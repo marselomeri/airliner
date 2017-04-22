@@ -58,7 +58,6 @@ PROC $sc_$cpu_fm_filerename_stress
 ;    -The CRC is just generated, it is not verified.
 ;
 ;  Change History
-;
 ;	Date	   Name		Description
 ;	06/11/08   D. Stewart	Original Procedure
 ;	12/04/08   W. Moleski	Added requirements 1000, 2005.1 and 2008 and
@@ -66,12 +65,14 @@ PROC $sc_$cpu_fm_filerename_stress
 ;	02/01/10   W. Moleski	Updated for FM 2.1.0.0 and more cleanup
 ;       03/01/11   W. Moleski   Added variables for App name and ram directory
 ;       01/06/15   W. Moleski   Modified CMD_EID events from INFO to DEBUG
+;       01/19/17   W. Moleski   Updated for FM 2.5.0.0 using CPU1 for commanding
+;                               and added a hostCPU variable for the utility
+;                               procs to connect to the proper host IP address.
 ;
 ;  Arguments
 ;	None
 ;
 ;  Procedures Called
-;
 ;	Name			Description
 ; 
 ;  Required Post-Test Analysis
@@ -123,6 +124,7 @@ local endOfStringChar = "00"
 local FMAppName = FM_APP_NAME
 local ramDir = "/ram"
 local ramDirPhys = "RAM:0"
+local hostCPU = "$CPU"
 local testSourceDir = ramDir & "/FMSOURCE"
 local testDestDir   = ramDir & "/FMDEST"
 local testDestDir2  = "/cf"
@@ -182,9 +184,9 @@ write ";********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";*********************************************************************"
@@ -194,7 +196,7 @@ write ";********************************************************************"
 s $sc_$cpu_fm_tableloadfile
 wait 5
 
-s ftp_file ("CF:0/apps", "$cpu_fmdevtbl_ld_1", FM_TABLE_FILENAME, "$CPU", "P")
+s ftp_file ("CF:0/apps", "$cpu_fmdevtbl_ld_1", FM_TABLE_FILENAME, hostCPU, "P")
 wait 5
 
 s $sc_$cpu_fm_startfmapps
@@ -311,7 +313,7 @@ write ";  Step 2.3: Upload Test File to test Directory."
 write ";*********************************************************************"
 ;; Upload the Test file
 ; proc ftp_file (remote_directory, filename, dest_filename, cpu, getorput)
-s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
 wait 5
 
 write ";*********************************************************************"
@@ -427,7 +429,7 @@ else
   ut_setrequirements FM_2005, "F"
 
   ;; Upload the Test file again if the above command worked
-  s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+  s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
 endif
 
 wait 5
@@ -462,7 +464,7 @@ else
   ut_setrequirements FM_2005, "F"
 
   ;; Upload the Test file again since the command worked
-  s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+  s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
 endif
 
 wait 5
@@ -709,13 +711,13 @@ write ";*********************************************************************"
 write ";  Step 3.5.4: Upload file to the new directory."
 write ";*********************************************************************"
 ;; Upload the Test file to the directories created above
-s ftp_file (uploadDir2, testFile2, testFile2, "$CPU", "P")
+s ftp_file (uploadDir2, testFile2, testFile2, hostCPU, "P")
 wait 5
 
-s ftp_file ( uploadDir3, testFile2, testFile2, "$CPU", "P")
+s ftp_file ( uploadDir3, testFile2, testFile2, hostCPU, "P")
 wait 5
 
-s ftp_file ( uploadDir4, testFile2, testFile2, "$CPU", "P")
+s ftp_file ( uploadDir4, testFile2, testFile2, hostCPU, "P")
 wait 5
 
 write ";*********************************************************************"
@@ -938,7 +940,7 @@ wait 5
 write ";*********************************************************************"
 write ";  Step 3.5.6: Upload file to the root directory."
 write ";*********************************************************************"
-s ftp_file (ramDirPhys, verySmallName, verySmallName, "$CPU", "P")
+s ftp_file (ramDirPhys, verySmallName, verySmallName, hostCPU, "P")
 wait 5
 
 write ";*********************************************************************"
@@ -985,7 +987,7 @@ write ";*********************************************************************"
 write ";  Step 3.6.2: Dest File Name with 0 characters (if possible):"
 write ";*********************************************************************"
 ;; Upload the Test file
-s ftp_file (uploadDir2, testFile2, testFile2, "$CPU", "P")
+s ftp_file (uploadDir2, testFile2, testFile2, hostCPU, "P")
 wait 5
 
 ut_setupevents "$SC", "$CPU", {FMAppName}, FM_RENAME_TGT_ERR_EID, "ERROR", 1
@@ -1031,7 +1033,7 @@ else
   ut_setrequirements FM_2005, "F"
 
   ;; Upload the Test file
-  s ftp_file (uploadDir2, testFile2, testFile2, "$CPU", "P")
+  s ftp_file (uploadDir2, testFile2, testFile2, hostCPU, "P")
 endif
 
 wait 5
@@ -1078,7 +1080,7 @@ if ( $SC_$CPU_FM_CMDPC = cmdctr ) then
   endif
 
   ;; Upload the Test file
-  s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+  s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
   wait 5
 else
   write "<!> Failed (1003;1008;2005) - Rename Command Rejected. Should have accepted 63 char full path spec"
@@ -1154,7 +1156,7 @@ if ($SC_$CPU_FM_CMDPC = cmdctr) then
   endif
 
   ;; Upload the Test file
-  s ftp_file ( uploadDir, testFile, testFile, "$CPU","P")
+  s ftp_file ( uploadDir, testFile, testFile, hostCPU,"P")
   wait 5
 else
   write "<!> Failed (1003;2005) - Rename Command Rejected. Should have accepted 62 char full path spec"
@@ -1229,7 +1231,7 @@ if ($SC_$CPU_FM_CMDPC = cmdctr) then
   endif
 
   ;; Upload the Test file
-  s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+  s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
   wait 5
 else
   write "<!> Failed (1003;2005) - Rename Command Rejected. Should have accepted 61 char full path spec"
@@ -1304,7 +1306,7 @@ if ($SC_$CPU_FM_CMDPC = cmdctr) then
   endif
 
   ;; Upload the Test file
-  s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+  s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
   wait 4
 else
   write "<!> Failed (1003;2005) - Rename Command Rejected."
@@ -1322,7 +1324,7 @@ write ";*********************************************************************"
 write ";  Step 4.1.1: Upload zero length file to test Directory."
 write ";*********************************************************************"
 ;; Upload the Test file
-s ftp_file (uploadDir, testFile3, testFile3, "$CPU", "P")
+s ftp_file (uploadDir, testFile3, testFile3, hostCPU, "P")
 wait 5
 
 write ";*********************************************************************"
@@ -1365,7 +1367,7 @@ write ";*********************************************************************"
 write ";  Step 4.2.1: Upload excessively large file to test Directory."
 write ";*********************************************************************"
 ;; Upload the Test file
-s ftp_file (uploadDir, testFile4, testFile4, "$CPU", "P")
+s ftp_file (uploadDir, testFile4, testFile4, hostCPU, "P")
 wait 5
 
 write ";*********************************************************************"
@@ -1436,9 +1438,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
-                                                                                
-cfe_startup $CPU
+wait 60
+
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"

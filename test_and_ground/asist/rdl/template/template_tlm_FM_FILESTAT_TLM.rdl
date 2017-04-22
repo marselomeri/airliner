@@ -46,6 +46,8 @@ PACKET Pxxxx APID=nnnn, DESC="$sc $cpu FM File Info Packet"
 !
   ULI  $sc_$cpu_FM_ModTime	 DESC="$sc $cpu FM Last Modification Time of File"
 !
+  ULI  $sc_$cpu_FM_Perms	 DESC="$sc $cpu FM Permissions of File"
+!
   char $sc_$cpu_FM_InfoFileName[OS_MAX_PATH_LEN]  DESC="$sc $cpu FM Name of File"
 !
 !  END                !END APPEND RECORD FUNCTION

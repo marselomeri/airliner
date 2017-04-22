@@ -12,6 +12,8 @@ PROC $sc_$cpu_fm_badtblloadfile
 ;
 ;	Date	   Name		Description
 ;	05/11/10   W. Moleski	Initial creation
+;       03/03/11   W. Moleski   Added variables for App name and ram directory
+;       01/18/17   W. Moleski   Added variable to specify the Host being used
 ;
 ;  Arguments
 ;	None.
@@ -34,6 +36,11 @@ local logging = %liv (log_procedure)
 ;**********************************************************************
 ; Define local variables
 ;**********************************************************************
+local FMAppName = FM_APP_NAME
+local ramDir = "/ram"
+local freeSpaceTblName = FMAppName & "." & FM_TABLE_CFE_NAME
+local hostCPU = "$CPU"
+
 LOCAL tblAppId, tblPktId
 
 ;;; Set the pkt and app IDs for the tables based upon the cpu being used
@@ -41,14 +48,6 @@ LOCAL tblAppId, tblPktId
 ;; CPU1 is the default
 tblAppId = "0FBA"
 tblPktId = 4026
-
-if ("$CPU" = "CPU2") then
-  tblAppId = "0FD8"
-  tblPktId = 4056
-elseif ("$CPU" = "CPU3") then
-  tblAppId = "0FF8"
-  tblPktId = 4088
-endif
 
 write ";*********************************************************************"
 write ";  Create & upload the Free Space Table file."
@@ -69,16 +68,15 @@ $SC_$CPU_FM_FreeSpaceTBL[3].Name = ""
 $SC_$CPU_FM_FreeSpaceTBL[4].State = 3
 $SC_$CPU_FM_FreeSpaceTBL[4].Name = ""
 
-$SC_$CPU_FM_FreeSpaceTBL[5].State = FM_TABLE_ENTRY_UNUSED
-$SC_$CPU_FM_FreeSpaceTBL[5].Name = ""
+for i = 5 to FM_TABLE_ENTRY_COUNT-1 do
+  $SC_$CPU_FM_FreeSpaceTBL[i].State = FM_TABLE_ENTRY_UNUSED
+  $SC_$CPU_FM_FreeSpaceTBL[i].Name = ""
+enddo
 
-$SC_$CPU_FM_FreeSpaceTBL[6].State = FM_TABLE_ENTRY_UNUSED
-$SC_$CPU_FM_FreeSpaceTBL[6].Name = ""
-
-$SC_$CPU_FM_FreeSpaceTBL[7].State = FM_TABLE_ENTRY_UNUSED
-$SC_$CPU_FM_FreeSpaceTBL[7].Name = ""
+local maxIndex = FM_TABLE_ENTRY_COUNT-1
+local endmnemonic = "$SC_$CPU_FM_FreeSpaceTBL[" & maxIndex & "]"
 
 ;; Create the Table Load file
-s create_tbl_file_from_cvt ("$CPU",tblAppId,"FM FreeSpace Table Invalid Load 1", "$cpu_fmbadtbl_ld_1","FM.FreeSpace", "$SC_$CPU_FM_FreeSpaceTBL[0].State", "$SC_$CPU_FM_FreeSpaceTBL[7].Name")
+s create_tbl_file_from_cvt (hostCPU,tblAppId,"FM FreeSpace Table Invalid Load 1","$cpu_fmbadtbl_ld_1",freeSpaceTblName,"$SC_$CPU_FM_FreeSpaceTBL[0].State",endmnemonic)
 
 ENDPROC

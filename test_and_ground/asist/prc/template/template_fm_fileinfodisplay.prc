@@ -10,11 +10,11 @@ proc $sc_$cpu_fm_fileinfodisplay (filename, crcVal, expResult)
 ;          the packet is viewed as stale or not 
 ;
 ; History:
-;
 ;       Date       Name         Description
 ;	07/31/08   D. Stewart	Initial development of this proc.
 ;       02/28/11   W. Moleski   Added variables for App name and ram directory
 ;       05/09/12   W. Moleski   Added check of ChildCMDPC and ChildCMDEC
+;	01/19/17   W. Moleski	Added print of File permissions
 ;==============================================================================
 
 if (%nargs < 2) then
@@ -36,12 +36,6 @@ local actualResult
 ; grab the current sequence counter for the info packet
 ; CPU1 is the default
 seqCount = P08Bscnt
-
-if ("$CPU" = "CPU2") then
-  seqCount = P18Bscnt
-elseif ("$CPU" = "CPU3") then
-  seqCount = P28Bscnt
-endif
 
 write "  Packet Sequence Counter before cmd = ", seqCount
 
@@ -79,12 +73,6 @@ if (actualResult = "Pass") then
   write "Contents of the File Info Packet:"
   local newSeqCount = P08Bscnt 
 
-  if ("$CPU" = "CPU2") then
-    newSeqCount = P18Bscnt
-  elseif ("$CPU" = "CPU3") then
-    newSeqCount = P28Bscnt
-  endif
-
   if (seqCount = newSeqCount) then
     write "<?> WARNING - Info Packet not received"
     writeToLog = 0
@@ -99,6 +87,7 @@ if (actualResult = "Pass") then
     write "  Compute CRC Flag = ", $SC_$CPU_FM_ComputeCRC
     write "  CRC              = ", $SC_$CPU_FM_CRC
     write "  last Mod Time    = ", $SC_$CPU_FM_ModTime
+    write "  Permissions      = ", $SC_$CPU_FM_Perms
     write ""
   endif
 endif

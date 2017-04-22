@@ -27,6 +27,8 @@ PROC $sc_$cpu_fm_filedecom_basic
 ;			b) last modification time,
 ;			c) file status (Open, Closed, or Nonexistent)
 ;			d) <MISSION_DEFINED> CRC
+;                       e) the file mode (permissions), as a 4-byte value
+;                       f) command-specified filename
 ;    FM4000	FM shall generate a housekeeping message containing the
 ;		following:
 ;			a) Valid Command Counter
@@ -36,7 +38,6 @@ PROC $sc_$cpu_fm_filedecom_basic
 ;		the following data to Zero
 ;			a) Valid Command Counter
 ;			b) Command Rejected Counter
-;
 ;
 ;  Prerequisite Conditions
 ;    The cFE & FM are up and running and ready to accept commands. 
@@ -49,19 +50,20 @@ PROC $sc_$cpu_fm_filedecom_basic
 ;    The CRC is just generated, it is not verified.
 ;
 ;  Change History
-;
 ;	Date	   Name		Description
 ;	05/08/08   D. Stewart	Original Procedure
 ;	12/08/08   W. Moleski	Added requirement 2009.1 and general cleanup
 ;	01/27/10   W. Moleski	Updating for FM 2.1.0.0
 ;       02/28/11   W. Moleski   Added variables for App name and ram directory
 ;       01/06/15   W. Moleski   Modified CMD_EID events from INFO to DEBUG
+;       01/19/17   W. Moleski   Updated for FM 2.5.0.0 using CPU1 for commanding
+;                               and added a hostCPU variable for the utility
+;                               procs to connect to the proper host IP address.
 ;
 ;  Arguments
 ;	None
 ;
 ;  Procedures Called
-;
 ;	Name			Description
 ; 
 ;  Required Post-Test Analysis
@@ -104,6 +106,7 @@ local cfe_requirements[0 .. ut_req_array_size] = ["FM_1003", "FM_1004", "FM_2009
 local FMAppName = FM_APP_NAME
 local ramDir = "/ram"
 local ramDirPhys = "RAM:0"
+local hostCPU = "$CPU"
 local testDir1 = ramDir & "/FMTEST1"
 local testDir2 = ramDir & "/FMTEST2"
 
@@ -130,9 +133,9 @@ write ";********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";*********************************************************************"
@@ -142,7 +145,7 @@ write ";********************************************************************"
 s $sc_$cpu_fm_tableloadfile
 wait 5
 
-s ftp_file ("CF:0/apps", "$cpu_fmdevtbl_ld_1", FM_TABLE_FILENAME, "$CPU", "P")
+s ftp_file ("CF:0/apps", "$cpu_fmdevtbl_ld_1", FM_TABLE_FILENAME, hostCPU, "P")
 wait 5
 
 s $sc_$cpu_fm_startfmapps
@@ -255,7 +258,7 @@ write ";  Step 2.3: Upload Test File to Source Directory."
 write ";*********************************************************************"
 ;; Upload the Test file
 ; proc ftp_file (remote_directory, filename, dest_filename, cpu, getorput)
-s ftp_file (uploadDir, testFileCompressed, testFileCompressed, "$CPU","P")
+s ftp_file (uploadDir, testFileCompressed, testFileCompressed, hostCPU,"P")
 wait 5
 
 write ";*********************************************************************"
@@ -828,9 +831,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"

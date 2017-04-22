@@ -17,6 +17,7 @@
 !			: and SetTblState commands
 !  30AUG11       WFM	: Added the Overwrite argument to the Copy and Move cmds
 !  15MAY12       WFM	: Removed the ForceDelete command
+!  18JAN17       WFM	: Added Set File Permissions command
 !
 !=============================================================================
 !
@@ -83,11 +84,15 @@ CLASS Pxxxx APID=nnnn, DESC="$sc $cpu File Manager App Commands"
   CMDS  $sc_$cpu_FM_DirListFile      FCTN=14, DESC="$sc $cpu FM Directory Listing to File command code"
       char DirName[OS_MAX_PATH_LEN]     DESC="Name of Directory to List files of"
       char File[OS_MAX_PATH_LEN]        DESC="Destination File Name for Directory List"
+      UB GetStatFlag			DESC="New argument that specifies whether to return file stats (size,time.mode)"
+      UB Spare[3]       DESC="Spare for alignment",INVISIBLE,STATIC,DEFAULT=0
   END
 !
   CMDS  $sc_$cpu_FM_DirListTlm       FCTN=15, DESC="$sc $cpu FM Directory Listing to Telemetry command code"
       char DirName[OS_MAX_PATH_LEN]     DESC="Name of Directory to List files of"
       ULI   Offset                      DESC="# of files in the Dir to skip before collecting filenames to send to the ground"
+      UB GetStatFlag			DESC="New argument that specifies whether to return file stats (size,time.mode)"
+      UB Spare[3]       DESC="Spare for alignment",INVISIBLE,STATIC,DEFAULT=0
   END
 !
   CMD  $sc_$cpu_FM_GetFreeSpace      FCTN=16, DESC="$sc $cpu FM Get Free Space command"
@@ -95,6 +100,11 @@ CLASS Pxxxx APID=nnnn, DESC="$sc $cpu File Manager App Commands"
   CMDS  $sc_$cpu_FM_SetTblState      FCTN=17, DESC="$sc $cpu FM Set Table State command"
       ULI tblEntry	DESC="The index of the table entry whose state is being set"
       ULI newState	DESC="The State to set the table entry to"
+  END
+!
+  CMDS  $sc_$cpu_FM_SetFilePermissions  FCTN=19, DESC="$sc $cpu FM Set File Permissions on the specified File"
+      char File[OS_MAX_PATH_LEN]        DESC="Name of the File to set the permissions on"
+      ULI NewPerms			DESC="The File permission mask to set for the specified file"
   END
 !
 END       !END COMMANDS

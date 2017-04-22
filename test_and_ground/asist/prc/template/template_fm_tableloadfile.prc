@@ -8,17 +8,19 @@ PROC $sc_$cpu_fm_tableloadfile
 ;	loaded via the CFE_TBL_LOAD command.
 ;
 ;  Change History
-;
 ;	Date	   Name		Description
 ;	12/10/08   W. Moleski	Original Procedure.
 ;	02/01/10   W. Moleski	Updated for FM 2.1.0.0
+;       03/01/11   W. Moleski   Added variables for App name and ram directory
+;       01/19/17   W. Moleski   Updated for FM 2.5.0.0 using CPU1 for commanding
+;                               and added a hostCPU variable for the utility
+;                               procs to connect to the proper host IP address.
 ;
 ;  Arguments
 ;	None.
 ;
 ;  Procedures Called
 ;	Name			Description
-;
 ;**********************************************************************
 
 local logging = %liv (log_procedure)
@@ -27,12 +29,18 @@ local logging = %liv (log_procedure)
 #include "ut_statusdefs.h"
 #include "fm_platform_cfg.h"
 #include "fm_events.h"
+#include "fm_defs.h"
 
 %liv (log_procedure) = logging
 
 ;**********************************************************************
 ; Define local variables
 ;**********************************************************************
+local FMAppName = FM_APP_NAME
+local ramDir = "/ram"
+local hostCPU = "$CPU"
+local freeSpaceTblName = FMAppName & "." & FM_TABLE_CFE_NAME
+
 LOCAL tblAppId, tblPktId
 
 ;;; Set the pkt and app IDs for the tables based upon the cpu being used
@@ -41,43 +49,25 @@ LOCAL tblAppId, tblPktId
 tblAppId = "0FBA"
 tblPktId = 4026
 
-if ("$CPU" = "CPU2") then
-  tblAppId = "0FD8"
-  tblPktId = 4056
-elseif ("$CPU" = "CPU3") then
-  tblAppId = "0FF8"
-  tblPktId = 4088
-endif
-
 write ";*********************************************************************"
 write ";  Create & upload the Free Space Table file."
 write ";********************************************************************"
 ;; States are 0=Disabled; 1=Enabled;
-$SC_$CPU_FM_FreeSpaceTBL[0].State = 1
-$SC_$CPU_FM_FreeSpaceTBL[0].Name = "/ram"
+$SC_$CPU_FM_FreeSpaceTBL[0].State = FM_TABLE_ENTRY_ENABLED
+$SC_$CPU_FM_FreeSpaceTBL[0].Name = ramDir
 
-$SC_$CPU_FM_FreeSpaceTBL[1].State = 1
+$SC_$CPU_FM_FreeSpaceTBL[1].State = FM_TABLE_ENTRY_ENABLED
 $SC_$CPU_FM_FreeSpaceTBL[1].Name = "/cf"
 
-$SC_$CPU_FM_FreeSpaceTBL[2].State = 0
-$SC_$CPU_FM_FreeSpaceTBL[2].Name = ""
+for i = 2 to FM_TABLE_ENTRY_COUNT-1 do
+  $SC_$CPU_FM_FreeSpaceTBL[i].State = FM_TABLE_ENTRY_UNUSED
+  $SC_$CPU_FM_FreeSpaceTBL[i].Name = ""
+enddo
 
-$SC_$CPU_FM_FreeSpaceTBL[3].State = 0
-$SC_$CPU_FM_FreeSpaceTBL[3].Name = ""
-
-$SC_$CPU_FM_FreeSpaceTBL[4].State = 0
-$SC_$CPU_FM_FreeSpaceTBL[4].Name = ""
-
-$SC_$CPU_FM_FreeSpaceTBL[5].State = 0
-$SC_$CPU_FM_FreeSpaceTBL[5].Name = ""
-
-$SC_$CPU_FM_FreeSpaceTBL[6].State = 0
-$SC_$CPU_FM_FreeSpaceTBL[6].Name = ""
-
-$SC_$CPU_FM_FreeSpaceTBL[7].State = 0
-$SC_$CPU_FM_FreeSpaceTBL[7].Name = ""
+local maxIndex = FM_TABLE_ENTRY_COUNT-1
+local endmnemonic = "$SC_$CPU_FM_FreeSpaceTBL[" & maxIndex & "]"
 
 ;; Create the Table Load file
-s create_tbl_file_from_cvt ("$CPU",tblAppId,"FM FreeSpace Table Load 1", "$cpu_fmdevtbl_ld_1","FM.FreeSpace", "$SC_$CPU_FM_FreeSpaceTBL[0].State", "$SC_$CPU_FM_FreeSpaceTBL[7].Name")
+s create_tbl_file_from_cvt (hostCPU,tblAppId,"FM FreeSpace Table Load 1","$cpu_fmdevtbl_ld_1",freeSpaceTblName,"$SC_$CPU_FM_FreeSpaceTBL[0].State",endmnemonic)
 
 ENDPROC

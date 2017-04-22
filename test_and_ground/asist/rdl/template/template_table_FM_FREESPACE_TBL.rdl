@@ -21,7 +21,6 @@
 !  	2008/12/02 WFM	: Initial implementation
 !  	2010/01/12 WFM	: Updates for FM 2.1.0.0
 !       2012/01/04 WFM  : Removed VARYING from Packet definition
-!       2015/01/07 WFM  : State Discrete changed where 0=Disabled and 2=Unused
 !==============================================================================
 !
 #include "osconfig.h"
@@ -32,7 +31,7 @@ TYPES
    RECORD $sc_$cpu_FM_FreeSpace_ENTRY  DESC="$sc $cpu FM Free Space Table Entry Type"
       ULI  State		 DESC="The State of this entry",DISCRETE,
 				 DRANGE=(0,1,2),
-				 DLABEL=("Disabled","Enabled","Unused")
+				 DLABEL=("Unused","Enabled","Disabled")
       char Name[OS_MAX_PATH_LEN] DESC="The name of the device" 
    END
 END_TYPES

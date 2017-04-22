@@ -24,12 +24,13 @@ TYPES
   END 
 
   RECORD FM_FileDetails
-     char Name[OS_MAX_PATH_LEN] DESC="FM Name of File"
-     ULI  FileSize              DESC="FM Size of File"
-     ULI  LastModTime           DESC="FM Last modification time of File"
+     char Name[OS_MAX_PATH_LEN] DESC="Name of File"
+     ULI  FileSize              DESC="Size of File"
+     ULI  LastModTime           DESC="Last modification time of File"
+     ULI  FilePerms             DESC="Permissions of File"
   END 
 
-   RECORD SC_ATSINFO_ENTRY_TYPE  DESC="$sc $cpu SC ATS Info Table Entry Type"
+   RECORD SC_ATSINFO_ENTRY_TYPE  DESC="SC ATS Info Table Entry Type"
       UI  UsageCtr      DESC="The number of times this ATS has been started"
       UI  CmdCtr        DESC="The number of commands contained in this ATS"
       ULI ATSSize       DESC="The size of this ATS"

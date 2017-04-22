@@ -22,11 +22,10 @@ PROC $sc_$cpu_fm_startfmapps
 ;                 FM Dir List File Page
 ;                 FM Open File List Page
 ;                 FM Free Space Table Page
+;                 FM Free Space Tlm Page
 ;                 TST FM HK Page
 ;
-;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	05/01/08   D. Stewart	Original Procedure
 ;       08/08/08   D. Stewart   Modified to be used by all fm testing procedures
@@ -35,14 +34,16 @@ PROC $sc_$cpu_fm_startfmapps
 ;				packet subscription
 ;       03/01/11   W. Moleski   Added variables for App name
 ;       01/07/15   W. Moleski   Updated this proc to determine if the apps are
-;				executing and only start then if they are not.
+;				executing and only start them if they are not.
 ;				Also, the Child Task Priority setting is checked
 ;				to make sure it is lower than the priority of
 ;				the FM app.
+;       01/18/17   W. Moleski   Updated for FM 2.5.0.0 using CPU1 for commanding
+;				and added a hostCPU variable for the utility 
+;				procs to connect to the proper host IP address.
 ;
 ;  Arguments
 ;	None
-;
 ;**********************************************************************
 
 ;; Turn off logging for the includes
@@ -68,6 +69,7 @@ local stream1, stream2, stream3, stream4, stream5
 local found_app1, found_app2
 local FMAppName = FM_APP_NAME
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 ;; This is the default priority set in the load_start_app procedure
 local fm_task_priority = 200
 local appDir = %env("WORK") & "/apps/$CPU/"
@@ -90,8 +92,9 @@ page $SC_$CPU_FM_DIR_LIST
 write "Opening FM Open File List Page."
 page $SC_$CPU_FM_OPEN_FILE_LIST
 
-write "Opening FM Free Space Table Page."
+write "Opening FM Free Space Pages"
 page $SC_$CPU_FM_FREESPACE_TABLE
+page $SC_$CPU_FM_FREESPACE_TLM
 
 write "Opening TST FM HK Page."
 page $SC_$CPU_TST_FM_HK
@@ -99,7 +102,7 @@ page $SC_$CPU_TST_FM_HK
 write ";*********************************************************************"
 write ";  Determine if the applications are running."
 write ";*********************************************************************"
-start get_file_to_cvt (ramDir, "cfe_es_app_info.log", "$sc_$cpu_es_app_info.log", "$CPU")
+start get_file_to_cvt (ramDir, "cfe_es_app_info.log", "$sc_$cpu_es_app_info.log", hostCPU)
 
 found_app1 = FALSE
 found_app2 = FALSE
@@ -149,10 +152,10 @@ if (found_app1 = FALSE) then
   ut_setupevents "$SC", "$CPU", {FMAppName}, FM_STARTUP_EID, "INFO", 2
 
   if (FM_CHILD_TASK_PRIORITY > fm_task_priority) then
-    s load_start_app (FMAppName,"$CPU","FM_AppMain")
+    s load_start_app (FMAppName,hostCPU,"FM_AppMain")
   else
     ;; Upload the application file
-    s load_app (ramDir,FMAppName,"$CPU")
+    s load_app (ramDir,FMAppName,hostCPU)
 
     fm_task_priority = FM_CHILD_TASK_PRIORITY - 10
 
@@ -180,20 +183,6 @@ if (found_app1 = FALSE) then
   stream3 = x'88C'
   stream4 = x'88D'
   stream5 = x'88E'
-
-  if ("$CPU" = "CPU2") then
-    stream1 = x'98A'
-    stream2 = x'98B'
-    stream3 = x'98C'
-    stream4 = x'98D'
-    stream5 = x'98E'
-  elseif ("$CPU" = "CPU3") then
-    stream1 = x'A8A'
-    stream2 = x'A8B'
-    stream3 = x'A8C'
-    stream4 = x'A8D'
-    stream5 = x'A8E'
-  endif
 
   write "Sending command to add subscription for FM HK packet."
   /$SC_$CPU_TO_ADDPACKET Stream=stream1 Pkt_Size=x'0' Priority=x'0' Reliability=x'1' Buflimit=x'4'
@@ -235,7 +224,7 @@ if (found_app1 = FALSE) then
   ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
   ut_setupevents "$SC", "$CPU", "TST_FM", TST_FM_INIT_INF_EID, "INFO", 2
 
-  s load_start_app ("TST_FM","$CPU","TST_FM_AppMain")
+  s load_start_app ("TST_FM",hostCPU,"TST_FM_AppMain")
 
   ; Wait for app startup events
   ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -253,12 +242,6 @@ if (found_app1 = FALSE) then
   ;;; Need to set the stream based upon the cpu being used
   ;; CPU1 is the default
   stream1 = x'927'
-
-  if ("$CPU" = "CPU2") then
-    stream1 = x'A27'
-  elseif ("$CPU" = "CPU3") then
-    stream1 = x'B27'
-  endif
 
   write "Sending command to add subscription for TST_FM HK packet."
   /$SC_$CPU_TO_ADDPACKET Stream=stream1 Pkt_Size=x'0' Priority=x'0' Reliability=x'1' Buflimit=x'4'

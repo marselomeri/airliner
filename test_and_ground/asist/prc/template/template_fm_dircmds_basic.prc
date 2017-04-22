@@ -37,12 +37,18 @@ PROC $sc_$cpu_fm_dircmds_basic
 ;			b) file size in bytes of each file
 ;			c) last modification time of each file
 ;			d) Filename of each file
+;			e) Mode (permissions), as a 4-byte value, of each file
 ;    FM3002.1	FM shall issue an event message that reports:
 ;			a) The number of filenames written to the specified file
 ;			b) The total number of files in the directory 
 ;			c) The command-specified file's filename
 ;    FM3002.2	FM shall use the <PLATFORM_DEFINED> default filename if a file
 ;		is not specified
+;    FM3002.3	If the command-specified GetSizeTimeMode flag is set to FALSE,
+;		FM shall initialize the following values to Zero:
+;			b) file size in bytes of each file
+;			c) last modification time of each file
+;			e) Mode (permissions), as a 4-byte value, of each file
 ;    FM3003	Upon receipt of a Directory Listing command, FM shall generate
 ;		a message containing the following for up to <PLATFORM_DEFINED>
 ;		consecutive files starting at the command specified offset:
@@ -50,6 +56,12 @@ PROC $sc_$cpu_fm_dircmds_basic
 ;			b) file size in bytes of each file
 ;			c) last modification time of each file
 ;			d) Filename of each file
+;			e) Mode (permissions), as a 4-byte value, of each file
+;    FM3003.1	If the command-specified GetSizeTimeMode flag is set to FALSE,
+;		FM shall initialize the following values to Zero:
+;			b) file size in bytes of each file
+;			c) last modification time of each file
+;			e) Mode (permissions), as a 4-byte value, of each file
 ;    FM4000	FM shall generate a housekeeping message containing the
 ;		following:
 ;			a) Valid Command Counter
@@ -59,7 +71,6 @@ PROC $sc_$cpu_fm_dircmds_basic
 ;		the following data to Zero
 ;			a) Valid Command Counter
 ;			b) Command Rejected Counter
-;
 ;
 ;  Prerequisite Conditions
 ;    The cFE & FM are up and running and ready to accept commands. 
@@ -77,12 +88,15 @@ PROC $sc_$cpu_fm_dircmds_basic
 ;	01/13/10   W. Moleski   Updated for FM 2.1.0.0 and did some more cleanup
 ;	02/25/11   W. Moleski   Added variables for the App Name and ram dir
 ;	01/06/15   W. Moleski   Modified CMD_EID events from INFO to DEBUG
+;       01/18/17   W. Moleski   Updated for FM 2.5.0.0 using CPU1 for commanding
+;				and added a hostCPU variable for the utility 
+;				procs to connect to the proper host IP address.
+;				Added tests for new Rqmts 3002.3 and 3003.1.
 ;
 ;  Arguments
 ;	None
 ;
 ;  Procedures Called
-;
 ;	Name			Description
 ; 
 ;  Required Post-Test Analysis
@@ -107,16 +121,18 @@ local logging = %liv (log_procedure)
 #define FM_3002     7
 #define FM_3002_1   8
 #define FM_3002_2   9
-#define FM_3003     10
-#define FM_4000     11
-#define FM_5000     12
+#define FM_3002_3   10
+#define FM_3003     11
+#define FM_3003_1   12
+#define FM_4000     13
+#define FM_5000     14
 
 ;**********************************************************************
 ;  Define variables
 ;**********************************************************************
 ; GLOBAL Variables
 
-global ut_req_array_size = 12
+global ut_req_array_size = 14
 global ut_requirement[0 .. ut_req_array_size]
 
 FOR i = 0 to ut_req_array_size DO
@@ -125,7 +141,7 @@ ENDDO
 
 ; LOCAL Variables
 
-local cfe_requirements[0 .. ut_req_array_size] = ["FM_1003", "FM_1004", "FM_1006", "FM_2008", "FM_3000", "FM_3001", "FM_3001.1", "FM_3002", "FM_3002.1", "FM_3002.2", "FM_3003", "FM_4000", "FM_5000"]
+local cfe_requirements[0 .. ut_req_array_size] = ["FM_1003", "FM_1004", "FM_1006", "FM_2008", "FM_3000", "FM_3001", "FM_3001.1", "FM_3002", "FM_3002.1", "FM_3002.2","FM_3002.3",  "FM_3003", "FM_3003.1", "FM_4000", "FM_5000"]
 
 local rawcmd
 
@@ -152,19 +168,20 @@ local errcnt
 local filenum = 1
 
 local currentDis
+local hostCPU = "$CPU"
 
 write ";*********************************************************************"
-write ";  Step 1.0:  Initialize the CPU for this test. "
+write ";  Step 1.0: Initialize the CPU for this test. "
 write ";*********************************************************************"
-write ";  Step 1.1:  Command a Power-On Reset on $CPU. "
+write ";  Step 1.1: Command a Power-On Reset on $CPU. "
 write ";********************************************************************"
 /$SC_$CPU_ES_POWERONRESET
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";*********************************************************************"
@@ -174,7 +191,7 @@ write ";********************************************************************"
 s $sc_$cpu_fm_tableloadfile
 wait 5
 
-s ftp_file ("CF:0/apps", "$cpu_fmdevtbl_ld_1", FM_TABLE_FILENAME, "$CPU", "P")
+s ftp_file ("CF:0/apps", "$cpu_fmdevtbl_ld_1", FM_TABLE_FILENAME, hostCPU, "P")
 wait 5
 
 s $sc_$cpu_fm_startfmapps
@@ -189,12 +206,6 @@ local hkPktId
 ;; Set the FM HK packet ID based upon the cpu being used
 ;; CPU1 is the default
 hkPktId = "p08A"
-
-if ("$CPU" = "CPU2") then
-  hkPktId = "p18A"
-elseif ("$CPU" = "CPU3") then
-  hkPktId = "p28A"
-endif
 
 ;; Verify the HK Packet is getting generated by waiting for the
 ;; sequencecount to increment twice
@@ -249,7 +260,7 @@ if ($SC_$CPU_FM_CMDPC = cmdctr) then
     ut_setrequirements FM_1003, "P"
     ut_setrequirements FM_3002_1, "P"
   else
-    write "<!> Failed (1003;3002.1) - Event message ", FM_GET_DIR_FILE_CMD_EID, " NOT received."
+    write "<!> Failed (1003;3002.1;3002.3) - Event message ", FM_GET_DIR_FILE_CMD_EID, " NOT received."
     ut_setrequirements FM_1003, "F"
     ut_setrequirements FM_3002_1, "F"
   endif
@@ -267,7 +278,7 @@ wait 5
 write ";*********************************************************************"
 write ";  Step 2.1.1.2: Listing to file command: List target (missing) dir"
 write ";*********************************************************************"
-ut_setupevents "$SC", "$CPU", {FMAppName}, FM_GET_DIR_FILE_SRC_ERR_EID, "ERROR", 1
+ut_setupevents "$SC","$CPU",{FMAppName},FM_GET_DIR_FILE_SRC_ERR_EID,"ERROR", 1
 
 errcnt = $SC_$CPU_FM_CMDEC + 1
 
@@ -644,7 +655,7 @@ write ";  Step 2.4: Upload a File to Test Directory."
 write ";*********************************************************************"
 ;; Upload the Test file
 ; proc ftp_file (remote_directory, filename, dest_filename, cpu, getorput)
-s ftp_file (uploadDir, testFile, testFile, "$CPU", "P")
+s ftp_file (uploadDir, testFile, testFile, hostCPU, "P")
 wait 5
 
 write ";*********************************************************************"
@@ -1276,15 +1287,79 @@ endif
 wait 5
 
 write ";*********************************************************************"
+write ";  Step 2.12: Listing to tlm command with flag set to TRUE"
+write ";*********************************************************************"
+cmdctr = $SC_$CPU_FM_CMDPC + 1
+
+s $sc_$cpu_fm_dirtlmdisplay (ramDir, 0, "Pass", 1)
+
+if (cmdctr = $SC_$CPU_FM_CMDPC ) then
+  write "<*> Passed (1006;3001) - Dir List to Tlm command passed."
+  ut_setrequirements FM_1006, "P"
+  ut_setrequirements FM_3001, "P"
+else
+  write "<!> Failed (1006;3003) - Dir List to Tlm command failed."
+  ut_setrequirements FM_1006, "F"
+  ut_setrequirements FM_3003, "F"
+endif
+
+wait 2
+
+;; Send the command again with flag set to False
+s $sc_$cpu_fm_dirtlmdisplay (ramDir, 0, "Pass", 0)
+
+if (($SC_$CPU_FM_DirList[1].FileSize = 0) AND ;;
+    ($SC_$CPU_FM_DirList[1].LastModTime = 0) AND ;;
+    ($SC_$CPU_FM_DirList[1].FilePerms = 0)) then
+  write "<*> Passed (3003.1) - File statistics were set to 0 as expected."
+  ut_setrequirements FM_3003_1, "P"
+else
+  write "<!> Failed (3003.1) - File statistics were NOT set to 0."
+  ut_setrequirements FM_3003_1, "F"
+endif
+
+wait 5
+
+write ";*********************************************************************"
+write ";  Step 2.13: Listing to file command with flag set to TRUE"
+write ";*********************************************************************"
+cmdctr = $SC_$CPU_FM_CMDPC + 1
+
+s $sc_$cpu_fm_dirfiledisplay (ramDir,ramDir & "/dirfiletrue.lst",downloadDir,"dirfiletrue.lst","Pass",1)
+
+if ($SC_$CPU_FM_CMDPC = cmdctr) then
+  write "<*> Passed (3002) - Dir Listing to File command accepted."
+  ut_setrequirements FM_3002, "P"
+else
+  write "<!> Failed (3002) - Dir Listing to File command rejected."
+  ut_setrequirements FM_3002, "F"
+endif
+
+;; Send the command again with flag set to False
+s $sc_$cpu_fm_dirfiledisplay (ramDir,ramDir & "/dirfilefalse.lst",downloadDir,"dirfilefalse.lst","Pass",0)
+
+if (($SC_$CPU_FM_FileListEntry[1].FileSize = 0) AND ;;
+    ($SC_$CPU_FM_FileListEntry[1].LastModTime = 0) AND ;;
+    ($SC_$CPU_FM_FileListEntry[1].FilePerms = 0)) then
+  write "<*> Passed (3002.3) - File statistics were set to 0 as expected."
+  ut_setrequirements FM_3002_3, "P"
+else
+  write "<!> Failed (3002.3) - File statistics were NOT set to 0."
+  ut_setrequirements FM_3002_3, "F"
+endif
+
+wait 5
+
+write ";*********************************************************************"
 write ";  Step 3.0:  Perform a Power-on Reset to clean-up from this test."
 write ";*********************************************************************"
 /$SC_$CPU_ES_POWERONRESET
 wait 10
 
 close_data_center
-wait 75
+wait 60
                                                                                 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"

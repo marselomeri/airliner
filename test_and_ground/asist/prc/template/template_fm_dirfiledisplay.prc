@@ -1,4 +1,4 @@
-proc $sc_$cpu_fm_dirfiledisplay (directory, filename, downloadDir, DLfilename, expResult)
+proc $sc_$cpu_fm_dirfiledisplay (directory, filename, downloadDir, DLfilename, expResult, statFlag)
 ;==============================================================================
 ;
 ; Purpose: The purpose of this procedure is to perform the Dir Listing to File
@@ -9,6 +9,8 @@ proc $sc_$cpu_fm_dirfiledisplay (directory, filename, downloadDir, DLfilename, e
 ;              filename has to be fully qualified 
 ;              downloadDir is of the form RAM:0/dir for use in the ftp_file proc
 ;              DLfilename is the name of the file found at downloadDir
+;              expResult is either "Pass" or "Fail". "Pass" is the default.
+;              statFlag is either 0 (False) or 1 (True). Default is 0.
 ;
 ; History:
 ;
@@ -19,6 +21,10 @@ proc $sc_$cpu_fm_dirfiledisplay (directory, filename, downloadDir, DLfilename, e
 ;				as the second argument since filename is the 
 ;				fully qualified name to use in the command.
 ;       01/06/15   W. Moleski   Modified CMD_EID events from INFO to DEBUG
+;       01/18/17   W. Moleski   Updated for FM 2.5.0.0 using CPU1 for commanding
+;                               and added a hostCPU variable for the utility
+;                               procs to connect to the proper host IP address.
+;                               Added new GetStatFlag argument to command.
 ;==============================================================================
 
 local logging = %liv (log_procedure)
@@ -32,6 +38,9 @@ local logging = %liv (log_procedure)
 ;; If the optional argument is not specified, expect Pass
 if (%nargs = 4) then
   expResult = "Pass"
+  statFlag = 0
+elseif (%nargs = 5) then
+  statFlag = 0
 endif
 
 local cmdctr, errcnt, childCmdCtr
@@ -45,18 +54,12 @@ local idBasedOnSC
 fileAppPktID = "P0F0C"
 idBasedOnSC = "PF0C"
 
-if ("$CPU" = "CPU2") then
-  fileAppPktID = "P0F2C"
-  idBasedOnSC = "PF2C"
-elseif ("$CPU" = "CPU3") then
-  fileAppPktID = "P0F4C"
-  idBasedOnSC = "PF4C"
-endif
-
 local tokenType = ""
 local numFilesWritEM
 local currentDis
 local maxToDis
+
+local hostCPU = "$CPU"
 
 ;****************************************
 ;  start of sub-proc
@@ -68,7 +71,7 @@ cmdctr = $SC_$CPU_FM_CMDPC + 1
 errcnt = $SC_$CPU_FM_CMDEC + 1
 childCmdCtr = $SC_$CPU_FM_CHILDCMDPC + 1
 
-/$SC_$CPU_FM_DirListFile DirName=directory File=filename
+/$SC_$CPU_FM_DirListFile DirName=directory File=filename GetStatFlag=statFlag
 
 wait until (($SC_$CPU_FM_CMDPC = cmdctr) OR ($SC_$CPU_FM_CMDEC = errcnt))   
 if (($SC_$CPU_FM_CMDPC = cmdctr) AND ($SC_$CPU_FM_CHILDCMDPC = childCmdCtr)) then
@@ -102,7 +105,7 @@ if (actualResult = "Pass") then
   if (filename = "") then
     filename = "fm_dirlist.out"
   endif
-  s ftp_file (downloadDir, DLfilename, DLfilename, "$CPU", "G")
+  s ftp_file (downloadDir, DLfilename, DLfilename, hostCPU, "G")
   wait 15
 
   ; populate the tlm page
@@ -172,6 +175,7 @@ if (actualResult = "Pass") then
     write "  File " & currentDis & " Name           = ",$SC_$CPU_FM_FileListEntry[currentDis].Name
     write "  File " & currentDis & " Size           = ",$SC_$CPU_FM_FileListEntry[currentDis].FileSize
     write "  File " & currentDis & " Last Mod Time  = ",$SC_$CPU_FM_FileListEntry[currentDis].LastModTime
+    write "  File " & currentDis & " Permissions    = ",$SC_$CPU_FM_FileListEntry[currentDis].FilePerms
   ENDDO
 endif
 
