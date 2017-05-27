@@ -33,13 +33,13 @@ else()
             ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
     )
 
-    add_airliner_app(
-        cfs_lib
-        DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
-    add_airliner_app(
-        sch
-        DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
-        CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch)
+    #add_airliner_app(
+    #    cfs_lib
+    #    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
+    #add_airliner_app(
+    #    sch
+    #    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
+    #    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch)
 
 endif()
 
