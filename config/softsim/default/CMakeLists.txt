@@ -62,6 +62,11 @@ else()
         DEFINITION ${PROJECT_SOURCE_DIR}/apps/fm/fsw/for_build
         CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/fm)
 
+    add_airliner_app(
+        hk
+        DEFINITION ${PROJECT_SOURCE_DIR}/apps/hk/fsw/for_build
+        CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hk)
+
 endif()
 
 

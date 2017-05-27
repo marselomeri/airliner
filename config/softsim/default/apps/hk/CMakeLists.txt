@@ -1,8 +1,10 @@
-# Set what we're going to call the application file.
-set(APP_FILE HK)
+set(APP_NAME hk)
 
-# Set path to the tables source code directory.
-set(TABLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tables)
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME hk_cpy_tbl
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/hk_cpy_tbl.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
 
-# Process build independent CMake file in application directory.
-add_subdirectory($ENV{CFS_APP_SRC}/hk/fsw/for_build app)
+
