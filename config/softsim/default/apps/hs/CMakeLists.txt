@@ -1,11 +1,37 @@
-# Set what we're going to call the application file.
-set(APP_FILE HS)
+set(APP_NAME hs)
 
-# Set path to the tables source code directory.
-set(TABLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tables)
-	
-# Process build dependent CMake file in build directory.
-add_subdirectory(src custom)
+add_airliner_app_src(
+    ${APP_NAME}
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hs_custom.c
+)
 
-# Process build independent CMake file in application directory.
-add_subdirectory($ENV{CFS_APP_SRC}/hs/fsw/for_build app)
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME hs_amt
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/hs_amt.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME hs_emt
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/hs_emt.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME hs_mat
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/hs_mat.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME hs_xct
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/hs_xct.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+

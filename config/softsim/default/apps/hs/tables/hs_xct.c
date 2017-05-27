@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: hs_xct_tbl.c 1.4 2015/03/03 12:16:33EST sstrege Exp  $
+**   $Id: hs_xct.c 1.1 2015/11/12 14:29:06EST wmoleski Exp  $
 **
-**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
+**   Copyright © 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -16,7 +16,15 @@
 **
 ** Notes:
 **
-** $Log: hs_xct_tbl.c  $
+** $Log: hs_xct.c  $
+** Revision 1.1 2015/11/12 14:29:06EST wmoleski 
+** Initial revision
+** Member added to project /CFS-APPs-PROJECT/hs/fsw/tables/project.pj
+** Revision 1.1 2015/05/01 14:54:33EDT lwalling 
+** Initial revision
+** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hs/fsw/tables/project.pj
+** Revision 1.5 2015/04/27 14:33:47EDT lwalling 
+** Add attribute unused to default table definitions
 ** Revision 1.4 2015/03/03 12:16:33EST sstrege 
 ** Added copyright information
 ** Revision 1.3 2011/08/15 15:43:01EDT aschoeni 
@@ -39,7 +47,7 @@
 #include "cfe_tbl_filedef.h"
 
 
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 {
     "HS_Default_ExeCount_Tbl", HS_APP_NAME ".ExeCount_Tbl", "HS ExeCount Table",
     "hs_xct.tbl", (sizeof(HS_XCTEntry_t) * HS_MAX_EXEC_CNT_SLOTS)
@@ -49,39 +57,40 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 
 HS_XCTEntry_t      HS_Default_ExeCount_Tbl[HS_MAX_EXEC_CNT_SLOTS] =
 {
-/*          ResourceName               	NullTerm ResourceType              */
-/*   0 */ { "CFE_ES",          			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   1 */ { "CFE_EVS",         			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   2 */ { "CFE_TIME",        			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   3 */ { "TIME_TONE_TASK",  			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   4 */ { "TIME_1HZ_TASK",   			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   5 */ { "CFE_TBL",         			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   6 */ { "CFE_SB",          			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   7 */ { "CF",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   8 */ { "CI",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*   9 */ { "CS",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  10 */ { "DS",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  11 */ { "ETA",             			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  12 */ { "FM",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  13 */ { "HK",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  14 */ { "HS",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  15 */ { "LC",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  16 */ { "MD",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  17 */ { "MM",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  18 */ { "PX4BR",           			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  19 */ { "SC",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  20 */ { "SCH",             			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  21 */ { "TO",              			0,       HS_XCT_TYPE_APP_MAIN       },
-/*  22 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  23 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  24 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  25 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  26 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  27 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  28 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  29 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  30 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
-/*  31 */ { "",                        	0,       HS_XCT_TYPE_NOTYPE         },
+/*          ResourceName               NullTerm ResourceType              */
+
+/*   0 */ { "CFE_ES",                  0,       HS_XCT_TYPE_APP_MAIN       },
+/*   1 */ { "CFE_EVS",                 0,       HS_XCT_TYPE_APP_MAIN       },
+/*   2 */ { "CFE_TIME",                0,       HS_XCT_TYPE_APP_MAIN       },
+/*   3 */ { "CFE_TBL",                 0,       HS_XCT_TYPE_APP_MAIN       },
+/*   4 */ { "CFE_SB",                  0,       HS_XCT_TYPE_APP_MAIN       },
+/*   5 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*   6 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*   7 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*   8 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*   9 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  10 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  11 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  12 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  13 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  14 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  15 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  16 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  17 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  18 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  19 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  20 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  21 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  22 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  23 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  24 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  25 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  26 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  27 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  28 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  29 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  30 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  31 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
 
 };
 

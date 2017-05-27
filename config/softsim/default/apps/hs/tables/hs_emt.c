@@ -1,6 +1,6 @@
 /************************************************************************
 ** File:
-**   $Id: hs_emt_tbl.c 1.3 2015/03/03 12:16:26EST sstrege Exp  $
+**   $Id: hs_emt.c 1.1 2015/11/12 14:29:06EST wmoleski Exp  $
 **
 **   Copyright © 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
@@ -16,7 +16,17 @@
 **
 ** Notes:
 **
-** $Log: hs_emt_tbl.c  $
+** $Log: hs_emt.c  $
+** Revision 1.1 2015/11/12 14:29:06EST wmoleski 
+** Initial revision
+** Member added to project /CFS-APPs-PROJECT/hs/fsw/tables/project.pj
+** Revision 1.2 2015/05/04 11:00:02EDT lwalling 
+** Change definitions for MAX_CRITICAL to MAX_MONITORED
+** Revision 1.1 2015/05/01 14:54:32EDT lwalling 
+** Initial revision
+** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hs/fsw/tables/project.pj
+** Revision 1.4 2015/04/27 14:33:47EDT lwalling 
+** Add attribute unused to default table definitions
 ** Revision 1.3 2015/03/03 12:16:26EST sstrege 
 ** Added copyright information
 ** Revision 1.2 2011/08/15 15:43:08EDT aschoeni 
@@ -37,15 +47,15 @@
 #include "cfe_tbl_filedef.h"
 
 
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 {
     "HS_Default_EventMon_Tbl", HS_APP_NAME ".EventMon_Tbl", "HS EventMon Table",
-    "hs_emt.tbl", (sizeof(HS_EMTEntry_t) * HS_MAX_CRITICAL_EVENTS)
+    "hs_emt.tbl", (sizeof(HS_EMTEntry_t) * HS_MAX_MONITORED_EVENTS)
 };
 
 
 
-HS_EMTEntry_t      HS_Default_EventMon_Tbl[HS_MAX_CRITICAL_EVENTS] =
+HS_EMTEntry_t      HS_Default_EventMon_Tbl[HS_MAX_MONITORED_EVENTS] =
 {
 /*          AppName                    NullTerm EventID        ActionType */
                                                 
