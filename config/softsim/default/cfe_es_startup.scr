@@ -8,6 +8,7 @@ CFE_APP, /cf/apps/HK.so,    	HK_AppMain,      HK,        70, 32768, 0x0, 0;
 CFE_APP, /cf/apps/HS.so,     HS_AppMain,      HS,        123, 32768, 0x0, 0;
 CFE_APP, /cf/apps/LC.so,    	LC_AppMain,   	 LC,		94, 32768, 0x0, 0;
 CFE_APP, /cf/apps/MM.so,     MM_AppMain,      MM,        88, 32768, 0x0, 0;
+CFE_APP, /cf/apps/SC.so,     SC_AppMain,      SC,        91, 32768, 0x0, 0;
 !CFE_APP, /cf/apps/HS.so,     HS_AppMain,      HS,        123, 32768, 0x0, 0;
 !CFE_APP, /cf/apps/TO.so,     TO_AppMain,      TO,	    80, 32768, 0x0, 0;
 CFE_APP, /cf/apps/CI.so, 	CI_AppMain,      CI,		43, 32768, 0x0, 0;
@@ -15,7 +16,6 @@ CFE_LIB, /cf/apps/schlib.so,    SCH_LibInit,    SCH_LIB,    0,     0, 0x0, 0;
 CFE_LIB, /cf/apps/PBLIB.so,    PBLIB_LibInit,    PBLIB,    0,     0, 0x0, 0;
 CFE_APP, /cf/apps/PX4BR.so,    PX4BR_AppMain,    PX4BR,    50,     32768, 0x0, 0;
 CFE_APP, /cf/apps/MD.so,    	MD_AppMain,   	 MD,		85, 32768, 0x0, 0;
-CFE_APP, /cf/apps/SC.so,     SC_AppMain,      SC,        91, 32768, 0x0, 0;
 !CFE_APP, /cf/apps/ETA.so,     ETA_AppMain,      ETA,       100, 32768, 0x0, 0;
 !CFE_APP, /cf/apps/SBN.so,    SBN_AppMain,     SBN,       37, 32768, 0x0, 0;
 !

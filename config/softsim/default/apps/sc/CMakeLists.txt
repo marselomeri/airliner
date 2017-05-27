@@ -1,11 +1,28 @@
-# Set what we're going to call the application file.
-set(APP_FILE SC)
+set(APP_NAME sc)
 
-# Set path to the tables source code directory.
-set(TABLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tables)
+add_airliner_app_src(
+    ${APP_NAME}
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/lc_custom.c
+)
 
-# Set path to the unit test build specific input directory.
-set(UNIT_TEST_INPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/unit_test)
-	
-# Process build independent CMake file in application directory.
-add_subdirectory($ENV{CFS_APP_SRC}/sc/fsw/for_build app)
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME sc_ats1
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/sc_ats1.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME sc_rts001
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/sc_rts001.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME sc_rts002
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/sc_rts002.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
