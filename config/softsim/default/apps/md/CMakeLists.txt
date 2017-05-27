@@ -1,11 +1,35 @@
-# Set what we're going to call the application file.
-set(APP_FILE MD)
+set(APP_NAME md)
 
-# Set path to the tables source code directory.
-set(TABLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tables)
+add_airliner_app_src(
+    ${APP_NAME}
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/md_custom.c
+)
 
-# Set path to the unit test build specific input directory.
-set(UNIT_TEST_INPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/unit_test)
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME md_dw1_tbl
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/md_dw1_tbl.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
 
-# Process build independent CMake file in application directory.
-add_subdirectory($ENV{CFS_APP_SRC}/md/fsw/for_build app)
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME md_dw2_tbl
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/md_dw2_tbl.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME md_dw3_tbl
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/md_dw3_tbl.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME md_dw4_tbl
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/md_dw4_tbl.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
