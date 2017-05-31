@@ -1,6 +1,12 @@
 # The build system is tested with cmake version 3.5.2
 cmake_minimum_required(VERSION 3.0.0)
 
+include(CTest)
+find_program( MEMORYCHECK_COMMAND valgrind )
+find_package(Threads)
+set( MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=yes --workaround-gcc296-bugs=yes --num-callers=50 --trace-children=yes --leak-check=full --track-origins=yes --gen-suppressions=all --xml=yes --xml-file=memcheck.xml" )
+enable_testing()
+
 # Set paths from all 3 major core components:  CFE, OSAL, and PSP.
 include(cfe/set-paths.cmake)
 include(osal/set-paths.cmake)

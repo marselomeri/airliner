@@ -23,9 +23,9 @@ $(TARGET_NAMES)::
         done; \
 	TARGET_PATH=$$(echo ${TARGET_PATHS} | cut -d " " -f $$idx); \
 	mkdir -p build/$$TARGET_PATH/host; \
-	(cd build/$$TARGET_PATH/host; cmake -DBUILDNAME:STRING=$$TARGET_PATH -DBUILD_TARGET:STRING=HOST ../../../..; $(MAKE) -j);\
+	(cd build/$$TARGET_PATH/host; cmake -DBUILDNAME:STRING=$$TARGET_PATH -DBUILD_TARGET:STRING=HOST -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug -Denable_memcheck_xml=ON ../../../..; $(MAKE) -j);\
 	mkdir -p build/$$TARGET_PATH/target; \
-	(cd build/$$TARGET_PATH/target; cmake -DBUILDNAME:STRING=$$TARGET_PATH -DBUILD_TARGET:STRING=TARGET ../../../..; $(MAKE) -j);
+	(cd build/$$TARGET_PATH/target; cmake -DBUILDNAME:STRING=$$TARGET_PATH -DBUILD_TARGET:STRING=TARGET -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug -Denable_memcheck_xml=ON ../../../..; $(MAKE) -j);
 	
 
 clean::
