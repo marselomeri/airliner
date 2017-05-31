@@ -46,6 +46,8 @@ extern "C" {
 ** Global Variables
 */
 
+#define SCH_FIX_HEADER(a, b, c) CFE_MAKE_BIG16(a), CFE_MAKE_BIG16(b), CFE_MAKE_BIG16(c) 
+
 /* Message table entry map */
 SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
 {

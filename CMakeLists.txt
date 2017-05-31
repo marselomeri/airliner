@@ -1,5 +1,5 @@
 # The build system is tested with cmake version 3.5.2
-cmake_minimum_required(VERSION 3.5.2)
+cmake_minimum_required(VERSION 3.0.0)
 
 # Set paths from all 3 major core components:  CFE, OSAL, and PSP.
 include(cfe/set-paths.cmake)
