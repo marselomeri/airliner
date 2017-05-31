@@ -8,7 +8,7 @@
 #DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "CFS CFDP (CF) Application on @BUILD_CONFIG_NAME@ User's Guide"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = @CMAKE_BINARY_DIR@/docs/users_guide/@PARSED_ARGS_TARGET@/
+OUTPUT_DIRECTORY       = @CMAKE_BINARY_DIR@/docs/users_guide/apps/cf/
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -17,7 +17,7 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = @CFS_MISSION@
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -222,7 +222,7 @@ SKIP_FUNCTION_MACROS   = YES
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
 TAGFILES               = @CMAKE_BINARY_DIR@/docs/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
-GENERATE_TAGFILE       = @CMAKE_BINARY_DIR@/docs/users_guide/@PARSED_ARGS_TARGET@/@PARSED_ARGS_TARGET@.tag
+GENERATE_TAGFILE       = @CMAKE_BINARY_DIR@/docs/users_guide/apps/cf/cf.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl
