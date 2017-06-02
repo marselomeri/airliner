@@ -115,11 +115,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dbcb7c94-25c6-415d-a367-2e3e13d901c9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/softsim/default/apps/md/CMakeLists.txt" afterPath="$PROJECT_DIR$/config/softsim/default/apps/md/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/softsim/default/apps/sc/CMakeLists.txt" afterPath="$PROJECT_DIR$/config/softsim/default/apps/sc/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/psp/fsw/pc-linux/src/CMakeLists.txt" afterPath="$PROJECT_DIR$/psp/fsw/pc-linux/src/CMakeLists.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/cf/fsw/for_build/CMakeLists.txt" afterPath="$PROJECT_DIR$/apps/cf/fsw/for_build/CMakeLists.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/ds/fsw/for_build/CMakeLists.txt" afterPath="$PROJECT_DIR$/apps/ds/fsw/for_build/CMakeLists.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/fm/fsw/for_build/CMakeLists.txt" afterPath="$PROJECT_DIR$/apps/fm/fsw/for_build/CMakeLists.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c" afterPath="$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/psp/fsw/pc-linux/src/main.c" afterPath="$PROJECT_DIR$/psp/fsw/pc-linux/src/main.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testcase.c" afterPath="$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testcase.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/softsim/default/target/" />
@@ -136,11 +137,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="psp_testcase.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="psp_testcase.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testcase.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="387">
+              <caret line="58" column="56" lean-forward="false" selection-start-line="58" selection-start-column="56" selection-end-line="58" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -150,7 +151,7 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_voltab.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="522">
-              <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+              <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -160,7 +161,7 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_watchdog.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="462">
-              <caret line="66" column="2" lean-forward="true" selection-start-line="66" selection-start-column="2" selection-end-line="176" selection-end-column="0" />
+              <caret line="66" column="2" lean-forward="false" selection-start-line="66" selection-start-column="2" selection-end-line="176" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -170,7 +171,7 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_timer.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="522">
-              <caret line="183" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+              <caret line="183" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -180,7 +181,7 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_ssr.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="58" column="0" lean-forward="true" selection-start-line="58" selection-start-column="0" selection-end-line="59" selection-end-column="67" />
+              <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="59" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -190,7 +191,7 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_memtab.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="525">
-              <caret line="99" column="0" lean-forward="true" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+              <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -200,7 +201,7 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_memory.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="57">
-              <caret line="741" column="12" lean-forward="true" selection-start-line="741" selection-start-column="12" selection-end-line="741" selection-end-column="12" />
+              <caret line="741" column="12" lean-forward="false" selection-start-line="741" selection-start-column="12" selection-end-line="741" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -209,8 +210,8 @@
       <file leaf-file-name="cfe_psp_start.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="502" column="11" lean-forward="true" selection-start-line="502" selection-start-column="11" selection-end-line="502" selection-end-column="11" />
+            <state relative-caret-position="375">
+              <caret line="202" column="4" lean-forward="false" selection-start-line="202" selection-start-column="4" selection-end-line="202" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -220,17 +221,17 @@
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_support.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="152">
-              <caret line="20" column="11" lean-forward="true" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+              <caret line="20" column="11" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.c" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+            <state relative-caret-position="15">
+              <caret line="1" column="44" lean-forward="false" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -290,8 +291,8 @@
         <option value="$PROJECT_DIR$/cfe/fsw/src/make/build-functions.cmake" />
         <option value="$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testrunner.c" />
         <option value="$PROJECT_DIR$/psp/fsw/pc-linux/src/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c" />
         <option value="$PROJECT_DIR$/psp/fsw/pc-linux/src/main.c" />
+        <option value="$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c" />
         <option value="$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testcase.c" />
       </list>
     </option>
@@ -1350,12 +1351,12 @@
       <workItem from="1493575279666" duration="6674000" />
       <workItem from="1493602679485" duration="2375000" />
       <workItem from="1493606749022" duration="1352000" />
-      <workItem from="1496369262299" duration="4224000" />
+      <workItem from="1496369262299" duration="4948000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47369000" />
+    <option name="totallyTimeSpent" value="48093000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1056" extended-state="6" />
@@ -1364,9 +1365,9 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18489583" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1610,18 +1611,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="502" column="11" lean-forward="true" selection-start-line="502" selection-start-column="11" selection-end-line="502" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_support.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
-          <caret line="20" column="11" lean-forward="true" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+          <caret line="20" column="11" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -1629,7 +1622,7 @@
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_memory.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
-          <caret line="741" column="12" lean-forward="true" selection-start-line="741" selection-start-column="12" selection-end-line="741" selection-end-column="12" />
+          <caret line="741" column="12" lean-forward="false" selection-start-line="741" selection-start-column="12" selection-end-line="741" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -1637,7 +1630,7 @@
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_memtab.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
-          <caret line="99" column="0" lean-forward="true" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+          <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1645,7 +1638,7 @@
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_ssr.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="58" column="0" lean-forward="true" selection-start-line="58" selection-start-column="0" selection-end-line="59" selection-end-column="67" />
+          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="59" selection-end-column="67" />
           <folding />
         </state>
       </provider>
@@ -1653,7 +1646,7 @@
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_timer.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
-          <caret line="183" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+          <caret line="183" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1661,7 +1654,7 @@
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_voltab.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
-          <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1669,23 +1662,31 @@
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_watchdog.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="462">
-          <caret line="66" column="2" lean-forward="true" selection-start-line="66" selection-start-column="2" selection-end-line="176" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testcase.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="66" column="2" lean-forward="false" selection-start-line="66" selection-start-column="2" selection-end-line="176" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        <state relative-caret-position="15">
+          <caret line="1" column="44" lean-forward="false" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/src/cfe_psp_start.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="202" column="4" lean-forward="false" selection-start-line="202" selection-start-column="4" selection-end-line="202" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/psp/fsw/pc-linux/unit_test/psp_testcase.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="58" column="56" lean-forward="false" selection-start-line="58" selection-start-column="56" selection-end-line="58" selection-end-column="56" />
           <folding />
         </state>
       </provider>
