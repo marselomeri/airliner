@@ -1,11 +1,5 @@
 set(APP_NAME sc)
 
-add_airliner_app_src(
-    ${APP_NAME}
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/lc_custom.c
-)
-
 add_airliner_app_table(
     ${APP_NAME}
     NAME sc_ats1
