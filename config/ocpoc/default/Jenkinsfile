@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'make ${BUILD_NAME}'
+        sh 'source ~/.bashrc; make ${BUILD_NAME}'
       }
     }
     stage('Test') {
