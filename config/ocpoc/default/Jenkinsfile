@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh '''#!/bin/bashshrc
+        sh '''#!/bin/bash
           make ${BUILD_NAME}
         '''
       }
