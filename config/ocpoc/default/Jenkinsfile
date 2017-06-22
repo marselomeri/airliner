@@ -1,0 +1,36 @@
+/*
+ * Jenkinsfile for Jenkins pipeline execution
+ * This version uses the declarative syntax, see:
+ * https://jenkins.io/doc/book/pipeline/jenkinsfile/
+ */
+pipeline {
+  agent { node { label 'zedboard' } }
+
+  environment {
+    BUILD_NAME        = 'ocpoc_default'
+    BUILD_TARGET_PATH = 'build/ocpoc/default/target'
+  }
+
+  stages {
+    stage('Cleanup') {
+      steps {
+        sh 'pwd; ls -la; rm -rf build'
+      }
+    }
+    stage('Build') {
+      steps {
+        sh 'make ${BUILD_NAME}'
+      }
+    }
+    stage('Test') {
+      steps {
+        sh 'cd ${BUILD_TARGET_PATH}; ctest -T Test --no-compress-output || /bin/true; ctest -T Coverage --no-compress-output || /bin/true; ctest -T MemCheck --no-compress-output || /bin/true; gcovr --branches --xml-pretty --exclude=".*.unit_test|tools.ut_assert.src" -r ../../../.. > coverage.xml'
+      }
+    }
+    stage('Docs') {
+      steps {
+        sh 'cd ${BUILD_TARGET_PATH}; make docs'
+      }
+    }
+  }
+}
