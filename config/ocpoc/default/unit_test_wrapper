@@ -6,8 +6,6 @@ TARGET_GCOV_PREFIX="${TARGET_DIR}/output"
 TARGET_USER="root"
 TARGET_ADDRESS="zedboard.windhoverlabs.lan"
 
-echo "Hello world" > /home/users/mbenson/project/airliner/build/ocpoc/default/target/output 
-
 ssh ${TARGET_USER}@${TARGET_ADDRESS} "mkdir -p ${TARGET_DIR}"
 scp -r ${HOST_DIR}/${FILE_NAME} ${TARGET_USER}@${TARGET_ADDRESS}:${TARGET_DIR}
 ssh ${TARGET_USER}@${TARGET_ADDRESS} "GCOV_PREFIX=${TARGET_GCOV_PREFIX} GCOV_PREFIX_STRIP=0 ${TARGET_DIR}/${FILE_NAME}"
