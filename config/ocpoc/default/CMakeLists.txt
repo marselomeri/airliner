@@ -31,6 +31,8 @@ else()
             /ram
         STARTUP_SCRIPT
             ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
+        UNIT_TEST_WRAPPER
+            ${CMAKE_CURRENT_SOURCE_DIR}/unit_test_wrapper
     )
 
     add_airliner_app(
