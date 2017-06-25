@@ -76,32 +76,80 @@ int UtTest_Run(void)
     uint32                   i;
     UtListNode_t            *UtListNode;
     UtTestDataBaseEntry_t   *UtTestDataBaseEntry;
+    int 					 rc = -1;
     
-    if (UtTestDataBase.NumberOfEntries > 0) {
-        
-        UtListNode = UtTestDataBase.First;
-        for (i=0; i < UtTestDataBase.NumberOfEntries; i++) {
-            
-            UtTestDataBaseEntry = UtListNode->Data;
+	if (UtTestDataBase.NumberOfEntries > 0) {
 
-            #if defined UT_VERBOSE || defined UT_VERBOSE_TEST_NAME
-            if (strlen(UtTestDataBaseEntry->TestName) > 0) { printf("\nRunning Test: %s\n", UtTestDataBaseEntry->TestName); }
-            #endif
+		UtListNode = UtTestDataBase.First;
+		for (i=0; i < UtTestDataBase.NumberOfEntries; i++) {
 
-            if (UtTestDataBaseEntry->Setup)    { UtTestDataBaseEntry->Setup(); }
-            if (UtTestDataBaseEntry->Test)     { UtTestDataBaseEntry->Test(); UtTestsExecutedCount++; }
-            if (UtTestDataBaseEntry->Teardown) { UtTestDataBaseEntry->Teardown(); }
+			UtTestDataBaseEntry = UtListNode->Data;
 
-            UtListNode = UtListNode->Next;
-        }
-    }
+			#if defined UT_VERBOSE || defined UT_VERBOSE_TEST_NAME
+			if (strlen(UtTestDataBaseEntry->TestName) > 0) { printf("\nRunning Test: %s\n", UtTestDataBaseEntry->TestName); }
+			#endif
 
-    printf("\n");
-    printf("Tests Executed:    %lu\n", UtTestsExecutedCount);
-    printf("Assert Pass Count: %lu\n", UtAssert_GetPassCount());
-    printf("Assert Fail Count: %lu\n", UtAssert_GetFailCount());
-    
-    UtList_Reset(&UtTestDataBase);
+			if (UtTestDataBaseEntry->Setup)    { UtTestDataBaseEntry->Setup(); }
+			if (UtTestDataBaseEntry->Test)     { UtTestDataBaseEntry->Test(); UtTestsExecutedCount++; }
+			if (UtTestDataBaseEntry->Teardown) { UtTestDataBaseEntry->Teardown(); }
 
-    return (UtAssert_GetFailCount() > 0);
+			UtListNode = UtListNode->Next;
+		}
+
+		printf("\n");
+		printf("Tests Executed:    %lu\n", UtTestsExecutedCount);
+		printf("Assert Pass Count: %lu\n", UtAssert_GetPassCount());
+		printf("Assert Fail Count: %lu\n", UtAssert_GetFailCount());
+
+		UtList_Reset(&UtTestDataBase);
+
+		rc = (UtAssert_GetFailCount() > 0);
+	}
+
+    return rc;
+}
+
+int UtTest_RunTest(unsigned int testCase)
+{
+    uint32                   i = 0;
+    UtListNode_t            *UtListNode;
+    UtTestDataBaseEntry_t   *UtTestDataBaseEntry;
+    int 					 rc = -1;
+
+  	if((testCase < 1) || (testCase > UtTestDataBase.NumberOfEntries)) {
+		printf("\n");
+		printf("Specified test case (%d) exceeds number of entries (%d)\n", testCase, UtTestDataBase.NumberOfEntries);
+		rc = -1;
+	}
+	else
+	{
+		UtListNode = UtTestDataBase.First;
+		for (i=1; i < testCase; i++)
+		{
+			UtListNode = UtListNode->Next;
+		}
+
+		UtTestDataBaseEntry = UtListNode->Data;
+
+		#if defined UT_VERBOSE || defined UT_VERBOSE_TEST_NAME
+		if (strlen(UtTestDataBaseEntry->TestName) > 0) { printf("\nRunning Test: %s\n", UtTestDataBaseEntry->TestName); }
+		#endif
+
+		if (UtTestDataBaseEntry->Setup)    { UtTestDataBaseEntry->Setup(); }
+		if (UtTestDataBaseEntry->Test)     { UtTestDataBaseEntry->Test(); UtTestsExecutedCount++; }
+		if (UtTestDataBaseEntry->Teardown) { UtTestDataBaseEntry->Teardown(); }
+
+		UtListNode = UtListNode->Next;
+
+		printf("\n");
+		printf("Tests Executed:    %lu\n", UtTestsExecutedCount);
+		printf("Assert Pass Count: %lu\n", UtAssert_GetPassCount());
+		printf("Assert Fail Count: %lu\n", UtAssert_GetFailCount());
+
+		UtList_Reset(&UtTestDataBase);
+
+		rc = (UtAssert_GetFailCount() > 0);
+	}
+
+    return rc;
 }

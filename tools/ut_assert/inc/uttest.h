@@ -49,5 +49,11 @@ void    UtTest_Add(void (*Test)(void), void (*Setup)(void), void (*Teardown)(voi
  * has occurred, FALSE = all tests passed) */
 int     UtTest_Run(void);
 
+/* This will execute a single unit test.  Once the tests has finished executing a results summary is 
+ * printed to the console and the test database is deleted.  This function also returns a boolean 
+ * status indicating if any of the tests failed. (TRUE = at least one test failure has occurred, 
+ * FALSE = all tests passed) */
+int     UtTest_RunTest(unsigned int testCase);
+
 #endif
 
