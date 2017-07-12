@@ -1,0 +1,64 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | Telemetry Output
+
+block main
+  .row
+      article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+        #wid-TO-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 General
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Cmd Count
+                      td 
+                        span(data-sage={tlm: {name:'/CFS/TO/CmdCounter'}}) ---
+                    tr
+                      th Cmd Error Count
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/ErrCounter'}}) ---
+                    tr
+                      th Packet Loss Count
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/PacketLossCount'}}) ---
+                    tr
+                      th VCDU Output Count
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/TotalVCDUOutputCount'}}) ---
+                    tr
+                      th Latest CLCW
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/LatestCLCW'}}) ---
+                    tr
+                      th Output Real Time VCDU
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/OutputRealTimeVCDU'}}) ---
+                    tr
+                      th Active Virtual Channel
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/ActiveVirtualChannel'}}) ---
+                    tr
+                      th Vehicle ID
+                      td
+                        span(data-sage={tlm: {name:'/CFS/TO/SpacecraftID'}}) ---
+              footer
+                .btn-group.btn-group-sm.btn-space
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/NoOp'}}) No-Op
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/Reset'}}) Reset Counters
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/SendDataTypes'}}) Send Types 
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/AddPkt'}}) Add Msg
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/RemovePkt'}}) Remove Msg 
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/RemoveAllPkts'}}) Remove All Msgs 
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/OutputEnable'}}) Redirect Output 
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/UpdateCLCW'}}) Update CLCW 
+              

@@ -1,0 +1,167 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4
+
+block main
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - Accelerometer
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #Accelerometer(style='width:100%; height:300px;')
+
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - Accelerometer
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Integral:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Integral"}}) ---
+                    tr
+                      th ErrorCount:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ErrorCount"}}) ---
+                    tr
+                      th X:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_X"}}) ---
+                    tr
+                      th Y:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Y"}}) ---
+                    tr
+                      th Z:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Z"}}) ---
+                    tr
+                      th XInt:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_XInt"}}) ---
+                    tr
+                      th YInt:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_YInt"}}) ---
+                    tr
+                      th ZInt:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ZInt"}}) ---
+                    tr
+                      th Temp:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Temp"}}) ---
+                    tr
+                      th Range:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Range"}}) ---
+                    tr
+                      th Scaling:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Scaling"}}) ---
+                    tr
+                      th DeviceID:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_DeviceID"}}) ---
+                    tr
+                      th XRaw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_XRaw"}}) ---
+                    tr
+                      th YRaw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_YRaw"}}) ---
+                    tr
+                      th ZRaw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ZRaw"}}) ---
+                    tr
+                      th TempRaw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SA_TempRaw"}}) ---
+
+
+      script.
+        var MaxCount = 2500;
+              
+        loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
+            var AccData = [];
+            var AccX = {value: 0, time: 1, utcTime: ''};
+            var AccY = {value: 0, time: 2, utcTime: ''};
+            var AccZ = {value: 0, time: 3, utcTime: ''};
+            var AccStarted = false;
+
+            AccGraph = new Dygraph(document.getElementById("Accelerometer"), AccData, {
+                                drawPoints: false,
+                                showRoller: true,
+                                valueRange: [-20.0, 20.0],
+                                labels: ['Time', 'X', 'Y', 'Z']
+                         });
+
+            session.on('connectFailed', function(err) {
+                console.log('Failed to start Sage session.  err = ' + err);
+            });
+
+            session.on('connect', function() {
+              var AccCount = 0;
+
+              session.subscribe({name: '/CFS/PX4/SA_X'}, function(param) {
+                AccX.value = param.engValue.floatValue;
+                AccX.time = param.acquisitionTime;
+                AccX.utcTime = param.acquisitionTimeUTC;
+                AccCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SA_Y'}, function(param) {
+                AccY.value = param.engValue.floatValue;
+                AccY.time = param.acquisitionTime;
+                AccY.utcTime = param.acquisitionTimeUTC;
+                AccCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SA_Z'}, function(param) {
+                AccZ.value = param.engValue.floatValue;
+                AccZ.time = param.acquisitionTime;
+                AccZ.utcTime = param.acquisitionTimeUTC;
+                AccCorrelateData();
+              });
+
+             setInterval(function() {
+                 AccGraph.updateOptions( { 'file': AccData } );
+             }, 100);
+             
+             var AccCorrelateData = function () {
+                  if((AccX.time == AccY.time ) && ( AccY.time == AccZ.time)){
+                      if(AccStarted == false){
+                          /* Skip the first one. */
+                          AccStarted = true;
+                      } else {        
+                        if (AccData.length >= MaxCount) {
+                          AccData = AccData.slice(1);
+                        }            
+                        AccData.push([AccCount, AccX.value, AccY.value, AccZ.value]);
+                        AccCount++;
+                      }
+                  }
+             };
+          });
+        });
+
+
+
