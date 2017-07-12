@@ -2,7 +2,7 @@ ocpoc:
     # Configuration of the active loaders
     # Valid loaders are: sheet, xtce or fully qualified name of the class
     - type: "sheet"
-      spec: "/mdb/cfs-ccsds.xls"
+      spec: "${YAMCS_WORKSPACE}/mdb/cfs-ccsds.xls"
       subLoaders:
            - type: "sheet"
              spec: "/mdb/PX4.xls"
