@@ -3,42 +3,29 @@ services:
     #loads all the tm providers specified in the tmproviders section below. Creates all the necessary streams
     - org.yamcs.tctm.DataLinkInitialiser
     - class: org.yamcs.archive.XtceTmRecorder
-    #- org.yamcs.archive.FSEventDecoder
-    - org.yamcs.archive.PpRecorder
+    - org.yamcs.archive.ParameterRecorder
     - org.yamcs.archive.AlarmRecorder
     - org.yamcs.archive.EventRecorder
     - org.yamcs.archive.ReplayServer
     - org.yamcs.archive.IndexServer
     - org.yamcs.parameter.SystemParametersCollector
     # create a realtime channel
-    - class: org.yamcs.YProcessorCreatorService
+    - class: org.yamcs.ProcessorCreatorService
       args: 
          name: "realtime"
          type: "realtime"
 
     #this one sets up the recording of the command history 
-    - org.yamcs.cmdhistory.CommandHistoryRecorder
-    - class: org.yamcs.hornetq.HornetQTmService
-      args: [tm_realtime, tm_dump]
-
-    - org.yamcs.web.YamcsWebService
-    - org.yamcs.AlarmReporter
+    - org.yamcs.archive.CommandHistoryRecorder
+    #- org.yamcs.AlarmReporter
     - class: org.yamcs.parameterarchive.ParameterArchive
       args:
          realtimeFiller: 
              enabled: true
              flushInterval: 60
-         backFiller:
-             #warmupTime: 60 seconds default warmupTime
-             enabled: true
-             schedule: [{startSegment: 10, numSegments: 3}]
-    - org.yamcs.hornetq.HornetQReplayServer
 
 #name of the class that is used for the TM index. If not specified, org.yamcs.archive.GenericCccsdsTmIndex is used
 #tmIndexer: 
-
-#name of the class that is used to to generate events from the streams
-eventDecoders: []
 
 #config the tm providers started by the TmProviderAdapter
 tmDataLinks:
@@ -47,10 +34,10 @@ tmDataLinks:
       spec: local
       stream: tm_realtime
 
-#ppDataLinks:
-    #- class: org.yamcs.simulation.SimulationPpProvider
-    #  stream: pp_realtime
-    #  args: {simulationDataPath: "etc/gs-simulation.xml"}
+#parameterDataLinks:
+#    - class: org.yamcs.simulation.SimulationPpProvider
+#      stream: pp_realtime
+#      args: {simulationDataPath: "etc/gs-simulation.xml"}
 
 
 # config the tc uplinkers
