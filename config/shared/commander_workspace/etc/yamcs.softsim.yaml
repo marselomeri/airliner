@@ -3,7 +3,7 @@ services:
     #loads all the tm providers specified in the tmproviders section below. Creates all the necessary streams
     - org.yamcs.tctm.DataLinkInitialiser
     - class: org.yamcs.archive.XtceTmRecorder
-    - org.yamcs.archive.FSEventDecoder
+    #- org.yamcs.archive.FSEventDecoder
     - org.yamcs.archive.PpRecorder
     - org.yamcs.archive.AlarmRecorder
     - org.yamcs.archive.EventRecorder
@@ -28,7 +28,11 @@ services:
          realtimeFiller: 
              enabled: true
              flushInterval: 60
-    #- org.yamcs.hornetq.HornetQReplayServer
+         backFiller:
+             #warmupTime: 60 seconds default warmupTime
+             enabled: true
+             schedule: [{startSegment: 10, numSegments: 3}]
+    - org.yamcs.hornetq.HornetQReplayServer
 
 #name of the class that is used for the TM index. If not specified, org.yamcs.archive.GenericCccsdsTmIndex is used
 #tmIndexer: 
