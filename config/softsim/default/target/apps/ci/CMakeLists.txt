@@ -1,8 +1,8 @@
-# Set what we're going to call the application file.
-set(APP_FILE CI)
+set(APP_NAME ci)
 
-# Set path to the tables source code directory.
-set(TABLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tables)
-
-# Process build independent CMake file in application directory.
-add_subdirectory($ENV{CFS_APP_SRC}/ci/fsw/for_build app)
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME ci_config
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/ci_config.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
