@@ -60,7 +60,7 @@ block main
       var GPSAnimating = false;
 
       session.subscribe({
-          instance: 'mavlink', homogeneity: {tolerance: 0.5}, tlm: [
+          homogeneity: {tolerance: 0.5}, tlm: [
             {name: '/MAV/CMN/GPI_lat'},
             {name: '/MAV/CMN/GPI_lon'},
             {name: '/MAV/CMN/GPI_alt'},
@@ -147,7 +147,7 @@ block main
     var hrzWidth;
 
     session.subscribe({
-        instance: 'mavlink', homogeneity: {tolerance: 0.5}, tlm: [
+        homogeneity: {tolerance: 0.5}, tlm: [
           {name: '/MAV/CMN/A_pitch'},
           {name: '/MAV/CMN/A_roll'}]
       },
