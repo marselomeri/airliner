@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_perfids.h 1.2 2015/03/04 16:09:51EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -32,15 +32,7 @@
 #ifndef _lc_perfids_
 #define _lc_perfids_
 
-/*************************************************************************
-** Macro Definitions
-*************************************************************************/
-/**
-** \name CFS LC Application Performance IDs */ 
-/** \{ */
-#define LC_APPMAIN_PERF_ID              28
-#define LC_WDT_SEARCH_PERF_ID           43
-/** \} */
+#include "perf_ids.h"
 
 #endif /*_lc_perfids_*/
 

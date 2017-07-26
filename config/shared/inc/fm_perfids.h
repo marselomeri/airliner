@@ -27,17 +27,7 @@
 #ifndef _fm_perfids_h_
 #define _fm_perfids_h_
 
-/*************************************************************************
-**
-** Macro Definitions
-**
-*************************************************************************/
-/**
-** \name FM CFS Application Performance IDs */
-/** \{ */
-#define FM_APPMAIN_PERF_ID          39
-#define FM_CHILD_TASK_PERF_ID       44
-/** \} */
+#include "perf_ids.h"
 
 #endif /*_fm_perfids_h_*/
 

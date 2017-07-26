@@ -28,40 +28,7 @@
 #ifndef _CI_PERFIDS_H_
 #define _CI_PERFIDS_H_
 
-/*
-** Pragmas
-*/
-
-/*
-** Include Files
-*/
-
-/*
-** Local Defines
-*/
-
-#define CI_MAIN_TASK_PERF_ID            32
-#define CI_SOCKET_RCV_PERF_ID           33
-
-/*
-** Local Structure Declarations
-*/
-
-/*
-** External Global Variables
-*/
-
-/*
-** Global Variables
-*/
-
-/*
-** Local Variables
-*/
-
-/*
-** Local Function Prototypes
-*/
+#include "perf_ids.h"
 
 #endif /* _ci_lab_perfids_h_ */
 

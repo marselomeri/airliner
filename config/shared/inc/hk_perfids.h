@@ -35,11 +35,7 @@
 #ifndef _hk_perfids_h_
 #define _hk_perfids_h_
 
-/**
- ** \name HK Performance ID */ 
-/** \{ */
-#define HK_APPMAIN_PERF_ID    25 
-/** \} */
+#include "perf_ids.h"
 
 #endif /* _hk_perfids_h_ */
 

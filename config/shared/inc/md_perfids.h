@@ -1,7 +1,7 @@
 /************************************************************************
 ** File: md_perfids.h
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -32,7 +32,7 @@
 #ifndef _md_perfids_h_
 #define _md_perfids_h_
 
-#define MD_APPMAIN_PERF_ID    26  /**< \brief CFS Memory Dwell Performance ID */
+#include "perf_ids.h"
 
 #endif /* _md_perfids_h_ */
 

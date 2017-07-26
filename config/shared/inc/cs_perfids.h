@@ -2,7 +2,7 @@
  ** File:
  **   $Id: cs_perfids.h 1.1.1.1 2015/03/03 11:58:52EST sstrege Exp  $
  **
- **   Copyright © 2007-2014 United States Government as represented by the 
+ **   Copyright ï¿½ 2007-2014 United States Government as represented by the 
  **   Administrator of the National Aeronautics and Space Administration. 
  **   All Other Rights Reserved.  
  **
@@ -33,16 +33,7 @@
 #ifndef _cs_perfids_
 #define _cs_perfids_
 
-/*************************************************************************
- ** Macro Definitions
- *************************************************************************/
-
-
-/**
- ** \name CS CFS Application Performance IDs */ 
-/** \{ */
-#define CS_APPMAIN_PERF_ID      29
-/** \} */
+#include "perf_ids.h"
 
 #endif /*cs_perfifds_*/
 

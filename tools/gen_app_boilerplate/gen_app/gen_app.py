@@ -4,7 +4,7 @@ from cookiecutter.main import cookiecutter
 import os
 from shutil import copyfile, rmtree
 
-extras = {"app_name": "AE"}
+extras = {"app_name": "VC"}
 
 base = os.getcwd()
 target = os.path.join(base, 'output')

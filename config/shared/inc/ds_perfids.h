@@ -19,7 +19,7 @@
 #ifndef _ds_perfids_h_
 #define _ds_perfids_h_
 
-#define DS_APPMAIN_PERF_ID    38
+#include "perf_ids.h"
 
 #endif /* _ds_perfids_h_ */
 

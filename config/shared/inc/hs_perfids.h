@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_perfids.h 1.2 2015/11/12 14:25:21EST wmoleski Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -33,15 +33,7 @@
 #ifndef _hs_perfids_h_
 #define _hs_perfids_h_
 
-/*************************************************************************
-** Macro Definitions
-*************************************************************************/
-/**
-** \name CFS HS Application Performance IDs */
-/** \{ */
-#define HS_IDLETASK_PERF_ID             37
-#define HS_APPMAIN_PERF_ID              40
-/** \} */
+#include "perf_ids.h"
 
 #endif /*_hs_perfids_h_*/
 

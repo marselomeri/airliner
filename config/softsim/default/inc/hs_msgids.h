@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_msgids.h 1.2 2015/11/12 14:25:23EST wmoleski Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -34,22 +34,7 @@
 #ifndef _hs_msgids_h_
 #define _hs_msgids_h_
 
-/*************************************************************************
-** Macro Definitions
-*************************************************************************/
-/**
-** \name HS Command Message IDs */
-/** \{ */
-#define HS_CMD_MID           0x18AE    /**< \brief Msg ID for cmds to HS                */
-#define HS_SEND_HK_MID       0x18AF    /**< \brief Msg ID to request HS housekeeping    */
-#define HS_WAKEUP_MID        0x18B0    /**< \brief Msg ID to wake up HS                 */
-/** \} */
-
-/**
-** \name HS Telemetry Message IDs */
-/** \{ */
-#define HS_HK_TLM_MID        0x08AD    /**< \brief HS Housekeeping Telemetry            */
-/** \} */
+#include "msg_ids.h"
 
 #endif /*_hs_msgids_h_*/
 

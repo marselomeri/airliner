@@ -69,36 +69,35 @@ CFE_TBL_FileDef_t CFE_TBL_FileDef =
 ** Default TO iLoad table data
 */
 
-#define TO_QUEUE_PILOT			0
-#define TO_QUEUE_HIGH			1
-#define TO_QUEUE_PX4			2
-#define TO_QUEUE_LOW			3
-#define TO_QUEUE_EVENTS			4
-#define TO_QUEUE_FWD_VIDEO		5
-#define TO_QUEUE_CFDP			6
-
-#define TO_QUEUE_PX4_SENSOR_ACCEL						7
-#define TO_QUEUE_PX4_SENSOR_GYRO						8
-#define TO_QUEUE_PX4_MC_ATT_CTRL_STATUS					9
-#define TO_QUEUE_PX4_COMMANDER_STATE					10
-#define TO_QUEUE_PX4_BATTERY_STATUS						11
-#define TO_QUEUE_PX4_VEHICLE_LOCAL_POSITION				12
-#define TO_QUEUE_PX4_ESTIMATOR_STATUS					13
-#define TO_QUEUE_PX4_VEHICLE_GLOBAL_POSITION			14
+#define TO_QUEUE_PILOT					0
+#define TO_QUEUE_HIGH					1
+#define TO_QUEUE_PX4					2
+#define TO_QUEUE_LOW					3
+#define TO_QUEUE_EVENTS					4
+#define TO_QUEUE_FWD_VIDEO				5
+#define TO_QUEUE_CFDP					6
+#define TO_QUEUE_PX4_SENSOR_ACCEL			7
+#define TO_QUEUE_PX4_SENSOR_GYRO			8
+#define TO_QUEUE_PX4_MC_ATT_CTRL_STATUS			9
+#define TO_QUEUE_PX4_COMMANDER_STATE			10
+#define TO_QUEUE_PX4_BATTERY_STATUS			11
+#define TO_QUEUE_PX4_VEHICLE_LOCAL_POSITION		12
+#define TO_QUEUE_PX4_ESTIMATOR_STATUS			13
+#define TO_QUEUE_PX4_VEHICLE_GLOBAL_POSITION		14
 #define TO_QUEUE_PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT	15
-#define TO_QUEUE_PX4_SENSOR_MAG							16
-#define TO_QUEUE_PX4_SENSOR_BARO						17
-#define TO_QUEUE_PX4_ACTUATOR_ARMED						18
-#define TO_QUEUE_PX4_VEHICLE_CONTROL_MODE				19
-#define TO_QUEUE_PX4_VEHICLE_GPS_POSITION				20
-#define TO_QUEUE_PX4_VEHICLE_STATUS						21
-#define TO_QUEUE_PX4_WIND_ESTIMATE						22
-#define TO_QUEUE_PX4_VEHICLE_ATTITUDE					23
+#define TO_QUEUE_PX4_SENSOR_MAG				16
+#define TO_QUEUE_PX4_SENSOR_BARO			17
+#define TO_QUEUE_PX4_ACTUATOR_ARMED			18
+#define TO_QUEUE_PX4_VEHICLE_CONTROL_MODE		19
+#define TO_QUEUE_PX4_VEHICLE_GPS_POSITION		20
+#define TO_QUEUE_PX4_VEHICLE_STATUS			21
+#define TO_QUEUE_PX4_WIND_ESTIMATE			22
+#define TO_QUEUE_PX4_VEHICLE_ATTITUDE			23
 
-#define TO_CHANNEL_PILOT		0
-#define TO_CHANNEL_TLM			1
-#define TO_CHANNEL_CFDP			2
-#define TO_CHANNEL_PX4			3
+#define TO_CHANNEL_PILOT				0
+#define TO_CHANNEL_TLM					1
+#define TO_CHANNEL_CFDP					2
+#define TO_CHANNEL_PX4					3
 
 TO_Table_t to_ConfigTable =
 {
@@ -108,11 +107,11 @@ TO_Table_t to_ConfigTable =
     {
     	/* 0 - 9 */
     	{CF_CONFIG_TLM_MID, 									1, TO_QUEUE_HIGH},
-		{CF_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-		{CF_SPACE_TO_GND_PDU_MID, 								32, TO_QUEUE_CFDP},
-		{CF_TRANS_TLM_MID, 										1, TO_QUEUE_HIGH},
+	{CF_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
+	{CF_SPACE_TO_GND_PDU_MID, 								32, TO_QUEUE_CFDP},
+	{CF_TRANS_TLM_MID, 									1, TO_QUEUE_HIGH},
     	{CFE_ES_APP_TLM_MID,    								1, TO_QUEUE_HIGH},
-    	{CFE_ES_HK_TLM_MID,										1, TO_QUEUE_HIGH},
+    	{CFE_ES_HK_TLM_MID,									1, TO_QUEUE_HIGH},
     	{CFE_ES_MEMSTATS_TLM_MID,								1, TO_QUEUE_HIGH},
     	{CFE_ES_SHELL_TLM_MID,  								32,	TO_QUEUE_LOW},
     	{CFE_EVS_EVENT_MSG_MID, 								32, TO_QUEUE_EVENTS},
@@ -128,23 +127,23 @@ TO_Table_t to_ConfigTable =
     	{CFE_TIME_DIAG_TLM_MID, 								1, TO_QUEUE_HIGH},
     	{CFE_TIME_HK_TLM_MID,   								1, TO_QUEUE_HIGH},
         {TO_HK_TLM_MID,     									1, TO_QUEUE_HIGH},
-    	{HS_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
+    	{HS_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
 
     	/* 20 - 29 */
-    	{SCH_DIAG_TLM_MID, 										1, TO_QUEUE_HIGH},
+    	{SCH_DIAG_TLM_MID, 									1, TO_QUEUE_HIGH},
     	{SCH_HK_TLM_MID,         								1, TO_QUEUE_HIGH},
-    	{EIM_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{FM_HK_TLM_MID,  										1, TO_QUEUE_HIGH},
+    	{EIM_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
+    	{FM_HK_TLM_MID,  									1, TO_QUEUE_HIGH},
     	{FM_OPEN_FILES_TLM_MID, 								1, TO_QUEUE_HIGH},
     	{FM_FREE_SPACE_TLM_MID, 								1, TO_QUEUE_HIGH},
     	{FM_FILE_INFO_TLM_MID, 									1, TO_QUEUE_HIGH},
     	{FM_DIR_LIST_TLM_MID, 									1, TO_QUEUE_HIGH},
-    	{CS_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{DS_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
+    	{CS_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
+    	{DS_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
 
     	/* 30 - 49 */
-    	{DS_DIAG_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{HK_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
+    	{DS_DIAG_TLM_MID, 									1, TO_QUEUE_HIGH},
+    	{HK_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
     	{HK_COMBINED_PKT1_MID, 									1, TO_QUEUE_HIGH},
     	{HK_COMBINED_PKT2_MID, 									1, TO_QUEUE_HIGH},
     	{HK_COMBINED_PKT3_MID, 									1, TO_QUEUE_HIGH},
@@ -157,21 +156,21 @@ TO_Table_t to_ConfigTable =
     	/* 40 - 49 */
     	{HK_COMBINED_PKT9_MID, 									1, TO_QUEUE_HIGH},
     	{HK_COMBINED_PKT10_MID,									1, TO_QUEUE_HIGH},
-    	{LC_HK_TLM_MID,											1, TO_QUEUE_HIGH},
-    	{LC_SAMPLE_AP_MID,										1, TO_QUEUE_HIGH},
-    	{MD_HK_TLM_MID,											1, TO_QUEUE_HIGH},
+    	{LC_HK_TLM_MID,										1, TO_QUEUE_HIGH},
+    	{LC_SAMPLE_AP_MID,									1, TO_QUEUE_HIGH},
+    	{MD_HK_TLM_MID,										1, TO_QUEUE_HIGH},
     	{MD_DWELL_PKT_MID_BASE,									1, TO_QUEUE_HIGH},
-    	{SCH_DIAG_TLM_MID,										1, TO_QUEUE_HIGH},
-    	{SCH_HK_TLM_MID,										1, TO_QUEUE_HIGH},
-    	{DS_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{DS_DIAG_TLM_MID,										1, TO_QUEUE_HIGH},
+    	{SCH_DIAG_TLM_MID,									1, TO_QUEUE_HIGH},
+    	{SCH_HK_TLM_MID,									1, TO_QUEUE_HIGH},
+    	{DS_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
+    	{DS_DIAG_TLM_MID,									1, TO_QUEUE_HIGH},
 
     	/* 50 - 59 */
-    	{MM_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{SC_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{NAV_HK_TLM_MID,										1, TO_QUEUE_HIGH},
-    	{TO_UNUSED, 											1, TO_QUEUE_HIGH},
-    	{TO_UNUSED, 											1, TO_QUEUE_HIGH},
+    	{MM_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
+    	{SC_HK_TLM_MID, 									1, TO_QUEUE_HIGH},
+    	{NAV_HK_TLM_MID,									1, TO_QUEUE_HIGH},
+    	{TO_UNUSED, 										1, TO_QUEUE_HIGH},
+    	{TO_UNUSED, 										1, TO_QUEUE_HIGH},
     	{HS_CUSTOM_HK_TLM_MID,									1, TO_QUEUE_HIGH},
     	{MPU9250_RAW_MEAS_MID, 									1, TO_QUEUE_HIGH},
     	{MPU9250_CAL_MEAS_MID,									1, TO_QUEUE_HIGH},
@@ -319,7 +318,7 @@ TO_Table_t to_ConfigTable =
 		{PX4_VISION_POSITION_ESTIMATE_MID, 						1, TO_QUEUE_PX4},
 		{PX4_VTOL_VEHICLE_STATUS_MID, 							1, TO_QUEUE_PX4},
 		{PX4_WIND_ESTIMATE_MID, 								1, TO_QUEUE_PX4_WIND_ESTIMATE},
-    	{TO_UNUSED, 											1, TO_QUEUE_HIGH},
+    	{VC_HK_TLM_MID,											1, TO_QUEUE_HIGH},
     	{TO_UNUSED, 											1, TO_QUEUE_HIGH},
 
     	/* 180 - 189 */

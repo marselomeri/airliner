@@ -21,9 +21,7 @@
 #ifndef _ci_lab_perfids_h_
 #define _ci_lab_perfids_h_
 
-
-#define CI_MAIN_TASK_PERF_ID            21
-#define CI_SOCKET_RCV_PERF_ID           24
+#include "perf_ids.h"
 
 #endif /* _ci_lab_perfids_h_ */
 
