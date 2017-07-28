@@ -15,105 +15,15 @@ block main
         div
           .jarviswidget-editbox
             input.form-control(type='text')
-          .widget-body
+          .widget-body(style='padding: 0px')
             #touchpad
-              #hud.no-padding
-
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-6
-      #wid-map.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false',data-widget-colorbutton='false',data-widget-deletebutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Map
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            style.
-              @import url(bower_components/cesium/Source/Widgets/widgets.css);
-            #cesiumContainer.fullSize
+              #hud(style='padding: 0px; margin-bottom: -5px;')
 
   script.
     var Position = {Lat: 0, Lon: 0, Alt: 0};
     var Attitude = {Yaw: 0, Pitch: 0, Roll: 0};
     var HUDCount = 0;
     var HUDStarted = false;
-
-    loadScript('node_modules/cesium/Build/CesiumUnminified/Cesium.js', function () {
-      /* Traveling Map */
-      Cesium.BingMapsApi.defaultKey = 'Anb5ZQS9_Qvje--nom_9ZKwQyQVnOOU04Fctd1uxMHnYoQKIcp1XFDrZuXN6evOQ';
-      var viewer = new Cesium.Viewer('cesiumContainer');
-
-      var uas = viewer.entities.add({
-        billboard: {
-          image: 'ws/flight/aircraft.png',
-          scale: 0.2,
-          alignedAxis: Cesium.Cartesian3.UNIT_Z,
-          rotation: 0.0,
-        }
-      });
-
-      var scratchCartesian3 = new Cesium.Cartesian3();
-      var ellipsoid = viewer.scene.mapProjection.ellipsoid;
-      var GPSCount = 0;
-      var GPSStarted = false;
-      var GPSAnimating = false;
-
-      session.subscribe({
-          homogeneity: {tolerance: 0.5}, tlm: [
-            {name: '/MAV/CMN/GPI_lat'},
-            {name: '/MAV/CMN/GPI_lon'},
-            {name: '/MAV/CMN/GPI_alt'},
-            {name: '/MAV/CMN/GPI_hdg'}]
-        },
-        function (params) {
-          for (var i = 0; i < params.length; ++i) {
-            switch (params[i].id.name) {
-              case '/MAV/CMN/GPI_hdg':
-                Attitude.Yaw = params[i].engValue.uint32Value / 100;
-                break;
-
-              case '/MAV/CMN/GPI_lat':
-                Position.Lat = params[i].engValue.sint32Value / 10000000.0;
-                break;
-
-              case '/MAV/CMN/GPI_lon':
-                Position.Lon = params[i].engValue.sint32Value / 10000000.0;
-                break;
-
-              case '/MAV/CMN/GPI_alt':
-                Position.Alt = (params[i].engValue.sint32Value / 1000.0) - 488.0;
-                break;
-            }
-          }
-
-          if (GPSStarted == false) {
-            /* Skip the first one. */
-            GPSStarted = true;
-            GPSCount++;
-          }
-        }
-      );
-
-      var temp = 0;
-      setInterval(function () {
-        if (GPSStarted == true) {
-          uas.position = Cesium.Cartesian3.fromDegrees(Position.Lon, Position.Lat);
-          uas.billboard.rotation = Cesium.Math.PI_OVER_TWO - Attitude.Yaw / 57.2958;
-
-          if (GPSAnimating == false) {
-            GPSAnimating = true;
-            viewer.camera.flyTo({
-              destination: Cesium.Cartesian3.fromDegrees(Position.Lon, Position.Lat, 100),
-              complete: function () {
-                GPSAnimating = false;
-              }
-            });
-          }
-        }
-      }, 100);
-    });
-
 
     //flyToLocation();
 
@@ -145,6 +55,8 @@ block main
     var OffsetY = 0;
     var rotation = 0;
     var hrzWidth;
+    var cameraImage;
+    var imageBuffer;
 
     session.subscribe({
         homogeneity: {tolerance: 0.5}, tlm: [
@@ -172,7 +84,7 @@ block main
         }
       }
     );
-
+      
     setInterval(function () {
       if (HUDStarted == true) {
         updateHUDAltitude(Position.Alt);
@@ -180,7 +92,7 @@ block main
         updateHUDPitch(Attitude.Pitch * 57.2958);
         updateHUDRoll(Attitude.Roll * 57.2958);
       }
-    }, 10);
+    }, 1000);
 
     drawHUD();
 
@@ -217,10 +129,15 @@ block main
       //updateHUDPitch(30);
       //updateHUDRoll(40);
     });
-
+    
+    var toggle = 0;
+    session.subscribeToVideo(function(image) {
+      imageBuffer = image;
+      cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
+    });
 
     function drawHUD() {
-      var aspectRatio = 320.0 / 200.0;
+      var aspectRatio = 320.0 / 180.0;
       hudWidth = $('#hud').width();
       hudHeight = hudWidth / aspectRatio;
       if ($(window).height() < hudHeight) {
@@ -236,7 +153,15 @@ block main
         var bgOpacity = 0.5;
         var rect = draw.rect('100%', '100%').attr({fill: '#000000'});
         //draw.fixSubPixelOffset();
-        draw.attr('preserveAspectRatio', 'x320Y200 meet');
+        draw.attr('preserveAspectRatio', 'x320Y180 meet');
+
+        /* -------------------------
+         Draw the camera video
+         ------------------------- */
+        //var defs = draw.defs();
+        //var cameraVideoClip = defs.clip().rect(hudWidth, hudHeight).move(0, 0);
+        cameraImage = draw.image('data:image/jpeg;base64,' + imageBuffer, hudWidth, hudHeight);
+
         var rollIndicator = draw.group();
 
         /* -------------------------
@@ -257,7 +182,7 @@ block main
         var altRec1 = altBorder.rect(altWidth, altHeight).attr({
           x: hudWidth - altWidth - 5,
           y: 5,
-          stroke: '#ffffff',
+          stroke: '#000000',
           'stroke-width': '3px',
           rx: 5,
           ry: 5,
@@ -332,7 +257,7 @@ block main
           [hudWidth - 5, (hudHeight + altCenterHeight) / 2],
           [hudWidth - altWidth + 15, (hudHeight + altCenterHeight) / 2],
           [hudWidth - altWidth - 5, hudHeight / 2]]).attr({
-          stroke: '#ffffff',
+          stroke: '#000000',
           'stroke-width': 3,
           'fill-opacity': 0.0
         });
@@ -389,7 +314,7 @@ block main
         var hdRec1 = headingBorder.rect(hdWidth, hdHeight).attr({
           x: (hudWidth - hdWidth) / 2,
           y: hudHeight - hdHeight - 5,
-          stroke: '#ffffff',
+          stroke: '#000000',
           'stroke-width': '3px',
           rx: 5,
           ry: 5,
@@ -410,7 +335,6 @@ block main
         for (i = 0; i < (360 + 90); i++) {
           if (i % 15 == 0) {
             x = ((hudWidth) / 2) + (pxPerDegree * i);
-            console.log(x);
             hdTicks.line(x, hudHeight - hdHeight - 3, x, hudHeight - hdHeight + 10).attr({
               width: 1,
               stroke: '#00ff00'
@@ -468,7 +392,7 @@ block main
           [(hudWidth - hdCenterWidth) / 2, hudHeight - hdHeight + 10],
           [(hudWidth - 20) / 2, hudHeight - hdHeight + 10],
           [hudWidth / 2, hudHeight - hdHeight - 5]]).attr({
-          stroke: '#ffffff',
+          stroke: '#000000',
           'stroke-width': 3,
           'fill-opacity': 0.0
         });
@@ -541,7 +465,8 @@ block main
                 [(hudWidth + (hrzWidth * 0.10)) / 2, y],
                 [(hudWidth + hrzWidth) / 2, y]]).attr({
                 'stroke-width': 3,
-                stroke: '#ffffff'
+                'fill-opacity': 0.0,
+                stroke: '#000000'
               });
               pitchIndicator.polyline([
                 [(hudWidth - hrzWidth) / 2, y],
@@ -550,6 +475,7 @@ block main
                 [(hudWidth + (hrzWidth * 0.10)) / 2, y],
                 [(hudWidth + hrzWidth) / 2, y]]).attr({
                 'stroke-width': 2,
+                'fill-opacity': 0.0,
                 stroke: '#00ff00'
               });
 
@@ -575,7 +501,7 @@ block main
             else {
               pitchIndicator.line(-hudWidth, y, 2 * hudWidth, y).attr({
                 'stroke-width': 3,
-                stroke: '#ffffff'
+                stroke: '#000000'
               });
               pitchIndicator.line(-hudWidth, y, 2 * hudWidth, y).attr({
                 'stroke-width': 2,
@@ -597,7 +523,8 @@ block main
                 [(hudWidth + (hrzWidth * 0.10)) / 2, y],
                 [(hudWidth + hrzWidth) / 2, y]]).attr({
                 'stroke-width': 3,
-                stroke: '#ffffff'
+                'fill-opacity': 0.0,
+                stroke: '#000000'
               });
               pitchIndicator.polyline([
                 [(hudWidth - hrzWidth) / 2, y],
@@ -606,6 +533,7 @@ block main
                 [(hudWidth + (hrzWidth * 0.10)) / 2, y],
                 [(hudWidth + hrzWidth) / 2, y]]).attr({
                 'stroke-width': 2,
+                'fill-opacity': 0.0,
                 stroke: '#00ff00'
               });
 
