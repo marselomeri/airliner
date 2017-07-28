@@ -484,6 +484,12 @@ block main
                 fixedPitch = 180 - i;
               }
 
+              pitchIndicator.rect(20, 20).attr({
+                fill: '#000000',
+                x: (hudWidth - hrzWidth) / 2 - 22,
+                y: y - 10,
+                'fill-opacity': bgOpacity,
+              });
               var leftTextPitchLine = pitchIndicator.text(fixedPitch.toString()).move((hudWidth - hrzWidth) / 2 - 5, y - 7);
               leftTextPitchLine.font({
                 fill: '#00ff00',
@@ -491,6 +497,12 @@ block main
                 size: 15,
               });
 
+              pitchIndicator.rect(20, 20).attr({
+                fill: '#000000',
+                x: (hudWidth + hrzWidth) / 2 + 3,
+                y: y - 10,
+                'fill-opacity': bgOpacity,
+              });
               var rightTextPitchLine = pitchIndicator.text(fixedPitch.toString()).move((hudWidth + hrzWidth) / 2 + 5, y - 7);
               rightTextPitchLine.font({
                 fill: '#00ff00',
@@ -542,6 +554,12 @@ block main
                 fixedPitch = -180 - i;
               }
 
+              pitchIndicator.rect(25, 20).attr({
+                fill: '#000000',
+                x: (hudWidth - hrzWidth) / 2 - 27,
+                y: y - 10,
+                'fill-opacity': bgOpacity,
+              });
               var leftTextPitchLine = pitchIndicator.text(fixedPitch.toString()).move((hudWidth - hrzWidth) / 2 - 5, y - 7);
               leftTextPitchLine.font({
                 fill: '#00ff00',
@@ -549,6 +567,12 @@ block main
                 size: 15,
               });
 
+              pitchIndicator.rect(25, 20).attr({
+                fill: '#000000',
+                x: (hudWidth + hrzWidth) / 2 + 3,
+                y: y - 10,
+                'fill-opacity': bgOpacity,
+              });
               var rightTextPitchLine = pitchIndicator.text(fixedPitch.toString()).move((hudWidth + hrzWidth) / 2 + 5, y - 7);
               rightTextPitchLine.font({
                 fill: '#00ff00',
