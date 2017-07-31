@@ -9,4 +9,7 @@
 #define VC_CC1_ERR_EID        6
 #define VC_LEN_ERR_EID        7
 #define VC_PIPE_ERR_EID       8
-#define VC_EVT_COUNT          8  /* count of event message ID's */
+#define VC_SOCKET_ERR_EID     9  /* socket error */
+#define VC_INIT_ERR_EID       10 /* initialization error */
+#define VC_CHA_INF_EID        11 /* channel init message "informational" */
+#define VC_EVT_COUNT          11  /* count of event message ID's */

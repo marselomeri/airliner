@@ -54,10 +54,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Ground system settings */
 
 /*! Ground system ip address */
-#define VC_SERVER_IP                    "10.10.0.12"
+#define VC_DESTINATION_IP               "10.10.0.12"
 /*! Ground system port */
-#define VC_SERVER_PORT                  "3000"
-
+#define VC_DESTINATION_PORT             3000
+/*! Source system ip address */
+#define VC_SOURCE_IP                    "0"
+/*! Source system port */
+#define VC_SOURCE_PORT                  0
 
 /* V4L settings */
 

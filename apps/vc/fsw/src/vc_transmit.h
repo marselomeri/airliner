@@ -1,5 +1,5 @@
 /*==============================================================================
-Copyright (c) 2015, Windhover Labs
+Copyright (c) 2017, Windhover Labs
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,74 +26,46 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-vc_app.h
 */
 
-#ifndef _vc_app_
-#define _vc_app_
+#ifndef VC_TRANSMIT_H
+#define VC_TRANSMIT_H
 
-#include "cfe.h"
-#include "vc_msg.h"
-#include "vc_events.h"
-#include "vc_mission_cfg.h"
-#include "vc_platform_cfg.h"
-#include "vc_config.h" /* move to platform_cfg */
-#include "vc_version.h"
-#include "vc_transmit.h"
-
-/* Example command pipe parameters */
-#define VC_PIPE_DEPTH         12 /* Depth of the Command Pipe for Application */
-
-/* Example app specific definitions */
-#define VC_SB_PIPE_1_NAME     "VC_CMD_PIPE"
-
-/** 
- *  \brief Example global data structure
+/**
+ * Transmit struct handle for user defined source and/or destination
+ * configuration information and initialized resource reference.
  */
 typedef struct
 {
-    /* Command interface counters */
-    uint8                 CmdCounter;
-    uint8                 ErrCounter;
-
-    /* Housekeeping telemetry packet */
-    VC_HkPacket_t         HkPacket;
-
-    /* Operational data (not reported in housekeeping) */
-    CFE_SB_MsgPtr_t       MsgPtr;
-    CFE_SB_PipeId_t       CmdPipe;
-
-    /* Run Status variable used in the main processing loop */
-    uint32                RunStatus;
-
-    /* Initialization data (not reported in housekeeping) */
-    char                  PipeName[OS_MAX_API_NAME];
-    uint16                PipeDepth;
-
-} VC_AppData_t;
+    uint16      DestPort;
+    uint16      MyPort;
+    char        DestIP[15];
+    char        MyIP[15];
+    int         SocketFd;
+} VC_Transmit_Handle_t;
 
 
 /**
- * \brief Application entry point and main process loop
+ * @brief Initialize a configured resource.
+ * @return true if successful, otherwise false
  */
-void VC_AppMain(void);
+boolean VC_Transmit_Init(void);
 
 
 /**
- * \brief Example app initialization
+ * @brief Uninitialize a previously initialized resource.
+ * @return true if successful, otherwise false
  */
-int32 VC_AppInit(void);
+boolean VC_Transmit_Uninit(void);
 
 
 /**
- * \brief Process command pipe message
+ * @brief Transmit data using a previously initialized handle.
+ * @param buf points to a buffer containing the data to be sent.
+ * @param len specifies the size of the data in bytes.
+ * @return On success, returns the number of bytes sent. On error, -1 is
+ * returned.
  */
-void VC_AppPipe(CFE_SB_MsgPtr_t msg);
+int VC_SendData(const void *buf, size_t len);
 
-/* Exported Data */
-extern VC_AppData_t     VC_AppData;
-
-
-#endif /* _vc_app_ */
-
+#endif

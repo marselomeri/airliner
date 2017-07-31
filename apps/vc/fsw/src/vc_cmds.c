@@ -36,7 +36,11 @@ void VC_NoopCmd(CFE_SB_MsgPtr_t msg)
         VC_AppData.CmdCounter++;
 
         CFE_EVS_SendEvent(VC_NOOP_INF_EID, CFE_EVS_INFORMATION, \
-                         "No-op command");
+                        "No-op command. Version %d.%d.%d.%d", \
+                        VC_MAJOR_VERSION, \
+                        VC_MINOR_VERSION, \
+                        VC_REVISION, \
+                        VC_MISSION_REV); \
     }
 
     return;

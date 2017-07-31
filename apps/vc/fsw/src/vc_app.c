@@ -156,6 +156,14 @@ int32 VC_AppInit(void)
        return (Status);
     }
     
+    /* Initialize a data transmission resource */
+    if (VC_Transmit_Init() != TRUE) 
+    {
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Init failed");
+        Status = -1;
+        return (Status);
+    }
+    
     /* Application startup event message */
     CFE_EVS_SendEvent(VC_INIT_INF_EID, CFE_EVS_INFORMATION, "VC: Application Initialized");
                          
