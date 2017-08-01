@@ -51,7 +51,7 @@ VC_AppCustomData_t VC_AppCustomData = {
           .MyPort = VC_SOURCE_PORT, \
           .DestIP = VC_DESTINATION_IP, \
           .MyIP = VC_SOURCE_IP, \
-          .SocketFd = -1 \
+          .SocketFd = 0 \
         }
     }
 };
@@ -68,7 +68,7 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
         (VC_AppCustomData.Channel[ChannelID].SocketFd != 0))
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                        "UDP telemetry for channel %u already enabled.", (unsigned int)i);
+                        "VC UDP for channel %u already enabled.", (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
     }
