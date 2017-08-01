@@ -41,6 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "cfe.h"
 #include "vc_transmit.h"
+#include "vc_perfids.h"
 
 #endif
 

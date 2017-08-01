@@ -39,6 +39,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef VC_CONFIG_H
 #define VC_CONFIG_H
 
+/* Custom Settings */
+
+/*! Max channels allowed */
+#define VC_MAX_OUTPUT_CHANNELS          5
+/*! Max characters of an IP address */
+#define INET_ADDRSTRLEN                 15
+
 /* Camera settings */
 
 /*! Video resolution width */

@@ -31,18 +31,36 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef VC_TRANSMIT_H
 #define VC_TRANSMIT_H
 
+#include "vc_config.h" /* move to platform_cfg */
+
+typedef enum
+{
+    VC_CHANNEL_UNUSED       = 0,
+    VC_CHANNEL_DISABLED     = 1,
+    VC_CHANNEL_ENABLED      = 2
+} VC_ChannelMode_t;
+
+
 /**
  * Transmit struct handle for user defined source and/or destination
  * configuration information and initialized resource reference.
  */
 typedef struct
 {
-    uint16      DestPort;
-    uint16      MyPort;
-    char        DestIP[15];
-    char        MyIP[15];
-    int         SocketFd;
+    VC_ChannelMode_t    Mode;
+    uint8               ChannelID;
+    uint16              DestPort;
+    uint16              MyPort;
+    char                DestIP[INET_ADDRSTRLEN];
+    char                MyIP[INET_ADDRSTRLEN];
+    int                 SocketFd;
 } VC_Transmit_Handle_t;
+
+
+typedef struct
+{
+    VC_Transmit_Handle_t Channel[VC_MAX_OUTPUT_CHANNELS];
+} VC_AppCustomData_t;
 
 
 /**
@@ -66,6 +84,6 @@ boolean VC_Transmit_Uninit(void);
  * @return On success, returns the number of bytes sent. On error, -1 is
  * returned.
  */
-int VC_SendData(const void *buf, size_t len);
+int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size);
 
 #endif

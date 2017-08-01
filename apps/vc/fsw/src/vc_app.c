@@ -100,6 +100,15 @@ void VC_AppMain(void)
 } /* end VC_AppMain */
 
 
+void VC_CleanupCallback()
+{
+    if(VC_Transmit_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Uninit failed");
+    }
+}
+
+
 int32 VC_AppInit(void)
 {
     int32  Status = CFE_SUCCESS;
@@ -164,12 +173,23 @@ int32 VC_AppInit(void)
         return (Status);
     }
     
+    /* Register the cleanup callback */
+    Status = OS_TaskInstallDeleteHandler(&VC_CleanupCallback);
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init register cleanup callback (0x%08X)",
+                                 (unsigned int)Status);
+        return (Status);
+    }
+    
     /* Application startup event message */
     CFE_EVS_SendEvent(VC_INIT_INF_EID, CFE_EVS_INFORMATION, "VC: Application Initialized");
                          
     return(CFE_SUCCESS);
 
 }
+
 
 void VC_AppPipe(CFE_SB_MsgPtr_t msg)
 {
