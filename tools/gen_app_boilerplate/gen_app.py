@@ -63,7 +63,8 @@ class Generator(object):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Autogenerate a cFS app.')
-	parser.add_argument('-n','--app_name', help='Name of the cFS app.')
+	parser.add_argument('-n','--app_name', help='Acronym of the cFS app. (Ex: CI)')
+	parser.add_argument('-f','--app_full_name', help='ame of the cFS app. (Ex: Command Ingest)')
 	parser.add_argument('-o','--output_dir', help='Directory to place the cFS app.')
 	parser.add_argument('-j','--json_path', help='Use JSON input file for configuration.')
 	args = vars(parser.parse_args())

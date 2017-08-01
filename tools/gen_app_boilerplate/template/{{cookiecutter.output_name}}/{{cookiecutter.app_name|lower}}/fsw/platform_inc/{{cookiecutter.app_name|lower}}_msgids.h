@@ -1,42 +1,49 @@
-/*==============================================================================
-Copyright (c) 2015, Windhover Labs
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of CmdIn nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-{{cookiecutter.app_name|lower}}_msgids.h
-*/
-
+    
 #ifndef {{cookiecutter.app_name}}_MSGIDS_H
 #define {{cookiecutter.app_name}}_MSGIDS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/***** TODO:  These Message ID values are default and may need to be changed
+******        by the developer or mission integrator!
+******/
+
 #include "msg_ids.h"
 
-#define {{cookiecutter.app_name}}_HK_TLM_MID    0x0c29 TODO
-#define {{cookiecutter.app_name}}_SEND_HK_MID   0x1c2a
-#define {{cookiecutter.app_name}}_CMD_MID       0x1c2b
+/**
+** \brief {{cookiecutter.app_name}} application-specific command MID
+*/
+#define {{cookiecutter.app_name}}_CMD_MID                 (0x18C0)
 
+/**
+** \brief Command for the application to send HK data
+*/
+#define {{cookiecutter.app_name}}_SEND_HK_MID             (0x18C1)
+
+/**
+** \brief Wakeup command for the application to perform processing
+*/
+#define {{cookiecutter.app_name}}_WAKEUP_MID              (0x18D0)
+
+/**
+** \brief Application-specific data output
+*/
+#define {{cookiecutter.app_name}}_OUT_DATA_MID            (0x18D1)
+
+/**
+** \brief Application housekeeping telemetry data
+*/
+#define {{cookiecutter.app_name}}_HK_TLM_MID              (0x08BB)
+
+
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* {{cookiecutter.app_name}}_MSGIDS_H */
+
+/************************/
+/*  End of File Comment */
+/************************/
