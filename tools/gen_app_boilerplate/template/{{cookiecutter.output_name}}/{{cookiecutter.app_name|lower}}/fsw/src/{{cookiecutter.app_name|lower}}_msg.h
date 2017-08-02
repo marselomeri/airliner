@@ -145,15 +145,6 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
-    /** \brief Padding for struct alignment */
-    uint8              padding[2];  
-  
-    /* TODO:  Add Doxygen markup. */
-    uint8              IngestMsgCount;
-
-    /* TODO:  Add Doxygen markup. */
-    uint8              IngestErrorCount;
-
 } {{cookiecutter.app_name}}_HkTlm_t;
 
 
