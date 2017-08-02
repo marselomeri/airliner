@@ -83,10 +83,6 @@ typedef struct
     /** \brief Housekeeping Telemetry for downlink */
     {{cookiecutter.app_name}}_HkTlm_t  HkTlm;
 
-    uint32          ListenerTaskID;
-    int32           ListenerTaskRunStatus;
-    uint8           IngestBuffer[{{cookiecutter.app_name}}_MAX_CMD_INGEST];
-    CFE_SB_Msg_t    *IngestPointer;
 } {{cookiecutter.app_name}}_AppData_t;
 
 /************************************************************************

@@ -1,32 +1,3 @@
-/*==============================================================================
-Copyright (c) 2015, Windhover Labs
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of CmdIn nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 
 /************************************************************************
 ** Pragmas
@@ -324,6 +295,7 @@ int32 {{cookiecutter.app_name}}_InitApp()
     return (iStatus);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Receive and Process Messages                                    */
@@ -396,6 +368,159 @@ int32 {{cookiecutter.app_name}}_RcvMsg(int32 iBlocking)
     }
 
     return (iStatus);
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Data                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void {{cookiecutter.app_name}}_ProcessNewData()
+{
+    int iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   DataMsgPtr=NULL;
+    CFE_SB_MsgId_t  DataMsgId;
+
+    /* Process telemetry messages till the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&DataMsgPtr, {{cookiecutter.app_name}}_AppData.DataPipeId, CFE_SB_POLL);
+        if (iStatus == CFE_SUCCESS)
+        {
+            DataMsgId = CFE_SB_GetMsgId(DataMsgPtr);
+            switch (DataMsgId)
+            {
+                /* TODO:  Add code to process all subscribed data here
+                **
+                ** Example:
+                **     case NAV_OUT_DATA_MID:
+                **         {{cookiecutter.app_name}}_ProcessNavData(DataMsgPtr);
+                **         break;
+                */
+
+                default:
+                    (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                      "Recvd invalid data msgId (0x%04X)", (unsigned short)DataMsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_PIPE_ERR_EID, CFE_EVS_ERROR,
+                  "Data pipe read error (0x%08X)", (unsigned int)iStatus);
+            {{cookiecutter.app_name}}_AppData.uiRunStatus = CFE_ES_APP_ERROR;
+            break;
+        }
+    }
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Commands                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void {{cookiecutter.app_name}}_ProcessNewCmds()
+{
+    int iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    CFE_SB_MsgId_t  CmdMsgId;
+
+    /* Process command messages till the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&CmdMsgPtr, {{cookiecutter.app_name}}_AppData.CmdPipeId, CFE_SB_POLL);
+        if(iStatus == CFE_SUCCESS)
+        {
+            CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
+            switch (CmdMsgId)
+            {
+                case {{cookiecutter.app_name}}_CMD_MID:
+                    {{cookiecutter.app_name}}_ProcessNewAppCmds(CmdMsgPtr);
+                    break;
+
+                /* TODO:  Add code to process other subscribed commands here
+                **
+                ** Example:
+                **     case CFE_TIME_DATA_CMD_MID:
+                **         {{cookiecutter.app_name}}_ProcessTimeDataCmd(CmdMsgPtr);
+                **         break;
+                */
+
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    {{cookiecutter.app_name}}_AppData.HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                      "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_PIPE_ERR_EID, CFE_EVS_ERROR,
+                  "CMD pipe read error (0x%08X)", (unsigned int)iStatus);
+            {{cookiecutter.app_name}}_AppData.uiRunStatus = CFE_ES_APP_ERROR;
+            break;
+        }
+    }
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process {{cookiecutter.app_name}} Commands                                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void {{cookiecutter.app_name}}_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
+{
+    uint32  uiCmdCode=0;
+
+    if (MsgPtr != NULL)
+    {
+        uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
+        switch (uiCmdCode)
+        {
+            case {{cookiecutter.app_name}}_NOOP_CC:
+                {{cookiecutter.app_name}}_AppData.HkTlm.usCmdCnt++;
+                (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CMD_INF_EID, CFE_EVS_INFORMATION,
+                                  "Recvd NOOP cmd (%u), Version %d.%d.%d.%d",
+                                  (unsigned int)uiCmdCode,
+                                  {{cookiecutter.app_name}}_MAJOR_VERSION,
+                                  {{cookiecutter.app_name}}_MINOR_VERSION,
+                                  {{cookiecutter.app_name}}_REVISION,
+                                  {{cookiecutter.app_name}}_MISSION_REV);
+                break;
+
+            case {{cookiecutter.app_name}}_RESET_CC:
+                {{cookiecutter.app_name}}_AppData.HkTlm.usCmdCnt = 0;
+                {{cookiecutter.app_name}}_AppData.HkTlm.usCmdErrCnt = 0;
+                (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CMD_INF_EID, CFE_EVS_INFORMATION,
+                                  "Recvd RESET cmd (%u)", (unsigned int)uiCmdCode);
+                break;
+
+            /* TODO:  Add code to process the rest of the {{cookiecutter.app_name}} commands here */
+
+            default:
+                {{cookiecutter.app_name}}_AppData.HkTlm.usCmdErrCnt++;
+                (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                  "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
+                break;
+        }
+    }
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

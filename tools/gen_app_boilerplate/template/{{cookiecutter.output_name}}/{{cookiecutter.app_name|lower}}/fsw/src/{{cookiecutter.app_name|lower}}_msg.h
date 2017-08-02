@@ -103,6 +103,33 @@ typedef struct
 } {{cookiecutter.app_name}}_NoArgCmd_t;
 
 /** 
+**  \brief TODO Elaborate this struct
+**  Boilerplate example of application-specific incoming data
+*/
+typedef struct
+{
+    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint32  counter;
+
+    /* TODO:  Add input data to this application here, such as raw data read from I/O
+    **        devices.
+    **        Option: for data that is already defined by another app, include
+    **        that app's message header above.
+    */
+
+} {{cookiecutter.app_name}}_InData_t;
+
+/** 
+**  \brief TODO Elaborate this struct
+**  Boilerplate example of application-specific outgoing data
+*/
+typedef struct
+{
+    uint8   ucTlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint32  uiCounter;
+} {{cookiecutter.app_name}}_OutData_t;
+
+/** 
 **  \brief {{cookiecutter.app_name}} application housekeeping data
 */
 typedef struct

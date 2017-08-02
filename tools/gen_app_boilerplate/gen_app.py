@@ -79,10 +79,8 @@ if __name__ == '__main__':
 	if json_file:
 		with open(json_file, 'r') as f:
 			args = json.load(f)
-			out_path = args["output_dir"]
-	else:
-		out_path = args['output_dir'] if args['output_dir'] else DEFAULT_APP_PATH
 
+	out_path = args['output_dir'] if args['output_dir'] else DEFAULT_APP_PATH
 	gen = Generator(args, out_path)
 	gen.run()
 	
