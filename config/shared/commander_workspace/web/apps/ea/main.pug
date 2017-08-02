@@ -1,0 +1,32 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | External Applications
+
+block main
+    .row.row-fluid
+      article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-EA-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 General
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Cmd Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/EA/CmdCounter'}]}) ---
+                    tr
+                      th Error Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/EA/ErrCounter'}]}) ---
+              footer
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/EA/NoOp'}}) No-Op
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/EA/Reset'}}) Reset

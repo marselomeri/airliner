@@ -296,22 +296,6 @@ void Test_{{cookiecutter.app_name}}_InitApp_Nominal(void)
     UtAssert_True (result == expected, "InitApp, nominal");
 }
 
-
-/**************************************************************************
- * Tests for {{cookiecutter.app_name}}_CleanupCallback()
- **************************************************************************/
-/**
- * Test {{cookiecutter.app_name}}_CleanupCallback(), Nominal
- * NOTE: empty function, so nothing to assert
- */
-void Test_{{cookiecutter.app_name}}_CleanupCallback(void)
-{
-    /* Execute the function being tested */
-    {{cookiecutter.app_name}}_CleanupCallback();
-}
-
-
-
 /**************************************************************************
  * Tests for {{cookiecutter.app_name}}_AppMain()
  **************************************************************************/
@@ -489,9 +473,6 @@ void {{cookiecutter.app_name}}_App_Test_AddTestCases(void)
                "Test_{{cookiecutter.app_name}}_InitApp_Fail_InitCDSTbl");
     UtTest_Add(Test_{{cookiecutter.app_name}}_InitApp_Nominal, {{cookiecutter.app_name}}_Test_Setup, {{cookiecutter.app_name}}_Test_TearDown,
                "Test_{{cookiecutter.app_name}}_InitApp_Nominal");
-
-    UtTest_Add(Test_{{cookiecutter.app_name}}_CleanupCallback, {{cookiecutter.app_name}}_Test_Setup, {{cookiecutter.app_name}}_Test_TearDown,
-               "Test_{{cookiecutter.app_name}}_CleanupCallback");
 
     UtTest_Add(Test_{{cookiecutter.app_name}}_AppMain_Fail_RegisterApp, {{cookiecutter.app_name}}_Test_Setup, {{cookiecutter.app_name}}_Test_TearDown,
                "Test_{{cookiecutter.app_name}}_AppMain_Fail_RegisterApp");
