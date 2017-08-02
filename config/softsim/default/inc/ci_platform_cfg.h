@@ -110,7 +110,7 @@ extern "C" {
 #define CI_STARTUP_TIMEOUT_MSEC    (1000)
 
 /* TODO:  Add Doxygen markup. */
-#define CI_CUSTOM_DEV_PATH       SBC_SNORKEL_READ_DEV_PATH
+#define CI_CUSTOM_DEV_PATH       "/dev/ttyUSB0"
 
 
 #ifdef __cplusplus

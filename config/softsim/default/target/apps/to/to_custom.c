@@ -89,21 +89,21 @@ typedef struct
 } TO_AppCustomData_t;
 
 
-int32 TO_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
-int32 TO_DisableChannel(uint8 ChannelID);
-void TO_ListenerTask(void);
+int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
+int32 TO_OutputChannel_Disable(uint8 ChannelID);
+void  TO_OutputChannel_ListenerTask(void);
 
 
 
 TO_AppCustomData_t TO_AppCustomData = {
 	{
-		{TO_CHANNEL_ENABLED, "127.0.0.1",  5011, 50, TO_ListenerTask, 0, 0}
+		{TO_CHANNEL_ENABLED, "127.0.0.1",  5011, 50, TO_OutputChannel_ListenerTask, 0, 0}
 	}
 };
 
 
 
-int32 TO_InitCustom(void)
+int32 TO_OutputChannel_CustomInitAll(void)
 {
     uint32 i = 0;
 
@@ -111,7 +111,7 @@ int32 TO_InitCustom(void)
 	{
 		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
 		{
-			if(TO_EnableChannel(i, TO_AppCustomData.Channel[i].IP, TO_AppCustomData.Channel[i].DstPort))
+			if(TO_OutputChannel_Enable(i, TO_AppCustomData.Channel[i].IP, TO_AppCustomData.Channel[i].DstPort))
 			{
 				TO_AppCustomData.Channel[i].Mode = TO_CHANNEL_DISABLED;
 			}
@@ -129,7 +129,7 @@ int32 TO_InitCustom(void)
 }
 
 
-int32 TO_SendToChannel(uint32 ChannelID, const char* Buffer, uint32 Size)
+int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
 	static struct sockaddr_in s_addr;
     int						  status = 0;
@@ -175,7 +175,7 @@ int32 TO_SendToChannel(uint32 ChannelID, const char* Buffer, uint32 Size)
 
 
 
-void TO_CleanupCustom(void)
+void TO_OutputChannel_CustomCleanupAll(void)
 {
 	uint32 i = 0;
 
@@ -184,14 +184,23 @@ void TO_CleanupCustom(void)
 		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
 		{
 
-			TO_DisableChannel(i);
+			TO_OutputChannel_Disable(i);
 		}
 	}
 }
 
+int32 TO_OutputChannel_CustomBuildupAll(void)
+{
+	return 0;
+}
+
+int32 TO_OutputChannel_CustomTeardownAll(void)
+{
+	return 0;
+}
 
 
-void TO_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
+void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
 
@@ -215,7 +224,7 @@ void TO_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                     break;
             	}
 
-            	if(TO_EnableChannel(cmd->ChannelID, cmd->DestinationAddress, cmd->DestinationPort))
+            	if(TO_OutputChannel_Enable(cmd->ChannelID, cmd->DestinationAddress, cmd->DestinationPort))
             	{
                     TO_AppData.HkTlm.usCmdErrCnt++;
                     break;
@@ -243,7 +252,7 @@ void TO_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                     break;
             	}
 
-            	if(TO_DisableChannel(cmd->ChannelID))
+            	if(TO_OutputChannel_Disable(cmd->ChannelID))
             	{
                     TO_AppData.HkTlm.usCmdErrCnt++;
                     break;
@@ -267,7 +276,7 @@ void TO_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
 
 
 
-int32 TO_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort)
+int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort)
 {
     int32 returnCode = 0;
     uint32 i = 0;
@@ -353,7 +362,7 @@ end_of_function:
 
 
 
-int32 TO_DisableChannel(uint8 ChannelID)
+int32 TO_OutputChannel_Disable(uint8 ChannelID)
 {
     int32 returnCode = 0;
     uint32 i = 0;
@@ -376,7 +385,7 @@ end_of_function:
 }
 
 
-void TO_ListenerTask(void)
+void TO_OutputChannel_ListenerTask(void)
 {
 	CFE_ES_RegisterChildTask();
     boolean continueListening = TRUE;
@@ -395,7 +404,7 @@ void TO_ListenerTask(void)
 			static struct sockaddr_in s_addr;
 		    int						  status = 0;
 		    int32	returnCode = 0;
-		    uint16  actualMessageSize = CFE_SB_GetUserDataLength(msgPtr);
+		    uint16  actualMessageSize = CFE_SB_GetTotalMsgLength(msgPtr);
 
 		    bzero((char *) &s_addr, sizeof(s_addr));
 		    s_addr.sin_family      = AF_INET;
@@ -431,7 +440,7 @@ void TO_ListenerTask(void)
 	                             (int)iStatus);
 	    	}
 
-			channel->QueuedCount--;
+			channel->CurrentlyQueuedCnt--;
 		}
 		else if(iStatus == OS_QUEUE_TIMEOUT)
 		{

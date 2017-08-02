@@ -77,7 +77,7 @@ int UtTest_Run(void)
     UtListNode_t            *UtListNode;
     UtTestDataBaseEntry_t   *UtTestDataBaseEntry;
     int 					 rc = -1;
-    
+
 	if (UtTestDataBase.NumberOfEntries > 0) {
 
 		UtListNode = UtTestDataBase.First;
