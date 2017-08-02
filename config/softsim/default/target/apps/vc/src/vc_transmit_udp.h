@@ -28,14 +28,6 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/**
- * @defgroup Transmit
- * @addtogroup Transmit
- * @file vc_transmit_udp.h
- * @brief Custom UDP layer for Video Controller.
- * @{
- */
- 
 #ifndef VC_TRANSMIT_UDP_H
 #define VC_TRANSMIT_UDP_H
 
@@ -44,5 +36,3 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vc_perfids.h"
 
 #endif
-
-/* @} */

@@ -106,6 +106,11 @@ void VC_CleanupCallback()
     {
         CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Uninit failed");
     }
+    
+    if(VC_Device_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Device_Uninit failed");
+    }
 }
 
 
@@ -165,10 +170,18 @@ int32 VC_AppInit(void)
        return (Status);
     }
     
-    /* Initialize a data transmission resource */
+    /* Initialize data transmission resources */
     if (VC_Transmit_Init() != TRUE) 
     {
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Init failed");
+        Status = -1;
+        return (Status);
+    }
+    
+    /* Initialize devices */
+    if (VC_Device_Init() != TRUE) 
+    {
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Device_Init failed");
         Status = -1;
         return (Status);
     }

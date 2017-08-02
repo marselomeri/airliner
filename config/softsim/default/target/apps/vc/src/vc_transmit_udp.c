@@ -36,12 +36,36 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include "vc_app.h"
 
-//VC_Transmit_Handle_t TransmitHandle = { .DestPort = VC_DESTINATION_PORT, \
-                                        .MyPort = VC_SOURCE_PORT, \
-                                        .DestIP = VC_DESTINATION_IP, \
-                                        .MyIP = VC_SOURCE_IP, \
-                                        .SocketFd = -1 }; 
-                                        
+typedef enum
+{
+    VC_CHANNEL_UNUSED       = 0,
+    VC_CHANNEL_DISABLED     = 1,
+    VC_CHANNEL_ENABLED      = 2
+} VC_ChannelMode_t;
+
+
+/**
+ * Transmit struct handle for user defined source and/or destination
+ * configuration information and initialized resource reference.
+ */
+typedef struct
+{
+    VC_ChannelMode_t    Mode;
+    uint8               ChannelID;
+    uint16              DestPort;
+    uint16              MyPort;
+    char                DestIP[INET_ADDRSTRLEN];
+    char                MyIP[INET_ADDRSTRLEN];
+    int                 SocketFd;
+} VC_Transmit_Handle_t;
+
+
+typedef struct
+{
+    VC_Transmit_Handle_t Channel[VC_MAX_OUTPUT_CHANNELS];
+} VC_AppCustomData_t;
+
+
 VC_AppCustomData_t VC_AppCustomData = {
     {
         { 
@@ -55,6 +79,11 @@ VC_AppCustomData_t VC_AppCustomData = {
         }
     }
 };
+
+
+int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
+int32 VC_DisableChannel(uint8 ChannelID);
+
 
 int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort)
 {
@@ -76,7 +105,7 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
     if(DestinationAddress == 0)
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                        "Destination address for channel %u is null.", (unsigned int)i);
+                        "VC Destination address for channel %u is null.", (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
     }
@@ -84,7 +113,7 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
     if(ChannelID >= VC_MAX_OUTPUT_CHANNELS)
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                        "ChannelID (%u) invalid.", (unsigned int)ChannelID);
+                        "VC ChannelID (%u) invalid.", (unsigned int)ChannelID);
         returnCode = -1;
         goto end_of_function;
     }
@@ -128,7 +157,7 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
     if(status < 0)
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                        "TLM bind errno: %i on channel %u", errno, (unsigned int)i);
+                        "VC bind errno: %i on channel %u", errno, (unsigned int)i);
         VC_AppCustomData.Channel[ChannelID].Mode = VC_CHANNEL_DISABLED;
         returnCode = -1;
         goto end_of_function;
@@ -155,7 +184,7 @@ int32 VC_InitCustom(void)
             else
             {
                 CFE_EVS_SendEvent(VC_CHA_INF_EID, CFE_EVS_INFORMATION,
-                        "UDP telemetry output enabled channel %u to %s:%u",
+                        "VC UDP output enabled channel %u to %s:%u",
                         (unsigned int)i, VC_AppCustomData.Channel[i].DestIP,
                         (unsigned int)VC_AppCustomData.Channel[i].DestPort);
             }
@@ -168,15 +197,11 @@ int32 VC_InitCustom(void)
 int32 VC_DisableChannel(uint8 ChannelID)
 {
     int32 returnCode = 0;
-    uint32 i = 0;
-    struct sockaddr_in servaddr;
-    int status;
-    int reuseaddr=1;
 
     if(VC_AppCustomData.Channel[ChannelID].Mode != VC_CHANNEL_ENABLED)
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                            "UDP telemetry for channel %u is not enabled.", (unsigned int)i);
+                            "UDP VC for channel %u is not enabled.", (unsigned int)ChannelID);
         returnCode = -1;
         goto end_of_function;
     }

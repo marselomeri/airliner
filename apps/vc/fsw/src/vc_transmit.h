@@ -28,50 +28,26 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/**
+ * @defgroup Transmit
+ * @addtogroup Transmit
+ * @file vc_transmit_udp.h
+ * @brief Custom UDP layer for Video Controller.
+ * @{
+ */
+ 
 #ifndef VC_TRANSMIT_H
 #define VC_TRANSMIT_H
 
-#include "vc_config.h" /* move to platform_cfg */
-
-typedef enum
-{
-    VC_CHANNEL_UNUSED       = 0,
-    VC_CHANNEL_DISABLED     = 1,
-    VC_CHANNEL_ENABLED      = 2
-} VC_ChannelMode_t;
-
-
 /**
- * Transmit struct handle for user defined source and/or destination
- * configuration information and initialized resource reference.
- */
-typedef struct
-{
-    VC_ChannelMode_t    Mode;
-    uint8               ChannelID;
-    uint16              DestPort;
-    uint16              MyPort;
-    char                DestIP[INET_ADDRSTRLEN];
-    char                MyIP[INET_ADDRSTRLEN];
-    int                 SocketFd;
-} VC_Transmit_Handle_t;
-
-
-typedef struct
-{
-    VC_Transmit_Handle_t Channel[VC_MAX_OUTPUT_CHANNELS];
-} VC_AppCustomData_t;
-
-
-/**
- * @brief Initialize a configured resource.
+ * @brief Initialize configured resources.
  * @return true if successful, otherwise false
  */
 boolean VC_Transmit_Init(void);
 
 
 /**
- * @brief Uninitialize a previously initialized resource.
+ * @brief Uninitialize previously initialized resources.
  * @return true if successful, otherwise false
  */
 boolean VC_Transmit_Uninit(void);
@@ -87,3 +63,5 @@ boolean VC_Transmit_Uninit(void);
 int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size);
 
 #endif
+
+/* @} */

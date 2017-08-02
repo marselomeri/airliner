@@ -43,8 +43,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*! Max channels allowed */
 #define VC_MAX_OUTPUT_CHANNELS          5
-/*! Max characters of an IP address */
-#define INET_ADDRSTRLEN                 15
+
+/*! Max device path length */
+#define VC_MAX_DEVICE_PATH              255
+
+/*! Max number of camera devices */
+#define VC_MAX_DEVICES                  1
 
 /* Camera settings */
 

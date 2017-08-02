@@ -10,7 +10,9 @@
 #define VC_LEN_ERR_EID        7
 #define VC_PIPE_ERR_EID       8
 #define VC_SOCKET_ERR_EID     9  /* socket error */
-#define VC_INIT_ERR_EID       10 /* initialization error */
-#define VC_UNINIT_ERR_EID     11 /* uninitialization error */
-#define VC_CHA_INF_EID        12 /* channel init message "informational" */
-#define VC_EVT_COUNT          12  /* count of event message ID's */
+#define VC_DEVICE_ERR_EID     10 /* device error */
+#define VC_INIT_ERR_EID       11 /* initialization error */
+#define VC_UNINIT_ERR_EID     12 /* uninitialization error */
+#define VC_CHA_INF_EID        13 /* channel init message "informational" */
+#define VC_DEV_INF_EID        14 /* device init message "informational" */
+#define VC_EVT_COUNT          14  /* count of event message ID's */
