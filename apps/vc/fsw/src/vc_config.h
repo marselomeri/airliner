@@ -39,16 +39,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef VC_CONFIG_H
 #define VC_CONFIG_H
 
+
 /* Custom Settings */
 
 /*! Max channels allowed */
 #define VC_MAX_OUTPUT_CHANNELS          5
-
 /*! Max device path length */
 #define VC_MAX_DEVICE_PATH              255
-
 /*! Max number of camera devices */
 #define VC_MAX_DEVICES                  1
+/*! Max buffer size */
+#define VC_MAX_BUFFER_SIZE               65527
+
 
 /* Camera settings */
 
@@ -83,7 +85,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG 
 /*! V4L field order */
 #define VC_V4L_VIDEO_FIELD_ORDER        V4L2_FIELD_NONE 
-
+/*! Buffers to request */
+#define VC_V4L_BUFFER_REQUEST           4
+/*! Memory Type */
+#define VC_V4L_MEMORY_TYPE              V4L2_MEMORY_USERPTR
 
 /* Timeout settings */
 
