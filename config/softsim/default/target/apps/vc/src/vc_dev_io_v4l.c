@@ -193,7 +193,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
     if (Request.count != VC_AppCustomDevice.Channel[DeviceID].BufferRequest)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_REQBUFS did not comply only %u buffers on %s channel %u", Request.count, 
+                        "VC VIDIOC_REQBUFS did not comply. Only %u buffers on %s channel %u", Request.count, 
                         VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
@@ -218,18 +218,10 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
         Buffer.type            = VC_AppCustomDevice.Channel[DeviceID].BufferType;
         Buffer.memory          = VC_AppCustomDevice.Channel[DeviceID].MemoryType;
         Buffer.index           = i;
-        Buffer.m.userptr       = (unsigned long)VC_AppCustomDevice.Channel[DeviceID].Buffers[i][0];
+        Buffer.m.userptr       = (unsigned long)&VC_AppCustomDevice.Channel[DeviceID].Buffers[i][0];
         Buffer.length          = VC_AppCustomDevice.Channel[DeviceID].Buffer_Size;
-        
-        if (Buffer.length > VC_AppCustomDevice.Channel[DeviceID].Buffer_Size)
-        {
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC Frame size too large on %s channel %u",
-                        VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
-            returnCode = -1;
-            goto end_of_function;
-        }
-        
+
+
         if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_QBUF, &Buffer))
         {
             CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -238,15 +230,16 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
             returnCode = -1;
             goto end_of_function;
         }
-        
-        if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMON, &Type))
-        {
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_STREAMON returned %i on %s channel %u", errno,
-                        VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
-            returnCode = -1;
-            goto end_of_function;
-        }
+    }
+    
+    /* TODO Move to seperate start function */
+    if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMON, &Type))
+    {
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "VC VIDIOC_STREAMON returned %i on %s channel %u", errno,
+                    VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+        returnCode = -1;
+        goto end_of_function;
     }
     
 end_of_function:
@@ -411,8 +404,6 @@ boolean VC_Device_Init(void)
 {
     if(VC_InitDevices() == -1)
     {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, \
-                "VC_Device_Init Failed");
         return FALSE;
     }
     return TRUE;
@@ -423,8 +414,6 @@ boolean VC_Device_Uninit(void)
 {
     if(VC_CleanupDevices() == -1)
     {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, \
-                "VC_Device_Uninit Failed");
         return FALSE;
     }
     return TRUE;

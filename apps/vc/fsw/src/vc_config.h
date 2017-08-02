@@ -49,8 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*! Max number of camera devices */
 #define VC_MAX_DEVICES                  1
 /*! Max buffer size */
-#define VC_MAX_BUFFER_SIZE               65527
-
+#define VC_MAX_BUFFER_SIZE               115200
 
 /* Camera settings */
 
