@@ -38,7 +38,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vc_app.h"
 #include <linux/videodev2.h>
 
-
 typedef enum
 {
     VC_DEVICE_UNUSED       = 0,
@@ -54,6 +53,9 @@ typedef enum
     VC_DEVICE_STREAMING     = 2
 } VC_DeviceStatus_t;
 
+typedef struct {
+    void   *ptr;
+}VC_BufferPtr_t;
 
 typedef struct
 {
@@ -71,6 +73,7 @@ typedef struct
     uint32              MemoryType;
     char                Buffers[VC_V4L_BUFFER_REQUEST][VC_MAX_BUFFER_SIZE];
     uint32              Buffer_Size;
+    VC_BufferPtr_t      Buffer_Ptrs[VC_V4L_BUFFER_REQUEST];
 } VC_Device_Handle_t;
 
 
@@ -96,7 +99,8 @@ VC_AppCustomDevice_t VC_AppCustomDevice = {
           .BufferRequest     = VC_V4L_BUFFER_REQUEST, \
           .MemoryType        = VC_V4L_MEMORY_TYPE, \
           .Buffers           = {{0}}, \
-          .Buffer_Size       = VC_MAX_BUFFER_SIZE
+          .Buffer_Size       = VC_MAX_BUFFER_SIZE, \
+          .Buffer_Ptrs       = {0}
         }
     }
 };
@@ -228,11 +232,13 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
     
     for (i=0; i < VC_AppCustomDevice.Channel[DeviceID].BufferRequest; i++)
     {
+        VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = (void*)&VC_AppCustomDevice.Channel[DeviceID].Buffers[i][0];
+        
         bzero(&Buffer, sizeof(Buffer));
         Buffer.type            = VC_AppCustomDevice.Channel[DeviceID].BufferType;
         Buffer.memory          = VC_AppCustomDevice.Channel[DeviceID].MemoryType;
         Buffer.index           = i;
-        Buffer.m.userptr       = (unsigned long)&VC_AppCustomDevice.Channel[DeviceID].Buffers[i][0];
+        Buffer.m.userptr       = (unsigned long)VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr;
         Buffer.length          = VC_AppCustomDevice.Channel[DeviceID].Buffer_Size;
 
         if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_QBUF, &Buffer))
@@ -329,7 +335,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         }
     }
     
-    if (VC_MAX_PACKET_SIZE < Buffer.bytesused)
+    if (Buffer.bytesused > VC_MAX_PACKET_SIZE)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC Packet on %s channel %u is too large",
@@ -365,6 +371,7 @@ int32 VC_Start_Streaming(void)
     int32 returnCode = 0;
     
     uint32 i = 0;
+    uint32 j = 0;
     uint32 maxFd = 0;
     fd_set fds;
     
@@ -431,6 +438,28 @@ int32 VC_Start_Streaming(void)
         {
             CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "VC buffer timeout streaming stopped");
+                    
+            for (i=0; i < VC_MAX_DEVICES; i++)
+            {        
+            struct v4l2_buffer Buffer;
+            
+                if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
+                && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
+                {
+                    for (j=0; j < VC_AppCustomDevice.Channel[i].BufferRequest; j++)
+                    {  
+                    bzero(&Buffer, sizeof(Buffer));
+                    Buffer.type = VC_AppCustomDevice.Channel[i].BufferType;
+                    Buffer.memory = VC_AppCustomDevice.Channel[i].MemoryType;
+                    Buffer.index = j;
+                    
+                    VC_Ioctl(VC_AppCustomDevice.Channel[i].DeviceFd, VIDIOC_QUERYBUF, &Buffer);
+                    CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "VC buffer flags for device channel %lu buffer %lu = %x", i, j, Buffer.flags);
+                    }
+                }
+            }
+            
             returnCode = -1;
             goto end_of_function;
         } 
@@ -547,19 +576,19 @@ int32 VC_InitDevices(void)
             else
             {
                 VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
-                CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
+                    CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
                         "VC Device configured channel %u from %s",
                         (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
             }
             
-            if (returnCode = VC_Start_StreamingDevice(i))
+            if (VC_Start_StreamingDevice(i))
             {
                 /* do nothing */
             }
             else
             {
                 VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_STREAMING;
-                CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
+                    CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
                         "VC Device streaming channel %u from %s",
                         (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
             }
@@ -603,7 +632,7 @@ int32 VC_DisableDevice(uint8 DeviceID)
     if(VC_AppCustomDevice.Channel[DeviceID].Mode != VC_DEVICE_ENABLED)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                            "VC Device for channel %u is not enabled.", (unsigned int)DeviceID);
+                        "VC Device for channel %u is not enabled.", (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
     }

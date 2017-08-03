@@ -62,6 +62,14 @@ void VC_AppMain(void)
         /* Performance Log exit stamp */
         CFE_ES_PerfLogExit(VC_APPMAIN_PERF_ID);
         
+        /* Start streaming */
+        if (VC_Devices_Start() != TRUE) 
+        {
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
+        //Status = -1;
+        //return (Status);
+        }
+        
         /* Wait for the next Software Bus message */
         Status = CFE_SB_RcvMsg(&VC_AppData.MsgPtr, VC_AppData.CmdPipe, VC_SB_TIMEOUT);
 
@@ -187,14 +195,6 @@ int32 VC_AppInit(void)
     if (VC_Devices_Init() != TRUE) 
     {
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Init failed");
-        Status = -1;
-        return (Status);
-    }
-    
-    /* Start streaming */
-    if (VC_Devices_Start() != TRUE) 
-    {
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
         Status = -1;
         return (Status);
     }
