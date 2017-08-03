@@ -19,9 +19,15 @@ void VC_ResetCmd(CFE_SB_MsgPtr_t msg);
 
 
 /**
- * \brief ground command (hello world command)
+ * \brief ground command (start streaming)
  */
-void VC_HelloWorldCmd(CFE_SB_MsgPtr_t msg); 
+void VC_StartStreamingCmd(CFE_SB_MsgPtr_t msg); 
+
+
+/**
+ * \brief ground command (stop streaming)
+ */
+void VC_StopStreamingCmd(CFE_SB_MsgPtr_t msg); 
 
 
 /**

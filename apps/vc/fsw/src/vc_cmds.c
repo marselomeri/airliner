@@ -67,19 +67,34 @@ void VC_ResetCmd(CFE_SB_MsgPtr_t msg)
 } /* End of VC_ResetCmd() */
 
 
-void VC_HelloWorldCmd(CFE_SB_MsgPtr_t msg)
+void VC_StartStreamingCmd(CFE_SB_MsgPtr_t msg)
 {
     uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t);
 
     /* Verify command packet length */
     if (VC_VerifyCmdLength(msg, ExpectedLength))
     {
-        CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Hello World!");
+        CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Start Streaming command received");
     }
 
     return;
 
-} /* End of VC_HelloWorldCmd() */
+} /* End of VC_StartStreamingCmd() */
+
+
+void VC_StopStreamingCmd(CFE_SB_MsgPtr_t msg)
+{
+    uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t);
+
+    /* Verify command packet length */
+    if (VC_VerifyCmdLength(msg, ExpectedLength))
+    {
+        CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Stop Streaming command received");
+    }
+
+    return;
+
+} /* End of VC_StopStreamingCmd() */
 
 
 boolean VC_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)

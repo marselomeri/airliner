@@ -66,8 +66,6 @@ void VC_AppMain(void)
         if (VC_Devices_Start() != TRUE) 
         {
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
-        //Status = -1;
-        //return (Status);
         }
         
         /* Wait for the next Software Bus message */
@@ -244,8 +242,11 @@ void VC_AppPipe(CFE_SB_MsgPtr_t msg)
                     VC_ResetCmd(msg);
                     break; 
 
-                case VC_HELLOWORLD_CC: 
-                    VC_HelloWorldCmd(msg); 
+                case VC_STARTSTREAMING_CC: 
+                    VC_StartStreamingCmd(msg); 
+                    break;
+                case VC_STOPSTREAMING_CC:
+                    VC_StopStreamingCmd(msg);
                     break;
 
                 default:
