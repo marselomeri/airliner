@@ -40,16 +40,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VC_DEV_IO_H
 
 /**
+ * @brief Starts initialized resources.
+ * @return true if successful, otherwise false
+ */
+boolean VC_Devices_Start(void);
+
+/**
+ * @brief Stops initialized resources.
+ * @return true if successful, otherwise false
+ */
+boolean VC_Devices_Stop(void);
+
+/**
  * @brief Initialize configured resources.
  * @return true if successful, otherwise false
  */
-boolean VC_Device_Init(void);
+boolean VC_Devices_Init(void);
 
 /**
  * @brief Uninitialize previously initialized resources.
  * @return true if successful, otherwise false
  */
-boolean VC_Device_Uninit(void);
+boolean VC_Devices_Uninit(void);
 
 
 #endif

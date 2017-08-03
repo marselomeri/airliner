@@ -51,6 +51,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*! Max buffer size */
 #define VC_MAX_BUFFER_SIZE               115200
 
+/*! Max packet size */
+#define VC_MAX_PACKET_SIZE               65527
+
 /* Camera settings */
 
 /*! Video resolution width */

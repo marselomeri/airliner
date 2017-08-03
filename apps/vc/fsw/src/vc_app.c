@@ -107,9 +107,14 @@ void VC_CleanupCallback()
         CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Uninit failed");
     }
     
-    if(VC_Device_Uninit() != TRUE)
+    if(VC_Devices_Stop() != TRUE)
     {
-        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Device_Uninit failed");
+        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Stop failed");
+    }
+    
+    if(VC_Devices_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Uninit failed");
     }
 }
 
@@ -179,9 +184,17 @@ int32 VC_AppInit(void)
     }
     
     /* Initialize devices */
-    if (VC_Device_Init() != TRUE) 
+    if (VC_Devices_Init() != TRUE) 
     {
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Device_Init failed");
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Init failed");
+        Status = -1;
+        return (Status);
+    }
+    
+    /* Start streaming */
+    if (VC_Devices_Start() != TRUE) 
+    {
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
         Status = -1;
         return (Status);
     }
