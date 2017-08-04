@@ -135,8 +135,39 @@ int32 VC_AppInit(void)
 
     VC_AppData.PipeDepth = VC_PIPE_DEPTH;
 
+    VC_AppData.EventFilters[0].EventID  = VC_INIT_INF_EID;
+    VC_AppData.EventFilters[0].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[1].EventID  = VC_NOOP_INF_EID;
+    VC_AppData.EventFilters[1].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[2].EventID  = VC_RESET_INF_EID;
+    VC_AppData.EventFilters[2].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[3].EventID  = VC_PROCCESS_INF_EID;
+    VC_AppData.EventFilters[3].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[4].EventID  = VC_MID_ERR_EID;
+    VC_AppData.EventFilters[4].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[5].EventID  = VC_CC1_ERR_EID;
+    VC_AppData.EventFilters[5].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[6].EventID  = VC_LEN_ERR_EID;
+    VC_AppData.EventFilters[6].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[7].EventID  = VC_PIPE_ERR_EID;
+    VC_AppData.EventFilters[7].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[8].EventID  = VC_SOCKET_ERR_EID;
+    VC_AppData.EventFilters[8].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[9].EventID  = VC_DEVICE_ERR_EID;
+    VC_AppData.EventFilters[9].Mask     = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[10].EventID = VC_INIT_ERR_EID;
+    VC_AppData.EventFilters[10].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[11].EventID = VC_UNINIT_ERR_EID;
+    VC_AppData.EventFilters[11].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[12].EventID = VC_CHA_INF_EID;
+    VC_AppData.EventFilters[12].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[13].EventID = VC_DEV_INF_EID;
+    VC_AppData.EventFilters[13].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[14].EventID = VC_ADDR_NUL_ERR_EID;
+    VC_AppData.EventFilters[14].Mask    = CFE_EVS_NO_FILTER;
+    
     /* Register event filter table */
-    Status = CFE_EVS_Register(NULL, 0, CFE_EVS_BINARY_FILTER);
+    Status = CFE_EVS_Register(VC_AppData.EventFilters, VC_EVT_COUNT, CFE_EVS_BINARY_FILTER);
 
     if (Status != CFE_SUCCESS)
     {

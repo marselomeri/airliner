@@ -299,3 +299,4 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 
     return returnCode;
 }
+

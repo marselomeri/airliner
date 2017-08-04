@@ -1,5 +1,5 @@
-
-
+#ifndef VC_EVENTS_H
+#define VC_EVENTS_H
 /* Event message ID's */
 #define VC_INIT_INF_EID       1  /* start up message "informational" */
 #define VC_NOOP_INF_EID       2  /* processed command "informational" */
@@ -14,5 +14,8 @@
 #define VC_INIT_ERR_EID       11 /* initialization error */
 #define VC_UNINIT_ERR_EID     12 /* uninitialization error */
 #define VC_CHA_INF_EID        13 /* channel init message "informational" */
-#define VC_DEV_INF_EID        14 /* device init message "informational" */
-#define VC_EVT_COUNT          14  /* count of event message ID's */
+#define VC_DEV_INF_EID        14 /* device init and info message "informational" */
+#define VC_ADDR_NUL_ERR_EID   15 /* cmd address null error*/
+#define VC_EVT_COUNT          15 /* count of event message ID's */
+
+#endif

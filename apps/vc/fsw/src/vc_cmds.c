@@ -1,5 +1,6 @@
 #include "vc_cmds.h"
 #include "vc_app.h"
+#include <string.h>
 
 
 void VC_HousekeepingCmd(CFE_SB_MsgPtr_t msg)
@@ -69,11 +70,44 @@ void VC_ResetCmd(CFE_SB_MsgPtr_t msg)
 
 void VC_StartStreamingCmd(CFE_SB_MsgPtr_t msg)
 {
-    uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t);
+    VC_StartStreamCmd_t *CmdPtr = 0;
+    
+    uint16 ExpectedLength = sizeof(VC_StartStreamCmd_t);
 
     /* Verify command packet length */
     if (VC_VerifyCmdLength(msg, ExpectedLength))
     {
+        CmdPtr = ((VC_StartStreamCmd_t *) msg);
+        
+        /* 
+        ** NUL terminate the very end of the address string as a
+        ** safety measure
+        */
+        CmdPtr->Address[VC_ADDRESS_LENGTH - 1] = '\0';
+        
+        /* 
+        ** Check if the address string is a nul string
+        */ 
+        if(strlen(CmdPtr->Address) == 0)
+        {
+            VC_AppData.ErrCounter++;
+            CFE_EVS_SendEvent(VC_ADDR_NUL_ERR_EID, CFE_EVS_ERROR,
+                            "NUL (empty) string specified for address");
+        }
+        else
+        {   
+            /* If address is not an empty string */
+            
+            /* Check streaming state */
+            
+            /* Verify the address */
+            
+            /* Update the configuration */
+            
+            VC_AppData.CmdCounter++;
+
+        }
+        
         CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Start Streaming command received");
     }
 

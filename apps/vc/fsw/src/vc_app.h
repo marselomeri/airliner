@@ -1,5 +1,5 @@
 /*==============================================================================
-Copyright (c) 2015, Windhover Labs
+Copyright (c) 2017, Windhover Labs
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-vc_app.h
 */
 
 #ifndef _vc_app_
@@ -43,14 +41,14 @@ vc_app.h
 #include "vc_transmit.h"
 #include "vc_dev_io.h"
 
-/* Example command pipe parameters */
+/* VC command pipe parameters */
 #define VC_PIPE_DEPTH         12 /* Depth of the Command Pipe for Application */
 
-/* Example app specific definitions */
+/* VC app specific definitions */
 #define VC_SB_PIPE_1_NAME     "VC_CMD_PIPE"
 
 /** 
- *  \brief Example global data structure
+ *  \brief VC global data structure
  */
 typedef struct
 {
@@ -71,18 +69,19 @@ typedef struct
     /* Initialization data (not reported in housekeeping) */
     char                  PipeName[OS_MAX_API_NAME];
     uint16                PipeDepth;
+    CFE_EVS_BinFilter_t      EventFilters[VC_EVT_COUNT];
 
 } VC_AppData_t;
 
 
 /**
- * \brief Application entry point and main process loop
+ * \brief VC application entry point and main process loop
  */
 void VC_AppMain(void);
 
 
 /**
- * \brief Example app initialization
+ * \brief VC app initialization
  */
 int32 VC_AppInit(void);
 

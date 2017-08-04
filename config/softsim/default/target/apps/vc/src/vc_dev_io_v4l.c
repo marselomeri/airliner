@@ -54,9 +54,11 @@ typedef enum
     VC_DEVICE_STREAMING     = 2
 } VC_DeviceStatus_t;
 
+
 typedef struct {
     void   *ptr;
 }VC_BufferPtr_t;
+
 
 typedef struct
 {
@@ -508,32 +510,35 @@ void VC_Start_Streaming(void)
                         VC_Ioctl(VC_AppCustomDevice.Channel[i].DeviceFd, VIDIOC_QUERYBUF, &Buffer);
                         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC buffer flags for device channel %lu buffer %lu = %x", i, j, Buffer.flags);
+                        }
                     }
                 }
-            }
             
             returnCode = -1;
             goto end_of_function;
-        } 
+            } 
     
-        if(returnCode > 0)
-        {    for (i=0; i < VC_MAX_DEVICES; i++)
-            {
-                if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
-                && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
+            if(returnCode > 0)
+            {       
+                for (i=0; i < VC_MAX_DEVICES; i++)
                 {
-                    if(FD_ISSET(VC_AppCustomDevice.Channel[i].DeviceFd, &fds))
+                    if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
+                    && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
                     {
-                        VC_Send_Buffer(i);
+                        if(FD_ISSET(VC_AppCustomDevice.Channel[i].DeviceFd, &fds))
+                        {
+                            VC_Send_Buffer(i);
+                        }
                     }
                 }
-            }
-        }    
-    } while (VC_AppCustomDevice.ContinueFlag == TRUE);
+            }    
+        } while (VC_AppCustomDevice.ContinueFlag == TRUE);
+    
+    }
 
 end_of_function:
-    CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_INFORMATION,
-        "VC streaming task exited with %u", returnCode);
+    CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
+        "VC streaming task exited with %lu", returnCode);
     CFE_ES_ExitChildTask();
 }
 

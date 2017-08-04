@@ -1,4 +1,5 @@
 #include "cfe.h"
+#include "vc_platform_cfg.h"
 
 /* Command packet command codes */
 #define VC_NOOP_CC            0  /* no-op command */
@@ -35,6 +36,6 @@ typedef struct
 {
     uint8                  CmdHeader[CFE_SB_CMD_HDR_SIZE];
     uint16                 Port;
-    uint32                 Address;
+    char                   Address[VC_ADDRESS_LENGTH];
 } VC_StartStreamCmd_t;
 
