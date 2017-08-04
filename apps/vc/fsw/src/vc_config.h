@@ -49,10 +49,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*! Max number of camera devices */
 #define VC_MAX_DEVICES                  1
 /*! Max buffer size */
-#define VC_MAX_BUFFER_SIZE               115200
-
+#define VC_MAX_BUFFER_SIZE              115200
 /*! Max packet size */
-#define VC_MAX_PACKET_SIZE               65527
+#define VC_MAX_PACKET_SIZE              65527
+/*! Retry attemps for interrupted calls */
+#define VC_MAX_RETRY_ATTEMPTS           2
+/*! Sleep time micro seconds for interrupted calls */
+#define VC_MAX_RETRY_SLEEP_USEC         10
+/*! Streaming task priority */
+#define VC_STREAMING_TASK_PRIORITY      50
+/*! Streaming task name */
+#define VC_STREAMING_TASK_NAME          "VC_STREAM"
 
 /* Camera settings */
 
