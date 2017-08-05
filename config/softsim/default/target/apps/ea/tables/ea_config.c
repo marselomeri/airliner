@@ -8,6 +8,10 @@
 *************************************************************************/
 #include "cfe_tbl_filedef.h"
 #include "ea_tbldefs.h"
+#include "ea_platform_cfg.h"
+#include "ea_mission_cfg.h"
+#include "ea_msg.h"
+#include "cfe_es_msg.h"
 
 /************************************************************************
 ** Local Defines

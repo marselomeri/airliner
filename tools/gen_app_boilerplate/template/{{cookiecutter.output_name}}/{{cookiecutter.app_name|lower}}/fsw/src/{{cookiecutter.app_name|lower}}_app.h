@@ -222,6 +222,48 @@ int32  {{cookiecutter.app_name}}_InitPipe(void);
 int32  {{cookiecutter.app_name}}_RcvMsg(int32 iBlocking);
 
 /************************************************************************/
+/** \brief {{cookiecutter.app_full_name}} Task incoming data processing
+**
+**  \par Description
+**       This function processes incoming data subscribed
+**       by {{cookiecutter.app_name}} application
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void  {{cookiecutter.app_name}}_ProcessNewData(void);
+
+/************************************************************************/
+/** \brief {{cookiecutter.app_full_name}} Task incoming command processing
+**
+**  \par Description
+**       This function processes incoming commands subscribed
+**       by {{cookiecutter.app_name}} application
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void  {{cookiecutter.app_name}}_ProcessNewCmds(void);
+
+/************************************************************************/
+/** \brief {{cookiecutter.app_full_name}} Task application commands
+**
+**  \par Description
+**       This function processes command messages
+**       specific to the {{cookiecutter.app_name}} application
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr       A #CFE_SB_Msg_t pointer that
+**                             references the software bus message
+**
+*************************************************************************/
+void  {{cookiecutter.app_name}}_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
 /** \brief Sends {{cookiecutter.app_name}} housekeeping message
 **
 **  \par Description
