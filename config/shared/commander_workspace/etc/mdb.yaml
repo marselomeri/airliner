@@ -52,4 +52,6 @@ softsim:
              spec: "/mdb/NEOM8N.xls"
            - type: "sheet"
              spec: "/mdb/ETA.xls"
+           - type: "sheet"
+             spec: "/mdb/EA.xls"
 

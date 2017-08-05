@@ -15,7 +15,7 @@ int32 EA_StartAppCustom(CFE_SB_Msg_t* MsgPtr)
 	int32 iStatus = CFE_ES_APP_ERROR;
 	EA_StartCmd_t  *CmdPtr = 0;
 	uint16 ExpectedLength = sizeof(EA_StartCmd_t);
-
+	uint16 usCmdCode = CFE_SB_GetCmdCode(MsgPtr);
 	/*
 	** Verify command packet length
 	*/
@@ -25,12 +25,18 @@ int32 EA_StartAppCustom(CFE_SB_Msg_t* MsgPtr)
 		{
 			CmdPtr = ((EA_StartCmd_t *) MsgPtr);
 
+			OS_printf("inter: %s\n", CmdPtr->interpreter);
+			OS_printf("script: %s\n", CmdPtr->script);
+
 			/*
 			** NUL terminate the very end of the filename string as a
 			** safety measure
 			*/
 			CmdPtr->interpreter[OS_MAX_PATH_LEN - 1] = '\0';
 			CmdPtr->script[OS_MAX_PATH_LEN - 1] = '\0';
+
+			OS_printf("inter: %s\n", CmdPtr->interpreter);
+			OS_printf("script: %s\n", CmdPtr->script);
 
 			/*
 			** Check if the filename string is a nul string
@@ -115,18 +121,13 @@ int32 EA_StartAppCustom(CFE_SB_Msg_t* MsgPtr)
 				"Attempted to send start command while app already running");
 		}
 	}
-	else
-	{
-		EA_AppData.HkTlm.usCmdErrCnt++;
-		CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-			"Invalid command length");
-	}
 
 	return(iStatus);
 }
 
 int32 EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr)
 {
+	OS_printf("In term custom code\n");
 	char kill_cmd[80];
 	uint16 ExpectedLength = sizeof(EA_NoArgCmd_t);
 	int32 iStatus = CFE_ES_APP_ERROR;

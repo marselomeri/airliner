@@ -320,7 +320,7 @@ TO_Table_t to_ConfigTable =
 		{PX4_VTOL_VEHICLE_STATUS_MID, 							1, TO_QUEUE_PX4},
 		{PX4_WIND_ESTIMATE_MID, 								1, TO_QUEUE_PX4_WIND_ESTIMATE},
     	{EA_HK_TLM_MID, 										1, TO_QUEUE_HIGH},
-    	{EA_WAKEUP_MID, 										1, TO_QUEUE_HIGH},
+    	{TO_UNUSED, 											1, TO_QUEUE_HIGH},
 
     	/* 180 - 189 */
     	{TO_UNUSED, 											1, TO_QUEUE_HIGH},
