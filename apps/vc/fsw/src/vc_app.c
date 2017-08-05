@@ -209,6 +209,7 @@ int32 VC_AppInit(void)
     /* Initialize data transmission resources */
     if (VC_Transmit_Init() != TRUE) 
     {
+        /* Data transmit sink failed to initialize for now error out */   
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Init failed");
         Status = -1;
         return (Status);
@@ -217,6 +218,7 @@ int32 VC_AppInit(void)
     /* Initialize devices */
     if (VC_Devices_Init() != TRUE) 
     {
+        /* Device failed to initialize for now error out */
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Init failed");
         Status = -1;
         return (Status);
@@ -225,6 +227,7 @@ int32 VC_AppInit(void)
     /* Start streaming */
     if (VC_Devices_Start() != TRUE) 
     {
+        /* Start streaming failed, raise event but for now don't error out */
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
     }
     

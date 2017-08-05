@@ -39,72 +39,122 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vc_app.h"
 #include <linux/videodev2.h>
 
+/**
+ * Device modes
+ */
 typedef enum
 {
+    /*! Device state unused  */
     VC_DEVICE_UNUSED       = 0,
+    /*! Device state disabled */
     VC_DEVICE_DISABLED     = 1,
+    /*! Device state enabled */
     VC_DEVICE_ENABLED      = 2
 } VC_DeviceMode_t;
 
 
+/**
+ * Device status
+ */
 typedef enum
 {
+    /*! Device status uninitialized */
     VC_DEVICE_UNINITIALIZED = 0,
+    /*! Device status uninitialized */
     VC_DEVICE_INITIALIZED   = 1,
+    /*! Device status streaming */
     VC_DEVICE_STREAMING     = 2
 } VC_DeviceStatus_t;
 
 
+/**
+ * Buffer pointers for V4L user pointer IO
+ */
 typedef struct {
+    /*! Pointer to user defined buffer */
     void   *ptr;
 }VC_BufferPtr_t;
 
 
+/**
+ * Device handle
+ */
 typedef struct
 {
+    /*! Device status */
     VC_DeviceStatus_t   Status;
+    /*! Device mode */
     VC_DeviceMode_t     Mode;
+    /*! Device resource channel identifier */
     uint8               ChannelID;
+    /*! Path to device */
     char                DevName[VC_MAX_DEVICE_PATH];
+    /*! Device file descriptor */
     int                 DeviceFd;
+    /*! V4L buffer type */
     uint32              BufferType;
+    /*! V4L frame width */
     uint32              FrameWidth;
+    /*! V4L frame height */
     uint32              FrameHeight;
+    /*! V4L video format */
     uint32              VideoFormat;
+    /*! V4L field order */
     uint8               FieldOrder;
+    /*! V4L buffer request */
     uint8               BufferRequest;
+    /*! V4L memory type */
     uint32              MemoryType;
+    /*! V4L user defined buffer(s) */
     char                Buffers[VC_V4L_BUFFER_REQUEST][VC_MAX_BUFFER_SIZE];
+    /*! V4L buffer size (for all buffers)  */
     uint32              Buffer_Size;
+    /*! V4L user defined buffer pointer(s) */
     VC_BufferPtr_t      Buffer_Ptrs[VC_V4L_BUFFER_REQUEST];
 } VC_Device_Handle_t;
 
 
+/**
+ * Global data structure for custom device IO layer
+ */
 typedef struct
 {
+    /*! Flag to start and stop streaming */
     boolean                         ContinueFlag;
+    /*! Streaming task priority */
     uint8                           Priority;
+    /*! Streaming child task identifier */
     uint32                          ChildTaskID;
+    /*! Streaming task function pointer */
     CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    /*! Device resource(s) channels */
     VC_Device_Handle_t              Channel[VC_MAX_DEVICES];
 } VC_AppCustomDevice_t;
 
 
-int32 VC_EnableDevice(uint8 DeviceID, const char *DeviceName);
-int32 VC_DisableDevice(uint8 DeviceID);
+/**
+ * Local Function Prototypes
+ */
+int32 VC_Init_CustomDevices(void); 
+int32 VC_InitDevice(uint8 DeviceID, const char *DeviceName);
 int32 VC_ConfigureDevice(uint8 DeviceID);
+int32 VC_Start_Streaming(void);
 int32 VC_Start_StreamingDevice(uint8 DeviceID);
-int32 VC_Stop_StreamingDevice(uint8 DeviceID);
-void VC_Start_Streaming(void);
-int32 VC_Stop_Streaming(void);
+void VC_Stream_Task(void);
 int32 VC_Send_Buffer(uint8 DeviceID);
+int32 VC_Stop_Streaming(void);
+int32 VC_Stop_StreamingDevice(uint8 DeviceID);
+int32 VC_DisableDevice(uint8 DeviceID);
 
 
+/**
+ * Custom device layer app data initialization
+ */
 VC_AppCustomDevice_t VC_AppCustomDevice = {
     .ContinueFlag = TRUE,
     .Priority = VC_STREAMING_TASK_PRIORITY,
     .ChildTaskID = 0,
-    .StreamingTask = VC_Start_Streaming,
+    .StreamingTask = VC_Stream_Task,
     {
         { 
             .Status            = VC_DEVICE_UNINITIALIZED, \
@@ -127,7 +177,14 @@ VC_AppCustomDevice_t VC_AppCustomDevice = {
 };
 
 
-
+/**
+ * @brief ioctl with limited EINTR retry attempts
+ * @param fh file descriptor
+ * @param request ioctl request code
+ * @param arg pointer to a device specific struct
+ * @return usually 0 for success and -1 for failure 
+ * @note see ioctl man-page for more info
+ */
 static int32 VC_Ioctl(int fh, int request, void *arg)
 {
     int32 returnCode;
@@ -150,6 +207,12 @@ static int32 VC_Ioctl(int fh, int request, void *arg)
     return returnCode;
 }
 
+
+/**
+ * Configure device resource
+ * @param DeviceID the device ID of the resource to configure
+ * @return 0 for success -1 for failure
+ */
 int32 VC_ConfigureDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
@@ -278,6 +341,11 @@ end_of_function:
 }
 
 
+/**
+ * @brief start streaming on a particular device
+ * @param DeviceID the device ID to start streaming on
+ * @return 0 for success -1 for failure
+ */
 int32 VC_Start_StreamingDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
@@ -294,7 +362,7 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
     }
     else
     {
-        VC_AppCustomDevice.Channel[DeviceID].Status = VC_DEVICE_STREAMING;
+        //VC_AppCustomDevice.Channel[DeviceID].Status = VC_DEVICE_STREAMING;
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "VC VIDIOC_STREAMON success on %s channel %u", 
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
@@ -304,6 +372,11 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
 }
 
 
+/**
+ * @brief stop streaming on a particular device
+ * @param DeviceID the device ID to stop streaming on
+ * @return 0 for success -1 for failure
+ */
 int32 VC_Stop_StreamingDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
@@ -314,22 +387,27 @@ int32 VC_Stop_StreamingDevice(uint8 DeviceID)
     
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMOFF, &Type))
     {
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_STREAMOFF returned %i on %s channel %u", errno,
-                        VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
-            returnCode = -1;
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "VC VIDIOC_STREAMOFF returned %i on %s channel %u", errno,
+                    VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+        returnCode = -1;
     }
     else
     {
-        VC_AppCustomDevice.Channel[DeviceID].Status = VC_DEVICE_INITIALIZED;
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "VC VIDIOC_STREAMOFF success on %s channel %u", 
+        //VC_AppCustomDevice.Channel[DeviceID].Status = VC_DEVICE_INITIALIZED;
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "VC VIDIOC_STREAMOFF success on %s channel %u", 
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
     }
     return returnCode;
 }
 
 
+/**
+ * @brief dequeue and send a buffer from a "ready" device
+ * @param DeviceID the device ID of the "ready" device
+ * @return 0 for success -1 for failure
+ */
 int32 VC_Send_Buffer(uint8 DeviceID)
 {
     int32 returnCode = 0;
@@ -342,22 +420,18 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     Buffer.type            = VC_AppCustomDevice.Channel[DeviceID].BufferType;
     Buffer.memory          = VC_AppCustomDevice.Channel[DeviceID].MemoryType;
 
+    /* Dequeue the ready buffer */
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_DQBUF, &Buffer))
     {
-        if(EAGAIN == errno)
-        {
-            goto end_of_function;
-        }
-        else
-        {
+        /* VIDIOC_DQBUF failed */
             CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "VC VIDIOC_DQBUF returned %i on %s channel %u", errno,
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
             returnCode = -1;
             goto end_of_function;
-        }
     }
     
+    /* The dequeued buffer is larger than max transmit packet size */
     if (Buffer.bytesused > VC_MAX_PACKET_SIZE)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -365,10 +439,11 @@ int32 VC_Send_Buffer(uint8 DeviceID)
                 VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
     }
     
-    /* check and make sure VIDIOC_DQBUF required a valid address*/
+    /* Check and make sure VIDIOC_DQBUF returned a valid address 
+     * from possible addresses (user buffer pointers)
+     */
     for (i=0; i < VC_AppCustomDevice.Channel[DeviceID].BufferRequest; i++)
     {
-    
         if ((Buffer.m.userptr == (unsigned long)VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr)
         && (Buffer.length == VC_AppCustomDevice.Channel[DeviceID].Buffer_Size))
         {
@@ -377,6 +452,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     }
     if (checkFlag == FALSE)
     {
+        /* VIDIOC_DQBUF returned an unknown buffer address */
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC VIDIOC_DQBUF returned unknown user pointer on %s channel %u",
                 VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
@@ -394,6 +470,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         goto end_of_function;
     }
     
+    /* Queue the next buffer */
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_QBUF, &Buffer))
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -408,7 +485,11 @@ end_of_function:
 }
 
 
-void VC_Start_Streaming(void)
+/**
+ * @brief Streaming task, takes ready buffer and sends
+ * @note This is a loop to be run in a VC app child task
+ */
+void VC_Stream_Task(void)
 {
     int32 returnCode = 0;
     
@@ -427,7 +508,7 @@ void VC_Start_Streaming(void)
     
     if (iStatus == CFE_SUCCESS)
     {
-        do
+        while (VC_AppCustomDevice.ContinueFlag == TRUE)
         {
             maxFd = 0;
             returnCode = 0;
@@ -436,7 +517,7 @@ void VC_Start_Streaming(void)
             /* initialize the set */
             FD_ZERO(&fds);
         
-            /* add enabled devices to the set */
+            /* Add enabled and streaming devices to the fd set */
             for (i=0; i < VC_MAX_DEVICES; i++)
             {
                 if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
@@ -447,23 +528,29 @@ void VC_Start_Streaming(void)
                     /* Get the greatest fd value for select() */
                     if (VC_AppCustomDevice.Channel[i].DeviceFd > maxFd)
                     {
+                        /* maxFd is needed for select */
                         maxFd = VC_AppCustomDevice.Channel[i].DeviceFd; 
                     }
                 }
             }
-    
+            /* If maxFd is > 0 a fd was added the set so call select */
             if (maxFd > 0)
             {
+                CFE_ES_PerfLogEntry(VC_DEVICE_GET_PERF_ID);
+                /* Wait for a queued buffer to be filled by the device */
                 returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
+                CFE_ES_PerfLogExit(VC_DEVICE_GET_PERF_ID);
             }
             else
             {
+                /* No fd's were added to the set so error out */
                 CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC can't start streaming no devices are streaming enabled");
                 returnCode = -1;
                 goto end_of_function;
             }
-    
+            
+            /* select() wasn't successful */
             if (-1 == returnCode)
             {
                 /* select was interrupted, try again */
@@ -481,6 +568,7 @@ void VC_Start_Streaming(void)
                 }
                 else
                 {
+                    /* select returned an error other than EINTR */
                     CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC start streaming failed select() returned %i", errno);
                     returnCode = -1;
@@ -492,7 +580,8 @@ void VC_Start_Streaming(void)
             {
                 CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC buffer timeout streaming stopped");
-                    
+                
+                /* select timed out so query the buffer status for debug info */    
                 for (i=0; i < VC_MAX_DEVICES; i++)
                 {        
                     struct v4l2_buffer Buffer;
@@ -517,9 +606,10 @@ void VC_Start_Streaming(void)
             returnCode = -1;
             goto end_of_function;
             } 
-    
+            /* select() returned and a buffer is ready to be dequeued */
             if(returnCode > 0)
-            {       
+            {   
+                /* Determine which device is ready */    
                 for (i=0; i < VC_MAX_DEVICES; i++)
                 {
                     if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
@@ -527,14 +617,14 @@ void VC_Start_Streaming(void)
                     {
                         if(FD_ISSET(VC_AppCustomDevice.Channel[i].DeviceFd, &fds))
                         {
+                            /* Call send buffer with the device that is ready */
                             VC_Send_Buffer(i);
                         }
                     }
                 }
             }    
-        } while (VC_AppCustomDevice.ContinueFlag == TRUE);
-    
-    }
+        } /* end while loop */
+    } /* end if status == success */
 
 end_of_function:
     CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
@@ -543,6 +633,40 @@ end_of_function:
 }
 
 
+/**
+ * @brief Start streaming on all devices
+ * @return 0 for success -1 for failure
+ */
+int32 VC_Start_Streaming(void)
+{
+    uint32 i = 0;
+    int32 returnCode = 0;
+    
+    for(i=0; i < VC_MAX_DEVICES; i++)
+    {
+        if((VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED) &&
+        (VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_INITIALIZED))
+        {
+            if(-1 == VC_Start_StreamingDevice(i))
+            {
+                /* Start streaming failed */
+                returnCode = -1;
+            }
+            else
+            {
+                /* Start streaming was successful set status to streaming */
+                VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_STREAMING;
+            }
+        }
+    }
+    return returnCode;
+}
+
+
+/**
+ * @brief Stop streaming on all devices
+ * @return 0 for success -1 for failure
+ */
 int32 VC_Stop_Streaming(void)
 {
     uint32 i = 0;
@@ -550,21 +674,32 @@ int32 VC_Stop_Streaming(void)
     
     for(i=0; i < VC_MAX_DEVICES; i++)
     {
-        if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED)
+        if((VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED) &&
+        (VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING))
         {
-            if(VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
-            {    
-                if(-1 == VC_Stop_StreamingDevice(i))
-                {
-                    returnCode = -1;
-                }
+            if(-1 == VC_Stop_StreamingDevice(i))
+            {
+                /* Stop streaming failed */
+                returnCode = -1;
+            }
+            else
+            {
+                /* Stop streaming was successful set status to initialized */
+                VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
             }
         }
     }
     return returnCode;
 }
 
-int32 VC_EnableDevice(uint8 DeviceID, const char *DeviceName)
+
+/**
+ * @brief Initialize an enabled device
+ * @param DeviceID the device to initialize
+ * @param DeviceName the device name (path) to open
+ * @return 0 for success -1 for failure
+ */
+int32 VC_InitDevice(uint8 DeviceID, const char *DeviceName)
 {
     int32 returnCode = 0;
     uint32 i = 0;
@@ -573,7 +708,7 @@ int32 VC_EnableDevice(uint8 DeviceID, const char *DeviceName)
         (VC_AppCustomDevice.Channel[DeviceID].DeviceFd != 0))
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC Device %s for channel %u already enabled.", DeviceName, (unsigned int)i);
+                        "VC Device %s for channel %u already initialized.", DeviceName, (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
     }
@@ -598,7 +733,7 @@ int32 VC_EnableDevice(uint8 DeviceID, const char *DeviceName)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC Device open errno: %i on channel %u", errno, (unsigned int)i);
-        VC_AppCustomDevice.Channel[DeviceID].Mode = VC_DEVICE_DISABLED;
+        //VC_AppCustomDevice.Channel[DeviceID].Mode = VC_DEVICE_DISABLED;
         returnCode = -1;
         goto end_of_function;
     }
@@ -608,7 +743,12 @@ end_of_function:
 }
 
 
-int32 VC_InitDevices(void)
+/**
+ * @brief Initialize, configure, and start all enabled devices
+ * @return usually 0 for success -1 for failure
+ * @note see ioctl man-page for more info
+ */
+int32 VC_Init_CustomDevices(void)
 {
     uint32 i = 0;
     int32 returnCode = 0;
@@ -617,46 +757,47 @@ int32 VC_InitDevices(void)
     {
         if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED)
         {
-            if (returnCode = VC_EnableDevice(i, VC_AppCustomDevice.Channel[i].DevName))
+            /* If the device is enabled initialize it */
+            if (returnCode = VC_InitDevice(i, VC_AppCustomDevice.Channel[i].DevName))
             {
+                /* If the device failed to be initialized set to disabled */
                 VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
             }
             else
             {
+                /* Success, raise info event */
                 CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                        "VC Device enabled channel %u from %s",
+                        "VC Device initialized channel %u from %s",
                         (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
-            }
-            
-            if (returnCode = VC_ConfigureDevice(i))
-            {
-                VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_UNINITIALIZED;
-            }
-            else
-            {
-                VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
-                    CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                        "VC Device configured channel %u from %s",
-                        (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
-            }
-            
-            if (VC_Start_StreamingDevice(i))
-            {
-                /* do nothing */
-            }
-            else
-            {
-                VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_STREAMING;
-                    CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                        "VC Device streaming channel %u from %s",
-                        (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
+                        
+                /* The device is initialized so now configure it */
+                if (returnCode = VC_ConfigureDevice(i))
+                {
+                    /* The device failed to be configured so make sure
+                     * the status is set to uninitialized 
+                     */
+                    VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_UNINITIALIZED;
+                }
+                else
+                {
+                    /* Success, set status to device initialized and
+                     * raise a info event
+                     */
+                    VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
+                        CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
+                            "VC Device configured channel %u from %s",
+                            (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
+                }
             }
         }
     }
     return returnCode;
 }
 
-
+/**
+ * @brief Cleanup (stop & close) all enabled and initialized devices
+ * @return 0 for success -1 for failure
+ */
 int32 VC_CleanupDevices(void)
 {
     uint32 i = 0;
@@ -670,13 +811,24 @@ int32 VC_CleanupDevices(void)
             {    
                 if(-1 == VC_Stop_StreamingDevice(i))
                 {
+                    /* VC_Stop_Streaming failed */
                     returnCode = -1;
+                }
+                else
+                {
+                    /* Success set device status to initialized */
+                    VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
                 }
             }
             
             if(-1 == VC_DisableDevice(i))
             {
+                /* VC_DisableDevice failed */
                 returnCode = -1;
+            }
+            else
+            {
+                VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
             }
         }
     }
@@ -684,6 +836,11 @@ int32 VC_CleanupDevices(void)
 }
 
 
+/**
+ * @brief Disable a device
+ * @param DeviceID the device to enable
+ * @return 0 for success -1 for failure
+ */
 int32 VC_DisableDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
@@ -703,11 +860,25 @@ end_of_function:
 }
 
 
+/*
+ * Start streaming on all enabled and initialized devices
+ * True for success, false for failure
+ * Creates streaming task
+ */
 boolean VC_Devices_Start(void)
 {
     int32 returnCode = 0;
-    /* Create the streaming task */
     
+    /* Set loop flag to continue forever */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Start streaming on all devices */
+    if(-1 == VC_Start_Streaming())
+    {
+        return FALSE;
+    }
+    
+    /* Create the streaming task */
     returnCode = CFE_ES_CreateChildTask(
         &VC_AppCustomDevice.ChildTaskID,
         VC_STREAMING_TASK_NAME,
@@ -726,9 +897,18 @@ boolean VC_Devices_Start(void)
 }
 
 
+/*
+ * Stop streaming on all enabled and initialized devices
+ * True for success, false for failure
+ */
 boolean VC_Devices_Stop(void)
 {
-    if(VC_Stop_Streaming() == -1)
+    /* Set streaming task loop flag to stop */
+    VC_AppCustomDevice.ContinueFlag = FALSE;
+    
+    /* TODO: Wait for task to stop? */
+    
+    if(-1 == VC_Stop_Streaming())
     {
         return FALSE;
     }
@@ -738,7 +918,7 @@ boolean VC_Devices_Stop(void)
 
 boolean VC_Devices_Init(void)
 {
-    if(VC_InitDevices() == -1)
+    if(-1 == VC_Init_CustomDevices())
     {
         return FALSE;
     }
@@ -748,7 +928,7 @@ boolean VC_Devices_Init(void)
 
 boolean VC_Devices_Uninit(void)
 {
-    if(VC_CleanupDevices() == -1)
+    if(-1 == VC_CleanupDevices())
     {
         return FALSE;
     }
