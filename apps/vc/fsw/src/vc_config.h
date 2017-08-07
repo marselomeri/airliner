@@ -76,9 +76,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Ground system settings */
 
 /*! Ground system ip address */
-#define VC_DESTINATION_IP               "10.10.0.12"
+#define VC_DESTINATION_IP               "10.10.0.115"
 /*! Ground system port */
-#define VC_DESTINATION_PORT             3000
+#define VC_DESTINATION_PORT             3001
 /*! Source system ip address */
 #define VC_SOURCE_IP                    "0"
 /*! Source system port */
@@ -105,6 +105,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VC_BUFFER_FILL_TIMEOUT_SEC      2
 /*! Wait time for camera data in microseconds */
 #define VC_BUFFER_FILL_TIMEOUT_USEC     0
+/*! Max timeouts until exiting streaming task */
+#define VC_BUFFER_TIMEOUTS_ALLOWED      2
 
 #endif
 

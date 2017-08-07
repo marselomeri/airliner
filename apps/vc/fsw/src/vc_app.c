@@ -246,7 +246,7 @@ int32 VC_AppInit(void)
                          
     return(CFE_SUCCESS);
 
-}
+} /* End of VC_AppInit() */
 
 
 void VC_AppPipe(CFE_SB_MsgPtr_t msg)
