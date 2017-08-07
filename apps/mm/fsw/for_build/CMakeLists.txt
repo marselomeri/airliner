@@ -18,7 +18,7 @@ add_airliner_app_def(mm
 )
 
 add_airliner_app_unit_test(MM-UT
-    UTF 
+    UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_dump_test.c

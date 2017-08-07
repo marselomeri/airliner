@@ -13,7 +13,7 @@ add_airliner_app_def(hk
 )
 
 add_airliner_app_unit_test(HK-UT
-    UTF 
+    UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_app_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_testrunner.c
