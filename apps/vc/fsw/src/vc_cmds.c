@@ -77,42 +77,78 @@ void VC_StartStreamingCmd(CFE_SB_MsgPtr_t msg)
     /* Verify command packet length */
     if (VC_VerifyCmdLength(msg, ExpectedLength))
     {
-        CmdPtr = ((VC_StartStreamCmd_t *) msg);
+        CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Start Streaming command received");
         
-        /* 
-        ** NUL terminate the very end of the address string as a
-        ** safety measure
-        */
-        CmdPtr->Address[VC_ADDRESS_LENGTH - 1] = '\0';
-        
-        /* 
-        ** Check if the address string is a nul string
-        */ 
-        if(strlen(CmdPtr->Address) == 0)
+        if (VC_AppData.AppState == VC_INITIALIZED)
         {
-            VC_AppData.ErrCounter++;
-            CFE_EVS_SendEvent(VC_ADDR_NUL_ERR_EID, CFE_EVS_ERROR,
-                            "NUL (empty) string specified for address");
+            CmdPtr = ((VC_StartStreamCmd_t *) msg);
+        
+            /* 
+            ** NUL terminate the very end of the address string as a
+            ** safety measure
+            */
+            CmdPtr->Address[VC_ADDRESS_LENGTH - 1] = '\0';
+        
+            /* 
+            ** Check if the address string is a nul string
+            */ 
+            if(strlen(CmdPtr->Address) == 0)
+            {
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_ADDR_NUL_ERR_EID, CFE_EVS_ERROR,
+                                "NUL (empty) string specified for address");
+            }
+            /* Check if the address is valid */
+            else if (FALSE == VC_Address_Verification(CmdPtr->Address))
+            {
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_ADDR_ERR_EID, CFE_EVS_ERROR,
+                                "Invalid string specified for address");
+            }
+            /* Update the configuration */
+            else if (FALSE == VC_Update_Destination(CmdPtr->Address, CmdPtr->Port))
+            {   
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                "Destination update failed");
+            }
+            /* Call VC_Transmit_Uninit() */
+            else if (FALSE == VC_Transmit_Uninit())
+            {
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,
+                                "VC_Transmit_Uninit failed");
+            }
+            /* Call VC_Transmit_Init() */
+            else if (FALSE == VC_Transmit_Init())
+            {
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                "VC_Transmit_Init failed");
+            }
+            /* Call VC_Devices_Start() */
+            else if (FALSE == VC_Devices_Start())
+            {
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                "VC_Devices_Start failed");
+            }
+            /* Success! */
+            else
+            {
+                VC_AppData.AppState = VC_STREAMING;
+                VC_AppData.CmdCounter++;
+                CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, 
+                    "VC started streaming to %s:%u", CmdPtr->Address, CmdPtr->Port);
+            }
         }
         else
-        {   
-            /* If address is not an empty string */
-            
-            /* Check streaming state */
-            
-            /* Verify the address */
-            
-            /* Update the configuration */
-            
-            VC_AppData.CmdCounter++;
-
+        {
+            VC_AppData.ErrCounter++;
+            CFE_EVS_SendEvent(VC_MID_ERR_EID, CFE_EVS_ERROR, "VC is already streaming");
         }
-        
-        CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Start Streaming command received");
     }
-
     return;
-
 } /* End of VC_StartStreamingCmd() */
 
 
@@ -124,10 +160,30 @@ void VC_StopStreamingCmd(CFE_SB_MsgPtr_t msg)
     if (VC_VerifyCmdLength(msg, ExpectedLength))
     {
         CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, "Stop Streaming command received");
+
+        if (VC_AppData.AppState == VC_STREAMING)
+        {
+            if(FALSE == VC_Devices_Stop())
+            {
+                VC_AppData.ErrCounter++;
+                CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,
+                                "VC_Devices_Stop() failed");
+            }
+            else
+            {
+                VC_AppData.AppState = VC_INITIALIZED;
+                VC_AppData.CmdCounter++;
+                CFE_EVS_SendEvent(VC_PROCCESS_INF_EID,CFE_EVS_INFORMATION, 
+                    "VC stopped streaming");
+            }
+        }
+        else
+        {
+            VC_AppData.ErrCounter++;
+            CFE_EVS_SendEvent(VC_MID_ERR_EID, CFE_EVS_ERROR, "VC is already not streaming");
+        }
     }
-
     return;
-
 } /* End of VC_StopStreamingCmd() */
 
 

@@ -54,6 +54,20 @@ boolean VC_Transmit_Uninit(void);
 
 
 /**
+ * @brief Verify an address
+ * @return true if successful, otherwise false
+ */
+boolean VC_Address_Verification(const char *Address);
+
+
+/**
+ * @brief Update the transmit destination
+ * @return true if successful, otherwise false
+ */
+boolean VC_Update_Destination(const char *Address, uint16 Port);
+
+
+/**
  * @brief Transmit data using a previously initialized handle.
  * @param buf points to a buffer containing the data to be sent.
  * @param len specifies the size of the data in bytes.
@@ -61,6 +75,8 @@ boolean VC_Transmit_Uninit(void);
  * returned.
  */
 int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size);
+
+
 
 #endif
 

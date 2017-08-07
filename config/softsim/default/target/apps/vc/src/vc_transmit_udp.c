@@ -300,3 +300,37 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
     return returnCode;
 }
 
+
+boolean VC_Address_Verification(const char *Address)
+{
+    static struct sockaddr_in s_addr;
+    if(0 == inet_aton(Address, &s_addr.sin_addr))
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
+boolean VC_Update_Destination(const char *Address, uint16 Port)
+{
+    uint32 i = 0;
+    
+    for (i=0; i < VC_MAX_OUTPUT_CHANNELS; i++)
+    {
+        if(VC_AppCustomData.Channel[i].Mode == VC_CHANNEL_ENABLED)
+        {
+            VC_AppCustomData.Channel[i].DestPort = Port;
+            
+            if(strncpy(VC_AppCustomData.Channel[i].DestIP, Address, sizeof(Address)))
+            {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+
+
+

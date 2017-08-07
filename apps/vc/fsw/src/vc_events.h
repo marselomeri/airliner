@@ -15,7 +15,8 @@
 #define VC_UNINIT_ERR_EID     12 /* uninitialization error */
 #define VC_CHA_INF_EID        13 /* channel init message "informational" */
 #define VC_DEV_INF_EID        14 /* device init and info message "informational" */
-#define VC_ADDR_NUL_ERR_EID   15 /* cmd address null error*/
-#define VC_EVT_COUNT          15 /* count of event message ID's */
+#define VC_ADDR_ERR_EID       15 /* cmd address error */
+#define VC_ADDR_NUL_ERR_EID   16 /* cmd address null error*/
+#define VC_EVT_COUNT          16 /* count of event message ID's */
 
 #endif

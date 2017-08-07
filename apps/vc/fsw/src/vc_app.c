@@ -125,6 +125,9 @@ int32 VC_AppInit(void)
 
     /* Setup the RunStatus variable */
     VC_AppData.RunStatus = CFE_ES_APP_RUN;
+    
+    /* Setup app state enum */
+    VC_AppData.AppState = VC_UNINITIALIZED;
 
     /* Initialize app command execution counters */
     VC_AppData.CmdCounter = 0;
@@ -163,8 +166,10 @@ int32 VC_AppInit(void)
     VC_AppData.EventFilters[12].Mask    = CFE_EVS_NO_FILTER;
     VC_AppData.EventFilters[13].EventID = VC_DEV_INF_EID;
     VC_AppData.EventFilters[13].Mask    = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[14].EventID = VC_ADDR_NUL_ERR_EID;
+    VC_AppData.EventFilters[14].EventID = VC_ADDR_ERR_EID;
     VC_AppData.EventFilters[14].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventFilters[15].EventID = VC_ADDR_NUL_ERR_EID;
+    VC_AppData.EventFilters[15].Mask    = CFE_EVS_NO_FILTER;
     
     /* Register event filter table */
     Status = CFE_EVS_Register(VC_AppData.EventFilters, VC_EVT_COUNT, CFE_EVS_BINARY_FILTER);
@@ -223,12 +228,22 @@ int32 VC_AppInit(void)
         Status = -1;
         return (Status);
     }
+    else
+    {
+        /* Initialization was successful set state */
+        VC_AppData.AppState = VC_INITIALIZED;
+    }
     
     /* Start streaming */
     if (VC_Devices_Start() != TRUE) 
     {
         /* Start streaming failed, raise event but for now don't error out */
         CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
+    }
+    else
+    {
+        /* Streaming is successful set state */
+        VC_AppData.AppState = VC_STREAMING;
     }
     
     /* Register the cleanup callback */

@@ -47,6 +47,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* VC app specific definitions */
 #define VC_SB_PIPE_1_NAME     "VC_CMD_PIPE"
 
+
+/**
+ * Device status
+ */
+typedef enum
+{
+    /*! VC app status uninitialized */
+    VC_UNINITIALIZED = 0,
+    /*! VC app status uninitialized */
+    VC_INITIALIZED   = 1,
+    /*! VC app status streaming */
+    VC_STREAMING     = 2
+} VC_Status_t;
+
 /** 
  *  \brief VC global data structure
  */
@@ -70,6 +84,9 @@ typedef struct
     char                  PipeName[OS_MAX_API_NAME];
     uint16                PipeDepth;
     CFE_EVS_BinFilter_t      EventFilters[VC_EVT_COUNT];
+    
+    /* VC app state */
+    VC_Status_t           AppState;
 
 } VC_AppData_t;
 
