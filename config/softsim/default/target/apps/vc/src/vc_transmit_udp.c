@@ -207,6 +207,7 @@ int32 VC_DisableChannel(uint8 ChannelID)
     }
 
     close(VC_AppCustomData.Channel[ChannelID].SocketFd);
+    VC_AppCustomData.Channel[ChannelID].SocketFd = 0;
 
 end_of_function:
     return returnCode;
@@ -304,7 +305,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 boolean VC_Address_Verification(const char *Address)
 {
     static struct sockaddr_in s_addr;
-    if(0 == inet_aton(Address, &s_addr.sin_addr))
+    if(0 != inet_aton(Address, &s_addr.sin_addr))
     {
         return TRUE;
     }

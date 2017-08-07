@@ -639,6 +639,8 @@ void VC_Stream_Task(void)
     } /* end if status == success */
 
 end_of_function:
+    /* Streaming task exited so set app flag to initialized */
+    VC_AppData.AppState = VC_INITIALIZED;
     CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
         "VC streaming task exited with %lu", returnCode);
     CFE_ES_ExitChildTask();
@@ -899,8 +901,7 @@ boolean VC_Devices_Start(void)
         CFE_ES_DEFAULT_STACK_SIZE,
         VC_AppCustomDevice.Priority,
         0);
-    
-    
+
     if(returnCode != CFE_SUCCESS)
     {
         return FALSE;
