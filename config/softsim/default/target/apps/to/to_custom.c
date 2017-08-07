@@ -1,4 +1,11 @@
 
+/************************************************************************
+** Pragmas
+*************************************************************************/
+
+/************************************************************************
+** Includes
+*************************************************************************/
 #include "to_app.h"
 #include "to_custom.h"
 #include "to_platform_cfg.h"
@@ -10,37 +17,19 @@
 #include <string.h>
 #include <unistd.h>
 
-extern TO_AppData_t TO_AppData;
-
+/************************************************************************
+** Local Defines
+*************************************************************************/
 #define TO_CUSTOM_RETURN_CODE_NULL_POINTER      (-1)
 #define TO_CUSTOM_RETURN_CODE_MESSAGE_TOO_BIG   (-2)
-
-#define TO_CUSTOM_MAX_MESSAGE_SIZE              (1024)
-
-/* The following macro defines the soak time, in milliseconds.  The write
- * function will pend for that amount of time to ensure we don't try to write
- * faster than the FPGA can send the data out.
- */
-#define TO_CUSTOM_WRITE_SOAK_TIME               (100) 
-
-/* The follow macro enables the loopback test mode.  Use this to verify 
- * data is sent out the port correctly by physically connecting the outgoing
- * port to an incoming port.  For example, when using the debug RS-422 port,
- * physically cross-wire the TX and RX, like a null modem cable.  Then set the
- * TO_CUSTOM_DEV_PATH and TO_CUSTOM_LOOPABACK_DEV_PATH to the correct paths.
- * Finally, disable any applications that will open the device with the
- * loopback path.  For Build 0.1, this means disabling CI to prevent
- * collisions.
- */
-//#define TO_CUSTOM_LOOPBACK_ENABLE
-#define TO_CUSTOM_LOOPBACK_ERRNO_OFFSET		(-256)
-#define TO_CUSTOM_LOOPBACK_SIZE_MISCOMPARE	(-2000)
-#define TO_CUSTOM_LOOPBACK_CONTENT_MISCOMPARE	(-2001)
 
 /* TODO:  Add Doxygen markup. */
 #define TO_ENABLE_CHANNEL_CC                 (10)
 #define TO_DISABLE_CHANNEL_CC                (11)
 
+/************************************************************************
+** Local Structure Declarations
+*************************************************************************/
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
@@ -88,6 +77,24 @@ typedef struct
 	TO_TlmChannels_t		Channel[TO_MAX_OUTPUT_CHANNELS];
 } TO_AppCustomData_t;
 
+/************************************************************************
+** External Global Variables
+*************************************************************************/
+
+extern TO_AppData_t TO_AppData;
+
+/************************************************************************
+** Global Variables
+*************************************************************************/
+
+
+/************************************************************************
+** Local Variables
+*************************************************************************/
+
+/************************************************************************
+** Local Function Definitions
+*************************************************************************/
 
 int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
 int32 TO_OutputChannel_Disable(uint8 ChannelID);
@@ -106,12 +113,23 @@ TO_AppCustomData_t TO_AppCustomData = {
 
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Custom Initialize All.  Nothing to do here.                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_CustomInitAll(void)
 {
 	return 0;
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Custom Send.  Send the message out the socket.                  */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
 	static struct sockaddr_in s_addr;
@@ -158,6 +176,13 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Custom Cleanup All.  Disable all the enable channels so we      */
+/* don't try sending messages when the sealed framework is torn    */
+/* down.                                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void TO_OutputChannel_CustomCleanupAll(void)
 {
 	uint32 i = 0;
@@ -172,6 +197,14 @@ void TO_OutputChannel_CustomCleanupAll(void)
 	}
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Custom Buildup All.  Enable all the 'enabled' channels.  If it  */
+/* fails, disable it.                                              */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_CustomBuildupAll(void)
 {
     uint32 i = 0;
@@ -197,12 +230,26 @@ int32 TO_OutputChannel_CustomBuildupAll(void)
     return 0;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Custom Teardown All.  Nothing to do here.                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_CustomTeardownAll(void)
 {
 	return 0;
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process New Custom Commands.  Raise an error event if the       */
+/* command is unknown.                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -279,6 +326,11 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
 
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Enable Channel.  This will bind the socket for transmission.    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort)
 {
     int32 returnCode = 0;
@@ -365,6 +417,11 @@ end_of_function:
 
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Disable channel.  Close the socket.                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_Disable(uint8 ChannelID)
 {
     int32 returnCode = 0;
@@ -388,6 +445,12 @@ end_of_function:
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Ground Channel Task Entry Point                                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void TO_OutputChannel_GroundChannelTask(void)
 {
 	CFE_ES_RegisterChildTask();
@@ -398,6 +461,12 @@ void TO_OutputChannel_GroundChannelTask(void)
 }
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Onboard Channel Task Entry Point                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 void TO_OutputChannel_OnboardChannelTask(void)
 {
@@ -410,6 +479,11 @@ void TO_OutputChannel_OnboardChannelTask(void)
 
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Channel Handler                                                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void TO_OutputChannel_ChannelHandler(uint32 chIdx)
 {
     boolean continueListening = TRUE;
