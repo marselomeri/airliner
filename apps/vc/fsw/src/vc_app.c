@@ -1,5 +1,5 @@
 /*==============================================================================
-Copyright (c) 2015, Windhover Labs
+Copyright (c) 2017, Windhover Labs
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-vc_app.c
 */
 
 #include "vc_app.h"
@@ -36,7 +34,9 @@ vc_app.c
 #include "vc_perfids.h"
 #include <string.h>
 
+
 VC_AppData_t VC_AppData;
+
 
 void VC_AppMain(void)
 {

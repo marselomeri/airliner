@@ -55,6 +55,7 @@ boolean VC_Transmit_Uninit(void);
 
 /**
  * @brief Verify an address
+ * @param Address the address to verify
  * @return true if successful, otherwise false
  */
 boolean VC_Address_Verification(const char *Address);
@@ -62,6 +63,8 @@ boolean VC_Address_Verification(const char *Address);
 
 /**
  * @brief Update the transmit destination
+ * @param Address the address to update
+ * @param Port the port to update
  * @return true if successful, otherwise false
  */
 boolean VC_Update_Destination(const char *Address, uint16 Port);
@@ -75,8 +78,6 @@ boolean VC_Update_Destination(const char *Address, uint16 Port);
  * returned.
  */
 int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size);
-
-
 
 #endif
 
