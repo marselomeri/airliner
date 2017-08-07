@@ -14,6 +14,7 @@ void VC_HousekeepingCmd(CFE_SB_MsgPtr_t msg)
        /* Get command execution counters */
         VC_AppData.HkPacket.CmdCounter = VC_AppData.CmdCounter;
         VC_AppData.HkPacket.ErrCounter = VC_AppData.ErrCounter;
+        VC_AppData.HkPacket.State      = VC_AppData.AppState; 
         
         /* Send housekeeping telemetry packet */
         CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &VC_AppData.HkPacket);

@@ -11,7 +11,7 @@ block main
           header
             span.widget-icon
               i.fa.fa-table
-            h2 General
+            h2 Video Control
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -27,7 +27,12 @@ block main
                       th Error Count
                       td
                         span(data-sage={tlm: [{name:'/CFS/VC/ErrCounter'}]}) ---
+                    tr
+                      th State
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/VC/State'}]}) ---
               footer
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/Reset'}}) Reset
-                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/HelloWorld'}}) Hello
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StartStreaming'}}) Start Streaming
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StopStreaming'}}) Stop Streaming

@@ -26,6 +26,7 @@ typedef struct
     /* Command interface counters */
     uint8                 CmdCounter;
     uint8                 ErrCounter;
+    uint8                 State;
 } VC_HkPacket_t;
 
 
