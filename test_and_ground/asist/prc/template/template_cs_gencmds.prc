@@ -8,82 +8,95 @@ PROC $sc_$cpu_cs_gencmds
 ;	This test verifies that the CFS Checksum (CS) general commands function
 ;	properly. The NOOP, Reset Counters, Enable/Disable Checksum, and One
 ;	Shot commands will be tested. Invalid versions of these commands will
-;	also be tested to ensure that the CS application hanled these properly.
+;	also be tested to ensure that the CS application handled these properly.
 ;
 ;  Requirements Tested
-;    cCS1000	Upon receipt of a No-Op command, CS shall increment the CS
+;    CS1000	Upon receipt of a No-Op command, CS shall increment the CS
 ;		Valid Command Counter and generate an event message.
-;    cCS1001	Upon receipt of a Reset command, CS shall reset the following
+;    CS1001	Upon receipt of a Reset command, CS shall reset the following
 ;		housekeeping variables to a value of zero:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Non-volatile CRC Miscompare Counter
-;			d. OS Code Segment CRC Miscompare Counter
-;			e. cFE Code Segment CRC Miscompare Counter
-;			f. Application CRC Miscompare Counter
-;			g. Table CRC Miscompare Counter
-;			h. User-defined Memory CRC Miscompare Counter
-;			i. Checksum Pass Counter
-;    cCS1002	For all CS commands, if the length contained in the message
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Non-volatile CRC Miscompare Counter
+;			d) OS Code Segment CRC Miscompare Counter
+;			e) cFE Code Segment CRC Miscompare Counter
+;			f) Application CRC Miscompare Counter
+;			g) Table CRC Miscompare Counter
+;			h) User-defined Memory CRC Miscompare Counter
+;			i) Checksum Pass Counter (number of passes through all
+;			   of the checksum areas)
+;    CS1002	For all CS commands, if the length contained in the message
 ;		header is not equal to the expected length, CS shall reject the
 ;		command and issue an event message.
-;    cCS1003	If CS accepts any command as valid, CS shall execute the
+;    CS1003	If CS accepts any command as valid, CS shall execute the
 ;		command, increment the CS Valid Command Counter and issue an
 ;		event message.
-;    cCS1004	If CS rejects any command, CS shall abort the command execution,
+;    CS1004	If CS rejects any command, CS shall abort the command execution,
 ;		increment the CS Command Rejected Counter and issue an event
 ;		message.
-;    cCS1005	CS shall use the <PLATFORM_DEFINED> CRC algorithm to compute
+;    CS1005	CS shall use the <PLATFORM_DEFINED> CRC algorithm to compute
 ;		the CRCs for any segment.
-;    cCS8000	Upon receipt of an Enable Checksum command, CS shall start
+;    CS8000	Upon receipt of an Enable Checksum command, CS shall start
 ;		calculating CRCs and compare them against the baseline CRCs.
-;    cCS8001	Upon receipt of a Disable Checksum command, CS shall stop
+;    CS8001	Upon receipt of a Disable Checksum command, CS shall stop
 ;		calculating CRCs and comparing them against the baseline CRCs.
-;    cCS8002	Upon receipt of a One Shot command, CS shall calculate the CRC
-;		starting at the command-specified address for the
-;		command-specified bytes.
-;    cCS8002.1	CS shall issue an event message containing the CRC.
-;    cCS8002.2	If CS is already processing a One Shot CRC command, CS shall
-;		reject the command.
-;    cCS8003	Upon receipt of a Cancel One Shot command, CS shall stop the
+;    CS8002	Upon receipt of a One Shot command, CS shall:
+;			a) Calculate the CRC starting at the command-specified
+;			   address for the command-specified bytes at the
+;			   command-specified rate (Max Bytes Per Cycle).
+;			b) Set the One Shot In Progress Flag to TRUE
+;    CS8002.1	Once the CRC is computed, CS shall:
+;			a) Issue an event message containing the CRC
+;			b) Set the One Shot In Progress Flag to FALSE
+;    CS8002.2	If CS is already processing a One Shot CRC command or a
+;		Recompute CRC command, CS shall reject the command.
+;    CS8002.3	If the command-specified rate is zero, CS shall calculate the
+;		CRC at the <PLATFORM_DEFINED> rate (Max Bytes Per Cycle).
+;    CS8003	Upon receipt of a Cancel One Shot command, CS shall stop the
 ;		current One Shot calculation.
-;    cCS9000	CS shall generate a housekeeping message containing the
+;    CS9000	CS shall generate a housekeeping message containing the
 ;		following:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Overall CRC enable/disable status
-;			d. Total Non-Volatile Baseline CRC
-;			e. OS code segment Baseline CRC
-;			f. cFE code segment Baseline CRC
-;			g. Non-Volatile CRC Miscompare Counter
-;			h. OS Code Segment CRC Miscompare Counter
-;			i. cFE Code Segment CRC Miscompare Counter
-;			j. Application CRC Miscompare Counter
-;			k. Table CRC Miscompare Counter
-;			l. User-Defined Memory CRC Miscompare Counter
-;			m. Last One Shot Address
-;			n. Last One Shot Size
-;			o. Last One Shot Checksum
-;			p. Checksum Pass Counter (number of passes thru all of
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Overall CRC enable/disable status
+;			d) Total Non-Volatile Baseline CRC
+;			e) OS code segment Baseline CRC
+;			f) cFE code segment Baseline CRC
+;			g) Non-Volatile CRC Miscompare Counter
+;			h) OS Code Segment CRC Miscompare Counter
+;			i) cFE Code Segment CRC Miscompare Counter
+;			j) Application CRC Miscompare Counter
+;			k) Table CRC Miscompare Counter
+;			l) User-Defined Memory CRC Miscompare Counter
+;			m) Last One Shot Address
+;			n) Last One Shot Size
+;			o) Last One Shot Checksum
+;			p) Checksum Pass Counter (number of passes thru all of
 ;			   the checksum areas)
-;			q. Current Checksum Region (Non-Volatile, OS code
+;			q) Current Checksum Region (Non-Volatile, OS code
 ;			   segment, cFE Code Segment etc)
-;			r. Non-Volatile CRC enable/disable status
-;			s. OS Code Segment CRC enable/disable status
-;			t. cFE Code Segment CRC enable/disable status
-;			u. Application CRC enable/disable status
-;			v. Table CRC enable/disable status
-;			w. User-Defined Memory CRC enable/disable status
-;    cCS9001	Upon initialization of the CS Application, CS shall initialize
-;		the following data to Zero:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Non-Volatile CRC Miscompare Counter
-;			d. OS Code Segment CRC Miscompare Counter
-;			e. cFE Code Segment CRC Miscompare Counter
-;			f. Application CRC Miscompare Counter
-;			g. Table CRC Miscompare Counter
-;			h. User-Defined Memory CRC Miscompare Counter
+;			r) Non-Volatile CRC enable/disable status
+;			s) OS Code Segment CRC enable/disable status
+;			t) cFE Code Segment CRC enable/disable status
+;			u) Application CRC enable/disable status
+;			v) Table CRC enable/disable status
+;			w) User-Defined Memory CRC enable/disable status
+;			x) Last One Shot Rate
+;			y) Recompute In Progress Flag
+;			z) One Shot In Progress Flag
+;    CS9001     Upon any initialization of the CS Application (cFE Power On, cFE
+;               Processor Reset or CS Application Reset), CS shall initialize
+;               the following data to Zero:
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Non-Volatile CRC Miscompare Counter
+;			d) OS Code Segment CRC Miscompare Counter
+;			e) cFE Code Segment CRC Miscompare Counter
+;			f) Application CRC Miscompare Counter
+;			g) Table CRC Miscompare Counter
+;			h) User-Defined Memory CRC Miscompare Counter
+;			i) Recompute In Progress Flag
+;			j) One Shot In Progress Flag
 ;
 ;  Prerequisite Conditions
 ;	The CFS is up and running and ready to accept commands.
@@ -99,12 +112,15 @@ PROC $sc_$cpu_cs_gencmds
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	08/27/08	Walt Moleski	Original Procedure.
 ;       09/22/10        Walt Moleski    Updated to use variables for the CFS
 ;                                       application name. Replaced all setupevt
 ;					instances with setupevents
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -152,11 +168,12 @@ local logging = %liv (log_procedure)
 #define CS_8002		8
 #define CS_80021	9
 #define CS_80022	10
-#define CS_8003		11
-#define CS_9000		12
-#define CS_9001		13
+#define CS_80023	11
+#define CS_8003		12
+#define CS_9000		13
+#define CS_9001		14
 
-global ut_req_array_size = 13
+global ut_req_array_size = 14
 global ut_requirement[0 .. ut_req_array_size]
 
 for i = 0 to ut_req_array_size DO
@@ -166,13 +183,14 @@ enddo
 ;**********************************************************************
 ; Set the local values
 ;**********************************************************************
-local cfe_requirements[0 .. ut_req_array_size] = ["CS_1000", "CS_1001", "CS_1002", "CS_1003", "CS_1004", "CS_1005", "CS_8000", "CS_8001", "CS_8002", "CS_8002.1", "CS_8002.2", "CS_8003", "CS_9000", "CS_9001" ]
+local cfe_requirements[0 .. ut_req_array_size] = ["CS_1000", "CS_1001", "CS_1002", "CS_1003", "CS_1004", "CS_1005", "CS_8000", "CS_8001", "CS_8002", "CS_8002.1", "CS_8002.2", "CS_8002.3", "CS_8003", "CS_9000", "CS_9001" ]
 
 ;**********************************************************************
 ; Define local variables
 ;**********************************************************************
 LOCAL rawcmd, stream
 local CSAppName = "CS"
+local hostCPU = "$CPU"
 
 write ";***********************************************************************"
 write ";  Step 1.0: Checksum Table Test Setup."
@@ -181,11 +199,11 @@ write ";  Step 1.1: Command a Power-on Reset on $CPU."
 write ";***********************************************************************"
 /$SC_$CPU_ES_POWERONRESET
 wait 10
-                                                                                
+
 close_data_center
-wait 75
-                                                                                
-cfe_startup $CPU
+wait 60
+
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -201,7 +219,7 @@ write ";********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_CS_MEMTBL", 1, "INFO", 2
 
-s load_start_app ("TST_CS_MEMTBL","$CPU","TST_CS_MemTblMain")
+s load_start_app ("TST_CS_MEMTBL",hostCPU,"TST_CS_MemTblMain")
 
 ;;  Wait for app startup event
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -220,30 +238,42 @@ endif
 ;; CPU1 is the default
 stream = x'0930'
 
-if ("$CPU" = "CPU2") then
-  stream = x'0A30'
-elseif ("$CPU" = "CPU3") then
-  stream = x'0B30'
-endif
-
 /$SC_$CPU_TO_ADDPACKET STREAM=stream PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 wait 5
 
+write ";*********************************************************************"
+write ";  Step 1.4: Create & upload the EEPROM Definition Table file to be   "
+write ";  used during this test."
+write ";********************************************************************"
+s $sc_$cpu_cs_edt1
+wait 5
+
+;; Upload the file created above as the default
+;; Non-volatile (EEPROM) Definition Table load file
+s ftp_file ("CF:0/apps","eeprom_def_ld_1","cs_eepromtbl.tbl",hostCPU,"P")
+wait 10
+
+write ";*********************************************************************"
+write ";  Step 1.5: Create & upload the Memory Definition Table file to be  "
+write ";  used during this test."
+write ";********************************************************************"
+s $sc_$cpu_cs_mdt5
+wait 5
+
+;; Upload the file created above as the default
+s ftp_file ("CF:0/apps","usrmem_def_ld_3","cs_memorytbl.tbl",hostCPU,"P")
+wait 10
+
+
 write ";***********************************************************************"
-write ";  Step 1.4:  Start the Checksum (CS) and Test Applications.            "
+write ";  Step 1.6:  Start the Checksum (CS) and Test Applications.            "
 write ";***********************************************************************"
-s $sc_$cpu_cs_start_apps("1.4")
+s $sc_$cpu_cs_start_apps("1.6")
 wait 5
 
 ;; Verify the Housekeeping Packet is being generated
 ;; Set the DS HK packet ID based upon the cpu being used
 local hkPktId = "p0A4"
-
-if ("$CPU" = "CPU2") then
-  hkPktId = "p1A4"
-elseif ("$CPU" = "CPU3") then
-  hkPktId = "p2A4"
-endif 
 
 ;; Verify the HK Packet is getting generated by waiting for the
 ;; sequencecount to increment twice
@@ -263,7 +293,7 @@ endif
 wait 5
 
 write ";***********************************************************************"
-write ";  Step 1.5: Enable DEBUG Event Messages "
+write ";  Step 1.7: Enable DEBUG Event Messages "
 write ";***********************************************************************"
 local cmdCtr = $SC_$CPU_EVS_CMDPC + 1
 
@@ -279,13 +309,15 @@ else
 endif
 
 write ";***********************************************************************"
-write ";  Step 1.6: Verify that the CS Housekeeping telemetry items are "
+write ";  Step 1.8: Verify that the CS Housekeeping telemetry items are "
 write ";  initialized to zero (0). "
 write ";***********************************************************************"
 ;; Check the HK tlm items to see if they are 0
 if ($SC_$CPU_CS_CMDPC = 0) AND ($SC_$CPU_CS_CMDEC = 0) AND ;;
    ($SC_$CPU_CS_EepromEC = 0) AND ($SC_$CPU_CS_MemoryEC = 0) AND ;;
    ($SC_$CPU_CS_TableEC = 0) AND ($SC_$CPU_CS_AppEC = 0) AND ;;
+   ($SC_$CPU_CS_RecomputeInProgress = 0) AND ;;
+   ($SC_$CPU_CS_OneShotInProgress = 0) AND ;;
    ($SC_$CPU_CS_CFECoreEC = 0) AND ($SC_$CPU_CS_OSEC = 0) THEN
   write "<*> Passed (9001) - Housekeeping telemetry initialized properly."
   ut_setrequirements CS_9001, "P"
@@ -305,7 +337,7 @@ endif
 wait 5
 
 write ";***********************************************************************"
-write ";  Step 1.7: Set Requirement 1005 to Analysis since the CRC algorithm   "
+write ";  Step 1.9: Set Requirement 1005 to Analysis since the CRC algorithm   "
 write ";  cannot be determined by this procedure. "
 write ";***********************************************************************"
 ut_setrequirements CS_1005, "A"
@@ -355,12 +387,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
   
 ;; CPU1 is the default
 rawcmd = "189Fc000000200B0"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000000200B0"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000000200B0"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -476,12 +502,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc000000201B0"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000000201B0"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000000201B0"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -557,12 +577,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc000000205BE"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000000205BE"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000000205BE"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -594,7 +608,7 @@ ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_FINISHED_INF_EID, "INFO", 2
 
 cmdCtr = $SC_$CPU_CS_CMDPC + 1
 ;; Send the One Shot Command
-/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=32
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -619,13 +633,36 @@ else
   ut_setrequirements CS_8002, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (8002)
+if (p@$SC_$CPU_CS_OneShotInProgress = "True") then
+  write "<*> Passed (8002) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_8002, "P"
+else
+  write "<!> Failed (8002) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_8002, "F"
+endif
+
 ;; Check for the finished event message
-ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (8002.1) - Expected Event Msg ",CS_ONESHOT_FINISHED_INF_EID," rcv'd."
   ut_setrequirements CS_80021, "P"
 else
   write "<!> Failed (8002.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_FINISHED_INF_EID,"."
+  ut_setrequirements CS_80021, "F"
+endif
+
+;; Wait for the next HK packet
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_OneShotInProgress = "False") then
+  write "<*> Passed (8002.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_80021, "P"
+else
+  write "<!> Failed (8002.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_80021, "F"
 endif
 
@@ -684,12 +721,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc000000204BF"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000000204BF"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000000204BF"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -721,7 +752,7 @@ ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_FINISHED_INF_EID, "INFO", 2
 
 cmdCtr = $SC_$CPU_CS_CMDPC + 1
 ;; Send the One Shot Command
-/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[1]+10 RegionSize=2048
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[1]+10 RegionSize=2048 MaxBytes=16
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -746,13 +777,36 @@ else
   ut_setrequirements CS_8002, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (8002)
+if (p@$SC_$CPU_CS_OneShotInProgress = "True") then
+  write "<*> Passed (8002) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_8002, "P"
+else
+  write "<!> Failed (8002) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_8002, "F"
+endif
+
 ;; Check for the finished event message
-ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (8002.1) - Expected Event Msg ",CS_ONESHOT_FINISHED_INF_EID," rcv'd."
   ut_setrequirements CS_80021, "P"
 else
   write "<!> Failed (8002.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_FINISHED_INF_EID,"."
+  ut_setrequirements CS_80021, "F"
+endif
+
+;; Wait for the next HK packet
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_OneShotInProgress = "False") then
+  write "<*> Passed (8002.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_80021, "P"
+else
+  write "<!> Failed (8002.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_80021, "F"
 endif
 
@@ -767,12 +821,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
   
 ;; CPU1 is the default
 rawcmd = "189Fc000000A02B0"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000000A02B0"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000000A02B0"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -808,7 +856,7 @@ startAddr = startAddr - 1000
 
 errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; Send the One Shot Command
-/$SC_$CPU_CS_OneShot Address=startAddr RegionSize=2048
+/$SC_$CPU_CS_OneShot Address=startAddr RegionSize=2048 MaxBytes=2048
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
@@ -839,7 +887,7 @@ ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_STARTED_DBG_EID, "DEBUG", 1
 
 cmdCtr = $SC_$CPU_CS_CMDPC + 1
 ;; Send the One Shot Command
-/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[1] RegionSize=$SC_$CPU_TST_CS_SIZE[1]
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[1] RegionSize=$SC_$CPU_TST_CS_SIZE[1] MaxBytes=0
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -862,6 +910,24 @@ else
   write "<!> Failed (1003;8002) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_STARTED_DBG_EID,"."
   ut_setrequirements CS_1003, "F"
   ut_setrequirements CS_8002, "F"
+endif
+
+;; Verify the telemetry flag is set to TRUE (8002)
+if (p@$SC_$CPU_CS_OneShotInProgress = "True") then
+  write "<*> Passed (8002) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_8002, "P"
+else
+  write "<!> Failed (8002) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_8002, "F"
+endif
+
+;; Verify the Rate is set to the platform-defined value (8002.3)
+if ($SC_$CPU_CS_LastOneShotRate = CS_DEFAULT_BYTES_PER_CYCLE) then
+  write "<*> Passed (8002.3) - One shot rate is set as expected."
+  ut_setrequirements CS_80023, "P"
+else
+  write "<!> Failed (8002.3) - One shot rate set to '",$SC_$CPU_CS_LastOneShotRate,"'. Expected '",CS_DEFAULT_BYTES_PER_CYCLE,"'"
+  ut_setrequirements CS_80023, "F"
 endif
 
 write ";***********************************************************************"
@@ -909,12 +975,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc000000203B0"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000000203B0"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000000203B0"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -946,7 +1006,7 @@ write ";***********************************************************************"
 cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ;; Send the One Shot Command
-/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[2] RegionSize=$SC_$CPU_TST_CS_SIZE[2]
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[2] RegionSize=$SC_$CPU_TST_CS_SIZE[2] MaxBytes=2048
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -968,7 +1028,38 @@ ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_FINISHED_INF_EID, "INFO", 2
 
 errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; Send the One Shot Command
-/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[1] RegionSize=$SC_$CPU_TST_CS_SIZE[1]
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[1] RegionSize=$SC_$CPU_TST_CS_SIZE[1] MaxBytes=0
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;8002.2) - CS One Shot command failed as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_80022, "P"
+else
+  write "<!> Failed (1004;8002.2) - CS One Shot command did not increment CMDEC."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_80022, "F"
+endif
+
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004) - Expected Event Msg ",CS_ONESHOT_CHDTASK_ERR_EID," rcv'd."
+  ut_setrequirements CS_1004, "P"
+else
+  write "<!> Failed (1003;8002) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_CHDTASK_ERR_EID,"."
+  ut_setrequirements CS_1004, "F"
+endif
+
+write ";***********************************************************************"
+write ";  Step 2.19: Send a Recompute command while a child task is already "
+write ";  running. An error event should be generated. "
+write ";***********************************************************************"
+ut_setupevents "$SC","$CPU",{CSAppName},CS_RECOMPUTE_APP_CHDTASK_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the RecomputeAppName Command
+/$SC_$CPU_CS_RecomputeAppName AppName=CSAppName
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
@@ -996,7 +1087,7 @@ endif
 wait 5
 
 write ";***********************************************************************"
-write ";  Step 2.19: Send a Cancel One Shot command when there is no One Shot  "
+write ";  Step 2.20: Send a Cancel One Shot command when there is no One Shot  "
 write ";  command executing.   "
 write ";***********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_ONESHOT_CANCEL_NO_CHDTASK_ERR_EID, "ERROR", 1
@@ -1027,7 +1118,7 @@ endif
 wait 5
 
 write ";***********************************************************************"
-write ";  Step 2.20: Send an invalid command.    "
+write ";  Step 2.21: Send an invalid command.    "
 write ";***********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_CC1_ERR_EID, "ERROR", 1
 
@@ -1035,12 +1126,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
   
 ;; CPU1 is the default
 rawcmd = "189Fc0000001AA"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc0000001AA"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc0000001AA"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1065,6 +1150,135 @@ endif
 
 wait 5
 
+write ";***********************************************************************"
+write ";  Step 2.22: Send the CS Housekeeping Request with an invalid length."
+write ";  Since this is an internal command, the CMDEC SHOULD NOT increment."
+write ";***********************************************************************"
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_LEN_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC
+  
+;; CPU1 is the default
+rawcmd = "18A0c00000020000"
+
+ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
+
+if ($SC_$CPU_find_event[1].num_found_messages = 1) THEN
+  write "<*> Passed (1004) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
+  ut_setrequirements CS_1004, "P"
+else
+  write "<!> Failed (1004) - Event message ",$SC_$CPU_evs_eventid," received. Expected Event message ",CS_LEN_ERR_EID, "."
+  ut_setrequirements CS_1004, "F"
+endif
+
+;; Verify the CMDEC did not increment
+if (errcnt = $SC_$CPU_CS_CMDEC) then
+  write "<*> Passed - CMDEC remained the same."
+else
+  write "<!> Failed - CMDEC incremented when it was not expected."
+endif
+
+wait 5
+
+write ";***********************************************************************"
+write ";  Step 2.23: Send the CS Background Cycle Request with an invalid "
+write ";  length. Since this is an internal command, the CMDEC SHOULD NOT "
+write ";  increment."
+write ";***********************************************************************"
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_LEN_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC
+  
+;; CPU1 is the default
+rawcmd = "18A1c00000020000"
+
+ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
+
+if ($SC_$CPU_find_event[1].num_found_messages = 1) THEN
+  write "<*> Passed (1004) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
+  ut_setrequirements CS_1004, "P"
+else
+  write "<!> Failed (1004) - Event message ",$SC_$CPU_evs_eventid," received. Expected Event message ",CS_LEN_ERR_EID, "."
+  ut_setrequirements CS_1004, "F"
+endif
+
+;; Verify the CMDEC did not increment
+if (errcnt = $SC_$CPU_CS_CMDEC) then
+  write "<*> Passed - CMDEC remained the same."
+else
+  write "<!> Failed - CMDEC incremented when it was not expected."
+endif
+
+wait 5
+
+write ";***********************************************************************"
+write ";  Step 2.24: Send a One Shot command with a valid address and a very   "
+write ";  large but valid size and MaxBytes that is not 8 bit aligned.    "
+write ";***********************************************************************"
+ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_STARTED_DBG_EID, "DEBUG", 1
+ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_FINISHED_INF_EID, "INFO", 2
+
+cmdCtr = $SC_$CPU_CS_CMDPC + 1
+
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_STARTADDR[2] RegionSize=2048 MaxBytes=6
+
+ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1003;8002) - CS One Shot command sent properly."
+  ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_8002, "P"
+else
+  write "<!> Failed (1003;8002) - CS One Shot command did not increment CMDPC."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_8002, "F"
+endif
+
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1003;8002) - Expected Event Msg ",CS_ONESHOT_STARTED_DBG_EID," rcv'd."
+  ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_8002, "P"
+else
+  write "<!> Failed (1003;8002) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_STARTED_DBG_EID,"."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_8002, "F"
+endif
+
+;; Verify the telemetry flag is set to TRUE (8002)
+if (p@$SC_$CPU_CS_OneShotInProgress = "True") then
+  write "<*> Passed (8002) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_8002, "P"
+else
+  write "<!> Failed (8002) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_8002, "F"
+endif
+
+;; Check for the finished event message
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 400
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (8002.1) - Expected Event Msg ",CS_ONESHOT_FINISHED_INF_EID," rcv'd."
+  ut_setrequirements CS_80021, "P"
+else
+  write "<!> Failed (8002.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_FINISHED_INF_EID,"."
+  ut_setrequirements CS_80021, "F"
+endif
+
+;; Wait for the next HK packet
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_OneShotInProgress = "False") then
+  write "<*> Passed (8002.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_80021, "P"
+else
+  write "<!> Failed (8002.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_80021, "F"
+endif
+
 write ";*********************************************************************"
 write ";  Step 3.0: Clean-up. "
 write ";*********************************************************************"
@@ -1074,9 +1288,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"
