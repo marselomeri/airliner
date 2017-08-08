@@ -21,10 +21,20 @@ add_airliner_app_def(cs
 
 
 
-add_airliner_app_unit_test(cs-ut
-    UTF 
+add_airliner_app_unit_test(cs-ut        
     SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/utf_test_cs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_compute_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_eeprom_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_memory_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_table_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_table_processing_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_test_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_testrunner.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_utils_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_tbl_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app_cmds.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_cmds.c
@@ -34,8 +44,31 @@ add_airliner_app_unit_test(cs-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_processing.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_utils.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utassert.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_evs_hooks.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_evs_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_fs_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_eeprom_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_memrange_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_memutils_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_ram_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_timer_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_psp_watchdog_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_sb_hooks.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_sb_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_tbl_hooks.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_time_hooks.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_time_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utlist.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osapi_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_osfileapi_stubs.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttest.c
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/uttools.c
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/
 )
