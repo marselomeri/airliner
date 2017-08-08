@@ -1,6 +1,7 @@
 #ifndef VC_EVENTS_H
 #define VC_EVENTS_H
 /* Event message ID's */
+#define VC_RESERVED_EID       0
 #define VC_INIT_INF_EID       1  /* start up message "informational" */
 #define VC_NOOP_INF_EID       2  /* processed command "informational" */
 #define VC_RESET_INF_EID      3

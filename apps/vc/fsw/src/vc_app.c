@@ -28,14 +28,123 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/************************************************************************
+** Pragmas
+*************************************************************************/
+
+/************************************************************************
+** Includes
+*************************************************************************/
 #include "vc_app.h"
 #include "vc_cmds.h"
 #include "vc_msgids.h"
 #include "vc_perfids.h"
 #include <string.h>
 
+/************************************************************************
+** Local Defines
+*************************************************************************/
 
+/************************************************************************
+** Local Structure Declarations
+*************************************************************************/
+
+/************************************************************************
+** External Global Variables
+*************************************************************************/
+
+/************************************************************************
+** Global Variables
+*************************************************************************/
 VC_AppData_t VC_AppData;
+
+/************************************************************************
+** Local Variables
+*************************************************************************/
+
+/************************************************************************
+** Local Function Definitions
+*************************************************************************/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Initialize event tables                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+int32 VC_InitEvent()
+{
+    int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset((void*)VC_AppData.EventTbl, 0x00, sizeof(VC_AppData.EventTbl));
+
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    VC_AppData.EventTbl[  ind].EventID = VC_RESERVED_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_INIT_INF_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_NOOP_INF_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_RESET_INF_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_PROCCESS_INF_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_MID_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_CC1_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    VC_AppData.EventTbl[  ind].EventID = VC_LEN_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+        
+    VC_AppData.EventTbl[  ind].EventID = VC_PIPE_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+        
+    VC_AppData.EventTbl[  ind].EventID = VC_SOCKET_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+        
+    VC_AppData.EventTbl[  ind].EventID = VC_DEVICE_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    VC_AppData.EventTbl[  ind].EventID = VC_INIT_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_UNINIT_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_CHA_INF_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    VC_AppData.EventTbl[  ind].EventID = VC_DEV_INF_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    VC_AppData.EventTbl[  ind].EventID = VC_ADDR_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    
+    VC_AppData.EventTbl[  ind].EventID = VC_ADDR_NUL_ERR_EID;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+
+    /* Register the table with CFE */
+    iStatus = CFE_EVS_Register(VC_AppData.EventTbl,
+                               VC_EVT_COUNT, CFE_EVS_BINARY_FILTER);
+    if (iStatus != CFE_SUCCESS)
+    {
+        (void) CFE_ES_WriteToSysLog("VC - Failed to register with EVS (0x%08X)\n", (unsigned int)iStatus);
+    }
+
+    return (iStatus);
+}
 
 
 void VC_AppMain(void)
@@ -122,6 +231,20 @@ void VC_CleanupCallback()
 int32 VC_AppInit(void)
 {
     int32  Status = CFE_SUCCESS;
+    int8   hasEvents = 0;
+    
+    Status = VC_InitEvent();
+    
+    Status = VC_InitEvent();
+    if (Status != CFE_SUCCESS)
+    {
+        (void) CFE_ES_WriteToSysLog("VC - Failed to init events (0x%08X)\n", (unsigned int)Status);
+        goto VC_InitApp_Exit_Tag;
+    }
+    else
+    {
+        hasEvents = 1;
+    }
 
     /* Setup the RunStatus variable */
     VC_AppData.RunStatus = CFE_ES_APP_RUN;
@@ -138,47 +261,6 @@ int32 VC_AppInit(void)
 
     VC_AppData.PipeDepth = VC_PIPE_DEPTH;
 
-    VC_AppData.EventFilters[0].EventID  = VC_INIT_INF_EID;
-    VC_AppData.EventFilters[0].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[1].EventID  = VC_NOOP_INF_EID;
-    VC_AppData.EventFilters[1].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[2].EventID  = VC_RESET_INF_EID;
-    VC_AppData.EventFilters[2].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[3].EventID  = VC_PROCCESS_INF_EID;
-    VC_AppData.EventFilters[3].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[4].EventID  = VC_MID_ERR_EID;
-    VC_AppData.EventFilters[4].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[5].EventID  = VC_CC1_ERR_EID;
-    VC_AppData.EventFilters[5].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[6].EventID  = VC_LEN_ERR_EID;
-    VC_AppData.EventFilters[6].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[7].EventID  = VC_PIPE_ERR_EID;
-    VC_AppData.EventFilters[7].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[8].EventID  = VC_SOCKET_ERR_EID;
-    VC_AppData.EventFilters[8].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[9].EventID  = VC_DEVICE_ERR_EID;
-    VC_AppData.EventFilters[9].Mask     = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[10].EventID = VC_INIT_ERR_EID;
-    VC_AppData.EventFilters[10].Mask    = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[11].EventID = VC_UNINIT_ERR_EID;
-    VC_AppData.EventFilters[11].Mask    = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[12].EventID = VC_CHA_INF_EID;
-    VC_AppData.EventFilters[12].Mask    = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[13].EventID = VC_DEV_INF_EID;
-    VC_AppData.EventFilters[13].Mask    = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[14].EventID = VC_ADDR_ERR_EID;
-    VC_AppData.EventFilters[14].Mask    = CFE_EVS_NO_FILTER;
-    VC_AppData.EventFilters[15].EventID = VC_ADDR_NUL_ERR_EID;
-    VC_AppData.EventFilters[15].Mask    = CFE_EVS_NO_FILTER;
-    
-    /* Register event filter table */
-    Status = CFE_EVS_Register(VC_AppData.EventFilters, VC_EVT_COUNT, CFE_EVS_BINARY_FILTER);
-
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_ES_WriteToSysLog("VC App: Error Registering Events, RC = 0x%08X\n", (unsigned int)Status);
-        return (Status);
-    }
     /* Initialize housekeeping packet (clear user data area) */
     CFE_SB_InitMsg(&VC_AppData.HkPacket, VC_HK_TLM_MID, sizeof(VC_HkPacket_t), TRUE);
 
@@ -256,11 +338,29 @@ int32 VC_AppInit(void)
         return (Status);
     }
     
-    /* Application startup event message */
-    CFE_EVS_SendEvent(VC_INIT_INF_EID, CFE_EVS_INFORMATION, "VC: Application Initialized");
-                         
+VC_InitApp_Exit_Tag:
+    if (Status == CFE_SUCCESS)
+    {
+        /* Application startup event message */
+        (void) CFE_EVS_SendEvent(VC_INIT_INF_EID, CFE_EVS_INFORMATION,
+                                 "Initialized.  Version %d.%d.%d.%d",
+                                 VC_MAJOR_VERSION,
+                                 VC_MINOR_VERSION,
+                                 VC_REVISION,
+                                 VC_MISSION_REV);
+    }
+    else
+    {
+        if (hasEvents == 1)
+        {
+            (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "Application failed to initialize");
+        }
+        else
+        {
+            (void) CFE_ES_WriteToSysLog("VC - Application failed to initialize\n");
+        }
+    }
     return(CFE_SUCCESS);
-
 } /* End of VC_AppInit() */
 
 

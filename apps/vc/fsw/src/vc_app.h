@@ -96,7 +96,7 @@ typedef struct
     /* Initialization data (not reported in housekeeping) */
     char                  PipeName[OS_MAX_API_NAME];
     uint16                PipeDepth;
-    CFE_EVS_BinFilter_t      EventFilters[VC_EVT_COUNT];
+    CFE_EVS_BinFilter_t   EventTbl[VC_EVT_COUNT];
     
     /* VC app state */
     VC_Status_t           AppState;
