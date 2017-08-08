@@ -9,8 +9,8 @@ add_airliner_app_table(
 
 
 
-add_airliner_app_src(
-    CI-UT
+add_airliner_app_unit_test_src(
+    ci-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/ci_custom.c
 )
