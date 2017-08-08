@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,151 +11,113 @@
 #include "ea_app.h"
 #include "ea_msg.h"
 
-int32 EA_StartAppCustom(CFE_SB_Msg_t* MsgPtr)
+void EA_StartAppCustom()
 {
-	int32 iStatus = CFE_ES_APP_ERROR;
-	EA_StartCmd_t  *CmdPtr = 0;
-	uint16 ExpectedLength = sizeof(EA_StartCmd_t);
-	uint16 usCmdCode = CFE_SB_GetCmdCode(MsgPtr);
-	/*
-	** Verify command packet length
-	*/
-	if(EA_VerifyCmdLength(MsgPtr, ExpectedLength))
+	int32 Status = -1;
+	Status = CFE_ES_RegisterChildTask();
+
+	if (Status == CFE_SUCCESS)
 	{
-		if(EA_AppData.HkTlm.ActiveAppPID == 0)
+		/*
+		** Create child process to execute app
+		*/
+		pid_t pid = fork();
+
+		/*
+		** Child process
+		*/
+		if (pid == 0)
 		{
-			CmdPtr = ((EA_StartCmd_t *) MsgPtr);
-
-			OS_printf("inter: %s\n", CmdPtr->interpreter);
-			OS_printf("script: %s\n", CmdPtr->script);
-
-			/*
-			** NUL terminate the very end of the filename string as a
-			** safety measure
-			*/
-			CmdPtr->interpreter[OS_MAX_PATH_LEN - 1] = '\0';
-			CmdPtr->script[OS_MAX_PATH_LEN - 1] = '\0';
-
-			OS_printf("inter: %s\n", CmdPtr->interpreter);
-			OS_printf("script: %s\n", CmdPtr->script);
-
-			/*
-			** Check if the filename string is a nul string
-			*/
-			if(strlen(CmdPtr->interpreter) == 0 || strlen(CmdPtr->script) == 0)
+			char *argv[] = {EA_AppData.ChildData.AppInterpreter, EA_AppData.ChildData.AppScript, NULL};
+			if(execvp(EA_AppData.ChildData.AppInterpreter, argv) == -1)
 			{
-				EA_AppData.HkTlm.usCmdErrCnt++;
-				CFE_EVS_SendEvent(EA_MSGLEN_ERR_EID, CFE_EVS_ERROR,
-					"NUL (empty) string specified as file name");
+				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
+									"Error starting external application");
 			}
-			else
-			{
-				/*
-				** Check if specified interpreter exists
-				*/
-				if(access(CmdPtr->interpreter, F_OK ) != -1)
-				{
-					/*
-					** Check if specified script exists
-					*/
-					if(access(CmdPtr->script, F_OK ) != -1)
-					{
-						/*
-						** Create child process to execute app
-						*/
-						pid_t pid = fork();
-						//int ret = -1;
-
-						/*
-						** Child process
-						*/
-						if (pid == 0)
-						{
-							char *argv[] = {CmdPtr->interpreter, CmdPtr->script, NULL};
-							if(execvp(CmdPtr->interpreter, argv) == -1)
-							{
-								CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-													"Error starting external application");
-							}
-						}
-						else if (pid == -1)
-						{
-							CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-												"Error starting new process");
-						}
-						/*
-						** Parent process
-						*/
-						else
-						{
-							iStatus = CFE_SUCCESS;
-							EA_AppData.HkTlm.usCmdCnt++;
-							CFE_EVS_SendEvent(EA_INF_APP_START, CFE_EVS_INFORMATION,
-												"External application started");
-							strncpy(EA_AppData.HkTlm.ActiveApp, CmdPtr->script, OS_MAX_PATH_LEN);
-							EA_AppData.HkTlm.ActiveAppPID = pid;
-							waitpid(pid, &EA_AppData.HkTlm.LastAppStatus, 0); // Check this to be correct
-							strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
-							//EA_AppData.HkTlm.LastAppStatus = ret; // Check this to be correct
-							//printf("Return code: %d\n", ret>>8); /* wait for child to exit */
-						}
-					}
-					else
-					{
-						EA_AppData.HkTlm.usCmdErrCnt++;
-						CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-							"Specified script does not exist");
-					}
-				}
-				else
-				{
-					EA_AppData.HkTlm.usCmdErrCnt++;
-					CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-						"Specified interpreter does not exist");
-				}
-			}
+			exit(0);
 		}
-		else
+		/*
+		** Failed Fork
+		*/
+		else if (pid == -1)
 		{
 			EA_AppData.HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-				"Attempted to send start command while app already running");
+								"Error starting new process");
 		}
-	}
+		/*
+		** Parent process
+		*/
+		else
+		{
+			EA_AppData.HkTlm.usCmdCnt++;
+			CFE_EVS_SendEvent(EA_INF_APP_START, CFE_EVS_INFORMATION,
+								"External application started");
+			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, OS_MAX_PATH_LEN);
+			EA_AppData.HkTlm.ActiveAppPID = pid;
+			waitpid(pid, &EA_AppData.HkTlm.LastAppStatus, 0);
+			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus>>8;
+			EA_AppData.HkTlm.ActiveAppPID = 0;
+			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
+			memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
+			memset(EA_AppData.ChildData.AppInterpreter, '\0', OS_MAX_PATH_LEN);
+			memset(EA_AppData.ChildData.AppScript, '\0', OS_MAX_PATH_LEN);
 
-	return(iStatus);
+		}
+	}/*end if register child task*/
+    else
+    {
+        /* Can't send event or write to syslog because this task isn't registered with the cFE. */
+        OS_printf("StartApp Child Task Registration failed!\n");
+    }
+
+	EA_AppData.ChildTaskID = 0;
+	EA_AppData.ChildTaskInUse = FALSE;
+	CFE_ES_ExitChildTask();
+
+	return;
 }
 
-int32 EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr)
+void EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr)
 {
-	OS_printf("In term custom code\n");
-	char kill_cmd[80];
 	uint16 ExpectedLength = sizeof(EA_NoArgCmd_t);
-	int32 iStatus = CFE_ES_APP_ERROR;
+	uint8 iUtil = -1;
+	int kill_status = -2;
 
 	/*
 	** Verify command packet length
 	*/
 	if(EA_VerifyCmdLength(MsgPtr, ExpectedLength))
 	{
+		/*
+		** Ensure app is currently running
+		*/
 		if(EA_AppData.HkTlm.ActiveAppPID != 0)
 		{
-			snprintf(kill_cmd, sizeof(kill_cmd), "kill -9 %i", EA_AppData.HkTlm.ActiveAppPID);
-			system(kill_cmd);
+			iUtil = EA_CalibrateTop(EA_AppData.HkTlm.ActiveAppPID);
 
-			if(EA_GetPidUtil(EA_AppData.HkTlm.ActiveAppPID) == 0)
+			OS_printf("Ready to kill child\n");
+			CFE_ES_DeleteChildTask(EA_AppData.ChildTaskID);
+			kill_status = kill(EA_AppData.HkTlm.ActiveAppPID, SIGKILL);
+			OS_printf("Kill signal sent\n");
+
+			/*
+			** Check kill call return code
+			*/
+			if(kill_status == 0)
 			{
 				EA_AppData.HkTlm.usCmdCnt++;
 				EA_AppData.HkTlm.ActiveAppPID = 0;
 				strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
 				EA_AppData.HkTlm.LastAppStatus = -1; // TODO: Add meaningful number to this
-				iStatus = CFE_SUCCESS;
+				memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
+				EA_AppData.ChildTaskInUse = FALSE;
 			}
 			else
 			{
 				EA_AppData.HkTlm.usCmdErrCnt++;
 				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-								"Unable to terminate application");
+								"Unable to terminate application. Errno %i", kill_status);
 			}
 		}
 		else
@@ -165,7 +128,7 @@ int32 EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr)
 		}
 	}
 
-	return(iStatus);
+	return;
 }
 
 int32 EA_PerfmonCustom(CFE_SB_Msg_t* MsgPtr)
@@ -173,10 +136,91 @@ int32 EA_PerfmonCustom(CFE_SB_Msg_t* MsgPtr)
 	return 0;
 }
 
-uint8 EA_GetPidUtil(int pid)
+uint8 EA_CalibrateTop(int32 pid)
 {
+	FILE *fp;
+	char output[1024];
+	char top_cmd_calibrate[80];
+	char *cpu_perc = "%CPU";
+
+	/* Generate top calibration command for PID */
+	snprintf(top_cmd_calibrate, sizeof(top_cmd_calibrate), "/usr/bin/top -b -n 1 -p %i | grep %%CPU", pid);
+
+	fp = popen(top_cmd_calibrate, "r");
+	if (fp == NULL) {
+		OS_printf("Failed to run command top\n" );
+		//exit(1);
+	}
+
+	int util_ndx = -1;
+	int count_ndx = 0;
+	/* Read the CPU% column header and get it's index in top output */
+	if (fgets(output, sizeof(output)-1, fp) != NULL)
+	{
+		for (char *tok = strtok(output," "); tok != NULL; tok = strtok(NULL, " "))
+		{
+			if (strcmp(tok, "%CPU") == 0)
+			{
+				util_ndx = count_ndx;
+				break;
+			}
+			count_ndx++;
+		}
+	}
+	else
+	{
+		// Calibration failed
+		OS_printf("Calibration faild\n");
+	}
+	pclose(fp);
+
+	return(util_ndx);
+}
+
+uint8 EA_GetPidUtil(int32 pid, uint8 util_ndx)
+{
+	FILE *fp;
+	char output[1024];
+	char top_cmd[80];
+	int util = -1;
+	int TOP_READ_LINE = 1;
+	/* Generate top command for PID */
+	snprintf(top_cmd, sizeof(top_cmd), "/usr/bin/top -p %i -d 1 -b -n 2 | grep %i", pid, pid);
+
+	fp = popen(top_cmd, "r");
+	if (fp == NULL) {
+		printf("Failed to run command\n" );
+		exit(1);
+	}
+
+	int output_line = 0;
+	int count_ndx = 0;
+	/* Read the outputput a line at a time - output it. */
+	while (fgets(output, sizeof(output)-1, fp) != NULL) {
+		if (output_line == TOP_READ_LINE)
+		{
+			for (char *tok = strtok(output," "); tok != NULL; tok = strtok(NULL, " "))
+			{
+				if (count_ndx == util_ndx)
+				{
+					util = atoi(tok);
+				}
+				count_ndx++;
+			}
+		}
+		output_line++;
+	}
+
+	OS_printf("Util: %i\n", util);
+
+	/* close */
+	pclose(fp);
+
 	return 0;
 }
+
+
+
 
 
 
