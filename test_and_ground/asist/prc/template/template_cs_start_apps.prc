@@ -5,6 +5,7 @@ proc $sc_$cpu_cs_start_apps (step_num)
 ;
 ; History:
 ;  27AUG08 WFM	Initial development of this proc
+;  01MAR17 WFM	Added hostCPU variable for cFS lab environment.
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -26,11 +27,12 @@ local stream1, stream2
 local subStepNum = 1
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 
 write ";*********************************************************************"
 write "; Step ",step_num, ".1: Determine if the applications are running."
 write ";*********************************************************************"
-start get_file_to_cvt (ramDir, "cfe_es_app_info.log", "$sc_$cpu_es_app_info.log", "$CPU")
+start get_file_to_cvt(ramDir,"cfe_es_app_info.log","$sc_$cpu_es_app_info.log",hostCPU)
 
 found_app1 = FALSE
 found_app2 = FALSE
@@ -64,7 +66,7 @@ if (found_app1 = FALSE) then
   ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
   ut_setupevents "$SC", "$CPU", {CSAppName}, CS_INIT_INF_EID, "INFO", 2
 
-  s load_start_app (CSAppName,"$CPU","CS_AppMain")
+  s load_start_app (CSAppName,hostCPU,"CS_AppMain")
 
   ; Wait for app startup events
   ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1, 70
@@ -82,12 +84,6 @@ if (found_app1 = FALSE) then
   ;; CPU1 is the default
   stream1 = x'08A4'
 
-  if ("$CPU" = "CPU2") then
-     stream1 = x'09A4'
-  elseif ("$CPU" = "CPU3") then
-     stream1 = x'0AA4'
-  endif
-
   /$SC_$CPU_TO_ADDPACKET STREAM=stream1 PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 
   subStepNum = 3
@@ -100,7 +96,7 @@ if (found_app2 = FALSE) then
   ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
   ut_setupevents "$SC", "$CPU", "TST_CS", TST_CS_INIT_INF_EID, "INFO", 2
 
-  s load_start_app ("TST_CS","$CPU","TST_CS_AppMain")
+  s load_start_app ("TST_CS",hostCPU,"TST_CS_AppMain")
 
   ; Wait for app startup events
   ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1
@@ -118,12 +114,6 @@ if (found_app2 = FALSE) then
 
   ;; CPU1 is the default
   stream2 = x'0930'
-
-  if ("$CPU" = "CPU2") then
-     stream2 = x'0A30'
-  elseif ("$CPU" = "CPU3") then
-     stream2 = x'0B30'
-  endif
 
   /$SC_$CPU_TO_ADDPACKET STREAM=stream2 PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 
