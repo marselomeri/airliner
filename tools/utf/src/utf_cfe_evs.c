@@ -244,10 +244,10 @@ int32 CFE_EVS_SendEvent (uint16 EventID, uint16 EventType, const char *Spec, ...
 
 	  /* Obtain task and system information */
       /*EVS_Packet.PacketID.SpacecraftID = OS_BSPGetSpacecraftId();*/
-      CFE_ES_GetAppName(EVS_Packet.PacketID.AppName, AppID, OS_MAX_API_NAME);
+      CFE_ES_GetAppName(EVS_Packet.AppName, AppID, OS_MAX_API_NAME);
       /* EVS_Packet.PacketID.ProcessorID  = OS_BSPGetProcessorId();*/
-      EVS_Packet.PacketID.EventID      = EventID;
-      EVS_Packet.PacketID.EventType    = EventType;
+      EVS_Packet.EventID      = EventID;
+      EVS_Packet.EventType    = EventType;
 
       /* Copy message to event packet if long format is enabled */
       if (UTF_Long_Events_Enabled == TRUE)
