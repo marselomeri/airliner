@@ -9,96 +9,109 @@ PROC $sc_$cpu_cs_corecode
 ;	segment checksumming commands function and handle anomolies properly.
 ;
 ;  Requirements Tested
-;    cCS1002	For all CS commands, if the length contained in the message
+;    CS1002	For all CS commands, if the length contained in the message
 ;		header is not equal to the expected length, CS shall reject the
 ;		command and issue an event message.
-;    cCS1003	If CS accepts any command as valid, CS shall execute the
+;    CS1003	If CS accepts any command as valid, CS shall execute the
 ;		command, increment the CS Valid Command Counter and issue an
 ;		event message.
-;    cCS1004	If CS rejects any command, CS shall abort the command execution,
+;    CS1004	If CS rejects any command, CS shall abort the command execution,
 ;		increment the CS Command Rejected Counter and issue an event
 ;		message.
-;    cCS3000	Checksum shall calculate CRC for the OS code segment and
+;    CS3000	Checksum shall calculate CRC for the OS code segment and
 ;		compare them against the corresponding baseline OS code segment
 ;		CRC if:
-;			a. Checksumming (as a whole) is Enabled
-;			b. OS segment checksumming is Enabled
-;    cCS3000.1	If the OS code segment CRC is not equal to the baseline OS code
+;			a) Checksumming (as a whole) is Enabled
+;			b) OS segment checksumming is Enabled
+;    CS3000.1	If the OS code segment CRC is not equal to the baseline OS code
 ;		segment CRC, CS shall increment the OS Code Segment CRC
 ;		Miscompare Counter and send an event message.
-;    cCS3002	Upon receipt of an Enable OS Code Segment command, CS shall 
+;    CS3002	Upon receipt of an Enable OS Code Segment command, CS shall 
 ;		enable checksumming of the OS Code segment.
-;    cCS3003	Upon receipt of a Disable OS Code Segment command, CS shall 
+;    CS3003	Upon receipt of a Disable OS Code Segment command, CS shall 
 ;		disable checksumming of the OS Code segment.
-;    cCS3004	Upon receipt of a Recompute OS Code Segment CRC, CS shall 
-;		recompute the baseline CRC for the OS Code segment.
-;    cCS3004.1	Once the baseline CRC is computed, CS shall generate an event
-;		message containing the baseline CRC.
-;    cCS3004.2	If CS is already processing a Recompute CRC command, CS shall
-;		reject the command.
-;    cCS3005	Upon receipt of a Report OS Code Segment CRC, CS shall send an
+;    CS3004	Upon receipt of a Recompute OS Code Segment CRC, CS shall:
+;			a) Recompute the baseline CRC for the OS Code segment
+;			b) Set the Recompute In Progress Flag to TRUE
+;    CS3004.1	Once the baseline CRC is computed, CS shall:
+;			a) Generate an event message containing the baseline CRC
+;			b) Set the Recompute In Progress Flag to FALSE
+;    CS3004.2	If CS is already processing a Recompute CRC command or a One
+;		Shot CRC command, CS shall reject the command.
+;    CS3005	Upon receipt of a Report OS Code Segment CRC, CS shall send an
 ;		event message containing the baseline OS code segment CRC.
-;    cCS3006	Checksum shall calculate CRC for the cFE code segment and
+;    CS3006	Checksum shall calculate CRC for the cFE code segment and
 ;		compare them against the corresponding baseline cFE code segment
 ;		CRC if:
-;			a. Checksumming (as a whole) is Enabled
-;			b. cFE segment checksumming is Enabled
-;    cCS3006.1	If the cFE code segment CRC is not equal to the baseline cFE
+;			a) Checksumming (as a whole) is Enabled
+;			b) cFE segment checksumming is Enabled
+;    CS3006.1	If the cFE code segment CRC is not equal to the baseline cFE
 ;		code segment CRC, CS shall increment the cFE Code Segment CRC
 ;		Miscompare Counter and send an event message.
-;    cCS3007	Upon receipt of an Enable cFE code segment command, CS shall
+;    CS3007	Upon receipt of an Enable cFE code segment command, CS shall
 ;		enable checksumming of the cFE code segment.
-;    cCS3008	Upon receipt of a Disable cFE code segment command, CS shall
+;    CS3008	Upon receipt of a Disable cFE code segment command, CS shall
 ;		disable checksumming of the cFE code segment.
-;    cCS3009	Upon receipt of a Recompute cFE Code Segment CRC, CS shall 
-;		recompute the baseline checksum for the cFE Code segment.
-;    cCS3009.1	Once the baseline CRC is computed, CS shall generate an event
-;		message containing the baseline CRC.
-;    cCS3009.2	If CS is already processing a Recompute CRC command, CS shall
-;		reject the command.
-;    cCS3010	Upon receipt of a Report cFE Code Segment CRC, CS shall send an
-;		event message containing the baseline cFE code segment CRC.
-;    cCS8000	Upon receipt of an Enable Checksum command, CS shall start
+;    CS3009	Upon receipt of a Recompute cFE Code Segment CRC command, CS 
+;		shall:
+;			a) Recompute the baseline checksum for the cFE Code
+;			   segment.
+;			b) Set the Recompute In Progress Flag to TRUE
+;    CS3009.1	Once the baseline CRC is computed, CS shall:
+;			a) Generate an event message containing the baseline CRC
+;			b) Set the Recompute In Progress Flag to FALSE
+;    CS3009.2	If CS is already processing a Recompute CRC command or a One
+;		Shot CRC command, CS shall reject the command.
+;    CS3010	Upon receipt of a Report cFE Code Segment CRC command, CS shall 
+;		send an event message containing the baseline cFE code segment
+;		CRC.
+;    CS8000	Upon receipt of an Enable Checksum command, CS shall start
 ;		calculating CRCs and compare them against the baseline CRCs.
-;    cCS8001	Upon receipt of a Disable Checksum command, CS shall stop
+;    CS8001	Upon receipt of a Disable Checksum command, CS shall stop
 ;		calculating CRCs and comparing them against the baseline CRCs.
-;    cCS9000	CS shall generate a housekeeping message containing the
+;    CS9000	CS shall generate a housekeeping message containing the
 ;		following:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Overall CRC enable/disable status
-;			d. Total Non-Volatile Baseline CRC
-;			e. OS code segment Baseline CRC
-;			f. cFE code segment Baseline CRC
-;			g. Non-Volatile CRC Miscompare Counter
-;			h. OS Code Segment CRC Miscompare Counter
-;			i. cFE Code Segment CRC Miscompare Counter
-;			j. Application CRC Miscompare Counter
-;			k. Table CRC Miscompare Counter
-;			l. User-Defined Memory CRC Miscompare Counter
-;			m. Last One Shot Address
-;			n. Last One Shot Size
-;			o. Last One Shot Checksum
-;			p. Checksum Pass Counter (number of passes thru all of
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Overall CRC enable/disable status
+;			d) Total Non-Volatile Baseline CRC
+;			e) OS code segment Baseline CRC
+;			f) cFE code segment Baseline CRC
+;			g) Non-Volatile CRC Miscompare Counter
+;			h) OS Code Segment CRC Miscompare Counter
+;			i) cFE Code Segment CRC Miscompare Counter
+;			j) Application CRC Miscompare Counter
+;			k) Table CRC Miscompare Counter
+;			l) User-Defined Memory CRC Miscompare Counter
+;			m) Last One Shot Address
+;			n) Last One Shot Size
+;			o) Last One Shot Checksum
+;			p) Checksum Pass Counter (number of passes thru all of
 ;			   the checksum areas)
-;			q. Current Checksum Region (Non-Volatile, OS code
-;			   segment, cFE Code Segment etc)
-;			r. Non-Volatile CRC enable/disable status
-;			s. OS Code Segment CRC enable/disable status
-;			t. cFE Code Segment CRC enable/disable status
-;			u. Application CRC enable/disable status
-;			v. Table CRC enable/disable status
-;			w. User-Defined Memory CRC enable/disable status
-;    cCS9001	Upon initialization of the CS Application, CS shall initialize
-;		the following data to Zero:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Non-Volatile CRC Miscompare Counter
-;			d. OS Code Segment CRC Miscompare Counter
-;			e. cFE Code Segment CRC Miscompare Counter
-;			f. Application CRC Miscompare Counter
-;			g. Table CRC Miscompare Counter
-;			h. User-Defined Memory CRC Miscompare Counter
+;			q) Current Checksum Region (Non-Volatile, OS code
+;			 ) segment, cFE Code Segment etc)
+;			r) Non-Volatile CRC enable/disable status
+;			s) OS Code Segment CRC enable/disable status
+;			t) cFE Code Segment CRC enable/disable status
+;			u) Application CRC enable/disable status
+;			v) Table CRC enable/disable status
+;			w) User-Defined Memory CRC enable/disable status
+;			x) Last One Shot Rate
+;			y) Recompute In Progress Flag
+;			z) One Shot In Progress Flag
+;    CS9001     Upon any initialization of the CS Application (cFE Power On, cFE
+;               Processor Reset or CS Application Reset), CS shall initialize
+;               the following data to Zero:
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Non-Volatile CRC Miscompare Counter
+;			d) OS Code Segment CRC Miscompare Counter
+;			e) cFE Code Segment CRC Miscompare Counter
+;			f) Application CRC Miscompare Counter
+;			g) Table CRC Miscompare Counter
+;			h) User-Defined Memory CRC Miscompare Counter
+;			i) Recompute In Progress Flag
+;			j) One Shot In Progress Flag
 ;
 ;  Prerequisite Conditions
 ;	The CFS is up and running and ready to accept commands.
@@ -120,6 +133,10 @@ PROC $sc_$cpu_cs_corecode
 ;       09/22/10        Walt Moleski    Updated to use variables for the CFS
 ;                                       application name. Replaced all setupevt
 ;					instances with setupevents
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -198,6 +215,7 @@ local cfe_requirements[0 .. ut_req_array_size] = ["CS_1002", "CS_1003", "CS_1004
 LOCAL rawcmd
 LOCAL stream
 local CSAppName = "CS"
+local hostCPU = "$CPU"
 
 write ";*********************************************************************"
 write ";  Step 1.0: Checksum Table Test Setup."
@@ -208,9 +226,9 @@ write ";**********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";*********************************************************************"
@@ -226,7 +244,7 @@ write ";********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_CS_MEMTBL", 1, "INFO", 2
 
-s load_start_app ("TST_CS_MEMTBL","$CPU","TST_CS_MemTblMain")
+s load_start_app ("TST_CS_MEMTBL",hostCPU,"TST_CS_MemTblMain")
 
 ;;  Wait for app startup event
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -314,6 +332,8 @@ write ";*********************************************************************"
 if ($SC_$CPU_CS_CMDPC = 0) AND ($SC_$CPU_CS_CMDEC = 0) AND ;;
    ($SC_$CPU_CS_EepromEC = 0) AND ($SC_$CPU_CS_MemoryEC = 0) AND ;;
    ($SC_$CPU_CS_TableEC = 0) AND ($SC_$CPU_CS_AppEC = 0) AND ;;
+   ($SC_$CPU_CS_RecomputeInProgress = 0) AND ;;
+   ($SC_$CPU_CS_OneShotInProgress = 0) AND ;;
    ($SC_$CPU_CS_CFECoreEC = 0) AND ($SC_$CPU_CS_OSEC = 0) THEN
   write "<*> Passed (9001) - Housekeeping telemetry initialized properly."
   ut_setrequirements CS_9001, "P"
@@ -626,8 +646,8 @@ endif
 write ";*********************************************************************"
 write ";  Step 2.8: Send the Recompute OS Code Segment command.              "
 write ";*********************************************************************"
-ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_OS_STARTED_DBG_EID, "DEBUG", 1
-ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID, "INFO", 2
+ut_setupevents "$SC","$CPU",{CSAppName},CS_RECOMPUTE_OS_STARTED_DBG_EID,"DEBUG", 1
+ut_setupevents "$SC","$CPU",{CSAppName},CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID, "INFO", 2
 
 cmdCtr = $SC_$CPU_CS_CMDPC + 1
 ;; Send the Command
@@ -656,6 +676,15 @@ else
   ut_setrequirements CS_3004, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3004)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3004) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3004, "P"
+else
+  write "<!> Failed (3004) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3004, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1, 300
 if (UT_TW_Status = UT_Success) then
@@ -663,6 +692,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30041, "P"
 else
   write "<!> Failed (3004.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30041, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3004.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30041, "P"
+else
+  write "<!> Failed (3004.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30041, "F"
 endif
 
@@ -985,6 +1028,15 @@ else
   ut_setrequirements CS_3009, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3009)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3009) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3009, "P"
+else
+  write "<!> Failed (3009) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3009, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 230
 if (UT_TW_Status = UT_Success) then
@@ -992,6 +1044,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30091, "P"
 else
   write "<!> Failed (1003;3009.1) - RecomputeCFECore failed to complete in the time allowed. Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30091, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3009.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3009.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30091, "P"
+else
+  write "<!> Failed (3009.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30091, "F"
 endif
 
@@ -1385,6 +1451,15 @@ else
   ut_setrequirements CS_3004, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3004)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3004) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3004, "P"
+else
+  write "<!> Failed (3004) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3004, "F"
+endif
+
 write ";*********************************************************************"
 write ";  Step 4.10: Send the Recompute OS Code Segment command again. This  "
 write ";  command should fail since there is already a recompute active.     "
@@ -1448,16 +1523,51 @@ else
   ut_setrequirements CS_1004, "F"
 endif
 
-;; Need to wait until the RecomputeOS task is completed.
+write ";*********************************************************************"
+write ";  Step 4.12: Send the One Shot CRC command. This should fail since "
+write ";  there is already a recompute active.     "
+write ";*********************************************************************"
+ut_setupevents "$SC", "$CPU",{CSAppName},CS_ONESHOT_CHDTASK_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=2048
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;3009.2) - One Shot CRC command failed as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_30092, "P"
+else
+  write "<!> Failed (1004;3009.2) - One Shot CRC command did not increment CMDEC."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_30092, "F"
+endif
+
+;; Need to wait until the RecomputeCFE task is completed.
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 300
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed - RecomputeOS task completed."
+  write "<*> Passed - RecomputeCFE task completed."
 else
-  write "<!> Failed - RecomputeOS failed to complete in the time allowed."
+  write "<!> Failed - RecomputeCFE failed to complete in the time allowed."
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3009.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3009.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30091, "P"
+else
+  write "<!> Failed (3009.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_30091, "F"
 endif
 
 write ";*********************************************************************"
-write ";  Step 4.12: Send the Recompute cFE Code Segment command.              "
+write ";  Step 4.13: Send the Recompute cFE Code Segment command.              "
 write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_CFECORE_STARTED_DBG_EID, "DEBUG", 1
 
@@ -1488,8 +1598,17 @@ else
   ut_setrequirements CS_3009, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3009)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3009) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3009, "P"
+else
+  write "<!> Failed (3009) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3009, "F"
+endif
+
 write ";*********************************************************************"
-write ";  Step 4.13: Send the Recompute cFE Code Segment command again. This "
+write ";  Step 4.14: Send the Recompute cFE Code Segment command again. This "
 write ";  command should fail since there is already a recompute active.     "
 write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_CFECORE_CHDTASK_ERR_EID, "ERROR", 1
@@ -1520,7 +1639,7 @@ else
 endif
 
 write ";*********************************************************************"
-write ";  Step 4.14: Send the Recompute OS Code Segment command again. This  "
+write ";  Step 4.15: Send the Recompute OS Code Segment command again. This  "
 write ";  command should fail since there is already a recompute active.     "
 write ";*********************************************************************"
 ut_setupevents "$SC","$CPU",{CSAppName},CS_RECOMPUTE_OS_CHDTASK_ERR_EID,"ERROR", 1
@@ -1551,12 +1670,47 @@ else
   ut_setrequirements CS_1004, "F"
 endif
 
-;; Need to wait until the RecomputeCFE task is completed.
+write ";*********************************************************************"
+write ";  Step 4.16: Send the One Shot CRC command. This should fail since "
+write ";  there is already a recompute active.     "
+write ";*********************************************************************"
+ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_CHDTASK_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=2048
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;3004.2) - One Shot CRC command failed as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_30042, "P"
+else
+  write "<!> Failed (1004;3004.2) - One Shot CRC command did not increment CMDEC."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_30042, "F"
+endif
+
+;; Need to wait until the RecomputeOS task is completed.
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed - RecomputeCFE task completed."
+  write "<*> Passed - RecomputeOS task completed."
 else
-  write "<!> Failed - RecomputeCFE failed to complete in the time allowed."
+  write "<!> Failed - RecomputeOS failed to complete in the time allowed."
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3004.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30041, "P"
+else
+  write "<!> Failed (3004.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_30041, "F"
 endif
 
 write ";*********************************************************************"
@@ -1681,6 +1835,15 @@ else
   ut_setrequirements CS_3004, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3004)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3004) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3004, "P"
+else
+  write "<!> Failed (3004) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3004, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 300
 if (UT_TW_Status = UT_Success) then
@@ -1688,6 +1851,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30041, "P"
 else
   write "<!> Failed (1003;3004.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30041, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3004.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30041, "P"
+else
+  write "<!> Failed (3004.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30041, "F"
 endif
 
@@ -1802,6 +1979,15 @@ else
   ut_setrequirements CS_3004, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3004)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3004) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3004, "P"
+else
+  write "<!> Failed (3004) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3004, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 300
 if (UT_TW_Status = UT_Success) then
@@ -1809,6 +1995,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30041, "P"
 else
   write "<!> Failed (1003;3004.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30041, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3004.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30041, "P"
+else
+  write "<!> Failed (3004.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30041, "F"
 endif
 
@@ -1924,6 +2124,15 @@ else
   ut_setrequirements CS_3009, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3009)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3009) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3009, "P"
+else
+  write "<!> Failed (3009) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3009, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
@@ -1931,6 +2140,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30091, "P"
 else
   write "<!> Failed (1003;3009.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30091, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3009.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3009.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30091, "P"
+else
+  write "<!> Failed (3009.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30091, "F"
 endif
 
@@ -2047,6 +2270,15 @@ else
   ut_setrequirements CS_3009, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3009)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3009) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3009, "P"
+else
+  write "<!> Failed (3009) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3009, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
@@ -2054,6 +2286,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30091, "P"
 else
   write "<!> Failed (1003;3009.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30091, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3009.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3009.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30091, "P"
+else
+  write "<!> Failed (3009.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30091, "F"
 endif
 
@@ -2213,6 +2459,15 @@ else
   ut_setrequirements CS_3004, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3004)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3004) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3004, "P"
+else
+  write "<!> Failed (3004) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3004, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 300
 if (UT_TW_Status = UT_Success) then
@@ -2220,6 +2475,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30041, "P"
 else
   write "<!> Failed (3004.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30041, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3004.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30041, "P"
+else
+  write "<!> Failed (3004.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30041, "F"
 endif
 
@@ -2336,6 +2605,15 @@ else
   ut_setrequirements CS_3004, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3004)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3004) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3004, "P"
+else
+  write "<!> Failed (3004) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3004, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 300
 if (UT_TW_Status = UT_Success) then
@@ -2343,6 +2621,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30041, "P"
 else
   write "<!> Failed (3004.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30041, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3004.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3004.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30041, "P"
+else
+  write "<!> Failed (3004.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30041, "F"
 endif
 
@@ -2458,6 +2750,15 @@ else
   ut_setrequirements CS_3009, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3009)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3009) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3009, "P"
+else
+  write "<!> Failed (3009) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3009, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
@@ -2465,6 +2766,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30091, "P"
 else
   write "<!> Failed (1003;3009.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30091, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3009.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3009.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30091, "P"
+else
+  write "<!> Failed (3009.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30091, "F"
 endif
 
@@ -2581,6 +2896,15 @@ else
   ut_setrequirements CS_3009, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (3009)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (3009) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_3009, "P"
+else
+  write "<!> Failed (3009) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_3009, "F"
+endif
+
 ;; Check for the event message #2
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 200
 if (UT_TW_Status = UT_Success) then
@@ -2588,6 +2912,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_30091, "P"
 else
   write "<!> Failed (3009.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_30091, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (3009.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (3009.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_30091, "P"
+else
+  write "<!> Failed (3009.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_30091, "F"
 endif
 
@@ -2636,9 +2974,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"
