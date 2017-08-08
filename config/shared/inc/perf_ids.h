@@ -30,7 +30,7 @@
 #define SC_APPMAIN_PERF_ID          59
 #define TO_MAIN_TASK_PERF_ID        60
 #define TO_SOCKET_SEND_PERF_ID      62
-#define VC_APPMAIN_PERF_ID          63
+#define VC_MAIN_TASK_PERF_ID        63
 #define VC_SOCKET_SEND_PERF_ID      64
 #define VC_DEVICE_GET_PERF_ID       65
 

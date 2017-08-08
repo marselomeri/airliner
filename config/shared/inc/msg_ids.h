@@ -466,5 +466,6 @@
 #define VC_HK_TLM_MID								0x0c29
 #define VC_SEND_HK_MID								0x1c2a
 #define VC_CMD_MID								    0x1c2b
+#define VC_WAKEUP_MID								0x1c2c
 
 #endif
