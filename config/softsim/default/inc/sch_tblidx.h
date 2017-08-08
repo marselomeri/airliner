@@ -58,8 +58,6 @@
 #define SC_1HZ_WAKEUP_MIDX			40
 #define SC_SEND_HK_MIDX				41
 
-#define CI_READ_CMD_MIDX			50
-
 #define CI_SEND_HK_MIDX             53
 #define CF_SEND_HK_MIDX				57
 #define CF_WAKE_UP_REQ_CMD_MIDX		58
