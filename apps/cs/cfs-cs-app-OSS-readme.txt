@@ -1,10 +1,10 @@
 core Flight System (cFS) Checksum Application (CS) 
 Open Source Release Readme
 
-CS Release 2.3.1 
+CS Release 2.4.0 
 
 Date: 
-February 27, 2015
+May 3, 2017
 
 Introduction:
   The Checksum application (CS) is a core Flight System (cFS) application that 
@@ -43,16 +43,16 @@ Introduction:
  
  
 Software Included:
-  Checksum application (CS) 2.3.1
+  Checksum application (CS) 2.4.0
   
  
 Software Required:
 
- Operating System Abstraction Layer 4.1.1 or higher can be 
+ Operating System Abstraction Layer 4.2.0 or higher can be 
  obtained at http://sourceforge.net/projects/osal or 
  github.com/nasa/osal
  
- core Flight Executive 6.4.1 or higher can be obtained at
+ core Flight Executive 6.5.0 or higher can be obtained at
  http://sorceforge.net/projects/coreflightexec
 
   
@@ -65,6 +65,7 @@ Other targets:
     Other targets are included, but may take additional work to
     run. They are included as examples of other target 
     environments.
+    
     1. mcf5235-rtems - This is for the Axiom MCF5235 Coldfire board running
                        RTEMS 4.10. It requires a static loader component for the
                        OS abstraction layer. The static loader is currently
@@ -76,13 +77,7 @@ Other targets:
           
                        Once RTEMS 4.11 is released, the goal is to support
                        an RTEMS simulator platform such as SPARC/sis or 
-                       quemu.
-
-    2. mac-osx and pc-cygwin - These targets are included for examples. They
-                       will most likely be removed in the future. 
-                       The pc-linux target is highly recommended. If you 
-                       have a windows or mac computer it is relatively easy to 
-                       set up a free virtual machine environment with 32 bit 
-                       Cent OS 5.x. 
+                       quemu. 
 
   
+EOF

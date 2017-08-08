@@ -9,106 +9,115 @@ PROC $sc_$cpu_cs_table
 ;	commands function properly and handles anomolies properly.
 ;
 ;  Requirements Tested
-;    cCS1002	For all CS commands, if the length contained in the message
+;    CS1002	For all CS commands, if the length contained in the message
 ;		header is not equal to the expected length, CS shall reject the
 ;		command and issue an event message.
-;    cCS1003	If CS accepts any command as valid, CS shall execute the
+;    CS1003	If CS accepts any command as valid, CS shall execute the
 ;		command, increment the CS Valid Command Counter and issue an
 ;		event message.
-;    cCS1004	If CS rejects any command, CS shall abort the command execution,
+;    CS1004	If CS rejects any command, CS shall abort the command execution,
 ;		increment the CS Command Rejected Counter and issue an event
 ;		message.
-;    cCS2003	Upon receipt of a Disable Non-volatile Checksumming command,
+;    CS2003	Upon receipt of a Disable Non-volatile Checksumming command,
 ;		CS shall disable non-volatile checksumming.
-;    cCS3003	Upon receipt of a Disable OS Checksumming command, CS shall 
+;    CS3003	Upon receipt of a Disable OS Checksumming command, CS shall 
 ;		disable checksumming of the OS Code segment.
-;    cCS3008	Upon receipt of a Disable cFE code segment command, CS shall
+;    CS3008	Upon receipt of a Disable cFE code segment command, CS shall
 ;		disable checksumming of the cFE code segment.
-;    cCS4002	Upon receipt of a Disable Application checksumming command, CS
+;    CS4002	Upon receipt of a Disable Application checksumming command, CS
 ;		shall disable checksumming of all Application code segments.
-;    cCS5000	Checksum shall calculate CRCs for each Table-Defined Table and 
+;    CS5000	Checksum shall calculate CRCs for each Table-Defined Table and 
 ;		compare them against the corresponding Table's baseline CRC if:
-;			a. Checksumming (as a whole) is Enabled
-;			b. Table checksumming is Enabled
-;			c. Checksumming of the Individual Table is Enabled
-;    cCS5000.1	If the Table's CRC is not equal to the corresponding Table's
+;			a) Checksumming (as a whole) is Enabled
+;			b) Table checksumming is Enabled
+;			c) Checksumming of the Individual Table is Enabled
+;    CS5000.1	If the Table's CRC is not equal to the corresponding Table's
 ;		baseline CRC and the table has not been modified (thru a table
 ;		load), CS shall increment the Table CRC Miscompare Counter and
 ;		send an event message.
-;    cCS5000.2	If the Table's CRC is not equal to the corresponding Table's
+;    CS5000.2	If the Table's CRC is not equal to the corresponding Table's
 ;		baseline CRC and the table has been modified (thru a table
 ;		load), CS shall recompute the table baseline CRC.
-;    cCS5000.3	If the table-defined Table is invalid, CS shall send an event
+;    CS5000.3	If the table-defined Table is invalid, CS shall send an event
 ;		message and skip that Table.
-;    cCS5001	Upon receipt of a Enable Table Checksumming command, CS shall
+;    CS5001	Upon receipt of a Enable Table Checksumming command, CS shall
 ;		enable checksumming of all tables.
-;    cCS5002	Upon receipt of a Disable Table Checksumming command, CS shall
+;    CS5002	Upon receipt of a Disable Table Checksumming command, CS shall
 ;		disable checksumming of all tables.
-;    cCS5003	Upon receipt of a Enable Table Name command, CS shall enable 
+;    CS5003	Upon receipt of a Enable Table Name command, CS shall enable 
 ;		checksumming of the command-specified Table.
-;    cCS5004	Upon receipt of a Disable Table Name command, CS shall disable 
+;    CS5004	Upon receipt of a Disable Table Name command, CS shall disable 
 ;		checksumming of the command-specified Table.
-;    cCS5005	Upon receipt of a Recompute Table CRC command, CS shall
-;		recompute the baseline checksum for the command-specified table.
-;    cCS5005.1	Once the baseline CRC is computed, CS shall generate an event
-;		message containing the baseline CRC.
-;    cCS5005.2	If CS is already processing a Recompute CRC command, CS shall
-;		reject the command.
-;    cCS5006	Upon receipt of a Report Table CRC command, CS shall send an
+;    CS5005	Upon receipt of a Recompute Table CRC command, CS shall:
+;			a) Recompute the baseline checksum for the
+;			   command-specified table
+;			b) Set the Recompute In Progress Flag to TRUE
+;    CS5005.1	Once the baseline CRC is computed, CS shall:
+;			a) Generate an event message containing the baseline CRC
+;			b) Set the Recompute In Progress Flag to FALSE
+;    CS5005.2	If CS is already processing a Recompute CRC command or a One
+;		Shot CRC command, CS shall reject the command.
+;    CS5006	Upon receipt of a Report Table CRC command, CS shall send an
 ;		event message containing the baseline Table CRC for the
 ;		command-specified table.
-;    cCS5007	If the command-specified Table is invalid (for any CS Table
+;    CS5007	If the command-specified Table is invalid (for any CS Table
 ;		command where a table name is a command argument), CS shall
 ;		reject the command and send an event message.
-;    cCS5008	CS shall provide the ability to dump the baseline CRCs and
+;    CS5008	CS shall provide the ability to dump the baseline CRCs and
 ;		status for the tables via a dump-only table.
-;    cCS6002	Upon receipt of a Disable User-Defined Memory Checksumming
+;    CS6002	Upon receipt of a Disable User-Defined Memory Checksumming
 ;		command, CS shall disable checksumming of all User-Defined
 ;		Memory.
-;    cCS7000	The CS software shall limit the amount of bytes processed during
+;    CS7000	The CS software shall limit the amount of bytes processed during
 ;		each of its execution cycles to a maximum of <PLATFORM_DEFINED>
 ;		bytes.
-;    cCS8000	Upon receipt of an Enable Checksum command, CS shall start
+;    CS8000	Upon receipt of an Enable Checksum command, CS shall start
 ;		calculating CRCs and compare them against the baseline CRCs.
-;    cCS8001	Upon receipt of a Disable Checksum command, CS shall stop
+;    CS8001	Upon receipt of a Disable Checksum command, CS shall stop
 ;		calculating CRCs and comparing them against the baseline CRCs.
-;    cCS9000	CS shall generate a housekeeping message containing the
+;    CS9000	CS shall generate a housekeeping message containing the
 ;		following:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Overall CRC enable/disable status
-;			d. Total Non-Volatile Baseline CRC
-;			e. OS code segment Baseline CRC
-;			f. cFE code segment Baseline CRC
-;			g. Non-Volatile CRC Miscompare Counter
-;			h. OS Code Segment CRC Miscompare Counter
-;			i. cFE Code Segment CRC Miscompare Counter
-;			j. Application CRC Miscompare Counter
-;			k. Table CRC Miscompare Counter
-;			l. User-Defined Memory CRC Miscompare Counter
-;			m. Last One Shot Address
-;			n. Last One Shot Size
-;			o. Last One Shot Checksum
-;			p. Checksum Pass Counter (number of passes thru all of
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Overall CRC enable/disable status
+;			d) Total Non-Volatile Baseline CRC
+;			e) OS code segment Baseline CRC
+;			f) cFE code segment Baseline CRC
+;			g) Non-Volatile CRC Miscompare Counter
+;			h) OS Code Segment CRC Miscompare Counter
+;			i) cFE Code Segment CRC Miscompare Counter
+;			j) Application CRC Miscompare Counter
+;			k) Table CRC Miscompare Counter
+;			l) User-Defined Memory CRC Miscompare Counter
+;			m) Last One Shot Address
+;			n) Last One Shot Size
+;			o) Last One Shot Checksum
+;			p) Checksum Pass Counter (number of passes thru all of
 ;			   the checksum areas)
-;			q. Current Checksum Region (Non-Volatile, OS code
+;			q) Current Checksum Region (Non-Volatile, OS code
 ;			   segment, cFE Code Segment etc)
-;			r. Non-Volatile CRC enable/disable status
-;			s. OS Code Segment CRC enable/disable status
-;			t. cFE Code Segment CRC enable/disable status
-;			u. Application CRC enable/disable status
-;			v. Table CRC enable/disable status
-;			w. User-Defined Memory CRC enable/disable status
-;    cCS9001	Upon initialization of the CS Application, CS shall initialize
-;		the following data to Zero:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Non-Volatile CRC Miscompare Counter
-;			d. OS Code Segment CRC Miscompare Counter
-;			e. cFE Code Segment CRC Miscompare Counter
-;			f. Application CRC Miscompare Counter
-;			g. Table CRC Miscompare Counter
-;			h. User-Defined Memory CRC Miscompare Counter
+;			r) Non-Volatile CRC enable/disable status
+;			s) OS Code Segment CRC enable/disable status
+;			t) cFE Code Segment CRC enable/disable status
+;			u) Application CRC enable/disable status
+;			v) Table CRC enable/disable status
+;			w) User-Defined Memory CRC enable/disable status
+;                       x) Last One Shot Rate
+;			y) Recompute In Progress Flag
+;			z) One Shot In Progress Flag
+;    CS9001     Upon any initialization of the CS Application (cFE Power On, cFE
+;               Processor Reset or CS Application Reset), CS shall initialize
+;               the following data to Zero:
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Non-Volatile CRC Miscompare Counter
+;			d) OS Code Segment CRC Miscompare Counter
+;			e) cFE Code Segment CRC Miscompare Counter
+;			f) Application CRC Miscompare Counter
+;			g) Table CRC Miscompare Counter
+;			h) User-Defined Memory CRC Miscompare Counter
+;			i) Recompute In Progress Flag
+;			j) One Shot In Progress Flag
 ;
 ;  Prerequisite Conditions
 ;	The CFS is up and running and ready to accept commands.
@@ -124,9 +133,12 @@ PROC $sc_$cpu_cs_table
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	08/11/08	Walt Moleski	Original Procedure.
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -213,6 +225,7 @@ LOCAL defTblId, defPktId, resTblId, resPktId
 local i,tblIndex,tblName,foundTbl
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 local tblDefTblName = CSAppName & "." & CS_DEF_TABLES_TABLE_NAME
 local tblResTblName = CSAppName & "." & CS_RESULTS_TABLES_TABLE_NAME
 local appDefTblName = CSAppName & "." & CS_DEF_APP_TABLE_NAME
@@ -225,18 +238,6 @@ resTblId = "0FB2"
 defPktId = 4014
 resPktId = 4018
 
-if ("$CPU" = "CPU2") then
-  defTblId = "0FCC"
-  resTblId = "0FD0"
-  defPktId = 4044
-  resPktId = 4048
-elseif ("$CPU" = "CPU3") then
-  defTblId = "0FEC"
-  resTblId = "0FF0"
-  defPktId = 4076
-  resPktId = 4080
-endif
-
 write ";*********************************************************************"
 write ";  Step 1.0:  Checksum Table Test Setup."
 write ";*********************************************************************"
@@ -246,9 +247,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";*********************************************************************"
@@ -270,7 +271,7 @@ enddo
 write "==> Default Table Definition Table filename = '",tableFileName,"'"
 
 ;; Get the file in order to restore it in the cleanup steps
-s ftp_file ("CF:0/apps",tableFileName,"cs_tablesorig.tbl","$CPU","G")
+s ftp_file ("CF:0/apps",tableFileName,"cs_tablesorig.tbl",hostCPU,"G")
 wait 5
 
 write ";**********************************************************************"
@@ -288,7 +289,7 @@ write ";********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_CS_MEMTBL", 1, "INFO", 2
 
-s load_start_app ("TST_CS_MEMTBL","$CPU","TST_CS_MemTblMain")
+s load_start_app ("TST_CS_MEMTBL",hostCPU,"TST_CS_MemTblMain")
 
 ;; Wait for app startup events
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -307,12 +308,6 @@ endif
 ;; CPU1 is the default
 stream = x'0930'
 
-if ("$CPU" = "CPU2") then
-  stream = x'0A30'
-elseif ("$CPU" = "CPU3") then
-  stream = x'0B30'
-endif
-
 /$SC_$CPU_TO_ADDPACKET STREAM=stream PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 wait 5
 
@@ -325,12 +320,6 @@ wait 5
 ;; Verify the Housekeeping Packet is being generated
 ;; Set the HK packet ID based upon the cpu being used
 local hkPktId = "p0A4"
-
-if ("$CPU" = "CPU2") then
-  hkPktId = "p1A4"
-elseif ("$CPU" = "CPU3") then
-  hkPktId = "p2A4"
-endif
 
 ;; Verify the HK Packet is getting generated by waiting for the
 ;; sequencecount to increment twice
@@ -355,7 +344,7 @@ s $sc_$cpu_cs_tdt1
 wait 5
 
 ;; Load the Tables file created above
-s load_table("tbl_def_tbl_ld_1","$CPU")
+s load_table("tbl_def_tbl_ld_1",hostCPU)
 wait 5
 
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_INF_EID,"INFO", 1
@@ -407,7 +396,7 @@ write ";**********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_TBL", TST_TBL_INIT_INF_EID, "INFO", 2
 
-s load_start_app ("TST_TBL","$CPU")
+s load_start_app ("TST_TBL",hostCPU)
 
 ; Wait for app startup events
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -469,7 +458,7 @@ wait 5
 write ";*********************************************************************"
 write ";  Step 1.10: Dump the Tables Definition Table."
 write ";*********************************************************************"
-s get_tbl_to_cvt (ramDir,tblDefTblName,"A","$cpu_deftbl1_10","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,tblDefTblName,"A","$cpu_deftbl1_10",hostCPU,defTblId)
 wait 5
 
 write ";*********************************************************************"
@@ -573,7 +562,7 @@ write ";  Step 2.3: Dump the Table Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_3","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_3",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -594,7 +583,7 @@ local keepDumpingResults=TRUE
 local dumpFileName = "$cpu_tblrestbl2_4"
 
 while (keepDumpingResults = TRUE) do
-  s get_tbl_to_cvt (ramDir,tblResTblName,"A",dumpFileName,"$CPU",resTblId)
+  s get_tbl_to_cvt (ramDir,tblResTblName,"A",dumpFileName,hostCPU,resTblId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -668,7 +657,7 @@ endif
 
 ;; Dump the definition table to verify the entry's state was modified
 ;; This verifies DCR #18559
-s get_tbl_to_cvt (ramDir,tblDefTblName,"A","$cpu_deftbl2_5","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,tblDefTblName,"A","$cpu_deftbl2_5",hostCPU,defTblId)
 wait 5
 
 if (p@$SC_$CPU_CS_TBL_DEF_TABLE[tblindex].State = "Disabled") then
@@ -754,7 +743,7 @@ write ";  Step 2.8: Dump the Table Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_8","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_8",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -767,8 +756,10 @@ else
 endif
 
 write ";*********************************************************************"
-write ";  Step 2.9: Send the Recompute Table CRC command for the table       "
-write ";  specified in Step 2.5 above. "
+write ";  Step 2.9: Send the Recompute Table CRC commands        "
+write ";*********************************************************************"
+write ";  Step 2.9.1: Send the Recompute Table CRC command for the table       "
+write ";  specified in Step 2.5 above in order to stop the miscompares. "
 write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_TABLES_STARTED_DBG_EID, "DEBUG", 1
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_FINISH_TABLES_INF_EID, "INFO", 2
@@ -809,6 +800,64 @@ if (UT_TW_Status = UT_Success) then
 else
   write "<!> Failed (1003;5005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_TABLES_INF_EID,"."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_50051, "F"
+endif
+
+wait 5
+
+write ";*********************************************************************"
+write ";  Step 2.9.2: Send the Recompute Table CRC command for the results "
+write ";  table in order to verify the flag states. "
+write ";*********************************************************************"
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_TABLES_STARTED_DBG_EID, "DEBUG", 1
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_FINISH_TABLES_INF_EID, "INFO", 2
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+wait 3
+;; Send the Recompute Command
+/$SC_$CPU_CS_RecomputeTableName TableName="CS.ResTablesTbl"
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to TRUE (5005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (5005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_5005, "P"
+else
+  write "<!> Failed (5005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_5005, "F"
+endif
+
+;; Check for the Recompute finished event message
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 100
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1003;5005.1) - Expected Event Msg ",CS_RECOMPUTE_FINISH_TABLES_INF_EID," rcv'd."
+  ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_50051, "P"
+else
+  write "<!> Failed (1003;5005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_TABLES_INF_EID,"."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_50051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (5005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (5005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_50051, "P"
+else
+  write "<!> Failed (5005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_50051, "F"
 endif
 
@@ -856,7 +905,7 @@ write ";  Step 2.11.1: Dump the Table Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_11_1","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_11_1",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -895,7 +944,7 @@ cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
 ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
-start load_table ("app_def_tbl_ld_2", "$CPU")
+start load_table ("app_def_tbl_ld_2", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -960,7 +1009,7 @@ endif
 wait 30
 
 ;; Dump the results table
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_11_2","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_11_2",hostCPU,resTblId)
 wait 5
 
 ;; Verify that the table's CRC has been recalculated
@@ -1000,7 +1049,7 @@ write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_TBL", TST_TBL_INIT_INF_EID, "INFO", 2
 
-s load_start_app ("TST_TBL","$CPU")
+s load_start_app ("TST_TBL",hostCPU)
 
 ; Wait for app startup events
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -1017,12 +1066,6 @@ endif
 
 ;; CPU1 is the default
 stream = x'904'
-
-if ("$CPU" = "CPU2") then
-   stream = x'A04'
-elseif ("$CPU" = "CPU3") then
-   stream = x'B04'
-endif
 
 ;; Subscribe to the Housekeeping packet
 /$SC_$CPU_TO_ADDPACKET STREAM=stream PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
@@ -1074,7 +1117,7 @@ $SC_$CPU_TST_TBL_TABLE1.element[9] = 9
 $SC_$CPU_TST_TBL_TABLE1.element[10] = 10
 
 ;; Create the load file
-s create_tbl_file_from_cvt ("$CPU",4002,"TableA initial load", "tst_tbl_a_ld","TST_TBL.tableA", "$SC_$CPU_TST_TBL_TABLE1.element[1]", "$SC_$CPU_TST_TBL_TABLE1.element[10]")
+s create_tbl_file_from_cvt (hostCPU,4002,"TableA initial load", "tst_tbl_a_ld","TST_TBL.tableA", "$SC_$CPU_TST_TBL_TABLE1.element[1]", "$SC_$CPU_TST_TBL_TABLE1.element[10]")
 
 ;; Initial tableB values
 $SC_$CPU_TST_TBL_TABLE1.element[1] = 10
@@ -1088,7 +1131,7 @@ $SC_$CPU_TST_TBL_TABLE1.element[8] = 3
 $SC_$CPU_TST_TBL_TABLE1.element[9] = 2
 $SC_$CPU_TST_TBL_TABLE1.element[10] = 1
 
-s create_tbl_file_from_cvt ("$CPU",4002,"TableB initial load", "tst_tbl_b_ld","TST_TBL.tableB", "$SC_$CPU_TST_TBL_TABLE1.element[1]", "$SC_$CPU_TST_TBL_TABLE1.element[10]")
+s create_tbl_file_from_cvt (hostCPU,4002,"TableB initial load", "tst_tbl_b_ld","TST_TBL.tableB", "$SC_$CPU_TST_TBL_TABLE1.element[1]", "$SC_$CPU_TST_TBL_TABLE1.element[10]")
 
 write ";*********************************************************************"
 write ";  Step 2.16: Load the files above and send the Activate commands."
@@ -1097,8 +1140,8 @@ cmdCtr = $SC_$CPU_TBL_CMDPC + 2
 
 ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
-start load_table ("tst_tbl_a_ld", "$CPU")
-start load_table ("tst_tbl_b_ld", "$CPU")
+start load_table ("tst_tbl_a_ld", hostCPU)
+start load_table ("tst_tbl_b_ld", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -1181,7 +1224,7 @@ wait 30
 ;; Dump the Results table
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_17","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_17",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1221,7 +1264,7 @@ write ";  Step 2.19: Dump the Results table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_19","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_19",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1272,8 +1315,8 @@ cmdCtr = $SC_$CPU_TBL_CMDPC + 2
 
 ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
-start load_table ("tst_tbl_a_ld", "$CPU")
-start load_table ("tst_tbl_b_ld", "$CPU")
+start load_table ("tst_tbl_a_ld", hostCPU)
+start load_table ("tst_tbl_b_ld", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -1353,7 +1396,7 @@ wait 5
 ;; Dump the Results table
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_22","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_22",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1406,7 +1449,7 @@ cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
 ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
-start load_table ("tst_tbl_a_ld", "$CPU")
+start load_table ("tst_tbl_a_ld", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -1455,7 +1498,7 @@ write ";  table used in the above steps has been recomputed. "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_25","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl2_25",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1530,6 +1573,20 @@ else
   ut_setrequirements CS_50051, "F"
 endif
 
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (5005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (5005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_50051, "P"
+else
+  write "<!> Failed (5005.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_50051, "F"
+endif
+
 wait 20
 
 ;; Verify that the Miscompare Error event was not generated
@@ -1586,6 +1643,20 @@ else
   ut_setrequirements CS_50051, "F"
 endif
 
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (5005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (5005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_50051, "P"
+else
+  write "<!> Failed (5005.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_50051, "F"
+endif
+
 wait 20
 
 ;; Verify that the Miscompare Error event was not generated
@@ -1607,12 +1678,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000021c99"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000021c99"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000021c99"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1648,12 +1713,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000021D98"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000021D98"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000021D98"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1686,12 +1745,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000282066"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000282066"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000282066"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1797,12 +1850,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000282199"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000282199"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000282199"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1906,12 +1953,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000281E75"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000281E75"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000281E75"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -2018,12 +2059,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000281F88"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000281F88"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000281F88"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -2123,6 +2158,7 @@ write ";*********************************************************************"
 write ";  Step 3.11: Send a valid Recompute command.  "
 write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_TABLES_STARTED_DBG_EID, "DEBUG", 1
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_FINISH_TABLES_INF_EID, "INFO", 2
 
 ;; Send the Command
 /$SC_$CPU_CS_RecomputeTableName TableName=tblResTblName
@@ -2148,12 +2184,6 @@ else
   ut_setrequirements CS_50052, "F"
 endif
 
-;; Verify the HK Telemetry indicating the Child and One Shot Task are in use
-write "; Child Task Flag = ",$sc_$cpu_cs_ChildTaskInUse
-write "; Child Task Flag = ",p@$sc_$cpu_cs_ChildTaskInUse
-write "; One Shot Task Flag = ",$sc_$cpu_cs_OneShotTaskInUse
-write "; One Shot Task Flag = ",p@$sc_$cpu_cs_OneShotTaskInUse
-
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2166,14 +2196,52 @@ else
   ut_setrequirements CS_50052, "F"
 endif
 
+write ";*********************************************************************"
+write ";  Step 3.13: Send the One Shot CRC command. This should fail since "
+write ";  a Recompute is already executing."
+write ";*********************************************************************"
+;; Check if the recompute finished. If yes, start another before the One Shot
+if ($SC_$CPU_find_event[2].num_found_messages = 1) then
+  /$SC_$CPU_CS_RecomputeTableName TableName=tblResTblName
+endif
+
+ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_CHDTASK_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=2048
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;5005.2) - One Shot CRC command failed as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_50052, "P"
+else
+  write "<!> Failed (1004;5005.2) - One Shot CRC command did not increment CMDEC."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_50052, "F"
+endif
+
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;5005.2) - Expected Event Msg ",CS_ONESHOT_CHDTASK_ERR_EID," rcv'd."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_50052, "P"
+else
+  write "<!> Failed (1004;5005.2) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_ONESHOT_CHDTASK_ERR_EID,"."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_50052, "F"
+endif
+
 wait 5
 
 write ";*********************************************************************"
-write ";  Step 3.13: Dump the Table Results Table."
+write ";  Step 3.14: Dump the Table Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl3_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl3_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2317,7 +2385,7 @@ write ";  Step 4.4: Dump the Table Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_4","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_4",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2489,7 +2557,7 @@ write ";  Step 4.8: Dump the Table Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_8","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_8",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2632,7 +2700,7 @@ write ";  Step 4.12: Dump the Table Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_12","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_12",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2740,7 +2808,7 @@ write ";  Step 4.15: Dump the Table Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_15","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_15",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2916,7 +2984,7 @@ write ";  Step 4.20: Dump the Table Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_20","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_20",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3042,7 +3110,7 @@ write ";  Step 4.24: Dump the Table Results table. "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_24","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_24",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3185,7 +3253,7 @@ write ";  Step 4.28: Dump the Table Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_28","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_28",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3292,7 +3360,7 @@ write ";  Step 4.31: Dump the Table Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_31","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl4_31",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3355,7 +3423,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("tbldefemptytable", "$CPU")
+start load_table ("tbldefemptytable", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3446,7 +3514,7 @@ write ";  Step 5.5: Dump the Tables Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl5_5","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl5_5",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3474,7 +3542,7 @@ write ";  Step 5.7: Send the command to load the invalid file created above."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("tbl_def_tbl_invalid", "$CPU")
+start load_table ("tbl_def_tbl_invalid", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3548,7 +3616,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("tbl_def_tbl_ld_2", "$CPU")
+start load_table ("tbl_def_tbl_ld_2", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3640,11 +3708,11 @@ write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 2
 
 ;; Dump the Definition Table
-s get_tbl_to_cvt (ramDir,tblDefTblName,"A","$cpu_deftbl5_13","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,tblDefTblName,"A","$cpu_deftbl5_13",hostCPU,defTblId)
 wait 5
 
 ;; Dump the Definition Table
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl5_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl5_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3834,7 +3902,7 @@ write ";  Step 6.6: Dump the Table Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl6_6","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl6_6",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3892,7 +3960,7 @@ local loopCtr = 1
 local segmentedCRC=FALSE
 
 while (keepDumpingResults = FALSE) do
-  s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl6_8","$CPU",resTblId)
+  s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl6_8",hostCPU,resTblId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -3936,7 +4004,7 @@ write ";*********************************************************************"
 write ";  Step 7.2: Delete the Table Definition table default load file from "
 write ";  $CPU. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","na",tableFileName,"$CPU","R")
+s ftp_file ("CF:0/apps","na",tableFileName,hostCPU,"R")
 
 write ";*********************************************************************"
 write ";  Step 7.3: Start the CS Application. "
@@ -3948,7 +4016,7 @@ write ";  Step 7.4: Dump the Table Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl7_4","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,tblResTblName,"A","$cpu_tblrestbl7_4",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3966,7 +4034,7 @@ write ";*********************************************************************"
 write ";  Step 8.1: Upload the default Tables Definition table downloaded in "
 write ";       step 1.1. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","cs_tablestbl.tblORIG",tableFileName,"$CPU","P")
+s ftp_file ("CF:0/apps","cs_tablestbl.tblORIG",tableFileName,hostCPU,"P")
 
 write ";*********************************************************************"
 write ";  Step 8.2: Send the Power-On Reset command. "
@@ -3975,9 +4043,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"
