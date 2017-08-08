@@ -125,8 +125,7 @@ void CS_ResetCmd_Test(void)
 void CS_BackgroundCheckCmd_Test_InvalidMsgLength(void)
 {
     CS_NoArgsCmd_t   CmdPacket;
-
-    CFE_SB_InitMsg (&CmdPacket, CS_CMD_MID, 10, TRUE);
+    CFE_SB_InitMsg (&CmdPacket, CS_CMD_MID, 10, FALSE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, 1);
 
     /* Execute the function being tested */
@@ -913,7 +912,7 @@ void CS_Cmds_Test_AddTestCases(void)
     UtTest_Add(CS_NoopCmd_Test, CS_Test_Setup, CS_Test_TearDown, "CS_NoopCmd_Test");
 
     UtTest_Add(CS_ResetCmd_Test, CS_Test_Setup, CS_Test_TearDown, "CS_ResetCmd_Test");
-    
+
     UtTest_Add(CS_BackgroundCheckCmd_Test_InvalidMsgLength, CS_Test_Setup, CS_Test_TearDown, "CS_BackgroundCheckCmd_Test_InvalidMsgLength");
     UtTest_Add(CS_BackgroundCheckCmd_Test_BackgroundCfeCore, CS_Test_Setup, CS_Test_TearDown, "CS_BackgroundCheckCmd_Test_BackgroundCfeCore");
     UtTest_Add(CS_BackgroundCheckCmd_Test_BackgroundOS, CS_Test_Setup, CS_Test_TearDown, "CS_BackgroundCheckCmd_Test_BackgroundOS");
@@ -923,7 +922,7 @@ void CS_Cmds_Test_AddTestCases(void)
     UtTest_Add(CS_BackgroundCheckCmd_Test_BackgroundApp, CS_Test_Setup, CS_Test_TearDown, "CS_BackgroundCheckCmd_Test_BackgroundApp");
     UtTest_Add(CS_BackgroundCheckCmd_Test_Default, CS_Test_Setup, CS_Test_TearDown, "CS_BackgroundCheckCmd_Test_Default");
     UtTest_Add(CS_BackgroundCheckCmd_Test_Disabled, CS_Test_Setup, CS_Test_TearDown, "CS_BackgroundCheckCmd_Test_Disabled");
-    
+
     UtTest_Add(CS_DisableAllCSCmd_Test, CS_Test_Setup, CS_Test_TearDown, "CS_DisableAllCSCmd_Test");
 
     UtTest_Add(CS_EnableAllCSCmd_Test, CS_Test_Setup, CS_Test_TearDown, "CS_EnableAllCSCmd_Test");
