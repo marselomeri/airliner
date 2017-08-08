@@ -124,6 +124,8 @@ extern "C" {
  **
  */
 #define EA_CHILD_TASK_PRIORITY              100
+#define EA_APP_UTIL_THRESHOLD	70
+#define EA_APP_NUM_THREADS		2
 
 #ifdef __cplusplus
 }
