@@ -13,13 +13,12 @@
 !       HISTORY:
 !
 !  27FEB08     WFM           : Initial
+!  02MAR17     WFM           : Updated OneShot command to add rate argument
 !
 !=============================================================================
 !
-#include "osconfig.h"
-#include "cfe_mission_cfg.h"
-
-#define TBL_NAME_LEN (OS_MAX_API_NAME + CFE_TBL_MAX_NAME_LENGTH + 2)
+!! OS_MAX_PATH_LEN is defined in the osconfig.h file
+!! TBL_NAME_LEN is defined in the cfe_cmd_types.rdl file
 
 CLASS Pxxxx APID=nnnn, DESC="$sc $cpu Checksum App Commands"
 !
@@ -30,6 +29,7 @@ CLASS Pxxxx APID=nnnn, DESC="$sc $cpu Checksum App Commands"
   CMDS  $sc_$cpu_CS_OneShot         FCTN=2, DESC="$sc $cpu CS One Shot command code"
       ULI Address	DESC="The memory address where to start checksumming"
       ULI RegionSize	DESC="The size (in bytes) of the region to caclulate the checksum"
+      ULI MaxBytes	DESC="The maximum number of bytes to compute per cycle. "
   END
 !
   CMD  $sc_$cpu_CS_CancelOneShot    FCTN=3, DESC="$sc $cpu CS Cancel One Shot command code"
@@ -59,19 +59,19 @@ CLASS Pxxxx APID=nnnn, DESC="$sc $cpu Checksum App Commands"
   CMD  $sc_$cpu_CS_DisableEeprom    FCTN=15, DESC="$sc $cpu CS Disable All Eeprom Checksumming command code"
 !
   CMDS  $sc_$cpu_CS_ReportEeprom    FCTN=16, DESC="$sc $cpu Report EEPROM Segment Checksum command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_RecomputeEeprom FCTN=17, DESC="$sc $cpu Recompute EEPROM Segment Checksum command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_EnableEepromEntry FCTN=18, DESC="$sc $cpu Enable EEPROM Segment Checksumming command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_DisableEepromEntry FCTN=19, DESC="$sc $cpu Disable EEPROM Segment Checksumming command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_GetEepromEntryID FCTN=20, DESC="$sc $cpu Get EEPROM Entry ID command code"
@@ -83,19 +83,19 @@ CLASS Pxxxx APID=nnnn, DESC="$sc $cpu Checksum App Commands"
   CMD  $sc_$cpu_CS_DisableMemory    FCTN=22, DESC="$sc $cpu CS Disable All User-Defined Memory Checksumming command code"
 !
   CMDS  $sc_$cpu_CS_ReportMemory    FCTN=23, DESC="$sc $cpu Report User-defined Memory Segment Checksum command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_RecomputeMemory FCTN=24, DESC="$sc $cpu Recompute User-defined Memory Segment Checksum command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_EnableMemoryEntry FCTN=25, DESC="$sc $cpu Enable User-defined Memory Segment Checksumming command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_DisableMemoryEntry FCTN=26, DESC="$sc $cpu Disable User-defined Memory Segment Checksumming command code"
-      UI EntryID	DESC="The ID of the entry to perform this command on"
+      ULI EntryID	DESC="The ID of the entry to perform this command on"
   END
 !
   CMDS  $sc_$cpu_CS_GetMemoryEntryID FCTN=27, DESC="$sc $cpu Get User-defined Memory Entry ID command code"

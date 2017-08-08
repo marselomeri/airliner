@@ -42,7 +42,7 @@ TYPES
       UB  CSOwned	DESC="Flag indicating whether the CS Application owns this table",
 			DISCRETE,DRANGE=(0,1),DLABEL=("FALSE","TRUE")
       char NAME[TBL_NAME_LEN] DESC="The name of the table associated with this entry"
-      char spare	DESC="Spare for alignment"
+      UB spare		DESC="Spare for alignement"
    END
 END_TYPES
 

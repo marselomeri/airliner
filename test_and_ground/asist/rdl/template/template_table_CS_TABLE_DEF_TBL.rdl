@@ -24,7 +24,7 @@
 !
 #include "cs_platform_cfg.h"
 !
-#define TBL_NAME_LEN (OS_MAX_API_NAME + CFE_TBL_MAX_NAME_LENGTH + 2)
+!! TBL_NAME_LEN is defined in the cfe_types.rdl file
 !
 TYPES
    RECORD $sc_$cpu_CS_TBL_DEF_ENTRY_TYPE  DESC="$sc $cpu Checksum Table Definition Table Entry Type"
