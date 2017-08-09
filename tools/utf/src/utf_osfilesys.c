@@ -201,7 +201,7 @@ void UTF_add_volume(char *DeviceName, char *PhysDevName, uint32 VolumeType, uint
              OS_FS_DRIVE_NOT_CREATED if the OS calls to create the the drive failed
              OS_FS_SUCCESS on creating the disk
 ---------------------------------------------------------------------------------------*/
-int32 OS_mkfs (char *address, char *devname,char * volname, uint32 blocksize,
+int32 OS_mkfs (char *address, const char *devname, const char * volname, uint32 blocksize,
                uint32 numblocks)
 {
     int i;
@@ -249,7 +249,7 @@ int32 OS_mkfs (char *address, char *devname,char * volname, uint32 blocksize,
              OS_FS_DRIVE_NOT_CREATED if the OS calls to create the the drive failed
              OS_FS_SUCCESS on creating the disk
 ---------------------------------------------------------------------------------------*/
-int32 OS_initfs (char *address,char *devname, char *volname, 
+int32 OS_initfs (char *address, const char *devname, const char *volname,
                 uint32 blocksize, uint32 numblocks)
 {
     int i;
@@ -306,7 +306,7 @@ int32 OS_initfs (char *address,char *devname, char *volname,
     Purpose: mounts a drive.
 
 ---------------------------------------------------------------------------------------*/
-int32 OS_mount (const char *devname, char* mountpoint)
+int32 OS_mount (const char *devname, const char* mountpoint)
 {
    int i;
    /* find the device in the table */
