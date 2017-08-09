@@ -10,107 +10,122 @@ PROC $sc_$cpu_cs_usermem
 ;	handles anomolies properly.
 ;
 ;  Requirements Tested
-;    cCS1002	For all CS commands, if the length contained in the message
+;    CS1002	For all CS commands, if the length contained in the message
 ;		header is not equal to the expected length, CS shall reject the
 ;		command and issue an event message.
-;    cCS1003	If CS accepts any command as valid, CS shall execute the
+;    CS1003	If CS accepts any command as valid, CS shall execute the
 ;		command, increment the CS Valid Command Counter and issue an
 ;		event message.
-;    cCS1004	If CS rejects any command, CS shall abort the command execution,
+;    CS1004	If CS rejects any command, CS shall abort the command execution,
 ;		increment the CS Command Rejected Counter and issue an event
 ;		message.
-;    cCS2003    Upon receipt of a Disable Non-volatile Checksumming command,
+;    CS2003	Upon receipt of a Disable Non-volatile Checksumming command,
 ;               CS shall disable non-volatile checksumming.
-;    cCS3003	Upon receipt of a Disable OS Checksumming command, CS shall 
+;    CS3003	Upon receipt of a Disable OS Checksumming command, CS shall 
 ;		disable checksumming of the OS Code segment.
-;    cCS3008	Upon receipt of a Disable cFE code segment command, CS shall
+;    CS3008	Upon receipt of a Disable cFE code segment command, CS shall
 ;		disable checksumming of the cFE code segment.
-;    cCS4002    Upon receipt of a Disable Application checksumming command, CS
+;    CS4002	Upon receipt of a Disable Application checksumming command, CS
 ;               shall disable checksumming of all Application code segments.
-;    cCS5002    Upon receipt of a Disable Table Checksumming command, CS shall
+;    CS5002	Upon receipt of a Disable Table Checksumming command, CS shall
 ;               disable checksumming of all tables.
-;    cCS6000    Checksum shall calculate CRCs for each Table-Defined 
+;    CS6000	Checksum shall calculate CRCs for each Table-Defined 
 ;		User-Defined Memory and compare them against the corresponding
 ;		baseline CRCs if: 
-;                       a. Checksumming (as a whole) is Enabled 
-;                       b. User-Defined Memory checksumming is Enabled
-;                       c. Checksumming of the individual Memory segments
+;                       a) Checksumming (as a whole) is Enabled 
+;                       b) User-Defined Memory checksumming is Enabled
+;                       c) Checksumming of the individual Memory segments
 ;                          is Enabled
-;    cCS6000.1  If the User-Defined Memory's CRC is not equal to the 
+;    CS6000.1	If the User-Defined Memory's CRC is not equal to the 
 ;               corresponding baseline CRC, CS shall increment the User-Defined
 ;               Memory CRC Miscompare Counter and send an event message.
-;    cCS6000.2  If the table-defined Memory is invalid, CS shall send an event
+;    CS6000.2	If the table-defined Memory is invalid, CS shall send an event
 ;		message.
-;    cCS6001	Upon receipt of an Enable User-Defined Memory checksumming
+;    CS6001	Upon receipt of an Enable User-Defined Memory checksumming
 ;		command, CS shall enable checksumming of all User-Defined
 ;		Memory.
-;    cCS6002	Upon receipt of a Disable User-Defined Memory checksumming
+;    CS6002	Upon receipt of a Disable User-Defined Memory checksumming
 ;		command, CS shall disable checksumming of all User-Defined
 ;		Memory.
-;    cCS6003	Upon receipt of an Enable User-Defined Memory Item command, CS
+;    CS6003	Upon receipt of an Enable User-Defined Memory Item command, CS
 ;		shall enable checksumming of command-specified Memory.
-;    cCS6004	Upon receipt of a Disable User-Defined Memory Item command, CS
+;    CS6004	Upon receipt of a Disable User-Defined Memory Item command, CS
 ;		shall disable checksumming of command-specified Memory.
-;    cCS6005	Upon receipt of a Recompute User-Defined Memory checksum
-;		command, CS shall recompute the baseline checksum for the
-;		command-specified User-Defined Memory.
-;    cCS6005.1	Once the baseline CRC is computed, CS shall generate an event
-;		message containing the baseline CRC.
-;    cCS6005.2	If CS is already processing a Recompute CRC command, CS shall
-;		reject the command.
-;    cCS6006	Upon receipt of a Recompute User-Defined Memory CRC command, CS
+;    CS6005	Upon receipt of a Recompute User-Defined Memory checksum
+;		command, CS shall:
+;			a) Recompute the baseline checksum for the
+;			   command-specified User-Defined Memory
+;			b) Set the Recompute In Progress Flag to TRUE
+;    CS6005.1	Once the baseline CRC is computed, CS shall:
+;			a) Generate an event message containing the baseline CRC
+;			b) Set the Recompute In Progress Flag to TRUE
+;    CS6005.2	If CS is already processing a Recompute CRC command or a One
+;		Shot CRC command, CS shall reject the command.
+;    CS6006	Upon receipt of a Report User-Defined Memory CRC command, CS
 ;		shall send an event message containing the baseline User-Defined
 ;		Memory CRC.
-;    cCS6007	If the command-specified User-Defined Memory is invalid (for any
+;    CS6007	If the command-specified User-Defined Memory is invalid (for any
 ;		of the User-Defined Memory commands where the memory ID is a
 ;		command argument), CS shall reject the command and send an event
 ;		message.
-;    cCS6008	CS shall provide the ability to dump the baseline CRCs and
+;    CS6008	CS shall provide the ability to dump the baseline CRCs and
 ;		status for all User-Defined Memory via a dump-only table.
-;    cCS7000    The CS software shall limit the amount of bytes processed during
+;    CS6009	Upon receipt of a Get User-Defined Memory Entry ID command, CS
+;		shall send an informational message containing the User-Defined
+;		Memory Table Entry ID for the command-specified Memory Address.
+;    CS6009.1	If the command-specified Memory Address cannot be found within
+;		the User-Defined Memory Table, CS shall send an informational
+;		event message.
+;    CS7000	The CS software shall limit the amount of bytes processed during
 ;               each of its execution cycles to a maximum of <PLATFORM_DEFINED>
 ;               bytes.
-;    cCS8000	Upon receipt of an Enable Checksum command, CS shall start
+;    CS8000	Upon receipt of an Enable Checksum command, CS shall start
 ;		calculating CRCs and compare them against the baseline CRCs.
-;    cCS8001	Upon receipt of a Disable Checksum command, CS shall stop
+;    CS8001	Upon receipt of a Disable Checksum command, CS shall stop
 ;		calculating CRCs and comparing them against the baseline CRCs.
-;    cCS9000	CS shall generate a housekeeping message containing the
+;    CS9000	CS shall generate a housekeeping message containing the
 ;		following:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Overall CRC enable/disable status
-;			d. Total Non-Volatile Baseline CRC
-;			e. OS code segment Baseline CRC
-;			f. cFE code segment Baseline CRC
-;			g. Non-Volatile CRC Miscompare Counter
-;			h. OS Code Segment CRC Miscompare Counter
-;			i. cFE Code Segment CRC Miscompare Counter
-;			j. Application CRC Miscompare Counter
-;			k. Table CRC Miscompare Counter
-;			l. User-Defined Memory CRC Miscompare Counter
-;			m. Last One Shot Address
-;			n. Last One Shot Size
-;			o. Last One Shot Checksum
-;			p. Checksum Pass Counter (number of passes thru all of
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Overall CRC enable/disable status
+;			d) Total Non-Volatile Baseline CRC
+;			e) OS code segment Baseline CRC
+;			f) cFE code segment Baseline CRC
+;			g) Non-Volatile CRC Miscompare Counter
+;			h) OS Code Segment CRC Miscompare Counter
+;			i) cFE Code Segment CRC Miscompare Counter
+;			j) Application CRC Miscompare Counter
+;			k) Table CRC Miscompare Counter
+;			l) User-Defined Memory CRC Miscompare Counter
+;			m) Last One Shot Address
+;			n) Last One Shot Size
+;			o) Last One Shot Checksum
+;			p) Checksum Pass Counter (number of passes thru all of
 ;			   the checksum areas)
-;			q. Current Checksum Region (Non-Volatile, OS code
+;			q) Current Checksum Region (Non-Volatile, OS code
 ;			   segment, cFE Code Segment etc)
-;			r. Non-Volatile CRC enable/disable status
-;			s. OS Code Segment CRC enable/disable status
-;			t. cFE Code Segment CRC enable/disable status
-;			u. Application CRC enable/disable status
-;			v. Table CRC enable/disable status
-;			w. User-Defined Memory CRC enable/disable status
-;    cCS9001	Upon initialization of the CS Application, CS shall initialize
-;		the following data to Zero:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Non-Volatile CRC Miscompare Counter
-;			d. OS Code Segment CRC Miscompare Counter
-;			e. cFE Code Segment CRC Miscompare Counter
-;			f. Application CRC Miscompare Counter
-;			g. Table CRC Miscompare Counter
-;			h. User-Defined Memory CRC Miscompare Counter
+;			r) Non-Volatile CRC enable/disable status
+;			s) OS Code Segment CRC enable/disable status
+;			t) cFE Code Segment CRC enable/disable status
+;			u) Application CRC enable/disable status
+;			v) Table CRC enable/disable status
+;			w) User-Defined Memory CRC enable/disable status
+;			x) Last One Shot Rate
+;			y) Recompute In Progress Flag
+;			z) One Shot In Progress Flag
+;    CS9001     Upon any initialization of the CS Application (cFE Power On, cFE
+;               Processor Reset or CS Application Reset), CS shall initialize
+;               the following data to Zero:
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Non-Volatile CRC Miscompare Counter
+;			d) OS Code Segment CRC Miscompare Counter
+;			e) cFE Code Segment CRC Miscompare Counter
+;			f) Application CRC Miscompare Counter
+;			g) Table CRC Miscompare Counter
+;			h) User-Defined Memory CRC Miscompare Counter
+;			i) Recompute In Progress Flag
+;			j) One Shot In Progress Flag
 ;
 ;  Prerequisite Conditions
 ;	The CFS is up and running and ready to accept commands.
@@ -126,9 +141,12 @@ PROC $sc_$cpu_cs_usermem
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	10/16/08	Walt Moleski	Original Procedure.
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -188,13 +206,15 @@ local logging = %liv (log_procedure)
 #define CS_6006		18
 #define CS_6007		19
 #define CS_6008		20
-#define CS_7000		21
-#define CS_8000		22
-#define CS_8001		23
-#define CS_9000		24
-#define CS_9001		25
+#define CS_6009		21
+#define CS_60091	22
+#define CS_7000		23
+#define CS_8000		24
+#define CS_8001		25
+#define CS_9000		26
+#define CS_9001		27
 
-global ut_req_array_size = 25
+global ut_req_array_size = 27
 global ut_requirement[0 .. ut_req_array_size]
 
 for i = 0 to ut_req_array_size DO
@@ -204,7 +224,7 @@ enddo
 ;**********************************************************************
 ; Set the local values
 ;**********************************************************************
-local cfe_requirements[0 .. ut_req_array_size] = ["CS_1002", "CS_1003", "CS_1004", "CS_2003", "CS_3003", "CS_3008", "CS_4002", "CS_5002", "CS_6000", "CS_6000.1", "CS_6000.2", "CS_6001", "CS_6002", "CS_6003", "CS_6004", "CS_6005", "CS_6005.1", "CS_6005.2", "CS_6006", "CS_6007", "CS_6008", "CS_7000", "CS_8000", "CS_8001", "CS_9000", "CS_9001" ]
+local cfe_requirements[0 .. ut_req_array_size] = ["CS_1002", "CS_1003", "CS_1004", "CS_2003", "CS_3003", "CS_3008", "CS_4002", "CS_5002", "CS_6000", "CS_6000.1", "CS_6000.2", "CS_6001", "CS_6002", "CS_6003", "CS_6004", "CS_6005", "CS_6005.1", "CS_6005.2", "CS_6006", "CS_6007", "CS_6008", "CS_6009", "CS_6009.1", "CS_7000", "CS_8000", "CS_8001", "CS_9000", "CS_9001" ]
 
 ;**********************************************************************
 ; Define local variables
@@ -215,6 +235,7 @@ LOCAL defTblId, defPktId, resTblId, resPktId
 local i,segIndex,foundSeg,ramAddress
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 local memDefTblName = CSAppName & "." & CS_DEF_MEMORY_TABLE_NAME
 local memResTblName = CSAppName & "." & CS_RESULTS_MEMORY_TABLE_NAME
 
@@ -225,18 +246,6 @@ resTblId = "0FB1"
 defPktId = 4013
 resPktId = 4017
 
-if ("$CPU" = "CPU2") then
-  defTblId = "0FCB"
-  resTblId = "0FCF"
-  defPktId = 4043
-  resPktId = 4047
-elseif ("$CPU" = "CPU3") then
-  defTblId = "0FEB"
-  resTblId = "0FEF"
-  defPktId = 4075
-  resPktId = 4079
-endif
-
 write ";*********************************************************************"
 write ";  Step 1.0: Checksum Non-Volatile Memory Test Setup."
 write ";*********************************************************************"
@@ -246,9 +255,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";*********************************************************************"
@@ -270,7 +279,7 @@ enddo
 write "==> Default Application Code Segment Table filename = '",tableFileName,"'"
 
 ;; Get the file in order to restore it in the cleanup steps
-s ftp_file ("CF:0/apps",tableFileName,"cs_mem_orig_tbl.tbl","$CPU","G")
+s ftp_file ("CF:0/apps",tableFileName,"cs_mem_orig_tbl.tbl",hostCPU,"G")
 
 write ";**********************************************************************"
 write ";  Step 1.3: Display the Housekeeping pages "
@@ -287,7 +296,7 @@ write ";********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_CS_MEMTBL", 1, "INFO", 2
 
-s load_start_app ("TST_CS_MEMTBL","$CPU","TST_CS_MemTblMain")
+s load_start_app ("TST_CS_MEMTBL",hostCPU,"TST_CS_MemTblMain")
 
 ;;  Wait for app startup events
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -306,12 +315,6 @@ endif
 ;; CPU1 is the default
 stream = x'0930'
 
-if ("$CPU" = "CPU2") then
-  stream = x'0A30'
-elseif ("$CPU" = "CPU3") then
-  stream = x'0B30'
-endif
-
 /$SC_$CPU_TO_ADDPACKET STREAM=stream PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 wait 5
 
@@ -324,12 +327,6 @@ wait 5
 ;; Verify the Housekeeping Packet is being generated
 ;; Set the HK packet ID based upon the cpu being used
 local hkPktId = "p0A4"
-
-if ("$CPU" = "CPU2") then
-  hkPktId = "p1A4"
-elseif ("$CPU" = "CPU3") then
-  hkPktId = "p2A4"
-endif
 
 ;; Verify the HK Packet is getting generated by waiting for the
 ;; sequencecount to increment twice
@@ -400,7 +397,7 @@ s $sc_$cpu_cs_mdt1
 wait 5
 
 ;; Load the file created above
-s load_table ("usrmem_def_ld_1", "$CPU")
+s load_table ("usrmem_def_ld_1", hostCPU)
 wait 5
 
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_INF_EID,"INFO", 1
@@ -449,7 +446,7 @@ wait 5
 write ";*********************************************************************"
 write ";  Step 1.9: Dump the User-defined Memory Definition Table."
 write ";*********************************************************************"
-s get_tbl_to_cvt (ramDir,memDefTblName,"A","$cpu_usrdeftbl1_9","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,memDefTblName,"A","$cpu_usrdeftbl1_9",hostCPU,defTblId)
 wait 5
 
 write ";*********************************************************************"
@@ -526,7 +523,7 @@ write ";  Step 2.1: Send the command to dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_1","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_1",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -612,7 +609,7 @@ write ";  Step 2.4: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_4","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_4",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -635,7 +632,7 @@ local loopCount=0
 local dumpFileName = "$cpu_usrrestbl2_5"
 
 while (keepDumpingResults = TRUE) do
-  s get_tbl_to_cvt (ramDir,memResTblName,"A",dumpFileName,"$CPU",resTblId)
+  s get_tbl_to_cvt (ramDir,memResTblName,"A",dumpFileName,hostCPU,resTblId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -708,7 +705,7 @@ endif
 
 ;; Dump the definition table to verify the entry's state was modified
 ;; This verifies DCR #18559
-s get_tbl_to_cvt (ramDir,memDefTblName,"A","$cpu_usrdeftbl2_6","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,memDefTblName,"A","$cpu_usrdeftbl2_6",hostCPU,defTblId)
 wait 5
 
 if (p@$SC_$CPU_CS_MEM_DEF_TABLE[segindex].State = "Disabled") then
@@ -725,7 +722,7 @@ write ";  disabled. "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_7","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_7",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -811,7 +808,7 @@ write ";  Step 2.10: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_10","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_10",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -826,6 +823,9 @@ endif
 write ";*********************************************************************"
 write ";  Step 2.11: Send the Recompute User-Defined Memory Entry command for"
 write ";  the segment specified in Steps above. "
+write ";*********************************************************************"
+write ";  Step 2.11.1: Send the Recompute User-Defined Memory Entry command "
+write ";  for the corrupted segment specified in above. "
 write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_MEMORY_STARTED_DBG_EID, "DEBUG", 1
 ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID, "INFO", 2
@@ -872,6 +872,82 @@ endif
 wait 5
 
 write ";*********************************************************************"
+write ";  Step 2.11.2: Send the Recompute User-Defined Memory Entry command "
+write ";  for a larger segment in order to test the Flag states "
+write ";*********************************************************************"
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_MEMORY_STARTED_DBG_EID, "DEBUG", 1
+ut_setupevents "$SC", "$CPU", {CSAppName}, CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID, "INFO", 2
+
+cmdCtr = $SC_$CPU_CS_CMDPC + 1
+;; Send the Command
+/$SC_$CPU_CS_RecomputeMemory EntryID=1
+
+ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1003;6005) - CS Recompute Memory Entry command sent properly."
+  ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6005, "P"
+else
+  write "<!> Failed (1003;6005) - CS Recompute Memory Entry command did not increment CMDPC."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6005, "F"
+endif
+
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1003;6005) - Expected Event Msg ",CS_RECOMPUTE_MEMORY_STARTED_DBG_EID," rcv'd."
+  ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6005, "P"
+else
+  write "<!> Failed (1003;6005) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_MEMORY_STARTED_DBG_EID,"."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6005, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to TRUE (6005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (6005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_6005, "P"
+else
+  write "<!> Failed (6005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_6005, "F"
+endif
+
+;; Check for the Completed event message
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 100
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1003;6005.1) - Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_60051, "P"
+else
+  write "<!> Failed (1003;6005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID,"."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_60051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (6005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (6005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_60051, "P"
+else
+  write "<!> Failed (6005.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_60051, "F"
+endif
+
+wait 5
+
+write ";*********************************************************************"
 write ";  Step 2.12: Send the Report User-Defined Memory Entry command for "
 write ";  the specified entry used in Steps above. "
 write ";*********************************************************************"
@@ -911,7 +987,7 @@ write ";  Step 2.13: Dump the Results table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl2_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -935,20 +1011,24 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory Entry ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory Entry ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory Entry ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory Entry ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
 if ($SC_$CPU_find_event[1].num_found_messages > 0) then
   write "<*> Passed (1003) - Expected Event Msg ",CS_GET_ENTRY_ID_MEMORY_INF_EID," rcv'd."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
   write "<!> Failed (1003) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_GET_ENTRY_ID_MEMORY_INF_EID,"."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 wait 5
@@ -966,12 +1046,6 @@ rawcmd = ""
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000021599"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000021599"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000021599"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1007,12 +1081,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000021698"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000021698"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000021698"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1046,12 +1114,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000041966"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000041926"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000041926"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1122,12 +1184,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000041A77"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000041A77"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000041A77"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1196,12 +1252,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000041855"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000041855"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000041855"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1272,12 +1322,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000041744"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000041744"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000041744"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1347,12 +1391,6 @@ errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000061B22"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000061B22"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000061B22"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1388,13 +1426,15 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}, 5
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1004;6007) - CS Get User-defined Memory ID command with invalid address sent properly."
+  write "<*> Passed (1004;6007;6009.1) - CS Get User-defined Memory ID command with invalid address sent properly."
   ut_setrequirements CS_1004, "P"
   ut_setrequirements CS_6007, "P"
+  ut_setrequirements CS_60091, "P"
 else
-  write "<!> Failed (1004;6007) - CS Get User-defined Memory  ID command with invalid address did not increment CMDPC as expected."
+  write "<!> Failed (1004;6007;6009.1) - CS Get User-defined Memory  ID command with invalid address did not increment CMDPC as expected."
   ut_setrequirements CS_1004, "F"
   ut_setrequirements CS_6007, "F"
+  ut_setrequirements CS_60091, "F"
 endif
 
 ;; Check for the event message
@@ -1416,7 +1456,7 @@ write ";  Step 3.13: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl3_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl3_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1458,11 +1498,36 @@ else
   ut_setrequirements CS_60052, "F"
 endif
 
-;; Verify the HK Telemetry indicating the Child and One Shot Task are in use
-write "; Child Task Flag = ",$sc_$cpu_cs_ChildTaskInUse
-write "; Child Task Flag = ",p@$sc_$cpu_cs_ChildTaskInUse
-write "; One Shot Task Flag = ",$sc_$cpu_cs_OneShotTaskInUse
-write "; One Shot Task Flag = ",p@$sc_$cpu_cs_OneShotTaskInUse
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004) - Expected Event Msg ",CS_RECOMPUTE_MEMORY_CHDTASK_ERR_EID," rcv'd."
+  ut_setrequirements CS_1004, "P"
+else
+  write "<!> Failed (1004) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_MEMORY_CHDTASK_ERR_EID,"."
+  ut_setrequirements CS_1004, "F"
+endif
+
+write ";*********************************************************************"
+write ";  Step 3.16: Send the One Shot CRC command. Verify that this command "
+write ";  fails since only 1 Recompute or One Shot can occur at the same time. "
+write ";*********************************************************************"
+ut_setupevents "$SC","$CPU",{CSAppName}, CS_ONESHOT_CHDTASK_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=2048
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;6005.2) - One Shot CRC command failed as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_60052, "P"
+else
+  write "<!> Failed (1004;6005.2) - One Shot CRC command did not increment CMDEC."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_60052, "F"
+endif
 
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
@@ -1486,6 +1551,20 @@ else
   ut_setrequirements CS_60051, "F"
 endif
 
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (6005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (6005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_60051, "P"
+else
+  write "<!> Failed (6005.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_60051, "F"
+endif
+
 wait 5
 
 write ";*********************************************************************"
@@ -1495,7 +1574,7 @@ write ";  Step 4.1: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_1","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_1",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1633,7 +1712,7 @@ write ";  Step 4.5: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_5","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_5",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1740,11 +1819,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait  $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -1816,7 +1897,7 @@ write ";  Step 4.10: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_10","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_10",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1923,11 +2004,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -2033,7 +2116,7 @@ write ";  Step 4.16: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_16","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_16",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2140,11 +2223,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -2216,7 +2301,7 @@ write ";  Step 4.21: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_21","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_21",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2323,11 +2408,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -2467,7 +2554,7 @@ write ";  Step 4.28: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_28","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_28",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2574,11 +2661,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -2650,7 +2739,7 @@ write ";  Step 4.33: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_33","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_33",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2757,11 +2846,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -2867,7 +2958,7 @@ write ";  Step 4.39: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_39","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_39",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2974,11 +3065,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -3050,7 +3143,7 @@ write ";  Step 4.44: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_44","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl4_44",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3157,11 +3250,13 @@ cmdCtr = $SC_$CPU_CS_CMDPC + 1
 
 ut_tlmwait $SC_$CPU_CS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed (1003) - CS Get User-defined Memory ID command sent properly."
+  write "<*> Passed (1003;6009) - CS Get User-defined Memory ID command sent properly."
   ut_setrequirements CS_1003, "P"
+  ut_setrequirements CS_6009, "P"
 else
-  write "<!> Failed (1003) - CS Get User-defined Memory ID command did not increment CMDPC."
+  write "<!> Failed (1003;6009) - CS Get User-defined Memory ID command did not increment CMDPC."
   ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_6009, "F"
 endif
 
 ;; Check for at least one event message
@@ -3191,7 +3286,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("usrmemdefemptytbl", "$CPU")
+start load_table ("usrmemdefemptytbl", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3277,7 +3372,7 @@ write ";  Step 5.6: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl5_6","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl5_6",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3306,7 +3401,7 @@ write ";  Step 5.8.1: Send the command to load the invalid file."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("usrmem_def_invalid", "$CPU")
+start load_table ("usrmem_def_invalid", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3394,7 +3489,7 @@ write ";  Step 5.8.4: Send the command to load the second invalid file."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("usrmem_def_invalid2", "$CPU")
+start load_table ("usrmem_def_invalid2", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3482,7 +3577,7 @@ write ";  Step 5.8.7: Send the command to load the third invalid file."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("usrmem_def_invalid3", "$CPU")
+start load_table ("usrmem_def_invalid3", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3580,7 +3675,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("usrmem_def_ld_2", "$CPU")
+start load_table ("usrmem_def_ld_2", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3669,7 +3764,7 @@ write ";  Step 5.13: Dump the Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl5_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl5_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3833,7 +3928,7 @@ local loopCtr = 1
 local segmentedCRC=FALSE
 
 while (keepDumpingResults = FALSE) do
-  s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl6_5","$CPU",resTblId)
+  s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl6_5",hostCPU,resTblId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -3878,7 +3973,7 @@ write ";*********************************************************************"
 write ";  Step 7.2: Delete the User-defined Memory Definition table default "
 write ";  load file from $CPU. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","na",tableFileName,"$CPU","R")
+s ftp_file ("CF:0/apps","na",tableFileName,hostCPU,"R")
 
 write ";*********************************************************************"
 write ";  Step 7.3: Start the CS and TST_CS applications. "
@@ -3890,7 +3985,7 @@ write ";  Step 7.4: Dump the Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl7_4","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,memResTblName,"A","$cpu_usrrestbl7_4",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3908,7 +4003,7 @@ write ";*********************************************************************"
 write ";  Step 8.1: Upload the default User-defined Memory Definition file "
 write ";  downloaded in step 1.1. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","cs_mem_orig_tbl.tbl",tableFileName,"$CPU","P")
+s ftp_file ("CF:0/apps","cs_mem_orig_tbl.tbl",tableFileName,hostCPU,"P")
 
 write ";*********************************************************************"
 write ";  Step 8.2: Send the Power-On Reset command. "
@@ -3917,9 +4012,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"

@@ -88,10 +88,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to)
 
-add_airliner_app(
-    ea
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ea/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ea)
+
 
 
 

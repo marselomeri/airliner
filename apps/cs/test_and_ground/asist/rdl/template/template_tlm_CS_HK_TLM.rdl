@@ -20,6 +20,7 @@
 !       HISTORY: 
 !
 !  2008/06/25  WFM	: Initial
+!  2017/03/02  WFM	: Updated HK for CS 2.4.0.0
 !
 !==============================================================================
 !
@@ -63,7 +64,15 @@ PACKET Pxxxx APID=nnnn, DESC="$sc $cpu CS Telemetry Data Packet",
                                DISCRETE, DRANGE=(1,2),
 			       DLABEL=("Enabled","Disabled")
 !
-  UB   $sc_$cpu_CS_Filler[3]      DESC="$sc $cpu spare for alignment"
+  UB   $sc_$cpu_CS_RecomputeInProgress DESC="$sc $cpu CS Recompute in progress flag",
+                               DISCRETE, DRANGE=(0,1),
+			       DLABEL=("False","True")
+!
+  UB  $sc_$cpu_CS_OneShotInProgress DESC="$sc $cpu CS One Shot in progress flag",
+                               DISCRETE, DRANGE=(0,1),
+			       DLABEL=("False","True")
+!
+  UB   $sc_$cpu_CS_Filler      DESC="$sc $cpu spare for alignment"
 !
   UI   $sc_$cpu_CS_EepromEC    DESC="$sc $cpu CS Eeprom CRC Miscompare Counter"
 !
@@ -92,6 +101,7 @@ PACKET Pxxxx APID=nnnn, DESC="$sc $cpu CS Telemetry Data Packet",
   ULI  $sc_$cpu_CS_LastOneShotAddr DESC="$sc $cpu CS starting address for the last one shot command"
 !
   ULI  $sc_$cpu_CS_LastOneShotSize DESC="$sc $cpu CS size (in bytes) used in the last one shot command"
+  ULI  $sc_$cpu_CS_LastOneShotRate DESC="$sc $cpu CS Max bytes per cycle for the last one shot command"
 !
   ULI  $sc_$cpu_CS_LastOneShotCRC  DESC="$sc $cpu CS CRC caclulated by the last one shot command"
 !
