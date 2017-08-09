@@ -12,7 +12,7 @@ add_airliner_app_def(hk
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 )
 
-add_airliner_app_unit_test(HK-UT
+add_airliner_app_unit_test(hk-ut
     UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_app_test.c
