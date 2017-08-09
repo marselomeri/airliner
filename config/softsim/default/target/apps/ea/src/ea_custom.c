@@ -212,95 +212,11 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	fclose(pid_stat);
 
 	procData.p_time = utime + stime;
-//	OS_printf("Utime: %llu\n", utime);
-//	OS_printf("Stime: %llu\n", stime);
-
 
 	return(procData);
 }
 
-uint8 EA_CalibrateTop(int32 pid)
-{
-	FILE *fp;
-	char output[1024];
-	char top_cmd_calibrate[80];
-	char *cpu_perc = "%CPU";
 
-	/* Generate top calibration command for PID */
-	snprintf(top_cmd_calibrate, sizeof(top_cmd_calibrate), "/usr/bin/top -b -n 1 -p %i | grep %%CPU", pid);
-
-	fp = popen(top_cmd_calibrate, "r");
-	if (fp == NULL) {
-		OS_printf("Failed to run command top\n" );
-		//exit(1);
-	}
-
-	int util_ndx = -1;
-	int count_ndx = 0;
-	/* Read the CPU% column header and get it's index in top output */
-	if (fgets(output, sizeof(output)-1, fp) != NULL)
-	{
-		for (char *tok = strtok(output," "); tok != NULL; tok = strtok(NULL, " "))
-		{
-			if (strcmp(tok, "%CPU") == 0)
-			{
-				util_ndx = count_ndx;
-				break;
-			}
-			count_ndx++;
-		}
-	}
-	else
-	{
-		// Calibration failed
-		OS_printf("Calibration faild\n");
-	}
-	pclose(fp);
-
-	return(util_ndx);
-}
-
-uint8 EA_GetPidUtil(int32 pid, uint8 util_ndx)
-{
-	FILE *fp;
-	char output[1024];
-	char top_cmd[80];
-	int util = -1;
-	int TOP_READ_LINE = 1;
-	/* Generate top command for PID */
-	snprintf(top_cmd, sizeof(top_cmd), "/usr/bin/top -p %i -d 1 -b -n 2 | grep %i", pid, pid);
-
-	fp = popen(top_cmd, "r");
-	if (fp == NULL) {
-		printf("Failed to run command\n" );
-		exit(1);
-	}
-
-	int output_line = 0;
-	int count_ndx = 0;
-	/* Read the output a line at a time - output it. */
-	while (fgets(output, sizeof(output)-1, fp) != NULL) {
-		if (output_line == TOP_READ_LINE)
-		{
-			for (char *tok = strtok(output," "); tok != NULL; tok = strtok(NULL, " "))
-			{
-				if (count_ndx == util_ndx)
-				{
-					util = atoi(tok);
-				}
-				count_ndx++;
-			}
-		}
-		output_line++;
-	}
-
-	OS_printf("Util: %i\n", util);
-
-	/* close */
-	pclose(fp);
-
-	return 0;
-}
 
 
 
