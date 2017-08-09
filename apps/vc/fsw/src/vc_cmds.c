@@ -37,7 +37,7 @@
 
 void VC_NoopCmd(CFE_SB_Msg_t* MsgPtr)
 {
-    uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t);
+    uint16 ExpectedLength = sizeof(VC_NoArgCmd_t);
 
     /* Verify command packet length */
     if (VC_VerifyCmdLength(MsgPtr, ExpectedLength))
@@ -59,14 +59,14 @@ void VC_NoopCmd(CFE_SB_Msg_t* MsgPtr)
 
 void VC_ResetCmd(CFE_SB_Msg_t* MsgPtr)
 {
-    uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t); 
+    uint16 ExpectedLength = sizeof(VC_NoArgCmd_t); 
 
     /* Verify command packet length */
     if (VC_VerifyCmdLength(MsgPtr, ExpectedLength))
     {
         VC_AppData.HkTlm.usCmdCnt = 0;
         VC_AppData.HkTlm.usCmdErrCnt = 0;
-        (void) CFE_EVS_SendEvent(VC_CMD_INF_EID, CFE_EVS_INFORMATION,
+        (void) CFE_EVS_SendEvent(VC_RESET_INF_EID, CFE_EVS_INFORMATION,
                             "Recvd RESET cmd");
                 
     }
@@ -78,7 +78,7 @@ void VC_ResetCmd(CFE_SB_Msg_t* MsgPtr)
 
 void VC_ReportHousekeeping(CFE_SB_Msg_t* MsgPtr)
 {
-    uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t); 
+    uint16 ExpectedLength = sizeof(VC_NoArgCmd_t); 
     uint16 i;
     
     /* Verify command packet length */
@@ -187,7 +187,7 @@ void VC_StartStreamingCmd(CFE_SB_Msg_t* MsgPtr)
 
 void VC_StopStreamingCmd(CFE_SB_Msg_t* MsgPtr)
 {
-    uint16 ExpectedLength = sizeof(VC_NoArgsCmd_t);
+    uint16 ExpectedLength = sizeof(VC_NoArgCmd_t);
 
     /* Verify command packet length */
     if (VC_VerifyCmdLength(MsgPtr, ExpectedLength))

@@ -2,6 +2,7 @@
 #include "vc_app_test.h"
 #include "vc_app.h"
 #include "vc_test_utils.h"
+#include "vc_msgids.h"
 
 #include "uttest.h"
 #include "ut_osapi_stubs.h"
@@ -227,38 +228,38 @@ void Test_VC_InitApp_Fail_InitData(void)
 /**
  * Test VC_InitApp(), fail init transmit.
  */
-void Test_VC_InitApp_Fail_InitTransmit(void)
-{
-    //int32 result = CFE_SUCCESS;
-    //int32 expected = CFE_TBL_ERR_INVALID_NAME;
+//void Test_VC_InitApp_Fail_InitTransmit(void)
+//{
+//    int32 result = CFE_SUCCESS;
+//    int32 expected = CFE_TBL_ERR_INVALID_NAME;
 
-    //Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, expected, 1);
+//    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = VC_InitApp();
+//    result = VC_InitApp();
 
     /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init transmit");
-}
+//  UtAssert_True (result == expected, "InitApp, fail init transmit");
+//}
 
 
 /* TODO */
 /**
  * Test VC_InitApp(), fail init devices
  */
-void Test_VC_InitApp_Fail_InitDevices(void)
-{
-    //int32 result = CFE_SUCCESS;
-    //int32 expected = CFE_ES_CDS_INVALID_NAME;
+//void Test_VC_InitApp_Fail_InitDevices(void)
+//{
+//    int32 result = CFE_SUCCESS;
+//    int32 expected = CFE_ES_CDS_INVALID_NAME;
 
     //Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCDS_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = VC_InitApp();
+//    result = VC_InitApp();
 
     /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init devices");
-}
+//    UtAssert_True (result == expected, "InitApp, fail init devices");
+//}
 
 
 /**
@@ -416,13 +417,15 @@ void Test_VC_AppMain_Nominal_Wakeup(void)
  */
 void Test_VC_AppMain_ProcessNewData_InvalidMsgID(void)
 {
-    VC_InData_t  InMsg;
+    VC_NoArgCmd_t InMsg;
+    
+    //VC_InData_t  InMsg;
     int32 DataPipe;
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it data to process. */
-    DataPipe = Ut_CFE_SB_CreatePipe("VC_DATA_PIPE");
-    CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(VC_InData_t), TRUE);
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(VC_NoArgCmd_t), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InMsg, DataPipe);
 
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
@@ -452,7 +455,7 @@ void Test_VC_ProcessNewAppCmds_InvalidCommand(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_SEND_TLM_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_HK_TLM_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -477,14 +480,14 @@ void Test_VC_ProcessNewAppCmds_InvalidCommand(void)
 void Test_VC_ProcessNewAppCmds_Noop_InvalidSize(void)
 {
     VC_NoArgCmd_t InSchMsg;
-    VC_AddMessageFlowCmd_t InNoopCmd;
+    VC_StartStreamCmd_t InNoopCmd;
     int32         DataPipe;
     int32         CmdPipe;
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_SEND_TLM_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_HK_TLM_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -516,7 +519,7 @@ void Test_VC_ProcessNewAppCmds_Noop_Nominal(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_SEND_TLM_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_HK_TLM_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -531,7 +534,7 @@ void Test_VC_ProcessNewAppCmds_Noop_Nominal(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
-    UtAssert_EventSent(VC_CMD_NOOP_EID, CFE_EVS_INFORMATION, "", "NOOP Cmd Event Sent");
+    UtAssert_EventSent(VC_NOOP_INF_EID, CFE_EVS_INFORMATION, "", "NOOP Cmd Event Sent");
 }
 
 
@@ -549,7 +552,7 @@ void Test_VC_ProcessNewAppCmds_Reset_Nominal(void)
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_SEND_TLM_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg (&InSchMsg, VC_HK_TLM_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -570,7 +573,7 @@ void Test_VC_ProcessNewAppCmds_Reset_Nominal(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
-    UtAssert_EventSent(VC_CMD_RESET_EID, CFE_EVS_INFORMATION, "", "RESET Cmd Event Sent");
+    UtAssert_EventSent(VC_RESET_INF_EID, CFE_EVS_INFORMATION, "", "RESET Cmd Event Sent");
 
     UtAssert_True(VC_AppData.HkTlm.usCmdCnt == 0, "VC_AppData.HkTlm.usCmdCnt == 0");
     UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt == 0, "VC_AppData.HkTlm.usCmdErrCnt == 0");
@@ -580,37 +583,37 @@ void Test_VC_ProcessNewAppCmds_Reset_Nominal(void)
 /**
  * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid Size
  */
-void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize(void)
-{
+//void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize(void)
+//{
 
-}
+//}
 
 /* TODO */
 /**
  * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid Address
  */
-void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress(void)
-{
+//void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress(void)
+//{
 
-}
+//}
 
 /* TODO */
 /**
  * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid (Null Address
  */
-void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
-{
+//void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
+//{
 
-}
+//}
 
 /* TODO */
 /**
  * Test VC_ProcessNewAppCmds(), Start Streaming command, Nominal
  */
-void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
-{
+//void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
+//{
 
-}
+//}
 
 /**
  * Test VC_ProcessNewAppCmds(), StopStreaming command, Invalid Size
@@ -618,14 +621,14 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
 void Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize(void)
 {
     VC_NoArgCmd_t InSchMsg;
-    VC_AddMessageFlowCmd_t InStopStreamingCmd;
+    VC_StartStreamCmd_t InStopStreamingCmd;
     int32         DataPipe;
     int32         CmdPipe;
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP,
        and gives it a command to process. */
     DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_SEND_TLM_MID, sizeof(InSchMsg), TRUE);
+    CFE_SB_InitMsg(&InSchMsg, VC_HK_TLM_MID, sizeof(InSchMsg), TRUE);
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
@@ -669,10 +672,10 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_InitApp_Fail_InitPipe");
     UtTest_Add(Test_VC_InitApp_Fail_InitData, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_InitApp_Fail_InitData");
-    UtTest_Add(Test_VC_InitApp_Fail_InitTransmit, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_InitApp_Fail_InitTransmit");
-    UtTest_Add(Test_VC_InitApp_Fail_InitDevices, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_InitApp_Fail_InitDevices");
+//    UtTest_Add(Test_VC_InitApp_Fail_InitTransmit, VC_Test_Setup, VC_Test_TearDown,
+//               "Test_VC_InitApp_Fail_InitTransmit");
+//    UtTest_Add(Test_VC_InitApp_Fail_InitDevices, VC_Test_Setup, VC_Test_TearDown,
+//               "Test_VC_InitApp_Fail_InitDevices");
     UtTest_Add(Test_VC_InitApp_FailTaskInstallDeleteHandler, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_InitApp_FailTaskInstallDeleteHandler");               
     UtTest_Add(Test_VC_InitApp_Nominal, VC_Test_Setup, VC_Test_TearDown,
@@ -699,14 +702,14 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_ProcessNewAppCmds_Noop_Nominal");                 
     UtTest_Add(Test_VC_ProcessNewAppCmds_Reset_Nominal, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_ProcessNewAppCmds_Reset_Nominal");   
-    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize");             
-    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress");            
-    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress");            
-    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_Nominal, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_ProcessNewAppCmds_StartStreaming_Nominal");           
+//    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
+//               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize");             
+//    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress, VC_Test_Setup, VC_Test_TearDown,
+//               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress");            
+//    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress, VC_Test_Setup, VC_Test_TearDown,
+//               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress");            
+//    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_Nominal, VC_Test_Setup, VC_Test_TearDown,
+//               "Test_VC_ProcessNewAppCmds_StartStreaming_Nominal");           
     UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize");
 }

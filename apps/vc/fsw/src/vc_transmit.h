@@ -32,7 +32,8 @@
 **  \par Description
 **       This function is called once at initialization and allows the
 **       custom layer to provide specific functionality to initialize
-**       internal objects.
+**       internal objects. Subsequent calls are made when a new 
+**       destination is initialized.
 **
 **  \par Assumptions, External Events, and Notes:
 **       This function must be defined, but not all custom

@@ -104,7 +104,7 @@ extern "C" {
 typedef struct
 {
     uint8                 CmdHeader[CFE_SB_CMD_HDR_SIZE];
-} VC_NoArgsCmd_t;
+} VC_NoArgCmd_t;
 
 
 /** 
