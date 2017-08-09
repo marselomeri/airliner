@@ -346,7 +346,7 @@ VC_InitApp_Exit_Tag:
             (void) CFE_ES_WriteToSysLog("VC - Application failed to initialize\n");
         }
     }
-    return(CFE_SUCCESS);
+    return(iStatus);
 } /* End of VC_AppInit() */
 
 

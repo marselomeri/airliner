@@ -47,7 +47,7 @@ FLIGHT_INC := -I$(APPDIR)/fsw/src \
 #
 UT_OBJS := vc_testrunner.o
 UT_OBJS += vc_app_test.o
-#UT_OBJS += vc_cmds_test.o
+UT_OBJS += vc_cmds_test.o
 #UT_OBJS += vc_config_tbl_test.o
 #UT_OBJS += vc_cds_tbl_test.o
 UT_OBJS += vc_test_utils.o
