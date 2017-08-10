@@ -12,6 +12,11 @@ typedef struct
     boolean VC_Devices_Stop_Return;
     boolean VC_Devices_Init_Return;
     boolean VC_Devices_Uninit_Return;
+    uint8   VC_Devices_Start_Return_Values;
+    uint8   VC_Devices_Stop_Return_Values;
+    uint8   VC_Devices_Init_Return_Values;
+    uint8   VC_Devices_Uninit_Return_Values;
+    uint8   VC_Devices_Start_CallCount;
 } VC_Device_Returns_t;
 
 

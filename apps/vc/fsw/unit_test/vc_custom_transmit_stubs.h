@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-
 typedef struct
 {
     boolean VC_Transmit_Init_Return;
@@ -13,6 +12,12 @@ typedef struct
     boolean VC_Address_Verification_Return;
     boolean VC_Update_Destination_Return;
     int32 VC_SendData_Return;
+    uint8   VC_Transmit_Init_Return_Values;
+    uint8   VC_Transmit_Uninit_Return_Values;
+    uint8   VC_Address_Verification_Return_Values;
+    uint8   VC_Update_Destination_Return_Values;
+    uint8   VC_SendData_Return_Values;
+    uint8   VC_Transmit_Init_CallCount;
 } VC_Transmit_Returns_t;
 
 

@@ -111,7 +111,7 @@ void VC_StartStreamingCmd(CFE_SB_Msg_t* MsgPtr)
     if (VC_VerifyCmdLength(MsgPtr, ExpectedLength))
     {
         CFE_EVS_SendEvent(VC_CMD_INF_EID, CFE_EVS_INFORMATION, "Start Streaming command received");
-        
+
         if (VC_AppData.AppState == VC_INITIALIZED)
         {
             CmdPtr = ((VC_StartStreamCmd_t *) MsgPtr);
@@ -121,7 +121,7 @@ void VC_StartStreamingCmd(CFE_SB_Msg_t* MsgPtr)
             ** safety measure
             */
             CmdPtr->Address[VC_ADDRESS_LENGTH - 1] = '\0';
-        
+
             /* 
             ** Check if the address string is a nul string
             */ 
@@ -143,28 +143,28 @@ void VC_StartStreamingCmd(CFE_SB_Msg_t* MsgPtr)
             {   
                 VC_AppData.HkTlm.usCmdErrCnt++;
                 CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                "Destination update failed");
+                                "Destination update failed in cmd start streaming");
             }
             /* Call VC_Transmit_Uninit() */
             else if (FALSE == VC_Transmit_Uninit())
             {
                 VC_AppData.HkTlm.usCmdErrCnt++;
                 CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,
-                                "VC_Transmit_Uninit failed");
+                                "VC_Transmit_Uninit failed in cmd start streaming");
             }
             /* Call VC_Transmit_Init() */
             else if (FALSE == VC_Transmit_Init())
             {
                 VC_AppData.HkTlm.usCmdErrCnt++;
                 CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                "VC_Transmit_Init failed");
+                                "VC_Transmit_Init failed in cmd start streaming");
             }
             /* Call VC_Devices_Start() */
             else if (FALSE == VC_Devices_Start())
             {
                 VC_AppData.HkTlm.usCmdErrCnt++;
                 CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                "VC_Devices_Start failed");
+                                "VC_Devices_Start failed in cmd start streaming");
             }
             /* Success! */
             else

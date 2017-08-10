@@ -306,7 +306,7 @@ int32 VC_InitApp(void)
     if (FALSE == VC_Devices_Start()) 
     {
         /* Start streaming failed, raise event but for now don't error out */
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed");
+        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed in InitApp");
     }
     else
     {

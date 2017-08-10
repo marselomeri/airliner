@@ -3,6 +3,7 @@
 #include "vc_app.h"
 #include "vc_test_utils.h"
 #include "vc_msgids.h"
+#include <string.h>
 
 #include "vc_custom_transmit_stubs.h"
 #include "vc_custom_device_stubs.h"
@@ -674,10 +675,8 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState(void)
 }
 
 
-
-/* TODO */
 /**
- * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid (Null Address
+ * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid (Null) Address
  */
 void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
 {
@@ -701,13 +700,11 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
     
     /* Start streaming needs to fail in init so state is initialized */
     VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
-    
-    /* Set the app state to initialized */
-    //VC_AppData.AppState = VC_INITIALIZED;
-    
+
     VC_AppMain();
-    
+
     /* Set stub return back to original state */
+    /* TODO reset this during teardown */
     VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
     
     /* Verify results */
@@ -716,24 +713,282 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
 }
 
 
-/* TODO */
 /**
  * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid Address
  */
 void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress(void)
 {
+    VC_NoArgCmd_t       InSchMsg;
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
 
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
+    
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    
+    /* Start streaming needs to fail in init so state is initialized */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+    
+    /* VC_Address_Verification needs to fail */
+    VC_Transmit_Test_Returns.VC_Address_Verification_Return = FALSE;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO reset this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+    VC_Transmit_Test_Returns.VC_Address_Verification_Return = TRUE;
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_ADDR_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
 
 
-/* TODO */
+/**
+ * Test VC_ProcessNewAppCmds(), StartStreaming command, destination
+ * update failure
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_UpdateDestinationFail(void)
+{
+    VC_NoArgCmd_t       InSchMsg;
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
+
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
+    
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    
+    /* Start streaming needs to fail in init so state is initialized */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+    
+    /* VC_Update_Destination needs to fail */
+    VC_Transmit_Test_Returns.VC_Update_Destination_Return = FALSE;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO reset this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+    VC_Transmit_Test_Returns.VC_Update_Destination_Return = TRUE;
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "Destination update failed", "Start Streaming Cmd Event Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewAppCmds(), StartStreaming command, transmit
+ * uninit failure
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_TransmitUninitFail(void)
+{
+    VC_NoArgCmd_t       InSchMsg;
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
+
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
+    
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    
+    /* Start streaming needs to fail in init so state is initialized */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+    
+    /* VC_Transmit_Uninit needs to fail */
+    VC_Transmit_Test_Returns.VC_Transmit_Uninit_Return = FALSE;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO reset this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+    VC_Transmit_Test_Returns.VC_Transmit_Uninit_Return = TRUE;
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewAppCmds(), StartStreaming command, transmit
+ * init failure
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_TransmitInitFail(void)
+{
+    VC_NoArgCmd_t       InSchMsg;
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
+
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
+    
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    
+    /* Start streaming needs to fail in init so state is initialized */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+    
+    /* VC_Transmit_init needs to fail the second time it's called 
+     * setting the second bit of return values to 0 will return logical
+     * NOT of the value set in VC_Transmit_Init_Return */
+    VC_Transmit_Test_Returns.VC_Transmit_Init_Return_Values = 0b11111101;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO reset this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+    VC_Transmit_Test_Returns.VC_Transmit_Init_Return_Values = 0b11111111;
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "VC_Transmit_Init failed in cmd start streaming", "Transmit init failure did not raise event");
+}
+
+
+/**
+ * Test VC_ProcessNewAppCmds(), StartStreaming command, devices
+ * start failure
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_DevicesStartFail(void)
+{
+    VC_NoArgCmd_t       InSchMsg;
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
+
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
+    
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    
+    /* Start streaming needs to fail in init so state is initialized */
+    /* Note it should also fail again in the start streaming command */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO start this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Start failed in cmd start streaming", "Device start failure did not raise event");
+}
+
+
+
 /**
  * Test VC_ProcessNewAppCmds(), Start Streaming command, Nominal
  */
-//void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
-//{
+void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
+{
+    VC_NoArgCmd_t       InSchMsg;
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
 
-//}
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
+    
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    
+    /* Start streaming needs to fail in init so state is initialized 
+     * but pass in the start streaming command */
+    VC_Device_Test_Returns.VC_Devices_Start_Return_Values = 0b11111110;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO reset this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return_Values = 0b11111111;
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_CMD_INF_EID, CFE_EVS_INFORMATION, "", "Start Streaming Cmd Event Sent");
+    UtAssert_True(VC_AppData.AppState == VC_STREAMING, "App state != streaming");
+}
 
 /**
  * Test VC_ProcessNewAppCmds(), StopStreaming command, Invalid Size
@@ -766,7 +1021,7 @@ void Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize(void)
     UtAssert_EventSent(VC_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
 
-
+/* TODO */
 /**
  * Test VC_ProcessNewAppCmds(), StopStreaming command, Invalid State
  */
@@ -839,12 +1094,20 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState");            
     UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress");            
-    //UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress, VC_Test_Setup, VC_Test_TearDown,
-               //"Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress");            
-//    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_Nominal, VC_Test_Setup, VC_Test_TearDown,
-//               "Test_VC_ProcessNewAppCmds_StartStreaming_Nominal");           
-    UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress");    
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_UpdateDestinationFail, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StartStreaming_UpdateDestinationFail");    
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_TransmitUninitFail, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StartStreaming_TransmitUninitFail");    
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_TransmitInitFail, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StartStreaming_TransmitInitFail");    
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_DevicesStartFail, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StartStreaming_DevicesStartFail");    
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_Nominal, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StartStreaming_Nominal");           
+    //UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
+               //"Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize");
     //UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState, VC_Test_Setup, VC_Test_TearDown,
                //"Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState");
 }

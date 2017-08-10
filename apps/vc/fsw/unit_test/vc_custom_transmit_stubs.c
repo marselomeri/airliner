@@ -6,12 +6,33 @@ VC_Transmit_Returns_t VC_Transmit_Test_Returns = { TRUE,
                                                    TRUE,
                                                    TRUE, 
                                                    TRUE, 
-                                                   1 };
+                                                   1,
+                                                   0b11111111,
+                                                   0b11111111,
+                                                   0b11111111,
+                                                   0b11111111,
+                                                   0b11111111,
+                                                   0 };
 
 
 boolean VC_Transmit_Init(void)
 {
-    return VC_Transmit_Test_Returns.VC_Transmit_Init_Return;
+    boolean returnCode = FALSE;
+
+    /* Bitshift 1 to the left the value of call count AND with 
+     * return values */
+    if(VC_Transmit_Test_Returns.VC_Transmit_Init_Return_Values &
+        (1<<VC_Transmit_Test_Returns.VC_Transmit_Init_CallCount))
+    {
+        returnCode = VC_Transmit_Test_Returns.VC_Transmit_Init_Return;
+    }
+    else
+    {
+        returnCode = !VC_Transmit_Test_Returns.VC_Transmit_Init_Return;
+    }
+
+    VC_Transmit_Test_Returns.VC_Transmit_Init_CallCount++;
+    return returnCode;
 }
 
 
