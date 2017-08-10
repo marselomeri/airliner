@@ -13,14 +13,3 @@ add_airliner_app_table(
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
 )
 
-add_airliner_app_src(
-    ea-ut
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
-)
-
-add_airliner_app_src(
-    ea-ut-gcov
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
-)

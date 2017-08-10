@@ -51,7 +51,7 @@ void EA_StartAppCustom()
 		else
 		{
 			EA_AppData.HkTlm.usCmdCnt++;
-			CFE_EVS_SendEvent(EA_INF_APP_START, CFE_EVS_INFORMATION,
+			CFE_EVS_SendEvent(EA_INF_APP_START_EID, CFE_EVS_INFORMATION,
 								"External application started");
 			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, OS_MAX_PATH_LEN);
 			EA_AppData.HkTlm.ActiveAppPID = pid;
@@ -81,48 +81,43 @@ void EA_StartAppCustom()
 
 void EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr)
 {
-	uint16 ExpectedLength = sizeof(EA_NoArgCmd_t);
 	int kill_status = -2;
 
 	/*
-	** Verify command packet length
+	** Ensure app is currently running
 	*/
-	if(EA_VerifyCmdLength(MsgPtr, ExpectedLength))
+	if(EA_AppData.HkTlm.ActiveAppPID != 0)
 	{
-		/*
-		** Ensure app is currently running
-		*/
-		if(EA_AppData.HkTlm.ActiveAppPID != 0)
-		{
-			CFE_ES_DeleteChildTask(EA_AppData.ChildAppTaskID);
-			kill_status = kill(EA_AppData.HkTlm.ActiveAppPID, SIGKILL);
+		CFE_ES_DeleteChildTask(EA_AppData.ChildAppTaskID);
+		kill_status = kill(EA_AppData.HkTlm.ActiveAppPID, SIGKILL);
 
-			/*
-			** Check kill call return code
-			*/
-			if(kill_status == 0)
-			{
-				EA_AppData.HkTlm.usCmdCnt++;
-				EA_AppData.HkTlm.ActiveAppPID = 0;
-				EA_AppData.HkTlm.ActiveAppUtil = 0;
-				strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
-				EA_AppData.HkTlm.LastAppStatus = -1; // TODO: Add meaningful number to this
-				memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
-				EA_AppData.ChildAppTaskInUse = FALSE;
-			}
-			else
-			{
-				EA_AppData.HkTlm.usCmdErrCnt++;
-				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-								"Unable to terminate application. Errno %i", kill_status);
-			}
+		/*
+		** Check kill call return code
+		*/
+		if(kill_status == 0)
+		{
+			EA_AppData.HkTlm.usCmdCnt++;
+			EA_AppData.HkTlm.ActiveAppPID = 0;
+			EA_AppData.HkTlm.ActiveAppUtil = 0;
+			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
+			EA_AppData.HkTlm.LastAppStatus = -1; // TODO: Add meaningful number to this
+			memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
+			EA_AppData.ChildAppTaskInUse = FALSE;
+			CFE_EVS_SendEvent(EA_INF_APP_TERM_EID, CFE_EVS_INFORMATION,
+						"External application terminated");
 		}
 		else
 		{
 			EA_AppData.HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-							"Attempted to terminate app while none executing");
+							"Unable to terminate application. Errno %i", kill_status);
 		}
+	}
+	else
+	{
+		EA_AppData.HkTlm.usCmdErrCnt++;
+		CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
+						"Attempted to terminate app while none executing");
 	}
 
 	return;
