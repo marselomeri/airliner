@@ -470,6 +470,7 @@ void Test_VC_AppMain_ProcessNewData_InvalidMsgID(void)
     VC_AppMain();
 
     /* Verify results */
+    
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
     UtAssert_EventSent(VC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
 }
@@ -730,7 +731,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress(void)
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
     
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
     
     /* Start streaming needs an address to pass null check */
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
@@ -777,7 +778,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_UpdateDestinationFail(void)
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
     
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
     
     /* Start streaming needs an address to pass null check */
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
@@ -824,7 +825,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_TransmitUninitFail(void)
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
     
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
     
     /* Start streaming needs an address to pass null check */
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
@@ -871,7 +872,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_TransmitInitFail(void)
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
     
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
     
     /* Start streaming needs an address to pass null check */
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
@@ -920,7 +921,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_DevicesStartFail(void)
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
     
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
     
     /* Start streaming needs an address to pass null check */
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
@@ -964,7 +965,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
     Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
     
     CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(VC_StartStreamCmd_t), TRUE);
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
     
     /* Start streaming needs an address to pass null check */
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
@@ -989,6 +990,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
     UtAssert_EventSent(VC_CMD_INF_EID, CFE_EVS_INFORMATION, "", "Start Streaming Cmd Event Sent");
     UtAssert_True(VC_AppData.AppState == VC_STREAMING, "App state != streaming");
 }
+
 
 /**
  * Test VC_ProcessNewAppCmds(), StopStreaming command, Invalid Size
@@ -1027,7 +1029,36 @@ void Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize(void)
  */
 void Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState(void)
 {
+    VC_NoArgCmd_t       InSchMsg;
+    VC_NoArgCmd_t       InStopStreamingCmd;
+    int32               DataPipe;
+    int32               CmdPipe;
+
+    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       and gives it a command to process. */
+    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+
+    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    CFE_SB_InitMsg (&InStopStreamingCmd, VC_CMD_MID, sizeof(InStopStreamingCmd), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStopStreamingCmd, VC_STOPSTREAMING_CC);
+    Ut_CFE_SB_AddMsgToPipe(&InStopStreamingCmd, CmdPipe);
+
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
     
+    /* Start streaming needs to fail in init so state is initialized */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+
+    VC_AppMain();
+
+    /* Set stub return back to original state */
+    /* TODO start this during teardown */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_EventSent(VC_CMD_ERR_EID, CFE_EVS_ERROR, "VC is already not streaming", "Stop Streaming Cmd Event Sent");
 }
 
 
@@ -1106,10 +1137,10 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_ProcessNewAppCmds_StartStreaming_DevicesStartFail");    
     UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_Nominal, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_ProcessNewAppCmds_StartStreaming_Nominal");           
-    //UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
-               //"Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize");
-    //UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState, VC_Test_Setup, VC_Test_TearDown,
-               //"Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState");
 }
 
 
