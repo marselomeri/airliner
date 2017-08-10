@@ -70,6 +70,7 @@ void EA_StartAppCustom()
     {
         /* Can't send event or write to syslog because this task isn't registered with the cFE. */
         OS_printf("StartApp Child Task Registration failed!\n");
+		EA_AppData.HkTlm.usCmdErrCnt++;
     }
 
 	EA_AppData.ChildAppTaskID = 0;
