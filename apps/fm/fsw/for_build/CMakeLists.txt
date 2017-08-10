@@ -33,6 +33,8 @@ add_airliner_app_unit_test(fm-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c
         
     INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../mission_inc/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
 )

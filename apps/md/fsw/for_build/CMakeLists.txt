@@ -12,3 +12,119 @@ add_airliner_app_def(md
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 )
 
+set(MD_UT_COMMON_CODE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_cmds.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_pkt.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_tbl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osapi.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osfilesys.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osfileapi.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osloader.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_memory.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_memrange.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_memutils.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_ram.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_eeprom.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_psp_support.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_sb_api.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_time_utils.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_time_api.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_sb.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_sim.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_es_api.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_es_cds.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_esmempool.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_evs.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_tbl_api.c
+    ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_tbl_internal.c
+    ${PROJECT_SOURCE_DIR}/cfe/fsw/src/sb/ccsds.c
+    ${PROJECT_SOURCE_DIR}/cfe/fsw/src/sb/cfe_sb_util.c
+    ${PROJECT_SOURCE_DIR}/cfe/fsw/src/es/cfe_es_cds_mempool.c
+    ${PROJECT_SOURCE_DIR}/cfe/fsw/src/fs/cfe_fs_api.c
+    ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/src/cfe_psp_timer.c
+    ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/src/cfe_psp_watchdog.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c)
+
+add_airliner_app_unit_test(md-ut-1 
+    UTF_OUTPUT_FILE
+        ${CMAKE_CURRENT_BINARY_DIR}/md_unit_test1.out
+        
+    UTF_BLESSED_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test1.out
+        
+    SOURCES
+        ${MD_UT_COMMON_CODE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test1.c .
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PROJECT_SOURCE_DIR}/tools/utf/inc/
+)
+add_custom_target(
+    md-ut-1-input-file
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test1.in ${CMAKE_CURRENT_BINARY_DIR}
+)
+add_dependencies(md-ut-1 md-ut-1-input-file)
+
+add_airliner_app_unit_test(md-ut-2    
+    UTF_OUTPUT_FILE
+        ${CMAKE_CURRENT_BINARY_DIR}/md_unit_test2.out
+        
+    UTF_BLESSED_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test2.out
+            
+    SOURCES
+        ${MD_UT_COMMON_CODE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test2.c
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PROJECT_SOURCE_DIR}/tools/utf/inc/
+)
+add_custom_target(
+    md-ut-2-input-file
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test2.in ${CMAKE_CURRENT_BINARY_DIR}
+)
+add_dependencies(md-ut-2 md-ut-2-input-file)
+
+add_airliner_app_unit_test(md-ut-3        
+    SOURCES
+        ${MD_UT_COMMON_CODE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test3.c
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PROJECT_SOURCE_DIR}/tools/utf/inc/
+        
+    COPYFILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test3.in
+)
+add_custom_target(
+    md-ut-3-input-file
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test3.in ${CMAKE_CURRENT_BINARY_DIR}
+)
+add_dependencies(md-ut-3 md-ut-3-input-file)
+
+add_airliner_app_unit_test(md-ut-4       
+    SOURCES
+        ${MD_UT_COMMON_CODE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test4.c
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PROJECT_SOURCE_DIR}/tools/utf/inc/
+        
+    COPYFILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test4.in
+)
+add_custom_target(
+    md-ut-4-input-file
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test4.in ${CMAKE_CURRENT_BINARY_DIR}
+)
+add_dependencies(md-ut-4 md-ut-4-input-file)
