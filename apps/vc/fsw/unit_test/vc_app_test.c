@@ -443,7 +443,6 @@ void Test_VC_AppMain_Nominal_Wakeup(void)
 
     /* Execute the function being tested */
     VC_AppMain();
-
 }
 
 
@@ -665,9 +664,6 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState(void)
     Ut_CFE_SB_AddMsgToPipe(&InStartStreamingCmd, CmdPipe);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
-
-    /* Set the app state to streaming */
-    VC_AppData.AppState = VC_STREAMING;
     
     /* Execute the function being tested */
     VC_AppMain();
@@ -703,13 +699,19 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
     
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
     
+    /* Start streaming needs to fail in init so state is initialized */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = FALSE;
+    
     /* Set the app state to initialized */
-    VC_AppData.AppState = VC_INITIALIZED;
+    //VC_AppData.AppState = VC_INITIALIZED;
     
     VC_AppMain();
     
+    /* Set stub return back to original state */
+    VC_Device_Test_Returns.VC_Devices_Start_Return = TRUE;
+    
     /* Verify results */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
     UtAssert_EventSent(VC_ADDR_NUL_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
 
