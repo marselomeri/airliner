@@ -58,4 +58,10 @@ add_airliner_app_unit_test(lc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         ${PROJECT_SOURCE_DIR}/tools/utf/inc/
+        
+    UTF_OUTPUT_FILE
+        ${CMAKE_CURRENT_BINARY_DIR}/lc_utest.out
+        
+    UTF_BLESSED_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/lc_utest.out
 )
