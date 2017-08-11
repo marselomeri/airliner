@@ -434,7 +434,6 @@ block main
       var count = 0;
 
       session.subscribe({
-        homogeneity: {tolerance: 0},
         tlm: [
           {name: '/CFS/EA/ActiveAppUtil'}
         ]}, 
@@ -450,8 +449,8 @@ block main
             console.log('' + count + ': ' + params);
             console.log(params);
 
-            var timeStamp = new Date(params[0].acquisitionTime);
-            var CpuUtil = params[0].engValue.uint32Value;
+            var timeStamp = new Date(params.acquisitionTime);
+            var CpuUtil = params.engValue.floatValue;
              
             CpuUtilData.push([timeStamp, CpuUtil]);
           }
