@@ -22,6 +22,15 @@
 
   \verbatim  
   $Log: cfs_cs.dox  $
+  Revision 1.3.1.1 2017/03/31 12:10:15EDT sstrege 
+  Updated overview section to make it clear that all checksum regions are now configurable.
+  Revision 1.3 2017/02/24 10:14:31EST mdeschu 
+  Update doxgyen user guide to reference the new options for cfe core and OS code segment checksumming
+  Revision 1.2 2017/02/13 14:51:48EST mdeschu 
+  Update doxygen User Guide to describe how the new way table enable/disable states are set at init
+  Revision 1.1 2015/07/24 19:10:04EDT rperera 
+  Initial revision
+  Member added to project /CFS-APPs-PROJECT/cs/docs/dox_src/users_guide/project.pj
   Revision 1.5 2011/09/19 17:32:54EDT jmdagost 
   Added text pointing out the risk of changing the default CRC algorithm.
   Revision 1.4 2010/03/09 14:53:53EST jmdagost 
@@ -116,11 +125,14 @@
   for ensuring the integrity of onboard memory. CS has the ability to ensure the
   integrity of Core Flight Executive (cFE) applications, cFE tables, the cFE 
   core, the onboard operating system (OS), onboard EEPROM, as well as any 
-  memory regions ("Memory") specified by the users. 
+  memory regions ("Memory") specified by the users.  
 
-  CS automatically checksums the cFE core and the OS by default when the CS 
-  application is used.  Additionally, the user may select other areas to
-  checksum, including:
+  All CS checksums regions are configurable allowing users to specify the 
+  enable/disable state for each region upon startup.  
+
+  The cFE core and the OS checksum regions are enabled by default.  These are the only
+  two checksum regions that are not table driven.  Additionally, the user may select 
+  other table driven areas to checksum, including:
   
   <ul>
   <li> <b>EEPROM</b>: A contiguous block of memory specified by a starting address
@@ -130,14 +142,15 @@
   <li> <b>Tables</b>: Any cFE or CFS application table, specified by the table name.
   <li> <b>Applications</b>: Any cFE or CFS application, specified by the app name.
   </ul>
-  
-  The CS application is table driven. All of the applications, tables, areas
-  of EEPROM, and other memory areas to be checksummed must be defined by the 
-  user in four separate tables that can be controlled independently. 
 
-  The CS application is also schedule driven. It will checksum up to 
-  #CS_DEFAULT_BYTES_PER_CYCLE (a configuration parameter) bytes every 
-  time CS receives its background cycle MID.
+  All table driven checksum regions are also enabled by default.
+  
+  The CS application is both table and schedule driven. All of the applications, 
+  tables, areas of EEPROM, and other memory areas to be checksummed must be defined 
+  by the user in four separate tables that can be controlled independently. For each 
+  checksum region that is enabled, CS will checksum up to #CS_DEFAULT_BYTES_PER_CYCLE 
+  (a configuration parameter) bytes every time CS receives its background cycle MID 
+  from a scheduling application/source.
 
   The CS application uses two sets of tables: a set of definition tables 
   which the user populates on the ground with the set of applications,
@@ -160,8 +173,15 @@
 
   Upon initialization CS will initialize its global memory area and proceed
   to populate its results tables (which are dump only tables) from the 
-  default definition tables located in non-volatile memory and are enabled
-  for checksumming. If the default definition tables do not pass table 
+  default definition tables located in non-volatile memory.  Each table has
+  a corresponding setting in the platform configuration of the enable/disabled
+  state of each table, the OS code segments and cFE Core for checksumming. 
+  These values are used for at initialization for power-on reset or if CS is
+  not configured to preserve states on via the CDS they will also be used for 
+  processor-reset.  If CS is configured to preserve enable state of the tables 
+  on a proc reset, states from CDS will be used upon processor reset.
+
+  If the default definition tables do not pass table 
   validation, or they are nonexistent, blank definition tables are used
   from CS's memory and the table is disabled for checksumming. The purpose
   of loading a blank table from memory is so that another table can be loaded
@@ -172,9 +192,6 @@
   Since CS cannot operate without the operating system or the cFE core, CS 
   automatically sets up checksumming for those areas and enables them for 
   checksumming. 
-
-  The CS application makes no distinction between Power-On and Processor 
-  Resets. The same initialization occurs for both types of resets.
 
    
   Next: \ref cfscsreq <BR>
@@ -271,6 +288,18 @@
   #CS_DEF_APP_TABLE_FILENAME is the name of the CS table defining application areas to checksum.  The default 
   value is "/cf/apps/cs_apptbl.tbl".  Note that the path is specified in the filename definition.
   
+  #CS_EEPROM_TBL_POWERON_STATE defines the enable/disable state of the EEPROM table at power on reset
+
+  #CS_MEMORY_TBL_POWERON_STATE defines the enable/disable state of the Memory table at power on reset
+
+  #CS_APPS_TBL_POWERON_STATE  defines the enable/disable state of the Apps table at power on reset
+
+  #CS_TABLES_TBL_POWERON_STATE defines the enable/disable state of the Tables table at power on reset
+
+  #CS_PRESERVE_TABLE_STATES_ON_PROCESSOR_RESET determines whether to preserve table 
+  states on processor reset
+
+
   Checksum app configuration parameter details are also available at \ref cfscscfg
     
   Next: \ref cfscscmds <BR>

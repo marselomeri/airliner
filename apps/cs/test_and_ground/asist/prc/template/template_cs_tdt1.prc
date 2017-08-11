@@ -23,6 +23,10 @@ PROC $sc_$cpu_cs_tdt1
 ;	07/18/11	Walt Moleski	Initial release.
 ;	02/24/15	Walt Moleski	Moved the DefTablesTbl entry lower in
 ;					the table and added the DefAppsTbl.
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -39,9 +43,9 @@ PROC $sc_$cpu_cs_tdt1
 local logging = %liv (log_procedure)
 %liv (log_procedure) = FALSE
 
+#include "cs_msgdefs.h"
 #include "cs_platform_cfg.h"
 #include "cs_tbldefs.h"
-#include "cs_msgdefs.h"
 
 %liv (log_procedure) = logging
 
@@ -51,6 +55,7 @@ local logging = %liv (log_procedure)
 LOCAL defTblId, defPktId
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 local tblDefTblName = CSAppName & "." & CS_DEF_TABLES_TABLE_NAME
 local tblResTblName = CSAppName & "." & CS_RESULTS_TABLES_TABLE_NAME
 local appDefTblName = CSAppName & "." & CS_DEF_APP_TABLE_NAME
@@ -60,14 +65,6 @@ local appResTblName = CSAppName & "." & CS_RESULTS_APP_TABLE_NAME
 ;; CPU1 is the default
 defTblId = "0FAE"
 defPktId = 4014
-
-if ("$CPU" = "CPU2") then
-  defTblId = "0FCC"
-  defPktId = 4044
-elseif ("$CPU" = "CPU3") then
-  defTblId = "0FEC"
-  defPktId = 4076
-endif
 
 write ";*********************************************************************"
 write ";  Define the Application Definition Table "
@@ -99,7 +96,7 @@ local lastEntry = CS_MAX_NUM_TABLES_TABLE_ENTRIES - 1
 local endmnemonic = "$SC_$CPU_CS_TBL_DEF_TABLE[" & lastEntry & "].Name"
 
 ;; Create the Table Load file
-s create_tbl_file_from_cvt ("$CPU",defTblId,"Table Definition Table Load 1","tbl_def_tbl_ld_1",tblDefTblName,"$SC_$CPU_CS_TBL_DEF_TABLE[0].State",endmnemonic)
+s create_tbl_file_from_cvt (hostCPU,defTblId,"Table Definition Table Load 1","tbl_def_tbl_ld_1",tblDefTblName,"$SC_$CPU_CS_TBL_DEF_TABLE[0].State",endmnemonic)
 
 write ";*********************************************************************"
 write ";  End procedure $SC_$CPU_cs_tdt1                              "

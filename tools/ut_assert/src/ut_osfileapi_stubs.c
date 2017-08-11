@@ -161,7 +161,7 @@ int32 OS_read  (int32  filedes, void *buffer, uint32 nbytes)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_write (int32  filedes, void *buffer, uint32 nbytes)
+int32 OS_write (int32  filedes, const void *buffer, uint32 nbytes)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_WRITE_INDEX))
@@ -356,7 +356,7 @@ int32 OS_check_name_length(const char *path)
     return OS_FS_SUCCESS;
 }
 
-int32 OS_ShellOutputToFile(char* Cmd, int32 OS_fd)
+int32 OS_ShellOutputToFile(const char* Cmd, int32 OS_fd)
 {
     /* Check for specified return */
     if (Ut_OSFILEAPI_UseReturnCode(UT_OSFILEAPI_SHELLOUTPUTTOFILE_INDEX))

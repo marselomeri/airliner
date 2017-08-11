@@ -244,10 +244,10 @@ int32 CFE_EVS_SendEvent (uint16 EventID, uint16 EventType, const char *Spec, ...
 
 	  /* Obtain task and system information */
       /*EVS_Packet.PacketID.SpacecraftID = OS_BSPGetSpacecraftId();*/
-      CFE_ES_GetAppName(EVS_Packet.PacketID.AppName, AppID, OS_MAX_API_NAME);
+      CFE_ES_GetAppName(EVS_Packet.Payload.PacketID.AppName, AppID, OS_MAX_API_NAME);
       /* EVS_Packet.PacketID.ProcessorID  = OS_BSPGetProcessorId();*/
-      EVS_Packet.PacketID.EventID      = EventID;
-      EVS_Packet.PacketID.EventType    = EventType;
+      EVS_Packet.Payload.PacketID.EventID      = EventID;
+      EVS_Packet.Payload.PacketID.EventType    = EventType;
 
       /* Copy message to event packet if long format is enabled */
       if (UTF_Long_Events_Enabled == TRUE)
@@ -277,7 +277,7 @@ int32 CFE_EVS_SendEvent (uint16 EventID, uint16 EventType, const char *Spec, ...
       else
       {
          /* Send an empty message if short format is enabled */
-         strcpy(EVS_Packet.Message, "\0");
+         strcpy(EVS_Packet.Payload.Message, "\0");
       }
 
       return CFE_SUCCESS;
@@ -371,20 +371,20 @@ int32 EVS_SendEventInternal(uint32 AppID, CFE_TIME_SysTime_t Time, uint16 EventI
          CFE_SB_SetMsgTime((CFE_SB_Msg_t *) &EVS_Packet, Time);
 
          /* Initialize event message string */
-         EVS_Packet.Message[0] = '\0';
+         EVS_Packet.Payload.Message[0] = '\0';
 
          /* Obtain task and system information */
      /*    EVS_Packet.PacketID.SpacecraftID = OS_BSPGetSpacecraftId(); */
-         CFE_ES_GetAppName(EVS_Packet.PacketID.AppName, AppID, OS_MAX_API_NAME);
+         CFE_ES_GetAppName(EVS_Packet.Payload.PacketID.AppName, AppID, OS_MAX_API_NAME);
       /*   EVS_Packet.PacketID.ProcessorID  = OS_BSPGetProcessorId(); */
-         EVS_Packet.PacketID.EventID      = EventID;
-         EVS_Packet.PacketID.EventType    = EventType;
+         EVS_Packet.Payload.PacketID.EventID      = EventID;
+         EVS_Packet.Payload.PacketID.EventType    = EventType;
 
          /* Copy message string to event packet message buffer */
-         strncpy(EVS_Packet.Message, EventString, CFE_EVS_MAX_MESSAGE_LENGTH);
+         strncpy(EVS_Packet.Payload.Message, EventString, CFE_EVS_MAX_MESSAGE_LENGTH);
 
          /* Ensure that the packet is always terminated by a null character */
-         EVS_Packet.Message[CFE_EVS_MAX_MESSAGE_LENGTH-1] = '\0';
+         EVS_Packet.Payload.Message[CFE_EVS_MAX_MESSAGE_LENGTH-1] = '\0';
 
          /* send event out software bus */
          Status = CFE_SB_SendMsg((CFE_SB_Msg_t *) &EVS_Packet);
@@ -428,7 +428,7 @@ int32 CFE_EVS_SendTimedEvent (CFE_TIME_SysTime_t Time, uint16 EventID,
    /* Set the packet timestamp */
    CFE_SB_SetMsgTime((CFE_SB_Msg_t *) &EVS_Packet, Time);   
   
-   EVS_Packet.Message[0] = '\0';
+   EVS_Packet.Payload.Message[0] = '\0';
 
    /* Copy message to event packet if long format is enabled */
    va_start(Ptr, Spec);

@@ -10,98 +10,112 @@ PROC $sc_$cpu_cs_nvmem
 ;	handles anomolies properly.
 ;
 ;  Requirements Tested
-;    cCS1002	For all CS commands, if the length contained in the message
+;    CS1002	For all CS commands, if the length contained in the message
 ;		header is not equal to the expected length, CS shall reject the
 ;		command and issue an event message.
-;    cCS1003	If CS accepts any command as valid, CS shall execute the
+;    CS1003	If CS accepts any command as valid, CS shall execute the
 ;		command, increment the CS Valid Command Counter and issue an
 ;		event message.
-;    cCS1004	If CS rejects any command, CS shall abort the command execution,
+;    CS1004	If CS rejects any command, CS shall abort the command execution,
 ;		increment the CS Command Rejected Counter and issue an event
 ;		message.
-;    cCS2001	The Checksum App shall calculate CRCs for each Non-volatile
-;		segment and compare them against the corresponding baseline
-;		Non-volatile segment CRCs if:
+;    CS2001	The Checksum App shall calculate CRCs for each Table-Defined
+;		Non-volatile segment and compare them against the corresponding
+;		baseline Non-volatile segment CRCs if:
 ;			a. Checksumming (as a whole) is Enabled
 ;			b. Non-volatile segment checksumming is Enabled
 ;			c. Checksumming of the individual Non-volatile segment
 ;			   is Enabled
-;    cCS2001.1	If the Non-volatile segment CRC is not equal to the 
+;    CS2001.1	If the Non-volatile segment CRC is not equal to the 
 ;		corresponding baseline CRC, CS shall increment the Non-volatile
 ;		CRC Miscompare Counter and send an event message.
-;    cCS2002	Upon receipt of an Enable Non-volatile Checksumming command,
+;    CS2001.2	If the table-defined segment is invalid, CE shall send an error
+;		event message. 
+;    CS2002	Upon receipt of an Enable Non-volatile Checksumming command,
 ;		CS shall enable non-volatile checksumming.
-;    cCS2003	Upon receipt of a Disable Non-volatile Checksumming command,
+;    CS2003	Upon receipt of a Disable Non-volatile Checksumming command,
 ;		CS shall disable non-volatile checksumming.
-;    cCS2004	Upon receipt of an Enable Non-volatile Segment command, CS shall
+;    CS2004	Upon receipt of an Enable Non-volatile Segment command, CS shall
 ;		enable checksumming of the command-specified non-volatile
 ;		segment.
-;    cCS2005	Upon receipt of a Disable Non-volatile Segment command, CS shall
+;    CS2005	Upon receipt of a Disable Non-volatile Segment command, CS shall
 ;		disable checksumming of the command-specified non-volatile
 ;		segment.
-;    cCS2006	Upon receipt of a Recompute Non-volatile Checksum Segment
-;		command, CS shall recompute the baseline checksum for the
-;		command-specified non-volatile segment.
-;    cCS2006.1	If CS is already processing a Recompute CRC command, CS shall
-;		reject the command.
-;    cCS2007	Upon receipt of a Report Non-volatile Checksum Segment command,
+;    CS2006	Upon receipt of a Recompute Non-volatile Checksum Segment
+;		command, CS shall:
+;			a) Recompute the baseline checksum for the 
+;			   command-specified non-volatile segment.
+;			b) Set the Recompute In Progress Flag to TRUE
+;    CS2006.1	If CS is already processing a Recompute CRC command or a One
+;		Shot command, CS shall reject the command.
+;    CS2006.2	Once the baseline CRC is computed, CS shall:
+;			a) Generate an informational event message containing
+;			   the baseline CRC
+;			b) Set the Recompute In Progress Flag to FALSE
+;    CS2007	Upon receipt of a Report Non-volatile Checksum Segment command,
 ;		CS shall send an event message containing the baseline
 ;		checksum for the command-specified non-volatile segment.
-;    cCS2008	Upon receipt of a Get Non-volatile Checksum Segment command, CS
+;    CS2008	Upon receipt of a Get Non-volatile Checksum Segment command, CS
 ;		shall send an event message containing the segment number for
 ;		the command-specified non-volatile address.
-;    cCS2009	If a command-specified segment is invalid (for any of the
+;    CS2009	If a command-specified segment is invalid (for any of the
 ;		non-volatile memory commands where segment is a command
 ;		argument), CS shall reject the command and send an event
 ;		message.
-;    cCS2010	CS shall provide the ability to dump the baseline CRCs and
+;    CS2010	CS shall provide the ability to dump the baseline CRCs and
 ;		status for the non-volatile memory segments via a dump-only
 ;		table.
-;    cCS3003	Upon receipt of a Disable OS Checksumming command, CS shall 
+;    CS3003	Upon receipt of a Disable OS Checksumming command, CS shall 
 ;		disable checksumming of the OS Code segment.
-;    cCS3008	Upon receipt of a Disable cFE code segment command, CS shall
+;    CS3008	Upon receipt of a Disable cFE code segment command, CS shall
 ;		disable checksumming of the cFE code segment.
-;    cCS8000	Upon receipt of an Enable Checksum command, CS shall start
+;    CS8000	Upon receipt of an Enable Checksum command, CS shall start
 ;		calculating CRCs and compare them against the baseline CRCs.
-;    cCS8001	Upon receipt of a Disable Checksum command, CS shall stop
+;    CS8001	Upon receipt of a Disable Checksum command, CS shall stop
 ;		calculating CRCs and comparing them against the baseline CRCs.
-;    cCS9000	CS shall generate a housekeeping message containing the
+;    CS9000	CS shall generate a housekeeping message containing the
 ;		following:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Overall CRC enable/disable status
-;			d. Total Non-Volatile Baseline CRC
-;			e. OS code segment Baseline CRC
-;			f. cFE code segment Baseline CRC
-;			g. Non-Volatile CRC Miscompare Counter
-;			h. OS Code Segment CRC Miscompare Counter
-;			i. cFE Code Segment CRC Miscompare Counter
-;			j. Application CRC Miscompare Counter
-;			k. Table CRC Miscompare Counter
-;			l. User-Defined Memory CRC Miscompare Counter
-;			m. Last One Shot Address
-;			n. Last One Shot Size
-;			o. Last One Shot Checksum
-;			p. Checksum Pass Counter (number of passes thru all of
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Overall CRC enable/disable status
+;			d) Total Non-Volatile Baseline CRC
+;			e) OS code segment Baseline CRC
+;			f) cFE code segment Baseline CRC
+;			g) Non-Volatile CRC Miscompare Counter
+;			h) OS Code Segment CRC Miscompare Counter
+;			i) cFE Code Segment CRC Miscompare Counter
+;			j) Application CRC Miscompare Counter
+;			k) Table CRC Miscompare Counter
+;			l) User-Defined Memory CRC Miscompare Counter
+;			m) Last One Shot Address
+;			n) Last One Shot Size
+;			o) Last One Shot Checksum
+;			p) Checksum Pass Counter (number of passes thru all of
 ;			   the checksum areas)
-;			q. Current Checksum Region (Non-Volatile, OS code
+;			q) Current Checksum Region (Non-Volatile, OS code
 ;			   segment, cFE Code Segment etc)
-;			r. Non-Volatile CRC enable/disable status
-;			s. OS Code Segment CRC enable/disable status
-;			t. cFE Code Segment CRC enable/disable status
-;			u. Application CRC enable/disable status
-;			v. Table CRC enable/disable status
-;			w. User-Defined Memory CRC enable/disable status
-;    cCS9001	Upon initialization of the CS Application, CS shall initialize
-;		the following data to Zero:
-;			a. Valid Ground Command Counter
-;			b. Ground Command Rejected Counter
-;			c. Non-Volatile CRC Miscompare Counter
-;			d. OS Code Segment CRC Miscompare Counter
-;			e. cFE Code Segment CRC Miscompare Counter
-;			f. Application CRC Miscompare Counter
-;			g. Table CRC Miscompare Counter
-;			h. User-Defined Memory CRC Miscompare Counter
+;			r) Non-Volatile CRC enable/disable status
+;			s) OS Code Segment CRC enable/disable status
+;			t) cFE Code Segment CRC enable/disable status
+;			u) Application CRC enable/disable status
+;			v) Table CRC enable/disable status
+;			w) User-Defined Memory CRC enable/disable status
+;			x) Last One Shot Rate
+;			y) Recompute In Progress Flag
+;			z) One Shot In Progress Flag
+;    CS9001     Upon any initialization of the CS Application (cFE Power On, cFE
+;               Processor Reset or CS Application Reset), CS shall initialize
+;               the following data to Zero:
+;			a) Valid Ground Command Counter
+;			b) Ground Command Rejected Counter
+;			c) Non-Volatile CRC Miscompare Counter
+;			d) OS Code Segment CRC Miscompare Counter
+;			e) cFE Code Segment CRC Miscompare Counter
+;			f) Application CRC Miscompare Counter
+;			g) Table CRC Miscompare Counter
+;			h) User-Defined Memory CRC Miscompare Counter
+;			i) Recompute In Progress Flag
+;			j) One Shot In Progress Flag
 ;
 ;  Prerequisite Conditions
 ;	The CFS is up and running and ready to accept commands.
@@ -117,7 +131,6 @@ PROC $sc_$cpu_cs_nvmem
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	10/09/08	Walt Moleski	Original Procedure.
 ;       09/22/10        Walt Moleski    Updated to use variables for the CFS
@@ -126,6 +139,11 @@ PROC $sc_$cpu_cs_nvmem
 ;       09/19/12        Walt Moleski    Added write of new HK items and added a
 ;					define of the OS_MEM_TABLE_SIZE that
 ;					was removed from osconfig.h in 3.5.0.0
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address. Changed define
+;                                       of OS_MEM_TABLE_SIZE to MEM_TABLE_SIZE.
 ;
 ;  Arguments
 ;	None.
@@ -164,31 +182,33 @@ local logging = %liv (log_procedure)
 
 %liv (log_procedure) = logging
 
-#define OS_MEM_TABLE_SIZE	10
+#define MEM_TABLE_SIZE	10
 
 #define CS_1002		0
 #define CS_1003		1
 #define CS_1004		2
 #define CS_2001		3
 #define CS_20011	4
-#define CS_2002		5
-#define CS_2003		6
-#define CS_2004		7
-#define CS_2005		8
-#define CS_2006		9
-#define CS_20061	10
-#define CS_2007		11
-#define CS_2008		12
-#define CS_2009		13
-#define CS_2010		14
-#define CS_3003		15
-#define CS_3008		16
-#define CS_8000		17
-#define CS_8001		18
-#define CS_9000		19
-#define CS_9001		20
+#define CS_20012	5
+#define CS_2002		6
+#define CS_2003		7
+#define CS_2004		8
+#define CS_2005		9
+#define CS_2006		10
+#define CS_20061	11
+#define CS_20062	12
+#define CS_2007		13
+#define CS_2008		14
+#define CS_2009		15
+#define CS_2010		16
+#define CS_3003		17
+#define CS_3008		18
+#define CS_8000		19
+#define CS_8001		20
+#define CS_9000		21
+#define CS_9001		22
 
-global ut_req_array_size = 20
+global ut_req_array_size = 22
 global ut_requirement[0 .. ut_req_array_size]
 
 for i = 0 to ut_req_array_size DO
@@ -198,7 +218,7 @@ enddo
 ;**********************************************************************
 ; Set the local values
 ;**********************************************************************
-local cfe_requirements[0 .. ut_req_array_size] = ["CS_1002", "CS_1003", "CS_1004", "CS_2001", "CS_2001.1", "CS_2002", "CS_2003", "CS_2004", "CS_2005", "CS_2006", "CS_2006.1", "CS_2007", "CS_2008", "CS_2009", "CS_2010", "CS_3003", "CS_3008", "CS_8000", "CS_8001", "CS_9000", "CS_9001" ]
+local cfe_requirements[0 .. ut_req_array_size] = ["CS_1002","CS_1003","CS_1004","CS_2001","CS_2001.1","CS_2001.2","CS_2002","CS_2003","CS_2004","CS_2005","CS_2006","CS_2006.1","CS_2006.2","CS_2007","CS_2008","CS_2009","CS_2010","CS_3003","CS_3008","CS_8000","CS_8001","CS_9000","CS_9001" ]
 
 ;**********************************************************************
 ; Define local variables
@@ -209,6 +229,7 @@ LOCAL defTblId, defPktId, resTblId, resPktId
 local i,segIndex,foundSeg,ramAddress
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 local eeDefTblName = CSAppName & "." & CS_DEF_EEPROM_TABLE_NAME
 local eeResTblName = CSAppName & "." & CS_RESULTS_EEPROM_TABLE_NAME
 
@@ -219,18 +240,6 @@ resTblId = "0FB0"
 defPktId = 4012
 resPktId = 4016
 
-if ("$CPU" = "CPU2") then
-  defTblId = "0FCA"
-  resTblId = "0FCE"
-  defPktId = 4042
-  resPktId = 4046
-elseif ("$CPU" = "CPU3") then
-  defTblId = "0FEA"
-  resTblId = "0FEE"
-  defPktId = 4074
-  resPktId = 4078
-endif
-
 write ";*********************************************************************"
 write ";  Step 1.0: Checksum Non-Volatile Memory Test Setup."
 write ";*********************************************************************"
@@ -240,9 +249,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";**********************************************************************"
@@ -260,7 +269,7 @@ write ";********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_CS_MEMTBL", 1, "INFO", 2
                                                                                 
-s load_start_app ("TST_CS_MEMTBL","$CPU","TST_CS_MemTblMain")
+s load_start_app ("TST_CS_MEMTBL",hostCPU,"TST_CS_MemTblMain")
                                                                                 
 ;;  Wait for app startup event
 ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1
@@ -332,7 +341,7 @@ wait 5
 write ";**********************************************************************"
 write ";  Step 1.6: Load the Definition file created above.       "
 write ";**********************************************************************"
-start load_table ("eeprom_def_ld_1", "$CPU")
+start load_table ("eeprom_def_ld_1", hostCPU)
 wait 5
 
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_INF_EID,"INFO", 1
@@ -414,7 +423,7 @@ wait 5
 write ";*********************************************************************"
 write ";  Step 1.9: Dump the EEPROM Definition Table."
 write ";*********************************************************************"
-s get_tbl_to_cvt (ramDir,eeDefTblName,"A","$cpu_eedeftbl1_9","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,eeDefTblName,"A","$cpu_eedeftbl1_9",hostCPU,defTblId)
 wait 5
 
 write ";*********************************************************************"
@@ -424,7 +433,7 @@ write ";  Step 2.1: Send the command to dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_1","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_1",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -553,7 +562,7 @@ write ";  Step 2.4: Dump the EEPROM Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_4","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_4",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -576,7 +585,7 @@ local loopCount=0
 local dumpFileName = "$cpu_eerestbl2_5"
 
 while (keepDumpingResults = TRUE) do
-  s get_tbl_to_cvt (ramDir,eeResTblName,"A",dumpFileName,"$CPU",resTblId)
+  s get_tbl_to_cvt (ramDir,eeResTblName,"A",dumpFileName,hostCPU,resTblId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -650,7 +659,7 @@ endif
 
 ;; Dump the definition table to verify the entry's state was modified
 ;; This verifies DCR #18559
-s get_tbl_to_cvt (ramDir,eeDefTblName,"A","$cpu_eedeftbl2_6","$CPU",defTblId)
+s get_tbl_to_cvt (ramDir,eeDefTblName,"A","$cpu_eedeftbl2_6",hostCPU,defTblId)
 wait 5
 
 if (p@$SC_$CPU_CS_EEPROM_DEF_TABLE[segindex].State = "Disabled") then
@@ -668,7 +677,7 @@ write ";  disabled. "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_7","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_7",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -754,7 +763,7 @@ write ";  Step 2.10: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_10","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_10",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -801,12 +810,13 @@ else
 endif
 
 ;; Check for the completed message
-ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 60
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  write "<*> Passed (2006.2) - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  ut_setrequirements CS_20062, "P"
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -851,7 +861,7 @@ write ";  Step 2.13: Dump the Results table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl2_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1324,7 +1334,7 @@ ut_setupevents "$SC", "$CPU", {CSAppName}, CS_GET_ENTRY_ID_EEPROM_NOT_FOUND_INF_
 
 local foundType=FALSE
 
-for i = 1 to OS_MEM_TABLE_SIZE DO
+for i = 1 to MEM_TABLE_SIZE DO
   if (p@$SC_$CPU_TST_CS_MemType[i] = "RAM") AND (foundType = FALSE) then
     ramAddress = $SC_$CPU_TST_CS_StartAddr[i] + 16
     foundType = TRUE
@@ -1365,7 +1375,7 @@ write ";  Step 3.13: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl3_13","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl3_13",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1407,11 +1417,36 @@ else
   ut_setrequirements CS_20061, "F"
 endif
 
-;; Verify the HK Telemetry indicating the Child and One Shot Task are in use
-write "; Child Task Flag = ",$sc_$cpu_cs_ChildTaskInUse
-write "; Child Task Flag = ",p@$sc_$cpu_cs_ChildTaskInUse
-write "; One Shot Task Flag = ",$sc_$cpu_cs_OneShotTaskInUse
-write "; One Shot Task Flag = ",p@$sc_$cpu_cs_OneShotTaskInUse
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004) - Expected Event Msg ",CS_RECOMPUTE_EEPROM_CHDTASK_ERR_EID," rcv'd."
+  ut_setrequirements CS_1004, "P"
+else
+  write "<!> Failed (1004) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_EEPROM_CHDTASK_ERR_EID,"."
+  ut_setrequirements CS_1003, "F"
+endif
+
+write ";*********************************************************************"
+write ";  Step 3.16: Send the One Shot CRC command to verify that only 1 "
+write ";  recompute or One Shot can occur at the same time. "
+write ";*********************************************************************"
+ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_CHDTASK_ERR_EID,"ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=2048
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;2006.1) - One Shot CRC command failed as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_20061, "P"
+else
+  write "<!> Failed (1003;2006.1) - One Shot CRC command did not increment CMDEC."
+  ut_setrequirements CS_1003, "F"
+  ut_setrequirements CS_20061, "F"
+endif
 
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
@@ -1424,12 +1459,27 @@ else
 endif
 
 ;; Check for the Recompute Finished message
-ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1, 120
+ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1, 180
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  write "<*> Passed (2006.2) - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  ut_setrequirements CS_20062, "P"
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (2006.2)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (2006.2) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_20062, "P"
+else
+  write "<!> Failed (2006.2) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -1441,7 +1491,7 @@ write ";  Step 4.1: Dump the Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_1","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_1",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1580,7 +1630,7 @@ write ";  Step 4.5: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_5","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_5",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1627,12 +1677,13 @@ else
 endif
 
 ;; Check for the Recompute Finished message
-ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 180
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  write "<*> Passed (2006.2) - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
+  ut_setrequirements CS_20062, "P"
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -1764,7 +1815,7 @@ write ";  Step 4.10: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_10","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_10",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1815,8 +1866,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -1983,7 +2034,7 @@ write ";  Step 4.16: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_16","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_16",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2034,8 +2085,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -2167,7 +2218,7 @@ write ";  Step 4.21: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_21","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_21",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2218,8 +2269,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -2420,7 +2471,7 @@ write ";  Step 4.28: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_28","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_28",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2471,8 +2522,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -2604,7 +2655,7 @@ write ";  Step 4.33: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_33","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_33",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2655,8 +2706,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -2823,7 +2874,7 @@ write ";  Step 4.39: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_39","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_39",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2874,8 +2925,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -3007,7 +3058,7 @@ write ";  Step 4.44: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_44","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl4_44",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3058,8 +3109,8 @@ ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 120
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," rcv'd."
 else
-  write "<!> Failed - Recompute Finished Event msg timed out. Waiting a little bit longer"
-  wait 60
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 wait 5
@@ -3148,7 +3199,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("eepromdefemptytable", "$CPU")
+start load_table ("eepromdefemptytable", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3221,13 +3272,12 @@ endif
 ;; Activate to be performed.
 
 ;; Wait for the recompute finished event message
-ut_tlmwait $SC_$CPU_find_event[3].num_found_messages, 1, 120
+ut_tlmwait $SC_$CPU_find_event[3].num_found_messages, 1, 180
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Recompute Finished Event Message rcv'd."
 else
-  write "<!> Failed - Recompute timed out. Expected Event Msg ",CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID," not rcd'd."
-  ;; Wait another 3 minutes in hope of rcving event
-  wait 180
+  write "<!> Failed (2006.2) - Recompute Finished Event msg not rcv'd as expected."
+  ut_setrequirements CS_20062, "F"
 endif
 
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -3246,7 +3296,7 @@ write ";  Step 5.6: Dump the Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl5_6","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl5_6",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3272,7 +3322,7 @@ write ";  Step 5.8: Send the command to load the invalid file created above."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("eeprom_def_invalid", "$CPU")
+start load_table ("eeprom_def_invalid", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3288,6 +3338,7 @@ write ";  Step 5.9: Send the command to validate the file loaded in Step 5.8"
 write ";*********************************************************************"
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VAL_REQ_MADE_INF_EID, "DEBUG", 1
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_ERR_EID, "ERROR", 2
+ut_setupevents "$SC","$CPU",{CSAppName},CS_VAL_EEPROM_RANGE_ERR_EID,"ERROR", 3
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
@@ -3308,10 +3359,20 @@ endif
 ;; Wait for the Validation Error event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
-  write "<*> Passed - EEPROM Definition Table validation failed with an invalid state."
+  write "<*> Passed - EEPROM Definition Table validation failed with an invalid range."
   Write "<*> Passed - Event Msg ",$SC_$CPU_find_event[2].eventid," Found!"
 else
   write "<!> Failed - EEPROM Definition Table validation was successful with an invalid state entry."
+endif
+
+;; Wait for the Validation Error event message from CS
+ut_tlmwait $SC_$CPU_find_event[3].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (2001.2) - EEPROM Definition Table validation failed with an invalid range."
+  ut_setrequirements CS_20012, "P"
+else
+  write "<!> Failed (2001.2) - EEPROM Definition Table validation was successful with an invalid state entry."
+  ut_setrequirements CS_20012, "F"
 endif
 
 write ";*********************************************************************"
@@ -3341,20 +3402,104 @@ endif
 wait 5
 
 write ";*********************************************************************"
-write ";  Step 5.11: Create an EEPROM Definition table load file containing "
+write ";  Step 5.11: Send the command to load the invalid state table."
+write ";*********************************************************************"
+cmdCtr = $SC_$CPU_TBL_CMDPC + 1
+
+start load_table ("eeprom_def_invalid2", hostCPU)
+
+ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed - Load command sent successfully."
+else
+  write "<!> Failed - Load command did not execute successfully."
+endif
+
+wait 5
+
+write ";**********************************************************************"
+write ";  Step 5.12: Send the command to validate the file loaded in Step 5.11"
+write ";**********************************************************************"
+ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VAL_REQ_MADE_INF_EID, "DEBUG", 1
+ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_ERR_EID, "ERROR", 2
+ut_setupevents "$SC","$CPU",{CSAppName},CS_VAL_EEPROM_STATE_ERR_EID,"ERROR", 3
+
+cmdCtr = $SC_$CPU_TBL_CMDPC + 1
+
+/$SC_$CPU_TBL_VALIDATE INACTIVE VTABLENAME=eeDefTblName
+
+ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed - Table Definition Table validate command sent."
+  if ($SC_$CPU_find_event[1].num_found_messages = 1) then
+    write "<*> Passed - Event Msg ",$SC_$CPU_find_event[1].eventid," Found!"
+  else
+    write "<!> Failed - Event Message not received for Validate command."
+  endif
+else
+  write "<!> Failed - EEPROM Definition Table validate command failed."
+endif
+
+;; Wait for the Validation Error event message
+ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed - EEPROM Definition Table validation failed with an invalid state."
+  Write "<*> Passed - Event Msg ",$SC_$CPU_find_event[2].eventid," Found!"
+else
+  write "<!> Failed - EEPROM Definition Table validation was successful with an invalid state entry."
+endif
+
+;; Wait for the Validation Error event message from CS
+ut_tlmwait $SC_$CPU_find_event[3].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (2001.2) - EEPROM Definition Table validation failed with an invalid state."
+  ut_setrequirements CS_20012, "P"
+else
+  write "<!> Failed (2001.2) - EEPROM Definition Table validation was successful with an invalid state entry."
+  ut_setrequirements CS_20012, "F"
+endif
+
+write ";*********************************************************************"
+write ";  Step 5.13: Send the command to abort the invalid load.             "
+write ";*********************************************************************"
+ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_LOAD_ABORT_INF_EID, "INFO", 1
+
+cmdCtr = $SC_$CPU_TBL_CMDPC + 1
+
+/$SC_$CPU_TBL_LOADABORT ABTABLENAME=eeDefTblName
+
+ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed - Load abort command sent successfully."
+else
+  write "<!> Failed - Load abort command did not execute successfully."
+endif
+
+;; Check for the Event message generation
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed - Event Msg ",$SC_$CPU_find_event[1].eventid," Found!"
+else
+  write "<!> Failed - Event Message not received for Load Abort command."
+endif
+
+wait 5
+
+write ";*********************************************************************"
+write ";  Step 5.14: Create an EEPROM Definition table load file containing "
 write ";  entries that overlap and empty entries in between valid entries.  "
 write ";*********************************************************************"
 s $sc_$cpu_cs_edt3
 wait 5
 
 write ";*********************************************************************"
-write ";  Step 5.12: Send the command to load the file with valid entries.   "
+write ";  Step 5.15: Send the command to load the file with valid entries.   "
 write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("eeprom_def_ld_2", "$CPU")
+start load_table ("eeprom_def_ld_2", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3374,7 +3519,7 @@ endif
 wait 5
 
 write ";*********************************************************************"
-write ";  Step 5.13: Send the command to validate the file loaded in Step 5.12"
+write ";  Step 5.16: Send the command to validate the file loaded in Step 5.15"
 write ";*********************************************************************"
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VAL_REQ_MADE_INF_EID, "DEBUG", 1
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_INF_EID, "INFO", 2
@@ -3406,7 +3551,7 @@ endif
 wait 5
 
 write ";*********************************************************************"
-write ";  Step 5.14: Send the command to Activate the file loaded in Step 5.12"
+write ";  Step 5.17: Send the command to Activate the file loaded in Step 5.15"
 write ";*********************************************************************"
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_LOAD_PEND_REQ_INF_EID,"DEBUG",1
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_UPDATE_SUCCESS_INF_EID,"INFO",2
@@ -3443,11 +3588,11 @@ endif
 wait 5
 
 write ";*********************************************************************"
-write ";  Step 5.15: Dump the Results table.        "
+write ";  Step 5.18: Dump the Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl5_15","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl5_15",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3460,7 +3605,7 @@ else
 endif
 
 write ";*********************************************************************"
-write ";  Step 5.16: Corrupt simulated EEPROM using the TST_CS application.  "
+write ";  Step 5.19: Corrupt simulated EEPROM using the TST_CS application.  "
 write ";*********************************************************************"
 ut_setupevents "$SC","$CPU","TST_CS",TST_CS_CORRUPT_EEPROM_MEM_INF_EID,"INFO", 1
 ut_setupevents "$SC","$CPU",{CSAppName},CS_EEPROM_MISCOMPARE_ERR_EID,"ERROR", 2
@@ -3478,8 +3623,10 @@ else
   write "<!> Failed - TST_CS Corrupt EEPROM command was not successful."
 endif
 
+wait 5
+
 write ";*********************************************************************"
-write ";  Step 5.17: Monitor the EEPROM Miscompare Counter to verify that   "
+write ";  Step 5.20: Monitor the EEPROM Miscompare Counter to verify that   "
 write ";  miscompares are occurring. "
 write ";*********************************************************************"
 ;; Wait for the CS application to attempt to recalculate the checksums
@@ -3525,13 +3672,13 @@ enddo
 write "==> Table filename ONLY = '",tableFileName,"'"
 
 ;; Download the table
-s ftp_file ("CF:0/apps",tableFileName,"cs_eeprom_orig_tbl.tbl","$CPU","G")
+s ftp_file ("CF:0/apps",tableFileName,"cs_eeprom_orig_tbl.tbl",hostCPU,"G")
 
 write ";*********************************************************************"
 write ";  Step 6.2: Delete the EEPROM Definition table default load file from "
 write ";  $CPU. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","na",tableFileName,"$CPU","R")
+s ftp_file ("CF:0/apps","na",tableFileName,hostCPU,"R")
 
 write ";*********************************************************************"
 write ";  Step 6.3: Start the CS and TST_CS Applications. "
@@ -3543,7 +3690,7 @@ write ";  Step 6.4: Dump the Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl6_4","$CPU",resTblId)
+s get_tbl_to_cvt (ramDir,eeResTblName,"A","$cpu_eerestbl6_4",hostCPU,resTblId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3561,7 +3708,7 @@ write ";*********************************************************************"
 write ";  Step 7.1: Upload the default Application Code Segment Definition   "
 write ";  table downloaded in step 1.1. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","cs_eeprom_orig_tbl.tbl",tableFileName,"$CPU","P")
+s ftp_file ("CF:0/apps","cs_eeprom_orig_tbl.tbl",tableFileName,hostCPU,"P")
 
 write ";*********************************************************************"
 write ";  Step 7.2: Send the Power-On Reset command. "
@@ -3570,9 +3717,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"

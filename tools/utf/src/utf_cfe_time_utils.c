@@ -116,7 +116,7 @@ void CFE_TIME_Tone1HzISR(void)
     return;
 }
 
-int16 CFE_TIME_CalculateState(CFE_TIME_Reference_t *Reference)
+int16 CFE_TIME_CalculateState(const CFE_TIME_Reference_t *Reference)
 {
     (void) Reference;          /* refer to function argument to avoid compiler warning */
 
@@ -149,7 +149,7 @@ void CFE_TIME_GetReference(CFE_TIME_Reference_t *Reference)
     return;
 } 
 
-CFE_TIME_SysTime_t CFE_TIME_CalculateTAI(CFE_TIME_Reference_t *Reference)
+CFE_TIME_SysTime_t CFE_TIME_CalculateTAI(const CFE_TIME_Reference_t *Reference)
 {
     CFE_TIME_SysTime_t TimeAsTAI;
 
@@ -164,7 +164,7 @@ CFE_TIME_SysTime_t CFE_TIME_CalculateTAI(CFE_TIME_Reference_t *Reference)
 /* CFE_TIME_CalculateUTC() -- calculate UTC from reference data    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-CFE_TIME_SysTime_t CFE_TIME_CalculateUTC(CFE_TIME_Reference_t *Reference)
+CFE_TIME_SysTime_t CFE_TIME_CalculateUTC(const CFE_TIME_Reference_t *Reference)
 {
     CFE_TIME_SysTime_t TimeAsUTC;
 

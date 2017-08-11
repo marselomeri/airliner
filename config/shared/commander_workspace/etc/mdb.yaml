@@ -54,4 +54,5 @@ softsim:
              spec: "/mdb/ETA.xls"
            - type: "sheet"
              spec: "/mdb/VC.xls"
-
+           - type: "sheet"
+             spec: "/mdb/EA.xls"
