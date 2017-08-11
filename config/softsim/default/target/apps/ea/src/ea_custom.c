@@ -1,3 +1,4 @@
+#include "ea_custom.h"
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +7,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include "ea_custom.h"
 #include "ea_platform_cfg.h"
 #include "ea_app.h"
 #include "ea_msg.h"
@@ -22,7 +22,6 @@ void EA_StartAppCustom()
 		** Create child process to execute app
 		*/
 		pid_t pid = fork();
-
 		/*
 		** Child process
 		*/
@@ -34,7 +33,7 @@ void EA_StartAppCustom()
 				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
 									"Error starting external application");
 			}
-			exit(0);
+			exit(0); // TODO
 		}
 		/*
 		** Failed Fork
@@ -70,7 +69,6 @@ void EA_StartAppCustom()
     {
         /* Can't send event or write to syslog because this task isn't registered with the cFE. */
         OS_printf("StartApp Child Task Registration failed!\n");
-		EA_AppData.HkTlm.usCmdErrCnt++;
     }
 
 	EA_AppData.ChildAppTaskID = 0;
