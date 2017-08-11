@@ -132,8 +132,8 @@ typedef struct
 typedef struct 
 {
     uint8                  CmdHeader[CFE_SB_CMD_HDR_SIZE];
-    uint16                 Port;
     char                   Address[VC_ADDRESS_LENGTH];
+    uint16                 Port;
 } VC_StartStreamCmd_t;
 
 
