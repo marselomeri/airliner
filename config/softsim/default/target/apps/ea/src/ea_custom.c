@@ -80,9 +80,9 @@ void EA_StartAppCustom()
 	return;
 }
 
-void EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr)
+void EA_TermAppCustom()
 {
-	int kill_status = -2;
+	int kill_status = -1;
 
 	/*
 	** Ensure app is currently running
