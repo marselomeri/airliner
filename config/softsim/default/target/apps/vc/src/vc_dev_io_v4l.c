@@ -216,11 +216,11 @@ static int32 VC_Ioctl(int fh, int request, void *arg)
 int32 VC_ConfigureDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
-    uint32 i = 0;
+    //uint32 i = 0;
     struct v4l2_format              Format;
     struct v4l2_capability          Capabilities;
     struct v4l2_requestbuffers      Request;
-    struct v4l2_buffer              Buffer;
+    //struct v4l2_buffer              Buffer;
 
     bzero(&Format, sizeof(Format));
     Format.type                = VC_AppCustomDevice.Channel[DeviceID].BufferType;
@@ -314,6 +314,47 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         returnCode = -1;
         goto end_of_function;
     }
+   
+/*    
+    for (i=0; i < VC_AppCustomDevice.Channel[DeviceID].BufferRequest; i++)
+    {
+        VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = (void*)&VC_AppCustomDevice.Channel[DeviceID].Buffers[i][0];
+        
+        bzero(&Buffer, sizeof(Buffer));
+        Buffer.type            = VC_AppCustomDevice.Channel[DeviceID].BufferType;
+        Buffer.memory          = VC_AppCustomDevice.Channel[DeviceID].MemoryType;
+        Buffer.index           = i;
+        Buffer.m.userptr       = (unsigned long)VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr;
+        Buffer.length          = VC_AppCustomDevice.Channel[DeviceID].Buffer_Size;
+
+        if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_QBUF, &Buffer))
+        {
+            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "VC VIDIOC_QBUF returned %i on %s channel %u", errno,
+                        VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+            returnCode = -1;
+            goto end_of_function;
+        }
+    }
+*/
+end_of_function:
+    return returnCode;
+}
+
+
+/**
+ * @brief start streaming on a particular device
+ * @param DeviceID the device ID to start streaming on
+ * @return 0 for success -1 for failure
+ */
+int32 VC_Start_StreamingDevice(uint8 DeviceID)
+{
+    int32 returnCode = 0;
+    uint32 i = 0;
+    enum v4l2_buf_type              Type;
+    struct v4l2_buffer              Buffer;
+    
+    Type = VC_AppCustomDevice.Channel[DeviceID].BufferType;
     
     for (i=0; i < VC_AppCustomDevice.Channel[DeviceID].BufferRequest; i++)
     {
@@ -335,23 +376,6 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
             goto end_of_function;
         }
     }
-    
-end_of_function:
-    return returnCode;
-}
-
-
-/**
- * @brief start streaming on a particular device
- * @param DeviceID the device ID to start streaming on
- * @return 0 for success -1 for failure
- */
-int32 VC_Start_StreamingDevice(uint8 DeviceID)
-{
-    int32 returnCode = 0;
-    enum v4l2_buf_type              Type;
-    
-    Type = VC_AppCustomDevice.Channel[DeviceID].BufferType;
 
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMON, &Type))
     {
@@ -359,6 +383,7 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
                     "VC VIDIOC_STREAMON returned %i on %s channel %u", errno,
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
+        goto end_of_function;
     }
     else
     {
@@ -367,6 +392,8 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
                     "VC VIDIOC_STREAMON success on %s channel %u", 
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
     }
+
+end_of_function:
 
     return returnCode;
 }
@@ -642,7 +669,7 @@ end_of_function:
     /* Streaming task exited so set app flag to initialized */
     VC_AppData.AppState = VC_INITIALIZED;
     CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-        "VC streaming task exited with %lu", returnCode);
+        "VC streaming task exited with %d", returnCode);
     CFE_ES_ExitChildTask();
 }
 
@@ -868,6 +895,7 @@ int32 VC_DisableDevice(uint8 DeviceID)
     }
 
     close(VC_AppCustomDevice.Channel[DeviceID].DeviceFd);
+    VC_AppCustomDevice.Channel[DeviceID].DeviceFd = 0;
 
 end_of_function:
     return returnCode;
