@@ -5,6 +5,9 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#ifdef EA_MOCK_OS_CALLS_H
+#include "ea_mock_os_calls.c"
+#endif
 #include <unistd.h>
 
 /*************************************************************************
@@ -42,7 +45,7 @@ typedef struct
 *************************************************************************/
 void EA_StartAppCustom();
 
-void EA_TermAppCustom(CFE_SB_Msg_t* MsgPtr);
+void EA_TermAppCustom();
 void EA_PerfmonCustom(int32 pid);
 EA_ProcData_t EA_ParsePidUtil(int32 pid);
 
