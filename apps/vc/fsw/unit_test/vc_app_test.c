@@ -335,6 +335,62 @@ void Test_VC_InitApp_Nominal(void)
 
 
 /**************************************************************************
+ * Tests for VC_RcvMsg()
+ **************************************************************************/
+ /**
+ * Test VC_RcvMsg CFE_SB_NO_MESSAGE failure
+ * NOTE: Nothing is currently implemented in this error check 
+ */
+void Test_VC_RcvMsg_Fail_NoMessage(void)
+{
+    int32 result = !CFE_SUCCESS;
+    int32 expected = CFE_SUCCESS;
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SB_NO_MESSAGE, 1);
+    
+    result = VC_RcvMsg(VC_SCH_PIPE_PEND_TIME);
+
+    UtAssert_True (result == expected, "VC_RcvMsg, CFE_SB_NO_MESSAGE");
+}
+
+
+ /**
+ * Test VC_RcvMsg CFE_SB_TIME_OUT failure
+ * NOTE: Nothing is currently implemented in this error check 
+ */
+void Test_VC_RcvMsg_Fail_TimeOut(void)
+{
+    int32 result = !CFE_SUCCESS;
+    int32 expected = CFE_SUCCESS;
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SB_TIME_OUT, 1);
+    
+    result = VC_RcvMsg(VC_SCH_PIPE_PEND_TIME);
+
+    UtAssert_True (result == expected, "VC_RcvMsg, CFE_SB_TIME_OUT");
+}
+
+
+ /**
+ * Test VC_RcvMsg CFE_SB_BAD_ARGUMENT failure
+ */
+void Test_VC_RcvMsg_Fail_BadArg(void)
+{
+    int32 result = CFE_SUCCESS;
+    int32 stateExpected = CFE_ES_APP_ERROR;
+    unsigned int returnExpected = 0xCA000003;
+    
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SB_BAD_ARGUMENT, 1);
+    
+    result = VC_RcvMsg(VC_SCH_PIPE_PEND_TIME);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_PIPE_ERR_EID, CFE_EVS_ERROR, "SB pipe read error (0xCA000003), app will exit", 
+                        "SB pipe read error failed to raise an event");
+    UtAssert_True(VC_AppData.uiRunStatus == stateExpected, "VC_RcvMsg, failed to set APP_ERROR");
+    UtAssert_True(result == returnExpected, "VC_RcvMsg, failed to return 0xCA000003");
+}
+
+
+/**************************************************************************
  * Tests for VC_CleanupCallback()
  **************************************************************************/
 /**
@@ -343,8 +399,31 @@ void Test_VC_InitApp_Nominal(void)
  */
 void Test_VC_CleanupCallback(void)
 {
+    /* Fail VC_Transmit_Uninit and assert that an event was raised */
+    VC_Transmit_Test_Returns.VC_Transmit_Uninit_Return = FALSE;
+    
+    /* Fail VC_Devices_Stop and assert that an event was raised */
+    VC_Device_Test_Returns.VC_Devices_Stop_Return = FALSE;
+    
+    /* Fail VC_Devices_Uninit and assert that an event was raised */
+    VC_Device_Test_Returns.VC_Devices_Uninit_Return = FALSE;
+    
     /* Execute the function being tested */
     VC_CleanupCallback();
+    
+    /* Set stub return back to original state */
+    /* TODO reset this during teardown */
+    VC_Transmit_Test_Returns.VC_Transmit_Uninit_Return = TRUE;
+    VC_Device_Test_Returns.VC_Devices_Stop_Return = TRUE;
+    VC_Device_Test_Returns.VC_Devices_Uninit_Return = TRUE;
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
+    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "VC_Transmit_Uninit failed", 
+                        "VC_Transmit_Uninit failed to raise an event");
+    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Stop failed", 
+                        "VC_Transmit_Uninit failed to raise an event");
+    UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Uninit failed", 
+                        "VC_Transmit_Uninit failed to raise an event");
 }
 
 
@@ -390,8 +469,8 @@ void Test_VC_AppMain_InvalidSchMessage(void)
 
     /* Execute the function being tested */
     VC_AppMain();
-
 }
+
 
 /* TODO */
 /**
@@ -427,7 +506,6 @@ void Test_VC_AppMain_Nominal_SendHK(void)
 
     /* Verify results */
     UtAssert_True (hookCalledCount == 1, "AppMain_Nominal_SendHK");
-
 }
 
 
@@ -476,6 +554,49 @@ void Test_VC_AppMain_ProcessNewData_InvalidMsgID(void)
 }
 
 
+ /**
+ * Test VC_AppMain(), CFE_SB_BAD_ARGUMENT failure
+ */
+void Test_VC_AppMain_Fail_BadArg(void)
+{
+    int32 stateExpected = CFE_ES_APP_ERROR;
+    
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SB_BAD_ARGUMENT, 1);
+    
+    /* Execute the function being tested */ 
+    VC_AppMain();
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
+    UtAssert_EventSent(VC_PIPE_ERR_EID, CFE_EVS_ERROR, "SB Pipe Read Error, VC App will exit. RC = 0xCA000003", 
+                        "SB pipe read error failed to raise an event");
+    UtAssert_True(VC_AppData.uiRunStatus == stateExpected, "VC_RcvMsg, failed to set APP_ERROR");
+}
+
+
+/**************************************************************************
+ * Tests for VC_ProcessNewCmds()
+ **************************************************************************/
+ /**
+ * Test VC_ProcessNewCmds CFE_SB_BAD_ARGUMENT failure
+ */
+void Test_VC_ProcessNewCmds_Fail_BadArg(void)
+{
+    int32 stateExpected = CFE_ES_APP_ERROR;
+    
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SB_BAD_ARGUMENT, 1);
+    
+    VC_ProcessNewCmds(); 
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_PIPE_ERR_EID, CFE_EVS_ERROR, "", 
+                        "SB pipe read error failed to raise an event");
+    UtAssert_True(VC_AppData.uiRunStatus == stateExpected, "VC_RcvMsg, failed to set APP_ERROR");
+}
+
+
+/**************************************************************************
+ * Tests for VC_ProcessNewAppCmds()
+ **************************************************************************/
 /**
  * Test VC_ProcessNewAppCmds(), Invalid Command Code
  */
@@ -504,6 +625,7 @@ void Test_VC_ProcessNewAppCmds_InvalidCommand(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Cmd with Invalid Cmd Code Sent");
 }
 
@@ -536,6 +658,7 @@ void Test_VC_ProcessNewAppCmds_Noop_InvalidSize(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", "NOOP Cmd Event Sent");
 }
 
@@ -568,6 +691,7 @@ void Test_VC_ProcessNewAppCmds_Noop_Nominal(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdCnt = 1,"Command cmd counter != 1");
     UtAssert_EventSent(VC_NOOP_INF_EID, CFE_EVS_INFORMATION, "", "NOOP Cmd Event Sent");
 }
 
@@ -641,8 +765,10 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
+
 
 /**
  * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid State
@@ -672,6 +798,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_CMD_ERR_EID, CFE_EVS_ERROR, "VC is already streaming", "Start Streaming Cmd Event Sent");
 }
 
@@ -710,6 +837,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_ADDR_NUL_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
 
@@ -756,6 +884,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_ADDR_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
 
@@ -803,6 +932,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_UpdateDestinationFail(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");    
     UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "Destination update failed", "Start Streaming Cmd Event Sent");
 }
 
@@ -850,6 +980,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_TransmitUninitFail(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");    
     UtAssert_EventSent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
 
@@ -899,6 +1030,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_TransmitInitFail(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");    
     UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "VC_Transmit_Init failed in cmd start streaming", "Transmit init failure did not raise event");
 }
 
@@ -943,9 +1075,9 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_DevicesStartFail(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Start failed in cmd start streaming", "Device start failure did not raise event");
 }
-
 
 
 /**
@@ -987,6 +1119,7 @@ void Test_VC_ProcessNewAppCmds_StartStreaming_Nominal(void)
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdCnt = 1,"Command counter != 1");
     UtAssert_EventSent(VC_CMD_INF_EID, CFE_EVS_INFORMATION, "", "Start Streaming Cmd Event Sent");
     UtAssert_True(VC_AppData.AppState == VC_STREAMING, "App state != streaming");
 }
@@ -1020,8 +1153,10 @@ void Test_VC_ProcessNewAppCmds_StopStreaming_InvalidSize(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", "Start Streaming Cmd Event Sent");
 }
+
 
 /* TODO */
 /**
@@ -1058,6 +1193,7 @@ void Test_VC_ProcessNewAppCmds_StopStreaming_InvalidState(void)
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_CMD_ERR_EID, CFE_EVS_ERROR, "VC is already not streaming", "Stop Streaming Cmd Event Sent");
 }
 
@@ -1097,6 +1233,12 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_InitApp_FailTaskInstallDeleteHandler");               
     UtTest_Add(Test_VC_InitApp_Nominal, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_InitApp_Nominal");
+    UtTest_Add(Test_VC_RcvMsg_Fail_NoMessage, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_RcvMsg_Fail_NoMessage");
+    UtTest_Add(Test_VC_RcvMsg_Fail_TimeOut, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_RcvMsg_Fail_TimeOut");
+    UtTest_Add(Test_VC_RcvMsg_Fail_BadArg, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_RcvMsg_Fail_BadArg");
     UtTest_Add(Test_VC_CleanupCallback, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_CleanupCallback");
     UtTest_Add(Test_VC_AppMain_Fail_RegisterApp, VC_Test_Setup, VC_Test_TearDown,
@@ -1111,6 +1253,10 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_AppMain_Nominal_Wakeup");
     UtTest_Add(Test_VC_AppMain_ProcessNewData_InvalidMsgID, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_AppMain_ProcessNewData_InvalidMsgID");
+    UtTest_Add(Test_VC_AppMain_Fail_BadArg, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_AppMain_Fail_BadArg");
+    UtTest_Add(Test_VC_ProcessNewCmds_Fail_BadArg, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_ProcessNewCmds_Fail_BadArg"); 
     UtTest_Add(Test_VC_ProcessNewAppCmds_InvalidCommand, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_ProcessNewAppCmds_InvalidCommand"); 
     UtTest_Add(Test_VC_ProcessNewAppCmds_Noop_InvalidSize, VC_Test_Setup, VC_Test_TearDown,

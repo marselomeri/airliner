@@ -194,6 +194,28 @@ int32  VC_InitData(void);
 
 
 /************************************************************************/
+/** \brief Receive and process software bus messages
+**
+**  \par Description
+**       This function processes incoming SB messages and routes
+**       messages to the appropriete helper function to process commands
+**       or report housekeeping etc.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   iBlocking    timeOut CFE_SB_PEND, CFE_SB_POLL or 
+**                             millisecond timeout
+**
+**  \returns
+**  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+**  \endreturns
+** 
+*************************************************************************/
+int32 VC_RcvMsg(int32 iBlocking);
+
+
+/************************************************************************/
 /** \brief Video Control Task incoming command processing
 **
 **  \par Description
