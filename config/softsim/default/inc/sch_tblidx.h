@@ -58,6 +58,9 @@
 #define SC_1HZ_WAKEUP_MIDX			40
 #define SC_SEND_HK_MIDX				41
 
+#define VC_SEND_HK_MIDX				45
+#define VC_WAKEUP_MIDX				46
+
 #define CI_READ_CMD_MIDX			50
 
 #define CI_SEND_HK_MIDX             53
@@ -81,6 +84,10 @@
 
 #define CFE_TIME_TONE_CMD_MIDX		110
 #define CFE_TIME_1HZ_CMD_MIDX		111
+
+#define EA_WAKEUP_MIDX 				125
+#define EA_PERFMON_MIDX 			126
+#define EA_SEND_HK_MIDX 			127
 
 #endif /* _SCH_TBL_IDX_H_ */
 

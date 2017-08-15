@@ -1,0 +1,26 @@
+{
+	"app_name": "{{cookiecutter.app_name}}",
+	"dir_name": "gyro",
+	"func_name": "SensorAccel",
+	"pb_msg_type": "px4_sensor_accel_pb",
+	"msg_type": "PX4_SensorAccelMsg_t",
+	"return_type": "uint32",
+	"var_names": { 
+			"integral_dt": "IntegralDt",
+			"x": "X",
+			"y": "Y",
+			"z": "Z",
+			"x_integral": "XIntegral",
+			"y_integral": "YIntegral",
+			"z_integral": "ZIntegral",
+			"temperature": "Temperature",
+			"range_m_s2": "Range_m_s2",
+			"scaling": "Scaling",
+			"device_id": "DeviceID",
+			"x_raw": "XRaw",
+			"y_raw": "YRaw",
+			"z_raw": "ZRaw",
+			"temperature_raw": "TemperatureRaw"},
+	"fname": "SensorAccel"
+}
+

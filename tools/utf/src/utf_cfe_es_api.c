@@ -581,7 +581,7 @@ int32 CFE_ES_RegisterApp(void)
 **           Application ID.
 **
 */
-int32 CFE_ES_GetAppIDByName(uint32 *AppIdPtr, char *AppName)
+int32 CFE_ES_GetAppIDByName(uint32 *AppIdPtr, const char *AppName)
 {
    int32 Result = CFE_ES_ERR_APPNAME;
    int   i;
@@ -1280,7 +1280,7 @@ int32 CFE_ES_GetTaskInfo(CFE_ES_TaskInfo_t *TaskInfo, uint32 TaskId)
 
 int32 CFE_ES_CreateChildTask(uint32 *TaskIdPtr, const char *TaskName,
                              CFE_ES_ChildTaskMainFuncPtr_t FunctionPtr,
-                             const uint32 *StackPtr,
+                             uint32 *StackPtr,
                              uint32 StackSize,
                              uint32 Priority,
                              uint32 Flags)
@@ -1669,48 +1669,6 @@ int32 CFE_ES_WriteToSysLog(const char *SpecStringPtr, ...)
     return CFE_SUCCESS;
 
 } /* End of CFE_ES_WriteToSysLog() */
-
-
-/*
-** Function: CFE_ES_RegisterDriver
-**
-** Purpose:  Initialize a cFE device driver.
-**
-*/
-int32 CFE_ES_RegisterDriver(uint32 *DriverIdPtr, CFE_ES_DeviceDriver_t *DriverPtr)
-{
-   /* Handle Preset Return Code */
-   if (cfe_es_api_return_value[CFE_ES_REGISTERDRIVER_PROC] !=  UTF_CFE_USE_DEFAULT_RETURN_CODE)
-   {
-      return cfe_es_api_return_value[CFE_ES_REGISTERDRIVER_PROC];
-   }
-
-   CFE_ES_WriteToSysLog("CFE ES Register Driver not Implemented\n");
-
-    return(CFE_ES_NOT_IMPLEMENTED);
-
-} /* End of CFE_ES_RegisterDriver() */
-
-
-/*
-** Function: CFE_ES_UnloadDriver
-**
-** Purpose:  Unload a cFE device driver.
-**
-*/
-int32 CFE_ES_UnloadDriver(uint32 DriverId)
-{
-   /* Handle Preset Return Code */
-   if (cfe_es_api_return_value[CFE_ES_UNLOADDRIVER_PROC] !=  UTF_CFE_USE_DEFAULT_RETURN_CODE)
-   {
-      return cfe_es_api_return_value[CFE_ES_UNLOADDRIVER_PROC];
-   }
-    
-	CFE_ES_WriteToSysLog("CFE ES Unload Driver not Implemented\n");
-
-    return(CFE_ES_NOT_IMPLEMENTED);
-
-} /* End of CFE_ES_UnloadDriver() */
    
 
 /*
@@ -1719,7 +1677,7 @@ int32 CFE_ES_UnloadDriver(uint32 DriverId)
 ** Purpose:  Perform a CRC calculation on a range of memory.
 **
 */
-uint32 CFE_ES_CalculateCRC(void *DataPtr, uint32 DataLength, uint32 InputCRC, uint32 TypeCRC)
+uint32 CFE_ES_CalculateCRC(const void *DataPtr, uint32 DataLength, uint32 InputCRC, uint32 TypeCRC)
 {
 	int32  i;
     int16  Index;

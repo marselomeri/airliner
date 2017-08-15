@@ -1403,7 +1403,7 @@ void CFE_TBL_ByteSwapUint32(uint32 *Uint32ToSwapPtr)
 ** NOTE: For complete prolog information, see 'cfe_tbl_internal.h'
 ********************************************************************/
 
-void CFE_TBL_CleanUpApp(uint32 AppId)
+int32 CFE_TBL_CleanUpApp(uint32 AppId)
 {
     uint32 i;
     CFE_TBL_RegistryRec_t *RegRecPtr = NULL;
@@ -1454,6 +1454,8 @@ void CFE_TBL_CleanUpApp(uint32 AppId)
             CFE_TBL_RemoveAccessLink(i);
         }
     }
+
+    return CFE_SUCCESS;
 }
 
 /*******************************************************************

@@ -2,7 +2,7 @@
  ** File:
  **   $Id: sc_msgids.h 1.2 2015/11/20 12:03:19EST sstrege Exp  $
  **
- **  Copyright © 2007-2014 United States Government as represented by the 
+ **  Copyright ï¿½ 2007-2014 United States Government as represented by the 
  **  Administrator of the National Aeronautics and Space Administration. 
  **  All Other Rights Reserved.  
  **
@@ -31,23 +31,7 @@
 #ifndef _sc_msgids_
 #define _sc_msgids_
 
-/*************************************************************************
- ** Macro Definitions
- *************************************************************************/
-
-/**
- ** \name SC Command Message Numbers */ 
-/** \{ */
-#define SC_CMD_MID                          (0x18A9)    /**< \brief Msg ID for cmds to SC   */
-#define SC_SEND_HK_MID                      (0x18AA)    /**< \brief Msg ID to request SC HK */
-#define SC_1HZ_WAKEUP_MID                   (0x18AB)    /**< \brief Msg ID to recieve the 1Hz */ 
-/** \} */
-
-/**
- ** \name SC Telemetery Message Number */ 
-/** \{ */
-#define SC_HK_TLM_MID                       (0x08AA)    /**< \brief Msg ID to send telemtry down on */
-/** \} */
+#include "msg_ids.h"
 
 #endif /*_sc_msgids_*/
 

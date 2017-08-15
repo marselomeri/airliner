@@ -262,7 +262,7 @@ void UTF_SCRIPT_SB_Use_Default_Api_Return_Code(int argc,char *argv[])
 **          Status
 **
 ******************************************************************************/
-int32  CFE_SB_CreatePipe(CFE_SB_PipeId_t *PipeIdPtr, uint16  Depth, char *PipeName)
+int32  CFE_SB_CreatePipe(CFE_SB_PipeId_t *PipeIdPtr, uint16  Depth, const char *PipeName)
 {
 
     static CFE_SB_PipeId_t PipeID = 1;

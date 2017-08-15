@@ -2,7 +2,7 @@
 ** File:
 **   $Id: mm_perfids.h 1.1 2015/07/28 12:21:08EDT rperera Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -32,18 +32,7 @@
 #ifndef _mm_perfids_
 #define _mm_perfids_
 
-/*************************************************************************
-** Macro Definitions
-*************************************************************************/
-/**
-** \name MM CFS Application Performance IDs */ 
-/** \{ */
-#define MM_APPMAIN_PERF_ID              30
-#define MM_SEGBREAK_PERF_ID             31
-#define MM_EEPROM_POKE_PERF_ID          32
-#define MM_EEPROM_FILELOAD_PERF_ID      33
-#define MM_EEPROM_FILL_PERF_ID          34
-/** \} */
+#include "perf_ids.h"
 
 #endif /*_mm_perfids_*/
 

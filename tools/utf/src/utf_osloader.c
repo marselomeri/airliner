@@ -156,7 +156,7 @@ void UTF_SetOSSymbolTableDumpStatus (int32 status)
              
              The address of the symbol will be stored in the pointer that is passed in.
 ---------------------------------------------------------------------------------------*/
-int32 OS_SymbolLookup( uint32 *SymbolAddress, char *SymbolName )
+int32 OS_SymbolLookup( uint32 *SymbolAddress, const char *SymbolName )
 {
 int32 returnStatus=OS_SUCCESS;
 boolean symbolFound=FALSE;
@@ -200,7 +200,7 @@ int i;
              OS_INVALID_FILE  if the file could not be opened or written
              OS_SUCCESS if the symbol is found 
 ---------------------------------------------------------------------------------------*/
-int32 OS_SymbolTableDump ( char *filename, uint32 SizeLimit )
+int32 OS_SymbolTableDump ( const char *filename, uint32 SizeLimit )
 {
 	(void) filename;	/* refer to function argument to avoid compiler warning */
 	(void) SizeLimit;	/* refer to function argument to avoid compiler warning */

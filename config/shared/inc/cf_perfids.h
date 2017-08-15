@@ -1,7 +1,7 @@
 /************************************************************************
 ** File: cf_perfids.h
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -36,15 +36,7 @@
 #ifndef _cf_perfids_h_
 #define _cf_perfids_h_
 
-#define CF_APPMAIN_PERF_ID      42
-#define CF_FILESIZE_PERF_ID     41
-#define CF_FOPEN_PERF_ID        13
-#define CF_FCLOSE_PERF_ID       14
-#define CF_FREAD_PERF_ID        15
-#define CF_FWRITE_PERF_ID       16
-#define CF_REDLIGHT_PERF_ID     17
-#define CF_CYCLE_ENG_PERF_ID    18
-#define CF_QDIRFILES_PERF_ID    19
+#include "perf_ids.h"
 
 #endif /* _cf_perfids_h_ */
 

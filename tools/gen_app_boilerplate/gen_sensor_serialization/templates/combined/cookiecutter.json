@@ -1,0 +1,24 @@
+{
+	"app_name": "{{cookiecutter.app_name}}",
+	"dir_name": "combined",
+	"func_name": "SensorCombined",
+	"pb_msg_type": "px4_sensor_combined_pb",
+	"msg_type": "PX4_SensorCombinedMsg_t",
+	"return_type": "uint32",
+	"var_names": { 
+			"gyro_rad[0]": "GyroRad[0]",
+			"gyro_rad[1]": "GyroRad[1]",
+			"gyro_rad[2]": "GyroRad[2]",
+			"gyro_integral_dt": "GyroIntegralDt",
+			"accelerometer_m_s2[0]": "Acc[0]",
+			"accelerometer_m_s2[1]": "Acc[1]",
+			"accelerometer_m_s2[2]": "Acc[2]",
+			"accelerometer_integral_dt": "AccIntegralDt",
+			"magnetometer_ga[0]": "Mag[0]",
+			"magnetometer_ga[1]": "Mag[1]",
+			"magnetometer_ga[2]": "Mag[2]",
+			"baro_alt_meter": "BaroAlt",
+			"baro_temp_celcius": "BaroTemp"},
+	"fname": "SensorCombined"
+}
+

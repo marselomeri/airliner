@@ -23,6 +23,14 @@ PROC $sc_$cpu_cs_mdt3
 ;
 ;	Date		   Name		Description
 ;	07/19/11	Walt Moleski	Initial release.
+;       09/19/12        Walt Moleski    Added write of new HK items and added a
+;                                       define of the OS_MEM_TABLE_SIZE that
+;                                       was removed from osconfig.h in 3.5.0.0
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address. Changed define
+;                                       of OS_MEM_TABLE_SIZE to MEM_TABLE_SIZE.
 ;
 ;  Arguments
 ;	None.
@@ -40,11 +48,13 @@ local logging = %liv (log_procedure)
 %liv (log_procedure) = FALSE
 
 #include "osconfig.h"
+#include "cs_msgdefs.h"
 #include "cs_platform_cfg.h"
 #include "cs_tbldefs.h"
-#include "cs_msgdefs.h"
 
 %liv (log_procedure) = logging
+
+#define MEM_TABLE_SIZE       10
 
 ;**********************************************************************
 ; Define local variables
@@ -52,20 +62,13 @@ local logging = %liv (log_procedure)
 LOCAL defTblId, defPktId
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 local memDefTblName = CSAppName & "." & CS_DEF_MEMORY_TABLE_NAME
 
 ;;; Set the pkt and app IDs for the tables based upon the cpu being used
 ;; CPU1 is the default
 defTblId = "0FAD"
 defPktId = 4013
-
-if ("$CPU" = "CPU2") then
-  defTblId = "0FCB"
-  defPktId = 4043
-elseif ("$CPU" = "CPU3") then
-  defTblId = "0FEB"
-  defPktId = 4075
-endif
 
 write ";*********************************************************************"
 write ";  Define the Memory Definition Table "
@@ -76,7 +79,7 @@ local eepromEntry = 0
 local ramEntry = 0
 
 ;; Parse the memory table to find a valid RAM and EEPROM entry
-for i=1 to OS_MEM_TABLE_SIZE do
+for i=1 to MEM_TABLE_SIZE do
   if (p@$SC_$CPU_TST_CS_MemType[i] = "EEPROM") then
     eepromEntry = i
   elseif (p@$SC_$CPU_TST_CS_MemType[i] = "RAM") then
@@ -136,7 +139,7 @@ local lastEntry = CS_MAX_NUM_MEMORY_TABLE_ENTRIES - 1
 local endmnemonic = "$SC_$CPU_CS_MEM_DEF_TABLE[" & lastEntry & "].NumBytes"
 
 ;; Create the Table Load file
-s create_tbl_file_from_cvt ("$CPU",defTblId,"User-defined Memory Definition Table Valid Load 2","usrmem_def_ld_2",memDefTblName,"$SC_$CPU_CS_MEM_DEF_TABLE[0].State",endmnemonic)
+s create_tbl_file_from_cvt (hostCPU,defTblId,"User-defined Memory Definition Table Valid Load 2","usrmem_def_ld_2",memDefTblName,"$SC_$CPU_CS_MEM_DEF_TABLE[0].State",endmnemonic)
 
 write ";*********************************************************************"
 write ";  End procedure $sc_$cpu_cs_mdt3                              "

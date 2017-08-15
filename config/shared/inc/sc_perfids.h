@@ -2,7 +2,7 @@
  ** File:
  **   $Id: sc_perfids.h 1.2 2015/10/08 15:42:43EDT sstrege Exp  $
  **
- **  Copyright © 2007-2014 United States Government as represented by the 
+ **  Copyright ï¿½ 2007-2014 United States Government as represented by the 
  **  Administrator of the National Aeronautics and Space Administration. 
  **  All Other Rights Reserved.  
  **
@@ -33,11 +33,7 @@
 #ifndef _sc_perfids_
 #define _sc_perfids_
 
-/**
- ** \name SC Performance ID */ 
-/** \{ */
-#define SC_APPMAIN_PERF_ID      35 
-/** \} */
+#include "perf_ids.h"
 
 #endif /*sc_perfids_*/
 

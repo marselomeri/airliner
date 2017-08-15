@@ -596,7 +596,7 @@ int32 OS_read  (int32  filedes, void *buffer, uint32 nbytes)
              number of bytes written if success
 ---------------------------------------------------------------------------------------*/
 
-int32 OS_write (int32  filedes, void *buffer, uint32 nbytes)
+int32 OS_write (int32  filedes, const void *buffer, uint32 nbytes)
 {
     int status;
 
@@ -1299,7 +1299,7 @@ Purpose: Takes a shell command in and writes the output of that command to the s
 Returns: OS_FS_ERROR if the command was not executed properly 
          OS_SUCCESS if success
  ---------------------------------------------------------------------------------------*/
-int32 OS_ShellOutputToFile(char* Cmd, int32 OS_fd)
+int32 OS_ShellOutputToFile(const char* Cmd, int32 OS_fd)
 {   
     /* this is a #define to avoid a 'variable length array' warning */
     /* 15 is for the size of the redirection string that is added 

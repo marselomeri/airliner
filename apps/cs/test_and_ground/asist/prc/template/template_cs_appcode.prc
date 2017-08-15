@@ -9,62 +9,65 @@ PROC $sc_$cpu_cs_appcode
 ;	checksumming commands function properly and handles anomolies properly.
 ;
 ;  Requirements Tested
-;    cCS1002	For all CS commands, if the length contained in the message
+;    CS1002	For all CS commands, if the length contained in the message
 ;		header is not equal to the expected length, CS shall reject the
 ;		command and issue an event message.
-;    cCS1003	If CS accepts any command as valid, CS shall execute the
+;    CS1003	If CS accepts any command as valid, CS shall execute the
 ;		command, increment the CS Valid Command Counter and issue an
 ;		event message.
-;    cCS1004	If CS rejects any command, CS shall abort the command execution,
+;    CS1004	If CS rejects any command, CS shall abort the command execution,
 ;		increment the CS Command Rejected Counter and issue an event
 ;		message.
-;    cCS4000	Checksum shall calculate CRCs for each Table-Defined
+;    CS4000	Checksum shall calculate CRCs for each Table-Defined
 ;		Application's code segment and compare them against the
 ;		corresponding Application's baseline code segment CRC if:
 ;			a. Checksumming (as a whole) is Enabled
 ;			b. App code segment checksumming is Enabled
 ;			c. Checksumming of the individual Application Code
 ;			   segment is Enabled
-;    cCS4000.1	If the Application's code segment CRC is not equal to the
+;    CS4000.1	If the Application's code segment CRC is not equal to the
 ;		corresponding Application's baseline code segment CRC, CS shall
 ;		increment the Application Code Segment CRC Miscompare Counter
 ;		and send an event message.	
-;    cCS4000.2	If the table-defined Application code segment is invalid, CS
+;    CS4000.2	If the table-defined Application code segment is invalid, CS
 ;		shall send an event message and skip that Application code
 ;		segment.
-;    cCS4001	Upon receipt of an Enable Application checksumming command, CS
+;    CS4001	Upon receipt of an Enable Application checksumming command, CS
 ;		shall enable checksumming of all Application code segments.
-;    cCS4002	Upon receipt of a Disable Application checksumming command, CS
+;    CS4002	Upon receipt of a Disable Application checksumming command, CS
 ;		shall disable checksumming of all Application code segments.
-;    cCS4003	Upon receipt of an Enable Application code segment command, CS
+;    CS4003	Upon receipt of an Enable Application code segment command, CS
 ;		shall enable checksumming of the command-specified Application.
-;    cCS4004	Upon receipt of a Disable Application code segment command, CS
+;    CS4004	Upon receipt of a Disable Application code segment command, CS
 ;		shall disable checksumming of the command-specified Application.
-;    cCS4005	Upon receipt of a Recompute Application Code Segment CRC
-;		command, CS shall recompute the baseline checksum for the
+;    CS4005	Upon receipt of a Recompute Application Code Segment CRC
+;		command, CS shall:
+;			a) Recompute the baseline CRC for the Application
+;			b) Set the Recompute In Progress Flag to TRUE
 ;		Application.
-;    cCS4005.1	Once the baseline CRC is computed, CS shall generate an event
-;		message containing the baseline CRC.
-;    cCS4005.2	If CS is already processing a Recompute CRC command, CS shall
+;    CS4005.1	Once the baseline CRC is computed, CS shall;
+;			a) Generate an event message containing the baseline CRC
+;			b) Set the Recompute In Progress Flag to FALSE
+;    CS4005.2	If CS is already processing a Recompute CRC command, CS shall
 ;		reject the command.
-;    cCS4006	Upon receipt of a Report Application Code Segment CRC command, 
+;    CS4006	Upon receipt of a Report Application Code Segment CRC command, 
 ;		CS shall send an event message containing the baseline
 ;		Application code segment CRC.
-;    cCS4007	If the command-specified Application is invalid (for any
+;    CS4007	If the command-specified Application is invalid (for any
 ;		Application Code Segment command where the Application is a
 ;		command argument), CS shall reject the command and send an
 ;		event message.
-;    cCS4008	CS shall provide the ability to dump the baseline CRCs and
+;    CS4008	CS shall provide the ability to dump the baseline CRCs and
 ;		status for the Application code segment memory segments via a
 ;		dump-only table.
-;    cCS7000	The CS software shall limit the amount of bytes processed during
+;    CS7000	The CS software shall limit the amount of bytes processed during
 ;		each of its execution cycles to a maximum of <PLATFORM_DEFINED>
 ;		bytes.
-;    cCS8000	Upon receipt of an Enable Checksum command, CS shall start
+;    CS8000	Upon receipt of an Enable Checksum command, CS shall start
 ;		calculating CRCs and compare them against the baseline CRCs.
-;    cCS8001	Upon receipt of a Disable Checksum command, CS shall stop
+;    CS8001	Upon receipt of a Disable Checksum command, CS shall stop
 ;		calculating CRCs and comparing them against the baseline CRCs.
-;    cCS9000	CS shall generate a housekeeping message containing the
+;    CS9000	CS shall generate a housekeeping message containing the
 ;		following:
 ;			a. Valid Ground Command Counter
 ;			b. Ground Command Rejected Counter
@@ -91,7 +94,11 @@ PROC $sc_$cpu_cs_appcode
 ;			u. Application CRC enable/disable status
 ;			v. Table CRC enable/disable status
 ;			w. User-Defined Memory CRC enable/disable status
-;    cCS9001	Upon initialization of the CS Application, CS shall initialize
+;			x. Last One Shot Rate
+;			y) Recompute In Progress Flag
+;			z) One Shot In Progress Flag
+;    CS9001	Upon initialization of the CS Application(CE Power On, cFE
+;		Processor Reset, or CS Application Reset), CS shall initialize
 ;		the following data to Zero:
 ;			a. Valid Ground Command Counter
 ;			b. Ground Command Rejected Counter
@@ -101,6 +108,8 @@ PROC $sc_$cpu_cs_appcode
 ;			f. Application CRC Miscompare Counter
 ;			g. Table CRC Miscompare Counter
 ;			h. User-Defined Memory CRC Miscompare Counter
+;			i) Recompute In Progress Flag
+;			j) One Shot In Progress Flag
 ;
 ;  Prerequisite Conditions
 ;	The CFS is up and running and ready to accept commands.
@@ -124,6 +133,10 @@ PROC $sc_$cpu_cs_appcode
 ;       09/22/10        Walt Moleski    Updated to use variables for the CFS
 ;                                       application name and ram disk. Replaced
 ;					all setupevt instances with setupevents
+;       03/01/17        Walt Moleski    Updated for CS 2.4.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -204,6 +217,7 @@ LOCAL defAppId, defPktId, resAppId, resPktId
 local i,appIndex,appName,foundApp
 local CSAppName = "CS"
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 local appDefTblName = CSAppName & "." & CS_DEF_APP_TABLE_NAME
 local appResTblName = CSAppName & "." & CS_RESULTS_APP_TABLE_NAME
 
@@ -214,18 +228,6 @@ resAppId = "0FB3"
 defPktId = 4015
 resPktId = 4019
 
-if ("$CPU" = "CPU2") then
-  defAppId = "0FCD"
-  resAppId = "0FD1"
-  defPktId = 4045
-  resPktId = 4049
-elseif ("$CPU" = "CPU3") then
-  defAppId = "0FED"
-  resAppId = "0FF1"
-  defPktId = 4077
-  resPktId = 4081
-endif
-
 write ";*********************************************************************"
 write ";  Step 1.0: Checksum Application Code Segment Test Setup."
 write ";*********************************************************************"
@@ -233,11 +235,11 @@ write ";  Step 1.1: Command a Power-on Reset on $CPU."
 write ";*********************************************************************"
 /$SC_$CPU_ES_POWERONRESET
 wait 10
-                                                                                
-close_data_center
-wait 75
 
-cfe_startup $CPU
+close_data_center
+wait 60
+
+cfe_startup {hostCPU}
 wait 5
 
 write ";**********************************************************************"
@@ -262,7 +264,7 @@ write ";********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_CS_MEMTBL", 1, "INFO", 2
 
-s load_start_app ("TST_CS_MEMTBL","$CPU","TST_CS_MemTblMain")
+s load_start_app ("TST_CS_MEMTBL",hostCPU,"TST_CS_MemTblMain")
 
 ;;  Wait for app startup event
 ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1
@@ -279,11 +281,6 @@ endif
 
 ;; These are the TST_CS HK Packet IDs since this app sends this packet
 stream = x'0930'
-if ("$CPU" = "CPU2") then
-  stream = x'0A30'
-elseif ("$CPU" = "CPU3") then
-  stream = x'0B30'
-endif
 
 /$SC_$CPU_TO_ADDPACKET STREAM=stream PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 wait 5
@@ -298,11 +295,6 @@ wait 5
 ;; Set the HK packet ID based upon the cpu being used
 local hkPktId = "p0A4"
 
-if ("$CPU" = "CPU2") then
-  hkPktId = "p1A4"
-elseif ("$CPU" = "CPU3") then
-  hkPktId = "p2A4"      
-endif                   
 
 ;; Verify the HK Packet is getting generated by waiting for the
 ;; sequencecount to increment twice
@@ -324,7 +316,7 @@ wait 5
 write ";**********************************************************************"
 write ";  Step 1.6: Load the Application Definition file created above.       "
 write ";**********************************************************************"
-start load_table ("app_def_tbl_ld_1", "$CPU")
+start load_table ("app_def_tbl_ld_1", hostCPU)
 wait 5
 
 ut_setupevents "$SC","$CPU","CFE_TBL",CFE_TBL_VALIDATION_INF_EID,"INFO", 1
@@ -376,7 +368,7 @@ write ";**********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_TBL", TST_TBL_INIT_INF_EID, "INFO", 2
                                                                                 
-s load_start_app ("TST_TBL","$CPU")
+s load_start_app ("TST_TBL",hostCPU)
 
 ; Wait for app startup events
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -419,6 +411,8 @@ write ";*********************************************************************"
 if ($SC_$CPU_CS_CMDPC = 0) AND ($SC_$CPU_CS_CMDEC = 0) AND ;;
    ($SC_$CPU_CS_EepromEC = 0) AND ($SC_$CPU_CS_MemoryEC = 0) AND ;;
    ($SC_$CPU_CS_TableEC = 0) AND ($SC_$CPU_CS_AppEC = 0) AND ;;
+   ($SC_$CPU_CS_RecomputeInProgress = 0) AND ;;
+   ($SC_$CPU_CS_OneShotInProgress = 0) AND ;;
    ($SC_$CPU_CS_CFECoreEC = 0) AND ($SC_$CPU_CS_OSEC = 0) THEN
   write "<*> Passed (9001) - Housekeeping telemetry initialized properly."
   ut_setrequirements CS_9001, "P"
@@ -440,7 +434,7 @@ wait 5
 write ";*********************************************************************"
 write ";  Step 1.10: Dump the Application Code Segment Definition Table."
 write ";*********************************************************************"
-s get_tbl_to_cvt (ramDir,appDefTblName,"A","$cpu_appdeftbl1_10","$CPU",defAppId)
+s get_tbl_to_cvt (ramDir,appDefTblName,"A","$cpu_appdeftbl1_10",hostCPU,defAppId)
 wait 5
 
 write ";*********************************************************************"
@@ -545,7 +539,7 @@ write ";  Step 2.3: Dump the Application Code Segment Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl2_3","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl2_3",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -565,7 +559,7 @@ write ";*********************************************************************"
 local keepDumpingResults=FALSE
 
 while (keepDumpingResults = FALSE) do
-  s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl2_4","$CPU",resAppId)
+  s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl2_4",hostCPU,resAppId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -640,7 +634,7 @@ else
 endif
 
 ;; Dump the definition table to verify the entry's state was modified
-s get_tbl_to_cvt (ramDir,appDefTblName,"A","$cpu_appdeftbl2_5","$CPU",defAppId)
+s get_tbl_to_cvt (ramDir,appDefTblName,"A","$cpu_appdeftbl2_5",hostCPU,defAppId)
 wait 5
 
 if (p@$SC_$CPU_CS_APP_DEF_TABLE[appindex].State = "Disabled") then
@@ -727,7 +721,7 @@ write ";  Step 2.8: Dump the Application Code Segment Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl2_8","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl2_8",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -773,6 +767,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1, 60
 if (UT_TW_Status = UT_Success) then
@@ -780,6 +783,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -845,7 +862,7 @@ write ";*********************************************************************"
 ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
 ut_setupevents "$SC", "$CPU", "TST_TBL", TST_TBL_INIT_INF_EID, "INFO", 2
                                                                                 
-s load_start_app ("TST_TBL","$CPU")
+s load_start_app ("TST_TBL",hostCPU)
                                                                                 
 ; Wait for app startup events
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
@@ -896,6 +913,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -903,6 +929,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -920,12 +960,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc00000022299"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000022299"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000022299"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -961,12 +995,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc00000022398"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc00000022398"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc00000022398"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1000,12 +1028,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc000002526"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000002526"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000002526"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1113,12 +1135,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc000002527"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000002527"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000002527"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1224,12 +1240,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 
 ;; CPU1 is the default
 rawcmd = "189Fc000002525"
-
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000002525"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000002525"
-endif
 
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
@@ -1337,12 +1347,6 @@ local errcnt = $SC_$CPU_CS_CMDEC + 1
 ;; CPU1 is the default
 rawcmd = "189Fc000002524"
 
-if ("$CPU" = "CPU2") then
-  rawcmd = "199Fc000002524"
-elseif ("$CPU" = "CPU3") then
-  rawcmd = "1A9Fc000002524"
-endif
-
 ut_sendrawcmd "$SC_$CPU_CS", (rawcmd)
 
 ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
@@ -1443,7 +1447,7 @@ write ";  Step 3.11: Dump the Application Code Segment Results Table."
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl3_11","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl3_11",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1462,11 +1466,15 @@ write ";*********************************************************************"
 ;; Send the RecomputeAppName Command
 /$SC_$CPU_CS_RecomputeAppName AppName=CSAppName
 
-;; Verify the HK Telemetry indicating the Child Task is in use
-write "; Child Task Flag = ",$sc_$cpu_cs_ChildTaskInUse
-write "; Child Task Flag = ",p@$sc_$cpu_cs_ChildTaskInUse
-write "; One Shot Task Flag = ",$sc_$cpu_cs_OneShotTaskInUse
-write "; One Shot Task Flag = ",p@$sc_$cpu_cs_OneShotTaskInUse
+;; Verify the telemetry flag is set to TRUE (4005)
+ut_tlmwait $SC_$CPU_CS_RecomputeInProgress, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
 
 write ";*********************************************************************"
 write ";  Step 3.13: Send the Recompute Application Code Segment CRC command "
@@ -1486,6 +1494,46 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40052, "P"
 else
   write "<!> Failed (1004;4005.2) - CS RecomputeAppName command did not increment CMDEC."
+  ut_setrequirements CS_1004, "F"
+  ut_setrequirements CS_40052, "F"
+endif
+
+;; Check for the event message
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004) - Expected Event Msg ",CS_RECOMPUTE_APP_CHDTASK_ERR_EID," rcv'd."
+  ut_setrequirements CS_1004, "P"
+else
+  write "<!> Failed (1004) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_APP_CHDTASK_ERR_EID,"."
+  ut_setrequirements CS_1004, "F"
+endif
+
+wait 5
+
+write ";*********************************************************************"
+write ";  Step 3.14: Send the Recompute Application Code Segment CRC command  "
+write ";  for an enabled application. "
+write ";*********************************************************************"
+;; Send the RecomputeAppName Command
+/$SC_$CPU_CS_RecomputeAppName AppName=CSAppName
+
+write ";*********************************************************************"
+write ";  Step 3.15: Send a One Shot CRC command. Verify that this command "
+write ";  is rejected."
+write ";*********************************************************************"
+ut_setupevents "$SC","$CPU",{CSAppName},CS_ONESHOT_CHDTASK_ERR_EID, "ERROR", 1
+
+errcnt = $SC_$CPU_CS_CMDEC + 1
+;; Send the One Shot Command
+/$SC_$CPU_CS_OneShot Address=$SC_$CPU_TST_CS_StartAddr[1] RegionSize=2048 MaxBytes=2048
+
+ut_tlmwait $SC_$CPU_CS_CMDEC, {errcnt}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed (1004;4005.2) - One Shot CRC command faild as expected."
+  ut_setrequirements CS_1004, "P"
+  ut_setrequirements CS_40052, "P"
+else
+  write "<!> Failed (1004;4005.2) - One Shot CRC command did not increment CMDEC."
   ut_setrequirements CS_1004, "F"
   ut_setrequirements CS_40052, "F"
 endif
@@ -1634,7 +1682,7 @@ write ";  Step 4.4: Dump the Application Code Segment Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_4","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_4",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1687,6 +1735,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -1787,7 +1849,7 @@ write ";  Step 4.8: Dump the Application Code Segment Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_8","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_8",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -1833,6 +1895,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -1840,6 +1911,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -1975,7 +2060,7 @@ write ";  Step 4.13: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_13","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_13",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2021,6 +2106,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2028,6 +2122,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -2128,7 +2236,7 @@ write ";  Step 4.17: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_17","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_17",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2174,6 +2282,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2181,6 +2298,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -2350,7 +2481,7 @@ write ";  Step 4.23: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_23","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_23",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2396,6 +2527,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2403,6 +2543,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -2503,7 +2657,7 @@ write ";  Step 4.27: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_27","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_27",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2549,6 +2703,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2559,7 +2722,21 @@ else
   ut_setrequirements CS_40051, "F"
 endif
 
-wait 10
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
+  ut_setrequirements CS_40051, "F"
+endif
+
+wait 5
 
 write ";*********************************************************************"
 write ";  Step 4.29: Send the Report Application Code Segment CRC command for"
@@ -2691,7 +2868,7 @@ write ";  Step 4.32: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_32","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_32",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2737,6 +2914,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2744,6 +2930,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -2844,7 +3044,7 @@ write ";  Step 4.36: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_36","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl4_36",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -2890,6 +3090,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 ;; Check for the event message
 ut_tlmwait $SC_$CPU_find_event[2].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
@@ -2897,6 +3106,20 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_40051, "P"
 else
   write "<!> Failed (4005.1) - Event message ", $SC_$CPU_evs_eventid," rcv'd. Expected Event Msg ",CS_RECOMPUTE_FINISH_APP_INF_EID,"."
+  ut_setrequirements CS_40051, "F"
+endif
+
+;; Wait for the next HK Pkt
+currSCnt = {seqTlmItem}
+expectedSCnt = currSCnt + 1
+
+ut_tlmwait {seqTlmItem}, {expectedSCnt}
+;; Verify the telemetry flag is set to FALSE (4005.1)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "False") then
+  write "<*> Passed (4005.1) - In Progress Flag set to False as expected."
+  ut_setrequirements CS_40051, "P"
+else
+  write "<!> Failed (4005.1) - In Progress Flag set to True when False was expected."
   ut_setrequirements CS_40051, "F"
 endif
 
@@ -2953,7 +3176,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("appdefemptytable", "$CPU")
+start load_table ("appdefemptytable", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3023,6 +3246,15 @@ else
   ut_setrequirements CS_4005, "F"
 endif
 
+;; Verify the telemetry flag is set to TRUE (4005)
+if (p@$SC_$CPU_CS_RecomputeInProgress = "True") then
+  write "<*> Passed (4005) - In Progress Flag set to True as expected."
+  ut_setrequirements CS_4005, "P"
+else
+  write "<!> Failed (4005) - In Progress Flag set to False when True was expected."
+  ut_setrequirements CS_4005, "F"
+endif
+
 wait 5
 
 write ";*********************************************************************"
@@ -3065,7 +3297,7 @@ write ";  Step 5.6: Dump the Application Code Segment Results table.         "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl5_6","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl5_6",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3093,7 +3325,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("app_def_tbl_invalid", "$CPU")
+start load_table ("app_def_tbl_invalid", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3168,7 +3400,7 @@ ut_setupevents "$SC", "$CPU", "CFE_TBL", CFE_TBL_FILE_LOADED_INF_EID, "INFO", 1
 
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-start load_table ("app_def_tbl_ld_2", "$CPU")
+start load_table ("app_def_tbl_ld_2", hostCPU)
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
@@ -3253,7 +3485,7 @@ write ";  Step 5.14: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl5_14","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl5_14",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3428,7 +3660,7 @@ write ";  Step 6.6: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl6_6","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl6_6",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3452,7 +3684,7 @@ local loopCtr = 1
 local segmentedCRC=FALSE
 
 while (keepDumpingResults = FALSE) do
-  s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl6_7","$CPU",resAppId)
+  s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl6_7",hostCPU,resAppId)
   wait 3
 
   ;; Loop for each valid entry in the results table
@@ -3520,14 +3752,14 @@ write "==> last Slash found at ",lastSlashLoc
 write "==> Default path spec = '",pathSpec,"'"
 
 ;; Get the file in order to restore it in the cleanup steps
-s ftp_file ("CF:0/apps",tableFileName,"cs_apptbl.tblORIG","$CPU","G")
+s ftp_file ("CF:0/apps",tableFileName,"cs_apptbl.tblORIG",hostCPU,"G")
 wait 5
 
 write ";*********************************************************************"
 write ";  Step 7.3: Delete the Application Code Segment Definition table "
 write ";  default load file from the $CPU. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","na",tableFileName,"$CPU","R")
+s ftp_file ("CF:0/apps","na",tableFileName,hostCPU,"R")
 
 write ";*********************************************************************"
 write ";  Step 7.4: Start the CS Application. "
@@ -3539,7 +3771,7 @@ write ";  Step 7.5: Dump the Application Code Segment Results table.        "
 write ";*********************************************************************"
 cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl7_5","$CPU",resAppId)
+s get_tbl_to_cvt (ramDir,appResTblName,"A","$cpu_apprestbl7_5",hostCPU,resAppId)
 wait 5
 
 ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
@@ -3548,7 +3780,7 @@ if (UT_TW_Status = UT_Success) then
   ut_setrequirements CS_4008, "P"
 else
   write "<!> Failed (4008) - Dump of App Results Table did not increment TBL_CMDPC."
-  ut_setrequirements CS_4008, "P"
+  ut_setrequirements CS_4008, "F"
 endif
 
 write ";*********************************************************************"
@@ -3557,18 +3789,18 @@ write ";*********************************************************************"
 write ";  Step 8.1: Upload the default Application Code Segment Definition   "
 write ";  table downloaded in step 7.2. "
 write ";*********************************************************************"
-s ftp_file ("CF:0/apps","cs_apptbl.tblORIG",tableFileName,"$CPU","P")
+s ftp_file ("CF:0/apps","cs_apptbl.tblORIG",tableFileName,hostCPU,"P")
 
 write ";*********************************************************************"
 write ";  Step 8.2: Send the Power-On Reset command. "
 write ";*********************************************************************"
 /$SC_$CPU_ES_POWERONRESET
 wait 10
-                                                                                
-close_data_center
-wait 75
 
-cfe_startup $CPU
+close_data_center
+wait 60
+
+cfe_startup {hostCPU}
 wait 5
 
 reqReport:

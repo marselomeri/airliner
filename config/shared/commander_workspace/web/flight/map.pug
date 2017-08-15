@@ -1,0 +1,103 @@
+extends ../common/layout
+
+block header
+  i.fa-fw.fa.fa-signal
+  | Pilot Display (Test)
+
+block main 
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-6
+      #wid-map.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false',data-widget-colorbutton='false',data-widget-deletebutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Map
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            style.
+              @import url(bower_components/cesium/Source/Widgets/widgets.css);
+            #cesiumContainer.fullSize
+
+  script.
+    var Position = {Lat: 0, Lon: 0, Alt: 0};
+    var Attitude = {Yaw: 0, Pitch: 0, Roll: 0};
+
+    loadScript('node_modules/cesium/Build/CesiumUnminified/Cesium.js', function () {
+      /* Traveling Map */
+      Cesium.BingMapsApi.defaultKey = 'Anb5ZQS9_Qvje--nom_9ZKwQyQVnOOU04Fctd1uxMHnYoQKIcp1XFDrZuXN6evOQ';
+      var viewer = new Cesium.Viewer('cesiumContainer');
+
+      var uas = viewer.entities.add({
+        billboard: {
+          image: 'ws/flight/aircraft.png',
+          scale: 0.2,
+          alignedAxis: Cesium.Cartesian3.UNIT_Z,
+          rotation: 0.0,
+        }
+      });
+
+      var scratchCartesian3 = new Cesium.Cartesian3();
+      var ellipsoid = viewer.scene.mapProjection.ellipsoid;
+      var GPSCount = 0;
+      var GPSStarted = false;
+      var GPSAnimating = false;
+
+      session.subscribe({
+          homogeneity: {tolerance: 0.5}, tlm: [
+            {name: '/MAV/CMN/GPI_lat'},
+            {name: '/MAV/CMN/GPI_lon'},
+            {name: '/MAV/CMN/GPI_alt'},
+            {name: '/MAV/CMN/GPI_hdg'}]
+        },
+        function (params) {
+          for (var i = 0; i < params.length; ++i) {
+            switch (params[i].id.name) {
+              case '/MAV/CMN/GPI_hdg':
+                Attitude.Yaw = params[i].engValue.uint32Value / 100;
+                break;
+
+              case '/MAV/CMN/GPI_lat':
+                Position.Lat = params[i].engValue.sint32Value / 10000000.0;
+                break;
+
+              case '/MAV/CMN/GPI_lon':
+                Position.Lon = params[i].engValue.sint32Value / 10000000.0;
+                break;
+
+              case '/MAV/CMN/GPI_alt':
+                Position.Alt = (params[i].engValue.sint32Value / 1000.0) - 488.0;
+                break;
+            }
+          }
+
+          if (GPSStarted == false) {
+            /* Skip the first one. */
+            GPSStarted = true;
+            GPSCount++;
+          }
+        }
+      );
+
+      var temp = 0;
+      setInterval(function () {
+        if (GPSStarted == true) {
+          uas.position = Cesium.Cartesian3.fromDegrees(Position.Lon, Position.Lat);
+          uas.billboard.rotation = Cesium.Math.PI_OVER_TWO - Attitude.Yaw / 57.2958;
+
+          if (GPSAnimating == false) {
+            GPSAnimating = true;
+            viewer.camera.flyTo({
+              destination: Cesium.Cartesian3.fromDegrees(Position.Lon, Position.Lat, 100),
+              complete: function () {
+                GPSAnimating = false;
+              }
+            });
+          }
+        }
+      }, 100);
+    });
+
+
+     

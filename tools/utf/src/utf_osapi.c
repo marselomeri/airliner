@@ -339,7 +339,7 @@ int32 OS_API_Init(void)
            Flags are unused at this point.
 ---------------------------------------------------------------------------------------*/
 int32 OS_TaskCreate (uint32 *task_id, const char *task_name, osal_task_entry function_pointer,
-                      const uint32 *stack_pointer, uint32 stack_size, uint32 priority,
+                      uint32 *stack_pointer, uint32 stack_size, uint32 priority,
                       uint32 flags)
 {
     (void) task_id;          /* refer to function argument to avoid compiler warning */
@@ -377,7 +377,7 @@ int32 OS_TaskDelete (uint32 task_id)
 
     returns: status
 ---------------------------------------------------------------------------------------*/
-int32 OS_TaskInstallDeleteHandler(void *function_pointer)
+int32 OS_TaskInstallDeleteHandler(osal_task_entry function_pointer)
 {
 	if (function_pointer == NULL)
 		return(OS_INVALID_POINTER);
@@ -598,7 +598,7 @@ int32 OS_QueueGet (uint32 queue_id, void *data, uint32 size, uint32 *size_copied
    Notes: The flags parameter is not used.  The message put is always configured to
             immediately return an error if the receiving message queue is full.
 ---------------------------------------------------------------------------------------*/
-int32 OS_QueuePut (uint32 queue_id, void *data, uint32 size, uint32 flags)
+int32 OS_QueuePut (uint32 queue_id, const void *data, uint32 size, uint32 flags)
 {
 
     if (UTF_OSAPI_HookTable.OS_QueuePut)
@@ -1227,8 +1227,7 @@ int32 OS_GetLocalTime(OS_time_t *time_struct)
 /****************************************************************************************
                                   Exception API
 ****************************************************************************************/
-
-int32 OS_ExcAttachHandler(uint32 ExceptionNumber, void (*ExceptionHandler)(uint32, uint32 *,uint32), int32 Parameter)
+int32 OS_ExcAttachHandler(uint32 ExceptionNumber, void (*ExceptionHandler)(uint32, const void *,uint32), int32 Parameter)
 {
     return(CFE_OSAPI_NOT_IMPLEMENTED);
 }

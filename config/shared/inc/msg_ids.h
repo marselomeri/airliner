@@ -9,17 +9,17 @@
 /* Range: 0x900 - 0x90f 					*/
 #define TO_CMD_MID 						0x1900
 #define TO_SEND_HK_MID 					0x1901
-#define TO_DATA_TYPES_MID				0x0902
-#define TO_HK_TLM_MID 					0x0903
-#define TO_SEND_TLM_MID					0x0904
+#define TO_HK_TLM_MID 					0x0902
+#define TO_SEND_TLM_MID					0x1903
+#define TO_DATA_TYPE_MID		        0x0904
 
 /* CI 										*/
 /* Range: 0x900 - 0x90f 					*/
 #define CI_CMD_MID 						0x1905
 #define CI_SEND_HK_MID 					0x1906
 #define CI_HK_TLM_MID 					0x0907
-#define CI_READ_CMD_MID					0x1908
-#define FIXHAWK_MAVLINK_IN_MSG_MID		0x0909
+#define CI_WAKEUP_MID					0x1908
+#define CI_OUT_DATA_MID		            0x1909
 
 /* CF										*/
 /* Range: 0x910 - 0x92f						*/
@@ -532,5 +532,19 @@
 #define PX4LDSM_READ_CMD_MID						0x1c27
 
 #define SBNPX4_WAKEUP_MID							0x0c28
+
+/* EA                                                   */
+#define EA_CMD_MID                                  0x1c29
+#define EA_SEND_HK_MID                              0x1c2a
+#define EA_HK_TLM_MID                               0x0c2b
+#define EA_WAKEUP_MID                               0x1c2c
+#define EA_OUT_DATA_MID            					0x0c2d
+#define EA_PERFMON_MID            					0x1c2e
+
+/* VC                                                   */
+#define VC_HK_TLM_MID                               0x0c39
+#define VC_SEND_HK_MID                              0x1c3a
+#define VC_CMD_MID                                  0x1c3b
+#define VC_WAKEUP_MID                               0x1c3c
 
 #endif

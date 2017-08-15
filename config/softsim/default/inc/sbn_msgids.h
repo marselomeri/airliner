@@ -1,7 +1,7 @@
 /*=======================================================================================
 ** File Name:  sbn_msgids.h
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.
 **
@@ -23,39 +23,7 @@
 #ifndef _SBN_MSGIDS_H_
 #define _SBN_MSGIDS_H_
 
-/*
-** Pragmas
-*/
-
-/*
-** Local Defines
-*/
-#define SBN_WAKEUP_MID   0x18FF
-
-/*
-** Include Files
-*/
-
-
-/*
-** Local Structure Declarations
-*/
-
-/*
-** External Global Variables
-*/
-
-/*
-** Global Variables
-*/
-
-/*
-** Local Variables
-*/
-
-/*
-** Local Function Prototypes
-*/
+#include "msg_ids.h"
 
 #endif /* _SBN_MSGIDS_H_ */
 
