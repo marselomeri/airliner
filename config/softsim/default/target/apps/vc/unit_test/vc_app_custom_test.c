@@ -19,11 +19,13 @@
 #include "ut_cfe_time_stubs.h"
 
 /**************************************************************************
- * Tests for 
+ * Tests for VC_Ioctl()
  **************************************************************************/
 
 void Test_VC_Custom_Test_True(void)
 {
+    int testing = 1;
+    VC_Ioctl(testing, testing, &testing);
     UtAssert_True(TRUE == TRUE, "True != True");
 }
 
