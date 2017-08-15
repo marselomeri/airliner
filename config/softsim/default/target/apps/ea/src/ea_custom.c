@@ -22,6 +22,7 @@ void EA_StartAppCustom()
 		** Create child process to execute app
 		*/
 		pid_t pid = fork();
+		EA_AppData.HkTlm.usCmdCnt = pid;
 		/*
 		** Child process
 		*/
