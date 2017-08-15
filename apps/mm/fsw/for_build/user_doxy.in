@@ -1,5 +1,5 @@
 # Doxyfile 1.5.4
-@INCLUDE_PATH=@PROJECT_SOURCE_DIR@/apps/mm/docs/dox_src/mnem_maps
+@INCLUDE_PATH=@APP_DEFINITION_DIR@/../../docs/dox_src/mnem_maps
 @INCLUDE=cfs_mm_cmd_mnem_map
 @INCLUDE=cfs_mm_tlm_mnem_map
 #---------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 #DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "CFS Memory Manager (MM) Application on @BUILD_CONFIG_NAME@ User's Guide"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = @CMAKE_BINARY_DIR@/docs/users_guide/apps/mm
+OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/users_guide/apps/mm
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -91,16 +91,13 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @PROJECT_SOURCE_DIR@/apps/mm/docs/dox_src/users_guide/cfs_mm.dox
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/mm/fsw/src/mm_msgdefs.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/mm/fsw/src/mm_msg.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/mm/fsw/src/mm_tbldefs.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/mm/fsw/src/mm_events.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/shared/inc/mm_perfids.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/softsim/default/inc/mm_msgids.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/softsim/default/inc/mm_platform_cfg.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/softsim/default/mm_custom.c 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/mm/fsw/src/mm_version.h 
+INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_mm.dox
+INPUT                 += @APP_DEFINITION_DIR@/../src/mm_msgdefs.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/mm_msg.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/mm_tbldefs.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/mm_events.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/mm_version.h 
+INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
@@ -114,7 +111,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = "./"
-IMAGE_PATH            += "@PROJECT_SOURCE_DIR@/apps/mm/docs/dox_src/users_guide/"
+IMAGE_PATH            += @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -139,7 +136,7 @@ IGNORE_PREFIX          =
 # configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = @CMAKE_BINARY_DIR@/docs/users_guide/apps/mm
+HTML_OUTPUT            = @CFS_DOCS_HTML_DIR@/users_guide/apps/mm
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 
@@ -160,7 +157,7 @@ TREEVIEW_WIDTH         = 250
 # configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
 GENERATE_LATEX         = NO
-LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/users_guide/apps/mm
+LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/users_guide/apps/ds
 LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex
 COMPACT_LATEX          = YES
@@ -175,7 +172,7 @@ LATEX_HIDE_INDICES     = NO
 # configuration options related to the RTF output
 #---------------------------------------------------------------------------
 GENERATE_RTF           = NO
-RTF_OUTPUT             = @CFS_DOCS_DIR@/users_guide/rtf/apps/mm
+RTF_OUTPUT             = @CFS_DOCS_DIR@/users_guide/rtf/apps/ds
 COMPACT_RTF            = YES
 RTF_HYPERLINKS         = NO
 RTF_STYLESHEET_FILE    = 
@@ -225,8 +222,8 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = @CMAKE_BINARY_DIR@/docs/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
-GENERATE_TAGFILE       = @CMAKE_BINARY_DIR@/docs/users_guide/apps/mm/mm.tag
+TAGFILES               = @CFS_DOCS_HTML_DIR@/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
+GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/users_guide/apps/mm/mm.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl

@@ -1,5 +1,5 @@
 # Doxyfile 1.5.4
-@INCLUDE_PATH=@CFS_MISSION@/apps/vc/docs/dox_src/mnem_maps
+@INCLUDE_PATH=@APP_DEFINITION_DIR@/../../docs/dox_src/mnem_maps
 @INCLUDE=cfs_vc_cmd_mnem_map
 @INCLUDE=cfs_vc_tlm_mnem_map
 #---------------------------------------------------------------------------
@@ -17,7 +17,7 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = @CFS_MISSION@
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -91,24 +91,17 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @CFS_MISSION@/apps/vc/docs/dox_src/users_guide/cfs_vc.dox
-INPUT                 += @CFS_MISSION@/config/mission_inc/vc_mission_cfg.h
-INPUT                 += @CFS_MISSION@/config/mission_inc/vc_perfids.h
-INPUT                 += @CFS_MISSION@/config/mission_inc/vc_msgids.h
-INPUT                 += @CFS_MISSION@/config/@BUILD_CONFIG_NAME@/inc/vc_platform_cfg.h
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_app.h
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_cds_utils.h
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_config_utils.h
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_events.h
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_msg.h 
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_tbldefs.h
-INPUT                 += @CFS_MISSION@/apps/vc/fsw/src/vc_version.h
+INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_vc.dox
+INPUT                 += @APP_DEFINITION_DIR@/../src/vc_msg.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/vc_events.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/vc_version.h 
+INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.h
 RECURSIVE              = YES
-EXCLUDE                = 
+EXCLUDE                = *.c
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 #EXCLUDE_SYMBOLS        = 
@@ -116,7 +109,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = "./"
-IMAGE_PATH            += "@CFS_MISSION@/apps/vc/docs/dox_src/users_guide/"
+IMAGE_PATH            += "@APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -161,7 +154,7 @@ TREEVIEW_WIDTH         = 250
 #---------------------------------------------------------------------------
 # configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/users_guide/apps/vc
 LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex

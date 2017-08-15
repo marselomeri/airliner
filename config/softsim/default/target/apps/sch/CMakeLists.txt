@@ -1,5 +1,11 @@
 set(APP_NAME sch)
 
+add_airliner_app_unit_test_src(
+    ${APP_NAME}-ut
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/sch_custom.c
+)
+
 add_airliner_app_table(
     ${APP_NAME}
     NAME sch_def_schtbl

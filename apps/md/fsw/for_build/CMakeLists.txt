@@ -21,6 +21,9 @@ add_airliner_app_def(md
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+
+    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
+    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 )
 
 set(MD_UT_COMMON_CODE 
