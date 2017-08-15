@@ -1,5 +1,6 @@
 
 #include "vc_custom_device_test_utils.h"
+#include "vc_platform_stubs.h"
 
 #include "ut_cfe_evs_hooks.h"
 #include "ut_cfe_time_stubs.h"
@@ -38,4 +39,5 @@ void VC_Custom_Device_Test_Setup(void)
 
 void VC_Custom_Device_Test_TearDown(void) {
     CFE_PSP_MemSet(&VC_AppCustomDevice, 0x00, sizeof(VC_AppCustomDevice_t));
+    CFE_PSP_MemSet(&VC_Platform_Stubs_Returns, 0x00, sizeof(VC_Platform_Stubs_Returns_t));
 }

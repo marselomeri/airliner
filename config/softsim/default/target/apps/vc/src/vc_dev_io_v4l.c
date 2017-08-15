@@ -72,7 +72,7 @@ VC_AppCustomDevice_t VC_AppCustomDevice = {
 
 int32 VC_Ioctl(int fh, int request, void *arg)
 {
-    int32 returnCode;
+    int32 returnCode = 0;
     uint32 i = 0;
 
     for (i=0; i < VC_MAX_RETRY_ATTEMPTS; i++)
