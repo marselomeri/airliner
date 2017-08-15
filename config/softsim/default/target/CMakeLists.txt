@@ -17,6 +17,12 @@ build_airliner_cfe(
         /ram
     STARTUP_SCRIPT
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
+    
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_mission_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/osconfig.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
 )
 
 add_airliner_app(
@@ -86,7 +92,14 @@ add_airliner_app(
 add_airliner_app(
     to
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/to/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to)
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/to_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/to_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/to_mission_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/to_perfids.h
+    )
 
 add_airliner_app(
     ea
