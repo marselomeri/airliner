@@ -3,12 +3,21 @@ add_airliner_app_def(mm
     FILE MM
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_dump.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_dump.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_load.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_load.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem16.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem16.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem32.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem32.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem8.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem8.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_version.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -21,21 +30,38 @@ add_airliner_app_unit_test(mm-ut
     UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_app_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_dump_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_dump_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_load_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_load_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_mem16_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_mem16_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_mem32_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_mem32_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_mem8_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_mem8_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_test_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_utils_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mm_utils_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_dump.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_dump.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_load.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_load.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem16.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem16.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem32.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem32.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem8.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_mem8.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mm_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c
         
     INCLUDES
