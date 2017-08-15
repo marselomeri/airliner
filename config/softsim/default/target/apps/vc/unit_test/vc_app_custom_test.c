@@ -343,6 +343,50 @@ void Test_VC_Custom_ConfigureDevice_CapabilitiesStreaming(void)
     
 }
 
+
+/**
+ * Test VC_ConfigureDevice() fail V4L set format fail
+ */
+void Test_VC_Custom_ConfigureDevice_FormatFail(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VIDIOC_S_FMT returned %i on %s channel %u", 
+    5,"test", 0);
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed once for the first capabilities check */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno_Value = 5;
+    
+    /* Set the second ioctl call to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return_Values = 0b11111101;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_ConfigureDevices() failed to raise an event");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+    
+}
+
+
 /**************************************************************************
  * Rollup Test Cases
  **************************************************************************/
@@ -370,4 +414,6 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_CapabilitiesBuffer");
     UtTest_Add(Test_VC_Custom_ConfigureDevice_CapabilitiesStreaming, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_CapabilitiesStreaming");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_FormatFail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_FormatFail");
 }

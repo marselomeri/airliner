@@ -140,8 +140,15 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         returnCode = -1;
         goto end_of_function;
     }
-
-    VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_S_FMT, &Format);
+    
+    if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_S_FMT, &Format)) 
+    {
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "VIDIOC_S_FMT returned %i on %s channel %u", errno,
+                        VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+        returnCode = -1;
+        goto end_of_function;
+    }
     
     if (Format.fmt.pix.pixelformat != VC_AppCustomDevice.Channel[DeviceID].VideoFormat)
     {

@@ -11,28 +11,55 @@ VC_Platform_Stubs_Returns_t VC_Platform_Stubs_Returns = { 0,
                                                           0,
                                                           0,
                                                           0,
+                                                          0,
+                                                          0b11111111,
                                                           0 };
 
 int __wrap_ioctl(int fh, int request, void *arg)
 {
+    int returnCode = 0;
+    
     if (VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno)
     {
         errno = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno_Value;
     }
+
     if (VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct)
     {
         switch(request) 
         {
             case VIDIOC_QUERYCAP:
-                ((struct v4l2_capability *)arg)->capabilities = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+                if(1 == VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct)
+                { 
+                    ((struct v4l2_capability *)arg)->capabilities = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+                }
+                if(2 == VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct)
+                {
+                    ((struct v4l2_capability *)arg)->capabilities = (V4L2_BUF_TYPE_VIDEO_CAPTURE +
+                    V4L2_CAP_STREAMING);
+                }
                 break;
-    
             default:
             break;
         }
         
     }
-    return VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
+
+    /* Bitshift 1 to the left the value of call count AND with 
+     * return values */
+    if(VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return_Values &
+        (1<<VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount))
+    {    
+        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
+    }
+    else
+    {
+        returnCode = !VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
+    }
+    
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount++;
+    return returnCode;
+    
 }
 
 

@@ -17,6 +17,8 @@ typedef struct
     int     VC_Wrap_Open_Return;
     int     VC_Wrap_Open_Errno;
     int     VC_Wrap_Open_Errno_Value;
+    uint8   VC_Wrap_Ioctl_Return_Values;
+    uint8   VC_Wrap_Ioctl_CallCount;
 } VC_Platform_Stubs_Returns_t;
 
 
