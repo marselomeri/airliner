@@ -38,6 +38,7 @@ void VC_Custom_Device_Test_Setup(void)
 }
 
 void VC_Custom_Device_Test_TearDown(void) {
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount = 0;
     CFE_PSP_MemSet(&VC_AppCustomDevice, 0x00, sizeof(VC_AppCustomDevice_t));
     CFE_PSP_MemSet(&VC_Platform_Stubs_Returns, 0x00, sizeof(VC_Platform_Stubs_Returns_t));
 }

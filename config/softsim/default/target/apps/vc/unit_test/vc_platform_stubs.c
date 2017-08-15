@@ -12,7 +12,8 @@ VC_Platform_Stubs_Returns_t VC_Platform_Stubs_Returns = { 0,
                                                           0,
                                                           0,
                                                           0,
-                                                          0b11111111,
+                                                          0,
+                                                          0,
                                                           0 };
 
 int __wrap_ioctl(int fh, int request, void *arg)
@@ -45,18 +46,19 @@ int __wrap_ioctl(int fh, int request, void *arg)
         
     }
 
-    /* Bitshift 1 to the left the value of call count AND with 
-     * return values */
-    if(VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return_Values &
-        (1<<VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount))
-    {    
-        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
+    if (1 == VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount)
+    {
+        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return1;
+    }
+    else if (2 == VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount)
+    {
+        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return2;
     }
     else
     {
-        returnCode = !VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
+    returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
     }
-    
+
     VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount++;
     return returnCode;
     

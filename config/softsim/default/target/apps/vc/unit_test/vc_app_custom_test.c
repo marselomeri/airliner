@@ -55,8 +55,10 @@ void Test_VC_Custom_Ioctl_Interrupted(void)
     int32 expected = -1;
     uint32 i = 0;
     
-    /* Set a return value for the wrapped ioctl */
+    /* Set a return value for the wrapped ioctl (always fail) */
     VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return = -1;
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return1 = -1;
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return2 = -1;
     
     /* Set return error number to true */
     VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno = 1;
@@ -67,7 +69,7 @@ void Test_VC_Custom_Ioctl_Interrupted(void)
     /* A test argument to pass to VC_Ioctl value is random 
      * the wrapped ioctl will not use the arguments and will return a
      * value */
-    int test = 1;
+    int test = 777;
     
     /* Call VC_Ioctl with errno set to EINTR max retry attempts*/
     result = VC_Ioctl(test, test, &test);
@@ -374,7 +376,7 @@ void Test_VC_Custom_ConfigureDevice_FormatFail(void)
     VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno_Value = 5;
     
     /* Set the second ioctl call to fail */
-    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return_Values = 0b11111101;
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return1 = -1;
 
     /* Call the function under test */
     result = VC_ConfigureDevice(DeviceID);
