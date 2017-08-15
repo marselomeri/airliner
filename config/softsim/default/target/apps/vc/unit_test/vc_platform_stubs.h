@@ -5,12 +5,18 @@
 extern "C" {
 #endif
 
+#include <linux/videodev2.h>
+
 
 typedef struct
 {
     int     VC_Wrap_Ioctl_Return;
     int     VC_Wrap_Ioctl_Errno;
     int     VC_Wrap_Ioctl_Errno_Value;
+    int     VC_Wrap_Ioctl_Struct;
+    int     VC_Wrap_Open_Return;
+    int     VC_Wrap_Open_Errno;
+    int     VC_Wrap_Open_Errno_Value;
 } VC_Platform_Stubs_Returns_t;
 
 

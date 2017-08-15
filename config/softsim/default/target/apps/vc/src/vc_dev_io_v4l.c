@@ -566,7 +566,7 @@ int32 VC_InitDevice(uint8 DeviceID, const char *DeviceName)
     int32 returnCode = 0;
     uint32 i = 0;
 
-    if((VC_AppCustomDevice.Channel[DeviceID].Mode == VC_DEVICE_ENABLED) &
+    if((VC_AppCustomDevice.Channel[DeviceID].Mode == VC_DEVICE_ENABLED) &&
         (VC_AppCustomDevice.Channel[DeviceID].DeviceFd != 0))
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -616,7 +616,8 @@ int32 VC_Init_CustomDevices(void)
             /* If the device is enabled initialize it */
             if (returnCode = VC_InitDevice(i, VC_AppCustomDevice.Channel[i].DevName))
             {
-                /* If the device failed to be initialized set to disabled */
+                /* If the device failed to be initialized set to disabled 
+                 * an error event will be generated in VC_InitDevice */
                 VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
             }
             else

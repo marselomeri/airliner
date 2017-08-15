@@ -34,7 +34,8 @@ set_property(TARGET vc-custom-ut
         APPEND_STRING
         PROPERTY
         LINK_FLAGS
-        "-Wl,--wrap=ioctl" 
+        "-Wl,--wrap=ioctl \
+         -Wl,--wrap=open" 
 )
 
 
