@@ -37,7 +37,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sch_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sch_perfids.h
     )
 
@@ -48,7 +47,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cf_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cf_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cf_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cf_perfids.h
     )
 
@@ -70,7 +68,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ds_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ds_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ds_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ds_perfids.h
     )
 
@@ -91,7 +88,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hk_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hk_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hk_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hk_perfids.h
     )
 
@@ -103,7 +99,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/hs/hs_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hs_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hs_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hs_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hs_perfids.h
     )
 
@@ -112,7 +107,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/lc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/lc
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/lc/lc_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/lc/src/lc_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/lc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/lc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lc_mission_cfg.h
@@ -126,7 +121,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/md_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/md_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/md_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/md_perfids.h
     )
 
@@ -148,7 +142,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sc_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sc_perfids.h
     )
 
@@ -181,10 +174,9 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/ea/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ea
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ea/ea_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ea/src/ea_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ea_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ea_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ea_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ea_perfids.h
     )
 
