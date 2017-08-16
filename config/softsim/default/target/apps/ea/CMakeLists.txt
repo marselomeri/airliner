@@ -56,3 +56,12 @@ set_property(TARGET ea-custom-ut
 		 -Wl,--wrap=kill"
 )
 
+add_custom_target(
+    ea-ut-input-files
+    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/sleep.py ${CMAKE_CURRENT_BINARY_DIR}
+	COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/fib.py ${CMAKE_CURRENT_BINARY_DIR}
+	COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/noop.py ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_dependencies(ea-custom-ut ea-ut-input-files)
+add_dependencies(ea-perfmon-ut ea-ut-input-files)

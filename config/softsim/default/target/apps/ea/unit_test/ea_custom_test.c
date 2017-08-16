@@ -27,8 +27,7 @@
 //printf("%i\n", EA_AppData.HkTlm.usCmdCnt);
 
 char CUSTOM_APP_PATH[OS_MAX_PATH_LEN] = "/usr/bin/python";
-char CUSTOM_TEST_ARG[OS_MAX_PATH_LEN] = "/home/vagrant/airliner/apps/ea/fsw/unit_test/noop.py";
-char CUSTOM_PERFMON_ARG[OS_MAX_PATH_LEN] = "/home/vagrant/airliner/apps/ea/fsw/unit_test/noop.py";
+char CUSTOM_TEST_ARG[OS_MAX_PATH_LEN] = "noop.py";
 
 int FORK_RET_CODE;
 int EXECVP_RET_CODE;
