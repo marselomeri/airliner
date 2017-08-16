@@ -23,7 +23,7 @@ $(TARGET_NAMES)::
         done; \
 	TARGET_PATH=$$(echo ${TARGET_PATHS} | cut -d " " -f $$idx); \
 	mkdir -p build/$$TARGET_PATH; \
-	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -DBUILD_TARGET:STRING=HOST -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) -j);
+	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) -j);
 	
 
 clean::

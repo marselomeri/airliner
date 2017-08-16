@@ -22,7 +22,6 @@ void EA_StartAppCustom()
 		** Create child process to execute app
 		*/
 		pid_t pid = fork();
-		EA_AppData.HkTlm.usCmdCnt = pid;
 		/*
 		** Child process
 		*/
@@ -56,7 +55,7 @@ void EA_StartAppCustom()
 			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, OS_MAX_PATH_LEN);
 			EA_AppData.HkTlm.ActiveAppPID = pid;
 			waitpid(pid, &EA_AppData.HkTlm.LastAppStatus, 0);
-			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus>>8;
+			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus;
 			EA_AppData.HkTlm.ActiveAppPID = 0;
 			EA_AppData.HkTlm.ActiveAppUtil = 0;
 			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
@@ -110,7 +109,7 @@ void EA_TermAppCustom()
 		{
 			EA_AppData.HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-							"Unable to terminate application. Errno %i", kill_status);
+							"Unable to terminate application");
 		}
 	}
 	else
@@ -173,7 +172,6 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	virt_time = guest + guest_nice;
 	total_time = utime + ntime + sys_time + idle_time + steal + virt_time;
 	procData.total_time = total_time;
-	//OS_printf("Total time: %llu\n", total_time);
 
 	char path[64];
 	snprintf(path, sizeof(path), "/proc/%i/stat", pid);

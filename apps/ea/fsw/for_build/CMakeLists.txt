@@ -1,4 +1,3 @@
-
 add_airliner_app_def(ea
     FILE EA
     SOURCES
@@ -22,7 +21,6 @@ add_airliner_app_def(ea
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 )
 
-
 add_airliner_app_unit_test(ea-ut
     UTASSERT 
     SOURCES
@@ -36,13 +34,9 @@ add_airliner_app_unit_test(ea-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_config_tbl_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_custom_stub.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_custom_stub.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_custom_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_custom_test.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_mock_os_calls.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_mock_os_calls.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_test_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_test_utils.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ea_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ea_cds_utils.c
@@ -59,12 +53,7 @@ add_airliner_app_unit_test(ea-ut
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-
-    PROPERTIES
-    LINK_FLAGS  
-        "-Wl,--wrap,fork"
 )
-
 
 add_custom_target(
     ea-ut-input-files
@@ -73,5 +62,3 @@ add_custom_target(
 	COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/noop.py ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_dependencies(ea-ut ea-ut-input-files)
-
-
