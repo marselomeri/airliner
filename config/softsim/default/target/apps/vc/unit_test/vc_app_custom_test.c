@@ -756,15 +756,360 @@ void Test_VC_Custom_DevicesInit_Nominal(void)
 /**************************************************************************
  * Tests for VC_Start_StreamingDevice()
  **************************************************************************/
- 
+
+/**
+ * Test VC_Start_StreamingDevice through VC_Start_Streaming()
+ * fail queue buffers ioctl
+ */
+void Test_VC_Custom_StartStreamingDevice_BufferQueue(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC VIDIOC_QBUF returned %i on %s channel %u", 5, "test", 0);
+
+    /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno_Value = 5;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set buffer request to its correct value */
+    VC_AppCustomDevice.Channel[0].BufferRequest = VC_V4L_BUFFER_REQUEST;
+    
+    /* Set the first ioctl call to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return = -1;
+
+    /* Set channel 0 to enabled and initialized */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+    
+    /* Call the function under test */
+    result = VC_Start_Streaming();
+
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(result == expected,"VC_Start_StreamingDevice() did not fail");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Status == VC_DEVICE_INITIALIZED, 
+                        "VC_StartStreaming changed status with failure");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Start_StreamingDevice() failed to raise an event");
+}
+
+/**
+ * Test VC_Start_StreamingDevice through VC_Start_Streaming() 
+ * fail stream on ioctl
+ */
+void Test_VC_Custom_StartStreamingDevice_StreamOn(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC VIDIOC_STREAMON returned %i on %s channel %u", 5, "test", 0);
+
+    /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno_Value = 5;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set buffer request to one to only call ioctl queue buffer once */
+    VC_AppCustomDevice.Channel[0].BufferRequest = 1;
+    
+    /* Set the second ioctl call to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return1 = -1;
+
+    /* Set channel 0 to enabled and initialized */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+    
+    /* Call the function under test */
+    result = VC_Start_Streaming();
+
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(result == expected,"VC_Start_StreamingDevice() did not fail");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Status == VC_DEVICE_INITIALIZED, 
+                        "VC_StartStreaming changed status with failure");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Start_StreamingDevice() failed to raise an event");
+}
+
+/**
+ * Test VC_Start_StreamingDevice nominal
+ */
+void Test_VC_Custom_StartStreamingDevice_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint8 DeviceID = 0;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC VIDIOC_STREAMON success on %s channel %u", "test", 0);
+
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set buffer request to one to only call ioctl queue buffer once */
+    VC_AppCustomDevice.Channel[0].BufferRequest = 1;
+    
+    /* Call the function under test */
+    result = VC_Start_StreamingDevice(DeviceID);
+
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(result == expected,"VC_Start_StreamingDevice() did not succeed");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString, 
+                        "VC_Start_StreamingDevice() failed to raise an event");
+}
+
 /**************************************************************************
  * Tests for VC_Start_Streaming()
  **************************************************************************/
+
+
+/**
+ * Test VC_Start_Streaming nominal
+ */
+void Test_VC_Custom_StartStreaming_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint8 DeviceID = 0;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC VIDIOC_STREAMON success on %s channel %u", "test", 0);
+    
+    /* Set channel 0 to enabled and initialized */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set buffer request to one to only call ioctl queue buffer once */
+    VC_AppCustomDevice.Channel[0].BufferRequest = 1;
+    
+    /* Call the function under test */
+    result = VC_Start_Streaming();
+
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Status == VC_DEVICE_STREAMING,
+                        "VC_Start_Streaming() did not set state to streaming");
+    UtAssert_True(result == expected,"VC_Start_StreamingDevice() did not succeed");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString, 
+                        "VC_Start_StreamingDevice() failed to raise an event");
+}
 
 /**************************************************************************
  * Tests for VC_Stream_Task()
  **************************************************************************/
 
+/**
+ * Test VC_Stream_Task() fail register child task
+ */
+void Test_VC_Custom_StreamTask_RegisterChildTaskFail(void)
+{
+    /* Set register child task to fail */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, -1, 1);
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, 
+                        "VC streaming task exited with return code 0 task status (0xFFFFFFFF)", 
+                        "VC_Stream_Task() failed to raise an event");
+}
+
+
+/**
+ * Test VC_Stream_Task() fail nothing enabled and streaming
+ */
+void Test_VC_Custom_StreamTask_NothingEnabled(void)
+{
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC can't start streaming no devices are streaming enabled");
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].DeviceFd = 7;
+    
+    /* Set select to fail with an error (-1) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = -1;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+ 
+
+/**
+ * Test VC_Stream_Task() fail select error
+ */
+void Test_VC_Custom_StreamTask_SelectError(void)
+{
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC start streaming failed select() returned %i", 6);
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set the mode and state for channel 0*/
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_STREAMING;
+    
+        /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno_Value = 6;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].DeviceFd = 7;
+    
+    /* Set select to fail with an error (-1) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = -1;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+
+/**
+ * Test VC_Stream_Task() fail select interrupted max retry attempts
+ */
+void Test_VC_Custom_StreamTask_InterruptedError(void)
+{
+    char returnString[64];
+    snprintf(returnString, 64, "VC select was interrupted");
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set the mode and state for channel 0*/
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_STREAMING;
+    
+        /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno_Value = EINTR;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].DeviceFd = 7;
+    
+    /* Set select to fail with an error (-1) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = -1;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==(VC_MAX_RETRY_ATTEMPTS + 1),
+                        "Event Count is not correct");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+
+/**
+ * Test VC_Stream_Task() fail select timeout max retry attempts
+ */
+void Test_VC_Custom_StreamTask_TimeoutError(void)
+{
+    char returnString[64];
+    snprintf(returnString, 64, "VC select timed out");
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set the mode and state for channel 0*/
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_STREAMING;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].DeviceFd = 7;
+    
+    /* Set select to timeout return value (0) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = 0;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==(VC_BUFFER_TIMEOUTS_ALLOWED + 1),
+                        "Event Count is not correct");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+ 
 /**************************************************************************
  * Tests for VC_Devices_Start()
  **************************************************************************/
@@ -844,4 +1189,22 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesInit_Fail");
     UtTest_Add(Test_VC_Custom_DevicesInit_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesInit_Nominal");
+    UtTest_Add(Test_VC_Custom_StartStreamingDevice_BufferQueue, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StartStreamingDevice_BufferQueue");
+    UtTest_Add(Test_VC_Custom_StartStreamingDevice_StreamOn, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StartStreamingDevice_StreamOn");
+    UtTest_Add(Test_VC_Custom_StartStreamingDevice_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StartStreamingDevice_Nominal");
+    UtTest_Add(Test_VC_Custom_StartStreaming_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StartStreaming_Nominal");
+    UtTest_Add(Test_VC_Custom_StreamTask_RegisterChildTaskFail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_RegisterChildTaskFail");
+    UtTest_Add(Test_VC_Custom_StreamTask_NothingEnabled, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_NothingEnabled");            
+    UtTest_Add(Test_VC_Custom_StreamTask_SelectError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_SelectError");
+    UtTest_Add(Test_VC_Custom_StreamTask_InterruptedError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_InterruptedError");
+    UtTest_Add(Test_VC_Custom_StreamTask_TimeoutError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_TimeoutError");
 }

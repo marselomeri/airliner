@@ -6,16 +6,7 @@
 #include "vc_platform_stubs.h"
 #include "vc_platform_cfg.h"
 
-VC_Platform_Stubs_Returns_t VC_Platform_Stubs_Returns = { 0,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                          0 };
+VC_Platform_Stubs_Returns_t VC_Platform_Stubs_Returns = {0};
 
 int __wrap_ioctl(int fh, int request, void *arg)
 {
@@ -82,3 +73,16 @@ int __wrap_open(char *filename, int  access, int  permission)
     }
     return VC_Platform_Stubs_Returns.VC_Wrap_Open_Return;
 }
+
+
+int __wrap_select(int nfds, fd_set *readfds, fd_set *writefds, 
+                    fd_set *exceptfds, struct timeval *timeout)
+{
+    if (VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno)
+    {
+        errno = VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno_Value;
+    }
+    return VC_Platform_Stubs_Returns.VC_Wrap_Select_Return;
+}
+
+

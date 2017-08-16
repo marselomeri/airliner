@@ -245,7 +245,7 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
     }
     else
     {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
                     "VC VIDIOC_STREAMON success on %s channel %u", 
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
     }
@@ -273,7 +273,7 @@ int32 VC_Stop_StreamingDevice(uint8 DeviceID)
     }
     else
     {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
                 "VC VIDIOC_STREAMOFF success on %s channel %u", 
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
     }
@@ -361,12 +361,12 @@ end_of_function:
 void VC_Stream_Task(void)
 {
     int32 returnCode = 0;
-    int32 timeouts = 0;
+    static int32 timeouts = 0;
     
     uint32 i = 0;
     uint32 j = 0;
     uint32 maxFd = 0;
-    uint32 retryAttempts = 0;
+    static uint32 retryAttempts = 0;
     fd_set fds;
     
     struct timeval timeValue;
@@ -380,16 +380,15 @@ void VC_Stream_Task(void)
         {
             maxFd = 0;
             returnCode = 0;
-            retryAttempts = 0;
             
-            /* select modifies the timeout value with time left until 
+            /* Select modifies the timeout value with time left until 
              * the timeout would expire so timeValue needs to be set
              * every loop iteration
              */
             timeValue.tv_sec = VC_BUFFER_FILL_TIMEOUT_SEC;
             timeValue.tv_usec = VC_BUFFER_FILL_TIMEOUT_USEC;
 
-            /* initialize the set */
+            /* Initialize the set */
             FD_ZERO(&fds);
         
             /* Add enabled and streaming devices to the fd set */
@@ -446,46 +445,22 @@ void VC_Stream_Task(void)
                     /* select returned an error other than EINTR */
                     CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC start streaming failed select() returned %i", errno);
-                    returnCode = -1;
                     goto end_of_function;
                 }
             }
             /* select timed out */
             if (0 == returnCode)
             {
-                if (timeouts < VC_BUFFER_TIMEOUTS_ALLOWED)
+                if (timeouts == VC_BUFFER_TIMEOUTS_ALLOWED)
                 {
-                    timeouts++;
-                    /* select timed out so query the buffer status for debug info */    
-                    for (i=0; i < VC_MAX_DEVICES; i++)
-                    {        
-                        struct v4l2_buffer Buffer;
-            
-                        if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
-                        && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
-                        {
-                            for (j=0; j < VC_AppCustomDevice.Channel[i].BufferRequest; j++)
-                            {  
-                            bzero(&Buffer, sizeof(Buffer));
-                            Buffer.type = VC_AppCustomDevice.Channel[i].BufferType;
-                            Buffer.memory = VC_AppCustomDevice.Channel[i].MemoryType;
-                            Buffer.index = j;
-                    
-                            VC_Ioctl(VC_AppCustomDevice.Channel[i].DeviceFd, VIDIOC_QUERYBUF, &Buffer);
-                            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                                "VC buffer flags for device channel %lu buffer %lu = %x", i, j, Buffer.flags);
-                            }
-                        }
-                    }
-                    continue;
+                    returnCode = -1;
+                    goto end_of_function;
                 }
-                else 
-                {
-                    CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC buffer timeout streaming stopped");
-                }
-            returnCode = -1;
-            goto end_of_function;
+                timeouts++;
+                usleep(VC_MAX_RETRY_SLEEP_USEC);
+                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "VC select timed out");
+                continue;
             } 
             /* select() returned and a buffer is ready to be dequeued */
             if(returnCode > 0)
@@ -508,11 +483,18 @@ void VC_Stream_Task(void)
     } /* end if status == success */
 
 end_of_function:
-    /* Streaming task exited so set app flag to initialized */
+
+    /* Streaming task is exiting so set app flag to initialized */
     VC_AppData.AppState = VC_INITIALIZED;
     CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-        "VC streaming task exited with return code %d", returnCode);
-    CFE_ES_ExitChildTask();
+        "VC streaming task exited with return code %d task status (0x%08X)", 
+        returnCode, (unsigned int)iStatus);
+
+    /* The child task was successfully created so exit from it */
+    if (iStatus == CFE_SUCCESS)
+    {
+        CFE_ES_ExitChildTask();
+    }
 }
 
 
