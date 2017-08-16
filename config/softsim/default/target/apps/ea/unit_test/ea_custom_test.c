@@ -16,15 +16,6 @@
 #include "ut_cfe_tbl_stubs.h"
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
-//#include "ea_mock_os_calls.h"
-
-//printf("%i\n", Ut_CFE_EVS_GetEventQueueDepth());
-//printf("%i\n", Ut_CFE_EVS_GetEventCount(EA_CHILD_TASK_START_EID, CFE_EVS_DEBUG, ""));
-//printf("%i\n", Ut_CFE_EVS_GetEventCount(EA_APP_ARG_ERR_EID, CFE_EVS_ERROR, ""));
-//printf("%i\n", Ut_CFE_EVS_GetEventCount(EA_CHILD_TASK_START_ERR_EID, CFE_EVS_ERROR, ""));
-//printf("%i\n", Ut_CFE_EVS_GetEventCount(EA_CMD_RESET_EID, CFE_EVS_INFORMATION, ""));
-//printf("%i\n", EA_AppData.HkTlm.usCmdErrCnt);
-//printf("%i\n", EA_AppData.HkTlm.usCmdCnt);
 
 char CUSTOM_APP_PATH[OS_MAX_PATH_LEN] = "/usr/bin/python";
 char CUSTOM_TEST_ARG[OS_MAX_PATH_LEN] = "noop.py";
@@ -172,6 +163,5 @@ void EA_Custom_Test_AddTestCases(void)
     UtTest_Add(Test_EA_Custom_TermApp_NoneActive, EA_Test_Setup, EA_Test_TearDown, "Test_EA_Custom_TermApp_NoneActive");
 	UtTest_Add(Test_EA_Custom_TermApp_KillFail, EA_Test_Setup, EA_Test_TearDown, "Test_EA_Custom_TermApp_KillFail");
 	UtTest_Add(Test_EA_Custom_TermApp_Nominal, EA_Test_Setup, EA_Test_TearDown, "Test_EA_Custom_TermApp_Nominal");
-	//UtTest_Add(, EA_Test_Setup, EA_Test_TearDown, "");
 }
 
