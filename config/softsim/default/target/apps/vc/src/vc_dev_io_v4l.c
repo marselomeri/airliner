@@ -185,7 +185,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_REQBUFS, &Request))
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_REQBUFS returned %i on %s channel %u", errno,
+                        "VC VIDIOC_REQBUFS returned %i on %s channel %u.", errno,
                         VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
@@ -194,7 +194,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
     if (Request.count != VC_AppCustomDevice.Channel[DeviceID].BufferRequest)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_REQBUFS did not comply. Only %u buffers on %s channel %u", Request.count, 
+                        "VC VIDIOC_REQBUFS did not comply. %u buffers on %s channel %u.", Request.count, 
                         VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;

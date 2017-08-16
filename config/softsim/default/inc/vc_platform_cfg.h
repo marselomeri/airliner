@@ -66,35 +66,35 @@ extern "C" {
 **       VC_SCH_PIPE_WAKEUP_RESERVED and VC_SCH_PIPE_SEND_HK_RESERVED
 **       must be less than VC_SCH_PIPE_DEPTH.
 */
-#define VC_SCH_PIPE_SEND_HK_RESERVED  (1)
+#define VC_SCH_PIPE_SEND_HK_RESERVED    (1)
 
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define VC_CMD_PIPE_DEPTH             (4)
+#define VC_CMD_PIPE_DEPTH               (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define VC_CMD_PIPE_NAME              ("VC_CMD_PIPE")
+#define VC_CMD_PIPE_NAME                ("VC_CMD_PIPE")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define VC_STARTUP_TIMEOUT_MSEC    (1000)
+#define VC_STARTUP_TIMEOUT_MSEC         (1000)
 
 /** \brief The max address length
 **
 **  \par Limits:
 **       This parameter must be at least 16 for IPV4.
 */
-#define VC_ADDRESS_LENGTH         INET_ADDRSTRLEN
+#define VC_ADDRESS_LENGTH               INET_ADDRSTRLEN
 
 /* Custom Settings */
 
@@ -104,7 +104,7 @@ extern "C" {
 **  \par Limits:
 **       Minimum of 1.
 */
-#define VC_MAX_OUTPUT_CHANNELS          5
+#define VC_MAX_OUTPUT_CHANNELS          (5)
 
 /** \brief Max device path length
 **
@@ -118,43 +118,43 @@ extern "C" {
 **  \par Limits:
 **       Minimum of 1.
 */
-#define VC_MAX_DEVICES                  1
+#define VC_MAX_DEVICES                  (1)
 
 /** \brief Max buffer size
 **
 **  \par Limits:
 **       Minimum based on configured device driver requirements.
 */
-//#define VC_MAX_BUFFER_SIZE              115200
-#define VC_MAX_BUFFER_SIZE              1228800
+//#define VC_MAX_BUFFER_SIZE              (115200)
+#define VC_MAX_BUFFER_SIZE              (1228800)
 
 /** \brief Max packet size
 **
 **  \par Limits:
 **       UDP max payload size.
 */
-#define VC_MAX_PACKET_SIZE              65527
+#define VC_MAX_PACKET_SIZE              (65527)
 
 /** \brief Retry attemps for interrupted calls
 **
 **  \par Limits:
 **       None.
 */
-#define VC_MAX_RETRY_ATTEMPTS           2
+#define VC_MAX_RETRY_ATTEMPTS           (2)
 
 /** \brief Sleep time micro seconds for interrupted calls
 **
 **  \par Limits:
 **       None.
 */
-#define VC_MAX_RETRY_SLEEP_USEC         10
+#define VC_MAX_RETRY_SLEEP_USEC         (10)
 
 /** \brief Streaming task priority
 **
 **  \par Limits:
 **       0 to MAX_PRIORITY (usually 255)
 */
-#define VC_STREAMING_TASK_PRIORITY      50
+#define VC_STREAMING_TASK_PRIORITY      (50)
 
 /** \brief Streaming task name
 **
@@ -170,21 +170,21 @@ extern "C" {
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_WIDTH                  320
+#define VC_FRAME_WIDTH                  (320)
 
 /** \brief Video resolution height
 **
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_HEIGHT                 180
+#define VC_FRAME_HEIGHT                 (180)
 
 /** \brief Video frame rate
 **
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAMERATE                    30
+#define VC_FRAMERATE                    (30)
 
 /** \brief Video camera device path
 **
@@ -259,7 +259,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_BUFFER_REQUEST           4
+#define VC_V4L_BUFFER_REQUEST           (4)
 
 /** \brief V4L Memory Type
 **
@@ -275,21 +275,21 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define VC_BUFFER_FILL_TIMEOUT_SEC      2
+#define VC_BUFFER_FILL_TIMEOUT_SEC      (2)
 
 /** \brief Wait time for camera data in microseconds
 **
 **  \par Limits:
 **       None.
 */
-#define VC_BUFFER_FILL_TIMEOUT_USEC     0
+#define VC_BUFFER_FILL_TIMEOUT_USEC     (0)
 
 /** \brief Max timeouts until exiting streaming task
 **
 **  \par Limits:
 **       None.
 */
-#define VC_BUFFER_TIMEOUTS_ALLOWED      2
+#define VC_BUFFER_TIMEOUTS_ALLOWED      (2)
 
 
 #ifdef __cplusplus

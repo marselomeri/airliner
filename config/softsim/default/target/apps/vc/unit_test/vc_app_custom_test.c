@@ -187,7 +187,7 @@ void Test_VC_Custom_InitDevice_OpenError(void)
 }
 
 /**
- * Test VC_InitDevice() through VC_InitCustomDevices() nominal
+ * Test VC_InitDevice() nominal
  */
 void Test_VC_Custom_InitDevice_Nominal(void)
 {
@@ -214,7 +214,7 @@ void Test_VC_Custom_InitDevice_Nominal(void)
  * Test VC_InitCustomDevices() pass init but fail configure
  * ConfigureDevice will fail on the first v4L struct verification
  */
-void Test_VC_Custom_InitCustomDevices_HalfNominal(void)
+void Test_VC_Custom_InitCustomDevices_FailInit(void)
 {
     int32 result = 0;
     int32 expected = -1;
@@ -238,13 +238,54 @@ void Test_VC_Custom_InitCustomDevices_HalfNominal(void)
     UtAssert_True(result == expected,"VC_InitDevice() did not return failure");
 }
 
-
 /**
- * Test VC_InitCustomDevices() pass init and configure
+ * Test VC_InitCustomDevices() Nominal
  */
 void Test_VC_Custom_InitCustomDevices_Nominal(void)
 {
-
+    int32 result = 0;
+    int32 expected = 0;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC Device initialized channel %u from %s", 0, "test");
+    char returnString1[64];
+    snprintf(returnString1, 64, "VC Device configured channel %u from %s", 0, "test"); 
+    /* Set the first device to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set the correct resolution */
+    VC_AppCustomDevice.Channel[0].FrameWidth = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight = VC_FRAME_HEIGHT;
+    
+    /* Set the correct size */
+    VC_AppCustomDevice.Channel[0].Buffer_Size = VC_MAX_BUFFER_SIZE;
+    
+    /* Set the correct buffer number */
+    VC_AppCustomDevice.Channel[0].BufferRequest = VC_V4L_BUFFER_REQUEST;
+    
+    result = VC_Init_CustomDevices();
+    
+    UtAssert_True(result == expected,"VC_Init_CustomDevices() did not succeed");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Status == VC_DEVICE_INITIALIZED,
+                    "VC_Init_CustomDevices() state not initialized");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString, 
+                        "VC_InitCustomDevices() failed to raise an event");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_InitCustomDevices() failed to raise an event");
 }
 
 /**************************************************************************
@@ -359,7 +400,7 @@ void Test_VC_Custom_ConfigureDevice_FormatFail(void)
     5,"test", 0);
     
     /* Set to true to emulate ioctl setting struct values */
-    /* Need to succeed once for the first capabilities check */
+    /* Need to succeed twice to reach format ioctl call */
     VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
     
     /* Set the test device path */
@@ -388,6 +429,247 @@ void Test_VC_Custom_ConfigureDevice_FormatFail(void)
     
 }
 
+/**
+ * Test VC_ConfigureDevice() fail V4L set format verification check
+ */
+void Test_VC_Custom_ConfigureDevice_FormatCheck(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC device %s channel %u didn't accept format %u.", 
+    "test",0, 0);
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_ConfigureDevices() failed to raise an event");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+    
+}
+
+/**
+ * Test VC_ConfigureDevice() fail V4L set format verification check
+ * resolution
+ */
+void Test_VC_Custom_ConfigureDevice_FormatCheckRes(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC device %s channel %u didn't accept resolution instead %d:%d.", 
+    "test",0, VC_FRAME_WIDTH, VC_FRAME_HEIGHT);
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_ConfigureDevices() failed to raise an event");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+}
+
+/**
+ * Test VC_ConfigureDevice() fail V4L set format verification check
+ * size
+ */
+void Test_VC_Custom_ConfigureDevice_FormatCheckSize(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC device %s channel %u size image %u > buffer size %lu.", 
+    "test",0, VC_MAX_BUFFER_SIZE, 0);
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set the correct resolution */
+    VC_AppCustomDevice.Channel[0].FrameWidth = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight = VC_FRAME_HEIGHT;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_ConfigureDevices() failed to raise an event");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+}
+
+
+/**
+ * Test VC_ConfigureDevice() fail V4L requests buffers
+ */
+void Test_VC_Custom_ConfigureDevice_RequestsBuffers(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC VIDIOC_REQBUFS returned %i on %s channel %u.", 
+    5,"test",0);
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set the correct resolution */
+    VC_AppCustomDevice.Channel[0].FrameWidth = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight = VC_FRAME_HEIGHT;
+    
+    /* Set the correct size */
+    VC_AppCustomDevice.Channel[0].Buffer_Size = VC_MAX_BUFFER_SIZE;
+    
+    /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Errno_Value = 5;
+    
+    /* Set the third ioctl call to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return2 = -1;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_ConfigureDevices() failed to raise an event");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+}
+
+
+/**
+ * Test VC_ConfigureDevice() fail V4L requests buffers fail requested 
+ * count verification
+ */
+void Test_VC_Custom_ConfigureDevice_RequestsBuffersCount(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC VIDIOC_REQBUFS did not comply. %u buffers on %s channel %u.", 
+    4,"test",0);
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set the correct resolution */
+    VC_AppCustomDevice.Channel[0].FrameWidth = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight = VC_FRAME_HEIGHT;
+    
+    /* Set the correct size */
+    VC_AppCustomDevice.Channel[0].Buffer_Size = VC_MAX_BUFFER_SIZE;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_ConfigureDevices() failed to raise an event");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+}
+
+/**
+ * Test VC_ConfigureDevice() nominal 
+ */
+void Test_VC_Custom_ConfigureDevice_Nominal(void)
+{
+    int32 result = 0;
+    int32 expected = 0;
+    uint8 DeviceID = 0;
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set the correct resolution */
+    VC_AppCustomDevice.Channel[0].FrameWidth = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight = VC_FRAME_HEIGHT;
+    
+    /* Set the correct size */
+    VC_AppCustomDevice.Channel[0].Buffer_Size = VC_MAX_BUFFER_SIZE;
+    
+    /* Set the correct buffer number */
+    VC_AppCustomDevice.Channel[0].BufferRequest = VC_V4L_BUFFER_REQUEST;
+
+    /* Call the function under test */
+    result = VC_ConfigureDevice(DeviceID);
+    
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==0,"Event Count = 0");
+    UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
+}
+
+
 
 /**************************************************************************
  * Rollup Test Cases
@@ -408,9 +690,11 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitDevice_OpenError");
     UtTest_Add(Test_VC_Custom_InitDevice_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitDevice_Nominal");
-    UtTest_Add(Test_VC_Custom_InitCustomDevices_HalfNominal, VC_Custom_Device_Test_Setup, 
-            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_HalfNominal");
-    UtTest_Add(Test_VC_Custom_ConfigureDevice_CapabilitiesFail, VC_Custom_Device_Test_Setup, 
+    UtTest_Add(Test_VC_Custom_InitCustomDevices_FailInit, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_FailInit");
+    UtTest_Add(Test_VC_Custom_InitCustomDevices_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_FailInit");
+    UtTest_Add(Test_VC_Custom_InitCustomDevices_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_CapabilitiesFail");
     UtTest_Add(Test_VC_Custom_ConfigureDevice_CapabilitiesBuffer, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_CapabilitiesBuffer");
@@ -418,4 +702,16 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_CapabilitiesStreaming");
     UtTest_Add(Test_VC_Custom_ConfigureDevice_FormatFail, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_FormatFail");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_FormatCheck, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_FormatCheck");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_FormatCheckRes, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_FormatCheckRes");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_FormatCheckSize, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_FormatCheckSize");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_RequestsBuffers, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_RequestsBuffers");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_RequestsBuffersCount, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_RequestsBuffersCount");
+    UtTest_Add(Test_VC_Custom_ConfigureDevice_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_Nominal");
 }
