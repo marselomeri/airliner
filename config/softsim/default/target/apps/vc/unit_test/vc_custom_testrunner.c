@@ -8,12 +8,19 @@
 
 VC_AppData_t VC_AppData;
 
+extern int enable_wrappers;
+
 int main(void)
 {   
+	int testResults = 0;
+	enable_wrappers = 1;
     VC_Custom_App_Test_AddTestCases();
     //VC_Cmds_Test_AddTestCases();
     //VC_Config_Tbl_Test_AddTestCases();
     //VC_CDS_Tbl_Test_AddTestCases();
+    testResults =  UtTest_Run();
 
-    return(UtTest_Run());
+    enable_wrappers = 0;
+
+    return testResults;
 }
