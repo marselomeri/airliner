@@ -21,15 +21,7 @@ add_airliner_app_unit_test(vc-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/
         ${PROJECT_SOURCE_DIR}/apps/vc/fsw/src
 
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
-    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    WRAPPERS
+        ioctl
 )
-
-set_property(TARGET vc-custom-ut
-        APPEND_STRING
-        PROPERTY
-        LINK_FLAGS
-        "-Wl,--wrap=ioctl" 
-)
-
 
