@@ -1,12 +1,5 @@
 set(APP_NAME vc)
 
-add_airliner_app_src(
-    ${APP_NAME}
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l.c
-)
-
 add_airliner_app_unit_test(vc-custom-ut
     UTASSERT
     SOURCES
@@ -23,19 +16,16 @@ add_airliner_app_unit_test(vc-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l.h
 
-        
+     
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/
         ${PROJECT_SOURCE_DIR}/apps/vc/fsw/src
-)
 
-set_property(TARGET vc-custom-ut
-        APPEND_STRING
-        PROPERTY
-        LINK_FLAGS
-        "-Wl,--wrap=ioctl \
-         -Wl,--wrap=open" 
+
+    WRAPPERS
+        ioctl
+	open
 )
 
 
