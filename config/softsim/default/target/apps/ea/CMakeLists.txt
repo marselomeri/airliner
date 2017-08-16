@@ -12,7 +12,7 @@ add_airliner_app_unit_test(ea-custom-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_custom_test.c
-		${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
+	${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_app.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_cds_utils.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_config_utils.c
@@ -29,7 +29,7 @@ add_airliner_app_unit_test(ea-perfmon-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_test.c
-		${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
+	${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_app.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_cds_utils.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_config_utils.c
