@@ -1,11 +1,5 @@
 set(APP_NAME ea)
 
-add_airliner_app_src(
-    ${APP_NAME}
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
-)
-
 add_airliner_app_table(
     ${APP_NAME}
     NAME ea_config
@@ -18,7 +12,7 @@ add_airliner_app_unit_test(ea-custom-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_custom_test.c
-		${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
+	${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_app.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_cds_utils.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_config_utils.c
@@ -28,6 +22,12 @@ add_airliner_app_unit_test(ea-custom-ut
         
 	INCLUDES
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
+        
+    WRAPPERS
+        fork
+        execvp
+        waitpid
+        kill
 )
 
 add_airliner_app_unit_test(ea-perfmon-ut
@@ -35,7 +35,7 @@ add_airliner_app_unit_test(ea-perfmon-ut
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_test.c
-		${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
+	${CMAKE_CURRENT_SOURCE_DIR}/src/ea_custom.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_app.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_cds_utils.c
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/ea_config_utils.c
@@ -44,16 +44,6 @@ add_airliner_app_unit_test(ea-perfmon-ut
         
 	INCLUDES
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
-)
-
-set_property(TARGET ea-custom-ut
-        APPEND_STRING
-        PROPERTY
-        LINK_FLAGS
-        "-Wl,--wrap=fork \
-		 -Wl,--wrap=execvp \
-		 -Wl,--wrap=waitpid \
-		 -Wl,--wrap=kill"
 )
 
 add_custom_target(

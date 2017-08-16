@@ -1,9 +1,9 @@
 set(APP_NAME hs)
 
-add_airliner_app_src(
-    ${APP_NAME}
+add_airliner_app_unit_test_src(
+    ${APP_NAME}-ut
     SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/hs_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hs_custom.c
 )
 
 add_airliner_app_table(

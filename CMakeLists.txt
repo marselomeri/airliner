@@ -21,11 +21,6 @@ set(ELF2CFETBL_BIN ${PROJECT_BINARY_DIR}/host/tools/elf2cfetbl)
 # Include the file with all the build functions that we will call in the configuration directory.
 include(cfe/build-functions.cmake)
 
-# Make sure we don't go any further unless the caller specified the BUILD_TARGET
-if(NOT DEFINED BUILD_TARGET)
-    error("No build target set.  You must add either -DBUILD_TARGET:STRING=HOST or -DBUILD_TARGET:STRING=HOST.")
-endif()
-
 # Now, start building with the configuration.
 add_subdirectory(config/${BUILDNAME}/host host)
 add_subdirectory(config/${BUILDNAME}/target target)

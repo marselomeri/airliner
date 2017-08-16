@@ -3,21 +3,46 @@ add_airliner_app_def(md
     FILE MD
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_pkt.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_pkt.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_tbl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_tbl.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_version.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+
+    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
+    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 )
 
 set(MD_UT_COMMON_CODE 
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_app.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_cmds.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_cmds.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_pkt.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_pkt.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_tbl.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_dwell_tbl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_events.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_msg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_msgdefs.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_tbldefs.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_verify.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/md_version.h
     ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osapi.c
     ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osfilesys.c
     ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_osfileapi.c
@@ -91,7 +116,13 @@ add_custom_target(
 )
 add_dependencies(md-ut-2 md-ut-2-input-file)
 
-add_airliner_app_unit_test(md-ut-3        
+add_airliner_app_unit_test(md-ut-3    
+    UTF_OUTPUT_FILE
+        ${CMAKE_CURRENT_BINARY_DIR}/md_unit_test3.out
+        
+    UTF_BLESSED_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test3.out
+              
     SOURCES
         ${MD_UT_COMMON_CODE}
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test3.c
@@ -100,9 +131,6 @@ add_airliner_app_unit_test(md-ut-3
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         ${PROJECT_SOURCE_DIR}/tools/utf/inc/
-        
-    COPYFILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test3.in
 )
 add_custom_target(
     md-ut-3-input-file
@@ -110,7 +138,13 @@ add_custom_target(
 )
 add_dependencies(md-ut-3 md-ut-3-input-file)
 
-add_airliner_app_unit_test(md-ut-4       
+add_airliner_app_unit_test(md-ut-4         
+    UTF_OUTPUT_FILE
+        ${CMAKE_CURRENT_BINARY_DIR}/md_unit_test4.out
+        
+    UTF_BLESSED_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test4.out
+        
     SOURCES
         ${MD_UT_COMMON_CODE}
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test4.c
@@ -119,9 +153,6 @@ add_airliner_app_unit_test(md-ut-4
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         ${PROJECT_SOURCE_DIR}/tools/utf/inc/
-        
-    COPYFILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md_unit_test4.in
 )
 add_custom_target(
     md-ut-4-input-file

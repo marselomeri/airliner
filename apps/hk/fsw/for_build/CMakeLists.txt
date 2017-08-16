@@ -3,7 +3,15 @@ add_airliner_app_def(hk
     FILE HK
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_app.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_version.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -16,11 +24,22 @@ add_airliner_app_unit_test(hk-ut
     UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_app_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_app_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_test_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_utils_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/hk_utils_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_app.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/hk_version.h
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

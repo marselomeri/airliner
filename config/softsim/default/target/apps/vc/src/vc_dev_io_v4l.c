@@ -140,8 +140,15 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         returnCode = -1;
         goto end_of_function;
     }
-
-    VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_S_FMT, &Format);
+    
+    if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_S_FMT, &Format)) 
+    {
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "VIDIOC_S_FMT returned %i on %s channel %u", errno,
+                        VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+        returnCode = -1;
+        goto end_of_function;
+    }
     
     if (Format.fmt.pix.pixelformat != VC_AppCustomDevice.Channel[DeviceID].VideoFormat)
     {
@@ -178,7 +185,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_REQBUFS, &Request))
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_REQBUFS returned %i on %s channel %u", errno,
+                        "VC VIDIOC_REQBUFS returned %i on %s channel %u.", errno,
                         VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
@@ -187,7 +194,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
     if (Request.count != VC_AppCustomDevice.Channel[DeviceID].BufferRequest)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC VIDIOC_REQBUFS did not comply. Only %u buffers on %s channel %u", Request.count, 
+                        "VC VIDIOC_REQBUFS did not comply. %u buffers on %s channel %u.", Request.count, 
                         VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
@@ -566,7 +573,7 @@ int32 VC_InitDevice(uint8 DeviceID, const char *DeviceName)
     int32 returnCode = 0;
     uint32 i = 0;
 
-    if((VC_AppCustomDevice.Channel[DeviceID].Mode == VC_DEVICE_ENABLED) &
+    if((VC_AppCustomDevice.Channel[DeviceID].Mode == VC_DEVICE_ENABLED) &&
         (VC_AppCustomDevice.Channel[DeviceID].DeviceFd != 0))
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -616,7 +623,8 @@ int32 VC_Init_CustomDevices(void)
             /* If the device is enabled initialize it */
             if (returnCode = VC_InitDevice(i, VC_AppCustomDevice.Channel[i].DevName))
             {
-                /* If the device failed to be initialized set to disabled */
+                /* If the device failed to be initialized set to disabled 
+                 * an error event will be generated in VC_InitDevice */
                 VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
             }
             else
