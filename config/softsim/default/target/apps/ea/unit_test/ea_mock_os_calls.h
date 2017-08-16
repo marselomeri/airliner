@@ -12,10 +12,10 @@ extern "C" {
 extern int FORK_RET_CODE;
 extern int EXECVP_RET_CODE;
 extern int KILL_RET_CODE;
-
-int __wrap_fork();
-int __wrap_execvp(const char *file, char *const argv[]);
-int __wrap_kill(int pid, int signal);
+extern int WAITPID_RET_CODE
+//int __wrap_fork();
+//int __wrap_execvp(const char *file, char *const argv[]);
+//int __wrap_kill(int pid, int signal);
 
 #ifdef __cplusplus
 }
