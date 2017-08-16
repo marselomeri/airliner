@@ -107,6 +107,7 @@ void Test_VC_Custom_InitDevice_AlreadyInitialized(void)
                         "VC_InitDevice() failed to raise an event");
 }
 
+
 /**
  * Test VC_InitDevice() null device name
  */
@@ -214,7 +215,7 @@ void Test_VC_Custom_InitDevice_Nominal(void)
  * Test VC_InitCustomDevices() pass init but fail configure
  * ConfigureDevice will fail on the first v4L struct verification
  */
-void Test_VC_Custom_InitCustomDevices_FailInit(void)
+void Test_VC_Custom_InitCustomDevices_FailConfigure(void)
 {
     int32 result = 0;
     int32 expected = -1;
@@ -669,7 +670,133 @@ void Test_VC_Custom_ConfigureDevice_Nominal(void)
     UtAssert_True(result == expected,"VC_ConfigureDevice() did not return failure");
 }
 
+/**************************************************************************
+ * Tests for VC_Devices_Init()
+ **************************************************************************/
+ 
+/**
+ * Test VC_Devices_Init fail VC_Init_CustomDevices and 
+ * VC_InitDevice() already initialized error (see previous already 
+ * initialized test)
+ */
+void Test_VC_Custom_DevicesInit_Fail(void)
+{
+    boolean result = TRUE;
+    boolean expected = FALSE;
+    uint8 DeviceID = 0;
+    
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the first device to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    /* Set the first device file descriptor to a non-zero value */
+    VC_AppCustomDevice.Channel[0].DeviceFd = 1;
 
+    result = VC_Devices_Init();
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(result == expected,"VC_InitDevice() did not return an error");
+    
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Mode == VC_DEVICE_DISABLED, 
+                         "VC_InitCustomDevices() did not mode to disabled");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, "VC Device test for channel 0 already initialized.", 
+                        "VC_InitDevice() failed to raise an event");
+}
+
+/**
+ * Test VC_Devices_Init Nominal (See previous test for
+ * VC_InitCustomDevices() Nominal)
+ */
+void Test_VC_Custom_DevicesInit_Nominal(void)
+{
+    boolean result = FALSE;
+    boolean expected = TRUE;
+    uint8 DeviceID = 0;
+    char returnString[64];
+    snprintf(returnString, 64, "VC Device initialized channel %u from %s", 0, "test");
+    char returnString1[64];
+    snprintf(returnString1, 64, "VC Device configured channel %u from %s", 0, "test"); 
+    /* Set the first device to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    
+    /* Set to true to emulate ioctl setting struct values */
+    /* Need to succeed twice to reach format ioctl call */
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct = 2;
+    
+    /* Set the test device path */
+    strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
+    
+    /* Set the video format to pass format check */
+    VC_AppCustomDevice.Channel[0].VideoFormat = VC_V4L_VIDEO_FORMAT;
+    
+    /* Set the correct buffer type */
+    VC_AppCustomDevice.Channel[0].BufferType = VC_V4L_BUFFER_TYPE;
+    
+    /* Set the correct resolution */
+    VC_AppCustomDevice.Channel[0].FrameWidth = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight = VC_FRAME_HEIGHT;
+    
+    /* Set the correct size */
+    VC_AppCustomDevice.Channel[0].Buffer_Size = VC_MAX_BUFFER_SIZE;
+    
+    /* Set the correct buffer number */
+    VC_AppCustomDevice.Channel[0].BufferRequest = VC_V4L_BUFFER_REQUEST;
+    
+    result = VC_Devices_Init();
+    
+    UtAssert_True(result == expected,"VC_Init_CustomDevices() did not succeed");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Status == VC_DEVICE_INITIALIZED,
+                    "VC_Init_CustomDevices() state not initialized");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString, 
+                        "VC_InitCustomDevices() failed to raise an event");
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_InitCustomDevices() failed to raise an event");
+}
+
+
+/**************************************************************************
+ * Tests for VC_Start_StreamingDevice()
+ **************************************************************************/
+ 
+/**************************************************************************
+ * Tests for VC_Start_Streaming()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Stream_Task()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Devices_Start()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Stop_StreamingDevice()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Stop_Streaming()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Devices_Stop()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_DisableDevice()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_CleanupDevices()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Devices_Uninit()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Send_Buffer()
+ **************************************************************************/
 
 /**************************************************************************
  * Rollup Test Cases
@@ -690,8 +817,8 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitDevice_OpenError");
     UtTest_Add(Test_VC_Custom_InitDevice_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitDevice_Nominal");
-    UtTest_Add(Test_VC_Custom_InitCustomDevices_FailInit, VC_Custom_Device_Test_Setup, 
-            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_FailInit");
+    UtTest_Add(Test_VC_Custom_InitCustomDevices_FailConfigure, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_FailConfigure");
     UtTest_Add(Test_VC_Custom_InitCustomDevices_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_FailInit");
     UtTest_Add(Test_VC_Custom_InitCustomDevices_Nominal, VC_Custom_Device_Test_Setup, 
@@ -714,4 +841,8 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_RequestsBuffersCount");
     UtTest_Add(Test_VC_Custom_ConfigureDevice_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_ConfigureDevice_Nominal");
+    UtTest_Add(Test_VC_Custom_DevicesInit_Fail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesInit_Fail");
+    UtTest_Add(Test_VC_Custom_DevicesInit_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesInit_Nominal");
 }
