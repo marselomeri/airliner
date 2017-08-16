@@ -2,15 +2,29 @@
 add_airliner_app_def(cs
     FILE CS
     SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_compute.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_compute.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_eeprom_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_eeprom_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_memory_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_memory_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_msgdefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_processing.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_version.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -24,26 +38,50 @@ add_airliner_app_def(cs
 add_airliner_app_unit_test(cs-ut        
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_compute_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_compute_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_eeprom_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_eeprom_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_memory_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_memory_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_table_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_table_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_table_processing_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_table_processing_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_test_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_utils_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_utils_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ut_cfe_tbl_stubs.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_compute.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_compute.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_eeprom_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_eeprom_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_memory_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_memory_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_msgdefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_cmds.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_table_processing.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/cs_version.h
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/utassert.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_stubs.c
