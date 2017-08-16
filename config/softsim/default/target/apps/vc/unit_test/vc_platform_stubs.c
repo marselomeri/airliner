@@ -48,7 +48,7 @@ int __wrap_ioctl(int fh, int request, void *arg)
                     ((struct v4l2_format *)arg)->fmt.pix.sizeimage = VC_MAX_BUFFER_SIZE;
                 break;
             case VIDIOC_REQBUFS:
-                ((struct v4l2_requestbuffers *)arg)->count = VC_V4L_BUFFER_REQUEST;
+                    ((struct v4l2_requestbuffers *)arg)->count = VC_V4L_BUFFER_REQUEST;
             default:
                 break;
         }

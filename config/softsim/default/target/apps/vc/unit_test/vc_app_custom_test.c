@@ -753,7 +753,6 @@ void Test_VC_Custom_DevicesInit_Nominal(void)
                         "VC_InitCustomDevices() failed to raise an event");
 }
 
-
 /**************************************************************************
  * Tests for VC_Start_StreamingDevice()
  **************************************************************************/
