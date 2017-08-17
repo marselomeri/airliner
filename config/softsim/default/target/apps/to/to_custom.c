@@ -308,9 +308,6 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
             	}
 
                 TO_AppData.HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(TO_CMD_INF_EID, CFE_EVS_INFORMATION,
-                                  "Disabled channel %u.",
-								  cmd->ChannelID);
                 break;
             }
 
@@ -338,14 +335,13 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
 	int status;
 	int reuseaddr=1;
 
-	if((TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED) &
-	   (TO_AppCustomData.Channel[ChannelID].Socket != 0))
-	{
-		CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
-						  "UDP telemetry for channel %u already enabled.", (unsigned int)i);
-		returnCode = -1;
-		goto end_of_function;
-	}
+	//if(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED)
+	//{
+	//	CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
+	//					  "UDP telemetry for channel %u already enabled.", (unsigned int)i);
+	//	returnCode = -1;
+	//	goto end_of_function;
+	//}
 
 	if(DestinationAddress == 0)
 	{
@@ -363,23 +359,23 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
 		goto end_of_function;
 	}
 
-	memcpy(TO_AppCustomData.Channel[ChannelID].IP, DestinationAddress, sizeof(TO_AppCustomData.Channel[ChannelID].IP));
-	TO_AppCustomData.Channel[ChannelID].DstPort = DestinationPort;
-
-    if((TO_AppCustomData.Channel[ChannelID].Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+	if((TO_AppCustomData.Channel[ChannelID].Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
 	{
 		TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_DISABLED;
 		CFE_EVS_SendEvent(TO_TLMOUTSOCKET_ERR_EID, CFE_EVS_ERROR,
-				   "TLM socket errno: %i on channel %u", errno, (unsigned int)i);
+				   "TLM socket errno: %i on channel %u", errno, (unsigned int)ChannelID);
 		returnCode = -1;
 		goto end_of_function;
 	}
 
-    /* Set the Reuse Address flag.  If we don't set this flag, the socket will
-     * lock the port on termination and the kernel won't unlock it until it
-     * times out after a minute or so.
-     */
-	setsockopt(TO_AppCustomData.Channel[ChannelID].Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+	/* Set the Reuse Address flag.  If we don't set this flag, the socket will
+	 * lock the port on termination and the kernel won't unlock it until it
+	 * times out after a minute or so.
+	 */
+	setsockopt(TO_AppCustomData.Channel[i].Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+
+	memcpy(TO_AppCustomData.Channel[ChannelID].IP, DestinationAddress, sizeof(TO_AppCustomData.Channel[ChannelID].IP));
+	TO_AppCustomData.Channel[ChannelID].DstPort = DestinationPort;
 
 	/* Set the input arguments to the socket bind.
 	 */
@@ -397,6 +393,9 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
 		returnCode = -1;
 		goto end_of_function;
 	}
+
+	/* Enable the channel for transmission. */
+	TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
 
 	/* Create the child listener task. */
 	char TaskName[OS_MAX_API_NAME];
@@ -437,7 +436,17 @@ int32 TO_OutputChannel_Disable(uint8 ChannelID)
 		goto end_of_function;
 	}
 
+	/* Disable the channel before we close the socket so if the handler
+	 * task is in the loop it will know the reason why the send
+	 * function failed is because the channel is disabled.
+	 */
+	TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_DISABLED;
 	close(TO_AppCustomData.Channel[ChannelID].Socket);
+	TO_AppCustomData.Channel[ChannelID].Socket = 0;
+
+	CFE_EVS_SendEvent(TO_CMD_INF_EID, CFE_EVS_INFORMATION,
+                      "Disabled channel %u.",
+					  ChannelID);
 
 end_of_function:
 	return returnCode;
@@ -483,16 +492,15 @@ void TO_OutputChannel_OnboardChannelTask(void)
 /* Channel Handler                                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_OutputChannel_ChannelHandler(uint32 chIdx)
+void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 {
-    boolean continueListening = TRUE;
     int32 iStatus = CFE_SUCCESS;
     int32 msgSize = 0;
     char *buffer;
 
-	TO_TlmOutputChannelQueue_t *chQueue = &TO_AppData.Config.OutputChannel[chIdx];
-	TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[chIdx];
-	while(continueListening)
+	TO_TlmOutputChannelQueue_t *chQueue = &TO_AppData.Config.OutputChannel[ChannelIdx];
+	TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
+	while(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
 	{
 		iStatus =  OS_QueueGet(
 				chQueue->OSALQueueID,
@@ -518,17 +526,12 @@ void TO_OutputChannel_ChannelHandler(uint32 chIdx)
 									 sizeof(s_addr));
 			if (status < 0)
 			{
-				if(errno == 90)
-				{
-					CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-								   "L%d TO sendto errno %d.  Message too long.  Size=%u", __LINE__, errno, (unsigned int)msgSize);
-				}
-				else
+				if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
 				{
 					CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
 							   "L%d TO sendto errno %d.", __LINE__, errno);
+					TO_OutputChannel_Disable(ChannelIdx);
 				}
-				returnCode = -1;
 			}
 			CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
 
