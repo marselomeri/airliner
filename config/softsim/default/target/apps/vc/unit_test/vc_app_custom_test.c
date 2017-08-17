@@ -22,6 +22,7 @@
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
 
+
 /**************************************************************************
  * Tests for VC_Ioctl()
  **************************************************************************/
@@ -1745,6 +1746,100 @@ void Test_VC_Custom_SendBuffer_Nominal(void)
 {
 
 }
+/**************************************************************************
+ * Tests for Custom Transmit Layer
+ **************************************************************************/
+/**************************************************************************
+ * Tests for VC_EnableChannel()
+ **************************************************************************/
+
+/**
+ * Test VC_EnableChannel() through VC_Init_CustomTransmitters
+ * fail already initialized error
+ */
+void Test_VC_Custom_InitTransmit_AlreadyInitialized(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    
+    char returnString[128];
+    snprintf(returnString, 128, "VC UDP for channel %u already enabled.", 0);
+    
+    /* Set test channel 0 to enabled */
+    VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
+    
+    /* Set a test port */
+    VC_AppCustomData.Channel[0].DestPort = 5000;
+    
+    /* Set a socket file descriptor to a non 0 value */
+    VC_AppCustomData.Channel[0].SocketFd = 1;
+    
+    /* Call the function under test */
+    result = VC_Init_CustomTransmitters();
+
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(result == expected,"VC_Init_CustomTransmitters() did not return an error");
+    
+    UtAssert_True(VC_AppCustomData.Channel[0].Mode == VC_CHANNEL_DISABLED, 
+                         "VC_Init_CustomTransmitters() did not mode to disabled");
+    UtAssert_EventSent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_EnableChannel() failed to raise an event");
+}
+
+/**
+ * Test VC_EnableChannel() invalid channel id
+ */
+void Test_VC_Custom_InitTransmit_ChannelId(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    
+    char returnString[128];
+    snprintf(returnString, 128, "VC ChannelID (%u) invalid.", (VC_MAX_OUTPUT_CHANNELS + 1));
+    
+    /* Set test channel 0 to enabled */
+    VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
+    
+    /* Call the function under test */
+    result = VC_EnableChannel((VC_MAX_OUTPUT_CHANNELS + 1));
+
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(result == expected,"VC_Init_CustomTransmitters() did not return an error");
+    UtAssert_EventSent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_EnableChannel() failed to raise an event");
+}
+
+/**************************************************************************
+ * Tests for VC_InitCustom()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Transmit_Init()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_SendData()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Address_Verification()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Update_Destination()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_DisableChannel()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_CleanupCustom()
+ **************************************************************************/
+
+/**************************************************************************
+ * Tests for VC_Transmit_Uninit()
+ **************************************************************************/
 
 
 /**************************************************************************
@@ -1752,6 +1847,9 @@ void Test_VC_Custom_SendBuffer_Nominal(void)
  **************************************************************************/
 void VC_Custom_App_Test_AddTestCases(void)
 {
+/**************************************************************************
+ * Tests for Custom Device Layer
+ **************************************************************************/
     UtTest_Add(Test_VC_Custom_Ioctl_Error, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_Ioctl_Error");
     UtTest_Add(Test_VC_Custom_Ioctl_Interrupted, VC_Custom_Device_Test_Setup, 
@@ -1846,4 +1944,11 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_InvalidAddress");
     UtTest_Add(Test_VC_Custom_SendBuffer_SendData, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_SendData");
+/**************************************************************************
+ * Tests for Custom Transmit Layer
+ **************************************************************************/
+    UtTest_Add(Test_VC_Custom_InitTransmit_AlreadyInitialized, VC_Custom_Transmit_Test_Setup, 
+            VC_Custom_Transmit_Test_TearDown, "Test_VC_Custom_InitTransmit_AlreadyInitialized");
+    UtTest_Add(Test_VC_Custom_InitTransmit_ChannelId, VC_Custom_Transmit_Test_Setup, 
+            VC_Custom_Transmit_Test_TearDown, "Test_VC_Custom_InitTransmit_ChannelId");
 }
