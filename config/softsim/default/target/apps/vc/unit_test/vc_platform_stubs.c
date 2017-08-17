@@ -1,8 +1,7 @@
 #include <sys/ioctl.h>
 #include <errno.h>
 #include <stdio.h>
-
-
+#include <arpa/inet.h>
 #include <sys/time.h> 
 #include <sys/types.h> 
 #include <unistd.h> 
@@ -17,8 +16,14 @@ int __real_close(int fildes);
 int __real_ioctl(int fh, int request, void *arg);
 int __real_select(int nfds, fd_set *readfds, fd_set *writefds, 
                     fd_set *exceptfds, struct timeval *timeout);
+int __real_socket(int domain, int type, int protocol);
+int __real_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+int __real_sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen);
+
 
 VC_Platform_Stubs_Returns_t VC_Platform_Stubs_Returns = {0};
+
 
 int __wrap_ioctl(int fh, int request, void *arg)
 {
@@ -50,13 +55,13 @@ int __wrap_ioctl(int fh, int request, void *arg)
                     }
                     break;
                 case VIDIOC_S_FMT:
-                        ((struct v4l2_format *)arg)->fmt.pix.pixelformat = VC_V4L_VIDEO_FORMAT;
-                        ((struct v4l2_format *)arg)->fmt.pix.width = VC_FRAME_WIDTH;
-                        ((struct v4l2_format *)arg)->fmt.pix.height = VC_FRAME_HEIGHT;
-                        ((struct v4l2_format *)arg)->fmt.pix.sizeimage = VC_MAX_BUFFER_SIZE;
+                    ((struct v4l2_format *)arg)->fmt.pix.pixelformat = VC_V4L_VIDEO_FORMAT;
+                    ((struct v4l2_format *)arg)->fmt.pix.width = VC_FRAME_WIDTH;
+                    ((struct v4l2_format *)arg)->fmt.pix.height = VC_FRAME_HEIGHT;
+                    ((struct v4l2_format *)arg)->fmt.pix.sizeimage = VC_MAX_BUFFER_SIZE;
                     break;
                 case VIDIOC_REQBUFS:
-                        ((struct v4l2_requestbuffers *)arg)->count = VC_V4L_BUFFER_REQUEST;
+                    ((struct v4l2_requestbuffers *)arg)->count = VC_V4L_BUFFER_REQUEST;
                 case VIDIOC_DQBUF:
                     if(1 == VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Struct)
                     {
@@ -66,7 +71,6 @@ int __wrap_ioctl(int fh, int request, void *arg)
                     {
                         ((struct v4l2_buffer *)arg)->bytesused = (VC_MAX_PACKET_SIZE + 1);
                     }
-                        
                 default:
                     break;
             }
@@ -110,6 +114,7 @@ int __wrap_open(char *filename, int  access, int  permission)
     return returnCode;
 }
 
+
 int __wrap_close(int fildes)
 {
     int returnCode = 0;
@@ -124,7 +129,6 @@ int __wrap_close(int fildes)
     }
     return returnCode;
 }
-
 
 
 int __wrap_select(int nfds, fd_set *readfds, fd_set *writefds, 
@@ -146,3 +150,58 @@ int __wrap_select(int nfds, fd_set *readfds, fd_set *writefds,
     return returnCode;
 }
 
+
+int __wrap_socket(int domain, int type, int protocol)
+{
+    int returnCode = 0;
+    if(enable_wrappers == 0)
+    {
+        returnCode = __real_socket(domain, type, protocol);
+    }
+    else
+    {
+        if (VC_Platform_Stubs_Returns.VC_Wrap_Socket_Errno)
+        {
+            errno = VC_Platform_Stubs_Returns.VC_Wrap_Socket_Errno_Value;
+        }
+        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Socket_Return;
+    }
+    return returnCode;
+}
+
+int __wrap_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+{
+    int returnCode = 0;
+    if(enable_wrappers == 0)
+    {
+        returnCode = __real_bind(sockfd, addr, addrlen);
+    }
+    else
+    {
+        if (VC_Platform_Stubs_Returns.VC_Wrap_Bind_Errno)
+        {
+            errno = VC_Platform_Stubs_Returns.VC_Wrap_Bind_Errno_Value;
+        }
+        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Bind_Return;
+    }
+    return returnCode;
+}
+
+int __wrap_sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen)
+{
+    int returnCode = 0;
+    if(enable_wrappers == 0)
+    {
+        returnCode = __real_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    }
+    else
+    {
+        if (VC_Platform_Stubs_Returns.VC_Wrap_SendTo_Errno)
+        {
+            errno = VC_Platform_Stubs_Returns.VC_Wrap_SendTo_Errno_Value;
+        }
+        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_SendTo_Return;
+    }
+    return returnCode;
+}
