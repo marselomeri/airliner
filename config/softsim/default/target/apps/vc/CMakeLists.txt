@@ -24,6 +24,7 @@ add_airliner_app_unit_test(vc-custom-ut
     WRAPPERS
         ioctl
         open
-	select
+        close
+        select
 )
 

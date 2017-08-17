@@ -307,9 +307,12 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     /* The dequeued buffer is larger than max transmit packet size */
     if (Buffer.bytesused > VC_MAX_PACKET_SIZE)
     {
+        /* The buffer is too large so skip sending */
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC Packet on %s channel %u is too large",
                 VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+            returnCode = -1;
+            goto queue_next_buffer;
     }
     
     /* Check and make sure VIDIOC_DQBUF returned a valid address 
@@ -343,6 +346,8 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         goto end_of_function;
     }
     
+queue_next_buffer:
+
     /* Queue the next buffer */
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_QBUF, &Buffer))
     {
@@ -350,7 +355,6 @@ int32 VC_Send_Buffer(uint8 DeviceID)
                 "VC VIDIOC_QBUF returned %i on %s channel %u", errno,
                 VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
-        goto end_of_function;
     }
     
 end_of_function:
@@ -714,6 +718,7 @@ boolean VC_Devices_Start(void)
     /* Start streaming on all devices */
     if(-1 == VC_Start_Streaming())
     {
+        VC_AppCustomDevice.ContinueFlag = FALSE;
         return FALSE;
     }
 
@@ -729,6 +734,7 @@ boolean VC_Devices_Start(void)
 
     if(returnCode != CFE_SUCCESS)
     {
+        VC_AppCustomDevice.ContinueFlag = FALSE;
         return FALSE;
     }
     return TRUE;

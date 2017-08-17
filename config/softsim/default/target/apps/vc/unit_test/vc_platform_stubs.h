@@ -19,6 +19,7 @@ typedef struct
     int     VC_Wrap_Open_Return;
     int     VC_Wrap_Open_Errno;
     int     VC_Wrap_Open_Errno_Value;
+    int     VC_Wrap_Close_Return;
     int     VC_Wrap_Select_Return;
     int     VC_Wrap_Select_Errno;
     int     VC_Wrap_Select_Errno_Value;
