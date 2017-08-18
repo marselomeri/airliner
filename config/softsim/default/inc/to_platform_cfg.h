@@ -130,7 +130,7 @@ extern "C" {
 
 /* TODO:  Add more platform configuration parameter definitions here, if necessary. */
 #define TO_MAX_MSGS_OUT_PER_FRAME (100)
-#define TO_MAX_OUTPUT_CHANNELS    (5)
+#define TO_MAX_CHANNELS			  (5)
 
 
 
