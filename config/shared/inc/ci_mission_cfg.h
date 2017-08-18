@@ -10,8 +10,7 @@ extern "C" {
 ** CI Mission Configuration Parameter Definitions
 */
 
-/* TODO:  Add mission configuration parameter definitions here, if necessary. */
-
+#define CI_MAX_RGST_CMDS	1000 //TODO
 
 #ifdef __cplusplus
 }
