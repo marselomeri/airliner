@@ -103,7 +103,14 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define TO_CONFIG_TABLE_FILENAME      ("/cf/apps/to_config.tbl")
+#define TO_CONFIG_GROUND_TABLE_FILENAME      ("/cf/apps/to_ground.tbl")
+#define TO_CONFIG_ONBOARD_TABLE_FILENAME     ("/cf/apps/to_onboard.tbl")
+
+/**
+ * \brief Defines the table identification name used for table registration.
+ */
+#define TO_CONFIG_GROUND_TABLENAME          ("GROUND_TBL")
+#define TO_CONFIG_ONBOARD_TABLENAME         ("ONBOARD_TBL")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **

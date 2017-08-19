@@ -33,8 +33,8 @@
 */
 static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
-    "TO_ConfigTbl", "TO.CONFIG_TBL", "TO default config table",
-    "to_config.tbl", (sizeof(TO_ConfigTbl_t))
+    "TO_ConfigTbl", "TO.GROUND_TBL", "TO ground config table",
+    "to_ground.tbl", (sizeof(TO_ChannelTbl_t))
 };
 
 /************************************************************************
@@ -62,7 +62,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /**
 **  \brief Default TO config table data
 */
-TO_ConfigTbl_t TO_ConfigTbl =
+TO_ChannelTbl_t TO_ConfigTbl =
 {
 	/* Table ID */
 	1,
@@ -166,13 +166,7 @@ TO_ConfigTbl_t TO_ConfigTbl =
 		/* TO_PQUEUE_GROUND_LOW_IDX */
 		{TO_PQUEUE_ENA, TO_CHANNEL_ONBOARD, 10, TO_PRIORITY_QUEUE_TYPE_FIFO, 0, 0},
 	},
-	{
-		/* Output Channels */
-		/* TO_CHANNEL_GROUND */
-		{TO_OUT_CHANNEL_ENA, 10, 0, 0, 0},
-		/* TO_CHANNEL_ONBOARD */
-		{TO_OUT_CHANNEL_ENA, 10, 0, 0, 0}
-	}
+	{10, 0, 0, 0}
 };
 
 /************************************************************************
