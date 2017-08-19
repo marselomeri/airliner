@@ -47,7 +47,7 @@ CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
 	1,
 	{
 		/* Registered Commands */
-		{0, 0, CI_CMD_2_STEP, CI_CMD_UNAUTH, 0, 0}
+		{0, 0, , STEP_2, UNAUTHORIZED, 0, LOG}
 	}
 };
 
