@@ -33,8 +33,8 @@
 */
 static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
-    "TO_ConfigTbl", "TO.ONBOARD_CFG", "TO onboard config table",
-    "to_onboard.tbl", (sizeof(TO_ChannelTbl_t))
+    "TO_ConfigTbl", "TO.GROUND_CFG", "TO ground config table",
+    "to_ground_test.tbl", (sizeof(TO_ChannelTbl_t))
 };
 
 /************************************************************************
@@ -61,7 +61,6 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	{
 		/* Message Flows */
 		/* Ground Queues */
-		{CFE_ES_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
 		{CFE_EVS_HK_TLM_MID,		1,	TO_PQUEUE_MEDIUM_IDX},
 		{CFE_SB_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
 		{CFE_TBL_HK_TLM_MID,		1,	TO_PQUEUE_MEDIUM_IDX},
@@ -109,7 +108,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
 		/* TO_PQUEUE_MEDIUM_IDX */
 		{TO_PQUEUE_ENA, 100, TO_PRIORITY_QUEUE_TYPE_FIFO},
 		/* TO_PQUEUE_LOW_IDX */
-		{TO_PQUEUE_ENA, 100, TO_PRIORITY_QUEUE_TYPE_FIFO}
+		{TO_PQUEUE_ENA, 100, TO_PRIORITY_QUEUE_TYPE_FIFO},
 	}
 };
 

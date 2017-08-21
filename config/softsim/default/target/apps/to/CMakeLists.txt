@@ -9,6 +9,13 @@ add_airliner_app_table(
 
 add_airliner_app_table(
     ${APP_NAME}
+    NAME to_ground_test
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_ground_test.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+add_airliner_app_table(
+    ${APP_NAME}
     NAME to_onboard
     SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/to_onboard.c
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/

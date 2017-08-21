@@ -34,4 +34,11 @@ add_airliner_app_table(
     INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
 )
 
+add_airliner_app_table(
+    ${APP_NAME}
+    NAME hs_xct_test
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tables/hs_xct_test.c
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
 

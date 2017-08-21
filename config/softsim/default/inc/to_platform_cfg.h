@@ -90,27 +90,22 @@ extern "C" {
 */
 #define TO_DATA_PIPE_DEPTH            (CFE_SB_MAX_PIPE_DEPTH)
 
-/** \brief Pipe name for the Scheduler pipe 
-**
-**  \par Limits:
-**       Note, this name must fit in OS_MAX_API_NAME.
-*/
-#define TO_DATA_PIPE_NAME             ("TO_DATA_PIPE")
-
 /** \brief The config table default filename
 **
 **  \par Limits:
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define TO_CONFIG_GROUND_TABLE_FILENAME      ("/cf/apps/to_ground.tbl")
-#define TO_CONFIG_ONBOARD_TABLE_FILENAME     ("/cf/apps/to_onboard.tbl")
+#define TO_GROUND_CONFIG_TABLE_FILENAME      ("/cf/apps/to_ground.tbl")
+#define TO_ONBOARD_CONFIG_TABLE_FILENAME     ("/cf/apps/to_onboard.tbl")
 
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define TO_CONFIG_GROUND_TABLENAME          ("GROUND_TBL")
-#define TO_CONFIG_ONBOARD_TABLENAME         ("ONBOARD_TBL")
+#define TO_GROUND_CONFIG_TABLENAME          ("GROUND_CFG")
+#define TO_GROUND_DUMP_TABLENAME          ("GROUND_DMP")
+#define TO_ONBOARD_CONFIG_TABLENAME         ("ONBOARD_CFG")
+#define TO_ONBOARD_DUMP_TABLENAME         ("ONBOARD_DMP")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
@@ -138,6 +133,7 @@ extern "C" {
 /* TODO:  Add more platform configuration parameter definitions here, if necessary. */
 #define TO_MAX_MSGS_OUT_PER_FRAME (100)
 #define TO_MAX_CHANNELS			  (5)
+#define TO_OUTPUT_QUEUE_DEPTH     (100)
 
 
 
