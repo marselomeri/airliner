@@ -47,10 +47,6 @@ CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
 	1,
 	{
 		/* Registered Commands */
-		{0x1905, 0, STEP_1, UNAUTHORIZED, 0, 0, LOG}, // CI Noop
-		{0x1905, 1, STEP_1, UNAUTHORIZED, 0, 0, LOG}, // CI Reset
-		{0x1905, 2, STEP_1, UNAUTHORIZED, 0, 0, LOG}, // CI Arm
-		{0x1905, 3, STEP_1, UNAUTHORIZED, 0, 0, LOG}, // CI Disarm
 		{0x1c29, 0, STEP_1, UNAUTHORIZED, 0, 0, LOG}, // EA Noop
 		{0x1c29, 1, STEP_2, UNAUTHORIZED, 0, 0, LOG}  // EA Reset
 	}
