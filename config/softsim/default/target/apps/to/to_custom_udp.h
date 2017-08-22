@@ -78,7 +78,9 @@ extern TO_AppData_t TO_AppData;
 ** Local Function Definitions
 *************************************************************************/
 
-int32 TO_OutputChannel_CustomBuildupAll(uint32 index);
+
+
+int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size);
 
 int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
 int32 TO_OutputChannel_Disable(uint8 ChannelID);
@@ -86,6 +88,7 @@ void  TO_OutputChannel_GroundChannelTask(void);
 void  TO_OutputChannel_OnboardChannelTask(void);
 void  TO_OutputChannel_ChannelHandler(uint32 ChannelIndex);
 
-
+int32 TO_OutputChannel_CustomBuildupAll(uint32 index);
+int32 TO_OutputChannel_CustomTeardownAll(uint32 index);
 
 #endif

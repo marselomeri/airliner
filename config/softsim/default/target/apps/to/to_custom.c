@@ -40,12 +40,6 @@
 ** Local Function Definitions
 *************************************************************************/
 
-int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
-int32 TO_OutputChannel_Disable(uint8 ChannelID);
-void  TO_OutputChannel_GroundChannelTask(void);
-void  TO_OutputChannel_OnboardChannelTask(void);
-void  TO_OutputChannel_ChannelHandler(uint32 ChannelIndex);
-
 
 
 TO_AppCustomData_t TO_AppCustomData = {

@@ -91,9 +91,22 @@ void Test_TO_OutputChannel_CustomBuildupAll_Nominal(void)
  * Tests for TO_OutputChannel_CustomTeardownAll()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_CustomTeardownAll()
+ * Test TO_OutputChannel_CustomTeardownAll() nominal
+ * NOTE: Function is not currently implemented.
  */
- 
+ void Test_TO_OutputChannel_CustomTeardownAll_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint32 index = 0;
+    
+    /* Execute the function being tested */
+    result = TO_OutputChannel_CustomTeardownAll(index);
+    
+    /* Verify results */
+    UtAssert_True (result == expected, 
+                "TO_OutputChannel_CustomBuildupAll() failed nominal");
+}
  /**************************************************************************
  * Tests for TO_OutputChannel_CustomCleanupAll()
  **************************************************************************/
@@ -113,5 +126,9 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(Test_TO_OutputChannel_CustomBuildupAll_Nominal, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "Test_TO_OutputChannel_CustomBuildupAll_Nominal");
-        
+
+
+    UtTest_Add(Test_TO_OutputChannel_CustomTeardownAll_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "Test_TO_OutputChannel_CustomTeardownAll_Nominal");
 }
