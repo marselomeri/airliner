@@ -107,7 +107,7 @@ extern "C" {
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define CI_STARTUP_TIMEOUT_MSEC    (1000)
+#define CI_STARTUP_TIMEOUT_MSEC    (5000)
 
 /* TODO:  Add Doxygen markup. */
 #define CI_CUSTOM_DEV_PATH       "/dev/ttyUSB0"
