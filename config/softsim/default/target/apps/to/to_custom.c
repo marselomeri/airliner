@@ -504,8 +504,10 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 				}
 				else
 				{
+					TO_Channel_LockByIndex(ChannelIdx);
 				    TO_AppData.HkTlm.MemInUse -= iStatus;
 					chQueue->CurrentlyQueuedCnt--;
+					TO_Channel_UnlockByIndex(ChannelIdx);
 				}
 
 			}
@@ -521,10 +523,5 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 								  "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
 			}
 		}
-		else
-		{
-			exit(-2);
-		}
 	}
-	exit(-1);
 }
