@@ -67,6 +67,13 @@ extern "C" {
 */
 #define CI_SCH_PIPE_SEND_HK_RESERVED  (1)
 
+/** \brief The number of PROCESS_TIMEOUT messages to reserve on the Scheduler pipe.
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define CI_SCH_PIPE_PROC_TIMEOUT_RESERVED  (1)
+
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
@@ -102,6 +109,15 @@ extern "C" {
 **       the #OS_MAX_PATH_LEN value.
 */
 #define CI_CONFIG_TABLE_FILENAME      ("/cf/apps/ci_config.tbl")
+
+/** \brief The timeout table default filename
+**
+**  \par Limits:
+**       The length of each string, including the NULL terminator cannot exceed
+**       the #OS_MAX_PATH_LEN value.
+*/
+#define CI_TIMEOUT_TABLE_FILENAME      ("/cf/apps/ci_timeout.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
