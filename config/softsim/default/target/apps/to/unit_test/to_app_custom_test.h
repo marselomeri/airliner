@@ -6,6 +6,13 @@
 extern "C" {
 #endif
 
+/*
+ * Includes
+ */
+
+#include "to_custom_test_utils.h"
+
+
 void TO_Custom_App_Test_AddTestCases(void);
 
 

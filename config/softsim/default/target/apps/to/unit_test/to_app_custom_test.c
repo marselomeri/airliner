@@ -1,4 +1,7 @@
 
+
+#include "to_app_custom_test.h"
+
 #include "uttest.h"
 #include "ut_osapi_stubs.h"
 #include "ut_cfe_sb_stubs.h"
@@ -15,19 +18,33 @@
 
 
 /**************************************************************************
- * Tests for TO_OutputChannel_CustomInitAll()
+ * Tests for TO_Custom_Init()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_CustomInitAll()
+ * Test TO_Custom_Init()
  */
  
 /**************************************************************************
  * Tests for TO_OutputChannel_CustomBuildupAll()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_CustomBuildupAll()
+ * Test TO_OutputChannel_CustomBuildupAll() nominal
+ * NOTE: Function is not currently implemented.
  */
- 
+void Test_TO_OutputChannel_CustomBuildupAll_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint32 index = 0;
+    
+    /* Execute the function being tested */
+    result = TO_OutputChannel_CustomBuildupAll(index);
+    
+    /* Verify results */
+    UtAssert_True (result == expected, 
+                "TO_OutputChannel_CustomBuildupAll() failed nominal");
+}
+
 /**************************************************************************
  * Tests for TO_OutputChannel_Enable()
  **************************************************************************/
@@ -93,5 +110,8 @@
 
 void TO_Custom_App_Test_AddTestCases(void)
 {
-
+    UtTest_Add(Test_TO_OutputChannel_CustomBuildupAll_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "Test_TO_OutputChannel_CustomBuildupAll_Nominal");
+        
 }

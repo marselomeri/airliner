@@ -7,7 +7,7 @@
  * Includes
  */
 
-#include "to_custom.c"
+#include "to_custom_udp.h"
 
 
 extern TO_AppCustomData_t TO_AppCustomData;
@@ -28,4 +28,4 @@ void TO_Custom_Test_TearDown(void);
 }
 #endif
 
-#endif /* TO_CUSTOM_DEVICE_TEST_UTILS_H */
+#endif /* TO_CUSTOM_TEST_UTILS_H */

@@ -163,6 +163,7 @@ add_airliner_app(
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/to
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_custom_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/to_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/to_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/to_mission_cfg.h
