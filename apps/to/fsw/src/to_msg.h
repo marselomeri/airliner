@@ -113,6 +113,7 @@ typedef struct
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     CFE_SB_MsgId_t MsgID;
     uint16 MsgLimit;
     uint16 PQueueIdx;
@@ -121,27 +122,28 @@ typedef struct
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     CFE_SB_MsgId_t MsgID;
-    uint16 PQueueIdx;
 } TO_RemoveMessageFlowCmd_t;
 
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     CFE_SB_MsgId_t MsgID;
-    uint16 PQueueIdx;
 } TO_QueryMessageFlowCmd_t;
 
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     uint16 PQueueIndex;
 } TO_QueryPriorityQueueCmd_t;
 
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-    uint16 OutputChannelIndex;
+    uint16 ChannelIdx;
 } TO_QueryOutputChannelCmd_t;
 
 /** 
@@ -191,13 +193,13 @@ typedef struct
         \brief Count of all messages dropped */
     uint8              usTotalMsgDropped;
 
-    /** \totlmmnemonic \TO_NOSERFUNCCNT
-        \brief Count of messages with no serialize functions. */
-    uint8              usNoSerFuncCnt;
-
     /** \totlmmnemonic \TO_MEMPOOLHNDL
         \brief Memory pool handle for queued messages. */
     uint32             MemPoolHandle;
+
+    uint32 			   MemInUse;
+    uint32 			   PeakMemInUse;
+    uint32             MaxMem;
   
     /* TODO:  Add declarations for additional housekeeping data here */
 

@@ -73,7 +73,7 @@ typedef struct
 
 typedef struct
 {
-	TO_TlmChannels_t		Channel[TO_MAX_OUTPUT_CHANNELS];
+	TO_TlmChannels_t		Channel[TO_MAX_CHANNELS];
 } TO_AppCustomData_t;
 
 /************************************************************************
@@ -117,9 +117,42 @@ TO_AppCustomData_t TO_AppCustomData = {
 /* Custom Initialize All.  Nothing to do here.                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_CustomInitAll(void)
+int32 TO_Custom_Init(void)
 {
-	return 0;
+	int32 iStatus = 0;
+    uint32 i = 0;
+
+	iStatus = TO_Channel_OpenChannel(0, "GROUND", TO_GROUND_CONFIG_TABLENAME, TO_GROUND_CONFIG_TABLE_FILENAME, TO_GROUND_DUMP_TABLENAME);
+	if(iStatus != 0)
+	{
+		goto end_of_function;
+	}
+
+	iStatus = TO_Channel_OpenChannel(1, "ONBOARD", TO_ONBOARD_CONFIG_TABLENAME, TO_ONBOARD_CONFIG_TABLE_FILENAME, TO_ONBOARD_DUMP_TABLENAME);
+
+	for (i=0; i < TO_MAX_CHANNELS; i++)
+	{
+		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
+		{
+			if(TO_OutputChannel_Enable(i, TO_AppCustomData.Channel[i].IP, TO_AppCustomData.Channel[i].DstPort))
+			{
+				TO_AppCustomData.Channel[i].Mode = TO_CHANNEL_DISABLED;
+			}
+			else
+			{
+				CFE_EVS_SendEvent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION,
+						"UDP telemetry output enabled channel %u to %s:%u",
+						(unsigned int)i, TO_AppCustomData.Channel[i].IP,
+						(unsigned int)TO_AppCustomData.Channel[i].DstPort);
+			}
+		}
+	}
+
+    return 0;
+
+end_of_function:
+
+	return iStatus;
 }
 
 
@@ -138,7 +171,7 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
     bzero((char *) &s_addr, sizeof(s_addr));
     s_addr.sin_family      = AF_INET;
 
-    if(ChannelID < TO_MAX_OUTPUT_CHANNELS)
+    if(ChannelID < TO_MAX_CHANNELS)
     {
     	TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelID];
 
@@ -186,7 +219,7 @@ void TO_OutputChannel_CustomCleanupAll(void)
 {
 	uint32 i = 0;
 
-	for(i=0; i < TO_MAX_OUTPUT_CHANNELS; i++)
+	for(i=0; i < TO_MAX_CHANNELS; i++)
 	{
 		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
 		{
@@ -204,29 +237,9 @@ void TO_OutputChannel_CustomCleanupAll(void)
 /* fails, disable it.                                              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_CustomBuildupAll(void)
+int32 TO_OutputChannel_CustomBuildupAll(uint32 index)
 {
-    uint32 i = 0;
-
-	for (i=0; i < TO_MAX_OUTPUT_CHANNELS; i++)
-	{
-		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
-		{
-			if(TO_OutputChannel_Enable(i, TO_AppCustomData.Channel[i].IP, TO_AppCustomData.Channel[i].DstPort))
-			{
-				TO_AppCustomData.Channel[i].Mode = TO_CHANNEL_DISABLED;
-			}
-			else
-			{
-				CFE_EVS_SendEvent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION,
-						"UDP telemetry output enabled channel %u to %s:%u",
-						(unsigned int)i, TO_AppCustomData.Channel[i].IP,
-						(unsigned int)TO_AppCustomData.Channel[i].DstPort);
-			}
-		}
-	}
-
-    return 0;
+	return 0;
 }
 
 
@@ -236,7 +249,7 @@ int32 TO_OutputChannel_CustomBuildupAll(void)
 /* Custom Teardown All.  Nothing to do here.                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_CustomTeardownAll(void)
+int32 TO_OutputChannel_CustomTeardownAll(uint32 index)
 {
 	return 0;
 }
@@ -351,7 +364,7 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
 		goto end_of_function;
 	}
 
-	if(ChannelID >= TO_MAX_OUTPUT_CHANNELS)
+	if(ChannelID >= TO_MAX_CHANNELS)
 	{
 		CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
 						  "ChannelID (%u) invalid.", (unsigned int)ChannelID);
@@ -498,66 +511,75 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
     int32 msgSize = 0;
     char *buffer;
 
-	TO_TlmOutputChannelQueue_t *chQueue = &TO_AppData.Config.OutputChannel[ChannelIdx];
 	TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
 	while(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
 	{
-		iStatus =  OS_QueueGet(
-				chQueue->OSALQueueID,
-				&buffer, sizeof(buffer), &msgSize, 1000);
-		if(iStatus == OS_SUCCESS)
+		if(TO_AppData.ChannelData[ChannelIdx].State == TO_CHANNEL_OPENED)
 		{
-			CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
-
-			static struct sockaddr_in s_addr;
-		    int						  status = 0;
-		    int32	returnCode = 0;
-		    uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
-
-		    bzero((char *) &s_addr, sizeof(s_addr));
-		    s_addr.sin_family      = AF_INET;
-
-			CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-			/* Send message via UDP socket */
-			s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-			s_addr.sin_port        = htons(channel->DstPort);
-			status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
-									(struct sockaddr *) &s_addr,
-									 sizeof(s_addr));
-			if (status < 0)
+			TO_OutputQueue_t *chQueue = &TO_AppData.ChannelData[ChannelIdx].OutputQueue;
+			iStatus =  OS_QueueGet(
+					chQueue->OSALQueueID,
+					&buffer, sizeof(buffer), &msgSize, 1000);
+			if(iStatus == OS_SUCCESS)
 			{
-				if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
+				CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
+
+				static struct sockaddr_in s_addr;
+				int						  status = 0;
+				int32	returnCode = 0;
+				uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
+
+				bzero((char *) &s_addr, sizeof(s_addr));
+				s_addr.sin_family      = AF_INET;
+
+				CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
+				/* Send message via UDP socket */
+				s_addr.sin_addr.s_addr = inet_addr(channel->IP);
+				s_addr.sin_port        = htons(channel->DstPort);
+				status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
+										(struct sockaddr *) &s_addr,
+										 sizeof(s_addr));
+				if (status < 0)
 				{
-					CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-							   "L%d TO sendto errno %d.", __LINE__, errno);
-					TO_OutputChannel_Disable(ChannelIdx);
+					if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
+					{
+						CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+								   "L%d TO sendto errno %d.", __LINE__, errno);
+						TO_OutputChannel_Disable(ChannelIdx);
+					}
 				}
+				CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
+
+				iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32 *)buffer);
+				if(iStatus < 0)
+				{
+					(void) CFE_EVS_SendEvent(TO_GET_POOL_ERR_EID, CFE_EVS_ERROR,
+									 "PutPoolBuf: error=0x%08lx",
+									 iStatus);
+				}
+				else
+				{
+				    TO_AppData.HkTlm.MemInUse -= iStatus;
+					chQueue->CurrentlyQueuedCnt--;
+				}
+
 			}
-			CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
-
-			iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32 *)buffer);
-		    if(iStatus < 0)
-	    	{
-	        	(void) CFE_EVS_SendEvent(TO_GET_POOL_ERR_EID, CFE_EVS_ERROR,
-	                             "PutPoolBuf: error=0x%08lx",
-	                             iStatus);
-	    	}
-		    else
-		    {
-			    chQueue->CurrentlyQueuedCnt--;
-	    	}
-
-		}
-		else if(iStatus == OS_QUEUE_TIMEOUT)
-		{
-			/* Don't do anything.  We include a timeout so we check to see if
-			 * the parent task wants us to terminate.
-			 */
+			else if(iStatus == OS_QUEUE_TIMEOUT)
+			{
+				/* Don't do anything.  We include a timeout so we check to see if
+				 * the parent task wants us to terminate.
+				 */
+			}
+			else
+			{
+				CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
+								  "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
+			}
 		}
 		else
 		{
-			CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
-							  "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
+			exit(-2);
 		}
 	}
+	exit(-1);
 }

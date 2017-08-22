@@ -8,7 +8,7 @@
 /* Build up all the message flows                                  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_MessageFlow_BuildupAll(void)
+int32 TO_MessageFlow_Buildup(TO_ChannelData_t* channel)
 {
 	uint32 i = 0;
 	int32 iStatus = CFE_SUCCESS;
@@ -18,16 +18,16 @@ int32 TO_MessageFlow_BuildupAll(void)
      */
 	for(i = 0; i < TO_MAX_MESSAGE_FLOWS; ++i)
 	{
-		if(TO_AppData.Config.MessageFlow[i].MsgId != 0)
+		if(channel->ConfigTblPtr->MessageFlow[i].MsgId != 0)
 		{
 			/* Subscribe to message. */
-			iStatus = CFE_SB_SubscribeEx(TO_AppData.Config.MessageFlow[i].MsgId, TO_AppData.DataPipeId,
-										 CFE_SB_Default_Qos, TO_AppData.Config.MessageFlow[i].MsgLimit);
+			iStatus = CFE_SB_SubscribeEx(channel->ConfigTblPtr->MessageFlow[i].MsgId, channel->DataPipeId,
+										 CFE_SB_Default_Qos, channel->ConfigTblPtr->MessageFlow[i].MsgLimit);
 			if (iStatus != CFE_SUCCESS)
 			{
 				(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
 						"Message flow failed to subscribe to (0x%08X). (%i)",
-						TO_AppData.Config.MessageFlow[i].MsgId,
+						channel->ConfigTblPtr->MessageFlow[i].MsgId,
 						(unsigned int)iStatus);
 				goto end_of_function;
 			}
@@ -45,24 +45,24 @@ end_of_function:
 /* Teardown all the message flows                                  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_MessageFlow_TeardownAll(void)
+int32 TO_MessageFlow_TeardownAll(TO_ChannelData_t* channel)
 {
 	uint32 i = 0;
 	int32 iStatus = CFE_SUCCESS;
 
 	for(i = 0; i < TO_MAX_MESSAGE_FLOWS; ++i)
 	{
-		if(TO_AppData.Config.MessageFlow[i].MsgId != 0)
+		if(channel->ConfigTblPtr->MessageFlow[i].MsgId != 0)
 		{
 			/* Unsubscribe from message. */
 			iStatus =  CFE_SB_Unsubscribe(
-					TO_AppData.Config.MessageFlow[i].MsgId,
-					TO_AppData.DataPipeId);
+					channel->ConfigTblPtr->MessageFlow[i].MsgId,
+					channel->DataPipeId);
 			if (iStatus != CFE_SUCCESS)
 			{
 				(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
 						"Message flow failed to unsubscribe from 0x%08X. (%i)",
-						TO_AppData.Config.MessageFlow[i].MsgId,
+						channel->ConfigTblPtr->MessageFlow[i].MsgId,
 						(unsigned int)iStatus);
 				goto end_of_function;
 			}
@@ -80,9 +80,9 @@ end_of_function:
 /* Cleanup the message flows before shutdown.                      */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_MessageFlow_CleanupAll(void)
+void TO_MessageFlow_CleanupAll(TO_ChannelData_t* channel)
 {
-	TO_MessageFlow_TeardownAll();
+	TO_MessageFlow_TeardownAll(channel);
 }
 
 
@@ -92,14 +92,14 @@ void TO_MessageFlow_CleanupAll(void)
 /* Reset all runtime metrics.                                      */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_MessageFlow_ResetCountsAll(void)
+void TO_MessageFlow_ResetCountsAll(TO_ChannelData_t* channel)
 {
 	uint32 i = 0;
 
 	for(i = 0; i < TO_MAX_MESSAGE_FLOWS; ++i)
 	{
-		TO_AppData.Config.MessageFlow[i].DroppedMsgCnt = 0;
-		TO_AppData.Config.MessageFlow[i].QueuedMsgCnt = 0;
+		channel->DumpTbl.MessageFlow[i].DroppedMsgCnt = 0;
+		channel->DumpTbl.MessageFlow[i].QueuedMsgCnt = 0;
 	}
 }
 
@@ -107,79 +107,31 @@ void TO_MessageFlow_ResetCountsAll(void)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Get the next message flow object                                */
+/* Get message flow object                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-TO_TlmMessageFlow_t* TO_MessageFlow_GetNextObject(CFE_SB_MsgId_t MsgID, uint32 *Cursor)
+TO_MessageFlow_t* TO_MessageFlow_GetObject(TO_ChannelData_t* channel, CFE_SB_MsgId_t MsgID, uint32 *Index)
 {
-	TO_TlmMessageFlow_t *outMsgFlow = 0;
-
-	if(Cursor == 0)
-	{
-		outMsgFlow = 0;
-	}
-	else if(MsgID == 0)
-	{
-		outMsgFlow = 0;
-		*Cursor = -1;
-	}
-	else
-	{
-		for(; *Cursor < TO_MAX_MESSAGE_FLOWS; ++(*Cursor))
-		{
-			if(TO_AppData.Config.MessageFlow[*Cursor].MsgId == MsgID)
-			{
-				outMsgFlow = &TO_AppData.Config.MessageFlow[*Cursor];
-				/* Increment Cursor so the next call will skip the object we just
-				 * found.
-				 */
-				++(*Cursor);
-				break;
-			}
-		}
-
-		/* This must be the end of the array.  Return a -1 to let the caller
-		 * know there are no more objects to retrieve.
-		 */
-		if(outMsgFlow == 0)
-		{
-			*Cursor = -1;
-		}
-	}
-
-	return outMsgFlow;
-}
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Get a specific message flow object                              */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-TO_TlmMessageFlow_t* TO_MessageFlow_GetObject(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx)
-{
-	TO_TlmMessageFlow_t *outMsgFlow = 0;
+	TO_MessageFlow_t *outMsgFlow = 0;
 	uint32 i = 0;
 
-	if(MsgID == 0)
+	for(i = 0; i < TO_MAX_MESSAGE_FLOWS; ++i)
 	{
-		outMsgFlow = 0;
-	}
-	else
-	{
-		for(i; i < TO_MAX_MESSAGE_FLOWS; ++i)
+		if(channel->ConfigTblPtr->MessageFlow[i].MsgId == MsgID)
 		{
-			if(TO_AppData.Config.MessageFlow[i].MsgId == MsgID)
+			outMsgFlow = &channel->ConfigTblPtr->MessageFlow[i];
+			/* Increment Cursor so the next call will skip the object we just
+			 * found.
+			 */
+			if(Index != 0)
 			{
-				if(TO_AppData.Config.MessageFlow[i].PQueueID == PQueueIdx)
-				{
-					outMsgFlow = &TO_AppData.Config.MessageFlow[i];
-					break;
-				}
+				*Index = i;
 			}
+			++i;
+			break;
 		}
 	}
+
 
 	return outMsgFlow;
 }
@@ -191,11 +143,11 @@ TO_TlmMessageFlow_t* TO_MessageFlow_GetObject(CFE_SB_MsgId_t MsgID, uint16 PQueu
 /* Get the priority queue for a specific message flow              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-TO_TlmPriorityQueue_t* TO_MessageFlow_GetPQueue(TO_TlmMessageFlow_t *MsgFlow)
+TO_PriorityQueue_t* TO_MessageFlow_GetPQueue(TO_ChannelData_t* channel, TO_MessageFlow_t *MsgFlow, uint32 *Index)
 {
 	uint32 i = 0;
 	uint32 idx = 0;
-	TO_TlmPriorityQueue_t* outPQueue = 0;
+	TO_PriorityQueue_t* outPQueue = 0;
 
 	if(MsgFlow == 0)
 	{
@@ -210,7 +162,8 @@ TO_TlmPriorityQueue_t* TO_MessageFlow_GetPQueue(TO_TlmMessageFlow_t *MsgFlow)
 		goto end_of_function;
 	}
 
-	outPQueue = &TO_AppData.Config.PriorityQueue[idx];
+	*Index = idx;
+	outPQueue = &channel->ConfigTblPtr->PriorityQueue[idx];
 
 end_of_function:
     return outPQueue;
@@ -223,18 +176,38 @@ end_of_function:
 /* Add a message flow                                              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean TO_MessageFlow_Add(CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueIdx)
+boolean TO_MessageFlow_Add(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueIdx)
 {
 	uint32 i = 0;
-	TO_TlmMessageFlow_t *msgFlow = 0;
+	TO_MessageFlow_t *msgFlow = 0;
     boolean added = FALSE;
+	int32 iStatus = CFE_SUCCESS;
 
-    /* First, see if there is a flow with this message ID and priority queue. */
-    msgFlow = TO_MessageFlow_GetObject(MsgID,  PQueueIdx);
+    TO_ChannelData_t *channel;
+
+    /* First, check if the channel index is valid. */
+    if(ChannelIdx >= TO_MAX_CHANNELS)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_ERROR,
+    		"Invalid channel index.");
+    	goto end_of_function;
+    }
+    channel = &TO_AppData.ChannelData[ChannelIdx];
+
+    /* Next, see if the channel is open. */
+    if(channel->State != TO_CHANNEL_OPENED)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_ERROR,
+    		"Channel not open.");
+    	goto end_of_function;
+    }
+
+    /* Next, see if there is a flow with this message ID. */
+    msgFlow = TO_MessageFlow_GetObject(channel, MsgID, 0);
 
     if(msgFlow != 0)
     {
-    	/* A message flow with this route already exists.  Reject the request. */
+    	/* A message flow already exists.  Reject the request. */
 		(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_ERROR,
 	                      "Message flow is already defined.");
 		goto end_of_function;
@@ -246,14 +219,13 @@ boolean TO_MessageFlow_Add(CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueI
      */
 	for(i = 0; i < TO_MAX_MESSAGE_FLOWS; ++i)
 	{
-		if(TO_AppData.Config.MessageFlow[i].MsgId == 0)
+		if(channel->ConfigTblPtr->MessageFlow[i].MsgId == 0)
 		{
-			int32 iStatus = CFE_SUCCESS;
 
 			/* We found an unused entry.  Set the message flow definition
 			 * here.  First, make sure the requested priority queue is valid.
 			 */
-			if(TO_PriorityQueue_IsValid(PQueueIdx) == FALSE)
+			if(TO_PriorityQueue_IsValid(channel, PQueueIdx) == FALSE)
 			{
 				/* This is an invalid priority queue. */
 				(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_ERROR,
@@ -265,7 +237,7 @@ boolean TO_MessageFlow_Add(CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueI
 			/* Now subscribe to the message to ensure the message ID is
 			 * valid.
 			 */
-			iStatus = CFE_SB_SubscribeEx(MsgID, TO_AppData.DataPipeId,
+			iStatus = CFE_SB_SubscribeEx(MsgID, channel->DataPipeId,
 										 CFE_SB_Default_Qos, MsgLimit);
 			if (iStatus != CFE_SUCCESS)
 			{
@@ -279,11 +251,14 @@ boolean TO_MessageFlow_Add(CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueI
 			/* Now that the message was successfully subscribed to, set the
 			 * message flow definition.
 			 */
-			TO_AppData.Config.MessageFlow[i].MsgId = MsgID,
-			TO_AppData.Config.MessageFlow[i].MsgLimit = MsgLimit,
-			TO_AppData.Config.MessageFlow[i].PQueueID = PQueueIdx,
-			TO_AppData.Config.MessageFlow[i].DroppedMsgCnt = 0;
-			TO_AppData.Config.MessageFlow[i].QueuedMsgCnt = 0;
+			channel->ConfigTblPtr->MessageFlow[i].MsgId = MsgID;
+			channel->ConfigTblPtr->MessageFlow[i].MsgLimit = MsgLimit;
+			channel->ConfigTblPtr->MessageFlow[i].PQueueID = PQueueIdx;
+			channel->DumpTbl.MessageFlow[i].DroppedMsgCnt = 0;
+			channel->DumpTbl.MessageFlow[i].QueuedMsgCnt = 0;
+
+			CFE_TBL_Modified(channel->ConfigTblHdl);
+			CFE_TBL_Modified(channel->DumpTblHdl);
 
 			added = TRUE;
 		}
@@ -300,19 +275,37 @@ end_of_function:
 /* Remove a message flow                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean TO_MessageFlow_Remove(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx)
+boolean TO_MessageFlow_Remove(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID)
 {
-	uint32 i = 0;
-	TO_TlmMessageFlow_t *msgFlow = 0;
+	uint32 msgFlowIndex = 0;
+	TO_MessageFlow_t *msgFlow = 0;
     boolean removed = FALSE;
-    int32 iStatus = CFE_SUCCESS;
+	int32 iStatus = CFE_SUCCESS;
 
-    /* First, see if there is a flow with this message ID and priority queue. */
-    msgFlow = TO_MessageFlow_GetObject(MsgID, PQueueIdx);
+    TO_ChannelData_t *channel;
 
+    /* First, check if the channel index is valid. */
+    if(ChannelIdx >= TO_MAX_CHANNELS)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_REMOVE_MSG_FLOW_EID, CFE_EVS_ERROR,
+    		"Invalid channel index.");
+    	goto end_of_function;
+    }
+    channel = &TO_AppData.ChannelData[ChannelIdx];
+
+    /* Next, see if the channel is open. */
+    if(channel->State != TO_CHANNEL_OPENED)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_REMOVE_MSG_FLOW_EID, CFE_EVS_ERROR,
+    		"Channel not open.");
+    	goto end_of_function;
+    }
+
+    /* Next, see if there is a flow with this message ID */
+    msgFlow = TO_MessageFlow_GetObject(channel, MsgID, &msgFlowIndex);
     if(msgFlow == 0)
     {
-    	/* A message flow with this route does not exist.  Reject the request. */
+    	/* A message flow does not exist.  Reject the request. */
 		(void) CFE_EVS_SendEvent(TO_CMD_REMOVE_MSG_FLOW_EID, CFE_EVS_ERROR,
 	                      "Message flow is not defined.");
 		goto end_of_function;
@@ -322,7 +315,7 @@ boolean TO_MessageFlow_Remove(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx)
      * the entries. */
 	iStatus =  CFE_SB_Unsubscribe(
 			msgFlow->MsgId,
-			TO_AppData.DataPipeId);
+			channel->DataPipeId);
 	if (iStatus != CFE_SUCCESS)
 	{
 		(void) CFE_EVS_SendEvent(TO_CMD_REMOVE_MSG_FLOW_EID, CFE_EVS_ERROR,
@@ -333,12 +326,14 @@ boolean TO_MessageFlow_Remove(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx)
 	}
 
 	/* Now just clear the entries. */
-	msgFlow->MsgId = 0;
-	msgFlow->MsgLimit = 0;
-	msgFlow->PQueueID = 0;
-	msgFlow->MinSize = 0;
-	msgFlow->DroppedMsgCnt = 0;
-	msgFlow->QueuedMsgCnt = 0;
+	channel->ConfigTblPtr->MessageFlow[msgFlowIndex].MsgId = 0;
+	channel->ConfigTblPtr->MessageFlow[msgFlowIndex].MsgLimit = 0;
+	channel->ConfigTblPtr->MessageFlow[msgFlowIndex].PQueueID = 0;
+	channel->DumpTbl.MessageFlow[msgFlowIndex].DroppedMsgCnt = 0;
+	channel->DumpTbl.MessageFlow[msgFlowIndex].QueuedMsgCnt = 0;
+
+	CFE_TBL_Modified(channel->ConfigTblHdl);
+	CFE_TBL_Modified(channel->DumpTblHdl);
 
     removed = TRUE;
 
@@ -353,36 +348,54 @@ end_of_function:
 /* Query a message flow                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean TO_MessageFlow_Query(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx)
+boolean TO_MessageFlow_Query(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID)
 {
 	uint32 i = 0;
-	TO_TlmMessageFlow_t *outMsgFlow = 0;
+	TO_MessageFlow_t *outMsgFlow = 0;
     boolean found = FALSE;
+
+    TO_ChannelData_t *channel;
+
+    /* First, check if the channel index is valid. */
+    if(ChannelIdx >= TO_MAX_CHANNELS)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_ERROR,
+    		"Invalid channel index.");
+    	goto end_of_function;
+    }
+    channel = &TO_AppData.ChannelData[ChannelIdx];
+
+    /* Next, see if the channel is open. */
+    if(channel->State != TO_CHANNEL_OPENED)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_ERROR,
+    		"Channel not open.");
+    	goto end_of_function;
+    }
 
 	for(i = 0; i < TO_MAX_MESSAGE_FLOWS; ++i)
 	{
-		if(TO_AppData.Config.MessageFlow[i].MsgId == MsgID)
+		if(channel->ConfigTblPtr->MessageFlow[i].MsgId == MsgID)
 		{
-			if(TO_AppData.Config.MessageFlow[i].PQueueID == PQueueIdx)
-			{
-				(void) CFE_EVS_SendEvent(TO_MSG_FLOW_INFO_EID, CFE_EVS_INFORMATION,
-			                      "MID=0x%04x ML=%u MS=%u PQI=%u D=%u Q=%u",
-								  TO_AppData.Config.MessageFlow[i].MsgId,
-								  TO_AppData.Config.MessageFlow[i].MsgLimit,
-								  TO_AppData.Config.MessageFlow[i].MinSize,
-								  TO_AppData.Config.MessageFlow[i].PQueueID,
-								  TO_AppData.Config.MessageFlow[i].DroppedMsgCnt,
-								  TO_AppData.Config.MessageFlow[i].QueuedMsgCnt);
-				found = TRUE;
-			}
+			(void) CFE_EVS_SendEvent(TO_MSG_FLOW_INFO_EID, CFE_EVS_INFORMATION,
+							  "MID=0x%04x ML=%u PQI=%u D=%u Q=%u",
+							  channel->ConfigTblPtr->MessageFlow[i].MsgId,
+							  channel->ConfigTblPtr->MessageFlow[i].MsgLimit,
+							  channel->ConfigTblPtr->MessageFlow[i].PQueueID,
+							  channel->DumpTbl.MessageFlow[i].DroppedMsgCnt,
+							  channel->DumpTbl.MessageFlow[i].QueuedMsgCnt);
+			found = TRUE;
+			break;
 		}
 	}
 
 	if(found != TRUE)
 	{
 		(void) CFE_EVS_SendEvent(TO_MSG_FLOW_INFO_EID, CFE_EVS_ERROR,
-		                      "MsgID=0x%04x PQueueIdx=%u not found", MsgID, PQueueIdx);
+		                      "MsgID=0x%04x not found", MsgID);
 	}
+
+end_of_function:
 
 	return found;
 }

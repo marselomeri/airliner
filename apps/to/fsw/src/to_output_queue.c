@@ -1,5 +1,5 @@
 #include "to_app.h"
-#include "to_output_channel.h"
+#include "to_output_queue.h"
 #include "to_custom.h"
 
 
@@ -10,9 +10,9 @@
 /* but flows down to the custom function.                          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_InitAll(void)
+int32 TO_OutputQueue_Init(void)
 {
-	return TO_OutputChannel_CustomInitAll();
+	return 0; //TO_OutputQueue_CustomInit();
 }
 
 
@@ -23,10 +23,10 @@ int32 TO_OutputChannel_InitAll(void)
 /* nothing flow down to the custom function.                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_OutputChannel_CleanupAll(void)
+void TO_OutputQueue_Cleanup(void)
 {
-	TO_OutputChannel_TeardownAll();
-	TO_OutputChannel_CustomCleanupAll();
+	//TO_OutputQueue_Teardown();
+	//TO_OutputQueue_CustomCleanup();
 }
 
 
@@ -36,39 +36,30 @@ void TO_OutputChannel_CleanupAll(void)
 /* Buildup all output channels after a reconfiguration             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_BuildupAll(void)
+int32 TO_OutputQueue_Buildup(TO_ChannelData_t* channel)
 {
-	uint32 i = 0;
 	int32 iStatus = 0;
 
-   /*
+	/*
 	 * Now that we have the new table, create all the new resources we need
 	 * starting with queues for the channels and priority queues.
 	 */
-	for(i=0; i < TO_MAX_OUTPUT_CHANNELS; ++i)
+	char QueueName[OS_MAX_API_NAME];
+	snprintf(QueueName, OS_MAX_API_NAME, "TO_%s_OUT", channel->ChannelName);
+	iStatus = OS_QueueCreate(
+			&channel->OutputQueue.OSALQueueID,
+			QueueName,
+			TO_OUTPUT_QUEUE_DEPTH,
+			sizeof(CFE_SB_Msg_t*),
+			0);
+	if (iStatus != OS_SUCCESS)
 	{
-		if(TO_AppData.Config.OutputChannel[i].State != TO_OUT_CHANNEL_UNUSED)
-		{
-			char QueueName[OS_MAX_API_NAME];
-			snprintf(QueueName, OS_MAX_API_NAME, "TO_CH_%u", (unsigned int)i);
-			iStatus = OS_QueueCreate(
-					&TO_AppData.Config.OutputChannel[i].OSALQueueID,
-					QueueName,
-					TO_AppData.Config.OutputChannel[i].MsgLimit,
-					sizeof(CFE_SB_Msg_t*),
-					0);
-			if (iStatus != OS_SUCCESS)
-			{
-				(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
-										 "Failed to create output channel queue. (%i)",
-										 (unsigned int)iStatus);
-				goto end_of_function;
+		(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+								 "Failed to create '%s' output channel queue. err=%i",
+								 channel->ChannelName, (unsigned int)iStatus);
+		goto end_of_function;
 
-			}
-		}
 	}
-
-    TO_OutputChannel_CustomBuildupAll();
 
 end_of_function:
 	return iStatus;
@@ -82,60 +73,54 @@ end_of_function:
 /* reconfiguration.                                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_TeardownAll(void)
+int32 TO_OutputQueue_Teardown(TO_ChannelData_t* channel)
 {
-	uint32 i = 0;
 	int32 iStatus = 0;
 
-	TO_OutputChannel_CustomTeardownAll();
+	//TO_OutputQueue_CustomTeardown();
 
-	for(i=0; i < TO_MAX_OUTPUT_CHANNELS; ++i)
+	if(channel->OutputQueue.OSALQueueID !=0)
 	{
-		if(TO_AppData.Config.OutputChannel[i].State != TO_PQUEUE_UNUSED)
+		void *buffer;
+		uint32 bufferSize = 0;
+		while(iStatus == OS_SUCCESS)
 		{
-			if(TO_AppData.Config.OutputChannel[i].OSALQueueID !=0)
+			iStatus =  OS_QueueGet(
+					channel->OutputQueue.OSALQueueID,
+					&buffer, sizeof(buffer), &bufferSize, OS_CHECK);
+			if(iStatus == OS_SUCCESS)
 			{
-				void *buffer;
-				uint32 bufferSize = 0;
-				while(iStatus == OS_SUCCESS)
-				{
-					iStatus =  OS_QueueGet(
-							TO_AppData.Config.OutputChannel[i].OSALQueueID,
-							&buffer, sizeof(buffer), &bufferSize, OS_CHECK);
-					if(iStatus == OS_SUCCESS)
-					{
-						iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32*)buffer);
-						if(iStatus < 0)
-						{
-							(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
-									"Failed to return message back to memory pool on tbl load. (%i)",
-									(unsigned int)iStatus);
-							goto end_of_function;
-						}
-					}
-				}
-				if(iStatus != OS_QUEUE_EMPTY)
+				iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32*)buffer);
+				if(iStatus < 0)
 				{
 					(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
-							"Message flow failed to pop all messages from queue %u. (%i)",
-							(unsigned int)i,
+							"Failed to return message back to memory pool on tbl load. (%i)",
 							(unsigned int)iStatus);
 					goto end_of_function;
 				}
-				else
-				{
-					/* Queue is empty.  Delete the queue. */
-					iStatus = OS_QueueDelete(
-							TO_AppData.Config.OutputChannel[i].OSALQueueID);
-					if(iStatus != OS_SUCCESS)
-					{
-						(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
-								"Failed to delete priority queue %u. (%i)",
-								(unsigned int)i,
-								(unsigned int)iStatus);
-						goto end_of_function;
-					}
-				}
+			    TO_AppData.HkTlm.MemInUse -= iStatus;
+			}
+		}
+		if(iStatus != OS_QUEUE_EMPTY)
+		{
+			(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+					"Failed to pop all messages from channel '%s' output queue. (%i)",
+					channel->ChannelName,
+					(unsigned int)iStatus);
+			goto end_of_function;
+		}
+		else
+		{
+			/* Queue is empty.  Delete the queue. */
+			iStatus = OS_QueueDelete(
+					channel->OutputQueue.OSALQueueID);
+			if(iStatus != OS_SUCCESS)
+			{
+				(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+						"Failed to delete channel '%s' output queue. (%i)",
+						channel->ChannelName,
+						(unsigned int)iStatus);
+				goto end_of_function;
 			}
 		}
 	}
@@ -151,15 +136,10 @@ end_of_function:
 /* Reset all dynamic metrics.                                      */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_OutputChannel_ResetCountsAll(void)
+void TO_OutputQueue_ResetCounts(TO_ChannelData_t* channel)
 {
-	uint32 i = 0;
-
-	for(i=0; i < TO_MAX_OUTPUT_CHANNELS; ++i)
-	{
-		TO_AppData.Config.OutputChannel[i].SentCount = 0;
-		TO_AppData.Config.OutputChannel[i].HighwaterMark = 0;
-	}
+	channel->OutputQueue.SentCount = 0;
+	channel->OutputQueue.HighwaterMark = 0;
 }
 
 
@@ -169,17 +149,11 @@ void TO_OutputChannel_ResetCountsAll(void)
 /* Push a message on the output channel queue.                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_QueueMsg(CFE_SB_MsgPtr_t MsgPtr, TO_TlmOutputChannelQueue_t* OutChannel)
+int32 TO_OutputQueue_QueueMsg(TO_ChannelData_t* channel, CFE_SB_MsgPtr_t MsgPtr)
 {
 	int32 iStatus = 0;
 
-	if(OutChannel == 0)
-	{
-		iStatus = -2;
-		goto end_of_function;
-	}
-
-    iStatus = OS_QueuePut(OutChannel->OSALQueueID, &MsgPtr, sizeof(MsgPtr), 0);
+    iStatus = OS_QueuePut(channel->OutputQueue.OSALQueueID, &MsgPtr, sizeof(MsgPtr), 0);
     if(iStatus == OS_QUEUE_FULL)
     {
     	/* This is not supposed to happen since we only queue when the channel
@@ -195,6 +169,7 @@ int32 TO_OutputChannel_QueueMsg(CFE_SB_MsgPtr_t MsgPtr, TO_TlmOutputChannelQueue
                              (int)iStatus);
         	goto end_of_function;
     	}
+	    TO_AppData.HkTlm.MemInUse -= iStatus;
     }
     else if(iStatus != CFE_SUCCESS)
     {
@@ -215,28 +190,40 @@ end_of_function:
 /* Query an output channel.                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean TO_OutputChannel_Query(uint16 OutputChannelIdx)
+boolean TO_OutputChannel_Query(uint16 ChannelIdx)
 {
 	boolean rc = FALSE;
 
-	if(OutputChannelIdx >= TO_MAX_OUTPUT_CHANNELS)
-	{
-		(void) CFE_EVS_SendEvent(TO_OUT_CH_INFO_EID, CFE_EVS_ERROR,
-		                      "Output Channel %u out of bounds", OutputChannelIdx);
-	}
-	else
-	{
-		TO_TlmOutputChannelQueue_t *channel = (TO_TlmOutputChannelQueue_t*)&TO_AppData.Config.OutputChannel[OutputChannelIdx];
-		(void) CFE_EVS_SendEvent(TO_OUT_CH_INFO_EID, CFE_EVS_INFORMATION,
-							  "OCI=%u S=%u ML=%u SC=%u CQC=%u HWM=%u",
-							  OutputChannelIdx,
+    TO_ChannelData_t *channel;
+
+    /* First, check if the channel index is valid. */
+    if(ChannelIdx >= TO_MAX_CHANNELS)
+    {
+    	(void) CFE_EVS_SendEvent(TO_OUT_CH_INFO_EID, CFE_EVS_ERROR,
+    		"Invalid channel index.");
+    	goto end_of_function;
+    }
+    channel = &TO_AppData.ChannelData[ChannelIdx];
+
+    /* Next, see if the channel is open. */
+    if(channel->State != TO_CHANNEL_OPENED)
+    {
+    	(void) CFE_EVS_SendEvent(TO_OUT_CH_INFO_EID, CFE_EVS_ERROR,
+    		"Channel not open.");
+    	goto end_of_function;
+    }
+
+	(void) CFE_EVS_SendEvent(TO_OUT_CH_INFO_EID, CFE_EVS_INFORMATION,
+							  "S=%u ML=%u SC=%u CQC=%u HWM=%u",
 							  channel->State,
-							  channel->MsgLimit,
-							  channel->SentCount,
-							  channel->CurrentlyQueuedCnt,
-							  channel->HighwaterMark);
-		rc = TRUE;
-	}
+							  TO_OUTPUT_QUEUE_DEPTH,
+							  channel->OutputQueue.SentCount,
+							  channel->OutputQueue.CurrentlyQueuedCnt,
+							  channel->OutputQueue.HighwaterMark);
+	rc = TRUE;
+
+end_of_function:
 
 	return rc;
+
 }

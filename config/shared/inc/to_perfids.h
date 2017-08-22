@@ -1,5 +1,5 @@
-#ifndef _TO_PERFIDS_H_
-#define _TO_PERFIDS_H_
+#ifndef TO_PERFIDS_H
+#define TO_PERFIDS_H
 
 #include "perf_ids.h"
 

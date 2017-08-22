@@ -14,7 +14,7 @@
 #include "to_platform_cfg.h"
 #include "to_message_flow.h"
 #include "to_priority_queue.h"
-#include "to_output_channel.h"
+#include "to_output_queue.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,16 +28,6 @@ extern "C" {
  */
 #define TO_CONFIG_TABLE_MAX_ENTRIES  (1)
 
-/**
- * \brief Defines the table identification name used for table registration.
- */
-#define TO_CONFIG_TABLENAME          ("CONFIG_TBL")
-
-/**
- * \brief Defines the table file name used for table registration.
- */
-#define TO_CDS_TABLENAME  ("to_CdsTbl")
-
 
 /************************************************************************
 ** Local Structure Declarations
@@ -50,18 +40,18 @@ typedef struct
 {
 	uint8	TableID;
 
-	TO_TlmMessageFlow_t	       MessageFlow[TO_MAX_MESSAGE_FLOWS];
-	TO_TlmPriorityQueue_t      PriorityQueue[TO_MAX_PRIORITY_QUEUES];
-	TO_TlmOutputChannelQueue_t OutputChannel[TO_MAX_OUTPUT_CHANNELS];
-} TO_ConfigTbl_t;
+	TO_MessageFlow_t	    MessageFlow[TO_MAX_MESSAGE_FLOWS];
+	TO_PriorityQueue_t      PriorityQueue[TO_MAX_PRIORITY_QUEUES];
+} TO_ChannelTbl_t;
 
-/** \brief Definition for Critical Data Storage (CDS) table entry */
 typedef struct
 {
-    int32  iParam;
+	uint8	TableID;
 
-    /* TODO:  Add type declaration for CDS data here. */
-} TO_CdsTbl_t;
+	TO_MessageFlowMetrics_t	  MessageFlow[TO_MAX_MESSAGE_FLOWS];
+	TO_PriorityQueueMetrics_t PriorityQueue[TO_MAX_PRIORITY_QUEUES];
+	TO_OutputQueue_t    	  OutputQueue;
+} TO_ChannelDumpTbl_t;
 
 /************************************************************************
 ** External Global Variables
