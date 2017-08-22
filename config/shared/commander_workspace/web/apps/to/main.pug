@@ -35,6 +35,18 @@ block main
                       th No Serialization Func Count
                       td
                         span(data-sage={tlm: [{name:'/CFS/TO/NoSerFuncCount'}]}) ---
+                    tr
+                      th Memory In Use
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/MemInUse'}]}) ---
+                    tr
+                      th Peak Memory In Use
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/PeakMemInUse'}]}) ---
+                    tr
+                      th Max Allocatable Memory
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/MaxMem'}]}) ---
               footer
                 .btn-group.btn-group-sm.btn-space
                   button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/NoOp'}}) No-Op

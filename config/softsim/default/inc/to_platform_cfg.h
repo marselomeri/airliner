@@ -102,9 +102,9 @@ extern "C" {
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define TO_GROUND_CONFIG_TABLENAME          ("GROUND_CFG")
+#define TO_GROUND_CONFIG_TABLENAME        ("GROUND_CFG")
 #define TO_GROUND_DUMP_TABLENAME          ("GROUND_DMP")
-#define TO_ONBOARD_CONFIG_TABLENAME         ("ONBOARD_CFG")
+#define TO_ONBOARD_CONFIG_TABLENAME       ("ONBOARD_CFG")
 #define TO_ONBOARD_DUMP_TABLENAME         ("ONBOARD_DMP")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
