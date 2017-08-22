@@ -8,6 +8,7 @@
  */
 
 #include "to_custom_udp.h"
+#include "to_app_stubs.h"
 
 
 extern TO_AppCustomData_t TO_AppCustomData;

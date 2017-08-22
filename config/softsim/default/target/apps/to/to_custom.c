@@ -58,40 +58,40 @@ TO_AppCustomData_t TO_AppCustomData = {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_Custom_Init(void)
 {
-	int32 iStatus = 0;
+    int32 iStatus = 0;
     uint32 i = 0;
 
-	iStatus = TO_Channel_OpenChannel(0, "GROUND", TO_GROUND_CONFIG_TABLENAME, TO_GROUND_CONFIG_TABLE_FILENAME, TO_GROUND_DUMP_TABLENAME);
-	if(iStatus != 0)
-	{
-		goto end_of_function;
-	}
+    iStatus = TO_Channel_OpenChannel(0, "GROUND", TO_GROUND_CONFIG_TABLENAME, TO_GROUND_CONFIG_TABLE_FILENAME, TO_GROUND_DUMP_TABLENAME);
+    if(iStatus != 0)
+    {
+        goto end_of_function;
+    }
 
-	iStatus = TO_Channel_OpenChannel(1, "ONBOARD", TO_ONBOARD_CONFIG_TABLENAME, TO_ONBOARD_CONFIG_TABLE_FILENAME, TO_ONBOARD_DUMP_TABLENAME);
+    iStatus = TO_Channel_OpenChannel(1, "ONBOARD", TO_ONBOARD_CONFIG_TABLENAME, TO_ONBOARD_CONFIG_TABLE_FILENAME, TO_ONBOARD_DUMP_TABLENAME);
 
-	for (i=0; i < TO_MAX_CHANNELS; i++)
-	{
-		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
-		{
-			if(TO_OutputChannel_Enable(i, TO_AppCustomData.Channel[i].IP, TO_AppCustomData.Channel[i].DstPort))
-			{
-				TO_AppCustomData.Channel[i].Mode = TO_CHANNEL_DISABLED;
-			}
-			else
-			{
-				CFE_EVS_SendEvent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION,
-						"UDP telemetry output enabled channel %u to %s:%u",
-						(unsigned int)i, TO_AppCustomData.Channel[i].IP,
-						(unsigned int)TO_AppCustomData.Channel[i].DstPort);
-			}
-		}
-	}
+    for (i=0; i < TO_MAX_CHANNELS; i++)
+    {
+        if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
+        {
+            if(TO_OutputChannel_Enable(i, TO_AppCustomData.Channel[i].IP, TO_AppCustomData.Channel[i].DstPort))
+            {
+                TO_AppCustomData.Channel[i].Mode = TO_CHANNEL_DISABLED;
+            }
+            else
+            {
+                CFE_EVS_SendEvent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION,
+                        "UDP telemetry output enabled channel %u to %s:%u",
+                        (unsigned int)i, TO_AppCustomData.Channel[i].IP,
+                        (unsigned int)TO_AppCustomData.Channel[i].DstPort);
+            }
+        }
+    }
 
     return 0;
 
 end_of_function:
 
-	return iStatus;
+    return iStatus;
 }
 
 
@@ -190,7 +190,7 @@ int32 TO_OutputChannel_CustomBuildupAll(uint32 index)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_CustomTeardownAll(uint32 index)
 {
-	return 0;
+    return 0;
 }
 
 

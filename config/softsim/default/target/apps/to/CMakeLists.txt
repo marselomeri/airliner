@@ -31,6 +31,8 @@ add_airliner_app_unit_test(to-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_custom_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_app_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_app_stubs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_platform_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/to_platform_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/to_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/to_custom_udp.h
 
@@ -38,4 +40,9 @@ add_airliner_app_unit_test(to-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/
         ${PROJECT_SOURCE_DIR}/apps/to/fsw/src
+        
+    WRAPPERS
+        socket
+        bind
+        sendto
 )
