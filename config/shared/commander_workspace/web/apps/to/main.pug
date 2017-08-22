@@ -32,10 +32,6 @@ block main
                       td
                         span(data-sage={tlm: [{name:'/CFS/TO/TotalMsgsDropped'}]}) ---
                     tr
-                      th No Serialization Func Count
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/TO/NoSerFuncCount'}]}) ---
-                    tr
                       th Memory In Use
                       td
                         span(data-sage={tlm: [{name:'/CFS/TO/MemInUse'}]}) ---
@@ -47,6 +43,26 @@ block main
                       th Max Allocatable Memory
                       td
                         span(data-sage={tlm: [{name:'/CFS/TO/MaxMem'}]}) ---
+                    tr
+                      th Output Queue 0 Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/OutChannel0Queud'}]}) ---
+                    tr
+                      th Output Queue 1 Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/OutChannel1Queud'}]}) ---
+                    tr
+                      th Output Queue 2 Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/OutChannel2Queud'}]}) ---
+                    tr
+                      th Output Queue 3 Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/OutChannel3Queud'}]}) ---
+                    tr
+                      th Output Queue 4 Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/OutChannel4Queud'}]}) ---
               footer
                 .btn-group.btn-group-sm.btn-space
                   button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/NoOp'}}) No-Op
