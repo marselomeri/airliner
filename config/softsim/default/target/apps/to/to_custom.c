@@ -195,7 +195,7 @@ int32 TO_OutputChannel_CustomBuildupAll(uint32 index)
 /* Custom Teardown All.  Nothing to do here.                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_CustomTeardownAll(uint32 index)
+int32 TO_OutputChannel_CustomTeardown(uint32 index)
 {
     return 0;
 }
@@ -217,6 +217,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
     	uint16 inSize = CFE_SB_GetTotalMsgLength(MsgPtr);
         uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
 
+    	OS_MutSemTake(TO_AppData.MutexID);
         switch (uiCmdCode)
         {
             case TO_ENABLE_CHANNEL_CC:
@@ -276,6 +277,7 @@ void TO_OutputChannel_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                                   "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
                 break;
         }
+    	OS_MutSemGive(TO_AppData.MutexID);
     }
 }
 
@@ -505,9 +507,13 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 				}
 				else
 				{
-					TO_Channel_LockByIndex(ChannelIdx);
+                	OS_MutSemTake(TO_AppData.MutexID);
 				    TO_AppData.HkTlm.MemInUse -= iStatus;
+                	OS_MutSemGive(TO_AppData.MutexID);
+
+					TO_Channel_LockByIndex(ChannelIdx);
 					chQueue->CurrentlyQueuedCnt--;
+					chQueue->SentCount++;
 					TO_Channel_UnlockByIndex(ChannelIdx);
 				}
 
