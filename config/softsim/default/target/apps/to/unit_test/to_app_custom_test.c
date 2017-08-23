@@ -22,7 +22,7 @@
  * Tests for TO_Custom_Init()
  **************************************************************************/
 /**
- * Test TO_Custom_Init() fail TO_Channel_OpenChannel
+ * Test TO_Custom_Init() fail TO_Channel_OpenChannel()
  */
 void TO_Custom_Init_OpenChannelFail(void)
 {
@@ -36,7 +36,84 @@ void TO_Custom_Init_OpenChannelFail(void)
     
     /* Verify results */
     UtAssert_True (result == expected, 
-                "TO_Custom_Init() did not fail");
+                "TO_Custom_Init() did not return an expected value");
+}
+
+
+/**
+ * Test TO_Custom_Init() fail TO_OutputChannel_Enable()
+ */
+void TO_Custom_Init_EnableChannelFail(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint8 ChannelID = 0;
+    
+    /* Set channel 0 to enabled */
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+    
+    /* Set socket call in TO_OutputChannel_Enable to fail */
+    TO_Platform_Stubs_Returns.TO_Wrap_Socket_Return = -1;
+    
+    /* Execute the function being tested */
+    result = TO_Custom_Init();
+    
+    /* Verify results */
+    UtAssert_True (result == expected, 
+                "TO_Custom_Init() did not return an expected value");
+    UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_DISABLED, 
+                         "TO_Custom_Init() did not set correct mode");
+}
+
+
+/**
+ * Test TO_Custom_Init() nothing enabled
+ */
+void TO_Custom_Init_NothingEnabled(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+
+    /* Execute the function being tested */
+    result = TO_Custom_Init();
+    
+    /* Verify results */
+    UtAssert_True (result == expected, 
+                "TO_Custom_Init() did not return an expected value");
+}
+
+
+/**
+ * Test TO_Custom_Init() nominal
+ */
+void TO_Custom_Init_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint8 ChannelID = 0;
+    uint16 testPort = 5000;
+    char *testIP = "test";
+    
+    char returnString[128];
+    snprintf(returnString, 128, "UDP telemetry output enabled channel %u to %s:%u", 
+            ChannelID, testIP, testPort);
+    
+    /* Set channel 0 to enabled */
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+    /* Set values for IP and port to help verify the raised event */
+    strncpy(TO_AppCustomData.Channel[ChannelID].IP, testIP, INET_ADDRSTRLEN);
+    TO_AppCustomData.Channel[ChannelID].DstPort = testPort;
+    
+    /* Execute the function being tested */
+    result = TO_Custom_Init();
+    
+    /* Verify results */
+    UtAssert_True (result == expected, 
+                "TO_Custom_Init() did not return an expected value");
+    UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED, 
+                         "TO_Custom_Init() did not set correct mode");
+    UtAssert_EventSent(TO_TLMOUTENA_INF_EID, CFE_EVS_INFORMATION, returnString, 
+                "TO_Custom_Init() failed to raise an event");
 }
 
 
@@ -231,13 +308,59 @@ void Test_TO_OutputChannel_Enable_CreateChildTaskFail(void)
 }
 
 
+/**
+ * Test TO_OutputChannel_Enable() nominal
+ */
+void Test_TO_OutputChannel_Enable_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = CFE_SUCCESS;
+    uint8 ChannelID = 0;
+    /* Set test destination address */
+    char *DestinationAddress = "test";
+    uint16 DestinationPort = 0;
+    
+    /* Set create child task to return success */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_CREATECHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set socket call to pass */
+    TO_Platform_Stubs_Returns.TO_Wrap_Socket_Return = 1;
+    
+    /* Execute the function being tested */
+    result = TO_OutputChannel_Enable(ChannelID, DestinationAddress, DestinationPort);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==0,"Event Count = 0");
+    UtAssert_True (result == expected, 
+                "TO_OutputChannel_Enable() did not return the correct value");
+    UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED, 
+                         "TO_OutputChannel_Enable() did not set correct mode");
+}
+
+
 /**************************************************************************
  * Tests for TO_OutputChannel_Send()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_Send()
+ * Test TO_OutputChannel_Send() invalid channel id
  */
- 
+void Test_TO_OutputChannel_Send_InvalidID(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint8 ChannelID = (TO_MAX_CHANNELS);
+    char *testBuffer;
+    
+    /* Execute the function being tested */
+    result = TO_OutputChannel_Send(ChannelID, testBuffer, sizeof(testBuffer));
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==0,"Event Count = 0");
+    UtAssert_True (result == expected, 
+                "TO_OutputChannel_Enable() did not return the correct value");
+}
+
+
  
  /**************************************************************************
  * Tests for TO_OutputChannel_ChannelHandler()
@@ -306,6 +429,15 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_Custom_Init_OpenChannelFail, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_Custom_Init_OpenChannelFail");
+    UtTest_Add(TO_Custom_Init_EnableChannelFail, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_Custom_Init_EnableChannelFail");               
+    UtTest_Add(TO_Custom_Init_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_Custom_Init_Nominal"); 
+    UtTest_Add(TO_Custom_Init_NothingEnabled, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_Custom_Init_NothingEnabled"); 
     UtTest_Add(Test_TO_OutputChannel_CustomBuildupAll_Nominal, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "Test_TO_OutputChannel_CustomBuildupAll_Nominal");
@@ -324,6 +456,12 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(Test_TO_OutputChannel_Enable_CreateChildTaskFail, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "Test_TO_OutputChannel_Enable_CreateChildTaskFail");
+    UtTest_Add(Test_TO_OutputChannel_Enable_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "Test_TO_OutputChannel_Enable_Nominal");
+    UtTest_Add(Test_TO_OutputChannel_Send_InvalidID, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "Test_TO_OutputChannel_Send_InvalidID");
 
 
     UtTest_Add(Test_TO_OutputChannel_CustomTeardownAll_Nominal, 

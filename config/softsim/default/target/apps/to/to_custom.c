@@ -103,19 +103,19 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
-	static struct sockaddr_in s_addr;
-    int						  status = 0;
-    int32	returnCode = 0;
+    static struct sockaddr_in s_addr;
+    int                       status = 0;
+    int32                     returnCode = 0;
 
     bzero((char *) &s_addr, sizeof(s_addr));
     s_addr.sin_family      = AF_INET;
 
     if(ChannelID < TO_MAX_CHANNELS)
     {
-    	TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelID];
+        TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelID];
 
-    	if(channel->Mode == TO_CHANNEL_ENABLED)
-    	{
+        if(channel->Mode == TO_CHANNEL_ENABLED)
+        {
 			CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
 			/* Send message via UDP socket */
 			s_addr.sin_addr.s_addr = inet_addr(channel->IP);
@@ -283,86 +283,86 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
 {
     int32 returnCode = 0;
     uint32 i = 0;
-	struct sockaddr_in servaddr;
-	int status;
-	int reuseaddr=1;
+    struct sockaddr_in servaddr;
+    int status;
+    int reuseaddr=1;
 
-	//if(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED)
-	//{
-	//	CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
-	//					  "UDP telemetry for channel %u already enabled.", (unsigned int)i);
-	//	returnCode = -1;
-	//	goto end_of_function;
-	//}
+    //if(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_ENABLED)
+    //{
+    //  CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
+    //                "UDP telemetry for channel %u already enabled.", (unsigned int)i);
+    //  returnCode = -1;
+    //  goto end_of_function;
+    //}
 
-	if(DestinationAddress == 0)
-	{
-		CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
-						  "Destination address for channel %u is null.", (unsigned int)i);
-		returnCode = -1;
-		goto end_of_function;
-	}
+    if(DestinationAddress == 0)
+    {
+        CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
+                "Destination address for channel %u is null.", (unsigned int)i);
+        returnCode = -1;
+        goto end_of_function;
+    }
 
-	if(ChannelID >= TO_MAX_CHANNELS)
-	{
-		CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
-						  "ChannelID (%u) invalid.", (unsigned int)ChannelID);
-		returnCode = -1;
-		goto end_of_function;
-	}
+    if(ChannelID >= TO_MAX_CHANNELS)
+    {
+        CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
+                "ChannelID (%u) invalid.", (unsigned int)ChannelID);
+        returnCode = -1;
+        goto end_of_function;
+    }
 
-	if((TO_AppCustomData.Channel[ChannelID].Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
-	{
-		TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_DISABLED;
-		CFE_EVS_SendEvent(TO_TLMOUTSOCKET_ERR_EID, CFE_EVS_ERROR,
-				   "TLM socket errno: %i on channel %u", errno, (unsigned int)ChannelID);
-		returnCode = -1;
-		goto end_of_function;
-	}
+    if((TO_AppCustomData.Channel[ChannelID].Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+    {
+        TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_DISABLED;
+        CFE_EVS_SendEvent(TO_TLMOUTSOCKET_ERR_EID, CFE_EVS_ERROR,
+                "TLM socket errno: %i on channel %u", errno, (unsigned int)ChannelID);
+        returnCode = -1;
+        goto end_of_function;
+    }
 
-	/* Set the Reuse Address flag.  If we don't set this flag, the socket will
-	 * lock the port on termination and the kernel won't unlock it until it
-	 * times out after a minute or so.
-	 */
-	setsockopt(TO_AppCustomData.Channel[i].Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+    /* Set the Reuse Address flag.  If we don't set this flag, the socket will
+     * lock the port on termination and the kernel won't unlock it until it
+     * times out after a minute or so.
+     */
+    setsockopt(TO_AppCustomData.Channel[i].Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
-	memcpy(TO_AppCustomData.Channel[ChannelID].IP, DestinationAddress, sizeof(TO_AppCustomData.Channel[ChannelID].IP));
-	TO_AppCustomData.Channel[ChannelID].DstPort = DestinationPort;
+    memcpy(TO_AppCustomData.Channel[ChannelID].IP, DestinationAddress, sizeof(TO_AppCustomData.Channel[ChannelID].IP));
+    TO_AppCustomData.Channel[ChannelID].DstPort = DestinationPort;
 
-	/* Set the input arguments to the socket bind.
-	 */
-	bzero(&servaddr,sizeof(servaddr));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servaddr.sin_port=0;
-	status = bind(TO_AppCustomData.Channel[ChannelID].Socket,
-			(struct sockaddr *)&servaddr,sizeof(servaddr));
-	if(status < 0)
-	{
-		CFE_EVS_SendEvent(TO_TLMOUTSOCKET_ERR_EID, CFE_EVS_ERROR,
-				   "TLM bind errno: %i on channel %u", errno, (unsigned int)i);
-		TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_DISABLED;
-		returnCode = -1;
-		goto end_of_function;
-	}
+    /* Set the input arguments to the socket bind.
+     */
+    bzero(&servaddr,sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port=0;
+    status = bind(TO_AppCustomData.Channel[ChannelID].Socket,
+            (struct sockaddr *)&servaddr,sizeof(servaddr));
+    if(status < 0)
+    {
+        CFE_EVS_SendEvent(TO_TLMOUTSOCKET_ERR_EID, CFE_EVS_ERROR,
+                "TLM bind errno: %i on channel %u", errno, (unsigned int)i);
+        TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_DISABLED;
+        returnCode = -1;
+        goto end_of_function;
+    }
 
-	/* Enable the channel for transmission. */
-	TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+    /* Enable the channel for transmission. */
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
 
-	/* Create the child listener task. */
-	char TaskName[OS_MAX_API_NAME];
-	snprintf(TaskName, OS_MAX_API_NAME, "TO_OUTCH_%u_CUSTOM", ChannelID);
-	returnCode = CFE_ES_CreateChildTask(
-			&TO_AppCustomData.Channel[ChannelID].ChildTaskID,
-	        (const char *)TaskName,
-			TO_AppCustomData.Channel[ChannelID].ListenerTask,
-			0,
-			CFE_ES_DEFAULT_STACK_SIZE,
-			TO_AppCustomData.Channel[ChannelID].Priority,
-			0);
+    /* Create the child listener task. */
+    char TaskName[OS_MAX_API_NAME];
+    snprintf(TaskName, OS_MAX_API_NAME, "TO_OUTCH_%u_CUSTOM", ChannelID);
+    returnCode = CFE_ES_CreateChildTask(
+            &TO_AppCustomData.Channel[ChannelID].ChildTaskID,
+            (const char *)TaskName,
+            TO_AppCustomData.Channel[ChannelID].ListenerTask,
+            0,
+            CFE_ES_DEFAULT_STACK_SIZE,
+            TO_AppCustomData.Channel[ChannelID].Priority,
+            0);
 
 end_of_function:
-	return returnCode;
+    return returnCode;
 }
 
 
