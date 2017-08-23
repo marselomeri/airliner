@@ -468,69 +468,69 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             iStatus =  OS_QueueGet(
                     chQueue->OSALQueueID,
                     &buffer, sizeof(buffer), &msgSize, 1000);
-			if(iStatus == OS_SUCCESS)
-			{
-				CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
+            if(iStatus == OS_SUCCESS)
+            {
+                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
 
-				static struct sockaddr_in s_addr;
-				int						  status = 0;
-				int32	returnCode = 0;
-				uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
+                static struct sockaddr_in s_addr;
+                int                       status = 0;
+                int32                     returnCode = 0;
+                uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
 
-				bzero((char *) &s_addr, sizeof(s_addr));
-				s_addr.sin_family      = AF_INET;
+                bzero((char *) &s_addr, sizeof(s_addr));
+                s_addr.sin_family      = AF_INET;
 
-				CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-				/* Send message via UDP socket */
-				s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-				s_addr.sin_port        = htons(channel->DstPort);
-				status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
-										(struct sockaddr *) &s_addr,
-										 sizeof(s_addr));
-				if (status < 0)
-				{
-					if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
-					{
-						CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-								   "L%d TO sendto errno %d.", __LINE__, errno);
-						TO_OutputChannel_Disable(ChannelIdx);
-					}
-				}
-				CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
+                CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
+                /* Send message via UDP socket */
+                s_addr.sin_addr.s_addr = inet_addr(channel->IP);
+                s_addr.sin_port        = htons(channel->DstPort);
+                status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
+                                        (struct sockaddr *) &s_addr,
+                                         sizeof(s_addr));
+                if (status < 0)
+                {
+                    if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
+                    {
+                        CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+                                "L%d TO sendto errno %d.", __LINE__, errno);
+                        TO_OutputChannel_Disable(ChannelIdx);
+                    }
+                }
+                CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
 
-				iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32 *)buffer);
-				if(iStatus < 0)
-				{
-					(void) CFE_EVS_SendEvent(TO_GET_POOL_ERR_EID, CFE_EVS_ERROR,
-									 "PutPoolBuf: error=0x%08lx",
-									 iStatus);
-				}
-				else
-				{
-                	OS_MutSemTake(TO_AppData.MutexID);
-				    TO_AppData.HkTlm.MemInUse -= iStatus;
-                	OS_MutSemGive(TO_AppData.MutexID);
+                iStatus = CFE_ES_PutPoolBuf(TO_AppData.HkTlm.MemPoolHandle, (uint32 *)buffer);
+                if(iStatus < 0)
+                {
+                    (void) CFE_EVS_SendEvent(TO_GET_POOL_ERR_EID, CFE_EVS_ERROR,
+                                "PutPoolBuf: error=0x%08lx",
+                                    iStatus);
+                }
+                else
+                {
+                    OS_MutSemTake(TO_AppData.MutexID);
+                    TO_AppData.HkTlm.MemInUse -= iStatus;
+                    OS_MutSemGive(TO_AppData.MutexID);
 
-					TO_Channel_LockByIndex(ChannelIdx);
-					chQueue->CurrentlyQueuedCnt--;
-					chQueue->SentCount++;
-					TO_Channel_UnlockByIndex(ChannelIdx);
-				}
+                    TO_Channel_LockByIndex(ChannelIdx);
+                    chQueue->CurrentlyQueuedCnt--;
+                    chQueue->SentCount++;
+                    TO_Channel_UnlockByIndex(ChannelIdx);
+                }
 
-			}
-			else if(iStatus == OS_QUEUE_TIMEOUT)
-			{
-				/* Don't do anything.  We include a timeout so we check to see if
-				 * the parent task wants us to terminate.
-				 */
-			}
-			else
-			{
-				CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
-								  "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
-			}
-		}
-	}
+            }
+            else if(iStatus == OS_QUEUE_TIMEOUT)
+            {
+                /* Don't do anything.  We include a timeout so we check to see if
+                 * the parent task wants us to terminate.
+                 */
+            }
+            else
+            {
+                CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
+                                "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
+            }
+        }
+    }
 }
 
 
