@@ -9,6 +9,7 @@ extern "C" {
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "to_custom_test_utils.h"
 
 /************************************************************************
 ** Structure Declarations
@@ -16,6 +17,9 @@ extern "C" {
 typedef struct
 {
     int32 TO_Channel_OpenChannel_Return; 
+    uint8 TO_Channel_State_Return;
+    uint8 TO_Channel_State_Return1;
+    uint8 TO_Channel_State_CallCount;
 } TO_App_Returns_t;
 
 /************************************************************************
@@ -34,6 +38,7 @@ void  TO_Channel_LockByIndex(uint32 index);
 
 void  TO_Channel_UnlockByIndex(uint32 index);
 
+uint8 TO_Channel_State(uint32 index);
 
 #ifdef __cplusplus
 }

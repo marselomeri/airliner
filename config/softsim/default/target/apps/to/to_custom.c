@@ -51,6 +51,13 @@ TO_AppCustomData_t TO_AppCustomData = {
 
 
 
+uint8 TO_OutputChannel_Status(uint32 index)
+{
+    return TO_AppCustomData.Channel[index].Mode;
+}
+
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Custom Initialize All.  Nothing to do here.                     */
@@ -116,30 +123,30 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 
         if(channel->Mode == TO_CHANNEL_ENABLED)
         {
-			CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-			/* Send message via UDP socket */
-			s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-			s_addr.sin_port        = htons(channel->DstPort);
-			status = sendto(channel->Socket, (char *)Buffer, Size, 0,
-									(struct sockaddr *) &s_addr,
-									 sizeof(s_addr));
-			if (status < 0)
-			{
-				if(errno == 90)
-				{
-					CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-								   "L%d TO sendto errno %d.  Message too long.  Size=%u", __LINE__, errno, (unsigned int)Size);
-				}
-				else
-				{
-					CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-							   "L%d TO sendto errno %d.", __LINE__, errno);
-					channel->Mode = TO_CHANNEL_DISABLED;
-				}
-				returnCode = -1;
-			}
-			CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
-    	}
+            CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
+            /* Send message via UDP socket */
+            s_addr.sin_addr.s_addr = inet_addr(channel->IP);
+            s_addr.sin_port        = htons(channel->DstPort);
+            status = sendto(channel->Socket, (char *)Buffer, Size, 0,
+                                    (struct sockaddr *) &s_addr,
+                                     sizeof(s_addr));
+            if (status < 0)
+            {
+                if(errno == 90)
+                {
+                    CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+                                "L%d TO sendto errno %d.  Message too long.  Size=%u", __LINE__, errno, (unsigned int)Size);
+                }
+                else
+                {
+                    CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+                            "L%d TO sendto errno %d.", __LINE__, errno);
+                    channel->Mode = TO_CHANNEL_DISABLED;
+                }
+                returnCode = -1;
+            }
+            CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
+        }
     }
 
     return returnCode;
@@ -450,15 +457,15 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
     int32 msgSize = 0;
     char *buffer;
 
-	TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
-	while(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
-	{
-		if(TO_AppData.ChannelData[ChannelIdx].State == TO_CHANNEL_OPENED)
-		{
-			TO_OutputQueue_t *chQueue = &TO_AppData.ChannelData[ChannelIdx].OutputQueue;
-			iStatus =  OS_QueueGet(
-					chQueue->OSALQueueID,
-					&buffer, sizeof(buffer), &msgSize, 1000);
+    TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
+    while(TO_OutputChannel_Status(ChannelIdx) == TO_CHANNEL_ENABLED)
+    {
+        if(TO_Channel_State(ChannelIdx) == TO_CHANNEL_OPENED)
+        {
+            TO_OutputQueue_t *chQueue = &TO_AppData.ChannelData[ChannelIdx].OutputQueue;
+            iStatus =  OS_QueueGet(
+                    chQueue->OSALQueueID,
+                    &buffer, sizeof(buffer), &msgSize, 1000);
 			if(iStatus == OS_SUCCESS)
 			{
 				CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
@@ -519,3 +526,5 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 		}
 	}
 }
+
+

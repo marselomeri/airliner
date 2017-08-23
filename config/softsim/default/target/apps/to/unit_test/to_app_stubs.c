@@ -22,3 +22,21 @@ void  TO_Channel_UnlockByIndex(uint32 index)
 {
     return 0;
 }
+
+
+uint8 TO_Channel_State(uint32 index)
+{
+    uint8 returnCode = 0;
+
+    if(0 == TO_App_Return.TO_Channel_State_CallCount) 
+    {
+        returnCode = TO_App_Return.TO_Channel_State_Return;
+    }
+    else
+    {
+        TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_DISABLED;
+        returnCode = TO_App_Return.TO_Channel_State_Return1;
+    }
+    TO_App_Return.TO_Channel_State_CallCount++;
+    return returnCode;
+}
