@@ -113,13 +113,13 @@ extern "C" {
 **       The number of block sizes defined cannot exceed
 **       #CFE_ES_MAX_MEMPOOL_BLOCK_SIZES
 */
-#define TO_MEM_BLOCK_SIZE_01              8
-#define TO_MEM_BLOCK_SIZE_02             16
-#define TO_MEM_BLOCK_SIZE_03             32
-#define TO_MEM_BLOCK_SIZE_04             64
-#define TO_MEM_BLOCK_SIZE_05            184
-#define TO_MEM_BLOCK_SIZE_06            256
-#define TO_MEM_BLOCK_SIZE_07            512
+#define TO_MEM_BLOCK_SIZE_01             32
+#define TO_MEM_BLOCK_SIZE_02             64
+#define TO_MEM_BLOCK_SIZE_03            128
+#define TO_MEM_BLOCK_SIZE_04            256
+#define TO_MEM_BLOCK_SIZE_05            512
+#define TO_MEM_BLOCK_SIZE_06           1024
+#define TO_MEM_BLOCK_SIZE_07           2048
 #define TO_MAX_BLOCK_SIZE       (TO_MEM_BLOCK_SIZE_07 + TO_MEM_BLOCK_SIZE_07)
 
 /**
@@ -137,6 +137,11 @@ extern "C" {
 */
 #define TO_STARTUP_TIMEOUT_MSEC    (1000)
 
+/* TODO:  Add more platform configuration parameter definitions here, if necessary. */
+#define TO_MAX_MSGS_OUT_PER_FRAME (100)
+#define TO_MAX_CHANNELS			  (5)
+#define TO_OUTPUT_QUEUE_DEPTH     (10)
+
 /**
 **  \tocfg Number of bytes in the Message Memory Pool
 **
@@ -151,12 +156,7 @@ extern "C" {
 **       an overhead cost in the memory pool.  The value must be larger than what is
 **       needed.
 */
-#define TO_NUM_BYTES_IN_MEM_POOL        (20 * 1024)
-
-/* TODO:  Add more platform configuration parameter definitions here, if necessary. */
-#define TO_MAX_MSGS_OUT_PER_FRAME (100)
-#define TO_MAX_CHANNELS			  (5)
-#define TO_OUTPUT_QUEUE_DEPTH     (100)
+#define TO_NUM_BYTES_IN_MEM_POOL        (TO_MAX_CHANNELS * TO_OUTPUT_QUEUE_DEPTH * TO_MAX_BLOCK_SIZE)
 
 
 

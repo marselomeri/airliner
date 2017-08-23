@@ -567,6 +567,7 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 
 					TO_Channel_LockByIndex(ChannelIdx);
 					chQueue->CurrentlyQueuedCnt--;
+					chQueue->SentCount++;
 					TO_Channel_UnlockByIndex(ChannelIdx);
 				}
 

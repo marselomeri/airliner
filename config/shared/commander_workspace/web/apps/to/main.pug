@@ -5,6 +5,8 @@ block header
         | Telemetry Output
 
 block main
+  -var MFLOW_COUNT = 50
+  -var PQUEUE_COUNT = 10
   .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
         #wid-TO-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -123,7 +125,115 @@ block main
                         .btn-group
                           button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/Dump', argument:[{name:'TableName', value:'TO.ONBOARD_DMP'}]}}) Dump
                           button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/TlmReg', argument:[{name:'TableName', value:'TO.ONBOARD_DMP'}]}}) TlmReg
-       
+  .row
+    article.col-xs-12.col-sm-12.col-md-8.col-lg-7(style='width:750px')
+      #wid-TO-Diag.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Diagnostic
+            button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/TO/SendDiag'}}) Send
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr  
+                    th Channel Index
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/ChannelIndex'}]}) --- 
+                  tr  
+                    th Config Table Name
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/ConfigTableName'}]}) --- 
+                  tr  
+                    th Config Table File Name
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/ConfigTableFileName'}]}) ---   
+                  tr  
+                    th Dump Table Name
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/DumpTableName'}]}) ---   
+                  tr  
+                    th Channel Name
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/ChannelName'}]}) ---   
+                  tr  
+                    th Table ID
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/TableID'}]}) ---      
+            .table-responsive
+              table.table.table-striped.table-condensed.table-memory
+                thead
+                  th(style='width:50px') Message Flow
+                  th(style='width:200px') Msg ID
+                  th(style='width:75px') Msg Limit
+                  th(style='width:75px') PQ ID
+                  th(style='width:75px') Dropped Msgs
+                  th(style='width:75px') Queued Msgs
+                tbody
+                  - for (var i = 0; i < MFLOW_COUNT; ++i) {
+                    tr
+                      th= i
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/MF'+i+'_MsgId'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/MF'+i+'_MsgLimit'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/MF'+i+'_PqueueID'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/MF'+i+'_DroppedMsgCnt'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/MF'+i+'_QueuedMsgCnt'}]}) ---   
+                  - } 
+            .table-responsive
+              table.table.table-striped.table-condensed.table-memory
+                thead
+                  th(style='width:50px') Priority Queue
+                  th(style='width:100px') State
+                  th(style='width:75px') Msg Limit
+                  th(style='width:75px') Type
+                  th(style='width:75px') Dropped
+                  th(style='width:75px') Total Queued
+                  th(style='width:75px') Current Queued
+                  th(style='width:75px') Highwater
+                tbody
+                  - for (var i = 0; i < PQUEUE_COUNT; ++i) {
+                    tr
+                      th= i
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_State'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_MsgLimit'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_Qtype'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_DroppedMsgCnt'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_QueuedMsgCnt'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_CurrentlyQueuedCnt'}]}) ---
+                      td
+                        span(data-sage={tlm:[{name:'/CFS/TO/PQ'+i+'_HighwaterMark'}]}) --- 
+                  - } 
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr  
+                    th Output Sent
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/Out_SentCount'}]}) --- 
+                  tr  
+                    th Output Currently Queued
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/Out_CurrentlyQueuedCnt'}]}) ---   
+                  tr  
+                    th Output Highwater
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/TO/Out_HighwaterMark'}]}) ---  
+
   .row
     article.col-xs-11.col-sm-6.col-md-5.col-lg-4(style='width:350px')
       #wid-TO-Memory.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
