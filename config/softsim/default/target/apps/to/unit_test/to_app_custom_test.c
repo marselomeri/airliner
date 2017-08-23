@@ -576,8 +576,28 @@ void TO_OutputChannel_ChannelHandle_OSQueueTimeout(void)
  * Tests for TO_OutputChannel_ProcessNewCustomCmds()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_ProcessNewCustomCmds()
+ * Test TO_OutputChannel_ProcessNewCustomCmds() invalid message length
  */
+void TO_OutputChannel_ProcessNewCustomCmds_InvalidMessageLength(void)
+{
+    /* Wrong type to create incorrect size condition */
+    TO_DisableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_ENABLE_CHANNEL_CC);
+    
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
+    UtAssert_EventSent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
+}
 
  /**************************************************************************
  * Tests for TO_OutputChannel_OnboardChannelTask()
@@ -666,4 +686,7 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ChannelHandle_OSQueueTimeout, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_OSQueueTimeout");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_InvalidMessageLength, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_InvalidMessageLength");
 }
