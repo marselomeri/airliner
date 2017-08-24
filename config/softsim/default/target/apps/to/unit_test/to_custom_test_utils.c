@@ -24,7 +24,7 @@
 void TO_Custom_Test_Setup(void)
 {
     /* initialize test environment to default state for every test */
-
+    CFE_PSP_MemSet(&TO_AppData, 0x00, sizeof(TO_AppData));
     CFE_PSP_MemSet(&TO_AppCustomData, 0x00, sizeof(TO_AppCustomData_t));
     CFE_PSP_MemSet(&TO_App_Return, 0x00, sizeof(TO_App_Return));
     CFE_PSP_MemSet(&TO_Platform_Stubs_Returns, 0x00, sizeof(TO_Platform_Stubs_Returns));
