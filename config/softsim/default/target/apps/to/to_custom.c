@@ -94,8 +94,6 @@ int32 TO_Custom_Init(void)
         }
     }
 
-    return 0;
-
 end_of_function:
 
     return iStatus;
@@ -132,17 +130,9 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
                                      sizeof(s_addr));
             if (status < 0)
             {
-                if(errno == 90)
-                {
-                    CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-                                "L%d TO sendto errno %d.  Message too long.  Size=%u", __LINE__, errno, (unsigned int)Size);
-                }
-                else
-                {
-                    CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+                CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
                             "L%d TO sendto errno %d.", __LINE__, errno);
                     channel->Mode = TO_CHANNEL_DISABLED;
-                }
                 returnCode = -1;
             }
             CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
@@ -161,18 +151,20 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 /* down.                                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_OutputChannel_CustomCleanupAll(void)
+void TO_OutputChannel_CustomCleanupAll()
 {
+	int32 iStatus = 0;
 	uint32 i = 0;
 
-	for(i=0; i < TO_MAX_CHANNELS; i++)
-	{
+    for (i=0; i < TO_MAX_CHANNELS; i++)
+    {
 		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
 		{
+			uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
 
 			TO_OutputChannel_Disable(i);
 		}
-	}
+    }
 }
 
 
@@ -467,7 +459,7 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             TO_OutputQueue_t *chQueue = &TO_AppData.ChannelData[ChannelIdx].OutputQueue;
             iStatus =  OS_QueueGet(
                     chQueue->OSALQueueID,
-                    &buffer, sizeof(buffer), &msgSize, 1000);
+                    &buffer, sizeof(buffer), &msgSize, 200);
             if(iStatus == OS_SUCCESS)
             {
                 CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
