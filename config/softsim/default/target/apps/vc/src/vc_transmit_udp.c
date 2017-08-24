@@ -37,21 +37,29 @@
 *************************************************************************/
 
 /**
- * Global data structure for custom device IO layer
+ * Global data structure for custom device transmit layer
  */
-VC_AppCustomData_t VC_AppCustomData = {
-    {
-        { 
-          .Mode = VC_CHANNEL_ENABLED, \
-          .ChannelID = 0, \
-          .DestPort = VC_DESTINATION_PORT, \
-          .MyPort = VC_SOURCE_PORT, \
-          .DestIP = VC_DESTINATION_IP, \
-          .MyIP = VC_SOURCE_IP, \
-          .SocketFd = 0 \
-        }
-    }
-};
+VC_AppCustomData_t VC_AppCustomData;
+
+
+int32 VC_CustomTransmit_InitData()
+{
+    int32 iStatus = CFE_SUCCESS;
+    
+    /* Set all struct zero values */
+    bzero(&VC_AppCustomData, sizeof(VC_AppCustomData));
+    
+    /* Set all non-zero values for channel zero */
+    VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
+    VC_AppCustomData.Channel[0].ChannelID = 0;
+    VC_AppCustomData.Channel[0].DestPort = VC_DESTINATION_PORT;
+    VC_AppCustomData.Channel[0].SocketFd = 0;
+
+    strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
+    strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
+    
+    return (iStatus);
+}
 
 
 int32 VC_EnableChannel(uint8 ChannelID)

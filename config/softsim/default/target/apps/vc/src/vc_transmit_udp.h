@@ -71,10 +71,18 @@ extern VC_AppCustomData_t VC_AppCustomData;
 *************************************************************************/
 
 /**
+ * @brief Custom function to initialize custom transmit data structure.
+ * @return CFE_SUCCESS
+ */
+int32 VC_CustomTransmit_InitData(void);
+
+
+/**
  * @brief Initialize all enabled transmit resources
  * @return 0 for success -1 for failure
  */
 int32 VC_Init_CustomTransmitters(void);
+
 
 /**
  * @brief Initialize a transmit channel
@@ -82,11 +90,13 @@ int32 VC_Init_CustomTransmitters(void);
  */
 int32 VC_EnableChannel(uint8 ChannelID);
 
+
 /**
  * @brief Cleanup all transmit resources 
  * @return 0 for success -1 for failure
  */
 int32 VC_CleanupCustom(void);
+
 
 /**
  * @brief Disable a transmit channel

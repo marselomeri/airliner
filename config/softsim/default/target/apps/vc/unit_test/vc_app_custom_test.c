@@ -5,7 +5,6 @@
 #include "vc_platform_cfg.h"
 #include <errno.h>
 #include <stdio.h>
-//#include "vc_msgids.h"
 #include <string.h>
 
 #include "uttest.h"
@@ -1710,6 +1709,9 @@ void Test_VC_Custom_SendBuffer_SendData(void)
         "VC send data failed on %s channel %u", 
         "test", 0);
     
+    /* Properly initialize custom transmit data */
+    VC_CustomTransmit_InitData();
+    
     /* Set the test device path */
     strcpy(VC_AppCustomDevice.Channel[0].DevName, "test");
     
@@ -1996,6 +1998,27 @@ void Test_VC_Custom_InitTransmit_Nominal(void)
     UtAssert_EventSent(VC_CHA_INF_EID, CFE_EVS_INFORMATION, returnString, 
                         "VC_EnableChannel() failed to raise an event");
 }
+
+/**************************************************************************
+ * Tests for VC_Devices_InitData()
+ **************************************************************************/
+
+/**
+ * Test VC_Devices_InitData() nominal
+ * Note: currently no way to fail this function
+ */
+void Test_VC_Custom_InitData_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = CFE_SUCCESS;
+    
+    /* Call the function under test */
+    result = VC_Devices_InitData();
+    
+    /* Verify the results */
+    UtAssert_True(result == expected,"VC_Custom_InitData() did not succeed");
+}
+
 
 /**************************************************************************
  * Tests for VC_Init_CustomTransmitters()
@@ -2414,6 +2437,9 @@ void VC_Custom_App_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_BufferQueue");
     UtTest_Add(Test_VC_Custom_SendBuffer_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_Nominal");
+    UtTest_Add(Test_VC_Custom_InitData_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitData_Nominal");
+
 /**************************************************************************
  * Tests for Custom Transmit Layer
  **************************************************************************/

@@ -41,33 +41,36 @@
 *************************************************************************/
 
 /**
- * Custom device layer app data initialization
+ * Custom device layer app data declaration
  */
-VC_AppCustomDevice_t VC_AppCustomDevice = {
-    .ContinueFlag = TRUE,
-    .Priority = VC_STREAMING_TASK_PRIORITY,
-    .ChildTaskID = 0,
-    .StreamingTask = VC_Stream_Task,
-    {
-        { 
-            .Status            = VC_DEVICE_UNINITIALIZED, \
-            .Mode              = VC_DEVICE_ENABLED, \
-            .ChannelID         = 0, \
-            .DevName           = VC_DEVICE_PATH, \
-            .DeviceFd          = 0, \
-            .BufferType        = VC_V4L_BUFFER_TYPE, \
-            .FrameWidth        = VC_FRAME_WIDTH, \
-            .FrameHeight       = VC_FRAME_HEIGHT, \
-            .VideoFormat       = VC_V4L_VIDEO_FORMAT, \
-            .FieldOrder        = VC_V4L_VIDEO_FIELD_ORDER, \
-            .BufferRequest     = VC_V4L_BUFFER_REQUEST, \
-            .MemoryType        = VC_V4L_MEMORY_TYPE, \
-            .Buffers           = {{0}}, \
-            .Buffer_Size       = VC_MAX_BUFFER_SIZE, \
-            .Buffer_Ptrs       = {0}
-        }
-    }
-};
+VC_AppCustomDevice_t VC_AppCustomDevice;
+
+
+int32 VC_CustomDevice_InitData()
+{
+    int32 iStatus = CFE_SUCCESS;
+    
+    /* Set all struct zero values */
+    bzero(&VC_AppCustomDevice, sizeof(VC_AppCustomDevice));
+    
+    /* Set all non-zero values for channel zero */
+    VC_AppCustomDevice.ContinueFlag          = TRUE;
+    VC_AppCustomDevice.Priority              = VC_STREAMING_TASK_PRIORITY;
+    VC_AppCustomDevice.StreamingTask         = VC_Stream_Task;
+    VC_AppCustomDevice.Channel[0].Status        = VC_DEVICE_UNINITIALIZED;
+    VC_AppCustomDevice.Channel[0].Mode          = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].BufferType    = VC_V4L_BUFFER_TYPE;
+    VC_AppCustomDevice.Channel[0].FrameWidth    = VC_FRAME_WIDTH;
+    VC_AppCustomDevice.Channel[0].FrameHeight   = VC_FRAME_HEIGHT;
+    VC_AppCustomDevice.Channel[0].VideoFormat   = VC_V4L_VIDEO_FORMAT;
+    VC_AppCustomDevice.Channel[0].FieldOrder    = VC_V4L_VIDEO_FIELD_ORDER;
+    VC_AppCustomDevice.Channel[0].BufferRequest = VC_V4L_BUFFER_REQUEST;
+    VC_AppCustomDevice.Channel[0].MemoryType    = VC_V4L_MEMORY_TYPE;
+    
+    strncpy(VC_AppCustomDevice.Channel[0].DevName, VC_DEVICE_PATH, VC_MAX_DEVICE_PATH); 
+    
+    return (iStatus);
+}
 
 
 int32 VC_Ioctl(int fh, int request, void *arg)
@@ -700,6 +703,16 @@ int32 VC_DisableDevice(uint8 DeviceID)
 
 end_of_function:
     return returnCode;
+}
+
+
+/*
+ * Custom function to initialize custom device data structure.
+ * returns CFE_SUCCESS
+ */
+int32 VC_Devices_InitData()
+{
+    return VC_CustomDevice_InitData();
 }
 
 

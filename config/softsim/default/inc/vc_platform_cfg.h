@@ -177,7 +177,7 @@ extern "C" {
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_HEIGHT                 (180)
+#define VC_FRAME_HEIGHT                 (240)
 
 /** \brief Video frame rate
 **
