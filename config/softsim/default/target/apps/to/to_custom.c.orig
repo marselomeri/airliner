@@ -153,16 +153,28 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void TO_OutputChannel_CustomCleanupAll()
 {
+<<<<<<< HEAD
     uint32 i = 0;
 
-    for (i=0; i < TO_MAX_CHANNELS; i++)
+    for(i=0; i < TO_MAX_CHANNELS; i++)
     {
         if(TO_OutputChannel_Status(i) == TO_CHANNEL_ENABLED)
         {
-            uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
-
             TO_OutputChannel_Disable(i);
         }
+=======
+	int32 iStatus = 0;
+	uint32 i = 0;
+
+    for (i=0; i < TO_MAX_CHANNELS; i++)
+    {
+		if(TO_AppCustomData.Channel[i].Mode == TO_CHANNEL_ENABLED)
+		{
+			uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
+
+			TO_OutputChannel_Disable(i);
+		}
+>>>>>>> origin/WINDEV-27-add-pipeline-concept-to-to
     }
 }
 
@@ -380,10 +392,10 @@ int32 TO_OutputChannel_Disable(uint8 ChannelID)
     int status;
     int reuseaddr=1;
 
-    if(TO_AppCustomData.Channel[ChannelID].Mode != TO_CHANNEL_ENABLED)
+    if(TO_OutputChannel_Status(ChannelID) != TO_CHANNEL_ENABLED)
     {
         CFE_EVS_SendEvent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR,
-                        "UDP telemetry for channel %u is not enabled.", (unsigned int)i);
+                    "UDP telemetry for channel %u is not enabled.", (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
     }
@@ -397,8 +409,8 @@ int32 TO_OutputChannel_Disable(uint8 ChannelID)
     TO_AppCustomData.Channel[ChannelID].Socket = 0;
 
     CFE_EVS_SendEvent(TO_CMD_INF_EID, CFE_EVS_INFORMATION,
-                      "Disabled channel %u.",
-                      ChannelID);
+                    "Disabled channel %u.",
+                    ChannelID);
 
 end_of_function:
     return returnCode;
