@@ -42,12 +42,7 @@
 
 
 
-TO_AppCustomData_t TO_AppCustomData = {
-    {
-        {TO_CHANNEL_ENABLED, "127.0.0.1",  5011, 50, TO_OutputChannel_GroundChannelTask, 0, 0},
-        {TO_CHANNEL_ENABLED, "127.0.0.1",  5012, 50, TO_OutputChannel_OnboardChannelTask, 0, 0}
-    }
-};
+TO_AppCustomData_t TO_AppCustomData;
 
 
 
@@ -67,6 +62,18 @@ int32 TO_Custom_Init(void)
 {
     int32 iStatus = 0;
     uint32 i = 0;
+
+    TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
+    strcpy(TO_AppCustomData.Channel[0].IP, "127.0.0.1");
+    TO_AppCustomData.Channel[0].DstPort = 5011;
+    TO_AppCustomData.Channel[0].Priority = 50;
+    TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_GroundChannelTask;
+
+    TO_AppCustomData.Channel[1].Mode = TO_CHANNEL_ENABLED;
+    strcpy(TO_AppCustomData.Channel[1].IP, "127.0.0.1");
+    TO_AppCustomData.Channel[1].DstPort = 5012;
+    TO_AppCustomData.Channel[1].Priority = 50;
+    TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_OnboardChannelTask;
 
     iStatus = TO_Channel_OpenChannel(0, "GROUND", TO_GROUND_CONFIG_TABLENAME, TO_GROUND_CONFIG_TABLE_FILENAME, TO_GROUND_DUMP_TABLENAME);
     if(iStatus != 0)
@@ -163,6 +170,8 @@ void TO_OutputChannel_CustomCleanupAll()
 			uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
 
 			TO_OutputChannel_Disable(i);
+
+			OS_TaskDelay(100);
 		}
     }
 }
@@ -352,7 +361,7 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
 
     /* Create the child listener task. */
     char TaskName[OS_MAX_API_NAME];
-    snprintf(TaskName, OS_MAX_API_NAME, "TO_OUTCH_%u_CUSTOM", ChannelID);
+    snprintf(TaskName, OS_MAX_API_NAME, "TO_OUTCH_%u", ChannelID);
     returnCode = CFE_ES_CreateChildTask(
             &TO_AppCustomData.Channel[ChannelID].ChildTaskID,
             (const char *)TaskName,
@@ -459,7 +468,7 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             TO_OutputQueue_t *chQueue = &TO_AppData.ChannelData[ChannelIdx].OutputQueue;
             iStatus =  OS_QueueGet(
                     chQueue->OSALQueueID,
-                    &buffer, sizeof(buffer), &msgSize, 200);
+                    &buffer, sizeof(buffer), &msgSize, OS_PEND);
             if(iStatus == OS_SUCCESS)
             {
                 CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
@@ -510,16 +519,11 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                 }
 
             }
-            else if(iStatus == OS_QUEUE_TIMEOUT)
-            {
-                /* Don't do anything.  We include a timeout so we check to see if
-                 * the parent task wants us to terminate.
-                 */
-            }
             else
             {
                 CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
                                 "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
+                TO_Channel_State(ChannelIdx) == TO_CHANNEL_CLOSED;
             }
         }
     }
