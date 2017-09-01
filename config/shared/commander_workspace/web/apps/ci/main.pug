@@ -22,21 +22,26 @@ block main
                     tr
                       th Cmd Count
                       td
-                        span(data-sage={tlm: {name:'/CFS/CI/CmdCounter'}}) ---
+                        span(data-sage={tlm: [{name:'/CFS/CI/CmdCounter'}]}) ---
                     tr
                       th Error Count
                       td
-                        span(data-sage={tlm: {name:'/CFS/CI/ErrCounter'}}) ---
+                        span(data-sage={tlm: [{name:'/CFS/CI/ErrCounter'}]}) ---
                     tr
                       th Ingest Count
                       td
-                        span(data-sage={tlm: {name:'/CFS/CI/IngestMsgCount'}}) ---
+                        span(data-sage={tlm: [{name:'/CFS/CI/IngestMsgCount'}]}) ---
                     tr
                       th Ingest Error Count
                       td
-                        span(data-sage={tlm: {name:'/CFS/CI/IngestErrorCount'}}) ---
+                        span(data-sage={tlm: [{name:'/CFS/CI/IngestErrorCount'}]}) ---
               footer
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/Reset'}}) Reset
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/ArmCmd'}}) Arm Cmd
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/DisarmCmd'}}) Disarm Cmd
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/RegCmd'}}) Register Cmd
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/DeregCmd'}}) Deregister cmd
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/UpdateCmdReg'}}) Update cmd
+
+

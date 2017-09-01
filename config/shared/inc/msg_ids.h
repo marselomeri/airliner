@@ -21,6 +21,7 @@
 #define CI_HK_TLM_MID 					0x0907
 #define CI_WAKEUP_MID					0x1908
 #define CI_OUT_DATA_MID		            0x1909
+#define CI_PROCESS_TIMEOUTS_MID         0x190a
 
 /* CF										*/
 /* Range: 0x910 - 0x92f						*/
