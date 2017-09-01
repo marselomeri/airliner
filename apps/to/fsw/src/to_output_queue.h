@@ -1,5 +1,5 @@
-#ifndef TO_OUTPUT_CHANNEL_H
-#define TO_OUTPUT_CHANNEL_H
+#ifndef TO_OUTPUT_QUEUE_H
+#define TO_OUTPUT_QUEUE_H
 
 /************************************************************************
 ** Pragmas
@@ -20,26 +20,15 @@
 *************************************************************************/
 
 /**
-** \brief Output channel state.  Used to determine if a table entry is used or not.
-*/
-typedef enum
-{
-	TO_OUT_CHANNEL_UNUSED = 0,
-	TO_OUT_CHANNEL_ENA = 1,
-} TO_OutputChannelState_t;
-
-/**
 ** \brief Definition for a single output channel queue entry.
 */
 typedef struct
 {
-	TO_OutputChannelState_t State;
-	uint16					MsgLimit;
 	uint16					SentCount;
 	uint16					CurrentlyQueuedCnt;
     uint16					HighwaterMark;
     uint32					OSALQueueID;
-} TO_TlmOutputChannelQueue_t;
+} TO_OutputQueue_t;
 
 /************************************************************************
 ** External Global Variables
@@ -62,19 +51,7 @@ typedef struct
 **  \param [in]   Size          Size of the message, in bytes, to push.
 **
 *************************************************************************/
-int32 TO_OutputChannel_Push(uint32 ChannelIdx, const char* Buffer, uint32 Size);
-
-
-
-/************************************************************************/
-/** \brief Initialize all output channels.
-**
-**  \par Description
-**       This function is call at initialization to initialize internal
-**       variables.
-**
-*************************************************************************/
-int32 TO_OutputChannel_InitAll(void);
+int32 TO_OutputQueue_Push(TO_ChannelData_t* channel, const char* Buffer, uint32 Size);
 
 
 
@@ -86,7 +63,7 @@ int32 TO_OutputChannel_InitAll(void);
 **       the queue, deallocating each message its popped off the queue.
 **
 *************************************************************************/
-void  TO_OutputChannel_CleanupAll(void);
+void  TO_OutputQueue_CleanupAll(TO_ChannelData_t* channel);
 
 
 
@@ -99,7 +76,7 @@ void  TO_OutputChannel_CleanupAll(void);
 **       Highwater Marks.
 **
 *************************************************************************/
-void  TO_OutputChannel_ResetCountsAll(void);
+void  TO_OutputQueue_ResetCounts(TO_ChannelData_t* channel);
 
 
 
@@ -112,7 +89,7 @@ void  TO_OutputChannel_ResetCountsAll(void);
 **       deallocate the messages contained in the queues.
 **
 *************************************************************************/
-int32 TO_OutputChannel_TeardownAll(void);
+int32 TO_OutputQueue_Teardown(TO_ChannelData_t* channel);
 
 
 
@@ -129,7 +106,7 @@ int32 TO_OutputChannel_TeardownAll(void);
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_OutputChannel_BuildupAll(void);
+int32 TO_OutputQueue_Buildup(TO_ChannelData_t* channel);
 
 
 
@@ -152,7 +129,7 @@ int32 TO_OutputChannel_BuildupAll(void);
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_OutputChannel_QueueMsg(CFE_SB_MsgPtr_t MsgPtr, TO_TlmOutputChannelQueue_t* OutChannel);
+int32 TO_OutputQueue_QueueMsg(TO_ChannelData_t* channel, CFE_SB_MsgPtr_t MsgPtr);
 
 
 
@@ -171,6 +148,6 @@ int32 TO_OutputChannel_QueueMsg(CFE_SB_MsgPtr_t MsgPtr, TO_TlmOutputChannelQueue
 **  \endreturns
 **
 *************************************************************************/
-boolean TO_OutputChannel_Query(uint16 OutputChannelIdx);
+boolean TO_OutputChannel_Query(uint16 ChannelIdx);
 
 #endif

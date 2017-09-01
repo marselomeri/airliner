@@ -18,8 +18,9 @@
 #include "to_classifier.h"
 #include "to_priority_queue.h"
 #include "to_scheduler.h"
-#include "to_output_channel.h"
+#include "to_output_queue.h"
 #include "to_custom.h"
+#include "to_channel.h"
 
 /************************************************************************
 ** Local Defines
@@ -41,6 +42,17 @@ TO_AppData_t  TO_AppData;
 /************************************************************************
 ** Local Variables
 *************************************************************************/
+uint32  TO_MemPoolDefSize[TO_MAX_MEMPOOL_BLK_SIZES] =
+{
+    TO_MAX_BLOCK_SIZE,
+	TO_MEM_BLOCK_SIZE_07,
+    TO_MEM_BLOCK_SIZE_06,
+	TO_MEM_BLOCK_SIZE_05,
+	TO_MEM_BLOCK_SIZE_04,
+	TO_MEM_BLOCK_SIZE_03,
+	TO_MEM_BLOCK_SIZE_02,
+	TO_MEM_BLOCK_SIZE_01
+};
 
 /************************************************************************
 ** Local Function Definitions
@@ -64,8 +76,8 @@ int32 TO_InitEvent()
     /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
      * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
      * (the default) has been provided as an example. */
-    TO_AppData.EventTbl[  ind].EventID = TO_RESERVED_EID;
-    TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    TO_AppData.EventTbl[  ind].EventID = TO_GET_POOL_ERR_EID;
+    TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
 
     TO_AppData.EventTbl[  ind].EventID = TO_INF_EID;
     TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
@@ -167,18 +179,6 @@ int32 TO_InitPipe()
         goto TO_InitPipe_Exit_Tag;
     }
 
-    /* Init data pipe and subscribe to messages on the data pipe */
-    iStatus = CFE_SB_CreatePipe(&TO_AppData.DataPipeId,
-                                 TO_DATA_PIPE_DEPTH,
-                                 TO_DATA_PIPE_NAME);
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(TO_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to create Data pipe (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto TO_InitPipe_Exit_Tag;
-    }
-
 TO_InitPipe_Exit_Tag:
     return (iStatus);
 }
@@ -202,6 +202,10 @@ void TO_InitData()
     /* Init housekeeping packet */
     CFE_SB_InitMsg(&TO_AppData.HkTlm,
                    TO_HK_TLM_MID, sizeof(TO_AppData.HkTlm), TRUE);
+
+	OS_MutSemCreate(&TO_AppData.MutexID, "TO_APP", 0);
+
+    TO_AppData.HkTlm.MaxMem = TO_NUM_BYTES_IN_MEM_POOL;
 }
 
 
@@ -236,32 +240,17 @@ int32 TO_InitApp()
         goto TO_InitApp_Exit_Tag;
     }
 
-    iStatus = TO_OutputChannel_InitAll();
-    if (iStatus != CFE_SUCCESS)
-    {
-    	(void) CFE_EVS_SendEvent(TO_INIT_ERR_EID, CFE_EVS_ERROR,
-            "Failed to init Output Channels (0x%08X)",
-            (unsigned int)iStatus);
-        goto TO_InitApp_Exit_Tag;
-    }
-
-    iStatus = TO_InitConfigTbl();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(TO_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init config tables (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto TO_InitApp_Exit_Tag;
-    }
-
     TO_InitData();
 
     /* Initialize the memory pool for the priority queues and output channel
      * queues.
      */
-    iStatus = CFE_ES_PoolCreate (&TO_AppData.HkTlm.MemPoolHandle,
-                                  TO_AppData.MemPoolBuffer,
-                                  sizeof (TO_AppData.MemPoolBuffer) );
+    iStatus = CFE_ES_PoolCreateEx(&TO_AppData.HkTlm.MemPoolHandle,
+    		      TO_AppData.MemPoolBuffer,
+				  TO_NUM_BYTES_IN_MEM_POOL,
+				  TO_MAX_MEMPOOL_BLK_SIZES,
+                  &TO_MemPoolDefSize[0],
+                  CFE_ES_USE_MUTEX);
     if (iStatus != CFE_SUCCESS)
     {
     	(void) CFE_EVS_SendEvent(TO_CR_POOL_ERR_EID, CFE_EVS_ERROR,
@@ -269,13 +258,20 @@ int32 TO_InitApp()
         goto TO_InitApp_Exit_Tag;
     }
 
-    /* Register the cleanup callback */
-    iStatus = OS_TaskInstallDeleteHandler(&TO_CleanupCallback);
+    iStatus = TO_Channel_InitAll();
     if (iStatus != CFE_SUCCESS)
     {
-        (void) CFE_EVS_SendEvent(TO_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init register cleanup callback (0x%08X)",
-                                 (unsigned int)iStatus);
+    	(void) CFE_EVS_SendEvent(TO_INIT_ERR_EID, CFE_EVS_ERROR,
+        		"Error initializing channels (0x%08X)",(unsigned int)iStatus);
+        goto TO_InitApp_Exit_Tag;
+    }
+
+    iStatus = TO_Custom_Init();
+    if (iStatus != CFE_SUCCESS)
+    {
+    	(void) CFE_EVS_SendEvent(TO_INIT_ERR_EID, CFE_EVS_ERROR,
+            "Failed to init custom layer (0x%08X)",
+            (unsigned int)iStatus);
         goto TO_InitApp_Exit_Tag;
     }
 
@@ -311,12 +307,10 @@ TO_InitApp_Exit_Tag:
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void TO_CleanupCallback()
+void TO_Cleanup()
 {
-	TO_MessageFlow_TeardownAll();
-	TO_PriorityQueue_TeardownAll();
-	TO_OutputChannel_TeardownAll();
-	TO_OutputChannel_CustomCleanupAll();
+    TO_Channel_CleanupAll();
+    OS_MutSemDelete(TO_AppData.MutexID);
 }
 
 
@@ -333,22 +327,45 @@ int32 TO_RcvMsg(int32 iBlocking)
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
+//	TO_ChannelData_t *channel = &TO_AppData.ChannelData[0];
+//	iStatus = OS_QueueDelete(
+//			channel->OutputQueue.OSALQueueID);
+//	if (iStatus != OS_SUCCESS)
+//	{
+//		(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+//								 "Failed to delete '%s' output channel queue. err=%i",
+//								 channel->ChannelName, (unsigned int)iStatus);
+//	}
     CFE_ES_PerfLogExit(TO_MAIN_TASK_PERF_ID);
+
+	TO_ReleaseAllTables();
 
     /* Wait for WakeUp messages from scheduler */
     iStatus = CFE_SB_RcvMsg(&MsgPtr, TO_AppData.SchPipeId, iBlocking);
 
+//	channel = &TO_AppData.ChannelData[1];
+//	iStatus = OS_QueueDelete(
+//			channel->OutputQueue.OSALQueueID);
+//	if (iStatus != OS_SUCCESS)
+//	{
+//		(void) CFE_EVS_SendEvent(TO_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+//								 "Failed to delete '%s' output channel queue. err=%i",
+//								 channel->ChannelName, (unsigned int)iStatus);
+//	}
+
     /* Start Performance Log entry */
     CFE_ES_PerfLogEntry(TO_MAIN_TASK_PERF_ID);
+
+	TO_AcquireAllTables();
 
     if (iStatus == CFE_SUCCESS)
     {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
-	{
+        {
             case TO_SEND_TLM_MID:
                 TO_ProcessNewCmds();
-                TO_ProcessTelemetry();
+                TO_Channel_ProcessTelemetryAll();
                 break;
 
             case TO_SEND_HK_MID:
@@ -362,7 +379,7 @@ int32 TO_RcvMsg(int32 iBlocking)
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
+        /* TODO: If there's no incoming message, you can do something here, or
          * nothing.  Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -370,7 +387,7 @@ int32 TO_RcvMsg(int32 iBlocking)
     else if (iStatus == CFE_SB_TIME_OUT)
     {
         /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+         * iBlocking arg, you can do something here, or nothing.
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -466,6 +483,7 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             case TO_NOOP_CC:
             	if(TO_VerifyCmdLength(MsgPtr, sizeof(TO_NoArgCmd_t)))
             	{
+                	OS_MutSemTake(TO_AppData.MutexID);
 					TO_AppData.HkTlm.usCmdCnt++;
 					(void) CFE_EVS_SendEvent(TO_CMD_NOOP_EID, CFE_EVS_INFORMATION,
 									  "Executed NOOP cmd (%u), Version %d.%d.%d.%d",
@@ -474,19 +492,21 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 									  TO_MINOR_VERSION,
 									  TO_REVISION,
 									  TO_MISSION_REV);
+                	OS_MutSemGive(TO_AppData.MutexID);
             	}
                 break;
 
             case TO_RESET_CC:
             	if(TO_VerifyCmdLength(MsgPtr, sizeof(TO_NoArgCmd_t)))
             	{
+                	OS_MutSemTake(TO_AppData.MutexID);
 					TO_AppData.HkTlm.usCmdCnt = 0;
 					TO_AppData.HkTlm.usCmdErrCnt = 0;
 					TO_AppData.HkTlm.usTotalMsgDropped = 0;
-					TO_AppData.HkTlm.usNoSerFuncCnt = 0;
-					TO_MessageFlow_ResetCountsAll();
-					TO_PriorityQueue_ResetCountsAll();
-					TO_OutputChannel_ResetCountsAll();
+					TO_AppData.HkTlm.PeakMemInUse = 0;
+                	OS_MutSemGive(TO_AppData.MutexID);
+
+					TO_Channel_ResetCountsAll();
 
 					(void) CFE_EVS_SendEvent(TO_CMD_RESET_EID, CFE_EVS_INFORMATION,
 									  "Executed RESET cmd (%u)", (unsigned int)uiCmdCode);
@@ -498,13 +518,17 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             	{
             		TO_AddMessageFlowCmd_t *cmd = (TO_AddMessageFlowCmd_t*)MsgPtr;
 
-            		if(TO_MessageFlow_Add(cmd->MsgID, cmd->MsgLimit, cmd->PQueueIdx) == FALSE)
+            		if(TO_MessageFlow_Add(cmd->ChannelIdx, cmd->MsgID, cmd->MsgLimit, cmd->PQueueIdx) == FALSE)
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdErrCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             		else
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
     					(void) CFE_EVS_SendEvent(TO_CMD_ADD_MSG_FLOW_EID, CFE_EVS_INFORMATION,
     									  "Executed ADD_MESSAGE cmd (%u)", (unsigned int)uiCmdCode);
             		}
@@ -516,13 +540,17 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             	{
             		TO_RemoveMessageFlowCmd_t *cmd = (TO_RemoveMessageFlowCmd_t*)MsgPtr;
 
-            		if(TO_MessageFlow_Remove(cmd->MsgID, cmd->PQueueIdx) == FALSE)
+            		if(TO_MessageFlow_Remove(cmd->ChannelIdx, cmd->MsgID) == FALSE)
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdErrCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             		else
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
     					(void) CFE_EVS_SendEvent(TO_CMD_REMOVE_MSG_FLOW_EID, CFE_EVS_INFORMATION,
     									  "Executed ADD_REMOVE cmd (%u)", (unsigned int)uiCmdCode);
             		}
@@ -534,13 +562,17 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             	{
             		TO_QueryMessageFlowCmd_t *cmd = (TO_QueryMessageFlowCmd_t*)MsgPtr;
 
-            		if(TO_MessageFlow_Query(cmd->MsgID, cmd->PQueueIdx) == FALSE)
+            		if(TO_MessageFlow_Query(cmd->ChannelIdx, cmd->MsgID) == FALSE)
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdErrCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             		else
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             	}
             	break;
@@ -550,13 +582,17 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             	{
             		TO_QueryPriorityQueueCmd_t *cmd = (TO_QueryPriorityQueueCmd_t*)MsgPtr;
 
-            		if(TO_PriorityQueue_Query(cmd->PQueueIndex) == FALSE)
+            		if(TO_PriorityQueue_Query(cmd->ChannelIdx, cmd->PQueueIndex) == FALSE)
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdErrCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             		else
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             	}
             	break;
@@ -566,18 +602,40 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             	{
             		TO_QueryOutputChannelCmd_t *cmd = (TO_QueryOutputChannelCmd_t*)MsgPtr;
 
-            		if(TO_OutputChannel_Query(cmd->OutputChannelIndex) == FALSE)
+            		if(TO_OutputChannel_Query(cmd->ChannelIdx) == FALSE)
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdErrCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             		else
             		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
             			TO_AppData.HkTlm.usCmdCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
             		}
             	}
             	break;
 
-            /* TODO:  Add code to process the rest of the TO commands here */
+            case TO_SEND_DIAG_CC:
+            	if(TO_VerifyCmdLength(MsgPtr, sizeof(TO_SendDiagCmd_t)))
+            	{
+            		TO_SendDiagCmd_t *cmd = (TO_SendDiagCmd_t*)MsgPtr;
+
+            		if(TO_SendDiag(cmd->ChannelIdx) == FALSE)
+            		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
+            			TO_AppData.HkTlm.usCmdErrCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
+            		}
+            		else
+            		{
+                    	OS_MutSemTake(TO_AppData.MutexID);
+            			TO_AppData.HkTlm.usCmdCnt++;
+                    	OS_MutSemGive(TO_AppData.MutexID);
+            		}
+            	}
+            	break;
 
             default:
             	TO_OutputChannel_ProcessNewCustomCmds(MsgPtr);
@@ -594,26 +652,112 @@ void TO_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void TO_ReportHousekeeping()
 {
-    /* TODO:  Add code to update housekeeping data, if needed, here.  */
+	uint32 i = 0;
+	int32 iStatus;
+
+	for(i = 0; i < TO_MAX_CHANNELS; ++i)
+	{
+		TO_ChannelData_t *channel = &TO_AppData.ChannelData[i];
+		TO_Channel_LockByRef(channel);
+		TO_AppData.HkTlm.QueuedInOutputChannel[i] = channel->OutputQueue.CurrentlyQueuedCnt;
+		TO_Channel_UnlockByRef(channel);
+	}
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&TO_AppData.HkTlm);
-    int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&TO_AppData.HkTlm);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* TODO: Decide what to do if the send message fails. */
-    }
+	OS_MutSemTake(TO_AppData.MutexID);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&TO_AppData.HkTlm);
+	OS_MutSemGive(TO_AppData.MutexID);
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Process Telemetry                                               */
+/* Send TO Send Diagnostic Message                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_ProcessTelemetry()
+boolean TO_SendDiag(uint16 ChannelIdx)
 {
-	TO_Classifier_Run();
-	TO_Scheduler_Run();
+	uint32 iMessageFlow = 0;
+	uint32 iPQueue = 0;
+	boolean rc = FALSE;
+	TO_ChannelDiagTlm_t diagMsg;
+
+    TO_ChannelData_t *channel;
+
+    /* First, check if the channel index is valid. */
+    if(ChannelIdx >= TO_MAX_CHANNELS)
+    {
+    	(void) CFE_EVS_SendEvent(TO_CMD_SEND_DIAG_EID, CFE_EVS_ERROR,
+    		"Invalid channel index.");
+    	goto end_of_function;
+    }
+    channel = &TO_AppData.ChannelData[ChannelIdx];
+
+    CFE_SB_InitMsg(&diagMsg, TO_DIAG_TLM_MID, sizeof(diagMsg), TRUE);
+
+    diagMsg.Index = ChannelIdx;
+
+    TO_Channel_LockByRef(channel);
+
+	diagMsg.State = channel->State;
+	strncpy(diagMsg.ConfigTableName, channel->ConfigTableName,
+			sizeof(diagMsg.ConfigTableName));
+	strncpy(diagMsg.ConfigTableFileName, channel->ConfigTableFileName,
+			sizeof(diagMsg.ConfigTableFileName));
+	strncpy(diagMsg.DumpTableName, channel->DumpTableName,
+			sizeof(diagMsg.DumpTableName));
+	strncpy(diagMsg.ChannelName, channel->ChannelName,
+			sizeof(diagMsg.ChannelName));
+	diagMsg.TableID = channel->ConfigTblPtr->TableID;
+
+	for(iMessageFlow = 0; iMessageFlow < TO_MAX_MESSAGE_FLOWS; ++iMessageFlow)
+	{
+		diagMsg.MessageFlow[iMessageFlow].MsgId
+			= channel->ConfigTblPtr->MessageFlow[iMessageFlow].MsgId;
+		diagMsg.MessageFlow[iMessageFlow].MsgLimit
+			= channel->ConfigTblPtr->MessageFlow[iMessageFlow].MsgLimit;
+		diagMsg.MessageFlow[iMessageFlow].PQueueID
+			= channel->ConfigTblPtr->MessageFlow[iMessageFlow].PQueueID;
+		diagMsg.MessageFlow[iMessageFlow].DroppedMsgCnt
+			= channel->DumpTbl.MessageFlow[iMessageFlow].DroppedMsgCnt;
+		diagMsg.MessageFlow[iMessageFlow].QueuedMsgCnt
+			= channel->DumpTbl.MessageFlow[iMessageFlow].QueuedMsgCnt;
+	}
+
+	for(iPQueue = 0; iPQueue < TO_MAX_PRIORITY_QUEUES; ++iPQueue)
+	{
+		diagMsg.PQueue[iPQueue].State
+			= channel->ConfigTblPtr->PriorityQueue[iPQueue].State;
+		diagMsg.PQueue[iPQueue].MsgLimit
+			= channel->ConfigTblPtr->PriorityQueue[iPQueue].MsgLimit;
+		diagMsg.PQueue[iPQueue].QType
+			= channel->ConfigTblPtr->PriorityQueue[iPQueue].QType;
+		diagMsg.PQueue[iPQueue].DroppedMsgCnt
+			= channel->DumpTbl.PriorityQueue[iPQueue].DroppedMsgCnt;
+		diagMsg.PQueue[iPQueue].QueuedMsgCnt
+			= channel->DumpTbl.PriorityQueue[iPQueue].QueuedMsgCnt;
+		diagMsg.PQueue[iPQueue].CurrentlyQueuedCnt
+			= channel->DumpTbl.PriorityQueue[iPQueue].CurrentlyQueuedCnt;
+		diagMsg.PQueue[iPQueue].HighwaterMark
+			= channel->DumpTbl.PriorityQueue[iPQueue].HighwaterMark;
+	}
+
+	diagMsg.OQueue.SentCount
+		= channel->OutputQueue.SentCount;
+	diagMsg.OQueue.CurrentlyQueuedCnt
+		= channel->OutputQueue.CurrentlyQueuedCnt;
+	diagMsg.OQueue.HighwaterMark
+		= channel->OutputQueue.HighwaterMark;
+
+	TO_Channel_UnlockByRef(channel);
+
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&diagMsg);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&diagMsg);
+
+    rc = TRUE;
+
+end_of_function:
+	return rc;
+
 }
 
 
@@ -669,7 +813,7 @@ boolean TO_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
             uint16 usCmdCode = CFE_SB_GetCmdCode(MsgPtr);
 
             (void) CFE_EVS_SendEvent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR,
-                              "Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, "
+                              "Rcvd invalid msgLen: msgId=0x%04X, cmdCode=%d, "
                               "msgLen=%d, expectedLen=%d",
                               MsgId, usCmdCode, usMsgLen, usExpectedLen);
             TO_AppData.HkTlm.usCmdErrCnt++;
@@ -687,6 +831,11 @@ boolean TO_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
 void TO_AppMain()
 {
+    /* Clear the AppData structure.  Global data appears to retain its value when an application is
+     * restarted.
+     */
+    memset(&TO_AppData, 0, sizeof(TO_AppData));
+
     /* Register the application with Executive Services */
     TO_AppData.uiRunStatus = CFE_ES_APP_RUN;
 
@@ -725,14 +874,9 @@ void TO_AppMain()
         {
             /* TODO: Decide what to do for other return values in TO_RcvMsg(). */
         }
-
-        iStatus = TO_AcquireConfigPointers();
-        if(iStatus != CFE_SUCCESS)
-        {
-            /* We apparently tried to load a new table but failed.  Terminate the application. */
-            TO_AppData.uiRunStatus = CFE_ES_APP_ERROR;
-        }
     }
+
+    TO_Cleanup();
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(TO_MAIN_TASK_PERF_ID);

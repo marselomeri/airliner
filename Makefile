@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 TARGET_PATHS := $(shell find config -maxdepth 2 -mindepth 2 -type d -path 'config/shared/*' -prune -o -exec expr {} : '[^/]*/\(.*\)' \; )
-TARGET_NAMES := $(shell echo ${TARGET_PATHS} | tr / _ )
+TARGET_NAMES := $(shell echo ${TARGET_PATHS} )
 
 
 help::
@@ -23,7 +23,7 @@ $(TARGET_NAMES)::
         done; \
 	TARGET_PATH=$$(echo ${TARGET_PATHS} | cut -d " " -f $$idx); \
 	mkdir -p build/$$TARGET_PATH; \
-	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE));
+	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) -j 4);
 	
 
 clean::

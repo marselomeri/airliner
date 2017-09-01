@@ -10,6 +10,8 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "to_channel.h"
+#include "to_priority_queue.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -94,6 +96,7 @@ extern "C" {
 #define TO_QUERY_MESSAGE_FLOW_CC   (4)
 #define TO_QUERY_PRIORITY_QUEUE_CC (5)
 #define TO_QUERY_OUTPUT_CHANNEL_CC (6)
+#define TO_SEND_DIAG_CC            (7)
 
 
 /************************************************************************
@@ -113,6 +116,7 @@ typedef struct
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     CFE_SB_MsgId_t MsgID;
     uint16 MsgLimit;
     uint16 PQueueIdx;
@@ -121,28 +125,35 @@ typedef struct
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     CFE_SB_MsgId_t MsgID;
-    uint16 PQueueIdx;
 } TO_RemoveMessageFlowCmd_t;
 
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     CFE_SB_MsgId_t MsgID;
-    uint16 PQueueIdx;
 } TO_QueryMessageFlowCmd_t;
 
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
     uint16 PQueueIndex;
 } TO_QueryPriorityQueueCmd_t;
 
 typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-    uint16 OutputChannelIndex;
+    uint16 ChannelIdx;
 } TO_QueryOutputChannelCmd_t;
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 ChannelIdx;
+} TO_SendDiagCmd_t;
 
 /** 
 **  \brief TODO Elaborate this struct
@@ -189,19 +200,67 @@ typedef struct
 
     /** \totlmmnemonic \TO_TTLMSGDROP
         \brief Count of all messages dropped */
-    uint8              usTotalMsgDropped;
-
-    /** \totlmmnemonic \TO_NOSERFUNCCNT
-        \brief Count of messages with no serialize functions. */
-    uint8              usNoSerFuncCnt;
+    uint16             usTotalMsgDropped;
 
     /** \totlmmnemonic \TO_MEMPOOLHNDL
         \brief Memory pool handle for queued messages. */
     uint32             MemPoolHandle;
+
+    uint32 			   MemInUse;
+    uint32 			   PeakMemInUse;
+    uint32             MaxMem;
+    uint16             QueuedInOutputChannel[TO_MAX_CHANNELS];
   
     /* TODO:  Add declarations for additional housekeeping data here */
 
 } TO_HkTlm_t;
+
+
+typedef struct
+{
+    CFE_SB_MsgId_t  MsgId;
+    uint16          MsgLimit;
+    uint16			PQueueID;
+    uint16			DroppedMsgCnt;
+    uint16			QueuedMsgCnt;
+} TO_MessageFlowDiagTlm_t;
+
+
+typedef struct
+{
+    TO_PriorityQueueState_t State;
+	uint16 				    MsgLimit;
+	TO_PriorityQueueType_t  QType;
+	uint16					DroppedMsgCnt;
+	uint16					QueuedMsgCnt;
+	uint16					CurrentlyQueuedCnt;
+	uint16					HighwaterMark;
+} TO_PriorityDiagTlm_t;
+
+
+typedef struct
+{
+	uint16					SentCount;
+	uint16					CurrentlyQueuedCnt;
+    uint16					HighwaterMark;
+} TO_OutputQueueDiagTlm_t;
+
+
+typedef struct
+{
+    uint8                   ucTlmHeader[CFE_SB_TLM_HDR_SIZE];
+	uint32				    Index;
+	TO_ChannelState_t       State;
+    char  	                ConfigTableName[CFE_TBL_MAX_NAME_LENGTH];
+    char  	                ConfigTableFileName[OS_MAX_PATH_LEN];
+    char  	                DumpTableName[OS_MAX_API_NAME];
+    char  	                ChannelName[OS_MAX_API_NAME];
+	uint8 	                TableID;
+	TO_MessageFlowDiagTlm_t MessageFlow[TO_MAX_MESSAGE_FLOWS];
+	TO_PriorityDiagTlm_t    PQueue[TO_MAX_PRIORITY_QUEUES];
+	TO_OutputQueueDiagTlm_t OQueue;
+} TO_ChannelDiagTlm_t;
+
 
 
 #ifdef __cplusplus
