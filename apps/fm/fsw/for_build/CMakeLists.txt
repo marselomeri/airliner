@@ -3,10 +3,21 @@ add_airliner_app_def(fm
     FILE FM
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_child.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_child.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmd_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmd_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_defs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_msgdefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_tbl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_tbl.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_version.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -19,17 +30,34 @@ add_airliner_app_unit_test(fm-ut
     UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_app_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_app_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_child_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_child_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_cmds_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_cmds_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_cmd_utils_test.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_cmd_utils_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_tbl_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_testrunner.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_tbl_test.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_test_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/fm_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_child.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_child.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmd_utils.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmd_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_defs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_msgdefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_tbl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_tbl.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/fm_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../cfs_lib/fsw/src/cfs_utils.c
         
     INCLUDES

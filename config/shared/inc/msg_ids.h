@@ -12,6 +12,7 @@
 #define TO_HK_TLM_MID 					0x0902
 #define TO_SEND_TLM_MID					0x1903
 #define TO_DATA_TYPE_MID		        0x0904
+#define TO_DIAG_TLM_MID					0x0911
 
 /* CI 										*/
 /* Range: 0x900 - 0x90f 					*/

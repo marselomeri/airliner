@@ -16,6 +16,8 @@
 ** Local Defines
 *************************************************************************/
 
+typedef struct TO_ChannelData_t TO_ChannelData_t;
+
 /************************************************************************
 ** Local Structure Definitions
 *************************************************************************/
@@ -28,10 +30,14 @@ typedef struct
     CFE_SB_MsgId_t  MsgId;
     uint16          MsgLimit;
     uint16			PQueueID;
-    uint16          MinSize;
+} TO_MessageFlow_t;
+
+
+typedef struct
+{
     uint16			DroppedMsgCnt;
     uint16			QueuedMsgCnt;
-} TO_TlmMessageFlow_t;
+} TO_MessageFlowMetrics_t;
 
 /************************************************************************
 ** External Global Variables
@@ -48,7 +54,7 @@ typedef struct
 **       and Queued Message Counts.
 **
 *************************************************************************/
-void TO_MessageFlow_ResetCountsAll(void);
+void TO_MessageFlow_ResetCountsAll(TO_ChannelData_t* channel);
 
 
 
@@ -65,7 +71,7 @@ void TO_MessageFlow_ResetCountsAll(void);
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_MessageFlow_TeardownAll(void);
+int32 TO_MessageFlow_TeardownAll(TO_ChannelData_t* channel);
 
 
 
@@ -82,7 +88,7 @@ int32 TO_MessageFlow_TeardownAll(void);
 **  \endreturns
 **
 *************************************************************************/
-int32 TO_MessageFlow_BuildupAll(void);
+int32 TO_MessageFlow_Buildup(TO_ChannelData_t* channel);
 
 
 
@@ -94,7 +100,7 @@ int32 TO_MessageFlow_BuildupAll(void);
 **       the queue, deallocating each message its popped off the queue.
 **
 *************************************************************************/
-void TO_MessageFlow_CleanupAll(void);
+void TO_MessageFlow_CleanupAll(TO_ChannelData_t* channel);
 
 
 
@@ -114,34 +120,12 @@ void TO_MessageFlow_CleanupAll(void);
 **                              object.
 **
 **  \returns
-**  Pointer to the #TO_TlmMessageFlow_t object when successful.  NULL
+**  Pointer to the #TO_MessageFlow_t object when successful.  NULL
 **  pointer when unsuccessful.
 **  \endreturns
 **
 *************************************************************************/
-TO_TlmMessageFlow_t* TO_MessageFlow_GetNextObject(CFE_SB_MsgId_t MsgID, uint32 *Cursor);
-
-
-
-/************************************************************************/
-/** \brief Get the specified message flow object.
-**
-**  \par Description
-**       This function is used by the classifier to get a specific
-**       message flow object with the specified message ID.
-**
-**  \param [in]   MsgPtr        A #CFE_SB_MsgId_t that references the
-**                              software bus message.
-**
-**  \param [in]   PQueueIdx     The index of the priority queue.
-**
-**  \returns
-**  Pointer to the #TO_TlmMessageFlow_t object when successful.  NULL
-**  pointer when unsuccessful.
-**  \endreturns
-**
-*************************************************************************/
-TO_TlmMessageFlow_t* TO_MessageFlow_GetObject(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx);
+TO_MessageFlow_t* TO_MessageFlow_GetObject(TO_ChannelData_t* channel, CFE_SB_MsgId_t MsgID, uint32 *Index);
 
 
 
@@ -152,16 +136,16 @@ TO_TlmMessageFlow_t* TO_MessageFlow_GetObject(CFE_SB_MsgId_t MsgID, uint16 PQueu
 **       This function is used by the classifier to get the priority
 **       queue object from the message flow object.
 **
-**  \param [in]   MsgPtr        A #TO_TlmMessageFlow_t pointer that
+**  \param [in]   MsgPtr        A #TO_MessageFlow_t pointer that
 **                              references the message flow.
 **
 **  \returns
-**  Pointer to the #TO_TlmPriorityQueue_t object when successful.  NULL
+**  Pointer to the #TO_PriorityQueue_t object when successful.  NULL
 **  pointer when unsuccessful.
 **  \endreturns
 **
 *************************************************************************/
-TO_TlmPriorityQueue_t* TO_MessageFlow_GetPQueue(TO_TlmMessageFlow_t *MsgFlow);
+TO_PriorityQueue_t* TO_MessageFlow_GetPQueue(TO_ChannelData_t* channel, TO_MessageFlow_t *MsgFlow, uint32 *Index);
 
 
 
@@ -185,7 +169,7 @@ TO_TlmPriorityQueue_t* TO_MessageFlow_GetPQueue(TO_TlmMessageFlow_t *MsgFlow);
 **  \endreturns
 **
 *************************************************************************/
-boolean TO_MessageFlow_Add(CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueIdx);
+boolean TO_MessageFlow_Add(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueIdx);
 
 
 
@@ -207,7 +191,7 @@ boolean TO_MessageFlow_Add(CFE_SB_MsgId_t MsgID, uint16 MsgLimit, uint16 PQueueI
 **  \endreturns
 **
 *************************************************************************/
-boolean TO_MessageFlow_Remove(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx);
+boolean TO_MessageFlow_Remove(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID);
 
 
 
@@ -230,6 +214,6 @@ boolean TO_MessageFlow_Remove(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx);
 **  \endreturns
 **
 *************************************************************************/
-boolean TO_MessageFlow_Query(CFE_SB_MsgId_t MsgID, uint16 PQueueIdx);
+boolean TO_MessageFlow_Query(uint16 ChannelIdx, CFE_SB_MsgId_t MsgID);
 
 #endif

@@ -46,6 +46,7 @@ block scripts
       });
      
       $('#CFE_ES_ConsoleSendCmd').click(function(){
+        console.log([{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
         session.sendCommand('/CFS/CFE_ES/ShellCmd', [{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
         $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + '\n');
       });

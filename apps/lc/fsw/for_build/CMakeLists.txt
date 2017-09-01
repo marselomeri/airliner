@@ -3,9 +3,21 @@ add_airliner_app_def(lc
     FILE LC
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_action.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_action.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_custom.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_tbl.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_tbldefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_watch.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_watch.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -22,9 +34,21 @@ add_airliner_app_unit_test(lc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../tables/lc_def_adt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../tables/lc_def_wdt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_action.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_action.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_app.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_cmds.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_cmds.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_custom.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_events.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_msgdefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_tbl.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_tbldefs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_verify.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_watch.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/lc_watch.h
         ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_es_api.c
         ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_es_cds.c
         ${PROJECT_SOURCE_DIR}/tools/utf/src/utf_cfe_esmempool.c
