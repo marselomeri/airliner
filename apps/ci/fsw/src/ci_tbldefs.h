@@ -10,6 +10,8 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "ci_private_types.h"
+#include "ci_mission_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,6 +31,11 @@ extern "C" {
 #define CI_CONFIG_TABLENAME          ("CONFIG_TBL")
 
 /**
+ * \brief Defines the table identification name used for timeout table registration.
+ */
+#define CI_TIMEOUT_TABLENAME         ("TIMEOUT_TBL")
+
+/**
  * \brief Defines the table file name used for table registration.
  */
 #define CI_CDS_TABLENAME  ("ci_CdsTbl")
@@ -37,37 +44,19 @@ extern "C" {
 ** Local Structure Declarations
 *************************************************************************/
 
-/** \brief Definition for a single config table entry */
+/** \brief Definition for a CI command config table */
 typedef struct
 {
-    int32  iParam;
-
-    /* TODO:  Add type declaration for config parameters here.
-    **
-    ** Examples:
-    **    int8/char            cParam;
-    **    int8/char            cParams[16];
-    **    uint8/unsigned char  ucParam;
-    **    uint8/unsigned char  ucParams[16];
-    **
-    **    int16   sParam;
-    **    int16   sParams[8];
-    **    uint16  usParam;
-    **    uint16  usParams[8];
-    **
-    **    int32   iParam;
-    **    int32   iParams[5];
-    **    uint32  uiParam;
-    **    uint32  uiParams[5];
-    **
-    **    float  fParam;
-    **    float  fParams[3];
-    **
-    **    double  dParam;
-    **    double  dParams[3];
-    */
+	uint8			TableID;
+	CI_CmdData_t	cmds[CI_MAX_RGST_CMDS];
 } CI_ConfigTblEntry_t;
 
+/** \brief Definition for a CI command timeout table */
+typedef struct
+{
+	uint8			TableID;
+	int				time[CI_MAX_RGST_CMDS];
+} CI_TimeoutTblEntry_t;
 
 /** \brief Definition for Critical Data Storage (CDS) table entry */
 typedef struct

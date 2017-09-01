@@ -62,8 +62,10 @@
 #define VC_WAKEUP_MIDX				46
 
 #define CI_READ_CMD_MIDX			50
+#define CI_1HZ_PROCESS_TIMEOUT_MIDX 51
+#define CI_SEND_HK_MIDX             52
 
-#define CI_SEND_HK_MIDX             53
+
 #define CF_SEND_HK_MIDX				57
 #define CF_WAKE_UP_REQ_CMD_MIDX		58
 

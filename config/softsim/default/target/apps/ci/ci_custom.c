@@ -56,7 +56,7 @@ end_of_function:
 
 int32 CI_ReadMessage(char* buffer, uint32* size)
 {
-	size = recv(CI_AppCustomData.Socket,
+	*size = recv(CI_AppCustomData.Socket,
 					   (char *)buffer,
 					   size, 0);
 }
