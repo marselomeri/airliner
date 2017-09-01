@@ -1619,6 +1619,7 @@ void CS_AppPipe_Test_InvalidCCError(void)
 {
     int32            Result;
     CS_NoArgsCmd_t   CmdPacket;
+    char			 ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     CS_AppData.ChildTaskTable = -1;
 
@@ -1631,9 +1632,11 @@ void CS_AppPipe_Test_InvalidCCError(void)
     /* Verify results */
     UtAssert_True (Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Invalid ground command code: ID = 0x%04X, CC = 99", CS_CMD_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(CS_CC1_ERR_EID, CFE_EVS_ERROR, "Invalid ground command code: ID = 0x189F, CC = 99"),
-        "Invalid ground command code: ID = 0x189F, CC = 99");
+        (Ut_CFE_EVS_EventSent(CS_CC1_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
@@ -1733,6 +1736,7 @@ void CS_HousekeepingCmd_Test_Nominal(void)
 void CS_HousekeepingCmd_Test_InvalidMsgLength(void)
 {
     CS_HkPacket_t   CmdPacket;
+    char			ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     CFE_SB_InitMsg (&CmdPacket, CS_SEND_HK_MID, 1, TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, 99);
@@ -1741,9 +1745,11 @@ void CS_HousekeepingCmd_Test_InvalidMsgLength(void)
     CS_HousekeepingCmd((CFE_SB_MsgPtr_t)(&CmdPacket));
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Invalid msg length: ID = 0x%04X, CC = 99, Len = 1, Expected = 8", CS_SEND_HK_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(CS_LEN_ERR_EID, CFE_EVS_ERROR, "Invalid msg length: ID = 0x18A0, CC = 99, Len = 1, Expected = 8"),
-        "Invalid msg length: ID = 0x18A0, CC = 99, Len = 1, Expected = 8");
+        (Ut_CFE_EVS_EventSent(CS_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
