@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 TARGET_PATHS := $(shell find config -maxdepth 2 -mindepth 2 -type d -path 'config/shared/*' -prune -o -exec expr {} : '[^/]*/\(.*\)' \; )
-TARGET_NAMES := $(shell echo ${TARGET_PATHS} | tr / _ )
+TARGET_NAMES := $(shell echo ${TARGET_PATHS} )
 
 
 help::
