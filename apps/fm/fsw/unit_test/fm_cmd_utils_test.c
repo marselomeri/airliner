@@ -304,10 +304,16 @@ void FM_VerifyFileClosed_Test_FileClosed(void)
     boolean Result;
     char Filename[OS_MAX_PATH_LEN];
 
+    memset(&FM_GlobalData, 0, sizeof(FM_GlobalData));
+
     strncpy (Filename, "name", OS_MAX_PATH_LEN);
 
     /* Needed to satisfy condition "FilenameState == FM_NAME_IS_FILE_CLOSED" */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsFile);
+
+    /* Needed to satisfy condition "OS_FDGetInfo(i, &FDTableEntry) != OS_FS_SUCCESS" */
+    Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_FDGETINFO_INDEX, OS_FS_ERR_INVALID_FD, 0);
+    Ut_OSFILEAPI_ContinueReturnCodeAfterCountZero(UT_OSFILEAPI_FDGETINFO_INDEX);
 
     /* Execute the function being tested */
     Result = FM_VerifyFileClosed(Filename, OS_MAX_PATH_LEN, 1, "Command");
@@ -648,6 +654,10 @@ void FM_VerifyFileNotOpen_Test_FileClosed(void)
 
     /* Satisfies condition "FilenameState == FM_NAME_IS_FILE_CLOSED" */
     Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_STAT_INDEX, &UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_StatHookIsFile);
+
+    /* Needed to satisfy condition "OS_FDGetInfo(i, &FDTableEntry) != OS_FS_SUCCESS" */
+    Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_FDGETINFO_INDEX, OS_FS_ERR_INVALID_FD, 0);
+    Ut_OSFILEAPI_ContinueReturnCodeAfterCountZero(UT_OSFILEAPI_FDGETINFO_INDEX);
 
     /* Execute the function being tested */
     Result = FM_VerifyFileNotOpen(Filename, OS_MAX_PATH_LEN, 1, "Command");
