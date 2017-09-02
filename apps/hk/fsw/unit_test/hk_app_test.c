@@ -345,6 +345,7 @@ void HK_AppInit_Test_SBSubscribeHKSendError(void)
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -365,9 +366,12 @@ void HK_AppInit_Test_SBSubscribeHKSendError(void)
     Result = HK_AppInit();
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Error Subscribing to HK Snd Cmb Pkt, MID=0x%04X, RC=0xFFFFFFFF",
+			HK_SEND_COMBINED_PKT_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_SUB_CMB_ERR_EID, CFE_EVS_ERROR, "Error Subscribing to HK Snd Cmb Pkt, MID=0x189C, RC=0xFFFFFFFF"),
-        "Error Subscribing to HK Snd Cmb Pkt, MID=0x189C, RC=0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(HK_SUB_CMB_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (HK_AppData.RunStatus == CFE_ES_APP_RUN, "HK_AppData.RunStatus == CFE_ES_APP_RUN");
 
@@ -380,6 +384,7 @@ void HK_AppInit_Test_SBSubscribeHKSendError(void)
 void HK_AppInit_Test_SBSubscribeHKRequestError(void)
 {
     int32 Result;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
@@ -403,9 +408,12 @@ void HK_AppInit_Test_SBSubscribeHKRequestError(void)
     Result = HK_AppInit();
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Error Subscribing to HK Request, MID=0x%04X, RC=0xFFFFFFFF",
+			HK_SEND_HK_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_SUB_REQ_ERR_EID, CFE_EVS_ERROR, "Error Subscribing to HK Request, MID=0x189B, RC=0xFFFFFFFF"),
-        "Error Subscribing to HK Request, MID=0x189B, RC=0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(HK_SUB_REQ_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (HK_AppData.RunStatus == CFE_ES_APP_RUN, "HK_AppData.RunStatus == CFE_ES_APP_RUN");
 
@@ -418,6 +426,7 @@ void HK_AppInit_Test_SBSubscribeHKRequestError(void)
 void HK_AppInit_Test_SBSubscribeHKGndCmdsError(void)
 {
     int32 Result;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
@@ -441,9 +450,12 @@ void HK_AppInit_Test_SBSubscribeHKGndCmdsError(void)
     Result = HK_AppInit();
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Error Subscribing to HK Gnd Cmds, MID=0x%04X, RC=0xFFFFFFFF",
+			HK_CMD_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_SUB_CMD_ERR_EID, CFE_EVS_ERROR, "Error Subscribing to HK Gnd Cmds, MID=0x189A, RC=0xFFFFFFFF"),
-        "Error Subscribing to HK Gnd Cmds, MID=0x189A, RC=0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(HK_SUB_CMD_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (HK_AppData.RunStatus == CFE_ES_APP_RUN, "HK_AppData.RunStatus == CFE_ES_APP_RUN");
 
@@ -878,6 +890,7 @@ void HK_AppPipe_Test_SendCombinedPktNominal(void)
 void HK_AppPipe_Test_SendCombinedPktError(void)
 {
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
@@ -896,9 +909,12 @@ void HK_AppPipe_Test_SendCombinedPktError(void)
     HK_AppPipe((CFE_SB_MsgPtr_t)(&CmdPacket));
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Msg with Bad length Rcvd: ID = 0x%04X, Exp Len = 10, Len = 1",
+			HK_SEND_COMBINED_PKT_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_MSG_LEN_ERR_EID, CFE_EVS_ERROR, "Msg with Bad length Rcvd: ID = 0x189C, Exp Len = 10, Len = 1"),
-        "Msg with Bad length Rcvd: ID = 0x189C, Exp Len = 10, Len = 1");
+        (Ut_CFE_EVS_EventSent(HK_MSG_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
@@ -932,6 +948,7 @@ void HK_AppPipe_Test_SendHKNominal(void)
 void HK_AppPipe_Test_SendHKError(void)
 {
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
@@ -950,9 +967,12 @@ void HK_AppPipe_Test_SendHKError(void)
     HK_AppPipe((CFE_SB_MsgPtr_t)(&CmdPacket));
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Msg with Bad length Rcvd: ID = 0x%04X, Exp Len = 8, Len = 1",
+			HK_SEND_HK_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_MSG_LEN_ERR_EID, CFE_EVS_ERROR, "Msg with Bad length Rcvd: ID = 0x189B, Exp Len = 8, Len = 1"),
-        "Msg with Bad length Rcvd: ID = 0x189B, Exp Len = 8, Len = 1");
+        (Ut_CFE_EVS_EventSent(HK_MSG_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
@@ -1019,6 +1039,7 @@ void HK_AppPipe_Test_Reset(void)
 void HK_AppPipe_Test_InvalidCommandCode(void)
 {
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
@@ -1036,9 +1057,12 @@ void HK_AppPipe_Test_InvalidCommandCode(void)
     HK_AppPipe((CFE_SB_MsgPtr_t)(&CmdPacket));
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Cmd Msg with Invalid command code Rcvd -- ID = 0x%04X, CC = 99",
+			HK_CMD_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_CC_ERR_EID, CFE_EVS_ERROR, "Cmd Msg with Invalid command code Rcvd -- ID = 0x189A, CC = 99"),
-        "Cmd Msg with Invalid command code Rcvd -- ID = 0x189A, CC = 99");
+        (Ut_CFE_EVS_EventSent(HK_CC_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (HK_AppData.ErrCounter == 1, "HK_AppData.ErrCounter == 1");
 
@@ -1244,6 +1268,7 @@ void HK_VerifyCmdLength_Test_BadMsgLength(void)
     int32               Result;
     uint32              ExpectedLength;
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
@@ -1261,9 +1286,12 @@ void HK_VerifyCmdLength_Test_BadMsgLength(void)
     Result = HK_VerifyCmdLength((CFE_SB_MsgPtr_t)(&CmdPacket), ExpectedLength);
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Cmd Msg with Bad length Rcvd: ID = 0x%04X, CC = 1, Exp Len = 99, Len = 8",
+			HK_CMD_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_CMD_LEN_ERR_EID, CFE_EVS_ERROR, "Cmd Msg with Bad length Rcvd: ID = 0x189A, CC = 1, Exp Len = 99, Len = 8"),
-        "Cmd Msg with Bad length Rcvd: ID = 0x189A, CC = 1, Exp Len = 99, Len = 8");
+        (Ut_CFE_EVS_EventSent(HK_CMD_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Result == HK_BAD_MSG_LENGTH_RC, "Result == HK_BAD_MSG_LENGTH_RC");
 
