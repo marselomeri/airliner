@@ -131,6 +131,13 @@ void FM_ValidateTable_Test_InvalidState(void)
 {
     int32 Result;
     FM_FreeSpaceTable_t TableData;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
+
+    /* Clear the table so its all zeros for the validation function.  Since
+     * this variable is allocated on stack, the contents are garbage.  We
+     * need to clear it first.
+     */
+    memset(&TableData, 0, sizeof(TableData));
 
     TableData.FileSys[0].State = 99;
 
@@ -138,15 +145,17 @@ void FM_ValidateTable_Test_InvalidState(void)
     Result = FM_ValidateTable(&TableData);
     
     /* Verify results */
+
     UtAssert_True (Result == FM_TABLE_VALIDATION_ERR, "Result == FM_TABLE_VALIDATION_ERR");
 
     UtAssert_True
         (Ut_CFE_EVS_EventSent(FM_TABLE_VERIFY_ERR_EID, CFE_EVS_ERROR, "Table verify error: index = 0, invalid state = 99"),
         "Table verify error: index = 0, invalid state = 99");
 
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH, "Free Space Table verify results: good entries = 0, bad = %u, unused = 0", FM_TABLE_ENTRY_COUNT);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(FM_TABLE_VERIFY_EID, CFE_EVS_INFORMATION, "Free Space Table verify results: good entries = 0, bad = 8, unused = 0"),
-        "Free Space Table verify results: good entries = 0, bad = 8, unused = 0");
+        (Ut_CFE_EVS_EventSent(FM_TABLE_VERIFY_EID, CFE_EVS_INFORMATION, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 2, "Ut_CFE_EVS_GetEventQueueDepth() == 2");
 
@@ -157,6 +166,12 @@ void FM_ValidateTable_Test_EmptyNameString(void)
     int32 Result;
     FM_FreeSpaceTable_t TableData;
     uint16 i;
+
+    /* Clear the table so its all zeros for the validation function.  Since
+     * this variable is allocated on stack, the contents are garbage.  We
+     * need to clear it first.
+     */
+    memset(&TableData, 0, sizeof(TableData));
 
     for (i = 0; i < FM_TABLE_ENTRY_COUNT; i++)
     {

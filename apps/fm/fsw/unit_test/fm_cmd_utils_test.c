@@ -82,7 +82,7 @@ int32 UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_FDGetInfoHook(int32 filedes, OS_FDTable
 
 int32 UT_FM_CMD_UTILS_TEST_CFE_ES_GetTaskInfoHook(CFE_ES_TaskInfo_t *TaskInfo, uint32 TaskId)
 {
-    strncpy ((char *)TaskInfo->AppName, "appname", OS_MAX_PATH_LEN);
+    strncpy ((char *)TaskInfo->AppName, "appname", sizeof(TaskInfo->AppName));
 
     return 0;
 } /* end UT_FM_CMD_UTILS_TEST_CFE_ES_GetTaskInfoHook */
@@ -140,15 +140,17 @@ void FM_GetOpenFilesData_Test(void)
     uint32 Result;
     FM_OpenFilesEntry_t OpenFilesData[OS_MAX_NUM_OPEN_FILES];
 
+    CFE_PSP_MemSet(&FM_GlobalData, 0, sizeof(FM_GlobalData_t));
+
     /* Satisfies condition "FDTableEntry.IsValid == TRUE", and causes LogicalName to be set to "name" */
-    Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_FDGETINFO_INDEX, &UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_FDGetInfoHook); 
+    Ut_OSFILEAPI_SetFunctionHook(UT_OSFILEAPI_FDGETINFO_INDEX, &UT_FM_CMD_UTILS_TEST_CFE_OSFILEAPI_FDGetInfoHook);
 
     /* Sets AppName to "appname" */
     Ut_CFE_ES_SetFunctionHook(UT_CFE_ES_GETTASKINFO_INDEX, &UT_FM_CMD_UTILS_TEST_CFE_ES_GetTaskInfoHook);
 
     /* Execute the function being tested */
     Result = FM_GetOpenFilesData(OpenFilesData);
-    
+
     /* Verify results */
     UtAssert_True (Result == OS_MAX_NUM_OPEN_FILES, "Result == OS_MAX_NUM_OPEN_FILES");
 
