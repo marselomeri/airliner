@@ -78,7 +78,7 @@ CFE_TIME_Compare_t UT_SC_StartAtsRq_CompareHook3(CFE_TIME_SysTime_t TimeA, CFE_T
 void SC_StartAtsCmd_Test_Nominal(void)
 {
     SC_StartAtsCmd_t   CmdPacket;
-    
+
     SC_InitTables();
 
     CFE_SB_InitMsg (&CmdPacket, SC_CMD_MID, sizeof(SC_StartAtsCmd_t), TRUE);
