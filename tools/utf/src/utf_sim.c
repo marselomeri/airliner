@@ -231,27 +231,27 @@ void UTF_set_write_sim_hook(utf_write_sim_hook_type hook)
 */
 void UTF_add_sim_address(unsigned long start, unsigned long size, char *name)
 {
-    if (sim_address_count < UTF_SIM_MEM_LOOKUP_TABLE_SIZE) {
-
-        if (size > 0) {
-
-            sim_memory_lookup_table[sim_address_count].start = start;
-            sim_memory_lookup_table[sim_address_count].size = size;
-            sim_memory_lookup_table[sim_address_count].name = name;
-            sim_memory_lookup_table[sim_address_count].memory = malloc(size);
-            if (sim_memory_lookup_table[sim_address_count].memory == NULL) {
-                UTF_error("Sim Mem Error Allocating Sim Memory Space, Address 0X%x, Bytes %d", start, size);
-            }
-            memset (sim_memory_lookup_table[sim_address_count].memory, 0, size);
-            sim_address_count++;
-        }
-        else {
-            UTF_error("Sim Mem Memory Segment Size is 0, Address: 0X%x", start);
-        }
-    }
-    else {
-        UTF_error("Sim Mem Maximum Number of Memory Addresses Exceeded, Max: %d", UTF_SIM_MEM_LOOKUP_TABLE_SIZE);
-    }
+//    if (sim_address_count < UTF_SIM_MEM_LOOKUP_TABLE_SIZE) {
+//
+//        if (size > 0) {
+//
+//            sim_memory_lookup_table[sim_address_count].start = start;
+//            sim_memory_lookup_table[sim_address_count].size = size;
+//            sim_memory_lookup_table[sim_address_count].name = name;
+//            sim_memory_lookup_table[sim_address_count].memory = malloc(size);
+//            if (sim_memory_lookup_table[sim_address_count].memory == NULL) {
+//                UTF_error("Sim Mem Error Allocating Sim Memory Space, Address 0X%x, Bytes %d", start, size);
+//            }
+//            memset (sim_memory_lookup_table[sim_address_count].memory, 0, size);
+//            sim_address_count++;
+//        }
+//        else {
+//            UTF_error("Sim Mem Memory Segment Size is 0, Address: 0X%x", start);
+//        }
+//    }
+//    else {
+//        UTF_error("Sim Mem Maximum Number of Memory Addresses Exceeded, Max: %d", UTF_SIM_MEM_LOOKUP_TABLE_SIZE);
+//    }
 }
 
 /******************************************************************************

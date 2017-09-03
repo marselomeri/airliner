@@ -107,6 +107,7 @@ void MM_VerifyCmdLength_Test_HKRequestLengthError (void)
     boolean          Result;
     uint16           ExpectedLength = 99;
     MM_PeekCmd_t     CmdPacket;
+    char			 ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     CFE_SB_InitMsg (&CmdPacket, MM_CMD_MID, sizeof(MM_PeekCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, MM_PEEK_CC);
@@ -120,9 +121,11 @@ void MM_VerifyCmdLength_Test_HKRequestLengthError (void)
     /* Verify results */
     UtAssert_True (Result == FALSE, "Result == FALSE");
 
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Invalid HK request msg length: ID = 0x%04X, CC = 2, Len = 80, Expected = 99", MM_SEND_HK_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(MM_HKREQ_LEN_ERR_EID, CFE_EVS_ERROR, "Invalid HK request msg length: ID = 0x1889, CC = 2, Len = 80, Expected = 99"),
-        "Invalid HK request msg length: ID = 0x1889, CC = 2, Len = 80, Expected = 99");
+        (Ut_CFE_EVS_EventSent(MM_HKREQ_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
