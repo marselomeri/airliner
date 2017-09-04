@@ -707,16 +707,6 @@ end_of_function:
 
 
 /*
- * Custom function to initialize custom device data structure.
- * returns CFE_SUCCESS
- */
-int32 VC_Devices_InitData()
-{
-    return VC_CustomDevice_InitData();
-}
-
-
-/*
  * Start streaming on all enabled and initialized devices
  * True for success, false for failure
  * Note: Creates the streaming task
@@ -796,3 +786,10 @@ boolean VC_Devices_Uninit(void)
     }
     return TRUE;
 }
+
+
+int32 VC_Devices_InitData()
+{
+    return VC_CustomDevice_InitData();
+}
+
