@@ -33,7 +33,10 @@ void EA_StartAppCustom()
 				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
 									"Error starting external application");
 			}
-			exit(0); // TODO
+            /*
+		    ** NOTE: This exit is required here as a means to shut down the child process.
+		    */  
+			exit(0); 
 		}
 		/*
 		** Failed Fork
@@ -154,8 +157,8 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	FILE* proc_stat = fopen("/proc/stat", "r");
 	if (proc_stat == NULL) {
 		OS_printf("Unable to open stat");
-		//return NULL;
 	}
+
 	char buf[1024];
 	char* data = fgets(buf, sizeof(buf) - 1, proc_stat);
 	if (data == NULL)
