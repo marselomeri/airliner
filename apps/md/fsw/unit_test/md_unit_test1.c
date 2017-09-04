@@ -173,10 +173,10 @@ void UTF_AddSimulatedMemory ( int argc, char *argv[])
     int32 RetVal;
     uint8 data1[4];
     uint32 data2;
-    data1[1] = 0xAA;
-    data1[2] = 0xBB;
-    data1[3] = 0xCC;
-    data1[4] = 0xDD;
+    data1[0] = 0xAA;
+    data1[1] = 0xBB;
+    data1[2] = 0xCC;
+    data1[3] = 0xDD;
     data2 = 0xabbadaba;
 
     /* Calling UTF_read_sim_address makes UTF simulate successful reads */
@@ -187,22 +187,22 @@ void UTF_AddSimulatedMemory ( int argc, char *argv[])
 
     /* Calling CFE_PSP_MemRangeSet makes calls to CFE_PSP_MemValidateRange for this */
     /* range return true. */
-    RetVal = CFE_PSP_MemRangeSet(0, CFE_PSP_MEM_RAM, 0x004610A0, 
+    RetVal = CFE_PSP_MemRangeSet(0, CFE_PSP_MEM_RAM, 0x004610A0,
                      0x00000008,  CFE_PSP_MEM_SIZE_BYTE,  CFE_PSP_MEM_ATTR_READ);
     if (RetVal != OS_SUCCESS)
     {
        UTF_put_text ("Error return %d from CFE_PSP_MemRangeSet\n", RetVal);
     }
-    
+
     /* Calling CFE_PSP_MemRangeSet makes calls to CFE_PSP_MemValidateRange for this */
     /* range return true. */
-    RetVal = CFE_PSP_MemRangeSet(1, CFE_PSP_MEM_RAM, 0x005610A0, 
+    RetVal = CFE_PSP_MemRangeSet(1, CFE_PSP_MEM_RAM, 0x005610A0,
                      0x00000008,  CFE_PSP_MEM_SIZE_BYTE,  CFE_PSP_MEM_ATTR_READ);
     if (RetVal != OS_SUCCESS)
     {
        UTF_put_text ("Error return %d from CFE_PSP_MemRangeSet\n", RetVal);
     }
-    
+
     /* No call to UTF_add_sim_address for address 0x005610A0 will cause */
     /* reads to return FALSE */
     

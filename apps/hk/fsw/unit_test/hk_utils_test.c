@@ -96,10 +96,14 @@ void HK_ProcessIncomingHkData_Test_Nominal(void)
 void HK_ProcessIncomingHkData_Test_MessageError(void)
 {
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable;
     hk_runtime_tbl_entry_t   RuntimeTable;
-    
+
+    memset(&CopyTable, 0, sizeof(CopyTable));
+    memset(&RuntimeTable, 0, sizeof(RuntimeTable));
+
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
 
@@ -111,9 +115,12 @@ void HK_ProcessIncomingHkData_Test_MessageError(void)
     HK_ProcessIncomingHkData((CFE_SB_MsgPtr_t)(&CmdPacket));
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"HK table definition exceeds packet length. MID:0x%04X, Length:10, Count:1",
+			HK_SEND_COMBINED_PKT_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_ACCESSING_PAST_PACKET_END_EID, CFE_EVS_ERROR, "HK table definition exceeds packet length. MID:0x189C, Length:10, Count:1"),
-        "HK table definition exceeds packet length. MID:0x189C, Length:10, Count:1");
+        (Ut_CFE_EVS_EventSent(HK_ACCESSING_PAST_PACKET_END_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 } /* end HK_ProcessIncomingHkData_Test_MessageError */
@@ -171,6 +178,7 @@ void HK_ProcessNewCopyTable_Test_Nominal(void)
 void HK_ProcessNewCopyTable_Test_Errors(void)
 {
     uint16  i;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable[HK_COPY_TABLE_ENTRIES];
     hk_runtime_tbl_entry_t   RuntimeTable[HK_COPY_TABLE_ENTRIES];
@@ -202,9 +210,12 @@ void HK_ProcessNewCopyTable_Test_Errors(void)
         (Ut_CFE_EVS_EventSent(HK_MEM_POOL_MALLOC_FAILED_EID, CFE_EVS_ERROR, "HK Processing New Table: ES_GetPoolBuf for size 2 returned 0xFFFFFFFF"),
         "HK Processing New Table: ES_GetPoolBuf for size 2 returned 0xFFFFFFFF");
 
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"HK Processing New Table:SB_Subscribe for Mid 0x%04X returned 0xFFFFFFFF",
+			HK_SEND_COMBINED_PKT_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_CANT_SUBSCRIBE_TO_SB_PKT_EID, CFE_EVS_ERROR, "HK Processing New Table:SB_Subscribe for Mid 0x189C returned 0xFFFFFFFF"),
-        "HK Processing New Table:SB_Subscribe for Mid 0x189C returned 0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(HK_CANT_SUBSCRIBE_TO_SB_PKT_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
     /* The two messages above each occur HK_COPY_TABLE_ENTRIES times */
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 2*HK_COPY_TABLE_ENTRIES, "Ut_CFE_EVS_GetEventQueueDepth() == 2*HK_COPY_TABLE_ENTRIES");
@@ -277,6 +288,7 @@ void HK_SendCombinedHkPacket_Test_MissingData(void)
 {
     uint16  i;
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable[HK_COPY_TABLE_ENTRIES];
     hk_runtime_tbl_entry_t   RuntimeTable[HK_COPY_TABLE_ENTRIES];
@@ -298,11 +310,14 @@ void HK_SendCombinedHkPacket_Test_MissingData(void)
 
     /* Execute the function being tested */
     HK_SendCombinedHkPacket((CFE_SB_MsgId_t)(HK_SEND_COMBINED_PKT_MID));
-    
+
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Combined Packet 0x%04X missing data from Input Pkt 0x%04X",
+			HK_SEND_COMBINED_PKT_MID, HK_SEND_COMBINED_PKT_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_OUTPKT_MISSING_DATA_EID, CFE_EVS_DEBUG, "Combined Packet 0x189C missing data from Input Pkt 0x189C"),
-        "Combined Packet 0x189C missing data from Input Pkt 0x189C");
+        (Ut_CFE_EVS_EventSent(HK_OUTPKT_MISSING_DATA_EID, CFE_EVS_DEBUG, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (HK_AppData.MissingDataCtr == 1, "HK_AppData.MissingDataCtr == 1");
     UtAssert_True (HK_AppData.CombinedPacketsSent == 1, "HK_AppData.CombinedPacketsSent == 1");
@@ -314,6 +329,7 @@ void HK_SendCombinedHkPacket_Test_PacketFoundFalse(void)
 {
     uint16  i;
     HK_Send_Out_Msg_t   CmdPacket;
+    char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     hk_copy_table_entry_t    CopyTable[HK_COPY_TABLE_ENTRIES];
     hk_runtime_tbl_entry_t   RuntimeTable[HK_COPY_TABLE_ENTRIES];
@@ -337,9 +353,12 @@ void HK_SendCombinedHkPacket_Test_PacketFoundFalse(void)
     HK_SendCombinedHkPacket((CFE_SB_MsgId_t)(HK_SEND_COMBINED_PKT_MID));
     
     /* Verify results */
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Combined HK Packet 0x%04X is not found in current HK Copy Table",
+			HK_SEND_COMBINED_PKT_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(HK_UNKNOWN_COMBINED_PACKET_EID, CFE_EVS_INFORMATION, "Combined HK Packet 0x189C is not found in current HK Copy Table"),
-        "Combined HK Packet 0x189C is not found in current HK Copy Table");
+        (Ut_CFE_EVS_EventSent(HK_UNKNOWN_COMBINED_PACKET_EID, CFE_EVS_INFORMATION, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 } /* end HK_SendCombinedHkPacket_Test_PacketFoundFalse */

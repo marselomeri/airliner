@@ -10,8 +10,9 @@ extern "C" {
 ** CI Mission Configuration Parameter Definitions
 */
 
-/* TODO:  Add mission configuration parameter definitions here, if necessary. */
-
+#define CI_MAX_RGST_CMDS		100 //TODO
+#define CI_CHECKSUM_REQUIRED	0
+#define CI_CMD_MAX_TIMEOUT	20
 
 #ifdef __cplusplus
 }

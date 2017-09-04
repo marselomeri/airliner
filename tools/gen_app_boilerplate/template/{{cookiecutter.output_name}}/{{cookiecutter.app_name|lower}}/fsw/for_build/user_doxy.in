@@ -96,13 +96,9 @@ INPUT                 += @CFS_MISSION@/config/mission_inc/{{cookiecutter.app_nam
 INPUT                 += @CFS_MISSION@/config/mission_inc/{{cookiecutter.app_name|lower}}_perfids.h
 INPUT                 += @CFS_MISSION@/config/mission_inc/{{cookiecutter.app_name|lower}}_msgids.h
 INPUT                 += @CFS_MISSION@/config/@BUILD_CONFIG_NAME@/inc/{{cookiecutter.app_name|lower}}_platform_cfg.h
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_app.h
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_cds_utils.h
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_config_utils.h
 INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_events.h
 INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_msg.h 
 INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_tbldefs.h
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_version.h
 
 #INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \

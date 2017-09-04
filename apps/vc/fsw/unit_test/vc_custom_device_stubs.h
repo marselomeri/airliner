@@ -17,6 +17,7 @@ typedef struct
     uint8   VC_Devices_Init_Return_Values;
     uint8   VC_Devices_Uninit_Return_Values;
     uint8   VC_Devices_Start_CallCount;
+    int32   VC_Devices_InitData_Return;
 } VC_Device_Returns_t;
 
 

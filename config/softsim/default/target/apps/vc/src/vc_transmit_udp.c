@@ -36,34 +36,33 @@
 ** Local Function Definitions
 *************************************************************************/
 
-int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
-int32 VC_DisableChannel(uint8 ChannelID);
-
 /**
- * Global data structure for custom device IO layer
+ * Global data structure for custom device transmit layer
  */
-VC_AppCustomData_t VC_AppCustomData = {
-    {
-        { 
-          .Mode = VC_CHANNEL_ENABLED, \
-          .ChannelID = 0, \
-          .DestPort = VC_DESTINATION_PORT, \
-          .MyPort = VC_SOURCE_PORT, \
-          .DestIP = VC_DESTINATION_IP, \
-          .MyIP = VC_SOURCE_IP, \
-          .SocketFd = 0 \
-        }
-    }
-};
+VC_AppCustomData_t VC_AppCustomData;
 
 
-/**
- * @brief Initialize a transmit channel
- * @param DestinationAddress the destination IP address to use
- * @param DestinationPort the destination port number to use
- * @return 0 for success -1 for failure
- */
-int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort)
+int32 VC_CustomTransmit_InitData()
+{
+    int32 iStatus = CFE_SUCCESS;
+    
+    /* Set all struct zero values */
+    bzero(&VC_AppCustomData, sizeof(VC_AppCustomData));
+    
+    /* Set all non-zero values for channel zero */
+    VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
+    VC_AppCustomData.Channel[0].ChannelID = 0;
+    VC_AppCustomData.Channel[0].DestPort = VC_DESTINATION_PORT;
+    VC_AppCustomData.Channel[0].SocketFd = 0;
+
+    strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
+    strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
+    
+    return (iStatus);
+}
+
+
+int32 VC_EnableChannel(uint8 ChannelID)
 {
     int32 returnCode = 0;
     uint32 i = 0;
@@ -71,19 +70,11 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
     int status;
     int reuseaddr=1;
 
-    if((VC_AppCustomData.Channel[ChannelID].Mode == VC_CHANNEL_ENABLED) &
+    if((VC_AppCustomData.Channel[ChannelID].Mode == VC_CHANNEL_ENABLED) &&
         (VC_AppCustomData.Channel[ChannelID].SocketFd != 0))
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                         "VC UDP for channel %u already enabled.", (unsigned int)i);
-        returnCode = -1;
-        goto end_of_function;
-    }
-
-    if(DestinationAddress == 0)
-    {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                        "VC Destination address for channel %u is null.", (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
     }
@@ -95,9 +86,6 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
         returnCode = -1;
         goto end_of_function;
     }
-
-    memcpy(VC_AppCustomData.Channel[ChannelID].DestIP, DestinationAddress, sizeof(VC_AppCustomData.Channel[ChannelID].DestIP));
-    VC_AppCustomData.Channel[ChannelID].DestPort = DestinationPort;
 
     if((VC_AppCustomData.Channel[ChannelID].SocketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
     {
@@ -119,12 +107,12 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
      
     bzero(&servaddr,sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port=htons(VC_AppCustomData.Channel[ChannelID].MyPort);
+    servaddr.sin_port = htons(VC_AppCustomData.Channel[ChannelID].MyPort);
     
     if (inet_aton(VC_AppCustomData.Channel[ChannelID].MyIP, &servaddr.sin_addr) == 0)
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                        "VC socket errno: %i on channel %u", errno, (unsigned int)i);
+                        "VC inet_aton errno: %i on channel %u", errno, (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
     }
@@ -137,7 +125,6 @@ int32 VC_EnableChannel(uint8 ChannelID, const char *DestinationAddress, uint16 D
                         "VC bind errno: %i on channel %u", errno, (unsigned int)i);
         VC_AppCustomData.Channel[ChannelID].Mode = VC_CHANNEL_DISABLED;
         returnCode = -1;
-        goto end_of_function;
     }
 
 end_of_function:
@@ -145,11 +132,7 @@ end_of_function:
 }
 
 
-/**
- * @brief Initialize all enabled transmit resources
- * @return 0 for success -1 for failure
- */
-int32 VC_InitCustom(void)
+int32 VC_Init_CustomTransmitters(void)
 {
     uint32 i = 0;
     int32 returnCode = 0;
@@ -158,8 +141,9 @@ int32 VC_InitCustom(void)
     {
         if(VC_AppCustomData.Channel[i].Mode == VC_CHANNEL_ENABLED)
         {
-            if(returnCode = VC_EnableChannel(i, VC_AppCustomData.Channel[i].DestIP, VC_AppCustomData.Channel[i].DestPort))
+            if(VC_EnableChannel(i))
             {
+                returnCode = -1;
                 VC_AppCustomData.Channel[i].Mode = VC_CHANNEL_DISABLED;
             }
             else
@@ -175,11 +159,6 @@ int32 VC_InitCustom(void)
 }
 
 
-/**
- * @brief Disable a transmit channel
- * @param ChannelID the channel to disable
- * @return 0 for success -1 for failure
- */
 int32 VC_DisableChannel(uint8 ChannelID)
 {
     int32 returnCode = 0;
@@ -200,10 +179,6 @@ end_of_function:
 }
 
 
-/**
- * @brief Cleanup all transmit resources 
- * @return 0 for success -1 for failure
- */
 int32 VC_CleanupCustom(void)
 {
     uint32 i = 0;
@@ -225,7 +200,7 @@ return returnCode;
 
 boolean VC_Transmit_Init(void)
 {
-    if(-1 == VC_InitCustom())
+    if(-1 == VC_Init_CustomTransmitters())
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, \
                 "VC_Transmit_Init Failed");
@@ -278,7 +253,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
                 }
                 else
                 {
-                    CFE_EVS_SendEvent(VC_SOCKET_ERR_EID,CFE_EVS_ERROR,
+                    CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                                 "L%d VC sendto errno %d.", __LINE__, errno);
                     channel->Mode = VC_CHANNEL_DISABLED;
                 }
@@ -287,7 +262,6 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
             CFE_ES_PerfLogExit(VC_SOCKET_SEND_PERF_ID);
         }
     }
-
     return returnCode;
 }
 

@@ -859,6 +859,9 @@ void FM_ProcessCmd_Test_GetOpenFiles(void)
     CFE_SB_InitMsg (&CmdPacket, FM_CMD_MID, sizeof(FM_GetOpenFilesCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, FM_GET_OPEN_FILES_CC);
 
+    Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_FDGETINFO_INDEX, OS_FS_ERR_INVALID_FD, 0);
+    Ut_OSFILEAPI_ContinueReturnCodeAfterCountZero(UT_OSFILEAPI_FDGETINFO_INDEX);
+
     /* Execute the function being tested */
     FM_ProcessCmd((CFE_SB_MsgPtr_t)(&CmdPacket));
     

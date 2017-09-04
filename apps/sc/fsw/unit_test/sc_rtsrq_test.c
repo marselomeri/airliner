@@ -153,7 +153,7 @@ void SC_StartRtsCmd_Test_StartRtsNoEvents(void)
 void SC_StartRtsCmd_Test_InvalidCommandLength(void)
 {
     SC_RtsCmd_t   CmdPacket;
-    SC_RtsEntryHeader_t*   Entry;
+    SC_RtsEntryHeader_t   Entry;
     uint8   RtsIndex = 0;
 
     SC_InitTables();
@@ -165,8 +165,10 @@ void SC_StartRtsCmd_Test_InvalidCommandLength(void)
     SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus = SC_LOADED;
 
     SC_OperData.RtsTblAddr[RtsIndex] = (uint16*)&Entry;
-    Entry = (SC_RtsEntryHeader_t *) &SC_OperData.RtsTblAddr[RtsIndex][0];
-    Entry->TimeTag = 0;
+    //Entry = (SC_RtsEntryHeader_t *) &SC_OperData.RtsTblAddr[RtsIndex][0];
+    Entry.TimeTag = 0;
+
+    CFE_SB_SetTotalMsgLength(&Entry.CmdHeader, 49159);
 
     /* Set message size in order to satisfy if-statement after comment "Make sure the command is big enough, but not too big" */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETTOTALMSGLENGTH_INDEX, sizeof(SC_RtsCmd_t), 1);

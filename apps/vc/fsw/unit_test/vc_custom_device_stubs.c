@@ -48,3 +48,9 @@ boolean VC_Devices_Uninit(void)
 {
     return VC_Device_Test_Returns.VC_Devices_Uninit_Return;
 }
+
+
+int32 VC_Devices_InitData(void)
+{
+    return VC_Device_Test_Returns.VC_Devices_InitData_Return;
+}

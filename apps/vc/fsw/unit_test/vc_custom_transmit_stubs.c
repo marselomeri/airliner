@@ -12,6 +12,7 @@ VC_Transmit_Returns_t VC_Transmit_Test_Returns = { TRUE,
                                                    0b11111111,
                                                    0b11111111,
                                                    0b11111111,
+                                                   0, 
                                                    0 };
 
 
@@ -58,3 +59,10 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
     return VC_Transmit_Test_Returns.VC_SendData_Return;
 }
+
+
+int32 VC_Transmit_InitData(void)
+{
+    return VC_Transmit_Test_Returns.VC_Transmit_InitData_Return;
+}
+

@@ -21,6 +21,8 @@
 #include "ci_events.h"
 #include "ci_config_utils.h"
 #include "ci_cds_utils.h"
+#include "ci_tbldefs.h"
+#include "ci_custom.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,15 +31,26 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define CI_TIMEOUT_MSEC             	(1000)
-#define CI_MAX_CMD_INGEST           	(CFE_SB_MAX_SB_MSG_SIZE)
+#define CI_MAX_CMD_INGEST           (CFE_SB_MAX_SB_MSG_SIZE)
 #define CI_LISTENER_TASK_NAME  		"CI_LISTENER"
 #define CI_LISTENER_TASK_STACK_SIZE	16000
 #define CI_LISTENER_TASK_PRIORITY	100
+#define CI_CFG_TBL_MUTEX_NAME 		"CI_CFG_TBL_MUTEX"
+#define CI_TIME_TBL_MUTEX_NAME 		"CI_TIME_TBL_MUTEX"
 
 /************************************************************************
 ** Local Structure Definitions
 *************************************************************************/
+
+/**
+**  \brief CI Operational Data Structure
+*/
+typedef enum
+{
+	BHV_OPTIMISTIC,
+	BHV_PESSIMISTIC,
+} CI_BEHAVIOR;
+
 /**
 **  \brief CI Operational Data Structure
 */
@@ -68,6 +81,12 @@ typedef struct
     /** \brief Config Table Pointer */
     CI_ConfigTblEntry_t*  ConfigTblPtr;
 
+    /** \brief Timeout Table Handle */
+    CFE_TBL_Handle_t  TimeoutTblHdl;
+
+    /** \brief Timeout Table */
+    CI_TimeoutTblEntry_t  TimeoutTbl;
+
     /* Critical Data Storage (CDS) table-related */
 
     /** \brief CDS Table Handle */
@@ -87,10 +106,24 @@ typedef struct
     /** \brief Housekeeping Telemetry for downlink */
     CI_HkTlm_t  HkTlm;
 
+    /** \brief Mutex for CI config table */
+	uint32          ConfigTblMutex;
+
+	/** \brief Mutex for CI timeout table */
+	uint32          TimeoutTblMutex;
+
+    /** \brief ID of child task */
     uint32          ListenerTaskID;
-    int32           ListenerTaskRunStatus;
+
+    /** \brief Buffer for child task cmd ingest */
     uint8           IngestBuffer[CI_MAX_CMD_INGEST];
-    CFE_SB_Msg_t    *IngestPointer;
+
+    /** \brief Run flag for ingest loop */
+    boolean			IngestActive;
+
+    /** \brief Behavior for unknown commands to CI */
+    CI_BEHAVIOR		IngestBehavior;
+
 } CI_AppData_t;
 
 /************************************************************************
@@ -143,7 +176,7 @@ void  CI_AppMain(void);
 **  \retstmt Return codes from #CI_InitEvent               \endcode
 **  \retstmt Return codes from #CI_InitPipe                \endcode
 **  \retstmt Return codes from #CI_InitData                \endcode
-**  \retstmt Return codes from #CI_InitConfigTbl           \endcode
+**  \retstmt Return codes from #CI_InitTbls          	   \endcode
 **  \retstmt Return codes from #CI_InitCdsTbl              \endcode
 **  \retstmt Return codes from #OS_TaskInstallDeleteHandler \endcode
 **  \endreturns
@@ -330,10 +363,223 @@ void  CI_SendOutData(void);
 *************************************************************************/
 boolean  CI_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
-/* TODO:  Add Doxygen markup. */
+/************************************************************************/
+/** \brief Init Listener Task
+**
+**  \par Description
+**       This function create a CFs child task for the command
+**       ingest listener.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \returns
+**	\retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+**  \retstmt Return codes from #CFE_ES_CreateChildTask            \endcode
+**
+*************************************************************************/
 int32  CI_InitListenerTask(void);
+
+/************************************************************************/
+/** \brief Listener Task Main
+**
+**  \par Description
+**       This function opens a socket and ingests all cmds for
+**       CI to process before publishing them to the software bus.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
 void CI_ListenerTaskMain(void);
-uint32 CI_GetCmdMessage(CFE_SB_Msg_t*);
+
+/************************************************************************/
+/** \brief Validate Command
+**
+**  \par Description
+**       This function validates several parameters of the command.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**  \param [in]   MsgSize 		The size of the message from the
+**  							ingest buffer
+**
+**  \returns
+**  TRUE if the command is valid, FALSE if it is not.
+**  \endreturns
+**
+*************************************************************************/
+boolean CI_ValidateCmd(CFE_SB_Msg_t* MsgPtr, uint32 MsgSize);
+
+/************************************************************************/
+/** \brief Get Command Authorization
+**
+**  \par Description
+**       This function verifies if a command is authorized to execute
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+**  \returns
+**  TRUE if the command is authorized, FALSE if it is not.
+**  \endreturns
+**
+*************************************************************************/
+boolean CI_GetCmdAuthorized(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
+/** \brief Log Command
+**
+**  \par Description
+**       This function logs execution of the command
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+*************************************************************************/
+void CI_LogCmd(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
+/** \brief Process Timeouts
+**
+**  \par Description
+**       This function decrements all authorized commands
+**       timeout counters and resets their state to unauthorized
+**       when it hits zero.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void CI_ProcessTimeouts(void);
+
+/************************************************************************/
+/** \brief Command Authorize
+**
+**  \par Description
+**       This function authorizes a 2-step command.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+*************************************************************************/
+void CI_CmdAuthorize(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
+/** \brief Command Deauthorize
+**
+**  \par Description
+**       This function deauthorizes a 2-step command.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+*************************************************************************/
+void CI_CmdDeauthorize(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
+/** \brief Get Registered Command
+**
+**  \par Description
+**       This function searches for and returns a command
+**       from the config table
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
+**  						   message ID if of the command
+**
+**  \param [in]   cmdCode      A #uint16 that specifies the command code
+**
+**  \returns
+**  #CI_CmdData_t if the command is registerd, NULL if it is not.
+**  \endreturns
+**
+*************************************************************************/
+CI_CmdData_t *CI_GetRegisterdCmd(CFE_SB_MsgId_t msgID, uint16 cmdCode);
+
+/************************************************************************/
+/** \brief Get Registered Command Index
+**
+**  \par Description
+**       This function searches for a cmd and returns an index
+**       of the config table containing that cmd
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
+**  						   message ID if of the command
+**
+**  \param [in]   cmdCode      A #uint16 that specifies the command code
+**
+**  \returns
+**  #uint32 if the command is registerd, -1 if it is not.
+**  \endreturns
+**
+*************************************************************************/
+uint32 CI_GetRegisterdCmdIdx(CFE_SB_MsgId_t msgID, uint16 cmdCode);
+
+/************************************************************************/
+/** \brief Register Command
+**
+**  \par Description
+**       This function adds a command to the registration table.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+*************************************************************************/
+void CI_CmdRegister(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
+/** \brief Deregister Command
+**
+**  \par Description
+**       This function removes a command from the registration table.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+*************************************************************************/
+void CI_CmdDeregister(CFE_SB_Msg_t* MsgPtr);
+
+/************************************************************************/
+/** \brief Update Command Register
+**
+**  \par Description
+**       This function updates a command in the registration table.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+*************************************************************************/
+void CI_UpdateCmdReg(CFE_SB_Msg_t* MsgPtr);
 
 #ifdef __cplusplus
 }

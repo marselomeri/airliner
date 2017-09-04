@@ -542,6 +542,7 @@ void MM_AppPipe_Test_DisableEepromWrite(void)
 void MM_AppPipe_Test_InvalidCommandCode(void)
 {
     MM_NoArgsCmd_t   CmdPacket;
+    char			 ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     CFE_SB_InitMsg (&CmdPacket, MM_CMD_MID, sizeof(MM_NoArgsCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, 99);
@@ -551,10 +552,12 @@ void MM_AppPipe_Test_InvalidCommandCode(void)
 
     /* Verify results */
     UtAssert_True (MM_AppData.ErrCounter == 1, "MM_AppData.ErrCounter == 1");
-    
+
+    snprintf(ExpectedEventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+    		"Invalid ground command code: ID = 0x%04X, CC = 99", MM_CMD_MID);
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(MM_CC1_ERR_EID, CFE_EVS_ERROR, "Invalid ground command code: ID = 0x1888, CC = 99"),
-        "Invalid ground command code: ID = 0x1888, CC = 99");
+        (Ut_CFE_EVS_EventSent(MM_CC1_ERR_EID, CFE_EVS_ERROR, ExpectedEventText),
+        		ExpectedEventText);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 

@@ -163,8 +163,10 @@ block main
           .jarviswidget-editbox
             input.form-control(type='text')
           .widget-body
-            button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
-            button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset
+            button.btn.btn-xs.btn-warning.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CI/ArmCmd',      argument:[{name:'MsgID', value:'0x1806'},{name:'CmdCode', value:'2'}]}}) Arm Reset
+            button.btn.btn-xs.btn-success.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CI/DisarmCmd',   argument:[{name:'MsgID', value:'0x1806'},{name:'CmdCode', value:'2'}]}}) Disarm Reset
+            button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px'  data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type',  value:'PROC'}]}}) Proc Reset
+            button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px'  data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type',  value:'POWER-ON'}]}}) Power Reset
 
   .row
     article.col-xs-12.col-sm-12.col-md-10.col-lg-6(style={width:'500px'})               
