@@ -35,7 +35,8 @@ add_airliner_app_def(cs
 
 
 
-add_airliner_app_unit_test(cs-ut        
+add_airliner_app_unit_test(cs-ut   
+    NO_MASSIF     
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/cs_app_cmds_test.h
