@@ -24,5 +24,10 @@ add_airliner_app_unit_test(vc-custom-ut
     WRAPPERS
         ioctl
         open
+        close
+        select
+        socket
+        bind
+        sendto
 )
 

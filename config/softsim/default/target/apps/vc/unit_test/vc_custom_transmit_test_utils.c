@@ -1,5 +1,6 @@
 
 #include "vc_custom_transmit_test_utils.h"
+#include "vc_platform_stubs.h"
 
 #include "ut_cfe_evs_hooks.h"
 #include "ut_cfe_time_stubs.h"
@@ -37,5 +38,7 @@ void VC_Custom_Transmit_Test_Setup(void)
 }
 
 void VC_Custom_Transmit_Test_TearDown(void) {
+    
     CFE_PSP_MemSet(&VC_AppCustomData, 0x00, sizeof(VC_AppCustomData_t));
+    CFE_PSP_MemSet(&VC_Platform_Stubs_Returns, 0x00, sizeof(VC_Platform_Stubs_Returns_t));
 }

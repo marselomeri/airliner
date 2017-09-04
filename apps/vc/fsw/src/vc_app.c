@@ -212,7 +212,7 @@ VC_InitPipe_Exit_Tag:
 
 int32 VC_InitData()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Setup app state enum */
     VC_AppData.AppState = VC_UNINITIALIZED;
@@ -221,6 +221,22 @@ int32 VC_InitData()
     memset((void*)&VC_AppData.HkTlm, 0x00, sizeof(VC_AppData.HkTlm));
     CFE_SB_InitMsg(&VC_AppData.HkTlm,
                    VC_HK_TLM_MID, sizeof(VC_AppData.HkTlm), TRUE);
+                   
+    /* Initialize custom device data */
+    iStatus = VC_Devices_InitData();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto end_of_function;
+    }
+
+    /* Initialize custom transmit data */
+    iStatus = VC_Transmit_InitData();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto end_of_function;
+    }
+    
+end_of_function:
 
     return (iStatus);
 }

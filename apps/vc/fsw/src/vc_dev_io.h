@@ -27,6 +27,25 @@
 *************************************************************************/
 
 /************************************************************************/
+/** \brief Custom function to initialize custom device data structure. 
+**
+**  \par Description
+**       This function is called on app startup, reload, restart etc
+**       to initialize non-zero data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+**  \returns
+**  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+**  \retstmt Return codes from #CFE_EVS_Register  \endcode
+**  \endreturns
+**
+*************************************************************************/
+int32 VC_Devices_InitData(void);
+
+/************************************************************************/
 /** \brief Custom function to start an initialized custom device. 
 **
 **  \par Description
@@ -111,4 +130,3 @@ boolean VC_Devices_Uninit(void);
 
 #endif
 
-/* @} */

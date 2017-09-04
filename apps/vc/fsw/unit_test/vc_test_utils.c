@@ -39,6 +39,7 @@ void VC_Test_Setup(void)
 }
 
 void VC_Test_TearDown(void) {
+
     CFE_PSP_MemSet(&VC_AppData, 0x00, sizeof(VC_AppData_t));
     VC_Transmit_Test_Returns.VC_Transmit_Init_CallCount = 0;
     VC_Device_Test_Returns.VC_Devices_Start_CallCount = 0;

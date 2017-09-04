@@ -18,6 +18,7 @@ typedef struct
     uint8   VC_Update_Destination_Return_Values;
     uint8   VC_SendData_Return_Values;
     uint8   VC_Transmit_Init_CallCount;
+    int32   VC_Transmit_InitData_Return;
 } VC_Transmit_Returns_t;
 
 

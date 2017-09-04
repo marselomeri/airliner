@@ -109,6 +109,13 @@ typedef struct
 *************************************************************************/
 
 /**
+ * @brief Custom function to initialize custom device data structure.
+ * @return CFE_SUCCESS
+ */
+int32 VC_CustomDevice_InitData(void);
+
+
+/**
  * @brief ioctl with limited EINTR retry attempts
  * @param fh file descriptor
  * @param request ioctl request code
