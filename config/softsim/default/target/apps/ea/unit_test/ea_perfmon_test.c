@@ -70,7 +70,7 @@ void Test_EA_PerfmonCustom_Nominal(void)
 			{
 				low_util_flag = 1;
 			}
-			if(util > 90 && util <= 100)
+			if(util > 50 && util <= 100)
 			{
 				high_util_flag = 1;
 			}
@@ -132,7 +132,7 @@ void Test_EA_PerfmonCustom_Idle(void)
 			{
 				low_util_flag = 1;
 			}
-			if(util > 90 && util <= 100)
+			if(util > 50 && util <= 100)
 			{
 				high_util_flag = 1;
 			}

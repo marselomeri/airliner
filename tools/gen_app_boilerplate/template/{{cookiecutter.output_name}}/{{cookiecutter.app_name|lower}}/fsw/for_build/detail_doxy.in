@@ -1,14 +1,14 @@
 # Doxyfile 1.5.4
-@INCLUDE_PATH=@CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/docs/dox_src/mnem_maps
+@INCLUDE_PATH=@APP_DEFINITION_DIR@/../../docs/dox_src/mnem_maps
 @INCLUDE=cfs_{{cookiecutter.app_name|lower}}_cmd_mnem_map
 @INCLUDE=cfs_{{cookiecutter.app_name|lower}}_tlm_mnem_map
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
 #DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "{{cookiecutter.app_full_name}} ({{cookiecutter.app_name}}) Application on @BUILD_CONFIG_NAME@ User's Guide"
+PROJECT_NAME           = "CFS {{cookiecutter.app_full_name}} ({{cookiecutter.app_name}}) Application on @BUILD_CONFIG_NAME@ Detailed Design"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/users_guide/apps/{{cookiecutter.app_name|lower}}
+OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/detailed_design/apps/{{cookiecutter.app_name|lower}}
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -17,7 +17,7 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = @CFS_MISSION@
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -26,8 +26,8 @@ MULTILINE_CPP_IS_BRIEF = NO
 DETAILS_AT_TOP         = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
-TAB_SIZE               = 8
-ALIASES               += "event=\xrefitem cfs{{cookiecutter.app_name|lower}}events \"Event Message\" \"{{cookiecutter.app_full_name}} Event Message Cross Reference\" "
+TAB_SIZE               = 4
+ALIASES               += "event=\xrefitem cfeevents \"Event Message\" \"cFE Event Message Cross Reference\" "
 ALIASES               += "retdesc=<TD WIDTH=\"80%\"> "
 ALIASES               += "retcode=<TR><TD WIDTH=\"20%\" VALIGN=TOP> "
 ALIASES               += endcode=</TR>
@@ -37,9 +37,9 @@ ALIASES               += "retstmt=<TR><TD COLSPAN=2 WIDTH=\"100%\"> "
 ALIASES               += endstmt=</TR>
 ALIASES               += "{{cookiecutter.app_name|lower}}cmd=\xrefitem cfs{{cookiecutter.app_name|lower}}cmds \"Name\" \"{{cookiecutter.app_full_name}} Commands\"  "
 ALIASES               += "{{cookiecutter.app_name|lower}}tlm=\xrefitem cfs{{cookiecutter.app_name|lower}}tlm \"Name\" \"{{cookiecutter.app_full_name}} Telemetry\"  "
-ALIASES               += "{{cookiecutter.app_name|lower}}cmdmnemonic=\xrefitem cfs{{cookiecutter.app_name|lower}}cmdmnems \"Command Mnemonic(s)\" \"{{cookiecutter.app_full_name}} Command Mnemonic Cross Reference\" \b \c  "
-ALIASES               += "{{cookiecutter.app_name|lower}}tlmmnemonic=\xrefitem cfs{{cookiecutter.app_name|lower}}tlmmnems \"Telemetry Mnemonic(s)\" \"{{cookiecutter.app_full_name}} Telemetry Mnemonic Cross Reference\" \b \c  "
-ALIASES               += "{{cookiecutter.app_name|lower}}cfg=\xrefitem cfs{{cookiecutter.app_name|lower}}cfg \"Purpose\" \"{{cookiecutter.app_full_name}} Configuration Parameters\"  " 
+ALIASES               += "{{cookiecutter.app_name|lower}}cmdmnemonic=\xrefitem cfs{{cookiecutter.app_name|lower}}cmdmnems \"Command Mnemonic(s)\" \"{{cookiecutter.app_name}} Command Mnemonic Cross Reference\" \b \c  "
+ALIASES               += "{{cookiecutter.app_name|lower}}tlmmnemonic=\xrefitem cfs{{cookiecutter.app_name|lower}}tlmmnems \"Telemetry Mnemonic(s)\" \"{{cookiecutter.app_name}} Telemetry Mnemonic Cross Reference\" \b \c  "
+ALIASES               += "{{cookiecutter.app_name|lower}}cfg=\xrefitem cfs{{cookiecutter.app_name|lower}}cfg \"Purpose\" \"CFS {{cookiecutter.app_full_name}} Configuration Parameters\"  " 
 OPTIMIZE_OUTPUT_FOR_C  = YES
 OPTIMIZE_OUTPUT_JAVA   = NO
 BUILTIN_STL_SUPPORT    = NO
@@ -91,15 +91,9 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/docs/dox_src/users_guide/cfs_{{cookiecutter.app_name|lower}}.dox
-INPUT                 += @CFS_MISSION@/config/mission_inc/{{cookiecutter.app_name|lower}}_mission_cfg.h
-INPUT                 += @CFS_MISSION@/config/mission_inc/{{cookiecutter.app_name|lower}}_perfids.h
-INPUT                 += @CFS_MISSION@/config/mission_inc/{{cookiecutter.app_name|lower}}_msgids.h
-INPUT                 += @CFS_MISSION@/config/@BUILD_CONFIG_NAME@/inc/{{cookiecutter.app_name|lower}}_platform_cfg.h
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_events.h
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_msg.h 
-INPUT                 += @CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/fsw/src/{{cookiecutter.app_name|lower}}_tbldefs.h
-
+INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_{{cookiecutter.app_name|lower}}.dox
+INPUT                 += @DEFINITION_SOURCES@
+INPUT                 += @CONFIG_SOURCES@
 #INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.h
@@ -112,7 +106,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = "./"
-IMAGE_PATH            += "@CFS_MISSION@/apps/{{cookiecutter.app_name|lower}}/docs/dox_src/users_guide/"
+IMAGE_PATH            += @APP_DEFINITION_DIR@/../../docs/dox_src/detailed_design/"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -137,7 +131,7 @@ IGNORE_PREFIX          =
 # configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = @CFS_DOCS_HTML_DIR@/users_guide/apps/{{cookiecutter.app_name|lower}}
+HTML_OUTPUT            = @CFS_DOCS_HTML_DIR@/detailed_design/apps/{{cookiecutter.app_name|lower}}
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 
@@ -157,8 +151,8 @@ TREEVIEW_WIDTH         = 250
 #---------------------------------------------------------------------------
 # configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
-GENERATE_LATEX         = YES
-LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/users_guide/apps/{{cookiecutter.app_name|lower}}
+GENERATE_LATEX         = NO
+LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/detailed_design/apps/{{cookiecutter.app_name|lower}}
 LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex
 COMPACT_LATEX          = YES
@@ -173,7 +167,7 @@ LATEX_HIDE_INDICES     = NO
 # configuration options related to the RTF output
 #---------------------------------------------------------------------------
 GENERATE_RTF           = NO
-RTF_OUTPUT             = @CFS_DOCS_DIR@/users_guide/rtf/apps/{{cookiecutter.app_name|lower}}
+RTF_OUTPUT             = @CFS_DOCS_DIR@/detailed_design/rtf/apps/{{cookiecutter.app_name|lower}}
 COMPACT_RTF            = YES
 RTF_HYPERLINKS         = NO
 RTF_STYLESHEET_FILE    = 
@@ -224,7 +218,7 @@ SKIP_FUNCTION_MACROS   = YES
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
 TAGFILES               = @CFS_DOCS_HTML_DIR@/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
-GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/users_guide/apps/{{cookiecutter.app_name|lower}}/{{cookiecutter.app_name|lower}}.tag
+GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/detailed_design/apps/{{cookiecutter.app_name|lower}}/{{cookiecutter.app_name|lower}}.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl
@@ -240,10 +234,10 @@ COLLABORATION_GRAPH    = NO
 GROUP_GRAPHS           = YES
 UML_LOOK               = NO
 TEMPLATE_RELATIONS     = NO
-INCLUDE_GRAPH          = NO
-INCLUDED_BY_GRAPH      = NO
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
 CALL_GRAPH             = YES
-CALLER_GRAPH           = NO
+CALLER_GRAPH           = YES
 GRAPHICAL_HIERARCHY    = NO
 DIRECTORY_GRAPH        = YES
 DOT_IMAGE_FORMAT       = png
