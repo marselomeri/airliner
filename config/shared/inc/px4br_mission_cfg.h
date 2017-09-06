@@ -28,8 +28,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
     
-#ifndef _PX4BR_PLATFORM_CFG_H_
-#define _PX4BR_PLATFORM_CFG_H_
+#ifndef _PX4BR_MISSION_CFG_H_
+#define _PX4BR_MISSION_CFG_H_
 
 /*
 ** Pragmas
@@ -38,16 +38,34 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
 ** Local Defines
 */
-#define PX4BR_RUNTIME_QUEUE_NAME "OS_RUNTIME_MGR_CMD"
-#define PX4BR_TCP_KEEPALIVE_INTERVAL	1
 
 /*
 ** Include Files
 */
 
+
 /*
 ** Local Structure Declarations
 */
+
+/*
+ * Defines
+ */
+#define PX4BR_HEARTBEAT_SEND_PERIOD			1000
+#define PX4BR_HEARTBEAT_TASK_NAME_TEMPLATE	"PX4BR_HB_"
+#define PX4BR_HEARTBEAT_TASK_STACK_SIZE 	24576
+#define PX4BR_HEARTBEAT_TASK_PRIORITY		120
+#define PX4BR_HEARTBEAT_SEND_DELAY       	1000
+
+#define PX4BR_LISTENER_TASK_NAME_TEMPLATE	"PX4BR_LST_"
+#define PX4BR_LISTENER_TASK_STACK_SIZE 	24576
+#define PX4BR_LISTENER_TASK_PRIORITY		120
+#define PX4BR_LISTENER_SEND_DELAY       	1000
+
+#define PX4BR_DATAOUT_TASK_NAME_TEMPLATE	"PX4BR_DO_"
+#define PX4BR_DATAOUT_TASK_STACK_SIZE 		24576
+#define PX4BR_DATAOUT_TASK_PRIORITY			120
+#define PX4BR_DATAOUT_SEND_DELAY       		1000
 
 /*
 ** External Global Variables
@@ -65,9 +83,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** Local Function Prototypes
 */
 
-#endif /* _PX4BR_PLATFORM_CFG_H_ */
+#endif /* _PX4BR_MISSION_CFG_H_ */
 
 /*=======================================================================================
-** End of file eta_platform_cfg.h
+** End of file eta_mission_cfg.h
 **=====================================================================================*/
     
