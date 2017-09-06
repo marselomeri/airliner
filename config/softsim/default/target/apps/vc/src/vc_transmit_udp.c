@@ -297,5 +297,8 @@ boolean VC_Update_Destination(const char *Address, uint16 Port)
 }
 
 
-
+int32 VC_Transmit_InitData()
+{
+    return VC_CustomTransmit_InitData();
+}
 
