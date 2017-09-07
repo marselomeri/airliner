@@ -11,9 +11,11 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pb_lib.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pb_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/pb.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/pb_lib.h
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 
     # This application has a public include header.  Add it so all the other applications can access it.
     PUBLIC_INCLUDES
