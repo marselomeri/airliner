@@ -126,17 +126,6 @@ typedef struct
 } VC_HkTlm_t;
 
 
-/** 
-**  \brief Start Streaming Command
-*/
-typedef struct 
-{
-    uint8                  CmdHeader[CFE_SB_CMD_HDR_SIZE];
-    char                   Address[VC_ADDRESS_LENGTH];
-    uint16                 Port;
-} VC_StartStreamCmd_t;
-
-
 #ifdef __cplusplus
 }
 #endif

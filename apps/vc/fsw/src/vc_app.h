@@ -16,6 +16,7 @@
 #include "vc_version.h"
 #include "vc_transmit.h"
 #include "vc_dev_io.h"
+#include "vc_custom.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,7 +62,7 @@ typedef struct
     uint32                uiRunStatus;
 
     /** \brief CFE Event Table */
-    CFE_EVS_BinFilter_t   EventTbl[VC_EVT_CNT];
+    CFE_EVS_BinFilter_t   EventTbl[(VC_EVT_CNT + VC_CUSTOM_EVT_CNT)];
     
     /** \brief VC App State */
     VC_Status_t           AppState;

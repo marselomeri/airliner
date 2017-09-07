@@ -1,5 +1,6 @@
 #include "vc_app_custom_device_test.h"
 #include "vc_custom_device_test_utils.h"
+#include "vc_transmit_udp.h"
 #include "vc_platform_stubs.h"
 #include "vc_platform_cfg.h"
 #include <errno.h>

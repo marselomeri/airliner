@@ -103,24 +103,12 @@ int32 VC_InitEvent()
     VC_AppData.EventTbl[  ind].EventID = VC_MSGID_ERR_EID;
     VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
-    VC_AppData.EventTbl[  ind].EventID = VC_MSGLEN_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_SOCKET_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_DEVICE_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_ADDR_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_ADDR_NUL_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    /* Add any custom events */
+    VC_Custom_Init_EventFilters(ind);
     
     /* Register the table with CFE */
     iStatus = CFE_EVS_Register(VC_AppData.EventTbl,
-                               VC_EVT_CNT, CFE_EVS_BINARY_FILTER);
+                               (VC_EVT_CNT + VC_CUSTOM_EVT_CNT), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("VC - Failed to register with EVS (0x%08X)\n", (unsigned int)iStatus);
@@ -513,19 +501,9 @@ void VC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
             case VC_RESET_CC:
                 VC_ResetCmd(MsgPtr);
                 break;
-                
-            case VC_STARTSTREAMING_CC: 
-                VC_StartStreamingCmd(MsgPtr); 
-                break;
-                
-            case VC_STOPSTREAMING_CC:
-                VC_StopStreamingCmd(MsgPtr);
-                break;
     
             default:
-                VC_AppData.HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(VC_MSGID_ERR_EID, CFE_EVS_ERROR,
-                                  "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
+                VC_ProcessNewCustomCmds(MsgPtr);
                 break;
         }
     }

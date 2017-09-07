@@ -10,6 +10,7 @@ add_airliner_app_def(vc
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_transmit.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_custom.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_version.h
    
     INCLUDES
@@ -30,6 +31,8 @@ add_airliner_app_unit_test(vc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_custom_device_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_custom_transmit_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_custom_transmit_stubs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_custom_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_test_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/vc_testrunner.c
@@ -41,6 +44,7 @@ add_airliner_app_unit_test(vc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_transmit.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_custom.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/vc_version.h
         
     INCLUDES
