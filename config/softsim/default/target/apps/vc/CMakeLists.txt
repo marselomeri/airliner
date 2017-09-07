@@ -18,15 +18,17 @@ add_airliner_app_unit_test(vc-custom-ut
         # Platform stubs
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_platform_stubs/vc_platform_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_platform_stubs/vc_platform_stubs.h
-        # Sealed headers
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l.h
+        # Custom code
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp/vc_transmit_udp.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp/vc_transmit_udp.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l/vc_dev_io_v4l.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l/vc_dev_io_v4l.h
 
     INCLUDES
         # Custom code under test
         ${CMAKE_CURRENT_SOURCE_DIR}/src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp/
         # Test code
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_dev_io_v4l_test/
