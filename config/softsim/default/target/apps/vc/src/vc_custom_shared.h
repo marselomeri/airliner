@@ -3,8 +3,10 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+#include "cfe.h"
 #include "vc_app.h"
 #include "vc_custom.h"
+
 
 /************************************************************************
 ** Structure Declarations
@@ -18,6 +20,7 @@ typedef struct
     char                   Address[VC_ADDRESS_LENGTH];
     uint16                 Port;
 } VC_StartStreamCmd_t;
+
 
 /* VC_CUSTOM_EVT_CNT must be defined in platform config */
 typedef enum {
@@ -80,7 +83,5 @@ typedef enum {
 *************************************************************************/
 
 extern VC_AppData_t VC_AppData;
-
-
 
 #endif /* VC_CUSTOM_SHARED_H */

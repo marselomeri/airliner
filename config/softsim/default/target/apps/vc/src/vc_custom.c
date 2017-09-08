@@ -1,5 +1,4 @@
-#include "vc_custom.h"
-
+#include "vc_custom_shared.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +34,6 @@ void VC_ProcessNewCustomCmds(CFE_SB_Msg_t* MsgPtr)
                                   "Recvd invalid cmdId (%u)", (unsigned int)uiCmdCode);
                 break;
         }
-        OS_MutSemGive(TO_AppData.MutexID);
     }
 }
 

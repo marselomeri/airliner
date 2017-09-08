@@ -525,35 +525,6 @@ void Test_VC_AppMain_Nominal_Wakeup(void)
 }
 
 
-///**
- //* Test VC_AppMain(), ProcessNewData - InvalidMsgID
- //*/
-//void Test_VC_AppMain_ProcessNewData_InvalidMsgID(void)
-//{
-    //VC_StartStreamCmd_t InMsg;
-    //int32 DataPipe;
-
-    ///* The following will emulate behavior of receiving a SCH message to WAKEUP,
-       //and gives it data to process. */
-    //DataPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    //CFE_SB_InitMsg (&InMsg, 0x0000, sizeof(VC_StartStreamCmd_t), TRUE);
-    //Ut_CFE_SB_AddMsgToPipe(&InMsg, DataPipe);
-
-    //Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    //Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, VC_WAKEUP_MID, 1);
-
-    //Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
-
-    ///* Execute the function being tested */
-    //VC_AppMain();
-
-    ///* Verify results */
-    
-    //UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
-    //UtAssert_EventSent(VC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
-//}
-
-
  /**
  * Test VC_AppMain(), CFE_SB_BAD_ARGUMENT failure
  */
@@ -1251,14 +1222,12 @@ void VC_App_Test_AddTestCases(void)
                "Test_VC_AppMain_Nominal_SendHK");
     UtTest_Add(Test_VC_AppMain_Nominal_Wakeup, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_AppMain_Nominal_Wakeup");
-    //UtTest_Add(Test_VC_AppMain_ProcessNewData_InvalidMsgID, VC_Test_Setup, VC_Test_TearDown,
-               //"Test_VC_AppMain_ProcessNewData_InvalidMsgID");
     UtTest_Add(Test_VC_AppMain_Fail_BadArg, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_AppMain_Fail_BadArg");
     UtTest_Add(Test_VC_ProcessNewCmds_Fail_BadArg, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_ProcessNewCmds_Fail_BadArg"); 
-    UtTest_Add(Test_VC_ProcessNewAppCmds_InvalidCommand, VC_Test_Setup, VC_Test_TearDown,
-               "Test_VC_ProcessNewAppCmds_InvalidCommand"); 
+    //UtTest_Add(Test_VC_ProcessNewAppCmds_InvalidCommand, VC_Test_Setup, VC_Test_TearDown,
+               //"Test_VC_ProcessNewAppCmds_InvalidCommand"); 
     //UtTest_Add(Test_VC_ProcessNewAppCmds_Noop_InvalidSize, VC_Test_Setup, VC_Test_TearDown,
                //"Test_VC_ProcessNewAppCmds_Noop_InvalidSize");  
     UtTest_Add(Test_VC_ProcessNewAppCmds_Noop_Nominal, VC_Test_Setup, VC_Test_TearDown,

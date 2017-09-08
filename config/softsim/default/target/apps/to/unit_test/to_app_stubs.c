@@ -1,7 +1,6 @@
 
 #include "to_app_stubs.h"
 
-
 TO_App_Returns_t TO_App_Return = {0};
 
 int32 TO_Channel_OpenChannel(uint32 index, char *ChannelName,

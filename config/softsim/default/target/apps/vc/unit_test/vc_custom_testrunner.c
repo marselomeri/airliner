@@ -17,6 +17,7 @@ int main(void)
 	enable_wrappers = 1;
     VC_Custom_App_Device_Test_AddTestCases();
     VC_Custom_App_Transmit_Test_AddTestCases();
+    VC_Custom_App_Shared_Test_AddTestCases();
     //VC_Cmds_Test_AddTestCases();
     //VC_Config_Tbl_Test_AddTestCases();
     //VC_CDS_Tbl_Test_AddTestCases();
