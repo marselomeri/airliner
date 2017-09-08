@@ -2,18 +2,17 @@
 #ifndef VC_CUSTOM_DEVICE_TEST_UTILS_H
 #define VC_CUSTOM_DEVICE_TEST_UTILS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Includes
  */
 
 #include "vc_dev_io_v4l.h"
 
-
 extern VC_AppCustomDevice_t VC_AppCustomDevice;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*
  * Function Definitions

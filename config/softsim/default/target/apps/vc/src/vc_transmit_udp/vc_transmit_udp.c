@@ -171,8 +171,17 @@ int32 VC_DisableChannel(uint8 ChannelID)
         goto end_of_function;
     }
 
-    close(VC_AppCustomData.Channel[ChannelID].SocketFd);
+    if(-1 == close(VC_AppCustomData.Channel[ChannelID].SocketFd))
+    {
+        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+                            "Socket close error", (unsigned int)ChannelID);
+        returnCode = -1;
+        goto end_of_function;
+    }
+    else
+    {
     VC_AppCustomData.Channel[ChannelID].SocketFd = 0;
+    }
 
 end_of_function:
     return returnCode;

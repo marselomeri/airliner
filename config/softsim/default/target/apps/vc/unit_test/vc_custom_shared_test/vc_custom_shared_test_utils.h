@@ -2,15 +2,17 @@
 #ifndef VC_CUSTOM_DEVICE_SHARED_UTILS_H
 #define VC_CUSTOM_DEVICE_SHARED_UTILS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Includes
  */
 
 #include "vc_custom_shared.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern VC_AppCustomDevice_t VC_AppCustomDevice;
 
 /*
  * Function Definitions
