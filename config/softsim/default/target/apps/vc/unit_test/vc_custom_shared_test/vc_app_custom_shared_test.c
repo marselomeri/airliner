@@ -23,6 +23,9 @@
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
 
+/**************************************************************************
+ * Tests VC_ProcessNewCustomCmds()
+ **************************************************************************/
 /**
  * Test VC_ProcessNewCustomCmds() - InvalidMsgID
  */
@@ -400,7 +403,7 @@ void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize(void)
 /**
  * Test VC_ProcessNewCustomCmds(), StopStreaming command, Invalid State
  */
-void Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState(void)
+void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState(void)
 {
     VC_NoArgCmd_t InMsg;
 
@@ -421,6 +424,19 @@ void Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState(void)
     UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
     UtAssert_EventSent(VC_CMD_ERR_EID, CFE_EVS_ERROR, 
             "VC is already not streaming", "Stop Streaming Cmd Event Sent");
+}
+
+
+/**************************************************************************
+ * Tests VC_Custom_Init_EventFilters()
+ **************************************************************************/
+/**
+ * Test VC_Custom_Init_EventFilters(), Nominal
+ * Note: Currently there is no way to fail this function
+ */
+void Test_VC_Custom_Init_EventFilters_Nominal(void)
+{
+    VC_Custom_Init_EventFilters(VC_EVT_CNT);
 }
 
 
@@ -468,7 +484,10 @@ void VC_Custom_App_Shared_Test_AddTestCases(void)
     UtTest_Add(Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
             "Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize");
-    UtTest_Add(Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState, 
+    UtTest_Add(Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
-            "Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState");
+            "Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState");
+    UtTest_Add(Test_VC_Custom_Init_EventFilters_Nominal, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_Init_EventFilters_Nominal");
 }

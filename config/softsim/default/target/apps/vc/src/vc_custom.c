@@ -163,10 +163,10 @@ void VC_Custom_Init_EventFilters(int32 ind)
     VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
     VC_AppData.EventTbl[  ind].EventID = VC_SOCKET_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
     
     VC_AppData.EventTbl[  ind].EventID = VC_DEVICE_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
 
     VC_AppData.EventTbl[  ind].EventID = VC_ADDR_ERR_EID;
     VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
