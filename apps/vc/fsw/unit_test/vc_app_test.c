@@ -597,37 +597,37 @@ void Test_VC_ProcessNewCmds_Fail_BadArg(void)
 /**************************************************************************
  * Tests for VC_ProcessNewAppCmds()
  **************************************************************************/
-/**
- * Test VC_ProcessNewAppCmds(), Invalid Command Code
- */
-void Test_VC_ProcessNewAppCmds_InvalidCommand(void)
-{
-    VC_NoArgCmd_t InSchMsg;
-    VC_NoArgCmd_t InInvalidCmd;
-    int32         DataPipe;
-    int32         CmdPipe;
+///**
+ //* Test VC_ProcessNewAppCmds(), Invalid Command Code
+ //*/
+//void Test_VC_ProcessNewAppCmds_InvalidCommand(void)
+//{
+    //VC_NoArgCmd_t InSchMsg;
+    //VC_NoArgCmd_t InInvalidCmd;
+    //int32         DataPipe;
+    //int32         CmdPipe;
 
-    /* The following will emulate behavior of receiving a SCH message to WAKEUP,
-       and gives it a command to process. */
-    DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
-    CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
-    Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
+    ///* The following will emulate behavior of receiving a SCH message to WAKEUP,
+       //and gives it a command to process. */
+    //DataPipe = Ut_CFE_SB_CreatePipe("VC_SCH_PIPE");
+    //CFE_SB_InitMsg (&InSchMsg, VC_WAKEUP_MID, sizeof(InSchMsg), TRUE);
+    //Ut_CFE_SB_AddMsgToPipe(&InSchMsg, DataPipe);
 
-    CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
-    CFE_SB_InitMsg ((CFE_SB_MsgPtr_t)&InInvalidCmd, VC_CMD_MID, sizeof(InInvalidCmd), TRUE);
-    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InInvalidCmd, 100);
-    Ut_CFE_SB_AddMsgToPipe(&InInvalidCmd, CmdPipe);
+    //CmdPipe = Ut_CFE_SB_CreatePipe("VC_CMD_PIPE");
+    //CFE_SB_InitMsg ((CFE_SB_MsgPtr_t)&InInvalidCmd, VC_CMD_MID, sizeof(InInvalidCmd), TRUE);
+    //CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InInvalidCmd, 100);
+    //Ut_CFE_SB_AddMsgToPipe(&InInvalidCmd, CmdPipe);
 
-    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+    //Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
-    /* Execute the function being tested */
-    VC_AppMain();
+    ///* Execute the function being tested */
+    //VC_AppMain();
 
-    /* Verify results */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
-    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
-    UtAssert_EventSent(VC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Cmd with Invalid Cmd Code Sent");
-}
+    ///* Verify results */
+    //UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    //UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    //UtAssert_EventSent(VC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Cmd with Invalid Cmd Code Sent");
+//}
 
 
 ///**
