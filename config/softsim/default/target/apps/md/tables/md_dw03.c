@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: md_dw3_tbl.c 1.3 2015/03/01 17:17:17EST sstrege Exp  $
+**   $Id: md_dw03.c 1.2 2017/05/22 14:56:31EDT mdeschu Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -16,14 +16,6 @@
 **
 ** Notes:
 **
-** $Log: md_dw3_tbl.c  $
-** Revision 1.3 2015/03/01 17:17:17EST sstrege 
-** Added copyright information
-** Revision 1.2 2012/07/20 16:57:56EDT aschoeni 
-** Fixed compiler warnings
-** Revision 1.1 2009/10/09 17:12:00EDT aschoeni 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/md/fsw/tables/project.pj
 **
 *************************************************************************/
 
@@ -74,7 +66,7 @@ MD_DwellTableLoad_t     MD_Default_Dwell3_Tbl =
 }
 };
 
-CFE_TBL_FILEDEF(MD_Default_Dwell3_Tbl, MD.DWELL_TABLE3, MD Dwell Table 3,md_dw3_tbl.tbl)
+CFE_TBL_FILEDEF(MD_Default_Dwell3_Tbl, MD.DWELL_TABLE3, MD Dwell Table 3,md_dw03.tbl)
 
 /************************/
 /*  End of File Comment */

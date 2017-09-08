@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: md_dw2_tbl.c 1.3 2015/03/01 17:17:23EST sstrege Exp  $
+**   $Id: md_dw01.c 1.2 2017/05/22 14:56:33EDT mdeschu Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -12,18 +12,10 @@
 **  agreement.
 **
 ** Purpose:
-**  The CFS Memory Dwell (MD) Example Dwell Table #2
+**  The CFS Memory Dwell (MD) Example Dwell Table #1
 **
 ** Notes:
 **
-** $Log: md_dw2_tbl.c  $
-** Revision 1.3 2015/03/01 17:17:23EST sstrege 
-** Added copyright information
-** Revision 1.2 2012/07/20 16:57:56EDT aschoeni 
-** Fixed compiler warnings
-** Revision 1.1 2009/10/09 17:12:00EDT aschoeni 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/md/fsw/tables/project.pj
 **
 *************************************************************************/
 
@@ -39,11 +31,11 @@
 #include "md_platform_cfg.h"
 
 
-MD_DwellTableLoad_t     MD_Default_Dwell2_Tbl =
+MD_DwellTableLoad_t     MD_Default_Dwell1_Tbl =
 {
 /* Enabled State */ MD_DWELL_STREAM_DISABLED,
 #if MD_SIGNATURE_OPTION == 1  
-/* Signature     */ "Default Table 2",
+/* Signature     */ "Default Table 1",
 #endif
 /* Entry    Length    Delay    Offset           SymName     */
 /*   1 */{{      0,       0,  {     0,               ""  }   },
@@ -74,7 +66,7 @@ MD_DwellTableLoad_t     MD_Default_Dwell2_Tbl =
 }
 };
 
-CFE_TBL_FILEDEF(MD_Default_Dwell2_Tbl, MD.DWELL_TABLE2, MD Dwell Table 2,md_dw2_tbl.tbl)
+CFE_TBL_FILEDEF(MD_Default_Dwell1_Tbl, MD.DWELL_TABLE1, MD Dwell Table 1,md_dw01.tbl)
 
 /************************/
 /*  End of File Comment */
