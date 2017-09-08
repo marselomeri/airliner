@@ -1,6 +1,8 @@
 
 #include "vc_custom_shared_test_utils.h"
 #include "vc_platform_stubs.h"
+#include "vc_transmit_udp.h"
+#include "vc_dev_io_v4l.h"
 
 #include "ut_cfe_evs_hooks.h"
 #include "ut_cfe_time_stubs.h"
@@ -39,5 +41,7 @@ void VC_Custom_Shared_Test_Setup(void)
 void VC_Custom_Shared_Test_TearDown(void) 
 {
     CFE_PSP_MemSet(&VC_AppData, 0x00, sizeof(VC_AppData));
+    CFE_PSP_MemSet(&VC_AppCustomDevice, 0x00, sizeof(VC_AppCustomDevice_t));
+    CFE_PSP_MemSet(&VC_AppCustomData, 0x00, sizeof(VC_AppCustomData_t));
     CFE_PSP_MemSet(&VC_Platform_Stubs_Returns, 0x00, sizeof(VC_Platform_Stubs_Returns_t));
 }

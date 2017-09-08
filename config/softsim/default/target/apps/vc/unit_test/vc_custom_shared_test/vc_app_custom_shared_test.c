@@ -290,6 +290,140 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_TransmitInitFail(void)
 }
 
 
+/**
+ * Test VC_ProcessNewCustomCmds(), StartStreaming command, devices
+ * start failure
+ */
+void Test_VC_ProcessNewCustomCmds_StartStreaming_DevicesStartFail(void)
+{
+    VC_StartStreamCmd_t InStartStreamingCmd;
+
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set app state to initialized */
+    VC_AppData.AppState = VC_INITIALIZED;
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "1.1.1.1");
+    
+    /* Set source IP to a valid value to pass transmit init */
+    strcpy(VC_AppCustomData.Channel[0].MyIP, "1.1.1.1");
+    
+    /* Set a channel to enabled to pass VC_Update_Destination */
+    VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
+    
+    /* Set status to initialized */
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+    
+    /* Set device start child task to fail */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_CREATECHILDTASK_INDEX, -1, 1);
+
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_INIT_ERR_EID, CFE_EVS_ERROR, "VC_Devices_Start failed in cmd start streaming", "Device start failure did not raise event");
+}
+
+
+/**
+ * Test VC_ProcessNewCustomCmds(), Start Streaming command, Nominal
+ */
+void Test_VC_ProcessNewCustomCmds_StartStreaming_Nominal(void)
+{
+    VC_StartStreamCmd_t InStartStreamingCmd;
+
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set app state to initialized */
+    VC_AppData.AppState = VC_INITIALIZED;
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "1.1.1.1");
+    
+    /* Set source IP to a valid value to pass transmit init */
+    strcpy(VC_AppCustomData.Channel[0].MyIP, "1.1.1.1");
+    
+    /* Set a channel to enabled to pass VC_Update_Destination */
+    VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
+    
+    /* Set status to initialized */
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
+    UtAssert_True(VC_AppData.HkTlm.usCmdCnt = 1,"Command counter != 1");
+    UtAssert_EventSent(VC_CMD_INF_EID, CFE_EVS_INFORMATION, "", "Start Streaming Cmd Event Sent");
+    UtAssert_True(VC_AppData.AppState == VC_STREAMING, "App state != streaming");
+}
+
+
+/**
+ * Test VC_ProcessNewCustomCmds(), StopStreaming command, Invalid Size
+ */
+void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize(void)
+{
+    /* Command with the wrong type (size) */
+    VC_StartStreamCmd_t InMsg;
+    
+    CFE_SB_InitMsg (&InMsg, VC_CMD_MID, sizeof(InMsg), TRUE);
+    
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, VC_STOPSTREAMING_CC);
+
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InMsg);
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+            "Start Streaming Cmd Event Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewCustomCmds(), StopStreaming command, Invalid State
+ */
+void Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState(void)
+{
+    VC_NoArgCmd_t InMsg;
+
+    CFE_SB_InitMsg (&InMsg, VC_CMD_MID, sizeof(InMsg), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, VC_STOPSTREAMING_CC);
+
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set app state to streaming */
+    VC_AppData.AppState = VC_INITIALIZED;
+    
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InMsg);
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_CMD_ERR_EID, CFE_EVS_ERROR, 
+            "VC is already not streaming", "Stop Streaming Cmd Event Sent");
+}
+
+
 /**************************************************************************
  * Rollup Test Cases
  **************************************************************************/
@@ -325,5 +459,16 @@ void VC_Custom_App_Shared_Test_AddTestCases(void)
     UtTest_Add(Test_VC_ProcessNewCustomCmds_StartStreaming_TransmitInitFail, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
             "Test_VC_ProcessNewCustomCmds_StartStreaming_TransmitInitFail");
-
+    UtTest_Add(Test_VC_ProcessNewCustomCmds_StartStreaming_DevicesStartFail, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewCustomCmds_StartStreaming_DevicesStartFail");
+    UtTest_Add(Test_VC_ProcessNewCustomCmds_StartStreaming_Nominal, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewCustomCmds_StartStreaming_Nominal");
+    UtTest_Add(Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize");
+    UtTest_Add(Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewCustomCmdss_StopStreaming_InvalidState");
 }
