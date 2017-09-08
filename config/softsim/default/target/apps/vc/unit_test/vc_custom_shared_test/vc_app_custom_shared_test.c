@@ -1,6 +1,9 @@
 #include "vc_app_custom_shared_test.h"
 #include "vc_custom_shared_test_utils.h"
 #include "vc_platform_cfg.h"
+
+#include "vc_msgids.h"
+
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,7 +23,7 @@
 #include "ut_cfe_time_stubs.h"
 
 /**
- * Test VC_ProcessNewCustomCmds(), - InvalidMsgID
+ * Test VC_ProcessNewCustomCmds() - InvalidMsgID
  */
 void Test_VC_Custom_ProcessNewCustomCmds_InvalidMsgID(void)
 {
@@ -45,6 +48,144 @@ void Test_VC_Custom_ProcessNewCustomCmds_InvalidMsgID(void)
 }
 
 
+/**
+ * Test VC_ProcessNewCustomCmds() - Invalid Command Code
+ */
+void Test_VC_Custom_ProcessNewCustomCmds_InvalidCommand(void)
+{
+    /* Create an invalid command code */
+    uint8 InvalidCommandCode = 100;
+    
+    VC_StartStreamCmd_t InMsg;
+    
+    CFE_SB_InitMsg (&InMsg, VC_STARTSTREAMING_CC, sizeof(VC_StartStreamCmd_t), TRUE);
+    
+    /* Set invalid command code */
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, InvalidCommandCode);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InMsg);
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_MSGID_ERR_EID, CFE_EVS_ERROR, "", 
+            "Cmd with Invalid Cmd Code Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewCustomCmds(), StartStreaming command, Invalid Size
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize(void)
+{
+    /* Command with the wrong type (size) */
+    VC_NoArgCmd_t InMsg;
+    
+    CFE_SB_InitMsg (&InMsg, VC_CMD_MID, sizeof(InMsg), TRUE);
+    
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, VC_STARTSTREAMING_CC);
+
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InMsg);
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+            "Start Streaming Cmd Event Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewCustomCmds(), StartStreaming command, Invalid State
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState(void)
+{
+    VC_StartStreamCmd_t InStartStreamingCmd;
+
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set app state to streaming */
+    VC_AppData.AppState = VC_STREAMING;
+    
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_CMD_ERR_EID, CFE_EVS_ERROR, "VC is already streaming", "Start Streaming Cmd Event Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewCustomCmds(), StartStreaming command, Invalid (Null) Address
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress(void)
+{
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set app state to initialized */
+    VC_AppData.AppState = VC_INITIALIZED;
+    
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_ADDR_NUL_ERR_EID, CFE_EVS_ERROR, 
+            "NUL (empty) string specified for address", "Start Streaming Cmd Event Sent");
+}
+
+
+/**
+ * Test VC_ProcessNewAppCmds(), StartStreaming command, Invalid Address
+ */
+void Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress(void)
+{
+    VC_StartStreamCmd_t InStartStreamingCmd;
+    
+    CFE_SB_InitMsg (&InStartStreamingCmd, VC_CMD_MID, sizeof(InStartStreamingCmd), TRUE);
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InStartStreamingCmd, VC_STARTSTREAMING_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set app state to initialized */
+    VC_AppData.AppState = VC_INITIALIZED;
+    
+    /* Start streaming needs an address to pass null check */
+    strcpy(InStartStreamingCmd.Address, "NOT_NULL");
+
+    /* Call the function under test */
+    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.HkTlm.usCmdErrCnt = 1,"Command error counter != 1");
+    UtAssert_EventSent(VC_ADDR_ERR_EID, CFE_EVS_ERROR, 
+            "Invalid string specified for address", "Start Streaming Cmd Event Sent");
+}
+
+
 /**************************************************************************
  * Rollup Test Cases
  **************************************************************************/
@@ -56,5 +197,20 @@ void VC_Custom_App_Shared_Test_AddTestCases(void)
     UtTest_Add(Test_VC_Custom_ProcessNewCustomCmds_InvalidMsgID, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
             "Test_VC_Custom_ProcessNewCustomCmds_InvalidMsgID");
+    UtTest_Add(Test_VC_Custom_ProcessNewCustomCmds_InvalidCommand, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_ProcessNewCustomCmds_InvalidCommand");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidSize");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidState");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidNullAddress");
+    UtTest_Add(Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_ProcessNewAppCmds_StartStreaming_InvalidAddress");
 
 }

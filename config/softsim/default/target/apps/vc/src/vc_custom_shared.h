@@ -7,6 +7,14 @@
 #include "vc_app.h"
 #include "vc_custom.h"
 
+/************************************************************************
+** Local Defines
+*************************************************************************/
+/* start streaming command */
+#define VC_STARTSTREAMING_CC  (2)
+/* stop streaming command */
+#define VC_STOPSTREAMING_CC   (3)
+
 
 /************************************************************************
 ** Structure Declarations

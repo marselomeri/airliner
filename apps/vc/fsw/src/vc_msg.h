@@ -87,10 +87,6 @@ extern "C" {
 **  \sa #VC_NOOP_CC
 */
 #define VC_RESET_CC           (1)
-/* start streaming command */
-#define VC_STARTSTREAMING_CC  (2)
-/* stop streaming command */
-#define VC_STOPSTREAMING_CC   (3)
 
 /************************************************************************
 ** Local Structure Declarations
