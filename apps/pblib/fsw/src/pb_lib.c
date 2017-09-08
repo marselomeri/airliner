@@ -88,6 +88,8 @@ uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
 	//void (*funcAddr)(const void *, char *, uint32) = NULL;
 	uint32 *funcAddr = 0;
+	char encFuncName[64];
+	int32 status = 0;
 
     if(msgId == 0)
     {
@@ -100,7 +102,11 @@ uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
     	if(PBLIB_RegisteredFuncs[i].msgId == msgId && PBLIB_RegisteredFuncs[i].cmdCode == cmdCode)
     	{
     		OS_printf("Found msg idx");
-    		OS_SymbolLookup(funcAddr, strcat(PBLIB_RegisteredFuncs[i].msgName, "_Enc"));
+    		strcpy(encFuncName, PBLIB_RegisteredFuncs[i].msgName);
+			strcat(encFuncName, "_Enc");
+			OS_printf("Looking up %s\n", encFuncName );
+			status = OS_SymbolLookup(&funcAddr, &encFuncName);
+    		OS_printf("Lookup returned %i\n", status);
     		break;
     	}
     }
@@ -122,7 +128,7 @@ uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 	//void (*funcAddr)(const void *, char *, uint32) = NULL;
 	uint32 *funcAddr = 0;
 	char decFuncName[64];
-
+	int32 status = 0;
 
     if(msgId == 0)
     {
@@ -138,7 +144,8 @@ uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 			strcat(decFuncName, "_Dec");
     		OS_printf("Found msg idx\n");
     		OS_printf("Looking up %s\n", decFuncName);
-    		OS_SymbolLookupTest(funcAddr, &decFuncName);
+    		status = OS_SymbolLookup(&funcAddr, &decFuncName);
+    		OS_printf("Lookup returned %i\n", status);
     		break;
     	}
     }
