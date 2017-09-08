@@ -20,8 +20,6 @@ int32 PBLIB_LibInit(void)
 			PBLIB_REVISION,
 			PBLIB_MISSION_REV);
 
-    //PBLIB_RegisteredFuncs = PBLIB_RegData_t[]
-
     return OS_SUCCESS;
  
 }/* End PBLIB_LibInit */
@@ -34,7 +32,6 @@ int32 PBLIB_RegisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName)
 
     if(msgId == 0)
     {
-    	OS_printf("MsgId 0. Stop");
     	status = -1;
     	goto PBLIB_RegisterMessage_Exit_Tag;
     }
@@ -43,7 +40,6 @@ int32 PBLIB_RegisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName)
     {
     	if(PBLIB_RegisteredFuncs[i].msgId == 0)
     	{
-    		OS_printf("Found empty idx");
     		PBLIB_RegisteredFuncs[i].msgId = msgId;
     		PBLIB_RegisteredFuncs[i].cmdCode = cmdCode;
     		strcpy(PBLIB_RegisteredFuncs[i].msgName, msgName);
@@ -62,7 +58,6 @@ int32 PBLIB_DeregisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 
     if(msgId == 0)
     {
-    	OS_printf("MsgId 0. Stop");
     	status = -1;
     	goto PBLIB_DeregisterMessage_Exit_Tag;
     }
@@ -71,7 +66,6 @@ int32 PBLIB_DeregisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode)
     {
     	if(PBLIB_RegisteredFuncs[i].msgId == msgId && PBLIB_RegisteredFuncs[i].cmdCode == cmdCode)
     	{
-    		OS_printf("Found msg idx");
     		PBLIB_RegisteredFuncs[i].msgId = 0;
     		PBLIB_RegisteredFuncs[i].cmdCode = 0;
     		strcpy(PBLIB_RegisteredFuncs[i].msgName, "\0");
@@ -86,14 +80,12 @@ PBLIB_DeregisterMessage_Exit_Tag:
 
 uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
-	//void (*funcAddr)(const void *, char *, uint32) = NULL;
 	uint32 *funcAddr = 0;
 	char encFuncName[64];
 	int32 status = 0;
 
     if(msgId == 0)
     {
-    	OS_printf("MsgId 0. Stop");
     	goto PBLIB_GetSerializationFunc_Exit_Tag;
     }
 
@@ -101,12 +93,9 @@ uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
     {
     	if(PBLIB_RegisteredFuncs[i].msgId == msgId && PBLIB_RegisteredFuncs[i].cmdCode == cmdCode)
     	{
-    		OS_printf("Found msg idx");
     		strcpy(encFuncName, PBLIB_RegisteredFuncs[i].msgName);
 			strcat(encFuncName, "_Enc");
-			OS_printf("Looking up %s\n", encFuncName );
 			status = OS_SymbolLookup(&funcAddr, &encFuncName);
-    		OS_printf("Lookup returned %i\n", status);
     		break;
     	}
     }
@@ -115,17 +104,8 @@ PBLIB_GetSerializationFunc_Exit_Tag:
     return funcAddr;
 }/* End PBLIB_GetSerializationFunc */
 
-int32 OS_SymbolLookupTest( uint32 *SymbolAddress, const char *SymbolName )
-{
-   OS_printf("Looking up SYMBOL %s\n", SymbolName);
-
-   return(OS_SUCCESS);
-
-}/* end OS_SymbolLookup */
-
 uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
-	//void (*funcAddr)(const void *, char *, uint32) = NULL;
 	uint32 *funcAddr = 0;
 	char decFuncName[64];
 	int32 status = 0;
@@ -142,10 +122,7 @@ uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
     	{
     		strcpy(decFuncName, PBLIB_RegisteredFuncs[i].msgName);
 			strcat(decFuncName, "_Dec");
-    		OS_printf("Found msg idx\n");
-    		OS_printf("Looking up %s\n", decFuncName);
     		status = OS_SymbolLookup(&funcAddr, &decFuncName);
-    		OS_printf("Lookup returned %i\n", status);
     		break;
     	}
     }
@@ -161,4 +138,3 @@ PBLIB_GetDeserializationFunc_Exit_Tag:
 /************************/
 /*  End of File Comment */
 /************************/
-

@@ -24,10 +24,11 @@
 typedef struct
 {
 	CFE_SB_MsgId_t 	msgId;
-	char			msgName[64];
+	char			msgName[CFE_SB_MAX_SB_MSG_SIZE]; // TODO: Should use smaller?
     uint16	 		cmdCode;
 } PBLIB_RegData_t;
 
+//
 PBLIB_RegData_t PBLIB_RegisteredFuncs[PBLIB_REG_MAX_ENTRY];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -38,11 +39,15 @@ PBLIB_RegData_t PBLIB_RegisteredFuncs[PBLIB_REG_MAX_ENTRY];
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PBLIB_LibInit(void);
 
+
 int32 PBLIB_RegisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName);
+
 
 int32 PBLIB_DeregisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode);
 
+
 uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode);
+
 
 uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode);
 
