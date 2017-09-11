@@ -43,6 +43,7 @@ typedef enum
     VC_STREAMING     = 2
 } VC_Status_t;
 
+
 /** 
  *  \brief VC global data structure
  */
@@ -60,14 +61,12 @@ typedef struct
     /* Run Status variable used in the main processing loop */
     /** \brief Task Run Status */
     uint32                uiRunStatus;
-
-    /** \brief CFE Event Table */
-    CFE_EVS_BinFilter_t   EventTbl[(VC_EVT_CNT + VC_CUSTOM_EVT_CNT)];
     
     /** \brief VC App State */
     VC_Status_t           AppState;
 
 } VC_AppData_t;
+
 
 /************************************************************************
 ** Function Prototypes

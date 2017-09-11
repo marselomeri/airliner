@@ -31,7 +31,6 @@ typedef struct
 } VC_StartStreamCmd_t;
 
 
-/* VC_CUSTOM_EVT_CNT must be defined in platform config */
 typedef enum {
 
 /** \brief <tt> 'VC - ' </tt>
@@ -85,12 +84,43 @@ typedef enum {
 **
 */
     VC_ADDR_NUL_ERR_EID,
-} TO_CustomEventIds_t;
+    
+/** \brief Number of custom events 
+**
+**  \par Limits:
+**       int32
+*/
+    VC_CUSTOM_EVT_CNT
+} VC_CustomEventIds_t;
+
 
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
 
 extern VC_AppData_t VC_AppData;
+
+/************************************************************************
+** Function Prototypes
+*************************************************************************/
+
+/************************************************************************/
+/** \brief Determines if the maximum of event filters has been reached.
+**
+**  \par Description
+**       This function checks if an index has reached the maximum
+**       number of events.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    ind    The current index to check.
+**                             
+**
+**  \returns    boolean
+**
+*************************************************************************/
+boolean VC_Custom_Max_Events_Not_Reached(int32 ind);
+
 
 #endif /* VC_CUSTOM_SHARED_H */

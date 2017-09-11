@@ -163,13 +163,6 @@ extern "C" {
 */
 #define VC_STREAMING_TASK_NAME          "VC_STREAM"
 
-/** \brief Number of custom events 
-**
-**  \par Limits:
-**       int32
-*/
-#define VC_CUSTOM_EVT_CNT               (4)
-
 /* Camera settings */
 
 /** \brief Video resolution width

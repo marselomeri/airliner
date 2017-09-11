@@ -157,20 +157,48 @@ void VC_StopStreamingCmd(CFE_SB_Msg_t* MsgPtr)
 } /* End of VC_StopStreamingCmd() */
 
 
-void VC_Custom_Init_EventFilters(int32 ind)
+boolean VC_Custom_Max_Events_Not_Reached(int32 ind)
 {
-    VC_AppData.EventTbl[  ind].EventID = VC_MSGLEN_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_SOCKET_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_DEVICE_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_ADDR_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_ADDR_NUL_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    if (ind < CFE_EVS_MAX_EVENT_FILTERS)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
+
+
+int32 VC_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
+{
+    int32 customEventCount = ind;
+
+    if(TRUE == VC_Custom_Max_Events_Not_Reached(customEventCount))
+    {
+        EventTbl[  customEventCount].EventID = VC_SOCKET_ERR_EID;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+    }
+    else
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+    
+    if(TRUE == VC_Custom_Max_Events_Not_Reached(customEventCount))
+    {
+        EventTbl[  customEventCount].EventID = VC_DEVICE_ERR_EID;
+        EventTbl[customEventCount].Mask    = CFE_EVS_FIRST_16_STOP;
+    }
+    else
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+
+end_of_function:
+
+    return customEventCount;
+}
+
+

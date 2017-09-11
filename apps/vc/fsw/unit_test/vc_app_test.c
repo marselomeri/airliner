@@ -7,6 +7,7 @@
 
 #include "vc_custom_transmit_stubs.h"
 #include "vc_custom_device_stubs.h"
+#include "vc_custom_stubs.h"
 
 #include "uttest.h"
 #include "ut_osapi_stubs.h"
@@ -46,6 +47,28 @@ void Test_VC_InitEvent_Fail_Register(void)
 
     /* Verify results */
     UtAssert_True (result == expected, "InitEvent, failed EVS Register");
+}
+
+
+/**
+ * Test VC_InitEvent() with failed VC_Custom_Init_EventFilters
+ */
+void Test_VC_InitEvent_Fail_CustomInit(void)
+{
+    /* Set a fail result for EVS */
+    int32 result = (CFE_SEVERITY_BITMASK & CFE_SEVERITY_ERROR)
+                   | CFE_EVENTS_SERVICE | CFE_EVS_NOT_IMPLEMENTED;
+    int32 expected = CFE_EVS_APP_FILTER_OVERLOAD;
+    
+    
+    /* Set custom init event to fail */
+    VC_Custom_Test_Returns.VC_Custom_Init_EventFilters_Return = -1;
+
+    /* Execute the function being tested */
+    result = VC_InitEvent();
+
+    /* Verify results */
+    UtAssert_True (result == expected, "InitEvent, custom init event failed");
 }
 
 
@@ -685,6 +708,8 @@ void VC_App_Test_AddTestCases(void)
 {
     UtTest_Add(Test_VC_InitEvent_Fail_Register, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_InitEvent_Fail_Register");
+    UtTest_Add(Test_VC_InitEvent_Fail_CustomInit, VC_Test_Setup, VC_Test_TearDown,
+               "Test_VC_InitEvent_Fail_CustomInit");
     UtTest_Add(Test_VC_InitPipe_Fail_CreateSCHPipe, VC_Test_Setup, VC_Test_TearDown,
                "Test_VC_InitPipe_Fail_CreateSCHPipe");
     UtTest_Add(Test_VC_InitPipe_Fail_SubscribeWakeup, VC_Test_Setup, VC_Test_TearDown,

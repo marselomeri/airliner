@@ -428,15 +428,89 @@ void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState(void)
 
 
 /**************************************************************************
+ * Tests VC_Custom_Max_Events_Not_Reached()
+ **************************************************************************/
+/**
+ * Test Test_VC_Custom_Max_Events_Not_Reached(), Nominal
+ * 
+ */
+void Test_VC_Custom_Max_Events_Not_Reached_Nominal(void)
+{
+    UtAssert_True(VC_Custom_Max_Events_Not_Reached(CFE_EVS_MAX_EVENT_FILTERS - 1) == TRUE,
+            "Max events not reached did return true");
+}
+
+
+/**
+ * Test Test_VC_Custom_Max_Events_Not_Reached(), Fail
+ * 
+ */
+void Test_VC_Custom_Max_Events_Not_Reached_Fail(void)
+{
+    UtAssert_True(VC_Custom_Max_Events_Not_Reached(CFE_EVS_MAX_EVENT_FILTERS + 1) == FALSE,
+            "Max events not reached did not return false");
+}
+
+
+/**************************************************************************
  * Tests VC_Custom_Init_EventFilters()
  **************************************************************************/
 /**
  * Test VC_Custom_Init_EventFilters(), Nominal
- * Note: Currently there is no way to fail this function
  */
 void Test_VC_Custom_Init_EventFilters_Nominal(void)
 {
-    VC_Custom_Init_EventFilters(VC_EVT_CNT);
+    int32 returnCode = 0;
+    int32 expected   = 2;
+
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    
+    returnCode = VC_Custom_Init_EventFilters(1, EventTbl);
+    
+    UtAssert_True(returnCode == expected,
+            "Test_VC_Custom_Init_EventFilters_Nominal did not return the expected value");
+    UtAssert_True(EventTbl[1].EventID == VC_SOCKET_ERR_EID,
+            "Event filter array entries not added");
+    UtAssert_True(EventTbl[2].EventID == VC_DEVICE_ERR_EID,
+            "Event filter array entries not added");
+}
+
+
+/**
+ * Test VC_Custom_Init_EventFilters(), Fail
+ */
+void Test_VC_Custom_Init_EventFilters_Fail1(void)
+{
+    int32 returnCode = 0;
+    int32 expected   = -1;
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    
+    returnCode = VC_Custom_Init_EventFilters(CFE_EVS_MAX_EVENT_FILTERS, EventTbl);
+    
+    UtAssert_True(returnCode == expected,
+            "Test_VC_Custom_Init_EventFilters_Fail did not return the expected value");
+
+}
+
+
+/**
+ * Test VC_Custom_Init_EventFilters(), Fail
+ */
+void Test_VC_Custom_Init_EventFilters_Fail2(void)
+{
+    int32 returnCode = 0;
+    int32 expected   = -1;
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    
+    returnCode = VC_Custom_Init_EventFilters(CFE_EVS_MAX_EVENT_FILTERS-1, EventTbl);
+    
+    UtAssert_True(returnCode == expected,
+            "Test_VC_Custom_Init_EventFilters_Fail did not return the expected value");
+    UtAssert_True(returnCode == expected,
+            "Test_VC_Custom_Init_EventFilters_Nominal did not return the expected value");
+    UtAssert_True(EventTbl[CFE_EVS_MAX_EVENT_FILTERS-1].EventID == VC_SOCKET_ERR_EID,
+            "Event filter array entries not added");
+
 }
 
 
@@ -487,7 +561,19 @@ void VC_Custom_App_Shared_Test_AddTestCases(void)
     UtTest_Add(Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
             "Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState");
+    UtTest_Add(Test_VC_Custom_Max_Events_Not_Reached_Nominal, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_Max_Events_Not_Reached_Nominal");
+    UtTest_Add(Test_VC_Custom_Max_Events_Not_Reached_Fail, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_Max_Events_Not_Reached_Fail");
     UtTest_Add(Test_VC_Custom_Init_EventFilters_Nominal, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
             "Test_VC_Custom_Init_EventFilters_Nominal");
+    UtTest_Add(Test_VC_Custom_Init_EventFilters_Fail1, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_Init_EventFilters_Fail1");
+    UtTest_Add(Test_VC_Custom_Init_EventFilters_Fail2, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_Init_EventFilters_Fail2");
 }

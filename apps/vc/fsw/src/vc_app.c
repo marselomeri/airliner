@@ -47,72 +47,36 @@ int32 VC_InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
     int32  ind = 0;
+    int32 customEventCount = 0;
+
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
-    memset((void*)VC_AppData.EventTbl, 0x00, sizeof(VC_AppData.EventTbl));
+    memset(EventTbl, 0x00, sizeof(EventTbl));
 
     /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
      * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
      * (the default) has been provided as an example. */
-    VC_AppData.EventTbl[  ind].EventID = VC_RESERVED_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_INIT_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_CONFIG_TABLE_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_NOOP_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_RESET_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_CMD_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = VC_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
-    VC_AppData.EventTbl[  ind].EventID = VC_DEV_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-        
-    VC_AppData.EventTbl[  ind].EventID = VC_CHA_INF_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-        
-    VC_AppData.EventTbl[  ind].EventID = VC_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-        
-    VC_AppData.EventTbl[  ind].EventID = VC_INIT_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    customEventCount = VC_Custom_Init_EventFilters(ind, EventTbl);
     
-    VC_AppData.EventTbl[  ind].EventID = VC_UNINIT_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_CONFIG_TABLE_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_CMD_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-
-    VC_AppData.EventTbl[  ind].EventID = VC_PIPE_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    VC_AppData.EventTbl[  ind].EventID = VC_MSGID_ERR_EID;
-    VC_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
-    
-    /* Add any custom events */
-    VC_Custom_Init_EventFilters(ind);
+    if(-1 == customEventCount)
+    {
+        iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        goto end_of_function;
+    }
     
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(VC_AppData.EventTbl,
-                               (VC_EVT_CNT + VC_CUSTOM_EVT_CNT), CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, (ind + customEventCount), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("VC - Failed to register with EVS (0x%08X)\n", (unsigned int)iStatus);
     }
+
+end_of_function:
 
     return (iStatus);
 }
