@@ -438,6 +438,12 @@ void LC_SbInit_Test_CreatePipeError(void)
 void LC_SbInit_Test_SubscribeHKReqError(void)
 {
     int32 Result;
+    
+     char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Error Subscribing to HK Request, MID=0x%04X, RC=0x%08X",
+            LC_SEND_HK_MID, -1);
 
     /* Set to generate error message LC_SUB_HK_REQ_ERR_EID */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBE_INDEX, -1, 1);
@@ -447,8 +453,8 @@ void LC_SbInit_Test_SubscribeHKReqError(void)
     
     /* Verify results */
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(LC_SUB_HK_REQ_ERR_EID, CFE_EVS_ERROR, "Error Subscribing to HK Request, MID=0x18A5, RC=0xFFFFFFFF"),
-        "Error Subscribing to HK Request, MID=0x18A5, RC=0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(LC_SUB_HK_REQ_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True(Result == -1, "Result == -1");
 
@@ -459,6 +465,13 @@ void LC_SbInit_Test_SubscribeHKReqError(void)
 void LC_SbInit_Test_SubscribeGndCmdError(void)
 {
     int32 Result;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Error Subscribing to GND CMD, MID=0x%04X, RC=0x%08X",
+            LC_CMD_MID, -1);
+
 
     /* Set to generate error message LC_SUB_GND_CMD_ERR_EID */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBE_INDEX, -1, 2);
@@ -468,8 +481,8 @@ void LC_SbInit_Test_SubscribeGndCmdError(void)
     
     /* Verify results */
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(LC_SUB_GND_CMD_ERR_EID, CFE_EVS_ERROR, "Error Subscribing to GND CMD, MID=0x18A4, RC=0xFFFFFFFF"),
-        "Error Subscribing to GND CMD, MID=0x18A4, RC=0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(LC_SUB_GND_CMD_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True(Result == -1, "Result == -1");
 
@@ -481,6 +494,12 @@ void LC_SbInit_Test_SubscribeSampleCmdError(void)
 {
     int32 Result;
 
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Error Subscribing to Sample CMD, MID=0x%04X, RC=0x%08X",
+            LC_SAMPLE_AP_MID, -1);
+
     /* Set to generate error message LC_SUB_SAMPLE_CMD_ERR_EID */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBE_INDEX, -1, 3);
 
@@ -489,8 +508,8 @@ void LC_SbInit_Test_SubscribeSampleCmdError(void)
     
     /* Verify results */
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(LC_SUB_SAMPLE_CMD_ERR_EID, CFE_EVS_ERROR, "Error Subscribing to Sample CMD, MID=0x18A6, RC=0xFFFFFFFF"),
-        "Error Subscribing to Sample CMD, MID=0x18A6, RC=0xFFFFFFFF");
+        (Ut_CFE_EVS_EventSent(LC_SUB_SAMPLE_CMD_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True(Result == -1, "Result == -1");
 

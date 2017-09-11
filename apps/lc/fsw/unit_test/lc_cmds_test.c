@@ -252,6 +252,12 @@ void LC_AppPipe_Test_InvalidCommandCode(void)
 {
     int32                 Result;
     LC_SetAPPermOff_t     CmdPacket;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Invalid command code: ID = 0x%04X, CC = %d",
+            LC_CMD_MID, 99);
 
     CFE_SB_InitMsg ((CFE_SB_MsgPtr_t)(&CmdPacket), LC_CMD_MID, 1, TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)(&CmdPacket), 99);
@@ -263,8 +269,8 @@ void LC_AppPipe_Test_InvalidCommandCode(void)
     UtAssert_True (Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(LC_CC_ERR_EID, CFE_EVS_ERROR, "Invalid command code: ID = 0x18A4, CC = 99"),
-        "Invalid command code: ID = 0x18A4, CC = 99");
+        (Ut_CFE_EVS_EventSent(LC_CC_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
@@ -1815,6 +1821,12 @@ void LC_VerifyMsgLength_Test_HKRequestLengthError(void)
 {
     boolean           Result;
     LC_NoArgsCmd_t    CmdPacket;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Invalid HK request msg length: ID = 0x%04X, CC = %d, Len = %d, Expected = %d",
+            LC_SEND_HK_MID, LC_NOOP_CC, 1, sizeof(LC_NoArgsCmd_t));
 
     CFE_SB_InitMsg (&CmdPacket, LC_SEND_HK_MID, 1, TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)(&CmdPacket), LC_NOOP_CC);
@@ -1826,8 +1838,8 @@ void LC_VerifyMsgLength_Test_HKRequestLengthError(void)
     UtAssert_True (Result == FALSE, "Result == FALSE");
 
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(LC_HKREQ_LEN_ERR_EID, CFE_EVS_ERROR, "Invalid HK request msg length: ID = 0x18A5, CC = 0, Len = 1, Expected = 8"),
-        "Invalid HK request msg length: ID = 0x18A5, CC = 0, Len = 1, Expected = 8");
+        (Ut_CFE_EVS_EventSent(LC_HKREQ_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
@@ -1837,6 +1849,12 @@ void LC_VerifyMsgLength_Test_APSampleLengthError(void)
 {
     boolean           Result;
     LC_NoArgsCmd_t    CmdPacket;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Invalid AP sample msg length: ID = 0x%04X, CC = %d, Len = %d, Expected = %d",
+            LC_SAMPLE_AP_MID, LC_NOOP_CC, 1, sizeof(LC_NoArgsCmd_t));
 
     CFE_SB_InitMsg (&CmdPacket, LC_SAMPLE_AP_MID, 1, TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)(&CmdPacket), LC_NOOP_CC);
@@ -1848,8 +1866,8 @@ void LC_VerifyMsgLength_Test_APSampleLengthError(void)
     UtAssert_True (Result == FALSE, "Result == FALSE");
 
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(LC_APSAMPLE_LEN_ERR_EID, CFE_EVS_ERROR, "Invalid AP sample msg length: ID = 0x18A6, CC = 0, Len = 1, Expected = 8"),
-        "Invalid AP sample msg length: ID = 0x18A6, CC = 0, Len = 1, Expected = 8");
+        (Ut_CFE_EVS_EventSent(LC_APSAMPLE_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
 
