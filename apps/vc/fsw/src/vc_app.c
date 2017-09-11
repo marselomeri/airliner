@@ -61,11 +61,13 @@ int32 VC_InitEvent()
     EventTbl[  ind].EventID = VC_RESERVED_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     
+    /* Add custom events to the filter table */
     customEventCount = VC_Custom_Init_EventFilters(ind, EventTbl);
     
     if(-1 == customEventCount)
     {
         iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        (void) CFE_ES_WriteToSysLog("VC - Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
         goto end_of_function;
     }
     

@@ -514,6 +514,20 @@ void Test_VC_Custom_Init_EventFilters_Fail2(void)
 }
 
 
+/**
+ * Test VC_Custom_Init_EventFilters(), Fail null check
+ */
+void Test_VC_Custom_Init_EventFilters_Null(void)
+{
+    int32 returnCode = 0;
+    int32 expected   = -1;
+    
+    returnCode = VC_Custom_Init_EventFilters(1, (CFE_EVS_BinFilter_t *)0);
+    
+    UtAssert_True(returnCode == expected,
+            "Test_VC_Custom_Init_EventFilters_Fail did not return the expected value");
+}
+
 /**************************************************************************
  * Rollup Test Cases
  **************************************************************************/
@@ -576,4 +590,7 @@ void VC_Custom_App_Shared_Test_AddTestCases(void)
     UtTest_Add(Test_VC_Custom_Init_EventFilters_Fail2, 
             VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
             "Test_VC_Custom_Init_EventFilters_Fail2");
+    UtTest_Add(Test_VC_Custom_Init_EventFilters_Null, 
+            VC_Custom_Shared_Test_Setup, VC_Custom_Shared_Test_TearDown,
+            "Test_VC_Custom_Init_EventFilters_Null");
 }
