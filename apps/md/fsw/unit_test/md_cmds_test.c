@@ -507,7 +507,7 @@ void MD_ProcessSignatureCmd_Test_InvalidSignatureLength(void)
 
     CFE_SB_InitMsg (&CmdPacket, MD_CMD_MID, sizeof(MD_CmdSetSignature_t), TRUE);
 
-    for (i = 0; i <= MD_SIGNATURE_FIELD_LENGTH; i++)
+    for (i = 0; i < MD_SIGNATURE_FIELD_LENGTH; i++)
     {
         CmdPacket.Signature[i] = 'x';
     }

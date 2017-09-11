@@ -173,6 +173,12 @@ void MD_AppMain_Test_WakeupNominal(void)
 void MD_AppMain_Test_WakeupLengthError(void)
 {
     MD_NoArgsCmd_t   CmdPacket;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Msg with Bad length Rcvd: ID = 0x%04X, Exp Len = %d, Len = %d",
+            MD_WAKEUP_MID, sizeof(MD_NoArgsCmd_t), 1);
 
     /* Set to prevent unintended error messages */
     Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_LOAD_INDEX, CFE_SUCCESS, 1);
@@ -195,8 +201,8 @@ void MD_AppMain_Test_WakeupLengthError(void)
     UtAssert_True(MD_AppData.RunStatus == CFE_ES_APP_RUN, "MD_AppData.RunStatus == CFE_ES_APP_RUN");
 
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(MD_MSG_LEN_ERR_EID, CFE_EVS_ERROR, "Msg with Bad length Rcvd: ID = 0x1892, Exp Len = 8, Len = 1"),
-        "Msg with Bad length Rcvd: ID = 0x1892, Exp Len = 8, Len = 1");
+        (Ut_CFE_EVS_EventSent(MD_MSG_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 3, "Ut_CFE_EVS_GetEventQueueDepth() == 3");
     /* Generates 2 event messages we don't care about in this test */
@@ -264,6 +270,12 @@ void MD_AppMain_Test_SendHkNominal(void)
 void MD_AppMain_Test_SendHkLengthError(void)
 {
     MD_NoArgsCmd_t   CmdPacket;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Msg with Bad length Rcvd: ID = 0x%04X, Exp Len = %d, Len = %d",
+            MD_SEND_HK_MID, sizeof(MD_NoArgsCmd_t), 1);
 
     /* Set to prevent unintended error messages */
     Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_LOAD_INDEX, CFE_SUCCESS, 1);
@@ -286,8 +298,8 @@ void MD_AppMain_Test_SendHkLengthError(void)
     UtAssert_True(MD_AppData.RunStatus == CFE_ES_APP_RUN, "MD_AppData.RunStatus == CFE_ES_APP_RUN");
 
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(MD_MSG_LEN_ERR_EID, CFE_EVS_ERROR, "Msg with Bad length Rcvd: ID = 0x1891, Exp Len = 8, Len = 1"),
-        "Msg with Bad length Rcvd: ID = 0x1891, Exp Len = 8, Len = 1");
+        (Ut_CFE_EVS_EventSent(MD_MSG_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 3, "Ut_CFE_EVS_GetEventQueueDepth() == 3");
     /* Generates 2 event messages we don't care about in this test */
@@ -917,6 +929,13 @@ void MD_ExecRequest_Test_SearchCmdHndlrTblError(void)
 void MD_ExecRequest_Test_CmdLengthError(void)
 {
     MD_NoArgsCmd_t   CmdPacket;
+    
+    char ExpectedEventString[CFE_EVS_MAX_MESSAGE_LENGTH];
+    
+    snprintf(ExpectedEventString, CFE_EVS_MAX_MESSAGE_LENGTH, 
+            "Cmd Msg with Bad length Rcvd: ID = 0x%04X, CC = %d, Exp Len = %d, Len = %d",
+            MD_CMD_MID, 0, sizeof(MD_NoArgsCmd_t), 1);
+
 
     CFE_SB_InitMsg (&CmdPacket, MD_CMD_MID, 1, TRUE);
 
@@ -928,8 +947,8 @@ void MD_ExecRequest_Test_CmdLengthError(void)
     
     /* Verify results */
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(MD_CMD_LEN_ERR_EID, CFE_EVS_ERROR, "Cmd Msg with Bad length Rcvd: ID = 0x1890, CC = 0, Exp Len = 8, Len = 1"),
-        "Cmd Msg with Bad length Rcvd: ID = 0x1890, CC = 0, Exp Len = 8, Len = 1");
+        (Ut_CFE_EVS_EventSent(MD_CMD_LEN_ERR_EID, CFE_EVS_ERROR, ExpectedEventString),
+        ExpectedEventString);
 
     UtAssert_True (MD_AppData.ErrCounter == 1, "MD_AppData.ErrCounter == 1");
 
