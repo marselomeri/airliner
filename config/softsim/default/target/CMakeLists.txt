@@ -149,17 +149,17 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sc_perfids.h
     )
 
-add_airliner_app(
-    ci
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ci/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci/ci_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ci_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ci_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ci_mission_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ci_perfids.h
-    )
+#add_airliner_app(
+#    ci
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ci/fsw/for_build
+#    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci
+#    CONFIG_SOURCES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci/ci_custom.c
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ci_platform_cfg.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ci_msgids.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ci_mission_cfg.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ci_perfids.h
+#    )
 
 add_airliner_app(
     to
@@ -208,6 +208,16 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/px4br_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_perfids.h
+    )
+
+add_airliner_app(
+    pmc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pmc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pmc
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pmc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pmc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pmc_perfids.h
     )
 
 

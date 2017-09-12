@@ -2,7 +2,7 @@
 ** File:
 **   $Id: cf_msgids.h 1.5 2015/03/06 14:38:32EST sstrege Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -33,41 +33,7 @@
 #ifndef _cf_msgids_h_
 #define _cf_msgids_h_
 
-/**************************
-** CF Command Message IDs
-***************************/
-
-#define CF_CMD_MID                      0x18B3
-#define CF_SEND_HK_MID                  0x18B4 
-#define CF_WAKE_UP_REQ_CMD_MID          0x18B5
-#define CF_SPARE1_CMD_MID               0x18B6
-#define CF_SPARE2_CMD_MID               0x18B7
-#define CF_SPARE3_CMD_MID               0x18B8
-#define CF_SPARE4_CMD_MID               0x18B9
-#define CF_SPARE5_CMD_MID               0x18BA
-#define CF_INCOMING_PDU_MID             0x1FFD 
-
-
-/***************************
-** CF Telemetry Message IDs
-****************************/
-
-#define CF_HK_TLM_MID                   0x08B0
-#define CF_TRANS_TLM_MID                0x08B1
-#define CF_CONFIG_TLM_MID               0x08B2
-#define CF_SPARE0_TLM_MID               0x08B3
-#define CF_SPARE1_TLM_MID               0x08B4
-#define CF_SPARE2_TLM_MID               0x08B5
-#define CF_SPARE3_TLM_MID               0x08B6
-#define CF_SPARE4_TLM_MID               0x08B7
-
-/* 
-** NOTE: the definition below is NOT used by the code. The code uses the MsgId 
-** defined in the CF table. For the purpose of keeping all CF related message
-** IDs defined in this file, the CF table should reference this macro 
-** definition.
-*/
-#define CF_SPACE_TO_GND_PDU_MID         0x0FFD
+#include "msg_ids.h"
 
 #endif /* _cf_msgids_h_ */
 
