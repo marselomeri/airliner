@@ -22,6 +22,7 @@ CI_AppCustomData_t CI_AppCustomData = {0, 5010};
 int32 CI_InitCustom(void)
 {
     int32 Status = 0;
+    int reuseaddr = 1;
 	struct sockaddr_in address;
 
     if((CI_AppCustomData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
@@ -31,6 +32,8 @@ int32 CI_InitCustom(void)
     		Status = -1;
     		goto end_of_function;
     }
+
+    setsockopt(CI_AppCustomData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
