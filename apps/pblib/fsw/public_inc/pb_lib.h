@@ -15,11 +15,11 @@
 ** Macro Definitions
 *************************************************************************/
 #define PBLIB_REG_MAX_ENTRY  (100)
+#define PBLIB_REGTBL_MUTEX_NAME ("PBLIB_REGTBL_MUTEX")
 
-/*************************************************************************
-** Private Function Prototypes
+/************************************************************************
+** Local Structure Definitions
 *************************************************************************/
-
 
 typedef struct
 {
@@ -28,8 +28,18 @@ typedef struct
     uint16	 		cmdCode;
 } PBLIB_RegData_t;
 
-//
-PBLIB_RegData_t PBLIB_RegisteredFuncs[PBLIB_REG_MAX_ENTRY];
+typedef struct
+{
+	/** \brief registration table for serialization functions */
+	PBLIB_RegData_t RegisteredFuncs[PBLIB_REG_MAX_ENTRY];
+
+	/** \brief Mutex for registration table */
+	uint32          RegTblMutex;
+}PBLIB_AppData_t;
+
+/*************************************************************************
+** Local Function Prototypes
+*************************************************************************/
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
