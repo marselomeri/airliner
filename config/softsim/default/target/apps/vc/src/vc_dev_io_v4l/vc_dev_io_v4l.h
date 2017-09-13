@@ -4,7 +4,7 @@
 
 #include "cfe.h"
 #include "vc_dev_io.h"
-#include "vc_custom_shared.h"
+#include "../vc_custom_shared.h"
 #include "vc_perfids.h"
 #include "vc_app.h"
 
