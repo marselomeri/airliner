@@ -2,6 +2,10 @@
 #ifndef VC_CUSTOM_TRANSMIT_TEST_UTILS_H
 #define VC_CUSTOM_TRANSMIT_TEST_UTILS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Includes
  */
@@ -10,11 +14,6 @@
 
 
 extern VC_AppCustomData_t VC_AppCustomData;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*
  * Function Definitions
  */

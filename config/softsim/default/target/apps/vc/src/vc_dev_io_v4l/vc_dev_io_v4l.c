@@ -60,6 +60,7 @@ int32 VC_CustomDevice_InitData()
     VC_AppCustomDevice.Channel[0].Status        = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[0].Mode          = VC_DEVICE_ENABLED;
     VC_AppCustomDevice.Channel[0].BufferType    = VC_V4L_BUFFER_TYPE;
+    VC_AppCustomDevice.Channel[0].Buffer_Size   = VC_MAX_BUFFER_SIZE;
     VC_AppCustomDevice.Channel[0].FrameWidth    = VC_FRAME_WIDTH;
     VC_AppCustomDevice.Channel[0].FrameHeight   = VC_FRAME_HEIGHT;
     VC_AppCustomDevice.Channel[0].VideoFormat   = VC_V4L_VIDEO_FORMAT;

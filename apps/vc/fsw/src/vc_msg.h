@@ -87,10 +87,6 @@ extern "C" {
 **  \sa #VC_NOOP_CC
 */
 #define VC_RESET_CC           (1)
-/* start streaming command */
-#define VC_STARTSTREAMING_CC  (2)
-/* stop streaming command */
-#define VC_STOPSTREAMING_CC   (3)
 
 /************************************************************************
 ** Local Structure Declarations
@@ -124,17 +120,6 @@ typedef struct
     /** \brief VC App State */
     uint8                 State;
 } VC_HkTlm_t;
-
-
-/** 
-**  \brief Start Streaming Command
-*/
-typedef struct 
-{
-    uint8                  CmdHeader[CFE_SB_CMD_HDR_SIZE];
-    char                   Address[VC_ADDRESS_LENGTH];
-    uint16                 Port;
-} VC_StartStreamCmd_t;
 
 
 #ifdef __cplusplus

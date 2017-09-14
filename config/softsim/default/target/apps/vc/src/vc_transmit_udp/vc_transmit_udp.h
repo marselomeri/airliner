@@ -8,6 +8,7 @@
 
 #include "cfe.h"
 #include "vc_transmit.h"
+#include "../vc_custom_shared.h"
 #include "vc_perfids.h"
 #include <arpa/inet.h>
 #include "vc_app.h"

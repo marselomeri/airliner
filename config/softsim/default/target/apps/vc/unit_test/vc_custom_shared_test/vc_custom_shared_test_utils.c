@@ -1,8 +1,8 @@
 
-#include "vc_test_utils.h"
-#include "vc_custom_transmit_stubs.h"
-#include "vc_custom_device_stubs.h"
-#include "vc_custom_stubs.h"
+#include "vc_custom_shared_test_utils.h"
+#include "vc_platform_stubs.h"
+#include "vc_transmit_udp.h"
+#include "vc_dev_io_v4l.h"
 
 #include "ut_cfe_evs_hooks.h"
 #include "ut_cfe_time_stubs.h"
@@ -22,12 +22,11 @@
 /*
  * Function Definitions
  */
-
-void VC_Test_Setup(void)
+void VC_Custom_Shared_Test_Setup(void)
 {
     /* initialize test environment to default state for every test */
 
-    CFE_PSP_MemSet(&VC_AppData, 0x00, sizeof(VC_AppData_t));
+    CFE_PSP_MemSet(&VC_AppData, 0x00, sizeof(VC_AppData));
 
     Ut_CFE_EVS_Reset();
     Ut_CFE_FS_Reset();
@@ -39,11 +38,10 @@ void VC_Test_Setup(void)
     Ut_OSFILEAPI_Reset();
 }
 
-void VC_Test_TearDown(void) {
-
-    CFE_PSP_MemSet(&VC_AppData, 0x00, sizeof(VC_AppData_t));
-    CFE_PSP_MemSet(&VC_Custom_Test_Returns, 0x00, sizeof(VC_Custom_Test_Returns));
-    VC_Transmit_Test_Returns.VC_Transmit_Init_CallCount = 0;
-    VC_Device_Test_Returns.VC_Devices_Start_CallCount = 0;
-    
+void VC_Custom_Shared_Test_TearDown(void) 
+{
+    CFE_PSP_MemSet(&VC_AppData, 0x00, sizeof(VC_AppData));
+    CFE_PSP_MemSet(&VC_AppCustomDevice, 0x00, sizeof(VC_AppCustomDevice_t));
+    CFE_PSP_MemSet(&VC_AppCustomData, 0x00, sizeof(VC_AppCustomData_t));
+    CFE_PSP_MemSet(&VC_Platform_Stubs_Returns, 0x00, sizeof(VC_Platform_Stubs_Returns_t));
 }
