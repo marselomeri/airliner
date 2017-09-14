@@ -27,22 +27,8 @@
 #ifndef _fm_msgids_h_
 #define _fm_msgids_h_
 
-/*************************************************************************
-**
-** Macro definitions
-**
-**************************************************************************/
 
-/* FM command packet message ID's */
-#define FM_CMD_MID                   0x188C      /** < \brief FM ground commands */
-#define FM_SEND_HK_MID               0x188D      /** < \brief FM send housekeeping */
-
-/* FM telemetry packet message ID's */
-#define FM_HK_TLM_MID                0x088A      /** < \brief FM housekeeping */
-#define FM_FILE_INFO_TLM_MID         0x088B      /** < \brief FM get file info */
-#define FM_DIR_LIST_TLM_MID          0x088C      /** < \brief FM get dir list */
-#define FM_OPEN_FILES_TLM_MID        0x088D      /** < \brief FM get open files */
-#define FM_FREE_SPACE_TLM_MID        0x088E      /** < \brief FM get free space */
+#include "msg_ids.h"
 
 #endif /* _fm_msgids_h_ */
 

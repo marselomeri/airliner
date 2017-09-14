@@ -65,11 +65,11 @@
 ** Platform Configuration Parameters for the OS API
 */
 
-#define OS_MAX_TASKS                64
-#define OS_MAX_QUEUES               64
-#define OS_MAX_COUNT_SEMAPHORES     20
-#define OS_MAX_BIN_SEMAPHORES       20
-#define OS_MAX_MUTEXES              20
+#define OS_MAX_TASKS                100
+#define OS_MAX_QUEUES               100
+#define OS_MAX_COUNT_SEMAPHORES     100
+#define OS_MAX_BIN_SEMAPHORES       100
+#define OS_MAX_MUTEXES              100
 #define OS_MAX_TIMEOUTS				(OS_MAX_QUEUES+OS_MAX_COUNT_SEMAPHORES+OS_MAX_BIN_SEMAPHORES)
 
 /*
@@ -146,7 +146,7 @@
 ** This define sets the queue implentation of the Linux port to use sockets 
 ** commenting this out makes the Linux port use the POSIX message queues.
 */
-/* #define OSAL_SOCKET_QUEUE */
+#define OSAL_SOCKET_QUEUE */
 
 /*
 ** Module loader/symbol table is optional

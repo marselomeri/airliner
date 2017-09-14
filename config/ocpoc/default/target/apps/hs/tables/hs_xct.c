@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_xct.c 1.1 2015/11/12 14:29:06EST wmoleski Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -62,25 +62,25 @@ HS_XCTEntry_t      HS_Default_ExeCount_Tbl[HS_MAX_EXEC_CNT_SLOTS] =
 /*   0 */ { "CFE_ES",                  0,       HS_XCT_TYPE_APP_MAIN       },
 /*   1 */ { "CFE_EVS",                 0,       HS_XCT_TYPE_APP_MAIN       },
 /*   2 */ { "CFE_TIME",                0,       HS_XCT_TYPE_APP_MAIN       },
-/*   3 */ { "CFE_TBL",                 0,       HS_XCT_TYPE_APP_MAIN       },
-/*   4 */ { "CFE_SB",                  0,       HS_XCT_TYPE_APP_MAIN       },
-/*   5 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*   6 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*   7 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*   8 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*   9 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  10 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  11 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  12 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  13 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  14 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  15 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  16 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  17 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  18 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  19 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  20 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  21 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*   3 */ { "TIME_TONE_TASK",          0,       HS_XCT_TYPE_APP_MAIN       },
+/*   4 */ { "TIME_1HZ_TASK",           0,       HS_XCT_TYPE_APP_MAIN       },
+/*   5 */ { "CFE_TBL",                 0,       HS_XCT_TYPE_APP_MAIN       },
+/*   6 */ { "CFE_SB",                  0,       HS_XCT_TYPE_APP_MAIN       },
+/*   7 */ { "CF",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*   8 */ { "CI",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*   9 */ { "CS",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  10 */ { "DS",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  11 */ { "EA",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  12 */ { "FM",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  13 */ { "HK",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  14 */ { "HS",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  15 */ { "LC",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  16 */ { "MD",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  17 */ { "MM",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  18 */ { "SC",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  19 */ { "SCH",                     0,       HS_XCT_TYPE_APP_MAIN       },
+/*  20 */ { "TO",                      0,       HS_XCT_TYPE_APP_MAIN       },
+/*  21 */ { "VC",                      0,       HS_XCT_TYPE_APP_MAIN       },
 /*  22 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
 /*  23 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
 /*  24 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },

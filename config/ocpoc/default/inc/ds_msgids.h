@@ -20,20 +20,7 @@
 #ifndef _ds_msgids_h_
 #define _ds_msgids_h_
 
-/**************************
-** DS Command Message IDs
-***********************/
-
-#define DS_CMD_MID         0x18BB /**< \brief DS Ground Commands Message ID */
-#define DS_SEND_HK_MID     0x18BC /**< \brief DS Send Hk Data Cmd Message ID*/
-
-
-/***************************************
-** DS Telemetry Message IDs
-***************************************/
-
-#define DS_HK_TLM_MID      0x08B8 /**< \brief DS Hk Telemetry Message ID ****/
-#define DS_DIAG_TLM_MID    0x08B9 /**< \brief DS File Info Telemetry Message ID ****/
+#include "msg_ids.h"
 
 
 #endif /* _ds_msgids_h_ */

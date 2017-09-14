@@ -2,7 +2,7 @@
 ** File:
 **   $Id: md_msgids.h 1.4 2015/03/01 17:17:50EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -35,25 +35,7 @@
 #ifndef _md_msgids_h_
 #define _md_msgids_h_
 
-/*************************************************************************
-** Macro Definitions
-*************************************************************************/
-/**
-** \name MD Telemetry Message Ids  */ 
-/** \{ */
-#define MD_HK_TLM_MID         0x0890 /**< \brief Message Id for Memory Dwell's housekeeping pkt */
-#define MD_DWELL_PKT_MID_BASE 0x0891 /**< \brief Base Message Id for Memory Dwell's dwell packets.  MIDs will be base, base + 1, etc.  */
-
-/** \} */
-
-/**
-** \name MD Command Message Ids */ 
-/** \{ */
-#define MD_CMD_MID            0x1890 /**< \brief Message Id for Memory Dwell's ground command */
-#define MD_SEND_HK_MID        0x1891 /**< \brief Message Id for Memory Dwell's 'Send Housekeeping' message */
-#define MD_WAKEUP_MID         0x1892 /**< \brief Message Id for Memory Dwell's wakeup message */
-/** \} */
-
+#include "msg_ids.h"
 
 #endif /*_md_msgids_h_*/
 
