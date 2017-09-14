@@ -21,7 +21,7 @@ add_airliner_app_unit_test(ea-custom-ut
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
         
 	INCLUDES
-        ${PROJECT_SOURCE_DIR}/build/softsim/default/target/apps/ea/msgs/protobuf
+	    ${EA_PROTOBUF_MSGS_DIR}
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
         
     WRAPPERS
@@ -44,7 +44,7 @@ add_airliner_app_unit_test(ea-perfmon-ut
         ${PROJECT_SOURCE_DIR}/tools/ut_assert/src/ut_cfe_es_hooks.c
         
 	INCLUDES
-        ${PROJECT_SOURCE_DIR}/build/softsim/default/target/apps/ea/msgs/protobuf
+	    ${EA_PROTOBUF_MSGS_DIR}
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
 )
 
