@@ -329,8 +329,7 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
      * times out after a minute or so.
      */
     setsockopt(TO_AppCustomData.Channel[i].Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
-
-    memcpy(TO_AppCustomData.Channel[ChannelID].IP, DestinationAddress, sizeof(TO_AppCustomData.Channel[ChannelID].IP));
+    strncpy(TO_AppCustomData.Channel[ChannelID].IP, DestinationAddress, sizeof(TO_AppCustomData.Channel[ChannelID].IP));
     TO_AppCustomData.Channel[ChannelID].DstPort = DestinationPort;
 
     /* Set the input arguments to the socket bind.

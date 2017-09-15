@@ -34,6 +34,7 @@
 #define VC_SOCKET_SEND_PERF_ID      64
 #define VC_DEVICE_GET_PERF_ID       65
 #define PX4BR_MAIN_TASK_PERF_ID     66
+#define PMC_MAIN_TASK_PERF_ID       67
 
 
 #endif

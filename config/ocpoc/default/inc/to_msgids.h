@@ -1,5 +1,5 @@
-#ifndef _to_msgids_
-#define _to_msgids_
+#ifndef TO_MSGIDS_H
+#define TO_MSGIDS_H
 
 #include "msg_ids.h"
 

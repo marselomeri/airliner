@@ -1,5 +1,9 @@
-set(PSP ${PROJECT_SOURCE_DIR}/psp/fsw/zynq-xenomai)
-set(OSAL ${PROJECT_SOURCE_DIR}/osal/src/os/xenomai-3)
+set(PSP ${PROJECT_SOURCE_DIR}/psp/fsw/ocpoc-linux)
+set(OSAL ${PROJECT_SOURCE_DIR}/osal/src/os/posix)
+
+
+
+
 
 
 
