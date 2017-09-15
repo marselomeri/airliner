@@ -11,7 +11,6 @@ import es_log_pb2
 
 cfs = ('', 5010)
 soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 flag = True
 
 es_cmd_hdr = bytearray([0x18, 0x06, 0xc0, 0x00, 0x00, 0x05, 0x00, 0x12])
