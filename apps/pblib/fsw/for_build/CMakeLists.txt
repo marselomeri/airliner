@@ -21,3 +21,5 @@ add_airliner_app_def(pblib
     PUBLIC_INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 )
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/tools/nanopb nanopb)

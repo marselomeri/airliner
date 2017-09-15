@@ -1,0 +1,7 @@
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../nanopb/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+add_custom_target(nanopb
+    ALL
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tests
+    COMMAND scons
+)
