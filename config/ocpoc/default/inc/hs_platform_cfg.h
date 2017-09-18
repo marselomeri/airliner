@@ -2,7 +2,7 @@
 ** File:
 **   $Id: hs_platform_cfg.h 1.3 2016/08/05 09:40:27EDT mdeschu Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -554,7 +554,7 @@
 **       The result of the conversion must be a 32 bit signed integer 
 **       (between -2147483648 and 2147483647).
 */
-#define HS_UTIL_CONV_DIV                       10000
+#define HS_UTIL_CONV_DIV                       1
 
 /** \hscfg CPU Utilization Conversion Factor Multiplication 2 (custom)
 **

@@ -20,3 +20,4 @@ set(nanopb_tests_path ${CMAKE_CURRENT_BINARY_DIR}/tests)
 
 add_test(NAME nanopb-all-tests
          COMMAND ${scons_path} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} -s -C ${nanopb_tests_path})
+

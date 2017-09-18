@@ -37,10 +37,12 @@ int32 CI_InitCustom(void)
 
     setsockopt(CI_AppCustomData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
-    bzero((char *) &address, sizeof(address));
+    // zero out the structure
+    memset((char *) &address, 0, sizeof(address));
+
     address.sin_family      = AF_INET;
-    address.sin_addr.s_addr = htonl (INADDR_ANY);
     address.sin_port        = htons(CI_AppCustomData.Port);
+    address.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if ( (bind(CI_AppCustomData.Socket, (struct sockaddr *) &address, sizeof(address)) < 0) )
 	{
@@ -61,9 +63,15 @@ end_of_function:
 
 int32 CI_ReadMessage(char* buffer, uint32* size)
 {
-	*size = recv(CI_AppCustomData.Socket,
-					   (char *)buffer,
-					   (size_t)size, 0);
+    struct sockaddr_in si_other;
+    int recv_len = 0;
+    int slen = sizeof(si_other);
+
+    recv_len = recv(CI_AppCustomData.Socket, buffer, (size_t)*size, 0);
+
+    *size = recv_len;
+
+    return CFE_SUCCESS;
 }
 
 
