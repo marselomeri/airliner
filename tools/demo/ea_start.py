@@ -9,7 +9,7 @@ import time
 import errno
 import ea_start_pb2
 
-cfs = ('', 5010)
+cfs = ('', 5009)
 soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 ea_payload = ea_start_pb2.ea_start_pb()
