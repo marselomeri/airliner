@@ -5,14 +5,16 @@
 #include <errno.h>
 #include <arpa/inet.h>
 #include "ci_events.h"
+#include <strings.h>
+#include <unistd.h>
 
 #define CI_CUSTOM_RETURN_CODE_NULL_POINTER      (-1)
 
 
 typedef struct
 {
-	int32  Socket;
-	uint32 Port;
+	int  Socket;
+	uint16 Port;
 } CI_AppCustomData_t;
 
 CI_AppCustomData_t CI_AppCustomData = {0, 5010};
@@ -61,7 +63,7 @@ int32 CI_ReadMessage(char* buffer, uint32* size)
 {
 	*size = recv(CI_AppCustomData.Socket,
 					   (char *)buffer,
-					   size, 0);
+					   (size_t)size, 0);
 }
 
 

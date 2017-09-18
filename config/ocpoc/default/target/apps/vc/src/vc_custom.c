@@ -1,5 +1,6 @@
 #include "vc_custom_shared.h"
-
+#include "vc_cmds.h"
+#include <string.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

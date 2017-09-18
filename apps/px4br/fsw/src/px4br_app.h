@@ -123,6 +123,7 @@ typedef struct
 } PX4BR_AppData_t;
 
 
+void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg);
 
 #endif  /* _PX4BR_APP_H_ */
 

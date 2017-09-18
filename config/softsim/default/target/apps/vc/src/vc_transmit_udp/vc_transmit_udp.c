@@ -166,7 +166,7 @@ int32 VC_DisableChannel(uint8 ChannelID)
     if(VC_AppCustomData.Channel[ChannelID].Mode != VC_CHANNEL_ENABLED)
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                            "UDP VC for channel %u is not enabled.", (unsigned int)ChannelID);
+                            "UDP VC for channel %u is not enabled.", ChannelID);
         returnCode = -1;
         goto end_of_function;
     }
@@ -174,7 +174,7 @@ int32 VC_DisableChannel(uint8 ChannelID)
     if(-1 == close(VC_AppCustomData.Channel[ChannelID].SocketFd))
     {
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
-                            "Socket close error", (unsigned int)ChannelID);
+                            "Socket close error on channel %u", ChannelID);
         returnCode = -1;
         goto end_of_function;
     }

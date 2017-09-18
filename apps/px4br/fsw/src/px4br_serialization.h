@@ -11,6 +11,8 @@
 #include "cfe.h"
 #include "px4_msgs.h"
 
+void PX4_DisplayBuffer(const char* inBuffer, int inSize);
+
 /* Serialization Functions */
 uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, char *inOutBuffer, uint32 inSize);

@@ -11,6 +11,10 @@ VC_AppData_t VC_AppData;
 
 extern int enable_wrappers;
 
+void VC_Custom_App_Device_Test_AddTestCases(void);
+void VC_Custom_App_Transmit_Test_AddTestCases(void);
+void VC_Custom_App_Shared_Test_AddTestCases(void);
+
 int main(void)
 {   
 	int testResults = 0;

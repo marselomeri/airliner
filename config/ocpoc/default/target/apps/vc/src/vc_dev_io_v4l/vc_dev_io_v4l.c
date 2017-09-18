@@ -495,8 +495,8 @@ end_of_function:
     /* Streaming task is exiting so set app flag to initialized */
     VC_AppData.AppState = VC_INITIALIZED;
     CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-        "VC streaming task exited with return code %d task status (0x%08X)", 
-        returnCode, (unsigned int)iStatus);
+        "VC streaming task exited with return code %li task status (0x%08lX)",
+        returnCode, iStatus);
 
     /* The child task was successfully created so exit from it */
     if (iStatus == CFE_SUCCESS)

@@ -57,7 +57,7 @@ void EA_StartAppCustom()
 								"External application started");
 			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, OS_MAX_PATH_LEN);
 			EA_AppData.HkTlm.ActiveAppPID = pid;
-			waitpid(pid, &EA_AppData.HkTlm.LastAppStatus, 0);
+			waitpid(pid, (int*)&EA_AppData.HkTlm.LastAppStatus, 0);
 			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus;
 			EA_AppData.HkTlm.ActiveAppPID = 0;
 			EA_AppData.HkTlm.ActiveAppUtil = 0;
@@ -177,7 +177,7 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	procData.total_time = total_time;
 
 	char path[64];
-	snprintf(path, sizeof(path), "/proc/%i/stat", pid);
+	snprintf(path, sizeof(path), "/proc/%li/stat", pid);
 	FILE* pid_stat = fopen(path, "r");
 	if (pid_stat == NULL) {
 		OS_printf("Unable to open pid_stat");

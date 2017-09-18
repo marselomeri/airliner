@@ -49,6 +49,7 @@ extern "C"
 #include "px4br_events.h"
 #include "px4br_cmd_codes.h"
 #include "px4br_msgids.h"
+#include "px4br_serialization.h"
 
 
 
@@ -117,7 +118,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -143,7 +144,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -169,7 +170,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -195,7 +196,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -221,7 +222,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -247,7 +248,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -274,7 +275,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmd.SourceComponent = 0;
         	cmd.Confirmation = 0;
 
-			PX4BR_RouteMessageToPX4(&cmd);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmd);
             break;
         }
 
@@ -388,7 +389,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
         	cmdOut.TransitionSwitch = cmdIn->TransitionSwitch;
         	cmdOut.ModeSlot = cmdIn->ModeSlot;
 
-			PX4BR_RouteMessageToPX4(&cmdOut);
+			PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)&cmdOut);
             break;
         }
 
@@ -436,7 +437,7 @@ boolean PX4BR_SendVehicleCommand(PX4_VehicleCommandCmd_t *cmdMsg)
 	OS_printf("VehicleCommandCmd_t\n");
 	OS_printf("  Param1=%f\n", cmdMsg->Param1);
 	OS_printf("  Command=%u\n", cmdMsg->Command);
-	OS_printf("  Param2=%u\n", cmdMsg->Param2);
+	OS_printf("  Param2=%f\n", cmdMsg->Param2);
 	OS_printf("**********\n");
 
 	PX4_DisplayBuffer((const char*)cmdMsg, sizeof(PX4_VehicleCommandCmd_t));

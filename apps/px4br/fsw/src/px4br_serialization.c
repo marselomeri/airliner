@@ -90,8 +90,6 @@
 #include "pb_msgs/wind_estimate.pb.h"
 
 
-void PX4_DisplayBuffer(const char* inBuffer, int inSize);
-
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
 {
 	uint32_t i = 0;

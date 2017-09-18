@@ -16,6 +16,7 @@
 #include "ut_cfe_tbl_stubs.h"
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
+#include "to_custom.h"
 
 
 /**************************************************************************
@@ -586,7 +587,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_EnableInvalidMessageLength(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
@@ -613,7 +614,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableInvalidMessageLength(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
@@ -643,7 +644,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_InvalidCommandCode(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
@@ -672,7 +673,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_EnableFail(void)
     TO_Platform_Stubs_Returns.TO_Wrap_Socket_Return = -1;
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
     
     /* Verify results */
     UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
@@ -699,7 +700,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableFail(void)
     
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
     
     /* Verify results */
     UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
@@ -725,7 +726,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_EnableNominal(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
 
     /* Verify results */
     UtAssert_True(TO_AppData.HkTlm.usCmdCnt == 1,"usCmdCnt not incremented");
@@ -758,7 +759,7 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableNominal(void)
     
     
     /* Call the function under test */
-    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    TO_OutputChannel_ProcessNewCustomCmds((CFE_SB_Msg_t*)&InMsg);
 
     /* Verify results */
     UtAssert_True(TO_AppData.HkTlm.usCmdCnt == 1,"usCmdCnt not incremented");

@@ -104,9 +104,9 @@ PBLIB_DeregisterMessage_Exit_Tag:
     return status;
 }/* End PBLIB_DeregisterMessage */
 
-uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
+PBLib_EncodeFuncPtr_t PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
-	uint32 *funcAddr = 0;
+	PBLib_EncodeFuncPtr_t funcAddr = 0;
 	char encFuncName[64];
 	int32 status = 0;
 
@@ -125,7 +125,7 @@ uint32 *PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
     	{
     		strcpy(encFuncName, PBLIB_AppData.RegisteredFuncs[i].msgName);
 			strcat(encFuncName, "_Enc");
-			status = OS_SymbolLookup(&funcAddr, &encFuncName);
+			status = OS_SymbolLookup((cpuaddr*)&funcAddr, (const char*)&encFuncName);
     		break;
     	}
     }
@@ -138,9 +138,9 @@ PBLIB_GetSerializationFunc_Exit_Tag:
     return funcAddr;
 }/* End PBLIB_GetSerializationFunc */
 
-uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
+PBLib_DecodeFuncPtr_t PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
-	uint32 *funcAddr = 0;
+	PBLib_DecodeFuncPtr_t funcAddr = 0;
 	char decFuncName[64];
 	int32 status = 0;
 
@@ -160,7 +160,7 @@ uint32 *PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
     	{
     		strcpy(decFuncName, PBLIB_AppData.RegisteredFuncs[i].msgName);
 			strcat(decFuncName, "_Dec");
-    		status = OS_SymbolLookup(&funcAddr, &decFuncName);
+    		status = OS_SymbolLookup((cpuaddr*)&funcAddr, (const char*)&decFuncName);
     		break;
     	}
     }

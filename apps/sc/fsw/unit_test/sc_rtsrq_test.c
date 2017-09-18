@@ -168,7 +168,7 @@ void SC_StartRtsCmd_Test_InvalidCommandLength(void)
     //Entry = (SC_RtsEntryHeader_t *) &SC_OperData.RtsTblAddr[RtsIndex][0];
     Entry.TimeTag = 0;
 
-    CFE_SB_SetTotalMsgLength(&Entry.CmdHeader, 49159);
+    CFE_SB_SetTotalMsgLength((CFE_SB_MsgPtr_t)&Entry.CmdHeader, 49159);
 
     /* Set message size in order to satisfy if-statement after comment "Make sure the command is big enough, but not too big" */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETTOTALMSGLENGTH_INDEX, sizeof(SC_RtsCmd_t), 1);

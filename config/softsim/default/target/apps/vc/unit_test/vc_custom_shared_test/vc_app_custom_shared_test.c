@@ -41,7 +41,7 @@ void Test_VC_Custom_ProcessNewCustomCmds_InvalidMsgID(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InMsg);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InMsg);
 
     /* Verify results */
     
@@ -71,7 +71,7 @@ void Test_VC_Custom_ProcessNewCustomCmds_InvalidCommand(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InMsg);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InMsg);
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
@@ -97,7 +97,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_InvalidSize(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InMsg);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InMsg);
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
@@ -124,7 +124,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_InvalidState(void)
     VC_AppData.AppState = VC_STREAMING;
     
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
@@ -150,7 +150,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_InvalidNullAddress(void)
     VC_AppData.AppState = VC_INITIALIZED;
     
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
@@ -180,7 +180,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_InvalidAddress(void)
     strcpy(InStartStreamingCmd.Address, "NOT_NULL");
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
@@ -211,7 +211,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_UpdateDestinationFail(void)
     strcpy(InStartStreamingCmd.Address, "1.1.1.1");
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
@@ -247,7 +247,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_TransmitUninitFail(void)
     VC_Platform_Stubs_Returns.VC_Wrap_Close_Return = -1;
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
@@ -283,7 +283,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_TransmitInitFail(void)
     VC_Platform_Stubs_Returns.VC_Wrap_Open_Return = -1;
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==4,"Event Count = 4");
@@ -326,7 +326,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_DevicesStartFail(void)
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_CREATECHILDTASK_INDEX, -1, 1);
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
     
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
@@ -364,7 +364,7 @@ void Test_VC_ProcessNewCustomCmds_StartStreaming_Nominal(void)
     VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
 
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InStartStreamingCmd);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InStartStreamingCmd);
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
@@ -390,7 +390,7 @@ void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidSize(void)
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
     
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InMsg);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InMsg);
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
@@ -417,7 +417,7 @@ void Test_VC_ProcessNewCustomCmds_StopStreaming_InvalidState(void)
     VC_AppData.AppState = VC_INITIALIZED;
     
     /* Call the function under test */
-    VC_ProcessNewCustomCmds(&InMsg);
+    VC_ProcessNewCustomCmds((CFE_SB_MsgPtr_t)&InMsg);
 
     /* Verify results */
     UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");

@@ -79,7 +79,6 @@ boolean PX4BR_IsPeerConnected(PX4BR_Peer_t* peer);
 int32 PX4BR_InitPeerSocket(PX4BR_Peer_t *inPeer);
 int32 PX4BR_InitSubscriptions(void);
 void PX4BR_RouteMessageToSB(const char *inMsgName, const char *inMsgContent, uint32 inMsgContentSize);
-void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg);
 void PX4BR_SendHk(void);
 int32 PX4BR_GetRouteByMsgName(const char *inMsgName, PX4BR_Route_t **inOutRoute);
 int32 PX4BR_GetRouteByMsgID(CFE_SB_MsgId_t inMsgID, PX4BR_Route_t **inOutRoute);
@@ -187,7 +186,7 @@ int32 PX4BR_RecvMsg()
     else
     {
         CFE_EVS_SendEvent(PX4BR_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-                "CFE_SB_RcvMsg failed.  %i", Status);
+                "CFE_SB_RcvMsg failed.  %li", Status);
     }
 
     /* Performance Log Exit Stamp */
@@ -243,7 +242,7 @@ int32 PX4BR_AppInit()
     else
     {
         CFE_EVS_SendEvent(PX4BR_PIPE_ERR_EID, CFE_EVS_ERROR,
-                "Can't create sch pipe status %i", Status);
+                "Can't create sch pipe status %li", Status);
         goto end_of_function;
     }
 
@@ -256,7 +255,7 @@ int32 PX4BR_AppInit()
     else
     {
         CFE_EVS_SendEvent(PX4BR_PIPE_ERR_EID, CFE_EVS_ERROR,
-                "Can't create cmd pipe status %i", Status);
+                "Can't create cmd pipe status %li", Status);
         goto end_of_function;
     }
 
@@ -266,7 +265,7 @@ int32 PX4BR_AppInit()
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(PX4BR_PIPE_ERR_EID, CFE_EVS_ERROR,
-                "Can't create router pipe status %i", Status);
+                "Can't create router pipe status %li", Status);
         goto end_of_function;
     }
 
@@ -360,7 +359,7 @@ void PX4BR_PeerListenerTaskMain(void)
          * thread. */
         CFE_EVS_SendEvent(PX4BR_HK_CREATE_CHDTASK_ERR_EID,
                 CFE_EVS_ERROR,
-                "Listener child task failed.  CFE_ES_RegisterChildTask returned: 0x%08X",
+                "Listener child task failed.  CFE_ES_RegisterChildTask returned: 0x%08lX",
                 Status);
     }
     else
@@ -501,7 +500,7 @@ void PX4BR_PeerDataOutTaskMain(void)
          * thread. */
         CFE_EVS_SendEvent(PX4BR_HK_CREATE_CHDTASK_ERR_EID,
                 CFE_EVS_ERROR,
-                "DataOut child task failed.  CFE_ES_RegisterChildTask returned: 0x%08X",
+                "DataOut child task failed.  CFE_ES_RegisterChildTask returned: 0x%08lX",
                 status);
         PX4BR_AppData.RunStatus = CFE_ES_APP_ERROR;
     }
@@ -585,7 +584,7 @@ void PX4BR_PeerDataOutTaskMain(void)
 						}
 						else
 						{
-							PX4BR_RouteMessageToPX4(msgPtr);
+							PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)msgPtr);
 						}
 		    	    }
 		    	}
@@ -597,7 +596,7 @@ void PX4BR_PeerDataOutTaskMain(void)
 		    else
 		    {
 		        CFE_EVS_SendEvent(PX4BR_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-		                "CFE_SB_RcvMsg failed.  %i", Status);
+		                "CFE_SB_RcvMsg failed.  %li", Status);
 		    }
 			//int n = 0;
 			//char buffer[PX4BR_MAX_MSG_SIZE] = "Hello PX4, from CFS.";
@@ -765,8 +764,7 @@ int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum)
    ** Using sscanf to parse the string.
    ** Currently no error handling
    */
-   OS_printf(FileEntry);
-   OS_printf("\n");
+   OS_printf("%s\n", FileEntry);
 
    ScanfStatus = sscanf(FileEntry,"%s %s %d",Name, Addr, &Port);
 
@@ -780,7 +778,7 @@ int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum)
    */
    if (ScanfStatus != PX4BR_ITEMS_PER_FILE_LINE) {
      CFE_EVS_SendEvent(PX4BR_INV_LINE_EID,CFE_EVS_ERROR,
-                        "%s:Invalid PX4BR ata file line,exp %d items,found %d",
+                        "Invalid PX4BR ata file line,exp %d items,found %d",
 						PX4BR_ITEMS_PER_FILE_LINE, ScanfStatus);
      return PX4BR_ERROR;
    }/* end if */
@@ -872,7 +870,7 @@ int32 PX4BR_InitPeers(void)
 				/* Failed to create the task.  Raise an event. */
 				CFE_EVS_SendEvent(PX4BR_HK_CREATE_CHDTASK_ERR_EID,
 						CFE_EVS_ERROR,
-						"listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08X",
+						"listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",
 						Status);
 				goto end_of_function;
 			}
@@ -889,7 +887,7 @@ int32 PX4BR_InitPeers(void)
 				/* Failed to create the task.  Raise an event. */
 				CFE_EVS_SendEvent(PX4BR_HK_CREATE_CHDTASK_ERR_EID,
 						CFE_EVS_ERROR,
-						"DataOut child task failed.  CFE_ES_CreateChildTask returned: 0x%08X",
+						"DataOut child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",
 						Status);
 				goto end_of_function;
 			}
@@ -1031,7 +1029,7 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
     	uint32 i = 0;
     	char buffer[PX4BR_MAX_MSG_SIZE];
 		uint16 contentSize = CFE_SB_GetTotalMsgLength(sbMsg);
-		int32 encSize = route->EncodeFunc(sbMsg, &buffer[PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH], PX4BR_MAX_MSG_SIZE-(PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH));
+		int32 encSize = route->EncodeFunc((const char*)sbMsg, &buffer[PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH], PX4BR_MAX_MSG_SIZE-(PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH));
     	uint32 totalSize = encSize + PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH;
 
     	if(totalSize > PX4BR_MAX_MSG_SIZE)

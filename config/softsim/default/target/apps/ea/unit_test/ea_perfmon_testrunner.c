@@ -3,6 +3,8 @@
 
 #include "ea_perfmon_test.h"
 
+void EA_Perfmon_Test_AddTestCases(void);
+
 int main(void)
 {   
 	EA_Perfmon_Test_AddTestCases();
