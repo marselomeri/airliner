@@ -108,7 +108,6 @@ int32 PMC_InitPipe()
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(PMC_WAKEUP_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, PMC_SCH_PIPE_WAKEUP_RESERVED);
-
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -118,11 +117,37 @@ int32 PMC_InitPipe()
         }
 
         iStatus = CFE_SB_SubscribeEx(PMC_SEND_HK_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, PMC_SCH_PIPE_SEND_HK_RESERVED);
-
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
                                      "CMD Pipe failed to subscribe to PMC_SEND_HK_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto PMC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto PMC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto PMC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_RC_CHANNELS_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_RC_CHANNELS_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto PMC_InitPipe_Exit_Tag;
         }
