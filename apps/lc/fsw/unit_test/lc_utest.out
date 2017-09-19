@@ -26,21 +26,21 @@ UTF Info: Return code for CFE SB Api #0 returned to default
 
 Test CFE_SB_Subscribe call 1 error 
 -----------------------------------
-ERROR EVENT ID=4 Error Subscribing to HK Request, MID=0x18A5, RC=0xCA000009
+ERROR EVENT ID=4 Error Subscribing to HK Request, MID=0x19B1, RC=0xCA000009
 CRITICAL EVENT ID=1 Task terminating, err = 0xCA000009
 SysLog:1980-001-00:00:00.00000 LC task terminating, err = 0xCA000009
 SysLog:1980-001-00:00:00.00000 Application LC called CFE_ES_ExitApp
 
 Test CFE_SB_Subscribe call 2 error 
 -----------------------------------
-ERROR EVENT ID=5 Error Subscribing to GND CMD, MID=0x18A4, RC=0xCA000009
+ERROR EVENT ID=5 Error Subscribing to GND CMD, MID=0x19B2, RC=0xCA000009
 CRITICAL EVENT ID=1 Task terminating, err = 0xCA000009
 SysLog:1980-001-00:00:00.00000 LC task terminating, err = 0xCA000009
 SysLog:1980-001-00:00:00.00000 Application LC called CFE_ES_ExitApp
 
 Test CFE_SB_Subscribe call 3 error 
 -----------------------------------
-ERROR EVENT ID=6 Error Subscribing to Sample CMD, MID=0x18A6, RC=0xCA000009
+ERROR EVENT ID=6 Error Subscribing to Sample CMD, MID=0x09B3, RC=0xCA000009
 CRITICAL EVENT ID=1 Task terminating, err = 0xCA000009
 SysLog:1980-001-00:00:00.00000 LC task terminating, err = 0xCA000009
 SysLog:1980-001-00:00:00.00000 Application LC called CFE_ES_ExitApp
@@ -425,10 +425,10 @@ ERROR EVENT ID=51 WP has invalid operator ID: WP = 65, OperID = 99
 INFO EVENT ID=49 Msg with unreferenced message ID rcvd: ID = 0x0700
 
 ERROR EVENT ID=53 WP offset error: MID = 1024, WP = 23, Offset = 24, DataSize = 1, MsgLen = 24
-ERROR EVENT ID=42 Invalid AP sample msg length: ID = 0x18A6, CC = 0, Len = 48, Expected = 14
+ERROR EVENT ID=42 Invalid AP sample msg length: ID = 0x09B3, CC = 0, Len = 48, Expected = 14
 ERROR EVENT ID=25 Sample AP error: invalid AP number, start = 176, end = 175
 ERROR EVENT ID=25 Sample AP error: invalid AP number, start = 175, end = 176
-ERROR EVENT ID=41 Invalid HK request msg length: ID = 0x18A5, CC = 0, Len = 48, Expected = 8
+ERROR EVENT ID=41 Invalid HK request msg length: ID = 0x19B1, CC = 0, Len = 48, Expected = 8
 SysLog:1980-001-00:00:00.00000 CFE_TBL:ValidateHandle-Table Handle=0 is for unused Table Handle
 SysLog:1980-001-00:00:00.00000 CFE_TBL:GetAddressInternal-App(0) using invalid Tbl Handle=0
 ERROR EVENT ID=19 Error getting WDT address, RC=0xCC000001
@@ -464,29 +464,29 @@ Actionpoint Results:
 SysLog:1980-001-00:00:00.00000 CFE_TBL:ValidateHandle-Table Handle=0 is for unused Table Handle
 SysLog:1980-001-00:00:00.00000 CFE_TBL:GetAddressInternal-App(0) using invalid Tbl Handle=0
 ERROR EVENT ID=19 Error getting WDT address, RC=0xCC000001
-ERROR EVENT ID=24 Invalid command code: ID = 0x18A4, CC = 99
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 0, Len = 48, Expected = 8
+ERROR EVENT ID=24 Invalid command code: ID = 0x19B2, CC = 99
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 0, Len = 48, Expected = 8
 INFO EVENT ID=26 No-op command: Version 2.0.0.0
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 1, Len = 48, Expected = 8
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 1, Len = 48, Expected = 8
 DEBUG EVENT ID=27 Reset counters command
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 2, Len = 48, Expected = 12
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 2, Len = 48, Expected = 12
 ERROR EVENT ID=29 Set LC state error: invalid state = 99
 INFO EVENT ID=28 Set LC state command: new state = 2
 INFO EVENT ID=28 Set LC state command: new state = 3
 INFO EVENT ID=28 Set LC state command: new state = 1
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 3, Len = 48, Expected = 12
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 3, Len = 48, Expected = 12
 ERROR EVENT ID=30 Set AP state error: AP = 175, Invalid new state = 99
 ERROR EVENT ID=32 Set AP state error: Invalid AP number = 176
 INFO EVENT ID=33 Set AP state command: AP = 175, New state = 2
 ERROR EVENT ID=31 Set AP state error: AP = 175, Invalid current AP state = 4
 INFO EVENT ID=33 Set AP state command: AP = 175, New state = 1
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 4, Len = 48, Expected = 12
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 4, Len = 48, Expected = 12
 ERROR EVENT ID=34 Set AP perm off error: Invalid AP number = 176
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 5, Len = 48, Expected = 12
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 5, Len = 48, Expected = 12
 ERROR EVENT ID=37 Reset AP stats error: invalid AP number = 176
 INFO EVENT ID=38 Reset AP stats command: AP = 65535
 INFO EVENT ID=38 Reset AP stats command: AP = 175
-ERROR EVENT ID=43 Invalid msg length: ID = 0x18A4, CC = 6, Len = 48, Expected = 12
+ERROR EVENT ID=43 Invalid msg length: ID = 0x19B2, CC = 6, Len = 48, Expected = 12
 ERROR EVENT ID=39 Reset WP stats error: invalid WP number = 176
 INFO EVENT ID=40 Reset WP stats command: WP = 65535
 INFO EVENT ID=40 Reset WP stats command: WP = 175

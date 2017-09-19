@@ -74,7 +74,7 @@ typedef enum
 typedef struct
 {
     int32 (*OS_creat)(const char *,int32);
-    int32 (*OS_write)(int32, void *, uint32);
+    int32 (*OS_write)(int32, const void *, uint32);
     int32 (*OS_read)(int32, void *, uint32);
     os_dirp_t (*OS_opendir)(const char *path);
     os_dirent_t* (*OS_readdir)(os_dirp_t directory);
@@ -93,7 +93,7 @@ typedef struct
     int32 (* OS_rmdir)(const char *path);
     int32 (*OS_check_name_length)(const char *path);
     void  (*OS_rewinddir)(os_dirp_t directory);
-    int32 (*OS_ShellOutputToFile)(char* Cmd, int32 OS_fd);
+    int32 (*OS_ShellOutputToFile)(const char* Cmd, int32 OS_fd);
     int32 (*OS_fsBytesFree)(const char *name, uint64 *bytes_free);
 } Ut_OSFILEAPI_HookTable_t;
 

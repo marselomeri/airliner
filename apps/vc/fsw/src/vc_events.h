@@ -225,58 +225,6 @@ typedef enum {
 */
     VC_MSGLEN_ERR_EID,
 
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a transmit resource encounters an 
-**  socket error.
-**
-*/
-    VC_SOCKET_ERR_EID,
-    
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a device resource encounters an 
-**  error.
-**
-*/
-    VC_DEVICE_ERR_EID,
-    
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a start streaming command is 
-**  received with a bad address command parameter.
-**
-*/
-    VC_ADDR_ERR_EID,
-    
-/** \brief <tt> 'VC - ' </tt>
-**  \event <tt> 'VC - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a start streaming command is 
-**  received with a NULL address command parameter.
-**
-*/
-    VC_ADDR_NUL_ERR_EID,
-
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     VC_EVT_CNT
 } VC_EventIds_t;

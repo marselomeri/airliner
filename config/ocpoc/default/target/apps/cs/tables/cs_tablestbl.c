@@ -2,7 +2,7 @@
 ** File:
 **   $Id: cs_tablestbl.c 1.3.1.1 2015/03/03 11:58:43EST sstrege Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -42,9 +42,8 @@
 CS_Def_Tables_Table_Entry_t      CS_TablesTable[CS_MAX_NUM_TABLES_TABLE_ENTRIES] =
 {
     /*         State             Name   */
-
-    /*   0 */ { CS_STATE_EMPTY,   ""    },
-    /*   1 */ { CS_STATE_EMPTY,   ""    },
+	/*   0 */ { CS_STATE_ENABLED,   "TO.GROUND_CFG"    },
+	/*   1 */ { CS_STATE_ENABLED,   "TO.ONBOARD_CFG"   },
     /*   2 */ { CS_STATE_EMPTY,   ""    },
     /*   3 */ { CS_STATE_EMPTY,   ""    },
     /*   4 */ { CS_STATE_EMPTY,   ""    },

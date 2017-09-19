@@ -5,14 +5,16 @@
 #include <errno.h>
 #include <arpa/inet.h>
 #include "ci_events.h"
+#include <strings.h>
+#include <unistd.h>
 
 #define CI_CUSTOM_RETURN_CODE_NULL_POINTER      (-1)
 
 
 typedef struct
 {
-	int32  Socket;
-	uint32 Port;
+	int  Socket;
+	uint16 Port;
 } CI_AppCustomData_t;
 
 CI_AppCustomData_t CI_AppCustomData = {0, 5010};
@@ -22,6 +24,7 @@ CI_AppCustomData_t CI_AppCustomData = {0, 5010};
 int32 CI_InitCustom(void)
 {
     int32 Status = 0;
+    int reuseaddr = 1;
 	struct sockaddr_in address;
 
     if((CI_AppCustomData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
@@ -31,6 +34,8 @@ int32 CI_InitCustom(void)
     		Status = -1;
     		goto end_of_function;
     }
+
+    setsockopt(CI_AppCustomData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
@@ -58,7 +63,7 @@ int32 CI_ReadMessage(char* buffer, uint32* size)
 {
 	*size = recv(CI_AppCustomData.Socket,
 					   (char *)buffer,
-					   size, 0);
+					   (size_t)size, 0);
 }
 
 

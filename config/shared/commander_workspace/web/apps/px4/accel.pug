@@ -34,134 +34,203 @@ block main
                     tr
                       th Integral:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Integral"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_Integral"}]}) ---
                     tr
                       th ErrorCount:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ErrorCount"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_ErrorCount"}]}) ---
                     tr
                       th X:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_X"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_X"}]}) ---
                     tr
                       th Y:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Y"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_Y"}]}) ---
                     tr
                       th Z:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Z"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_Z"}]}) ---
                     tr
                       th XInt:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_XInt"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_XInt"}]}) ---
                     tr
                       th YInt:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_YInt"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_YInt"}]}) ---
                     tr
                       th ZInt:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ZInt"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_ZInt"}]}) ---
                     tr
                       th Temp:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Temp"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_Temp"}]}) ---
                     tr
                       th Range:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Range"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_Range"}]}) ---
                     tr
                       th Scaling:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Scaling"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_Scaling"}]}) ---
                     tr
                       th DeviceID:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_DeviceID"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_DeviceID"}]}) ---
                     tr
                       th XRaw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_XRaw"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_XRaw"}]}) ---
                     tr
                       th YRaw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_YRaw"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_YRaw"}]}) ---
                     tr
                       th ZRaw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ZRaw"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_ZRaw"}]}) ---
                     tr
                       th TempRaw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_TempRaw"}}) ---
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SA_TempRaw"}]}) ---
 
 
       script.
         var MaxCount = 2500;
-              
-        loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
-            var AccData = [];
-            var AccX = {value: 0, time: 1, utcTime: ''};
-            var AccY = {value: 0, time: 2, utcTime: ''};
-            var AccZ = {value: 0, time: 3, utcTime: ''};
-            var AccStarted = false;
+        var XData = [];
+        var YData = [];
+        var ZData = [];
+        
+        $(function () {
+          function legendFormatter(label, series) {
+            return '<div ' + 
+               'style="color:white;font-size:8pt;text-align:left;padding:4px;padding-left:10px">' +
+               label + '</div>';
+          };
+    
+          var UtilGraph = $.plot($("#Accelerometer"), [],{
+              xaxis : {
+                mode : 'time',
+                font : {
+                  color: "#ffffff"
+                }
+              },
+              yaxis : {
+                min : -20.0,
+                max : 20.0,
+                font : {
+                  color: "#ffffff"
+                }
+              },
+              series : {
+                lines : {
+                  show : true
+                },
+                points: {
+                  show: false
+                }
+              },
+              legend: {
+                show: true,
+                labelFormatter: legendFormatter,
+                labelBoxBorderColor: 'rgba(255, 255, 255, 0.0)',
+                noColumns: 1,
+                position: 'ne',
+                margin: [10,10],
+                backgroundColor: null,
+                backgroundOpacity: 0,
+                container: null,
+                sorted: false
+              },
+              grid: {
+                show: true,
+                //aboveData: boolean
+                //color: '#ffffff',
+                //backgroundColor: color/gradient or null
+                //margin: number or margin object
+                //labelMargin: number
+                //axisMargin: number
+                //markings: [{ color: "#ffffff" }],
+                //markings: array of markings or (fn: axes -> array of markings)
+                //borderWidth: number or object with "top", "right", "bottom" and "left" properties with different widths
+                //borderColor: color or null or object with "top", "right", "bottom" and "left" properties with different colors
+                //minBorderMargin: number or null
+                //clickable: boolean
+                //hoverable: boolean
+                //autoHighlight: boolean
+                //mouseActiveRadius: number
+              }
+            }
+          );
+        
 
-            AccGraph = new Dygraph(document.getElementById("Accelerometer"), AccData, {
-                                drawPoints: false,
-                                showRoller: true,
-                                valueRange: [-20.0, 20.0],
-                                labels: ['Time', 'X', 'Y', 'Z']
-                         });
-
-            session.on('connectFailed', function(err) {
-                console.log('Failed to start Sage session.  err = ' + err);
-            });
-
-            session.on('connect', function() {
-              var AccCount = 0;
-
-              session.subscribe({name: '/CFS/PX4/SA_X'}, function(param) {
-                AccX.value = param.engValue.floatValue;
-                AccX.time = param.acquisitionTime;
-                AccX.utcTime = param.acquisitionTimeUTC;
-                AccCorrelateData();
-              });
-
-              session.subscribe({name: '/CFS/PX4/SA_Y'}, function(param) {
-                AccY.value = param.engValue.floatValue;
-                AccY.time = param.acquisitionTime;
-                AccY.utcTime = param.acquisitionTimeUTC;
-                AccCorrelateData();
-              });
-
-              session.subscribe({name: '/CFS/PX4/SA_Z'}, function(param) {
-                AccZ.value = param.engValue.floatValue;
-                AccZ.time = param.acquisitionTime;
-                AccZ.utcTime = param.acquisitionTimeUTC;
-                AccCorrelateData();
-              });
-
-             setInterval(function() {
-                 AccGraph.updateOptions( { 'file': AccData } );
-             }, 100);
-             
-             var AccCorrelateData = function () {
-                  if((AccX.time == AccY.time ) && ( AccY.time == AccZ.time)){
-                      if(AccStarted == false){
-                          /* Skip the first one. */
-                          AccStarted = true;
-                      } else {        
-                        if (AccData.length >= MaxCount) {
-                          AccData = AccData.slice(1);
-                        }            
-                        AccData.push([AccCount, AccX.value, AccY.value, AccZ.value]);
-                        AccCount++;
-                      }
+              var MaxCount = 120;
+              var ignoreCount = 3;
+              var updateInterval = 100;
+              var count = 0;
+              var prevX = -1;
+              var prevY = -1;
+              var prevZ = -1;
+      
+              session.subscribe({
+                homogeneity: {tolerance: 0},
+                tlm: [
+                  {name: '/CFS/PX4/SA_X'},
+                  {name: '/CFS/PX4/SA_Y'},
+                  {name: '/CFS/PX4/SA_Z'}
+                ]},function(params) {                
+                  count = count + 1;
+                  if(ignoreCount > 0){
+                    ignoreCount = ignoreCount - 1;
+                  } else { 
+                    if (XData.length >= MaxCount) {
+                      XData = XData.slice(1);
+                    }
+                    if (YData.length >= MaxCount) {
+                      YData = YData.slice(1);
+                    }
+                    if (ZData.length >= MaxCount) {
+                      ZData = ZData.slice(1);
+                    }
+        
+                    var timeStamp = new Date(params[0].acquisitionTime);
+                    var X = params[0].engValue.floatValue;
+                    var Y = params[1].engValue.floatValue;
+                    var Z = params[2].engValue.floatValue;
+                     
+                    XData.push([timeStamp, X]);
+                    YData.push([timeStamp, Y]);
+                    ZData.push([timeStamp, Z]);
                   }
-             };
-          });
-        });
+              });
+
+              function update() {
+                UtilGraph.setData(
+                  [{
+                    data: XData,
+                    label: "X",
+                    color: '#ff00ff'
+                  }, {
+                    data : YData,
+                    label : 'Y',
+                    color: '#00ffff'
+                  }, {
+                    data : ZData,
+                    label : 'Z',
+                    color: '#ffff00'
+                  }]);
+        
+        
+                // since the axes don't change, we don't need to call plot.setupGrid()
+                UtilGraph.setupGrid();
+                UtilGraph.draw();
+                setTimeout(update, updateInterval);
+              }
+                  
+              update();
+            });
 
 
 

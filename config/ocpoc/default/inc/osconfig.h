@@ -51,11 +51,11 @@
 #define OS_RUNTIME_MANAGER_CMD_QUEUE_NAME 		"OS_RUNTIME_MGR_CMD"
 #define OS_RUNTIME_MANAGER_CMD_QUEUE_DEPTH		1
 #define OS_RUNTIME_MANAGER_CMD_TASK_NAME		"OS_RUNTIME_MGR_CMD"
-#define OS_RUNTIME_MANAGER_CMD_TASK_STACK_SIZE  8192
+#define OS_RUNTIME_MANAGER_CMD_TASK_STACK_SIZE  32535
 #define OS_RUNTIME_MANAGER_CMD_TASK_PRIORITY	0
 #define OS_RUNTIME_MANAGER_EXEC_TASK_NAME		"OS_RUNTIME_MGR_EXEC"
-#define OS_RUNTIME_MANAGER_EXEC_TASK_STACK_SIZE  8192
-#define OS_RUNTIME_MANAGER_EXEC_TASK_PRIORITY	230
+#define OS_RUNTIME_MANAGER_EXEC_TASK_STACK_SIZE  32535
+#define OS_RUNTIME_MANAGER_EXEC_TASK_PRIORITY	99
 #define OS_RUNTIME_MANAGER_SEM_NAME				"OS_RUNTIME_MGR_SEM"
 
 #define OS_MAX_QUEUE_WIDTH          8
@@ -65,11 +65,11 @@
 ** Platform Configuration Parameters for the OS API
 */
 
-#define OS_MAX_TASKS                64
-#define OS_MAX_QUEUES               64
-#define OS_MAX_COUNT_SEMAPHORES     20
-#define OS_MAX_BIN_SEMAPHORES       20
-#define OS_MAX_MUTEXES              20
+#define OS_MAX_TASKS                100
+#define OS_MAX_QUEUES               100
+#define OS_MAX_COUNT_SEMAPHORES     100
+#define OS_MAX_BIN_SEMAPHORES       100
+#define OS_MAX_MUTEXES              100
 #define OS_MAX_TIMEOUTS				(OS_MAX_QUEUES+OS_MAX_COUNT_SEMAPHORES+OS_MAX_BIN_SEMAPHORES)
 
 /*
@@ -146,7 +146,7 @@
 ** This define sets the queue implentation of the Linux port to use sockets 
 ** commenting this out makes the Linux port use the POSIX message queues.
 */
-/* #define OSAL_SOCKET_QUEUE */
+#define OSAL_SOCKET_QUEUE */
 
 /*
 ** Module loader/symbol table is optional

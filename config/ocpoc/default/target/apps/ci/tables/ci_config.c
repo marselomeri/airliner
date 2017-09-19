@@ -1,37 +1,3 @@
-/*==============================================================================
-** File Name: ci_iloads.c
-**
-** Title:     CI iloads table definition
-**
-** $Author: $
-** $Revision: $
-** $Date:  $
-**
-** Purpose:   To provide the CI iloads table for default data config.
-**
-** Functions Contained:
-**    None
-**
-**
-** Limitations, Assumptions, External Events, and Notes:
-**  1.   None
-**
-** Modification History:
-**   MM/DD/YY  SCR/SDR     Author          DESCRIPTION
-**   --------  ----------  -------------   -----------------------------
-**   mm/dd/yy  $$$SCRxxxx  C. Writer       Build #: Code Started
-**
-**
-**==============================================================================
-*/
-
-#ifndef _CI_CONFIG_
-#define _CI_CONFIG_
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 
 /*
 ** Pragmas
@@ -40,42 +6,30 @@ extern "C" {
 /*
 ** Include Files
 */
-#include "app.h"
-#include "tbl.h"
 #include "cfe_tbl_filedef.h"
-#include "ci_platform_cfg.h"
-#include "ci_mission_cfg.h"
-#include "msg_ids.h"
-#include "cfe_es_msg.h"
-#include "cmd_codes.h"
+#include "ci_tbldefs.h"
 
 /*
 ** Local Defines
 */
 
-
 /*
 ** Local Structure Declarations
 */
-
-CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
-    "ci_ConfigTable", "CI.ci_config", "CI config table",
-    "ci_config.tbl", sizeof(CI_ConfigTable_t)
-};
+    /* Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
+    **    ObjName - variable name of config table, e.g., CI_ConfigDefTbl[]
+    **    TblName - app's table name, e.g., CI.CONFIG_TBL, where CI is the same app name
+    **              used in cfe_es_startup.scr, and CI_defConfigTbl is the same table
+    **              name passed in to CFE_TBL_Register()
+    **    Desc - description of table in string format
+    **    TgtFileName[20] - table file name, compiled as .tbl file extension
+    **    ObjSize - size of the entire table
+    */
 
-/*
-** Default CI iLoad table data
-*/
-
-
-CI_ConfigTable_t ci_ConfigTable =
-{
-	0x1ffd,
-	1000,
-	{ 5010, 0},
-	{
-	}
+    "CI_ConfigTbl", "CI.CONFIG_TBL", "CI default config table",
+    "ci_config.tbl", (sizeof(CI_ConfigTblEntry_t) * CI_CONFIG_TABLE_MAX_ENTRIES)
 };
 
 /*
@@ -86,16 +40,32 @@ CI_ConfigTable_t ci_ConfigTable =
 ** Global Variables
 */
 
+/* Default CI config table data */
+CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
+{
+	/* Table ID */
+	1,
+	{
+		/* Registered Commands */
+		{0x1806, 2, STEP_2, UNAUTHORIZED, 0, LOG}, // CFE ES Proc/Power Reset
+		{0x1c29, 0, STEP_1, UNAUTHORIZED, 0, LOG}, // EA Noop
+		{0x1c29, 1, STEP_2, UNAUTHORIZED, 0, LOG}  // EA Reset
+	}
+};
+
 /*
 ** Local Variables
 */
 
 /*
-** Local Function Prototypes
+** Function Prototypes
 */
 
-#ifdef	__cplusplus
-}
-#endif
+/*
+** Function Definitions
+*/
 
-#endif /* _CI_CONFIG_ */
+/*=======================================================================================
+** End of file ci_config.c
+**=====================================================================================*/
+    

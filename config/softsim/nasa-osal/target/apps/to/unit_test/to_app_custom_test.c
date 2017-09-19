@@ -16,6 +16,7 @@
 #include "ut_cfe_tbl_stubs.h"
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
+#include "to_custom.h"
 
 
 /**************************************************************************
@@ -91,18 +92,12 @@ void TO_Custom_Init_Nominal(void)
     int32 result = -1;
     int32 expected = 0;
     uint8 ChannelID = 0;
-    uint16 testPort = 5000;
-    char *testIP = "test";
+    uint16 testPort = 5011;
+    char *testIP = "127.0.0.1";
     
     char returnString[128];
     snprintf(returnString, 128, "UDP telemetry output enabled channel %u to %s:%u", 
             ChannelID, testIP, testPort);
-    
-    /* Set channel 0 to enabled */
-    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
-    /* Set values for IP and port to help verify the raised event */
-    strncpy(TO_AppCustomData.Channel[ChannelID].IP, testIP, INET_ADDRSTRLEN);
-    TO_AppCustomData.Channel[ChannelID].DstPort = testPort;
     
     /* Execute the function being tested */
     result = TO_Custom_Init();
@@ -576,37 +571,307 @@ void TO_OutputChannel_ChannelHandle_OSQueueTimeout(void)
  * Tests for TO_OutputChannel_ProcessNewCustomCmds()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_ProcessNewCustomCmds()
+ * Test TO_OutputChannel_ProcessNewCustomCmds() invalid message length
+ * enable channel command code
  */
+void TO_OutputChannel_ProcessNewCustomCmds_EnableInvalidMessageLength(void)
+{
+    /* Wrong type to create incorrect size condition */
+    TO_DisableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_ENABLE_CHANNEL_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
+    UtAssert_EventSent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
+}
+
+
+/**
+ * Test TO_OutputChannel_ProcessNewCustomCmds() invalid message length
+ * disable channel command code
+ */
+void TO_OutputChannel_ProcessNewCustomCmds_DisableInvalidMessageLength(void)
+{
+    /* Wrong type to create incorrect size condition */
+    TO_EnableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_DISABLE_CHANNEL_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
+    UtAssert_EventSent(TO_MSGLEN_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
+}
+
+
+/**
+ * Test TO_OutputChannel_ProcessNewCustomCmds() invalid command code
+ */
+void TO_OutputChannel_ProcessNewCustomCmds_InvalidCommandCode(void)
+{
+    /* Create an invalid command code */
+    uint8 InvalidCommandCode = 100;
+
+    /* Wrong type to create incorrect size condition */
+    TO_EnableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    /* Set invalid command code */
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, InvalidCommandCode);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
+    UtAssert_EventSent(TO_MSGID_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_ProcessNewCustomCmds() failed to raise an event");
+}
+
+
+/**
+ * Test TO_OutputChannel_ProcessNewCustomCmds() enable fail
+ */
+void TO_OutputChannel_ProcessNewCustomCmds_EnableFail(void)
+{
+    TO_EnableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    /* Set command code */
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_ENABLE_CHANNEL_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Set socket create to fail */
+    TO_Platform_Stubs_Returns.TO_Wrap_Socket_Return = -1;
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    
+    /* Verify results */
+    UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_TLMOUTSOCKET_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_Enable() failed to raise an event");
+}
+
+
+/**
+ * Test TO_OutputChannel_ProcessNewCustomCmds() disable fail
+ */
+void TO_OutputChannel_ProcessNewCustomCmds_DisableFail(void)
+{
+    TO_DisableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    /* Set command code */
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_DISABLE_CHANNEL_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+    
+    /* Verify results */
+    UtAssert_True(TO_AppData.HkTlm.usCmdErrCnt == 1,"CmdErrCnt not incremented");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_Disable() failed to raise an event");
+}
+
+
+/**
+ * Test TO_OutputChannel_ProcessNewCustomCmds() enable nominal
+ */
+void TO_OutputChannel_ProcessNewCustomCmds_EnableNominal(void)
+{
+    TO_EnableChannelCmd_t InMsg;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    /* Set command code */
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_ENABLE_CHANNEL_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+
+    /* Verify results */
+    UtAssert_True(TO_AppData.HkTlm.usCmdCnt == 1,"usCmdCnt not incremented");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+            "TO_OutputChannel_Enable() failed to raise an event");
+}
+
+
+/**
+ * Test TO_OutputChannel_ProcessNewCustomCmds() disable nominal
+ */
+void TO_OutputChannel_ProcessNewCustomCmds_DisableNominal(void)
+{
+    uint8 ChannelID = 0;
+    TO_DisableChannelCmd_t InMsg;
+    
+    /* Set to enabled for TO_OutputChannel_Disable can set to 
+     * disabled 
+     */
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+    
+    CFE_SB_InitMsg(&InMsg, TO_CMD_MID, sizeof(InMsg), TRUE);
+
+    /* Set command code */
+    CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&InMsg, TO_DISABLE_CHANNEL_CC);
+    
+    /* Set get command code function hook */
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_GETCMDCODE_INDEX, &Ut_CFE_SB_GetCmdCodeHook);
+    
+    
+    /* Call the function under test */
+    TO_OutputChannel_ProcessNewCustomCmds(&InMsg);
+
+    /* Verify results */
+    UtAssert_True(TO_AppData.HkTlm.usCmdCnt == 1,"usCmdCnt not incremented");
+    UtAssert_True(TO_AppCustomData.Channel[ChannelID].Mode == TO_CHANNEL_DISABLED,
+            "TO_OutputChannel_Disable did not set correct mode");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+            "TO_OutputChannel_Disable() failed to raise an event");
+}
+
 
  /**************************************************************************
  * Tests for TO_OutputChannel_OnboardChannelTask()
  **************************************************************************/
 /**
  * Test TO_OutputChannel_OnboardChannelTask()
+ * Note: currently there is no way to fail this function
  */
- 
+void TO_OutputChannel_OnboardChannelTask_Nominal(void)
+{
+    TO_OutputChannel_OnboardChannelTask();
+}
+
+
  /**************************************************************************
  * Tests for TO_OutputChannel_GroundChannelTask()
  **************************************************************************/
 /**
  * Test TO_OutputChannel_GroundChannelTask()
+ * Note: currently there is no way to fail this function
  */
- 
+void TO_OutputChannel_GroundChannelTask_Nominal(void)
+{
+    TO_OutputChannel_GroundChannelTask();
+}
+
+
  /**************************************************************************
  * Tests for TO_OutputChannel_CustomCleanupAll()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_CustomCleanupAll()
+ * Test TO_OutputChannel_CustomCleanupAll() nominal
+ * Note: currently there is no way to fail this function
  */
- 
+void TO_OutputChannel_CustomCleanupAll_Nominal(void)
+{
+    uint8 ChannelID = 0;
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+
+    /* Call the function under test */
+    TO_OutputChannel_CustomCleanupAll();
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+            "TO_OutputChannel_Disable() failed to raise an event");
+}
+
+
  /**************************************************************************
  * Tests for TO_OutputChannel_Disable()
  **************************************************************************/
+ 
 /**
- * Test TO_OutputChannel_Disable()
+ * Test TO_OutputChannel_Disable() nominal
  */
+void TO_OutputChannel_Disable_Fail(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    uint8 ChannelID = 0;
+    
+    /* Call the function under test */
+    result = TO_OutputChannel_Disable(ChannelID);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_TLMOUTENA_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_Disable() failed to raise an event");
+    UtAssert_True(result == expected,
+            "TO_OutputChannel_Disable() did not return the correct value");
+    
+}
 
+
+/**
+ * Test TO_OutputChannel_Disable() nominal
+ */
+void TO_OutputChannel_Disable_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    uint8 ChannelID = 0;
+    
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+    
+    /* Call the function under test */
+    result = TO_OutputChannel_Disable(ChannelID);
+    
+    /* Verify results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
+            "TO_OutputChannel_Disable() failed to raise an event");
+    UtAssert_True(result == expected,
+            "TO_OutputChannel_Disable() did not return the correct value");
+    
+}
+
+
+ /**************************************************************************
+ * Test Rollup
+ **************************************************************************/
 void TO_Custom_App_Test_AddTestCases(void)
 {
     UtTest_Add(TO_Custom_Init_OpenChannelFail, 
@@ -666,4 +931,40 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ChannelHandle_OSQueueTimeout, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_OSQueueTimeout");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_EnableInvalidMessageLength, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_EnableInvalidMessageLength");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_DisableInvalidMessageLength, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_DisableInvalidMessageLength");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_InvalidCommandCode, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_InvalidCommandCode");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_EnableFail, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_EnableFail");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_DisableFail, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_DisableFail");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_EnableNominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_EnableNominal");
+    UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_DisableNominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_ProcessNewCustomCmds_DisableNominal");
+    UtTest_Add(TO_OutputChannel_OnboardChannelTask_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_OnboardChannelTask_Nominal");
+    UtTest_Add(TO_OutputChannel_GroundChannelTask_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_GroundChannelTask_Nominal");
+    UtTest_Add(TO_OutputChannel_CustomCleanupAll_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_CustomCleanupAll_Nominal");
+    UtTest_Add(TO_OutputChannel_Disable_Fail, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_Disable_Fail");
+    UtTest_Add(TO_OutputChannel_Disable_Nominal, 
+                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+               "TO_OutputChannel_Disable_Nominal");
 }

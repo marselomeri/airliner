@@ -2,7 +2,7 @@
  ** File:
  **   $Id: cs_msgids.h 1.2.1.1 2015/03/03 11:58:23EST sstrege Exp  $
  **
- **   Copyright © 2007-2014 United States Government as represented by the 
+ **   Copyright ï¿½ 2007-2014 United States Government as represented by the 
  **   Administrator of the National Aeronautics and Space Administration. 
  **   All Other Rights Reserved.  
  **
@@ -36,23 +36,7 @@
 #ifndef _cs_msgids_
 #define _cs_msgids_
 
-/*************************************************************************
- ** Macro Definitions
- *************************************************************************/
-
-/**
- ** \name CS Command Message IDs */ 
-/** \{ */
-#define CS_CMD_MID                          (0x189F)      /**< \brief Msg ID for cmds to CS   */
-#define CS_SEND_HK_MID                      (0x18A0)      /**< \brief Msg ID to request CS HK */
-#define CS_BACKGROUND_CYCLE_MID             (0x18A1)      /**< \brief Msg ID for background checking */
-/** \} */
-
-/**
- ** \name CS Telemetery Message Number */ 
-/** \{ */
-#define CS_HK_TLM_MID                       (0x08A4)
-/** \} */
+#include "msg_ids.h"
 
 #endif /*_cs_msgids_*/
 
