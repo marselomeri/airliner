@@ -999,6 +999,7 @@ void OS_printf( const char *String, ...)
 
 int32 OS_SymbolLookup( cpuaddr *SymbolAddress, const char *SymbolName )
 {
+	printf("!!!!!!!!!!!!!!\n");
     /* Check for specified return */
     if (Ut_OSAPI_UseReturnCode(UT_OSAPI_SYMBOLLOOKUP_INDEX))
         return Ut_OSAPI_ReturnCodeTable[UT_OSAPI_SYMBOLLOOKUP_INDEX].Value;
