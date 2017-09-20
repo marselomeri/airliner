@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 
 from cookiecutter.main import cookiecutter
+#from cookiecutter.envirnment import ExtensionLoaderMixin
+
+from jinja2 import Environment, FileSystemLoader
 import os
 from shutil import copyfile, rmtree
 
-extras = {"app_name": "AE"}
+extras = {"app_name": "AE",
+			"_extensions": ["AirlinerExtension.AirlinerExtension"]}
 
 base = os.getcwd()
 target = os.path.join(base, 'src')
+
+#j2_env = Environment(loader=FileSystemLoader(base),
+					
 
 if os.path.exists(target):
 	rmtree(target)
