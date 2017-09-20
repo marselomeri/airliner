@@ -166,7 +166,6 @@ PBLib_DecodeFuncPtr_t PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 
 
     if(msgId == 0)
     {
-    	OS_printf("MsgId 0. Stop");
     	goto PBLIB_GetDeserializationFunc_Exit_Tag;
     }
 

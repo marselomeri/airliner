@@ -146,20 +146,25 @@ void Test_PBLIB_DeregisterMessage_Nominal(void)
 }
 
 /**
+ * Test OS_SymbolLookupHook()
+ */
+int32 OS_SymbolLookupHook( uint32 *SymbolAddress, const char *SymbolName )
+{
+	*SymbolAddress = 1;
+}
+
+/**
  * Test PBLIB_GetSerializationFunc(), Not found
  */
 void Test_PBLIB_GetSerializationFunc_No_Match(void)
 {
-	PBLib_EncodeFuncPtr_t retCode = -1;
-
-	/* Register the MsgId and cmd code */
-	Ut_OSAPI_SetReturnCode(UT_OSAPI_SYMBOLLOOKUP_INDEX, 0, 1);
+	uint32 funcAddr = -1;
 
 	/* Execute the function being tested */
-	retCode = PBLIB_GetSerializationFunc(TEST_MSG_ID, TEST_CC);
+	funcAddr = (uint32)PBLIB_GetSerializationFunc(TEST_MSG_ID, TEST_CC);
 
 	/* Verify results */
-	UtAssert_True(retCode==0,"Serialization function not found");
+	UtAssert_True(funcAddr==0,"Serialization function not found");
 }
 
 /**
@@ -167,16 +172,19 @@ void Test_PBLIB_GetSerializationFunc_No_Match(void)
  */
 void Test_PBLIB_GetSerializationFunc_Nominal(void)
 {
-	PBLib_EncodeFuncPtr_t retCode = 0;
+	uint32 funcAddr = 0;
 
-	Ut_OSAPI_SetReturnCode(UT_OSAPI_SYMBOLLOOKUP_INDEX, -1, 1);
+	/* Register the MsgId and cmd code */
+	PBLIB_RegisterMessage(TEST_MSG_ID, TEST_CC, TEST_MSG_NAME);
+
+	/* Set symbol lookup return */
+	Ut_OSAPI_SetFunctionHook(UT_OSAPI_SYMBOLLOOKUP_INDEX, OS_SymbolLookupHook);
 
 	/* Execute the function being tested */
-	retCode = PBLIB_GetSerializationFunc(TEST_MSG_ID, TEST_CC);
-	//printf("FuncAddr: %02x\n", retCode);
+	funcAddr = (uint32)PBLIB_GetSerializationFunc(TEST_MSG_ID, TEST_CC);
 
 	/* Verify results */
-	UtAssert_True(retCode==-1,"Serialization function found");
+	UtAssert_True(funcAddr==1,"Serialization function found");
 }
 
 /**
@@ -184,16 +192,16 @@ void Test_PBLIB_GetSerializationFunc_Nominal(void)
  */
 void Test_PBLIB_GetDeserializationFunc_No_Match(void)
 {
-	PBLib_DecodeFuncPtr_t retCode = -1;
+	uint32 funcAddr = -1;
 
-	/* Register the MsgId and cmd code */
+	/* Set symbol lookup return */
 	Ut_OSAPI_SetReturnCode(UT_OSAPI_SYMBOLLOOKUP_INDEX, 0, 1);
 
 	/* Execute the function being tested */
-	retCode = PBLIB_GetDeserializationFunc(TEST_MSG_ID, TEST_CC);
+	funcAddr = (uint32)PBLIB_GetDeserializationFunc(TEST_MSG_ID, TEST_CC);
 
 	/* Verify results */
-	UtAssert_True(retCode==0,"Serialization function not found");
+	UtAssert_True(funcAddr==0,"Serialization function not found");
 }
 
 /**
@@ -201,16 +209,19 @@ void Test_PBLIB_GetDeserializationFunc_No_Match(void)
  */
 void Test_PBLIB_GetDeserializationFunc_Nominal(void)
 {
-	PBLib_DecodeFuncPtr_t retCode = 0;
+	uint32 funcAddr = 0;
 
-	Ut_OSAPI_SetReturnCode(UT_OSAPI_SYMBOLLOOKUP_INDEX, -1, 1);
+	/* Register the MsgId and cmd code */
+	PBLIB_RegisterMessage(TEST_MSG_ID, TEST_CC, TEST_MSG_NAME);
+
+	/* Set symbol lookup return */
+	Ut_OSAPI_SetFunctionHook(UT_OSAPI_SYMBOLLOOKUP_INDEX, OS_SymbolLookupHook);
 
 	/* Execute the function being tested */
-	retCode = PBLIB_GetDeserializationFunc(TEST_MSG_ID, TEST_CC);
-	//printf("FuncAddr: %02x\n", retCode);
+	funcAddr = (uint32)PBLIB_GetDeserializationFunc(TEST_MSG_ID, TEST_CC);
 
 	/* Verify results */
-	UtAssert_True(retCode==-1,"Serialization function found");
+	UtAssert_True(funcAddr==1,"Serialization function found");
 }
 
 /**************************************************************************

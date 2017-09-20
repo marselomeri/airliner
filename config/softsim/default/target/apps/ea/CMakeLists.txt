@@ -9,6 +9,7 @@ add_airliner_app_table(
 
 add_airliner_app_unit_test(ea-custom-ut
     UTASSERT 
+	NANOPB
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_custom_test.c
@@ -32,7 +33,8 @@ add_airliner_app_unit_test(ea-custom-ut
 )
 
 add_airliner_app_unit_test(ea-perfmon-ut
-    UTASSERT 
+    UTASSERT
+	NANOPB
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ea_perfmon_test.c
