@@ -1,0 +1,23 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_battery_status_pb 
+{
+	enum BATTERY_WARNING
+	{
+		BATTERY_WARNING_NONE 		= 0;
+		BATTERY_WARNING_LOW 		= 1;
+		BATTERY_WARNING_CRITICAL	= 2;
+	}
+
+	required uint64 timestamp = 1;
+	required float voltage_v = 2;
+	required float voltage_filtered_v = 3;
+	required float current_a = 4;
+	required float current_filtered_a = 5;
+	required float discharged_mah = 6;
+	required float remaining = 7;
+	required int32 cell_count = 8;
+	required bool connected  = 9;
+	required uint32 warning  = 10;
+}

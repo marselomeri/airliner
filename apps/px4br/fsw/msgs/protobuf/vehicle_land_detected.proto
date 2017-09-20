@@ -1,0 +1,11 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_land_detected_pb 
+{
+	required uint64 timestamp = 1;
+	required bool landed = 2;
+	required bool freefall = 3;
+}
+
+// ORB_DECLARE(vehicle_land_detected);

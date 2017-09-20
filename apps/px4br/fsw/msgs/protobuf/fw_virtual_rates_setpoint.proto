@@ -1,0 +1,13 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_fw_virtual_rates_setpoint_pb
+{
+	required uint64 timestamp = 1;
+	required float roll = 2;
+	required float pitch = 3;
+	required float yaw = 4;
+	required float thrust = 5;
+}
+
+// ORB_DECLARE(fw_virtual_rates_setpoint);

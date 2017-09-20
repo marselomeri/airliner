@@ -1,0 +1,16 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_test_motor_pb 
+{
+	enum MOTOR_OUTPUTS
+	{
+		MOTOR_OUTPUTS_COUNT = 8;
+	}
+
+	required uint64 timestamp = 1;
+	required uint32 motor_number = 2;
+	required float value = 3;
+}
+
+// ORB_DECLARE(test_motor);

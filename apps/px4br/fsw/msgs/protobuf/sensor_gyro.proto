@@ -1,0 +1,25 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_sensor_gyro_pb 
+{
+	required uint64 timestamp = 1;
+	required uint64 integral_dt = 2;
+	required uint64 error_count = 3;
+	required float x = 4;
+	required float y = 5;
+	required float z = 6;
+	required float x_integral = 7;
+	required float y_integral = 8;
+	required float z_integral = 9;
+	required float temperature = 10;
+	required float range_rad_s = 11;
+	required float scaling = 12;
+	required uint32 device_id = 13;
+	required int32 x_raw = 14;
+	required int32 y_raw = 15;
+	required int32 z_raw = 16;
+	required int32 temperature_raw = 17;
+}
+
+// ORB_DECLARE(sensor_gyro);

@@ -189,6 +189,8 @@ typedef enum {
 */
     PMC_MSGLEN_ERR_EID,
 
+    PMC_PWM_CALIB_INFO_EID,
+
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     PMC_EVT_CNT

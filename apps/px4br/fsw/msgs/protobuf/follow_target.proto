@@ -1,0 +1,16 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_follow_target_pb 
+{
+	required uint64 timestamp = 1;
+	required double lat = 2;
+	required double lon = 3;
+	required float alt = 4;
+	required float vy = 5;
+	required float vx = 6;
+	required float vz = 7;
+	required uint32 est_cap = 8;
+}
+
+// ORB_DECLARE(follow_target);

@@ -1,0 +1,13 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_sensor_baro_pb 
+{
+	required uint64 timestamp = 1;
+	required uint64 error_count = 2;
+	required float pressure = 3;
+	required float altitude = 4;
+	required float temperature = 5;
+}
+
+// ORB_DECLARE(sensor_baro);

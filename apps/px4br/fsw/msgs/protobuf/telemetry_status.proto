@@ -1,0 +1,30 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_telemetry_status_pb
+{
+	enum TELEMETRY_STATUS
+	{
+		TELEMETRY_STATUS_RADIO_TYPE_GENERIC 		= 0;
+		TELEMETRY_STATUS_RADIO_TYPE_3DR_RADIO 		= 1;
+		TELEMETRY_STATUS_RADIO_TYPE_UBIQUITY_BULLET 	= 2;
+		TELEMETRY_STATUS_RADIO_TYPE_WIRE 		= 3;
+		TELEMETRY_STATUS_RADIO_TYPE_USB 		= 4;
+	}
+
+	required uint64 timestamp = 1;
+	required uint64 heartbeat_time = 2;
+	required uint64 telem_time = 3;
+	required uint32 rxerrors = 4;
+	required uint32 fixed = 5;
+	required uint32 type = 6;
+	required uint32 rssi = 7;
+	required uint32 remote_rssi = 8;
+	required uint32 noise = 9;
+	required uint32 remote_noise = 10;
+	required uint32 txbuf = 11;
+	required uint32 system_id = 12;
+	required uint32 component_id = 13;
+}
+
+// ORB_DECLARE(telemetry_status);

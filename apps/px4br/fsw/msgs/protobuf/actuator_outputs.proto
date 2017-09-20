@@ -1,0 +1,17 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_actuator_outputs_pb 
+{
+	enum ACTUATOR_OUTPUTS
+	{
+		ACTUATOR_OUTPUTS_NUM_ACTUATOR_OUTPUTS = 16;
+		ACTUATOR_OUTPUTS_NUM_ACTUATOR_OUTPUTS_GROUP = 4;
+	}
+
+	required uint64 timestamp = 1;
+	required uint32 noutputs = 2;
+	repeated float output = 3 [packed=true, (nanopb).max_count = 16];
+}	
+
+// ORB_DECLARE(actuator_outputs)

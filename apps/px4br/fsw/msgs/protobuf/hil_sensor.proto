@@ -1,0 +1,82 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_hil_sensor_pb
+{
+	enum MAGNETOMETER_MODE 
+	{
+	    	MAGNETOMETER_MODE_NORMAL	= 0;
+	    	MAGNETOMETER_MODE_POSITIVE_BIAS	= 1;
+	    	MAGNETOMETER_MODE_NEGATIVE_BIAS	= 2;
+	}
+
+	required uint64 timestamp = 1;
+	required uint64 accelerometer_timestamp = 2;
+	required uint64 magnetometer_timestamp = 3;
+	required uint64 gyro1_timestamp = 4;
+	required uint64 accelerometer1_timestamp = 5;
+	required uint64 magnetometer1_timestamp = 6;
+	required uint64 gyro2_timestamp = 7;
+	required uint64 accelerometer2_timestamp = 8;
+	required uint64 magnetometer2_timestamp = 9;
+	required uint64 baro_timestamp = 10;
+	required uint64 baro1_timestamp = 11;
+	required uint64 differential_pressure_timestamp = 12;
+	required uint64 differential_pressure1_timestamp = 13;
+	repeated float gyro_rad_s = 14 [packed=true, (nanopb).max_count = 3];
+	required uint32 gyro_errcount = 15;
+	required float gyro_temp = 16;
+	repeated float accelerometer_m_s2 = 17 [packed=true, (nanopb).max_count = 3];
+	required float accelerometer_range_m_s2 = 18;
+	required uint32 accelerometer_errcount = 19;
+	required float accelerometer_temp = 20;
+	repeated float magnetometer_ga = 21 [packed=true, (nanopb).max_count = 3];
+	required float magnetometer_range_ga = 22;
+	required float magnetometer_cuttoff_freq_hz = 23;
+	required uint32 magnetometer_errcount = 24;
+	required float magnetometer_temp = 25;
+	repeated float gyro1_rad_s = 26 [packed=true, (nanopb).max_count = 3];
+	required uint32 gyro1_errcount = 27;
+	required float gyro1_temp = 28;
+	repeated float accelerometer1_m_s2 = 29 [packed=true, (nanopb).max_count = 3];
+	required uint32 accelerometer1_errcount = 30;
+	required float accelerometer1_temp = 31;
+	repeated float magnetometer1_ga = 32 [packed=true, (nanopb).max_count = 3];
+	required uint32 magnetometer1_errcount = 33;
+	required float magnetometer1_temp = 34;
+	repeated float gyro2_rad_s = 35 [packed=true, (nanopb).max_count = 3];
+	required uint32 gyro2_errcount = 36;
+	required float gyro2_temp = 37;
+	repeated float accelerometer2_m_s2 = 38 [packed=true, (nanopb).max_count = 3];
+	required uint32 accelerometer2_errcount = 39;
+	required float accelerometer2_temp = 40;
+	repeated float magnetometer2_ga = 41 [packed=true, (nanopb).max_count = 3];
+	required uint32 magnetometer2_errcount = 42;
+	required float magnetometer2_temp = 43;
+	required float baro_pres_mbar = 44;
+	required float baro_alt_meter = 45;
+	required float baro_temp_celcius = 46;
+	required float baro1_pres_mbar = 47;
+	required float baro1_alt_meter = 48;
+	required float baro1_temp_celcius = 49;
+	repeated float adc_voltage_v = 50 [packed=true, (nanopb).max_count = 10];
+	required float mcu_temp_celcius = 51;
+	required float differential_pressure_pa = 52;
+	required float differential_pressure_filtered_pa = 53;
+	required float differential_pressure1_pa = 54;
+	required float differential_pressure1_filtered_pa = 55;
+	repeated int32 gyro_raw = 56 [packed=true, (nanopb).max_count = 3];
+	repeated int32 accelerometer_raw = 57 [packed=true, (nanopb).max_count = 3];
+	required int32 accelerometer_mode = 58;
+	repeated int32 magnetometer_raw = 59 [packed=true, (nanopb).max_count = 3];
+	required int32 magnetometer_mode = 60;
+	repeated int32 gyro1_raw = 61 [packed=true, (nanopb).max_count = 3];
+	repeated int32 accelerometer1_raw = 62 [packed=true, (nanopb).max_count = 3];
+	repeated int32 magnetometer1_raw = 63 [packed=true, (nanopb).max_count = 3];
+	repeated int32 gyro2_raw = 64 [packed=true, (nanopb).max_count = 3];
+	repeated int32 accelerometer2_raw = 65 [packed=true, (nanopb).max_count = 3];
+	repeated int32 magnetometer2_raw = 66 [packed=true, (nanopb).max_count = 3];
+	repeated uint32 adc_mapping = 67 [packed=true, (nanopb).max_count = 10];
+}
+
+// ORB_DECLARE(hil_sensor);

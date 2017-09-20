@@ -1,0 +1,23 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_distance_sensor_pb
+{
+	enum MAV_DISTANCE_SENSOR
+	{
+	    	MAV_DISTANCE_SENSOR_LASER	= 0;
+	    	MAV_DISTANCE_SENSOR_ULTRASOUND 	= 1;
+	    	MAV_DISTANCE_SENSOR_INFRARED	= 2;
+	}
+
+	required uint64 timestamp = 1;
+	required float min_distance = 2;
+	required float max_distance = 3;
+	required float current_distance = 4;
+	required float covariance = 5;
+	required uint32 type = 6;
+	required uint32 id = 7;
+	required uint32 orientation = 8;
+}
+
+// ORB_DECLARE(distance_sensor);

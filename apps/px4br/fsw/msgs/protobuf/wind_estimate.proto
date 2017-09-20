@@ -1,0 +1,13 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_wind_estimate_pb 
+{
+	required uint64 timestamp 	= 1;
+	required float windspeed_north 	= 2;
+	required float windspeed_east 	= 3;
+	required float covariance_north = 4;
+	required float covariance_east 	= 5;
+}
+
+// ORB_DECLARE(wind_estimate);

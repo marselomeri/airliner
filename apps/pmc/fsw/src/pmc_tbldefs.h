@@ -40,7 +40,9 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    int32  iParam;
+    int32 PwmDisarmed;
+    int32 PwmMin;
+    int32 PwmMax;
 
     /* TODO:  Add type declaration for config parameters here.
     **

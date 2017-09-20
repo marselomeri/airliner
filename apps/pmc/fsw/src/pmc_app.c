@@ -7,16 +7,24 @@
 ** Includes
 *************************************************************************/
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <errno.h>
 
 #include "cfe.h"
 
 #include "pmc_app.h"
 #include "pmc_msg.h"
 #include "pmc_version.h"
+#include <math.h>
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+
 
 /************************************************************************
 ** Local Structure Declarations
@@ -39,6 +47,16 @@ PMC_AppData_t  PMC_AppData;
 ** Local Function Definitions
 *************************************************************************/
 int32 PMC_InitMixer(const char *Filename);
+void PMC_SendOutputs(const uint16 *PWM);
+uint32 PMC_Freq2tick(uint16 FreqHz);
+int32 PMC_InitDevice(const char *Device);
+void PMC_DeinitDevice(void);
+void PMC_UpdateMotors(void);
+void PMC_StopMotors(void);
+int32 PMC_ControlCallback(uint32 *Handle,
+        uint8 ControlGroup,
+        uint8 ControlIndex,
+        float *Control);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -227,7 +245,7 @@ int32 PMC_InitData()
     /* Init output data */
     memset((void*)&PMC_AppData.OutData, 0x00, sizeof(PMC_AppData.OutData));
     CFE_SB_InitMsg(&PMC_AppData.OutData,
-                   PMC_OUT_DATA_MID, sizeof(PMC_AppData.OutData), TRUE);
+            PX4_ACTUATOR_OUTPUTS_MID, sizeof(PMC_AppData.OutData), TRUE);
 
     /* Init housekeeping packet */
     memset((void*)&PMC_AppData.HkTlm, 0x00, sizeof(PMC_AppData.HkTlm));
@@ -296,11 +314,42 @@ int32 PMC_InitApp()
         goto PMC_InitApp_Exit_Tag;
     }
 
-    iStatus = PMC_InitMixer("");
+    MIXER_Rotor RotorConfig[] = {
+        { -0.382683,  0.923880, -1.000000,  1.000000 },
+        {  0.382683, -0.923880, -1.000000,  1.000000 },
+        { -0.923880,  0.382683,  1.000000,  1.000000 },
+        { -0.382683, -0.923880,  1.000000,  1.000000 },
+        {  0.382683,  0.923880,  1.000000,  1.000000 },
+        {  0.923880, -0.382683,  1.000000,  1.000000 },
+        {  0.923880,  0.382683, -1.000000,  1.000000 },
+        { -0.923880, -0.382683, -1.000000,  1.000000 },
+    };
+
+    iStatus = MIXER_MixerInit(
+            PMC_ControlCallback,
+            &PMC_AppData.CVT.ActuatorControls,
+            &PMC_AppData.MixerData,
+            10000.0/10000.0f,
+            10000.0/10000.0f,
+            10000.0/10000.0f,
+            1600.0/10000.0f,
+            8,
+            RotorConfig);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init mixer (0x%08x)",
+                                 (unsigned int)iStatus);
+        goto PMC_InitApp_Exit_Tag;
+    }
+
+    PwmLimit_Init(&PMC_AppData.PwmLimit);
+
+    iStatus = PMC_InitDevice(PMC_DEVICE_PATH);
+    if (iStatus != CFE_SUCCESS)
+    {
+        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init device (0x%08x)",
                                  (unsigned int)iStatus);
         goto PMC_InitApp_Exit_Tag;
     }
@@ -370,6 +419,27 @@ int32 PMC_RcvMsg(int32 iBlocking)
 
             case PMC_SEND_HK_MID:
                 PMC_ReportHousekeeping();
+                break;
+
+            case PX4_ACTUATOR_ARMED_MID:
+                memcpy(&PMC_AppData.CVT.ActuatorArmed, MsgPtr, sizeof(PMC_AppData.CVT.ActuatorArmed));
+                PMC_UpdateMotors();
+                break;
+
+            case PX4_ACTUATOR_CONTROLS_MID:
+                memcpy(&PMC_AppData.CVT.ActuatorControls, MsgPtr, sizeof(PMC_AppData.CVT.ActuatorControls));
+                if(PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode == FALSE)
+                {
+                    PMC_UpdateMotors();
+                }
+                break;
+
+            case PX4_RC_CHANNELS_MID:
+                memcpy(&PMC_AppData.CVT.RcChannels, MsgPtr, sizeof(PMC_AppData.CVT.RcChannels));
+                if(PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode == TRUE)
+                {
+                    PMC_UpdateMotors();
+                }
                 break;
 
             default:
@@ -703,6 +773,174 @@ int32 PMC_InitMixer(const char *Filename)
 {
 	/* TODO:  Complete this */
 	return 0;
+}
+
+void PMC_SendOutputs(const uint16 *PWM)
+{
+    uint32 i = 0;
+
+    /* Convert this to duty_cycle in ns */
+    for (i = 0; i < PMC_MAX_ZYNQ_PWMS; ++i) {
+        PMC_AppData.SharedMemCmd->PeriodHi[i].Hi = PMC_TICK_PER_US * PWM[i];
+    }
+}
+
+
+void PMC_StopMotors(void)
+{
+    uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
+
+    for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
+        disarmed_pwm[i] = PMC_AppData.ConfigTblPtr->PwmDisarmed;
+    }
+
+    PMC_SendOutputs(disarmed_pwm);
+}
+
+
+void PMC_UpdateMotors(void)
+{
+    const uint16 reverse_mask = 0;
+    uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
+    uint16 min_pwm[PMC_MAX_ZYNQ_PWMS];
+    uint16 max_pwm[PMC_MAX_ZYNQ_PWMS];
+    uint16 pwm[PMC_MAX_ZYNQ_PWMS];
+    PX4_ActuatorOutputsMsg_t outputs;
+
+    //_outputs.timestamp = _controls.timestamp;
+
+    /* Do mixing */
+    PMC_AppData.OutData.Count = MIXER_Mix(&PMC_AppData.MixerData, PMC_AppData.OutData.Output, 0, 0);
+
+    /* Disable unused ports by setting their output to NaN */
+    for (size_t i = PMC_AppData.OutData.Count;
+         i < sizeof(PMC_AppData.OutData.Output) / sizeof(PMC_AppData.OutData.Output[0]);
+         i++) {
+        PMC_AppData.OutData.Output[i] = NAN;
+    }
+
+    for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
+        disarmed_pwm[i] = PMC_AppData.ConfigTblPtr->PwmDisarmed;
+        min_pwm[i] = PMC_AppData.ConfigTblPtr->PwmMin;
+        max_pwm[i] = PMC_AppData.ConfigTblPtr->PwmMax;
+    }
+
+    /* TODO */
+    PwmLimit_Calc(PMC_AppData.CVT.ActuatorArmed.Armed,
+            FALSE/*_armed.prearmed*/,
+            PMC_AppData.OutData.Count,
+            reverse_mask,
+            disarmed_pwm,
+            min_pwm,
+            max_pwm,
+            PMC_AppData.OutData.Output,
+            pwm,
+            &PMC_AppData.PwmLimit);
+
+    if (PMC_AppData.CVT.ActuatorArmed.Lockdown)
+    {
+        OS_printf("PMC_AppData.CVT.ActuatorArmed.Lockdown\n");
+        PMC_SendOutputs(disarmed_pwm);
+    }
+    else if (PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode)
+    {
+        OS_printf("PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode\n");
+        if (PMC_AppData.CVT.ActuatorControls.Control[3] * 1000 > 0.5f) {
+            pwm[0] = PMC_AppData.ConfigTblPtr->PwmMax;
+            pwm[1] = PMC_AppData.ConfigTblPtr->PwmMax;
+            pwm[2] = PMC_AppData.ConfigTblPtr->PwmMax;
+            pwm[3] = PMC_AppData.ConfigTblPtr->PwmMax;
+        } else {
+            pwm[0] = PMC_AppData.ConfigTblPtr->PwmMin;
+            pwm[1] = PMC_AppData.ConfigTblPtr->PwmMin;
+            pwm[2] = PMC_AppData.ConfigTblPtr->PwmMin;
+            pwm[3] = PMC_AppData.ConfigTblPtr->PwmMin;
+        }
+
+        PMC_SendOutputs(pwm);
+        CFE_EVS_SendEvent(PMC_PWM_CALIB_INFO_EID, CFE_EVS_INFORMATION, "Calib pwm %d:%d:%d:%d.", pwm[0], pwm[1], pwm[2], pwm[3]);
+
+    }
+    else
+    {
+        OS_printf("******************\n");
+        for(uint32 i = 0; i < 8; ++i)
+        {
+            OS_printf("%u %04x\n", i, pwm[i]);
+        }
+        PMC_SendOutputs(pwm);
+    }
+
+    OS_printf("  \n");
+    for(uint32 i = 0; i < PMC_AppData.OutData.Count; ++i)
+    {
+        OS_printf("%u %f\n", i, PMC_AppData.OutData.Output[i]);
+    }
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+}
+
+
+int32 PMC_InitDevice(const char *device)
+{
+    uint32 i;
+    int mem_fd;
+
+    /* Initialize just in case we were reloaded and the ctor wasn't called. */
+    PMC_AppData.SharedMemCmd = 0;
+
+    //signal(SIGBUS,catch_sigbus);
+    mem_fd = open(device, O_RDWR | O_SYNC);
+    PMC_AppData.SharedMemCmd = (PMC_SharedMemCmd_t *) mmap(0, 0x1000, PROT_READ | PROT_WRITE,
+                        MAP_SHARED, mem_fd, PMC_RCOUT_ZYNQ_PWM_BASE);
+    close(mem_fd);
+
+    if (PMC_AppData.SharedMemCmd == 0) {
+        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init device.  errno = %u.",
+                                 errno);
+        return -1;
+    }
+
+    for (i = 0; i < PMC_MAX_ZYNQ_PWMS; ++i) {
+        PMC_AppData.SharedMemCmd->PeriodHi[i].Period = PMC_Freq2tick(PMC_FREQUENCY_PWM);
+        PMC_AppData.SharedMemCmd->PeriodHi[i].Hi     = PMC_Freq2tick(PMC_FREQUENCY_PWM) / 2; // i prefer it is zero at the beginning
+        //PX4_ERR("initialize pwm pointer failed.%d, %d", sharedMem_cmd->periodhi[i].period, sharedMem_cmd->periodhi[i].hi);
+    }
+
+    OS_TaskDelay(100);
+    PMC_StopMotors();
+
+    return 0;
+}
+
+void PMC_Deinitialize(void)
+{
+    uint32 i = 0;
+
+    for (i = 0; i < PMC_MAX_ZYNQ_PWMS; ++i) {
+        PMC_AppData.SharedMemCmd = 0;
+    }
+}
+
+
+unsigned long PMC_Freq2tick(uint16 FreqHz)
+{
+    unsigned long duty = PMC_TICK_PER_S / (unsigned long)FreqHz;
+    return duty;
+}
+
+
+int32 PMC_ControlCallback(uint32 *Handle,
+        uint8 ControlGroup,
+        uint8 ControlIndex,
+        float *Control)
+{
+    const PX4_ActuatorControlsMsg_t *controls = (PX4_ActuatorControlsMsg_t*)Handle;
+
+    *Control = controls[ControlGroup].Control[ControlIndex];
+
+    return 0;
 }
 
 /************************/

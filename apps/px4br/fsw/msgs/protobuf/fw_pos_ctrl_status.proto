@@ -1,0 +1,20 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_fw_pos_ctrl_status_pb
+{
+	required uint64 timestamp = 1;
+	required float nav_roll = 2;
+	required float nav_pitch = 3;
+	required float nav_bearing = 4;
+	required float target_bearing = 5;
+	required float wp_dist = 6;
+	required float xtrack_error = 7;
+	required float turn_distance = 8;
+	required float landing_horizontal_slope_displacement = 9;
+	required float landing_slope_angle_rad = 10;
+	required float landing_flare_length = 11;
+	required bool abort_landing = 12;
+}
+
+// ORB_DECLARE(fw_pos_ctrl_status);
