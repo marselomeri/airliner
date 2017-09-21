@@ -283,5 +283,6 @@ add_airliner_app_def(px4br
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pb_msgs/
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/px4_msgs/
+        ${PROJECT_SOURCE_DIR}/tools/nanopb
 )
 

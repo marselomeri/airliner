@@ -972,6 +972,40 @@ CI_GetCmdAuthorized_Exit_tag:
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
+/* Determine Validity of Serialized Command                        */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+boolean CI_ValidateSerialCmd(CFE_SB_Msg_t* MsgPtr)
+{
+	boolean 			bResult = FALSE;
+
+	/* Verify CCSDS version */
+	if (CCSDS_RD_VERS(MsgPtr->Hdr) != 0)
+	{
+		goto CI_ValidateSerialCmd_Exit_Tag;
+	}
+
+	/* Verify secondary header present */
+	if (CCSDS_RD_SHDR(MsgPtr->Hdr) == 0)
+	{
+		goto CI_ValidateSerialCmd_Exit_Tag;
+	}
+
+	/* Verify packet type is cmd */
+	if (CCSDS_RD_TYPE(MsgPtr->Hdr) != CCSDS_CMD)
+	{
+		goto CI_ValidateSerialCmd_Exit_Tag;
+	}
+
+	bResult = TRUE;
+
+CI_ValidateSerialCmd_Exit_Tag:
+	return bResult;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
 /* Deserialize Message                                    		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -983,12 +1017,12 @@ uint32 CI_DeserializeMsg(CFE_SB_MsgPtr_t CmdMsgPtr)
 	uint16 				cmdCode = 0;
 	uint32  			payloadSize = 0;
 	uint32  			hdrSize = 0;
-	boolean				valid;
-	PBLib_DecodeFuncPtr_t  decodeFunc;
+	boolean				valid = TRUE;
+	PBLib_DecodeFuncPtr_t	decodeFunc;
 	char				decodeBuf[CI_MAX_ENC_LEN];
 
 	msgSize = CFE_SB_GetTotalMsgLength(CmdMsgPtr);
-	valid = CI_ValidateCmd(CmdMsgPtr, msgSize);
+	valid = CI_ValidateSerialCmd(CmdMsgPtr);
 	if(!valid)
 	{
 		CFE_EVS_SendEvent (CI_CMD_INVALID_EID, CFE_EVS_ERROR, "Rcvd invalid cmd for deserialization");
@@ -1030,55 +1064,6 @@ CI_DeserializeMsg_Exit_Tag:
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Serialize Message                                    		   */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-// TODO: THIS DOESN'T BELONG HERE FIXME
-
-uint32 TO_SerializeMsg(CFE_SB_MsgPtr_t msgPtr, char encBuffer[], uint32 inSize)
-{
-	CFE_SB_MsgId_t  	msgId = 0;
-	uint32  			msgSize = 0;
-	uint16  			outSize = 0;
-	uint16 				cmdCode = 0;
-	uint32  			hdrSize = 0;
-	uint32  			payloadSize = 0;
-	PBLib_EncodeFuncPtr_t encodeFunc;
-
-	/* Get required params */
-	msgId = CFE_SB_GetMsgId(msgPtr);
-	payloadSize = CFE_SB_GetUserDataLength(msgPtr); //change to user data length
-	cmdCode = CFE_SB_GetCmdCode(msgPtr);
-	hdrSize = CFE_SB_MsgHdrSize(msgId);
-
-	/* Get serialization funciton from PBL */
-	encodeFunc = PBLIB_GetSerializationFunc(msgId, cmdCode);
-	if(encodeFunc == 0)
-	{
-		// TODO: Update event to TO when moving
-		CFE_EVS_SendEvent (CI_NO_DECODE_FUNC_EID, CFE_EVS_ERROR, "MsgId (0x%04X) cmd (%i) has no serialization function",
-									msgId, cmdCode);
-		outSize = 0;
-		goto TO_SerializeMsg_Exit_Tag;
-	}
-
-	/* Call encode function */
-	payloadSize = encodeFunc(msgPtr, &encBuffer[hdrSize], CI_MAX_ENC_LEN - hdrSize);
-	outSize = hdrSize + payloadSize;
-
-	/* Create new SB msg from serialized data */
-	CFE_SB_InitMsg(encBuffer, msgId, outSize, FALSE);
-
-	/* Update header info */
-	CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)encBuffer, cmdCode);
-	CFE_SB_GenerateChecksum((CFE_SB_MsgPtr_t)encBuffer);
-
-TO_SerializeMsg_Exit_Tag:
-	return outSize;
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
 /* Spawn Child Task				                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1109,6 +1094,24 @@ int32 CI_InitListenerTask(void)
 								   CI_LISTENER_TASK_PRIORITY,
 								   0);
 
+	if (Status != CFE_SUCCESS)
+	{
+		goto CI_InitListenerTask_Exit_Tag;
+	}
+
+	Status= CFE_ES_CreateChildTask(&CI_AppData.SerialListenerTaskID,
+									CI_SERIAL_LISTENER_TASK_NAME,
+									CI_SerializedListenerTaskMain,
+									NULL,
+									CI_SERIAL_LISTENER_TASK_STACK_SIZE,
+									CI_SERIAL_LISTENER_TASK_PRIORITY,
+									0);
+
+	if (Status != CFE_SUCCESS)
+	{
+		goto CI_InitListenerTask_Exit_Tag;
+	}
+
 CI_InitListenerTask_Exit_Tag:
 	if (Status != CFE_SUCCESS)
 	{
@@ -1121,6 +1124,60 @@ CI_InitListenerTask_Exit_Tag:
     return Status;
 }
 
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Ingest Cmd			                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize)
+{
+    CFE_SB_MsgId_t  CmdMsgId;
+
+	if(MsgSize > 0)
+	{
+		/* If number of bytes received less than max */
+		if (MsgSize <= CI_MAX_CMD_INGEST)
+		{
+			/* Verify validity of cmd */
+			if (CI_ValidateCmd(CmdMsgPtr, MsgSize) == TRUE)
+			{
+				/* Check if cmd is for CI and route if so */
+				CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
+				if (CI_CMD_MID == CmdMsgId)
+				{
+					CI_ProcessNewAppCmds(CmdMsgPtr);
+				}
+				else
+				{
+					/* Verify cmd is authorized */
+					if (CI_GetCmdAuthorized(CmdMsgPtr) == TRUE)
+					{
+						CFE_ES_PerfLogEntry(CI_SOCKET_RCV_PERF_ID);
+						CI_AppData.HkTlm.IngestMsgCount++;
+						CFE_SB_SendMsg(CmdMsgPtr);
+						CFE_ES_PerfLogExit(CI_SOCKET_RCV_PERF_ID);
+					}
+				}
+			}
+			else
+			{
+				CI_AppData.HkTlm.usCmdErrCnt++;
+				CFE_EVS_SendEvent (CI_CMD_INVALID_EID, CFE_EVS_ERROR, "Rcvd invalid cmd (%i) for msgId (0x%04X)",
+									CFE_SB_GetCmdCode(CmdMsgPtr), CmdMsgId);
+			}
+		}
+		else
+		{
+			CI_AppData.HkTlm.IngestErrorCount++;
+			CFE_EVS_SendEvent(CI_CMD_INGEST_ERR_EID, CFE_EVS_ERROR,
+							  "Message too long.  Size = %lu", MsgSize);
+		}
+	}
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Child Task Listener Main		                                   */
@@ -1130,76 +1187,77 @@ CI_InitListenerTask_Exit_Tag:
 void CI_ListenerTaskMain(void)
 {
     int32 			Status = -1;
-    uint32  		i = 0;
     uint32  		MsgSize = 0;
-    uint32  		iMsg = 0;
     CFE_SB_MsgPtr_t CmdMsgPtr;
-    CFE_SB_MsgPtr_t MsgPtr;
     CFE_SB_MsgId_t  CmdMsgId;
-    char			encBuffer[CI_MAX_ENC_LEN];
 
     PBLIB_RegisterMessage(7209, 2, "EA_StartCmd_t");
+    //PBLIB_RegisterMessage(6150, 18, "CFE_ES_OverWriteSysLogCmd_t");
 
 	Status = CFE_ES_RegisterChildTask();
 	if (Status == CFE_SUCCESS)
 	{
-		/* Receive data and place in IngestBuffer */
+		/* Ingest Loop */
 		do{
-			memset(encBuffer, '\0', CI_MAX_ENC_LEN);
+			/* Receive cmd and gather data on it */
 			MsgSize = CI_MAX_CMD_INGEST;
 			CI_ReadMessage(CI_AppData.IngestBuffer, &MsgSize);
-
-#ifdef	CI_DEBUG_SERIALIZED
-			MsgSize = TO_SerializeMsg(CI_AppData.IngestBuffer, encBuffer, sizeof(encBuffer));
-#endif
-
-#ifdef CI_SERIALIZED
-			MsgSize = CI_DeserializeMsg(encBuffer);
-			CmdMsgPtr = (CFE_SB_MsgPtr_t)encBuffer;
-#else
 			CmdMsgPtr = (CFE_SB_MsgPtr_t)CI_AppData.IngestBuffer;
-#endif
-			if(MsgSize > 0)
+
+			/* Process the cmd */
+			CI_ProcessIngestCmd(CmdMsgPtr, MsgSize);
+
+			/* Wait before next iteration */
+			OS_TaskDelay(100);
+		}while(CI_AppData.IngestActive == TRUE);
+
+		CFE_ES_ExitChildTask();
+	}
+	else
+	{
+		/* Can't send event or write to syslog because this task isn't registered with the cFE. */
+		OS_printf("CI Listener Child Task Registration failed!\n");
+	}
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Child Task Serialized Listener Main		                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void CI_SerializedListenerTaskMain(void)
+{
+    int32 			Status = -1;
+    uint32  		MsgSize = 0;
+    uint32  		payloadSize = 0;
+    uint32  		hdrSize = 0;
+    CFE_SB_MsgPtr_t CmdMsgPtr;
+    CFE_SB_MsgId_t  CmdMsgId;
+
+	Status = CFE_ES_RegisterChildTask();
+	if (Status == CFE_SUCCESS)
+	{
+		/* Ingest Loop */
+		do{
+			/* Receive cmd and gather data on it */
+			MsgSize = CI_MAX_CMD_INGEST;
+			CI_ReadSerializedMessage(CI_AppData.SerialIngestBuffer, &MsgSize);
+			CmdMsgPtr = (CFE_SB_MsgPtr_t)CI_AppData.SerialIngestBuffer;
+			payloadSize = CFE_SB_GetUserDataLength(CmdMsgPtr);
+			hdrSize = CFE_SB_MsgHdrSize(CFE_SB_GetMsgId(CmdMsgPtr));
+
+			/* Don't need to deserialize if there is no payload */
+			if (payloadSize > 0)
 			{
-				/* If number of bytes received less than max */
-				if (MsgSize <= CI_MAX_CMD_INGEST)
-				{
-					/* Verify validity of cmd */
-					if (CI_ValidateCmd(CmdMsgPtr, MsgSize) == TRUE)
-					{
-						/* Check if cmd is for CI and route if so */
-						CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
-						if (CI_CMD_MID == CmdMsgId)
-						{
-							CI_ProcessNewAppCmds(CmdMsgPtr);
-						}
-						else
-						{
-							/* Verify cmd is authorized */
-							if (CI_GetCmdAuthorized(CmdMsgPtr) == TRUE)
-							{
-								CFE_ES_PerfLogEntry(CI_SOCKET_RCV_PERF_ID); // need?
-								CI_AppData.HkTlm.IngestMsgCount++;
-								CFE_SB_SendMsg(CmdMsgPtr);
-								CFE_ES_PerfLogExit(CI_SOCKET_RCV_PERF_ID);
-							}
-						}
-					}
-					else
-					{
-						CI_AppData.HkTlm.usCmdErrCnt++;
-						CFE_EVS_SendEvent (CI_CMD_INVALID_EID, CFE_EVS_ERROR, "Rcvd invalid cmd (%i) for msgId (0x%04X)",
-											CFE_SB_GetCmdCode(CmdMsgPtr), CmdMsgId);
-					}
-				}
-				else
-				{
-					CI_AppData.HkTlm.IngestErrorCount++;
-					CFE_EVS_SendEvent(CI_CMD_INGEST_ERR_EID, CFE_EVS_ERROR,
-									  "Message too long.  Size = %lu", MsgSize);
-				}
+				MsgSize = CI_DeserializeMsg(CmdMsgPtr);
 			}
-			OS_TaskDelay(100); // TODO: Verify required
+
+			/* Process the cmd */
+			CI_ProcessIngestCmd(CmdMsgPtr, MsgSize);
+
+			/* Wait before next iteration */
+			OS_TaskDelay(100);
 		}while(CI_AppData.IngestActive == TRUE);
 
 		CFE_ES_ExitChildTask();
