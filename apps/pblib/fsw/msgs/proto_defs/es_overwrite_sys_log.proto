@@ -1,0 +1,12 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message es_overwrite_sys_log_payload_pb
+{
+	required uint32 Mode = 1;
+}
+
+message es_overwrite_sys_log_pb
+{
+	required es_overwrite_sys_log_payload_pb payload = 1;
+}

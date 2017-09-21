@@ -1,0 +1,12 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message es_app_name_payload_pb
+{
+	required string Application = 1 [(nanopb).max_size = 64];
+}
+
+message es_app_name_pb
+{
+	required es_app_name_payload_pb payload = 1;
+}

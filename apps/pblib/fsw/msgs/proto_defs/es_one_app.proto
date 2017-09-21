@@ -1,0 +1,37 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message es_app_info_pb
+{
+	required uint32 AppId = 1;
+	required uint32 Type = 2;
+	required string Name = 3 [(nanopb).max_size = 64];
+	required string EntryPoint = 4 [(nanopb).max_size = 64];
+	required string FileName = 5 [(nanopb).max_size = 64];
+	required uint32 StackSize = 6;
+	required uint32 ModuleId = 7;
+	required uint32 AddressesAreValid = 8;
+	required uint32 CodeAddress = 9;
+	required uint32 CodeSize = 10;
+	required uint32 DataAddress = 11;
+	required uint32 DataSize = 12;
+	required uint32 BSSAddress = 13;
+	required uint32 BSSSize = 14;
+	required uint32 StartAddress = 15;
+	required uint32 ExceptionAction = 16;
+	required uint32 Priority = 17;
+	required uint32 MainTaskId = 18;
+	required uint32 ExecutionCounter = 19;
+	required string MainTaskName = 20 [(nanopb).max_size = 64];
+	required uint32 NumOfChildTasks = 21;
+}
+
+message es_one_app_payload_pb
+{
+	required es_app_info_pb AppInfo = 1;
+}
+
+message es_one_app_pb
+{
+	required es_one_app_payload_pb payload = 1;
+}

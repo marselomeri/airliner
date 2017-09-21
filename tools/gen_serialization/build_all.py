@@ -8,6 +8,7 @@ import os
 from shutil import copyfile, rmtree
 
 extras = {"app_name": "AE",
+			"autogen_ver": "0.0.0.1",
 			"_extensions": ["AirlinerExtension.AirlinerExtension"]}
 
 base = os.getcwd()
