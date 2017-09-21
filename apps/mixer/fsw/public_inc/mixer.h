@@ -18,7 +18,7 @@ typedef struct {
     float   PitchScale;/**< scales pitch for this rotor */
     float   YawScale;  /**< scales yaw for this rotor */
     float   OutScale;  /**< scales total out for this rotor */
-} MIXER_Rotor;
+} MIXER_RotorConfig_t;
 
 typedef enum
 {
@@ -88,7 +88,7 @@ typedef struct
     float  ThrustFactor;
     uint32 RotorCount;
     float  PrevOutputs[MIXER_MAX_ROTOR_COUNT];
-    MIXER_Rotor RotorConfig[MIXER_MAX_ROTOR_COUNT];
+    MIXER_RotorConfig_t RotorConfig[MIXER_MAX_ROTOR_COUNT];
     MIXER_ControlCallback_t ControlCb;
     void *Controls;
     MIXER_SaturationStatus_t SaturationStatus;
@@ -104,7 +104,7 @@ int32 MIXER_MixerInit(
         float YawScale,
         float IdleSpeed,
         uint32 RotorCount,
-        MIXER_Rotor *RotorConfig);
+        MIXER_RotorConfig_t *RotorConfig);
 
 
 uint32 MIXER_Mix(MIXER_Data_t *Data, float *Outputs, uint32 Space, uint16 *StatusReg);

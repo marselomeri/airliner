@@ -45,7 +45,7 @@ extern "C"
 
 typedef struct
 {
-    PX4_ActuatorControlsMsg_t ActuatorControls;
+    PX4_ActuatorControlsMsg_t ActuatorControls0;
     PX4_ActuatorArmedMsg_t    ActuatorArmed;
     PX4_RcChannelsMsg_t       RcChannels;
 } PMC_CurrentValueTable_t;

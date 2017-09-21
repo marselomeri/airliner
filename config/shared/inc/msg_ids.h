@@ -210,7 +210,10 @@
 /* PX4												*/
 /* Range: 0x9f0 - 0x9ff								*/
 #define PX4_ACTUATOR_ARMED_MID						0x0a05
-#define PX4_ACTUATOR_CONTROLS_MID					0x0a06
+#define PX4_ACTUATOR_CONTROLS_0_MID					0x0a06
+#define PX4_ACTUATOR_CONTROLS_1_MID                 0x0a5b
+#define PX4_ACTUATOR_CONTROLS_2_MID                 0x0a5c
+#define PX4_ACTUATOR_CONTROLS_3_MID                 0x0a5d
 #define PX4_ACTUATOR_DIRECT_MID						0x0a07
 #define PX4_ACTUATOR_OUTPUTS_MID					0x0a08
 #define PX4_ADC_REPORT_MID							0x0a09

@@ -112,6 +112,8 @@ extern "C" {
 /* TODO:  Add Doxygen markup. */
 #define PMC_CUSTOM_DEV_PATH       "/tmp/ttyS0"
 
+#define PMC_MAX_ROTOR_COUNT         (16)
+
 
 #ifdef __cplusplus
 }

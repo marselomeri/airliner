@@ -181,6 +181,7 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 
 	//pbMsg.timestamp = inObject->timestamp;
 	//pbMsg.timestamp_sample = inObject->timestamp_sample;
+    pbMsg.control_count = PX4_ACTUATOR_CONTROL_COUNT;
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		pbMsg.control[i] = inObject->Control[i];

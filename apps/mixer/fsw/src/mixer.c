@@ -77,7 +77,7 @@ int32 MIXER_MixerInit(
         float YawScale,
         float IdleSpeed,
         uint32 RotorCount,
-        MIXER_Rotor *RotorConfig)
+        MIXER_RotorConfig_t *RotorConfig)
 {
     uint32 i = 0;
 

@@ -152,11 +152,11 @@ int32 PMC_InitPipe()
             goto PMC_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, PMC_AppData.SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_MID. (0x%08X)",
+                                     "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto PMC_InitPipe_Exit_Tag;
         }
@@ -314,27 +314,16 @@ int32 PMC_InitApp()
         goto PMC_InitApp_Exit_Tag;
     }
 
-    MIXER_Rotor RotorConfig[] = {
-        { -0.382683,  0.923880, -1.000000,  1.000000 },
-        {  0.382683, -0.923880, -1.000000,  1.000000 },
-        { -0.923880,  0.382683,  1.000000,  1.000000 },
-        { -0.382683, -0.923880,  1.000000,  1.000000 },
-        {  0.382683,  0.923880,  1.000000,  1.000000 },
-        {  0.923880, -0.382683,  1.000000,  1.000000 },
-        {  0.923880,  0.382683, -1.000000,  1.000000 },
-        { -0.923880, -0.382683, -1.000000,  1.000000 },
-    };
-
     iStatus = MIXER_MixerInit(
             PMC_ControlCallback,
-            &PMC_AppData.CVT.ActuatorControls,
+            &PMC_AppData.CVT.ActuatorControls0,
             &PMC_AppData.MixerData,
-            10000.0/10000.0f,
-            10000.0/10000.0f,
-            10000.0/10000.0f,
-            1600.0/10000.0f,
-            8,
-            RotorConfig);
+            PMC_AppData.ConfigTblPtr->RollScale,
+            PMC_AppData.ConfigTblPtr->PitchScale,
+            PMC_AppData.ConfigTblPtr->YawScale,
+            PMC_AppData.ConfigTblPtr->IdleSpeed,
+            PMC_AppData.ConfigTblPtr->RotorCount,
+            PMC_AppData.ConfigTblPtr->RotorConfig);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -426,8 +415,8 @@ int32 PMC_RcvMsg(int32 iBlocking)
                 PMC_UpdateMotors();
                 break;
 
-            case PX4_ACTUATOR_CONTROLS_MID:
-                memcpy(&PMC_AppData.CVT.ActuatorControls, MsgPtr, sizeof(PMC_AppData.CVT.ActuatorControls));
+            case PX4_ACTUATOR_CONTROLS_0_MID:
+                memcpy(&PMC_AppData.CVT.ActuatorControls0, MsgPtr, sizeof(PMC_AppData.CVT.ActuatorControls0));
                 if(PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode == FALSE)
                 {
                     PMC_UpdateMotors();
@@ -845,7 +834,7 @@ void PMC_UpdateMotors(void)
     else if (PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode)
     {
         OS_printf("PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode\n");
-        if (PMC_AppData.CVT.ActuatorControls.Control[3] * 1000 > 0.5f) {
+        if (PMC_AppData.CVT.ActuatorControls0.Control[3] * 1000 > 0.5f) {
             pwm[0] = PMC_AppData.ConfigTblPtr->PwmMax;
             pwm[1] = PMC_AppData.ConfigTblPtr->PwmMax;
             pwm[2] = PMC_AppData.ConfigTblPtr->PwmMax;
@@ -863,21 +852,21 @@ void PMC_UpdateMotors(void)
     }
     else
     {
-        OS_printf("******************\n");
-        for(uint32 i = 0; i < 8; ++i)
-        {
-            OS_printf("%u %04x\n", i, pwm[i]);
-        }
+        //OS_printf("******************\n");
+        //for(uint32 i = 0; i < 8; ++i)
+        //{
+        //    OS_printf("%u %04x\n", i, pwm[i]);
+        //}
         PMC_SendOutputs(pwm);
     }
 
-    OS_printf("  \n");
-    for(uint32 i = 0; i < PMC_AppData.OutData.Count; ++i)
-    {
-        OS_printf("%u %f\n", i, PMC_AppData.OutData.Output[i]);
-    }
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+    //OS_printf("  \n");
+    //for(uint32 i = 0; i < PMC_AppData.OutData.Count; ++i)
+    //{
+    //    OS_printf("%u %f\n", i, PMC_AppData.OutData.Output[i]);
+    //}
+    //CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+    //CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
 }
 
 

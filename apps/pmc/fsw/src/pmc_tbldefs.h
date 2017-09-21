@@ -10,6 +10,8 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "pmc_platform_cfg.h"
+#include "mixer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,7 +28,7 @@ extern "C" {
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define PMC_CONFIG_TABLENAME          ("CONFIG_TBL")
+#define PMC_CONFIG_TABLENAME ("CONFIG_TBL")
 
 /**
  * \brief Defines the table file name used for table registration.
@@ -40,34 +42,15 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    int32 PwmDisarmed;
-    int32 PwmMin;
-    int32 PwmMax;
-
-    /* TODO:  Add type declaration for config parameters here.
-    **
-    ** Examples:
-    **    int8/char            cParam;
-    **    int8/char            cParams[16];
-    **    uint8/unsigned char  ucParam;
-    **    uint8/unsigned char  ucParams[16];
-    **
-    **    int16   sParam;
-    **    int16   sParams[8];
-    **    uint16  usParam;
-    **    uint16  usParams[8];
-    **
-    **    int32   iParam;
-    **    int32   iParams[5];
-    **    uint32  uiParam;
-    **    uint32  uiParams[5];
-    **
-    **    float  fParam;
-    **    float  fParams[3];
-    **
-    **    double  dParam;
-    **    double  dParams[3];
-    */
+    int32  PwmDisarmed;
+    int32  PwmMin;
+    int32  PwmMax;
+    float  RollScale;
+    float  PitchScale;
+    float  YawScale;
+    float  IdleSpeed;
+    uint32 RotorCount;
+    MIXER_RotorConfig_t RotorConfig[PMC_MAX_ROTOR_COUNT];
 } PMC_ConfigTblEntry_t;
 
 
