@@ -3,7 +3,9 @@
 	"dir_name": "bulk",
 	"proto_msgs": {
 		"px4_sensor_accel_pb": {
-			"airliner_type": "PX4_SensorAccelMsg_t",	
+			"airliner_type": "PX4_SensorAccelMsg_t",
+			"airliner_mid": "0x1c76",
+			"airliner_cc": "0",
 			"fields": { 
 				"x": {
 					"airliner_name": "X", 
@@ -29,6 +31,8 @@
 		},
 		"px4_sensor_baro_pb": {
 			"airliner_type": "PX4_SensorBaroMsg_t",	
+			"airliner_mid": "0x1c55",
+			"airliner_cc": "1",
 			"fields": { 
 				"error_count": {
 					"airliner_name": "ErrorCount", 

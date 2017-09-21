@@ -1,0 +1,26 @@
+{
+	"app_name": "CFE",
+	"dir_name": "cfe_msg",
+	"proto_msgs": {
+		"px4_sensor_accel_pb": {
+			"airliner_type": "PX4_SensorAccelMsg_t",
+			"airliner_mid": "0x1c76",
+			"airliner_cc": "0",
+			"fields": { 
+				"x": {
+					"airliner_name": "X", 
+					"type": "int",
+					"array_len": 0
+				},
+				"integral_dt": {
+					"airliner_name": "IntegralDt", 
+					"type": "string",
+					"array_len": 0
+				},
+
+			}
+		},
+
+	}
+}
+
