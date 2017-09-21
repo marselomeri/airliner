@@ -34,5 +34,5 @@ for dir in os.listdir(target):
 		src = os.path.join(target, dir, f)
 		dest = os.path.join(target, f)
 		copyfile(src, dest)
-	rmtree(os.path.join(target, dir))
+	#rmtree(os.path.join(target, dir))
 
