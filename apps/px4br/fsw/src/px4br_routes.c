@@ -102,7 +102,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
         {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
         {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //		{"actuator_direct", (PX4_ENCODE_FUNC) PX4BR_ActuatorDirect_Enc, (PX4_DECODE_FUNC) PX4BR_ActuatorDirect_Dec, PX4_ACTUATOR_DIRECT_MID, px4_actuator_direct_pb_size, 1, 0, 0},
-		{"actuator_outputs", (PX4_ENCODE_FUNC) PX4BR_ActuatorOutputs_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_OUTPUTS_MID, px4_actuator_outputs_pb_size, 1, 0, 0},
+//		{"actuator_outputs", (PX4_ENCODE_FUNC) PX4BR_ActuatorOutputs_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_OUTPUTS_MID, px4_actuator_outputs_pb_size, 1, 0, 0},
 //		{"adc_report", (PX4_ENCODE_FUNC) PX4BR_AdcReport_Enc, (PX4_DECODE_FUNC) PX4BR_AdcReport_Dec, PX4_ADC_REPORT_MID, px4_adc_report_pb_size, 1, 0, 0},
 //		{"airspeed", (PX4_ENCODE_FUNC) PX4BR_Airspeed_Enc, (PX4_DECODE_FUNC) PX4BR_Airspeed_Dec, PX4_AIRSPEED_MID, px4_airspeed_pb_size, 1, 0, 0},
 //		{"att_pos_mocap", (PX4_ENCODE_FUNC) PX4BR_AttPosMoCap_Enc, (PX4_DECODE_FUNC) PX4BR_AttPosMoCap_Dec, PX4_ATT_POS_MOCAP_MID, px4_att_pos_mocap_pb_size, 1, 0, 0},

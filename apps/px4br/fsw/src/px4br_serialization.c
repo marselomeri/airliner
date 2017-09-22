@@ -179,8 +179,8 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	bool status = false;
 	px4_actuator_controls_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
-	//pbMsg.timestamp_sample = inObject->timestamp_sample;
+	pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp_sample = inObject->timestamp_sample;
     pbMsg.control_count = PX4_ACTUATOR_CONTROL_COUNT;
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
@@ -219,8 +219,8 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
-	//inOutObject->timestamp_sample = pbMsg.timestamp_sample;
+	inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->timestamp_sample = pbMsg.timestamp_sample;
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		inOutObject->Control[i] = pbMsg.control[i];
@@ -292,8 +292,9 @@ uint32 PX4BR_ActuatorOutputs_Enc(const PX4_ActuatorOutputsMsg_t *inObject, char 
 	bool status = false;
 	px4_actuator_outputs_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->timestamp;
 	pbMsg.noutputs = inObject->Count;
+	pbMsg.output_count = PX4_ACTUATOR_OUTPUTS_MAX;
 	for(i=0; i < PX4_ACTUATOR_OUTPUTS_MAX; ++i)
 	{
 		pbMsg.output[i] = inObject->Output[i];

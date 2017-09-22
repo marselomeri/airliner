@@ -796,7 +796,7 @@ void PMC_UpdateMotors(void)
     uint16 pwm[PMC_MAX_ZYNQ_PWMS];
     PX4_ActuatorOutputsMsg_t outputs;
 
-    //_outputs.timestamp = _controls.timestamp;
+    PMC_AppData.OutData.timestamp = PMC_AppData.CVT.ActuatorControls0.timestamp;
 
     /* Do mixing */
     PMC_AppData.OutData.Count = MIXER_Mix(&PMC_AppData.MixerData, PMC_AppData.OutData.Output, 0, 0);
@@ -865,8 +865,8 @@ void PMC_UpdateMotors(void)
     //{
     //    OS_printf("%u %f\n", i, PMC_AppData.OutData.Output[i]);
     //}
-    //CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
-    //CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
 }
 
 

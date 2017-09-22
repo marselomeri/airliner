@@ -458,6 +458,8 @@ typedef struct
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	CFE_TIME_SysTime_t Timestamp;
 	CFE_TIME_SysTime_t SampleTime;
+    uint64 timestamp;
+    uint64 timestamp_sample;
 	float Control[8];
 } PX4_ActuatorControlsMsg_t;
 
@@ -473,6 +475,7 @@ typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	CFE_TIME_SysTime_t Timestamp;
+	uint64 timestamp;
 	uint32 Count;
 	float Output[PX4_ACTUATOR_OUTPUTS_MAX];
 } PX4_ActuatorOutputsMsg_t;
