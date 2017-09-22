@@ -7,9 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 import os
 from shutil import copyfile, rmtree
 
-extras = {"app_name": "AE",
-			"autogen_ver": "0.0.0.1",
-			"_extensions": ["AirlinerExtension.AirlinerExtension"]}
+extras = {"autogen_version": "0.0.0.1"}
 
 base = os.getcwd()
 target = os.path.join(base, 'src')

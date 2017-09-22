@@ -1,5 +1,6 @@
 {
-	"app_name": "TEST",
+	"app_name": "",
+	"autogen_version": "",
 	"dir_name": "bulk",
 	"proto_msgs": {
 		"px4_sensor_accel_pb": {
