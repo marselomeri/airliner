@@ -11,7 +11,7 @@ void {{cookiecutter.app_name}}_RegisterSerializationFuncs()
 	int32 Status = CFE_SUCCESS;
 
 	/* Register each message with PBL */{% for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() %}
-	Status = PBLIB_RegisterMessage({{proto_data.airliner_mid}}, {{proto_data.airliner_cc}}, "{{proto_data.airliner_type}}")
+	Status = PBLIB_RegisterMessage({{proto_data.airliner_mid}}, {{proto_data.airliner_cc}}, "{{proto_data.airliner_msg}}")
 	if (Status != CFE_SUCCESS)
 	{
 		goto {{cookiecutter.app_name}}_RegisterSerializationFuncs_Exit_Tag;
@@ -21,17 +21,17 @@ void {{cookiecutter.app_name}}_RegisterSerializationFuncs()
     return Status;
 }
 {% for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() %}
-uint32 {{proto_data.airliner_type}}_Enc(const {{proto_data.airliner_type}} *inObject, char *inOutBuffer, uint32 inSize)
+uint32 {{proto_data.airliner_msg}}_Enc(const {{proto_data.airliner_msg}} *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
 	{{proto_msg}} pbMsg;
-	{% for pb_var, var_data in proto_data.fields.iteritems() %}{% if var_data.array_len| int > 0 %}
-	pbMsg.{{pb_var}}_count = {{var_data.array_len}};{% for i in range(0, var_data.array_len | int) %}
-	{% if var_data.type == "string" %}strcpy(pbMsg.{{pb_var}}[{{loop.index0}}], inObject->{{var_data.airliner_name}}[{{loop.index0}}]);{% else %}pbMsg.{{pb_var}}[{{loop.index0}}] = inObject->{{var_data.airliner_name}}[{{loop.index0}}];
+	{% for pb_var, var_data in proto_data.fields.iteritems() %}{% if var_data.pb_field_rule == "repeated" %}
+	pbMsg.{{pb_var}}_count = {{var_data.array_length}};{% for i in range(0, var_data.array_length | int) %}
+	{% if var_data.airliner_type == "char" %}strcpy(pbMsg.{{pb_var}}[{{loop.index0}}], inObject->{{var_data.airliner_name}}[{{loop.index0}}]);{% else %}pbMsg.{{pb_var}}[{{loop.index0}}] = inObject->{{var_data.airliner_name}}[{{loop.index0}}];
 	{%- endif -%}
 	{%- endfor -%}
 	{%- else %}
-	{% if var_data.type == "string" %}strcpy(pbMsg.{{pb_var}}, inObject->{{var_data.airliner_name}});{% else %}pbMsg.{{pb_var}} = inObject->{{var_data.airliner_name}};
+	{% if var_data.airliner_type == "char" %}strcpy(pbMsg.{{pb_var}}, inObject->{{var_data.airliner_name}});{% else %}pbMsg.{{pb_var}} = inObject->{{var_data.airliner_name}};
 	{%- endif -%}
 	{%- endif -%}
 	{% endfor %}
@@ -51,7 +51,7 @@ uint32 {{proto_data.airliner_type}}_Enc(const {{proto_data.airliner_type}} *inOb
 	return stream.bytes_written;
 }
 
-uint32 {{proto_data.airliner_type}}_Dec(const char *inBuffer, uint32 inSize, {{proto_data.airliner_type}} *inOutObject)
+uint32 {{proto_data.airliner_msg}}_Dec(const char *inBuffer, uint32 inSize, {{proto_data.airliner_msg}} *inOutObject)
 {
 	bool status = false;
 	{{proto_msg}} pbMsg;
@@ -67,17 +67,17 @@ uint32 {{proto_data.airliner_type}}_Dec(const char *inBuffer, uint32 inSize, {{p
 	{
 		return 0;
 	}
-	{% for pb_var, var_data in proto_data.fields.iteritems() %}{% if var_data.array_len| int > 0 %}{% for i in range(0, var_data.array_len | int) %}
-	{% if var_data.type == "string" %}strcpy(inOutObject->{{var_data.airliner_name}}[{{loop.index0}}], pbMsg.{{pb_var}}[{{loop.index0}}]);{% else %}inOutObject->{{var_data.airliner_name}}[{{loop.index0}}] = pbMsg.{{pb_var}}[{{loop.index0}}];
+	{% for pb_var, var_data in proto_data.fields.iteritems() %}{% if var_data.pb_field_rule == "repeated" %}{% for i in range(0, var_data.array_length | int) %}
+	{% if var_data.airliner_type == "char" %}strcpy(inOutObject->{{var_data.airliner_name}}[{{loop.index0}}], pbMsg.{{pb_var}}[{{loop.index0}}]);{% else %}inOutObject->{{var_data.airliner_name}}[{{loop.index0}}] = pbMsg.{{pb_var}}[{{loop.index0}}];
 	{%- endif -%}
 	{%- endfor -%}
 	{%- else %}
-	{% if var_data.type == "string" %}strcpy(inOutObject->{{var_data.airliner_name}}, pbMsg.{{pb_var}});{% else %}inOutObject->{{var_data.airliner_name}} = pbMsg.{{pb_var}};
+	{% if var_data.airliner_type == "char" %}strcpy(inOutObject->{{var_data.airliner_name}}, pbMsg.{{pb_var}});{% else %}inOutObject->{{var_data.airliner_name}} = pbMsg.{{pb_var}};
 	{%- endif -%}
 	{%- endif -%}
 	{% endfor %}
 
-	return sizeof({{proto_data.airliner_type}});
+	return sizeof({{proto_data.airliner_msg}});
 }
 {% endfor %}
 
