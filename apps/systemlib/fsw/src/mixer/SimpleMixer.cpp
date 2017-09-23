@@ -1,5 +1,5 @@
 
-#include "mixer.h"
+#include "SimpleMixer.h"
 
 SimpleMixer::SimpleMixer(ControlCallback control_cb,
 			 cpuaddr cb_handle, const SYSTEMLIB_MixerScaler_t &scaler) :

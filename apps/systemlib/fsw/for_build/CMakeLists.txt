@@ -3,11 +3,18 @@ add_airliner_app_def(systemlib
     FILE SYSTEMLIB
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/systemlib.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/mixer.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/mixer_group.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/mixer_helicopter.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/mixer_multirotor.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/mixer_simple.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/Mixer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/Mixer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/MixerGroup.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/MixerGroup.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/HelicopterMixer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/HelicopterMixer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/MultirotorMixer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/MultirotorMixer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/SimpleMixer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/SimpleMixer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/NullMixer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/mixer/NullMixer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lib/math/Limits.cpp
 
     INCLUDES

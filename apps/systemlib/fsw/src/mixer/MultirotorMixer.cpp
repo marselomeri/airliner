@@ -1,4 +1,4 @@
-#include "mixer.h"
+#include "MultirotorMixer.h"
 #include <math.h>
 #include <string.h>
 #include "lib/math/Limits.hpp"

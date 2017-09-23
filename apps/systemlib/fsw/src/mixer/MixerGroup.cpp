@@ -1,5 +1,5 @@
 
-#include "mixer.h"
+#include "MixerGroup.h"
 
 MixerGroup::MixerGroup(ControlCallback control_cb, cpuaddr cb_handle) :
 	Mixer(control_cb, cb_handle),

@@ -1,5 +1,5 @@
 
-#include "mixer.h"
+#include "Mixer.h"
 
 Mixer::Mixer(ControlCallback ControlCb, cpuaddr CbHandle) :
     m_Next(nullptr),
@@ -70,34 +70,4 @@ Mixer::scale_check(const SYSTEMLIB_MixerScaler_t &scaler)
     }
 
     return 0;
-}
-
-/****************************************************************************/
-
-NullMixer::NullMixer() :
-	Mixer(nullptr, 0)
-{
-}
-
-uint32
-NullMixer::mix(float *outputs, uint32 space, uint16 *status_reg)
-{
-    if (space > 0) {
-        *outputs = 0.0f;
-        return 1;
-    }
-
-    return 0;
-}
-
-uint16
-NullMixer::get_saturation_status()
-{
-	return 0;
-}
-
-void
-NullMixer::groups_required(uint32 &groups)
-{
-
 }

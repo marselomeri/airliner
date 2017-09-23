@@ -3,7 +3,7 @@
 *************************************************************************/
 #include "cfe.h"
 #include "systemlib_version.h"
-#include "mixer.h"
+#include "MultirotorMixer.h"
 
 extern "C" {
 
