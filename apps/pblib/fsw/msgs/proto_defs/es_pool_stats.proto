@@ -1,12 +1,15 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message es_restart_payload_pb
+
+
+message es_tlm_pool_stats_cmd_payload_pb
 {
-	required uint32 RestartType = 1;
+	required uint64 PoolHandle = 1;
+	required es_mem_pool_stats_pb Application = 2;
 }
 
-message es_restart_pb
+message es_tlm_pool_stats_cmd_pb
 {
-	required es_restart_payload_pb payload = 1;
+	required es_tlm_pool_stats_payload_pb payload = 1;
 }
