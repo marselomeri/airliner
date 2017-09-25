@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from cookiecutter.main import cookiecutter
-#from cookiecutter.envirnment import ExtensionLoaderMixin
 from distutils.dir_util import copy_tree
 import json
 from jinja2 import Environment, FileSystemLoader
@@ -23,12 +22,14 @@ if os.path.exists(target):
 if os.path.exists(temp):
 	rmtree(temp)
 
-#os.mkdir(temp)
+# Make working dirs
+os.mkdir(temp)
 os.mkdir(target)
 
-#os.chdir(temp)
+# Need to change current working dir to desired cookiecutter output dir
 os.chdir(target)
 
+# Need to copy templates into temp dir
 copy_tree(templates, temp)
 
 with open(join(temp, "cookiecutter.json"), 'r') as f:
