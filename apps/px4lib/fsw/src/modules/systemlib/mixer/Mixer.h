@@ -92,18 +92,10 @@
  */
 
 
-#ifndef _SYSTEMLIB_MIXER_H
-#define _SYSTEMLIB_MIXER_H value
+#ifndef MIXER_H
+#define MIXER_H
 
 #include "cfe.h"
-
-struct SYSTEMLIB_MixerScaler_t {
-    float negative_scale;
-    float positive_scale;
-    float offset;
-    float min_output;
-    float max_output;
-};
 
 /**
  * Abstract class defining a mixer mixing zero or more inputs to
@@ -112,6 +104,14 @@ struct SYSTEMLIB_MixerScaler_t {
 class Mixer
 {
 public:
+	 struct MixerScaler_t {
+	     float negative_scale;
+	     float positive_scale;
+	     float offset;
+	     float min_output;
+	     float max_output;
+	 };
+
 	/** next mixer in a list */
 	Mixer				*m_Next;
 
@@ -162,14 +162,6 @@ public:
 	virtual void			groups_required(uint32 &groups) = 0;
 
 	/**
-	 * @brief      Empty method, only implemented for MultirotorMixer and MixerGroup class.
-	 *
-	 * @param[in]  delta_out_max  Maximum delta output.
-	 *
-	 */
-	virtual void 			set_max_delta_out_once(float delta_out_max) {};
-
-	/**
 	 * @brief Set trim offset for this mixer
 	 *
 	 * @return the number of outputs this mixer feeds to
@@ -204,7 +196,7 @@ protected:
 	 * @param input			The value to be scaled.
 	 * @return			The scaled value.
 	 */
-	static float			scale(const SYSTEMLIB_MixerScaler_t &scaler, float input);
+	static float			scale(const MixerScaler_t &scaler, float input);
 
 	/**
 	 * Validate a scaler
@@ -212,7 +204,7 @@ protected:
 	 * @param scaler		The scaler to be validated.
 	 * @return			Zero if good, nonzero otherwise.
 	 */
-	static int32			scale_check(const SYSTEMLIB_MixerScaler_t &scaler);
+	static int32			scale_check(const MixerScaler_t &scaler);
 
 private:
 

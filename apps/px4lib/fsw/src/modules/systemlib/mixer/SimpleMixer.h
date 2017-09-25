@@ -1,5 +1,5 @@
-#ifndef _SYSTEMLIB_MIXER_SIMPLE_MIXER_H
-#define _SYSTEMLIB_MIXER_SIMPLE_MIXER_H value
+#ifndef SIMPLE_MIXER_H
+#define SIMPLE_MIXER_H
 
 #include "cfe.h"
 #include "Mixer.h"
@@ -21,7 +21,7 @@ public:
 	 */
 	SimpleMixer(ControlCallback control_cb,
 		    cpuaddr cb_handle,
-		    const SYSTEMLIB_MixerScaler_t &scaler);
+		    const MixerScaler_t &scaler);
 	~SimpleMixer();
 
 	/**
@@ -84,13 +84,6 @@ public:
 protected:
 
 private:
-	static int32		parse_output_scaler(const char *buf, uint32 &buflen, const SYSTEMLIB_MixerScaler_t &scaler);
-	static int32		parse_control_scaler(const char *buf,
-	        uint32 &buflen,
-	        const SYSTEMLIB_MixerScaler_t &scaler,
-			uint8 &control_group,
-			uint8 &control_index);
-
 	/* do not allow to copy due to ptr data members */
 	//SimpleMixer(const SimpleMixer &);
 	//SimpleMixer operator=(const SimpleMixer &);

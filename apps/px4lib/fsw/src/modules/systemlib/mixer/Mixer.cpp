@@ -21,7 +21,7 @@ Mixer::get_control(uint8 group, uint8 index)
 
 
 float
-Mixer::scale(const SYSTEMLIB_MixerScaler_t &scaler, float input)
+Mixer::scale(const MixerScaler_t &scaler, float input)
 {
     float output;
 
@@ -47,7 +47,7 @@ Mixer::scale(const SYSTEMLIB_MixerScaler_t &scaler, float input)
 }
 
 int32
-Mixer::scale_check(const SYSTEMLIB_MixerScaler_t &scaler)
+Mixer::scale_check(const MixerScaler_t &scaler)
 {
     if (scaler.offset > 1.001f) {
         return 1;

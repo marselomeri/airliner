@@ -9,13 +9,12 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "cfe.h"
-#include "pmc_platform_cfg.h"
-#include "mixer.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "cfe.h"
+#include "pmc_platform_cfg.h"
 
 /************************************************************************
 ** Local Defines
@@ -28,7 +27,8 @@ extern "C" {
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define PMC_CONFIG_TABLENAME ("CONFIG_TBL")
+#define PMC_PWM_CONFIG_TABLENAME ("PWMCFG_TBL")
+#define PMC_MIXER_CONFIG_TABLENAME ("MIXERCFG_TBL")
 
 /**
  * \brief Defines the table file name used for table registration.
@@ -45,13 +45,7 @@ typedef struct
     int32  PwmDisarmed;
     int32  PwmMin;
     int32  PwmMax;
-    float  RollScale;
-    float  PitchScale;
-    float  YawScale;
-    float  IdleSpeed;
-    uint32 RotorCount;
-    MIXER_RotorConfig_t RotorConfig[PMC_MAX_ROTOR_COUNT];
-} PMC_ConfigTblEntry_t;
+} PMC_PwmConfigTbl_t;
 
 
 /** \brief Definition for Critical Data Storage (CDS) table entry */

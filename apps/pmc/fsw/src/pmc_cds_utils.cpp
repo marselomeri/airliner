@@ -6,6 +6,11 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <string.h>
 #include "pmc_app.h"
 #include "pmc_cds_utils.h"
@@ -128,6 +133,10 @@ void PMC_SaveCdsTbl()
        in case of failure or should add a return value for higher-level logic to handle. */
     CFE_ES_CopyToCDS(PMC_AppData.CdsTblHdl, &PMC_AppData.CdsTbl);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 /************************/
 /*  End of File Comment */

@@ -63,19 +63,7 @@ typedef union {
 
 
 
-/**
- * Fetch a control value.
- *
- * @param handle        Token passed when the callback is registered.
- * @param control_group     The group to fetch the control from.
- * @param control_index     The group-relative index to fetch the control from.
- * @param control       The returned control
- * @return          Zero if the value was fetched, nonzero otherwise.
- */
-typedef int32 (* MIXER_ControlCallback_t)(uint32 *Handle,
-                    uint8 ControlGroup,
-                    uint8 ControlIndex,
-                    float *Control);
+
 
 
 typedef struct

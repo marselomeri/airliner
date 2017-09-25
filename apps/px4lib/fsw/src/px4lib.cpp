@@ -2,7 +2,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "systemlib_version.h"
+#include "px4lib_version.h"
 #include "MultirotorMixer.h"
 
 extern "C" {
@@ -15,8 +15,8 @@ extern "C" {
 /*************************************************************************
 ** Private Function Prototypes
 *************************************************************************/
-int32 SYSTEMLIB_LibInit(void);
-int32 SYSTEMLIB_MixerCallback(cpuaddr Handle,
+int32 PX4LIB_LibInit(void);
+int32 PX4LIB_MixerCallback(cpuaddr Handle,
                         uint8 ControlGroup,
                         uint8 ControlIndex,
                         float &Control);
@@ -28,25 +28,26 @@ int32 SYSTEMLIB_MixerCallback(cpuaddr Handle,
 /* cFE requires that a library have an initialization routine      */ 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 SYSTEMLIB_LibInit(void)
+int32 PX4LIB_LibInit(void)
 {
-    MultirotorGeometry geometry;
+    MultirotorMixer_ConfigTable_t configTable;
+    MultirotorMixer_ConfigTable_t *configTablePtr;
 
-    MultirotorMixer mixer(SYSTEMLIB_MixerCallback,
-            0, geometry, 0.0, 0.0, 0.0, 0.0);
+    MultirotorMixer mixer(PX4LIB_MixerCallback,
+            0, configTablePtr);
 
-    OS_printf ("SystemLib Initialized.  Version %d.%d.%d.%d\n",
-            SYSTEMLIB_MAJOR_VERSION,
-            SYSTEMLIB_MINOR_VERSION,
-            SYSTEMLIB_REVISION,
-            SYSTEMLIB_MISSION_REV);
+    OS_printf ("PX4 Library Initialized.  Version %d.%d.%d.%d\n",
+    		PX4LIB_MAJOR_VERSION,
+			PX4LIB_MINOR_VERSION,
+			PX4LIB_REVISION,
+			PX4LIB_MISSION_REV);
                 
     return CFE_SUCCESS;
  
-}/* End SYSTEMLIB_LibInit */
+}/* End PX4LIB_LibInit */
 
 
-int32  SYSTEMLIB_MixerCallback(cpuaddr Handle,
+int32 PX4LIB_MixerCallback(cpuaddr Handle,
                         uint8 ControlGroup,
                         uint8 ControlIndex,
                         float &Control)

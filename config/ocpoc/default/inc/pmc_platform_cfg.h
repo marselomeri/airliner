@@ -101,7 +101,7 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define PMC_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_config.tbl")
+#define PMC_PWM_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_pwmcfg.tbl")
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:

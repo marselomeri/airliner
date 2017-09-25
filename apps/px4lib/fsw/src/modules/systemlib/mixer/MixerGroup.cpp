@@ -137,13 +137,3 @@ MixerGroup::groups_required(uint32 &groups)
         mixer = mixer->m_Next;
     }
 }
-
-void MixerGroup::set_max_delta_out_once(float delta_out_max)
-{
-    Mixer   *mixer = m_First;
-
-    while (mixer != nullptr) {
-        mixer->set_max_delta_out_once(delta_out_max);
-        mixer = mixer->m_Next;
-    }
-}

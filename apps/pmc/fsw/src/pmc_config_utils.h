@@ -9,12 +9,13 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "cfe.h"
-#include "pmc_app.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "cfe.h"
+#include "pmc_app.h"
 
 /************************************************************************
 ** Local Defines
@@ -73,7 +74,9 @@ int32  PMC_InitConfigTbl(void);
 **  \endreturns
 **
 *************************************************************************/
-int32  PMC_ValidateConfigTbl(void*);
+int32  PMC_ValidatePwmCfgTbl(void*);
+
+int32  PMC_ValidateMixerCfgTbl(void*);
 
 /************************************************************************/
 /** \brief Obtain PMC Config Table Data Pointer
@@ -107,7 +110,9 @@ int32 PMC_AcquireConfigPointers(void);
 **  \endreturns
 **
 *************************************************************************/
-void   PMC_ProcessNewConfigTbl(void);
+void   PMC_ProcessNewPwmConfigTbl(void);
+
+void   PMC_ProcessNewMixerConfigTbl(void);
 
 
 #ifdef __cplusplus

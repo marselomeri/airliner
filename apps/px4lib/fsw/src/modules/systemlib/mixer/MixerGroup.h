@@ -1,5 +1,5 @@
-#ifndef _SYSTEMLIB_MIXER_MIXER_GROUP_H
-#define _SYSTEMLIB_MIXER_MIXER_GROUP_H
+#ifndef MIXER_GROUP_H
+#define MIXER_GROUP_H
 
 #include "cfe.h"
 #include "Mixer.h"
@@ -33,18 +33,6 @@ public:
 	 * Count the mixers in the group.
 	 */
 	uint32			count();
-
-	/**
-	 * @brief      Update slew rate parameter. This tells instances of the class MultirotorMixer
-	 *             the maximum allowed change of the output values per cycle.
-	 *             The value is only valid for one cycle, in order to have continuous
-	 *             slew rate limiting this function needs to be called before every call
-	 *             to mix().
-	 *
-	 * @param[in]  delta_out_max  Maximum delta output.
-	 *
-	 */
-	virtual void 			set_max_delta_out_once(float delta_out_max);
 
 	/*
 	 * Invoke the set_offset method of each mixer in the group

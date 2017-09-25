@@ -101,7 +101,10 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define PMC_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_config.tbl")
+#define PMC_PWM_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_pwmcfg.tbl")
+
+#define PMC_MIXER_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_mixercfg.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
@@ -111,6 +114,8 @@ extern "C" {
 
 /* TODO:  Add Doxygen markup. */
 #define PMC_CUSTOM_DEV_PATH       "/tmp/ttyS0"
+
+#define PMC_MAX_ROTOR_COUNT         (16)
 
 
 #ifdef __cplusplus

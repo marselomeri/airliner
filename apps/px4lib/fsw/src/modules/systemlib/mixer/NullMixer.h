@@ -1,5 +1,5 @@
-#ifndef _SYSTEMLIB_MIXER_NULL_MIXER_H
-#define _SYSTEMLIB_MIXER_NULL_MIXER_H value
+#ifndef NULL_MIXER_H
+#define NULL_MIXER_H
 
 #include "cfe.h"
 #include "Mixer.h"

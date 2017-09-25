@@ -6,6 +6,11 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -314,34 +319,34 @@ int32 PMC_InitApp()
         goto PMC_InitApp_Exit_Tag;
     }
 
-    iStatus = MIXER_MixerInit(
-            PMC_ControlCallback,
-            &PMC_AppData.CVT.ActuatorControls0,
-            &PMC_AppData.MixerData,
-            PMC_AppData.ConfigTblPtr->RollScale,
-            PMC_AppData.ConfigTblPtr->PitchScale,
-            PMC_AppData.ConfigTblPtr->YawScale,
-            PMC_AppData.ConfigTblPtr->IdleSpeed,
-            PMC_AppData.ConfigTblPtr->RotorCount,
-            PMC_AppData.ConfigTblPtr->RotorConfig);
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init mixer (0x%08x)",
-                                 (unsigned int)iStatus);
-        goto PMC_InitApp_Exit_Tag;
-    }
-
-    PwmLimit_Init(&PMC_AppData.PwmLimit);
-
-    iStatus = PMC_InitDevice(PMC_DEVICE_PATH);
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init device (0x%08x)",
-                                 (unsigned int)iStatus);
-        goto PMC_InitApp_Exit_Tag;
-    }
+//    iStatus = MIXER_MixerInit(
+//            PMC_ControlCallback,
+//            &PMC_AppData.CVT.ActuatorControls0,
+//            &PMC_AppData.MixerData,
+//            PMC_AppData.ConfigTblPtr->RollScale,
+//            PMC_AppData.ConfigTblPtr->PitchScale,
+//            PMC_AppData.ConfigTblPtr->YawScale,
+//            PMC_AppData.ConfigTblPtr->IdleSpeed,
+//            PMC_AppData.ConfigTblPtr->RotorCount,
+//            PMC_AppData.ConfigTblPtr->RotorConfig);
+//    if (iStatus != CFE_SUCCESS)
+//    {
+//        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+//                                 "Failed to init mixer (0x%08x)",
+//                                 (unsigned int)iStatus);
+//        goto PMC_InitApp_Exit_Tag;
+//    }
+//
+//    PwmLimit_Init(&PMC_AppData.PwmLimit);
+//
+//    iStatus = PMC_InitDevice(PMC_DEVICE_PATH);
+//    if (iStatus != CFE_SUCCESS)
+//    {
+//        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+//                                 "Failed to init device (0x%08x)",
+//                                 (unsigned int)iStatus);
+//        goto PMC_InitApp_Exit_Tag;
+//    }
 
 PMC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -396,14 +401,14 @@ int32 PMC_RcvMsg(int32 iBlocking)
         switch (MsgId)
 	{
             case PMC_WAKEUP_MID:
-                PMC_ProcessNewCmds();
-                PMC_ProcessNewData();
+                //PMC_ProcessNewCmds();
+                //PMC_ProcessNewData();
 
                 /* TODO:  Add more code here to handle other things when app wakes up */
 
                 /* The last thing to do at the end of this Wakeup cycle should be to
                  * automatically publish new output. */
-                PMC_SendOutData();
+                //PMC_SendOutData();
                 break;
 
             case PMC_SEND_HK_MID:
@@ -780,7 +785,7 @@ void PMC_StopMotors(void)
     uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
 
     for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
-        disarmed_pwm[i] = PMC_AppData.ConfigTblPtr->PwmDisarmed;
+        disarmed_pwm[i] = PMC_AppData.PwmConfigTblPtr->PwmDisarmed;
     }
 
     PMC_SendOutputs(disarmed_pwm);
@@ -789,84 +794,84 @@ void PMC_StopMotors(void)
 
 void PMC_UpdateMotors(void)
 {
-    const uint16 reverse_mask = 0;
-    uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
-    uint16 min_pwm[PMC_MAX_ZYNQ_PWMS];
-    uint16 max_pwm[PMC_MAX_ZYNQ_PWMS];
-    uint16 pwm[PMC_MAX_ZYNQ_PWMS];
-    PX4_ActuatorOutputsMsg_t outputs;
-
-    PMC_AppData.OutData.timestamp = PMC_AppData.CVT.ActuatorControls0.timestamp;
-
-    /* Do mixing */
-    PMC_AppData.OutData.Count = MIXER_Mix(&PMC_AppData.MixerData, PMC_AppData.OutData.Output, 0, 0);
-
-    /* Disable unused ports by setting their output to NaN */
-    for (size_t i = PMC_AppData.OutData.Count;
-         i < sizeof(PMC_AppData.OutData.Output) / sizeof(PMC_AppData.OutData.Output[0]);
-         i++) {
-        PMC_AppData.OutData.Output[i] = NAN;
-    }
-
-    for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
-        disarmed_pwm[i] = PMC_AppData.ConfigTblPtr->PwmDisarmed;
-        min_pwm[i] = PMC_AppData.ConfigTblPtr->PwmMin;
-        max_pwm[i] = PMC_AppData.ConfigTblPtr->PwmMax;
-    }
-
-    /* TODO */
-    PwmLimit_Calc(PMC_AppData.CVT.ActuatorArmed.Armed,
-            FALSE/*_armed.prearmed*/,
-            PMC_AppData.OutData.Count,
-            reverse_mask,
-            disarmed_pwm,
-            min_pwm,
-            max_pwm,
-            PMC_AppData.OutData.Output,
-            pwm,
-            &PMC_AppData.PwmLimit);
-
-    if (PMC_AppData.CVT.ActuatorArmed.Lockdown)
-    {
-        OS_printf("PMC_AppData.CVT.ActuatorArmed.Lockdown\n");
-        PMC_SendOutputs(disarmed_pwm);
-    }
-    else if (PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode)
-    {
-        OS_printf("PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode\n");
-        if (PMC_AppData.CVT.ActuatorControls0.Control[3] * 1000 > 0.5f) {
-            pwm[0] = PMC_AppData.ConfigTblPtr->PwmMax;
-            pwm[1] = PMC_AppData.ConfigTblPtr->PwmMax;
-            pwm[2] = PMC_AppData.ConfigTblPtr->PwmMax;
-            pwm[3] = PMC_AppData.ConfigTblPtr->PwmMax;
-        } else {
-            pwm[0] = PMC_AppData.ConfigTblPtr->PwmMin;
-            pwm[1] = PMC_AppData.ConfigTblPtr->PwmMin;
-            pwm[2] = PMC_AppData.ConfigTblPtr->PwmMin;
-            pwm[3] = PMC_AppData.ConfigTblPtr->PwmMin;
-        }
-
-        PMC_SendOutputs(pwm);
-        CFE_EVS_SendEvent(PMC_PWM_CALIB_INFO_EID, CFE_EVS_INFORMATION, "Calib pwm %d:%d:%d:%d.", pwm[0], pwm[1], pwm[2], pwm[3]);
-
-    }
-    else
-    {
-        //OS_printf("******************\n");
-        //for(uint32 i = 0; i < 8; ++i)
-        //{
-        //    OS_printf("%u %04x\n", i, pwm[i]);
-        //}
-        PMC_SendOutputs(pwm);
-    }
-
-    //OS_printf("  \n");
-    //for(uint32 i = 0; i < PMC_AppData.OutData.Count; ++i)
-    //{
-    //    OS_printf("%u %f\n", i, PMC_AppData.OutData.Output[i]);
-    //}
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+//    const uint16 reverse_mask = 0;
+//    uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
+//    uint16 min_pwm[PMC_MAX_ZYNQ_PWMS];
+//    uint16 max_pwm[PMC_MAX_ZYNQ_PWMS];
+//    uint16 pwm[PMC_MAX_ZYNQ_PWMS];
+//    PX4_ActuatorOutputsMsg_t outputs;
+//
+//    PMC_AppData.OutData.timestamp = PMC_AppData.CVT.ActuatorControls0.timestamp;
+//
+//    /* Do mixing */
+//    PMC_AppData.OutData.Count = MIXER_Mix(&PMC_AppData.MixerData, PMC_AppData.OutData.Output, 0, 0);
+//
+//    /* Disable unused ports by setting their output to NaN */
+//    for (size_t i = PMC_AppData.OutData.Count;
+//         i < sizeof(PMC_AppData.OutData.Output) / sizeof(PMC_AppData.OutData.Output[0]);
+//         i++) {
+//        PMC_AppData.OutData.Output[i] = NAN;
+//    }
+//
+//    for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
+//        disarmed_pwm[i] = PMC_AppData.ConfigTblPtr->PwmDisarmed;
+//        min_pwm[i] = PMC_AppData.ConfigTblPtr->PwmMin;
+//        max_pwm[i] = PMC_AppData.ConfigTblPtr->PwmMax;
+//    }
+//
+//    /* TODO */
+//    PwmLimit_Calc(PMC_AppData.CVT.ActuatorArmed.Armed,
+//            FALSE/*_armed.prearmed*/,
+//            PMC_AppData.OutData.Count,
+//            reverse_mask,
+//            disarmed_pwm,
+//            min_pwm,
+//            max_pwm,
+//            PMC_AppData.OutData.Output,
+//            pwm,
+//            &PMC_AppData.PwmLimit);
+//
+//    if (PMC_AppData.CVT.ActuatorArmed.Lockdown)
+//    {
+//        OS_printf("PMC_AppData.CVT.ActuatorArmed.Lockdown\n");
+//        PMC_SendOutputs(disarmed_pwm);
+//    }
+//    else if (PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode)
+//    {
+//        OS_printf("PMC_AppData.CVT.ActuatorArmed.InEscCalibrationMode\n");
+//        if (PMC_AppData.CVT.ActuatorControls0.Control[3] * 1000 > 0.5f) {
+//            pwm[0] = PMC_AppData.ConfigTblPtr->PwmMax;
+//            pwm[1] = PMC_AppData.ConfigTblPtr->PwmMax;
+//            pwm[2] = PMC_AppData.ConfigTblPtr->PwmMax;
+//            pwm[3] = PMC_AppData.ConfigTblPtr->PwmMax;
+//        } else {
+//            pwm[0] = PMC_AppData.ConfigTblPtr->PwmMin;
+//            pwm[1] = PMC_AppData.ConfigTblPtr->PwmMin;
+//            pwm[2] = PMC_AppData.ConfigTblPtr->PwmMin;
+//            pwm[3] = PMC_AppData.ConfigTblPtr->PwmMin;
+//        }
+//
+//        PMC_SendOutputs(pwm);
+//        CFE_EVS_SendEvent(PMC_PWM_CALIB_INFO_EID, CFE_EVS_INFORMATION, "Calib pwm %d:%d:%d:%d.", pwm[0], pwm[1], pwm[2], pwm[3]);
+//
+//    }
+//    else
+//    {
+//        //OS_printf("******************\n");
+//        //for(uint32 i = 0; i < 8; ++i)
+//        //{
+//        //    OS_printf("%u %04x\n", i, pwm[i]);
+//        //}
+//        PMC_SendOutputs(pwm);
+//    }
+//
+//    //OS_printf("  \n");
+//    //for(uint32 i = 0; i < PMC_AppData.OutData.Count; ++i)
+//    //{
+//    //    OS_printf("%u %f\n", i, PMC_AppData.OutData.Output[i]);
+//    //}
+//    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
+//    CFE_SB_SendMsg((CFE_SB_Msg_t*)&PMC_AppData.OutData);
 }
 
 
@@ -931,6 +936,10 @@ int32 PMC_ControlCallback(uint32 *Handle,
 
     return 0;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 /************************/
 /*  End of File Comment */

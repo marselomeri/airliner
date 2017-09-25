@@ -1,6 +1,13 @@
 #ifndef PMC_APP_H
 #define PMC_APP_H
 
+
+#include "MultirotorMixer.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
  ** Pragmas
  *************************************************************************/
@@ -21,12 +28,7 @@
 #include "pmc_config_utils.h"
 #include "pmc_cds_utils.h"
 #include "px4_msgs.h"
-#include "mixer.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 /************************************************************************
  ** Local Defines
@@ -84,11 +86,17 @@ typedef struct
 
     /* Config table-related */
 
-    /** \brief Config Table Handle */
-    CFE_TBL_Handle_t ConfigTblHdl;
+    /** \brief PWM Config Table Handle */
+    CFE_TBL_Handle_t PwmConfigTblHdl;
 
-    /** \brief Config Table Pointer */
-    PMC_ConfigTblEntry_t* ConfigTblPtr;
+    /** \brief Mixer Config Table Handle */
+    CFE_TBL_Handle_t MixerConfigTblHdl;
+
+    /** \brief PWM Config Table Pointer */
+    PMC_PwmConfigTbl_t* PwmConfigTblPtr;
+
+    /** \brief Mixer Config Table Pointer */
+    MultirotorMixer_ConfigTable_t* MixerConfigTblPtr;
 
     /* Critical Data Storage (CDS) table-related */
 
@@ -113,8 +121,8 @@ typedef struct
 
     volatile PMC_SharedMemCmd_t *SharedMemCmd;
 
-    MIXER_Data_t  MixerData;
-    PwmLimit_Data_t PwmLimit;
+    //MIXER_Data_t  MixerData;
+    //PwmLimit_Data_t PwmLimit;
 
 } PMC_AppData_t;
 

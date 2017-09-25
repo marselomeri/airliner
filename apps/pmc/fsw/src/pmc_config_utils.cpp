@@ -6,6 +6,11 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "pmc_config_utils.h"
 
 /************************************************************************
@@ -49,25 +54,55 @@ int32 PMC_InitConfigTbl()
     int32  iStatus=0;
 
     /* Register Config table */
-    iStatus = CFE_TBL_Register(&PMC_AppData.ConfigTblHdl,
-                               PMC_CONFIG_TABLENAME,
-                               (sizeof(PMC_ConfigTblEntry_t) * PMC_CONFIG_TABLE_MAX_ENTRIES),
+    iStatus = CFE_TBL_Register(&PMC_AppData.PwmConfigTblHdl,
+                               PMC_PWM_CONFIG_TABLENAME,
+                               (sizeof(PMC_PwmConfigTbl_t)),
                                CFE_TBL_OPT_DEFAULT,
-                               PMC_ValidateConfigTbl);
+							   PMC_ValidatePwmCfgTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
          * made critical this logic would have to change. */
         (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to register Config table (0x%08X)",
+                                 "Failed to register PWM table (0x%08X)",
+                                 (unsigned int)iStatus);
+        goto PMC_InitConfigTbl_Exit_Tag;
+    }
+
+    /* Register Mixer table */
+    iStatus = CFE_TBL_Register(&PMC_AppData.MixerConfigTblHdl,
+                               PMC_MIXER_CONFIG_TABLENAME,
+                               (sizeof(MultirotorMixer_ConfigTable_t)),
+                               CFE_TBL_OPT_DEFAULT,
+							   PMC_ValidateMixerCfgTbl);
+    if (iStatus != CFE_SUCCESS)
+    {
+        /* Note, a critical table could return another nominal code.  If this table is
+         * made critical this logic would have to change. */
+        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to register Mixer table (0x%08X)",
                                  (unsigned int)iStatus);
         goto PMC_InitConfigTbl_Exit_Tag;
     }
 
     /* Load Config table file */
-    iStatus = CFE_TBL_Load(PMC_AppData.ConfigTblHdl,
+    iStatus = CFE_TBL_Load(PMC_AppData.PwmConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-                           PMC_CONFIG_TABLE_FILENAME);
+                           PMC_PWM_CONFIG_TABLE_FILENAME);
+    if (iStatus != CFE_SUCCESS)
+    {
+        /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
+           load is desired then this logic would have to change. */
+        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to load Config Table (0x%08X)",
+                                 (unsigned int)iStatus);
+        goto PMC_InitConfigTbl_Exit_Tag;
+    }
+
+    /* Load Config table file */
+    iStatus = CFE_TBL_Load(PMC_AppData.MixerConfigTblHdl,
+                           CFE_TBL_SRC_FILE,
+                           PMC_MIXER_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -91,15 +126,15 @@ PMC_InitConfigTbl_Exit_Tag:
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 PMC_ValidateConfigTbl(void* ConfigTblPtr)
+int32 PMC_ValidatePwmCfgTbl(void* ConfigTblPtr)
 {
     int32  iStatus=0;
-    PMC_ConfigTblEntry_t* PMC_ConfigTblPtr = (PMC_ConfigTblEntry_t*)(ConfigTblPtr);
+    PMC_PwmConfigTbl_t* PMC_PwmConfigTblPtr = (PMC_PwmConfigTbl_t*)(ConfigTblPtr);
 
     if (ConfigTblPtr == NULL)
     {
         iStatus = -1;
-        goto PMC_ValidateConfigTbl_Exit_Tag;
+        goto PMC_ValidatePwmCfgTbl_Exit_Tag;
     }
 
     /* TODO:  Add code to validate new data values here.
@@ -112,7 +147,32 @@ int32 PMC_ValidateConfigTbl(void* ConfigTblPtr)
     ** }
     **/
 
-PMC_ValidateConfigTbl_Exit_Tag:
+PMC_ValidatePwmCfgTbl_Exit_Tag:
+    return (iStatus);
+}
+
+int32 PMC_ValidateMixerCfgTbl(void* ConfigTblPtr)
+{
+    int32  iStatus=0;
+    MultirotorMixer_ConfigTable_t* TblPtr = (MultirotorMixer_ConfigTable_t*)(ConfigTblPtr);
+
+    if (ConfigTblPtr == NULL)
+    {
+        iStatus = -1;
+        goto PMC_ValidateMixerCfgTbl_Exit_Tag;
+    }
+
+    /* TODO:  Add code to validate new data values here.
+    **
+    ** Examples:
+    ** if (PMC_ConfigTblPtr->iParam <= 16) {
+    **   (void) CFE_EVS_SendEvent(PMC_CONFIG_TABLE_INF_EID, CFE_EVS_ERROR,
+     *                         "Invalid value for Config parameter sParam (%d)",
+    **                         PMC_ConfigTblPtr->iParam);
+    ** }
+    **/
+
+PMC_ValidateMixerCfgTbl_Exit_Tag:
     return (iStatus);
 }
 
@@ -123,7 +183,18 @@ PMC_ValidateConfigTbl_Exit_Tag:
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void PMC_ProcessNewConfigTbl()
+void PMC_ProcessNewPwmConfigTbl()
+{
+    /* TODO:  Add code to set new Config parameters with new values here.
+    **
+    ** Examples:
+    **
+    **    PMC_AppData.latest_sParam = PMC_AppData.ConfigTblPtr->sParam;
+    **    PMC_AppData.latest_fParam = PMC.AppData.ConfigTblPtr->fParam;
+    */
+}
+
+void PMC_ProcessNewMixerConfigTbl()
 {
     /* TODO:  Add code to set new Config parameters with new values here.
     **
@@ -136,7 +207,7 @@ void PMC_ProcessNewConfigTbl()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Acquire Conifg Pointers                                         */
+/* Acquire Config Pointers                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PMC_AcquireConfigPointers(void)
@@ -149,16 +220,25 @@ int32 PMC_AcquireConfigPointers(void)
     /* TODO: This return value can indicate success, error, or that the info has been 
      * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
      * be sure this is the behavior you want. */
-    (void) CFE_TBL_ReleaseAddress(PMC_AppData.ConfigTblHdl);
+    (void) CFE_TBL_ReleaseAddress(PMC_AppData.PwmConfigTblHdl);
 
     /*
     ** Manage the table
     */
-    iStatus = CFE_TBL_Manage(PMC_AppData.ConfigTblHdl);
+    iStatus = CFE_TBL_Manage(PMC_AppData.PwmConfigTblHdl);
     if ((iStatus != CFE_SUCCESS) && (iStatus != CFE_TBL_INFO_UPDATED))
     {
         (void) CFE_EVS_SendEvent(PMC_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to manage Config table (0x%08X)",
+                                 "Failed to manage PWM Config table (0x%08X)",
+                                 (unsigned int)iStatus);
+        goto PMC_AcquireConfigPointers_Exit_Tag;
+    }
+
+    iStatus = CFE_TBL_Manage(PMC_AppData.MixerConfigTblHdl);
+    if ((iStatus != CFE_SUCCESS) && (iStatus != CFE_TBL_INFO_UPDATED))
+    {
+        (void) CFE_EVS_SendEvent(PMC_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to manage Mixer Config table (0x%08X)",
                                  (unsigned int)iStatus);
         goto PMC_AcquireConfigPointers_Exit_Tag;
     }
@@ -166,18 +246,33 @@ int32 PMC_AcquireConfigPointers(void)
     /*
     ** Get a pointer to the table
     */
-    iStatus = CFE_TBL_GetAddress((void*)&PMC_AppData.ConfigTblPtr,
-                                 PMC_AppData.ConfigTblHdl);
+    iStatus = CFE_TBL_GetAddress((void**)&PMC_AppData.PwmConfigTblPtr,
+                                 PMC_AppData.PwmConfigTblHdl);
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
-        PMC_ProcessNewConfigTbl();
+        PMC_ProcessNewPwmConfigTbl();
         iStatus = CFE_SUCCESS;
     }
     else if(iStatus != CFE_SUCCESS)
     {
-	PMC_AppData.ConfigTblPtr = 0;
+    	PMC_AppData.PwmConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(PMC_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to get Config table's address (0x%08X)",
+                                 "Failed to get PWM Config table's address (0x%08X)",
+                                 (unsigned int)iStatus);
+    }
+
+    iStatus = CFE_TBL_GetAddress((void**)&PMC_AppData.MixerConfigTblPtr,
+                                 PMC_AppData.MixerConfigTblHdl);
+    if (iStatus == CFE_TBL_INFO_UPDATED)
+    {
+        PMC_ProcessNewMixerConfigTbl();
+        iStatus = CFE_SUCCESS;
+    }
+    else if(iStatus != CFE_SUCCESS)
+    {
+    	PMC_AppData.MixerConfigTblPtr = 0;
+        (void) CFE_EVS_SendEvent(PMC_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to get Mixer Config table's address (0x%08X)",
                                  (unsigned int)iStatus);
     }
 
@@ -185,6 +280,11 @@ PMC_AcquireConfigPointers_Exit_Tag:
     return (iStatus);
 
 } /* End of PMC_AcquirePointers */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 /************************/
 /*  End of File Comment */
