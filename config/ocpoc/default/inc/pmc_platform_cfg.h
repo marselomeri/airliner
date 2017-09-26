@@ -102,6 +102,9 @@ extern "C" {
 **       the #OS_MAX_PATH_LEN value.
 */
 #define PMC_PWM_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_pwmcfg.tbl")
+
+#define PMC_MIXER_CONFIG_TABLE_FILENAME      ("/cf/apps/pmc_mixercfg.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:

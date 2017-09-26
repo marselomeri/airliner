@@ -26,7 +26,6 @@ extern "C" {
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
-extern PMC_AppData_t  PMC_AppData;
 
 /************************************************************************
 ** Global Variables
@@ -51,7 +50,7 @@ extern PMC_AppData_t  PMC_AppData;
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 PMC_InitCdsTbl()
+int32 PMC::InitCdsTbl()
 {
     int32  iStatus=0;
     int32  iResetType=0;
@@ -61,16 +60,16 @@ int32 PMC_InitCdsTbl()
     iResetType = CFE_ES_GetResetType(&uiResetSubType);
     if (iResetType == CFE_ES_POWERON_RESET)
     {
-        memset((void*)&PMC_AppData.CdsTbl, 0x00, sizeof(PMC_CdsTbl_t));
+        memset((void*)&CdsTbl, 0x00, sizeof(PMC_CdsTbl_t));
     }
 
     /* Register and manage CDS table */
-    iStatus = CFE_ES_RegisterCDS(&PMC_AppData.CdsTblHdl, sizeof(PMC_CdsTbl_t),
+    iStatus = CFE_ES_RegisterCDS(&CdsTblHdl, sizeof(PMC_CdsTbl_t),
                                  PMC_CDS_TABLENAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Setup initial content of CDS table */
-        iStatus = CFE_ES_CopyToCDS(PMC_AppData.CdsTblHdl, &PMC_AppData.CdsTbl);
+        iStatus = CFE_ES_CopyToCDS(CdsTblHdl, &CdsTbl);
         if (iStatus == CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PMC_CDS_INF_EID, CFE_EVS_INFORMATION,
@@ -85,8 +84,8 @@ int32 PMC_InitCdsTbl()
     else if (iStatus == CFE_ES_CDS_ALREADY_EXISTS)
     {
         /* If one already exists, get a copy of its current content */
-        memset((void*)&PMC_AppData.CdsTbl, 0x00, sizeof(PMC_CdsTbl_t));
-        iStatus = CFE_ES_RestoreFromCDS(&PMC_AppData.CdsTbl, PMC_AppData.CdsTblHdl);
+        memset((void*)&CdsTbl, 0x00, sizeof(PMC_CdsTbl_t));
+        iStatus = CFE_ES_RestoreFromCDS(&CdsTbl, CdsTblHdl);
         if (iStatus == CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PMC_CDS_INF_EID, CFE_EVS_INFORMATION,
@@ -96,7 +95,7 @@ int32 PMC_InitCdsTbl()
         {
             (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
                                      "Failed to restore data from CDS");
-            memset((void*)&PMC_AppData.CdsTbl, 0x00, sizeof(PMC_CdsTbl_t));
+            memset((void*)&CdsTbl, 0x00, sizeof(PMC_CdsTbl_t));
         }
     }
     else
@@ -115,7 +114,7 @@ int32 PMC_InitCdsTbl()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void PMC_UpdateCdsTbl()
+void PMC::UpdateCdsTbl()
 {
     /* TODO:  Add code to update values in CDS table here */
 }
@@ -127,11 +126,11 @@ void PMC_UpdateCdsTbl()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void PMC_SaveCdsTbl()
+void PMC::SaveCdsTbl()
 {
     /* TODO This return value is not checked. Developer should decide what to do here
        in case of failure or should add a return value for higher-level logic to handle. */
-    CFE_ES_CopyToCDS(PMC_AppData.CdsTblHdl, &PMC_AppData.CdsTbl);
+    CFE_ES_CopyToCDS(CdsTblHdl, &CdsTbl);
 }
 
 #ifdef __cplusplus

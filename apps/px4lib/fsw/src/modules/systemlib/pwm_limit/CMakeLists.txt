@@ -1,9 +1,6 @@
 set(PX4LIB_SOURCES
     ${PX4LIB_SOURCES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Mixer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Mixer.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/MultirotorMixer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/MultirotorMixer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pwm_limit.c
 )
 
 set(PX4LIB_PUBLIC_INCLUDES

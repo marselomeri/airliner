@@ -14,23 +14,33 @@
 
 MultirotorMixer::MultirotorMixer(
 	ControlCallback control_cb,
-	cpuaddr cb_handle,
-	MultirotorMixer_ConfigTablePtr_t &ConfigTablePtr) :
+	cpuaddr cb_handle) :
     	Mixer(control_cb, cb_handle),
-		m_ThrustFactor(0.0f),
-		m_ConfigTablePtr(ConfigTablePtr)
+		m_ThrustFactor(0.0f)
 {
-	if(ConfigTablePtr != 0)
-	{
-    	/* shift to output range here to avoid runtime calculation */
-        float idle_speed_fixed = -1.0f + m_ConfigTablePtr->IdleSpeed * 2.0f;
-		memset(m_OutputsPrev, idle_speed_fixed, sizeof(m_OutputsPrev));
-	}
-    memset(&m_SaturationStatus, 0, sizeof(m_SaturationStatus));
+//    memset(&m_SaturationStatus, 0, sizeof(m_SaturationStatus));
 }
 
 MultirotorMixer::~MultirotorMixer()
 {
+}
+
+int32 MultirotorMixer::SetConfigTablePtr(
+    MultirotorMixer_ConfigTablePtr_t &ConfigTablePtr)
+{
+
+    if(ConfigTablePtr != 0)
+    {
+        m_ConfigTablePtr = ConfigTablePtr;
+
+        /* shift to output range here to avoid runtime calculation */
+        float idle_speed_fixed = -1.0f + m_ConfigTablePtr->IdleSpeed * 2.0f;
+        memset(m_OutputsPrev, idle_speed_fixed, sizeof(m_OutputsPrev));
+
+        return CFE_SUCCESS;
+    }
+
+    return -1;
 }
 
 uint32

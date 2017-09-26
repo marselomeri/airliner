@@ -41,10 +41,13 @@ public:
 	 */
 	MultirotorMixer(
 			ControlCallback control_cb,
-			cpuaddr cb_handle,
-			MultirotorMixer_ConfigTablePtr_t &ConfigTablePtr
+			cpuaddr cb_handle
 			);
 	~MultirotorMixer();
+
+    int32 SetConfigTablePtr(MultirotorMixer_ConfigTablePtr_t &ConfigTablePtr);
+
+
 
 	/**
 	 * Factory method.

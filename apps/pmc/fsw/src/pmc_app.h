@@ -2,7 +2,7 @@
 #define PMC_APP_H
 
 
-#include "MultirotorMixer.h"
+#include <mixer/MultirotorMixer.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,6 +28,7 @@ extern "C" {
 #include "pmc_config_utils.h"
 #include "pmc_cds_utils.h"
 #include "px4_msgs.h"
+#include <pwm_limit/pwm_limit.h>
 
 
 /************************************************************************
@@ -62,11 +63,16 @@ typedef struct
      PMC_PeriodHi_t PeriodHi[PMC_MAX_ZYNQ_PWMS];
 } PMC_SharedMemCmd_t;
 
+
 /**
  **  \brief PMC Operational Data Structure
  */
-typedef struct
+class PMC
 {
+public:
+    PMC();
+    ~PMC();
+
     /** \brief CFE Event Table */
     CFE_EVS_BinFilter_t EventTbl[PMC_EVT_CNT];
 
@@ -121,10 +127,11 @@ typedef struct
 
     volatile PMC_SharedMemCmd_t *SharedMemCmd;
 
-    //MIXER_Data_t  MixerData;
-    //PwmLimit_Data_t PwmLimit;
+    MultirotorMixer MixerObject;
 
-} PMC_AppData_t;
+    //MIXER_Data_t  MixerData;
+    PwmLimit_Data_t PwmLimit;
+
 
 /************************************************************************
  ** External Global Variables
@@ -155,7 +162,7 @@ typedef struct
  **       main loop is never executed and the application will exit.
  **
  *************************************************************************/
-void PMC_AppMain(void);
+void AppMain(void);
 
 /************************************************************************/
 /** \brief Initialize the CFS PWM Motor Controller (PMC) application
@@ -182,7 +189,7 @@ void PMC_AppMain(void);
  **  \endreturns
  **
  *************************************************************************/
-int32 PMC_InitApp(void);
+int32 InitApp(void);
 
 /************************************************************************/
 /** \brief Initialize Event Services and Event tables
@@ -200,7 +207,7 @@ int32 PMC_InitApp(void);
  **  \endreturns
  **
  *************************************************************************/
-int32 PMC_InitEvent(void);
+int32 InitEvent(void);
 
 /************************************************************************/
 /** \brief Initialize global variables used by PMC application
@@ -218,7 +225,7 @@ int32 PMC_InitEvent(void);
  **  \endreturns
  **
  *************************************************************************/
-int32 PMC_InitData(void);
+int32 InitData(void);
 
 /************************************************************************/
 /** \brief Initialize message pipes
@@ -239,7 +246,7 @@ int32 PMC_InitData(void);
  **  \endreturns
  **
  *************************************************************************/
-int32 PMC_InitPipe(void);
+int32 InitPipe(void);
 
 /************************************************************************/
 /** \brief Receive and process messages
@@ -260,7 +267,7 @@ int32 PMC_InitPipe(void);
  **  \endreturns
  **
  *************************************************************************/
-int32 PMC_RcvMsg(int32 iBlocking);
+int32 RcvMsg(int32 iBlocking);
 
 /************************************************************************/
 /** \brief PWM Motor Controller Task incoming data processing
@@ -273,7 +280,7 @@ int32 PMC_RcvMsg(int32 iBlocking);
  **       None
  **
  *************************************************************************/
-void PMC_ProcessNewData(void);
+void ProcessNewData(void);
 
 /************************************************************************/
 /** \brief PWM Motor Controller Task incoming command processing
@@ -286,7 +293,7 @@ void PMC_ProcessNewData(void);
  **       None
  **
  *************************************************************************/
-void PMC_ProcessNewCmds(void);
+void ProcessNewCmds(void);
 
 /************************************************************************/
 /** \brief PWM Motor Controller Task application commands
@@ -302,7 +309,7 @@ void PMC_ProcessNewCmds(void);
  **                             references the software bus message
  **
  *************************************************************************/
-void PMC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
+void ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
 
 /************************************************************************/
 /** \brief Sends PMC housekeeping message
@@ -314,7 +321,7 @@ void PMC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
  **       None
  **
  *************************************************************************/
-void PMC_ReportHousekeeping(void);
+void ReportHousekeeping(void);
 
 /************************************************************************/
 /** \brief Sends PMC output data
@@ -326,7 +333,7 @@ void PMC_ReportHousekeeping(void);
  **       None
  **
  *************************************************************************/
-void PMC_SendOutData(void);
+void SendOutData(void);
 
 /************************************************************************/
 /** \brief Verify Command Length
@@ -346,7 +353,33 @@ void PMC_SendOutData(void);
  **  \endreturns
  **
  *************************************************************************/
-boolean PMC_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+
+private:
+    int32  InitMixer(const char *Filename);
+    void   SendOutputs(const uint16 *PWM);
+    uint32 Freq2tick(uint16 FreqHz);
+    int32  InitDevice(const char *Device);
+    void   DeinitDevice(void);
+    void   UpdateMotors(void);
+    void   StopMotors(void);
+    int32  InitCdsTbl(void);
+    void   UpdateCdsTbl(void);
+    void   SaveCdsTbl(void);
+    int32  InitConfigTbl(void);
+    void   Deinitialize(void);
+    void   ProcessNewPwmConfigTbl(void);
+    void   ProcessNewMixerConfigTbl(void);
+    int32  AcquireConfigPointers(void);
+
+public:
+    static int32  ControlCallback(cpuaddr Handle,
+        uint8 ControlGroup,
+        uint8 ControlIndex,
+        float &Control);
+    static int32  ValidatePwmCfgTbl(void* ConfigTblPtr);
+    static int32  ValidateMixerCfgTbl(void* ConfigTblPtr);
+};
 
 #ifdef __cplusplus
 }

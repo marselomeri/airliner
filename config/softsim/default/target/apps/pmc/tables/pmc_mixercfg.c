@@ -6,7 +6,7 @@
 /*
 ** Include Files
 */
-#include "MixerTables.h"
+#include <mixer/MixerTables.h>
 #include "cfe_tbl_filedef.h"
 #include "pmc_tbldefs.h"
 

@@ -221,6 +221,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pmc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pmc
     CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/pmc/pmc_custom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pmc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pmc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pmc_perfids.h

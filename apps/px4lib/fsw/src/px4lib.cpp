@@ -30,12 +30,6 @@ int32 PX4LIB_MixerCallback(cpuaddr Handle,
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PX4LIB_LibInit(void)
 {
-    MultirotorMixer_ConfigTable_t configTable;
-    MultirotorMixer_ConfigTable_t *configTablePtr;
-
-    MultirotorMixer mixer(PX4LIB_MixerCallback,
-            0, configTablePtr);
-
     OS_printf ("PX4 Library Initialized.  Version %d.%d.%d.%d\n",
     		PX4LIB_MAJOR_VERSION,
 			PX4LIB_MINOR_VERSION,

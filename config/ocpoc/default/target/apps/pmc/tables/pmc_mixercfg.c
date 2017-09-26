@@ -6,6 +6,7 @@
 /*
 ** Include Files
 */
+#include <mixer/MixerTables.h>
 #include "cfe_tbl_filedef.h"
 #include "pmc_tbldefs.h"
 
@@ -28,8 +29,8 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
     **    ObjSize - size of the entire table
     */
 
-    "PMC_ConfigTbl", "PMC.CONFIG_TBL", "PMC default config table",
-    "pmc_config.tbl", (sizeof(PMC_ConfigTblEntry_t) * PMC_CONFIG_TABLE_MAX_ENTRIES)
+    "PMC_MixerCfgTbl", "PMC.MIXERCFG_TBL", "PMC default mixer config table",
+    "pmc_mixercfg.tbl", (sizeof(MultirotorMixer_ConfigTable_t))
 };
 
 /*
@@ -41,16 +42,15 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 */
 
 /* Default CI config table data */
-PMC_ConfigTblEntry_t PMC_ConfigTbl[PMC_CONFIG_TABLE_MAX_ENTRIES] =
+MultirotorMixer_ConfigTable_t PMC_MixerCfgTbl =
 {
-    900,  /* PwmDisarmed */
-    1000, /* PwmMin      */
-    2000, /* PwmMax      */
-    1.0,  /* Roll Scale  */
-    1.0,  /* Pitch Scale */
-    1.0,  /* Yaw Scale   */
-    0.2,  /* Idle Speed  */
-    8,    /* Rotor Count */
+    1.0,          /* Roll Scale     */
+    1.0,          /* Pitch Scale    */
+    1.0,          /* Yaw Scale      */
+    0.2,          /* Idle Speed     */
+    1.0,          /* Delta Out Max  */
+    8,            /* Rotor Count    */
+	MIXER_OCTA_X, /* Rotor Geometry */
     {
         /* Rotor # | Roll Scale  |  Pitch Scale  |  Yaw Scale  |  Output Scale */
         /*  0  */  { -0.382683,      0.923880,      -1.000000,     1.000000 },

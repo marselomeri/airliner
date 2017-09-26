@@ -35,7 +35,7 @@ void PMC_Function2_Test_Case1(void)
 {
 /*    int32 Result;
 
-    PMC_AppData.Variable3 = 3;
+    Variable3 = 3;
 
     Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_SUBSCRIBE_INDEX, &PMC_Cmds_Test_UT_CFE_SB_SubscribeHook1);
 */
@@ -43,7 +43,7 @@ void PMC_Function2_Test_Case1(void)
 /*    Result = PMC_Function2();*/
     
     /* Verify results */
-/*    UtAssert_True (PMC_AppData.Variable4 == 4, "PMC_AppData.Variable4 == 4");
+/*    UtAssert_True (Variable4 == 4, "Variable4 == 4");
     UtAssert_True (Result == 25, "Result == 25");
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 0, "Ut_CFE_EVS_GetEventQueueDepth() == 0");
