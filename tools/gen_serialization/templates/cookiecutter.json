@@ -756,9 +756,9 @@
 						},
 						"PoolHandle": {
 							"airliner_name": "PoolHandle", 
-							"pb_type": "uint64",
+							"pb_type": "uint32",
 							"pb_field_rule": "required",
-							"airliner_type": "uint64",
+							"airliner_type": "uint32",
 							"array_length": 0
 						}
 					}
@@ -934,7 +934,7 @@
 				}
 			}
 		},
-		"es_start_pb": {
+		"es_start_app_pb": {
 			"airliner_msg": "CFE_ES_StartAppCmd_t",
 			"airliner_mid": "0x1806",
 			"airliner_cc": "4",
@@ -1078,9 +1078,9 @@
 					"fields": {
 						"PoolHandle": {
 							"airliner_name": "PoolHandle", 
-							"pb_type": "uint64",
+							"pb_type": "uint32",
 							"pb_field_rule": "required",
-							"airliner_type": "uint64",
+							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"Application": {

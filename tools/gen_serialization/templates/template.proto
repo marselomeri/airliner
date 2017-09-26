@@ -11,13 +11,13 @@ message {{req_proto_msg}}
 { 
 {%- for field_name, field_data in req_proto_data.fields.iteritems() %}
 	{{field_data.pb_field_rule}} {{field_data.pb_type}} {{field_name}} = {{loop.index}}
-	{%- if field_data.pb_field_rule == "repeated"-%}[packed=true, (nanopb).max_count = {{field_data.array_length}}];{%- elif field_data.pb_type == "string"-%} [(nanopb).max_size = {{field_data.array_length}}]; {%- else -%};{%- endif -%}{% endfor %}
+	{%- if field_data.pb_field_rule == "repeated"-%}[(nanopb).max_count = {{field_data.array_length}}];{%- elif field_data.pb_type == "string"-%} [(nanopb).max_size = {{field_data.array_length}}]; {%- else -%};{%- endif -%}{% endfor %}
 }{% endfor %}
 {% for field_name, field_data in proto_data.fields.iteritems() %}{% if proto_msg[:-3] == self._TemplateReference__context.name[:-6] %}
 message {{proto_msg}}
 {
 	{{field_data.pb_field_rule}} {{field_data.pb_type}} {{field_name}} = {{loop.index}}
-	{%- if field_data.pb_field_rule == "repeated"-%}[packed=true, (nanopb).max_count = {{field_data.array_length}}];{%- elif field_data.pb_type == "string"-%} [(nanopb).max_count = {{field_data.array_length}}]; {%- else -%};{% endif %}
+	{%- if field_data.pb_field_rule == "repeated"-%}[(nanopb).max_count = {{field_data.array_length}}];{%- elif field_data.pb_type == "string"-%} [(nanopb).max_count = {{field_data.array_length}}]; {%- else -%};{% endif %}
 }
 	{%- endif %}
 {% endfor %}
