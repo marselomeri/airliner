@@ -4,10 +4,7 @@ add_airliner_app_def(pmc
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_app.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_cds_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_cds_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_config_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_config_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/pmc_private_ids.h

@@ -1,41 +1,8 @@
-
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "pmc_config_utils.h"
-
-/************************************************************************
-** Local Defines
-*************************************************************************/
-
-/************************************************************************
-** Local Structure Declarations
-*************************************************************************/
-
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-
-/************************************************************************
-** Global Variables
-*************************************************************************/
-
-/************************************************************************
-** Local Variables
-*************************************************************************/
-
-/************************************************************************
-** Function Prototypes
-*************************************************************************/
+#include "pmc_app.h"
 
 /************************************************************************
 ** Function Definitions
@@ -47,7 +14,6 @@ extern "C" {
 /* Initialize Config Table                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 PMC::InitConfigTbl()
 {
     int32  iStatus=0;
@@ -121,10 +87,9 @@ PMC_InitConfigTbl_Exit_Tag:
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Validate Config Table                                           */
+/* Validate PWM Configuration Table                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 PMC::ValidatePwmCfgTbl(void* ConfigTblPtr)
 {
     int32  iStatus=0;
@@ -150,6 +115,12 @@ PMC_ValidatePwmCfgTbl_Exit_Tag:
     return (iStatus);
 }
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate Mixer Configuration Table                              */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PMC::ValidateMixerCfgTbl(void* ConfigTblPtr)
 {
     int32  iStatus=0;
@@ -173,35 +144,6 @@ int32 PMC::ValidateMixerCfgTbl(void* ConfigTblPtr)
 
 PMC_ValidateMixerCfgTbl_Exit_Tag:
     return (iStatus);
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Process New Config Table                                        */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void PMC::ProcessNewPwmConfigTbl()
-{
-    /* TODO:  Add code to set new Config parameters with new values here.
-    **
-    ** Examples:
-    **
-    **    latest_sParam = ConfigTblPtr->sParam;
-    **    latest_fParam = PMC.AppData.ConfigTblPtr->fParam;
-    */
-}
-
-void PMC::ProcessNewMixerConfigTbl()
-{
-    /* TODO:  Add code to set new Config parameters with new values here.
-    **
-    ** Examples:
-    **
-    **    latest_sParam = ConfigTblPtr->sParam;
-    **    latest_fParam = PMC.AppData.ConfigTblPtr->fParam;
-    */
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -249,7 +191,6 @@ int32 PMC::AcquireConfigPointers(void)
                                  PwmConfigTblHdl);
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
-        ProcessNewPwmConfigTbl();
         iStatus = CFE_SUCCESS;
     }
     else if(iStatus != CFE_SUCCESS)
@@ -264,7 +205,6 @@ int32 PMC::AcquireConfigPointers(void)
                                  MixerConfigTblHdl);
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
-        ProcessNewMixerConfigTbl();
         iStatus = CFE_SUCCESS;
     }
     else if(iStatus != CFE_SUCCESS)
@@ -278,7 +218,7 @@ int32 PMC::AcquireConfigPointers(void)
 PMC_AcquireConfigPointers_Exit_Tag:
     return (iStatus);
 
-} /* End of PMC_AcquirePointers */
+}
 
 
 #ifdef __cplusplus
