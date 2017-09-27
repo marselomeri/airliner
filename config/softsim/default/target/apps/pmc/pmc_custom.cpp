@@ -1,13 +1,13 @@
 #include "cfe.h"
 #include "pmc_app.h"
 
-
-int32 PMC::InitDevice(const char *device)
+int32 PMC::InitDevice(void)
 {
     return 0;
 }
 
-void PMC::SendOutputs(const uint16 *PWM)
+
+void PMC::SetMotorOutputs(const uint16 *PWM)
 {
 
 }

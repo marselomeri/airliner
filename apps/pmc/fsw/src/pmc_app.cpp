@@ -21,40 +21,32 @@ extern "C" {
 #include "pmc_version.h"
 #include <math.h>
 
-/************************************************************************
-** Local Defines
-*************************************************************************/
 
-
-/************************************************************************
-** Local Structure Declarations
-*************************************************************************/
-
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-
-/************************************************************************
-** Global Variables
-*************************************************************************/
-//PMC_AppData_t  PMC_AppData;
-
-/************************************************************************
-** Local Variables
-*************************************************************************/
-
-/************************************************************************
-** Local Function Definitions
-*************************************************************************/
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Instantiate the application object.                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 PMC oPMC;
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Default constructor.                                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 PMC::PMC() :
-        MixerObject(PMC::ControlCallback, (cpuaddr)&CVT.ActuatorControls0)
+    MixerObject(PMC::ControlCallback, (cpuaddr)&CVT.ActuatorControls0)
 {
 
 }
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Destructor constructor.                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 PMC::~PMC()
 {
 
@@ -62,14 +54,13 @@ PMC::~PMC()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Initialize event tables                                         */
+/* Initialize event tables.                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 PMC::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
-    int32  ind = 0;
+    uint32  ind = 0;
 
     /* Initialize the event filter table.
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
@@ -116,7 +107,6 @@ int32 PMC::InitEvent()
 /* Initialize Message Pipes                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 PMC::InitPipe()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -127,11 +117,11 @@ int32 PMC::InitPipe()
                                  PMC_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(PMC_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, PMC_SCH_PIPE_WAKEUP_RESERVED);
+        iStatus = CFE_SB_SubscribeEx(PMC_UPDATE_MOTORS_MID, SchPipeId, CFE_SB_Default_Qos, PMC_SCH_PIPE_WAKEUP_RESERVED);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "Sch Pipe failed to subscribe to PMC_WAKEUP_MID. (0x%08X)",
+                                     "Sch Pipe failed to subscribe to PMC_UPDATE_MOTORS_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto PMC_InitPipe_Exit_Tag;
         }
@@ -236,21 +226,15 @@ PMC_InitPipe_Exit_Tag:
 /* Initialize Global Variables                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 PMC::InitData()
 {
     int32  iStatus=CFE_SUCCESS;
 
-    /* Init input data */
-    memset((void*)&InData, 0x00, sizeof(InData));
+    /* Init actuator outputs message */
+    CFE_SB_InitMsg(&ActuatorOutputs,
+            PX4_ACTUATOR_OUTPUTS_MID, sizeof(ActuatorOutputs), TRUE);
 
-    /* Init output data */
-    memset((void*)&OutData, 0x00, sizeof(OutData));
-    CFE_SB_InitMsg(&OutData,
-            PX4_ACTUATOR_OUTPUTS_MID, sizeof(OutData), TRUE);
-
-    /* Init housekeeping packet */
-    memset((void*)&HkTlm, 0x00, sizeof(HkTlm));
+    /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
                    PMC_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
@@ -263,7 +247,6 @@ int32 PMC::InitData()
 /* PMC initialization                                              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 PMC::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
@@ -307,15 +290,6 @@ int32 PMC::InitApp()
         goto PMC_InitApp_Exit_Tag;
     }
 
-    iStatus = InitCdsTbl();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init CDS table (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto PMC_InitApp_Exit_Tag;
-    }
-
     iStatus = MixerObject.SetConfigTablePtr(MixerConfigTblPtr);
     if (iStatus != CFE_SUCCESS)
     {
@@ -327,7 +301,7 @@ int32 PMC::InitApp()
 
     PwmLimit_Init(&PwmLimit);
 
-    iStatus = InitDevice(PMC_DEVICE_PATH);
+    iStatus = InitDevice();
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(PMC_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -368,7 +342,7 @@ PMC_InitApp_Exit_Tag:
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 PMC::RcvMsg(int32 iBlocking)
+int32 PMC::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
@@ -388,15 +362,8 @@ int32 PMC::RcvMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
 	{
-            case PMC_WAKEUP_MID:
-                //PMC_ProcessNewCmds();
-                //PMC_ProcessNewData();
-
-                /* TODO:  Add more code here to handle other things when app wakes up */
-
-                /* The last thing to do at the end of this Wakeup cycle should be to
-                 * automatically publish new output. */
-                //PMC_SendOutData();
+            case PMC_UPDATE_MOTORS_MID:
+                UpdateMotors();
                 break;
 
             case PMC_SEND_HK_MID:
@@ -405,23 +372,14 @@ int32 PMC::RcvMsg(int32 iBlocking)
 
             case PX4_ACTUATOR_ARMED_MID:
                 memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
-                UpdateMotors();
                 break;
 
             case PX4_ACTUATOR_CONTROLS_0_MID:
                 memcpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
-                if(CVT.ActuatorArmed.InEscCalibrationMode == FALSE)
-                {
-                    UpdateMotors();
-                }
                 break;
 
             case PX4_RC_CHANNELS_MID:
                 memcpy(&CVT.RcChannels, MsgPtr, sizeof(CVT.RcChannels));
-                if(CVT.ActuatorArmed.InEscCalibrationMode == TRUE)
-                {
-                    UpdateMotors();
-                }
                 break;
 
             default:
@@ -442,6 +400,7 @@ int32 PMC::RcvMsg(int32 iBlocking)
          * iBlocking arg, you can do something here, or nothing.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
+        UpdateMotors();
         iStatus = CFE_SUCCESS;
     }
     else
@@ -455,56 +414,6 @@ int32 PMC::RcvMsg(int32 iBlocking)
     }
 
     return (iStatus);
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Process Incoming Data                                           */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-void PMC::ProcessNewData()
-{
-    int iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   DataMsgPtr=NULL;
-    CFE_SB_MsgId_t  DataMsgId;
-
-    /* Process telemetry messages till the pipe is empty */
-    while (1)
-    {
-        iStatus = CFE_SB_RcvMsg(&DataMsgPtr, DataPipeId, CFE_SB_POLL);
-        if (iStatus == CFE_SUCCESS)
-        {
-            DataMsgId = CFE_SB_GetMsgId(DataMsgPtr);
-            switch (DataMsgId)
-            {
-                /* TODO:  Add code to process all subscribed data here
-                **
-                ** Example:
-                **     case NAV_OUT_DATA_MID:
-                **         PMC_ProcessNavData(DataMsgPtr);
-                **         break;
-                */
-
-                default:
-                    (void) CFE_EVS_SendEvent(PMC_MSGID_ERR_EID, CFE_EVS_ERROR,
-                                      "Recvd invalid data msgId (0x%04X)", (unsigned short)DataMsgId);
-                    break;
-            }
-        }
-        else if (iStatus == CFE_SB_NO_MESSAGE)
-        {
-            break;
-        }
-        else
-        {
-            (void) CFE_EVS_SendEvent(PMC_PIPE_ERR_EID, CFE_EVS_ERROR,
-                  "Data pipe read error (0x%08X)", (unsigned int)iStatus);
-            uiRunStatus = CFE_ES_APP_ERROR;
-            break;
-        }
-    }
 }
 
 
@@ -530,16 +439,8 @@ void PMC::ProcessNewCmds()
             switch (CmdMsgId)
             {
                 case PMC_CMD_MID:
-                    ProcessNewAppCmds(CmdMsgPtr);
+                    ProcessAppCmds(CmdMsgPtr);
                     break;
-
-                /* TODO:  Add code to process other subscribed commands here
-                **
-                ** Example:
-                **     case CFE_TIME_DATA_CMD_MID:
-                **         PMC_ProcessTimeDataCmd(CmdMsgPtr);
-                **         break;
-                */
 
                 default:
                     /* Bump the command error counter for an unknown command.
@@ -572,7 +473,7 @@ void PMC::ProcessNewCmds()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void PMC::ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
+void PMC::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
 
@@ -618,14 +519,8 @@ void PMC::ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void PMC::ReportHousekeeping()
 {
-    /* TODO:  Add code to update housekeeping data, if needed, here.  */
-
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
-    int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* TODO: Decide what to do if the send message fails. */
-    }
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
 
 
@@ -635,16 +530,10 @@ void PMC::ReportHousekeeping()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void PMC::SendOutData()
+void PMC::SendActuatorOutputs()
 {
-    /* TODO:  Add code to update output data, if needed, here.  */
-
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&OutData);
-    int32 iStatus = CFE_SB_SendMsg((CFE_SB_Msg_t*)&OutData);
-    if (iStatus != CFE_SUCCESS)
-    {
-        /* TODO: Decide what to do if the send message fails. */
-    }
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
 }
 
 
@@ -653,7 +542,6 @@ void PMC::SendOutData()
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 boolean PMC::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
@@ -681,9 +569,10 @@ boolean PMC::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
     return (bResult);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* PMC application entry point and main process loop               */
+/* PMC Application C style main entry point.                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void PMC_AppMain()
@@ -691,6 +580,12 @@ void PMC_AppMain()
     oPMC.AppMain();
 }
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* PMC Application C++ style main entry point.                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void PMC::AppMain()
 {
     /* Register the application with Executive Services */
@@ -726,17 +621,7 @@ void PMC::AppMain()
     /* Application main loop */
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
-        int32 iStatus = RcvMsg(PMC_SCH_PIPE_PEND_TIME);
-        if (iStatus != CFE_SUCCESS)
-        {
-            /* TODO: Decide what to do for other return values in PMC_RcvMsg(). */
-        }
-        /* TODO: This is only a suggestion for when to update and save CDS table.
-        ** Depends on the nature of the application, the frequency of update
-        ** and save can be more or less independently.
-        */
-        UpdateCdsTbl();
-        SaveCdsTbl();
+        RcvSchPipeMsg(PMC_SCH_PIPE_PEND_TIME);
 
         iStatus = AcquireConfigPointers();
         if(iStatus != CFE_SUCCESS)
@@ -754,48 +639,50 @@ void PMC::AppMain()
 }
 
 
-
-int32 PMC::InitMixer(const char *Filename)
-{
-	/* TODO:  Complete this */
-	return 0;
-}
-
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Command all motors to stop.                                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void PMC::StopMotors(void)
 {
-    uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
+    uint16 disarmed_pwm[PMC_MAX_MOTOR_OUTPUTS];
 
-    for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
+    for (unsigned int i = 0; i < PMC_MAX_MOTOR_OUTPUTS; i++) {
         disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
     }
 
-    SendOutputs(disarmed_pwm);
+    SetMotorOutputs(disarmed_pwm);
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Mix actuator controls and update motor speeds accordingly.      */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void PMC::UpdateMotors(void)
 {
     const uint16 reverse_mask = 0;
-    uint16 disarmed_pwm[PMC_MAX_ZYNQ_PWMS];
-    uint16 min_pwm[PMC_MAX_ZYNQ_PWMS];
-    uint16 max_pwm[PMC_MAX_ZYNQ_PWMS];
-    uint16 pwm[PMC_MAX_ZYNQ_PWMS];
+    uint16 disarmed_pwm[PMC_MAX_MOTOR_OUTPUTS];
+    uint16 min_pwm[PMC_MAX_MOTOR_OUTPUTS];
+    uint16 max_pwm[PMC_MAX_MOTOR_OUTPUTS];
+    uint16 pwm[PMC_MAX_MOTOR_OUTPUTS];
     PX4_ActuatorOutputsMsg_t outputs;
 
-    OutData.timestamp = CVT.ActuatorControls0.timestamp;
+    ActuatorOutputs.timestamp = CVT.ActuatorControls0.timestamp;
 
     /* Do mixing */
-    OutData.Count = MixerObject.mix(OutData.Output, 0, 0);
+    ActuatorOutputs.Count = MixerObject.mix(ActuatorOutputs.Output, 0, 0);
 
     /* Disable unused ports by setting their output to NaN */
-    for (size_t i = OutData.Count;
-         i < sizeof(OutData.Output) / sizeof(OutData.Output[0]);
+    for (size_t i = ActuatorOutputs.Count;
+         i < sizeof(ActuatorOutputs.Output) / sizeof(ActuatorOutputs.Output[0]);
          i++) {
-        OutData.Output[i] = NAN;
+        ActuatorOutputs.Output[i] = NAN;
     }
 
-    for (unsigned int i = 0; i < PMC_MAX_ZYNQ_PWMS; i++) {
+    for (unsigned int i = 0; i < PMC_MAX_MOTOR_OUTPUTS; i++) {
         disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
         min_pwm[i] = PwmConfigTblPtr->PwmMin;
         max_pwm[i] = PwmConfigTblPtr->PwmMax;
@@ -804,23 +691,21 @@ void PMC::UpdateMotors(void)
     /* TODO */
     PwmLimit_Calc(CVT.ActuatorArmed.Armed,
             FALSE/*_armed.prearmed*/,
-            OutData.Count,
+            ActuatorOutputs.Count,
             reverse_mask,
             disarmed_pwm,
             min_pwm,
             max_pwm,
-            OutData.Output,
+            ActuatorOutputs.Output,
             pwm,
             &PwmLimit);
 
     if (CVT.ActuatorArmed.Lockdown)
     {
-        OS_printf("CVT.ActuatorArmed.Lockdown\n");
-        SendOutputs(disarmed_pwm);
+        SetMotorOutputs(disarmed_pwm);
     }
     else if (CVT.ActuatorArmed.InEscCalibrationMode)
     {
-        OS_printf("CVT.ActuatorArmed.InEscCalibrationMode\n");
         if (CVT.ActuatorControls0.Control[3] * 1000 > 0.5f) {
             pwm[0] = PwmConfigTblPtr->PwmMax;
             pwm[1] = PwmConfigTblPtr->PwmMax;
@@ -833,46 +718,46 @@ void PMC::UpdateMotors(void)
             pwm[3] = PwmConfigTblPtr->PwmMin;
         }
 
-        SendOutputs(pwm);
+        SetMotorOutputs(pwm);
         CFE_EVS_SendEvent(PMC_PWM_CALIB_INFO_EID, CFE_EVS_INFORMATION, "Calib pwm %d:%d:%d:%d.", pwm[0], pwm[1], pwm[2], pwm[3]);
 
     }
     else
     {
-        SendOutputs(pwm);
+        SetMotorOutputs(pwm);
     }
 
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&OutData);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&OutData);
-}
-
-void PMC::Deinitialize(void)
-{
-    uint32 i = 0;
-
-    for (i = 0; i < PMC_MAX_ZYNQ_PWMS; ++i) {
-        SharedMemCmd = 0;
-    }
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
 }
 
 
-unsigned long PMC::Freq2tick(uint16 FreqHz)
-{
-    unsigned long duty = PMC_TICK_PER_S / (unsigned long)FreqHz;
-    return duty;
-}
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Mixer callback to get the actual control value.                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PMC::ControlCallback(
         cpuaddr Handle,
         uint8 ControlGroup,
         uint8 ControlIndex,
         float &Control)
 {
+    int32 iStatus = 0;
+
     const PX4_ActuatorControlsMsg_t *controls = (PX4_ActuatorControlsMsg_t*)Handle;
 
-    Control = controls[ControlGroup].Control[ControlIndex];
+    if(ControlGroup > 0)
+        iStatus = -1;
+    else if(ControlIndex > 8)
+        iStatus = -1;
+    else
+    {
+        Control = controls[ControlGroup].Control[ControlIndex];
+        iStatus = CFE_SUCCESS;
+    }
 
-    return 0;
+    return iStatus;
 }
 
 #ifdef __cplusplus

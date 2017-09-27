@@ -25,8 +25,7 @@ extern "C" {
 #include "pmc_msgids.h"
 #include "pmc_msg.h"
 #include "pmc_events.h"
-#include "pmc_config_utils.h"
-#include "pmc_cds_utils.h"
+#include "pmc_tbldefs.h"
 #include "px4_msgs.h"
 #include <pwm_limit/pwm_limit.h>
 
@@ -34,13 +33,6 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define PMC_TIMEOUT_MSEC        (1000)
-#define PMC_MAX_ZYNQ_PWMS       (8)
-#define PMC_RCOUT_ZYNQ_PWM_BASE (0x43c00000)
-#define PMC_FREQUENCY_PWM       (400)
-#define PMC_TICK_PER_S          (50000000)
-#define PMC_TICK_PER_US         (50)
-#define PMC_DEVICE_PATH         "/dev/mem"
 
 /************************************************************************
  ** Local Structure Definitions
@@ -52,16 +44,6 @@ typedef struct
     PX4_ActuatorArmedMsg_t    ActuatorArmed;
     PX4_RcChannelsMsg_t       RcChannels;
 } PMC_CurrentValueTable_t;
-
-typedef struct {
-    uint32 Period;
-    uint32 Hi;
-} PMC_PeriodHi_t;
-
-typedef struct
-{
-     PMC_PeriodHi_t PeriodHi[PMC_MAX_ZYNQ_PWMS];
-} PMC_SharedMemCmd_t;
 
 
 /**
@@ -104,281 +86,379 @@ public:
     /** \brief Mixer Config Table Pointer */
     MultirotorMixer_ConfigTable_t* MixerConfigTblPtr;
 
-    /* Critical Data Storage (CDS) table-related */
-
-    /** \brief CDS Table Handle */
-    CFE_ES_CDSHandle_t CdsTblHdl;
-
-    /** \brief CDS Table data */
-    PMC_CdsTbl_t CdsTbl;
-
-    /* Inputs/Outputs */
-
-    /** \brief Input Data from I/O or other apps */
-    PMC_InData_t InData;
-
     /** \brief Output Data published at the end of cycle */
-    PX4_ActuatorOutputsMsg_t OutData;
+    PX4_ActuatorOutputsMsg_t ActuatorOutputs;
 
     /** \brief Housekeeping Telemetry for downlink */
     PMC_HkTlm_t HkTlm;
 
     PMC_CurrentValueTable_t CVT;
 
-    volatile PMC_SharedMemCmd_t *SharedMemCmd;
-
     MultirotorMixer MixerObject;
 
     //MIXER_Data_t  MixerData;
     PwmLimit_Data_t PwmLimit;
 
+    /************************************************************************/
+    /** \brief CFS PWM Motor Controller Task (PMC) application entry point
+     **
+     **  \par Description
+     **       CFS PWM Motor Controller Task application entry point.  This function
+     **       performs app initialization, then waits for the cFE ES Startup
+     **       Sync, then executes the RPR main processing loop.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       If there is an unrecoverable failure during initialization the
+     **       main loop is never executed and the application will exit.
+     **
+     *************************************************************************/
+    void AppMain(void);
 
-/************************************************************************
- ** External Global Variables
- *************************************************************************/
+    /************************************************************************/
+    /** \brief Initialize the CFS PWM Motor Controller (PMC) application
+     **
+     **  \par Description
+     **       PWM Motor Controller application initialization routine. This
+     **       function performs all the required startup steps to
+     **       initialize (or restore from CDS) PMC data structures and get
+     **       the application registered with the cFE services so it can
+     **       begin to receive command messages and send events.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS    \endcode
+     **  \retstmt Return codes from #CFE_ES_RegisterApp          \endcode
+     **  \retstmt Return codes from #PMC_InitEvent               \endcode
+     **  \retstmt Return codes from #PMC_InitPipe                \endcode
+     **  \retstmt Return codes from #PMC_InitData                \endcode
+     **  \retstmt Return codes from #PMC_InitConfigTbl           \endcode
+     **  \retstmt Return codes from #OS_TaskInstallDeleteHandler \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 InitApp(void);
 
-/************************************************************************
- ** Global Variables
- *************************************************************************/
+    /************************************************************************/
+    /** \brief Initialize Event Services and Event tables
+     **
+     **  \par Description
+     **       This function performs the steps required to setup
+     **       cFE Event Services for use by the PMC application.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+     **  \retstmt Return codes from #CFE_EVS_Register  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 InitEvent(void);
 
-/************************************************************************
- ** Local Variables
- *************************************************************************/
+    /************************************************************************/
+    /** \brief Initialize global variables used by PMC application
+     **
+     **  \par Description
+     **       This function performs the steps required to initialize
+     **       the PMC application data.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+     **  \retstmt Return codes from #CFE_EVS_Register  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 InitData(void);
 
-/************************************************************************
- ** Local Function Prototypes
- *************************************************************************/
+    /************************************************************************/
+    /** \brief Initialize message pipes
+     **
+     **  \par Description
+     **       This function performs the steps required to setup
+     **       initialize the cFE Software Bus message pipes and subscribe to
+     **       messages for the PMC application.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+     **  \retstmt Return codes from #CFE_SB_CreatePipe        \endcode
+     **  \retstmt Return codes from #CFE_SB_SubscribeEx       \endcode
+     **  \retstmt Return codes from #CFE_SB_Subscribe         \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 InitPipe(void);
 
-/************************************************************************/
-/** \brief CFS PWM Motor Controller Task (PMC) application entry point
- **
- **  \par Description
- **       CFS PWM Motor Controller Task application entry point.  This function
- **       performs app initialization, then waits for the cFE ES Startup
- **       Sync, then executes the RPR main processing loop.
- **
- **  \par Assumptions, External Events, and Notes:
- **       If there is an unrecoverable failure during initialization the
- **       main loop is never executed and the application will exit.
- **
- *************************************************************************/
-void AppMain(void);
+    /************************************************************************/
+    /** \brief Receive and process messages from the scheduler pipe.
+     **
+     **  \par Description
+     **       This function receives and processes messages
+     **       for the PMC application from the SCH pipe.  This function
+     **       will pend for the type defined by iBlocking, allowing
+     **       it to wait for messages, i.e. wakeup messages from scheduler.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   iBlocking    A #CFE_SB_PEND_FOREVER, #CFE_SB_POLL or
+     **                             millisecond timeout
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+     **  \retstmt Return codes from #CFE_SB_RcvMsg            \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 RcvSchPipeMsg(int32 iBlocking);
 
-/************************************************************************/
-/** \brief Initialize the CFS PWM Motor Controller (PMC) application
- **
- **  \par Description
- **       PWM Motor Controller application initialization routine. This
- **       function performs all the required startup steps to
- **       initialize (or restore from CDS) PMC data structures and get
- **       the application registered with the cFE services so it can
- **       begin to receive command messages and send events.
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \returns
- **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS    \endcode
- **  \retstmt Return codes from #CFE_ES_RegisterApp          \endcode
- **  \retstmt Return codes from #PMC_InitEvent               \endcode
- **  \retstmt Return codes from #PMC_InitPipe                \endcode
- **  \retstmt Return codes from #PMC_InitData                \endcode
- **  \retstmt Return codes from #PMC_InitConfigTbl           \endcode
- **  \retstmt Return codes from #PMC_InitCdsTbl              \endcode
- **  \retstmt Return codes from #OS_TaskInstallDeleteHandler \endcode
- **  \endreturns
- **
- *************************************************************************/
-int32 InitApp(void);
+    /************************************************************************/
+    /** \brief PWM Motor Controller Task incoming command processing
+     **
+     **  \par Description
+     **       This function processes incoming commands subscribed
+     **       by PMC application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ProcessNewCmds(void);
 
-/************************************************************************/
-/** \brief Initialize Event Services and Event tables
- **
- **  \par Description
- **       This function performs the steps required to setup
- **       cFE Event Services for use by the PMC application.
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \returns
- **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
- **  \retstmt Return codes from #CFE_EVS_Register  \endcode
- **  \endreturns
- **
- *************************************************************************/
-int32 InitEvent(void);
+    /************************************************************************/
+    /** \brief PWM Motor Controller Task application commands
+     **
+     **  \par Description
+     **       This function processes command messages
+     **       specific to the PMC application
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   MsgPtr       A #CFE_SB_Msg_t pointer that
+     **                             references the software bus message
+     **
+     *************************************************************************/
+    void ProcessAppCmds(CFE_SB_Msg_t* MsgPtr);
 
-/************************************************************************/
-/** \brief Initialize global variables used by PMC application
- **
- **  \par Description
- **       This function performs the steps required to initialize
- **       the PMC application data.
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \returns
- **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
- **  \retstmt Return codes from #CFE_EVS_Register  \endcode
- **  \endreturns
- **
- *************************************************************************/
-int32 InitData(void);
+    /************************************************************************/
+    /** \brief Sends PMC housekeeping message
+     **
+     **  \par Description
+     **       This function sends the housekeeping message
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReportHousekeeping(void);
 
-/************************************************************************/
-/** \brief Initialize message pipes
- **
- **  \par Description
- **       This function performs the steps required to setup
- **       initialize the cFE Software Bus message pipes and subscribe to
- **       messages for the PMC application.
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \returns
- **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
- **  \retstmt Return codes from #CFE_SB_CreatePipe        \endcode
- **  \retstmt Return codes from #CFE_SB_SubscribeEx       \endcode
- **  \retstmt Return codes from #CFE_SB_Subscribe         \endcode
- **  \endreturns
- **
- *************************************************************************/
-int32 InitPipe(void);
+    /************************************************************************/
+    /** \brief Sends the Actuator Output message.
+     **
+     **  \par Description
+     **       This function publishes the actuator output message containing
+     **       the commanding values to the motors.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void SendActuatorOutputs(void);
 
-/************************************************************************/
-/** \brief Receive and process messages
- **
- **  \par Description
- **       This function receives and processes messages
- **       for the PMC application
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \param [in]   iBlocking    A #CFE_SB_PEND_FOREVER, #CFE_SB_POLL or
- **                             millisecond timeout
- **
- **  \returns
- **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
- **  \retstmt Return codes from #CFE_SB_RcvMsg            \endcode
- **  \endreturns
- **
- *************************************************************************/
-int32 RcvMsg(int32 iBlocking);
-
-/************************************************************************/
-/** \brief PWM Motor Controller Task incoming data processing
- **
- **  \par Description
- **       This function processes incoming data subscribed
- **       by PMC application
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- *************************************************************************/
-void ProcessNewData(void);
-
-/************************************************************************/
-/** \brief PWM Motor Controller Task incoming command processing
- **
- **  \par Description
- **       This function processes incoming commands subscribed
- **       by PMC application
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- *************************************************************************/
-void ProcessNewCmds(void);
-
-/************************************************************************/
-/** \brief PWM Motor Controller Task application commands
- **
- **  \par Description
- **       This function processes command messages
- **       specific to the PMC application
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \param [in]   MsgPtr       A #CFE_SB_Msg_t pointer that
- **                             references the software bus message
- **
- *************************************************************************/
-void ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr);
-
-/************************************************************************/
-/** \brief Sends PMC housekeeping message
- **
- **  \par Description
- **       This function sends the housekeeping message
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- *************************************************************************/
-void ReportHousekeeping(void);
-
-/************************************************************************/
-/** \brief Sends PMC output data
- **
- **  \par Description
- **       This function publishes the PMC application output data.
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- *************************************************************************/
-void SendOutData(void);
-
-/************************************************************************/
-/** \brief Verify Command Length
- **
- **  \par Description
- **       This function verifies the command message length.
- **
- **  \par Assumptions, External Events, and Notes:
- **       None
- **
- **  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
- **                              references the software bus message
- **  \param [in]   usExpectedLen The expected length of the message
- **
- **  \returns
- **  TRUE if the message length matches expectations, FALSE if it does not.
- **  \endreturns
- **
- *************************************************************************/
-boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    /************************************************************************/
+    /** \brief Verify Command Length
+     **
+     **  \par Description
+     **       This function verifies the command message length.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+     **                              references the software bus message
+     **  \param [in]   usExpectedLen The expected length of the message
+     **
+     **  \returns
+     **  TRUE if the message length matches expectations, FALSE if it does not.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
-    int32  InitMixer(const char *Filename);
-    void   SendOutputs(const uint16 *PWM);
-    uint32 Freq2tick(uint16 FreqHz);
-    int32  InitDevice(const char *Device);
-    void   DeinitDevice(void);
+    /************************************************************************/
+    /** \brief Set the actual motor outputs.
+     **
+     **  \par Description
+     **       This function takes an array of uint16 representing motor
+     **       speeds for each of the motors in the array, and sets the motor
+     **       to that specific speed.  The range of inputs is configuration
+     **       specific.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   *PWM          A pointer to an array of uint16.  The
+     **                              array size is defined by
+     **                              PMC_MAX_MOTOR_OUTPUTS.
+     **                              references the software bus message
+     **
+     *************************************************************************/
+    void   SetMotorOutputs(const uint16 *PWM);
+
+    /************************************************************************/
+    /** \brief Initialize device
+     **
+     **  \par Description
+     **       This function is defined in the platform specific package and
+     **       initializes the device, whatever it is, to allow the application
+     **       to set motor speeds.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  Meaning of actual return value is platform specific.
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32  InitDevice(void);
+
+    /************************************************************************/
+    /** \brief Update motors
+     **
+     **  \par Description
+     **       This function mixes the yaw, pitch, roll, and throttle actuators
+     **       and sets each specific motor to result in the commanded attitude
+     **       change.  Exactly to which proportion each motor affects each
+     **       actuator position is defined in the #MixerConfigTblHdl table.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void   UpdateMotors(void);
+
+    /************************************************************************/
+    /** \brief Stop motors
+     **
+     **  \par Description
+     **       This function commands the motors to immediately stop.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void   StopMotors(void);
-    int32  InitCdsTbl(void);
-    void   UpdateCdsTbl(void);
-    void   SaveCdsTbl(void);
+
+    /************************************************************************/
+    /** \brief Initialize the PMC configuration tables.
+    **
+    **  \par Description
+    **       This function initializes PMC's configuration tables.  This
+    **       includes the PWM and the Mixer configuration table.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
+    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
+    **  \retstmt Return codes from #PMC_AcquireConfigPointers \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     int32  InitConfigTbl(void);
-    void   Deinitialize(void);
-    void   ProcessNewPwmConfigTbl(void);
-    void   ProcessNewMixerConfigTbl(void);
+
+    /************************************************************************/
+    /** \brief Obtain PMC configuration tables data pointers.
+    **
+    **  \par Description
+    **       This function manages the configuration tables
+    **       and obtains a pointer to their data.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     int32  AcquireConfigPointers(void);
 
 public:
+    /************************************************************************/
+    /** \brief Validate PMC PWM configuration table
+    **
+    **  \par Description
+    **       This function validates PMC's PWM configuration table
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static int32  ValidatePwmCfgTbl(void*);
+
+    /************************************************************************/
+    /** \brief Validate PMC Mixer configuration table
+    **
+    **  \par Description
+    **       This function validates PMC's Mixer configuration table
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+     **
+     **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static int32  ValidateMixerCfgTbl(void*);
+
+    /************************************************************************/
+    /** \brief Return the specified control value
+    **
+    **  \par Description
+    **       This function is called by the Mixer object and returns the
+    **       value of the specified control.  This specific function only
+    **       supports ControlGroup 0 and will return an error otherwise.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+     **
+     **  \param [in]   ControlGroup    Index of the control group.
+     **  \param [in]   ControlIndex    Index of the control.
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \retcode -1  \retdesc Invalid input  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
     static int32  ControlCallback(cpuaddr Handle,
         uint8 ControlGroup,
         uint8 ControlIndex,
         float &Control);
-    static int32  ValidatePwmCfgTbl(void* ConfigTblPtr);
-    static int32  ValidateMixerCfgTbl(void* ConfigTblPtr);
 };
 
 #ifdef __cplusplus
