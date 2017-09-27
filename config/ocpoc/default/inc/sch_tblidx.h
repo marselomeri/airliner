@@ -69,8 +69,8 @@
 #define CF_SEND_HK_MIDX				57
 #define CF_WAKE_UP_REQ_CMD_MIDX		58
 
-#define PMC_UPDATE_MOTORS_MIDX      65
-#define PMC_SEND_HK_MIDX            66
+#define AMC_UPDATE_MOTORS_MIDX      65
+#define AMC_SEND_HK_MIDX            66
 
 #define MM_SEND_HK_MIDX				70
 

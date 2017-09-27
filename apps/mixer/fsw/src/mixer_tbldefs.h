@@ -27,7 +27,6 @@ extern "C" {
 /** \brief Definition for a CI command config table */
 typedef struct
 {
-    char    ConfigName[OS_MAX_NAME_LEN];
     float   RollScale;
     float   PitchScale;
     float   YawScale;
