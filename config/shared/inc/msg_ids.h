@@ -552,12 +552,12 @@
 #define VC_CMD_MID                                  0x1c3b
 #define VC_WAKEUP_MID                               0x1c3c
 
-/* PMC                                                  */
-#define PMC_CMD_MID                                 0x1c3d
-#define PMC_SEND_HK_MID                             0x1c3e
-#define PMC_UPDATE_MOTORS_MID                       0x1c3f
-#define PMC_OUT_DATA_MID                            0x0c40
-#define PMC_HK_TLM_MID                              0x0c41
+/* AMC                                                  */
+#define AMC_CMD_MID                                 0x1c3d
+#define AMC_SEND_HK_MID                             0x1c3e
+#define AMC_UPDATE_MOTORS_MID                              0x1c3f
+#define AMC_OUT_DATA_MID                            0x0c40
+#define AMC_HK_TLM_MID                              0x0c41
 
 /* MAC                                                  */
 #define MAC_CMD_MID                                 0x1c42

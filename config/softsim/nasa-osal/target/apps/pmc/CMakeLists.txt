@@ -1,1 +1,1 @@
-set(APP_NAME pmc)
+set(APP_NAME amc)

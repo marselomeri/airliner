@@ -101,7 +101,10 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define AMC_CONFIG_TABLE_FILENAME      ("/cf/apps/amc_config.tbl")
+#define AMC_PWM_CONFIG_TABLE_FILENAME      ("/cf/apps/amc_pwmcfg.tbl")
+
+#define AMC_MIXER_CONFIG_TABLE_FILENAME      ("/cf/apps/amc_mixercfg.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
@@ -111,6 +114,8 @@ extern "C" {
 
 /* TODO:  Add Doxygen markup. */
 #define AMC_CUSTOM_DEV_PATH       "/tmp/ttyS0"
+
+#define AMC_MAX_MOTOR_OUTPUTS         (16)
 
 
 #ifdef __cplusplus
