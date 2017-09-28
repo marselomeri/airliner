@@ -1,60 +1,5 @@
-/************************************************************************
-** File:
-**   $Id: cf_platform_cfg.h 1.15.1.1 2015/03/06 15:30:43EST sstrege Exp  $
-**
-**   Copyright © 2007-2014 United States Government as represented by the 
-**   Administrator of the National Aeronautics and Space Administration. 
-**   All Other Rights Reserved.  
-**
-**   This software was created at NASA's Goddard Space Flight Center.
-**   This software is governed by the NASA Open Source Agreement and may be 
-**   used, distributed and modified only pursuant to the terms of that 
-**   agreement.
-**
-** Purpose: 
-**  The CFS CF Application platform configuration header file
-**
-** Notes:
-**
-** $Log: cf_platform_cfg.h  $
-** Revision 1.15.1.1 2015/03/06 15:30:43EST sstrege 
-** Added copyright information
-** Revision 1.15 2011/05/19 15:32:04EDT rmcgraw 
-** DCR15033:1 Add auto suspend processing
-** Revision 1.14 2011/05/19 13:15:13EDT rmcgraw 
-** DCR14532:1 Let user select fix or variable size outgoing PDU pkts
-** Revision 1.13 2011/05/13 14:59:26EDT rmcgraw 
-** DCR13439:1 Added platform config param CF_STARTUP_SYNC_TIMEOUT
-** Revision 1.12 2010/11/04 11:37:45EDT rmcgraw 
-** Dcr13051:1 Wrap OS_printfs in platform cfg CF_DEBUG
-** Revision 1.11 2010/10/25 11:21:51EDT rmcgraw 
-** DCR12573:1 Changes to allow more than one incoming PDU MsgId
-** Revision 1.10 2010/10/20 16:07:01EDT rmcgraw 
-** DCR13054:1 Expanded max event filters at startup from four to eight
-** Revision 1.9 2010/10/20 10:13:31EDT rmcgraw 
-** DCR12982:1 Moved 4th digit in version to platform cfg file
-** Revision 1.8 2010/08/06 18:45:56EDT rmcgraw 
-** Dcr11510:1 Fixed cfg params with buffer sizes
-** Revision 1.7 2010/08/04 15:16:09EDT rmcgraw 
-** DCR11510:1 Added Event Filtering
-** Revision 1.6 2010/07/20 14:37:40EDT rmcgraw 
-** Dcr11510:1 Remove Downlink buffer references
-** Revision 1.5 2010/07/07 17:25:12EDT rmcgraw 
-** DCR11510:1 Change incoming pdu data buf to incoming pdu buffer and corrected 
-**     the comments
-** Revision 1.4 2010/04/27 09:06:54EDT rmcgraw 
-** DCR11510:1 Comment changes
-** Revision 1.3 2010/04/23 08:39:16EDT rmcgraw 
-** Dcr11510:1 Code Review Prep
-** Revision 1.2 2010/03/12 12:14:39EST rmcgraw 
-** DCR11510:1 Initial check-in towards CF Version 1000
-** Revision 1.1 2009/11/24 12:47:36EST rmcgraw 
-** Initial revision
-** Member added to CFS CF project
-**
-*************************************************************************/
-#ifndef _cf_platform_cfg_h_
-#define _cf_platform_cfg_h_
+#ifndef CF_PLATFORM_CFG_H
+#define CF_PLATFORM_CFG_H
 
 /*************************************************************************
 ** Macro definitions
@@ -421,7 +366,7 @@
 
 
 
-#endif /* _cf_platform_cfg_h_ */
+#endif /* CF_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */

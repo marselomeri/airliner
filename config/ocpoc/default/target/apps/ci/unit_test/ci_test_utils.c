@@ -1,4 +1,3 @@
-
 #include "ci_test_utils.h"
 
 #include "ut_cfe_evs_hooks.h"

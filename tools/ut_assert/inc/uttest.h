@@ -36,6 +36,10 @@
 #ifndef _uttest_
 #define	_uttest_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Exported Functions
  */
@@ -54,6 +58,10 @@ int     UtTest_Run(void);
  * status indicating if any of the tests failed. (TRUE = at least one test failure has occurred, 
  * FALSE = all tests passed) */
 int     UtTest_RunTest(unsigned int testCase);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

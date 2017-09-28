@@ -1,36 +1,4 @@
 /************************************************************************
-** File:
-**   $Id: cs_memorytbl.c 1.3.1.1 2015/03/03 11:58:08EST sstrege Exp  $
-**
-**   Copyright © 2007-2014 United States Government as represented by the 
-**   Administrator of the National Aeronautics and Space Administration. 
-**   All Other Rights Reserved.  
-**
-**   This software was created at NASA's Goddard Space Flight Center.
-**   This software is governed by the NASA Open Source Agreement and may be 
-**   used, distributed and modified only pursuant to the terms of that 
-**   agreement.
-**
-** Purpose: 
-**  The CFS Checksum (CS) Application Default Memory Table Definition
-**
-** Notes:
-**
-** $Log: cs_memorytbl.c  $
-** Revision 1.3.1.1 2015/03/03 11:58:08EST sstrege 
-** Added copyright information
-** Revision 1.3 2012/09/14 14:54:39EDT aschoeni 
-** Now uses macro for header
-** Revision 1.2 2010/07/16 13:22:34EDT jmdagost 
-** Corrected app name from "CS_APP" to "CS".
-** Revision 1.1 2010/03/09 15:30:30EST jmdagost 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/cs/fsw/tables/project.pj
-**
-*************************************************************************/
-
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include "cfe.h"

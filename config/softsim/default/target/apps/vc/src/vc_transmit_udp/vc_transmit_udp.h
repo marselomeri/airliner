@@ -1,4 +1,3 @@
-
 #ifndef VC_TRANSMIT_UDP_H
 #define VC_TRANSMIT_UDP_H
 

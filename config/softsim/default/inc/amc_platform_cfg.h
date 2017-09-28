@@ -1,4 +1,3 @@
-    
 #ifndef AMC_PLATFORM_CFG_H
 #define AMC_PLATFORM_CFG_H
 
@@ -113,9 +112,7 @@ extern "C" {
 #define AMC_STARTUP_TIMEOUT_MSEC    (1000)
 
 /* TODO:  Add Doxygen markup. */
-#define AMC_CUSTOM_DEV_PATH       "/tmp/ttyS0"
-
-#define AMC_MAX_MOTOR_OUTPUTS         (16)
+#define AMC_MAX_MOTOR_OUTPUTS       (8)
 
 
 #ifdef __cplusplus

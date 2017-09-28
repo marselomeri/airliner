@@ -16,6 +16,10 @@
 #ifndef UT_CFE_PSP_RAM_STUBS_H_
 #define UT_CFE_PSP_RAM_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_CFE_PSP_RAM_MEMREAD8_INDEX,
@@ -47,5 +51,9 @@ typedef struct
 void Ut_CFE_PSP_RAM_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_CFE_PSP_RAM_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_CFE_PSP_RAM_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

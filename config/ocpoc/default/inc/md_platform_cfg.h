@@ -1,27 +1,5 @@
-/*************************************************************************
-** File:
-**   $Id: md_platform_cfg.h 1.4 2017/05/22 14:59:23EDT mdeschu Exp  $
-**
-**  Copyright (c) 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose: 
-**   Specification for the CFS Memory Dwell constants that can
-**   be configured from one platform to another
-**
-** Notes:
-**
-** 
-*************************************************************************/
-
-#ifndef _md_platform_cfg_h_
-#define _md_platform_cfg_h_
+#ifndef MD_PLATFORM_CFG_H
+#define MD_PLATFORM_CFG_H
 
 
 /*************************************************************************
@@ -114,7 +92,7 @@
 */
 #define MD_MISSION_REV      0
 
-#endif /* _md_platform_cfg_ */
+#endif /* MD_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */

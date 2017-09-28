@@ -1,4 +1,3 @@
-
 #ifndef VC_DEV_IO_V4L_H
 #define VC_DEV_IO_V4L_H
 

@@ -1,4 +1,3 @@
-
 #include "to_custom_test_utils.h"
 #include "to_platform_stubs.h"
 

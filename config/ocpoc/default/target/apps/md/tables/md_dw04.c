@@ -1,26 +1,4 @@
 /************************************************************************
-** File:
-**   $Id: md_dw04.c 1.2 2017/05/22 14:56:30EDT mdeschu Exp  $
-**
-**  Copyright (c) 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose:
-**  The CFS Memory Dwell (MD) Example Dwell Table #4
-**
-** Notes:
-**
-**
-*************************************************************************/
-
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include "cfe.h"

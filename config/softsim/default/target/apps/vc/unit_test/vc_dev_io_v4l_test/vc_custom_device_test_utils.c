@@ -1,4 +1,3 @@
-
 #include "vc_custom_device_test_utils.h"
 #include "vc_platform_stubs.h"
 

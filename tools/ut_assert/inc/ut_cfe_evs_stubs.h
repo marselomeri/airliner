@@ -41,6 +41,10 @@
 #ifndef UT_CFE_EVS_STUBS_H_
 #define UT_CFE_EVS_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_CFE_EVS_REGISTER_INDEX,
@@ -71,5 +75,9 @@ void Ut_CFE_EVS_Reset(void);
 void Ut_CFE_EVS_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_CFE_EVS_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_CFE_EVS_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 

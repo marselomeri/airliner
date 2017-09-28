@@ -1,7 +1,7 @@
 /*
 ** $Id: ut_version.h 1.1.1.1 2016/07/13 12:00:30EDT sstrege Exp  $
 **
-**  Copyright © 2012-2013 United States Government as represented by the
+**  Copyright ï¿½ 2012-2013 United States Government as represented by the
 **  Administrator of the National Aeronautics and Space Administration.
 **  All Other Rights Reserved.
 **
@@ -26,6 +26,10 @@
 
 #ifndef _ut_version_h_
 #define _ut_version_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*************************************************************************
 **
@@ -53,6 +57,10 @@
 #define UT_MAJOR_VERSION     1
 #define UT_MINOR_VERSION     1
 #define UT_REVISION          0
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _ut_version_h_ */
 

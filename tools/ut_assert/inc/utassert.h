@@ -39,6 +39,10 @@
 #ifndef _utassert_
 #define	_utassert_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Includes
  */
@@ -116,5 +120,9 @@ uint32      UtAssert_GetFailCount(void);
 
 /* Base assert function.  All asserts must call this function. */
 boolean     UtAssert(boolean Expression, char *Description, char *File, uint32 Line);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

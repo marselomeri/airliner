@@ -1,6 +1,4 @@
-extern "C" {
-    #include "cfe.h"
-}
+#include "cfe.h"
 #include "amc_app.h"
 #include <sys/types.h>
 #include <sys/stat.h>

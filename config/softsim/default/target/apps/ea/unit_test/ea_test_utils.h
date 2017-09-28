@@ -1,4 +1,3 @@
-
 #ifndef EA_TEST_UTILS_H
 #define EA_TEST_UTILS_H
 

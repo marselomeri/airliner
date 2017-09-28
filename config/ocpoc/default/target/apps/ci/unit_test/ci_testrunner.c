@@ -1,4 +1,3 @@
-
 #include "uttest.h"
 
 #include "ci_custom_test.h"

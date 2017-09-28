@@ -1,4 +1,3 @@
-    
 #ifndef AMC_PLATFORM_CFG_H
 #define AMC_PLATFORM_CFG_H
 

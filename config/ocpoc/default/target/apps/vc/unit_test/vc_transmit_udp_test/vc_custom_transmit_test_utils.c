@@ -1,4 +1,3 @@
-
 #include "vc_custom_transmit_test_utils.h"
 #include "vc_platform_stubs.h"
 
