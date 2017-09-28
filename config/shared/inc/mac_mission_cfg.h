@@ -1,4 +1,3 @@
-    
 #ifndef MAC_MISSION_CFG_H
 #define MAC_MISSION_CFG_H
 

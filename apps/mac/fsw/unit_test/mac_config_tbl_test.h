@@ -1,4 +1,3 @@
-
 #ifndef MAC_CONFIG_TBL_TEST_H
 #define MAC_CONFIG_TBL_TEST_H
 

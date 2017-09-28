@@ -1,4 +1,3 @@
-
 #include "mac_config_tbl_test.h"
 #include "mac_test_utils.h"
 

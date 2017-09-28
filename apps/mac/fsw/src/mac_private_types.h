@@ -1,4 +1,3 @@
-    
 #ifndef MAC_PRIVATE_TYPES_H
 #define MAC_PRIVATE_TYPES_H
 

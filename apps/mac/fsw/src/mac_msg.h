@@ -1,4 +1,3 @@
-    
 #ifndef MAC_MSG_H
 #define MAC_MSG_H
 

@@ -1,4 +1,3 @@
-
 #include "uttest.h"
 
 #include "mac_app_test.h"

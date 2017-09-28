@@ -1,4 +1,3 @@
-    
 #ifndef MAC_TBLDEFS_H
 #define MAC_TBLDEFS_H
 

@@ -1,4 +1,3 @@
-
 #ifndef MAC_APP_TEST_H
 #define MAC_APP_TEST_H
 

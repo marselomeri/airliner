@@ -1,4 +1,3 @@
-    
 #ifndef MAC_VERSION_H
 #define MAC_VERSION_H
 

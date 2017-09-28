@@ -1,4 +1,3 @@
-    
 #ifndef MAC_PLATFORM_CFG_H
 #define MAC_PLATFORM_CFG_H
 

@@ -1,4 +1,3 @@
-    
 #ifndef MAC_EVENTS_H
 #define MAC_EVENTS_H
 

@@ -1,4 +1,3 @@
-
 #ifndef MAC_TEST_UTILS_H
 #define MAC_TEST_UTILS_H
 
