@@ -559,4 +559,11 @@
 #define AMC_OUT_DATA_MID                            0x0c40
 #define AMC_HK_TLM_MID                              0x0c41
 
+/* MAC                                                  */
+#define MAC_CMD_MID                                 0x1c42
+#define MAC_SEND_HK_MID                             0x1c43
+#define MAC_UPDATE_MOTORS_MID                       0x1c44
+#define MAC_OUT_DATA_MID                            0x0c45
+#define MAC_HK_TLM_MID                              0x0c46
+
 #endif

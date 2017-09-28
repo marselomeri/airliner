@@ -35,7 +35,7 @@
 #define VC_DEVICE_GET_PERF_ID       65
 #define PX4BR_MAIN_TASK_PERF_ID     66
 #define AMC_MAIN_TASK_PERF_ID       67
-
+#define MAC_MAIN_TASK_PERF_ID       68
 
 #endif
 
