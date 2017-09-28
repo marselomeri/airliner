@@ -555,14 +555,14 @@
 /* PMC                                                  */
 #define PMC_CMD_MID                                 0x1c3d
 #define PMC_SEND_HK_MID                             0x1c3e
-#define PMC_UPDATE_MOTORS_MID                              0x1c3f
+#define PMC_UPDATE_MOTORS_MID                       0x1c3f
 #define PMC_OUT_DATA_MID                            0x0c40
 #define PMC_HK_TLM_MID                              0x0c41
 
 /* MAC                                                  */
 #define MAC_CMD_MID                                 0x1c42
 #define MAC_SEND_HK_MID                             0x1c43
-#define MAC_WAKEUP_MID                              0x1c44
+#define MAC_UPDATE_MOTORS_MID                       0x1c44
 #define MAC_OUT_DATA_MID                            0x0c45
 #define MAC_HK_TLM_MID                              0x0c46
 
