@@ -45,10 +45,7 @@ int32 AMC::InitDevice(void)
     close(mem_fd);
 
     if (SharedMemCmd == 0) {
-        (void) CFE_EVS_SendEvent(AMC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init device.  errno = %u.",
-                                 errno);
-        return -1;
+        return errno;
     }
 
     for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) {

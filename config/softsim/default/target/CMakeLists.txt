@@ -227,12 +227,12 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_perfids.h
 )
 
-add_airliner_app(
-    mac
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mac/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mac
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mac_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_perfids.h
-)
+#add_airliner_app(
+#    mac
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mac/fsw/for_build
+#    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mac
+#    CONFIG_SOURCES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mac_platform_cfg.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_msgids.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_perfids.h
+#)
