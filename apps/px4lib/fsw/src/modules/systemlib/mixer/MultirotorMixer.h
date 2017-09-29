@@ -80,37 +80,11 @@ public:
 
     int32 SetConfigTablePtr(MultirotorMixer_ConfigTablePtr_t &ConfigTablePtr);
 
-
-
-	/**
-	 * Factory method.
-	 *
-	 * Given a pointer to a buffer containing a text description of the mixer,
-	 * returns a pointer to a new instance of the mixer.
-	 *
-	 * @param control_cb		The callback to invoke when fetching a
-	 *				control value.
-	 * @param cb_handle		Handle passed to the control callback.
-	 * @param buf			Buffer containing a text description of
-	 *				the mixer.
-	 * @param buflen		Length of the buffer in bytes, adjusted
-	 *				to reflect the bytes consumed.
-	 * @return			A new MultirotorMixer instance, or nullptr
-	 *				if the text format is bad.
-	 */
-	static MultirotorMixer		*from_text(Mixer::ControlCallback control_cb,
-			cpuaddr cb_handle,
-			const char *buf,
-			uint32 &buflen);
-
 	virtual uint32		mix(float *outputs, uint32 space, uint16 *status_reg);
 	virtual uint16		get_saturation_status(void);
 	virtual void		groups_required(uint32 &groups);
 
-	uint32 set_trim(float trim)
-	{
-		return 0;
-	}
+	uint32 set_trim(float trim);
 
 	/**
 	 * @brief      Sets the thrust factor used to calculate mapping from desired thrust to pwm.

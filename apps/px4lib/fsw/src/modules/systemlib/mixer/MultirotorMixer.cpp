@@ -394,3 +394,8 @@ uint16 MultirotorMixer::get_saturation_status()
 {
 	return m_SaturationStatus.value;
 }
+
+uint32 MultirotorMixer::set_trim(float trim)
+{
+    return 0;
+}
