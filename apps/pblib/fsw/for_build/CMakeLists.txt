@@ -86,6 +86,14 @@ add_airliner_app_def(pblib
         ${ES_PROTOBUF_MSGS_DIR}/es_tlm_pool_stats_cmd.pb.c
         ${ES_PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.h
         ${ES_PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.c
+        ${ES_PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.c
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.h
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.c
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
+        ${PROJECT_SOURCE_DIR}/tools/nanopb/pb.h
 
     INCLUDES
         ${ES_PROTOBUF_MSGS_DIR}
