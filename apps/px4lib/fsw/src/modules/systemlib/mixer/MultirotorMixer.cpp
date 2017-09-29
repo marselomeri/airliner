@@ -399,3 +399,8 @@ uint32 MultirotorMixer::set_trim(float trim)
 {
     return 0;
 }
+
+void MultirotorMixer::set_thrust_factor(float val)
+{
+    m_ThrustFactor = val;
+}

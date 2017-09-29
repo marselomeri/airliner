@@ -91,7 +91,7 @@ public:
 	 *
 	 * @param[in]  val   The value
 	 */
-	virtual void			set_thrust_factor(float val) {m_ThrustFactor = val;}
+	virtual void			set_thrust_factor(float val);
 
 private:
 	float 			   m_ThrustFactor;
