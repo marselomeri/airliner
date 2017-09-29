@@ -1057,6 +1057,115 @@
 				}
 			}
 		},
+		"es_tlm_pool_stats_pb": {
+			"airliner_msg": "CFE_ES_PoolStatsTlm_t",
+			"airliner_mid": "0x1806",
+			"airliner_cc": "22",
+			"fields": {
+				"Payload": {
+					"airliner_name": "Payload", 
+					"pb_type": "es_tlm_pool_stats_payload_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "CFE_ES_PoolStatsTlm_Payload_t",
+					"array_length": 0
+				}
+			},
+			"required_pb_msgs": {
+				"es_tlm_pool_stats_payload_pb": {
+					"airliner_msg": "CFE_ES_PoolStatsTlm_Payload_t",
+					"parent_field": "Payload",
+					"fields": {
+						"PoolHandle": {
+							"airliner_name": "PoolHandle", 
+							"pb_type": "uint32",
+							"pb_field_rule": "required",
+							"airliner_type": "uint32",
+							"array_length": 0
+						},
+						"PoolStats": {
+							"airliner_name": "PoolStats", 
+							"pb_type": "es_mem_pool_stats_pb",
+							"pb_field_rule": "required",
+							"airliner_type": "CFE_ES_MemPoolStats_t",
+							"array_length": 0
+						}
+					},
+					"required_pb_msgs": {
+						"es_mem_pool_stats_pb": {
+							"airliner_msg": "CFE_ES_MemPoolStats_t",
+							"parent_field": "PoolStats",
+							"fields": {
+								"PoolSize": {
+									"airliner_name": "PoolSize", 
+									"pb_type": "uint32",
+									"pb_field_rule": "required",
+									"airliner_type": "uint32",
+									"array_length": 0
+								},
+								"NumBlocksRequested": {
+									"airliner_name": "NumBlocksRequested", 
+									"pb_type": "uint32",
+									"pb_field_rule": "required",
+									"airliner_type": "uint32",
+									"array_length": 0
+								},
+								"CheckErrCtr": {
+									"airliner_name": "CheckErrCtr", 
+									"pb_type": "uint32",
+									"pb_field_rule": "required",
+									"airliner_type": "uint32",
+									"array_length": 0
+								},
+								"NumFreeBytes": {
+									"airliner_name": "NumFreeBytes", 
+									"pb_type": "uint32",
+									"pb_field_rule": "required",
+									"airliner_type": "uint32",
+									"array_length": 0
+								},
+								"BlockStats": {
+									"airliner_name": "BlockStats", 
+									"pb_type": "es_block_stats_pb",
+									"pb_field_rule": "repeated",
+									"airliner_type": "CFE_ES_BlockStats_t",
+									"array_length": 17
+								}
+							},
+							"required_pb_msgs": {
+								"es_block_stats_pb": {
+									"airliner_msg": "CFE_ES_BlockStats_t",
+									"parent_field": "BlockStats",
+									"fields": {
+										"BlockSize": {
+											"airliner_name": "BlockSize", 
+											"pb_type": "uint32",
+											"pb_field_rule": "required",
+											"airliner_type": "uint32",
+											"array_length": 0
+										},
+										"NumCreated": {
+											"airliner_name": "NumCreated", 
+											"pb_type": "uint32",
+											"pb_field_rule": "required",
+											"airliner_type": "uint32",
+											"array_length": 0
+										},
+										"NumFree": {
+											"airliner_name": "NumFree", 
+											"pb_type": "uint32",
+											"pb_field_rule": "required",
+											"airliner_type": "uint32",
+											"array_length": 0
+										}
+									},
+									"required_pb_msgs": {}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"es_write_er_log_pb": {
 			"airliner_msg": "CFE_ES_WriteERlogCmd_t",
 			"airliner_mid": "0x1806",

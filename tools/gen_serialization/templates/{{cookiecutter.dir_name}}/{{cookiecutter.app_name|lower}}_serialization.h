@@ -11,8 +11,6 @@
 extern "C" {
 #endif
 
-uint32 {{cookiecutter.app_name}}_RegisterSerializationFuncs();
-
 {% for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() -%}
 uint32 {{proto_data.airliner_msg}}_Enc(const {{proto_data.airliner_msg}} *inObject, char *inOutBuffer, uint32 inSize);
 uint32 {{proto_data.airliner_msg}}_Dec(const char *inBuffer, uint32 inSize, {{proto_data.airliner_msg}} *inOutObject);
