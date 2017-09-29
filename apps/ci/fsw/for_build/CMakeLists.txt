@@ -1,3 +1,4 @@
+set(CI_PROTOBUF_MSGS_DIR ${CMAKE_CURRENT_BINARY_DIR}/msgs/protobuf)
 
 add_airliner_app_def(ci
     FILE CI
@@ -15,9 +16,23 @@ add_airliner_app_def(ci
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_version.h
+        ${CI_PROTOBUF_MSGS_DIR}/ci_auth.pb.c
+        ${CI_PROTOBUF_MSGS_DIR}/ci_auth.pb.h
+        ${CI_PROTOBUF_MSGS_DIR}/ci_reg.pb.c
+        ${CI_PROTOBUF_MSGS_DIR}/ci_reg.pb.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_serialization.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_serialization.c
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+		${CI_PROTOBUF_MSGS_DIR}
+
+    PROTOBUF_DEFS
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/ci_reg.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/ci_auth.proto
+
+    PROTOBUF_MSGS_DIR        
+        ${CI_PROTOBUF_MSGS_DIR}
         
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in   
     DESIGN_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in    
@@ -26,7 +41,8 @@ add_airliner_app_def(ci
 
 
 add_airliner_app_unit_test(ci-ut
-    UTASSERT 
+    UTASSERT
+	NANOPB
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_app.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_app.h
@@ -54,9 +70,22 @@ add_airliner_app_unit_test(ci-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ci_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ci_testrunner.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../pblib/fsw/src/pb_lib.c
+        ${CI_PROTOBUF_MSGS_DIR}/ci_auth.pb.c
+        ${CI_PROTOBUF_MSGS_DIR}/ci_auth.pb.h
+        ${CI_PROTOBUF_MSGS_DIR}/ci_reg.pb.c
+        ${CI_PROTOBUF_MSGS_DIR}/ci_reg.pb.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_serialization.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ci_serialization.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ci_wrap_pbl.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ci_wrap_pbl.h
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        #${CMAKE_CURRENT_SOURCE_DIR}/../../../pblib/fsw/public_inc/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/      
+        ${CI_PROTOBUF_MSGS_DIR}
+
+	WRAPPERS
+		PBLIB_GetDeserializationFunc
 )
+
+set(CI_PROTOBUF_MSGS_DIR ${CI_PROTOBUF_MSGS_DIR} PARENT_SCOPE)

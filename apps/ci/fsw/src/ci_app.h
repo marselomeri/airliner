@@ -32,12 +32,15 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define CI_MAX_CMD_INGEST           (CFE_SB_MAX_SB_MSG_SIZE)
-#define CI_LISTENER_TASK_NAME  		"CI_LISTENER"
-#define CI_LISTENER_TASK_STACK_SIZE	16000
-#define CI_LISTENER_TASK_PRIORITY	100
-#define CI_CFG_TBL_MUTEX_NAME 		"CI_CFG_TBL_MUTEX"
-#define CI_TIME_TBL_MUTEX_NAME 		"CI_TIME_TBL_MUTEX"
+#define CI_MAX_CMD_INGEST           		(CFE_SB_MAX_SB_MSG_SIZE)
+#define CI_LISTENER_TASK_NAME  				"CI_LISTENER"
+#define CI_LISTENER_TASK_STACK_SIZE			16000
+#define CI_LISTENER_TASK_PRIORITY			100
+#define CI_SERIAL_LISTENER_TASK_NAME  		"CI_SERIAL_LISTENER"
+#define CI_SERIAL_LISTENER_TASK_STACK_SIZE	16000
+#define CI_SERIAL_LISTENER_TASK_PRIORITY	100
+#define CI_CFG_TBL_MUTEX_NAME 				"CI_CFG_TBL_MUTEX"
+#define CI_TIME_TBL_MUTEX_NAME 				"CI_TIME_TBL_MUTEX"
 
 /************************************************************************
 ** Local Structure Definitions
@@ -113,11 +116,17 @@ typedef struct
 	/** \brief Mutex for CI timeout table */
 	uint32          TimeoutTblMutex;
 
-    /** \brief ID of child task */
+    /** \brief ID of listener child task */
     uint32          ListenerTaskID;
+
+    /** \brief ID of serialized listener child task */
+	uint32          SerialListenerTaskID;
 
     /** \brief Buffer for child task cmd ingest */
     uint8           IngestBuffer[CI_MAX_CMD_INGEST];
+
+    /** \brief Buffer for serialized child task cmd ingest */
+    uint8           SerialIngestBuffer[CI_MAX_CMD_INGEST];
 
     /** \brief Run flag for ingest loop */
     boolean			IngestActive;
@@ -395,6 +404,38 @@ int32  CI_InitListenerTask(void);
 void CI_ListenerTaskMain(void);
 
 /************************************************************************/
+/** \brief Serialized Listener Task Main
+**
+**  \par Description
+**       This function opens a socket and ingests all serialized cmds for
+**       CI to process before publishing them to the software bus.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void CI_SerializedListenerTaskMain(void);
+
+
+/************************************************************************/
+/** \brief Process Ingest Command
+**
+**  \par Description
+**       This function contains the shared logic for processing a cmd
+**       used by both the serialized and nonserialized ingest loops.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   CmdMsgPtr     A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**  \param [in]   MsgSize 		The size of the message from the
+**  							ingest buffer
+**
+*************************************************************************/
+void CI_ProcessIngestCmd(CFE_SB_MsgPtr_t CmdMsgPtr, uint32 MsgSize);
+
+/************************************************************************/
 /** \brief Validate Command
 **
 **  \par Description
@@ -414,6 +455,26 @@ void CI_ListenerTaskMain(void);
 **
 *************************************************************************/
 boolean CI_ValidateCmd(CFE_SB_Msg_t* MsgPtr, uint32 MsgSize);
+
+/************************************************************************/
+/** \brief Validate Serialized Command
+**
+**  \par Description
+**       This function validates several parameters of a serialized command.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   MsgPtr        A #CFE_SB_Msg_t pointer that
+**                              references the software bus message
+**
+**  \returns
+**  TRUE if the command is valid, FALSE if it is not.
+**  \endreturns
+**
+*************************************************************************/
+boolean CI_ValidateSerialCmd(CFE_SB_Msg_t* MsgPtr);
+
 
 /************************************************************************/
 /** \brief Get Command Authorization
