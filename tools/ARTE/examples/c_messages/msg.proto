@@ -1,0 +1,3 @@
+message test_msg_int {
+    required int32 content = 1;
+}
