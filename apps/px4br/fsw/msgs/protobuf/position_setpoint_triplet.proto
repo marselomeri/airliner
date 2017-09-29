@@ -1,0 +1,13 @@
+syntax = "proto2";
+import "nanopb.proto";
+import "position_setpoint.proto";
+
+message px4_position_setpoint_triplet_pb 
+{
+	required uint64 timestamp = 1;
+	required px4_position_setpoint_pb previous = 2;
+	required px4_position_setpoint_pb current = 3;
+	required px4_position_setpoint_pb next = 4;
+}
+
+// ORB_DECLARE(position_setpoint_triplet);

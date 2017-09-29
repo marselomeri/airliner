@@ -1,6 +1,6 @@
-#ifndef _ea_perfids_
-#define _ea_perfids_
+#ifndef EA_PERFIDS_H
+#define EA_PERFIDS_H
 
-#define EA_MAIN_TASK_PERF_ID 90
+#include "perf_ids.h"
 
 #endif

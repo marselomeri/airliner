@@ -1,57 +1,5 @@
-/******************************************************************************
-** File: cfe_msgids.h
-**
-** Purpose:
-**   This header file contains the Message Id's for messages used by the
-**   cFE core.
-**
-** Author:   R.McGraw/SSI
-**
-** Notes:
-**   This file should not contain messages defined by cFE external
-**   applications.
-**
-** $Log: cfe_msgids.h  $
-** Revision 1.3 2008/07/22 15:51:56GMT-05:00 apcudmore 
-** Member moved from cfe_msgids.h in project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/platform_inc/project.pj to cfe_msgids.h in project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/platform_inc/cpu1/project.pj.
-** Revision 1.2 2008/07/22 15:51:56ACT apcudmore 
-** Member moved from cfe_msgids.h in project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/build/cpu1/inc/project.pj to cfe_msgids.h in project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/platform_inc/project.pj.
-** Revision 1.1 2008/07/22 15:51:56ACT apcudmore 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/build/cpu1/inc/project.pj
-** Revision 1.2 2008/07/07 14:09:41EDT apcudmore 
-** Removed FS Message ID defines from system config files.
-** Revision 1.1 2008/04/17 08:01:29EDT ruperera 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/build/cpu1/cfe/inc/project.pj
-** Revision 1.2 2007/09/19 15:21:16EDT rjmcgraw 
-** DCR4488 Removed all SB network message numbers and message ids
-** Revision 1.1 2007/08/24 11:23:04EDT apcudmore
-** Initial revision
-** Member added to project d:/mksdata/MKS-CFE-PROJECT/fsw/build/cpu1/cfe/inc/project.pj
-** Revision 1.8 2007/05/04 20:07:50EDT dlkobe
-** Added command to telemeter memory pool statistics
-** Revision 1.7 2007/02/23 09:11:30GMT-05:00 njyanchik
-** - 1) Add CFE_ES_SHELL_TLM_MSG to cfe_mission_cfg.h
-** - 2) Add#define CFE_ES_SHELL_TLM_MID CFE_TLM_MID_BASE_CPUx + CFE_ES_SHELL_TLM_MSG to cfe_msgids.h for CPU's 1, 2, and 3.
-** - 3) Add {CFE_TLM_MID_BASE_CPUx + CFE_ES_SHELL_TLM_MSG, {0,0}, 32 } for all 3 CPU's to tomain.c
-** - 4) Add CFE_ES_ShellPacket_t to cfe_es_task.h
-** - 5) Add CFE_ES_MAX_SHELLL_PKT 32 to cfe_platform_cfg.g in all 3 CPU's
-** -6) Add CFE_ES_ShellPacket_t ShellPacket into CFE_ES_TaskData Structure in cfe_es_task.h
-** - 7) In CFE_ES_TaskInit, in cfe_es_task.c, add initialization for shell output.
-** - 8) In ES_ShellCmd, add logic to break output into chunks and send them to TO.
-** Revision 1.6 2006/12/28 16:22:11EST rjmcgraw
-** Added msgids for new SB subscription pkts
-** Revision 1.5 2006/02/06 16:17:37EST rjmcgraw
-** Member moved
-** Revision 1.2 2005/11/10 15:40:51EST dlkobe
-** Added Table Registry Dump Packet Message ID
-** Revision 1.1 2005/06/09 09:57:58GMT-05:00 rperera
-** Initial revision
-**
-******************************************************************************/
-#ifndef _cfe_msgids_
-#define _cfe_msgids_
+#ifndef CFE_MSGIDS_H
+#define CFE_MSGIDS_H
 
 /*
 ** Includes

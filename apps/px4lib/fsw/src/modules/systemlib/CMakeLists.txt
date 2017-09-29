@@ -1,0 +1,6 @@
+add_subdirectory(mixer mixer)
+add_subdirectory(pwm_limit pwm_limit)
+
+set(PX4LIB_SOURCES  ${PX4LIB_SOURCES} PARENT_SCOPE)
+set(PX4LIB_INCLUDES ${PX4LIB_INCLUDES} PARENT_SCOPE)
+set(PX4LIB_PUBLIC_INCLUDES ${PX4LIB_PUBLIC_INCLUDES} PARENT_SCOPE)

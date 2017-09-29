@@ -1,42 +1,4 @@
 /************************************************************************
-** File:
-**   $Id: hk_cpy_tbl.c 1.7 2015/03/04 14:58:33EST sstrege Exp  $
-**
-**  Copyright © 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose: 
-**  The CFS Housekeeping (HK) Application Copy Table Definition
-**
-** Notes:
-**
-** $Log: hk_cpy_tbl.c  $
-** Revision 1.7 2015/03/04 14:58:33EST sstrege 
-** Added copyright information
-** Revision 1.6 2012/08/15 18:50:58EDT aschoeni 
-** fixed table compile warning
-** Revision 1.5 2010/07/16 13:29:12EDT jmdagost 
-** Fixed app name from "HK_APP" to "HK".
-** Revision 1.4 2008/09/17 10:53:43EDT rjmcgraw 
-** Member moved from hk_cpy_tbl.c in project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hk/fsw/src/project.pj to hk_cpy_tbl.c in project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hk/fsw/tables/project.pj.
-** Revision 1.3 2008/09/17 09:53:43ACT rjmcgraw 
-** DCR4325:1 Changed tbl name in hdr from HK_APP.HkCopyTable to HK_APP.CopyTable
-** Revision 1.2 2008/09/11 11:29:20EDT rjmcgraw 
-** DCR4041:1 Added hk_tbldefs.h to list of #includes
-** Revision 1.1 2008/04/09 16:42:07EDT rjmcgraw 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hk/fsw/src/project.pj
-**
-*************************************************************************/
-
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include "cfe.h"

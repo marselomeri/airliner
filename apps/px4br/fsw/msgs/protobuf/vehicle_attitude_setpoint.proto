@@ -1,0 +1,23 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_attitude_setpoint_pb 
+{
+	required uint64 timestamp = 1;
+	required float roll_body = 2;
+	required float pitch_body = 3;
+	required float yaw_body = 4;
+	required float yaw_sp_move_rate = 5;
+	repeated float q_d = 6 [packed=true, (nanopb).max_count = 4];
+	required bool  q_d_valid = 7;
+	required float thrust = 8;
+	required bool roll_reset_integral = 9;
+	required bool pitch_reset_integral = 10;
+	required bool yaw_reset_integral = 11;
+	required bool fw_control_yaw = 12;
+	required bool disable_mc_yaw_control = 13;
+	required bool apply_flaps = 14;
+	required float landing_gear = 15;
+}
+
+// ORB_DECLARE(vehicle_attitude_setpoint);

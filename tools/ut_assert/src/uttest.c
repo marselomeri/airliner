@@ -60,14 +60,14 @@ uint32          UtTestsExecutedCount = 0;
  * Function Definitions
  */
 
-void UtTest_Add(void (*Test)(void), void (*Setup)(void), void (*Teardown)(void), char *TestName)
+void UtTest_Add(void (*Test)(void), void (*Setup)(void), void (*Teardown)(void), const char *TestName)
 {
     UtTestDataBaseEntry_t   UtTestDataBaseEntry;
 
     UtTestDataBaseEntry.Test = Test;
     UtTestDataBaseEntry.Setup = Setup;
     UtTestDataBaseEntry.Teardown = Teardown;
-    UtTestDataBaseEntry.TestName = TestName;
+    UtTestDataBaseEntry.TestName = (char*)TestName;
     UtList_Add(&UtTestDataBase, &UtTestDataBaseEntry, sizeof(UtTestDataBaseEntry_t), 0);
 }
 

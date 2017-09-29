@@ -1,0 +1,26 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_mc_virtual_attitude_setpoint_pb 
+{
+	required uint64 timestamp = 1;
+	required float roll_body = 2;
+	required float pitch_body = 3;
+	required float yaw_body = 4;
+	required float yaw_sp_move_rate = 5;
+	repeated float R_body = 6 [packed=true, (nanopb).max_count = 9];
+	repeated float q_d = 7 [packed=true, (nanopb).max_count = 4];
+	repeated float q_e = 8 [packed=true, (nanopb).max_count = 4];
+	required float thrust = 9;
+	required bool R_valid = 10;
+	required bool q_d_valid = 11;
+	required bool q_e_valid = 12;
+	required bool roll_reset_integral = 13;
+	required bool pitch_reset_integral = 14;
+	required bool yaw_reset_integral = 15;
+	required bool fw_control_yaw = 16;
+	required bool disable_mc_yaw_control = 17;
+	required bool apply_flaps = 18;
+}
+
+// ORB_DECLARE(mc_virtual_attitude_setpoint);

@@ -46,6 +46,10 @@
 #ifndef UT_OSAPI_STUBS_H_
 #define UT_OSAPI_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_OSAPI_TASKDELAY_INDEX,
@@ -178,5 +182,9 @@ void Ut_OSAPI_Reset(void);
 void Ut_OSAPI_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_OSAPI_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_OSAPI_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

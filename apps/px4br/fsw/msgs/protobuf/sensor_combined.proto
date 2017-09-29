@@ -1,0 +1,24 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_sensor_combined_pb 
+{
+	enum RELATIVE_TIMESTAMP
+	{
+		RELATIVE_TIMESTAMP_INVALID = 2147483647;
+	}
+
+	required uint64 timestamp = 1;
+	repeated float gyro_rad = 2 [packed=true, (nanopb).max_count = 3];
+	required float gyro_integral_dt = 3;
+	required int32 accelerometer_timestamp_relative = 4;
+	repeated float accelerometer_m_s2 = 5 [packed=true, (nanopb).max_count = 3];
+	required float accelerometer_integral_dt = 6;
+	required int32 magnetometer_timestamp_relative = 7;
+	repeated float magnetometer_ga = 8 [packed=true, (nanopb).max_count = 3];
+	required int32 baro_timestamp_relative = 9;
+	required float baro_alt_meter = 10;
+	required float baro_temp_celcius = 11;
+}
+
+// ORB_DECLARE(sensor_combined);

@@ -1,0 +1,23 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_global_position_pb 
+{
+	required uint64 timestamp = 1;
+	required uint64 time_utc_usec = 2;
+	required double lat = 3;
+	required double lon = 4;
+	required float alt = 5;
+	required float vel_n = 6;
+	required float vel_e = 7;
+	required float vel_d = 8;
+	required float yaw = 9;
+	required float eph = 10;
+	required float epv = 11;
+	required float terrain_alt = 12;
+	required float pressure_alt = 13;
+	required bool terrain_alt_valid = 14;
+	required bool dead_reckoning = 15;
+}
+
+// ORB_DECLARE(vehicle_global_position);

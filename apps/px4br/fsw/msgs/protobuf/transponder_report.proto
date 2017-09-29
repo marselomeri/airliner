@@ -1,0 +1,22 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_transponder_report_pb 
+{
+	required uint64 timestamp = 1;
+	required double lat = 2;
+	required double lon = 3;
+	required uint32 ICAO_address = 4;
+	required float altitude = 5;
+	required float heading = 6;
+	required float hor_velocity = 7;
+	required float ver_velocity = 8;
+	required uint32 flags = 9;
+	required uint32 squawk = 10;
+	required uint32 altitude_type = 11;
+	required string callsign = 12 [(nanopb).max_size = 9];
+	required uint32 emitter_type = 13;
+	required uint32 tslc = 14;
+}
+
+// ORB_DECLARE(transponder_report);

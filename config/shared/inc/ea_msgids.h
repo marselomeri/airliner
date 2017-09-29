@@ -1,5 +1,5 @@
-#ifndef _ea_msgids_
-#define _ea_msgids_
+#ifndef EA_MSGIDS_H
+#define EA_MSGIDS_H
 
 #include "msg_ids.h"
 

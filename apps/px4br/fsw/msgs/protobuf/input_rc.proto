@@ -1,0 +1,38 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_input_rc_pb
+{
+	enum RC_INPUT_SOURCE 
+	{
+	    	RC_INPUT_SOURCE_UNKNOWN  	    = 0;
+	    	RC_INPUT_SOURCE_PX4FMU_PPM  	= 1;
+	    	RC_INPUT_SOURCE_PX4IO_PPM  	    = 2;
+	    	RC_INPUT_SOURCE_PX4IO_SPEKTRUM	= 3;
+	    	RC_INPUT_SOURCE_PX4IO_SBUS  	= 4;
+	    	RC_INPUT_SOURCE_PX4IO_ST24  	= 5;
+	    	RC_INPUT_SOURCE_MAVLINK  	    = 6;
+	    	RC_INPUT_SOURCE_QURT  		    = 7;
+	    	RC_INPUT_SOURCE_PX4FMU_SPEKTRUM	= 8;
+	    	RC_INPUT_SOURCE_PX4FMU_SBUS  	= 9;
+	    	RC_INPUT_SOURCE_PX4FMU_ST24  	= 10;
+	    	RC_INPUT_SOURCE_PX4FMU_SUMD  	= 11;
+	    	RC_INPUT_SOURCE_PX4FMU_DSM  	= 12;
+	    	RC_INPUT_SOURCE_PX4IO_SUMD  	= 13;
+	    	RC_INPUT_SOURCE_MAX_CHANNELS  	= 18;
+	}
+
+	required uint64 timestamp = 1;
+	required uint64 timestamp_last_signal = 2;
+	required uint32 channel_count = 3;
+	required int32 rssi = 4;
+	required uint32 rc_lost_frame_count = 5;
+	required uint32 rc_total_frame_count = 6;
+	required uint32 rc_ppm_frame_length = 7;
+	repeated uint32 values = 8 [packed=true, (nanopb).max_count = 18];
+	required bool rc_failsafe = 9;
+	required bool rc_lost = 10;
+	required uint32 input_source = 11;
+}
+
+// ORB_DECLARE(input_rc);

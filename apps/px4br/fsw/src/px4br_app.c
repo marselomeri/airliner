@@ -1,32 +1,35 @@
-/*==============================================================================
- Copyright (c) 2015, Windhover Labs
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this
- list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution.
-
- * Neither the name of TlmOut nor the names of its
- contributors may be used to endorse or promote products derived from
- this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+/****************************************************************************
+ *
+ *   Copyright (c) 2016-2017 Windhover Labs, L.L.C. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name PX4 nor the names of its contributors may be
+ *    used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ ****************************************************************************/
 
 #ifdef __cplusplus
 extern "C"
@@ -981,31 +984,34 @@ void PX4BR_RouteMessageToSB(const char *inMsgName, const char *inMsgContent, uin
 		       route->MsgID,
 			   1500,
 			   FALSE);
-		int32 decSize = route->DecodeFunc(inMsgContent, inMsgContentSize, outMsg);
-		if(decSize > 1500)
+		if(route->DecodeFunc != 0)
 		{
-			OS_printf("PX4BR just had a buffer overflow.  Fix it.\n");
-			return;
-		}
+            int32 decSize = route->DecodeFunc(inMsgContent, inMsgContentSize, outMsg);
+            if(decSize > 1500)
+            {
+                OS_printf("PX4BR just had a buffer overflow.  Fix it.\n");
+                return;
+            }
 
-		if(decSize > 0)
-		{
-			/* We successfully decoded it.  Now publish it. */
-			CFE_SB_SetTotalMsgLength((CFE_SB_MsgPtr_t)outMsg, decSize);
-			CFE_SB_TimeStampMsg((CFE_SB_MsgPtr_t)outMsg);
-			CFE_SB_SendMsg((CFE_SB_MsgPtr_t)outMsg);
-			route->InCount++;
-			if(route->InCount == 1)
-			{
-				OS_printf("PX4BR:  Received '%s'\n", inMsgName);
-			}
-			if(route->InCount == 0)
-			{
-				/* Skip the 0 to avoid roll over issues. */
-				route->InCount++;
-			}
-			return;
-		}
+            if(decSize > 0)
+            {
+                /* We successfully decoded it.  Now publish it. */
+                CFE_SB_SetTotalMsgLength((CFE_SB_MsgPtr_t)outMsg, decSize);
+                CFE_SB_TimeStampMsg((CFE_SB_MsgPtr_t)outMsg);
+                CFE_SB_SendMsg((CFE_SB_MsgPtr_t)outMsg);
+                route->InCount++;
+                if(route->InCount == 1)
+                {
+                    OS_printf("PX4BR:  Received '%s'\n", inMsgName);
+                }
+                if(route->InCount == 0)
+                {
+                    /* Skip the 0 to avoid roll over issues. */
+                    route->InCount++;
+                }
+                return;
+            }
+	    }
 	}
 }
 
@@ -1029,46 +1035,50 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
     	uint32 i = 0;
     	char buffer[PX4BR_MAX_MSG_SIZE];
 		uint16 contentSize = CFE_SB_GetTotalMsgLength(sbMsg);
-		int32 encSize = route->EncodeFunc((const char*)sbMsg, &buffer[PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH], PX4BR_MAX_MSG_SIZE-(PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH));
-    	uint32 totalSize = encSize + PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH;
-
-    	if(totalSize > PX4BR_MAX_MSG_SIZE)
-    	{
-    		OS_printf("PX4BR:  Message '%s' does not fit in transmission packet.  Dropping message.", route->OrbName);
-    		return;
-    	}
-
-    	buffer[0] = ((encSize & 0xff00) >> 8);
-    	buffer[1] = (encSize & 0x00ff);
-    	memcpy(&buffer[PX4BR_SIZE_FIELD_LENGTH], route->OrbName, PX4BR_NAME_FIELD_LENGTH);
-
-		for(i = 0; i < PX4BR_MAX_NETWORK_PEERS; ++i)
+		if(route->EncodeFunc != 0)
 		{
-			if(PX4BR_AppData.Peer[i].IsConnected == TRUE)
-			{
-				n = write(PX4BR_AppData.Peer[i].Socket, buffer, totalSize);
-				if(n < 0)
-				{
-					/* TODO - Add event */
-					OS_printf("PX4BR:  Socket write failed.  errno=%d '%s'", errno, strerror(errno));
-					PX4BR_AppData.Peer[i].IsConnected = FALSE;
-					close(PX4BR_AppData.Peer[i].Socket);
-					PX4BR_InitPeerSocket(&PX4BR_AppData.Peer[i]);
-				}
-				else
-				{
-					route->OutCount++;
-					if(route->OutCount == 1)
-					{
-						OS_printf("PX4BR:  Sent '%s'\n", route->OrbName);
-					}
-					if(route->OutCount == 0)
-					{
-						/* Skip the 0 to avoid roll over issues. */
-						route->OutCount++;
-					}
-				}
-			}
+		    int32 encSize = route->EncodeFunc((const char*)sbMsg, &buffer[PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH], PX4BR_MAX_MSG_SIZE-(PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH));
+
+            uint32 totalSize = encSize + PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH;
+
+            if(totalSize > PX4BR_MAX_MSG_SIZE)
+            {
+                OS_printf("PX4BR:  Message '%s' does not fit in transmission packet.  Dropping message.", route->OrbName);
+                return;
+            }
+
+            buffer[0] = ((encSize & 0xff00) >> 8);
+            buffer[1] = (encSize & 0x00ff);
+            memcpy(&buffer[PX4BR_SIZE_FIELD_LENGTH], route->OrbName, PX4BR_NAME_FIELD_LENGTH);
+
+            for(i = 0; i < PX4BR_MAX_NETWORK_PEERS; ++i)
+            {
+                if(PX4BR_AppData.Peer[i].IsConnected == TRUE)
+                {
+                    n = write(PX4BR_AppData.Peer[i].Socket, buffer, totalSize);
+                    if(n < 0)
+                    {
+                        /* TODO - Add event */
+                        OS_printf("PX4BR:  Socket write failed.  errno=%d '%s'", errno, strerror(errno));
+                        PX4BR_AppData.Peer[i].IsConnected = FALSE;
+                        close(PX4BR_AppData.Peer[i].Socket);
+                        PX4BR_InitPeerSocket(&PX4BR_AppData.Peer[i]);
+                    }
+                    else
+                    {
+                        route->OutCount++;
+                        if(route->OutCount == 1)
+                        {
+                            OS_printf("PX4BR:  Sent '%s'\n", route->OrbName);
+                        }
+                        if(route->OutCount == 0)
+                        {
+                            /* Skip the 0 to avoid roll over issues. */
+                            route->OutCount++;
+                        }
+                    }
+                }
+            }
 		}
     }
 }

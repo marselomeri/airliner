@@ -1,55 +1,5 @@
- /*************************************************************************
- ** File:
- **   $Id: sc_platform_cfg.h 1.2 2015/11/20 12:03:20EST sstrege Exp  $
- **
- **  Copyright © 2007-2014 United States Government as represented by the 
- **  Administrator of the National Aeronautics and Space Administration. 
- **  All Other Rights Reserved.  
- **
- **  This software was created at NASA's Goddard Space Flight Center.
- **  This software is governed by the NASA Open Source Agreement and may be 
- **  used, distributed and modified only pursuant to the terms of that 
- **  agreement.
- **
- ** Purpose: 
- **   This file contains the platform configuration parameters used by
- **   Stored Command
- **
- ** References:
- **   Flight Software Branch C Coding Standard Version 1.2
- **   CFS Development Standards Document
- ** Notes:
- **
- **   $Log: sc_platform_cfg.h  $ 
- **   Revision 1.2 2015/11/20 12:03:20EST sstrege  
- **   Restoration from MKS 2009 Trunk 
- **   Revision 1.13 2015/03/02 12:58:43EST sstrege  
- **   Added copyright information 
- **   Revision 1.12 2011/09/26 13:39:35EDT lwalling  
- **   Remove definition for SC_SAVE_TO_CDS 
- **   Revision 1.11 2011/09/23 14:25:09EDT lwalling  
- **   Made group commands conditional on configuration definition 
- **   Revision 1.10 2010/10/08 13:19:44EDT lwalling  
- **   Move mission rev definition to platform config header file 
- **   Revision 1.9 2010/04/05 11:44:21EDT lwalling  
- **   Create definitions for Append ATS data and info tables 
- **   Revision 1.8 2010/03/30 18:11:33EDT lwalling  
- **   Change SC_MAX_ATS_CMDS from 999 to 1000 
- **   Revision 1.7 2010/03/11 16:27:23EST lwalling  
- **   Create table file name definition separate from table object name 
- **   Revision 1.6 2010/03/10 17:23:57EST lwalling  
- **   Corrected typo in max cmd packet size from 256 to 250 
- **   Revision 1.5 2010/03/09 15:10:08EST lwalling  
- **   Update SB msg size comments, change CDS cfg def from ifdef or ifndef to if true or if false 
- **   Revision 1.4 2009/02/19 10:07:08EST nyanchik  
- **   Update SC To work with cFE 5.2 Config parameters 
- **   Revision 1.3 2009/01/26 14:47:14EST nyanchik  
- **   Check in of Unit test 
- **   Revision 1.2 2009/01/05 08:26:40EST nyanchik  
- **   Check in after code review changes 
- *************************************************************************/
-#ifndef _sc_platform_cfg_
-#define _sc_platform_cfg_
+#ifndef SC_PLATFORM_CFG_H
+#define SC_PLATFORM_CFG_H
 
 /*************************************************************************
  ** Macro Definitions
@@ -401,7 +351,7 @@
 #define SC_MISSION_REV      0
 
 
-#endif /*_sc_platform_cfg_*/
+#endif /*SC_PLATFORM_CFG_H*/
 
 /************************/
 /*  End of File Comment */

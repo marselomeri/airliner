@@ -36,12 +36,16 @@
 #ifndef _uttest_
 #define	_uttest_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Exported Functions
  */
 
 /* Adds a new unit test to the test database. */
-void    UtTest_Add(void (*Test)(void), void (*Setup)(void), void (*Teardown)(void), char *TestName);
+void    UtTest_Add(void (*Test)(void), void (*Setup)(void), void (*Teardown)(void), const char *TestName);
 
 /* Executes all unit tests contained in the test database.  Once all tests have finished executing 
  * a results summary is printed to the console and the test database is deleted.  This function also 
@@ -54,6 +58,10 @@ int     UtTest_Run(void);
  * status indicating if any of the tests failed. (TRUE = at least one test failure has occurred, 
  * FALSE = all tests passed) */
 int     UtTest_RunTest(unsigned int testCase);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

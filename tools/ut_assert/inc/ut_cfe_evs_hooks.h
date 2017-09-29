@@ -40,6 +40,10 @@
 #ifndef UT_CFE_EVS_HOOKS_H_
 #define UT_CFE_EVS_HOOKS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cfe.h"
 #include "utassert.h"
 #include "utlist.h"
@@ -60,5 +64,9 @@ uint32      Ut_CFE_EVS_GetEventQueueDepth(void);
 uint32      Ut_CFE_EVS_GetEventCount(uint16 EventID, uint16 EventType, const char *EventText);
 int32       Ut_CFE_EVS_SendEventHook(uint16 EventID, uint16 EventType, const char *EventText);
 boolean     Ut_CFE_EVS_EventSent(uint16 EventID, uint16 EventType, const char *EventText);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
