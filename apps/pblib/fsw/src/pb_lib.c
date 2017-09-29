@@ -58,18 +58,24 @@ int32 PBLIB_LibInit(void)
 	}
 
 PBLIB_LibInit_Exit_Tag:
-    OS_printf ("PBLIB Initialized.  Version %d.%d.%d.%d\n",
+	if (Status == CFE_SUCCESS)
+	{
+		OS_printf ("PBLIB Initialized.  Version %d.%d.%d.%d\n",
     		PBLIB_MAJOR_VERSION,
 			PBLIB_MINOR_VERSION,
 			PBLIB_REVISION,
 			PBLIB_MISSION_REV);
+	}
 
-    return OS_SUCCESS;
+    return Status;
  
 }/* End PBLIB_LibInit */
 
-// TODO: Look into hashmaps
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Register Message		                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PBLIB_RegisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName)
 {
     int32 		status = -2;
@@ -103,6 +109,11 @@ PBLIB_RegisterMessage_Exit_Tag:
     return status;
 }/* End PBLIB_RegisterMessage */
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Deregister Message		                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 PBLIB_DeregisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
     int32 		status = -2;
@@ -136,6 +147,11 @@ PBLIB_DeregisterMessage_Exit_Tag:
     return status;
 }/* End PBLIB_DeregisterMessage */
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Get Serialization Function Address                              */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 PBLib_EncodeFuncPtr_t PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
 	PBLib_EncodeFuncPtr_t funcAddr = 0;
@@ -170,6 +186,11 @@ PBLIB_GetSerializationFunc_Exit_Tag:
     return funcAddr;
 }/* End PBLIB_GetSerializationFunc */
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Get Deserialization Function Address                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 PBLib_DecodeFuncPtr_t PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
 	PBLib_DecodeFuncPtr_t funcAddr = 0;
@@ -178,7 +199,6 @@ PBLib_DecodeFuncPtr_t PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 
 
     if(msgId == 0)
     {
-    	OS_printf("MsgId 0. Stop");
     	goto PBLIB_GetDeserializationFunc_Exit_Tag;
     }
 
@@ -203,10 +223,6 @@ PBLib_DecodeFuncPtr_t PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 
 PBLIB_GetDeserializationFunc_Exit_Tag:
     return funcAddr;
 }/* End PBLIB_GetSerializationFunc */
-
-
-
-
 
 /************************/
 /*  End of File Comment */

@@ -1,0 +1,71 @@
+{
+	"app_name": "ES",
+	"autogen_version": "",
+	"dir_name": "cfe_msg",
+	"proto_msgs": {
+		"es_app_name_pb": {
+			"airliner_msg": "CFE_ES_AppNameCmd_t",
+			"airliner_mid": "0x1806",
+			"airliner_cc": "5",
+			"fields": {
+				"Payload": {
+					"airliner_name": "Payload", 
+					"pb_type": "es_app_name_payload_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "CFE_ES_AppNameCmd_Payload_t",
+					"array_length": 0
+				}
+			},
+			"required_pb_msgs": {
+				"es_app_name_payload_pb": {
+					"fields": {
+						"Application": {
+							"airliner_name": "Application", 
+							"pb_type": "string",
+							"pb_field_rule": "required",
+							"airliner_type": "char",
+							"array_length": 64
+						}
+					},
+					"required_pb_msgs": {}
+				}
+			}
+		},
+		"es_app_reload_pb": {
+			"airliner_msg": "CFE_ES_AppReloadCmd_t",
+			"airliner_mid": "0x1806",
+			"airliner_cc": "7",
+			"fields": {
+				"Payload": {
+					"airliner_name": "Payload", 
+					"pb_type": "es_app_reload_payload_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "CFE_ES_AppReloadCmd_Payload_t",
+					"array_length": 0
+				}
+			},
+			"required_pb_msgs": {
+				"es_app_reload_payload_pb": {
+					"fields": {
+						"Application": {
+							"airliner_name": "Application", 
+							"pb_type": "string",
+							"pb_field_rule": "required",
+							"airliner_type": "char",
+							"array_length": 64
+						},
+						"AppFileName": {
+							"airliner_name": "AppFileName", 
+							"pb_type": "string",
+							"pb_field_rule": "required",
+							"airliner_type": "char",
+							"array_length": 64
+						}
+					},
+					"required_pb_msgs": {}
+				}
+			}
+		}
+	},
+	"_extensions": ["jinja2.ext.do", "jinja2.ext.loopcontrols"]
+}

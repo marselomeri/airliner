@@ -107,7 +107,7 @@ void Test_CI_InitCustom_Nominal(void)
 	/* Verify results */
 	UtAssert_True(retCode==0,"Return = 0");
 	UtAssert_EventSent(CI_ENA_INF_EID, CFE_EVS_INFORMATION, "", "Socket opened");
-	UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+	UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
 }
 
 /**************************************************************************
