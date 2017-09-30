@@ -104,8 +104,6 @@ public:
 
     MAC_CurrentValueTable_t CVT;
 
-    MultirotorMixer MixerObject;
-
     //MIXER_Data_t  MixerData;
     PwmLimit_Data_t PwmLimit;
 
@@ -322,33 +320,6 @@ public:
 private:
 
     /************************************************************************/
-    /** \brief Update motors
-     **
-     **  \par Description
-     **       This function mixes the yaw, pitch, roll, and throttle actuators
-     **       and sets each specific motor to result in the commanded attitude
-     **       change.  Exactly to which proportion each motor affects each
-     **       actuator position is defined in the #MixerConfigTblHdl table.
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void   UpdateMotors(void);
-
-    /************************************************************************/
-    /** \brief Stop motors
-     **
-     **  \par Description
-     **       This function commands the motors to immediately stop.
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void   StopMotors(void);
-
-    /************************************************************************/
     /** \brief Initialize the MAC configuration tables.
     **
     **  \par Description
@@ -422,30 +393,6 @@ public:
     *************************************************************************/
     static int32  ValidateMixerCfgTbl(void*);
 
-    /************************************************************************/
-    /** \brief Return the specified control value
-    **
-    **  \par Description
-    **       This function is called by the Mixer object and returns the
-    **       value of the specified control.  This specific function only
-    **       supports ControlGroup 0 and will return an error otherwise.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-     **
-     **  \param [in]   ControlGroup    Index of the control group.
-     **  \param [in]   ControlIndex    Index of the control.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retcode -1  \retdesc Invalid input  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ControlCallback(cpuaddr Handle,
-        uint8 ControlGroup,
-        uint8 ControlIndex,
-        float &Control);
 };
 
 #ifdef __cplusplus

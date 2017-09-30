@@ -1714,5 +1714,34 @@ typedef struct
 	float CovarianceEast;
 } PX4_WindEstimateMsg_t;
 
+typedef struct
+{
+    float gyro_offset_0[3];
+    float gyro_scale_0[3];
+    float gyro_offset_1[3];
+    float gyro_scale_1[3];
+    float gyro_offset_2[3];
+    float gyro_scale_2[3];
+    float accel_offset_0[3];
+    float accel_scale_0[3];
+    float accel_offset_1[3];
+    float accel_scale_1[3];
+    float accel_offset_2[3];
+    float accel_scale_2[3];
+    float baro_offset_0;
+    float baro_scale_0;
+    float baro_offset_1;
+    float baro_scale_1;
+    float baro_offset_2;
+    float baro_scale_2;
+    uint8 selected_gyro_instance;
+    uint8 selected_accel_instance;
+    uint8 selected_baro_instance;
+    uint8 gyro_mapping;
+    uint8 accel_mapping;
+    uint8 baro_mapping;
+} PX4_SensorCorrectionMsg_t;
 
 #endif
+
+

@@ -35,8 +35,7 @@ MAC oMAC;
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-MAC::MAC() :
-    MixerObject(MAC::ControlCallback, (cpuaddr)&CVT.ActuatorControls0)
+MAC::MAC()
 {
 
 }
@@ -290,15 +289,6 @@ int32 MAC::InitApp()
         goto MAC_InitApp_Exit_Tag;
     }
 
-    iStatus = MixerObject.SetConfigTablePtr(MixerConfigTblPtr);
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init mixer (0x%08x)",
-                                 (unsigned int)iStatus);
-        goto MAC_InitApp_Exit_Tag;
-    }
-
     PwmLimit_Init(&PwmLimit);
 
 MAC_InitApp_Exit_Tag:
@@ -352,25 +342,17 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
     {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
-	{
-            case MAC_UPDATE_MOTORS_MID:
-                UpdateMotors();
-                break;
-
+        {
             case MAC_SEND_HK_MID:
                 ReportHousekeeping();
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+                memcpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
                 break;
 
             case PX4_ACTUATOR_CONTROLS_0_MID:
-                memcpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
-                break;
-
-            case PX4_RC_CHANNELS_MID:
-                memcpy(&CVT.RcChannels, MsgPtr, sizeof(CVT.RcChannels));
+                memcpy(&CVT.Actuators, MsgPtr, sizeof(CVT.Actuators));
                 break;
 
             default:
@@ -391,7 +373,6 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
          * iBlocking arg, you can do something here, or nothing.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
-        UpdateMotors();
         iStatus = CFE_SUCCESS;
     }
     else
@@ -627,128 +608,6 @@ void MAC::AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Command all motors to stop.                                     */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MAC::StopMotors(void)
-{
-    uint16 disarmed_pwm[MAC_MAX_MOTOR_OUTPUTS];
-
-    for (unsigned int i = 0; i < MAC_MAX_MOTOR_OUTPUTS; i++) {
-        disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
-    }
-
-    //SetMotorOutputs(disarmed_pwm);
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Mix actuator controls and update motor speeds accordingly.      */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MAC::UpdateMotors(void)
-{
-    const uint16 reverse_mask = 0;
-    uint16 disarmed_pwm[MAC_MAX_MOTOR_OUTPUTS];
-    uint16 min_pwm[MAC_MAX_MOTOR_OUTPUTS];
-    uint16 max_pwm[MAC_MAX_MOTOR_OUTPUTS];
-    uint16 pwm[MAC_MAX_MOTOR_OUTPUTS];
-    PX4_ActuatorOutputsMsg_t outputs;
-
-    ActuatorOutputs.timestamp = CVT.ActuatorControls0.timestamp;
-
-    /* Do mixing */
-    ActuatorOutputs.Count = MixerObject.mix(ActuatorOutputs.Output, 0, 0);
-
-    /* Disable unused ports by setting their output to NaN */
-    for (size_t i = ActuatorOutputs.Count;
-         i < sizeof(ActuatorOutputs.Output) / sizeof(ActuatorOutputs.Output[0]);
-         i++) {
-        ActuatorOutputs.Output[i] = NAN;
-    }
-
-    for (unsigned int i = 0; i < MAC_MAX_MOTOR_OUTPUTS; i++) {
-        disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
-        min_pwm[i] = PwmConfigTblPtr->PwmMin;
-        max_pwm[i] = PwmConfigTblPtr->PwmMax;
-    }
-
-    /* TODO */
-    PwmLimit_Calc(CVT.ActuatorArmed.Armed,
-            FALSE/*_armed.prearmed*/,
-            ActuatorOutputs.Count,
-            reverse_mask,
-            disarmed_pwm,
-            min_pwm,
-            max_pwm,
-            ActuatorOutputs.Output,
-            pwm,
-            &PwmLimit);
-
-    if (CVT.ActuatorArmed.Lockdown)
-    {
-        //SetMotorOutputs(disarmed_pwm);
-    }
-    else if (CVT.ActuatorArmed.InEscCalibrationMode)
-    {
-        if (CVT.ActuatorControls0.Control[3] * 1000 > 0.5f) {
-            pwm[0] = PwmConfigTblPtr->PwmMax;
-            pwm[1] = PwmConfigTblPtr->PwmMax;
-            pwm[2] = PwmConfigTblPtr->PwmMax;
-            pwm[3] = PwmConfigTblPtr->PwmMax;
-        } else {
-            pwm[0] = PwmConfigTblPtr->PwmMin;
-            pwm[1] = PwmConfigTblPtr->PwmMin;
-            pwm[2] = PwmConfigTblPtr->PwmMin;
-            pwm[3] = PwmConfigTblPtr->PwmMin;
-        }
-
-        //SetMotorOutputs(pwm);
-        CFE_EVS_SendEvent(MAC_PWM_CALIB_INFO_EID, CFE_EVS_INFORMATION, "Calib pwm %d:%d:%d:%d.", pwm[0], pwm[1], pwm[2], pwm[3]);
-
-    }
-    else
-    {
-        //SetMotorOutputs(pwm);
-    }
-
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Mixer callback to get the actual control value.                 */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 MAC::ControlCallback(
-        cpuaddr Handle,
-        uint8 ControlGroup,
-        uint8 ControlIndex,
-        float &Control)
-{
-    int32 iStatus = 0;
-
-    const PX4_ActuatorControlsMsg_t *controls = (PX4_ActuatorControlsMsg_t*)Handle;
-
-    if(ControlGroup > 0)
-        iStatus = -1;
-    else if(ControlIndex > 8)
-        iStatus = -1;
-    else
-    {
-        Control = controls[ControlGroup].Control[ControlIndex];
-        iStatus = CFE_SUCCESS;
-    }
-
-    return iStatus;
 }
 
 #ifdef __cplusplus
