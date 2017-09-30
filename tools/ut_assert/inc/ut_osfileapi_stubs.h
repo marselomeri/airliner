@@ -44,6 +44,10 @@
 #ifndef UT_OSFILEAPI_STUBS_H_
 #define UT_OSFILEAPI_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_OSFILEAPI_CREAT_INDEX,
@@ -86,7 +90,7 @@ typedef struct
     int32 (*OS_chmod)(const char *path, uint32 access);
     int32 (*OS_lseek)(int32  filedes, int32 offset, uint32 whence);
     int32 (*OS_remove)(const char *path);
-    int32 (*OS_rename)(const char *old, const char *new);
+    int32 (*OS_rename)(const char *old_file, const char *new_file);
     int32 (*OS_cp)(const char *src, const char *dest);
     int32 (*OS_mv)(const char *src, const char *dest);
     int32 (*OS_mkdir)(const char *path, uint32 access);
@@ -108,5 +112,9 @@ void Ut_OSFILEAPI_Reset(void);
 void Ut_OSFILEAPI_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_OSFILEAPI_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_OSFILEAPI_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 

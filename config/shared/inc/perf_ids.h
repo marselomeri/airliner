@@ -36,6 +36,7 @@
 #define PX4BR_MAIN_TASK_PERF_ID     66
 #define AMC_MAIN_TASK_PERF_ID       67
 #define MAC_MAIN_TASK_PERF_ID       68
+#define EA_MAIN_TASK_PERF_ID        69
 
 #endif
 

@@ -1,4 +1,3 @@
-
 #include "ci_custom.h"
 #include "ci_platform_cfg.h"
 #include <fcntl.h>

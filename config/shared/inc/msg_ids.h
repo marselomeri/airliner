@@ -1,5 +1,5 @@
-#ifndef _EFT1_MIDS_H_
-#define _EFT1_MIDS_H_
+#ifndef MSG_IDS_H
+#define MSG_IDS_H
 
 #include "cfe_msgids.h"
 
@@ -555,7 +555,7 @@
 /* AMC                                                  */
 #define AMC_CMD_MID                                 0x1c3d
 #define AMC_SEND_HK_MID                             0x1c3e
-#define AMC_UPDATE_MOTORS_MID                              0x1c3f
+#define AMC_UPDATE_MOTORS_MID                       0x1c3f
 #define AMC_OUT_DATA_MID                            0x0c40
 #define AMC_HK_TLM_MID                              0x0c41
 

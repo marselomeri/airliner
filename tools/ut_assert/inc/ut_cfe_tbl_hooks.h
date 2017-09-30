@@ -41,6 +41,10 @@
 #ifndef UT_CFE_TBL_HOOKS_H_
 #define UT_CFE_TBL_HOOKS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cfe.h"
 
 void        Ut_CFE_TBL_ClearTables(void);
@@ -52,5 +56,9 @@ void       *Ut_CFE_TBL_GetAddress(CFE_TBL_Handle_t TblHandle);
 int32       Ut_CFE_TBL_GetAddressHook(void **TblPtr, CFE_TBL_Handle_t TblHandle);
 int32       Ut_CFE_TBL_RegisterHook(CFE_TBL_Handle_t *TblHandlePtr, const char *Name, uint32 Size, uint16 TblOptionFlags, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr);
 int32       Ut_CFE_TBL_LoadHook(CFE_TBL_Handle_t TblHandle, CFE_TBL_SrcEnum_t SrcType, const void *SrcDataPtr);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

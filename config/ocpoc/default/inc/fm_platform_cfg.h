@@ -1,31 +1,5 @@
-/*
-** $Id: fm_platform_cfg.h 1.6.1.2 2017/01/23 21:53:19EST sstrege Exp  $
-**
-**  Copyright (c) 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Title: File Manager (FM) Platform Configuration Header File
-**
-** Purpose: Specification for the CFS FM application constants
-**          that can be configured form one platform to another
-**
-** Author: Susanne L. Strege, Code 582 NASA GSFC
-**
-** Notes:
-**
-** References:
-**    Flight Software Branch C Coding Standard Version 1.0a
-**
-*/
-
-#ifndef _fm_platform_cfg_h_
-#define _fm_platform_cfg_h_
+#ifndef FM_PLATFORM_CFG_H
+#define FM_PLATFORM_CFG_H
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -439,7 +413,7 @@
 #define FM_TABLE_VALIDATION_ERR         (0xCF000080L)
 
 
-#endif /* _fm_platform_cfg_h_ */
+#endif /* FM_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */

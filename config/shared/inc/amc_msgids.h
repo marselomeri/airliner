@@ -1,4 +1,3 @@
-    
 #ifndef AMC_MSGIDS_H
 #define AMC_MSGIDS_H
 

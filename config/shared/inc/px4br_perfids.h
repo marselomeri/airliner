@@ -1,5 +1,5 @@
-#ifndef _px4br_perfids_
-#define _px4br_perfids_
+#ifndef PX4BR_PERFIDS_H
+#define PX4BR_PERFIDS_H
 
 #include "perf_ids.h"
 

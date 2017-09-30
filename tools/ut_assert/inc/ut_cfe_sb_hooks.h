@@ -40,6 +40,10 @@
 #ifndef UT_CFE_SB_HOOKS_H_
 #define UT_CFE_SB_HOOKS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cfe.h"
 #include "utassert.h"
 #include "utlist.h"
@@ -91,5 +95,9 @@ void                CCSDS_LoadCheckSum (CCSDS_CmdPkt_t *PktPtr);
 void                CCSDS_InitPkt (CCSDS_PriHdr_t *PktPtr, uint16 StreamId, uint16 Length, boolean Clear);
 boolean             CCSDS_ValidCheckSum (CCSDS_CmdPkt_t *PktPtr);
 uint8               CCSDS_ComputeCheckSum (CCSDS_CmdPkt_t *PktPtr);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

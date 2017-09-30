@@ -1,4 +1,3 @@
-    
 #ifndef AMC_MISSION_CFG_H
 #define AMC_MISSION_CFG_H
 

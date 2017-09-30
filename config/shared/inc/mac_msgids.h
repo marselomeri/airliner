@@ -1,4 +1,3 @@
-    
 #ifndef MAC_MSGIDS_H
 #define MAC_MSGIDS_H
 

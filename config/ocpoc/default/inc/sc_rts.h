@@ -1,39 +1,5 @@
- /*************************************************************************
- ** File:
- **   $Id: sc_rts.h 1.2 2015/11/20 12:03:20EST sstrege Exp  $
- **
- **  Copyright © 2007-2014 United States Government as represented by the 
- **  Administrator of the National Aeronautics and Space Administration. 
- **  All Other Rights Reserved.  
- **
- **  This software was created at NASA's Goddard Space Flight Center.
- **  This software is governed by the NASA Open Source Agreement and may be 
- **  used, distributed and modified only pursuant to the terms of that 
- **  agreement.
- **
- ** Purpose: 
- **   This file contains human readable definitions of all of the RTS's
- **   in Stored Command. This should be edited by the mission if it wishes
- **   to name it's RTS's
- **
- ** References:
- **   Flight Software Branch C Coding Standard Version 1.2
- **   CFS Development Standards Document
- ** Notes:
- **
- **   $Log: sc_rts.h  $ 
- **   Revision 1.2 2015/11/20 12:03:20EST sstrege  
- **   Restoration from MKS 2009 Trunk 
- **   Revision 1.4 2015/03/02 12:58:31EST sstrege  
- **   Added copyright information 
- **   Revision 1.3 2011/03/15 17:30:47EDT lwalling  
- **   Delete RTS_ID_START_AUTO_EXEC, add RTS_ID_AUTO_POWER_ON and RTS_ID_AUTO_PROCESSOR 
- **   Revision 1.2 2009/01/05 08:26:41EST nyanchik  
- **   Check in after code review changes 
- *************************************************************************/
-
-#ifndef _sc_rts_
-#define _sc_rts_
+#ifndef SC_RTS_H
+#define SC_RTS_H
 
 /**
  ** \name RTS 'name for a mission
@@ -325,7 +291,7 @@
 /** \} */
 
 
-#endif /* _sc_rts_ */			    
+#endif /* SC_RTS_H */
 
 /************************/
 /*  End of File Comment */

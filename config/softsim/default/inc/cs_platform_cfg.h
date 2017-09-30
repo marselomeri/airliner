@@ -1,29 +1,5 @@
-/*************************************************************************
- ** File:
- **   $Id: cs_platform_cfg.h 1.10 2017/03/10 10:51:00EST mdeschu Exp  $
- **
- **   Copyright (c) 2007-2014 United States Government as represented by the
- **   Administrator of the National Aeronautics and Space Administration. 
- **   All Other Rights Reserved.  
- **
- **   This software was created at NASA's Goddard Space Flight Center.
- **   This software is governed by the NASA Open Source Agreement and may be 
- **   used, distributed and modified only pursuant to the terms of that 
- **   agreement.
- **
- ** Purpose: 
- **   Specification for the CFS Checksum constants that can
- **   be configured from one platform to another
- **
- ** References:
- **   Flight Software Branch C Coding Standard Version 1.2
- **   CFS Development Standards Document
- **   CFS CS Heritage Analysis Document
- **   CFS CS CDR Package
- **
- *************************************************************************/
-#ifndef _cs_platform_cfg_
-#define _cs_platform_cfg_
+#ifndef CS_PLATFORM_CFG_H
+#define CS_PLATFORM_CFG_H
 
 /*************************************************************************
  ** Macro Definitions

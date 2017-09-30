@@ -1,4 +1,3 @@
-
 #ifndef CI_PLATFORM_CFG_H
 #define CI_PLATFORM_CFG_H
 

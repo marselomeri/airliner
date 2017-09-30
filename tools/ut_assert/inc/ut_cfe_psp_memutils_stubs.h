@@ -34,6 +34,10 @@
 #ifndef UT_CFE_PSP_MEMUTILS_STUBS_H_
 #define UT_CFE_PSP_MEMUTILS_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_CFE_PSP_MEMUTILS_MEMCPY_INDEX,
@@ -57,5 +61,9 @@ typedef struct
 void Ut_CFE_PSP_MEMUTILS_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_CFE_PSP_MEMUTILS_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_CFE_PSP_MEMUTILS_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
