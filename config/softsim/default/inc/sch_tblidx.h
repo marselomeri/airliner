@@ -56,6 +56,9 @@
 #define CF_SEND_HK_MIDX				57
 #define CF_WAKE_UP_REQ_CMD_MIDX		58
 
+#define MAC_SEND_HK_MIDX            60
+#define MAC_RUN_CONTROLLER_MIDX		61
+
 #define AMC_UPDATE_MOTORS_MIDX      65
 #define AMC_SEND_HK_MIDX            66
 

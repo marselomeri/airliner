@@ -148,14 +148,23 @@ int32 MAC::InitPipe()
                                  MAC_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-//        iStatus = CFE_SB_SubscribeEx(MAC_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_SEND_HK_RESERVED);
-//        if (iStatus != CFE_SUCCESS)
-//        {
-//            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-//                                     "CMD Pipe failed to subscribe to MAC_SEND_HK_MID. (0x%08X)",
-//                                     (unsigned int)iStatus);
-//            goto MAC_InitPipe_Exit_Tag;
-//        }
+        iStatus = CFE_SB_SubscribeEx(MAC_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_SEND_HK_RESERVED);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to MAC_SEND_HK_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(MAC_RUN_CONTROLLER_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to MAC_RUN_CONTROLLER_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
 
         iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
@@ -459,7 +468,13 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 ReportHousekeeping();
                 break;
 
+            case MAC_RUN_CONTROLLER_MID:
+                RunController();
+                break;
+
             case PX4_ACTUATOR_ARMED_MID:
+                memcpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
+                RunController();
                 break;
 
             case PX4_ACTUATOR_CONTROLS_0_MID:
@@ -768,6 +783,11 @@ void MAC::AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
+}
+
+void MAC::RunController(void)
+{
+	OS_printf("MAC::RunController()\n");
 }
 
 #ifdef __cplusplus

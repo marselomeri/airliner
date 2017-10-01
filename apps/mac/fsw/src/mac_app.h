@@ -142,7 +142,6 @@ public:
 
 
 
-
 	uint32 m_GyroCount;
 	int32 m_SelectedGyro;
 
@@ -425,6 +424,8 @@ public:
     **
     *************************************************************************/
     static int32  ValidateMixerCfgTbl(void*);
+
+    void RunController(void);
 
 };
 
