@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_actuator_outputs_pb 
+message px4_sensor_correction_pb 
 {
     repeated float gyro_offset_0 = 1 [packed=true, (nanopb).max_count = 3];
     repeated float gyro_scale_0 = 2 [packed=true, (nanopb).max_count = 3];
@@ -30,13 +30,13 @@ message px4_actuator_outputs_pb
     required float baro_offset_2 = 17;
     required float baro_scale_2 = 18;
 
-    required uint8 selected_gyro_instance = 19;
-    required uint8 selected_accel_instance = 20;
-    required uint8 selected_baro_instance = 21;
+    required uint32 selected_gyro_instance = 19;
+    required uint32 selected_accel_instance = 20;
+    required uint32 selected_baro_instance = 21;
     
-    repeated uint8 gyro_mapping = 22 [packed=true, (nanopb).max_count = 3];
-    repeated uint8 accel_mapping = 22 [packed=true, (nanopb).max_count = 3];
-    repeated uint8 baro_mapping = 22 [packed=true, (nanopb).max_count = 3];
+    repeated uint32 gyro_mapping = 22 [packed=true, (nanopb).max_count = 3];
+    repeated uint32 accel_mapping = 23 [packed=true, (nanopb).max_count = 3];
+    repeated uint32 baro_mapping = 24 [packed=true, (nanopb).max_count = 3];
 }	
 
 // ORB_DECLARE(sensor_correction)

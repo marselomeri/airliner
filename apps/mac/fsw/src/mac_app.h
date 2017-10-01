@@ -73,19 +73,19 @@ extern "C" {
 
 typedef struct
 {
-	PX4_ControlStateMsg_t				ControlState;
-	PX4_VehicleAttitudeSetpointMsg_t	VAttSp;			  /**< vehicle attitude setpoint */
-	PX4_VehicleRatesSetpointMsg_t		VRatesSp;		  /**< vehicle rates setpoint */
-	PX4_ManualControlSetpointMsg_t		ManualControlSp;  /**< manual control setpoint */
-	PX4_VehicleControlModeMsg_t			VControlMode;	  /**< vehicle control mode */
-	PX4_ActuatorControlsMsg_t			Actuators;		  /**< actuator controls */
 	PX4_ActuatorArmedMsg_t				Armed;			  /**< actuator arming status */
-	PX4_VehicleStatusMsg_t				VehicleStatus;	  /**< vehicle status */
-	PX4_MultirotorMotorLimitsMsg_t		MotorLimits;	  /**< motor limits */
-	PX4_McAttCtrlStatusMsg_t 			ControllerStatus; /**< controller status */
+	PX4_ActuatorControlsMsg_t			Actuators;		  /**< actuator controls */
 	PX4_BatteryStatusMsg_t				BatteryStatus;	  /**< battery status */
-	PX4_SensorGyroMsg_t					SensorGyro;		  /**< gyro data before thermal correctons and ekf bias estimates are applied */
+	PX4_ControlStateMsg_t				ControlState;
+	PX4_ManualControlSetpointMsg_t		ManualControlSp;  /**< manual control setpoint */
+	PX4_McAttCtrlStatusMsg_t 			ControllerStatus; /**< controller status */
+	PX4_MultirotorMotorLimitsMsg_t		MotorLimits;	  /**< motor limits */
 	PX4_SensorCorrectionMsg_t			SensorCorrection; /**< sensor thermal corrections */
+	PX4_SensorGyroMsg_t					SensorGyro;		  /**< gyro data before thermal correctons and ekf bias estimates are applied */
+	PX4_VehicleAttitudeSetpointMsg_t	VAttSp;			  /**< vehicle attitude setpoint */
+	PX4_VehicleControlModeMsg_t			VControlMode;	  /**< vehicle control mode */
+	PX4_VehicleRatesSetpointMsg_t		VRatesSp;		  /**< vehicle rates setpoint */
+	PX4_VehicleStatusMsg_t				VehicleStatus;	  /**< vehicle status */
 } MAC_CurrentValueTable_t;
 
 

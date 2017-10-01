@@ -1770,9 +1770,9 @@ typedef struct
     uint8 selected_gyro_instance;
     uint8 selected_accel_instance;
     uint8 selected_baro_instance;
-    uint8 gyro_mapping;
-    uint8 accel_mapping;
-    uint8 baro_mapping;
+    uint8 gyro_mapping[3];
+    uint8 accel_mapping[3];
+    uint8 baro_mapping[3];
 } PX4_SensorCorrectionMsg_t;
 
 #endif

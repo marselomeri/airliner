@@ -148,23 +148,14 @@ int32 MAC::InitPipe()
                                  MAC_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(MAC_UPDATE_MOTORS_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_WAKEUP_RESERVED);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "Sch Pipe failed to subscribe to MAC_UPDATE_MOTORS_MID. (0x%08X)",
-                                     (unsigned int)iStatus);
-            goto MAC_InitPipe_Exit_Tag;
-        }
-
-        iStatus = CFE_SB_SubscribeEx(MAC_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_SEND_HK_RESERVED);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "CMD Pipe failed to subscribe to MAC_SEND_HK_MID. (0x%08X)",
-                                     (unsigned int)iStatus);
-            goto MAC_InitPipe_Exit_Tag;
-        }
+//        iStatus = CFE_SB_SubscribeEx(MAC_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_SEND_HK_RESERVED);
+//        if (iStatus != CFE_SUCCESS)
+//        {
+//            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+//                                     "CMD Pipe failed to subscribe to MAC_SEND_HK_MID. (0x%08X)",
+//                                     (unsigned int)iStatus);
+//            goto MAC_InitPipe_Exit_Tag;
+//        }
 
         iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
@@ -184,15 +175,104 @@ int32 MAC::InitPipe()
             goto MAC_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_RC_CHANNELS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "CMD Pipe failed to subscribe to PX4_RC_CHANNELS_MID. (0x%08X)",
+                                     "CMD Pipe failed to subscribe to PX4_BATTERY_STATUS_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto MAC_InitPipe_Exit_Tag;
         }
 
+        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MC_ATT_CTRL_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_MC_ATT_CTRL_STATUS_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MULTIROTOR_MOTOR_LIMITS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_MULTIROTOR_MOTOR_LIMITS_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_CORRECTION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_SENSOR_CORRECTION_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_GYRO_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_SENSOR_GYRO_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_SETPOINT_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_RATES_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_RATES_SETPOINT_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
     }
     else
     {
@@ -380,16 +460,64 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
                 break;
 
             case PX4_ACTUATOR_CONTROLS_0_MID:
                 memcpy(&CVT.Actuators, MsgPtr, sizeof(CVT.Actuators));
                 break;
 
+            case PX4_BATTERY_STATUS_MID:
+                memcpy(&CVT.BatteryStatus, MsgPtr, sizeof(CVT.BatteryStatus));
+                break;
+
+            case PX4_CONTROL_STATE_MID:
+            	OS_printf("PX4_CONTROL_STATE_MID\n");
+                memcpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
+                break;
+
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+            	OS_printf("PX4_MANUAL_CONTROL_SETPOINT_MID\n");
+                memcpy(&CVT.ManualControlSp, MsgPtr, sizeof(CVT.ManualControlSp));
+                break;
+
+            case PX4_MC_ATT_CTRL_STATUS_MID:
+                memcpy(&CVT.ControllerStatus, MsgPtr, sizeof(CVT.ControllerStatus));
+                break;
+
+            case PX4_MULTIROTOR_MOTOR_LIMITS_MID:
+            	OS_printf("PX4_MULTIROTOR_MOTOR_LIMITS_MID\n");
+                memcpy(&CVT.MotorLimits, MsgPtr, sizeof(CVT.MotorLimits));
+                break;
+
+            case PX4_SENSOR_CORRECTION_MID:
+            	OS_printf("PX4_SENSOR_CORRECTION_MID\n");
+                memcpy(&CVT.SensorCorrection, MsgPtr, sizeof(CVT.SensorCorrection));
+                break;
+
+            case PX4_SENSOR_GYRO_MID:
+                memcpy(&CVT.SensorGyro, MsgPtr, sizeof(CVT.SensorGyro));
+                break;
+
+            case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
+            	OS_printf("PX4_VEHICLE_ATTITUDE_SETPOINT_MID\n");
+                memcpy(&CVT.VAttSp, MsgPtr, sizeof(CVT.VAttSp));
+                break;
+
+            case PX4_VEHICLE_CONTROL_MODE_MID:
+                memcpy(&CVT.VControlMode, MsgPtr, sizeof(CVT.VControlMode));
+                break;
+
+            case PX4_VEHICLE_RATES_SETPOINT_MID:
+                memcpy(&CVT.VRatesSp, MsgPtr, sizeof(CVT.VRatesSp));
+                break;
+
+            case PX4_VEHICLE_STATUS_MID:
+                memcpy(&CVT.VehicleStatus, MsgPtr, sizeof(CVT.VehicleStatus));
+                break;
+
             default:
                 (void) CFE_EVS_SendEvent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR,
-                                  "Recvd invalid SCH msgId (0x%04X)", (unsigned short)MsgId);
+                                  "Recvd invalid SCH msgId (0x%04X)", MsgId);
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)

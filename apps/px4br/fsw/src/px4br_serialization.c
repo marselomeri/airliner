@@ -120,6 +120,7 @@
 #include "vehicle_status.pb.h"
 #include "vtol_vehicle_status.pb.h"
 #include "wind_estimate.pb.h"
+#include "sensor_correction.pb.h"
 
 
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
@@ -2864,6 +2865,155 @@ uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorC
 }
 
 
+uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
+{
+	bool status = false;
+	px4_sensor_correction_pb pbMsg;
+
+	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.gyro_offset_0_count = 3;
+	pbMsg.gyro_offset_0[0] = inObject->gyro_offset_0[0];
+	pbMsg.gyro_offset_0[1] = inObject->gyro_offset_0[1];
+	pbMsg.gyro_offset_0[2] = inObject->gyro_offset_0[2];
+	pbMsg.gyro_offset_1_count = 3;
+	pbMsg.gyro_offset_1[0] = inObject->gyro_offset_1[0];
+	pbMsg.gyro_offset_1[1] = inObject->gyro_offset_1[1];
+	pbMsg.gyro_offset_1[2] = inObject->gyro_offset_1[2];
+	pbMsg.gyro_offset_2_count = 3;
+	pbMsg.gyro_offset_2[0] = inObject->gyro_offset_2[0];
+	pbMsg.gyro_offset_2[1] = inObject->gyro_offset_2[1];
+	pbMsg.gyro_offset_2[2] = inObject->gyro_offset_2[2];
+
+	pbMsg.gyro_scale_0_count = 3;
+	pbMsg.gyro_scale_0[0] = inObject->gyro_scale_0[0];
+	pbMsg.gyro_scale_0[1] = inObject->gyro_scale_0[1];
+	pbMsg.gyro_scale_0[2] = inObject->gyro_scale_0[2];
+	pbMsg.gyro_scale_1_count = 3;
+	pbMsg.gyro_scale_1[0] = inObject->gyro_scale_1[0];
+	pbMsg.gyro_scale_1[1] = inObject->gyro_scale_1[1];
+	pbMsg.gyro_scale_1[2] = inObject->gyro_scale_1[2];
+	pbMsg.gyro_scale_2_count = 3;
+	pbMsg.gyro_scale_2[0] = inObject->gyro_scale_2[0];
+	pbMsg.gyro_scale_2[1] = inObject->gyro_scale_2[1];
+	pbMsg.gyro_scale_2[2] = inObject->gyro_scale_2[2];
+
+	pbMsg.accel_offset_0_count = 3;
+	pbMsg.accel_offset_0[0] = inObject->accel_offset_0[0];
+	pbMsg.accel_offset_0[1] = inObject->accel_offset_0[1];
+	pbMsg.accel_offset_0[2] = inObject->accel_offset_0[2];
+	pbMsg.accel_offset_1_count = 3;
+	pbMsg.accel_offset_1[0] = inObject->accel_offset_1[0];
+	pbMsg.accel_offset_1[1] = inObject->accel_offset_1[1];
+	pbMsg.accel_offset_1[2] = inObject->accel_offset_1[2];
+	pbMsg.accel_offset_2_count = 3;
+	pbMsg.accel_offset_2[0] = inObject->accel_offset_2[0];
+	pbMsg.accel_offset_2[1] = inObject->accel_offset_2[1];
+	pbMsg.accel_offset_2[2] = inObject->accel_offset_2[2];
+	pbMsg.accel_scale_0_count = 3;
+	pbMsg.accel_scale_0[0] = inObject->accel_scale_0[0];
+	pbMsg.accel_scale_0[1] = inObject->accel_scale_0[1];
+	pbMsg.accel_scale_0[2] = inObject->accel_scale_0[2];
+	pbMsg.accel_scale_1_count = 3;
+	pbMsg.accel_scale_1[0] = inObject->accel_scale_1[0];
+	pbMsg.accel_scale_1[1] = inObject->accel_scale_1[1];
+	pbMsg.accel_scale_1[2] = inObject->accel_scale_1[2];
+	pbMsg.accel_scale_2_count = 3;
+	pbMsg.accel_scale_2[0] = inObject->accel_scale_2[0];
+	pbMsg.accel_scale_2[1] = inObject->accel_scale_2[1];
+	pbMsg.accel_scale_2[2] = inObject->accel_scale_2[2];
+
+	pbMsg.baro_offset_0 = inObject->baro_offset_0;
+	pbMsg.baro_offset_0 = inObject->baro_offset_0;
+	pbMsg.baro_offset_0 = inObject->baro_offset_0;
+	pbMsg.baro_offset_1 = inObject->baro_offset_1;
+	pbMsg.baro_offset_1 = inObject->baro_offset_1;
+	pbMsg.baro_offset_1 = inObject->baro_offset_1;
+	pbMsg.baro_offset_2 = inObject->baro_offset_2;
+	pbMsg.baro_offset_2 = inObject->baro_offset_2;
+	pbMsg.baro_offset_2 = inObject->baro_offset_2;
+
+	pbMsg.baro_scale_0 = inObject->baro_scale_0;
+	pbMsg.baro_scale_0 = inObject->baro_scale_0;
+	pbMsg.baro_scale_0 = inObject->baro_scale_0;
+	pbMsg.baro_scale_1 = inObject->baro_scale_1;
+	pbMsg.baro_scale_1 = inObject->baro_scale_1;
+	pbMsg.baro_scale_1 = inObject->baro_scale_1;
+	pbMsg.baro_scale_2 = inObject->baro_scale_2;
+	pbMsg.baro_scale_2 = inObject->baro_scale_2;
+	pbMsg.baro_scale_2 = inObject->baro_scale_2;
+
+	pbMsg.selected_gyro_instance = inObject->selected_gyro_instance;
+	pbMsg.selected_accel_instance = inObject->selected_accel_instance;
+	pbMsg.selected_baro_instance = inObject->selected_baro_instance;
+
+	pbMsg.gyro_mapping_count = 3;
+	pbMsg.gyro_mapping[0] = inObject->gyro_mapping[0];
+	pbMsg.gyro_mapping[1] = inObject->gyro_mapping[1];
+	pbMsg.gyro_mapping[2] = inObject->gyro_mapping[2];
+
+	pbMsg.accel_mapping_count = 3;
+	pbMsg.accel_mapping[0] = inObject->accel_mapping[0];
+	pbMsg.accel_mapping[1] = inObject->accel_mapping[1];
+	pbMsg.accel_mapping[2] = inObject->accel_mapping[2];
+
+	pbMsg.baro_mapping_count = 3;
+	pbMsg.baro_mapping[0] = inObject->baro_mapping[0];
+	pbMsg.baro_mapping[1] = inObject->baro_mapping[1];
+	pbMsg.baro_mapping[2] = inObject->baro_mapping[2];
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4_sensor_combined_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+
+	return stream.bytes_written;
+}
+
+uint32 PX4BR_SensorCorrection_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCorrectionMsg_t *inOutObject)
+{
+//	bool status = false;
+//	px4_sensor_combined_pb pbMsg;
+//
+//	/* Create a stream that reads from the buffer. */
+//	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+//
+//	/* Now we are ready to decode the message. */
+//	status = pb_decode(&stream, px4_sensor_combined_pb_fields, &pbMsg);
+//
+//	/* Check for errors... */
+//	if (!status)
+//	{
+//		return 0;
+//	}
+//
+//	//inOutObject->timestamp = pbMsg.timestamp;
+//	inOutObject->GyroRad[0] = pbMsg.gyro_rad[0];
+//	inOutObject->GyroRad[1] = pbMsg.gyro_rad[1];
+//	inOutObject->GyroRad[2] = pbMsg.gyro_rad[2];
+//	inOutObject->GyroIntegralDt = pbMsg.gyro_integral_dt;
+//	//inOutObject->accelerometer_timestamp_relative = pbMsg.accelerometer_timestamp_relative;
+//	inOutObject->Acc[0] = pbMsg.accelerometer_m_s2[0];
+//	inOutObject->Acc[1] = pbMsg.accelerometer_m_s2[1];
+//	inOutObject->Acc[2] = pbMsg.accelerometer_m_s2[2];
+//	inOutObject->AccIntegralDt = pbMsg.accelerometer_integral_dt;
+//	//inOutObject->magnetometer_timestamp_relative = pbMsg.magnetometer_timestamp_relative;
+//	inOutObject->Mag[0] = pbMsg.magnetometer_ga[0];
+//	inOutObject->Mag[1] = pbMsg.magnetometer_ga[1];
+//	inOutObject->Mag[2] = pbMsg.magnetometer_ga[2];
+//	//inOutObject->baro_timestamp_relative = pbMsg.baro_timestamp_relative;
+//	inOutObject->BaroAlt = pbMsg.baro_alt_meter;
+//	inOutObject->BaroTemp = pbMsg.baro_temp_celcius;
+
+	return sizeof(PX4_SensorCombinedMsg_t);
+}
+
+
 uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
@@ -4136,7 +4286,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Dec(const char *inBuffer, uint32 inSiz
 	inOutObject->AccY = pbMsg.acc_y;
 	inOutObject->AccZ = pbMsg.acc_z;
 
-	return sizeof(PX4BR_VehicleLocalPositionSetpoint_Dec);
+	return sizeof(PX4_VehicleLocalPositionSetpointMsg_t);
 }
 
 
@@ -4188,7 +4338,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	inOutObject->Yaw = pbMsg.yaw;
 	inOutObject->Thrust = pbMsg.thrust;
 
-	return sizeof(PX4BR_VehicleRatesSetpoint_Dec);
+	return sizeof(PX4_VehicleRatesSetpointMsg_t);
 }
 
 
