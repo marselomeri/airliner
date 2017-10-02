@@ -1,48 +1,5 @@
-/************************************************************************
-** File:
-**   $Id: hk_platform_cfg.h 1.2 2015/11/10 16:49:03EST lwalling Exp  $
-**
-**  Copyright © 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose: 
-**  The CFS Housekeeping (HK) Application platform configuration header file
-**
-** Notes:
-**
-** $Log: hk_platform_cfg.h  $
-** Revision 1.2 2015/11/10 16:49:03EST lwalling 
-** Restore data lost in MKS 2010 from MKS 2009
-** Revision 1.1 2015/07/25 21:31:16EDT rperera 
-** Initial revision
-** Member added to project /CFS-APPs-PROJECT/hk/fsw/platform_inc/project.pj
-** Revision 1.8 2015/03/04 14:58:29EST sstrege 
-** Added copyright information
-** Revision 1.7 2012/08/15 18:32:39EDT aschoeni 
-** Added ability to discard incomplete combo packets
-** Revision 1.6 2011/06/23 12:00:02EDT jmdagost 
-** Moved HK_MISSION_REV from version header to here.
-** Revision 1.5 2010/05/06 15:32:55EDT jmdagost 
-** Changed location of hk_cpy_tbl.tbl from /cf/ to /cf/apps/
-** Revision 1.4 2009/12/03 16:32:17EST jmdagost 
-** Expanded comment on mempool size definition, corrected copy table filename.
-** Revision 1.3 2009/04/18 12:55:14EDT dkobe 
-** Updates to correct doxygen comments
-** Revision 1.2 2008/05/07 09:55:22EDT rjmcgraw 
-** DCR1647:3 Romoved the Hk from copy table name and runtime table name
-** Revision 1.1 2008/04/09 16:39:33EDT rjmcgraw 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hk/fsw/platform_inc/project.pj
-**
-*************************************************************************/
-#ifndef _hk_platform_cfg_h_
-#define _hk_platform_cfg_h_
+#ifndef HK_PLATFORM_CFG_H
+#define HK_PLATFORM_CFG_H
 
 
 
@@ -159,7 +116,7 @@
 #define HK_MISSION_REV            0
 
 
-#endif /* _hk_platform_cfg_h_ */
+#endif /* HK_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */

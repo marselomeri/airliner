@@ -31,6 +31,10 @@
 #ifndef _uttools_
 #define	_uttools_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Includes
  */
@@ -82,6 +86,10 @@ boolean             UtMemCmpCount(void *Memory, uint32 Length);
 /* Compares a region of memory with the contents of a binary file and determines if they are equal.  Note: Use
  * UtMem2BinFile to copy a region of memory to a binary file. */
 boolean             UtMem2BinFileCmp(void *Memory, char *Filename);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

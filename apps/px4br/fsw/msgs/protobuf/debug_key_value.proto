@@ -1,0 +1,12 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_debug_key_value_pb 
+{
+	required uint64 timestamp = 1;
+	required uint32 timestamp_ms = 2;
+	required float value = 3;
+	required string key = 4 [(nanopb).max_size = 10];
+}
+
+// ORB_DECLARE(debug_key_value);

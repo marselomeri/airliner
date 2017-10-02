@@ -1,0 +1,31 @@
+syntax = "proto2";
+import "nanopb.proto";
+import "esc_report.proto";
+
+message px4_esc_status_pb
+{
+	enum ESC_VENDOR
+	{
+	    ESC_VENDOR_GENERIC			= 0;
+	    ESC_VENDOR_MIKROKOPTER 		= 1;
+	    ESC_VENDOR_GRAUPNER_HOTT 	= 2;
+		ESC_VENDOR_TAP				= 3;
+	}
+
+	enum ESC_CONNECTIN_TYPE
+	{
+	    ESC_CONNECTIN_TYPE_PPM		= 0;
+		ESC_CONNECTIN_TYPE_SERIAL	= 1;
+		ESC_CONNECTIN_TYPE_ONESHOOT	= 2;
+		ESC_CONNECTIN_TYPE_I2C		= 3;
+		ESC_CONNECTIN_TYPE_CAN		= 4;
+	}
+
+	required uint64 timestamp = 1;
+	required uint32 counter = 2;
+	required uint32 count = 3;
+	required uint32 connectiontype = 4;
+	repeated px4_esc_report_pb esc = 5 [(nanopb).max_count = 8];
+}
+
+// ORB_DECLARE(esc_status);

@@ -1,50 +1,5 @@
-/*************************************************************************
-** File:
-**   $Id: lc_platform_cfg.h 1.2 2015/03/04 16:09:54EST sstrege Exp  $
-**
-**  Copyright © 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose: 
-**   CFS Limit Checker (LC) Application Platform Configuration Header File
-**
-** Notes:
-**
-**   $Log: lc_platform_cfg.h  $
-**   Revision 1.2 2015/03/04 16:09:54EST sstrege 
-**   Added copyright information
-**   Revision 1.1 2012/07/31 16:53:35EDT nschweis 
-**   Initial revision
-**   Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/lcx/fsw/platform_inc/project.pj
-**   Revision 1.8 2011/03/04 09:47:04EST lwalling 
-**   Change default table directory from ram to cf/apps
-**   Revision 1.7 2011/01/19 11:32:05EST jmdagost 
-**   Moved mission revision number from lc_version.h to lc_platform_cfg.h.
-**   Revision 1.6 2010/02/23 11:24:14EST lwalling 
-**   Change application name from LC_APP to LC per CFS naming convention
-**   Revision 1.5 2009/12/22 13:17:45EST lwalling 
-**   Create common definition for LC application name
-**   Revision 1.4 2008/12/10 15:59:26EST dahardis 
-**   Reduced the maximum number of watchpoints and actionpoints config params
-**   from 256 to 176
-**   Revision 1.3 2008/12/10 15:33:21EST dahardis 
-**   Changed default configuration parameter setting to not attempt a restore 
-**   from CDS on application restart
-**   Revision 1.2 2008/12/03 13:59:40EST dahardis 
-**   Corrections from peer code review
-**   Revision 1.1 2008/10/29 14:18:17EDT dahardison 
-**   Initial revision
-**   Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/lc/fsw/platform_inc/project.pj
-** 
-*************************************************************************/
-#ifndef _lc_platform_cfg_
-#define _lc_platform_cfg_
+#ifndef LC_PLATFORM_CFG_H
+#define LC_PLATFORM_CFG_H
 
 /** \lccfg Application Name
 **
@@ -262,7 +217,7 @@
 */
 #define LC_MISSION_REV            0
 
-#endif /*_lc_platform_cfg_*/
+#endif /*LC_PLATFORM_CFG_H*/
 
 /************************/
 /*  End of File Comment */

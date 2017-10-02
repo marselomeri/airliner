@@ -1,0 +1,16 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_uavcan_parameter_value_pb 
+{
+	required uint64 timestamp = 1;
+	required int64 int_value = 2;
+	required float real_value = 3;
+	required int32 param_index = 4;
+	required uint32 param_count = 5;
+	required uint32 node_id = 6;
+	required string param_id = 7 [(nanopb).max_size = 17];
+	required uint32 param_type = 8;
+}
+
+// ORB_DECLARE(uavcan_parameter_value);

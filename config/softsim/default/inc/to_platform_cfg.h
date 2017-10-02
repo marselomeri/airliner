@@ -1,4 +1,3 @@
-    
 #ifndef TO_PLATFORM_CFG_H
 #define TO_PLATFORM_CFG_H
 

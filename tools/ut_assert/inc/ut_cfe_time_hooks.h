@@ -32,6 +32,10 @@
 #ifndef UT_CFE_TIME_HOOKS_H_
 #define UT_CFE_TIME_HOOKS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cfe.h"
 
 CFE_TIME_SysTime_t  Ut_CFE_TIME_AddHook (CFE_TIME_SysTime_t Time1, CFE_TIME_SysTime_t Time2);
@@ -40,6 +44,10 @@ uint32              Ut_CFE_TIME_Sub2MicroSecsHook (uint32 SubSeconds);
 uint32              Ut_CFE_TIME_Micro2SubSecsHook (uint32 MicroSeconds);
 void                Ut_CFE_TIME_PrintHook(char *PrintBuffer, CFE_TIME_SysTime_t TimeToPrint);
 CFE_TIME_Compare_t  Ut_CFE_TIME_CompareHook(CFE_TIME_SysTime_t TimeA, CFE_TIME_SysTime_t TimeB);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

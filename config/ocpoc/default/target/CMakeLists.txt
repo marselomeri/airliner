@@ -30,6 +30,10 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
 
 add_airliner_app(
+    px4lib
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build)
+
+add_airliner_app(
     pblib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
 
@@ -190,10 +194,12 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/vc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_custom_shared.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/vc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_mission_cfg.h
@@ -209,6 +215,17 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_perfids.h
     )
+
+add_airliner_app(
+    amc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/amc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/amc
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/amc/amc_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/amc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_perfids.h
+)
 
 
 

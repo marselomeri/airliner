@@ -41,6 +41,10 @@
 #ifndef UT_CFE_TBL_STUBS_H_
 #define UT_CFE_TBL_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define CFE_TBL_NOT_OWNED               0xFFFFFFFF
 #define CFE_TBL_NOT_FOUND               (-1)
 #define CFE_TBL_END_OF_LIST             (CFE_TBL_Handle_t)0xFFFF
@@ -99,5 +103,9 @@ void Ut_CFE_TBL_Reset(void);
 void Ut_CFE_TBL_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_CFE_TBL_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_CFE_TBL_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 

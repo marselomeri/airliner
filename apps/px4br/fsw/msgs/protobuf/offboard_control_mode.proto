@@ -1,0 +1,15 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_offboard_control_mode_pb 
+{
+	required uint64 timestamp = 1;
+	required bool ignore_thrust = 2;
+	required bool ignore_attitude = 3;
+	required bool ignore_bodyrate = 4;
+	required bool ignore_position = 5;
+	required bool ignore_velocity = 6;
+	required bool ignore_acceleration_force = 7;
+}
+
+// ORB_DECLARE(offboard_control_mode);

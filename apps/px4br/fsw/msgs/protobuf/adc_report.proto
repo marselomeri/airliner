@@ -1,0 +1,11 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_adc_report_pb 
+{
+	required uint64 timestamp = 1;
+	repeated float channel_value = 2 [packed=true, (nanopb).max_count = 8];
+	repeated uint32 channel_id = 3 [packed=true, (nanopb).max_count = 8];
+}
+
+// ORB_DECLARE(adc_report);

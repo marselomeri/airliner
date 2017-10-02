@@ -1,4 +1,3 @@
-
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -98,7 +97,15 @@ TO_ChannelTbl_t TO_ConfigTbl =
 		{TO_DATA_TYPE_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
 		{EA_HK_TLM_MID,				1,	TO_PQUEUE_MEDIUM_IDX},
         {VC_HK_TLM_MID,				1,	TO_PQUEUE_MEDIUM_IDX},
-        {TO_DIAG_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX}
+        {TO_DIAG_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
+        {PX4_VEHICLE_GPS_POSITION_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_SENSOR_COMBINED_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_SENSOR_ACCEL_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_ACTUATOR_ARMED_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_ACTUATOR_CONTROLS_0_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_ACTUATOR_CONTROLS_1_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_ACTUATOR_CONTROLS_2_MID, 1, TO_PQUEUE_MEDIUM_IDX},
+        {PX4_ACTUATOR_CONTROLS_3_MID, 1, TO_PQUEUE_MEDIUM_IDX}
 	},{
 		/* Priority Queues */
 		/* TO_PQUEUE_SINGLE_PASS_IDX */

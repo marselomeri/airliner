@@ -1,0 +1,22 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_rc_parameter_map_pb 
+{
+	enum RC_PARAM_MAP
+	{
+		RC_PARAM_MAP_NCHAN = 3;
+		PARAM_ID_LEN = 16;
+	}
+
+	required uint64 timestamp = 1;
+	repeated int32 param_index = 2 [packed=true, (nanopb).max_count = 3];
+	repeated float scale = 3 [packed=true, (nanopb).max_count = 3];
+	repeated float value0 = 4 [packed=true, (nanopb).max_count = 3];
+	repeated float value_min = 5 [packed=true, (nanopb).max_count = 3];
+	repeated float value_max = 6 [packed=true, (nanopb).max_count = 3];
+	repeated bool valid = 7 [packed=true, (nanopb).max_count = 3];
+	required string param_id = 8 [(nanopb).max_size = 51];
+}
+
+// ORB_DECLARE(rc_parameter_map);

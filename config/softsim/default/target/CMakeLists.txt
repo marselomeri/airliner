@@ -30,6 +30,10 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
 
 add_airliner_app(
+    px4lib
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build)
+
+add_airliner_app(
     pblib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
 
@@ -213,15 +217,22 @@ add_airliner_app(
     )
 
 add_airliner_app(
-    pmc
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pmc/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pmc
+    amc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/amc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/amc
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pmc_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pmc_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pmc_perfids.h
-    )
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/amc/amc_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/amc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_perfids.h
+)
 
-
-
-
+#add_airliner_app(
+#    mac
+#    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mac/fsw/for_build
+#    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mac
+#    CONFIG_SOURCES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mac_platform_cfg.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_msgids.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_perfids.h
+#)

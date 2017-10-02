@@ -1,0 +1,20 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_command_ack_pb 
+{
+	enum VEHICLE_RESULT 
+	{
+	    	VEHICLE_RESULT_ACCEPTED = 0;
+	    	VEHICLE_RESULT_TEMPORARILY_REJECTED = 1;
+	    	VEHICLE_RESULT_DENIED = 2;
+	    	VEHICLE_RESULT_UNSUPPORTED = 3;
+	    	VEHICLE_RESULT_FAILED = 4;
+	}
+
+	required uint64 timestamp = 1;
+	required uint32 command = 2;
+	required uint32 result = 3;
+}
+
+// ORB_DECLARE(vehicle_command_ack);

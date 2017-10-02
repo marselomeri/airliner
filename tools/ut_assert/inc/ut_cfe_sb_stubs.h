@@ -38,6 +38,10 @@
 #ifndef UT_CFE_SB_STUBS_H_
 #define UT_CFE_SB_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_CFE_SB_CREATEPIPE_INDEX,
@@ -124,5 +128,9 @@ void Ut_CFE_SB_Reset(void);
 void Ut_CFE_SB_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_CFE_SB_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_CFE_SB_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

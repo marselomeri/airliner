@@ -1,0 +1,10 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_time_offset_pb 
+{
+	required uint64 timestamp = 1;
+	required uint64 offset_ns = 2;
+}
+
+// ORB_DECLARE(time_offset);

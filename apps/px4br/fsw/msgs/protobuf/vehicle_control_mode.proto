@@ -1,0 +1,25 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_control_mode_pb 
+{
+	required uint64 timestamp = 1;
+	required bool flag_armed = 2;
+	required bool flag_external_manual_override_ok = 3;
+	required bool flag_system_hil_enabled = 4;
+	required bool flag_control_manual_enabled = 5;
+	required bool flag_control_auto_enabled = 6;
+	required bool flag_control_offboard_enabled = 7;
+	required bool flag_control_rates_enabled = 8;
+	required bool flag_control_attitude_enabled = 9;
+	required bool flag_control_rattitude_enabled = 10;
+	required bool flag_control_force_enabled = 11;
+	required bool flag_control_acceleration_enabled = 12;
+	required bool flag_control_velocity_enabled = 13;
+	required bool flag_control_position_enabled = 14;
+	required bool flag_control_altitude_enabled = 15;
+	required bool flag_control_climb_rate_enabled = 16;
+	required bool flag_control_termination_enabled = 17;
+}
+
+// ORB_DECLARE(vehicle_control_mode);

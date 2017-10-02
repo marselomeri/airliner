@@ -1,44 +1,4 @@
 /************************************************************************
-** File:
-**   $Id: hs_amt.c 1.1 2015/11/12 14:29:05EST wmoleski Exp  $
-**
-**   Copyright © 2007-2014 United States Government as represented by the 
-**   Administrator of the National Aeronautics and Space Administration. 
-**   All Other Rights Reserved.  
-**
-**   This software was created at NASA's Goddard Space Flight Center.
-**   This software is governed by the NASA Open Source Agreement and may be 
-**   used, distributed and modified only pursuant to the terms of that 
-**   agreement.
-**
-** Purpose:
-**  The CFS Health and Safety (HS) Applications Monitor Table Definition
-**
-** Notes:
-**
-** $Log: hs_amt.c  $
-** Revision 1.1 2015/11/12 14:29:05EST wmoleski 
-** Initial revision
-** Member added to project /CFS-APPs-PROJECT/hs/fsw/tables/project.pj
-** Revision 1.2 2015/05/04 11:00:08EDT lwalling 
-** Change definitions for MAX_CRITICAL to MAX_MONITORED
-** Revision 1.1 2015/05/01 14:54:31EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hs/fsw/tables/project.pj
-** Revision 1.4 2015/04/27 14:33:46EDT lwalling 
-** Add attribute unused to default table definitions
-** Revision 1.3 2015/03/03 12:16:12EST sstrege 
-** Added copyright information
-** Revision 1.2 2011/08/15 15:43:17EDT aschoeni 
-** Updated so application name is configurable
-** Revision 1.1 2009/05/04 11:50:07EDT aschoeni 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/hs/fsw/project.pj
-**
-*************************************************************************/
-
-
-/************************************************************************
 ** Includes
 *************************************************************************/
 #include "cfe.h"

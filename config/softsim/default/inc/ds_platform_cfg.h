@@ -1,24 +1,5 @@
-/************************************************************************
-** File:
-**   $Id: ds_platform_cfg.h 1.3 2017/01/25 12:05:36EST sstrege Exp  $
-**
-**  Copyright (c) 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose: 
-**  The CFS Data Storage (DS) Application platform configuration header file
-**
-** Notes:
-**
-*************************************************************************/
-#ifndef _ds_platform_cfg_h_
-#define _ds_platform_cfg_h_
+#ifndef DS_PLATFORM_CFG_H
+#define DS_PLATFORM_CFG_H
 
 
 /**
@@ -483,7 +464,7 @@
 #define DS_PER_PACKET_PIPE_LIMIT        50
 
 
-#endif /* _ds_platform_cfg_h_ */
+#endif /* DS_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */

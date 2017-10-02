@@ -1,0 +1,11 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_mavlink_log_pb
+{
+	required uint64 timestamp = 1;
+	required string text = 2 [(nanopb).max_size = 50];
+	required uint32 severity = 3;
+}
+
+// ORB_DECLARE(mavlink_log);

@@ -1,0 +1,32 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_local_position_pb 
+{
+	required uint64 timestamp = 1;
+	required uint64 ref_timestamp = 2;
+	required double ref_lat = 3;
+	required double ref_lon = 4;
+	required uint64 surface_bottom_timestamp = 5;
+	required float x = 6;
+	required float y = 7;
+	required float z = 8;
+	required float vx = 9;
+	required float vy = 10;
+	required float vz = 11;
+	required float yaw = 12;
+	required float ref_alt = 13;
+	required float dist_bottom = 14;
+	required float dist_bottom_rate = 15;
+	required float eph = 16;
+	required float epv = 17;
+	required bool xy_valid = 18;
+	required bool z_valid = 19;
+	required bool v_xy_valid = 20;
+	required bool v_z_valid = 21;
+	required bool xy_global = 22;
+	required bool z_global = 23;
+	required bool dist_bottom_valid = 24;
+}
+
+// ORB_DECLARE(vehicle_local_position);
