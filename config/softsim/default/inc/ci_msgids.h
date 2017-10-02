@@ -1,5 +1,5 @@
-#ifndef _ci_msgids_
-#define _ci_msgids_
+#ifndef CI_MSGIDS_H
+#define CI_MSGIDS_H
 
 #include "msg_ids.h"
 

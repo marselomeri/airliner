@@ -1,5 +1,5 @@
-#ifndef _px4br_msgids_
-#define _px4br_msgids_
+#ifndef PX4BR_MSGIDS_H
+#define PX4BR_MSGIDS_H
 
 #include "msg_ids.h"
 

@@ -1,40 +1,5 @@
-/*************************************************************************
-** File:
-**   $Id: lc_mission_cfg.h 1.2 2015/03/04 16:09:55EST sstrege Exp  $
-**
-**  Copyright © 2007-2014 United States Government as represented by the 
-**  Administrator of the National Aeronautics and Space Administration. 
-**  All Other Rights Reserved.  
-**
-**  This software was created at NASA's Goddard Space Flight Center.
-**  This software is governed by the NASA Open Source Agreement and may be 
-**  used, distributed and modified only pursuant to the terms of that 
-**  agreement.
-**
-** Purpose: 
-**   CFS Limit Checker (LC) Application Mission Configuration Header File
-**
-** Notes:
-**
-**   $Log: lc_mission_cfg.h  $
-**   Revision 1.2 2015/03/04 16:09:55EST sstrege 
-**   Added copyright information
-**   Revision 1.1 2012/07/31 16:53:34EDT nschweis 
-**   Initial revision
-**   Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/lcx/fsw/mission_inc/project.pj
-**   Revision 1.4 2010/04/14 11:55:45EDT lwalling 
-**   Update stored command message ID, command code appears OK
-**   Revision 1.3 2010/03/03 15:23:16EST lwalling 
-**   Change RTS command code from 2 to 4, change some Doxygen pound symbols to forward slashes
-**   Revision 1.2 2010/01/07 13:53:10EST lwalling 
-**   Update LC configuration header files and configuration verification header file
-**   Revision 1.1 2008/12/03 13:51:47EST dahardis 
-**   Initial revision
-**   Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/lc/fsw/mission_inc/project.pj
-** 
-*************************************************************************/
-#ifndef _lc_mission_cfg_
-#define _lc_mission_cfg_
+#ifndef LC_MISSION_CFG_H
+#define LC_MISSION_CFG_H
 
 /** \lccfg RTS Request Message ID
 **  
@@ -79,7 +44,7 @@
 */
 #define LC_RTS_REQ_CC                     4
 
-#endif /*_lc_mission_cfg_*/
+#endif /*LC_MISSION_CFG_H*/
 
 /************************/
 /*  End of File Comment */

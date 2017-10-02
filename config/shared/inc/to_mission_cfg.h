@@ -1,4 +1,3 @@
-    
 #ifndef TO_MISSION_CFG_H
 #define TO_MISSION_CFG_H
 

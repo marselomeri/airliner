@@ -1,93 +1,125 @@
+/****************************************************************************
+ *
+ *   Copyright (c) 2016-2017 Windhover Labs, L.L.C. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name Windhover Labs nor the names of its contributors 
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ ****************************************************************************/
+
 #include "px4br_serialization.h"
 #include <pb_encode.h>
 #include <pb_decode.h>
 #include "px4_msgs.h"
-#include <pb_msgs/actuator_armed.pb.h>
-#include "pb_msgs/actuator_controls.pb.h"
-#include "pb_msgs/actuator_direct.pb.h"
-#include "pb_msgs/actuator_outputs.pb.h"
-#include "pb_msgs/adc_report.pb.h"
-#include "pb_msgs/airspeed.pb.h"
-#include "pb_msgs/att_pos_mocap.pb.h"
-#include "pb_msgs/battery_status.pb.h"
-#include "pb_msgs/camera_trigger.pb.h"
-#include "pb_msgs/commander_state.pb.h"
-#include "pb_msgs/control_state.pb.h"
-#include "pb_msgs/cpuload.pb.h"
-#include "pb_msgs/debug_key_value.pb.h"
-#include "pb_msgs/differential_pressure.pb.h"
-#include "pb_msgs/distance_sensor.pb.h"
-#include "pb_msgs/ekf2_innovations.pb.h"
-#include "pb_msgs/ekf2_replay.pb.h"
-#include "pb_msgs/esc_report.pb.h"
-#include "pb_msgs/esc_status.pb.h"
-#include "pb_msgs/estimator_status.pb.h"
-#include "pb_msgs/fence.pb.h"
-#include "pb_msgs/fence_vertex.pb.h"
-#include "pb_msgs/filtered_bottom_flow.pb.h"
-#include "pb_msgs/follow_target.pb.h"
-#include "pb_msgs/fw_pos_ctrl_status.pb.h"
-#include "pb_msgs/fw_virtual_attitude_setpoint.pb.h"
-#include "pb_msgs/fw_virtual_rates_setpoint.pb.h"
-#include "pb_msgs/geofence_result.pb.h"
-#include "pb_msgs/gps_dump.pb.h"
-#include "pb_msgs/gps_inject_data.pb.h"
-#include "pb_msgs/hil_sensor.pb.h"
-#include "pb_msgs/home_position.pb.h"
-#include "pb_msgs/input_rc.pb.h"
-#include "pb_msgs/log_message.pb.h"
-#include "pb_msgs/manual_control_setpoint.pb.h"
-#include "pb_msgs/mavlink_log.pb.h"
-#include "pb_msgs/mc_att_ctrl_status.pb.h"
-#include "pb_msgs/mc_virtual_attitude_setpoint.pb.h"
-#include "pb_msgs/mc_virtual_rates_setpoint.pb.h"
-#include "pb_msgs/mission.pb.h"
-#include "pb_msgs/mission_result.pb.h"
-#include "pb_msgs/multirotor_motor_limits.pb.h"
-#include "pb_msgs/offboard_control_mode.pb.h"
-#include "pb_msgs/optical_flow.pb.h"
-#include "pb_msgs/output_pwm.pb.h"
-#include "pb_msgs/parameter_update.pb.h"
-#include "pb_msgs/position_setpoint.pb.h"
-#include "pb_msgs/position_setpoint_triplet.pb.h"
-#include "pb_msgs/pwm_input.pb.h"
-#include "pb_msgs/qshell_req.pb.h"
-#include "pb_msgs/rc_channels.pb.h"
-#include "pb_msgs/rc_parameter_map.pb.h"
-#include "pb_msgs/safety.pb.h"
-#include "pb_msgs/satellite_info.pb.h"
-#include "pb_msgs/sensor_accel.pb.h"
-#include "pb_msgs/sensor_baro.pb.h"
-#include "pb_msgs/sensor_combined.pb.h"
-#include "pb_msgs/sensor_gyro.pb.h"
-#include "pb_msgs/sensor_mag.pb.h"
-#include "pb_msgs/servorail_status.pb.h"
-#include "pb_msgs/subsystem_info.pb.h"
-#include "pb_msgs/system_power.pb.h"
-#include "pb_msgs/tecs_status.pb.h"
-#include "pb_msgs/telemetry_status.pb.h"
-#include "pb_msgs/test_motor.pb.h"
-#include "pb_msgs/time_offset.pb.h"
-#include "pb_msgs/transponder_report.pb.h"
-#include "pb_msgs/uavcan_parameter_request.pb.h"
-#include "pb_msgs/uavcan_parameter_value.pb.h"
-#include "pb_msgs/vehicle_attitude.pb.h"
-#include "pb_msgs/vehicle_attitude_setpoint.pb.h"
-#include "pb_msgs/vehicle_command_ack.pb.h"
-#include "pb_msgs/vehicle_command.pb.h"
-#include "pb_msgs/vehicle_control_mode.pb.h"
-#include "pb_msgs/vehicle_force_setpoint.pb.h"
-#include "pb_msgs/vehicle_global_position.pb.h"
-#include "pb_msgs/vehicle_global_velocity_setpoint.pb.h"
-#include "pb_msgs/vehicle_gps_position.pb.h"
-#include "pb_msgs/vehicle_land_detected.pb.h"
-#include "pb_msgs/vehicle_local_position.pb.h"
-#include "pb_msgs/vehicle_local_position_setpoint.pb.h"
-#include "pb_msgs/vehicle_rates_setpoint.pb.h"
-#include "pb_msgs/vehicle_status.pb.h"
-#include "pb_msgs/vision_position_estimate.pb.h"
-#include "pb_msgs/vtol_vehicle_status.pb.h"
-#include "pb_msgs/wind_estimate.pb.h"
+#include "actuator_armed.pb.h"
+#include "actuator_controls.pb.h"
+#include "actuator_direct.pb.h"
+#include "actuator_outputs.pb.h"
+#include "adc_report.pb.h"
+#include "airspeed.pb.h"
+#include "att_pos_mocap.pb.h"
+#include "battery_status.pb.h"
+#include "camera_trigger.pb.h"
+#include "commander_state.pb.h"
+#include "control_state.pb.h"
+#include "cpuload.pb.h"
+#include "debug_key_value.pb.h"
+#include "differential_pressure.pb.h"
+#include "distance_sensor.pb.h"
+#include "ekf2_innovations.pb.h"
+#include "ekf2_replay.pb.h"
+#include "esc_report.pb.h"
+#include "esc_status.pb.h"
+#include "estimator_status.pb.h"
+#include "fence.pb.h"
+#include "fence_vertex.pb.h"
+#include "filtered_bottom_flow.pb.h"
+#include "follow_target.pb.h"
+#include "fw_pos_ctrl_status.pb.h"
+#include "fw_virtual_attitude_setpoint.pb.h"
+#include "fw_virtual_rates_setpoint.pb.h"
+#include "geofence_result.pb.h"
+#include "gps_dump.pb.h"
+#include "gps_inject_data.pb.h"
+#include "hil_sensor.pb.h"
+#include "home_position.pb.h"
+#include "input_rc.pb.h"
+#include "log_message.pb.h"
+#include "manual_control_setpoint.pb.h"
+#include "mavlink_log.pb.h"
+#include "mc_att_ctrl_status.pb.h"
+#include "mc_virtual_attitude_setpoint.pb.h"
+#include "mc_virtual_rates_setpoint.pb.h"
+#include "mission.pb.h"
+#include "mission_result.pb.h"
+#include "multirotor_motor_limits.pb.h"
+#include "offboard_control_mode.pb.h"
+#include "optical_flow.pb.h"
+#include "output_pwm.pb.h"
+#include "parameter_update.pb.h"
+#include "position_setpoint.pb.h"
+#include "position_setpoint_triplet.pb.h"
+#include "pwm_input.pb.h"
+#include "qshell_req.pb.h"
+#include "rc_channels.pb.h"
+#include "rc_parameter_map.pb.h"
+#include "safety.pb.h"
+#include "satellite_info.pb.h"
+#include "sensor_accel.pb.h"
+#include "sensor_baro.pb.h"
+#include "sensor_combined.pb.h"
+#include "sensor_gyro.pb.h"
+#include "sensor_mag.pb.h"
+#include "servorail_status.pb.h"
+#include "subsystem_info.pb.h"
+#include "system_power.pb.h"
+#include "tecs_status.pb.h"
+#include "telemetry_status.pb.h"
+#include "test_motor.pb.h"
+#include "time_offset.pb.h"
+#include "transponder_report.pb.h"
+#include "uavcan_parameter_request.pb.h"
+#include "uavcan_parameter_value.pb.h"
+#include "vehicle_attitude.pb.h"
+#include "vehicle_attitude_setpoint.pb.h"
+#include "vehicle_command_ack.pb.h"
+#include "vehicle_command.pb.h"
+#include "vehicle_control_mode.pb.h"
+#include "vehicle_force_setpoint.pb.h"
+#include "vehicle_global_position.pb.h"
+#include "vehicle_global_velocity_setpoint.pb.h"
+#include "vehicle_gps_position.pb.h"
+#include "vehicle_land_detected.pb.h"
+#include "vehicle_local_position.pb.h"
+#include "vehicle_local_position_setpoint.pb.h"
+#include "vehicle_rates_setpoint.pb.h"
+#include "vehicle_status.pb.h"
+#include "vtol_vehicle_status.pb.h"
+#include "wind_estimate.pb.h"
 
 
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
@@ -180,8 +212,9 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	bool status = false;
 	px4_actuator_controls_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
-	//pbMsg.timestamp_sample = inObject->timestamp_sample;
+	pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp_sample = inObject->timestamp_sample;
+    pbMsg.control_count = PX4_ACTUATOR_CONTROL_COUNT;
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		pbMsg.control[i] = inObject->Control[i];
@@ -219,8 +252,8 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
-	//inOutObject->timestamp_sample = pbMsg.timestamp_sample;
+	inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->timestamp_sample = pbMsg.timestamp_sample;
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		inOutObject->Control[i] = pbMsg.control[i];
@@ -292,8 +325,9 @@ uint32 PX4BR_ActuatorOutputs_Enc(const PX4_ActuatorOutputsMsg_t *inObject, char 
 	bool status = false;
 	px4_actuator_outputs_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->timestamp;
 	pbMsg.noutputs = inObject->Count;
+	pbMsg.output_count = PX4_ACTUATOR_OUTPUTS_MAX;
 	for(i=0; i < PX4_ACTUATOR_OUTPUTS_MAX; ++i)
 	{
 		pbMsg.output[i] = inObject->Output[i];
@@ -661,7 +695,6 @@ uint32 PX4BR_DifferentialPressure_Enc(const PX4_DifferentialPressureMsg_t *inObj
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.differential_pressure_raw_pa = inObject->DifferentialPressureRaw;
 	pbMsg.differential_pressure_filtered_pa = inObject->DifferentialPressureFiltered;
-	pbMsg.max_differential_pressure_pa = inObject->MaxDifferentialPressure;
 	pbMsg.temperature = inObject->Temperature;
 
 	/* Create a stream that will write to our buffer. */
@@ -699,7 +732,6 @@ uint32 PX4BR_DifferentialPressure_Dec(const char *inBuffer, uint32 inSize, PX4_D
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->DifferentialPressureRaw = pbMsg.differential_pressure_raw_pa;
 	inOutObject->DifferentialPressureFiltered = pbMsg.differential_pressure_filtered_pa;
-	inOutObject->MaxDifferentialPressure = pbMsg.max_differential_pressure_pa;
 	inOutObject->Temperature = pbMsg.temperature;
 
 	return sizeof(PX4_DifferentialPressureMsg_t);
@@ -2118,9 +2150,7 @@ uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inO
 	px4_multirotor_motor_limits_pb pbMsg;
 
 	//pbMsg.timestamp = inObject->timestamp;
-	pbMsg.lower_limit = inObject->LowerLimit;
-	pbMsg.upper_limit = inObject->UpperLimit;
-	pbMsg.yaw = inObject->Yaw;
+	pbMsg.saturation_status = inObject->SaturationStatus;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -2154,9 +2184,7 @@ uint32 PX4BR_MultirotorMotorLimits_Dec(const char *inBuffer, uint32 inSize, PX4_
 	}
 
 	//inOutObject->timestamp = pbMsg.timestamp;
-	inOutObject->LowerLimit = pbMsg.lower_limit;
-	inOutObject->UpperLimit = pbMsg.upper_limit;
-	inOutObject->Yaw = pbMsg.yaw;
+	inOutObject->SaturationStatus = pbMsg.saturation_status;
 
 	return sizeof(PX4_MultirotorMotorLimitsMsg_t);
 }
@@ -2490,7 +2518,7 @@ uint32 PX4BR_RcChannels_Dec(const char *inBuffer, uint32 inSize, PX4_RcChannelsM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	//OutObject->timestamp = pbMsg.timestamp;
 	//inOutObject->timestamp_last_valid = pbMsg.timestamp_last_valid;
 	for(iChannel = 0; iChannel < PX4_RC_INPUT_MAX_CHANNELS; ++iChannel)
 	{
@@ -3336,39 +3364,13 @@ uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char 
 	px4_vehicle_attitude_pb pbMsg;
 
 	//pbMsg.timestamp = inObject->timestamp;
-	pbMsg.roll = inObject->Roll;
-	pbMsg.pitch = inObject->Pitch;
-	pbMsg.yaw = inObject->Yaw;
 	pbMsg.rollspeed = inObject->RollSpeed;
 	pbMsg.pitchspeed = inObject->PitchSpeed;
 	pbMsg.yawspeed = inObject->YawSpeed;
-	pbMsg.rollacc = inObject->RollAcc;
-	pbMsg.pitchacc = inObject->PitchAcc;
-	pbMsg.yawacc = inObject->YawAcc;
-	pbMsg.rate_vibration = inObject->RateVibration;
-	pbMsg.accel_vibration = inObject->AccelVibration;
-	pbMsg.mag_vibration = inObject->MagVibration;
-	pbMsg.rate_offsets[0] = inObject->RateOffsets[0];
-	pbMsg.rate_offsets[1] = inObject->RateOffsets[1];
-	pbMsg.rate_offsets[2] = inObject->RateOffsets[2];
-	pbMsg.R[0] = inObject->R[0];
-	pbMsg.R[1] = inObject->R[1];
-	pbMsg.R[2] = inObject->R[2];
-	pbMsg.R[3] = inObject->R[3];
-	pbMsg.R[4] = inObject->R[4];
-	pbMsg.R[5] = inObject->R[5];
-	pbMsg.R[6] = inObject->R[6];
-	pbMsg.R[7] = inObject->R[7];
-	pbMsg.R[8] = inObject->R[8];
-	pbMsg.q[0] = inObject->Q[0];
-	pbMsg.q[1] = inObject->Q[1];
-	pbMsg.q[2] = inObject->Q[2];
-	pbMsg.q[3] = inObject->Q[3];
-	pbMsg.g_comp[0] = inObject->G_Comp[0];
-	pbMsg.g_comp[1] = inObject->G_Comp[1];
-	pbMsg.g_comp[2] = inObject->G_Comp[2];
-	pbMsg.R_valid = inObject->R_Valid;
-	pbMsg.q_valid = inObject->Q_Valid;
+    pbMsg.q[0] = inObject->Q[0];
+    pbMsg.q[1] = inObject->Q[1];
+    pbMsg.q[2] = inObject->Q[2];
+    pbMsg.q[3] = inObject->Q[3];
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -3402,39 +3404,13 @@ uint32 PX4BR_VehicleAttitude_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicl
 	}
 
 	//inOutObject->timestamp = pbMsg.timestamp;
-	inOutObject->Roll = pbMsg.roll;
-	inOutObject->Pitch = pbMsg.pitch;
-	inOutObject->Yaw = pbMsg.yaw;
 	inOutObject->RollSpeed = pbMsg.rollspeed;
 	inOutObject->PitchSpeed = pbMsg.pitchspeed;
 	inOutObject->YawSpeed = pbMsg.yawspeed;
-	inOutObject->RollAcc = pbMsg.rollacc;
-	inOutObject->PitchAcc = pbMsg.pitchacc;
-	inOutObject->YawAcc = pbMsg.yawacc;
-	inOutObject->RateVibration = pbMsg.rate_vibration;
-	inOutObject->AccelVibration = pbMsg.accel_vibration;
-	inOutObject->MagVibration = pbMsg.mag_vibration;
-	inOutObject->RateOffsets[0] = pbMsg.rate_offsets[0];
-	inOutObject->RateOffsets[1] = pbMsg.rate_offsets[1];
-	inOutObject->RateOffsets[2] = pbMsg.rate_offsets[2];
-	inOutObject->R[0] = pbMsg.R[0];
-	inOutObject->R[1] = pbMsg.R[1];
-	inOutObject->R[2] = pbMsg.R[2];
-	inOutObject->R[3] = pbMsg.R[3];
-	inOutObject->R[4] = pbMsg.R[4];
-	inOutObject->R[5] = pbMsg.R[5];
-	inOutObject->R[6] = pbMsg.R[6];
-	inOutObject->R[7] = pbMsg.R[7];
-	inOutObject->R[8] = pbMsg.R[8];
 	inOutObject->Q[0] = pbMsg.q[0];
 	inOutObject->Q[1] = pbMsg.q[1];
 	inOutObject->Q[2] = pbMsg.q[2];
 	inOutObject->Q[3] = pbMsg.q[3];
-	inOutObject->G_Comp[0] = pbMsg.g_comp[0];
-	inOutObject->G_Comp[1] = pbMsg.g_comp[1];
-	inOutObject->G_Comp[2] = pbMsg.g_comp[2];
-	inOutObject->R_Valid = pbMsg.R_valid;
-	inOutObject->Q_Valid = pbMsg.q_valid;
 
 	return sizeof(PX4_VehicleAttitudeMsg_t);
 }
@@ -3450,33 +3426,19 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
-	pbMsg.R_body[0] = inObject->R_Body[0];
-	pbMsg.R_body[1] = inObject->R_Body[1];
-	pbMsg.R_body[2] = inObject->R_Body[2];
-	pbMsg.R_body[3] = inObject->R_Body[3];
-	pbMsg.R_body[4] = inObject->R_Body[4];
-	pbMsg.R_body[5] = inObject->R_Body[5];
-	pbMsg.R_body[6] = inObject->R_Body[6];
-	pbMsg.R_body[7] = inObject->R_Body[7];
-	pbMsg.R_body[8] = inObject->R_Body[8];
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
 	pbMsg.q_d[3] = inObject->Q_D[3];
-	pbMsg.q_e[0] = inObject->Q_E[0];
-	pbMsg.q_e[1] = inObject->Q_E[1];
-	pbMsg.q_e[2] = inObject->Q_E[2];
-	pbMsg.q_e[3] = inObject->Q_E[3];
-	pbMsg.thrust = inObject->Thrust;
-	pbMsg.R_valid = inObject->R_Valid;
-	pbMsg.q_d_valid = inObject->Q_D_Valid;
-	pbMsg.q_e_valid = inObject->Q_E_Valid;
-	pbMsg.roll_reset_integral = inObject->RollResetIntegral;
-	pbMsg.pitch_reset_integral = inObject->PitchResetIntegral;
+    pbMsg.q_d_valid = inObject->Q_D_Valid;
+    pbMsg.thrust = inObject->Thrust;
+    pbMsg.roll_reset_integral = inObject->RollResetIntegral;
+    pbMsg.pitch_reset_integral = inObject->PitchResetIntegral;
 	pbMsg.yaw_reset_integral = inObject->YawResetIntegral;
 	pbMsg.fw_control_yaw = inObject->FwControlYaw;
 	pbMsg.disable_mc_yaw_control = inObject->DisableMcYawControl;
 	pbMsg.apply_flaps = inObject->ApplyFlaps;
+    pbMsg.landing_gear = inObject->LandingGear;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -3514,33 +3476,19 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX
 	inOutObject->PitchBody = pbMsg.pitch_body;
 	inOutObject->YawBody = pbMsg.yaw_body;
 	inOutObject->YawSpMoveRate = pbMsg.yaw_sp_move_rate;
-	inOutObject->R_Body[0] = pbMsg.R_body[0];
-	inOutObject->R_Body[1] = pbMsg.R_body[1];
-	inOutObject->R_Body[2] = pbMsg.R_body[2];
-	inOutObject->R_Body[3] = pbMsg.R_body[3];
-	inOutObject->R_Body[4] = pbMsg.R_body[4];
-	inOutObject->R_Body[5] = pbMsg.R_body[5];
-	inOutObject->R_Body[6] = pbMsg.R_body[6];
-	inOutObject->R_Body[7] = pbMsg.R_body[7];
-	inOutObject->R_Body[8] = pbMsg.R_body[8];
 	inOutObject->Q_D[0] = pbMsg.q_d[0];
 	inOutObject->Q_D[1] = pbMsg.q_d[1];
 	inOutObject->Q_D[2] = pbMsg.q_d[2];
 	inOutObject->Q_D[3] = pbMsg.q_d[3];
-	inOutObject->Q_E[0] = pbMsg.q_e[0];
-	inOutObject->Q_E[1] = pbMsg.q_e[1];
-	inOutObject->Q_E[2] = pbMsg.q_e[2];
-	inOutObject->Q_E[3] = pbMsg.q_e[3];
+    inOutObject->Q_D_Valid = pbMsg.q_d_valid;
 	inOutObject->Thrust = pbMsg.thrust;
-	inOutObject->R_Valid = pbMsg.R_valid;
-	inOutObject->Q_D_Valid = pbMsg.q_d_valid;
-	inOutObject->Q_E_Valid = pbMsg.q_e_valid;
 	inOutObject->RollResetIntegral = pbMsg.roll_reset_integral;
 	inOutObject->PitchResetIntegral = pbMsg.pitch_reset_integral;
 	inOutObject->YawResetIntegral = pbMsg.yaw_reset_integral;
 	inOutObject->FwControlYaw = pbMsg.fw_control_yaw;
 	inOutObject->DisableMcYawControl = pbMsg.disable_mc_yaw_control;
 	inOutObject->ApplyFlaps = pbMsg.apply_flaps;
+    inOutObject->LandingGear = pbMsg.landing_gear;
 
 	return sizeof(PX4_VehicleAttitudeSetpointMsg_t);
 }

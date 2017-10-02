@@ -43,6 +43,10 @@
 #ifndef UT_CFE_ES_STUBS_H_
 #define UT_CFE_ES_STUBS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum 
 {
     UT_CFE_ES_GETRESETTYPE_INDEX,
@@ -131,5 +135,9 @@ void Ut_CFE_ES_Reset(void);
 void Ut_CFE_ES_SetFunctionHook(uint32 Index, void *FunPtr);
 void Ut_CFE_ES_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
 void Ut_CFE_ES_ContinueReturnCodeAfterCountZero(uint32 Index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

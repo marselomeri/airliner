@@ -1,0 +1,19 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_home_position_pb
+{
+	required uint64 timestamp = 1;
+	required double lat = 2;
+	required double lon = 3;
+	required float alt = 4;
+	required float x = 5;
+	required float y = 6;
+	required float z = 7;
+	required float yaw = 8;
+	required float direction_x = 9;
+	required float direction_y = 10;
+	required float direction_z = 11;
+}
+
+// ORB_DECLARE(home_position);

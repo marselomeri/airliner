@@ -1,0 +1,82 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_vehicle_status_pb 
+{
+	enum ARMING_STATE 
+	{  
+		ARMING_STATE_INIT = 0;
+		ARMING_STATE_STANDBY = 1;
+		ARMING_STATE_ARMED = 2;
+		ARMING_STATE_ARMED_ERROR = 3;
+		ARMING_STATE_STANDBY_ERROR = 4;
+		ARMING_STATE_REBOOT = 5;
+		ARMING_STATE_IN_AIR_RESTORE = 6;
+		ARMING_STATE_MAX = 7;
+	}
+
+	enum HIL_STATE 
+	{
+		HIL_STATE_OFF = 0;
+		HIL_STATE_ON = 1;
+	}
+
+	enum NAVIGATION_STATE 
+	{
+		NAVIGATION_STATE_MANUAL = 0;
+		NAVIGATION_STATE_ALTCTL = 1;
+		NAVIGATION_STATE_POSCTL = 2;
+		NAVIGATION_STATE_AUTO_MISSION = 3;
+		NAVIGATION_STATE_AUTO_LOITER = 4;
+		NAVIGATION_STATE_AUTO_RTL = 5;
+		NAVIGATION_STATE_AUTO_RCRECOVER = 6;
+		NAVIGATION_STATE_AUTO_RTGS = 7;
+		NAVIGATION_STATE_AUTO_LANDENGFAIL = 8;
+		NAVIGATION_STATE_AUTO_LANDGPSFAIL = 9;
+		NAVIGATION_STATE_ACRO = 10;
+		NAVIGATION_STATE_UNUSED = 11;
+		NAVIGATION_STATE_DESCEND = 12;
+		NAVIGATION_STATE_TERMINATION = 13;
+		NAVIGATION_STATE_OFFBOARD = 14;
+		NAVIGATION_STATE_STAB = 15;
+		NAVIGATION_STATE_RATTITUDE = 16;
+		NAVIGATION_STATE_AUTO_TAKEOFF = 17;
+		NAVIGATION_STATE_AUTO_LAND = 18;
+		NAVIGATION_STATE_AUTO_FOLLOW_TARGET = 19;
+		NAVIGATION_STATE_MAX = 20;
+	}
+
+	enum RC_IN_MODE 
+	{
+		RC_IN_MODE_DEFAULT = 0;
+		RC_IN_MODE_OFF = 1;
+		RC_IN_MODE_GENERATED = 2;
+	}	
+
+	required uint64 timestamp = 1;
+	required uint32 system_id = 2;
+	required uint32 component_id = 3;
+	required uint32 onboard_control_sensors_present = 4;
+	required uint32 onboard_control_sensors_enabled = 5;
+	required uint32 onboard_control_sensors_health = 6;
+	required uint32 nav_state = 7;
+	required uint32 arming_state = 8;
+	required uint32 hil_state = 9;
+	required bool failsafe = 10;
+	required uint32 system_type = 11;
+	required bool is_rotary_wing = 12;
+	required bool is_vtol = 13;
+	required bool vtol_fw_permanent_stab = 14;
+	required bool in_transition_mode = 15;
+	required bool rc_signal_lost = 16;
+	required uint32 rc_input_mode = 17;
+	required bool data_link_lost = 18;
+	required uint32 data_link_lost_counter = 19;
+	required bool engine_failure = 20;
+	required bool engine_failure_cmd = 21;
+	required bool mission_failure = 22;
+}
+
+// ORB_DECLARE(vehicle_status);
+
+

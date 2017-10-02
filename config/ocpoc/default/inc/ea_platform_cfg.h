@@ -1,4 +1,3 @@
-    
 #ifndef EA_PLATFORM_CFG_H
 #define EA_PLATFORM_CFG_H
 

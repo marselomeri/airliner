@@ -1,4 +1,3 @@
-    
 #ifndef EA_MISSION_CFG_H
 #define EA_MISSION_CFG_H
 

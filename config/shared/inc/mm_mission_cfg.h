@@ -1,43 +1,5 @@
-/*************************************************************************
-** File:
-**   $Id: mm_mission_cfg.h 1.1 2015/07/28 12:21:06EDT rperera Exp  $
-**
-**   Copyright © 2007-2014 United States Government as represented by the 
-**   Administrator of the National Aeronautics and Space Administration. 
-**   All Other Rights Reserved.  
-**
-**   This software was created at NASA's Goddard Space Flight Center.
-**   This software is governed by the NASA Open Source Agreement and may be 
-**   used, distributed and modified only pursuant to the terms of that 
-**   agreement.
-**
-** Purpose: 
-**   Specification for the CFS Memory Manager constants that can
-**   be configured from one mission to another
-**
-** References:
-**   Flight Software Branch C Coding Standard Version 1.2
-**   CFS Development Standards Document
-**   CFS MM Heritage Analysis Document
-**   CFS MM CDR Package
-**
-** Notes:
-**
-**   $Log: mm_mission_cfg.h  $
-**   Revision 1.1 2015/07/28 12:21:06EDT rperera 
-**   Initial revision
-**   Member added to project /CFS-APPs-PROJECT/mm/fsw/mission_inc/project.pj
-**   Revision 1.3 2015/03/31 10:56:45EDT sstrege 
-**   Added cfe_mission_cfg.h include
-**   Revision 1.2 2015/03/02 14:26:44EST sstrege 
-**   Added copyright information
-**   Revision 1.1 2008/09/05 13:11:52EDT dahardison 
-**   Initial revision
-**   Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/mm/fsw/mission_inc/project.pj
-** 
-*************************************************************************/
-#ifndef _mm_mission_cfg_
-#define _mm_mission_cfg_
+#ifndef MM_MISSION_CFG_H
+#define MM_MISSION_CFG_H
 
 /************************************************************************
 ** Includes
@@ -80,7 +42,7 @@
 */
 #define MM_DUMP_FILE_CRC_TYPE    CFE_ES_DEFAULT_CRC
 
-#endif /*_mm_mission_cfg_*/
+#endif /*MM_MISSION_CFG_H*/
 
 /************************/
 /*  End of File Comment */

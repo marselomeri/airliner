@@ -1,5 +1,5 @@
-#ifndef _EFT1_MIDS_H_
-#define _EFT1_MIDS_H_
+#ifndef MSG_IDS_H
+#define MSG_IDS_H
 
 #include "cfe_msgids.h"
 
@@ -210,7 +210,10 @@
 /* PX4												*/
 /* Range: 0x9f0 - 0x9ff								*/
 #define PX4_ACTUATOR_ARMED_MID						0x0a05
-#define PX4_ACTUATOR_CONTROLS_MID					0x0a06
+#define PX4_ACTUATOR_CONTROLS_0_MID					0x0a06
+#define PX4_ACTUATOR_CONTROLS_1_MID                 0x0a5b
+#define PX4_ACTUATOR_CONTROLS_2_MID                 0x0a5c
+#define PX4_ACTUATOR_CONTROLS_3_MID                 0x0a5d
 #define PX4_ACTUATOR_DIRECT_MID						0x0a07
 #define PX4_ACTUATOR_OUTPUTS_MID					0x0a08
 #define PX4_ADC_REPORT_MID							0x0a09
@@ -549,11 +552,18 @@
 #define VC_CMD_MID                                  0x1c3b
 #define VC_WAKEUP_MID                               0x1c3c
 
-/* PMC                                                  */
-#define PMC_CMD_MID                                 0x1c3d
-#define PMC_SEND_HK_MID                             0x1c3e
-#define PMC_WAKEUP_MID                              0x1c3f
-#define PMC_OUT_DATA_MID                            0x0c40
-#define PMC_HK_TLM_MID                              0x0c41
+/* AMC                                                  */
+#define AMC_CMD_MID                                 0x1c3d
+#define AMC_SEND_HK_MID                             0x1c3e
+#define AMC_UPDATE_MOTORS_MID                       0x1c3f
+#define AMC_OUT_DATA_MID                            0x0c40
+#define AMC_HK_TLM_MID                              0x0c41
+
+/* MAC                                                  */
+#define MAC_CMD_MID                                 0x1c42
+#define MAC_SEND_HK_MID                             0x1c43
+#define MAC_UPDATE_MOTORS_MID                       0x1c44
+#define MAC_OUT_DATA_MID                            0x0c45
+#define MAC_HK_TLM_MID                              0x0c46
 
 #endif

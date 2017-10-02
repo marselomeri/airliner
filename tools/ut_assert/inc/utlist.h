@@ -31,6 +31,10 @@
 #ifndef _utlist_
 #define	_utlist_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Includes
  */
@@ -128,5 +132,9 @@ boolean                     UtList_IsEmpty(UtListHead_t *ListHead);
 
 /* Returns the number of nodes on the list.  This is the same as (UtListHead->NumberOfEntries). */
 uint32                      UtList_Depth(UtListHead_t *ListHead);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

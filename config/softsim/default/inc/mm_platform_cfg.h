@@ -1,56 +1,5 @@
-/*************************************************************************
-** File:
-**   $Id: mm_platform_cfg.h 1.3 2016/10/31 16:33:42EDT mdeschu Exp  $
-**
-**   Copyright © 2007-2014 United States Government as represented by the 
-**   Administrator of the National Aeronautics and Space Administration. 
-**   All Other Rights Reserved.  
-**
-**   This software was created at NASA's Goddard Space Flight Center.
-**   This software is governed by the NASA Open Source Agreement and may be 
-**   used, distributed and modified only pursuant to the terms of that 
-**   agreement.
-**
-** Purpose: 
-**   Specification for the CFS Memory Manager constants that can
-**   be configured from one platform to another
-**
-** References:
-**   Flight Software Branch C Coding Standard Version 1.2
-**   CFS Development Standards Document
-**   CFS MM Heritage Analysis Document
-**   CFS MM CDR Package
-**
-** Notes:
-**
-**   $Log: mm_platform_cfg.h  $
-**   Revision 1.3 2016/10/31 16:33:42EDT mdeschu 
-**   Change MM dump file CFE subtype from 0 to 4D4D5354 (MMST in ascii hex)
-**   Revision 1.2 2016/10/31 16:30:38EDT mdeschu 
-**   Move CFE subtype and description to public platform config header
-**   Revision 1.1 2015/07/28 12:21:20EDT rperera 
-**   Initial revision
-**   Member added to project /CFS-APPs-PROJECT/mm/fsw/platform_inc/project.pj
-**   Revision 1.9 2015/03/02 14:26:59EST sstrege 
-**   Added copyright information
-**   Revision 1.8 2010/11/29 13:34:44EST jmdagost 
-**   Changed 8, 16, and 32-bit memory type definitions to TRUE/FALSE.
-**   Revision 1.7 2010/11/26 13:03:54EST jmdagost 
-**   Added mission revision revision number (moved from mm_version.h)
-**   Revision 1.6 2010/11/24 17:08:01EST jmdagost 
-**   Add max number of bytes definition for symbol table dump
-**   Revision 1.5 2008/09/05 13:15:30EDT dahardison 
-**   Moved CRC configuration parameters to mm_mission_cfg.h to be more
-**   consistent with other CFS applications
-**   Revision 1.4 2008/05/22 15:03:09EDT dahardison 
-**   Moved message and performance monitor IDs to mm_msgids.h and
-**   mm_perfids.h
-**   Revision 1.3 2008/05/19 15:22:24EDT dahardison 
-**   Version after completion of unit testing
-** 
-*************************************************************************/
-#ifndef _mm_platform_cfg_
-#define _mm_platform_cfg_
+#ifndef MM_PLATFORM_CFG_H
+#define MM_PLATFORM_CFG_H
 
 /**
 **  \mmcfg Memory Managment File -- cFE file header sub-type
@@ -443,7 +392,7 @@
 */
 #define MM_MISSION_REV            0
 
-#endif /*_mm_platform_cfg_*/
+#endif /*MM_PLATFORM_CFG_H*/
 
 /************************/
 /*  End of File Comment */

@@ -1,0 +1,11 @@
+syntax = "proto2";
+import "nanopb.proto";
+
+message px4_gps_dump_pb
+{
+	required uint64 timestamp = 1;
+	required uint32 len = 2;
+	required string data = 3 [(nanopb).max_size = 79];
+}
+
+// ORB_DECLARE(gps_dump);
