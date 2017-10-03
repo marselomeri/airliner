@@ -11,133 +11,133 @@ uint32 ES_RegisterSerializationFuncs()
 	int32 Status = CFE_SUCCESS;
 
 	/* Register each message with PBL */
-	Status = PBLIB_RegisterMessage(0x1806, 14, "CFE_ES_PerfStartCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 14, "CFE_ES_PerfStartCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 2, "CFE_ES_RestartCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 2, "CFE_ES_RestartCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 16, "CFE_ES_PerfSetFilterMaskCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 16, "CFE_ES_PerfSetFilterMaskCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 22, "CFE_ES_PoolStatsTlm_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 22, "CFE_ES_PoolStatsTlm_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 3, "CFE_ES_ShellCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 3, "CFE_ES_ShellCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 15, "CFE_ES_PerfStopCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 15, "CFE_ES_PerfStopCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 99, "CFE_ES_ShellPacket_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 99, "CFE_ES_ShellPacket_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 18, "CFE_ES_OverWriteSysLogCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 18, "CFE_ES_OverWriteSysLogCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 9, "CFE_ES_QueryAllCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 9, "CFE_ES_QueryAllCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 17, "CFE_ES_PerfSetTrigMaskCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 17, "CFE_ES_PerfSetTrigMaskCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 7, "CFE_ES_AppReloadCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 7, "CFE_ES_AppReloadCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 13, "CFE_ES_WriteERlogCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 13, "CFE_ES_WriteERlogCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 5, "CFE_ES_AppNameCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 5, "CFE_ES_AppNameCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x0800, 0, "CFE_ES_HkPacket_t");
+	Status = PBLIB_RegisterCmdMessage(0x0800, 0, "CFE_ES_HkPacket_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 8, "CFE_ES_OneAppTlm_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 8, "CFE_ES_OneAppTlm_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 20, "CFE_ES_SetMaxPRCountCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 20, "CFE_ES_SetMaxPRCountCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 4, "CFE_ES_StartAppCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 4, "CFE_ES_StartAppCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 21, "CFE_ES_DeleteCDSCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 21, "CFE_ES_DeleteCDSCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 24, "CFE_ES_QueryAllTasksCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 24, "CFE_ES_QueryAllTasksCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 11, "CFE_ES_WriteSyslogCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 11, "CFE_ES_WriteSyslogCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 22, "CFE_ES_TlmPoolStatsCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 22, "CFE_ES_TlmPoolStatsCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;
 	}
 	
-	Status = PBLIB_RegisterMessage(0x1806, 23, "CFE_ES_DumpCDSRegCmd_t");
+	Status = PBLIB_RegisterCmdMessage(0x1806, 23, "CFE_ES_DumpCDSRegCmd_t");
 	if (Status != CFE_SUCCESS)
 	{
 		goto ES_RegisterSerializationFuncs_Exit_Tag;

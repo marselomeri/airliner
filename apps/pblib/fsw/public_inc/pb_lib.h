@@ -108,7 +108,7 @@ typedef uint32 (*PBLib_EncodeFuncPtr_t)(const void *, char *, uint32);
 int32 PBLIB_LibInit(void);
 
 /************************************************************************/
-/** \brief Register Message
+/** \brief Register Command Message
 **
 **  \par Description
 **       This function adds an entry to the serialization registration
@@ -129,10 +129,32 @@ int32 PBLIB_LibInit(void);
 **  -2 if array is full
 **  \endreturns
 *************************************************************************/
-int32 PBLIB_RegisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName);
+int32 PBLIB_RegisterCmdMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName);
 
 /************************************************************************/
-/** \brief Deregister Message
+/** \brief Register Telemetry Message
+**
+**  \par Description
+**       This function adds an entry to the serialization registration
+**       array.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
+**  						   message ID if of the command
+**
+**  \param [in]   msgName      A #char pointer of the message name
+**
+**  \returns
+**  #int32 Returns 0 if successful, -1 if MsgID is invalid, or
+**  -2 if array is full
+**  \endreturns
+*************************************************************************/
+int32 PBLIB_RegisterTlmMessage(CFE_SB_MsgId_t msgId, char *msgName);
+
+/************************************************************************/
+/** \brief Deregister Command  Message
 **
 **  \par Description
 **       This function removes an entry from the serialization
@@ -151,10 +173,30 @@ int32 PBLIB_RegisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName)
 **  -2 if MsgID with cmdCode not found
 **  \endreturns
 *************************************************************************/
-int32 PBLIB_DeregisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode);
+int32 PBLIB_DeregisterCmdMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode);
 
 /************************************************************************/
-/** \brief Get Serialization Function
+/** \brief Deregister Telemetry Message
+**
+**  \par Description
+**       This function removes an entry from the serialization
+**       registration array.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
+**  						   message ID if of the command
+**
+**  \returns
+**  #int32 Returns 0 if successful, -1 if MsgID is invalid, or
+**  -2 if MsgID with cmdCode not found
+**  \endreturns
+*************************************************************************/
+int32 PBLIB_DeregisterTlmMessage(CFE_SB_MsgId_t msgId);
+
+/************************************************************************/
+/** \brief Get Command Serialization Function
 **
 **  \par Description
 **       This function looks up the address of a serialization function
@@ -173,10 +215,30 @@ int32 PBLIB_DeregisterMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode);
 **  or 0 if not found.
 **  \endreturns
 *************************************************************************/
-PBLib_EncodeFuncPtr_t PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode);
+PBLib_EncodeFuncPtr_t PBLIB_GetCmdSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode);
 
 /************************************************************************/
-/** \brief Get Deserialization Function
+/** \brief Get Telemetry Serialization Function
+**
+**  \par Description
+**       This function looks up the address of a serialization function
+**       registered with PBL.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
+**  						   message ID if of the command
+**
+**  \returns
+**  #PBLib_EncodeFuncPtr_t Pointer to the serialization function address
+**  or 0 if not found.
+**  \endreturns
+*************************************************************************/
+PBLib_EncodeFuncPtr_t PBLIB_GetTlmSerializationFunc(CFE_SB_MsgId_t msgId);
+
+/************************************************************************/
+/** \brief Get Command Deserialization Function
 **
 **  \par Description
 **       This function looks up the address of a deserialization function
@@ -195,7 +257,27 @@ PBLib_EncodeFuncPtr_t PBLIB_GetSerializationFunc(CFE_SB_MsgId_t msgId, uint16 cm
 **  or 0 if not found.
 **  \endreturns
 *************************************************************************/
-PBLib_DecodeFuncPtr_t PBLIB_GetDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode);
+PBLib_DecodeFuncPtr_t PBLIB_GetCmdDeserializationFunc(CFE_SB_MsgId_t msgId, uint16 cmdCode);
+
+/************************************************************************/
+/** \brief Get Telemetry Deserialization Function
+**
+**  \par Description
+**       This function looks up the address of a deserialization function
+**       registered with PBL.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]   msgID        A #CFE_SB_MsgId_t that specifies the
+**  						   message ID if of the command
+**
+**  \returns
+**  #PBLib_EncodeFuncPtr_t Pointer to the deserialization function address
+**  or 0 if not found.
+**  \endreturns
+*************************************************************************/
+PBLib_DecodeFuncPtr_t PBLIB_GetTlmDeserializationFunc(CFE_SB_MsgId_t msgId);
 
 /************************/
 /*  End of File Comment */

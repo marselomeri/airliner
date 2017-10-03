@@ -97,10 +97,10 @@ int32 TO_Custom_Init(void)
     uint32 i = 0;
 
     TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[0].IP, "127.0.0.1", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[0].IP, "10.10.0.10", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[0].DstPort = 5011;
     TO_AppCustomData.Channel[0].Priority = 50;
-    TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_GroundChannelTask;
+    TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_BinaryChannelTask;
     TO_AppCustomData.Channel[0].Socket = 0;
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
@@ -108,17 +108,17 @@ int32 TO_Custom_Init(void)
     strncpy(TO_AppCustomData.Channel[1].IP, "127.0.0.1", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[1].DstPort = 5012;
     TO_AppCustomData.Channel[1].Priority = 50;
-    TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_OnboardChannelTask;
+    TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_ProtobufChannelTask;
     TO_AppCustomData.Channel[1].Socket = 0;
     TO_AppCustomData.Channel[1].ChildTaskID = 0;
 
-    iStatus = TO_Channel_OpenChannel(0, "GROUND", TO_GROUND_CONFIG_TABLENAME, TO_GROUND_CONFIG_TABLE_FILENAME, TO_GROUND_DUMP_TABLENAME);
+    iStatus = TO_Channel_OpenChannel(0, "GRND-BIN", TO_GROUND_BINARY_CONFIG_TABLENAME, TO_GROUND_BINARY_CONFIG_TABLE_FILENAME, TO_GROUND_BINARY_DUMP_TABLENAME);
     if(iStatus != 0)
     {
         goto end_of_function;
     }
 
-    iStatus = TO_Channel_OpenChannel(1, "ONBOARD", TO_ONBOARD_CONFIG_TABLENAME, TO_ONBOARD_CONFIG_TABLE_FILENAME, TO_ONBOARD_DUMP_TABLENAME);
+    iStatus = TO_Channel_OpenChannel(1, "GRND-PB", TO_GROUND_PROTOBUF_CONFIG_TABLENAME, TO_GROUND_PROTOBUF_CONFIG_TABLE_FILENAME, TO_GROUND_PROTOBUF_DUMP_TABLENAME);
 
     for (i=0; i < TO_MAX_CHANNELS; i++)
     {
@@ -153,8 +153,10 @@ end_of_function:
 int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
     struct sockaddr_in s_addr;
-    int                       status = 0;
-    int32                     returnCode = 0;
+    int    status = 0;
+    int32  returnCode = 0;
+    const char *outBuffer;
+    uint32 outSize;
 
     bzero((char *) &s_addr, sizeof(s_addr));
     s_addr.sin_family      = AF_INET;
@@ -165,11 +167,24 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 
         if(channel->Mode == TO_CHANNEL_ENABLED)
         {
+        	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
+            if(TO_GetChannelType(ChannelID) == TO_OUTPUT_TYPE_PROTOBUF)
+            {
+            	int encSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)Buffer, encBuffer, sizeof(encBuffer));
+                outBuffer = encBuffer;
+                outSize = encSize;
+            }
+            else
+            {
+                outBuffer = Buffer;
+                outSize = Size;
+            }
+
             CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->IP);
             s_addr.sin_port        = htons(channel->DstPort);
-            status = sendto(channel->Socket, (char *)Buffer, Size, 0,
+            status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
                                     (struct sockaddr *) &s_addr,
                                      sizeof(s_addr));
             if (status < 0)
@@ -446,7 +461,7 @@ end_of_function:
 /* Ground Channel Task Entry Point                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_OutputChannel_GroundChannelTask(void)
+void TO_OutputChannel_BinaryChannelTask(void)
 {
     CFE_ES_RegisterChildTask();
 
@@ -463,7 +478,7 @@ void TO_OutputChannel_GroundChannelTask(void)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void TO_OutputChannel_OnboardChannelTask(void)
+void TO_OutputChannel_ProtobufChannelTask(void)
 {
     CFE_ES_RegisterChildTask();
 
@@ -484,6 +499,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
     int32 iStatus = CFE_SUCCESS;
     int32 msgSize = 0;
     char *buffer;
+    const char *outBuffer;
+    uint32 outSize;
 
     TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
     while(TO_OutputChannel_Status(ChannelIdx) == TO_CHANNEL_ENABLED)
@@ -506,11 +523,23 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                 bzero((char *) &s_addr, sizeof(s_addr));
                 s_addr.sin_family      = AF_INET;
 
+            	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
+                if(TO_GetChannelType(ChannelIdx) == TO_OUTPUT_TYPE_PROTOBUF)
+                {
+                	outSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)buffer, encBuffer, sizeof(encBuffer));
+                    outBuffer = encBuffer;
+                }
+                else
+                {
+                    outSize = actualMessageSize;
+                    outBuffer = buffer;
+                }
+
                 CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
                 /* Send message via UDP socket */
                 s_addr.sin_addr.s_addr = inet_addr(channel->IP);
                 s_addr.sin_port        = htons(channel->DstPort);
-                status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
+                status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
                                         (struct sockaddr *) &s_addr,
                                          sizeof(s_addr));
                 if (status < 0)
@@ -518,7 +547,7 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                     if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
                     {
                         CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-                                "L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, actualMessageSize, channel->IP, channel->DstPort);
+                                "L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, outSize, channel->IP, channel->DstPort);
                         TO_OutputChannel_Disable(ChannelIdx);
                     }
                 }
