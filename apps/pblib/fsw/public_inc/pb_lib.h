@@ -41,8 +41,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "cfe.h"
+#include "es_registration.h"
 
 /*************************************************************************
 ** Macro Definitions

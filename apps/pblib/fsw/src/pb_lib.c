@@ -57,6 +57,12 @@ int32 PBLIB_LibInit(void)
 		goto PBLIB_LibInit_Exit_Tag;
 	}
 
+	Status = ES_RegisterSerializationFuncs();
+	if (Status != CFE_SUCCESS)
+	{
+		goto PBLIB_LibInit_Exit_Tag;
+	}
+
 PBLIB_LibInit_Exit_Tag:
 	if (Status == CFE_SUCCESS)
 	{

@@ -42,6 +42,8 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/pb_lib.h
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_serialization.h
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_serialization.c
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_registration.h
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_registration.c
       	${ES_PROTOBUF_MSGS_DIR}/es_perf_start.pb.h
         ${ES_PROTOBUF_MSGS_DIR}/es_perf_start.pb.c
         ${ES_PROTOBUF_MSGS_DIR}/es_restart.pb.h
@@ -98,7 +100,8 @@ add_airliner_app_def(pblib
     INCLUDES
         ${ES_PROTOBUF_MSGS_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-	${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
+		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
+		${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/
 
     PROTOBUF_DEFS
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_start.proto
@@ -146,11 +149,14 @@ add_airliner_app_unit_test(pblib-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pbl_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pbl_test_utils.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/pbl_testrunner.c
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_registration.h
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_registration.c
 
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-	${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
+		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
+		${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/
 )
 
 set(ES_PROTOBUF_MSGS_DIR ${ES_PROTOBUF_MSGS_DIR} PARENT_SCOPE)
