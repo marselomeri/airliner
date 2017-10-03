@@ -73,6 +73,38 @@ if __name__ == '__main__':
     # the command_packet
     command_packet.set_user_data_length(7)
     
-    print("command packet user data size",command_packet.get_user_data_length())
+    #command_packet.init_packet()
+    
+    print("command packet user data size = ",command_packet.get_user_data_length())
+    
+    # set the user data length. This automatically sets the length of 
+    # the command_packet. 
+    command_packet.set_user_data_length(0)
+    
+    #print("command packet user data size = ", command_packet.get_user_data_length())
+    
+    # calculate the checksum for a command packet
+    command_packet.set_checksum(0)
+    
+    #print("command packet checksum value = ", command_packet.SecHdr.Command.bits.checksum)
+    
+    # validate the checksum
+    print("command packet validation = ", command_packet.validate_checksum(0))
+    
+    command_packet.clear_packet()
+    
+    # create a payload for a checksum check
+    payload = bytes(b'\x01')
+
+    command_packet.set_user_data_length(len(payload))
+    
+    command_packet.set_checksum(payload)
+    
+    print("command packet checksum value = ", command_packet.SecHdr.Command.bits.checksum)
+    
+    print("command packet validation = ", command_packet.validate_checksum(payload))
+    
+    
+    
     
     

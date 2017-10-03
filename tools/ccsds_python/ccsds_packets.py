@@ -487,6 +487,59 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         """
         return self.get_length() - self.get_packet_size()
 
+    def compute_checksum(self, payload):
+        """Compute the checksum for a command packet. The checksum 
+        is the XOR of all bytes in the packet. A valid checksum is zero.
+        
+        Note:
+            pass 0 as an argument if there is no payload.
+
+        Args:
+            payload (bytes): The encoded payload.
+
+        Returns:
+            int: The checksum.
+        """
+        check_sum = 0xFF
+        encoded = self.get_encoded()
+
+        for i in range(self.get_packet_size()):
+            check_sum ^= encoded[i]
+
+        if payload != 0:
+            for j in range(self.get_user_data_length()):
+                check_sum ^= payload[j]
+
+        return check_sum
+
+    def set_checksum(self, payload):
+        """Set the checksum for a command packet. 
+
+        Note:
+            pass 0 as an argument if there is no payload.
+
+        Args:
+            payload (bytes): The encoded payload.
+        """
+        computed = self.compute_checksum(payload)
+        self.SecHdr.Command.bits.checksum = computed
+
+    def validate_checksum(self, payload):
+        """Validate checksum for a command packet. 
+
+        Note:
+            pass 0 as an argument if there is no payload.
+
+        Returns:
+            (bool): True if checksum of packet is valid; False if not.
+        """
+        validated = self.compute_checksum(payload)
+        
+        if validated == 0:
+            return True
+        else:
+            return False
+
 
 class CCSDS_TlmPkt_t(ctypes.Structure):
     """Generic combined telemetry header."""
