@@ -1,7 +1,6 @@
 import ctypes
 import struct 
 import time
-#import binascii
 
 
 """CCSDS Space Packet Protocol ctype structure definitions.
@@ -9,7 +8,8 @@ import time
 Note: ctypes.BigEndianStructure seems to have a bug bit fields defined 
 with bigendianstructure seem to create fields in random order. Using 
 ctypes Structure for now. ctypes uses the native byte order for 
-Structures and Unions.
+Structures and Unions. For issues with alignment use the pragma pack
+ctype equivalent _pack_ = n.
 
 """
 
@@ -39,14 +39,14 @@ class sequence_bits(ctypes.Structure):
 
 
 class command_bits(ctypes.Structure):
-    """Command secondary header big fields.
+    """Command secondary header bit fields.
 
     Checksum, calculated by ground system
     command function code
     reserved, set to 0
     """
     _fields_ = [("checksum", ctypes.c_uint16, 8),
-                ("code", ctypes.c_uint16, 15),
+                ("code", ctypes.c_uint16, 7),
                 ("reserved", ctypes.c_uint16, 1)]
 
 
@@ -57,12 +57,13 @@ class StreamId(ctypes.Union):
 
 
 class Sequence(ctypes.Union):
+    """Primary header packet sequence word."""
     _fields_ = [("bits", sequence_bits),
                 ("data", ctypes.c_uint16)]
 
 
 class Command(ctypes.Union):
-    """Primary header packet sequence word union."""
+    """Secondary command header packet sequence word union."""
     _fields_ = [("bits", command_bits),
                 ("data", ctypes.c_uint16)]
 
@@ -197,10 +198,12 @@ class CCSDS_PriHdr_t(ctypes.Structure):
         The length count C shall be expressed as:
         C = (Total Number of Octets in the Packet Data Field) - 1
         
+        Plus the length of the primary header - 6 bytes
+        
         Args:
             value (int): Total packet length in bytes
         """
-        self.Length = value + 1
+        self.Length = value - 7
 
     def get_length(self):
         """Get the packet data length.
@@ -209,10 +212,20 @@ class CCSDS_PriHdr_t(ctypes.Structure):
         The length count C shall be expressed as:
         C = (Total Number of Octets in the Packet Data Field) - 1
         
+        Plus the length of the primary header - 6 bytes
+        
         Returns:
             int: Total packet length in bytes
         """
-        return self.Length - 1
+        return self.Length + 7
+    
+    def get_header_size(self):
+        """Returns the length of the primary header using ctypes.sizeof.
+        
+        Returns:
+            int: Total primary header size in bytes.
+        """
+        return ctypes.sizeof(self)
 
 
 class CCSDS_CmdSecHdr_t(ctypes.Structure):
@@ -269,8 +282,18 @@ class CCSDS_CmdSecHdr_t(ctypes.Structure):
         """
         self.Command.data, = struct.unpack('>H', sec_header)
 
+    def get_header_size(self):
+        """Returns the length of the command secondary header using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total primary header size in bytes.
+        """
+        return ctypes.sizeof(self)
+
 
 class Time(ctypes.Structure):
+    _pack_ = 1
     _fields_ = [("Seconds", ctypes.c_uint32),
                 ("Subseconds", ctypes.c_uint16)]
 
@@ -346,6 +369,15 @@ class CCSDS_TlmSecHdr_t(ctypes.Structure):
         """
         return self.Time.Seconds, self.Time.Subseconds
 
+    def get_header_size(self):
+        """Returns the length of the telemetry secondary header using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total primary header size in bytes.
+        """
+        return ctypes.sizeof(self)
+
 
 class CCSDS_CmdPkt_t(ctypes.Structure):
     """Generic combined command header."""
@@ -411,23 +443,29 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         """Set the packet data length.
         
         Note:
-            The plus two is the size of the secondary command header.
+            The minus two is the size of the secondary command header.
 
         Args:
-            value (int): Total packet length in bytes.
+            value (int): Total payload length in bytes.
         """
         self.PriHdr.set_length(value + 2)
 
     def get_length(self):
         """Get the packet data length.
-        
-        Note:
-            The plus two is the size of the secondary command header.
-
+    
         Returns:
-            int: Total packet length in bytes.
+            int: Total payload length in bytes.
         """
-        return self.PriHdr.get_length() - 2
+        return self.PriHdr.get_length()
+    
+    def get_packet_size(self):
+        """Returns the length of the combined command packet using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total combined command packet size in bytes.
+        """
+        return self.PriHdr.get_header_size() + self.SecHdr.get_header_size()
 
 
 class CCSDS_TlmPkt_t(ctypes.Structure):
@@ -496,20 +534,17 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
             The plus six is the size of the secondary telemetry header.
 
         Args:
-            value (int): Total packet length in bytes.
+            value (int): Total payload length in bytes.
         """
         self.PriHdr.set_length(value + 6)
 
     def get_length(self):
         """Get the packet data length.
-        
-        Note:
-            The plus six is the size of the secondary telemetry header.
 
         Returns:
-            int: Total packet length in bytes.
+            int: Total payload length in bytes.
         """
-        return self.PriHdr.get_length() - 6
+        return self.PriHdr.get_length() 
         
     def set_current_time(self):
         """Set the time field to the current system time.
@@ -533,6 +568,14 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         """
         return self.SecHdr.Time.Seconds, self.SecHdr.Time.Subseconds
 
+    def get_packet_size(self):
+        """Returns the length of the combined telemetry packet using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total combined telemetry packet size in bytes.
+        """
+        return self.PriHdr.get_header_size() + self.SecHdr.get_header_size()
 
 #class float_bits(ctypes.BigEndianStructure):
     #_fields_ = [("mantisa", ctypes.c_ulonglong, 52),
