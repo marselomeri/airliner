@@ -103,8 +103,4 @@ if __name__ == '__main__':
     print("command packet checksum value = ", command_packet.SecHdr.Command.bits.checksum)
     
     print("command packet validation = ", command_packet.validate_checksum(payload))
-    
-    
-    
-    
-    
+

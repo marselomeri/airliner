@@ -622,22 +622,33 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         Note:
             CFS has other time formats besides 32 bits seconds + 16 bits
             subseconds. time.time() returns time in seconds since the
-            epoch as a floating point number. Milliseconds are rounded.
+            epoch as a floating point number. A conversion from a 
+            floating point fraction to binary fraction i.e. MSB = 2^-1.
         """
         float_time = time.time()
         int_time = int(float_time)
         fraction_time = float_time - int_time
-        print(str(fraction_time))
-        millis_time = int(round(fraction_time * 1000))
-        self.SecHdr.set_time(int_time, millis_time)
+        subseconds = 0
+        
+        for n in range(16):
+            if (fraction_time/(2**-(n+1))) >= 1:
+                subseconds |= 1 << (16 - (n+1)) 
+                fraction_time -= 2**-(n+1)
+        self.SecHdr.set_time(int_time, subseconds)
 
     def get_time(self):
         """Get the time field.
 
         Returns:
-            tuple: Seconds (int32) and subseconds (int16)
+            tuple: Seconds (int32) and subseconds (int16) converted to
+            a fraction.
         """
-        return self.SecHdr.Time.Seconds, self.SecHdr.Time.Subseconds
+        bin_subseconds = self.SecHdr.Time.Subseconds
+        fraction_subseconds = 0
+        for n in range(16):
+            if(bin_subseconds & 1 << (16 - (n+1))):
+                fraction_subseconds += 2**-(n+1)
+        return self.SecHdr.Time.Seconds, fraction_subseconds
 
     def get_packet_size(self):
         """Returns the length of the combined telemetry packet using 
