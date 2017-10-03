@@ -535,21 +535,25 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                     outBuffer = buffer;
                 }
 
-                CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-                /* Send message via UDP socket */
-                s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-                s_addr.sin_port        = htons(channel->DstPort);
-                status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
-                                        (struct sockaddr *) &s_addr,
-                                         sizeof(s_addr));
-                if (status < 0)
+                if(outSize > 0)
                 {
-                    if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
-                    {
-                        CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-                                "L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, outSize, channel->IP, channel->DstPort);
-                        TO_OutputChannel_Disable(ChannelIdx);
-                    }
+                	CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
+
+					/* Send message via UDP socket */
+					s_addr.sin_addr.s_addr = inet_addr(channel->IP);
+					s_addr.sin_port        = htons(channel->DstPort);
+					status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
+											(struct sockaddr *) &s_addr,
+											 sizeof(s_addr));
+					if (status < 0)
+					{
+						if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
+						{
+							CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+									"L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, (unsigned int)outSize, channel->IP, channel->DstPort);
+							TO_OutputChannel_Disable(ChannelIdx);
+						}
+					}
                 }
                 CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
 
