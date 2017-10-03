@@ -441,14 +441,11 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
 
     def set_length(self, value):
         """Set the packet data length.
-        
-        Note:
-            The minus two is the size of the secondary command header.
 
         Args:
             value (int): Total payload length in bytes.
         """
-        self.PriHdr.set_length(value + 2)
+        self.PriHdr.set_length(value)
 
     def get_length(self):
         """Get the packet data length.
@@ -457,7 +454,7 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
             int: Total payload length in bytes.
         """
         return self.PriHdr.get_length()
-    
+
     def get_packet_size(self):
         """Returns the length of the combined command packet using 
         ctypes.sizeof.
@@ -466,6 +463,29 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
             int: Total combined command packet size in bytes.
         """
         return self.PriHdr.get_header_size() + self.SecHdr.get_header_size()
+
+    def set_user_data_length(self, value):
+        """Set the length of the user payload. 
+        
+        Note:
+            This function automatically sets the length of the packet.
+            
+        Args:
+            The length of the user payload in bytes.
+        """
+        self.set_length(self.get_packet_size() + value)
+
+    def get_user_data_length(self):
+        """Get the length of the user payload. 
+        
+        Note:
+            This function automatically subtracts the length of the 
+            packet.
+            
+        Returns:
+            The length of the user payload in bytes.
+        """
+        return self.get_length() - self.get_packet_size()
 
 
 class CCSDS_TlmPkt_t(ctypes.Structure):
@@ -529,14 +549,11 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 
     def set_length(self, value):
         """Set the packet data length.
-        
-        Note:
-            The plus six is the size of the secondary telemetry header.
 
         Args:
             value (int): Total payload length in bytes.
         """
-        self.PriHdr.set_length(value + 6)
+        self.PriHdr.set_length(value)
 
     def get_length(self):
         """Get the packet data length.
@@ -557,12 +574,13 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         float_time = time.time()
         int_time = int(float_time)
         fraction_time = float_time - int_time
+        print(str(fraction_time))
         millis_time = int(round(fraction_time * 1000))
         self.SecHdr.set_time(int_time, millis_time)
-    
+
     def get_time(self):
         """Get the time field.
-        
+
         Returns:
             tuple: Seconds (int32) and subseconds (int16)
         """
@@ -571,11 +589,35 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
     def get_packet_size(self):
         """Returns the length of the combined telemetry packet using 
         ctypes.sizeof.
-        
+
         Returns:
             int: Total combined telemetry packet size in bytes.
         """
         return self.PriHdr.get_header_size() + self.SecHdr.get_header_size()
+
+    def set_user_data_length(self, value):
+        """Set the length of the user payload. 
+
+        Note:
+            This function automatically sets the length of the packet.
+
+        Args:
+            The length of the user payload in bytes.
+        """
+        self.set_length(self.get_packet_size() + value)
+
+    def get_user_data_length(self):
+        """Get the length of the user payload. 
+
+        Note:
+            This function automatically subtracts the length of the 
+            packet.
+            
+        Returns:
+            The length of the user payload in bytes.
+        """
+        return self.get_length() - self.get_packet_size()
+
 
 #class float_bits(ctypes.BigEndianStructure):
     #_fields_ = [("mantisa", ctypes.c_ulonglong, 52),

@@ -66,4 +66,13 @@ if __name__ == '__main__':
     #print in binary
     command_packet.print_base2()
     
+    # clear the packet
+    command_packet.clear_packet()
+    
+    # set the user data length. This automatically sets the length of 
+    # the command_packet
+    command_packet.set_user_data_length(7)
+    
+    print("command packet user data size",command_packet.get_user_data_length())
+    
     
