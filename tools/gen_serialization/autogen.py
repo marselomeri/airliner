@@ -50,6 +50,7 @@ for root, dirs, files in os.walk(templates):
 			continue
 		cookiecutter(join(templates, d), no_input=True, extra_context=extras, overwrite_if_exists=True)
 
+# Cleanup
 for dir in os.listdir(target):
 	for f in os.listdir(dir):
 		src = join(target, dir, f)
