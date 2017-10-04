@@ -23,6 +23,24 @@ def client(ip, port, header, message):
         pb_message.ParseFromString(response)
         print ("client received message: ", pb_message.seconds, pb_message.subseconds)
         
+        #send message
+        test_message = msg_pb2.test_msg()
+        test_message.content = "Shutdown"
+        encoded = test_message.SerializeToString()
+        sock.sendall(header)
+        sock.sendall(encoded)
+
+        #receive response
+        response_header = sock.recv(8)
+        command_header = CCSDS_CmdPkt_t()
+        command_header.set_decoded(response_header)
+        message_length = command_header.get_user_data_length()
+        
+        response = sock.recv(message_length)
+        pb_message = msg_pb2.next_step()
+        pb_message.ParseFromString(response)
+        print ("client received message: ", pb_message.seconds, pb_message.subseconds)
+        
     finally:
         sock.close()
         
@@ -42,5 +60,4 @@ if __name__ == "__main__":
 
     print("client 1 is ready, notify server")
     client(IP, PORT, header.get_encoded(), encoded)
-    
 

@@ -46,6 +46,9 @@ except Exception:
 
 def message_handler(message, threadname):
     print(message + " " + threadname)
+    if message == "Shutdown":
+        print("received shutdown message")
+        ArteServerGlobals.shutdown_flag = False
 
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
@@ -55,52 +58,58 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         time_source.set_start_time()
         cur_thread = threading.current_thread()
         telemetry_packet = CCSDS_TlmPkt_t()
-        # receive message
-        header = self.request.recv(telemetry_packet.get_packet_size())
-        telemetry_packet.set_decoded(header)
-        message_length = telemetry_packet.get_user_data_length() 
-        print ("received message timestamp :", telemetry_packet.get_time())
-        
-        message = self.request.recv(message_length)
-        pb_message = msg_pb2.test_msg()
-        pb_message.ParseFromString(message)
-        message_handler(pb_message.content, cur_thread.name)
-        
-        # decrement the client count
-        ArteServerGlobals.client_count -= 1
-        
-        if ArteServerGlobals.client_count == 0:
-            # if all clients have connected release any threads that
-            # are waiting
-            with ArteServerGlobals.condition:
-                print("all clients connected")
-                ArteServerGlobals.condition.notify_all()
-            # wait for all clients to connect
-            ''' Note on acquire/release for condition
-            All of the objects provided by a module that has acquire() 
-            and release() methods can be used as context managers for a with 
-            statement. The acquire() method will be called when the block 
-            is entered, and release() will be called when the block is exited 
-            (see https://docs.python.org/3/library/threading.html#with-locks)
-            '''
-        else:
-            with ArteServerGlobals.condition:
-                print("client connected, waiting for all clients to connect")
-                ArteServerGlobals.condition.wait()
 
-        # send response
-        test_response = msg_pb2.next_step()
-        test_response.seconds, test_response.subseconds = time_source.get_time()
-        encoded = test_response.SerializeToString(test_response)
-        # prepare header
-        command_header = CCSDS_CmdPkt_t()
-        command_header.init_packet()
-        command_header.set_user_data_length(len(encoded))
-        # send encoded header
-        self.request.sendall(command_header.get_encoded())
-        # send payload
-        self.request.sendall(encoded)
-        print("server sent response")
+        while ArteServerGlobals.shutdown_flag:
+        # receive message
+            header = self.request.recv(telemetry_packet.get_packet_size())
+            telemetry_packet.set_decoded(header)
+            message_length = telemetry_packet.get_user_data_length() 
+            print ("received message timestamp :", telemetry_packet.get_time())
+            
+            message = self.request.recv(message_length)
+            pb_message = msg_pb2.test_msg()
+            pb_message.ParseFromString(message)
+            message_handler(pb_message.content, cur_thread.name)
+            
+            # decrement the client count
+            ArteServerGlobals.client_count -= 1
+            
+            if ArteServerGlobals.client_count == 0:
+                # if all clients have connected release any threads that
+                # are waiting
+                with ArteServerGlobals.condition:
+                    print("all clients connected")
+                    ArteServerGlobals.condition.notify_all()
+                # wait for all clients to connect
+                ''' Note on acquire/release for condition
+                All of the objects provided by a module that has acquire() 
+                and release() methods can be used as context managers for a with 
+                statement. The acquire() method will be called when the block 
+                is entered, and release() will be called when the block is exited 
+                (see https://docs.python.org/3/library/threading.html#with-locks)
+                '''
+            else:
+                with ArteServerGlobals.condition:
+                    print("client connected, waiting for all clients to connect")
+                    ArteServerGlobals.condition.wait()
+    
+            # send response
+            test_response = msg_pb2.next_step()
+            test_response.seconds, test_response.subseconds = time_source.get_time()
+            encoded = test_response.SerializeToString(test_response)
+            # prepare header
+            command_header = CCSDS_CmdPkt_t()
+            command_header.init_packet()
+            command_header.set_user_data_length(len(encoded))
+            # send encoded header
+            self.request.sendall(command_header.get_encoded())
+            # send payload
+            self.request.sendall(encoded)
+            print("server sent response")
+            # reset the client connect count
+            ArteServerGlobals.client_count = ArteServerGlobals.starting_client_count
+            # increment the time source
+            time_source.add_step_time()
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -122,6 +131,7 @@ class ArteServer(object):
         self.client_count = client_count
         # set the shared client count
         ArteServerGlobals.client_count = self.client_count
+        ArteServerGlobals.starting_client_count = self.client_count
         # prevent error 98 Address already in use when relaunching 
         socketserver.TCPServer.allow_reuse_address = True
         self.server = ThreadedTCPServer((self.host, self.port), ThreadedTCPRequestHandler)
@@ -137,4 +147,7 @@ class ArteServer(object):
 class ArteServerGlobals:
     """Shared data between server and client threads."""
     client_count = 0
+    starting_client_count = 0
     condition = threading.Condition()
+    shutdown_flag = True
+    
