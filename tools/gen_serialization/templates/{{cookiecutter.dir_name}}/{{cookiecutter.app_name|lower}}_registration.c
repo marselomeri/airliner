@@ -10,8 +10,8 @@ uint32 {{cookiecutter.app_name}}_RegisterSerializationFuncs()
 {
 	int32 Status = CFE_SUCCESS;
 
-	/* Register each message with PBL */{% for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() %}
-	Status = PBLIB_RegisterMessage({{proto_data.airliner_mid}}, {{proto_data.airliner_cc}}, "{{proto_data.airliner_msg}}");
+	/* Register each message with PBL */{% for op_name, op_data in cookiecutter.operations.iteritems() %}
+	Status = {% if op_data.airliner_cc == -1 %}PBLIB_RegisterTlmMessage({{op_data.airliner_mid}}, "{{op_data.airliner_msg}}");{% else %}PBLIB_RegisterCmdMessage({{op_data.airliner_mid}}, {{op_data.airliner_cc}}, "{{op_data.airliner_msg}}"); {% endif %}
 	if (Status != CFE_SUCCESS)
 	{
 		goto {{cookiecutter.app_name}}_RegisterSerializationFuncs_Exit_Tag;
@@ -24,3 +24,4 @@ uint32 {{cookiecutter.app_name}}_RegisterSerializationFuncs()
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
