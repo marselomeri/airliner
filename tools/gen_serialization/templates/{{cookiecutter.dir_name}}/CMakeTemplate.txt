@@ -10,8 +10,8 @@ add_airliner_app_def(appname
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name|lower}}_registration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{cookiecutter.app_name|lower}}_registration.c
 {%- for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() %}
-        ${ {{-cookiecutter.app_name}}_PROTOBUF_MSGS_DIR}/{{proto_msg[:-3]}}.pb.h
-        ${ {{-cookiecutter.app_name}}_PROTOBUF_MSGS_DIR}/{{proto_msg[:-3]}}.pb.c
+        ${ {{-cookiecutter.app_name}}_PROTOBUF_MSGS_DIR}/{{proto_data.proto_msg[:-3]}}.pb.h
+        ${ {{-cookiecutter.app_name}}_PROTOBUF_MSGS_DIR}/{{proto_data.proto_msg[:-3]}}.pb.c
 {%- endfor %}
 
     INCLUDES
@@ -20,7 +20,7 @@ add_airliner_app_def(appname
 
 	PROTOBUF_DEFS
 {%- for proto_msg, proto_data in cookiecutter.proto_msgs.iteritems() %}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{proto_msg[:-3]}}.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/{{proto_data.proto_msg[:-3]}}.proto
 {%- endfor %}
         
     PROTOBUF_MSGS_DIR        
