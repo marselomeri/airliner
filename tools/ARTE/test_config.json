@@ -6,12 +6,12 @@
   "clients": [
     {
       "name": "Python test script 1",
-      "command": "/home/vagrant/Desktop/arte/examples/c_messages/test",
+      "command": "python3 /home/vagrant/Desktop/airliner/tools/ARTE/test_script1.py",
       "output": "test_script1.txt"
     },
     {
       "name": "Python test script 2",
-      "command": "python3 /home/vagrant/Desktop/arte/test_script2.py",
+      "command": "python3 /home/vagrant/Desktop/airliner/tools/ARTE/test_script2.py",
       "output": "test_script2.txt"
     }
   ]

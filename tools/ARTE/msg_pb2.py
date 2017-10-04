@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='msg.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\tmsg.proto\"\x1b\n\x08test_msg\x12\x0f\n\x07\x63ontent\x18\x01 \x02(\t')
+  serialized_pb=_b('\n\tmsg.proto\"\x1b\n\x08test_msg\x12\x0f\n\x07\x63ontent\x18\x01 \x02(\t\"0\n\tnext_step\x12\x0f\n\x07seconds\x18\x01 \x02(\r\x12\x12\n\nsubseconds\x18\x02 \x02(\r')
 )
 
 
@@ -55,7 +55,46 @@ _TEST_MSG = _descriptor.Descriptor(
   serialized_end=40,
 )
 
+
+_NEXT_STEP = _descriptor.Descriptor(
+  name='next_step',
+  full_name='next_step',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='seconds', full_name='next_step.seconds', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='subseconds', full_name='next_step.subseconds', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=42,
+  serialized_end=90,
+)
+
 DESCRIPTOR.message_types_by_name['test_msg'] = _TEST_MSG
+DESCRIPTOR.message_types_by_name['next_step'] = _NEXT_STEP
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 test_msg = _reflection.GeneratedProtocolMessageType('test_msg', (_message.Message,), dict(
@@ -64,6 +103,13 @@ test_msg = _reflection.GeneratedProtocolMessageType('test_msg', (_message.Messag
   # @@protoc_insertion_point(class_scope:test_msg)
   ))
 _sym_db.RegisterMessage(test_msg)
+
+next_step = _reflection.GeneratedProtocolMessageType('next_step', (_message.Message,), dict(
+  DESCRIPTOR = _NEXT_STEP,
+  __module__ = 'msg_pb2'
+  # @@protoc_insertion_point(class_scope:next_step)
+  ))
+_sym_db.RegisterMessage(next_step)
 
 
 # @@protoc_insertion_point(module_scope)
