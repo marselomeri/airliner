@@ -17,8 +17,9 @@ es_hk = es_hk_pb2.es_hk_pb()
 while True:
 	print "Waiting for msg"
 	time.sleep(1)
-	tlm = soc.recv(64)
+	tlm = soc.recv(37)
 	es_hk.ParseFromString(tlm)
+	print es_hk.CmdCounter
 	
 
 
