@@ -36,9 +36,9 @@ with open(join(temp, "cookiecutter.json"), 'r') as f:
 	cookie_json = json.load(f)
 
 # Copy proto template file for every proto msg
-for proto_msg in cookie_json["proto_msgs"]:
+for proto_msg, proto_data in cookie_json["proto_msgs"].iteritems():
 	pb_template = join(temp, "template.proto")
-	out_template = join(temp, "{{cookiecutter.dir_name}}", proto_msg[:-3] + ".proto")
+	out_template = join(temp, "{{cookiecutter.dir_name}}", proto_data["proto_msg"][:-3] + ".proto")
 	copyfile(pb_template, out_template)
 
 cookiecutter(temp, no_input=True, extra_context=extras, overwrite_if_exists=True)
