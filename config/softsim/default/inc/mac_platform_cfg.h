@@ -100,9 +100,7 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define MAC_PWM_CONFIG_TABLE_FILENAME      ("/cf/apps/mac_pwmcfg.tbl")
-
-#define MAC_MIXER_CONFIG_TABLE_FILENAME      ("/cf/apps/mac_mixercfg.tbl")
+#define MAC_PARAM_TABLE_FILENAME      ("/cf/apps/mac_param.tbl")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **

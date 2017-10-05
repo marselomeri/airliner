@@ -51,21 +51,18 @@ extern "C" {
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-/**
- * \brief Defines the number of entries in the table
- */
-#define MAC_CONFIG_TABLE_MAX_ENTRIES  (1)
 
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define MAC_PWM_CONFIG_TABLENAME ("PWMCFG_TBL")
-#define MAC_MIXER_CONFIG_TABLENAME ("MIXERCFG_TBL")
+#define MAC_PARAM_TABLENAME ("PARAM_TBL")
 
-/**
- * \brief Defines the table file name used for table registration.
- */
-#define MAC_CDS_TABLENAME  ("mac_CdsTbl")
+typedef enum
+{
+	MAC_TAILSITTER	= 0,
+	MAC_TILTROTOR   = 1,
+	MAC_STANDARD    = 2
+} MAC_VTOL_Type_t;
 
 /************************************************************************
 ** Local Structure Declarations
@@ -74,10 +71,39 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    int32  PwmDisarmed;
-    int32  PwmMin;
-    int32  PwmMax;
-} MAC_PwmConfigTbl_t;
+	float att_p[3];                     /**< P gain for angular error */
+	float rate_p[3];    				/**< P gain for angular rate error */
+	float rate_i[3];    				/**< I gain for angular rate error */
+	float rate_int_lim[3];    			/**< integrator state limit for rate loop */
+	float rate_d[3];    				/**< D gain for angular rate error */
+	float rate_ff[3];    			    /**< Feedforward gain for desired rates */
+	float yaw_ff;						/**< yaw control feed-forward */
+
+	float tpa_breakpoint_p;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_breakpoint_i;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_breakpoint_d;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_rate_p;					/**< Throttle PID Attenuation slope */
+	float tpa_rate_i;					/**< Throttle PID Attenuation slope */
+	float tpa_rate_d;					/**< Throttle PID Attenuation slope */
+
+	float roll_rate_max;
+	float pitch_rate_max;
+	float yaw_rate_max;
+	float yaw_auto_max;
+	float mc_rate_max[3];    			/**< attitude rate limits in stabilized modes */
+	float auto_rate_max[3];    			/**< attitude rate limits in auto modes */
+	float acro_rate_max[3];    			/**< max attitude rates in acro mode */
+	float rattitude_thres;
+	MAC_VTOL_Type_t vtol_type;			/**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
+	boolean vtol_opt_recovery_enabled;
+	float vtol_wv_yaw_rate_scale;		/**< Scale value [0, 1] for yaw rate setpoint  */
+
+	boolean bat_scale_en;
+
+	int board_rotation;
+
+	float board_offset[3];
+} MAC_ParamTbl_t;
 
 
 /** \brief Definition for Critical Data Storage (CDS) table entry */

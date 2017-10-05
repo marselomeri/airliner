@@ -44,6 +44,16 @@ add_airliner_app_def(mac
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

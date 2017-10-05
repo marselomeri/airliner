@@ -117,17 +117,11 @@ public:
 
     /* Config table-related */
 
-    /** \brief PWM Config Table Handle */
-    CFE_TBL_Handle_t PwmConfigTblHdl;
+    /** \brief Param Table Handle */
+    CFE_TBL_Handle_t ParamTblHdl;
 
-    /** \brief Mixer Config Table Handle */
-    CFE_TBL_Handle_t MixerConfigTblHdl;
-
-    /** \brief PWM Config Table Pointer */
-    MAC_PwmConfigTbl_t* PwmConfigTblPtr;
-
-    /** \brief Mixer Config Table Pointer */
-    MultirotorMixer_ConfigTable_t* MixerConfigTblPtr;
+    /** \brief Param Table Pointer */
+    MAC_ParamTbl_t* ParamTblPtr;
 
     /** \brief Output Data published at the end of cycle */
     PX4_ActuatorOutputsMsg_t ActuatorOutputs;
@@ -149,6 +143,7 @@ public:
 	PX4_ActuatorControlsMsg_t       m_ActuatorControls0;
 
 	boolean m_Actuators0CircuitBreakerEnabled;
+
 
 
 
@@ -405,27 +400,23 @@ public:
     **  \endreturns
     **
     *************************************************************************/
-    static int32  ValidatePwmCfgTbl(void*);
+    static int32  ValidateParamTbl(void*);
 
-    /************************************************************************/
-    /** \brief Validate MAC Mixer configuration table
-    **
-    **  \par Description
-    **       This function validates MAC's Mixer configuration table
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-     **
-     **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ValidateMixerCfgTbl(void*);
-
+private:
     void RunController(void);
+
+	/**
+	 * Attitude controller.
+	 */
+	void ControlAttitude(float dt);
+
+	/**
+	 * Attitude rates controller.
+	 */
+	void ControlAttitudeRates(float dt);
+
+private:
+	float ThrustSp;		/**< thrust setpoint */
 
 };
 

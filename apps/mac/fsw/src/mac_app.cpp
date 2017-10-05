@@ -38,7 +38,6 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,6 +51,9 @@ extern "C" {
 #include "mac_msg.h"
 #include "mac_version.h"
 #include <math.h>
+#include "cfs_utils.h"
+
+#include "Quaternion.hpp"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -788,6 +790,323 @@ void MAC::AppMain()
 void MAC::RunController(void)
 {
 	OS_printf("MAC::RunController()\n");
+
+	static uint64 last_run = 0;
+	float dt = (CFE_TIME_GetTimeInMicros() - last_run) / 1000000.0f;
+
+	/* guard against too small (< 2ms) and too large (> 20ms) dt's */
+	if (dt < 0.002f)
+	{
+		dt = 0.002f;
+	}
+	else if (dt > 0.02f)
+	{
+		dt = 0.02f;
+	}
+
+//	/* check for updates in other topics */
+//	parameter_update_poll();
+
+	/* Check if we are in rattitude mode and the pilot is above the threshold on pitch
+	 * or roll (yaw can rotate 360 in normal att control).  If both are true don't
+	 * even bother running the attitude controllers */
+	if (CVT.VControlMode.ControlRattitudeEnabled)
+	{
+		if (fabsf(CVT.ManualControlSp.Y) > ParamTblPtr->rattitude_thres ||
+		    fabsf(CVT.ManualControlSp.X) > ParamTblPtr->rattitude_thres)
+		{
+			CVT.VControlMode.ControlAttitudeEnabled = FALSE;
+		}
+	}
+
+	if (CVT.VControlMode.ControlAttitudeEnabled)
+	{
+//		if (_ts_opt_recovery == nullptr) {
+//			// the  tailsitter recovery instance has not been created, thus, the vehicle
+//			// is not a tailsitter, do normal attitude control
+			ControlAttitude(dt);
+//		}
+//		else
+//		{
+//			vehicle_attitude_setpoint_poll();
+//			_thrust_sp = _v_att_sp.thrust;
+//			math::Quaternion q(_ctrl_state.q[0], _ctrl_state.q[1], _ctrl_state.q[2], _ctrl_state.q[3]);
+//			math::Quaternion q_sp(&_v_att_sp.q_d[0]);
+//			_ts_opt_recovery->setAttGains(_params.att_p, _params.yaw_ff);
+//			_ts_opt_recovery->calcOptimalRates(q, q_sp, _v_att_sp.yaw_sp_move_rate, _rates_sp);
+//
+//			/* limit rates */
+//			for (int i = 0; i < 3; i++) {
+//				_rates_sp(i) = math::constrain(_rates_sp(i), -_params.mc_rate_max(i), _params.mc_rate_max(i));
+//			}
+//		}
+
+//		/* publish attitude rates setpoint */
+//		_v_rates_sp.roll = _rates_sp(0);
+//		_v_rates_sp.pitch = _rates_sp(1);
+//		_v_rates_sp.yaw = _rates_sp(2);
+//		_v_rates_sp.thrust = _thrust_sp;
+//		_v_rates_sp.timestamp = hrt_absolute_time();
+//
+//		if (_v_rates_sp_pub != nullptr) {
+//			orb_publish(_rates_sp_id, _v_rates_sp_pub, &_v_rates_sp);
+//
+//		} else if (_rates_sp_id) {
+//			_v_rates_sp_pub = orb_advertise(_rates_sp_id, &_v_rates_sp);
+//		}
+//
+//		}
+
+	}
+	else
+	{
+//		/* attitude controller disabled, poll rates setpoint topic */
+//		if (_v_control_mode.flag_control_manual_enabled) {
+//			/* manual rates control - ACRO mode */
+//			_rates_sp = math::Vector<3>(_manual_control_sp.y, -_manual_control_sp.x,
+//						    _manual_control_sp.r).emult(_params.acro_rate_max);
+//			_thrust_sp = math::min(_manual_control_sp.z, MANUAL_THROTTLE_MAX_MULTICOPTER);
+//
+//			/* publish attitude rates setpoint */
+//			_v_rates_sp.roll = _rates_sp(0);
+//			_v_rates_sp.pitch = _rates_sp(1);
+//			_v_rates_sp.yaw = _rates_sp(2);
+//			_v_rates_sp.thrust = _thrust_sp;
+//			_v_rates_sp.timestamp = hrt_absolute_time();
+//
+//			if (_v_rates_sp_pub != nullptr) {
+//				orb_publish(_rates_sp_id, _v_rates_sp_pub, &_v_rates_sp);
+//
+//			} else if (_rates_sp_id) {
+//				_v_rates_sp_pub = orb_advertise(_rates_sp_id, &_v_rates_sp);
+//			}
+//
+//		} else {
+//			/* attitude controller disabled, poll rates setpoint topic */
+//			vehicle_rates_setpoint_poll();
+//			_rates_sp(0) = _v_rates_sp.roll;
+//			_rates_sp(1) = _v_rates_sp.pitch;
+//			_rates_sp(2) = _v_rates_sp.yaw;
+//			_thrust_sp = _v_rates_sp.thrust;
+//		}
+	}
+
+	if (CVT.VControlMode.ControlRatesEnabled)
+	{
+		ControlAttitudeRates(dt);
+//
+//		/* publish actuator controls */
+//		_actuators.control[0] = (PX4_ISFINITE(_att_control(0))) ? _att_control(0) : 0.0f;
+//		_actuators.control[1] = (PX4_ISFINITE(_att_control(1))) ? _att_control(1) : 0.0f;
+//		_actuators.control[2] = (PX4_ISFINITE(_att_control(2))) ? _att_control(2) : 0.0f;
+//		_actuators.control[3] = (PX4_ISFINITE(_thrust_sp)) ? _thrust_sp : 0.0f;
+//		_actuators.control[7] = _v_att_sp.landing_gear;
+//		_actuators.timestamp = hrt_absolute_time();
+//		_actuators.timestamp_sample = _ctrl_state.timestamp;
+//
+//		/* scale effort by battery status */
+//		if (_params.bat_scale_en && _battery_status.scale > 0.0f) {
+//			for (int i = 0; i < 4; i++) {
+//				_actuators.control[i] *= _battery_status.scale;
+//			}
+//		}
+//
+//		_controller_status.roll_rate_integ = _rates_int(0);
+//		_controller_status.pitch_rate_integ = _rates_int(1);
+//		_controller_status.yaw_rate_integ = _rates_int(2);
+//		_controller_status.timestamp = hrt_absolute_time();
+//
+//		if (!_actuators_0_circuit_breaker_enabled) {
+//			if (_actuators_0_pub != nullptr) {
+//
+//				orb_publish(_actuators_id, _actuators_0_pub, &_actuators);
+//				perf_end(_controller_latency_perf);
+//
+//			} else if (_actuators_id) {
+//				_actuators_0_pub = orb_advertise(_actuators_id, &_actuators);
+//			}
+//
+//		}
+//
+//		/* publish controller status */
+//		if (_controller_status_pub != nullptr) {
+//			orb_publish(ORB_ID(mc_att_ctrl_status), _controller_status_pub, &_controller_status);
+//
+//		} else {
+//			_controller_status_pub = orb_advertise(ORB_ID(mc_att_ctrl_status), &_controller_status);
+//		}
+	}
+
+	if (CVT.VControlMode.ControlTerminationEnabled)
+	{
+		if (!CVT.VehicleStatus.IsVtol)
+		{
+//			_rates_sp.zero();
+//			_rates_int.zero();
+//			_thrust_sp = 0.0f;
+//			_att_control.zero();
+//
+//
+//			/* publish actuator controls */
+//			_actuators.control[0] = 0.0f;
+//			_actuators.control[1] = 0.0f;
+//			_actuators.control[2] = 0.0f;
+//			_actuators.control[3] = 0.0f;
+//			_actuators.timestamp = hrt_absolute_time();
+//			_actuators.timestamp_sample = _ctrl_state.timestamp;
+//
+//			if (!_actuators_0_circuit_breaker_enabled) {
+//				if (_actuators_0_pub != nullptr) {
+//
+//					orb_publish(_actuators_id, _actuators_0_pub, &_actuators);
+//					perf_end(_controller_latency_perf);
+//
+//				} else if (_actuators_id) {
+//					_actuators_0_pub = orb_advertise(_actuators_id, &_actuators);
+//				}
+//			}
+//
+//			_controller_status.roll_rate_integ = _rates_int(0);
+//			_controller_status.pitch_rate_integ = _rates_int(1);
+//			_controller_status.yaw_rate_integ = _rates_int(2);
+//			_controller_status.timestamp = hrt_absolute_time();
+//
+//			/* publish controller status */
+//			if (_controller_status_pub != nullptr) {
+//				orb_publish(ORB_ID(mc_att_ctrl_status), _controller_status_pub, &_controller_status);
+//
+//			} else {
+//				_controller_status_pub = orb_advertise(ORB_ID(mc_att_ctrl_status), &_controller_status);
+//			}
+//
+//			/* publish attitude rates setpoint */
+//			_v_rates_sp.roll = _rates_sp(0);
+//			_v_rates_sp.pitch = _rates_sp(1);
+//			_v_rates_sp.yaw = _rates_sp(2);
+//			_v_rates_sp.thrust = _thrust_sp;
+//			_v_rates_sp.timestamp = hrt_absolute_time();
+//
+//			if (_v_rates_sp_pub != nullptr) {
+//				orb_publish(_rates_sp_id, _v_rates_sp_pub, &_v_rates_sp);
+//
+//			} else if (_rates_sp_id) {
+//				_v_rates_sp_pub = orb_advertise(_rates_sp_id, &_v_rates_sp);
+//			}
+		}
+	}
+}
+
+
+void MAC::ControlAttitude(float dt)
+{
+
+//	vehicle_attitude_setpoint_poll();
+//
+	ThrustSp = CVT.VAttSp.Thrust;
+
+	/* construct attitude setpoint rotation matrix */
+	math::Quaternion q_sp(
+			CVT.VAttSp.Q_D[0],
+			CVT.VAttSp.Q_D[1],
+			CVT.VAttSp.Q_D[2],
+			CVT.VAttSp.Q_D[3]);
+
+	math::Matrix3F3 R_sp = q_sp.RotationMatrix();
+
+	/* get current rotation matrix from control state quaternions */
+	math::Quaternion q_att(CVT.ControlState.Q[0], CVT.ControlState.Q[1], CVT.ControlState.Q[2], CVT.ControlState.Q[3]);
+	math::Matrix3F3 R = q_att.RotationMatrix();
+
+	/* all input data is ready, run controller itself */
+
+	/* try to move thrust vector shortest way, because yaw response is slower than roll/pitch */
+	math::Vector3F R_z(R[0][2], R[1][2], R[2][2]);
+	math::Vector3F R_sp_z(R_sp[0][2], R_sp[1][2], R_sp[2][2]);
+
+	/* axis and sin(angle) of desired rotation */
+	math::Vector3F e_R = R.Transpose() * (R_z % R_sp_z);
+
+	/* calculate angle error */
+	float e_R_z_sin = e_R.length();
+	float e_R_z_cos = R_z * R_sp_z;
+
+	/* calculate weight for yaw control */
+	float yaw_w = R_sp[2][2] * R_sp[2][2];
+
+	/* calculate rotation matrix after roll/pitch only rotation */
+	math::Matrix3F3 R_rp;
+
+	if (e_R_z_sin > 0.0f) {
+		/* get axis-angle representation */
+		float e_R_z_angle = atan2f(e_R_z_sin, e_R_z_cos);
+		math::Vector3F e_R_z_axis = e_R / e_R_z_sin;
+
+		e_R = e_R_z_axis * e_R_z_angle;
+
+		/* cross product matrix for e_R_axis */
+		math::Matrix3F3 e_R_cp;
+		e_R_cp.Zero();
+		e_R_cp[0][1] = -e_R_z_axis[2];
+		e_R_cp[0][2] = e_R_z_axis[1];
+		e_R_cp[1][0] = e_R_z_axis[2];
+		e_R_cp[1][2] = -e_R_z_axis[0];
+		e_R_cp[2][0] = -e_R_z_axis[1];
+		e_R_cp[2][1] = e_R_z_axis[0];
+
+		/* rotation matrix for roll/pitch only rotation */
+		R_rp = R * (math::Matrix3F3::Identity() + e_R_cp * e_R_z_sin + e_R_cp * e_R_cp * (1.0f - e_R_z_cos));
+
+	} else {
+		/* zero roll/pitch rotation */
+		R_rp = R;
+	}
+
+	/* R_rp and R_sp has the same Z axis, calculate yaw error */
+	math::Vector3F R_sp_x(R_sp[0][0], R_sp[1][0], R_sp[2][0]);
+	math::Vector3F R_rp_x(R_rp[0][0], R_rp[1][0], R_rp[2][0]);
+	e_R[2] = atan2f((R_rp_x % R_sp_x) * R_sp_z, R_rp_x * R_sp_x) * yaw_w;
+
+	if (e_R_z_cos < 0.0f) {
+		/* for large thrust vector rotations use another rotation method:
+		 * calculate angle and axis for R -> R_sp rotation directly */
+		math::Quaternion q_error(R.Transpose() * R_sp);
+		math::Vector3F e_R_d = q_error[0] >= 0.0f ? q_error.Imaginary()  * 2.0f : -q_error.Imaginary() * 2.0f;
+
+		/* use fusion of Z axis based rotation and direct rotation */
+		float direct_w = e_R_z_cos * e_R_z_cos * yaw_w;
+		e_R = e_R * (1.0f - direct_w) + e_R_d * direct_w;
+	}
+
+	/* calculate angular rates setpoint */
+//	_rates_sp = _params.att_p.emult(e_R);
+
+	/* limit rates */
+//	for (int i = 0; i < 3; i++) {
+//		if ((_v_control_mode.flag_control_velocity_enabled || _v_control_mode.flag_control_auto_enabled) &&
+//		    !_v_control_mode.flag_control_manual_enabled) {
+//			_rates_sp(i) = math::constrain(_rates_sp(i), -_params.auto_rate_max(i), _params.auto_rate_max(i));
+//
+//		} else {
+//			_rates_sp(i) = math::constrain(_rates_sp(i), -_params.mc_rate_max(i), _params.mc_rate_max(i));
+//		}
+//	}
+//
+	/* feed forward yaw setpoint rate */
+//	_rates_sp(2) += _v_att_sp.yaw_sp_move_rate * yaw_w * _params.yaw_ff;
+//
+//	/* weather-vane mode, dampen yaw rate */
+//	if ((_v_control_mode.flag_control_velocity_enabled || _v_control_mode.flag_control_auto_enabled) &&
+//	    _v_att_sp.disable_mc_yaw_control == true && !_v_control_mode.flag_control_manual_enabled) {
+//		float wv_yaw_rate_max = _params.auto_rate_max(2) * _params.vtol_wv_yaw_rate_scale;
+//		_rates_sp(2) = math::constrain(_rates_sp(2), -wv_yaw_rate_max, wv_yaw_rate_max);
+//		// prevent integrator winding up in weathervane mode
+//		_rates_int(2) = 0.0f;
+//	}
+}
+
+
+void MAC::ControlAttitudeRates(float dt)
+{
 }
 
 #ifdef __cplusplus
