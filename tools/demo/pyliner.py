@@ -1,25 +1,16 @@
 #!/usr/bin/python
 
 from arte_ccsds import *
-import pyliner_msgs
-
-from pymitter import EventEmitter
-from collections import namedtuple
-import urllib2
-import websocket
-import thread
-import time
-from websocket import create_connection
 import json
 from os.path import exists,join
-import time
-import datetime
-import message_pb2
-import requests
-import logging
+import python_pb.pyliner_msgs as pyliner_msgs
+import socket
 
 DEFAULT_CI_PORT = 5009
 DEFAULT_TO_PORT = 5012
+
+# Custom exceptions
+class InvalidCommand(Exception): pass
 
 class Pyliner(object):
 
@@ -29,6 +20,13 @@ class Pyliner(object):
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
         self.airliner_data = self.__read_json(kwargs.get("airliner_map", None))
         self.subscribed_tlm = []
+        self.ci_socket = self.__init_socket()
+        self.to_socket = self.__init_socket()
+        self.seq_count = 0
+
+    def __init_socket(self):
+        """ Creates a UDP socket object and returns it """
+        return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def __read_json(self, file_path):
         """ Parses the required JSON input file containing Airliner mappings """
@@ -36,72 +34,117 @@ class Pyliner(object):
             with open(file_path, 'r') as airliner_map:
                 return json.load(airliner_map)
         else:
-            raise IOError #TODO
+            raise IOError("Specified input file does not exist")
             
     def __get_airliner_op(self, op_path):
         """ Receive a ops name and returns a dict to that op """
         ret_op = None
         ops_names = op_path.split('/')
-        print ops_names
+        #print ops_names
         
-        for fsw in self.airliner_data:
+        for fsw, fsw_data in self.airliner_data.iteritems():
             if fsw == ops_names[0]:
-                for app, app_data in fsw["apps"].iteritems():
+                for app, app_data in fsw_data["apps"].iteritems():
                     if app_data["app_ops_name"] == ops_names[1]:
-                        op = app["operations"][ops_names[2]]
+                        op = app_data["operations"][ops_names[2]]
                         ret_op = op if op else None
 
+        #print "OP: " + str(op)
         return ret_op
 
-    def __get_ccsds_msg(self, op_path):
+    def __get_ccsds_msg(self, op_dict):
         """ Receive a ops name and returns a ccsds msg """
-        ret_msg = None
-        op = self.__get_airliner_op(op_path)
-        if not op:
-            return ret_msg
-            
-        if op["airliner_cc"] == "-1": # TODO Check if int
+        if op_dict["airliner_cc"] == "-1":
             # Telemetry
             ret_msg = CCSDS_TlmPkt_t()
             ret_msg.init_packet()
-            ret_msg.PriHdr.StreamId.bits.app_id = op["airliner_msg"] #TODO
+            ret_msg.PriHdr.StreamId.bits.app_id = int(op_dict["airliner_mid"], 0)
         else:
             # Command
+            print op_dict["airliner_cc"]
             ret_msg = CCSDS_CmdPkt_t()
+            ret_msg.clear_packet()
             ret_msg.init_packet()
-            ret_msg.PriHdr.StreamId.bits.app_id = op["airliner_msg"] #TODO
-            ret_msg.SecHdr.Command.bits.code = op["airliner_cc"]
-            ret_msg.set_checksum(0) #TODO
+            ret_msg.PriHdr.StreamId.bits.app_id = int(op_dict["airliner_mid"], 0)
+            ret_msg.SecHdr.Command.bits.code = int(op_dict["airliner_cc"])
+            #ret_msg.print_base16()
+            #ret_msg.set_checksum(0) #TODO
 
         return ret_msg
 
-    def serialize(self, msg, payload):
+    def serialize(self, header, payload):
         """ Receive a CCSDS message and payload then returns the serialized concatenation of them """
-        return str(msg.get_encoded()) + payload.SerializeToString()
+        if not payload:
+            return str(header.get_encoded())        
+        else:
+            return str(header.get_encoded()) + payload.SerializeToString()
 
     def deserialize(self, msg, msg_id):
-        """ Receive the payload of a message and deserializes it"""
+        """ Receive the payload of a message and deserializes it """
         tlm_packet = CCSDS_TlmPkt_t()
         tlm_packet.set_decoded(msg[:12]) #TODO
         
 
-    def create_pb_obj(self, script_cmd):
-        """ Receives a cmd from the user script and initializes a pb obj of that type """
-        op = self.__get_airliner_op(script_cmd["name"])
-        if not op:
+    def create_pb_obj(self, cmd, op):
+        """ Receives a cmd from the user script and initializes a pb obj of that type. """
+        # Check if no args cmd
+        if len(op["airliner_msg"]) == 0:
             return None
-            
-        pb_obj = proto_msg_map[op["airliner_msg"]]()
+        
+        # Call the correct protobuf constructor for this command
+        pb_obj = pyliner_msgs.proto_msg_map[op["airliner_msg"]]()
+        
+        # Generate executable string assigning correct values to pb object
         assign = ""
-        for arg in script_cmd["args"]:
-            assign.append("pb_obj." + arg["name"] + " = " + arg["value"]
-            
+        for arg in cmd["args"]:
+            assign += ("pb_obj." + arg["name"] + "=" + arg["value"] + "\n")
         exec(assign)
+        
+        return pb_obj
 
-    def send_command(self, args):
-        """ 
+    def send_command(self, cmd):
+        """ User accessible function to send a command to the software bus. 
+        
+        Args:
+            cmd(dict): A command specifiying the operation to execute and any args for it.
+                E.g.    {'name':'/Airliner/ES/Noop'} 
+                                    or
+                        {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
+                             {'name':'X', 'value':'0'},
+                             {'name':'Y', 'value':'0'},
+                             {'name':'Z', 'value':'500'}]}
         """
-        pass
+        args_present = False
+        
+        if "name" not in cmd:
+            raise InvalidCommand("Invalid command received. Missing \"name\" attribute")
+        
+        # Check if no args cmd
+        if "args" in cmd:
+            args_present = True
+
+        # Get command operation        
+        op = self.__get_airliner_op(cmd["name"])
+        if not op:
+            raise InvalidCommand("Invalid command received. Operation not defined.")
+
+        # Generate airliner cmd
+        header = self.__get_ccsds_msg(op)
+        payload = self.create_pb_obj(cmd, op) if args_present else None
+        payload_size = payload.ByteSize() if args_present else 0
+        header.set_user_data_length(payload_size)
+        
+        test = CCSDS_CmdPkt_t()
+        test.set_decoded(bytearray.fromhex("1806c00000050012"))
+        print "test"
+        test.print_base2()
+        print "org"        
+        header.print_base2()
+        print payload
+        serial_cmd = self.serialize(header, payload)
+        
+        self.send_to_airliner(serial_cmd)
+        self.seq_count += 1
 
     def recv_telemetry(self, args):
         """ 
@@ -111,173 +154,9 @@ class Pyliner(object):
     def step_frame(self, steps = 1):
         """ Step passed number of frames """
         pass
-        
-    def recv_telemetry(self, args):
-        """ 
-        """
-        pass
 
-    def setDefaultInstance(self, name):
-        err, self.defaultInstance = self.bindToInstance(name)
-        self.emit("connect", self.defaultInstance['name'])
+    def send_to_airliner(self, msg):
+        """ Publish the passed message to airliner """
+        self.ci_socket.sendto(msg, (self.address, self.ci_port))
 
-    def getCommandInfo(self, cmd, cb):
-        apiUrl = 'http://' + self.address + ':' + `self.port` + '/api';
-        url = apiUrl + '/mdb/' + self.defaultInstance['name'] + '/commands' + cmd.get('name')
-        cmdInfo = urllib2.urlopen(url).read()
-        cb(cmdInfo)
 
-    def getActiveInstanceByName(self, name):
-        for instance in self.activeInstances:
-            if instance['name'] == name:
-                return instance
-        return None
-
-    def bindToInstance(self, name):
-        def runListener(*args):
-                instance['client'].run_forever()
-        instance = self.getActiveInstanceByName(name);
-        if instance != None:
-            # Instance is already bound.  Call the callback with the already bound
-            # instance object.
-            return None, instance
-        else:
-            # Instance is not bound.  Open a websocket to the server.
-            url = 'ws://' + self.address + ':' + `self.port` + '/' + name + '/_websocket'
-            instance = {'tlmSeqNum': 0, 'name': name, 'client':websocket.WebSocketApp(url,
-                                                   on_message = self.onWsMessage,
-                                                   on_error = self.onWsError,
-                                                   on_close = self.onWsClose)}
-            instance['client'].on_open = self.onWsOpen
-            self.activeInstances.append(instance)
-            thread.start_new_thread(runListener, ())
-            return None, instance
-
-    def onWsMessage(self, ws, message):
-        obj = json.loads(message)
-        #if obj[1] == 1:
-        #    # Request
-        #    print "Request"
-        if obj[1] == 2:
-            # Reply
-            print "Reply"
-        elif obj[1] == 3:
-            # Exception
-            print "Exception"
-        elif obj[1] == 4:
-            # Data
-            for param in obj[3]['data']['parameter']:
-                for subscriber in self.subscribers:
-                    for tlmItem in subscriber['params']['tlm']:
-                        if tlmItem['name'] == param['id']['name']:
-                            if 'homogeneity' in subscriber['params']:
-                                ## First store the parameter so we can compare homogeneity. */
-                                tlmItem['sample'] = param;
-
-                                # Get the optional parameters.
-                                homogenousBy = 'acquisitionTime';
-                                tolerance = 0;
-                                if 'by' in subscriber['params']['homogeneity']:
-                                    homogenousBy = subscriber['params']['homogeneity']['by']
-                                if 'tolerance' in subscriber['params']['homogeneity']:
-                                    tolerance = subscriber['params']['homogeneity']['tolerance']
-
-                                # Now determine if the samples are homogenous.  First,
-                                # Get the timestamp of the current sample.
-                                timeStamp = datetime.datetime.fromtimestamp(param[homogenousBy] / 1000.0)
-
-                                # Now iterate through the remaining samples.  If any
-                                # of them fall outside the defined tolerance, flag
-                                # this not homogenous.
-                                isHomogenous = True
-                                for tlmInner in subscriber['params']['tlm']:
-                                    if 'sample' in tlmInner:
-                                        sample = tlmInner['sample']
-                                        sampleTimeStamp = datetime.datetime.fromtimestamp(sample[homogenousBy]/1000.0)
-                                        diff = timeStamp - sampleTimeStamp
-                                        if diff > datetime.timedelta(milliseconds=float(tolerance)):
-                                            isHomogenous = False
-                                            break
-                                    else:
-                                        isHomogenous = False
-                                        break
-                                if isHomogenous:
-                                    # The sample group is homogenous.  Send the subscriber
-                                    # an array containing the entire group.
-                                    params = []
-                                    for tlmInner in subscriber['params']['tlm']:
-                                        params.append(tlmInner['sample'])
-                                    subscriber['updateFunc'](params)
-                            else:
-                                # Homogeneity is not defined.  Just give it to the subscriber
-                                # as its received.
-                                subscriber['updateFunc'](param);
-
-    def onWsError(self, ws, error):
-        print error
-
-    def onWsClose(self, ws):
-        print "### closed ###"
-
-    def onWsOpen(self, ws):
-        print "on_open"
-
-    def subscribeAfterBind(self, args, updateFunc, err, newInstance):
-        print "bindComplete"
-        #print newInstance
-        #self.tlmSeqNum = self.tlmSeqNum + 1;
-        # var msgOut = '[1,1,' + self.tlmSeqNum + ',' + JSON.stringify(msg) + ']';
-
-    def subscribe(self, args, updateFunc):
-        self.subscribers.append({'tlmSeqNum': 0, 'params':args, 'updateFunc':updateFunc});
-        if 'instance' in args:
-            # The caller specified an instance.  Get the specific instance.
-            instance = self.getActiveInstanceByName(args['instance']);
-            if instance == None:
-                # We haven't bound this instance yet.  Bind it and defer the
-                # subscription to after the bind is complete.
-                err, newInstance = self.bindToInstance(args['instance'])
-                newInstance['tlmSeqNum'] += 1
-                msgOut = '[1,1,' + `newInstance['tlmSeqNum']` + ',{"parameter":"subscribe","data":{"list":' + json.dumps(args['tlm']) + '}}]'
-                time.sleep(1)
-                newInstance['client'].send(msgOut)
-            else:
-                # We have already bound this instance.  Just go ahead and subscribe.
-                instance['tlmSeqNum'] += 1
-                msgOut = '[1,1,' + `instance['tlmSeqNum']` + ',{"parameter":"subscribe","data":{"list":' + json.dumps(args['tlm']) + '}}]'
-                instance['client'].send(msgOut)
-        else:
-            # The caller did not specify an instance.  Go ahead and just use the
-            # default instance, if defined.
-            self.defaultInstance['tlmSeqNum'] += 1
-            msgOut = '[1,1,' + `self.defaultInstance['tlmSeqNum']` + ',{"parameter":"subscribe","data":{"list":' + json.dumps(args['tlm']) + '}}]'
-            self.defaultInstance['client'].send(msgOut)
-
-    def sendCommand(self, args):
-        cmdMsg = message_pb2.IssueCommandRequest()
-        cmdMsg.origin = "user@host"
-        cmdMsg.sequenceNumber = self.cmdSeqNum
-        cmdMsg.dryRun = False
-
-        assignments = []
-
-        if 'args' in args:
-            for arg in args['args']:
-                assignment = message_pb2.IssueCommandRequest.Assignment()
-                assignment.name = arg['name']
-                assignment.value = arg['value']
-                assignments.append(assignment)
-
-        cmdMsg.assignment.extend(assignments)
-        path = 'http://' + self.address + ':' + `self.port` + '/api/processors/' + self.defaultInstance['name'] + '/realtime/commands/' + args['name'] + '?nolink';
-        req = urllib2.Request(path, cmdMsg.SerializeToString(), {'Content-Type': 'application/protobuf', 'Accept': 'application/protobuf'})
-
-        res = urllib2.urlopen(req)
-        
-        
-            def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT, to_port=DEFAULT_TO_PORT):
-        self.address = address
-        self.ci_port = ci_port
-        self.to_port = to_port
-        self.subscribed_tlm = []
-        self.airliner_data = self.__read_airliner_input()
