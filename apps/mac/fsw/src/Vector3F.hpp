@@ -14,12 +14,13 @@ private:
 	float nan;
 
 public:
+	Vector3F();
 	Vector3F(float X, float Y, float Z);
 	~Vector3F();
 	float& operator [] (uint32 i);
 	float operator [] (uint32 i) const;
-	float length(void) const;
-	void zero(void);
+	float Length(void) const;
+	void Zero(void);
 	Vector3F operator+(const Vector3F &vecIn);
 	Vector3F operator-(const Vector3F &vecIn);
 	Vector3F operator%(const Vector3F &vecIn);
@@ -27,7 +28,8 @@ public:
 	Vector3F operator/(const float scalar);
 	float operator*(const Vector3F &vecIn);
 	Vector3F operator-() const;
-	Vector3F();
+	const Vector3F EMult(const Vector3F &vecIn) const;
+	void Constrain(uint32 i, float min, float max);
 
 protected:
 

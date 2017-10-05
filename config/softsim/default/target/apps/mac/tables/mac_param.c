@@ -43,38 +43,49 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MAC config table data */
 MAC_ParamTbl_t MAC_ParamTbl =
 {
-	{1.0, 1.0, 1.0},						/**< P gain for angular error */
-	{1.0, 1.0, 1.0},						/**< P gain for angular rate error */
-	{1.0, 1.0, 1.0},						/**< I gain for angular rate error */
-	{1.0, 1.0, 1.0},						/**< integrator state limit for rate loop */
-	{1.0, 1.0, 1.0},						/**< D gain for angular rate error */
-	{1.0, 1.0, 1.0},						/**< Feedforward gain for desired rates */
-	1.0,									/**< yaw control feed-forward */
-
-	1.0,									/**< Throttle PID Attenuation breakpoint */
-	1.0,									/**< Throttle PID Attenuation breakpoint */
-	1.0,									/**< Throttle PID Attenuation breakpoint */
-	1.0,									/**< Throttle PID Attenuation slope */
-	1.0,									/**< Throttle PID Attenuation slope */
-	1.0,									/**< Throttle PID Attenuation slope */
-
-	1.0,                                    /**< Roll rate maximum */
-	1.0,                                    /**< Pitch rate maximum */
-	1.0,                                    /**< Yaw rate maximum */
-	1.0,                                    /**< Yaw auto maximum */
-	{1.0, 1.0, 1.0},						/**< attitude rate limits in stabilized modes */
-	{1.0, 1.0, 1.0},						/**< attitude rate limits in auto modes */
-	{1.0, 1.0, 1.0},						/**< max attitude rates in acro mode */
-	1.0,						/**< Rattitude threshold
-	MAC_STANDARD,                           /**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
-	FALSE,                                  /**< VTOL opt recovery enabled
-	1.0,                                    /**< Scale value [0, 1] for yaw rate setpoint  */
-
-	TRUE,                                   /**< Battery scale enabled */
-
-	0,                                      /**< Board rotation */
-
-	{1.0, 1.0, 1.0}                        /**< Board offset */
+		6.5;		/* MC_ROLL_P 	   */
+		0.15;		/* MC_ROLLRATE_P   */
+		0.05;		/* MC_ROLLRATE_I   */
+		0.30;		/* MC_RR_INT_LIM   */
+		0.003;		/* MC_ROLLRATE_D   */
+		0.0;		/* MC_ROLLRATE_FF  */
+		6.5;		/* MC_PITCH_P      */
+		0.15;		/* MC_PITCHRATE_P  */
+		0.05;		/* MC_PITCHRATE_I  */
+		0.30;		/* MC_PR_INT_LIM   */
+		0.003;		/* MC_PITCHRATE_D  */
+		0.0;		/* MC_PITCHRATE_FF */
+		1.0;		/* MC_TPA_BREAK_P  */
+		1.0;		/* MC_TPA_BREAK_I  */
+		1.0;		/* MC_TPA_BREAK_D  */
+		0.0;		/* MC_TPA_RATE_P   */
+		0.0;		/* MC_TPA_RATE_I   */
+		0.0;		/* MC_TPA_RATE_D   */
+		2.8;		/* MC_YAW_P        */
+		0.2;		/* MC_YAWRATE_P	   */
+		0.1;		/* MC_YAWRATE_I    */
+		0.30;       /* MC_YR_INT_LIM   */
+		0.0;		/* MC_YAWRATE_D    */
+		0.0;		/* MC_YAWRATE_FF   */
+		0.5;		/* MC_YAW_FF       */
+		220.0;		/* MC_ROLLRATE_MAX */
+		220.0;		/* MC_PITCHRATE_MAX */
+		200.0;		/* MC_YAWRATE_MAX   */
+		45.0;		/* MC_YAWRAUTO_MAX  */
+		360.0;      /* MC_ACRO_R_MAX    */
+		360.0;		/* MC_ACRO_P_MAX    */
+        360.0;		/* MC_ACRO_Y_MAX    */
+		0.8;		/* MC_RATT_TH	    */
+		0;			/* VT_TYPE          */
+		0.2;		/* MC_ROLL_TC		*/
+		0.2;		/* MC_PITCH_TC      */
+		0;			/* VT_OPT_RECOV_EN  */
+		0.15;		/* VT_WV_YAWR_SCL   */
+		0;			/* MC_BAT_SCALE_EN  */
+		0;			/* SENS_BOARD_ROT   */
+		0.0;		/* SENS_BOARD_X_OFF */
+		0.0;		/* SENS_BOARD_Y_OFF */
+		0.0;		/* SENS_BOARD_Z_OFF */
 };
 
 /*

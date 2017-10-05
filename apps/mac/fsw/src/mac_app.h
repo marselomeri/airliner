@@ -36,6 +36,7 @@
 
 
 #include <mixer/MultirotorMixer.h>
+#include "Vector3F.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -89,6 +90,43 @@ typedef struct
 } MAC_CurrentValueTable_t;
 
 
+typedef struct
+{
+	math::Vector3F att_p;               /**< P gain for angular error */
+	math::Vector3F rate_p;    			/**< P gain for angular rate error */
+	math::Vector3F rate_i;    			/**< I gain for angular rate error */
+	math::Vector3F rate_int_lim;    	/**< integrator state limit for rate loop */
+	math::Vector3F rate_d;    			/**< D gain for angular rate error */
+	math::Vector3F rate_ff;    			/**< Feedforward gain for desired rates */
+	float yaw_ff;						/**< yaw control feed-forward */
+
+	float tpa_breakpoint_p;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_breakpoint_i;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_breakpoint_d;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_rate_p;					/**< Throttle PID Attenuation slope */
+	float tpa_rate_i;					/**< Throttle PID Attenuation slope */
+	float tpa_rate_d;					/**< Throttle PID Attenuation slope */
+
+	float roll_rate_max;
+	float pitch_rate_max;
+	float yaw_rate_max;
+	float yaw_auto_max;
+	math::Vector3F mc_rate_max;    		/**< attitude rate limits in stabilized modes */
+	math::Vector3F auto_rate_max;    	/**< attitude rate limits in auto modes */
+	math::Vector3F acro_rate_max;    	/**< max attitude rates in acro mode */
+	float rattitude_thres;
+	MAC_VTOL_Type_t vtol_type;			/**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
+	boolean vtol_opt_recovery_enabled;
+	float vtol_wv_yaw_rate_scale;		/**< Scale value [0, 1] for yaw rate setpoint  */
+
+	boolean bat_scale_en;
+
+	int board_rotation;
+
+	float board_offset[3];
+} MAC_Params_t;
+
+
 /**
  **  \brief MAC Operational Data Structure
  */
@@ -135,6 +173,10 @@ public:
     PwmLimit_Data_t PwmLimit;
 
 
+	math::Vector3F AngularRatesSetpoint;
+	math::Vector3F AngularRatesIntegralError;
+
+
 
 	uint32 m_GyroCount;
 	int32 m_SelectedGyro;
@@ -145,7 +187,10 @@ public:
 	boolean m_Actuators0CircuitBreakerEnabled;
 
 
+	math::Vector3F		m_AngularRatesSetpoint;		/**< angular rates setpoint */
 
+
+	MAC_Params_t m_Params;
 
 
 

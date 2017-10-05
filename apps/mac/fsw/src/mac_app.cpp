@@ -360,6 +360,32 @@ int32 MAC::InitData()
     CFE_SB_InitMsg(&HkTlm,
                    MAC_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
+
+	AngularRatesSetpoint.Zero();
+	AngularRatesIntegralError.Zero();
+
+	m_Params.att_p.Zero();
+	m_Params.rate_p.Zero();
+	m_Params.rate_i.Zero();
+	m_Params.rate_int_lim.Zero();
+	m_Params.rate_d.Zero();
+	m_Params.rate_ff.Zero();
+	m_Params.yaw_ff = 0.0f;
+	m_Params.roll_rate_max = 0.0f;
+	m_Params.pitch_rate_max = 0.0f;
+	m_Params.yaw_rate_max = 0.0f;
+	m_Params.mc_rate_max.Zero();
+	m_Params.auto_rate_max.Zero();
+	m_Params.acro_rate_max.Zero();
+	m_Params.rattitude_thres = 1.0f;
+	m_Params.vtol_opt_recovery_enabled = false;
+	m_Params.vtol_wv_yaw_rate_scale = 1.0f;
+	m_Params.bat_scale_en = 0;
+	m_Params.board_rotation = 0;
+	m_Params.board_offset[0] = 0.0f;
+	m_Params.board_offset[1] = 0.0f;
+	m_Params.board_offset[2] = 0.0f;
+
     return (iStatus);
 }
 
@@ -812,8 +838,8 @@ void MAC::RunController(void)
 	 * even bother running the attitude controllers */
 	if (CVT.VControlMode.ControlRattitudeEnabled)
 	{
-		if (fabsf(CVT.ManualControlSp.Y) > ParamTblPtr->rattitude_thres ||
-		    fabsf(CVT.ManualControlSp.X) > ParamTblPtr->rattitude_thres)
+		if (fabsf(CVT.ManualControlSp.Y) > m_Params.rattitude_thres ||
+		    fabsf(CVT.ManualControlSp.X) > m_Params.rattitude_thres)
 		{
 			CVT.VControlMode.ControlAttitudeEnabled = FALSE;
 		}
@@ -1027,7 +1053,7 @@ void MAC::ControlAttitude(float dt)
 	math::Vector3F e_R = R.Transpose() * (R_z % R_sp_z);
 
 	/* calculate angle error */
-	float e_R_z_sin = e_R.length();
+	float e_R_z_sin = e_R.Length();
 	float e_R_z_cos = R_z * R_sp_z;
 
 	/* calculate weight for yaw control */
@@ -1078,30 +1104,30 @@ void MAC::ControlAttitude(float dt)
 	}
 
 	/* calculate angular rates setpoint */
-//	_rates_sp = _params.att_p.emult(e_R);
+	AngularRatesSetpoint = m_Params.att_p.EMult(e_R);
 
 	/* limit rates */
-//	for (int i = 0; i < 3; i++) {
-//		if ((_v_control_mode.flag_control_velocity_enabled || _v_control_mode.flag_control_auto_enabled) &&
-//		    !_v_control_mode.flag_control_manual_enabled) {
-//			_rates_sp(i) = math::constrain(_rates_sp(i), -_params.auto_rate_max(i), _params.auto_rate_max(i));
-//
-//		} else {
-//			_rates_sp(i) = math::constrain(_rates_sp(i), -_params.mc_rate_max(i), _params.mc_rate_max(i));
-//		}
-//	}
-//
+	for (uint32 i = 0; i < 3; i++) {
+		if ((CVT.VControlMode.ControlVelocityEnabled || CVT.VControlMode.ControlAutoEnabled) &&
+		    !CVT.VControlMode.ControlManualEnabled)
+		{
+			AngularRatesSetpoint.Constrain(i, -m_Params.auto_rate_max[i], m_Params.auto_rate_max[i]);
+		} else {
+			AngularRatesSetpoint.Constrain(i, -m_Params.mc_rate_max[i], m_Params.mc_rate_max[i]);
+		}
+	}
+
 	/* feed forward yaw setpoint rate */
-//	_rates_sp(2) += _v_att_sp.yaw_sp_move_rate * yaw_w * _params.yaw_ff;
-//
-//	/* weather-vane mode, dampen yaw rate */
-//	if ((_v_control_mode.flag_control_velocity_enabled || _v_control_mode.flag_control_auto_enabled) &&
-//	    _v_att_sp.disable_mc_yaw_control == true && !_v_control_mode.flag_control_manual_enabled) {
-//		float wv_yaw_rate_max = _params.auto_rate_max(2) * _params.vtol_wv_yaw_rate_scale;
-//		_rates_sp(2) = math::constrain(_rates_sp(2), -wv_yaw_rate_max, wv_yaw_rate_max);
-//		// prevent integrator winding up in weathervane mode
-//		_rates_int(2) = 0.0f;
-//	}
+	AngularRatesSetpoint[2] += CVT.VAttSp.YawSpMoveRate * yaw_w * m_Params.yaw_ff;
+
+	/* weather-vane mode, dampen yaw rate */
+	if ((CVT.VControlMode.ControlVelocityEnabled || CVT.VControlMode.ControlAutoEnabled) &&
+	    CVT.VAttSp.DisableMcYawControl == true && !CVT.VControlMode.ControlManualEnabled) {
+		float wv_yaw_rate_max = m_Params.auto_rate_max[2] * m_Params.vtol_wv_yaw_rate_scale;
+		AngularRatesSetpoint.Constrain(2, -wv_yaw_rate_max, wv_yaw_rate_max);
+		// prevent integrator winding up in weathervane mode
+		AngularRatesIntegralError[2] = 0.0f;
+	}
 }
 
 

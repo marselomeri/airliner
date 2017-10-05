@@ -41,6 +41,9 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+
+#include "Vector3F.hpp"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -71,37 +74,46 @@ typedef enum
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-	float att_p[3];                     /**< P gain for angular error */
-	float rate_p[3];    				/**< P gain for angular rate error */
-	float rate_i[3];    				/**< I gain for angular rate error */
-	float rate_int_lim[3];    			/**< integrator state limit for rate loop */
-	float rate_d[3];    				/**< D gain for angular rate error */
-	float rate_ff[3];    			    /**< Feedforward gain for desired rates */
-	float yaw_ff;						/**< yaw control feed-forward */
-
-	float tpa_breakpoint_p;				/**< Throttle PID Attenuation breakpoint */
-	float tpa_breakpoint_i;				/**< Throttle PID Attenuation breakpoint */
-	float tpa_breakpoint_d;				/**< Throttle PID Attenuation breakpoint */
-	float tpa_rate_p;					/**< Throttle PID Attenuation slope */
-	float tpa_rate_i;					/**< Throttle PID Attenuation slope */
-	float tpa_rate_d;					/**< Throttle PID Attenuation slope */
-
+	float roll_p;
+	float roll_rate_p;
+	float roll_rate_i;
+	float roll_rate_integ_lim;
+	float roll_rate_d;
+	float roll_rate_ff;
+	float pitch_p;
+	float pitch_rate_p;
+	float pitch_rate_i;
+	float pitch_rate_integ_lim;
+	float pitch_rate_d;
+	float pitch_rate_ff;
+	float tpa_breakpoint_p;
+	float tpa_breakpoint_i;
+	float tpa_breakpoint_d;
+	float tpa_rate_p;
+	float tpa_rate_i;
+	float tpa_rate_d;
+	float yaw_p;
+	float yaw_rate_p;
+	float yaw_rate_i;
+	float yaw_rate_integ_lim;
+	float yaw_rate_d;
+	float yaw_rate_ff;
+	float yaw_ff;
 	float roll_rate_max;
 	float pitch_rate_max;
 	float yaw_rate_max;
 	float yaw_auto_max;
-	float mc_rate_max[3];    			/**< attitude rate limits in stabilized modes */
-	float auto_rate_max[3];    			/**< attitude rate limits in auto modes */
-	float acro_rate_max[3];    			/**< max attitude rates in acro mode */
+	float acro_roll_max;
+	float acro_pitch_max;
+	float acro_yaw_max;
 	float rattitude_thres;
-	MAC_VTOL_Type_t vtol_type;			/**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
-	boolean vtol_opt_recovery_enabled;
-	float vtol_wv_yaw_rate_scale;		/**< Scale value [0, 1] for yaw rate setpoint  */
-
-	boolean bat_scale_en;
-
-	int board_rotation;
-
+	int32 vtol_type;
+	float roll_tc;
+	float pitch_tc;
+	int32 vtol_opt_recovery_enabled;
+	float vtol_wv_yaw_rate_scale;
+	int32 bat_scale_en;
+	int32 board_rotation;
 	float board_offset[3];
 } MAC_ParamTbl_t;
 

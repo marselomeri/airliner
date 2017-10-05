@@ -42,12 +42,12 @@ float Vector3F::operator [] (uint32 i) const
 };
 
 
-float Vector3F::length() const
+float Vector3F::Length() const
 {
     return sqrtf(data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
 }
 
-void Vector3F::zero()
+void Vector3F::Zero()
 {
     data[0] = 0.0f;
     data[1] = 0.0f;
@@ -126,4 +126,30 @@ Vector3F Vector3F::operator-() const
 	res[2] = -data[2];
 
     return res;
+}
+
+
+const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
+{
+	Vector3F res;
+
+	res[0] = data[0] * vecIn[0];
+	res[1] = data[1] * vecIn[1];
+	res[2] = data[2] * vecIn[2];
+
+	return res;
+}
+
+
+
+void Vector3F::Constrain(uint32 i, float min, float max)
+{
+	if(data[i] < min)
+	{
+		data[i] = min;
+	}
+	else if(data[i] > max)
+	{
+		data[i] = max;
+	}
 }
