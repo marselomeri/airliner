@@ -95,6 +95,8 @@ class Pyliner(object):
         assign = ""
         for arg in script_cmd["args"]:
             assign.append("pb_obj." + arg["name"] + " = " + arg["value"]
+            
+        exec(assign)
 
     def send_command(self, args):
         """ 
