@@ -3,17 +3,26 @@ import time
 
 airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json"})
 
-#airliner.send_command({'name':'Airliner/Steve/Noop'})
+max_pr = 0
 
 flag = True
 while True:
-    time.sleep(1)
+    airliner.send_command({'name':'Airliner/Steve/Noop'})
+    airliner.send_command({'name':'Airliner/Steve/SetMaxPRCount', 'args':[
+                                 {'name':'Payload.MaxPRCount', 'value':max_pr}]})
+    if max_pr == 15:                
+        airliner.send_command({'name':'Airliner/Steve/ClearSysLog'})
+        airliner.send_command({'name':'Airliner/Steve/ClearERLog'})
+                                 
     if flag:
-        flag = True
-        airliner.send_command({'name':'Airliner/Steve/OverwriteSysLog', 'args':[
-                             {'name':'Payload.Mode', 'value':'1'}]})
-    else:
         flag = False
         airliner.send_command({'name':'Airliner/Steve/OverwriteSysLog', 'args':[
-                             {'name':'Payload.Mode', 'value':'0'}]})
+                             {'name':'Payload.Mode', 'value':1}]})
+    else:
+        flag = True
+        airliner.send_command({'name':'Airliner/Steve/OverwriteSysLog', 'args':[
+                             {'name':'Payload.Mode', 'value':0}]})
+                             
+    max_pr += 1
+    time.sleep(2)
 

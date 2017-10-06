@@ -49,7 +49,6 @@ class Pyliner(object):
                         op = app_data["operations"][ops_names[2]]
                         ret_op = op if op else None
 
-        #print "OP: " + str(op)
         return ret_op
 
     def __get_ccsds_msg(self, op_dict):
@@ -61,7 +60,6 @@ class Pyliner(object):
             ret_msg.PriHdr.StreamId.bits.app_id = int(op_dict["airliner_mid"], 0)
         else:
             # Command
-            print op_dict["airliner_cc"]
             ret_msg = CCSDS_CmdPkt_t()
             ret_msg.clear_packet()
             ret_msg.init_packet()
@@ -97,7 +95,7 @@ class Pyliner(object):
         # Generate executable string assigning correct values to pb object
         assign = ""
         for arg in cmd["args"]:
-            assign += ("pb_obj." + arg["name"] + "=" + arg["value"] + "\n")
+            assign += ("pb_obj." + arg["name"] + "=" + str(arg["value"]) + "\n")
         exec(assign)
         
         return pb_obj
@@ -132,15 +130,7 @@ class Pyliner(object):
         header = self.__get_ccsds_msg(op)
         payload = self.create_pb_obj(cmd, op) if args_present else None
         payload_size = payload.ByteSize() if args_present else 0
-        header.set_user_data_length(payload_size)
-        
-        test = CCSDS_CmdPkt_t()
-        test.set_decoded(bytearray.fromhex("1806c00000050012"))
-        print "test"
-        test.print_base2()
-        print "org"        
-        header.print_base2()
-        print payload
+        header.set_user_data_length(payload_size)        
         serial_cmd = self.serialize(header, payload)
         
         self.send_to_airliner(serial_cmd)
