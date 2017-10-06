@@ -20,10 +20,10 @@ class Pyliner(object):
         self.ci_port = kwargs.get("ci_port", DEFAULT_CI_PORT)
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
         self.airliner_data = self.__read_json(kwargs.get("airliner_map", None))
-        self.subscribed_tlm = []
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
         self.seq_count = 0
+        self.subscribers = []
         self.event_handler = events.EventHandler(None)
 
     def __init_socket(self):
@@ -165,12 +165,20 @@ class Pyliner(object):
         """
         pass
         
-    def subscribe(self, tlm):
-        """ Receives an operation path to 
-        
+    def subscribe(self, tlm, callback):
+        """ Receives an operation path to an airliner msg with ops names of that 
+        messages attributes to subscribe to as well as a callback function.
         """
-        
-        
+        op = self.__get_airliner_op(cmd["name"])
+        if not op:
+            raise InvalidCommand("Invalid command received. Operation (%s) not defined." % cmd["name"])
+
+        self.subscribers.append({'tlmSeqNum': 0, 'params':args, 'updateFunc':updateFunc})
+
+
+
+
+
     def step_frame(self, steps = 1):
         """ Step passed number of frames """
         pass
