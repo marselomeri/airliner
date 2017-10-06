@@ -5,6 +5,7 @@ import json
 from os.path import exists,join
 import python_pb.pyliner_msgs as pyliner_msgs
 import socket
+from utils import events
 
 DEFAULT_CI_PORT = 5009
 DEFAULT_TO_PORT = 5012
@@ -23,6 +24,7 @@ class Pyliner(object):
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
         self.seq_count = 0
+        self.event_handler = events.EventHandler(None)
 
     def __init_socket(self):
         """ Creates a UDP socket object and returns it """
@@ -30,17 +32,19 @@ class Pyliner(object):
 
     def __read_json(self, file_path):
         """ Parses the required JSON input file containing Airliner mappings """
-        if exists(file_path):
+        try:
             with open(file_path, 'r') as airliner_map:
                 return json.load(airliner_map)
-        else:
-            raise IOError("Specified input file does not exist")
+        except IOError:
+            print "Specified input file (%s) does not exist" % file_path
+        except Exception as e:
+            print e
+            
             
     def __get_airliner_op(self, op_path):
         """ Receive a ops name and returns a dict to that op """
         ret_op = None
-        ops_names = op_path.split('/')
-        ops_names = ops_names[1:]
+        ops_names = op_path.split('/')[1:]
         
         for fsw, fsw_data in self.airliner_data.iteritems():
             if fsw == ops_names[0]:
@@ -78,7 +82,23 @@ class Pyliner(object):
         """ Receive the payload of a message and deserializes it """
         tlm_packet = CCSDS_TlmPkt_t()
         tlm_packet.set_decoded(msg[:12]) #TODO
+
+    def _get_op_attr(self, op_path, op_attr, op):
+        """ 
+        Gets the real operation path from airliner data for an attribute
+        """
+        ops_names = op_path.split('/')[1:]
         
+        for fsw, fsw_data in self.airliner_data.iteritems():
+            if fsw == ops_names[0]:
+                for app, app_data in fsw_data["apps"].iteritems():
+                    if app_data["app_ops_name"] == ops_names[1]:
+                        for op_name, op_data in app_data["proto_msgs"][op["airliner_msg"]]["operational_names"].iteritems():
+                            if op_name == op_attr:
+                                return op_data["field_path"]
+        
+        return None
+
 
     def create_pb_obj(self, cmd, op):
         """ Receives a cmd from the user script and initializes a pb obj of that type. """
@@ -92,7 +112,10 @@ class Pyliner(object):
         # Generate executable string assigning correct values to pb object
         assign = ""
         for arg in cmd["args"]:
-            assign += ("pb_obj." + arg["name"] + "=" + str(arg["value"]) + "\n")
+            arg_path =  self._get_op_attr(cmd["name"], arg["name"], op)
+            if not arg_path:
+                raise InvalidCommand("Invalid command received. Argument operational name (%s) not found." % arg["name"])
+            assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
         exec(assign)
         
         return pb_obj
@@ -121,7 +144,7 @@ class Pyliner(object):
         # Get command operation        
         op = self.__get_airliner_op(cmd["name"])
         if not op:
-            raise InvalidCommand("Invalid command received. Operation not defined.")
+            raise InvalidCommand("Invalid command received. Operation (%s) not defined." % cmd["name"])
 
         # Generate airliner cmd
         header = self.__get_ccsds_msg(op)
@@ -141,6 +164,12 @@ class Pyliner(object):
         """ 
         """
         pass
+        
+    def subscribe(self, tlm):
+        """ Receives an operation path to 
+        
+        """
+        
         
     def step_frame(self, steps = 1):
         """ Step passed number of frames """

@@ -127,6 +127,122 @@
 		            },
 		            "CFE_ES_HkPacket_t": {
 			            "proto_msg": "es_hk_pb",
+			            "operational_names": {
+			                "CmdCounter": {
+			                    "field_path": "Payload.CmdCounter"
+			                },
+    		                "ErrCounter": {
+			                    "field_path": "Payload.ErrCounter"
+			                },
+    		                "CFECoreChecksum": {
+			                    "field_path": "Payload.CFECoreChecksum"
+			                },
+    		                "CFEMajorVersion": {
+			                    "field_path": "Payload.CFEMajorVersion"
+			                },
+    		                "CFEMinorVersion": {
+			                    "field_path": "Payload.CFEMinorVersion"
+			                },
+    		                "CFERevision": {
+			                    "field_path": "Payload.CFERevision"
+			                },
+    		                "CFEMissionRevision": {
+			                    "field_path": "Payload.CFEMissionRevision"
+			                },
+    		                "OSALMajorVersion": {
+			                    "field_path": "Payload.OSALMajorVersion"
+			                },
+    		                "OSALMinorVersion": {
+			                    "field_path": "Payload.OSALMinorVersion"
+			                },
+    		                "OSALRevision": {
+			                    "field_path": "Payload.OSALRevision"
+			                },
+    		                "OSALMissionRevision": {
+			                    "field_path": "Payload.OSALMissionRevision"
+			                },
+    		                "SysLogBytesUsed": {
+			                    "field_path": "Payload.SysLogBytesUsed"
+			                },
+    		                "SysLogSize": {
+			                    "field_path": "Payload.SysLogSize"
+			                },
+    		                "SysLogEntries": {
+			                    "field_path": "Payload.SysLogEntries"
+			                },
+    		                "SysLogMode": {
+			                    "field_path": "Payload.SysLogMode"
+			                },
+    		                "ERLogIndex": {
+			                    "field_path": "Payload.ERLogIndex"
+			                },
+    		                "ERLogEntries": {
+			                    "field_path": "Payload.ERLogEntries"
+			                },
+    		                "RegisteredCoreApps": {
+			                    "field_path": "Payload.RegisteredCoreApps"
+			                },
+    		                "RegisteredExternalApps": {
+			                    "field_path": "Payload.RegisteredExternalApps"
+			                },
+                            "RegisteredTasks": {
+			                    "field_path": "Payload.RegisteredTasks"
+			                },
+                            "RegisteredLibs": {
+			                    "field_path": "Payload.RegisteredLibs"
+			                },
+                            "ResetType": {
+			                    "field_path": "Payload.ResetType"
+			                },
+                            "ResetSubtype": {
+			                    "field_path": "Payload.ResetSubtype"
+			                },
+                            "ProcessorResets": {
+			                    "field_path": "Payload.ProcessorResets"
+			                },
+                            "MaxProcessorResets": {
+			                    "field_path": "Payload.MaxProcessorResets"
+			                },
+                            "BootSource": {
+			                    "field_path": "Payload.BootSource"
+			                },
+                            "PerfState": {
+			                    "field_path": "Payload.PerfState"
+			                },
+                            "PerfMode": {
+			                    "field_path": "Payload.PerfMode"
+			                },
+                            "PerfTriggerCount": {
+			                    "field_path": "Payload.PerfTriggerCount"
+			                },
+                            "PerfFilterMask": {
+			                    "field_path": "Payload.PerfFilterMask"
+			                },
+                            "PerfTriggerMask": {
+			                    "field_path": "Payload.PerfTriggerMask"
+			                },
+                            "PerfDataStart": {
+			                    "field_path": "Payload.PerfDataStart"
+			                },
+                            "PerfDataEnd": {
+			                    "field_path": "Payload.PerfDataEnd"
+			                },
+                            "PerfDataCount": {
+			                    "field_path": "Payload.PerfDataCount"
+			                },
+                            "PerfDataToWrite": {
+			                    "field_path": "Payload.PerfDataToWrite"
+			                },
+                            "HeapBytesFree": {
+			                    "field_path": "Payload.HeapBytesFree"
+			                },
+                            "HeapBlocksFree": {
+			                    "field_path": "Payload.HeapBlocksFree"
+			                },
+                            "HeapMaxBlockSize": {
+			                    "field_path": "Payload.HeapMaxBlockSize"
+			                }
+			            },
 			            "fields": {
 				            "Payload": {
 					            "airliner_name": "Payload", 
@@ -597,6 +713,11 @@
 		            },
 		            "CFE_ES_OverWriteSysLogCmd_t": {
 			            "proto_msg": "es_overwrite_sys_log_pb",
+			            "operational_names": {
+			                "OverwriteMode": {
+			                    "field_path": "Payload.Mode"
+			                }
+			            },
 			            "fields": {
 				            "Payload": {
 					            "airliner_name": "Payload", 
@@ -870,6 +991,11 @@
 		            },
 		            "CFE_ES_SetMaxPRCountCmd_t": {
 			            "proto_msg": "es_set_max_pr_count_pb",
+			            "operational_names": {
+			                "MaxProcResets": {
+			                    "field_path": "Payload.MaxPRCount"
+			                }
+			            },
 			            "fields": {
 				            "Payload": {
 					            "airliner_name": "Payload", 
