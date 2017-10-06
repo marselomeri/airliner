@@ -71,3 +71,14 @@ uint8 TO_Channel_State(uint32 index)
     TO_App_Return.TO_Channel_State_CallCount++;
     return returnCode;
 }
+
+TO_ChannelType_t TO_GetChannelType(uint32 index)
+{
+	return TO_OUTPUT_TYPE_BINARY;
+}
+
+uint32 TO_ProtobufTlmEncode(CFE_SB_MsgPtr_t MsgInPtr,
+		char *Buffer, uint32 Size)
+{
+	return 0;
+}

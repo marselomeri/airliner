@@ -31,51 +31,21 @@
 *
 *****************************************************************************/
 
-#ifndef TO_APP_STUBS_H
-#define TO_APP_STUBS_H
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/************************************************************************
-** Includes
-*************************************************************************/
-#include "cfe.h"
-#include "to_custom_test_utils.h"
+#include "../../../pblib/fsw/public_inc/pb_lib.h"
 
-/************************************************************************
-** Structure Declarations
-*************************************************************************/
-typedef struct
+int PBLIB_RET_CODE = 0;
+
+PBLib_DecodeFuncPtr_t __wrap_PBLIB_GetTlmSerializationFunc(CFE_SB_MsgId_t msgId)
 {
-    int32 TO_Channel_OpenChannel_Return; 
-    uint8 TO_Channel_State_Return;
-    uint8 TO_Channel_State_Return1;
-    uint8 TO_Channel_State_CallCount;
-} TO_App_Returns_t;
+	if(PBLIB_RET_CODE == 0)
+	{
+		return 0;
+	}
 
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-extern TO_App_Returns_t TO_App_Return;
-
-/************************************************************************
-** Function Prototypes (Stubs)
-*************************************************************************/
-int32 TO_Channel_OpenChannel(uint32 index, char *ChannelName,
-        char *ConfigTableName, char *ConfigTableFileName,
-        char *DumpTableName);
-
-void  TO_Channel_LockByIndex(uint32 index);
-
-void  TO_Channel_UnlockByIndex(uint32 index);
-
-uint8 TO_Channel_State(uint32 index);
-
-
-#ifdef __cplusplus
+	return (PBLib_DecodeFuncPtr_t)0;
 }
-#endif
 
-#endif /* TO_APP_STUBS_H */
