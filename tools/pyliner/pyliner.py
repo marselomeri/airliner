@@ -40,7 +40,7 @@ class Pyliner(object):
         """ Receive a ops name and returns a dict to that op """
         ret_op = None
         ops_names = op_path.split('/')
-        #print ops_names
+        ops_names = ops_names[1:]
         
         for fsw, fsw_data in self.airliner_data.iteritems():
             if fsw == ops_names[0]:
@@ -53,21 +53,18 @@ class Pyliner(object):
 
     def __get_ccsds_msg(self, op_dict):
         """ Receive a ops name and returns a ccsds msg """
+        # If the command code is -1 this is telemetry
         if op_dict["airliner_cc"] == "-1":
-            # Telemetry
             ret_msg = CCSDS_TlmPkt_t()
             ret_msg.init_packet()
             ret_msg.PriHdr.StreamId.bits.app_id = int(op_dict["airliner_mid"], 0)
         else:
-            # Command
             ret_msg = CCSDS_CmdPkt_t()
             ret_msg.clear_packet()
             ret_msg.init_packet()
             ret_msg.PriHdr.StreamId.bits.app_id = int(op_dict["airliner_mid"], 0)
             ret_msg.SecHdr.Command.bits.code = int(op_dict["airliner_cc"])
-            #ret_msg.print_base16()
-            #ret_msg.set_checksum(0) #TODO
-
+        
         return ret_msg
 
     def serialize(self, header, payload):
@@ -129,8 +126,12 @@ class Pyliner(object):
         # Generate airliner cmd
         header = self.__get_ccsds_msg(op)
         payload = self.create_pb_obj(cmd, op) if args_present else None
+        
+        # Set header correctly
         payload_size = payload.ByteSize() if args_present else 0
-        header.set_user_data_length(payload_size)        
+        payload_checksum = payload.SerializeToString() if args_present else 0
+        header.set_user_data_length(payload_size)
+        #header.set_checksum(payload_checksum)
         serial_cmd = self.serialize(header, payload)
         
         self.send_to_airliner(serial_cmd)

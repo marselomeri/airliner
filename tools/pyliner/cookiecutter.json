@@ -3,7 +3,7 @@
         "apps": {
             "ES": {	
 	            "app_name": "CFE_ES",
-	            "app_ops_name": "Steve",
+	            "app_ops_name": "ES",
 	            "dir_name": "cfe_msg",
 	            "proto_msgs": {
 		            "CFE_ES_AppNameCmd_t": {
