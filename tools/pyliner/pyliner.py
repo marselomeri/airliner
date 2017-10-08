@@ -125,12 +125,12 @@ class Pyliner(object):
         
         Args:
             cmd(dict): A command specifiying the operation to execute and any args for it.
-                E.g.    {'name':'/Airliner/ES/Noop'} 
+                       E.g.    {'name':'/Airliner/ES/Noop'} 
                                     or
-                        {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
-                             {'name':'X', 'value':'0'},
-                             {'name':'Y', 'value':'0'},
-                             {'name':'Z', 'value':'500'}]}
+                               {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
+                                   {'name':'X', 'value':'0'},
+                                   {'name':'Y', 'value':'0'},
+                                   {'name':'Z', 'value':'500'}]}
         """
         args_present = False
         
@@ -160,7 +160,7 @@ class Pyliner(object):
         self.send_to_airliner(serial_cmd)
         self.seq_count += 1
 
-    def recv_telemetry(self, args):
+    def on_recv_telemetry(self, args):
         """ 
         """
         pass
@@ -168,16 +168,22 @@ class Pyliner(object):
     def subscribe(self, tlm, callback):
         """ Receives an operation path to an airliner msg with ops names of that 
         messages attributes to subscribe to as well as a callback function.
+
+        Args:
+            tlm(dict): Dictionary specifying the telemtry items to subscribe to, using the 
+                       telemtry item's operational names. 
+                       E.g. {'name': '/Airliner/ES/HK', 'args':[
+                                {'name':'CmdCounter'}]}
+
+            callback(function): Function to call when this telemetry is updated. If not specified
+                                defaults to on_recv_telemetry                                
         """
-        op = self.__get_airliner_op(cmd["name"])
+        op = self.__get_airliner_op(tlm["name"])
         if not op:
             raise InvalidCommand("Invalid command received. Operation (%s) not defined." % cmd["name"])
 
-        self.subscribers.append({'tlmSeqNum': 0, 'params':args, 'updateFunc':updateFunc})
-
-
-
-
+        cb = callback if callback else self.on_recv_telemetry
+        self.subscribers.append({'params':tlm['args'], 'callback':cb, 'tlmSeqNum': 0})
 
     def step_frame(self, steps = 1):
         """ Step passed number of frames """
@@ -186,5 +192,17 @@ class Pyliner(object):
     def send_to_airliner(self, msg):
         """ Publish the passed message to airliner """
         self.ci_socket.sendto(msg, (self.address, self.ci_port))
+    
+    def recv_telemetry(self):
+        """ 
+        Listen to the the socket TO is publishing to. If it receives telemetry 
+        we're subscribed to notify the correct callback.
+        """
+        pass
+
+
+
+
+
 
 
