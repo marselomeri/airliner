@@ -5,6 +5,6 @@ message test_msg {
 }
 
 message next_step {
-    required uint32 seconds = 1;
-    required uint32 subseconds = 2;
+    required uint32 microseconds = 1;
 }
+

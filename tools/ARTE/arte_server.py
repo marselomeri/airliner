@@ -34,6 +34,7 @@ import socket
 import sys
 import threading
 import msg_pb2
+import time
 from struct import unpack
 from struct import pack
 from arte_ccsds import *
@@ -52,24 +53,47 @@ def message_handler(message, threadname):
 
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+    
+    def recv_message(self):
+        telemetry_packet = CCSDS_TlmPkt_t()
+        header = self.request.recv(telemetry_packet.get_packet_size())
+        telemetry_packet.set_decoded(header)
+        telemetry_packet.print_base10()
+        time.sleep(2)
+        print ("received message timestamp :", telemetry_packet.get_time())
+        
+    def send_response(self):
+        test_response = msg_pb2.next_step()
+        test_response.microseconds = 25
+        encoded = test_response.SerializeToString(test_response)
+        # prepare header
+        command_header = CCSDS_CmdPkt_t()
+        command_header.init_packet()
+        command_header.set_user_data_length(len(encoded))
+        print("server sent bytes = ", bytes(encoded))
+        # send encoded header
+        self.request.sendall(command_header.get_encoded())
+        # send payload
+        self.request.sendall(encoded)
+        print("server sent response")
+        # reset the client connect count
+        ArteServerGlobals.client_count = ArteServerGlobals.starting_client_count
+        # increment the time source
+        #time_source.add_step_time()
 
     def handle(self):
-        time_source = ArteTimeSource(0, .25)
-        time_source.set_start_time()
+        #time_source = ArteTimeSource(0, .25)
+        #time_source.set_start_time()
         cur_thread = threading.current_thread()
-        telemetry_packet = CCSDS_TlmPkt_t()
-
+        
         while ArteServerGlobals.shutdown_flag:
-        # receive message
-            header = self.request.recv(telemetry_packet.get_packet_size())
-            telemetry_packet.set_decoded(header)
-            message_length = telemetry_packet.get_user_data_length() 
-            print ("received message timestamp :", telemetry_packet.get_time())
-            
-            message = self.request.recv(message_length)
-            pb_message = msg_pb2.test_msg()
-            pb_message.ParseFromString(message)
-            message_handler(pb_message.content, cur_thread.name)
+            # receive message
+            self.recv_message()
+            #message_length = telemetry_packet.get_user_data_length() 
+            #message = self.request.recv(message_length)
+            #pb_message = msg_pb2.test_msg()
+            #pb_message.ParseFromString(message)
+            #message_handler(pb_message.content, cur_thread.name)
             
             # decrement the client count
             ArteServerGlobals.client_count -= 1
@@ -92,24 +116,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 with ArteServerGlobals.condition:
                     print("client connected, waiting for all clients to connect")
                     ArteServerGlobals.condition.wait()
-    
-            # send response
-            test_response = msg_pb2.next_step()
-            test_response.seconds, test_response.subseconds = time_source.get_time()
-            encoded = test_response.SerializeToString(test_response)
-            # prepare header
-            command_header = CCSDS_CmdPkt_t()
-            command_header.init_packet()
-            command_header.set_user_data_length(len(encoded))
-            # send encoded header
-            self.request.sendall(command_header.get_encoded())
-            # send payload
-            self.request.sendall(encoded)
-            print("server sent response")
-            # reset the client connect count
-            ArteServerGlobals.client_count = ArteServerGlobals.starting_client_count
-            # increment the time source
-            time_source.add_step_time()
+            # Send "next step" to all clients
+            self.send_response()
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):

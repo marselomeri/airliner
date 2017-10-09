@@ -395,7 +395,8 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         self.PriHdr.StreamId.bits.type = 1
         #self.PriHdr.StreamId.bits.version = 0
         #self.PriHdr.StreamId.bits.count = 0
-        #self.PriHdr.StreamId.bits.seq_flags = 0
+        # segmentation flags:  3 = complete packet 
+        self.PriHdr.StreamId.bits.seq_flags = 3
         #self.PriHdr.Length = 0
         #self.SecHdr.Command.bits.checksum = 0
         #self.SecHdr.Command.bits.code = 0
@@ -557,7 +558,8 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         self.PriHdr.StreamId.bits.type = 0
         #self.PriHdr.StreamId.bits.version = 0
         #self.PriHdr.StreamId.bits.count = 0
-        #self.PriHdr.StreamId.bits.seq_flags = 0
+        # segmentation flags:  3 = complete packet 
+        self.PriHdr.StreamId.bits.seq_flags = 3
         #self.PriHdr.Length = 0
         #self.SecHdr.Time.Seconds = 0
         #self.SecHdr.Time.Subseconds = 0

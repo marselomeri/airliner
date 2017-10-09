@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='msg.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\tmsg.proto\"\x1b\n\x08test_msg\x12\x0f\n\x07\x63ontent\x18\x01 \x02(\t\"0\n\tnext_step\x12\x0f\n\x07seconds\x18\x01 \x02(\r\x12\x12\n\nsubseconds\x18\x02 \x02(\r')
+  serialized_pb=_b('\n\tmsg.proto\"\x1b\n\x08test_msg\x12\x0f\n\x07\x63ontent\x18\x01 \x02(\t\"!\n\tnext_step\x12\x14\n\x0cmicroseconds\x18\x01 \x02(\r')
 )
 
 
@@ -38,7 +38,7 @@ _TEST_MSG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -64,19 +64,12 @@ _NEXT_STEP = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='seconds', full_name='next_step.seconds', index=0,
+      name='microseconds', full_name='next_step.microseconds', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='subseconds', full_name='next_step.subseconds', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -90,7 +83,7 @@ _NEXT_STEP = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=42,
-  serialized_end=90,
+  serialized_end=75,
 )
 
 DESCRIPTOR.message_types_by_name['test_msg'] = _TEST_MSG
