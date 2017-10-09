@@ -51,8 +51,8 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     def decode_message(self, telemetry_packet):
         if telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
             print("received shutdown message")
-            ArteServerGlobals.shutdown_flag = False
-            # TODO shutdown clients now instead of waiting for timeout.
+            #ArteServerGlobals.shutdown_flag = False
+            ArteServerGlobals.shutdown_notification.set()
     
     def recv_message(self):
         telemetry_packet = CCSDS_TlmPkt_t()
@@ -77,8 +77,6 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         print("server sent response")
         # reset the client connect count
         ArteServerGlobals.client_count = ArteServerGlobals.starting_client_count
-        # increment the time source
-        #time_source.add_step_time()
 
     def handle(self):
         #time_source = ArteTimeSource(0, .25)
@@ -164,4 +162,4 @@ class ArteServerGlobals:
     condition = threading.Condition()
     shutdown_flag = True
     shutdown_event = threading.Event()
-    
+    shutdown_notification = threading.Event()

@@ -64,7 +64,4 @@ class ArteTestFixture(object):
 
     def test_run(self):
         self.test_setup()
-        # for now sleep duration timeout
-        time.sleep(self.timeout)
-        print ("configured timeout reached")
 

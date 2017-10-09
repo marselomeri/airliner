@@ -33,6 +33,7 @@
 from arte_config import ArteSplash
 from arte_launcher import ArteSubprocess
 from arte_server import ArteServer
+from arte_server import ArteServerGlobals
 from arte_test import ArteTestFixture
 
 import time
@@ -77,9 +78,17 @@ def main():
     
     # startup the clients
     my_test_fixture.test_run()
+     
+    # wait on a shutdown event or timeout
+    if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
+        # A shutdown request was received from a client.
+        server.server_shutdown()
+        my_test_fixture.test_teardown()
+        sys.exit(0)
     
-    # The test fixture returned so a timeout was reached.
+    # The event wait returned false so a timeout was reached.
     # Shutdown the server.
+    print ("configured timeout reached")
     server.server_shutdown()
     
     # Terminate clients.
