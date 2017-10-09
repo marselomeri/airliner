@@ -45,32 +45,31 @@ try:
 except Exception:
     print ("python3 socketserver not found. Must be python2.")
 
-def message_handler(message, threadname):
-    print(message + " " + threadname)
-    if message == "Shutdown":
-        print("received shutdown message")
-        ArteServerGlobals.shutdown_flag = False
-
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+    
+    def decode_message(self, telemetry_packet):
+        if telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
+            print("received shutdown message")
+            ArteServerGlobals.shutdown_flag = False
+            # TODO shutdown clients now instead of waiting for timeout.
     
     def recv_message(self):
         telemetry_packet = CCSDS_TlmPkt_t()
         header = self.request.recv(telemetry_packet.get_packet_size())
         telemetry_packet.set_decoded(header)
-        telemetry_packet.print_base10()
-        time.sleep(2)
         print ("received message timestamp :", telemetry_packet.get_time())
+        self.decode_message(telemetry_packet)
         
     def send_response(self):
         test_response = msg_pb2.next_step()
+        # TODO Remove hardcoded test value
         test_response.microseconds = 25
         encoded = test_response.SerializeToString(test_response)
         # prepare header
         command_header = CCSDS_CmdPkt_t()
         command_header.init_packet()
         command_header.set_user_data_length(len(encoded))
-        print("server sent bytes = ", bytes(encoded))
         # send encoded header
         self.request.sendall(command_header.get_encoded())
         # send payload
@@ -118,6 +117,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     ArteServerGlobals.condition.wait()
             # Send "next step" to all clients
             self.send_response()
+        print("thread done = ", cur_thread.name)
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -150,6 +150,14 @@ class ArteServer(object):
         self.server_thread.daemon = True
         self.server_thread.start()
         print ("ARTE server loop running in thread: ", self.server_thread.name)
+    
+    def server_shutdown(self):
+        ArteServerGlobals.shutdown_flag = False
+        """ TODO this sleep is here to allow server threads to finish one
+        last loop before shutting down clients. Replace this with a 
+        condition wait etc.  
+        """
+        time.sleep(1)
 
 
 class ArteServerGlobals:

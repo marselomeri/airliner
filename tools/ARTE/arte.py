@@ -75,8 +75,16 @@ def main():
     
     server = ArteServer("localhost", 9999, my_test_fixture.client_count)
     
+    # startup the clients
     my_test_fixture.test_run()
-
+    
+    # The test fixture returned so a timeout was reached.
+    # Shutdown the server.
+    server.server_shutdown()
+    
+    # Terminate clients.
+    my_test_fixture.test_teardown()
+    sys.exit(0)
 
 if __name__ == '__main__':
     main()
