@@ -118,6 +118,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             # Send "next step" to all clients
             self.send_response()
         print("thread done = ", cur_thread.name)
+        ArteServerGlobals.shutdown_event.set()
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -153,11 +154,7 @@ class ArteServer(object):
     
     def server_shutdown(self):
         ArteServerGlobals.shutdown_flag = False
-        """ TODO this sleep is here to allow server threads to finish one
-        last loop before shutting down clients. Replace this with a 
-        condition wait etc.  
-        """
-        time.sleep(1)
+        ArteServerGlobals.shutdown_event.wait()
 
 
 class ArteServerGlobals:
@@ -166,4 +163,5 @@ class ArteServerGlobals:
     starting_client_count = 0
     condition = threading.Condition()
     shutdown_flag = True
+    shutdown_event = threading.Event()
     
