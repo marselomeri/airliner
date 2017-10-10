@@ -6,7 +6,7 @@
   "clients": [
     {
       "name": "Airliner",
-      "command": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/core-bin",
+      "command": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/core-bin -M TEST",
       "output": "test_script2.txt"
     },
     {

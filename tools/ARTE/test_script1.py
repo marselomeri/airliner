@@ -25,7 +25,7 @@ def client(ip, port, header):
         pb_message.ParseFromString(response)
         print ("client received message: ", pb_message.microseconds)
         
-        time.sleep(1)
+        time.sleep(5)
         
         shutdown_msg = CCSDS_TlmPkt_t()
         shutdown_msg.init_packet()

@@ -57,12 +57,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     def recv_message(self, cur_thread):
         telemetry_packet = CCSDS_TlmPkt_t()
         header = self.request.recv(telemetry_packet.get_packet_size())
-        # if we received the correct number of bytes attempt to decode
-        # TODO 
-        if len(header) == telemetry_packet.get_packet_size():
-            telemetry_packet.set_decoded(header)
-            print ("received message timestamp :", telemetry_packet.get_time(), cur_thread)
-            self.decode_message(telemetry_packet, cur_thread)
+        telemetry_packet.set_decoded(header)
+        print ("received message timestamp :", telemetry_packet.get_time(), cur_thread)
+        self.decode_message(telemetry_packet, cur_thread)
         
     def send_response(self, cur_thread):
         test_response = msg_pb2.next_step()
