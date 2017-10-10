@@ -38,7 +38,7 @@ float Vector3F::operator [] (uint32 i) const
 		return data[i];
 	}
 
-	return nan;
+	return FP_NAN;
 };
 
 

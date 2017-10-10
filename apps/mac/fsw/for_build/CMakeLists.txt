@@ -78,3 +78,20 @@ add_airliner_app_def(mac
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
 #)
+
+
+add_airliner_app_unit_test(MAC-V3F-UT
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+)
