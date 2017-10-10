@@ -199,10 +199,8 @@ class Pyliner(object):
         header.set_user_data_length(payload_size)
         payload_checksum = payload.SerializeToString() if args_present else 0
         header.SecHdr.Command.bits.checksum = header.compute_checksum(payload_checksum) if args_present else 0
-        #header.print_base16()
         
-        serial_cmd = self.serialize(header, payload)
-        
+        serial_cmd = self.serialize(header, payload)      
         self.send_to_airliner(serial_cmd)
 
     def __get_pb_value(self, pb_msg, op_path, op_attr):
@@ -250,7 +248,7 @@ class Pyliner(object):
                 if subscribed_tlm['callback']:
                     # Get pb msg for this msg
                     pb_msg = self.__get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
-                    
+
                     # Generate telemtry dictionary for callback
                     cb_dict = {}
                     cb_dict['name'] = subscribed_tlm['op_path']
@@ -312,11 +310,5 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
         
     def handle(self):
         self.callback(self.request)
-
-
-
-
-
-
 
 
