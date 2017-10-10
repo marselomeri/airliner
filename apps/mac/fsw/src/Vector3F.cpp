@@ -129,7 +129,7 @@ Vector3F Vector3F::operator-() const
 }
 
 
-const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
+Vector3F Vector3F::EMult(const Vector3F &vecIn)
 {
 	Vector3F res;
 

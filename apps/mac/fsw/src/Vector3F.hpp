@@ -28,7 +28,7 @@ public:
 	Vector3F operator/(const float scalar);
 	float operator*(const Vector3F &vecIn);
 	Vector3F operator-() const;
-	const Vector3F EMult(const Vector3F &vecIn) const;
+	Vector3F EMult(const Vector3F &vecIn);
 	void Constrain(uint32 i, float min, float max);
 
 protected:

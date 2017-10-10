@@ -75,11 +75,9 @@ extern "C" {
 typedef struct
 {
 	PX4_ActuatorArmedMsg_t				Armed;			  /**< actuator arming status */
-	PX4_ActuatorControlsMsg_t			Actuators;		  /**< actuator controls */
 	PX4_BatteryStatusMsg_t				BatteryStatus;	  /**< battery status */
 	PX4_ControlStateMsg_t				ControlState;
 	PX4_ManualControlSetpointMsg_t		ManualControlSp;  /**< manual control setpoint */
-	PX4_McAttCtrlStatusMsg_t 			ControllerStatus; /**< controller status */
 	PX4_MultirotorMotorLimitsMsg_t		MotorLimits;	  /**< motor limits */
 	PX4_SensorCorrectionMsg_t			SensorCorrection; /**< sensor thermal corrections */
 	PX4_SensorGyroMsg_t					SensorGyro;		  /**< gyro data before thermal correctons and ekf bias estimates are applied */
@@ -162,7 +160,7 @@ public:
     MAC_ParamTbl_t* ParamTblPtr;
 
     /** \brief Output Data published at the end of cycle */
-    PX4_ActuatorOutputsMsg_t ActuatorOutputs;
+    PX4_ActuatorControlsMsg_t m_ActuatorControls;
 
     /** \brief Housekeeping Telemetry for downlink */
     MAC_HkTlm_t HkTlm;
@@ -172,22 +170,22 @@ public:
     //MIXER_Data_t  MixerData;
     PwmLimit_Data_t PwmLimit;
 
+    math::Vector3F m_AngularRatesPrevious;
+    math::Vector3F m_AngularRatesSetpointPrevious;
+	math::Vector3F m_AngularRatesSetpoint;
+	math::Vector3F m_AngularRatesIntegralError;
+	math::Vector3F m_AttControl;
 
-	math::Vector3F AngularRatesSetpoint;
-	math::Vector3F AngularRatesIntegralError;
 
 
 
 	uint32 m_GyroCount;
 	int32 m_SelectedGyro;
 
-	PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
+	//PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
 	PX4_ActuatorControlsMsg_t       m_ActuatorControls0;
 
 	boolean m_Actuators0CircuitBreakerEnabled;
-
-
-	math::Vector3F		m_AngularRatesSetpoint;		/**< angular rates setpoint */
 
 
 	MAC_Params_t m_Params;
@@ -367,7 +365,7 @@ public:
      **       None
      **
      *************************************************************************/
-    void SendActuatorOutputs(void);
+    void SendActuatorControls(void);
 
     /************************************************************************/
     /** \brief Verify Command Length
@@ -449,6 +447,7 @@ public:
 
 private:
     void RunController(void);
+    void UpdateParams(void);
 
 	/**
 	 * Attitude controller.
@@ -460,8 +459,10 @@ private:
 	 */
 	void ControlAttitudeRates(float dt);
 
+	math::Vector3F PidAttenuations(float tpa_breakpoint, float tpa_rate);
+
 private:
-	float ThrustSp;		/**< thrust setpoint */
+	float m_ThrustSp;		/**< thrust setpoint */
 
 };
 

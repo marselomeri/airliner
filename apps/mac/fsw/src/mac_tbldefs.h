@@ -42,7 +42,7 @@
 ** Includes
 *************************************************************************/
 
-#include "Vector3F.hpp"
+//#include "Vector3F.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -107,7 +107,7 @@ typedef struct
 	float acro_pitch_max;
 	float acro_yaw_max;
 	float rattitude_thres;
-	int32 vtol_type;
+	MAC_VTOL_Type_t vtol_type;
 	float roll_tc;
 	float pitch_tc;
 	int32 vtol_opt_recovery_enabled;

@@ -3,6 +3,43 @@
 
 using namespace math;
 
+
+const Matrix3F3::RotLookup_t Matrix3F3::RotLookup[] = {
+	{  0,   0,   0 },
+	{  0,   0,  45 },
+	{  0,   0,  90 },
+	{  0,   0, 135 },
+	{  0,   0, 180 },
+	{  0,   0, 225 },
+	{  0,   0, 270 },
+	{  0,   0, 315 },
+	{180,   0,   0 },
+	{180,   0,  45 },
+	{180,   0,  90 },
+	{180,   0, 135 },
+	{  0, 180,   0 },
+	{180,   0, 225 },
+	{180,   0, 270 },
+	{180,   0, 315 },
+	{ 90,   0,   0 },
+	{ 90,   0,  45 },
+	{ 90,   0,  90 },
+	{ 90,   0, 135 },
+	{270,   0,   0 },
+	{270,   0,  45 },
+	{270,   0,  90 },
+	{270,   0, 135 },
+	{  0,  90,   0 },
+	{  0, 270,   0 },
+	{270,   0, 270 },
+	{180, 270,   0 },
+	{  0,  90, 180 },
+	{ 90,  90,   0 },
+	{ 90,  68, 293 },
+	{270,  90,   0 },
+	{  0,   9, 180 },
+};
+
 Matrix3F3::Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2) :
 	data{m0, m1, m2}
 {
@@ -148,4 +185,36 @@ Matrix3F3 Matrix3F3::operator+(const Matrix3F3 &matIn) const
     matOut[2][2] = data[2][2] + matIn[2][2];
 
     return matOut;
+}
+
+
+void Matrix3F3::RotationMatrix(Matrix3F3::Rotation_t boardRotation)
+{
+	float roll  = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].roll;
+	float pitch = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].pitch;
+	float yaw   = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].yaw;
+
+	this->FromEuler(roll, pitch, yaw);
+}
+
+
+
+void Matrix3F3::FromEuler(float roll, float pitch, float yaw)
+{
+	float cp = cosf(pitch);
+	float sp = sinf(pitch);
+	float sr = sinf(roll);
+	float cr = cosf(roll);
+	float sy = sinf(yaw);
+	float cy = cosf(yaw);
+
+	data[0][0] = cp * cy;
+	data[0][1] = (sr * sp * cy) - (cr * sy);
+	data[0][2] = (cr * sp * cy) + (sr * sy);
+	data[1][0] = cp * sy;
+	data[1][1] = (sr * sp * sy) + (cr * cy);
+	data[1][2] = (cr * sp * sy) - (sr * cy);
+	data[2][0] = -sp;
+	data[2][1] = sr * cp;
+	data[2][2] = cr * cp;
 }

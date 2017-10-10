@@ -124,10 +124,10 @@
 PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 {
 		{"actuator_armed", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorArmed_Dec, PX4_ACTUATOR_ARMED_MID, px4_actuator_armed_pb_size, 1, 0, 0},
-		{"actuator_controls_0", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
-        {"actuator_controls_1", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_1_MID, px4_actuator_controls_pb_size, 1, 0, 0},
-        {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
-        {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+		{"actuator_controls_0", (PX4_ENCODE_FUNC) PX4BR_ActuatorControls_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//        {"actuator_controls_1", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_1_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//        {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//        {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //		{"actuator_direct", (PX4_ENCODE_FUNC) PX4BR_ActuatorDirect_Enc, (PX4_DECODE_FUNC) PX4BR_ActuatorDirect_Dec, PX4_ACTUATOR_DIRECT_MID, px4_actuator_direct_pb_size, 1, 0, 0},
 //		{"actuator_outputs", (PX4_ENCODE_FUNC) PX4BR_ActuatorOutputs_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_OUTPUTS_MID, px4_actuator_outputs_pb_size, 1, 0, 0},
 //		{"adc_report", (PX4_ENCODE_FUNC) PX4BR_AdcReport_Enc, (PX4_DECODE_FUNC) PX4BR_AdcReport_Dec, PX4_ADC_REPORT_MID, px4_adc_report_pb_size, 1, 0, 0},
@@ -167,7 +167,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"mc_virtual_rates_setpoint", (PX4_ENCODE_FUNC) PX4BR_McVirtualRatesSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_McVirtualRatesSetpoint_Dec, PX4_MC_VIRTUAL_RATES_SETPOINT_MID, px4_mc_virtual_rates_setpoint_pb_size, 1, 0, 0},
 //		{"mission", (PX4_ENCODE_FUNC) PX4BR_Mission_Enc, (PX4_DECODE_FUNC) PX4BR_Mission_Dec, PX4_MISSION_MID, px4_mission_pb_size, 1, 0, 0},
 //		{"mission_result", (PX4_ENCODE_FUNC) PX4BR_MissionResult_Enc, (PX4_DECODE_FUNC) PX4BR_MissionResult_Dec, PX4_MISSION_RESULT_MID, px4_mission_result_pb_size, 1, 0, 0},
-		{"multirotor_motor_limits", (PX4_ENCODE_FUNC) PX4BR_MultirotorMotorLimits_Enc, (PX4_DECODE_FUNC) PX4BR_MultirotorMotorLimits_Dec, PX4_MULTIROTOR_MOTOR_LIMITS_MID, px4_multirotor_motor_limits_pb_size, 1, 0, 0},
+		{"multirotor_motor_limits", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_MultirotorMotorLimits_Dec, PX4_MULTIROTOR_MOTOR_LIMITS_MID, px4_multirotor_motor_limits_pb_size, 1, 0, 0},
 //		{"offboard_control_mode", (PX4_ENCODE_FUNC) PX4BR_OffboardControlMode_Enc, (PX4_DECODE_FUNC) PX4BR_OffboardControlMode_Dec, PX4_OFFBOARD_CONTROL_MODE_MID, px4_offboard_control_mode_pb_size, 1, 0, 0},
 //		{"optical_flow", (PX4_ENCODE_FUNC) PX4BR_OpticalFlow_Enc, (PX4_DECODE_FUNC) PX4BR_OpticalFlow_Dec, PX4_OPTICAL_FLOW_MID, px4_optical_flow_pb_size, 1, 0, 0},
 //		{"output_pwm", (PX4_ENCODE_FUNC) PX4BR_OutputPwm_Enc, (PX4_DECODE_FUNC) PX4BR_OutputPwm_Dec, PX4_OUTPUT_PWM_MID, px4_output_pwm_pb_size, 1, 0, 0},

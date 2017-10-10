@@ -465,6 +465,7 @@ uint32 PX4BR_BatteryStatus_Enc(const PX4_BatteryStatusMsg_t *inObject, char *inO
 	pbMsg.current_filtered_a = inObject->CurrentFiltered;
 	pbMsg.discharged_mah = inObject->Discharged;
 	pbMsg.remaining = inObject->Remaining;
+	pbMsg.scale = inObject->Scale;
 	pbMsg.cell_count = inObject->CellCount;
 	pbMsg.connected = inObject->Connected;
 	pbMsg.warning = inObject->Warning;
@@ -508,6 +509,7 @@ uint32 PX4BR_BatteryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_BatteryS
 	inOutObject->CurrentFiltered = pbMsg.current_filtered_a;
 	inOutObject->Discharged = pbMsg.discharged_mah;
 	inOutObject->Remaining = pbMsg.remaining;
+	inOutObject->Scale = pbMsg.scale;
 	inOutObject->CellCount = pbMsg.cell_count;
 	inOutObject->Connected = pbMsg.connected;
 	inOutObject->Warning = pbMsg.warning;
@@ -598,11 +600,19 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 	pbMsg.q[1] = inObject->Q[1];
 	pbMsg.q[2] = inObject->Q[2];
 	pbMsg.q[3] = inObject->Q[3];
+	pbMsg.delta_q_reset[0] = inObject->DeltaQReset[0];
+	pbMsg.delta_q_reset[1] = inObject->DeltaQReset[1];
+	pbMsg.delta_q_reset[2] = inObject->DeltaQReset[2];
+	pbMsg.delta_q_reset[3] = inObject->DeltaQReset[3];
 	pbMsg.roll_rate = inObject->RollRate;
 	pbMsg.pitch_rate = inObject->PitchRate;
 	pbMsg.yaw_rate = inObject->YawRate;
 	pbMsg.horz_acc_mag = inObject->HorzAccMag;
+	pbMsg.roll_rate_bias = inObject->RollRateBias;
+	pbMsg.pitch_rate_bias = inObject->PitchRateBias;
+	pbMsg.yaw_rate_bias = inObject->YawRateBias;
 	pbMsg.airspeed_valid = inObject->AirspeedValid;
+	pbMsg.quat_reset_counter = inObject->QuatResetCounter;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -656,11 +666,19 @@ uint32 PX4BR_ControlState_Dec(const char *inBuffer, uint32 inSize, PX4_ControlSt
 	inOutObject->Q[1] = pbMsg.q[1];
 	inOutObject->Q[2] = pbMsg.q[2];
 	inOutObject->Q[3] = pbMsg.q[3];
+	inOutObject->DeltaQReset[0] = pbMsg.delta_q_reset[0];
+	inOutObject->DeltaQReset[1] = pbMsg.delta_q_reset[1];
+	inOutObject->DeltaQReset[2] = pbMsg.delta_q_reset[2];
+	inOutObject->DeltaQReset[3] = pbMsg.delta_q_reset[3];
 	inOutObject->RollRate = pbMsg.roll_rate;
 	inOutObject->PitchRate = pbMsg.pitch_rate;
 	inOutObject->YawRate = pbMsg.yaw_rate;
 	inOutObject->HorzAccMag = pbMsg.horz_acc_mag;
+	inOutObject->RollRateBias = pbMsg.roll_rate_bias;
+	inOutObject->PitchRateBias = pbMsg.pitch_rate_bias;
+	inOutObject->YawRateBias = pbMsg.yaw_rate_bias;
 	inOutObject->AirspeedValid = pbMsg.airspeed_valid;
+	inOutObject->QuatResetCounter = pbMsg.quat_reset_counter;
 
 	return sizeof(PX4_ControlStateMsg_t);
 }
@@ -2151,7 +2169,7 @@ uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inO
 	px4_multirotor_motor_limits_pb pbMsg;
 
 	//pbMsg.timestamp = inObject->timestamp;
-	pbMsg.saturation_status = inObject->SaturationStatus;
+	pbMsg.saturation_status = inObject->SaturationStatus.Value;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -2185,7 +2203,7 @@ uint32 PX4BR_MultirotorMotorLimits_Dec(const char *inBuffer, uint32 inSize, PX4_
 	}
 
 	//inOutObject->timestamp = pbMsg.timestamp;
-	inOutObject->SaturationStatus = pbMsg.saturation_status;
+	inOutObject->SaturationStatus.Value = pbMsg.saturation_status;
 
 	return sizeof(PX4_MultirotorMotorLimitsMsg_t);
 }
