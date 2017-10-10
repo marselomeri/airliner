@@ -1,14 +1,20 @@
 import pyliner
 import time
 
+def cb(data):
+    #print data
+    print "CmdCounter: " + str(data['params']['CmdCounter']['value'])
+    print "SysLogMode: " + str(data['params']['SysLogMode']['value'])
+    print "MaxProcessorResets: " + str(data['params']['MaxProcessorResets']['value'])
+    print ""
+
 airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json"})
 
 max_pr = 0
 flag = True
 
-#airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[
-#                         {'name':'CmdCounter'}]})
-
+airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[
+                         {'name':'CmdCounter'}, {'name':'SysLogMode'}, {'name':'MaxProcessorResets'}]}, cb)
 
 while True:
     airliner.send_command({'name':'/Airliner/ES/Noop'})
@@ -28,5 +34,5 @@ while True:
                              {'name':'OverwriteMode', 'value':0}]})
                              
     max_pr += 1
-    time.sleep(2)
+    time.sleep(1)
 

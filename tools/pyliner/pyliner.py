@@ -5,6 +5,8 @@ import json
 from os.path import exists,join
 import python_pb.pyliner_msgs as pyliner_msgs
 import socket
+import SocketServer
+import threading
 from utils import events
 
 DEFAULT_CI_PORT = 5009
@@ -25,10 +27,19 @@ class Pyliner(object):
         self.seq_count = 0
         self.subscribers = []
         self.event_handler = events.EventHandler(None)
+        self.tlm_listener = SocketServer.UDPServer((self.address, DEFAULT_TO_PORT), self.__server_factory(self.__on_recv_telemetry))
+        self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
+        self.recv_telemetry()
 
     def __init_socket(self):
         """ Creates a UDP socket object and returns it """
         return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        
+    def __server_factory(self, callback):
+        """ Creates our server object and sets the callback """
+        def create_handler(*args, **kwargs):
+            return ThreadedUDPRequestHandler(callback, *args, **kwargs)
+        return create_handler
 
     def __read_json(self, file_path):
         """ Parses the required JSON input file containing Airliner mappings """
@@ -83,12 +94,12 @@ class Pyliner(object):
         tlm_packet = CCSDS_TlmPkt_t()
         tlm_packet.set_decoded(msg[:12]) #TODO
 
-    def _get_op_attr(self, op_path, op_attr, op):
+    def _get_op_attr(self, op_path, op_attr):
         """ 
         Gets the real operation path from airliner data for an attribute
         """
+        op = self.__get_airliner_op(op_path)
         ops_names = op_path.split('/')[1:]
-        
         for fsw, fsw_data in self.airliner_data.iteritems():
             if fsw == ops_names[0]:
                 for app, app_data in fsw_data["apps"].iteritems():
@@ -96,23 +107,26 @@ class Pyliner(object):
                         for op_name, op_data in app_data["proto_msgs"][op["airliner_msg"]]["operational_names"].iteritems():
                             if op_name == op_attr:
                                 return op_data["field_path"]
-        
+  
         return None
 
+    def __proto_obj_factory(self, msg):
+        """ Returns a protobuf object for the type of airliner msg passed """
+        return pyliner_msgs.proto_msg_map[msg]()
 
-    def create_pb_obj(self, cmd, op):
+    def get_pb_encode_obj(self, cmd, op):
         """ Receives a cmd from the user script and initializes a pb obj of that type. """
         # Check if no args cmd
         if len(op["airliner_msg"]) == 0:
             return None
         
         # Call the correct protobuf constructor for this command
-        pb_obj = pyliner_msgs.proto_msg_map[op["airliner_msg"]]()
+        pb_obj = self.__proto_obj_factory(op["airliner_msg"])
         
         # Generate executable string assigning correct values to pb object
         assign = ""
         for arg in cmd["args"]:
-            arg_path =  self._get_op_attr(cmd["name"], arg["name"], op)
+            arg_path =  self._get_op_attr(cmd["name"], arg["name"])
             if not arg_path:
                 raise InvalidCommand("Invalid command received. Argument operational name (%s) not found." % arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
@@ -148,7 +162,7 @@ class Pyliner(object):
 
         # Generate airliner cmd
         header = self.__get_ccsds_msg(op)
-        payload = self.create_pb_obj(cmd, op) if args_present else None
+        payload = self.get_pb_encode_obj(cmd, op) if args_present else None
         
         # Set header correctly
         payload_size = payload.ByteSize() if args_present else 0
@@ -160,12 +174,63 @@ class Pyliner(object):
         self.send_to_airliner(serial_cmd)
         self.seq_count += 1
 
-    def on_recv_telemetry(self, args):
-        """ 
-        """
-        pass
+    def __get_pb_decode_obj(self, raw_tlm, op):
+        """  """
+        op = self.__get_airliner_op(op)
+        if not op:
+            return None
         
-    def subscribe(self, tlm, callback):
+        # Check if no args cmd
+        if len(op["airliner_msg"]) == 0:
+            return None
+        
+        # Call the correct protobuf constructor for this command
+        pb_msg = self.__proto_obj_factory(op["airliner_msg"])
+        pb_msg.ParseFromString(raw_tlm)
+        
+        return pb_msg
+        
+
+    def __get_pb_value(self, pb_msg, op_path, op_name):
+        """ Takes a bytearray and op name, and returns the decoded value of that parameter """
+        value = None
+        arg_path =  self._get_op_attr(op_path, op_name)
+        if not arg_path:
+            return None
+        assign_string = "value =  pb_msg." + arg_path
+        exec(assign_string)
+        return value
+
+    def __on_recv_telemetry(self, tlm):
+        """ Callback for TO socket listener """
+        # TODO: Check if needed
+        hdr = tlm[0].split()[0][:12]
+        if len(hdr) < 12:
+            print "header length: " + str(len(hdr))
+            print self.request[0].split()
+        
+        # Get python CCSDS object    
+        header = bytearray(hdr)
+        tlm_pkt = CCSDS_TlmPkt_t()
+        tlm_pkt.set_decoded(header)
+
+        # Iterate over subscribed telemetry to check if we care
+        for subscribed_tlm in self.subscribers:
+            if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):
+                if subscribed_tlm['callback']:
+                    pb_msg = self.__get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
+                    cb_dict = {}
+                    cb_dict['name'] = subscribed_tlm['op_path']
+                    cb_dict['params'] = {}
+                    for op in [op['name'] for op in subscribed_tlm['params']]:
+                        cb_dict['params'][op] = {}
+                        cb_dict['params'][op]['value'] = self.__get_pb_value(pb_msg, cb_dict['name'], op)
+                    
+                    subscribed_tlm['callback'](cb_dict)
+            
+        #tlm_pkt.print_base16()
+        
+    def subscribe(self, tlm, callback=None):
         """ Receives an operation path to an airliner msg with ops names of that 
         messages attributes to subscribe to as well as a callback function.
 
@@ -181,9 +246,8 @@ class Pyliner(object):
         op = self.__get_airliner_op(tlm["name"])
         if not op:
             raise InvalidCommand("Invalid command received. Operation (%s) not defined." % cmd["name"])
-
-        cb = callback if callback else self.on_recv_telemetry
-        self.subscribers.append({'params':tlm['args'], 'callback':cb, 'tlmSeqNum': 0})
+            
+        self.subscribers.append({'op_path': tlm["name"], 'airliner_mid': op['airliner_mid'], 'params':tlm['args'], 'callback':callback, 'tlmSeqNum': 0})
 
     def step_frame(self, steps = 1):
         """ Step passed number of frames """
@@ -198,7 +262,19 @@ class Pyliner(object):
         Listen to the the socket TO is publishing to. If it receives telemetry 
         we're subscribed to notify the correct callback.
         """
-        pass
+        self.listener_thread.daemon = True
+        self.listener_thread.start()
+
+
+class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
+
+    def __init__(self, callback, *args, **keys):
+        self.callback = callback
+        SocketServer.BaseRequestHandler.__init__(self, *args, **keys)
+        
+    def handle(self):
+        self.callback(self.request)
+
 
 
 
