@@ -76,6 +76,8 @@ def main():
     
     server = ArteServer("localhost", 9999, my_test_fixture.client_count)
     
+    print("client count = ", my_test_fixture.client_count)
+    
     # startup the clients
     my_test_fixture.test_run()
      

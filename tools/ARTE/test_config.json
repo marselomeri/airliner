@@ -8,6 +8,11 @@
       "name": "Airliner",
       "command": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/core-bin",
       "output": "test_script2.txt"
+    },
+    {
+      "name": "Pyliner",
+      "command": "python3 test_script1.py",
+      "output": "test_script1.txt"
     }
   ]
 }

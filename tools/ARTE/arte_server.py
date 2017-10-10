@@ -48,20 +48,23 @@ except Exception:
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     
-    def decode_message(self, telemetry_packet):
+    def decode_message(self, telemetry_packet, cur_thread):
         if telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
-            print("received shutdown message")
-            #ArteServerGlobals.shutdown_flag = False
+            print("received shutdown message", cur_thread)
+            # notify main so it can initiate shutdown
             ArteServerGlobals.shutdown_notification.set()
     
-    def recv_message(self):
+    def recv_message(self, cur_thread):
         telemetry_packet = CCSDS_TlmPkt_t()
         header = self.request.recv(telemetry_packet.get_packet_size())
-        telemetry_packet.set_decoded(header)
-        print ("received message timestamp :", telemetry_packet.get_time())
-        self.decode_message(telemetry_packet)
+        # if we received the correct number of bytes attempt to decode
+        # TODO 
+        if len(header) == telemetry_packet.get_packet_size():
+            telemetry_packet.set_decoded(header)
+            print ("received message timestamp :", telemetry_packet.get_time(), cur_thread)
+            self.decode_message(telemetry_packet, cur_thread)
         
-    def send_response(self):
+    def send_response(self, cur_thread):
         test_response = msg_pb2.next_step()
         # TODO Remove hardcoded test value
         test_response.microseconds = 25
@@ -74,24 +77,18 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.request.sendall(command_header.get_encoded())
         # send payload
         self.request.sendall(encoded)
-        print("server sent response")
+        print("server sent response", cur_thread)
         # reset the client connect count
         ArteServerGlobals.client_count = ArteServerGlobals.starting_client_count
 
     def handle(self):
-        #time_source = ArteTimeSource(0, .25)
-        #time_source.set_start_time()
+        # TODO fix this hardcoded timeout
+        #self.request.settimeout(15)
         cur_thread = threading.current_thread()
         
         while ArteServerGlobals.shutdown_flag:
             # receive message
-            self.recv_message()
-            #message_length = telemetry_packet.get_user_data_length() 
-            #message = self.request.recv(message_length)
-            #pb_message = msg_pb2.test_msg()
-            #pb_message.ParseFromString(message)
-            #message_handler(pb_message.content, cur_thread.name)
-            
+            self.recv_message(cur_thread)
             # decrement the client count
             ArteServerGlobals.client_count -= 1
             
@@ -99,23 +96,21 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 # if all clients have connected release any threads that
                 # are waiting
                 with ArteServerGlobals.condition:
-                    print("all clients connected")
+                    print("all clients ready")
                     ArteServerGlobals.condition.notify_all()
-                # wait for all clients to connect
-                ''' Note on acquire/release for condition
-                All of the objects provided by a module that has acquire() 
-                and release() methods can be used as context managers for a with 
-                statement. The acquire() method will be called when the block 
-                is entered, and release() will be called when the block is exited 
-                (see https://docs.python.org/3/library/threading.html#with-locks)
-                '''
+                    self.send_response(cur_thread)
+
             else:
+                # wait for all clients to connect
                 with ArteServerGlobals.condition:
-                    print("client connected, waiting for all clients to connect")
+                    print("client ready, waiting for all clients...")
                     ArteServerGlobals.condition.wait()
-            # Send "next step" to all clients
-            self.send_response()
+                    # send "next step" to all clients
+                    self.send_response(cur_thread)
+        # we're outside the while loop so the shutdown flag has been 
+        # raised
         print("thread done = ", cur_thread.name)
+        # notify server_shutdown 
         ArteServerGlobals.shutdown_event.set()
 
 
@@ -135,6 +130,7 @@ class ArteServer(object):
     def __init__(self, host, port, client_count):
         self.host = host
         self.port = port
+        # this is a static count of total clients
         self.client_count = client_count
         # set the shared client count
         ArteServerGlobals.client_count = self.client_count
@@ -152,8 +148,8 @@ class ArteServer(object):
     
     def server_shutdown(self):
         ArteServerGlobals.shutdown_flag = False
-        ArteServerGlobals.shutdown_event.wait()
-
+        # TODO fix hardcoded timeout
+        ArteServerGlobals.shutdown_event.wait(1)
 
 class ArteServerGlobals:
     """Shared data between server and client threads."""
