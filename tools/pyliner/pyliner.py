@@ -82,7 +82,7 @@ class Pyliner(object):
     def serialize(self, header, payload):
         """ Receive a CCSDS message and payload then returns the serialized concatenation of them """
         if not payload:
-            return str(header.get_encoded())        
+            return str(header.get_encoded())    
         else:
             return str(header.get_encoded()) + payload.SerializeToString()
 
@@ -196,9 +196,11 @@ class Pyliner(object):
         
         # Set header correctly
         payload_size = payload.ByteSize() if args_present else 0
-        payload_checksum = payload.SerializeToString() if args_present else 0
         header.set_user_data_length(payload_size)
-        #header.set_checksum(payload_checksum)
+        payload_checksum = payload.SerializeToString() if args_present else 0
+        header.SecHdr.Command.bits.checksum = header.compute_checksum(payload_checksum) if args_present else 0
+        #header.print_base16()
+        
         serial_cmd = self.serialize(header, payload)
         
         self.send_to_airliner(serial_cmd)
@@ -234,10 +236,13 @@ class Pyliner(object):
             print "header length: " + str(len(hdr))
             print self.request[0].split()
         
-        # Get python CCSDS object    
-        header = bytearray(hdr)
-        tlm_pkt = CCSDS_TlmPkt_t()
-        tlm_pkt.set_decoded(header)
+        # Get python CCSDS object #TODO: Check what causes this to fail on some tlm pkts
+        try: 
+            header = bytearray(hdr)
+            tlm_pkt = CCSDS_TlmPkt_t()
+            tlm_pkt.set_decoded(header)
+        except Exception as e:
+            print e
 
         # Iterate over subscribed telemetry to check if we care
         for subscribed_tlm in self.subscribers:

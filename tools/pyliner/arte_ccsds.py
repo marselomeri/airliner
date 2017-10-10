@@ -536,12 +536,11 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         encoded = self.get_encoded()
 
         for i in range(self.get_packet_size()):
-            check_sum ^= encoded[i]
+            check_sum ^= int(encoded[i].encode('hex'), 16)
 
-        if payload != 0:
-            for j in range(self.get_user_data_length()):
-                check_sum ^= payload[j]
-
+        for j in range(self.get_user_data_length()):
+            check_sum ^= int(payload[j].encode('hex'), 16)
+            
         return check_sum
 
     def set_checksum(self, payload):
