@@ -46,6 +46,7 @@ print airliner.log_name
 for i in range(10):
     print "AAAAAAAAAAAAAAAAAAA: " + str(cmd_count)
     airliner.assert_equals(1,1)
+    airliner.assert_true(1==1)
     # Noop
     airliner.send_command({'name':'/Airliner/ES/Noop'})
     

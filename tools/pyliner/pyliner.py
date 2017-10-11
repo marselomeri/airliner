@@ -32,14 +32,13 @@ class Pyliner(object):
         self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
         self.passes = 0
         self.fails = 0
-        self.fail_items = []
         self.start_time = datetime.now()
         self.log_dir = kwargs.get("log_dir", "./logs/")
         self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + "_pyliner_" + self.test_name + ".log"
         self.all_telemetry = []
-        self.recv_telemetry()
         self.__setup_log()
         self.ingest_active = True
+        self.recv_telemetry()
 
     def __init_socket(self):
         """ Creates a UDP socket object and returns it """
@@ -254,7 +253,7 @@ class Pyliner(object):
             return
         
         self.all_telemetry.append(tlm)
-        logging.debug("Recvd tlm: " + str(tlm))
+        #logging.debug("Recvd tlm: " + str(tlm))
         
         # TODO: Check if needed
         hdr = tlm[0].split()[0][:12]
@@ -365,16 +364,20 @@ class Pyliner(object):
         """ Assert for Pyliner that tracks passes and failures """
         if expr:
             self.passes += 1
+            logging.info("Valid true assertion made")
         else:
             self.fails += 1
+            logging.warn("Invalid true assertion made")
             
-    def assert_true(self, expr):
+    def assert_false(self, expr):
         """ Assert for Pyliner that tracks passes and failures """
         if not expr:
             self.passes += 1
+            logging.info("Valid false assertion made")
         else:
             self.fails += 1
-            
+            logging.warn("Invalid false assertion made")
+
     def dump_tlm(self):
         """ Dump all received telemetry to file """
         with open(join(self.log_dir, self.log_name[:-3]) + 'tlm', 'w') as tlm_file:
