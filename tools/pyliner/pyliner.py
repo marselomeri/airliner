@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
 from arte_ccsds import *
+from datetime import datetime, timedelta
 import json
+import logging
+from os import mkdir
 from os.path import exists,join
 import python_pb.pyliner_msgs as pyliner_msgs
 import socket
@@ -20,13 +23,23 @@ class Pyliner(object):
         self.address = kwargs.get("address", "localhost")
         self.ci_port = kwargs.get("ci_port", DEFAULT_CI_PORT)
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
+        self.test_name = kwargs.get("test_name", "Unspecified")
         self.airliner_data = self.__read_json(kwargs.get("airliner_map", None))
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
         self.subscribers = []
         self.tlm_listener = SocketServer.UDPServer((self.address, DEFAULT_TO_PORT), self.__server_factory(self.__on_recv_telemetry))
         self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
+        self.passes = 0
+        self.fails = 0
+        self.fail_items = []
+        self.start_time = datetime.now()
+        self.log_dir = kwargs.get("log_dir", "./logs/")
+        self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + "_pyliner_" + self.test_name + ".log"
+        self.all_telemetry = []
         self.recv_telemetry()
+        self.__setup_log()
+        self.ingest_active = True
 
     def __init_socket(self):
         """ Creates a UDP socket object and returns it """
@@ -47,7 +60,16 @@ class Pyliner(object):
             print "Specified input file (%s) does not exist" % file_path
         except Exception as e:
             print e
+    
+    def __setup_log(self):
+        """ Setup log for Pyliner """
+        if not exists(self.log_dir):
+            mkdir(self.log_dir)
             
+        logging.basicConfig(format='%(asctime)s\t%(levelname)s: %(message)s', 
+                            datefmt='%m/%d/%Y %I:%M:%S %p',
+                            filename=join(self.log_dir, self.log_name),
+                            level=logging.DEBUG)
             
     def __get_airliner_op(self, op_path):
         """ Receive a ops path and returns the dict for that op defined in the input file """
@@ -228,6 +250,12 @@ class Pyliner(object):
         Args:
             tlm(str): Raw bytes received from socket
         """
+        if not self.ingest_active:
+            return
+        
+        self.all_telemetry.append(tlm)
+        logging.debug("Recvd tlm: " + str(tlm))
+        
         # TODO: Check if needed
         hdr = tlm[0].split()[0][:12]
         if len(hdr) < 12:
@@ -239,6 +267,7 @@ class Pyliner(object):
             header = bytearray(hdr)
             tlm_pkt = CCSDS_TlmPkt_t()
             tlm_pkt.set_decoded(header)
+            tlm_time = tlm_pkt.get_time()
         except Exception as e:
             print e
 
@@ -256,6 +285,7 @@ class Pyliner(object):
                     for op in [op['name'] for op in subscribed_tlm['params']]:
                         cb_dict['params'][op] = {}
                         cb_dict['params'][op]['value'] = self.__get_pb_value(pb_msg, cb_dict['name'], op)
+                        cb_dict['params'][op]['time'] = tlm_time
                     
                     # Call specified callback for this telemetry
                     subscribed_tlm['callback'](cb_dict)
@@ -288,6 +318,14 @@ class Pyliner(object):
     def step_frame(self, steps = 1):
         """ Step passed number of frames """
         pass
+        
+    def step_forever(self):
+        """ Run Airliner at max speed """
+        pass
+        
+    def pause_frame(self):
+        """ Stop Airliner execution """
+        pass
 
     def send_to_airliner(self, msg):
         """ Publish the passed message to airliner """
@@ -300,6 +338,71 @@ class Pyliner(object):
         """
         self.listener_thread.daemon = True
         self.listener_thread.start()
+        
+    def reset_test(self):
+        """ Reset  """
+        pass #Need this?
+        
+    def assert_equals(self, a, b):
+        """ Assert for Pyliner that tracks passes and failures """
+        if a == b:
+            self.passes += 1
+            logging.info('Valid assertion made: %s == %s' % (a, b))
+        else:
+            self.fails += 1
+            logging.warn('Invalid assertion made: %s == %s' % (a, b))
+            
+    def assert_not_equals(self, a, b):
+        """ Assert for Pyliner that tracks passes and failures """
+        if a != b:
+            self.passes += 1
+            logging.info('Valid assertion made: %s != %s' % (a, b))
+        else:
+            self.fails += 1
+            logging.warn('Invalid assertion made: %s != %s' % (a, b))
+            
+    def assert_true(self, expr):
+        """ Assert for Pyliner that tracks passes and failures """
+        if expr:
+            self.passes += 1
+        else:
+            self.fails += 1
+            
+    def assert_true(self, expr):
+        """ Assert for Pyliner that tracks passes and failures """
+        if not expr:
+            self.passes += 1
+        else:
+            self.fails += 1
+            
+    def dump_tlm(self):
+        """ Dump all received telemetry to file """
+        with open(join(self.log_dir, self.log_name[:-3]) + 'tlm', 'w') as tlm_file:
+            for tlm in self.all_telemetry:
+                tlm_file.write(str(tlm) + '\n')
+            
+    def get_test_results(self):
+        """ Generates a string with all test results """
+        time_diff = datetime.now() - self.start_time
+        diff = divmod(time_diff.total_seconds(), 60)
+        duration = "%i minutes %i seconds"%(diff[0],diff[1]) if diff[0] > 0 else "%i seconds"%(diff[1])
+        result = "PASS" if self.fails == 0 else "FAIL"
+
+        results = "\n=================================================\n"
+        results += "Pyliner test complete\n\n"
+        results += "Test case:  " + self.test_name + "\n"
+        results += "Result:     " + result + "\n"
+        results += "Passes:     " + str(self.passes) + "\n"
+        results += "Fails:      " + str(self.fails) + "\n"
+        results += "Duration:   " + str(duration) + "\n"
+        results += "================================================="
+        return results
+
+    def finish_test(self):
+        """ Do all the clean up post test execution """
+        self.ingest_active = False
+        self.dump_tlm()
+        print self.get_test_results()
 
 
 class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):

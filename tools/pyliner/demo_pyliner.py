@@ -1,36 +1,51 @@
 import pyliner
 import time
 
+global cmd_count
+cmd_count = 0
+log_mode = 0
+max_pr = 0
+log_size = 0
+log_entries = 0
+
 # Callback 1
 def cb_1(data):
-    print "Cmd counter: " + str(data['params']['CmdCounter']['value'])
+    #print data
+    cmd_count = data['params']['CmdCounter']['value']
+    print "Cmd counter: " + str(cmd_count)
     
 # Callback 2
 def cb_2(data):
-    print "Log mode: " + str(data['params']['SysLogMode']['value'])
+    log_mode = data['params']['SysLogMode']['value']
+    print "Log mode: " + str(log_mode)
     
 # Callback 3
 def cb_3(data):
-    print "Max processor resets: " + str(data['params']['MaxProcessorResets']['value'])
+    max_pr = data['params']['MaxProcessorResets']['value']
+    print "Max processor resets: " + str(max_pr)
 
 # Callback 4
 def cb_4(data):
-    print "Log size: " + str(data['params']['SysLogBytesUsed']['value'])
-    print "Log entries: " + str(data['params']['SysLogEntries']['value'])
+    log_size = data['params']['SysLogBytesUsed']['value']
+    log_entries = data['params']['SysLogEntries']['value']
+    print "Log size: " + str(log_size)
+    print "Log entries: " + str(log_entries)
 
 
 
 # Initialize pyliner object
-airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json"})
+airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "test_name": "demo_test"})
 
 # Subscribe to desired telemetry for our callbacks
 airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'CmdCounter'}]}, cb_1)                         
 airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'SysLogMode'}]}, cb_2)                         
 airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'MaxProcessorResets'}]}, cb_3)
 airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'SysLogBytesUsed'}, {'name':'SysLogEntries'}]}, cb_4)
-
+print airliner.log_name
 # Start sending commands
-for i in range(250):
+for i in range(10):
+    print "AAAAAAAAAAAAAAAAAAA: " + str(cmd_count)
+    airliner.assert_equals(1,1)
     # Noop
     airliner.send_command({'name':'/Airliner/ES/Noop'})
     
@@ -49,6 +64,7 @@ for i in range(250):
     else:
         airliner.send_command({'name':'/Airliner/ES/OverwriteSysLog', 'args':[
                              {'name':'OverwriteMode', 'value':0}]})
-    print ""
     time.sleep(1)
+
+airliner.finish_test()
 

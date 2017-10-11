@@ -40,19 +40,13 @@ with open(join(temp, "cookiecutter.json"), 'r') as f:
 for proto_msg, proto_data in cookie_json["proto_msgs"].iteritems():
 	pb_template = join(temp, "template.proto")
 	pb_py_template = join(temp, "py_template.proto")
-	out_template = join(temp, "{{cookiecutter.dir_name}}", proto_data["proto_msg"][:-3] + ".proto")
-	py_out_template = join(temp, "{{cookiecutter.dir_name}}", "_py_" + proto_data["proto_msg"][:-3] + ".proto")
+	out_template = join(temp, "{{cookiecutter.autogen_version}}", proto_data["proto_msg"][:-3] + ".proto")
+	py_out_template = join(temp, "{{cookiecutter.autogen_version}}", "_py_" + proto_data["proto_msg"][:-3] + ".proto")
 	copyfile(pb_template, out_template)
 	copyfile(pb_py_template, py_out_template)
 
 cookiecutter(temp, no_input=True, extra_context=extras, overwrite_if_exists=True)
 
-# Walk through template directory and call cookiecutter on every dir
-for root, dirs, files in os.walk(templates):
-	for d in dirs:
-		if d[:2] == '{{':
-			continue
-		cookiecutter(join(templates, d), no_input=True, extra_context=extras, overwrite_if_exists=True)
 
 # Cleanup
 for dir in os.listdir(target):
