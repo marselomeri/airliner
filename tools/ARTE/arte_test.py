@@ -49,14 +49,12 @@ class ArteTestFixture(object):
         for i in self.config['clients']:
             self.client_count += 1
 
-    # TODO make this __private
     def test_setup(self):
         # Loop through the client array
         for i in self.config['clients']:
             self.clients.append(ArteSubprocess(i['command'], i['output'], i['cwd']))
         self.timeout = self.config['timeout']
 
-    # TODO make this __private
     def test_teardown(self):
         # Loop through the client array
         for i in range(self.client_count):
@@ -71,7 +69,4 @@ class ArteTestFixture(object):
                 time.sleep(1)
                 self.returnCode = self.clients[i].poll_subprocess()
                 print ("killed client process returned: ", str(self.returnCode))
-
-    def test_run(self):
-        self.test_setup()
 

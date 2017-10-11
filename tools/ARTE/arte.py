@@ -74,16 +74,16 @@ def main():
     # TODO write a helper function to verify the config file
     my_test_fixture = ArteTestFixture("test1", config)
     
-    server = ArteServer("localhost", 9999, my_test_fixture.client_count)
+    server = ArteServer("localhost", 9999, my_test_fixture.client_count, my_test_fixture.timeout)
     
     print("client count = ", my_test_fixture.client_count)
     
     # startup the clients
-    my_test_fixture.test_run()
+    my_test_fixture.test_setup()
      
     # wait on a shutdown event or timeout
+    # this timeout needs to be changed to a watchdog that gets kicked.
     if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
-        print("reached shutdown notification if statement")
         # A shutdown request was received from a client.
         server.server_shutdown()
         my_test_fixture.test_teardown()

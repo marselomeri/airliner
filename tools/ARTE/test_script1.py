@@ -18,7 +18,18 @@ def client(ip, port, header):
         print("after receive response = ", response_header)
         command_header.set_decoded(response_header)
 
-        time.sleep(15)
+        time.sleep(3)
+        
+        #send message
+        sock.sendall(header)
+        
+        #receive response
+        command_header = CCSDS_CmdPkt_t()
+        response_header = sock.recv(command_header.get_packet_size())
+        print("after receive response = ", response_header)
+        command_header.set_decoded(response_header)
+        
+        time.sleep(3)
         
         # send shutdown message
         shutdown_msg = CCSDS_TlmPkt_t()
