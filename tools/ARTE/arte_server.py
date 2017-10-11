@@ -96,9 +96,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             except socket.timeout:
                 print("ARTE Server socket receive timed out", cur_thread)
                 print("shutting down")
+                # TODO get rid of this flag change
                 ArteServerGlobals.shutdown_notification.set()
                 ArteServerGlobals.shutdown_flag = False
-                # notify main here or shutdown
 
             with ArteServerGlobals.condition:
                 # decrement the client count
