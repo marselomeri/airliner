@@ -14,19 +14,13 @@ def client(ip, port, header):
         
         #receive response
         command_header = CCSDS_CmdPkt_t()
-        print("before receive response")
         response_header = sock.recv(command_header.get_packet_size())
         print("after receive response = ", response_header)
         command_header.set_decoded(response_header)
-        message_length = command_header.get_user_data_length()
-        print("message_length", message_length)
-        response = sock.recv(message_length)
-        pb_message = msg_pb2.next_step()
-        pb_message.ParseFromString(response)
-        print ("client received message: ", pb_message.microseconds)
+
+        time.sleep(15)
         
-        time.sleep(5)
-        
+        # send shutdown message
         shutdown_msg = CCSDS_TlmPkt_t()
         shutdown_msg.init_packet()
         shutdown_msg.set_current_time()

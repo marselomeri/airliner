@@ -83,6 +83,7 @@ def main():
      
     # wait on a shutdown event or timeout
     if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
+        print("reached shutdown notification if statement")
         # A shutdown request was received from a client.
         server.server_shutdown()
         my_test_fixture.test_teardown()

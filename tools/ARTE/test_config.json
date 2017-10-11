@@ -5,14 +5,14 @@
   "timeout": 15,
   "clients": [
     {
-      "name": "Airliner",
-      "command": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/core-bin -M TEST",
-      "output": "test_script2.txt"
-    },
-    {
       "name": "Pyliner",
       "command": "python3 test_script1.py",
       "output": "test_script1.txt"
+    },
+    {
+      "name": "Pyline2",
+      "command": "python3 test_script2.py",
+      "output": "test_script2.txt"
     }
   ]
 }
