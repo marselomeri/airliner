@@ -43,6 +43,7 @@ class ArteTestFixture(object):
         self.count_clients()
         self.clients = []
         self.timeout = None
+        self.return_code = None
         
     def count_clients(self):
         for i in self.config['clients']:
@@ -52,7 +53,7 @@ class ArteTestFixture(object):
     def test_setup(self):
         # Loop through the client array
         for i in self.config['clients']:
-            self.clients.append(ArteSubprocess(i['command'], i['output']))
+            self.clients.append(ArteSubprocess(i['command'], i['output'], i['cwd']))
         self.timeout = self.config['timeout']
 
     # TODO make this __private
@@ -60,7 +61,16 @@ class ArteTestFixture(object):
         # Loop through the client array
         for i in range(self.client_count):
             self.clients[i].stop_subprocess()
-            print ("terminated client process returned: ", str(self.clients[i].poll_subprocess()))
+            time.sleep(1)
+            self.returnCode = self.clients[i].poll_subprocess()
+            print ("terminated client process returned: ", str(self.returnCode))
+            if self.returnCode == None:
+                print("client failed to terminate, attempting to kill")
+                # poll returned None so the process hasn't terminated
+                self.clients[i].kill_subprocess()
+                time.sleep(1)
+                self.returnCode = self.clients[i].poll_subprocess()
+                print ("killed client process returned: ", str(self.returnCode))
 
     def test_run(self):
         self.test_setup()

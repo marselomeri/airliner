@@ -47,17 +47,21 @@ class ArteSubprocess(object):
         lastStatus: Return code.
         proc: The subprocess object.
     """
-    def __init__(self, command, fileName):
+    def __init__(self, command, fileName, cwd):
         self.command = command
         self.args = shlex.split(command)
         self.fileName = fileName
+        self.cwd = cwd
         f = open(self.fileName, "a")
         f.write("- ARTE " + str(command) + " " + datetime.now().strftime('%Y%m%d_%H:%M:%S - ') + "\n")
-        self.proc = subprocess.Popen(self.args,stdout=f, shell=False)
+        self.proc = subprocess.Popen(self.args,stdout=f, shell=False, cwd=self.cwd)
         self.lastStatus = None
         
     def stop_subprocess(self):
         self.proc.terminate()
+        
+    def kill_subprocess(self):
+        self.proc.kill()
     
     def pend_subprocess(self):
         self.lastStatus = self.proc.wait()

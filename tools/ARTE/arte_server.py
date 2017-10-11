@@ -83,7 +83,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         # TODO fix this hardcoded timeout
-        #self.request.settimeout(10)
+        #self.request.settimeout(15)
         cur_thread = threading.current_thread()
         # setup the command and telemetry packets
         self.initial_setup()
@@ -94,7 +94,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             # decrement the client count
             ArteServerGlobals.client_count -= 1
             
-            if ArteServerGlobals.client_count == 0:
+            if ArteServerGlobals.client_count == 0 and ArteServerGlobals.shutdown_flag:
                 # if all clients have connected release any threads that
                 # are waiting
                 if ArteServerGlobals.shutdown_flag:
@@ -105,14 +105,13 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     # reset the client connect count
                     ArteServerGlobals.client_count = ArteServerGlobals.starting_client_count
 
-            else:
+            elif ArteServerGlobals.shutdown_flag:
                 # wait for all clients to connect
                 with ArteServerGlobals.condition:
                     print("client ready, waiting for all clients...")
                     ArteServerGlobals.condition.wait()
-                    if ArteServerGlobals.shutdown_flag:
-                        # send "next step" to all clients
-                        self.send_response(cur_thread)
+                    # send "next step" to all clients
+                    self.send_response(cur_thread)
         # we're outside the while loop so the shutdown flag has been 
         # raised
         print("thread done = ", cur_thread.name)
