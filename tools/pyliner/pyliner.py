@@ -223,6 +223,7 @@ class Pyliner(object):
         
         serial_cmd = self.serialize(header, payload)      
         self.send_to_airliner(serial_cmd)
+        logging.info('Sending command to airliner: %s' % (cmd))
 
     def __get_pb_value(self, pb_msg, op_path, op_attr):
         """ Get value from protobuf object
@@ -289,7 +290,7 @@ class Pyliner(object):
                     # Call specified callback for this telemetry
                     subscribed_tlm['callback'](cb_dict)
             
-    def subscribe(self, tlm, callback=None):
+    def subscribe(self, tlm, callback):
         """ Receives an operation path to an airliner msg with ops names of that 
         messages attributes to subscribe to as well as a callback function.
 
@@ -313,6 +314,8 @@ class Pyliner(object):
                                  'params':tlm['args'], 
                                  'callback':callback,
                                  'tlmSeqNum': 0})
+        
+        logging.info('Subscribing to the following telemetry: %s' % (tlm))
 
     def step_frame(self, steps = 1):
         """ Step passed number of frames """
@@ -391,8 +394,8 @@ class Pyliner(object):
         duration = "%i minutes %i seconds"%(diff[0],diff[1]) if diff[0] > 0 else "%i seconds"%(diff[1])
         result = "PASS" if self.fails == 0 else "FAIL"
 
-        results = "\n=================================================\n"
-        results += "Pyliner test complete\n\n"
+        results = "=================================================\n"
+        results += "Pyliner test complete\n"
         results += "Test case:  " + self.test_name + "\n"
         results += "Result:     " + result + "\n"
         results += "Passes:     " + str(self.passes) + "\n"
