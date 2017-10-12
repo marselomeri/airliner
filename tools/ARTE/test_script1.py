@@ -88,18 +88,16 @@ def client(ip, port, header):
         
     finally:
         sock.close()
-
-
 #<-- Delete me
 
 if __name__ == "__main__":
     
     IP, PORT = "localhost", 9999
 
-    print("client 1 is ready, notify server")
     client = ArteClient(IP, PORT)
     for x in range(0, 10):
         client.send_ready()
+        time.sleep(1)
         client.receive_response()
     client.send_shutdown()
     client.close_conn()
