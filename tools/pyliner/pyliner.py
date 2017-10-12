@@ -254,7 +254,7 @@ class Pyliner(object):
             return
         
         self.all_telemetry.append(tlm)
-        #logging.debug("Recvd tlm: " + str(tlm))
+        logging.debug("Recvd tlm: " + str(tlm))
         
         # TODO: Check if needed
         hdr = tlm[0].split()[0][:12]

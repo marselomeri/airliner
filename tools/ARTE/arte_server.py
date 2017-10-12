@@ -59,15 +59,18 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.command_packet.clear_packet()
         self.command_packet.init_packet()
         self.command_packet.set_user_data_length(0)
+        self.command_packet.PriHdr.Sequence.bits.count = 1
     
     def recv_message(self, cur_thread):
         # TODO edge cases for receive. timeouts, interrupts, erros etc
         # request.recv is a socket object
-        packet = self.request.recv(self.telemetry_packet_size)
-        if len(packet) == self.telemetry_packet_size:
-            self.telemetry_packet.set_decoded(packet)
-            print ("received message timestamp :", self.telemetry_packet.get_time(), cur_thread)
-            self.decode_message(cur_thread)
+        packet = bytes(0)
+        while len(packet) != self.telemetry_packet_size:
+            packet = self.request.recv(self.telemetry_packet_size)
+            if len(packet) == self.telemetry_packet_size:
+                self.telemetry_packet.set_decoded(packet)
+                print ("received message timestamp :", self.telemetry_packet.get_time(), cur_thread)
+                self.decode_message(cur_thread)
         
     def decode_message(self, cur_thread):
         if self.telemetry_packet.PriHdr.StreamId.bits.app_id == 1:

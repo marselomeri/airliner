@@ -2,16 +2,16 @@
   "name": "ARTE test config file",
   "version": 0.1,
   "date": "2017-09-22T00:00:00.000Z",
-  "timeout": 15,
+  "timeout": 120,
   "clients": [
     {
       "name": "Pyliner",
-      "command": "python3 test_script1.py",
+      "command": "python2 challenge.py",
       "output": "test_script1.txt",
-      "cwd": "/home/vagrant/Desktop/airliner/tools/ARTE/"
+      "cwd": "/home/vagrant/Desktop/airliner/tools/pyliner/"
     },
     {
-      "name": "Pyline2",
+      "name": "Airliner",
       "command": "./core-bin -M TEST",
       "output": "test_script2.txt",
       "cwd": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/"
