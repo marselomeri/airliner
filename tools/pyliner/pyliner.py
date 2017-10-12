@@ -408,8 +408,7 @@ class Pyliner(object):
         """ Do all the clean up post test execution """
         self.ingest_active = False
         self.dump_tlm()
-        print self.get_test_results()
-
+        print self.get_test_results()        
 
 class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
 

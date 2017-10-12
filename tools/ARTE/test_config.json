@@ -6,15 +6,15 @@
   "clients": [
     {
       "name": "Pyliner",
-      "command": "python2 challenge.py",
+      "command": "python2 pclient_test.py",
       "output": "test_script1.txt",
-      "cwd": "/home/vagrant/Desktop/airliner/tools/pyliner/"
+      "cwd": "/home/vagrant/airliner/tools/pyliner/"
     },
     {
       "name": "Airliner",
       "command": "./core-bin -M TEST",
       "output": "test_script2.txt",
-      "cwd": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/"
+      "cwd": "/home/vagrant/airliner/build/softsim/default/target/exe/"
     }
   ]
 }

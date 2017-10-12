@@ -14,14 +14,11 @@ def cmd_count_callback(data):
     cmd_count = data['params']['CmdCounter']['value']
     print "Cmd counter: " + str(cmd_count)
 
-print "instantiating pyliner"
 airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "test_name": "demo_challenge"})
-print "sub to ES/HK"
 airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'CmdCounter'}]}, cmd_count_callback)
 
 IP, PORT = "localhost", 9999
 client = ArteClient(IP, PORT)
-print "just instantiated client"
 
 while run_flag:
     total_frames += 1
