@@ -4,7 +4,7 @@ run_flag = True
 cmd_count = 0
 total_frames = 0
 current_frame = -1
-recv_frame = -1
+recv_frame = 0
 sent_frame = 0
 
 def cmd_count_callback(data):
@@ -23,8 +23,9 @@ while run_flag:
         airliner.send_command({'name':'/Airliner/ES/Noop'})
         sent_frame = total_frames
     
-    if recv_frame != -1:
+    if cmd_count == 1:
         run_flag = False
+        recv_frame = total_frames
         
     # Something to make this loop wait till next frame
 
