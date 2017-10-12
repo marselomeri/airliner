@@ -730,6 +730,7 @@ int32 SCH_AcquirePointers(void)
     */
     CFE_TBL_Manage(SCH_AppData.ScheduleTableHandle);
     CFE_TBL_Manage(SCH_AppData.MessageTableHandle);
+    CFE_TBL_Manage(SCH_AppData.DeadlineTableHandle);
 
     /*
     ** Get a pointer to the schedule table
@@ -756,6 +757,20 @@ int32 SCH_AcquirePointers(void)
         {
             Result = CFE_SUCCESS;
         }
+    }
+
+    /*
+    ** Repeat the process for the deadline table
+    */
+    if (Result == CFE_SUCCESS)
+    {
+    	Result = CFE_TBL_GetAddress((void *)&SCH_AppData.DeadlineTable,
+                                             SCH_AppData.DeadlineTableHandle);
+
+    	if (Result > CFE_SUCCESS)
+    	{
+    		Result = CFE_SUCCESS;
+    	}
     }
 
     return(Result);

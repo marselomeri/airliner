@@ -566,4 +566,6 @@
 #define MAC_OUT_DATA_MID                            0x0c45
 #define MAC_HK_TLM_MID                              0x0c46
 
+#define SCH_ACTIVITY_DONE_MID						0x0f00
+
 #endif
