@@ -33,7 +33,6 @@
 import socket
 import sys
 import threading
-import msg_pb2
 import time
 from struct import unpack
 from struct import pack

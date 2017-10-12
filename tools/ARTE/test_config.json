@@ -8,13 +8,13 @@
       "name": "Pyliner",
       "command": "python3 test_script1.py",
       "output": "test_script1.txt",
-      "cwd": "/home/vagrant/git/airliner/tools/ARTE/"
+      "cwd": "/home/vagrant/Desktop/airliner/tools/ARTE/"
     },
     {
       "name": "Pyline2",
-      "command": "./core-bin --runmode NORMAL",
+      "command": "./core-bin -M TEST",
       "output": "test_script2.txt",
-      "cwd": "/home/vagrant/git/airliner/build/softsim/default/target/exe/"
+      "cwd": "/home/vagrant/Desktop/airliner/build/softsim/default/target/exe/"
     }
   ]
 }
