@@ -37,14 +37,13 @@ import time
 
 """CCSDS Space Packet Protocol ctype structure definitions.
 
-Note: ctypes.BigEndianStructure seems to have a bug bit fields defined 
-with bigendianstructure seem to create fields in random order. Using 
+Note: ctypes.BigEndianStructure seems to have a bug. Bit fields defined 
+with bigendianstructure appear to create fields in random order. Using 
 ctypes Structure for now. ctypes uses the native byte order for 
 Structures and Unions. For issues with alignment use the pragma pack
 ctype equivalent _pack_ = n.
 
 """
-
 
 class stream_id_bits(ctypes.Structure):
     """Primary header packet identifier word (stream ID) bit fields.
@@ -77,8 +76,8 @@ class command_bits(ctypes.Structure):
     command function code
     reserved, set to 0
     """
-    _fields_ = [("checksum", ctypes.c_uint16, 8),
-                ("code", ctypes.c_uint16, 7),
+    _fields_ = [("code", ctypes.c_uint16, 7),
+                ("checksum", ctypes.c_uint16, 8),
                 ("reserved", ctypes.c_uint16, 1)]
 
 
@@ -325,13 +324,19 @@ class CCSDS_CmdSecHdr_t(ctypes.Structure):
 
 
 class Time(ctypes.Structure):
+    """Secondary telemetry header time.
+    
+    Note:
+        This is used for CFE_SB_PACKET_TIME_FORMAT == 
+        CFE_SB_TIME_32_16_SUBS when CCSDS_TIME_SIZE is defined as 6 in
+        CFS.
+    
+    """
     _pack_ = 1
     _fields_ = [("Seconds", ctypes.c_uint32),
                 ("Subseconds", ctypes.c_uint16)]
 
 
-# for CFE_SB_PACKET_TIME_FORMAT == CFE_SB_TIME_32_16_SUBS
-# CCSDS_TIME_SIZE 6
 class CCSDS_TlmSecHdr_t(ctypes.Structure):
     """Secondary telemetry header."""
     _fields_ = [("Time", Time)]
@@ -426,8 +431,9 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         self.PriHdr.StreamId.bits.shdr_flag = 1
         self.PriHdr.StreamId.bits.type = 1
         #self.PriHdr.StreamId.bits.version = 0
-        #self.PriHdr.StreamId.bits.count = 0
-        #self.PriHdr.StreamId.bits.seq_flags = 0
+        #self.PriHdr.Sequence.bits.count = 0
+        # segmentation flags:  3 = complete packet 
+        self.PriHdr.Sequence.bits.seq_flags = 3
         #self.PriHdr.Length = 0
         #self.SecHdr.Command.bits.checksum = 0
         #self.SecHdr.Command.bits.code = 0
@@ -536,12 +542,11 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         encoded = self.get_encoded()
 
         for i in range(self.get_packet_size()):
-            check_sum ^= encoded[i]
+            check_sum ^= int(encoded[i].encode('hex'), 16)
 
-        if payload != 0:
-            for j in range(self.get_user_data_length()):
-                check_sum ^= payload[j]
-
+        for j in range(self.get_user_data_length()):
+            check_sum ^= int(payload[j].encode('hex'), 16)
+            
         return check_sum
 
     def set_checksum(self, payload):
@@ -588,8 +593,9 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         self.PriHdr.StreamId.bits.shdr_flag = 1
         self.PriHdr.StreamId.bits.type = 0
         #self.PriHdr.StreamId.bits.version = 0
-        #self.PriHdr.StreamId.bits.count = 0
-        #self.PriHdr.StreamId.bits.seq_flags = 0
+        #self.PriHdr.Sequence.bits.count = 0
+        # segmentation flags:  3 = complete packet 
+        self.PriHdr.Sequence.bits.seq_flags = 3
         #self.PriHdr.Length = 0
         #self.SecHdr.Time.Seconds = 0
         #self.SecHdr.Time.Subseconds = 0
@@ -752,5 +758,3 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 #class testing(ctypes.Union):
     #_fields_ = [("bits", test_bits),
                 #("data", ctypes.c_uint16)]
-
-
