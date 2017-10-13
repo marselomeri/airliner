@@ -1,18 +1,18 @@
 from arte_client import ArteClient
+import logging
 from pyliner import Pyliner
 import time
 
 class PylinerClient(Pyliner):
-    
-    def __init__(self, **kwargs):
-        super(PylinerClient, self).__init__()
+
+    def __init__(self, kwargs):
+        super(PylinerClient, self).__init__(**kwargs)
         self.ip = kwargs.get("ip", "localhost")
         self.port = kwargs.get("port", 9999)
         self.minor_frames = kwargs.get("minor_frames", 200)
         self.current_frame = 0
         self.total_frames = 0
         self.arte_client = ArteClient(self.ip, self.port)
-        self.step_frame()
    
     def step_frame(self, num = 1):
         """ Signal ARTE to step to next frame specified number of times """
@@ -24,6 +24,7 @@ class PylinerClient(Pyliner):
     
     def frame_analysis(self, op, tlm):
         """ Analyze frames required to receive telemetry for this command """
+        logging.info('Starting frame analysis')
         wait_flag = True
         frame_callback_var = 0
         recv_frame = 0
@@ -33,7 +34,7 @@ class PylinerClient(Pyliner):
         def frame_analyze_cb(data):
             global frame_callback_var
             frame_callback_var = data['params']['CmdCounter']['value']
-            print "Cmd counter: " + str(cmd_count)
+            logging.info('Callback received value of: %s' % (frame_callback_var))
         
         self.subscribe(tlm, frame_analyze_cb)
         
@@ -43,7 +44,7 @@ class PylinerClient(Pyliner):
             self.step_frame()
             
             if self.current_frame % self.minor_frames == 0:
-                self.send_message(op)
+                self.send_command(op)
                 sent_frame = self.total_frames
             
             if frame_callback_var == 1:
@@ -51,7 +52,9 @@ class PylinerClient(Pyliner):
                 recv_frame = self.total_frames
         
         self.subscribers.pop()
-        return recv_frame - sent_frame
+        result = recv_frame - sent_frame
+        logging.info('Frame analysis for %s: %s' % (op, result))
+        return result
             
 
 
