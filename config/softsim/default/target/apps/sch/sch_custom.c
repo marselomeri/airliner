@@ -140,7 +140,9 @@ int32 SCH_CustomLateInit(void)
 
 uint32 SCH_CustomGetCurrentSlotNumber(void)
 {
-	return OS_RtmGetCurrentMinorFrame();
+	uint32 minorFrame = OS_RtmGetCurrentMinorFrame();
+
+	return minorFrame;
 } /* End of SH_CustomGetCurrentSlotNumber() */
 
 /*******************************************************************
@@ -162,7 +164,6 @@ void SCH_CustomCleanup(void)
 
 void SCH_MinorFrameCallback(uint32 TimerId)
 {
-	OS_printf("SCH_MinorFrameCallback\n");
     OS_BinSemGive(SCH_AppData.TimeSemaphore);
 
     return;

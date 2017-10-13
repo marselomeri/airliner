@@ -86,6 +86,7 @@ def main():
     if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
         # A shutdown request was received from a client.
         server.server_shutdown()
+        time.sleep(1)
         my_test_fixture.test_teardown()
         sys.exit(0)
     

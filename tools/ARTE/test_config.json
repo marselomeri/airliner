@@ -8,13 +8,14 @@
       "name": "Pyliner",
       "command": "python2 pclient_test.py",
       "output": "test_script1.txt",
-      "cwd": "/home/vagrant/airliner/tools/pyliner/"
+      "cwd": "../../tools/pyliner/"
     },
     {
       "name": "Airliner",
       "command": "./core-bin -M TEST",
       "output": "test_script2.txt",
-      "cwd": "/home/vagrant/airliner/build/softsim/default/target/exe/"
+      "cwd": "../../build/softsim/default/target/exe/"
+
     }
   ]
 }
