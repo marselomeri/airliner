@@ -124,10 +124,10 @@ extern "C" {
 /**
  * \brief Defines the table identification name used for table registration.
  */
-#define TO_GROUND_CONFIG_TABLENAME        ("GROUND_CFG")
-#define TO_GROUND_DUMP_TABLENAME          ("GROUND_DMP")
-#define TO_ONBOARD_CONFIG_TABLENAME       ("ONBOARD_CFG")
-#define TO_ONBOARD_DUMP_TABLENAME         ("ONBOARD_DMP")
+#define TO_GROUND_BINARY_CONFIG_TABLENAME        ("GRND_BIN_CFG")
+#define TO_GROUND_BINARY_DUMP_TABLENAME          ("GRND_BIN_DMP")
+#define TO_ONBOARD_PROTOBUF_CONFIG_TABLENAME     ("GRND_PB_CFG")
+#define TO_ONBOARD_PROTOBUF_DUMP_TABLENAME       ("GRND_PB_DMP")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **

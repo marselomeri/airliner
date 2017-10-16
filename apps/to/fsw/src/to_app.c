@@ -53,6 +53,7 @@
 #include "to_output_queue.h"
 #include "to_custom.h"
 #include "to_channel.h"
+#include "pb_lib.h"
 
 /************************************************************************
 ** Local Defines
@@ -111,8 +112,8 @@ int32 TO_InitEvent()
     TO_AppData.EventTbl[  ind].EventID = TO_GET_POOL_ERR_EID;
     TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_4_STOP;
 
-    TO_AppData.EventTbl[  ind].EventID = TO_INF_EID;
-    TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    TO_AppData.EventTbl[  ind].EventID = TO_NO_ENCODE_FUNC_EID;
+    TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_FIRST_8_STOP;
 
     TO_AppData.EventTbl[  ind].EventID = TO_CONFIG_TABLE_ERR_EID;
     TO_AppData.EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
@@ -915,6 +916,51 @@ void TO_AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(TO_AppData.uiRunStatus);
+}
+
+uint32 TO_ProtobufTlmEncode(CFE_SB_MsgPtr_t MsgInPtr,
+		char *BufferOut, uint32 Size)
+{
+	CFE_SB_MsgId_t  	msgId = 0;
+	uint32  			msgSize = 0;
+	uint16  			outSize = 0;
+	uint32  			hdrSize = 0;
+	uint32  			payloadSize = 0;
+	PBLib_EncodeFuncPtr_t encodeFunc;
+
+	/* Get required params */
+	msgId = CFE_SB_GetMsgId(MsgInPtr);
+	payloadSize = CFE_SB_GetUserDataLength(MsgInPtr); //change to user data length
+	hdrSize = CFE_SB_MsgHdrSize(msgId);
+
+	/* Get serialization funciton from PBL */
+	encodeFunc = PBLIB_GetTlmSerializationFunc(msgId);
+	if(encodeFunc == 0)
+	{
+		CFE_EVS_SendEvent (TO_NO_ENCODE_FUNC_EID, CFE_EVS_ERROR, "MsgId (0x%04X) has no serialization function",
+									msgId);
+		outSize = 0;
+		goto TO_ProtobufEncode_Exit_Tag;
+	}
+
+	/* Call encode function */
+	payloadSize = encodeFunc(MsgInPtr, &BufferOut[hdrSize], Size - hdrSize);
+	outSize = hdrSize + payloadSize;
+
+	/* Create new SB msg from serialized data */
+	CFE_SB_InitMsg(BufferOut, msgId, outSize, FALSE);
+
+	/* Update header info */
+	CFE_SB_GenerateChecksum((CFE_SB_MsgPtr_t)BufferOut);
+
+TO_ProtobufEncode_Exit_Tag:
+	return outSize;
+}
+
+
+TO_ChannelType_t TO_GetChannelType(uint32 ChannelID)
+{
+	return TO_AppData.ChannelData[ChannelID].ConfigTblPtr->ChannelType;
 }
 
 

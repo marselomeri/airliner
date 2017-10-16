@@ -493,7 +493,7 @@ typedef struct
 	CFE_TIME_SysTime_t SampleTime;
     uint64 timestamp;
     uint64 timestamp_sample;
-	float Control[8];
+	float Control[PX4_ACTUATOR_CONTROL_COUNT];
 } PX4_ActuatorControlsMsg_t;
 
 typedef struct
@@ -548,6 +548,7 @@ typedef struct
 	float CurrentFiltered;			/* A */
 	float Discharged;				/* mAh */
 	float Remaining;
+	float Scale;
 	int32 CellCount;
 	boolean Connected;
 	PX4_BatteryWarningSeverity_t Warning;
@@ -586,11 +587,16 @@ typedef struct
 	float VelVariance[3];
 	float PosVariance[3];
 	float Q[4];
+	float DeltaQReset[4];
 	float RollRate;
 	float PitchRate;
 	float YawRate;
 	float HorzAccMag;
+	float RollRateBias;
+	float PitchRateBias;
+	float YawRateBias;
 	boolean AirspeedValid;
+	uint8 QuatResetCounter;
 } PX4_ControlStateMsg_t;
 
 
@@ -1086,11 +1092,30 @@ typedef struct
 	boolean MissionFailure;
 } PX4_MissionResultMsg_t;
 
+
+typedef union
+{
+	struct
+	{
+		uint16 MotorPos	 : 1; // 0 - true when any motor has saturated in the positive direction
+		uint16 MotorNeg	 : 1; // 1 - true when any motor has saturated in the negative direction
+		uint16 RollPos	 : 1; // 2 - true when a positive roll demand change will increase saturation
+		uint16 RollNeg	 : 1; // 3 - true when a negative roll demand change will increase saturation
+		uint16 PitchPos	 : 1; // 4 - true when a positive pitch demand change will increase saturation
+		uint16 PitchNeg	 : 1; // 5 - true when a negative pitch demand change will increase saturation
+		uint16 YawPos	 : 1; // 6 - true when a positive yaw demand change will increase saturation
+		uint16 YawNeg	 : 1; // 7 - true when a negative yaw demand change will increase saturation
+		uint16 ThrustPos : 1; // 8 - true when a positive thrust demand change will increase saturation
+		uint16 ThrustNeg : 1; // 9 - true when a negative thrust demand change will increase saturation
+	} Flags;
+	uint16 Value;
+} PX4_SaturationStatus_t;
+
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	CFE_TIME_SysTime_t Timestamp;
-	uint32 SaturationStatus;
+	PX4_SaturationStatus_t SaturationStatus;
 } PX4_MultirotorMotorLimitsMsg_t;
 
 typedef struct
@@ -1747,5 +1772,34 @@ typedef struct
 	float CovarianceEast;
 } PX4_WindEstimateMsg_t;
 
+typedef struct
+{
+    float gyro_offset_0[3];
+    float gyro_scale_0[3];
+    float gyro_offset_1[3];
+    float gyro_scale_1[3];
+    float gyro_offset_2[3];
+    float gyro_scale_2[3];
+    float accel_offset_0[3];
+    float accel_scale_0[3];
+    float accel_offset_1[3];
+    float accel_scale_1[3];
+    float accel_offset_2[3];
+    float accel_scale_2[3];
+    float baro_offset_0;
+    float baro_scale_0;
+    float baro_offset_1;
+    float baro_scale_1;
+    float baro_offset_2;
+    float baro_scale_2;
+    uint8 selected_gyro_instance;
+    uint8 selected_accel_instance;
+    uint8 selected_baro_instance;
+    uint8 gyro_mapping[3];
+    uint8 accel_mapping[3];
+    uint8 baro_mapping[3];
+} PX4_SensorCorrectionMsg_t;
 
 #endif
+
+

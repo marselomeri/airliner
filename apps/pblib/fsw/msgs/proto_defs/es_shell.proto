@@ -11,8 +11,5 @@ message es_shell_payload_pb
 
 message es_shell_pb
 {
-	required es_shell_payload_pb payload = 1;
+	required es_shell_payload_pb Payload = 1;
 }
-
-
-

@@ -57,7 +57,11 @@
 /** \name Scheduler App Pipe Characteristics */
 /**  \{ */
 #define SCH_PIPE_NAME       "SCH_CMD_PIPE"  /**< \brief SCH Command Pipe Name */
+#define SCH_AD_PIPE_NAME    "SCH_AD_PIPE"   /**< \brief SCH Activity Deadline Messaging Pipe Name */
 /** \} */
+
+#define SCH_AD_CHILD_TASK_NAME  		"SCH_AD_TASK"
+#define SCH_AD_MUTEX_NAME			"SCH_AD_MUTEX"
 
 /*
 ** Event filter table definitions
@@ -86,6 +90,7 @@
 /**  \{ */
 #define SCH_SCHEDULE_TABLE_NAME  "SCHED_DEF"  /**< \brief Schedule Definition Table Name */
 #define SCH_MESSAGE_TABLE_NAME   "MSG_DEFS"   /**< \brief Message Definition Table Name */
+#define SCH_DEADLINE_TABLE_NAME  "DEADLINE_TBL"
 /** \} */
 
 /*
@@ -139,12 +144,15 @@ typedef struct
     */
     CFE_SB_MsgPtr_t       MsgPtr;                         /**< \brief Ptr to most recently received cmd message */
     CFE_SB_PipeId_t       CmdPipe;                        /**< \brief Pipe ID for SCH Command Pipe */
+    CFE_SB_PipeId_t       ADPipe;                         /**< \brief Pipe ID for SCH Activity Deadline Message Pipe */
     
     SCH_MessageEntry_t   *MessageTable;                   /**< \brief Ptr to Message Table contents */
     SCH_ScheduleEntry_t  *ScheduleTable;                  /**< \brief Ptr to Schedule Table contents */
+    SCH_DeadlineTable_t  *DeadlineTable;                  /**< \brief Ptr to Deadline Table contents */
     
     CFE_TBL_Handle_t      ScheduleTableHandle;            /**< \brief Handle for Schedule Definition Table */
     CFE_TBL_Handle_t      MessageTableHandle;             /**< \brief Handle for Message Definition Table */
+    CFE_TBL_Handle_t      DeadlineTableHandle;
     
     CFE_EVS_BinFilter_t   EventFilters[SCH_FILTER_COUNT]; /**< \brief Array of Event Filters */
     
@@ -231,6 +239,10 @@ typedef struct
     boolean               IgnoreMajorFrameMsgSent;       /**< \brief Major Frame Event Message has been sent */
     boolean               UnexpectedMajorFrame;          /**< \brief Major Frame signal was unexpected */
 
+    uint32		  ADChildTaskID;	         /**< \brief Activity Deadline child task ID */
+    int32 		  ADChildTaskRunStatus;
+    uint32		  ADChildTaskMutex;
+    uint32                ADHoldupSemaphore;
 } SCH_AppData_t;
 
 /*************************************************************************

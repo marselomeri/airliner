@@ -1,3 +1,0 @@
-message test_msg {
-    required string content = 1;
-}

@@ -8,6 +8,8 @@ message px4_battery_status_pb
 		BATTERY_WARNING_NONE 		= 0;
 		BATTERY_WARNING_LOW 		= 1;
 		BATTERY_WARNING_CRITICAL	= 2;
+		BATTERY_WARNING_EMERGENCY	= 3;
+		BATTERY_WARNING_FAILED  	= 4;
 	}
 
 	required uint64 timestamp = 1;
@@ -17,7 +19,8 @@ message px4_battery_status_pb
 	required float current_filtered_a = 5;
 	required float discharged_mah = 6;
 	required float remaining = 7;
-	required int32 cell_count = 8;
-	required bool connected  = 9;
-	required uint32 warning  = 10;
+	required float scale = 8;
+	required int32 cell_count = 9;
+	required bool connected  = 10;
+	required uint32 warning  = 11;
 }
