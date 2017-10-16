@@ -1,6 +1,4077 @@
-- ARTE python2 pclient_test.py 20171012_18:08:07 - 
-- ARTE python2 pclient_test.py 20171012_18:08:44 - 
-coercing to Unicode: need string or buffer, NoneType found
+- ARTE python2 pclient_test.py 20171016_17:47:46 - 
+- ARTE python2 pclient_test.py 20171016_17:55:34 - 
+- ARTE python2 pclient_test.py 20171016_17:56:11 - 
 sending ready to ARTE server
 waiting for response from ARTE server
 ('sequence count from ARTE server = ', 1)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 2)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 3)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 4)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 5)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 6)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 7)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 8)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 9)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 10)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 11)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 12)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 13)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 14)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 15)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 16)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 17)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 18)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 19)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 20)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 21)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 22)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 23)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 24)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 25)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 26)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 27)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 28)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 29)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 30)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 31)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 32)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 33)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 34)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 35)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 36)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 37)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 38)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 39)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 40)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 41)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 42)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 43)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 44)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 45)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 46)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 47)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 48)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 49)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 50)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 51)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 52)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 53)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 54)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 55)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 56)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 57)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 58)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 59)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 60)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 61)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 62)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 63)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 64)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 65)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 66)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 67)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 68)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 69)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 70)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 71)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 72)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 73)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 74)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 75)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 76)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 77)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 78)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 79)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 80)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 81)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 82)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 83)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 84)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 85)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 86)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 87)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 88)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 89)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 90)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 91)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 92)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 93)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 94)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 95)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 96)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 97)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 98)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 99)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 100)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 101)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 102)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 103)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 104)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 105)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 106)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 107)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 108)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 109)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 110)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 111)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 112)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 113)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 114)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 115)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 116)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 117)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 118)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 119)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 120)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 121)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 122)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 123)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 124)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 125)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 126)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 127)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 128)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 129)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 130)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 131)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 132)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 133)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 134)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 135)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 136)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 137)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 138)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 139)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 140)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 141)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 142)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 143)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 144)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 145)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 146)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 147)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 148)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 149)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 150)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 151)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 152)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 153)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 154)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 155)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 156)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 157)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 158)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 159)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 160)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 161)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 162)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 163)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 164)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 165)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 166)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 167)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 168)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 169)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 170)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 171)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 172)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 173)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 174)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 175)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 176)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 177)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 178)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 179)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 180)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 181)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 182)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 183)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 184)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 185)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 186)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 187)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 188)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 189)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 190)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 191)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 192)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 193)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 194)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 195)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 196)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 197)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 198)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 199)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 200)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 201)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 202)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 203)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 204)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 205)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 206)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 207)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 208)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 209)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 210)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 211)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 212)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 213)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 214)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 215)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 216)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 217)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 218)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 219)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 220)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 221)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 222)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 223)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 224)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 225)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 226)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 227)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 228)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 229)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 230)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 231)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 232)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 233)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 234)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 235)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 236)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 237)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 238)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 239)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 240)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 241)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 242)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 243)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 244)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 245)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 246)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 247)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 248)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 249)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 250)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 251)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 252)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 253)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 254)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 255)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 256)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 257)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 258)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 259)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 260)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 261)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 262)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 263)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 264)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 265)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 266)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 267)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 268)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 269)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 270)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 271)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 272)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 273)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 274)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 275)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 276)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 277)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 278)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 279)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 280)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 281)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 282)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 283)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 284)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 285)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 286)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 287)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 288)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 289)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 290)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 291)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 292)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 293)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 294)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 295)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 296)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 297)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 298)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 299)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 300)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 301)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 302)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 303)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 304)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 305)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 306)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 307)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 308)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 309)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 310)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 311)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 312)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 313)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 314)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 315)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 316)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 317)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 318)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 319)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 320)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 321)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 322)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 323)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 324)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 325)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 326)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 327)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 328)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 329)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 330)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 331)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 332)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 333)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 334)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 335)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 336)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 337)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 338)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 339)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 340)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 341)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 342)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 343)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 344)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 345)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 346)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 347)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 348)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 349)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 350)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 351)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 352)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 353)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 354)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 355)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 356)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 357)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 358)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 359)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 360)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 361)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 362)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 363)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 364)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 365)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 366)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 367)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 368)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 369)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 370)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 371)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 372)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 373)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 374)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 375)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 376)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 377)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 378)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 379)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 380)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 381)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 382)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 383)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 384)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 385)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 386)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 387)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 388)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 389)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 390)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 391)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 392)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 393)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 394)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 395)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 396)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 397)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 398)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 399)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 400)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 401)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 402)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 403)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 404)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 405)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 406)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 407)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 408)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 409)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 410)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 411)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 412)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 413)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 414)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 415)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 416)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 417)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 418)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 419)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 420)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 421)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 422)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 423)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 424)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 425)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 426)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 427)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 428)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 429)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 430)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 431)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 432)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 433)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 434)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 435)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 436)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 437)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 438)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 439)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 440)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 441)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 442)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 443)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 444)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 445)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 446)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 447)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 448)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 449)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 450)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 451)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 452)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 453)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 454)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 455)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 456)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 457)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 458)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 459)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 460)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 461)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 462)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 463)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 464)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 465)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 466)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 467)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 468)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 469)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 470)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 471)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 472)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 473)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 474)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 475)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 476)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 477)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 478)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 479)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 480)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 481)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 482)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 483)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 484)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 485)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 486)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 487)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 488)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 489)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 490)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 491)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 492)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 493)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 494)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 495)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 496)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 497)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 498)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 499)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 500)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 501)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 502)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 503)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 504)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 505)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 506)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 507)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 508)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 509)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 510)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 511)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 512)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 513)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 514)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 515)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 516)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 517)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 518)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 519)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 520)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 521)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 522)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 523)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 524)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 525)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 526)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 527)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 528)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 529)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 530)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 531)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 532)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 533)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 534)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 535)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 536)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 537)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 538)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 539)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 540)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 541)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 542)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 543)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 544)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 545)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 546)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 547)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 548)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 549)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 550)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 551)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 552)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 553)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 554)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 555)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 556)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 557)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 558)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 559)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 560)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 561)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 562)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 563)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 564)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 565)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 566)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 567)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 568)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 569)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 570)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 571)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 572)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 573)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 574)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 575)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 576)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 577)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 578)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 579)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 580)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 581)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 582)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 583)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 584)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 585)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 586)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 587)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 588)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 589)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 590)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 591)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 592)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 593)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 594)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 595)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 596)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 597)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 598)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 599)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 600)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 601)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 602)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 603)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 604)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 605)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 606)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 607)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 608)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 609)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 610)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 611)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 612)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 613)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 614)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 615)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 616)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 617)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 618)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 619)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 620)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 621)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 622)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 623)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 624)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 625)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 626)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 627)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 628)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 629)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 630)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 631)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 632)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 633)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 634)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 635)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 636)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 637)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 638)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 639)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 640)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 641)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 642)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 643)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 644)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 645)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 646)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 647)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 648)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 649)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 650)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 651)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 652)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 653)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 654)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 655)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 656)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 657)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 658)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 659)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 660)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 661)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 662)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 663)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 664)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 665)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 666)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 667)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 668)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 669)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 670)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 671)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 672)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 673)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 674)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 675)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 676)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 677)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 678)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 679)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 680)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 681)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 682)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 683)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 684)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 685)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 686)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 687)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 688)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 689)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 690)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 691)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 692)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 693)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 694)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 695)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 696)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 697)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 698)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 699)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 700)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 701)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 702)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 703)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 704)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 705)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 706)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 707)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 708)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 709)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 710)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 711)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 712)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 713)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 714)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 715)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 716)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 717)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 718)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 719)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 720)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 721)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 722)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 723)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 724)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 725)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 726)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 727)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 728)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 729)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 730)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 731)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 732)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 733)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 734)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 735)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 736)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 737)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 738)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 739)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 740)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 741)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 742)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 743)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 744)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 745)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 746)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 747)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 748)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 749)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 750)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 751)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 752)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 753)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 754)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 755)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 756)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 757)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 758)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 759)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 760)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 761)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 762)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 763)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 764)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 765)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 766)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 767)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 768)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 769)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 770)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 771)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 772)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 773)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 774)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 775)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 776)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 777)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 778)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 779)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 780)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 781)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 782)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 783)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 784)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 785)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 786)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 787)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 788)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 789)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 790)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 791)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 792)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 793)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 794)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 795)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 796)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 797)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 798)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 799)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 800)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 801)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 802)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 803)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 804)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 805)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 806)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 807)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 808)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 809)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 810)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 811)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 812)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 813)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 814)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 815)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 816)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 817)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 818)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 819)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 820)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 821)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 822)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 823)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 824)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 825)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 826)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 827)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 828)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 829)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 830)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 831)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 832)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 833)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 834)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 835)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 836)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 837)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 838)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 839)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 840)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 841)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 842)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 843)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 844)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 845)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 846)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 847)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 848)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 849)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 850)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 851)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 852)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 853)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 854)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 855)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 856)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 857)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 858)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 859)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 860)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 861)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 862)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 863)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 864)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 865)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 866)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 867)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 868)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 869)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 870)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 871)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 872)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 873)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 874)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 875)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 876)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 877)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 878)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 879)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 880)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 881)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 882)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 883)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 884)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 885)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 886)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 887)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 888)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 889)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 890)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 891)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 892)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 893)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 894)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 895)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 896)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 897)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 898)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 899)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 900)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 901)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 902)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 903)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 904)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 905)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 906)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 907)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 908)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 909)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 910)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 911)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 912)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 913)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 914)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 915)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 916)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 917)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 918)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 919)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 920)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 921)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 922)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 923)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 924)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 925)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 926)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 927)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 928)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 929)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 930)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 931)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 932)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 933)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 934)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 935)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 936)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 937)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 938)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 939)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 940)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 941)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 942)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 943)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 944)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 945)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 946)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 947)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 948)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 949)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 950)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 951)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 952)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 953)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 954)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 955)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 956)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 957)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 958)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 959)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 960)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 961)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 962)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 963)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 964)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 965)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 966)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 967)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 968)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 969)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 970)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 971)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 972)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 973)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 974)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 975)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 976)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 977)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 978)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 979)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 980)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 981)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 982)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 983)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 984)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 985)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 986)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 987)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 988)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 989)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 990)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 991)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 992)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 993)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 994)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 995)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 996)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 997)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 998)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 999)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1000)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1001)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1002)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1003)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1004)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1005)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1006)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1007)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1008)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1009)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1010)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1011)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1012)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1013)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1014)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1015)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1016)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1017)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1018)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1019)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1020)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1021)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1022)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1023)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1024)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1025)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1026)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1027)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1028)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1029)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1030)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1031)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1032)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1033)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1034)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1035)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1036)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1037)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1038)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1039)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1040)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1041)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1042)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1043)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1044)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1045)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1046)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1047)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1048)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1049)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1050)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1051)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1052)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1053)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1054)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1055)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1056)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1057)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1058)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1059)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1060)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1061)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1062)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1063)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1064)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1065)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1066)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1067)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1068)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1069)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1070)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1071)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1072)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1073)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1074)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1075)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1076)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1077)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1078)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1079)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1080)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1081)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1082)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1083)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1084)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1085)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1086)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1087)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1088)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1089)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1090)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1091)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1092)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1093)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1094)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1095)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1096)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1097)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1098)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1099)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1100)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1101)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1102)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1103)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1104)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1105)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1106)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1107)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1108)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1109)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1110)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1111)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1112)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1113)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1114)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1115)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1116)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1117)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1118)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1119)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1120)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1121)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1122)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1123)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1124)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1125)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1126)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1127)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1128)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1129)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1130)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1131)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1132)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1133)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1134)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1135)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1136)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1137)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1138)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1139)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1140)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1141)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1142)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1143)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1144)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1145)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1146)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1147)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1148)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1149)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1150)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1151)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1152)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1153)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1154)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1155)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1156)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1157)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1158)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1159)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1160)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1161)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1162)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1163)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1164)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1165)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1166)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1167)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1168)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1169)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1170)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1171)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1172)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1173)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1174)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1175)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1176)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1177)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1178)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1179)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1180)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1181)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1182)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1183)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1184)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1185)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1186)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1187)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1188)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1189)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1190)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1191)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1192)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1193)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1194)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1195)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1196)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1197)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1198)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1199)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1200)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1201)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1202)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1203)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1204)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1205)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1206)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1207)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1208)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1209)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1210)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1211)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1212)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1213)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1214)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1215)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1216)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1217)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1218)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1219)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1220)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1221)
+----------------------------------------
+Exception happened during processing of request from ('127.0.0.1', 52201)
+----------------------------------------
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1222)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1223)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1224)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1225)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1226)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1227)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1228)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1229)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1230)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1231)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1232)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1233)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1234)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1235)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1236)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1237)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1238)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1239)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1240)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1241)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1242)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1243)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1244)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1245)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1246)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1247)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1248)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1249)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1250)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1251)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1252)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1253)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1254)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1255)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1256)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1257)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1258)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1259)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1260)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1261)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1262)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1263)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1264)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1265)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1266)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1267)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1268)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1269)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1270)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1271)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1272)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1273)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1274)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1275)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1276)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1277)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1278)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1279)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1280)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1281)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1282)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1283)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1284)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1285)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1286)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1287)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1288)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1289)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1290)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1291)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1292)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1293)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1294)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1295)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1296)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1297)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1298)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1299)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1300)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1301)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1302)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1303)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1304)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1305)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1306)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1307)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1308)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1309)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1310)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1311)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1312)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1313)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1314)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1315)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1316)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1317)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1318)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1319)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1320)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1321)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1322)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1323)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1324)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1325)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1326)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1327)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1328)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1329)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1330)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1331)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1332)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1333)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1334)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1335)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1336)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1337)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1338)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1339)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1340)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1341)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1342)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1343)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1344)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1345)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1346)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1347)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1348)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1349)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1350)
+sending ready to ARTE server
+waiting for response from ARTE server
+('sequence count from ARTE server = ', 1351)

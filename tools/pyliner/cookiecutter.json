@@ -1215,7 +1215,7 @@
 			            "airliner_msg": "CFE_ES_HkPacket_t",
 			            "airliner_cc": -1,
 			            "airliner_mid": "0x0800"
-		            },
+		            },			            
 		            "OneAppTlm": {			
 			            "airliner_msg": "CFE_ES_OneAppTlm_t",
 			            "airliner_cc": -1,
