@@ -6,7 +6,7 @@
   "clients": [
     {
       "name": "Pyliner",
-      "command": "python2 challenge.py",
+      "command": "python2 pclient_test.py",
       "output": "test_script1.txt",
       "cwd": "../../tools/pyliner/"
     },
@@ -15,6 +15,7 @@
       "command": "./core-bin -M TEST",
       "output": "test_script2.txt",
       "cwd": "../../build/softsim/default/target/exe/"
+
     }
   ]
 }

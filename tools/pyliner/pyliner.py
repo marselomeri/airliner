@@ -15,7 +15,7 @@ DEFAULT_CI_PORT = 5009
 DEFAULT_TO_PORT = 5012
 
 # Custom exceptions
-class InvalidCommand(Exception): pass
+class InvalidCommandException(Exception): pass
 
 class Pyliner(object):
 
@@ -24,7 +24,7 @@ class Pyliner(object):
         self.ci_port = kwargs.get("ci_port", DEFAULT_CI_PORT)
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
         self.test_name = kwargs.get("test_name", "Unspecified")
-        self.airliner_data = self.__read_json(kwargs.get("airliner_map", None))
+        self.airliner_data = self.__read_json(kwargs.get("airliner_map", "cookiecutter.json"))
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
         self.subscribers = []
@@ -138,7 +138,7 @@ class Pyliner(object):
         
         Args:
             cmd(dict): User command specifying op and args
-            op(dict): Operation dict
+            op(dict): Operation dictionary
             
         Returns:
             Protobuf object for this specific message with set values
@@ -155,7 +155,7 @@ class Pyliner(object):
         for arg in cmd["args"]:
             arg_path =  self._get_op_attr(cmd["name"], arg["name"])
             if not arg_path:
-                raise InvalidCommand("Invalid command received. Argument operational name (%s) not found." % arg["name"])
+                raise InvalidCommandException("Invalid command received. Argument operational name (%s) not found." % arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
         exec(assign)
         
@@ -200,7 +200,7 @@ class Pyliner(object):
         args_present = False
         
         if "name" not in cmd:
-            raise InvalidCommand("Invalid command received. Missing \"name\" attribute")
+            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
         
         # Check if no args cmd
         if "args" in cmd:
@@ -209,7 +209,7 @@ class Pyliner(object):
         # Get command operation        
         op = self.__get_airliner_op(cmd["name"])
         if not op:
-            raise InvalidCommand("Invalid command received. Operation (%s) not defined." % cmd["name"])
+            raise InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
 
         # Generate airliner cmd
         header = self.__get_ccsds_msg(op)
@@ -306,7 +306,7 @@ class Pyliner(object):
         # Get operation for specified telemetry
         op = self.__get_airliner_op(tlm["name"])
         if not op:
-            raise InvalidCommand("Invalid command received. Operation (%s) not defined." % cmd["name"])
+            raise InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
         
         # Add entry to subscribers list
         self.subscribers.append({'op_path': tlm["name"],
@@ -316,18 +316,6 @@ class Pyliner(object):
                                  'tlmSeqNum': 0})
         
         logging.info('Subscribing to the following telemetry: %s' % (tlm))
-
-    def step_frame(self, steps = 1):
-        """ Step passed number of frames """
-        pass
-        
-    def step_forever(self):
-        """ Run Airliner at max speed """
-        pass
-        
-    def pause_frame(self):
-        """ Stop Airliner execution """
-        pass
 
     def send_to_airliner(self, msg):
         """ Publish the passed message to airliner """
@@ -408,8 +396,7 @@ class Pyliner(object):
         """ Do all the clean up post test execution """
         self.ingest_active = False
         self.dump_tlm()
-        print self.get_test_results()
-
+        print self.get_test_results()        
 
 class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
 
