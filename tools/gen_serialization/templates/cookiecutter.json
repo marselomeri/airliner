@@ -1,12 +1,9 @@
 {
-	"app_name": "ES",
-	"autogen_version": "",
-	"dir_name": "cfe_msg",
+	"app_name": "CFE_ES",
+	"app_ops_name": "Steve",
 	"proto_msgs": {
-		"es_app_name_pb": {
-			"airliner_msg": "CFE_ES_AppNameCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "5",
+		"CFE_ES_AppNameCmd_t": {
+			"proto_msg": "es_app_name_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -33,10 +30,8 @@
 				}
 			}
 		},
-		"es_app_reload_pb": {
-			"airliner_msg": "CFE_ES_AppReloadCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "7",
+		"CFE_ES_AppReloadCmd_t": {
+			"proto_msg": "es_app_reload_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -70,10 +65,8 @@
 				}
 			}
 		},
-		"es_delete_cds_pb": {
-			"airliner_msg": "CFE_ES_DeleteCDSCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "21",
+		"CFE_ES_DeleteCDSCmd_t": {
+			"proto_msg": "es_delete_cds_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -100,10 +93,8 @@
 				}
 			}
 		},
-		"es_dump_cds_reg_pb": {
-			"airliner_msg": "CFE_ES_DumpCDSRegCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "23",
+		"CFE_ES_DumpCDSRegCmd_t": {
+			"proto_msg": "es_dump_cds_reg_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -130,10 +121,8 @@
 				}
 			}
 		},
-		"es_hk_pb": {
-			"airliner_msg": "CFE_ES_HkPacket_t",
-			"airliner_mid": "0x0800",
-			"airliner_cc": "0",
+		"CFE_ES_HkPacket_t": {
+			"proto_msg": "es_hk_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -419,10 +408,8 @@
 				}
 			}
 		},
-		"es_one_app_pb": {
-			"airliner_msg": "CFE_ES_OneAppTlm_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "8",
+		"CFE_ES_OneAppTlm_t": {
+			"proto_msg": "es_one_app_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -604,10 +591,8 @@
 				}
 			}
 		},
-		"es_overwrite_sys_log_pb": {
-			"airliner_msg": "CFE_ES_OverWriteSysLogCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "18",
+		"CFE_ES_OverWriteSysLogCmd_t": {
+			"proto_msg": "es_overwrite_sys_log_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -634,10 +619,8 @@
 				}
 			}
 		},
-		"es_perf_set_filter_mask_pb": {
-			"airliner_msg": "CFE_ES_PerfSetFilterMaskCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "16",
+		"CFE_ES_PerfSetFilterMaskCmd_t": {
+			"proto_msg": "es_perf_set_filter_mask_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -671,10 +654,8 @@
 				}
 			}
 		},
-		"es_perf_set_trig_mask_pb": {
-			"airliner_msg": "CFE_ES_PerfSetTrigMaskCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "17",
+		"CFE_ES_PerfSetTrigMaskCmd_t": {
+			"proto_msg": "es_perf_set_trig_mask_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -708,10 +689,8 @@
 				}
 			}
 		},
-		"es_perf_start_pb": {
-			"airliner_msg": "CFE_ES_PerfStartCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "14",
+		"CFE_ES_PerfStartCmd_t": {
+			"proto_msg": "es_perf_start_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -738,10 +717,8 @@
 				}
 			}
 		},
-		"es_perf_stop_pb": {
-			"airliner_msg": "CFE_ES_PerfStopCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "15",
+		"CFE_ES_PerfStopCmd_t": {
+			"proto_msg": "es_perf_stop_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -768,10 +745,8 @@
 				}
 			}
 		},
-		"es_tlm_pool_stats_cmd_pb": {
-			"airliner_msg": "CFE_ES_TlmPoolStatsCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "22",
+		"CFE_ES_TlmPoolStatsCmd_t": {
+			"proto_msg": "es_tlm_pool_stats_cmd_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -805,10 +780,8 @@
 				}
 			}
 		},
-		"es_query_all_pb": {
-			"airliner_msg": "CFE_ES_QueryAllCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "9",
+		"CFE_ES_QueryAllCmd_t": {
+			"proto_msg": "es_query_all_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -835,10 +808,8 @@
 				}
 			}
 		},
-		"es_query_all_tasks_pb": {
-			"airliner_msg": "CFE_ES_QueryAllTasksCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "24",
+		"CFE_ES_QueryAllTasksCmd_t": {
+			"proto_msg": "es_query_all_tasks_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -865,10 +836,8 @@
 				}
 			}
 		},
-		"es_restart_pb": {
-			"airliner_msg": "CFE_ES_RestartCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "2",
+		"CFE_ES_RestartCmd_t": {
+			"proto_msg": "es_restart_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -895,10 +864,8 @@
 				}
 			}
 		},
-		"es_set_max_pr_count_pb": {
-			"airliner_msg": "CFE_ES_SetMaxPRCountCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "20",
+		"CFE_ES_SetMaxPRCountCmd_t": {
+			"proto_msg": "es_set_max_pr_count_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -925,10 +892,8 @@
 				}
 			}
 		},
-		"es_shell_pb": {
-			"airliner_msg": "CFE_ES_ShellCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "3",
+		"CFE_ES_ShellCmd_t": {
+			"proto_msg": "es_shell_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -962,10 +927,8 @@
 				}
 			}
 		},
-		"es_shell_packet_pb": {
-			"airliner_msg": "CFE_ES_ShellPacket_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "99",
+		"CFE_ES_ShellPacket_t": {
+			"proto_msg": "es_shell_packet_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -992,10 +955,8 @@
 				}
 			}
 		},
-		"es_start_app_pb": {
-			"airliner_msg": "CFE_ES_StartAppCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "4",
+		"CFE_ES_StartAppCmd_t": {
+			"proto_msg": "es_start_app_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -1057,10 +1018,8 @@
 				}
 			}
 		},
-		"es_write_er_log_pb": {
-			"airliner_msg": "CFE_ES_WriteERlogCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "13",
+		"CFE_ES_WriteERlogCmd_t": {
+			"proto_msg": "es_write_er_log_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -1087,10 +1046,8 @@
 				}
 			}
 		},
-		"es_write_sys_log_pb": {
-			"airliner_msg": "CFE_ES_WriteSyslogCmd_t",
-			"airliner_mid": "0x1806",
-			"airliner_cc": "11",
+		"CFE_ES_WriteSyslogCmd_t": {
+			"proto_msg": "es_write_sys_log_pb",
 			"fields": {
 				"Payload": {
 					"airliner_name": "Payload", 
@@ -1118,5 +1075,148 @@
 			}
 		}
 	},
+	"operations": {
+		"ShellPacket": {			
+			"airliner_msg": "CFE_ES_ShellPacket_t",
+			"airliner_cc": -1,
+			"airliner_mid": "0x080F"
+		},
+		"HK": {			
+			"airliner_msg": "CFE_ES_HkPacket_t",
+			"airliner_cc": -1,
+			"airliner_mid": "0x0800"
+		},
+		"OneAppTlm": {			
+			"airliner_msg": "CFE_ES_OneAppTlm_t",
+			"airliner_cc": -1,
+			"airliner_mid": "0x080B"
+		},
+		"Noop": {			
+			"airliner_msg": "",
+			"airliner_cc": 0,
+			"airliner_mid": "0x1806"
+		},
+		"Reset": {			
+			"airliner_msg": "",
+			"airliner_cc": 1,
+			"airliner_mid": "0x1806"
+		},
+		"Restart": {			
+			"airliner_msg": "CFE_ES_RestartCmd_t",
+			"airliner_cc": 2,
+			"airliner_mid": "0x1806"
+		},
+		"Shell": {			
+			"airliner_msg": "CFE_ES_ShellCmd_t",
+			"airliner_cc": 3,
+			"airliner_mid": "0x1806"
+		},
+		"StartApp": {			
+			"airliner_msg": "CFE_ES_StartAppCmd_t",
+			"airliner_cc": 4,
+			"airliner_mid": "0x1806"
+		},	
+		"StopApp": {			
+			"airliner_msg": "CFE_ES_AppNameCmd_t",
+			"airliner_cc": 5,
+			"airliner_mid": "0x1806"
+		},
+		"RestartApp": {			
+			"airliner_msg": "CFE_ES_AppNameCmd_t",
+			"airliner_cc": 6,
+			"airliner_mid": "0x1806"
+		},
+		"ReloadApp": {			
+			"airliner_msg": "CFE_ES_AppReloadCmd_t",
+			"airliner_cc": 7,
+			"airliner_mid": "0x1806"
+		},
+		"QueryOne": {			
+			"airliner_msg": "CFE_ES_AppNameCmd_t",
+			"airliner_cc": 8,
+			"airliner_mid": "0x1806"
+		},
+		"QueryAll": {			
+			"airliner_msg": "CFE_ES_QueryAllCmd_t",
+			"airliner_cc": 9,
+			"airliner_mid": "0x1806"
+		},
+		"ClearSysLog": {			
+			"airliner_msg": "",
+			"airliner_cc": 10,
+			"airliner_mid": "0x1806"
+		},
+		"WriteSysLog": {			
+			"airliner_msg": "CFE_ES_WriteSyslogCmd_t",
+			"airliner_cc": 11,
+			"airliner_mid": "0x1806"
+		},
+		"ClearERLog": {			
+			"airliner_msg": "",
+			"airliner_cc": 12,
+			"airliner_mid": "0x1806"
+		},
+		"WriteERLog": {			
+			"airliner_msg": "CFE_ES_WriteERlogCmd_t",
+			"airliner_cc": 13,
+			"airliner_mid": "0x1806"
+		},		
+		"PerfStart": {			
+			"airliner_msg": "CFE_ES_PerfStartCmd_t",
+			"airliner_cc": 14,
+			"airliner_mid": "0x1806"
+		},
+		"PerfStop": {			
+			"airliner_msg": "CFE_ES_PerfStopCmd_t",
+			"airliner_cc": 15,
+			"airliner_mid": "0x1806"
+		},
+		"SetFilterMask": {			
+			"airliner_msg": "CFE_ES_PerfSetFilterMaskCmd_t",
+			"airliner_cc": 16,
+			"airliner_mid": "0x1806"
+		},
+		"SetTriggerMask": {			
+			"airliner_msg": "CFE_ES_PerfSetTrigMaskCmd_t",
+			"airliner_cc": 17,
+			"airliner_mid": "0x1806"
+		},
+		"OverwriteSysLog": {			
+			"airliner_msg": "CFE_ES_OverWriteSysLogCmd_t",
+			"airliner_cc": 18,
+			"airliner_mid": "0x1806"
+		},
+		"ResetPRCount": {			
+			"airliner_msg": "",
+			"airliner_cc": 19,
+			"airliner_mid": "0x1806"
+		},
+		"SetMaxPRCount": {			
+			"airliner_msg": "CFE_ES_SetMaxPRCountCmd_t",
+			"airliner_cc": 20,
+			"airliner_mid": "0x1806"
+		},
+		"DeleteCDS": {			
+			"airliner_msg": "CFE_ES_DeleteCDSCmd_t",
+			"airliner_cc": 21,
+			"airliner_mid": "0x1806"
+		},
+		"TlmPoolStats": {			
+			"airliner_msg": "CFE_ES_TlmPoolStatsCmd_t",
+			"airliner_cc": 22,
+			"airliner_mid": "0x1806"
+		},
+		"DumpCDSReg": {			
+			"airliner_msg": "CFE_ES_DumpCDSRegCmd_t",
+			"airliner_cc": 23,
+			"airliner_mid": "0x1806"
+		},
+		"QueryAllTasks": {			
+			"airliner_msg": "CFE_ES_QueryAllTasksCmd_t",
+			"airliner_cc": 24,
+			"airliner_mid": "0x1806"
+		}
+	},
+	"autogen_version": "",
 	"_extensions": ["jinja2.ext.do", "jinja2.ext.loopcontrols"]
 }

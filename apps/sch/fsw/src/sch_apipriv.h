@@ -42,6 +42,13 @@ typedef struct
     uint32         ProcessingDisabledCtr;  /**< \brief Processing disable if greater than zero */
 } SCH_LibData_t;
 
+typedef struct
+{
+    uint8        TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    CFE_SB_MsgId_t MsgID;
+} SCH_ActivityDoneMsg_t;
+
+
 /*************************************************************************
 **
 ** Exported data
@@ -56,6 +63,9 @@ extern SCH_LibData_t    SCH_LibData;
 **
 **************************************************************************/
 
+/*
+** Library entry point for initialization
+*/
 /************************************************************************/
 /** \brief CFS Scheduler (SCH) Library Entry Point
 **  

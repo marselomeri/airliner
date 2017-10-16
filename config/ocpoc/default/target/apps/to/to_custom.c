@@ -100,7 +100,7 @@ int32 TO_Custom_Init(void)
     strncpy(TO_AppCustomData.Channel[0].IP, "10.10.0.10", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[0].DstPort = 5011;
     TO_AppCustomData.Channel[0].Priority = 50;
-    TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_GroundChannelTask;
+    TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_BinaryChannelTask;
     TO_AppCustomData.Channel[0].Socket = 0;
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
@@ -108,17 +108,17 @@ int32 TO_Custom_Init(void)
     strncpy(TO_AppCustomData.Channel[1].IP, "127.0.0.1", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[1].DstPort = 5012;
     TO_AppCustomData.Channel[1].Priority = 50;
-    TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_OnboardChannelTask;
+    TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_ProtobufChannelTask;
     TO_AppCustomData.Channel[1].Socket = 0;
     TO_AppCustomData.Channel[1].ChildTaskID = 0;
 
-    iStatus = TO_Channel_OpenChannel(0, "GROUND", TO_GROUND_CONFIG_TABLENAME, TO_GROUND_CONFIG_TABLE_FILENAME, TO_GROUND_DUMP_TABLENAME);
+    iStatus = TO_Channel_OpenChannel(0, "GRND-BIN", TO_GROUND_BINARY_CONFIG_TABLENAME, TO_GROUND_BINARY_CONFIG_TABLE_FILENAME, TO_GROUND_BINARY_DUMP_TABLENAME);
     if(iStatus != 0)
     {
         goto end_of_function;
     }
 
-    iStatus = TO_Channel_OpenChannel(1, "ONBOARD", TO_ONBOARD_CONFIG_TABLENAME, TO_ONBOARD_CONFIG_TABLE_FILENAME, TO_ONBOARD_DUMP_TABLENAME);
+    iStatus = TO_Channel_OpenChannel(1, "GRND-PB", TO_GROUND_PROTOBUF_CONFIG_TABLENAME, TO_GROUND_PROTOBUF_CONFIG_TABLE_FILENAME, TO_GROUND_PROTOBUF_DUMP_TABLENAME);
 
     for (i=0; i < TO_MAX_CHANNELS; i++)
     {
@@ -446,7 +446,7 @@ end_of_function:
 /* Ground Channel Task Entry Point                                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void TO_OutputChannel_GroundChannelTask(void)
+void TO_OutputChannel_BinaryChannelTask(void)
 {
     CFE_ES_RegisterChildTask();
 
@@ -463,7 +463,7 @@ void TO_OutputChannel_GroundChannelTask(void)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void TO_OutputChannel_OnboardChannelTask(void)
+void TO_OutputChannel_ProtobufChannelTask(void)
 {
     CFE_ES_RegisterChildTask();
 

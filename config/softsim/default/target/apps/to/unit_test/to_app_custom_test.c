@@ -804,28 +804,28 @@ void TO_OutputChannel_ProcessNewCustomCmds_DisableNominal(void)
 
 
  /**************************************************************************
- * Tests for TO_OutputChannel_OnboardChannelTask()
+ * Tests for TO_OutputChannel_ProtobufChannelTask()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_OnboardChannelTask()
+ * Test TO_OutputChannel_ProtobufChannelTask()
  * Note: currently there is no way to fail this function
  */
-void TO_OutputChannel_OnboardChannelTask_Nominal(void)
+void TO_OutputChannel_ProtobufChannelTask_Nominal(void)
 {
-    TO_OutputChannel_OnboardChannelTask();
+    TO_OutputChannel_ProtobufChannelTask();
 }
 
 
  /**************************************************************************
- * Tests for TO_OutputChannel_GroundChannelTask()
+ * Tests for TO_OutputChannel_BinaryChannelTask()
  **************************************************************************/
 /**
- * Test TO_OutputChannel_GroundChannelTask()
+ * Test TO_OutputChannel_BinaryChannelTask()
  * Note: currently there is no way to fail this function
  */
-void TO_OutputChannel_GroundChannelTask_Nominal(void)
+void TO_OutputChannel_BinaryChannelTask_Nominal(void)
 {
-    TO_OutputChannel_GroundChannelTask();
+    TO_OutputChannel_BinaryChannelTask();
 }
 
 
@@ -984,12 +984,12 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ProcessNewCustomCmds_DisableNominal, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ProcessNewCustomCmds_DisableNominal");
-    UtTest_Add(TO_OutputChannel_OnboardChannelTask_Nominal, 
+    UtTest_Add(TO_OutputChannel_ProtobufChannelTask_Nominal,
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_OnboardChannelTask_Nominal");
-    UtTest_Add(TO_OutputChannel_GroundChannelTask_Nominal, 
+               "TO_OutputChannel_ProtobufChannelTask_Nominal");
+    UtTest_Add(TO_OutputChannel_BinaryChannelTask_Nominal,
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_GroundChannelTask_Nominal");
+               "TO_OutputChannel_BinaryChannelTask_Nominal");
     UtTest_Add(TO_OutputChannel_CustomCleanupAll_Nominal, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_CustomCleanupAll_Nominal");

@@ -197,7 +197,7 @@
 #define SCH_UNUSED_MID      			0
 #define SCH_DIAG_TLM_MID				0x09e7
 #define SCH_HK_TLM_MID					0x09e8
-#define SCH_ACTIVITY_DONE_MID			0x09e9
+//#define SCH_ACTIVITY_DONE_MID			0x09e9
 
 
 /* GOPRO									*/
@@ -566,5 +566,7 @@
 #define MAC_RUN_CONTROLLER_MID                      0x1c44
 #define MAC_OUT_DATA_MID                            0x0c45
 #define MAC_HK_TLM_MID                              0x0c46
+
+#define SCH_ACTIVITY_DONE_MID						0x0f00
 
 #endif
