@@ -16,6 +16,7 @@ DEFAULT_TO_PORT = 5012
 
 # Custom exceptions
 class InvalidCommandException(Exception): pass
+class InvalidOperationException(Exception): pass
 
 class Pyliner(object):
 
@@ -28,6 +29,7 @@ class Pyliner(object):
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
         self.subscribers = []
+        self.telemetry = {}
         self.tlm_listener = SocketServer.UDPServer((self.address, DEFAULT_TO_PORT), self.__server_factory(self.__on_recv_telemetry))
         self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
         self.passes = 0
@@ -38,7 +40,7 @@ class Pyliner(object):
         self.all_telemetry = []
         self.__setup_log()
         self.ingest_active = True
-        self.recv_telemetry()
+        self.__recv_telemetry()
 
     def __init_socket(self):
         """ Creates a UDP socket object and returns it """
@@ -107,12 +109,11 @@ class Pyliner(object):
         else:
             return str(header.get_encoded()) + payload.SerializeToString()
 
-    def _get_op_attr(self, op_path, op_attr):
+    def _get_op_attr(self, op_path):
         """ Gets the operation path from airliner data for a specified attribute 
         
         Args:
-            op_path(str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
-            op_attr(str): Operational name of message attribute (E.g. CmdCounter)
+            op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
             
         Returns:
             True path to access this attribute in protobuf message (E.g. Payload.CmdCounter)
@@ -124,7 +125,7 @@ class Pyliner(object):
                 for app, app_data in fsw_data["apps"].iteritems():
                     if app_data["app_ops_name"] == ops_names[1]:
                         for op_name, op_data in app_data["proto_msgs"][op["airliner_msg"]]["operational_names"].iteritems():
-                            if op_name == op_attr:
+                            if op_name == ops_names[3]:
                                 return op_data["field_path"]
   
         return None
@@ -137,8 +138,8 @@ class Pyliner(object):
         """ Generates protobuf object from user script command
         
         Args:
-            cmd(dict): User command specifying op and args
-            op(dict): Operation dictionary
+            cmd (dict): User command specifying op and args
+            op (dict): Operation dictionary
             
         Returns:
             Protobuf object for this specific message with set values
@@ -153,7 +154,7 @@ class Pyliner(object):
         # Generate executable string assigning correct values to pb object
         assign = ""
         for arg in cmd["args"]:
-            arg_path =  self._get_op_attr(cmd["name"], arg["name"])
+            arg_path =  self._get_op_attr(cmd["name"] + '/' + arg["name"])
             if not arg_path:
                 raise InvalidCommandException("Invalid command received. Argument operational name (%s) not found." % arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
@@ -165,8 +166,8 @@ class Pyliner(object):
         """ Generates protobuf object from raw telemetry
         
         Args:
-            raw_tlm(str): Raw bytes received from socket
-            op_path(str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
+            raw_tlm (str): Raw bytes received from socket
+            op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
             
         Returns:
             Protobuf object for this specific message with set values
@@ -189,7 +190,7 @@ class Pyliner(object):
         """ User accessible function to send a command to the software bus. 
         
         Args:
-            cmd(dict): A command specifiying the operation to execute and any args for it.
+            cmd (dict): A command specifiying the operation to execute and any args for it.
                        E.g.    {'name':'/Airliner/ES/Noop'} 
                                     or
                                {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
@@ -225,19 +226,18 @@ class Pyliner(object):
         self.send_to_airliner(serial_cmd)
         logging.info('Sending command to airliner: %s' % (cmd))
 
-    def __get_pb_value(self, pb_msg, op_path, op_attr):
+    def __get_pb_value(self, pb_msg, op_path):
         """ Get value from protobuf object
         
         Args:
-            pb_msg(ProtoObj): Protobuf object for this message
-            op_path(str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
-            op_attr(str): Operational name of message attribute (E.g. CmdCounter)
+            pb_msg (ProtoObj): Protobuf object for this message
+            op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
             
         Returns:
             Value of attribute for passed proto message
         """
         value = None
-        arg_path =  self._get_op_attr(op_path, op_attr)
+        arg_path =  self._get_op_attr(op_path)
         if not arg_path:
             return None
         assign_string = "value =  pb_msg." + arg_path
@@ -273,55 +273,66 @@ class Pyliner(object):
 
         # Iterate over subscribed telemetry to check if we care
         for subscribed_tlm in self.subscribers:
-            if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):
-                if subscribed_tlm['callback']:
-                    # Get pb msg for this msg
-                    pb_msg = self.__get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
+            if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):       
+                # Get pb msg for this msg
+                pb_msg = self.__get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
 
-                    # Generate telemtry dictionary for callback
-                    cb_dict = {}
-                    cb_dict['name'] = subscribed_tlm['op_path']
-                    cb_dict['params'] = {}
-                    for op in [op['name'] for op in subscribed_tlm['params']]:
-                        cb_dict['params'][op] = {}
-                        cb_dict['params'][op]['value'] = self.__get_pb_value(pb_msg, cb_dict['name'], op)
-                        cb_dict['params'][op]['time'] = tlm_time
-                    
-                    # Call specified callback for this telemetry
+                # Generate telemtry dictionary for callback
+                cb_dict = {}
+                cb_dict['name'] = subscribed_tlm['op_path']
+                cb_dict['value'] = self.__get_pb_value(pb_msg, cb_dict['name'])
+                cb_dict['time'] = tlm_time
+                
+                # Update telemetry dictionary with fresh data
+                self.telemetry[subscribed_tlm['op_path']] = cb_dict
+                
+                # Call specified callback for this telemetry if it has one
+                if subscribed_tlm['callback']:
                     subscribed_tlm['callback'](cb_dict)
+                
+                                
             
-    def subscribe(self, tlm, callback):
+    def subscribe(self, tlm, callback = None):
         """ Receives an operation path to an airliner msg with ops names of that 
         messages attributes to subscribe to as well as a callback function.
 
         Args:
-            tlm(dict): Dictionary specifying the telemtry items to subscribe to, using the 
+            tlm (dict): Dictionary specifying the telemtry items to subscribe to, using the 
                        telemtry item's operational names. 
                        E.g. {'name': '/Airliner/ES/HK', 'args':[
                                 {'name':'CmdCounter'}]}
 
-            callback(function): Function to call when this telemetry is updated. If not specified
+            callback (function, optional): Function to call when this telemetry is updated. If not specified
                                 defaults to on_recv_telemetry                                
         """
-        # Get operation for specified telemetry
-        op = self.__get_airliner_op(tlm["name"])
-        if not op:
-            raise InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
-        
-        # Add entry to subscribers list
-        self.subscribers.append({'op_path': tlm["name"],
-                                 'airliner_mid': op['airliner_mid'],
-                                 'params':tlm['args'], 
-                                 'callback':callback,
-                                 'tlmSeqNum': 0})
-        
-        logging.info('Subscribing to the following telemetry: %s' % (tlm))
+        for tlm_item in tlm["tlm"]:
+            # Get operation for specified telemetry
+            op = self.__get_airliner_op(tlm_item)
+            if not op:
+                err_msg = "Invalid telemetry operational name received. Operation (%s) not defined." % tlm_item
+                logging.error(err_msg)
+                raise InvalidOperationException(err_msg)
+
+            # Add entry to subscribers list
+            self.subscribers.append({'op_path': tlm_item,
+                                     'airliner_mid': op['airliner_mid'],
+                                     'callback':callback,
+                                     'tlmSeqNum': 0})
+             
+            # Add entry to telemetry dictionary to prevent key errors
+            # in user scripts and set default values.
+            self.telemetry[tlm_item] = {'name': tlm_item,
+                                        'value': 'NULL',
+                                        'time': 'NULL'}
+            
+            
+            logging.info('Subscribing to the following telemetry: %s' % (tlm))
 
     def send_to_airliner(self, msg):
         """ Publish the passed message to airliner """
         self.ci_socket.sendto(msg, (self.address, self.ci_port))
     
-    def recv_telemetry(self):
+    def __recv_telemetry(self):
         """ 
         Listen to the the socket TO is publishing to. If it receives telemetry 
         we're subscribed to notify the correct callback.
