@@ -31,18 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef MAC_CDS_TBL_TEST_H
-#define MAC_CDS_TBL_TEST_H
+#include "Matrix3F3_test_utils.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/*
+ * Function Definitions
+ */
 
-void MAC_CDS_Tbl_Test_AddTestCases(void);
+void Matrix3F3_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* MAC_CDS_TBL_TEST_H */
+void Matrix3F3_Test_TearDown(void)
+{
+}

@@ -166,6 +166,8 @@ add_airliner_app_def(px4br
         ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_baro.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_combined.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_combined.pb.h
+        ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_correction.pb.c
+        ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_correction.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_gyro.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_gyro.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/sensor_mag.pb.c
@@ -286,6 +288,7 @@ add_airliner_app_def(px4br
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/sensor_accel.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/sensor_baro.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/sensor_combined.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/sensor_correction.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/sensor_gyro.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/sensor_mag.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/servorail_status.proto

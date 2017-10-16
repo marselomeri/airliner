@@ -31,61 +31,39 @@
 *
 *****************************************************************************/
 
-#include "mac_cmds_test.h"
-#include "mac_test_utils.h"
-
-#include "mac_msg.h"
-
 #include "uttest.h"
-#include "ut_osapi_stubs.h"
-#include "ut_cfe_sb_stubs.h"
-#include "ut_cfe_es_stubs.h"
-#include "ut_cfe_es_hooks.h"
-#include "ut_cfe_evs_stubs.h"
-#include "ut_cfe_evs_hooks.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_cfe_psp_memutils_stubs.h"
-#include "ut_cfe_tbl_stubs.h"
-#include "ut_cfe_fs_stubs.h"
-#include "ut_cfe_time_stubs.h"
 
-int32 MAC_Cmds_Test_UT_CFE_SB_SubscribeHook1(CFE_SB_MsgId_t MsgId, CFE_SB_PipeId_t PipeId,
-                                                CFE_SB_Qos_t Quality, uint16 MsgLim)
-{
-    return 5;
+#include "Matrix3F3_test.hpp"
+#include "Matrix3F3_test_utils.hpp"
+
+int main(void)
+{   
+	UtTest_Add(Test_Matrix3F3_Constructor, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Constructor");
+	UtTest_Add(Test_Matrix3F3_IndexOutOfBounds, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_IndexOutOfBounds");
+	UtTest_Add(Test_Matrix3F3_ArrayOperator, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_ArrayOperator");
+	UtTest_Add(Test_Matrix3F3_Transpose, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_Transpose");
+	UtTest_Add(Test_Matrix3F3_Identity, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_Identity");
+	UtTest_Add(Test_Matrix3F3_VectorMultiply, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_VectorMultiply");
+	UtTest_Add(Test_Matrix3F3_MatrixMultiply, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_MatrixMultiply");
+	UtTest_Add(Test_Matrix3F3_ScalarMultiply, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_ScalarMultiply");
+	UtTest_Add(Test_Matrix3F3_MatrixAddition, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_MatrixAddition");
+	UtTest_Add(Test_Matrix3F3_MatrixSubtraction, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_MatrixSubtraction");
+	UtTest_Add(Test_Matrix3F3_FromEuler, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_FromEuler");
+	UtTest_Add(Test_Matrix3F3_RotationMatrix, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_RotationMatrix");
+
+    return(UtTest_Run());
+
 }
-
-
-int32 MAC_Cmds_Test_UT_CFE_SB_SubscribeHook2(CFE_SB_MsgId_t MsgId, CFE_SB_PipeId_t PipeId,
-                                                CFE_SB_Qos_t Quality, uint16 MsgLim)
-{
-    return 6;
-}
-
-
-void MAC_Function2_Test_Case1(void)
-{
-/*    int32 Result;
-
-    Variable3 = 3;
-
-    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_SUBSCRIBE_INDEX, &MAC_Cmds_Test_UT_CFE_SB_SubscribeHook1);
-*/
-    /* Execute the function being tested */
-/*    Result = MAC_Function2();*/
-    
-    /* Verify results */
-/*    UtAssert_True (Variable4 == 4, "Variable4 == 4");
-    UtAssert_True (Result == 25, "Result == 25");
-
-    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 0, "Ut_CFE_EVS_GetEventQueueDepth() == 0");
-*/
-} /* end MAC_Function2_Test_Case1 */
-
-
-void MAC_Cmds_Test_AddTestCases(void)
-{
-    UtTest_Add(MAC_Function2_Test_Case1, MAC_Test_Setup, MAC_Test_TearDown, "MAC_Function2_Test_Case1");
-} /* end MAC_Cmds_Test_AddTestCases */
-
 

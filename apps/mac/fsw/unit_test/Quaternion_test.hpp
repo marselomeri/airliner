@@ -31,34 +31,21 @@
 *
 *****************************************************************************/
 
-#include "mac_cds_tbl_test.h"
-#include "mac_test_utils.h"
+#ifndef VECTOR4F_TEST_H
+#define VECTOR4F_TEST_H
 
-#include "mac_msg.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include "uttest.h"
-#include "ut_osapi_stubs.h"
-#include "ut_cfe_sb_stubs.h"
-#include "ut_cfe_es_stubs.h"
-#include "ut_cfe_es_hooks.h"
-#include "ut_cfe_evs_stubs.h"
-#include "ut_cfe_evs_hooks.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_cfe_psp_memutils_stubs.h"
-#include "ut_cfe_tbl_stubs.h"
-#include "ut_cfe_fs_stubs.h"
-#include "ut_cfe_time_stubs.h"
+void Test_Quaternion_Constructor(void);
+void Test_Quaternion_IndexOutOfBounds(void);
+void Test_Quaternion_ArrayOperator(void);
+void Test_Quaternion_NegateOperator(void);
 
 
-void MAC_CDS_Tbl_Test_Case1(void)
-{
-
+#ifdef __cplusplus
 }
+#endif
 
-
-void MAC_CDS_Tbl_Test_AddTestCases(void)
-{
-    UtTest_Add(MAC_CDS_Tbl_Test_Case1, MAC_Test_Setup, MAC_Test_TearDown, "MAC_CDS_Tbl_Test_Case1");
-}
-
-
+#endif /* VECTOR4F_TEST_H */

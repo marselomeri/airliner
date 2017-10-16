@@ -211,9 +211,9 @@
 /* Range: 0x9f0 - 0x9ff								*/
 #define PX4_ACTUATOR_ARMED_MID						0x0a05
 #define PX4_ACTUATOR_CONTROLS_0_MID					0x0a06
-#define PX4_ACTUATOR_CONTROLS_1_MID                 0x0a5b
-#define PX4_ACTUATOR_CONTROLS_2_MID                 0x0a5c
-#define PX4_ACTUATOR_CONTROLS_3_MID                 0x0a5d
+#define PX4_ACTUATOR_CONTROLS_1_MID                 0x0a5c
+#define PX4_ACTUATOR_CONTROLS_2_MID                 0x0a5d
+#define PX4_ACTUATOR_CONTROLS_3_MID                 0x0a5e
 #define PX4_ACTUATOR_DIRECT_MID						0x0a07
 #define PX4_ACTUATOR_OUTPUTS_MID					0x0a08
 #define PX4_ADC_REPORT_MID							0x0a09
@@ -298,6 +298,7 @@
 #define PX4_VISION_POSITION_ESTIMATE_MID			0x0a58
 #define PX4_VTOL_VEHICLE_STATUS_MID					0x0a59
 #define PX4_WIND_ESTIMATE_MID						0x0a5a
+#define PX4_SENSOR_CORRECTION_MID					0x0a5b
 
 /* VID													*/
 /* Range: 0xb20 - 0xb2f									*/
@@ -562,7 +563,7 @@
 /* MAC                                                  */
 #define MAC_CMD_MID                                 0x1c42
 #define MAC_SEND_HK_MID                             0x1c43
-#define MAC_UPDATE_MOTORS_MID                       0x1c44
+#define MAC_RUN_CONTROLLER_MID                      0x1c44
 #define MAC_OUT_DATA_MID                            0x0c45
 #define MAC_HK_TLM_MID                              0x0c46
 
