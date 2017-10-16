@@ -123,7 +123,7 @@ int32 SCH_CustomLateInit(void)
 
     CFE_ES_WaitForStartupSync(SCH_STARTUP_SYNC_TIMEOUT);
 
-    Status = OS_TimerSet(SCH_AppData.TimerId, 0, SCH_NORMAL_SLOT_PERIOD);
+    Status = OS_TimerSet(SCH_AppData.TimerId, SCH_NORMAL_SLOT_PERIOD, SCH_NORMAL_SLOT_PERIOD);
 
     /* Step one minor frame to get the machine going. */
     OS_BinSemGive(SCH_AppData.TimeSemaphore);

@@ -31,21 +31,32 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#ifndef MAC_TEST_UTILS_H
+#define MAC_TEST_UTILS_H
 
-#include "mac_app_test.h"
-#include "mac_cmds_test.h"
-#include "mac_config_tbl_test.h"
-#include "mac_cds_tbl_test.h"
+/*
+ * Includes
+ */
 
-int main(void)
-{   
-    MAC_App_Test_AddTestCases();
-    MAC_Cmds_Test_AddTestCases();
-    MAC_Config_Tbl_Test_AddTestCases();
-    MAC_CDS_Tbl_Test_AddTestCases();
+#include "mac_app.hpp"
 
-    return(UtTest_Run());
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+/*
+ * Function Definitions
+ */
+
+void MAC_Test_Setup(void);
+void MAC_Test_TearDown(void);
+
+extern MAC oMAC;
+
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* MAC_TEST_UTILS_H */
 

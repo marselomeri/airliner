@@ -31,32 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef MAC_TEST_UTILS_H
-#define MAC_TEST_UTILS_H
-
-/*
- * Includes
- */
-
-#include "mac_app.h"
-
-extern MAC_AppData_t  MAC_AppData;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Vector3F_test_utils.hpp"
 
 /*
  * Function Definitions
  */
 
-void MAC_Test_Setup(void);
-void MAC_Test_TearDown(void);
+void Vector3F_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* MAC_TEST_UTILS_H */
-
+void Vector3F_Test_TearDown(void)
+{
+}

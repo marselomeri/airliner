@@ -97,6 +97,7 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *inOutBuffer, uint32 inSize);
+uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_ServorailStatus_Enc(const PX4_ServorailStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize);
@@ -185,6 +186,7 @@ uint32 PX4BR_SatelliteInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Satellit
 uint32 PX4BR_SensorAccel_Dec(const char *inBuffer, uint32 inSize, PX4_SensorAccelMsg_t *inOutObject);
 uint32 PX4BR_SensorBaro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorBaroMsg_t *inOutObject);
 uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCombinedMsg_t *inOutObject);
+uint32 PX4BR_SensorCorrection_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCorrectionMsg_t *inOutObject);
 uint32 PX4BR_SensorGyro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorGyroMsg_t *inOutObject);
 uint32 PX4BR_SensorMag_Dec(const char *inBuffer, uint32 inSize, PX4_SensorMagMsg_t *inOutObject);
 uint32 PX4BR_ServorailStatus_Dec(const char *inBuffer, uint32 inSize, PX4_ServorailStatusMsg_t *inOutObject);

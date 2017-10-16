@@ -36,6 +36,7 @@
 
 
 #include <mixer/MultirotorMixer.h>
+#include "Vector3F.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,20 +74,55 @@ extern "C" {
 
 typedef struct
 {
-	PX4_ControlStateMsg_t				ControlState;
-	PX4_VehicleAttitudeSetpointMsg_t	VAttSp;			  /**< vehicle attitude setpoint */
-	PX4_VehicleRatesSetpointMsg_t		VRatesSp;		  /**< vehicle rates setpoint */
-	PX4_ManualControlSetpointMsg_t		ManualControlSp;  /**< manual control setpoint */
-	PX4_VehicleControlModeMsg_t			VControlMode;	  /**< vehicle control mode */
-	PX4_ActuatorControlsMsg_t			Actuators;		  /**< actuator controls */
 	PX4_ActuatorArmedMsg_t				Armed;			  /**< actuator arming status */
-	PX4_VehicleStatusMsg_t				VehicleStatus;	  /**< vehicle status */
-	PX4_MultirotorMotorLimitsMsg_t		MotorLimits;	  /**< motor limits */
-	PX4_McAttCtrlStatusMsg_t 			ControllerStatus; /**< controller status */
 	PX4_BatteryStatusMsg_t				BatteryStatus;	  /**< battery status */
-	PX4_SensorGyroMsg_t					SensorGyro;		  /**< gyro data before thermal correctons and ekf bias estimates are applied */
+	PX4_ControlStateMsg_t				ControlState;
+	PX4_ManualControlSetpointMsg_t		ManualControlSp;  /**< manual control setpoint */
+	PX4_MultirotorMotorLimitsMsg_t		MotorLimits;	  /**< motor limits */
 	PX4_SensorCorrectionMsg_t			SensorCorrection; /**< sensor thermal corrections */
+	PX4_SensorGyroMsg_t					SensorGyro;		  /**< gyro data before thermal correctons and ekf bias estimates are applied */
+	PX4_VehicleAttitudeSetpointMsg_t	VAttSp;			  /**< vehicle attitude setpoint */
+	PX4_VehicleControlModeMsg_t			VControlMode;	  /**< vehicle control mode */
+	PX4_VehicleRatesSetpointMsg_t		VRatesSp;		  /**< vehicle rates setpoint */
+	PX4_VehicleStatusMsg_t				VehicleStatus;	  /**< vehicle status */
 } MAC_CurrentValueTable_t;
+
+
+typedef struct
+{
+	math::Vector3F att_p;               /**< P gain for angular error */
+	math::Vector3F rate_p;    			/**< P gain for angular rate error */
+	math::Vector3F rate_i;    			/**< I gain for angular rate error */
+	math::Vector3F rate_int_lim;    	/**< integrator state limit for rate loop */
+	math::Vector3F rate_d;    			/**< D gain for angular rate error */
+	math::Vector3F rate_ff;    			/**< Feedforward gain for desired rates */
+	float yaw_ff;						/**< yaw control feed-forward */
+
+	float tpa_breakpoint_p;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_breakpoint_i;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_breakpoint_d;				/**< Throttle PID Attenuation breakpoint */
+	float tpa_rate_p;					/**< Throttle PID Attenuation slope */
+	float tpa_rate_i;					/**< Throttle PID Attenuation slope */
+	float tpa_rate_d;					/**< Throttle PID Attenuation slope */
+
+	float roll_rate_max;
+	float pitch_rate_max;
+	float yaw_rate_max;
+	float yaw_auto_max;
+	math::Vector3F mc_rate_max;    		/**< attitude rate limits in stabilized modes */
+	math::Vector3F auto_rate_max;    	/**< attitude rate limits in auto modes */
+	math::Vector3F acro_rate_max;    	/**< max attitude rates in acro mode */
+	float rattitude_thres;
+	MAC_VTOL_Type_t vtol_type;			/**< 0 = Tailsitter, 1 = Tiltrotor, 2 = Standard airframe */
+	boolean vtol_opt_recovery_enabled;
+	float vtol_wv_yaw_rate_scale;		/**< Scale value [0, 1] for yaw rate setpoint  */
+
+	boolean bat_scale_en;
+
+	int board_rotation;
+
+	float board_offset[3];
+} MAC_Params_t;
 
 
 /**
@@ -117,30 +153,28 @@ public:
 
     /* Config table-related */
 
-    /** \brief PWM Config Table Handle */
-    CFE_TBL_Handle_t PwmConfigTblHdl;
+    /** \brief Param Table Handle */
+    CFE_TBL_Handle_t ParamTblHdl;
 
-    /** \brief Mixer Config Table Handle */
-    CFE_TBL_Handle_t MixerConfigTblHdl;
-
-    /** \brief PWM Config Table Pointer */
-    MAC_PwmConfigTbl_t* PwmConfigTblPtr;
-
-    /** \brief Mixer Config Table Pointer */
-    MultirotorMixer_ConfigTable_t* MixerConfigTblPtr;
+    /** \brief Param Table Pointer */
+    MAC_ParamTbl_t* ParamTblPtr;
 
     /** \brief Output Data published at the end of cycle */
-    PX4_ActuatorOutputsMsg_t ActuatorOutputs;
+    PX4_ActuatorControlsMsg_t m_ActuatorControls;
 
     /** \brief Housekeeping Telemetry for downlink */
     MAC_HkTlm_t HkTlm;
 
     MAC_CurrentValueTable_t CVT;
 
-    MultirotorMixer MixerObject;
-
     //MIXER_Data_t  MixerData;
     PwmLimit_Data_t PwmLimit;
+
+    math::Vector3F m_AngularRatesPrevious;
+    math::Vector3F m_AngularRatesSetpointPrevious;
+	math::Vector3F m_AngularRatesSetpoint;
+	math::Vector3F m_AngularRatesIntegralError;
+	math::Vector3F m_AttControl;
 
 
 
@@ -148,12 +182,13 @@ public:
 	uint32 m_GyroCount;
 	int32 m_SelectedGyro;
 
-	PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
+	//PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
 	PX4_ActuatorControlsMsg_t       m_ActuatorControls0;
 
 	boolean m_Actuators0CircuitBreakerEnabled;
 
 
+	MAC_Params_t m_Params;
 
 
 
@@ -330,7 +365,7 @@ public:
      **       None
      **
      *************************************************************************/
-    void SendActuatorOutputs(void);
+    void SendActuatorControls(void);
 
     /************************************************************************/
     /** \brief Verify Command Length
@@ -353,33 +388,6 @@ public:
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
-
-    /************************************************************************/
-    /** \brief Update motors
-     **
-     **  \par Description
-     **       This function mixes the yaw, pitch, roll, and throttle actuators
-     **       and sets each specific motor to result in the commanded attitude
-     **       change.  Exactly to which proportion each motor affects each
-     **       actuator position is defined in the #MixerConfigTblHdl table.
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void   UpdateMotors(void);
-
-    /************************************************************************/
-    /** \brief Stop motors
-     **
-     **  \par Description
-     **       This function commands the motors to immediately stop.
-     **
-     **  \par Assumptions, External Events, and Notes:
-     **       None
-     **
-     *************************************************************************/
-    void   StopMotors(void);
 
     /************************************************************************/
     /** \brief Initialize the MAC configuration tables.
@@ -435,51 +443,31 @@ public:
     **  \endreturns
     **
     *************************************************************************/
-    static int32  ValidatePwmCfgTbl(void*);
+    static int32  ValidateParamTbl(void*);
 
-    /************************************************************************/
-    /** \brief Validate MAC Mixer configuration table
-    **
-    **  \par Description
-    **       This function validates MAC's Mixer configuration table
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-     **
-     **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ValidateMixerCfgTbl(void*);
+private:
+    void RunController(void);
+    void UpdateParams(void);
 
-    /************************************************************************/
-    /** \brief Return the specified control value
-    **
-    **  \par Description
-    **       This function is called by the Mixer object and returns the
-    **       value of the specified control.  This specific function only
-    **       supports ControlGroup 0 and will return an error otherwise.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-     **
-     **  \param [in]   ControlGroup    Index of the control group.
-     **  \param [in]   ControlIndex    Index of the control.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retcode -1  \retdesc Invalid input  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ControlCallback(cpuaddr Handle,
-        uint8 ControlGroup,
-        uint8 ControlIndex,
-        float &Control);
+	/**
+	 * Attitude controller.
+	 */
+	void ControlAttitude(float dt);
+
+	/**
+	 * Attitude rates controller.
+	 */
+	void ControlAttitudeRates(float dt);
+
+	math::Vector3F PidAttenuations(float tpa_breakpoint, float tpa_rate);
+
+private:
+	float m_ThrustSp;		/**< thrust setpoint */
+
 };
+
+
+extern MAC oMAC;
 
 #ifdef __cplusplus
 }

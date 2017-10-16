@@ -38,20 +38,35 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <string.h>
 #include <errno.h>
 
 #include "cfe.h"
 
-#include "mac_app.h"
+#include "mac_app.hpp"
 #include "mac_msg.h"
 #include "mac_version.h"
 #include <math.h>
+#include "cfs_utils.h"
+
+#include "Quaternion.hpp"
+
+
+#define TPA_RATE_LOWER_LIMIT  0.05f
+#define MIN_TAKEOFF_THRUST    0.2f
+#define ATTITUDE_TC_DEFAULT   0.2f
+#define MANUAL_THROTTLE_MAX_MULTICOPTER	0.9f
+
+#define MAX_GYRO_COUNT 3
+
+
+typedef enum
+{
+	AXIS_INDEX_ROLL = 0,
+	AXIS_INDEX_PITCH,
+	AXIS_INDEX_YAW,
+	AXIS_COUNT
+} AXIS_Index_t;
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -67,8 +82,7 @@ MAC oMAC;
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-MAC::MAC() :
-    MixerObject(MAC::ControlCallback, (cpuaddr)&CVT.ActuatorControls0)
+MAC::MAC()
 {
 
 }
@@ -149,20 +163,20 @@ int32 MAC::InitPipe()
                                  MAC_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(MAC_UPDATE_MOTORS_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_WAKEUP_RESERVED);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "Sch Pipe failed to subscribe to MAC_UPDATE_MOTORS_MID. (0x%08X)",
-                                     (unsigned int)iStatus);
-            goto MAC_InitPipe_Exit_Tag;
-        }
-
         iStatus = CFE_SB_SubscribeEx(MAC_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, MAC_SCH_PIPE_SEND_HK_RESERVED);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
                                      "CMD Pipe failed to subscribe to MAC_SEND_HK_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(MAC_RUN_CONTROLLER_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to MAC_RUN_CONTROLLER_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto MAC_InitPipe_Exit_Tag;
         }
@@ -176,24 +190,95 @@ int32 MAC::InitPipe()
             goto MAC_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08X)",
+                                     "CMD Pipe failed to subscribe to PX4_BATTERY_STATUS_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto MAC_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(PX4_RC_CHANNELS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "CMD Pipe failed to subscribe to PX4_RC_CHANNELS_MID. (0x%08X)",
+                                     "CMD Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08X)",
                                      (unsigned int)iStatus);
             goto MAC_InitPipe_Exit_Tag;
         }
 
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_MULTIROTOR_MOTOR_LIMITS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_MULTIROTOR_MOTOR_LIMITS_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_CORRECTION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_SENSOR_CORRECTION_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_GYRO_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_SENSOR_GYRO_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_SETPOINT_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_RATES_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_RATES_SETPOINT_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PX4_VEHICLE_STATUS_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto MAC_InitPipe_Exit_Tag;
+        }
     }
     else
     {
@@ -262,13 +347,63 @@ int32 MAC::InitData()
 {
     int32  iStatus=CFE_SUCCESS;
 
-    /* Init actuator outputs message */
-    CFE_SB_InitMsg(&ActuatorOutputs,
-            PX4_ACTUATOR_OUTPUTS_MID, sizeof(ActuatorOutputs), TRUE);
+    CFE_SB_InitMsg(&CVT.Armed, PX4_ACTUATOR_ARMED_MID, sizeof(CVT.Armed), TRUE);
+    CFE_SB_InitMsg(&CVT.BatteryStatus, PX4_BATTERY_STATUS_MID, sizeof(CVT.BatteryStatus), TRUE);
+    CFE_SB_InitMsg(&CVT.ControlState, PX4_CONTROL_STATE_MID, sizeof(CVT.ControlState), TRUE);
+    CFE_SB_InitMsg(&CVT.ManualControlSp, PX4_MANUAL_CONTROL_SETPOINT_MID, sizeof(CVT.ManualControlSp), TRUE);
+    CFE_SB_InitMsg(&CVT.MotorLimits, PX4_MULTIROTOR_MOTOR_LIMITS_MID, sizeof(CVT.MotorLimits), TRUE);
+    CFE_SB_InitMsg(&CVT.SensorCorrection, PX4_SENSOR_CORRECTION_MID, sizeof(CVT.SensorCorrection), TRUE);
+    CFE_SB_InitMsg(&CVT.SensorGyro, PX4_SENSOR_GYRO_MID, sizeof(CVT.SensorGyro), TRUE);
+    CFE_SB_InitMsg(&CVT.VAttSp, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, sizeof(CVT.VAttSp), TRUE);
+    CFE_SB_InitMsg(&CVT.VControlMode, PX4_VEHICLE_CONTROL_MODE_MID, sizeof(CVT.VControlMode), TRUE);
+    CFE_SB_InitMsg(&CVT.VRatesSp, PX4_VEHICLE_RATES_SETPOINT_MID, sizeof(CVT.VRatesSp), TRUE);
+    CFE_SB_InitMsg(&CVT.VehicleStatus, PX4_VEHICLE_STATUS_MID, sizeof(CVT.VehicleStatus), TRUE);
 
+    /* Init actuator outputs message */
+    CFE_SB_InitMsg(&m_ActuatorControls,
+    		PX4_ACTUATOR_CONTROLS_0_MID, sizeof(m_ActuatorControls), TRUE);
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
                    MAC_HK_TLM_MID, sizeof(HkTlm), TRUE);
+
+    m_AngularRatesPrevious.Zero();
+    m_AngularRatesSetpointPrevious.Zero();
+	m_AngularRatesSetpoint.Zero();
+	m_AngularRatesIntegralError.Zero();
+	m_AttControl.Zero();
+
+	for (uint32 i = 0; i < 3; i++)
+	{
+		// used scale factors to unity
+		CVT.SensorCorrection.gyro_scale_0[i] = 1.0f;
+		CVT.SensorCorrection.gyro_scale_1[i] = 1.0f;
+		CVT.SensorCorrection.gyro_scale_2[i] = 1.0f;
+	}
+
+	m_Params.att_p.Zero();
+	m_Params.rate_p.Zero();
+	m_Params.rate_i.Zero();
+	m_Params.rate_int_lim.Zero();
+	m_Params.rate_d.Zero();
+	m_Params.rate_ff.Zero();
+	m_Params.yaw_ff = 0.0f;
+	m_Params.roll_rate_max = 0.0f;
+	m_Params.pitch_rate_max = 0.0f;
+	m_Params.yaw_rate_max = 0.0f;
+	m_Params.mc_rate_max.Zero();
+	m_Params.auto_rate_max.Zero();
+	m_Params.acro_rate_max.Zero();
+	m_Params.rattitude_thres = 1.0f;
+	m_Params.vtol_opt_recovery_enabled = false;
+	m_Params.vtol_wv_yaw_rate_scale = 1.0f;
+	m_Params.bat_scale_en = 0;
+	m_Params.board_rotation = 0;
+	m_Params.board_offset[0] = 0.0f;
+	m_Params.board_offset[1] = 0.0f;
+	m_Params.board_offset[2] = 0.0f;
+
+	m_ThrustSp = 0.0f;
+	OS_printf("7) m_ThrustSp = %f\n", m_ThrustSp);
 
     return (iStatus);
 }
@@ -322,17 +457,6 @@ int32 MAC::InitApp()
         goto MAC_InitApp_Exit_Tag;
     }
 
-    iStatus = MixerObject.SetConfigTablePtr(MixerConfigTblPtr);
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent(MAC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init mixer (0x%08x)",
-                                 (unsigned int)iStatus);
-        goto MAC_InitApp_Exit_Tag;
-    }
-
-    PwmLimit_Init(&PwmLimit);
-
 MAC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -384,30 +508,67 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
     {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
-	{
-            case MAC_UPDATE_MOTORS_MID:
-                UpdateMotors();
-                break;
-
+        {
             case MAC_SEND_HK_MID:
                 ReportHousekeeping();
                 break;
 
+            case MAC_RUN_CONTROLLER_MID:
+                //RunController();
+                break;
+
             case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+                memcpy(&CVT.Armed, MsgPtr, sizeof(CVT.Armed));
                 break;
 
-            case PX4_ACTUATOR_CONTROLS_0_MID:
-                memcpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
+            case PX4_BATTERY_STATUS_MID:
+                memcpy(&CVT.BatteryStatus, MsgPtr, sizeof(CVT.BatteryStatus));
                 break;
 
-            case PX4_RC_CHANNELS_MID:
-                memcpy(&CVT.RcChannels, MsgPtr, sizeof(CVT.RcChannels));
+            case PX4_CONTROL_STATE_MID:
+                memcpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
+                RunController();
+                break;
+
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+                memcpy(&CVT.ManualControlSp, MsgPtr, sizeof(CVT.ManualControlSp));
+                break;
+
+            case PX4_MULTIROTOR_MOTOR_LIMITS_MID:
+                memcpy(&CVT.MotorLimits, MsgPtr, sizeof(CVT.MotorLimits));
+                break;
+
+            case PX4_SENSOR_CORRECTION_MID:
+                memcpy(&CVT.SensorCorrection, MsgPtr, sizeof(CVT.SensorCorrection));
+            	if (CVT.SensorCorrection.selected_gyro_instance < MAX_GYRO_COUNT)
+            	{
+            		m_SelectedGyro = CVT.SensorCorrection.selected_gyro_instance;
+            	}
+                break;
+
+            case PX4_SENSOR_GYRO_MID:
+                memcpy(&CVT.SensorGyro, MsgPtr, sizeof(CVT.SensorGyro));
+                break;
+
+            case PX4_VEHICLE_ATTITUDE_SETPOINT_MID:
+                memcpy(&CVT.VAttSp, MsgPtr, sizeof(CVT.VAttSp));
+                break;
+
+            case PX4_VEHICLE_CONTROL_MODE_MID:
+                memcpy(&CVT.VControlMode, MsgPtr, sizeof(CVT.VControlMode));
+                break;
+
+            case PX4_VEHICLE_RATES_SETPOINT_MID:
+                memcpy(&CVT.VRatesSp, MsgPtr, sizeof(CVT.VRatesSp));
+                break;
+
+            case PX4_VEHICLE_STATUS_MID:
+                memcpy(&CVT.VehicleStatus, MsgPtr, sizeof(CVT.VehicleStatus));
                 break;
 
             default:
                 (void) CFE_EVS_SendEvent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR,
-                                  "Recvd invalid SCH msgId (0x%04X)", (unsigned short)MsgId);
+                                  "Recvd invalid SCH msgId (0x%04X)", MsgId);
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -423,7 +584,6 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
          * iBlocking arg, you can do something here, or nothing.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
-        UpdateMotors();
         iStatus = CFE_SUCCESS;
     }
     else
@@ -553,10 +713,10 @@ void MAC::ReportHousekeeping()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void MAC::SendActuatorOutputs()
+void MAC::SendActuatorControls()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&m_ActuatorControls);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&m_ActuatorControls);
 }
 
 
@@ -598,7 +758,7 @@ boolean MAC::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 /* MAC Application C style main entry point.                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MAC_AppMain()
+extern "C" void MAC_AppMain()
 {
     oMAC.AppMain();
 }
@@ -661,131 +821,624 @@ void MAC::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Command all motors to stop.                                     */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MAC::StopMotors(void)
+void MAC::RunController(void)
 {
-    uint16 disarmed_pwm[MAC_MAX_MOTOR_OUTPUTS];
+	static uint64 last_run = 0;
+	float dt = (CFE_TIME_GetTimeInMicros() - last_run) / 1000000.0f;
 
-    for (unsigned int i = 0; i < MAC_MAX_MOTOR_OUTPUTS; i++) {
-        disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
-    }
+	UpdateParams();
 
-    //SetMotorOutputs(disarmed_pwm);
+	/* guard against too small (< 2ms) and too large (> 20ms) dt's */
+	if (dt < 0.002f)
+	{
+		dt = 0.002f;
+	}
+	else if (dt > 0.02f)
+	{
+		dt = 0.02f;
+	}
+
+//	/* check for updates in other topics */
+//	parameter_update_poll();
+
+	/* Check if we are in rattitude mode and the pilot is above the threshold on pitch
+	 * or roll (yaw can rotate 360 in normal att control).  If both are true don't
+	 * even bother running the attitude controllers */
+	if (CVT.VControlMode.ControlRattitudeEnabled)
+	{
+		if (fabsf(CVT.ManualControlSp.Y) > m_Params.rattitude_thres ||
+		    fabsf(CVT.ManualControlSp.X) > m_Params.rattitude_thres)
+		{
+			CVT.VControlMode.ControlAttitudeEnabled = FALSE;
+		}
+	}
+
+	if (CVT.VControlMode.ControlAttitudeEnabled)
+	{
+//		if (_ts_opt_recovery == nullptr) {
+//			// the  tailsitter recovery instance has not been created, thus, the vehicle
+//			// is not a tailsitter, do normal attitude control
+			ControlAttitude(dt);
+//		}
+//		else
+//		{
+//			vehicle_attitude_setpoint_poll();
+//			_thrust_sp = _v_att_sp.thrust;
+//			math::Quaternion q(_ctrl_state.q[0], _ctrl_state.q[1], _ctrl_state.q[2], _ctrl_state.q[3]);
+//			math::Quaternion q_sp(&_v_att_sp.q_d[0]);
+//			_ts_opt_recovery->setAttGains(_params.att_p, _params.yaw_ff);
+//			_ts_opt_recovery->calcOptimalRates(q, q_sp, _v_att_sp.yaw_sp_move_rate, _rates_sp);
+//
+//			/* limit rates */
+//			for (int i = 0; i < 3; i++) {
+//				_rates_sp(i) = math::constrain(_rates_sp(i), -_params.mc_rate_max(i), _params.mc_rate_max(i));
+//			}
+//		}
+
+//		/* publish attitude rates setpoint */
+		CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
+		CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
+		CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
+		CVT.VRatesSp.Thrust = m_ThrustSp;
+
+	    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
+	    CFE_SB_SendMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
+	}
+	else
+	{
+		/* attitude controller disabled, poll rates setpoint topic */
+		if (CVT.VControlMode.ControlManualEnabled)
+		{
+			/* manual rates control - ACRO mode */
+			m_AngularRatesSetpoint = math::Vector3F(CVT.ManualControlSp.Y, -CVT.ManualControlSp.X,
+					CVT.ManualControlSp.R).EMult(m_Params.acro_rate_max);
+			m_ThrustSp = fmin(CVT.ManualControlSp.Z, MANUAL_THROTTLE_MAX_MULTICOPTER);
+
+			/* publish attitude rates setpoint */
+			CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
+			CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
+			CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
+			CVT.VRatesSp.Thrust = m_ThrustSp;
+
+		    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
+		    CFE_SB_SendMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
+		}
+		else
+		{
+			/* attitude controller disabled, poll rates setpoint topic */
+			m_AngularRatesSetpoint[0] = CVT.VRatesSp.Roll;
+			m_AngularRatesSetpoint[1] = CVT.VRatesSp.Pitch;
+			m_AngularRatesSetpoint[2] = CVT.VRatesSp.Yaw;
+			m_ThrustSp = CVT.VRatesSp.Thrust;
+		}
+	}
+
+	if (CVT.VControlMode.ControlRatesEnabled)
+	{
+		ControlAttitudeRates(dt);
+
+//		/* publish actuator controls */
+
+		m_ActuatorControls.Control[0] = (isfinite(m_AttControl[0])) ? m_AttControl[0] : 0.0f;
+		m_ActuatorControls.Control[1] = (isfinite(m_AttControl[1])) ? m_AttControl[1] : 0.0f;
+		m_ActuatorControls.Control[2] = (isfinite(m_AttControl[2])) ? m_AttControl[2] : 0.0f;
+		m_ActuatorControls.Control[3] = (isfinite(m_ThrustSp)) ? m_ThrustSp : 0.0f;
+		m_ActuatorControls.Control[7] = CVT.VAttSp.LandingGear;
+
+		/* scale effort by battery status */
+		if (m_Params.bat_scale_en && CVT.BatteryStatus.Scale > 0.0f)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				m_ActuatorControls.Control[i] *= CVT.BatteryStatus.Scale;
+			}
+		}
+
+		/* TODO:  Add _actuators_0_circuit_breaker_enabled functionality */
+		//if (!_actuators_0_circuit_breaker_enabled) {
+			SendActuatorControls();
+		//}
+
+		PX4_McAttCtrlStatusMsg_t controllerStatus;
+	    CFE_SB_InitMsg(&controllerStatus,
+	    		PX4_MC_ATT_CTRL_STATUS_MID, sizeof(controllerStatus), TRUE);
+		controllerStatus.RollRateInteg = m_AngularRatesIntegralError[0];
+		controllerStatus.PitchRateInteg = m_AngularRatesIntegralError[1];
+		controllerStatus.YawRateInteg = m_AngularRatesIntegralError[2];
+	}
+
+	if (CVT.VControlMode.ControlTerminationEnabled)
+	{
+		if (!CVT.VehicleStatus.IsVtol)
+		{
+//			_rates_sp.zero();
+//			_rates_int.zero();
+//			_thrust_sp = 0.0f;
+//			_att_control.zero();
+//
+//
+//			/* publish actuator controls */
+//			_actuators.control[0] = 0.0f;
+//			_actuators.control[1] = 0.0f;
+//			_actuators.control[2] = 0.0f;
+//			_actuators.control[3] = 0.0f;
+//			_actuators.timestamp = hrt_absolute_time();
+//			_actuators.timestamp_sample = _ctrl_state.timestamp;
+//
+//			if (!_actuators_0_circuit_breaker_enabled) {
+//				if (_actuators_0_pub != nullptr) {
+//
+//					orb_publish(_actuators_id, _actuators_0_pub, &_actuators);
+//					perf_end(_controller_latency_perf);
+//
+//				} else if (_actuators_id) {
+//					_actuators_0_pub = orb_advertise(_actuators_id, &_actuators);
+//				}
+//			}
+//
+//			_controller_status.roll_rate_integ = _rates_int(0);
+//			_controller_status.pitch_rate_integ = _rates_int(1);
+//			_controller_status.yaw_rate_integ = _rates_int(2);
+//			_controller_status.timestamp = hrt_absolute_time();
+//
+//			/* publish controller status */
+//			if (_controller_status_pub != nullptr) {
+//				orb_publish(ORB_ID(mc_att_ctrl_status), _controller_status_pub, &_controller_status);
+//
+//			} else {
+//				_controller_status_pub = orb_advertise(ORB_ID(mc_att_ctrl_status), &_controller_status);
+//			}
+//
+//			/* publish attitude rates setpoint */
+//			_v_rates_sp.roll = _rates_sp(0);
+//			_v_rates_sp.pitch = _rates_sp(1);
+//			_v_rates_sp.yaw = _rates_sp(2);
+//			_v_rates_sp.thrust = _thrust_sp;
+//			_v_rates_sp.timestamp = hrt_absolute_time();
+//
+//			if (_v_rates_sp_pub != nullptr) {
+//				orb_publish(_rates_sp_id, _v_rates_sp_pub, &_v_rates_sp);
+//
+//			} else if (_rates_sp_id) {
+//				_v_rates_sp_pub = orb_advertise(_rates_sp_id, &_v_rates_sp);
+//			}
+		}
+	}
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Mix actuator controls and update motor speeds accordingly.      */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MAC::UpdateMotors(void)
+void MAC::ControlAttitude(float dt)
 {
-    const uint16 reverse_mask = 0;
-    uint16 disarmed_pwm[MAC_MAX_MOTOR_OUTPUTS];
-    uint16 min_pwm[MAC_MAX_MOTOR_OUTPUTS];
-    uint16 max_pwm[MAC_MAX_MOTOR_OUTPUTS];
-    uint16 pwm[MAC_MAX_MOTOR_OUTPUTS];
-    PX4_ActuatorOutputsMsg_t outputs;
 
-    ActuatorOutputs.timestamp = CVT.ActuatorControls0.timestamp;
+//	vehicle_attitude_setpoint_poll();
+//
+	m_ThrustSp = CVT.VAttSp.Thrust;
 
-    /* Do mixing */
-    ActuatorOutputs.Count = MixerObject.mix(ActuatorOutputs.Output, 0, 0);
+	/* construct attitude setpoint rotation matrix */
+	math::Quaternion q_sp(
+			CVT.VAttSp.Q_D[0],
+			CVT.VAttSp.Q_D[1],
+			CVT.VAttSp.Q_D[2],
+			CVT.VAttSp.Q_D[3]);
 
-    /* Disable unused ports by setting their output to NaN */
-    for (size_t i = ActuatorOutputs.Count;
-         i < sizeof(ActuatorOutputs.Output) / sizeof(ActuatorOutputs.Output[0]);
-         i++) {
-        ActuatorOutputs.Output[i] = NAN;
-    }
+	math::Matrix3F3 R_sp = q_sp.RotationMatrix();
 
-    for (unsigned int i = 0; i < MAC_MAX_MOTOR_OUTPUTS; i++) {
-        disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
-        min_pwm[i] = PwmConfigTblPtr->PwmMin;
-        max_pwm[i] = PwmConfigTblPtr->PwmMax;
-    }
+	/* get current rotation matrix from control state quaternions */
+	math::Quaternion q_att(CVT.ControlState.Q[0], CVT.ControlState.Q[1], CVT.ControlState.Q[2], CVT.ControlState.Q[3]);
+	math::Matrix3F3 R = q_att.RotationMatrix();
+	//for(uint32 x = 0; x < 4; ++x)
+	//{
+	//	OS_printf("q_att[%u] = %f\n", x,q_att[x]);
+	//}
+	//for(uint32 x = 0; x < 3; ++x)
+	//{
+	//	for(uint32 y = 0; y < 3; ++y)
+	//	{
+	//		OS_printf("R[%u][%u] = %f\n", x, y, R[x][y]);
+	//	}
+	//}
 
-    /* TODO */
-    PwmLimit_Calc(CVT.ActuatorArmed.Armed,
-            FALSE/*_armed.prearmed*/,
-            ActuatorOutputs.Count,
-            reverse_mask,
-            disarmed_pwm,
-            min_pwm,
-            max_pwm,
-            ActuatorOutputs.Output,
-            pwm,
-            &PwmLimit);
+	/* all input data is ready, run controller itself */
 
-    if (CVT.ActuatorArmed.Lockdown)
-    {
-        //SetMotorOutputs(disarmed_pwm);
-    }
-    else if (CVT.ActuatorArmed.InEscCalibrationMode)
-    {
-        if (CVT.ActuatorControls0.Control[3] * 1000 > 0.5f) {
-            pwm[0] = PwmConfigTblPtr->PwmMax;
-            pwm[1] = PwmConfigTblPtr->PwmMax;
-            pwm[2] = PwmConfigTblPtr->PwmMax;
-            pwm[3] = PwmConfigTblPtr->PwmMax;
-        } else {
-            pwm[0] = PwmConfigTblPtr->PwmMin;
-            pwm[1] = PwmConfigTblPtr->PwmMin;
-            pwm[2] = PwmConfigTblPtr->PwmMin;
-            pwm[3] = PwmConfigTblPtr->PwmMin;
-        }
+	/* try to move thrust vector shortest way, because yaw response is slower than roll/pitch */
+	math::Vector3F R_z(R[0][2], R[1][2], R[2][2]);
+	math::Vector3F R_sp_z(R_sp[0][2], R_sp[1][2], R_sp[2][2]);
 
-        //SetMotorOutputs(pwm);
-        CFE_EVS_SendEvent(MAC_PWM_CALIB_INFO_EID, CFE_EVS_INFORMATION, "Calib pwm %d:%d:%d:%d.", pwm[0], pwm[1], pwm[2], pwm[3]);
+	/* axis and sin(angle) of desired rotation */
+	math::Vector3F e_R = R.Transpose() * (R_z % R_sp_z);
 
-    }
-    else
-    {
-        //SetMotorOutputs(pwm);
-    }
+	/* calculate angle error */
+	float e_R_z_sin = e_R.Length();
+	float e_R_z_cos = R_z * R_sp_z;
 
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+	/* calculate weight for yaw control */
+	float yaw_w = R_sp[2][2] * R_sp[2][2];
+
+	/* calculate rotation matrix after roll/pitch only rotation */
+	math::Matrix3F3 R_rp;
+
+	if (e_R_z_sin > 0.0f) {
+		/* get axis-angle representation */
+		float e_R_z_angle = atan2f(e_R_z_sin, e_R_z_cos);
+		math::Vector3F e_R_z_axis = e_R / e_R_z_sin;
+
+		e_R = e_R_z_axis * e_R_z_angle;
+
+		/* cross product matrix for e_R_axis */
+		math::Matrix3F3 e_R_cp;
+		e_R_cp.Zero();
+		e_R_cp[0][1] = -e_R_z_axis[2];
+		e_R_cp[0][2] = e_R_z_axis[1];
+		e_R_cp[1][0] = e_R_z_axis[2];
+		e_R_cp[1][2] = -e_R_z_axis[0];
+		e_R_cp[2][0] = -e_R_z_axis[1];
+		e_R_cp[2][1] = e_R_z_axis[0];
+
+		/* rotation matrix for roll/pitch only rotation */
+		R_rp = R * (math::Matrix3F3::Identity() + e_R_cp * e_R_z_sin + e_R_cp * e_R_cp * (1.0f - e_R_z_cos));
+
+	} else {
+		/* zero roll/pitch rotation */
+		R_rp = R;
+	}
+
+	/* R_rp and R_sp has the same Z axis, calculate yaw error */
+	math::Vector3F R_sp_x(R_sp[0][0], R_sp[1][0], R_sp[2][0]);
+	math::Vector3F R_rp_x(R_rp[0][0], R_rp[1][0], R_rp[2][0]);
+	e_R[2] = atan2f((R_rp_x % R_sp_x) * R_sp_z, R_rp_x * R_sp_x) * yaw_w;
+
+	if (e_R_z_cos < 0.0f) {
+		/* for large thrust vector rotations use another rotation method:
+		 * calculate angle and axis for R -> R_sp rotation directly */
+		math::Quaternion q_error(R.Transpose() * R_sp);
+		math::Vector3F e_R_d = q_error[0] >= 0.0f ? q_error.Imaginary()  * 2.0f : -q_error.Imaginary() * 2.0f;
+
+		/* use fusion of Z axis based rotation and direct rotation */
+		float direct_w = e_R_z_cos * e_R_z_cos * yaw_w;
+		e_R = e_R * (1.0f - direct_w) + e_R_d * direct_w;
+	}
+
+	/* calculate angular rates setpoint */
+	m_AngularRatesSetpoint = m_Params.att_p.EMult(e_R);
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("e_R[%u] = %f\n", x, e_R[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_Params.att_p[%u] = %f\n", x, m_Params.att_p[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_Params.att_p.EMult(e_R)[%u] = %f\n", x, m_Params.att_p.EMult(e_R)[x]);
+//	}
+
+	/* limit rates */
+	for (uint32 i = 0; i < 3; i++) {
+		if ((CVT.VControlMode.ControlVelocityEnabled || CVT.VControlMode.ControlAutoEnabled) &&
+		    !CVT.VControlMode.ControlManualEnabled)
+		{
+			m_AngularRatesSetpoint.Constrain(i, -m_Params.auto_rate_max[i], m_Params.auto_rate_max[i]);
+		} else {
+			m_AngularRatesSetpoint.Constrain(i, -m_Params.mc_rate_max[i], m_Params.mc_rate_max[i]);
+		}
+	}
+
+	/* feed forward yaw setpoint rate */
+	m_AngularRatesSetpoint[2] += CVT.VAttSp.YawSpMoveRate * yaw_w * m_Params.yaw_ff;
+
+	/* weather-vane mode, dampen yaw rate */
+	if ((CVT.VControlMode.ControlVelocityEnabled || CVT.VControlMode.ControlAutoEnabled) &&
+	    CVT.VAttSp.DisableMcYawControl == true && !CVT.VControlMode.ControlManualEnabled) {
+		float wv_yaw_rate_max = m_Params.auto_rate_max[2] * m_Params.vtol_wv_yaw_rate_scale;
+		m_AngularRatesSetpoint.Constrain(2, -wv_yaw_rate_max, wv_yaw_rate_max);
+		// prevent integrator winding up in weathervane mode
+		m_AngularRatesIntegralError[2] = 0.0f;
+	}
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Mixer callback to get the actual control value.                 */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 MAC::ControlCallback(
-        cpuaddr Handle,
-        uint8 ControlGroup,
-        uint8 ControlIndex,
-        float &Control)
+void MAC::ControlAttitudeRates(float dt)
 {
-    int32 iStatus = 0;
+	math::Matrix3F3	boardRotation;	/**< rotation matrix for the orientation that the board is mounted */
 
-    const PX4_ActuatorControlsMsg_t *controls = (PX4_ActuatorControlsMsg_t*)Handle;
+	/* reset integral if disarmed */
+	if(!CVT.Armed.Armed || !CVT.VehicleStatus.IsRotaryWing)
+	{
+		m_AngularRatesIntegralError.Zero();
+	}
 
-    if(ControlGroup > 0)
-        iStatus = -1;
-    else if(ControlIndex > 8)
-        iStatus = -1;
-    else
-    {
-        Control = controls[ControlGroup].Control[ControlIndex];
-        iStatus = CFE_SUCCESS;
-    }
+//	OS_printf("CVT.Armed.Armed = %u\n", CVT.Armed.Armed);
+//	OS_printf("CVT.VehicleStatus.IsRotaryWing = %u\n", CVT.VehicleStatus.IsRotaryWing);
 
-    return iStatus;
+	/* get transformation matrix from sensor/board to body frame */
+	boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->board_rotation);
+
+//	OS_printf("ParamTblPtr->board_rotation = %i\n", ParamTblPtr->board_rotation);
+//
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		for(uint32 y = 0; y < 3; ++y)
+//		{
+//			OS_printf("#1 boardRotation[%u][%u] = %f\n", x, y, boardRotation[x][y]);
+//		}
+//	}
+
+	/* fine tune the rotation */
+	math::Matrix3F3 boardRotationOffset;
+	boardRotationOffset.FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
+					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[1],
+					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[2]);
+	boardRotation = boardRotationOffset * boardRotation;
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		for(uint32 y = 0; y < 3; ++y)
+//		{
+//			OS_printf("#2 boardRotation[%u][%u] = %f\n", x, y, boardRotation[x][y]);
+//		}
+//	}
+
+	// get the raw gyro data and correct for thermal errors
+	math::Vector3F rates;
+
+	if (m_SelectedGyro == 0)
+	{
+		rates[0] = (CVT.SensorGyro.X - CVT.SensorCorrection.gyro_offset_0[0]) * CVT.SensorCorrection.gyro_scale_0[0];
+		rates[1] = (CVT.SensorGyro.Y - CVT.SensorCorrection.gyro_offset_0[1]) * CVT.SensorCorrection.gyro_scale_0[1];
+		rates[2] = (CVT.SensorGyro.Z - CVT.SensorCorrection.gyro_offset_0[2]) * CVT.SensorCorrection.gyro_scale_0[2];
+
+	}
+	else if (m_SelectedGyro == 1)
+	{
+		rates[0] = (CVT.SensorGyro.X - CVT.SensorCorrection.gyro_offset_1[0]) * CVT.SensorCorrection.gyro_scale_1[0];
+		rates[1] = (CVT.SensorGyro.Y - CVT.SensorCorrection.gyro_offset_1[1]) * CVT.SensorCorrection.gyro_scale_1[1];
+		rates[2] = (CVT.SensorGyro.Z - CVT.SensorCorrection.gyro_offset_1[2]) * CVT.SensorCorrection.gyro_scale_1[2];
+	}
+	else if (m_SelectedGyro == 2)
+	{
+		rates[0] = (CVT.SensorGyro.X - CVT.SensorCorrection.gyro_offset_2[0]) * CVT.SensorCorrection.gyro_scale_2[0];
+		rates[1] = (CVT.SensorGyro.Y - CVT.SensorCorrection.gyro_offset_2[1]) * CVT.SensorCorrection.gyro_scale_2[1];
+		rates[2] = (CVT.SensorGyro.Z - CVT.SensorCorrection.gyro_offset_2[2]) * CVT.SensorCorrection.gyro_scale_2[2];
+	}
+	else
+	{
+		rates[0] = CVT.SensorGyro.X;
+		rates[1] = CVT.SensorGyro.Y;
+		rates[2] = CVT.SensorGyro.Z;
+	}
+
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("#1 rates[%u] = %f\n", x, rates[x]);
+//	}
+
+	// rotate corrected measurements from sensor to body frame
+	rates = boardRotation * rates;
+
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("#2 rates[%u] = %f\n", x, rates[x]);
+//	}
+
+	// correct for in-run bias errors
+	rates[0] -= CVT.ControlState.RollRateBias;
+	rates[1] -= CVT.ControlState.PitchRateBias;
+	rates[2] -= CVT.ControlState.YawRateBias;
+
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("#3 rates[%u] = %f\n", x, rates[x]);
+//	}
+
+	math::Vector3F rates_p_scaled = m_Params.rate_p.EMult(PidAttenuations(m_Params.tpa_breakpoint_p, m_Params.tpa_rate_p));
+	math::Vector3F rates_i_scaled = m_Params.rate_i.EMult(PidAttenuations(m_Params.tpa_breakpoint_i, m_Params.tpa_rate_i));
+	math::Vector3F rates_d_scaled = m_Params.rate_d.EMult(PidAttenuations(m_Params.tpa_breakpoint_d, m_Params.tpa_rate_d));
+
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates_p_scaled[%u] = %f\n", x, rates_p_scaled[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates_i_scaled[%u] = %f\n", x, rates_i_scaled[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates_d_scaled[%u] = %f\n", x, rates_d_scaled[x]);
+//	}
+
+	/* angular rates error */
+	math::Vector3F rates_err = m_AngularRatesSetpoint - rates;
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);
+//	}
+
+	m_AttControl = rates_p_scaled.EMult(rates_err) +
+			m_AngularRatesIntegralError +
+		    rates_d_scaled.EMult(m_AngularRatesPrevious - rates) / dt +
+		    m_Params.rate_ff.EMult(m_AngularRatesSetpoint);
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates_p_scaled.EMult(rates_err)[%u] = %f\n", x, rates_p_scaled.EMult(rates_err)[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_AngularRatesIntegralError[%u] = %f\n", x, m_AngularRatesIntegralError[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_AngularRatesPrevious[%u] = %f\n", x, m_AngularRatesPrevious[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("rates[%u] = %f\n", x, rates[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("(m_AngularRatesPrevious - rates)[%u] = %f\n", x, (m_AngularRatesPrevious - rates)[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("(rates_d_scaled.EMult(m_AngularRatesPrevious - rates))[%u] = %f\n", x, (rates_d_scaled.EMult(m_AngularRatesPrevious - rates))[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("(rates_d_scaled.EMult((m_AngularRatesPrevious - rates))/dt)[%u] = %f\n", x, ((rates_d_scaled.EMult(m_AngularRatesPrevious - rates))/dt)[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_AngularRatesSetpoint[%u] = %f\n", x, m_AngularRatesSetpoint[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_Params.rate_ff[%u] = %f\n", x, m_Params.rate_ff[x]);
+//	}
+//	for(uint32 x = 0; x < 3; ++x)
+//	{
+//		OS_printf("m_Params.rate_ff.EMult(m_AngularRatesSetpoint)[%u] = %f\n", x, m_Params.rate_ff.EMult(m_AngularRatesSetpoint)[x]);
+//	}
+
+	m_AngularRatesSetpointPrevious = m_AngularRatesSetpoint;
+	m_AngularRatesPrevious = rates;
+
+	/* update integral only if motors are providing enough thrust to be effective */
+	if (m_ThrustSp > MIN_TAKEOFF_THRUST)
+	{
+		for (int i = AXIS_INDEX_ROLL; i < AXIS_COUNT; i++)
+		{
+			// Check for positive control saturation
+			bool positive_saturation =
+				((i == AXIS_INDEX_ROLL) && CVT.MotorLimits.SaturationStatus.Flags.RollPos) ||
+				((i == AXIS_INDEX_PITCH) && CVT.MotorLimits.SaturationStatus.Flags.PitchPos) ||
+				((i == AXIS_INDEX_YAW) && CVT.MotorLimits.SaturationStatus.Flags.YawPos);
+
+			// Check for negative control saturation
+			bool negative_saturation =
+				((i == AXIS_INDEX_ROLL) && CVT.MotorLimits.SaturationStatus.Flags.RollNeg) ||
+				((i == AXIS_INDEX_PITCH) && CVT.MotorLimits.SaturationStatus.Flags.PitchNeg) ||
+				((i == AXIS_INDEX_YAW) && CVT.MotorLimits.SaturationStatus.Flags.YawNeg);
+
+			// prevent further positive control saturation
+			if (positive_saturation)
+			{
+				rates_err[i] = fmin(rates_err[i], 0.0f);
+			}
+
+			// prevent further negative control saturation
+			if (negative_saturation) {
+				rates_err[i] = fmax(rates_err[i], 0.0f);
+			}
+
+			// Perform the integration using a first order method and do not propaate the result if out of range or invalid
+			float rate_i = m_AngularRatesIntegralError[i] + m_Params.rate_i[i] * rates_err[i] * dt;
+
+			if (isfinite(rate_i) && rate_i > -m_Params.rate_int_lim[i] && rate_i < m_Params.rate_int_lim[i])
+			{
+				m_AngularRatesIntegralError[i] = rate_i;
+			}
+		}
+	}
+
+	/* explicitly limit the integrator state */
+	for (int i = AXIS_INDEX_ROLL; i < AXIS_COUNT; i++)
+	{
+		m_AngularRatesIntegralError.Constrain(i, -m_Params.rate_int_lim[i], m_Params.rate_int_lim[i]);
+	}
 }
 
-#ifdef __cplusplus
+
+math::Vector3F MAC::PidAttenuations(float tpa_breakpoint, float tpa_rate)
+{
+	/* throttle pid attenuation factor */
+	float tpa = 1.0f - tpa_rate * (fabsf(CVT.VRatesSp.Thrust) - tpa_breakpoint) / (1.0f - tpa_breakpoint);
+	tpa = fmaxf(TPA_RATE_LOWER_LIMIT, fminf(1.0f, tpa));
+
+	math::Vector3F pidAttenuationPerAxis;
+	pidAttenuationPerAxis[AXIS_INDEX_ROLL] = tpa;
+	pidAttenuationPerAxis[AXIS_INDEX_PITCH] = tpa;
+	pidAttenuationPerAxis[AXIS_INDEX_YAW] = 1.0;
+
+	return pidAttenuationPerAxis;
 }
-#endif
+
+
+void MAC::UpdateParams(void)
+{
+	/* roll gains */
+	m_Params.att_p[0] = ParamTblPtr->roll_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->roll_tc);
+	m_Params.rate_p[0] = ParamTblPtr->roll_rate_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->roll_tc);
+	m_Params.rate_i[0] = ParamTblPtr->roll_rate_i;
+	m_Params.rate_int_lim[0] = ParamTblPtr->roll_rate_integ_lim;
+	m_Params.rate_d[0] = ParamTblPtr->roll_rate_d * (ATTITUDE_TC_DEFAULT / ParamTblPtr->roll_tc);
+	m_Params.rate_ff[0] = ParamTblPtr->roll_rate_ff;
+
+	/* pitch gains */
+	m_Params.att_p[1] = ParamTblPtr->pitch_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->pitch_tc);
+	m_Params.rate_p[1] = ParamTblPtr->pitch_rate_p * (ATTITUDE_TC_DEFAULT / ParamTblPtr->pitch_tc);
+	m_Params.rate_i[1] = ParamTblPtr->pitch_rate_i;
+	m_Params.rate_int_lim[1] = ParamTblPtr->pitch_rate_integ_lim;
+	m_Params.rate_d[1] = ParamTblPtr->pitch_rate_d * (ATTITUDE_TC_DEFAULT / ParamTblPtr->pitch_tc);
+	m_Params.rate_ff[1] = ParamTblPtr->pitch_rate_ff;
+
+	m_Params.tpa_breakpoint_p = ParamTblPtr->tpa_breakpoint_p;
+	m_Params.tpa_breakpoint_i = ParamTblPtr->tpa_breakpoint_i;
+	m_Params.tpa_breakpoint_d = ParamTblPtr->tpa_breakpoint_d;
+	m_Params.tpa_rate_p = ParamTblPtr->tpa_rate_p;
+	m_Params.tpa_rate_i = ParamTblPtr->tpa_rate_i;
+	m_Params.tpa_rate_d = ParamTblPtr->tpa_rate_d;
+
+	/* yaw gains */
+	m_Params.att_p[2] = ParamTblPtr->yaw_p;
+	m_Params.rate_p[2] = ParamTblPtr->yaw_rate_p;
+	m_Params.rate_i[2] = ParamTblPtr->yaw_rate_i;
+	m_Params.rate_int_lim[2] = ParamTblPtr->yaw_rate_integ_lim;
+	m_Params.rate_d[2] = ParamTblPtr->yaw_rate_d;
+	m_Params.rate_ff[2] = ParamTblPtr->yaw_rate_ff;
+
+	m_Params.yaw_ff = ParamTblPtr->yaw_ff;
+
+	/* angular rate limits */
+	m_Params.mc_rate_max[0] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+	m_Params.mc_rate_max[1] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+	m_Params.mc_rate_max[2] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+
+	/* auto angular rate limits */
+	m_Params.auto_rate_max[0] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+	m_Params.auto_rate_max[1] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+	m_Params.auto_rate_max[2] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+
+	/* manual rate control scale and auto mode roll/pitch rate limits */
+	m_Params.acro_rate_max[0] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+	m_Params.acro_rate_max[1] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+	m_Params.acro_rate_max[2] = (ParamTblPtr->roll_rate_max / 180.0f) * M_PI;
+
+	/* stick deflection needed in rattitude mode to control rates not angles */
+	m_Params.rattitude_thres = ParamTblPtr->rattitude_thres;
+
+	m_Params.vtol_type = ParamTblPtr->vtol_type;
+
+	m_Params.vtol_opt_recovery_enabled = ParamTblPtr->vtol_opt_recovery_enabled;
+
+	m_Params.vtol_wv_yaw_rate_scale = ParamTblPtr->vtol_wv_yaw_rate_scale;
+
+	m_Params.bat_scale_en = ParamTblPtr->bat_scale_en;
+
+	/* TODO:  Add circuit breaker */
+	// _actuators_0_circuit_breaker_enabled = circuit_breaker_enabled("CBRK_RATE_CTRL", CBRK_RATE_CTRL_KEY);
+
+	/* rotation of the autopilot relative to the body */
+	m_Params.board_rotation = ParamTblPtr->board_rotation;
+
+	/* fine adjustment of the rotation */
+	m_Params.board_offset[0] = ParamTblPtr->board_offset[0];
+	m_Params.board_offset[1] = ParamTblPtr->board_offset[1];
+	m_Params.board_offset[2] = ParamTblPtr->board_offset[2];
+}
 
 /************************/
 /*  End of File Comment */

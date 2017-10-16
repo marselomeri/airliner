@@ -1,18 +1,49 @@
+"""
+
+   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+ 3. Neither the name Windhover Labs nor the names of its 
+    contributors may be used to endorse or promote products derived 
+    from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+"""
 import ctypes
 import struct 
 import time
-#import binascii
 
 
 """CCSDS Space Packet Protocol ctype structure definitions.
 
-Note: ctypes.BigEndianStructure seems to have a bug bit fields defined 
-with bigendianstructure seem to create fields in random order. Using 
+Note: ctypes.BigEndianStructure seems to have a bug. Bit fields defined 
+with bigendianstructure appear to create fields in random order. Using 
 ctypes Structure for now. ctypes uses the native byte order for 
-Structures and Unions.
+Structures and Unions. For issues with alignment use the pragma pack
+ctype equivalent _pack_ = n.
 
 """
-
 
 class stream_id_bits(ctypes.Structure):
     """Primary header packet identifier word (stream ID) bit fields.
@@ -39,14 +70,14 @@ class sequence_bits(ctypes.Structure):
 
 
 class command_bits(ctypes.Structure):
-    """Command secondary header big fields.
+    """Command secondary header bit fields.
 
     Checksum, calculated by ground system
     command function code
     reserved, set to 0
     """
-    _fields_ = [("checksum", ctypes.c_uint16, 8),
-                ("code", ctypes.c_uint16, 15),
+    _fields_ = [("code", ctypes.c_uint16, 7),
+                ("checksum", ctypes.c_uint16, 8),
                 ("reserved", ctypes.c_uint16, 1)]
 
 
@@ -57,12 +88,13 @@ class StreamId(ctypes.Union):
 
 
 class Sequence(ctypes.Union):
+    """Primary header packet sequence word."""
     _fields_ = [("bits", sequence_bits),
                 ("data", ctypes.c_uint16)]
 
 
 class Command(ctypes.Union):
-    """Primary header packet sequence word union."""
+    """Secondary command header packet sequence word union."""
     _fields_ = [("bits", command_bits),
                 ("data", ctypes.c_uint16)]
 
@@ -197,10 +229,12 @@ class CCSDS_PriHdr_t(ctypes.Structure):
         The length count C shall be expressed as:
         C = (Total Number of Octets in the Packet Data Field) - 1
         
+        Plus the length of the primary header - 6 bytes
+        
         Args:
             value (int): Total packet length in bytes
         """
-        self.Length = value + 1
+        self.Length = value - 7
 
     def get_length(self):
         """Get the packet data length.
@@ -209,10 +243,20 @@ class CCSDS_PriHdr_t(ctypes.Structure):
         The length count C shall be expressed as:
         C = (Total Number of Octets in the Packet Data Field) - 1
         
+        Plus the length of the primary header - 6 bytes
+        
         Returns:
             int: Total packet length in bytes
         """
-        return self.Length - 1
+        return self.Length + 7
+    
+    def get_header_size(self):
+        """Returns the length of the primary header using ctypes.sizeof.
+        
+        Returns:
+            int: Total primary header size in bytes.
+        """
+        return ctypes.sizeof(self)
 
 
 class CCSDS_CmdSecHdr_t(ctypes.Structure):
@@ -269,14 +313,30 @@ class CCSDS_CmdSecHdr_t(ctypes.Structure):
         """
         self.Command.data, = struct.unpack('>H', sec_header)
 
+    def get_header_size(self):
+        """Returns the length of the command secondary header using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total primary header size in bytes.
+        """
+        return ctypes.sizeof(self)
+
 
 class Time(ctypes.Structure):
+    """Secondary telemetry header time.
+    
+    Note:
+        This is used for CFE_SB_PACKET_TIME_FORMAT == 
+        CFE_SB_TIME_32_16_SUBS when CCSDS_TIME_SIZE is defined as 6 in
+        CFS.
+    
+    """
+    _pack_ = 1
     _fields_ = [("Seconds", ctypes.c_uint32),
                 ("Subseconds", ctypes.c_uint16)]
 
 
-# for CFE_SB_PACKET_TIME_FORMAT == CFE_SB_TIME_32_16_SUBS
-# CCSDS_TIME_SIZE 6
 class CCSDS_TlmSecHdr_t(ctypes.Structure):
     """Secondary telemetry header."""
     _fields_ = [("Time", Time)]
@@ -346,6 +406,15 @@ class CCSDS_TlmSecHdr_t(ctypes.Structure):
         """
         return self.Time.Seconds, self.Time.Subseconds
 
+    def get_header_size(self):
+        """Returns the length of the telemetry secondary header using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total primary header size in bytes.
+        """
+        return ctypes.sizeof(self)
+
 
 class CCSDS_CmdPkt_t(ctypes.Structure):
     """Generic combined command header."""
@@ -362,8 +431,9 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         self.PriHdr.StreamId.bits.shdr_flag = 1
         self.PriHdr.StreamId.bits.type = 1
         #self.PriHdr.StreamId.bits.version = 0
-        #self.PriHdr.StreamId.bits.count = 0
-        #self.PriHdr.StreamId.bits.seq_flags = 0
+        #self.PriHdr.Sequence.bits.count = 0
+        # segmentation flags:  3 = complete packet 
+        self.PriHdr.Sequence.bits.seq_flags = 3
         #self.PriHdr.Length = 0
         #self.SecHdr.Command.bits.checksum = 0
         #self.SecHdr.Command.bits.code = 0
@@ -409,25 +479,103 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
 
     def set_length(self, value):
         """Set the packet data length.
-        
-        Note:
-            The plus two is the size of the secondary command header.
 
         Args:
-            value (int): Total packet length in bytes.
+            value (int): Total payload length in bytes.
         """
-        self.PriHdr.set_length(value + 2)
+        self.PriHdr.set_length(value)
 
     def get_length(self):
         """Get the packet data length.
+    
+        Returns:
+            int: Total payload length in bytes.
+        """
+        return self.PriHdr.get_length()
+
+    def get_packet_size(self):
+        """Returns the length of the combined command packet using 
+        ctypes.sizeof.
+        
+        Returns:
+            int: Total combined command packet size in bytes.
+        """
+        return self.PriHdr.get_header_size() + self.SecHdr.get_header_size()
+
+    def set_user_data_length(self, value):
+        """Set the length of the user payload. 
         
         Note:
-            The plus two is the size of the secondary command header.
+            This function automatically sets the length of the packet.
+            
+        Args:
+            The length of the user payload in bytes.
+        """
+        self.set_length(self.get_packet_size() + value)
+
+    def get_user_data_length(self):
+        """Get the length of the user payload. 
+        
+        Note:
+            This function automatically subtracts the length of the 
+            packet.
+            
+        Returns:
+            The length of the user payload in bytes.
+        """
+        return self.get_length() - self.get_packet_size()
+
+    def compute_checksum(self, payload):
+        """Compute the checksum for a command packet. The checksum 
+        is the XOR of all bytes in the packet. A valid checksum is zero.
+        
+        Note:
+            pass 0 as an argument if there is no payload.
+
+        Args:
+            payload (bytes): The encoded payload.
 
         Returns:
-            int: Total packet length in bytes.
+            int: The checksum.
         """
-        return self.PriHdr.get_length() - 2
+        check_sum = 0xFF
+        encoded = self.get_encoded()
+
+        for i in range(self.get_packet_size()):
+            check_sum ^= int(encoded[i].encode('hex'), 16)
+
+        for j in range(self.get_user_data_length()):
+            check_sum ^= int(payload[j].encode('hex'), 16)
+            
+        return check_sum
+
+    def set_checksum(self, payload):
+        """Set the checksum for a command packet. 
+
+        Note:
+            pass 0 as an argument if there is no payload.
+
+        Args:
+            payload (bytes): The encoded payload.
+        """
+        computed = self.compute_checksum(payload)
+        self.SecHdr.Command.bits.checksum = computed
+
+    def validate_checksum(self, payload):
+        """Validate checksum for a command packet. 
+
+        Note:
+            pass 0 as an argument if there is no payload.
+
+        Returns:
+            (bool): True if checksum of packet is valid; False if not.
+        """
+        validated = self.compute_checksum(payload)
+        
+        if validated == 0:
+            return True
+        else:
+            return False
 
 
 class CCSDS_TlmPkt_t(ctypes.Structure):
@@ -445,8 +593,9 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         self.PriHdr.StreamId.bits.shdr_flag = 1
         self.PriHdr.StreamId.bits.type = 0
         #self.PriHdr.StreamId.bits.version = 0
-        #self.PriHdr.StreamId.bits.count = 0
-        #self.PriHdr.StreamId.bits.seq_flags = 0
+        #self.PriHdr.Sequence.bits.count = 0
+        # segmentation flags:  3 = complete packet 
+        self.PriHdr.Sequence.bits.seq_flags = 3
         #self.PriHdr.Length = 0
         #self.SecHdr.Time.Seconds = 0
         #self.SecHdr.Time.Subseconds = 0
@@ -491,25 +640,19 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 
     def set_length(self, value):
         """Set the packet data length.
-        
-        Note:
-            The plus six is the size of the secondary telemetry header.
 
         Args:
-            value (int): Total packet length in bytes.
+            value (int): Total payload length in bytes.
         """
-        self.PriHdr.set_length(value + 6)
+        self.PriHdr.set_length(value)
 
     def get_length(self):
         """Get the packet data length.
-        
-        Note:
-            The plus six is the size of the secondary telemetry header.
 
         Returns:
-            int: Total packet length in bytes.
+            int: Total payload length in bytes.
         """
-        return self.PriHdr.get_length() - 6
+        return self.PriHdr.get_length() 
         
     def set_current_time(self):
         """Set the time field to the current system time.
@@ -517,21 +660,65 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         Note:
             CFS has other time formats besides 32 bits seconds + 16 bits
             subseconds. time.time() returns time in seconds since the
-            epoch as a floating point number. Milliseconds are rounded.
+            epoch as a floating point number. A conversion from a 
+            floating point fraction to binary fraction i.e. MSB = 2^-1.
         """
         float_time = time.time()
         int_time = int(float_time)
         fraction_time = float_time - int_time
-        millis_time = int(round(fraction_time * 1000))
-        self.SecHdr.set_time(int_time, millis_time)
-    
+        subseconds = 0
+        
+        for n in range(16):
+            if (fraction_time/(2**-(n+1))) >= 1:
+                subseconds |= 1 << (16 - (n+1)) 
+                fraction_time -= 2**-(n+1)
+        self.SecHdr.set_time(int_time, subseconds)
+
     def get_time(self):
         """Get the time field.
-        
+
         Returns:
-            tuple: Seconds (int32) and subseconds (int16)
+            tuple: Seconds (int32) and subseconds (int16) converted to
+            a fraction.
         """
-        return self.SecHdr.Time.Seconds, self.SecHdr.Time.Subseconds
+        bin_subseconds = self.SecHdr.Time.Subseconds
+        fraction_subseconds = 0
+        for n in range(16):
+            if(bin_subseconds & 1 << (16 - (n+1))):
+                fraction_subseconds += 2**-(n+1)
+        return self.SecHdr.Time.Seconds, fraction_subseconds
+
+    def get_packet_size(self):
+        """Returns the length of the combined telemetry packet using 
+        ctypes.sizeof.
+
+        Returns:
+            int: Total combined telemetry packet size in bytes.
+        """
+        return self.PriHdr.get_header_size() + self.SecHdr.get_header_size()
+
+    def set_user_data_length(self, value):
+        """Set the length of the user payload. 
+
+        Note:
+            This function automatically sets the length of the packet.
+
+        Args:
+            The length of the user payload in bytes.
+        """
+        self.set_length(self.get_packet_size() + value)
+
+    def get_user_data_length(self):
+        """Get the length of the user payload. 
+
+        Note:
+            This function automatically subtracts the length of the 
+            packet.
+            
+        Returns:
+            The length of the user payload in bytes.
+        """
+        return self.get_length() - self.get_packet_size()
 
 
 #class float_bits(ctypes.BigEndianStructure):
@@ -571,5 +758,3 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 #class testing(ctypes.Union):
     #_fields_ = [("bits", test_bits),
                 #("data", ctypes.c_uint16)]
-
-
