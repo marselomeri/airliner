@@ -451,6 +451,40 @@ void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
 
 
 
+void Test_MAC_RunController(void)
+{
+
+}
+
+
+
+void Test_MAC_ControlAttitude(void)
+{
+
+}
+
+
+void Test_MAC_ControlAttitudeRates(void)
+{
+
+}
+
+
+
+void Test_MAC_PidAttenuations(void)
+{
+
+}
+
+
+
+void Test_MAC_UpdateParams(void)
+{
+
+}
+
+
+
 /**************************************************************************
  * Rollup Test Cases
  **************************************************************************/
@@ -500,6 +534,22 @@ void MAC_App_Test_AddTestCases(void)
                "Test_MAC_AppMain_Nominal_Wakeup");
     UtTest_Add(Test_MAC_AppMain_ProcessNewData_InvalidMsgID, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_AppMain_ProcessNewData_InvalidMsgID");
+
+    UtTest_Add(Test_MAC_RunController, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_RunController");
+
+    UtTest_Add(Test_MAC_ControlAttitude, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_ControlAttitude");
+
+    UtTest_Add(Test_MAC_ControlAttitudeRates, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_ControlAttitudeRates");
+
+    UtTest_Add(Test_MAC_PidAttenuations, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_PidAttenuations");
+
+    UtTest_Add(Test_MAC_UpdateParams, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_UpdateParams");
+
 
 }
 
