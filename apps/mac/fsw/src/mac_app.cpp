@@ -43,7 +43,7 @@
 
 #include "cfe.h"
 
-#include "mac_app.h"
+#include "mac_app.hpp"
 #include "mac_msg.h"
 #include "mac_version.h"
 #include <math.h>
@@ -456,8 +456,6 @@ int32 MAC::InitApp()
                                  (unsigned int)iStatus);
         goto MAC_InitApp_Exit_Tag;
     }
-
-    PwmLimit_Init(&PwmLimit);
 
 MAC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)

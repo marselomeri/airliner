@@ -59,6 +59,7 @@ public:
 private:
 	static const int SIZE = 3;
 	Vector3F data[SIZE];
+	Vector3F nan;
 
 	static const RotLookup_t RotLookup[];
 
@@ -75,8 +76,8 @@ public:
 	Matrix3F3 operator*(const float &scalar);
 	void Zero(void);
     Matrix3F3 operator+(const Matrix3F3 &matIn) const;
-	void RotationMatrix(Matrix3F3::Rotation_t boardRotation);
-	void FromEuler(float roll, float pitch, float yaw);
+	static Matrix3F3 RotationMatrix(Matrix3F3::Rotation_t boardRotation);
+	static Matrix3F3 FromEuler(float roll, float pitch, float yaw);
 
 protected:
 

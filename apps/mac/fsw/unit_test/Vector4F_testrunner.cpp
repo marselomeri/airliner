@@ -31,29 +31,23 @@
 *
 *****************************************************************************/
 
-#ifndef VECTOR3F_TEST_H
-#define VECTOR3F_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Vector4F_test.hpp"
+#include "Vector4F_test_utils.hpp"
 
-void Test_Vector3F_Constructor(void);
-void Test_Vector3F_IndexOutOfBounds(void);
-void Test_Vector3F_Length(void);
-void Test_Vector3F_ArrayOperator(void);
-void Test_Vector3F_AdditionOperator(void);
-void Test_Vector3F_SubtractionOperator(void);
-void Test_Vector3F_CrossProductOperator(void);
-void Test_Vector3F_ScalarMultiplyOperator(void);
-void Test_Vector3F_ScalarDivOperator(void);
-void Test_Vector3F_DotProductOperator(void);
-void Test_Vector3F_EMult(void);
-void Test_Vector3F_Constrain(void);
+int main(void)
+{   
+	UtTest_Add(Test_Vector4F_Constructor, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_Constructor");
+	UtTest_Add(Test_Vector4F_IndexOutOfBounds, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_IndexOutOfBounds");
+	UtTest_Add(Test_Vector4F_ArrayOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+			 "Test_Vector4F_ArrayOperator");
+	UtTest_Add(Test_Vector4F_NegateOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_NegateOperator");
 
+    return(UtTest_Run());
 
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* VECTOR3F_TEST_H */

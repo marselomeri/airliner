@@ -31,29 +31,21 @@
 *
 *****************************************************************************/
 
-#ifndef VECTOR3F_TEST_H
-#define VECTOR3F_TEST_H
+#ifndef VECTOR4F_TEST_H
+#define VECTOR4F_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void Test_Vector3F_Constructor(void);
-void Test_Vector3F_IndexOutOfBounds(void);
-void Test_Vector3F_Length(void);
-void Test_Vector3F_ArrayOperator(void);
-void Test_Vector3F_AdditionOperator(void);
-void Test_Vector3F_SubtractionOperator(void);
-void Test_Vector3F_CrossProductOperator(void);
-void Test_Vector3F_ScalarMultiplyOperator(void);
-void Test_Vector3F_ScalarDivOperator(void);
-void Test_Vector3F_DotProductOperator(void);
-void Test_Vector3F_EMult(void);
-void Test_Vector3F_Constrain(void);
+void Test_Vector4F_Constructor(void);
+void Test_Vector4F_IndexOutOfBounds(void);
+void Test_Vector4F_ArrayOperator(void);
+void Test_Vector4F_NegateOperator(void);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* VECTOR3F_TEST_H */
+#endif /* VECTOR4F_TEST_H */

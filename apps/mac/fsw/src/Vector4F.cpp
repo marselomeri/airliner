@@ -5,7 +5,7 @@ using namespace math;
 
 Vector4F::Vector4F(float m1, float m2, float m3, float m4) :
     data{m1, m2, m3, m4},
-	nan(FP_NAN)
+	nan(NAN)
 {
 };
 
@@ -38,7 +38,7 @@ float Vector4F::operator [] (uint32 i) const
 		return data[i];
 	}
 
-	return nan;
+	return NAN;
 };
 
 

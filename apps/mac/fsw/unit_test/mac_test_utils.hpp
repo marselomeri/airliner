@@ -38,9 +38,7 @@
  * Includes
  */
 
-#include "mac_app.h"
-
-extern MAC_AppData_t  MAC_AppData;
+#include "mac_app.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,6 +50,8 @@ extern "C" {
 
 void MAC_Test_Setup(void);
 void MAC_Test_TearDown(void);
+
+extern MAC oMAC;
 
 
 #ifdef __cplusplus

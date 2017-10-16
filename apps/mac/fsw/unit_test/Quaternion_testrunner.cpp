@@ -31,29 +31,23 @@
 *
 *****************************************************************************/
 
-#ifndef VECTOR3F_TEST_H
-#define VECTOR3F_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Quaternion_test.hpp"
+#include "Quaternion_test_utils.hpp"
 
-void Test_Vector3F_Constructor(void);
-void Test_Vector3F_IndexOutOfBounds(void);
-void Test_Vector3F_Length(void);
-void Test_Vector3F_ArrayOperator(void);
-void Test_Vector3F_AdditionOperator(void);
-void Test_Vector3F_SubtractionOperator(void);
-void Test_Vector3F_CrossProductOperator(void);
-void Test_Vector3F_ScalarMultiplyOperator(void);
-void Test_Vector3F_ScalarDivOperator(void);
-void Test_Vector3F_DotProductOperator(void);
-void Test_Vector3F_EMult(void);
-void Test_Vector3F_Constrain(void);
+int main(void)
+{   
+	UtTest_Add(Test_Quaternion_Constructor, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_Constructor");
+	UtTest_Add(Test_Quaternion_IndexOutOfBounds, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_IndexOutOfBounds");
+	UtTest_Add(Test_Quaternion_ArrayOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_ArrayOperator");
+	UtTest_Add(Test_Quaternion_NegateOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_NegateOperator");
 
+    return(UtTest_Run());
 
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* VECTOR3F_TEST_H */

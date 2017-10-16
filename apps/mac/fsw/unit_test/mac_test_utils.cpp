@@ -31,29 +31,54 @@
 *
 *****************************************************************************/
 
-#ifndef VECTOR3F_TEST_H
-#define VECTOR3F_TEST_H
+#include "mac_test_utils.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_tbl_hooks.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_osapi_stubs.h"
+#include "ut_osfileapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_evs_stubs.h"
 
-void Test_Vector3F_Constructor(void);
-void Test_Vector3F_IndexOutOfBounds(void);
-void Test_Vector3F_Length(void);
-void Test_Vector3F_ArrayOperator(void);
-void Test_Vector3F_AdditionOperator(void);
-void Test_Vector3F_SubtractionOperator(void);
-void Test_Vector3F_CrossProductOperator(void);
-void Test_Vector3F_ScalarMultiplyOperator(void);
-void Test_Vector3F_ScalarDivOperator(void);
-void Test_Vector3F_DotProductOperator(void);
-void Test_Vector3F_EMult(void);
-void Test_Vector3F_Constrain(void);
+#include <time.h>
 
+extern MAC cpyMAC;
 
-#ifdef __cplusplus
+/*
+ * Config table for testing
+ */
+MAC_ParamTbl_t MAC_paramtbl = {
+        1 /* iParam*/
+};
+
+/*
+ * Function Definitions
+ */
+
+void MAC_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
+
+    CFE_PSP_MemCpy(&oMAC, &cpyMAC, sizeof(MAC));
+
+    Ut_CFE_EVS_Reset();
+    Ut_CFE_FS_Reset();
+    Ut_CFE_TIME_Reset();
+    Ut_CFE_TBL_Reset();
+    Ut_CFE_SB_Reset();
+    Ut_CFE_ES_Reset();
+    Ut_OSAPI_Reset();
+    Ut_OSFILEAPI_Reset();
+
+    Ut_CFE_TBL_AddTable(MAC_PARAM_TABLE_FILENAME, (void *) &MAC_paramtbl);
 }
-#endif
 
-#endif /* VECTOR3F_TEST_H */
+void MAC_Test_TearDown(void)
+{
+}

@@ -5,7 +5,7 @@ using namespace math;
 
 Vector3F::Vector3F(float X, float Y, float Z) :
     data{X,Y,Z},
-	nan(FP_NAN)
+	nan(NAN)
 {
 };
 
@@ -38,7 +38,7 @@ float Vector3F::operator [] (uint32 i) const
 		return data[i];
 	}
 
-	return FP_NAN;
+	return NAN;
 };
 
 
@@ -47,12 +47,14 @@ float Vector3F::Length() const
     return sqrtf(data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
 }
 
+
 void Vector3F::Zero()
 {
     data[0] = 0.0f;
     data[1] = 0.0f;
     data[2] = 0.0f;
 }
+
 
 // overload + operator to provide a vector addition
 Vector3F Vector3F::operator+(const Vector3F &vecIn)
@@ -64,6 +66,7 @@ Vector3F Vector3F::operator+(const Vector3F &vecIn)
     return vecOut;
 }
 
+
 // overload - operator to provide a vector subtraction
 Vector3F Vector3F::operator-(const Vector3F &vecIn)
 {
@@ -74,17 +77,19 @@ Vector3F Vector3F::operator-(const Vector3F &vecIn)
     return vecOut;
 }
 
+
 // overload % operator to provide a vector cross product
 Vector3F Vector3F::operator%(const Vector3F &vecIn)
 {
     Vector3F vecOut;
-    vecOut[0] = data[1]*data[2] - data[2]*vecIn[1];
-    vecOut[1] = data[2]*data[0] - data[0]*vecIn[2];
-    vecOut[2] = data[0]*data[1] - data[1]*vecIn[0];
+    vecOut[0] = data[1]*vecIn[2] - data[2]*vecIn[1];
+    vecOut[1] = data[2]*vecIn[0] - data[0]*vecIn[2];
+    vecOut[2] = data[0]*vecIn[1] - data[1]*vecIn[0];
     return vecOut;
 }
 
-// overload * operator to provide a vector scaler product
+
+// overload * operator to provide a vector scalar product
 Vector3F Vector3F::operator*(const float scalar)
 {
     Vector3F vecOut;
@@ -93,6 +98,7 @@ Vector3F Vector3F::operator*(const float scalar)
     vecOut[2] = data[2] * scalar;
     return vecOut;
 }
+
 
 // overload / operator to provide a vector scalar division
 Vector3F Vector3F::operator/(const float scalar)
@@ -104,7 +110,8 @@ Vector3F Vector3F::operator/(const float scalar)
     return vecOut;
 }
 
-// overload * operator to provide a vector scaler product
+
+// overload dot product operator to provide a vector scalar product
 float Vector3F::operator*(const Vector3F &vecIn)
 {
 	float res = 0.0f;

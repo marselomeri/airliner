@@ -31,29 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef VECTOR3F_TEST_H
-#define VECTOR3F_TEST_H
+#include "Matrix4F4_test_utils.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/*
+ * Function Definitions
+ */
 
-void Test_Vector3F_Constructor(void);
-void Test_Vector3F_IndexOutOfBounds(void);
-void Test_Vector3F_Length(void);
-void Test_Vector3F_ArrayOperator(void);
-void Test_Vector3F_AdditionOperator(void);
-void Test_Vector3F_SubtractionOperator(void);
-void Test_Vector3F_CrossProductOperator(void);
-void Test_Vector3F_ScalarMultiplyOperator(void);
-void Test_Vector3F_ScalarDivOperator(void);
-void Test_Vector3F_DotProductOperator(void);
-void Test_Vector3F_EMult(void);
-void Test_Vector3F_Constrain(void);
+void Matrix4F4_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* VECTOR3F_TEST_H */
+void Matrix4F4_Test_TearDown(void)
+{
+}

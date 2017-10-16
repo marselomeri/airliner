@@ -31,21 +31,18 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#include "Matrix3F3_test_utils.hpp"
 
-#include "mac_app_test.h"
-#include "mac_cmds_test.h"
-#include "mac_config_tbl_test.h"
-#include "mac_cds_tbl_test.h"
+/*
+ * Function Definitions
+ */
 
-int main(void)
-{   
-    MAC_App_Test_AddTestCases();
-    MAC_Cmds_Test_AddTestCases();
-    MAC_Config_Tbl_Test_AddTestCases();
-    MAC_CDS_Tbl_Test_AddTestCases();
-
-    return(UtTest_Run());
+void Matrix3F3_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
 }
 
+void Matrix3F3_Test_TearDown(void)
+{
+}

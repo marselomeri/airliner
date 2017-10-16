@@ -31,29 +31,61 @@
 *
 *****************************************************************************/
 
-#ifndef VECTOR3F_TEST_H
-#define VECTOR3F_TEST_H
+#include "mac_cmds_test.hpp"
+#include "mac_test_utils.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "mac_msg.h"
 
-void Test_Vector3F_Constructor(void);
-void Test_Vector3F_IndexOutOfBounds(void);
-void Test_Vector3F_Length(void);
-void Test_Vector3F_ArrayOperator(void);
-void Test_Vector3F_AdditionOperator(void);
-void Test_Vector3F_SubtractionOperator(void);
-void Test_Vector3F_CrossProductOperator(void);
-void Test_Vector3F_ScalarMultiplyOperator(void);
-void Test_Vector3F_ScalarDivOperator(void);
-void Test_Vector3F_DotProductOperator(void);
-void Test_Vector3F_EMult(void);
-void Test_Vector3F_Constrain(void);
+#include "uttest.h"
+#include "ut_osapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_es_hooks.h"
+#include "ut_cfe_evs_stubs.h"
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
 
-
-#ifdef __cplusplus
+int32 MAC_Cmds_Test_UT_CFE_SB_SubscribeHook1(CFE_SB_MsgId_t MsgId, CFE_SB_PipeId_t PipeId,
+                                                CFE_SB_Qos_t Quality, uint16 MsgLim)
+{
+    return 5;
 }
-#endif
 
-#endif /* VECTOR3F_TEST_H */
+
+int32 MAC_Cmds_Test_UT_CFE_SB_SubscribeHook2(CFE_SB_MsgId_t MsgId, CFE_SB_PipeId_t PipeId,
+                                                CFE_SB_Qos_t Quality, uint16 MsgLim)
+{
+    return 6;
+}
+
+
+void MAC_Function2_Test_Case1(void)
+{
+/*    int32 Result;
+
+    Variable3 = 3;
+
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_SUBSCRIBE_INDEX, &MAC_Cmds_Test_UT_CFE_SB_SubscribeHook1);
+*/
+    /* Execute the function being tested */
+/*    Result = MAC_Function2();*/
+    
+    /* Verify results */
+/*    UtAssert_True (Variable4 == 4, "Variable4 == 4");
+    UtAssert_True (Result == 25, "Result == 25");
+
+    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 0, "Ut_CFE_EVS_GetEventQueueDepth() == 0");
+*/
+} /* end MAC_Function2_Test_Case1 */
+
+
+void MAC_Cmds_Test_AddTestCases(void)
+{
+    UtTest_Add(MAC_Function2_Test_Case1, MAC_Test_Setup, MAC_Test_TearDown, "MAC_Function2_Test_Case1");
+} /* end MAC_Cmds_Test_AddTestCases */
+
+

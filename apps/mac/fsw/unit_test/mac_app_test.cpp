@@ -31,9 +31,9 @@
 *
 *****************************************************************************/
 
-#include "mac_app_test.h"
-#include "mac_app.h"
-#include "mac_test_utils.h"
+#include "mac_app_test.hpp"
+#include "mac_app.hpp"
+#include "mac_test_utils.hpp"
 
 #include "uttest.h"
 #include "ut_osapi_stubs.h"
@@ -69,7 +69,7 @@ void Test_MAC_InitEvent_Fail_Register(void)
     Ut_CFE_EVS_SetReturnCode(UT_CFE_EVS_REGISTER_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitEvent();
+    result = oMAC.InitEvent();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitEvent, failed EVS Register");
@@ -92,7 +92,7 @@ void Test_MAC_InitPipe_Fail_CreateSCHPipe(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_CREATEPIPE_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitPipe();
+    result = oMAC.InitPipe();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitPipe, fail SB create SCH pipe");
@@ -112,7 +112,7 @@ void Test_MAC_InitPipe_Fail_SubscribeWakeup(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBEEX_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitPipe();
+    result = oMAC.InitPipe();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitPipe, fail CFE_SB_SubscribeEx for wakeup");
@@ -132,7 +132,7 @@ void Test_MAC_InitPipe_Fail_SubscribeSendHK(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBEEX_INDEX, expected, 2);
 
     /* Execute the function being tested */
-    result = MAC_InitPipe();
+    result = oMAC.InitPipe();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitPipe, fail CFE_SB_SubscribeEx for sendhk");
@@ -152,7 +152,7 @@ void Test_MAC_InitPipe_Fail_CreateCMDPipe(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_CREATEPIPE_INDEX, expected, 2);
 
     /* Execute the function being tested */
-    result = MAC_InitPipe();
+    result = oMAC.InitPipe();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitPipe, fail SB create CMD pipe");
@@ -172,7 +172,7 @@ void Test_MAC_InitPipe_Fail_SubscribeCMD(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBE_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitPipe();
+    result = oMAC.InitPipe();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitPipe, fail CFE_SB_Subscribe for CMD");
@@ -192,7 +192,7 @@ void Test_MAC_InitPipe_Fail_CreateDATAPipe(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_CREATEPIPE_INDEX, expected, 3);
 
     /* Execute the function being tested */
-    result = MAC_InitPipe();
+    result = oMAC.InitPipe();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitPipe, fail SB create DATA pipe");
@@ -212,7 +212,7 @@ void Test_MAC_InitData(void)
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
-    result = MAC_InitData();
+    result = oMAC.InitData();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitData");
@@ -233,7 +233,7 @@ void Test_MAC_InitApp_Fail_InitEvent(void)
     Ut_CFE_EVS_SetReturnCode(UT_CFE_EVS_REGISTER_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitApp();
+    result = oMAC.InitApp();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitApp, fail init event");
@@ -251,7 +251,7 @@ void Test_MAC_InitApp_Fail_InitPipe(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_CREATEPIPE_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitApp();
+    result = oMAC.InitApp();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitApp, fail init pipe");
@@ -268,7 +268,7 @@ void Test_MAC_InitApp_Fail_InitData(void)
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
-    result = MAC_InitApp();
+    result = oMAC.InitApp();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitApp, fail init data");
@@ -286,28 +286,10 @@ void Test_MAC_InitApp_Fail_InitConfigTbl(void)
     Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, expected, 1);
 
     /* Execute the function being tested */
-    result = MAC_InitApp();
+    result = oMAC.InitApp();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitApp, fail init config table");
-}
-
-
-/**
- * Test MAC_InitApp(), fail init CDS table
- */
-void Test_MAC_InitApp_Fail_InitCDSTbl(void)
-{
-    int32 result = CFE_SUCCESS;
-    int32 expected = CFE_ES_CDS_INVALID_NAME;
-
-    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCDS_INDEX, expected, 1);
-
-    /* Execute the function being tested */
-    result = MAC_InitApp();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init CDS table");
 }
 
 
@@ -322,7 +304,7 @@ void Test_MAC_InitApp_Nominal(void)
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
-    result = MAC_InitApp();
+    result = oMAC.InitApp();
 
     /* Verify results */
     UtAssert_True (result == expected, "InitApp, nominal");
@@ -340,7 +322,7 @@ void Test_MAC_AppMain_Fail_RegisterApp(void)
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERAPP_INDEX, CFE_ES_ERR_APP_REGISTER, 1);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 }
 
 
@@ -353,7 +335,7 @@ void Test_MAC_AppMain_Fail_InitApp(void)
     Ut_CFE_EVS_SetReturnCode(UT_CFE_EVS_REGISTER_INDEX, CFE_EVS_APP_NOT_REGISTERED, 1);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 }
 
 
@@ -366,7 +348,7 @@ void Test_MAC_AppMain_Fail_AcquireConfigPtrs(void)
     Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_GETADDRESS_INDEX, CFE_TBL_ERR_INVALID_HANDLE, 2);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 }
 
 
@@ -382,7 +364,7 @@ void Test_MAC_AppMain_InvalidSchMessage(void)
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 
 }
 
@@ -412,10 +394,10 @@ void Test_MAC_AppMain_Nominal_SendHK(void)
 
     /* Used to verify HK was transmitted correctly. */
     hookCalledCount = 0;
-    Ut_CFE_ES_SetFunctionHook(UT_CFE_SB_SENDMSG_INDEX, &Test_MAC_AppMain_Nominal_SendHK_SendMsgHook);
+    Ut_CFE_ES_SetFunctionHook(UT_CFE_SB_SENDMSG_INDEX, (void*)&Test_MAC_AppMain_Nominal_SendHK_SendMsgHook);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 
     /* Verify results */
     UtAssert_True (hookCalledCount == 1, "AppMain_Nominal_SendHK");
@@ -430,12 +412,12 @@ void Test_MAC_AppMain_Nominal_Wakeup(void)
 {
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, MAC_WAKEUP_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, MAC_RUN_CONTROLLER_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 
 }
 
@@ -455,16 +437,16 @@ void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
     Ut_CFE_SB_AddMsgToPipe(&InMsg, DataPipe);
 
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, MAC_WAKEUP_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, MAC_RUN_CONTROLLER_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
     /* Execute the function being tested */
-    MAC_AppMain();
+    oMAC.AppMain();
 
     /* Verify results */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==3,"Event Count = 3");
-    UtAssert_EventSent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    //UtAssert_EventSent(MAC_MSGID_ERR_EID, CFE_EVS_ERROR, "", "Error Event Sent");
 }
 
 
@@ -501,8 +483,6 @@ void MAC_App_Test_AddTestCases(void)
                "Test_MAC_InitApp_Fail_InitData");
     UtTest_Add(Test_MAC_InitApp_Fail_InitConfigTbl, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_InitApp_Fail_InitConfigTbl");
-    UtTest_Add(Test_MAC_InitApp_Fail_InitCDSTbl, MAC_Test_Setup, MAC_Test_TearDown,
-               "Test_MAC_InitApp_Fail_InitCDSTbl");
     UtTest_Add(Test_MAC_InitApp_Nominal, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_InitApp_Nominal");
 

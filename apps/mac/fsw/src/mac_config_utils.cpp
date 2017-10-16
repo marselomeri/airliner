@@ -35,7 +35,7 @@
 extern "C" {
 #endif
 
-#include "mac_app.h"
+#include "mac_app.hpp"
 
 /************************************************************************
 ** Function Definitions

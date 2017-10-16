@@ -31,18 +31,39 @@
 *
 *****************************************************************************/
 
-#ifndef MAC_CDS_TBL_TEST_H
-#define MAC_CDS_TBL_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Matrix3F3_test.hpp"
+#include "Matrix3F3_test_utils.hpp"
 
-void MAC_CDS_Tbl_Test_AddTestCases(void);
+int main(void)
+{   
+	UtTest_Add(Test_Matrix3F3_Constructor, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Constructor");
+	UtTest_Add(Test_Matrix3F3_IndexOutOfBounds, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_IndexOutOfBounds");
+	UtTest_Add(Test_Matrix3F3_ArrayOperator, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_ArrayOperator");
+	UtTest_Add(Test_Matrix3F3_Transpose, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_Transpose");
+	UtTest_Add(Test_Matrix3F3_Identity, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_Identity");
+	UtTest_Add(Test_Matrix3F3_VectorMultiply, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+			 "Test_Matrix3F3_VectorMultiply");
+	UtTest_Add(Test_Matrix3F3_MatrixMultiply, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_MatrixMultiply");
+	UtTest_Add(Test_Matrix3F3_ScalarMultiply, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_ScalarMultiply");
+	UtTest_Add(Test_Matrix3F3_MatrixAddition, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_MatrixAddition");
+	UtTest_Add(Test_Matrix3F3_MatrixSubtraction, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_MatrixSubtraction");
+	UtTest_Add(Test_Matrix3F3_FromEuler, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_FromEuler");
+	UtTest_Add(Test_Matrix3F3_RotationMatrix, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_RotationMatrix");
 
+    return(UtTest_Run());
 
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* MAC_CDS_TBL_TEST_H */

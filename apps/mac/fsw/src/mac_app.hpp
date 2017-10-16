@@ -466,6 +466,9 @@ private:
 
 };
 
+
+extern MAC oMAC;
+
 #ifdef __cplusplus
 }
 #endif 

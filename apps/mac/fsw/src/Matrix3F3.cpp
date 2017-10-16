@@ -41,7 +41,8 @@ const Matrix3F3::RotLookup_t Matrix3F3::RotLookup[] = {
 };
 
 Matrix3F3::Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2) :
-	data{m0, m1, m2}
+	data{m0, m1, m2},
+	nan{NAN,NAN,NAN}
 {
 };
 
@@ -51,7 +52,8 @@ Matrix3F3::Matrix3F3() :
 		{0.0, 0.0, 0.0},
 		{0.0, 0.0, 0.0},
 		{0.0, 0.0, 0.0}
-    }
+    },
+    nan{NAN,NAN,NAN}
 {
 };
 
@@ -63,13 +65,27 @@ Matrix3F3::~Matrix3F3()
 
 Vector3F& Matrix3F3::operator [] (uint32 i)
 {
-	return data[i];
+	if(i >= 3)
+	{
+		return nan;
+	}
+	else
+	{
+		return data[i];
+	}
 };
 
 
 Vector3F Matrix3F3::operator [] (uint32 i) const
 {
-	return data[i];
+	if(i >= 3)
+	{
+		return nan;
+	}
+	else
+	{
+		return data[i];
+	}
 };
 
 
@@ -188,19 +204,23 @@ Matrix3F3 Matrix3F3::operator+(const Matrix3F3 &matIn) const
 }
 
 
-void Matrix3F3::RotationMatrix(Matrix3F3::Rotation_t boardRotation)
+Matrix3F3 Matrix3F3::RotationMatrix(Matrix3F3::Rotation_t boardRotation)
 {
+	Matrix3F3 matrix;
+
 	float roll  = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].roll;
 	float pitch = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].pitch;
 	float yaw   = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].yaw;
 
-	this->FromEuler(roll, pitch, yaw);
+	Matrix3F3::FromEuler(roll, pitch, yaw);
 }
 
 
 
-void Matrix3F3::FromEuler(float roll, float pitch, float yaw)
+Matrix3F3 Matrix3F3::FromEuler(float roll, float pitch, float yaw)
 {
+	Matrix3F3 matrix;
+
 	float cp = cosf(pitch);
 	float sp = sinf(pitch);
 	float sr = sinf(roll);
@@ -208,13 +228,15 @@ void Matrix3F3::FromEuler(float roll, float pitch, float yaw)
 	float sy = sinf(yaw);
 	float cy = cosf(yaw);
 
-	data[0][0] = cp * cy;
-	data[0][1] = (sr * sp * cy) - (cr * sy);
-	data[0][2] = (cr * sp * cy) + (sr * sy);
-	data[1][0] = cp * sy;
-	data[1][1] = (sr * sp * sy) + (cr * cy);
-	data[1][2] = (cr * sp * sy) - (sr * cy);
-	data[2][0] = -sp;
-	data[2][1] = sr * cp;
-	data[2][2] = cr * cp;
+	matrix[0][0] = cp * cy;
+	matrix[0][1] = (sr * sp * cy) - (cr * sy);
+	matrix[0][2] = (cr * sp * cy) + (sr * sy);
+	matrix[1][0] = cp * sy;
+	matrix[1][1] = (sr * sp * sy) + (cr * cy);
+	matrix[1][2] = (cr * sp * sy) - (sr * cy);
+	matrix[2][0] = -sp;
+	matrix[2][1] = sr * cp;
+	matrix[2][2] = cr * cp;
+
+	return matrix;
 }
