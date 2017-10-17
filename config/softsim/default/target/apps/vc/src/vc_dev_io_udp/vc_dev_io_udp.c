@@ -258,8 +258,8 @@ void VC_Stream_Task(void)
              * the timeout would expire so timeValue needs to be set
              * every loop iteration
              */
-            timeValue.tv_sec = VC_BUFFER_FILL_TIMEOUT_SEC;
-            timeValue.tv_usec = VC_BUFFER_FILL_TIMEOUT_USEC;
+            //timeValue.tv_sec = VC_BUFFER_FILL_TIMEOUT_SEC;
+            //timeValue.tv_usec = VC_BUFFER_FILL_TIMEOUT_USEC;
 
             /* Initialize the set */
             FD_ZERO(&fds);
@@ -284,8 +284,9 @@ void VC_Stream_Task(void)
             if (maxFd > 0)
             {
                 CFE_ES_PerfLogEntry(VC_DEVICE_GET_PERF_ID);
-                /* Wait for a queued buffer to be filled by the device */
-                returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
+                /* Wait for a socket fd to become ready */
+                /* timeout set to null = block indefinitely */
+                returnCode = select(maxFd + 1, &fds, 0, 0, 0);
                 CFE_ES_PerfLogExit(VC_DEVICE_GET_PERF_ID);
             }
             else
