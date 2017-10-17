@@ -24,7 +24,7 @@ class Pyliner(object):
         self.address = kwargs.get("address", "localhost")
         self.ci_port = kwargs.get("ci_port", DEFAULT_CI_PORT)
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
-        self.test_name = kwargs.get("test_name", "Unspecified")
+        self.test_name = kwargs.get("script_name", "Unspecified")
         self.airliner_data = self.__read_json(kwargs.get("airliner_map", "cookiecutter.json"))
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
@@ -324,7 +324,6 @@ class Pyliner(object):
             self.telemetry[tlm_item] = {'name': tlm_item,
                                         'value': 'NULL',
                                         'time': 'NULL'}
-            
             
             logging.info('Subscribing to the following telemetry: %s' % (tlm))
 

@@ -1,12 +1,21 @@
-import pyliner
+from os import path, sys
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+from pyliner import Pyliner
 import time
 
 # Initialize pyliner object
-airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "test_name": "demo_test"})
+airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
+                      "ci_port": 5009,
+                      "to_port": 5012,
+                      "script_name": "demo_test",
+                      "log_dir": "./logs/"})
 
 # Subscribe to desired telemetry
-airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/SysLogMode', '/Airliner/ES/HK/MaxProcessorResets']})
-airliner.subscribe({'tlm': ['/Airliner/ES/HK/SysLogBytesUsed', '/Airliner/ES/HK/SysLogEntries']})
+airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter',
+                            '/Airliner/ES/HK/SysLogMode', 
+                            '/Airliner/ES/HK/MaxProcessorResets', 
+                            '/Airliner/ES/HK/SysLogBytesUsed', 
+                            '/Airliner/ES/HK/SysLogEntries']})
 
 # Start sending commands
 for i in range(15):

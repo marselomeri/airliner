@@ -1,3 +1,5 @@
+from os import path, sys
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 from pyliner_client import PylinerClient
 
 pc = PylinerClient({'test_name': 'frame_analyzer'})

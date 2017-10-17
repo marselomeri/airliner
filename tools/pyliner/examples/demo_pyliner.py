@@ -1,36 +1,26 @@
+from os import path, sys
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+
 import pyliner
 import time
 
 # Callback 1
 def cb_1(data):
-    cmd_count = data['params']['CmdCounter']['value']
-    print "Cmd counter: " + str(cmd_count)
+    print "%s = %s" % (data['name'], data['value'])
     
 # Callback 2
 def cb_2(data):
-    log_mode = data['params']['SysLogMode']['value']
-    print "Log mode: " + str(log_mode)
-    
-# Callback 3
-def cb_3(data):
-    max_pr = data['params']['MaxProcessorResets']['value']
-    print "Max processor resets: " + str(max_pr)
-
-# Callback 4
-def cb_4(data):
-    log_size = data['params']['SysLogBytesUsed']['value']
-    log_entries = data['params']['SysLogEntries']['value']
-    print "Log size: " + str(log_size)
-    print "Log entries: " + str(log_entries)
+    print "%s = %s" % (data['name'], data['value'])
 
 # Initialize pyliner object
 airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "test_name": "demo_test"})
 
 # Subscribe to desired telemetry for our callbacks
-airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'CmdCounter'}]}, cb_1)                         
-airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'SysLogMode'}]}, cb_2)                         
-airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'MaxProcessorResets'}]}, cb_3)
-airliner.subscribe({'name': '/Airliner/ES/HK', 'args':[{'name':'SysLogBytesUsed'}, {'name':'SysLogEntries'}]}, cb_4)
+airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter']}, cb_1)                         
+airliner.subscribe({'tlm': ['/Airliner/ES/HK/MaxProcessorResets', 
+                            '/Airliner/ES/HK/SysLogMode', 
+                            '/Airliner/ES/HK/SysLogBytesUsed', 
+                            '/Airliner/ES/HK/SysLogEntries']}, cb_2)
 
 # Start sending commands
 for i in range(15):

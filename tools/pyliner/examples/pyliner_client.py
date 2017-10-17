@@ -1,6 +1,8 @@
+from os import path, sys
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+from pyliner import Pyliner
 from arte_client import ArteClient
 import logging
-from pyliner import Pyliner
 import time
 
 class PylinerClient(Pyliner):
