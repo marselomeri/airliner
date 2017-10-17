@@ -1100,6 +1100,15 @@ void MAC::ControlAttitude(float dt)
 
 	/* calculate angular rates setpoint */
 	m_AngularRatesSetpoint = m_Params.att_p.EMult(e_R);
+    printf("   m_Params.att_p[0] = %f\n", m_Params.att_p[0]);
+    printf("   m_Params.att_p[1] = %f\n", m_Params.att_p[1]);
+    printf("   m_Params.att_p[2] = %f\n", m_Params.att_p[2]);
+    printf("   e_R[0] = %f\n", e_R[0]);
+    printf("   e_R[1] = %f\n", e_R[1]);
+    printf("   e_R[2] = %f\n", e_R[2]);
+    printf("   m_AngularRatesSetpoint[0] = %f\n", m_AngularRatesSetpoint[0]);
+    printf("   m_AngularRatesSetpoint[1] = %f\n", m_AngularRatesSetpoint[1]);
+    printf("   m_AngularRatesSetpoint[2] = %f\n", m_AngularRatesSetpoint[2]);
 //	for(uint32 x = 0; x < 3; ++x)
 //	{
 //		OS_printf("e_R[%u] = %f\n", x, e_R[x]);

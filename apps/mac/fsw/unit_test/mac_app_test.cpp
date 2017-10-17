@@ -460,7 +460,84 @@ void Test_MAC_RunController(void)
 
 void Test_MAC_ControlAttitude(void)
 {
+	/* Set inputs */
+	/*
+	INFO  [mc_att_control] dt = 0.004976
+	INFO  [mc_att_control] _v_att_sp.thrust = 0.557261
+	INFO  [mc_att_control] _v_att_sp.q_d[0] = 0.709146
+	INFO  [mc_att_control] _v_att_sp.q_d[1] = 0.006867
+	INFO  [mc_att_control] _v_att_sp.q_d[2] = -0.015907
+	INFO  [mc_att_control] _v_att_sp.q_d[3] = 0.704849
+	INFO  [mc_att_control] _ctrl_state.q_d[0] = 0.708758
+	INFO  [mc_att_control] _ctrl_state.q_d[1] = 0.007156
+	INFO  [mc_att_control] _ctrl_state.q_d[2] = -0.013554
+	INFO  [mc_att_control] _ctrl_state.q_d[3] = 0.705285
+	INFO  [mc_att_control] _params.att_p[0] = 6.000000
+	INFO  [mc_att_control] _params.att_p[1] = 6.000000
+	INFO  [mc_att_control] _params.att_p[2] = 2.800000
+	INFO  [mc_att_control] _v_control_mode.flag_control_velocity_enabled = 1
+	INFO  [mc_att_control] _v_control_mode.flag_control_auto_enabled = 1
+	INFO  [mc_att_control] _v_control_mode.flag_control_manual_enabled = 0
+	INFO  [mc_att_control] _v_att_sp.yaw_sp_move_rate = 0.000000
+	INFO  [mc_att_control] _params.yaw_ff = 0.500000
+	INFO  [mc_att_control] _v_att_sp.disable_mc_yaw_control = 0
+	INFO  [mc_att_control] _params.auto_rate_max(0) = 3.839725
+	INFO  [mc_att_control] _params.auto_rate_max(1) = 3.839725
+	INFO  [mc_att_control] _params.auto_rate_max(2) = 0.785398
+	INFO  [mc_att_control] _params.vtol_wv_yaw_rate_scale = 0.150000
+	INFO  [mc_att_control] _rates_sp(2) = -0.003174
+	INFO  [mc_att_control] _params.mc_rate_max(0) = 3.839725
+	INFO  [mc_att_control] _params.mc_rate_max(1) = 3.839725
+	INFO  [mc_att_control] _params.mc_rate_max(2) = 3.490659
+	INFO  [mc_att_control] _rates_int(2) = 0.000017
+	INFO  [mc_att_control]
+	*/
+    oMAC.CVT.VAttSp.Thrust = 0.547918f;
+    oMAC.CVT.VAttSp.Q_D[0] = 0.704050f;
+    oMAC.CVT.VAttSp.Q_D[1] = 0.002164f;
+    oMAC.CVT.VAttSp.Q_D[2] = -0.012259f;
+    oMAC.CVT.VAttSp.Q_D[3] = 0.710041f;
+    oMAC.CVT.ControlState.Q[0] = 0.704148f;
+    oMAC.CVT.ControlState.Q[1] = 0.000206f;
+    oMAC.CVT.ControlState.Q[2] = -0.011443f;
+    oMAC.CVT.ControlState.Q[3] = 0.709961f;
+    oMAC.m_Params.att_p[0] = 6.000000f;
+    oMAC.m_Params.att_p[1] = 6.000000f;
+    oMAC.m_Params.att_p[2] = 2.800000f;
+    oMAC.CVT.VControlMode.ControlVelocityEnabled = TRUE;
+    oMAC.CVT.VControlMode.ControlAutoEnabled = TRUE;
+    oMAC.CVT.VControlMode.ControlManualEnabled = FALSE;
+    oMAC.CVT.VAttSp.YawSpMoveRate = 0.000000f;
+    oMAC.m_Params.yaw_ff = 0.500000f;
+    oMAC.CVT.VAttSp.DisableMcYawControl = FALSE;
+    oMAC.m_Params.auto_rate_max[0] = 3.839725f;
+    oMAC.m_Params.auto_rate_max[1] = 3.839725f;
+    oMAC.m_Params.auto_rate_max[2] = 0.785398f;
+    oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.150000f;
+    oMAC.m_AngularRatesSetpoint[2] = 0.000594f;
+    oMAC.m_Params.mc_rate_max[0] = 3.839725f;
+    oMAC.m_Params.mc_rate_max[1] = 3.839725f;
+    oMAC.m_Params.mc_rate_max[2] = 3.490659f;
+    oMAC.m_AngularRatesIntegralError[2] = 0.000206f;
 
+    /* Run the function */
+    oMAC.ControlAttitude(0.005003f);
+
+	/* Check outputs */
+    /*
+	INFO  [mc_att_control] _v_att_sp.disable_mc_yaw_control = 0.000000
+	INFO  [mc_att_control] _thrust_sp = 0.557261
+	INFO  [mc_att_control] _rates_sp(0) = -0.022480
+	INFO  [mc_att_control] _rates_sp(1) = -0.017538
+	INFO  [mc_att_control] _rates_sp(2) = -0.003145
+	INFO  [mc_att_control] _rates_int(2) = 0.000017
+     */
+    printf("oMAC.CVT.VAttSp.DisableMcYawControl = %u\n", oMAC.CVT.VAttSp.DisableMcYawControl);
+    printf("oMAC.m_ThrustSp = %f\n", oMAC.m_ThrustSp);
+    printf("oMAC.m_AngularRatesSetpoint[0] = %f\n", oMAC.m_AngularRatesSetpoint[0]);
+    printf("oMAC.m_AngularRatesSetpoint[1] = %f\n", oMAC.m_AngularRatesSetpoint[1]);
+    printf("oMAC.m_AngularRatesSetpoint[2] = %f\n", oMAC.m_AngularRatesSetpoint[2]);
+    printf("oMAC.m_AngularRatesIntegralError[2] = %f\n", oMAC.m_AngularRatesIntegralError[2]);
 }
 
 
