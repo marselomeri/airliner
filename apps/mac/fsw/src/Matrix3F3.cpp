@@ -212,7 +212,7 @@ Matrix3F3 Matrix3F3::RotationMatrix(Matrix3F3::Rotation_t boardRotation)
 	float pitch = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].pitch;
 	float yaw   = M_DEG_TO_RAD_F * (float)Matrix3F3::RotLookup[boardRotation].yaw;
 
-	Matrix3F3::FromEuler(roll, pitch, yaw);
+	return Matrix3F3::FromEuler(roll, pitch, yaw);
 }
 
 
