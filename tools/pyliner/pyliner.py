@@ -24,7 +24,7 @@ class Pyliner(object):
         self.address = kwargs.get("address", "localhost")
         self.ci_port = kwargs.get("ci_port", DEFAULT_CI_PORT)
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
-        self.test_name = kwargs.get("script_name", "Unspecified")
+        self.script_name = kwargs.get("script_name", "Unspecified")
         self.airliner_data = self.__read_json(kwargs.get("airliner_map", "cookiecutter.json"))
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
@@ -36,7 +36,7 @@ class Pyliner(object):
         self.fails = 0
         self.start_time = datetime.now()
         self.log_dir = kwargs.get("log_dir", "./logs/")
-        self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + "_pyliner_" + self.test_name + ".log"
+        self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + "_pyliner_" + self.script_name + ".log"
         self.all_telemetry = []
         self.__setup_log()
         self.ingest_active = True
@@ -243,6 +243,34 @@ class Pyliner(object):
         assign_string = "value =  pb_msg." + arg_path
         exec(assign_string)
         return value
+    
+    def get_tlm_value(self, tlm):
+        """ Get current value of specified telemetry item
+        
+        Args:
+            tlm (str): Operational name of requested telemetry
+        
+        Returns:
+            Current value of telemetry or None if not found
+        """
+        if tlm not in self.telemetry:
+            return None
+        else:
+            return self.telemetry[tlm]['value']
+
+    def get_tlm(self, tlm):
+        """ Get all data of specified telemetry item
+        
+        Args:
+            tlm (str): Operational name of requested telemetry
+        
+        Returns:
+            Telemetry data dict or None if not found
+        """
+        if tlm not in self.telemetry:
+            return None
+        else:
+            return self.telemetry[tlm]
 
     def __on_recv_telemetry(self, tlm):
         """ Callback for TO socket listener 
@@ -293,14 +321,15 @@ class Pyliner(object):
                                 
             
     def subscribe(self, tlm, callback = None):
-        """ Receives an operation path to an airliner msg with ops names of that 
-        messages attributes to subscribe to as well as a callback function.
+        """ Receives an operational path to an airliner msg attribute to subscribe
+        to, as well as an optional callback function.
 
         Args:
             tlm (dict): Dictionary specifying the telemtry items to subscribe to, using the 
                        telemtry item's operational names. 
-                       E.g. {'name': '/Airliner/ES/HK', 'args':[
-                                {'name':'CmdCounter'}]}
+                       E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}
+                            or
+                            {'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/ErrCounter']}
 
             callback (function, optional): Function to call when this telemetry is updated. If not specified
                                 defaults to on_recv_telemetry                                
@@ -394,7 +423,7 @@ class Pyliner(object):
 
         results = "=================================================\n"
         results += "Pyliner test complete\n"
-        results += "Test case:  " + self.test_name + "\n"
+        results += "Test case:  " + self.script_name + "\n"
         results += "Result:     " + result + "\n"
         results += "Passes:     " + str(self.passes) + "\n"
         results += "Fails:      " + str(self.fails) + "\n"

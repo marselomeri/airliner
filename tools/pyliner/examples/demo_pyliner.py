@@ -15,16 +15,18 @@ def cb_2(data):
 # Initialize pyliner object
 airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "test_name": "demo_test"})
 
-# Subscribe to desired telemetry for our callbacks
-airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter']}, cb_1)                         
+# Subscribe to only CmdCounter for callback 1
+airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter']}, cb_1)       
+
+# Subscribe to remaining items for callback 2             
 airliner.subscribe({'tlm': ['/Airliner/ES/HK/MaxProcessorResets', 
                             '/Airliner/ES/HK/SysLogMode', 
                             '/Airliner/ES/HK/SysLogBytesUsed', 
                             '/Airliner/ES/HK/SysLogEntries']}, cb_2)
 
-# Start sending commands
+# Perform 15 batches of sending commands and receiving telemetry
 for i in range(15):
-    # Noop
+    # Send NoOp command
     airliner.send_command({'name':'/Airliner/ES/Noop'})
     
     # Set max cpu resets equal to loop iteration
@@ -35,7 +37,7 @@ for i in range(15):
         airliner.send_command({'name':'/Airliner/ES/ClearSysLog'})
         airliner.send_command({'name':'/Airliner/ES/ClearERLog'})
     
-    # Switch log mode on even/odd iterations
+    # Toggle log mode on even/odd iterations
     if i % 2 == 0:
         airliner.send_command({'name':'/Airliner/ES/OverwriteSysLog', 'args':[
                              {'name':'OverwriteMode', 'value':1}]})

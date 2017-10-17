@@ -17,21 +17,29 @@ airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter',
                             '/Airliner/ES/HK/SysLogBytesUsed', 
                             '/Airliner/ES/HK/SysLogEntries']})
 
-# Start sending commands
+# Perform 15 batches of sending commands and receiving telemetry
 for i in range(15):
-    cmd_count = airliner.telemetry['/Airliner/ES/HK/CmdCounter']['value']
-    log_mode = airliner.telemetry['/Airliner/ES/HK/SysLogMode']['value']
-    max_pr = airliner.telemetry['/Airliner/ES/HK/MaxProcessorResets']['value']
-    log_size = airliner.telemetry['/Airliner/ES/HK/SysLogBytesUsed']['value']
-    log_entries = airliner.telemetry['/Airliner/ES/HK/SysLogEntries']['value']
+    # Get entire telemetry data dictionary for CmdCounter
+    cmd_count_data = airliner.get_tlm('/Airliner/ES/HK/CmdCounter')
+    
+    # Print all data for CmdCounter
+    print "Telemetry: %s   Value: %s   Timestamp: %s" % (cmd_count_data['name'],
+                                                         cmd_count_data['value'], 
+                                                         cmd_count_data['time'])
+    
+    # Get just the value of other subscribed items
+    log_mode = airliner.get_tlm_value('/Airliner/ES/HK/SysLogMode')
+    max_proc_resets = airliner.get_tlm_value('/Airliner/ES/HK/MaxProcessorResets')
+    log_size = airliner.get_tlm_value('/Airliner/ES/HK/SysLogBytesUsed')
+    log_entries = airliner.get_tlm_value('/Airliner/ES/HK/SysLogEntries')
 
-    print "Cmd counter: " + str(cmd_count)
+    # Print the fresh telemetry values
     print "Log mode: " + str(log_mode)
-    print "Max processor resets: " + str(max_pr)
+    print "Max processor resets: " + str(max_proc_resets)
     print "Log size: " + str(log_size)
     print "Log entries: " + str(log_entries)
 
-    # Noop
+    # Send NoOp command
     airliner.send_command({'name':'/Airliner/ES/Noop'})
     
     # Set max cpu resets equal to loop iteration
@@ -42,7 +50,7 @@ for i in range(15):
         airliner.send_command({'name':'/Airliner/ES/ClearSysLog'})
         airliner.send_command({'name':'/Airliner/ES/ClearERLog'})
     
-    # Switch log mode on even/odd iterations
+    # Toggle log mode on even/odd iterations
     if i % 2 == 0:
         airliner.send_command({'name':'/Airliner/ES/OverwriteSysLog', 'args':[
                              {'name':'OverwriteMode', 'value':1}]})
@@ -50,4 +58,5 @@ for i in range(15):
         airliner.send_command({'name':'/Airliner/ES/OverwriteSysLog', 'args':[
                              {'name':'OverwriteMode', 'value':0}]})
                              
+    # Sleep for duration of a major frame
     time.sleep(1)
