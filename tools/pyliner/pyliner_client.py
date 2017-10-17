@@ -10,7 +10,7 @@ class PylinerClient(Pyliner):
         self.ip = kwargs.get("ip", "localhost")
         self.port = kwargs.get("port", 9999)
         self.minor_frames = kwargs.get("minor_frames", 200)
-        self.current_frame = 0
+        self.current_frame = 1
         self.total_frames = 0
         self.arte_client = ArteClient(self.ip, self.port)
    
@@ -39,22 +39,28 @@ class PylinerClient(Pyliner):
         # TODO: Not hard code
         def frame_analyze_cb(data):
             global frame_callback_var
-            frame_callback_var = data['params']['CmdCounter']['value']
+            frame_callback_var = data['value']
             logging.info('Callback received value of: %s' % (frame_callback_var))
         
         # TODO: Not hard code this either
         self.send_command({'name':'/Airliner/ES/Reset'})
         self.subscribe(tlm, frame_analyze_cb)
         
+        logging.info('Sending at frame: %s' % (start_frame))
+        sent_flag = False
+        time.sleep(0.5)
         # TODO: Loop safegaurd
         while wait_flag:
-            logging.info('Current frame: %s Total frames: %s' % (self.current_frame, self.total_frames))
-            if self.current_frame > start_frame:
-                time.sleep(0.01)
+            if self.current_frame % self.minor_frames > start_frame:
+                #logging.info('current frame: %s' % (self.current_frame))
+                global frame_callback_var
+                time.sleep(0.02)
                 
-                if self.current_frame % self.minor_frames == 0:
+                if not sent_flag:
+                    logging.info('Sending cmd at frame: %s' % (self.current_frame))
                     self.send_command(op)
                     sent_frame = self.total_frames
+                    sent_flag = True
                 
                 if frame_callback_var == 1:
                     wait_flag = False
@@ -73,8 +79,8 @@ class PylinerClient(Pyliner):
         
         best_frame_time = self.minor_frames
 
-        for start_frame in range(1, self.minor_frames):
-            frame_time = self.frame_analysis(op, tlm)
+        for start_frame in range(1, self.minor_frames+1):
+            frame_time = self.frame_analysis(op, tlm, start_frame)
             if frame_time < best_frame_time:
                 best_frame_time = frame_time
 
