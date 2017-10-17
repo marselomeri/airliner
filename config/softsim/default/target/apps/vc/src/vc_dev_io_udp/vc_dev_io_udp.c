@@ -87,7 +87,7 @@ int32 VC_Devices_InitData(void)
     VC_AppCustomDevice.Channel[0].Mode       = VC_DEVICE_ENABLED;
     VC_AppCustomDevice.Channel[0].Socket     = 0;
     /* TODO move to platform config */
-    VC_AppCustomDevice.Channel[0].Port       = 3999;
+    VC_AppCustomDevice.Channel[0].Port       = 5600;
 
     return (iStatus);
 }

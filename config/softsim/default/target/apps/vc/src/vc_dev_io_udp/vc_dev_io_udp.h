@@ -54,7 +54,7 @@
 /** \brief Char count where length of the payload is specified in the 
 **         multipartmux preamble.
 */
-#define VC_MPARTMUX_HEADER_LENGTH_START 53
+#define VC_MPARTMUX_HEADER_LENGTH_START 51
 
 /************************************************************************
 ** Structure Declarations
