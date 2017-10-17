@@ -75,8 +75,8 @@ int32 VC_Devices_InitData(void)
     /* Set all non-zero values for channel zero */
     VC_AppCustomDevice.Channel[0].Status        = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[0].Mode          = VC_DEVICE_ENABLED;
-    /* TODO move these to platform config */
     VC_AppCustomDevice.Channel[0].Socket        = 0;
+    /* TODO move to platform config */
     VC_AppCustomDevice.Channel[0].Port          = 5600;
 
     return (iStatus);
@@ -90,13 +90,6 @@ boolean VC_Devices_Start(void)
     /* Set loop flag to continue forever */
     VC_AppCustomDevice.ContinueFlag = TRUE;
     
-    /* Start streaming on all devices */
-    if(-1 == VC_Start_Streaming())
-    {
-        VC_AppCustomDevice.ContinueFlag = FALSE;
-        return FALSE;
-    }
-
     /* Create the streaming task */
     returnCode = CFE_ES_CreateChildTask(
         &VC_AppCustomDevice.ChildTaskID,
@@ -118,8 +111,9 @@ boolean VC_Devices_Start(void)
 
 boolean VC_Devices_Stop(void)
 {
+    int32   returnCode = CFE_SUCCESS;
     /* Delete the child task */
-    CFE_ES_DeleteChildTask(VC_AppCustomDevice.ChildTaskID);
+    returnCode = CFE_ES_DeleteChildTask(VC_AppCustomDevice.ChildTaskID);
     
     /* Set streaming task loop flag to stop */
     VC_AppCustomDevice.ContinueFlag = FALSE;
@@ -127,7 +121,7 @@ boolean VC_Devices_Stop(void)
     /* Set app state to initialized */
     VC_AppData.AppState = VC_INITIALIZED;
     
-    if(-1 == VC_Stop_Streaming())
+    if (returnCode != CFE_SUCCESS)
     {
         return FALSE;
     }
@@ -143,6 +137,7 @@ boolean VC_Devices_Init(void)
     }
     return TRUE;
 }
+
 
 boolean VC_Devices_Uninit(void)
 {
@@ -187,34 +182,41 @@ int32 VC_Init_CustomDevices(void)
 
     for (i=0; i < VC_MAX_DEVICES; i++)
     {
+        /* if a device is enabled... */
         if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED)
         {
             /* Create socket */
             VC_AppCustomDevice.Channel[i].Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+            /* if socket creation failed */
             if (VC_AppCustomDevice.Channel[i].Socket < 0)
             {
                 CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, "Socket errno: %i", errno);
                 returnCode = -1;
-                /* Socket creation failed set device to disabled */
-                VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
                 goto end_of_function;
             }
+            /* socket creation success try to bind */
             setsockopt(VC_AppCustomDevice.Channel[i].Socket, SOL_SOCKET, 
                     SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
             bzero((char *) &address, sizeof(address));
             address.sin_family      = AF_INET;
             address.sin_addr.s_addr = htonl (INADDR_ANY);
             address.sin_port        = htons(VC_AppCustomDevice.Channel[i].Port);
+            /* if bind failed... */
+            if((bind(VC_AppCustomDevice.Channel[i].Socket , (struct sockaddr *) &address, sizeof(address)) < 0))
+            {
+            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
+            returnCode = -1;
+            goto end_of_function;
+            }
+            /* socket create and bind success */
+            VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
+            CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
+                    "VC Device configured channel %u", (unsigned int)i);
         }
-        if((bind(VC_AppCustomDevice.Channel[i].Socket , (struct sockaddr *) &address, sizeof(address)) < 0))
-        {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
-        returnCode = -1;
-        goto end_of_function;
-        }
-        CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                "VC Device configured channel %u", (unsigned int)i);
     }
+    
+end_of_function:
+
     return returnCode;
 }
 
@@ -256,7 +258,7 @@ void VC_Stream_Task(void)
             for (i=0; i < VC_MAX_DEVICES; i++)
             {
                 if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
-                && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
+                && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_INITIALIZED)
                 {
                     FD_SET(VC_AppCustomDevice.Channel[i].Socket, &fds);
             
@@ -330,7 +332,7 @@ void VC_Stream_Task(void)
                 for (i=0; i < VC_MAX_DEVICES; i++)
                 {
                     if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
-                    && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_STREAMING)
+                    && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_INITIALIZED)
                     {
                         if(FD_ISSET(VC_AppCustomDevice.Channel[i].Socket, &fds))
                         {
@@ -359,33 +361,43 @@ end_of_function:
 }
 
 
-
 int32 VC_Send_Buffer(uint8 DeviceID)
 {
     int32 returnCode = 0;
     uint32 i = 0;
-    uint32 size;
-    /* TODO: Move this buffer size to platform config */
-    char *buffer[65527];
+    uint32 size = 0;
+    unsigned int packetLength = 0;
     
-    
-    /* ADD MAGIC HERE FOR MULTIPARTMUX OVER UDP*/
-    //while(size != 65527 && 
-        //size += recv(VC_AppCustomDevice.Channel[i].Socket, buffer, , 0);
-
-
-    
-    /* Send data, for now map device id to senddata channel */
-    if (-1 == VC_SendData(DeviceID, (void*)buffer, size))
+    size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
+            VC_AppCustomDevice.Channel[DeviceID].Buffer, VC_MAX_PACKET_SIZE, 0);
+    /* if we have the preamble header... */
+    if (size == VC_MPARTMUX_HEADER_SIZE)
     {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "VC send data failed on channel %u", (unsigned int)DeviceID);
+        /* get the size of the payload from the preamble header */
+        sscanf(&VC_AppCustomDevice.Channel[DeviceID].Buffer[VC_MPARTMUX_HEADER_LENGTH_START], 
+                "%u", &packetLength);
+        /* receive the payload */
+        size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
+                VC_AppCustomDevice.Channel[DeviceID].Buffer, VC_MAX_PACKET_SIZE, 0);
+        /* if the size we received is not the size specified in the header 
+         * something went wrong. */
+        if (size != packetLength)
+        {
+            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "VC recv size error on channel %u", (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
+        }
+        /* Send data, for now map device id to senddata channel */
+        if (-1 == VC_SendData(DeviceID, (void*)VC_AppCustomDevice.Channel[DeviceID].Buffer, packetLength))
+        {
+            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "VC send data failed on channel %u", (unsigned int)DeviceID);
+            returnCode = -1;
+            goto end_of_function;
+        }
     }
-    
 
-    
 end_of_function:
     return returnCode;
 }

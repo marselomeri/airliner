@@ -35,6 +35,22 @@
 #define VC_DEV_IO_UDP_H
 
 /************************************************************************
+** Local Defines
+*************************************************************************/
+/* TODO move to platform config */
+/** \brief Size of the Gstreamer multipartmux preamble when configured
+**         with a boundary = "*".
+**
+**  \par Limits:
+**       Varies with boundary specified.
+*/
+#define VC_MPARTMUX_HEADER_SIZE 61
+/** \brief Char count where length of the payload is specified in the 
+**         multipartmux preamble.
+*/
+#define VC_MPARTMUX_HEADER_LENGTH_START 53
+
+/************************************************************************
 ** Structure Declarations
 *************************************************************************/
 
@@ -79,7 +95,8 @@ typedef struct
     int                 Socket;
     /*! Device port number */
     uint16              Port;
-
+    /*! Device buffer for receiving image data */
+    char Buffer[VC_MAX_PACKET_SIZE];
 } VC_Device_Handle_t;
 
 
