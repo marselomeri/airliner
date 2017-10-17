@@ -34,6 +34,12 @@
 #ifndef VC_DEV_IO_UDP_H
 #define VC_DEV_IO_UDP_H
 
+#include "cfe.h"
+#include "vc_dev_io.h"
+#include "../vc_custom_shared.h"
+#include "vc_perfids.h"
+#include "vc_app.h"
+
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -116,5 +122,11 @@ typedef struct
     /*! Device resource(s) channels */
     VC_Device_Handle_t              Channel[VC_MAX_DEVICES];
 } VC_AppCustomDevice_t;
+
+
+int32 VC_CleanupDevices(void);
+int32 VC_Init_CustomDevices(void);
+void VC_Stream_Task(void);
+int32 VC_Send_Buffer(uint8 DeviceID);
 
 #endif

@@ -37,7 +37,14 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-
+#include "vc_dev_io_udp.h"
+#include "cfe.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <time.h>
+#include <string.h>
+#include <arpa/inet.h>
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -73,11 +80,14 @@ int32 VC_Devices_InitData(void)
     bzero(&VC_AppCustomDevice, sizeof(VC_AppCustomDevice));
     
     /* Set all non-zero values for channel zero */
-    VC_AppCustomDevice.Channel[0].Status        = VC_DEVICE_UNINITIALIZED;
-    VC_AppCustomDevice.Channel[0].Mode          = VC_DEVICE_ENABLED;
-    VC_AppCustomDevice.Channel[0].Socket        = 0;
+    VC_AppCustomDevice.ContinueFlag          = TRUE;
+    VC_AppCustomDevice.Priority              = VC_STREAMING_TASK_PRIORITY;
+    VC_AppCustomDevice.StreamingTask         = VC_Stream_Task;
+    VC_AppCustomDevice.Channel[0].Status     = VC_DEVICE_UNINITIALIZED;
+    VC_AppCustomDevice.Channel[0].Mode       = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Socket     = 0;
     /* TODO move to platform config */
-    VC_AppCustomDevice.Channel[0].Port          = 5600;
+    VC_AppCustomDevice.Channel[0].Port       = 3999;
 
     return (iStatus);
 }
