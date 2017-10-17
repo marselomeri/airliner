@@ -53,7 +53,7 @@ class PylinerClient(Pyliner):
         time.sleep(0.5)
         # TODO: Loop safegaurd
         while wait_flag:
-            if self.current_frame % self.minor_frames > start_frame:
+            if self.current_frame % self.minor_frames >= start_frame:
                 #logging.info('current frame: %s' % (self.current_frame))
                 global frame_callback_var
                 time.sleep(0.02)
