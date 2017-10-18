@@ -73,10 +73,23 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.decode_message(cur_thread)
         
     def decode_message(self, cur_thread):
-        if self.telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
-            print("received shutdown message", cur_thread)
-            # notify main so it can initiate shutdown
-            ArteServerGlobals.shutdown_notification.set()
+        # if app_id > 0 we've received a shutdown requests
+        if self.telemetry_packet.PriHdr.StreamId.bits.app_id > 0:
+            # if app_id == 1 the client test(s) succeeded
+            if self.telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
+                print("received shutdown message and success", cur_thread)
+                # notify main so it can initiate shutdown
+                ArteServerGlobals.shutdown_notification.set()
+            # if app_id == 2 the client test(s) failed
+            elif self.telemetry_packet.PriHdr.StreamId.bits.app_id == 2:
+                print("received shutdown message and failure", cur_thread)
+                # notify main so it can initiate shutdown
+                ArteServerGlobals.shutdown_notification.set()
+            # if we've received an unknown test outcome code
+            else:
+                print("received shutdown message and unknown status", cur_thread)
+                # notify main so it can initiate shutdown
+                ArteServerGlobals.shutdown_notification.set()
     
     def send_response(self, cur_thread):
         self.request.sendall(self.command_packet.get_encoded())

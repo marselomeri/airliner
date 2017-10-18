@@ -56,10 +56,13 @@ class ArteClient(object):
         self.telemetry_packet.set_current_time()
         self.sock.sendall(self.telemetry_packet.get_encoded())
         
-    def send_shutdown(self):
+    def send_shutdown(self, successBool):
         #TODO add try catch
         print("sending shutdown to ARTE server")
-        self.telemetry_packet.PriHdr.StreamId.bits.app_id = 1
+        if successBool == True:
+            self.telemetry_packet.PriHdr.StreamId.bits.app_id = 1
+        elif successBool == False:
+            self.telemetry_packet.PriHdr.StreamId.bits.app_id = 2
         self.telemetry_packet.set_current_time()
         self.sock.sendall(self.telemetry_packet.get_encoded())
         self.telemetry_packet.PriHdr.StreamId.bits.app_id = 0
