@@ -354,8 +354,7 @@ end_of_function:
 int32 VC_Send_Buffer(uint8 DeviceID)
 {
     int32 returnCode = 0;
-    uint32 i = 0;
-    uint32 size = 0;
+    int size = 0;
     unsigned int packetLength = 0;
     
     size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
@@ -370,13 +369,15 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
                 VC_AppCustomDevice.Channel[DeviceID].Buffer, VC_MAX_PACKET_SIZE, 0);
         /* if the size we received is not the size specified in the header 
-         * something went wrong. */
+         * something went wrong. Or sscanf didn't find a match so we  
+         * don't have a size from the preamble etc */
+
         if (size != packetLength)
         {
             CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC recv size error on channel %u", (unsigned int)DeviceID);
-        returnCode = -1;
-        goto end_of_function;
+            returnCode = -1;
+            goto end_of_function;
         }
         /* Send data, for now map device id to senddata channel */
         if (-1 == VC_SendData(DeviceID, (void*)VC_AppCustomDevice.Channel[DeviceID].Buffer, packetLength))
@@ -388,12 +389,17 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         }
     }
     /* if recv returned an error */
-    if (size == -1)
+    else if (size == -1)
     {
         /* recv returned an error */
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC recv errno: %i on channel %u", errno, (unsigned int)DeviceID);
         returnCode = -1;
+        goto end_of_function;
+    }
+    else
+    {
+        /* do nothing we received the 2 byte preamble */
         goto end_of_function;
     }
 

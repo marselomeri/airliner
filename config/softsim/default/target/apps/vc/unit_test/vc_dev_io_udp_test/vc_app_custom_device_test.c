@@ -541,7 +541,7 @@ void Test_VC_Custom_DevicesUninit_Nominal(void)
  * Test VC_Send_Buffer() recv error
  * 
  */
-void Test_VC_Custom_DevicesUninit_RecvError(void)
+void Test_VC_Custom_SendBuffer_RecvError(void)
 {
     int32 result = 0;
     int32 expected = -1;
@@ -560,6 +560,90 @@ void Test_VC_Custom_DevicesUninit_RecvError(void)
     UtAssert_True(result == expected,"VC_Send_Buffer() did not return the correct value");
     UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
                         "VC_Send_Buffer() failed to raise an event");  
+}
+
+
+/**
+ * Test VC_Send_Buffer() size error
+ * 
+ */
+void Test_VC_Custom_SendBuffer_SizeError(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC recv size error on channel %u", 0);
+    
+    /* Set recv to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return = VC_MPARTMUX_HEADER_SIZE;
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return1 = -1;
+
+    /* Call the function under test */
+    result = VC_Send_Buffer(0);
+     
+    UtAssert_True(result == expected,"VC_Send_Buffer() did not return the correct value");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Send_Buffer() failed to raise an event");  
+}
+
+
+/**
+ * Test VC_Send_Buffer() send data fail
+ * 
+ */
+void Test_VC_Custom_SendBuffer_SendError(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC send data failed on channel %u", 0);
+    
+    /* Set recv to pass/fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return = VC_MPARTMUX_HEADER_SIZE;
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return1 = 0;
+    
+    /* set sendto to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_SendTo_Return = -1;
+    
+    /* Properly initialize custom transmit data */
+    VC_CustomTransmit_InitData();
+
+    /* Call the function under test */
+    result = VC_Send_Buffer(0);
+     
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(result == expected,"VC_Send_Buffer() did not return the correct value");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Send_Buffer() failed to raise an event");  
+}
+
+
+/**
+ * Test VC_Send_Buffer() nominal
+ * 
+ */
+void Test_VC_Custom_SendBuffer_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC send data failed on channel %u", 0);
+    
+    /* Set recv to pass/fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return = VC_MPARTMUX_HEADER_SIZE;
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return1 = 0;
+    
+    /* Properly initialize custom transmit data */
+    VC_CustomTransmit_InitData();
+
+    /* Call the function under test */
+    result = VC_Send_Buffer(0);
+     
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==0,"Event Count = 0");
+    UtAssert_True(result == expected,"VC_Send_Buffer() did not return the correct value");
 }
 
 
@@ -625,9 +709,14 @@ void VC_Custom_App_Device_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_CleanupFail");
     UtTest_Add(Test_VC_Custom_DevicesUninit_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_Nominal");
-    UtTest_Add(Test_VC_Custom_DevicesUninit_RecvError, VC_Custom_Device_Test_Setup, 
-            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_RecvError");
-
+    UtTest_Add(Test_VC_Custom_SendBuffer_RecvError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_RecvError");
+    UtTest_Add(Test_VC_Custom_SendBuffer_SizeError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_SizeError");
+    UtTest_Add(Test_VC_Custom_SendBuffer_SendError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_SendError");
+    UtTest_Add(Test_VC_Custom_SendBuffer_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_SendBuffer_Nominal");
     UtTest_Add(Test_VC_Devices_InitData_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Devices_InitData_Nominal");
 }

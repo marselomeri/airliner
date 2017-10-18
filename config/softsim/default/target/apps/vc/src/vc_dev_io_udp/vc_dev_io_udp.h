@@ -152,7 +152,10 @@ void VC_Stream_Task(void);
 
 
 /**
- * @brief dequeue and send a buffer from a "ready" socket
+ * @brief send a buffer from a "ready" socket
+ * @note gst multipartmux sends 2 bytes, preamble bytes (70 if the 
+ *       default boundary string is used, less if a custom boundary is
+ *       specified), followed by the image payload.
  * @param DeviceID the device ID of the "ready" socket
  * @return 0 for success -1 for failure
  */
