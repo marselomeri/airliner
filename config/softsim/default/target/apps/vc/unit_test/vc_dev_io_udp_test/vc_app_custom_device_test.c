@@ -172,30 +172,367 @@ void Test_VC_Custom_StreamTask_RegisterChildTaskFail(void)
                         "VC_Stream_Task() failed to raise an event");
 }
 
+
+/**
+ * Test VC_Stream_Task() fail nothing enabled and streaming
+ */
+void Test_VC_Custom_StreamTask_NothingEnabled(void)
+{
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC can't start streaming no devices are streaming enabled");
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].Socket = 7;
+    
+    /* Set select to fail with an error (-1) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = -1;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+
+
+/**
+ * Test VC_Stream_Task() fail select error
+ */
+void Test_VC_Custom_StreamTask_SelectError(void)
+{
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC start streaming failed select() returned %i", 6);
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set the mode and state for channel 0*/
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+    
+        /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno_Value = 6;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].Socket = 7;
+    
+    /* Set select to fail with an error (-1) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = -1;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+
+
+/**
+ * Test VC_Stream_Task() fail select interrupted max retry attempts
+ */
+void Test_VC_Custom_StreamTask_InterruptedError(void)
+{
+    char returnString[64];
+    snprintf(returnString, 64, "VC select was interrupted");
+    char returnString1[128];
+    snprintf(returnString1, 128, "VC streaming task exited with return code %d task status (0x%08X)", 
+                                -1, (unsigned int)CFE_SUCCESS);
+  
+    /* Set register child task to succeed */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERCHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    /* Set the while loop continue flag to true */
+    VC_AppCustomDevice.ContinueFlag = TRUE;
+    
+    /* Set the mode and state for channel 0*/
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[0].Status = VC_DEVICE_INITIALIZED;
+    
+        /* Set return error number to true */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno = 1;
+    
+    /* Set error number to interrupted */
+    /* Note this will set errno through multiple calls */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Errno_Value = EINTR;
+    
+    /* Set a fake device file descriptor */
+    VC_AppCustomDevice.Channel[0].Socket = 7;
+    
+    /* Set select to fail with an error (-1) */
+    VC_Platform_Stubs_Returns.VC_Wrap_Select_Return = -1;
+
+    /* Call the function under test */
+    VC_Stream_Task();
+    
+    /* Verfity results */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==(VC_MAX_RETRY_ATTEMPTS + 1),
+                        "Event Count is not correct");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "VC_Stream_Task() did not set app state");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Stream_Task() failed to raise an event");                        
+    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString1, 
+                        "VC_Stream_Task() failed to raise an event");
+}
+
+
 /**************************************************************************
  * Tests for VC_Devices_Start()
  **************************************************************************/
- 
+ /**
+ * Test VC_Devices_Start() fail child task creation
+ */
+void Test_VC_Custom_DevicesStart_ChildTaskCreationFail(void)
+{
+    /* Set create child task to fail */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_CREATECHILDTASK_INDEX, -1, 1);
+    
+    boolean result = TRUE;
+    boolean expected = FALSE;
+    
+    /* Call the function under test */
+    result = VC_Devices_Start();
+
+    UtAssert_True(VC_AppCustomDevice.ContinueFlag == FALSE,
+                        "Devices start continue flag not correctly set");
+    UtAssert_True(result == expected,"VC_Devices_Start() did not fail");
+}
+
+
+/**
+ * Test VC_Devices_Start() nominal
+ */
+void Test_VC_Custom_DevicesStart_Nominal(void)
+{
+    /* Set create child task to fail */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_CREATECHILDTASK_INDEX, CFE_SUCCESS, 1);
+    
+    boolean result = FALSE;
+    boolean expected = TRUE;
+
+    /* Call the function under test */
+    result = VC_Devices_Start();
+    
+    UtAssert_True(VC_AppCustomDevice.ContinueFlag == TRUE,
+                        "Devices start continue flag not correctly set");
+    UtAssert_True(result == expected,"VC_Devices_Start() did not fail");
+}
+
 
 /**************************************************************************
  * Tests for VC_Devices_Stop()
  **************************************************************************/
+ /**
+ * Test VC_Devices_Stop() fail delete child task
+ */
+void Test_VC_Custom_DevicesStop_ChildTaskDeleteFail(void)
+{
+    /* Set delete child task to fail */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_DELETECHILDTASK_INDEX, -1, 1);
+
+    boolean result = TRUE;
+    boolean expected = FALSE;
+    
+    /* Call the function under test */
+    result = VC_Devices_Stop();
+
+    UtAssert_True(VC_AppCustomDevice.ContinueFlag == FALSE,
+                        "Devices start continue flag not correctly set");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "AppState not correctly set");
+    UtAssert_True(result == expected,"VC_Devices_Stop() did not fail");
+}
+
+
+ /**
+ * Test VC_Devices_Stop() nominal
+ */
+void Test_VC_Custom_DevicesStop_Nominal(void)
+{
+    /* Set delete child task to fail */
+    Ut_CFE_ES_SetReturnCode(UT_CFE_ES_DELETECHILDTASK_INDEX, CFE_SUCCESS, 1);
+
+    boolean result = FALSE;
+    boolean expected = TRUE;
+    
+    /* Call the function under test */
+    result = VC_Devices_Stop();
+
+    UtAssert_True(VC_AppCustomDevice.ContinueFlag == FALSE,
+                        "Devices start continue flag not correctly set");
+    UtAssert_True(VC_AppData.AppState == VC_INITIALIZED,
+                        "AppState not correctly set");
+    UtAssert_True(result == expected,"VC_Devices_Stop() did not fail");
+}
 
 
 /**************************************************************************
  * Tests for VC_CleanupDevices()
  **************************************************************************/
-
+ /**
+ * Test VC_CleanupDevices() close fail
+ * 
+ */
+void Test_VC_Custom_CleanupDevices_CloseFail(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    
+    /* Set channel 0 to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    
+    /* Set close to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Close_Return = -1;
+    
+    /* Call the function under test */
+    result = VC_CleanupDevices();
+       
+    UtAssert_True(result == expected,"VC_DisableDevice() did not succeed");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Mode == VC_DEVICE_ENABLED,
+                        "VC_CleanupDevices() did not set correct status");
+}
+ 
+/**
+ * Test VC_CleanupDevices() nominal
+ * 
+ */
+void Test_VC_Custom_CleanupDevices_Nominal(void)
+{
+    int32 result = -1;
+    int32 expected = 0;
+    
+    /* Set channel 0 to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    
+    
+    /* Call the function under test */
+    result = VC_CleanupDevices();
+       
+    UtAssert_True(result == expected,"VC_DisableDevice() did not succeed");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Mode == VC_DEVICE_DISABLED,
+                        "VC_CleanupDevices() did not set correct status");
+}
 
 /**************************************************************************
  * Tests for VC_Devices_Init()
  **************************************************************************/
+ /**
+ * Test VC_Devices_Init fail VC_Init_CustomDevices see previous test
+ * VC_InitCustomDevices() fail socket creation
+ */
+void Test_VC_Custom_DevicesInit_Fail(void)
+{
+    boolean result = TRUE;
+    boolean expected = FALSE;
+    
+    /* Set the first device to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    
+    /* Set socket creation to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Socket_Return = -1;
+    VC_Platform_Stubs_Returns.VC_Wrap_Socket_Errno = 1;
+    VC_Platform_Stubs_Returns.VC_Wrap_Socket_Errno_Value = 13;
+
+    result = VC_Devices_Init();
+    
+    UtAssert_True(result == expected,"VC_Devices_Init() did not return an error");
+}
+
+
+ /**
+ * Test VC_Devices_Init nominal see previous test
+ * VC_InitCustomDevices() nominal
+ */
+void Test_VC_Custom_DevicesInit_Nominal(void)
+{
+    boolean result = FALSE;
+    boolean expected = TRUE;
+    
+    /* Set the first device to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+
+    result = VC_Devices_Init();
+    
+    UtAssert_True(result == expected,"VC_Devices_Init() did not return an error");
+}
  
  
 /**************************************************************************
  * Tests for VC_Devices_Uninit()
  **************************************************************************/
+/**
+ * Test VC_Devices_Uninit() cleanup fail see previous test
+ * VC_CleanupDevices() close fail
+ */
+void Test_VC_Custom_DevicesUninit_CleanupFail(void)
+{
+    boolean result = TRUE;
+    boolean expected = FALSE;
 
+    /* Set channel 0 to enabled */
+    VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_ENABLED;
+    
+    /* Set close to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Close_Return = -1;
+
+    /* Call the function under test */
+    result = VC_Devices_Uninit();
+     
+    UtAssert_True(result == expected,"VC_DisableDevice() did not succeed");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_DISABLED,
+                        "VC_CleanupDevices() did not set correct status");
+}
+
+
+/**
+ * Test VC_Devices_Uninit() nominal
+ * 
+ */
+void Test_VC_Custom_DevicesUninit_Nominal(void)
+{
+    boolean result = FALSE;
+    boolean expected = TRUE;
+
+    /* Call the function under test */
+    result = VC_Devices_Uninit();
+     
+    UtAssert_True(result == expected,"VC_DisableDevice() did not succeed");
+    UtAssert_True(VC_AppCustomDevice.Channel[0].Mode = VC_DEVICE_DISABLED,
+                        "VC_CleanupDevices() did not set correct status");
+}
 
 /**************************************************************************
  * Tests for VC_Send_Buffer()
@@ -238,6 +575,33 @@ void VC_Custom_App_Device_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_InitCustomDevices_Nominal");
     UtTest_Add(Test_VC_Custom_StreamTask_RegisterChildTaskFail, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_RegisterChildTaskFail");
+    UtTest_Add(Test_VC_Custom_StreamTask_NothingEnabled, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_NothingEnabled");
+    UtTest_Add(Test_VC_Custom_StreamTask_SelectError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_SelectError");
+    UtTest_Add(Test_VC_Custom_StreamTask_InterruptedError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_StreamTask_InterruptedError");
+    UtTest_Add(Test_VC_Custom_DevicesStart_ChildTaskCreationFail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesStart_ChildTaskCreationFail");
+    UtTest_Add(Test_VC_Custom_DevicesStart_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesStart_Nominal");
+    UtTest_Add(Test_VC_Custom_DevicesStop_ChildTaskDeleteFail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesStop_ChildTaskDeleteFail");
+    UtTest_Add(Test_VC_Custom_DevicesStop_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesStop_Nominal");
+    UtTest_Add(Test_VC_Custom_CleanupDevices_CloseFail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_CleanupDevices_CloseFail");
+    UtTest_Add(Test_VC_Custom_CleanupDevices_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_CleanupDevices_Nominal");
+    UtTest_Add(Test_VC_Custom_DevicesInit_Fail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesInit_Fail");
+    UtTest_Add(Test_VC_Custom_DevicesInit_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesInit_Nominal");
+    UtTest_Add(Test_VC_Custom_DevicesUninit_CleanupFail, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_CleanupFail");
+    UtTest_Add(Test_VC_Custom_DevicesUninit_Nominal, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_Nominal");
+
     UtTest_Add(Test_VC_Devices_InitData_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Devices_InitData_Nominal");
 }
