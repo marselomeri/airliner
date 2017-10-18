@@ -387,6 +387,15 @@ int32 VC_Send_Buffer(uint8 DeviceID)
             goto end_of_function;
         }
     }
+    /* if recv returned an error */
+    if (size == -1)
+    {
+        /* recv returned an error */
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "VC recv errno: %i on channel %u", errno, (unsigned int)DeviceID);
+        returnCode = -1;
+        goto end_of_function;
+    }
 
 end_of_function:
     return returnCode;

@@ -74,5 +74,6 @@ add_airliner_app_unit_test(vc-custom-ut
         socket
         bind
         sendto
+        recv
 )
 

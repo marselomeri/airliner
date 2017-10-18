@@ -537,6 +537,30 @@ void Test_VC_Custom_DevicesUninit_Nominal(void)
 /**************************************************************************
  * Tests for VC_Send_Buffer()
  **************************************************************************/
+/**
+ * Test VC_Send_Buffer() recv error
+ * 
+ */
+void Test_VC_Custom_DevicesUninit_RecvError(void)
+{
+    int32 result = 0;
+    int32 expected = -1;
+    
+    char returnString[64];
+    snprintf(returnString, 64, "VC recv errno: %i on channel %u", 1, 0);
+    
+    /* Set recv to fail */
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return = -1;
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Errno = 1;
+    VC_Platform_Stubs_Returns.VC_Wrap_Recv_Errno_Value = 1;
+
+    /* Call the function under test */
+    result = VC_Send_Buffer(0);
+     
+    UtAssert_True(result == expected,"VC_Send_Buffer() did not return the correct value");
+    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
+                        "VC_Send_Buffer() failed to raise an event");  
+}
 
 
 /**************************************************************************
@@ -601,6 +625,8 @@ void VC_Custom_App_Device_Test_AddTestCases(void)
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_CleanupFail");
     UtTest_Add(Test_VC_Custom_DevicesUninit_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_Nominal");
+    UtTest_Add(Test_VC_Custom_DevicesUninit_RecvError, VC_Custom_Device_Test_Setup, 
+            VC_Custom_Device_Test_TearDown, "Test_VC_Custom_DevicesUninit_RecvError");
 
     UtTest_Add(Test_VC_Devices_InitData_Nominal, VC_Custom_Device_Test_Setup, 
             VC_Custom_Device_Test_TearDown, "Test_VC_Devices_InitData_Nominal");
