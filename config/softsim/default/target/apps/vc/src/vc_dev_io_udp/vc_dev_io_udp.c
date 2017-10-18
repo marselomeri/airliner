@@ -45,6 +45,7 @@
 #include <time.h>
 #include <string.h>
 #include <arpa/inet.h>
+
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -86,8 +87,7 @@ int32 VC_Devices_InitData(void)
     VC_AppCustomDevice.Channel[0].Status     = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[0].Mode       = VC_DEVICE_ENABLED;
     VC_AppCustomDevice.Channel[0].Socket     = 0;
-    /* TODO move to platform config */
-    VC_AppCustomDevice.Channel[0].Port       = 5600;
+    VC_AppCustomDevice.Channel[0].Port       = VC_GST_GAZEBO_PORT;
 
     return (iStatus);
 }
@@ -198,9 +198,10 @@ int32 VC_Init_CustomDevices(void)
             /* Create socket */
             VC_AppCustomDevice.Channel[i].Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
             /* if socket creation failed */
+            
             if (VC_AppCustomDevice.Channel[i].Socket < 0)
             {
-                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, "Socket errno: %i", errno);
+                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, "Socket errno: %i on channel %u", errno, (unsigned int)i);
                 returnCode = -1;
                 goto end_of_function;
             }
@@ -214,14 +215,14 @@ int32 VC_Init_CustomDevices(void)
             /* if bind failed... */
             if((bind(VC_AppCustomDevice.Channel[i].Socket , (struct sockaddr *) &address, sizeof(address)) < 0))
             {
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
-            returnCode = -1;
-            goto end_of_function;
+                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,"Bind errno: %i on channel %u", errno, (unsigned int)i);
+                returnCode = -1;
+                goto end_of_function;
             }
             /* socket create and bind success */
             VC_AppCustomDevice.Channel[i].Status = VC_DEVICE_INITIALIZED;
             CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                    "VC Device configured channel %u", (unsigned int)i);
+                    "VC Device initialized channel %u", (unsigned int)i);
         }
     }
     
@@ -253,13 +254,6 @@ void VC_Stream_Task(void)
         {
             maxFd = 0;
             returnCode = 0;
-            
-            /* Select modifies the timeout value with time left until 
-             * the timeout would expire so timeValue needs to be set
-             * every loop iteration
-             */
-            //timeValue.tv_sec = VC_BUFFER_FILL_TIMEOUT_SEC;
-            //timeValue.tv_usec = VC_BUFFER_FILL_TIMEOUT_USEC;
 
             /* Initialize the set */
             FD_ZERO(&fds);
@@ -271,7 +265,6 @@ void VC_Stream_Task(void)
                 && VC_AppCustomDevice.Channel[i].Status == VC_DEVICE_INITIALIZED)
                 {
                     FD_SET(VC_AppCustomDevice.Channel[i].Socket, &fds);
-            
                     /* Get the greatest fd value for select() */
                     if (VC_AppCustomDevice.Channel[i].Socket > maxFd)
                     {
@@ -322,24 +315,10 @@ void VC_Stream_Task(void)
                     goto end_of_function;
                 }
             }
-            /* select timed out */
-            if (0 == returnCode)
-            {
-                if (timeouts == VC_BUFFER_TIMEOUTS_ALLOWED)
-                {
-                    returnCode = -1;
-                    goto end_of_function;
-                }
-                timeouts++;
-                usleep(VC_MAX_RETRY_SLEEP_USEC);
-                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC select timed out");
-                continue;
-            } 
-            /* select() returned and a buffer is ready to be dequeued */
+            /* select() returned and a socket is ready */
             if(returnCode > 0)
             {   
-                /* Determine which device is ready */    
+                /* Determine which socket is ready */    
                 for (i=0; i < VC_MAX_DEVICES; i++)
                 {
                     if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED 
@@ -347,7 +326,7 @@ void VC_Stream_Task(void)
                     {
                         if(FD_ISSET(VC_AppCustomDevice.Channel[i].Socket, &fds))
                         {
-                            /* Call send buffer with the device that is ready */
+                            /* Call send buffer with the socket that is ready */
                             VC_Send_Buffer(i);
                         }
                     }

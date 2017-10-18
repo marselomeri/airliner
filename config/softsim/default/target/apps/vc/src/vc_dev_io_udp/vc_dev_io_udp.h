@@ -34,6 +34,9 @@
 #ifndef VC_DEV_IO_UDP_H
 #define VC_DEV_IO_UDP_H
 
+/************************************************************************
+** Includes
+*************************************************************************/
 #include "cfe.h"
 #include "vc_dev_io.h"
 #include "../vc_custom_shared.h"
@@ -45,16 +48,19 @@
 *************************************************************************/
 /* TODO move to platform config */
 /** \brief Size of the Gstreamer multipartmux preamble when configured
-**         with a boundary = "*".
+**         with a boundary = "*". 
 **
 **  \par Limits:
 **       Varies with boundary specified.
 */
-#define VC_MPARTMUX_HEADER_SIZE 61
+#define VC_MPARTMUX_HEADER_SIZE (61)
 /** \brief Char count where length of the payload is specified in the 
 **         multipartmux preamble.
 */
-#define VC_MPARTMUX_HEADER_LENGTH_START 51
+#define VC_MPARTMUX_HEADER_LENGTH_START (51)
+/** \brief Gstreamer Gazebo camera plugin UDP output port number.
+*/
+#define VC_GST_GAZEBO_PORT (5600)
 
 /************************************************************************
 ** Structure Declarations
@@ -124,9 +130,33 @@ typedef struct
 } VC_AppCustomDevice_t;
 
 
+/**
+ * @brief Cleanup (close) all enabled  devices
+ * @return 0 for success -1 for failure
+ */
 int32 VC_CleanupDevices(void);
+
+
+/**
+ * @brief Initialize all enabled devices.
+ * @return 0 for success -1 for failure
+ */
 int32 VC_Init_CustomDevices(void);
+
+
+/**
+ * @brief Streaming task, takes ready file descriptor and sends.
+ * @note This is a loop to be run in a VC app child task
+ */
 void VC_Stream_Task(void);
+
+
+/**
+ * @brief dequeue and send a buffer from a "ready" socket
+ * @param DeviceID the device ID of the "ready" socket
+ * @return 0 for success -1 for failure
+ */
 int32 VC_Send_Buffer(uint8 DeviceID);
+
 
 #endif
