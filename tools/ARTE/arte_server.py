@@ -106,18 +106,16 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             # if app_id == 1 the client test(s) succeeded
             if self.telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
                 print("received shutdown message and success", cur_thread)
-                # notify main so it can initiate shutdown
-                ArteServerGlobals.shutdown_notification.set()
             # if app_id == 2 the client test(s) failed
             elif self.telemetry_packet.PriHdr.StreamId.bits.app_id == 2:
                 print("received shutdown message and failure", cur_thread)
-                # notify main so it can initiate shutdown
-                ArteServerGlobals.shutdown_notification.set()
+                self.event_handler.returnCode = 1
             # if we've received an unknown test outcome code
             else:
                 print("received shutdown message and unknown status", cur_thread)
-                # notify main so it can initiate shutdown
-                ArteServerGlobals.shutdown_notification.set()
+                self.event_handler.returnCode = 2
+            # notify the event handler
+            self.event_handler.shutdown_notification.set()
     
     def send_response(self, cur_thread):
         self.request.sendall(self.command_packet.get_encoded())
@@ -149,12 +147,15 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     ThreadedTCPRequestHandler.client_ready_count = ThreadedTCPRequestHandler.client_count
                 elif ThreadedTCPRequestHandler.shutdown_flag:
                     # wait for all clients to connect
-                    #with ArteServerGlobals.condition:
                     print("client ready, waiting for all clients...", cur_thread)
                     ThreadedTCPRequestHandler.client_ready_condition.wait()
                     if ThreadedTCPRequestHandler.shutdown_flag:
                         # send "next step" to all clients
                         self.send_response(cur_thread)
+                    else:
+                        break
+                else:
+                    break
         # we're outside the while loop so the shutdown flag has been 
         # raised
         print("thread done = ", cur_thread.name)
@@ -201,8 +202,8 @@ class ArteServer(object):
         # Go ahead and notify any waiting threads
         with ThreadedTCPRequestHandler.client_ready_condition:
             ThreadedTCPRequestHandler.client_ready_condition.notify_all()
+        time.sleep(1)
+        print("threading.enumerate() ", threading.enumerate())
+        self.server.shutdown()
+        print("threading.enumerate() ", threading.enumerate())
         #self.server_thread.join(1)
-
-class ArteServerGlobals:
-    """Shared data between server and client threads."""
-    shutdown_notification = threading.Event()

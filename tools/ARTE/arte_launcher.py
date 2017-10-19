@@ -47,14 +47,18 @@ class ArteSubprocess(object):
         lastStatus: Return code.
         proc: The subprocess object.
     """
-    def __init__(self, command, fileName, cwd):
+    def __init__(self, command, fileName, cwd, terminalBool = True):
         self.command = command
         self.args = shlex.split(command)
         self.fileName = fileName
         self.cwd = cwd
+
         f = open(self.fileName, "a")
         f.write("- ARTE " + str(command) + " " + datetime.now().strftime('%Y%m%d_%H:%M:%S - ') + "\n")
-        self.proc = subprocess.Popen(self.args,stdout=f, shell=False, cwd=self.cwd)
+        self.proc = subprocess.Popen(self.args,stdout=f, stderr=f, shell=False, cwd=self.cwd)
+        if terminalBool:
+            # TODO add terminal pipe option
+            pass
         self.lastStatus = None
         
     def stop_subprocess(self):

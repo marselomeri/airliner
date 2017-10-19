@@ -2,7 +2,9 @@
   "name": "ARTE test config file",
   "version": 0.1,
   "date": "2017-09-22T00:00:00.000Z",
-  "timeout": 120,
+  "timeout": 300,
+  "timeouts": 5,
+  "watchdog": 5,
   "clients": [
     {
       "name": "Pyliner",

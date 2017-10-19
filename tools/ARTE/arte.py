@@ -34,7 +34,6 @@
 from arte_config import ArteSplash
 from arte_launcher import ArteSubprocess
 from arte_server import ArteServer
-from arte_server import ArteServerGlobals
 from arte_test import ArteTestFixture
 from arte_events import ArteEventHandler
 
@@ -66,6 +65,14 @@ def count_clients(config):
     return client_count
 
 
+def get_timeouts(config):
+    return config['timeouts']
+
+
+def get_timeout(config):
+    return config['timeout']
+    
+
 def main():
     ArteSplash()
     
@@ -84,10 +91,15 @@ def main():
     # Count the number of clients specified in the config file
     client_count = count_clients(config)
     
+    # Get the configured timeouts value for things like recv etc
+    timeouts = get_timeouts(config)
+    
+    # get the timeout for the complete test(s)
+    timeout = get_timeout(config)
     
     my_event_handler = ArteEventHandler()
     
-    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, 5)
+    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts)
 
     my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
     
@@ -99,10 +111,10 @@ def main():
      
     # wait on a shutdown event or timeout
     # this timeout needs to be changed to a watchdog that gets kicked.
-    if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
+    if my_event_handler.shutdown_notification.wait(timeout):
         # A shutdown request was received from a client.
         my_event_handler.shutdown()
-        sys.exit(0)
+        sys.exit(my_event_handler.returnCode)
     
     # The event wait returned false so a timeout was reached.
     # Shutdown the server.
@@ -110,7 +122,7 @@ def main():
 
     # Terminate clients.
     my_event_handler.shutdown()
-    sys.exit(0)
+    sys.exit(1)
 
 if __name__ == '__main__':
     main()
