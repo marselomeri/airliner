@@ -643,8 +643,8 @@ void FM_GetDirListPktCmd_Test(void)
 void FM_GetFreeSpaceCmd_Test_Nominal(void)
 {
     boolean Result;
-    FM_GetFreeSpaceCmd_t   CmdPacket;
-    FM_FreeSpaceTable_t    FreeSpaceTable;
+    FM_GetFreeSpaceCmd_t   CmdPacket = {0};
+    FM_FreeSpaceTable_t    FreeSpaceTable = {0};
 
     CFE_SB_InitMsg (&CmdPacket, FM_CMD_MID, sizeof(FM_GetFreeSpaceCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, FM_GET_FREE_SPACE_CC);
