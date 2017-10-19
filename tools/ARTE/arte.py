@@ -87,7 +87,7 @@ def main():
     
     my_event_handler = ArteEventHandler()
     
-    my_server = ArteServer("localhost", 9999, client_count, my_event_handler)
+    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, 5)
 
     my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
     
