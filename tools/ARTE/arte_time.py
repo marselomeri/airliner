@@ -31,48 +31,76 @@
 
 """
 import time
+from threading import Timer
 
-class ArteTimeSource(object):
-    """
-    Args:
-        seconds_increment (int): 
-        subseconds_increment (float):
-    
-    """
-    def __init__(self, seconds_increment, subseconds_increment):
-        self.start_time = 0
-        self.float_time = 0
-        self.seconds = 0
-        self.subseconds = 0
-        self.seconds_increment = seconds_increment
-        self.subseconds_increment = subseconds_increment
-    
-    def convert_subseconds(self, fraction_time):
-        converted_time = 0
-        for n in range(16):
-            if (fraction_time/(2**-(n+1))) >= 1:
-                converted_time |= 1 << (16 - (n+1)) 
-                fraction_time -= 2**-(n+1)
-        return converted_time
+class ArteWatchdog(object):
+    def __init__(self, timeout, event_handler):
+        self.timeout = timeout
+        self.event_handler = event_handler
+        self.event_handler.reset_watchdog += self.reset
+        self.event_handler.stop_watchdog += self.stop
+        self.timer = Timer(self.timeout, self.timeoutHandler)
 
-    def set_start_time(self):
-        self.start_time = self.float_time = time.time()
-        int_time = int(self.float_time)
-        fraction_time = self.float_time - int_time
-        self.seconds = int_time
-        self.subseconds = self.convert_subseconds(fraction_time)
-        
-    def add_step_time(self):
-        # add a step increment to the time in floating point format.
-        self.float_time += (self.seconds_increment + self.subseconds_increment)
-        # add a step increment to the time in seconds.
-        self.seconds = int(self.float_time)
-        # add a step increment to the time in subseconds.
-        self.subseconds = self.convert_subseconds(self.float_time - int(self.float_time))
+    def start(self):
+        self.timer.start()
+
+    def reset(self):
+        self.timer.cancel()
+        self.timer = Timer(self.timeout, self.timeoutHandler)
+        self.timer.start()
+
+    def stop(self):
+        self.timer.cancel()
+        self.timer.join()
     
-    def get_time(self):
-        return self.seconds, self.subseconds
+    def timeoutHandler(self):
+        self.event_handler.expired_watchdog()
+
+
+# TODO delete me not currently used
+#class ArteTimeSource(object):
+    #"""
+    #Args:
+        #seconds_increment (int): 
+        #subseconds_increment (float):
+    
+    #"""
+    #def __init__(self, seconds_increment, subseconds_increment):
+        #self.start_time = 0
+        #self.float_time = 0
+        #self.seconds = 0
+        #self.subseconds = 0
+        #self.seconds_increment = seconds_increment
+        #self.subseconds_increment = subseconds_increment
+    
+    #def convert_subseconds(self, fraction_time):
+        #converted_time = 0
+        #for n in range(16):
+            #if (fraction_time/(2**-(n+1))) >= 1:
+                #converted_time |= 1 << (16 - (n+1)) 
+                #fraction_time -= 2**-(n+1)
+        #return converted_time
+
+    #def set_start_time(self):
+        #self.start_time = self.float_time = time.time()
+        #int_time = int(self.float_time)
+        #fraction_time = self.float_time - int_time
+        #self.seconds = int_time
+        #self.subseconds = self.convert_subseconds(fraction_time)
         
-    def print_time(self):
-        print("seconds ", self.seconds)
-        print("subseconds ", bin(self.subseconds))
+    #def add_step_time(self):
+        ## add a step increment to the time in floating point format.
+        #self.float_time += (self.seconds_increment + self.subseconds_increment)
+        ## add a step increment to the time in seconds.
+        #self.seconds = int(self.float_time)
+        ## add a step increment to the time in subseconds.
+        #self.subseconds = self.convert_subseconds(self.float_time - int(self.float_time))
+    
+    #def get_time(self):
+        #return self.seconds, self.subseconds
+        
+    #def print_time(self):
+        #print("seconds ", self.seconds)
+        #print("subseconds ", bin(self.subseconds))
+        
+

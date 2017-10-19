@@ -47,7 +47,7 @@ class ArteSubprocess(object):
         lastStatus: Return code.
         proc: The subprocess object.
     """
-    def __init__(self, command, fileName, cwd, terminalBool = True):
+    def __init__(self, command, fileName, cwd, terminalBool = False):
         self.command = command
         self.args = shlex.split(command)
         self.fileName = fileName

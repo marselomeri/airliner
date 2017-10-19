@@ -42611,4 +42611,14 @@ waiting for response from ARTE server
 Cmd counter: 1
 Cmd processed in 21 frames
 sending ready to ARTE server
-waiting for response from 
+waiting for response from ARTE server
+Traceback (most recent call last):
+  File "challenge.py", line 27, in <module>
+    client.receive_response()
+  File "/home/vagrant/Desktop/airliner/tools/pyliner/arte_client.py", line 38, in receive_response
+    self.command_packet.set_decoded(response)
+  File "/home/vagrant/Desktop/airliner/tools/pyliner/arte_ccsds.py", line 471, in set_decoded
+    self.PriHdr.set_decoded(cmd_packet[0:6])
+  File "/home/vagrant/Desktop/airliner/tools/pyliner/arte_ccsds.py", line 180, in set_decoded
+    self.StreamId.data, self.Sequence.data, self.Length = struct.unpack('>HHH', header)
+struct.error: unpack requires a string argument of length 6
