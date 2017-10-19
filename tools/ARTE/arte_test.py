@@ -35,10 +35,14 @@ import time
 import sys
 
 class ArteTestFixture(object):
-    def __init__(self, name, config):
+    def __init__(self, name, config, event_handler):
         self.name = name
         self.config = config
         self.client_count = 0
+        # register test setup and teardown with the event handler
+        self.event_handler = event_handler
+        self.event_handler.startup += self.test_setup
+        self.event_handler.shutdown += self.test_teardown
         # count the number of clients in the config file.
         self.count_clients()
         self.clients = []
@@ -49,13 +53,13 @@ class ArteTestFixture(object):
         for i in self.config['clients']:
             self.client_count += 1
 
-    def test_setup(self):
+    def test_setup(self, sender):
         # Loop through the client array
         for i in self.config['clients']:
             self.clients.append(ArteSubprocess(i['command'], i['output'], i['cwd']))
         self.timeout = self.config['timeout']
 
-    def test_teardown(self):
+    def test_teardown(self, sender):
         # Loop through the client array
         for i in range(self.client_count):
             self.clients[i].stop_subprocess()

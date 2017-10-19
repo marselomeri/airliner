@@ -757,6 +757,4 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 #class testing(ctypes.Union):
     #_fields_ = [("bits", test_bits),
                 #("data", ctypes.c_uint16)]
-
-if __name__ == '__main__':
     

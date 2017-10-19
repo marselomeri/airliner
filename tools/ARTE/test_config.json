@@ -6,7 +6,7 @@
   "clients": [
     {
       "name": "Pyliner",
-      "command": "python2 pclient_test.py",
+      "command": "python2 challenge.py",
       "output": "test_script1.txt",
       "cwd": "../../tools/pyliner/"
     },

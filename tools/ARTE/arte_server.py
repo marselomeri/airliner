@@ -45,9 +45,28 @@ except Exception:
     print ("python3 socketserver not found. Must be python2.")
 
 
+class EventDrivenTCPServer(socketserver.TCPServer):
+    """Base class for various socket-based server classes extended
+       to add an event_handler argument. The request handler will be
+       called with an event_handler object.
+    """
+    def __init__(self, server_address, RequestHandlerClass, event_handler, bind_and_activate=True):
+        self.event_handler = event_handler
+        socketserver.TCPServer.__init__(self, server_address, RequestHandlerClass, bind_and_activate=True)
+        
+    def finish_request(self, request, client_address):
+        """Finish one request by instantiating RequestHandlerClass.
+           Now extended with an event_handler argument.
+        """
+        self.RequestHandlerClass(request, client_address, self, self.event_handler)
+
+
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+    #client_count = 0
+    #client_ready_count = 0
     
-    def initial_setup(self):
+    def __init__(self, request, client_address, server, event_handler):
+        self.event_handler = event_handler
         # Set up telemetry packet
         self.telemetry_packet = CCSDS_TlmPkt_t()
         self.telemetry_packet.clear_packet()
@@ -60,9 +79,11 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.command_packet.init_packet()
         self.command_packet.set_user_data_length(0)
         self.command_packet.PriHdr.Sequence.bits.count = 1
-    
+        # call the parent constructor
+        socketserver.BaseRequestHandler.__init__(self, request, client_address, server)
+
     def recv_message(self, cur_thread):
-        # TODO edge cases for receive. timeouts, interrupts, erros etc
+        # TODO edge cases for receive. timeouts, interrupts, errors etc
         # request.recv is a socket object
         packet = bytes(0)
         while len(packet) != self.telemetry_packet_size:
@@ -99,21 +120,12 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         # TODO
-        self.request.settimeout(ArteServerGlobals.timeout)
+        #self.request.settimeout(ArteServerGlobals.timeout)
         cur_thread = threading.current_thread()
-        # setup the command and telemetry packets
-        self.initial_setup()
         
         while ArteServerGlobals.shutdown_flag:
-            # receive message
-            try:
-                self.recv_message(cur_thread)
-            except socket.timeout:
-                print("ARTE Server socket receive timed out", cur_thread)
-                print("shutting down")
-                # TODO get rid of this flag change
-                ArteServerGlobals.shutdown_notification.set()
-                ArteServerGlobals.shutdown_flag = False
+
+            self.recv_message(cur_thread)
 
             with ArteServerGlobals.condition:
                 # decrement the client count
@@ -139,7 +151,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         print("thread done = ", cur_thread.name)
 
 
-class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, EventDrivenTCPServer):
     pass
 
 
@@ -152,19 +164,25 @@ class ArteServer(object):
         client_count (int): Number of clients that will connect. 
 
     """
-    def __init__(self, host, port, client_count, timeout):
+    def __init__(self, host, port, client_count, event_handler):
         self.host = host
         self.port = port
         # this is a static count of total clients
         self.client_count = client_count
         # set the shared client count
+        # TODO change to class attribute
         ArteServerGlobals.client_count = self.client_count
         ArteServerGlobals.starting_client_count = self.client_count
-        self.timeout = timeout
-        ArteServerGlobals.timeout = self.timeout
+        # register server_startup and shutdown with the event handler
+        self.event_handler = event_handler
+        self.event_handler.startup += self.server_startup
+        self.event_handler.shutdown += self.server_shutdown
+    
+    def server_startup(self, sender):
         # prevent error 98 Address already in use when relaunching 
         socketserver.TCPServer.allow_reuse_address = True
-        self.server = ThreadedTCPServer((self.host, self.port), ThreadedTCPRequestHandler)
+        test = 0
+        self.server = ThreadedTCPServer((self.host, self.port), ThreadedTCPRequestHandler, self.event_handler)
         # start a thread with the server -- that thread will then start one
         # more thread for each request
         self.server_thread = threading.Thread(target=self.server.serve_forever)
@@ -172,13 +190,14 @@ class ArteServer(object):
         self.server_thread.daemon = True
         self.server_thread.start()
         print ("ARTE server loop running in thread: ", self.server_thread.name)
-    
-    def server_shutdown(self):
+
+    def server_shutdown(self, sender):
         ArteServerGlobals.shutdown_flag = False
         print("reached server_shutdown()")
         # Go ahead and notify any waiting threads
         with ArteServerGlobals.condition:
             ArteServerGlobals.condition.notify_all()
+        time.sleep(1)
 
 class ArteServerGlobals:
     """Shared data between server and client threads."""
@@ -187,4 +206,3 @@ class ArteServerGlobals:
     condition = threading.Condition()
     shutdown_flag = True
     shutdown_notification = threading.Event()
-    timeout = 0

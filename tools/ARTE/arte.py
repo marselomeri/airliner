@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 
    Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
@@ -35,6 +36,7 @@ from arte_launcher import ArteSubprocess
 from arte_server import ArteServer
 from arte_server import ArteServerGlobals
 from arte_test import ArteTestFixture
+from arte_events import ArteEventHandler
 
 import time
 import argparse
@@ -57,6 +59,13 @@ def check_path(file_path):
         sys.exit("Configuration file not found: " + str(file_path))
 
 
+def count_clients(config):
+    client_count = 0
+    for i in config['clients']:
+        client_count += 1
+    return client_count
+
+
 def main():
     ArteSplash()
     
@@ -66,37 +75,41 @@ def main():
     
     # Check the path to the configuration file
     check_path(args.configpath)
-    
+
+    # TODO write a helper function to verify the config file
     # Open and decode the configuration file
     with open(args.configpath) as config_file:
         config = json.load(config_file)
         
-    # TODO write a helper function to verify the config file
-    my_test_fixture = ArteTestFixture("test1", config)
+    # Count the number of clients specified in the config file
+    client_count = count_clients(config)
     
-    server = ArteServer("localhost", 9999, my_test_fixture.client_count, my_test_fixture.timeout)
     
+    my_event_handler = ArteEventHandler()
+    
+    my_server = ArteServer("localhost", 9999, client_count, my_event_handler)
+
+    my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
+    
+    # TODO move to logging
     print("client count = ", my_test_fixture.client_count)
     
     # startup the clients
-    my_test_fixture.test_setup()
+    my_event_handler.startup()
      
     # wait on a shutdown event or timeout
     # this timeout needs to be changed to a watchdog that gets kicked.
     if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
         # A shutdown request was received from a client.
-        server.server_shutdown()
-        time.sleep(1)
-        my_test_fixture.test_teardown()
+        my_event_handler.shutdown()
         sys.exit(0)
     
     # The event wait returned false so a timeout was reached.
     # Shutdown the server.
     print ("configured timeout reached")
-    server.server_shutdown()
-    
+
     # Terminate clients.
-    my_test_fixture.test_teardown()
+    my_event_handler.shutdown()
     sys.exit(0)
 
 if __name__ == '__main__':
