@@ -108,8 +108,8 @@ void SC_ProcessAtpCmd_Test_SwitchCmd(void)
 
 void SC_ProcessAtpCmd_Test_NonSwitchCmd(void)
 {    
-    SC_AtsEntryHeader_t*   Entry;
-    uint16 AtsTable[SC_ATS_BUFF_SIZE];
+    SC_AtsEntryHeader_t*   Entry = 0;
+    uint16 AtsTable[SC_ATS_BUFF_SIZE]= {0};
 
     SC_InitTables();
 
