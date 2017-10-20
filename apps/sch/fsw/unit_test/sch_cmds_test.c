@@ -340,7 +340,7 @@ void SCH_HousekeepingCmd_Test(void)
 
 void SCH_NoopCmd_Test_Error(void)
 {
-    SCH_NoArgsCmd_t  CmdPacket;
+    SCH_NoArgsCmd_t  CmdPacket = {0};
 
     CFE_SB_InitMsg (&CmdPacket, SCH_CMD_MID, 1, TRUE);
 
