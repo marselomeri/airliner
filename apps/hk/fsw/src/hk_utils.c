@@ -156,18 +156,18 @@ int32 HK_ValidateHkCopyTable (void * TblPtr)
 void HK_ProcessNewCopyTable (hk_copy_table_entry_t * CpyTblPtr, 
                              hk_runtime_tbl_entry_t * RtTblPtr)
 {
-    hk_copy_table_entry_t         * StartOfCopyTable;
-    hk_copy_table_entry_t         * OuterCpyEntry;
-    hk_copy_table_entry_t         * InnerDefEntry;
-    hk_runtime_tbl_entry_t        * StartOfRtTable;
-    hk_runtime_tbl_entry_t        * OuterRtEntry;
-    hk_runtime_tbl_entry_t        * InnerRtEntry;
-    int32                           Loop1;
-    int32                           Loop2;
-    CFE_SB_MsgId_t                  MidOfThisPacket;
-    int32                           SizeOfThisPacket;
-    int32                           FurthestByteFromThisEntry;
-    CFE_SB_MsgPtr_t                 NewPacketAddr;
+    hk_copy_table_entry_t         * StartOfCopyTable = &(hk_copy_table_entry_t){0};
+    hk_copy_table_entry_t         * OuterCpyEntry = &(hk_copy_table_entry_t){0};
+    hk_copy_table_entry_t         * InnerDefEntry = &(hk_copy_table_entry_t){0};
+    hk_runtime_tbl_entry_t        * StartOfRtTable = &(hk_runtime_tbl_entry_t){0};
+    hk_runtime_tbl_entry_t        * OuterRtEntry = &(hk_runtime_tbl_entry_t){0};
+    hk_runtime_tbl_entry_t        * InnerRtEntry = &(hk_runtime_tbl_entry_t){0};
+    int32                           Loop1 = 0;
+    int32                           Loop2 = 0;
+    CFE_SB_MsgId_t                  MidOfThisPacket = 0;
+    int32                           SizeOfThisPacket = 0;
+    int32                           FurthestByteFromThisEntry = 0;
+    CFE_SB_MsgPtr_t                 NewPacketAddr = 0;
     int32                           Result = CFE_SUCCESS;
      
     StartOfCopyTable = CpyTblPtr;
