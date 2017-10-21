@@ -35,6 +35,37 @@ import time
 import sys
 
 class ArteTestFixture(object):
+    """A test fixture to handle test setup and teardown. 
+    
+    Note:
+        The test fixture uses ArteLauncher to startup and terminate
+        clients. The configuration file specifies the clients to be 
+        included in setup and teardown. 
+
+    Args:
+        name (str): The name of the test fixture.
+        config (:obj: deserialized JSON object): The deserialized JSON
+        configuration file.
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object.
+
+    Attributes:
+        name (str): The name of the test fixture.
+        config (:obj: deserialized JSON object): The deserialized JSON
+        configuration file.
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object. Callbacks are assigned to the 
+        test_setup and test_teardown EventHandler objects.
+        timer (:obj: threading.Timer): The current threading.Timer 
+        object.
+        client_count (unsigned int): The number of clients in the 
+        configuration file.
+        clients (:obj:`list` of :obj:`ArteSubprocess`): A list of client
+        subprocess objects.
+        return_code (int): The return code of a terminated or killed 
+        subprocess.
+        
+    """
     def __init__(self, name, config, event_handler):
         self.name = name
         self.config = config
@@ -44,21 +75,40 @@ class ArteTestFixture(object):
         self.event_handler.startup += self.test_setup
         self.event_handler.shutdown += self.test_teardown
         # count the number of clients in the config file.
+        self.client_count = 0
         self.count_clients()
         self.clients = []
         self.return_code = None
         
     def count_clients(self):
+        """Count the number of clients specified in the
+        configuration file. Sets the client_count attribute."""
         for i in self.config['clients']:
             self.client_count += 1
 
     def test_setup(self, sender):
-        # Loop through the client array
+        """Launches all clients specified in the configuration file
+        with the command, output path, and current working directory 
+        to be used when launching the client."""
+        # Loop through the client list
         for i in self.config['clients']:
             self.clients.append(ArteSubprocess(i['command'], i['output'], i['cwd']))
 
     def test_teardown(self, sender):
-        # Loop through the client array
+        """Terminates or kills all the clients in the client list.
+        
+        Note:
+            test_teardown will first try to stop the client subprocess.
+            stop_subprocess mimics subprocess terminate which sends 
+            SIGTERM and if the process doesn't return anything after 0.1 
+            seconds if then calls kill_subprocess (subprocess kill) 
+            which sends SIGKILL.
+            
+        Args:
+            sender (:obj:): The responsible object that executes the
+            event handler.
+        """
+        # Loop through the client list
         for i in range(self.client_count):
             self.clients[i].stop_subprocess()
             time.sleep(0.1)

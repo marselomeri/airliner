@@ -34,6 +34,21 @@ import socket
 from arte_ccsds import *
 
 class ArteClient(object):
+    """ArteClient for communicating with ArteServer over TCP.
+    
+    Args:
+        ip (str): The IP address of the server.
+        port (unsigned int): The port number of the server.
+        
+    Attributes:
+        socket (:obj: socket object): The instantiated socket object.
+        sequence (unsigned int): The current sequence count as received
+        from ArteServer.
+        telemetry_packet (:obj: CCSDS_TlmPkt_t): A CCSDS telemetry 
+        packet used for all communication to ArteServer.
+        command_packet (:obj: CCSDS_CmdPkt_t): A CCSDS command packet
+        used for all communication from ArteServer.
+    """
     def __init__(self, ip, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((ip, port))
@@ -51,12 +66,19 @@ class ArteClient(object):
         self.command_packet.set_user_data_length(0)
 
     def send_ready(self):
+        """Sends a ready notification to ArteServer."""
         #TODO add try catch
         print("sending ready to ARTE server")
         self.telemetry_packet.set_current_time()
         self.sock.sendall(self.telemetry_packet.get_encoded())
         
     def send_shutdown(self, successBool):
+        """Sends a shutdown notification to ArteServer.
+        
+        Args:
+            successBool: (boolean): Notify ArteServer that that test(s)
+            completed with success or failure.
+        """
         #TODO add try catch
         print("sending shutdown to ARTE server")
         if successBool == True:
@@ -68,14 +90,23 @@ class ArteClient(object):
         self.telemetry_packet.PriHdr.StreamId.bits.app_id = 0
     
     def receive_response(self):
+        """Receive a response from ArteServer.
+
+        Note:
+            Currently pends forever. 
+        """
+        #TODO add timeout to the recv or use select().
         print("waiting for response from ARTE server")
         response = self.sock.recv(self.command_packet.get_packet_size())
         self.command_packet.set_decoded(response)
         self.decode_sequence()
     
     def decode_sequence(self):
+        """Get and set the sequence count from a received 
+        ArteServer command packet."""
         self.sequence = self.command_packet.PriHdr.Sequence.bits.count
         print("sequence count from ARTE server = ", self.sequence)
         
     def close_conn(self):
+        """Close the TCP socket object."""
         self.sock.close()

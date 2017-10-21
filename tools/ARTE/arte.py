@@ -45,6 +45,14 @@ import json
 
 
 def path_exists(file_path):
+    """Check if a path exists.
+    
+    Args: 
+        file_path (path): The path to the configuration file.
+    
+    Returns:
+        boolean: True for success, otherwise failure.
+    """
     if not os.path.exists(file_path):
         return False
     else:
@@ -52,6 +60,15 @@ def path_exists(file_path):
 
 
 def check_path(file_path):
+    """Check if the configuration file exists.
+    
+    Args:
+        file_path (path): The path to the configuration file.
+
+    Note:
+        Exits with a string notification that the path could not be 
+        resolved.
+    """
     if path_exists(file_path):
         print ("Configuration file resolved:", str(file_path))
     else:
@@ -59,6 +76,16 @@ def check_path(file_path):
 
 
 def count_clients(config):
+    """Count the number of clients in the deserialized configuration.
+
+    Args:
+        config (:obj: deserialized JSON): The deserialized JSON 
+        configuration file.
+
+    Returns:
+        unsigned int: the number of clients counted.
+    """
+    
     client_count = 0
     for i in config['clients']:
         client_count += 1
@@ -66,14 +93,63 @@ def count_clients(config):
 
 
 def get_timeouts(config):
+    """Get the value of timeouts in the configuration file.
+    
+    Note:
+        timeouts is for generic timeouts i.e. anything that could pend
+        forever like recv.
+
+    Args:
+        config (:obj: deserialized JSON): The deserialized JSON 
+        configuration file.
+        
+    Returns:
+        unsigned int: the timeout in seconds as specified in the 
+        configuration file.
+     """
     return config['timeouts']
 
 
 def get_timeout(config):
+    """Get the value of timeout in the configuration file.
+
+    Note:
+        timeout is the overall timeout for all test(s). This value 
+        needs to be greater than the maximum amount of time test(s)
+        could take.
+
+    Args:
+        config (:obj: deserialized JSON): The deserialized JSON 
+        configuration file.
+
+    Returns:
+        unsigned int: the timeout in seconds as specified in the 
+        configuration file.
+     """
     return config['timeout']
-    
+
+def get_watchdog(config):
+    """Get the value of the watchdog timeout in the configuration file.
+
+    Note:
+        watchdog is the timeout for all watchdog timers. This value 
+        needs to be greater than the maximum amount of time any thread
+        would take before resetting its watchdog. The same goes for any
+        task that is assigned a watchdog.
+
+    Args:
+        config (:obj: deserialized JSON): The deserialized JSON 
+        configuration file.
+
+    Returns:
+        unsigned int: the timeout in seconds as specified in the 
+        configuration file.
+     """
+    return config['watchdog']
+
 
 def main():
+    """The entry point for ARTE."""
     ArteSplash()
     
     parser = argparse.ArgumentParser()
@@ -96,6 +172,9 @@ def main():
     
     # get the timeout for the complete test(s)
     timeout = get_timeout(config)
+    
+    # get the watchdog timeout
+    watchdog = get_watchdog(config)
     
     my_event_handler = ArteEventHandler()
     

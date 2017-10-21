@@ -34,26 +34,49 @@ import time
 from threading import Timer
 
 class ArteWatchdog(object):
+    """A watchdog timer for threads or any long running task.
+
+    Note:
+        ArteWatchdog implements threading.Timer. An instance of 
+        ArteWatchdog will instantiate a threading.Timer in the 
+        constructor and a new threading.Timer every reset.
+
+    Args:
+        timeout (unsigned int): The timeout in seconds.
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object.
+
+    Attributes:
+        timeout (unsigned int): The timeout in seconds.
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object. 
+        timer (:obj: threading.Timer): The current threading.Timer 
+        object.
+    """
     def __init__(self, timeout, event_handler):
         self.timeout = timeout
         self.event_handler = event_handler
-        self.event_handler.reset_watchdog += self.reset
-        self.event_handler.stop_watchdog += self.stop
         self.timer = Timer(self.timeout, self.timeoutHandler)
 
     def start(self):
+        """Starts the watchdog timer."""
         self.timer.start()
 
     def reset(self):
+        """Resets the watchdog timer."""
         self.timer.cancel()
+        #self.timer.join()
         self.timer = Timer(self.timeout, self.timeoutHandler)
         self.timer.start()
 
     def stop(self):
+        """Stops the watchdog timer."""
         self.timer.cancel()
         self.timer.join()
     
     def timeoutHandler(self):
+        """The handler called when watchdog timer expires. Triggers 
+        the expired_watchdog event."""
         self.event_handler.expired_watchdog()
 
 
