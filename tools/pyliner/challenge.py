@@ -31,7 +31,7 @@ while run_flag:
         airliner.send_command({'name':'/Airliner/ES/Noop'})
         sent_frame = client.sequence
     
-    if cmd_count == 200:
+    if cmd_count == 400:
         run_flag = False
 airliner.finish_test()
 client.send_shutdown(True)

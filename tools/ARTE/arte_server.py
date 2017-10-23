@@ -130,7 +130,6 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         logging.debug('About to receive message %s', cur_thread)
         try:
             packet = self.request.recv(self.telemetry_packet_size)
-            logging.debug('packet len received %d', len(packet))
             if len(packet) == self.telemetry_packet_size:
                 self.telemetry_packet.set_decoded(packet)
                 logging.debug('received message timestamp %s:%s', self.telemetry_packet.get_time(), cur_thread)

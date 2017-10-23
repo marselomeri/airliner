@@ -97,8 +97,8 @@ class ArteClient(object):
         """
         #TODO add timeout to the recv or use select().
         print("waiting for response from ARTE server")
-        response = self.sock.recv(self.command_packet.get_packet_size())
-        self.command_packet.set_decoded(response)
+        
+        response = self.sock.recv(self.command_packet.get_packet_size(), socket.MSG_WAITALL)
         self.decode_sequence()
     
     def decode_sequence(self):
