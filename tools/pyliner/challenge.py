@@ -34,7 +34,7 @@ while run_flag:
     if cmd_count == 1:
         run_flag = False
 airliner.finish_test()
-client.send_shutdown()
+client.send_shutdown(True)
 client.close_conn()
         
 

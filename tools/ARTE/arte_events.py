@@ -37,12 +37,9 @@ class ArteEventHandler(object):
     def __init__(self):
         self.shutdown = EventHandler(self)
         self.startup = EventHandler(self)
-        self.reset_watchdog = EventHandler(self)
-        self.stop_watchdog = EventHandler(self)
         self.expired_watchdog = EventHandler(self)
-        # 
-        #self.expired_watchdog += self.shutdown()
         self.shutdown_notification = threading.Event()
+        #self.expired_watchdog += self.shutdown_notification.set()
         self.returnCode = 0
         
 

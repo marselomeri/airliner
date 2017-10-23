@@ -33,6 +33,7 @@
 from arte_launcher import ArteSubprocess
 import time
 import sys
+import logging
 
 class ArteTestFixture(object):
     """A test fixture to handle test setup and teardown. 
@@ -85,7 +86,7 @@ class ArteTestFixture(object):
         configuration file. Sets the client_count attribute."""
         for i in self.config['clients']:
             self.client_count += 1
-
+            
     def test_setup(self, sender):
         """Launches all clients specified in the configuration file
         with the command, output path, and current working directory 
@@ -113,12 +114,12 @@ class ArteTestFixture(object):
             self.clients[i].stop_subprocess()
             time.sleep(0.1)
             self.returnCode = self.clients[i].poll_subprocess()
-            print ("terminated client process returned: ", str(self.returnCode))
+            logging.info('terminated client process returned %s ', str(self.returnCode))
             if self.returnCode == None:
-                print("client failed to terminate, attempting to kill")
+                logging.error('client failed to terminate, attempting to kill')
                 # poll returned None so the process hasn't terminated
                 self.clients[i].kill_subprocess()
                 time.sleep(0.1)
                 self.returnCode = self.clients[i].poll_subprocess()
-                print ("killed client process returned: ", str(self.returnCode))
+                logging.error('terminated client process returned %s ', str(self.returnCode))
 

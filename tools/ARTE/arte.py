@@ -42,6 +42,7 @@ import argparse
 import os
 import sys
 import json
+import logging
 
 
 def path_exists(file_path):
@@ -70,7 +71,7 @@ def check_path(file_path):
         resolved.
     """
     if path_exists(file_path):
-        print ("Configuration file resolved:", str(file_path))
+        logging.info('Configuration file resolved %s', str(file_path))
     else:
         sys.exit("Configuration file not found: " + str(file_path))
 
@@ -128,6 +129,7 @@ def get_timeout(config):
      """
     return config['timeout']
 
+
 def get_watchdog(config):
     """Get the value of the watchdog timeout in the configuration file.
 
@@ -149,7 +151,16 @@ def get_watchdog(config):
 
 
 def main():
-    """The entry point for ARTE."""
+    """The entry point for ARTE.
+    
+    Exit status codes:
+        0: A client shutdown requests returned success.
+        1: The main timeout was reached.
+        2: The watchdog timeout was reached.
+        
+    """
+    logging.basicConfig(level=logging.DEBUG)
+
     ArteSplash()
     
     parser = argparse.ArgumentParser()
@@ -166,30 +177,30 @@ def main():
         
     # Count the number of clients specified in the config file
     client_count = count_clients(config)
+    logging.info('client count %d', client_count)
     
     # Get the configured timeouts value for things like recv etc
     timeouts = get_timeouts(config)
     
-    # get the timeout for the complete test(s)
+    # Get the timeout for the complete test(s)
     timeout = get_timeout(config)
     
-    # get the watchdog timeout
+    # Get the watchdog timeout
     watchdog = get_watchdog(config)
     
+    # Create an event handler for event callbacks
     my_event_handler = ArteEventHandler()
     
+    # Create a server
     my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts)
 
+    # Create a test fixture
     my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
     
-    # TODO move to logging
-    print("client count = ", my_test_fixture.client_count)
-    
-    # startup the clients
+    # Startup the clients
     my_event_handler.startup()
      
-    # wait on a shutdown event or timeout
-    # this timeout needs to be changed to a watchdog that gets kicked.
+    # Wait on a shutdown event or timeout
     if my_event_handler.shutdown_notification.wait(timeout):
         # A shutdown request was received from a client.
         my_event_handler.shutdown()
@@ -197,7 +208,7 @@ def main():
     
     # The event wait returned false so a timeout was reached.
     # Shutdown the server.
-    print ("configured timeout reached")
+    logging.error('Configured timeout reached %d seconds', timeout)
 
     # Terminate clients.
     my_event_handler.shutdown()

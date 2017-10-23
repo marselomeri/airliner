@@ -34,6 +34,7 @@ import socket
 import sys
 import threading
 import time
+import logging
 from struct import unpack
 from struct import pack
 from arte_ccsds import *
@@ -97,7 +98,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             packet = self.request.recv(self.telemetry_packet_size)
             if len(packet) == self.telemetry_packet_size:
                 self.telemetry_packet.set_decoded(packet)
-                print ("received message timestamp :", self.telemetry_packet.get_time(), cur_thread)
+                logging.debug('received message timestamp %s:%s', self.telemetry_packet.get_time(), cur_thread)
                 self.decode_message(cur_thread)
         
     def decode_message(self, cur_thread):
@@ -105,40 +106,43 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         if self.telemetry_packet.PriHdr.StreamId.bits.app_id > 0:
             # if app_id == 1 the client test(s) succeeded
             if self.telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
-                print("received shutdown message and success", cur_thread)
+                logging.info('received shutdown message and success %s', cur_thread)
             # if app_id == 2 the client test(s) failed
             elif self.telemetry_packet.PriHdr.StreamId.bits.app_id == 2:
-                print("received shutdown message and failure", cur_thread)
+                logging.info('received shutdown message and failure %s', cur_thread)
                 self.event_handler.returnCode = 1
             # if we've received an unknown test outcome code
             else:
-                print("received shutdown message and unknown status", cur_thread)
+                logging.error('received shutdown message and unknown status %s', cur_thread)
                 self.event_handler.returnCode = 2
             # notify the event handler
             self.event_handler.shutdown_notification.set()
     
     def send_response(self, cur_thread):
         self.request.sendall(self.command_packet.get_encoded())
-        print("server sent response", cur_thread)
+        logging.debug('server sent response %s', cur_thread)
         # increment the sequence count
         self.command_packet.PriHdr.Sequence.bits.count += 1
 
     def handle(self):
-        # TODO
-
+        """The overriden BaseRequestHandler class handle method.
+    
+        Note:
+            This method will process incoming requests.
+        """
         cur_thread = threading.current_thread()
         
         while ThreadedTCPRequestHandler.shutdown_flag:
             try:
                 self.recv_message(cur_thread)
             except socket.timeout:
-                print("ARTE Server socket receive timed out", cur_thread)
+                logging.error('ARTE Server socket receive timed out %s', cur_thread)
 
             with ThreadedTCPRequestHandler.client_ready_condition:
                 # decrement the client count
                 ThreadedTCPRequestHandler.client_ready_count -= 1
                 if ThreadedTCPRequestHandler.client_ready_count == 0 and ThreadedTCPRequestHandler.shutdown_flag:
-                    print("all clients ready")
+                    logging.debug('all clients ready')
                     # if all clients have connected release any threads that
                     # are waiting
                     ThreadedTCPRequestHandler.client_ready_condition.notify_all()
@@ -147,7 +151,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     ThreadedTCPRequestHandler.client_ready_count = ThreadedTCPRequestHandler.client_count
                 elif ThreadedTCPRequestHandler.shutdown_flag:
                     # wait for all clients to connect
-                    print("client ready, waiting for all clients...", cur_thread)
+                    logging.debug('client ready, waiting for all clients... %s', cur_thread)
                     ThreadedTCPRequestHandler.client_ready_condition.wait()
                     if ThreadedTCPRequestHandler.shutdown_flag:
                         # send "next step" to all clients
@@ -158,7 +162,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     break
         # we're outside the while loop so the shutdown flag has been 
         # raised
-        print("thread done = ", cur_thread.name)
+        logging.debug('thread done %s', cur_thread.name)
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, EventDrivenTCPServer):
@@ -166,44 +170,63 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, EventDrivenTCPServer):
 
 
 class ArteServer(object):
-    """
+    """ArteServer used for inter-process TCP synchronization.
 
     Args:
         host (str): IP address.
         port (int): Port number.
-        client_count (int): Number of clients that will connect. 
+        client_count (int): Number of clients that will connect.
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object.
+        timeouts (unsigned int): The timeouts value used for anything
+        that pends forever.
+
+    Attributes:
+        host (str): IP address.
+        port (int): Port number.
+        client_count (unsigned int): The number of clients in the 
+        configuration file.
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object. Callbacks are assigned to the 
+        server_startup and server_shutdown EventHandler objects.
+        timeouts (unsigned int): The timeouts value used for anything
+        that pends forever.
+        server (:obj: ThreadedTCPServer) An extended instance of
+        socketserver ThreadingMixIn and TCPServer.
+        server_thread (:obj: threading.Thread) The main server thread
+        which will spawn other threads for each new connection.
 
     """
-    def __init__(self, host, port, client_count, event_handler, timeout):
+    def __init__(self, host, port, client_count, event_handler, timeouts):
         self.host = host
         self.port = port
         self.client_count = client_count
-        self.timeout = timeout
+        self.timeouts = timeouts
         # register server_startup and shutdown with the event handler
         self.event_handler = event_handler
         self.event_handler.startup += self.server_startup
         self.event_handler.shutdown += self.server_shutdown
-    
+
     def server_startup(self, sender):
         # prevent error 98 Address already in use when relaunching 
         socketserver.TCPServer.allow_reuse_address = True
-        self.server = ThreadedTCPServer((self.host, self.port), ThreadedTCPRequestHandler, self.event_handler, self.client_count, self.timeout)
+        self.server = ThreadedTCPServer((self.host, self.port), ThreadedTCPRequestHandler, self.event_handler, self.client_count, self.timeouts)
         # start a thread with the server -- that thread will then start one
         # more thread for each request
         self.server_thread = threading.Thread(target=self.server.serve_forever)
         # exit the server thread when the main thread terminates
         self.server_thread.daemon = True
         self.server_thread.start()
-        print ("ARTE server loop running in thread: ", self.server_thread.name)
+        logging.info('ARTE server loop running in thread %s', self.server_thread.name)
 
     def server_shutdown(self, sender):
-        print("reached server_shutdown()")
+        logging.info('reached server_shutdown()')
         ThreadedTCPRequestHandler.shutdown_flag = False
         # Go ahead and notify any waiting threads
         with ThreadedTCPRequestHandler.client_ready_condition:
             ThreadedTCPRequestHandler.client_ready_condition.notify_all()
         time.sleep(1)
-        print("threading.enumerate() ", threading.enumerate())
+        logging.debug('threading.enumerate() %s', threading.enumerate())
         self.server.shutdown()
-        print("threading.enumerate() ", threading.enumerate())
+        logging.debug('threading.enumerate() %s', threading.enumerate())
         #self.server_thread.join(1)
