@@ -584,9 +584,9 @@ void CS_ProcessNewTablesDefinitionTable    (CS_Def_Tables_Table_Entry_t      * D
     uint16                                      DefNameIndex        = 0;
     uint16                                      AppNameIndex        = 0;
     uint16                                      TableNameIndex      = 0;
-    char                                        AppName [OS_MAX_API_NAME];
-    char                                        TableAppName [OS_MAX_API_NAME];
-    char                                        TableTableName [CFE_TBL_MAX_NAME_LENGTH];
+    char                                        AppName [OS_MAX_API_NAME] = "\0";
+    char                                        TableAppName [OS_MAX_API_NAME] = "\0";
+    char                                        TableTableName [CFE_TBL_MAX_NAME_LENGTH] = "\0";
     
     CFE_PSP_MemCpy(&StartOfResultsTable, ResultsTblPtr,    sizeof(StartOfResultsTable));
     CFE_PSP_MemCpy(&StartOfDefTable,     DefinitionTblPtr, sizeof(StartOfDefTable));  
