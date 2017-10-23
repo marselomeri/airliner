@@ -1019,6 +1019,7 @@ void CS_BackgroundApp_Test_Nominal(void)
     /* Set to prevent CS_ComputeApp from returning an error */
     Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_GETADDRESS_INDEX, CFE_SUCCESS, 1);
     Ut_CFE_TBL_ContinueReturnCodeAfterCountZero(UT_CFE_TBL_GETADDRESS_INDEX);
+    Ut_CFE_ES_SetFunctionHook(UT_CFE_ES_GETAPPINFO_INDEX, &CS_UTILS_TEST_CFE_ES_GetAppInfoHook1);
 
     /* Execute the function being tested */
     Result = CS_BackgroundApp();

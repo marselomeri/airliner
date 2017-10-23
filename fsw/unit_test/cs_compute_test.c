@@ -1123,8 +1123,8 @@ void CS_RecomputeEepromMemoryChildTask_Test_RegisterChildTaskError(void)
 
 void CS_RecomputeAppChildTask_Test_Nominal(void)
 {
-    CS_Res_App_Table_Entry_t     RecomputeAppEntry;
-    CS_Def_App_Table_Entry_t     DefAppTbl[10];
+    CS_Res_App_Table_Entry_t     RecomputeAppEntry = {0};
+    CS_Def_App_Table_Entry_t     DefAppTbl[10] = {0};
 
     CS_AppData.RecomputeAppEntryPtr   = &RecomputeAppEntry;
     CS_AppData.DefAppTblPtr           = DefAppTbl;
@@ -1173,8 +1173,8 @@ void CS_RecomputeAppChildTask_Test_Nominal(void)
 
 void CS_RecomputeAppChildTask_Test_CouldNotGetAddress(void)
 {
-    CS_Res_App_Table_Entry_t     RecomputeAppEntry;
-    CS_Def_App_Table_Entry_t     DefAppTbl[10];
+    CS_Res_App_Table_Entry_t     RecomputeAppEntry = {0};
+    CS_Def_App_Table_Entry_t     DefAppTbl[10] = {0};
 
     CS_AppData.RecomputeAppEntryPtr   = &RecomputeAppEntry;
     CS_AppData.DefAppTblPtr           = DefAppTbl;
@@ -1235,8 +1235,8 @@ void CS_RecomputeAppChildTask_Test_RegisterChildTaskError(void)
 
 void CS_RecomputeTablesChildTask_Test_Nominal(void)
 {
-    CS_Res_Tables_Table_Entry_t     RecomputeTablesEntry;
-    CS_Def_Tables_Table_Entry_t     DefTablesTbl[10];
+    CS_Res_Tables_Table_Entry_t     RecomputeTablesEntry = {0};
+    CS_Def_Tables_Table_Entry_t     DefTablesTbl[10] = {0};
 
     CS_AppData.RecomputeTablesEntryPtr   = &RecomputeTablesEntry;
     CS_AppData.DefTablesTblPtr           = DefTablesTbl;
@@ -1301,8 +1301,8 @@ void CS_RecomputeTablesChildTask_Test_Nominal(void)
 
 void CS_RecomputeTablesChildTask_Test_CouldNotGetAddress(void)
 {
-    CS_Res_Tables_Table_Entry_t     RecomputeTablesEntry;
-    CS_Def_Tables_Table_Entry_t     DefTablesTbl[10];
+    CS_Res_Tables_Table_Entry_t     RecomputeTablesEntry = {0};
+    CS_Def_Tables_Table_Entry_t     DefTablesTbl[10] = {0};
 
     CS_AppData.RecomputeTablesEntryPtr   = &RecomputeTablesEntry;
     CS_AppData.DefTablesTblPtr           = DefTablesTbl;
