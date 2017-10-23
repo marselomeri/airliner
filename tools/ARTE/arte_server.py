@@ -35,6 +35,7 @@ import sys
 import threading
 import time
 import logging
+import errno
 from struct import unpack
 from struct import pack
 from arte_ccsds import *
@@ -64,7 +65,30 @@ class EventDrivenTCPServer(socketserver.TCPServer):
         self.RequestHandlerClass(request, client_address, self, self.event_handler, self.client_count, self.timeout)
 
 
+
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+    """The request handler for ARTE server.
+    
+    Args:
+        event_handler (:obj: ArteEventHandler): An instance of an 
+        ArteEventHandler object.
+        client_count (int): Number of clients that will connect.
+        timeout (unsigned int): The timeout value used for anything
+        that pends forever.
+    
+    Class Attributes:
+        client_count (unsigned int): The total client count.
+        client_ready_count (unsigned int): The client counter used for
+        counting "ready" clients each frame step.
+        client_ready_condition (:obj: threading.Condition()): A 
+        conditional variable object for thread synchronization.
+        shutdown_flag (boolean): A while loop flag for threads.
+        
+    Attributes:
+        
+    
+
+    """
     client_count = 0
     client_ready_count = 0
     client_ready_condition = threading.Condition()
@@ -86,22 +110,55 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.command_packet.init_packet()
         self.command_packet.set_user_data_length(0)
         self.command_packet.PriHdr.Sequence.bits.count = 1
+        self.timeout = timeout
         # call the parent constructor
         socketserver.BaseRequestHandler.__init__(self, request, client_address, server)
-        self.request.settimeout(timeout)
+        self.request.settimeout(self.timeout)
 
     def recv_message(self, cur_thread):
+        """Receive an ARTE client message over TCP socket.
+        
+        Args:
+            cur_thread ("obj" threading.thread): The current thread.
+        
+        Returns:
+            True for success, and False for failure.
+        """
+        returnBool = False
         # TODO edge cases for receive. timeouts, interrupts, errors etc
         # request.recv is a socket object
-        packet = bytes(0)
-        while len(packet) != self.telemetry_packet_size:
+        logging.debug('About to receive message %s', cur_thread)
+        try:
             packet = self.request.recv(self.telemetry_packet_size)
+            logging.debug('packet len received %d', len(packet))
             if len(packet) == self.telemetry_packet_size:
                 self.telemetry_packet.set_decoded(packet)
                 logging.debug('received message timestamp %s:%s', self.telemetry_packet.get_time(), cur_thread)
                 self.decode_message(cur_thread)
+                returnBool = True
+            elif len(packet) == 0:
+                logging.error('client closed connection %s', cur_thread)
+        except socket.timeout:
+            logging.error('ARTE Server socket receive timed out %s', cur_thread)
+        return returnBool
+        
+    def initiate_shutdown(self, returnCode):
+        """Shutdown for use when ARTE cannot continue.
+        
+        Args:
+            returnCode (unsigned int): The return code that ARTE should
+            use when it exits. 
+        """
+        # set the return code
+        self.event_handler.returnCode = returnCode
+        # notify the event handler
+        self.event_handler.shutdown_notification.set()
+        # set the shutdown flag
+        ThreadedTCPRequestHandler.shutdown_flag = False
         
     def decode_message(self, cur_thread):
+        """Decode a message from ARTE clients."""
+        returnCode = 0
         # if app_id > 0 we've received a shutdown requests
         if self.telemetry_packet.PriHdr.StreamId.bits.app_id > 0:
             # if app_id == 1 the client test(s) succeeded
@@ -110,19 +167,40 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             # if app_id == 2 the client test(s) failed
             elif self.telemetry_packet.PriHdr.StreamId.bits.app_id == 2:
                 logging.info('received shutdown message and failure %s', cur_thread)
-                self.event_handler.returnCode = 1
+                returnCode = 1
             # if we've received an unknown test outcome code
             else:
                 logging.error('received shutdown message and unknown status %s', cur_thread)
-                self.event_handler.returnCode = 2
-            # notify the event handler
-            self.event_handler.shutdown_notification.set()
-    
+                returnCode = 3
+            # For now break out of the thread that received the 
+            # shutdown request
+            self.initiate_shutdown(returnCode)
+            
     def send_response(self, cur_thread):
-        self.request.sendall(self.command_packet.get_encoded())
-        logging.debug('server sent response %s', cur_thread)
-        # increment the sequence count
-        self.command_packet.PriHdr.Sequence.bits.count += 1
+        """Send a response to an ARTE client.
+        
+        Args:
+            cur_thread ("obj" threading.thread): The current thread.
+        
+        Returns:
+            True for success, and False for failure.
+        """
+        returnBool = False
+        try:
+            self.request.sendall(self.command_packet.get_encoded())
+            logging.debug('server sent response %s', cur_thread)
+            # increment the sequence count
+            if self.command_packet.PriHdr.Sequence.bits.count == 16383:
+                self.command_packet.PriHdr.Sequence.bits.count = 1
+            else:
+                self.command_packet.PriHdr.Sequence.bits.count += 1
+            returnBool = True
+        except socket.error as e:
+            if e.errno == errno.EPIPE:
+                logging.error('broken pipe error %s', cur_thread)
+            else:
+                logging.error('socket send error %s', cur_thread)
+        return returnBool
 
     def handle(self):
         """The overriden BaseRequestHandler class handle method.
@@ -131,35 +209,46 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             This method will process incoming requests.
         """
         cur_thread = threading.current_thread()
-        
-        while ThreadedTCPRequestHandler.shutdown_flag:
-            try:
-                self.recv_message(cur_thread)
-            except socket.timeout:
-                logging.error('ARTE Server socket receive timed out %s', cur_thread)
 
-            with ThreadedTCPRequestHandler.client_ready_condition:
-                # decrement the client count
-                ThreadedTCPRequestHandler.client_ready_count -= 1
-                if ThreadedTCPRequestHandler.client_ready_count == 0 and ThreadedTCPRequestHandler.shutdown_flag:
-                    logging.debug('all clients ready')
-                    # if all clients have connected release any threads that
-                    # are waiting
-                    ThreadedTCPRequestHandler.client_ready_condition.notify_all()
-                    self.send_response(cur_thread)
-                    # reset the client connect count
-                    ThreadedTCPRequestHandler.client_ready_count = ThreadedTCPRequestHandler.client_count
-                elif ThreadedTCPRequestHandler.shutdown_flag:
-                    # wait for all clients to connect
-                    logging.debug('client ready, waiting for all clients... %s', cur_thread)
-                    ThreadedTCPRequestHandler.client_ready_condition.wait()
-                    if ThreadedTCPRequestHandler.shutdown_flag:
-                        # send "next step" to all clients
+        while ThreadedTCPRequestHandler.shutdown_flag:
+
+            if self.recv_message(cur_thread):
+                with ThreadedTCPRequestHandler.client_ready_condition:
+                    # decrement the client count
+                    ThreadedTCPRequestHandler.client_ready_count -= 1
+                    if ThreadedTCPRequestHandler.client_ready_count == 0 and ThreadedTCPRequestHandler.shutdown_flag:
+                        logging.debug('all clients ready')
+                        # if all clients have connected release any threads that
+                        # are waiting
+                        ThreadedTCPRequestHandler.client_ready_condition.notify_all()
                         self.send_response(cur_thread)
+                        # reset the client connect count
+                        ThreadedTCPRequestHandler.client_ready_count = ThreadedTCPRequestHandler.client_count
+                    elif ThreadedTCPRequestHandler.shutdown_flag:
+                        # wait for all clients to connect
+                        logging.debug('client ready, waiting for all clients... %s', cur_thread)
+                        ThreadedTCPRequestHandler.client_ready_condition.wait()
+                        if ThreadedTCPRequestHandler.shutdown_flag:
+                                # send "next step" to all clients
+                                if self.send_response(cur_thread):
+                                    pass
+                                else:
+                                    logging.error('thread encountered a send error %s', cur_thread)
+                                    self.initiate_shutdown(4)
+                                    break
+                        else:
+                            logging.info('shutdown flag encountered on wakeup %s', cur_thread)
+                            # shutdown flag has been set...
+                            break
                     else:
+                        logging.info('shutdown flag encountered %s', cur_thread)
+                        # shutdown flag has been set...
                         break
-                else:
-                    break
+            else:
+                # Recieve error or client close connection
+                logging.error('thread encountered a receive error %s', cur_thread)
+                self.initiate_shutdown(4)
+                break
         # we're outside the while loop so the shutdown flag has been 
         # raised
         logging.debug('thread done %s', cur_thread.name)

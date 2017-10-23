@@ -157,6 +157,8 @@ def main():
         0: A client shutdown requests returned success.
         1: The main timeout was reached.
         2: The watchdog timeout was reached.
+        3: A shutdown requests was received with an unknown status.
+        4: A socket error caused an early shutdown.
         
     """
     logging.basicConfig(level=logging.DEBUG)

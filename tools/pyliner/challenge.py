@@ -21,7 +21,7 @@ IP, PORT = "localhost", 9999
 client = ArteClient(IP, PORT)
 
 while run_flag:
-    time.sleep(0.01)
+    #time.sleep(0.01)
     
     client.send_ready()
     client.receive_response()
@@ -31,7 +31,7 @@ while run_flag:
         airliner.send_command({'name':'/Airliner/ES/Noop'})
         sent_frame = client.sequence
     
-    if cmd_count == 1:
+    if cmd_count == 200:
         run_flag = False
 airliner.finish_test()
 client.send_shutdown(True)
