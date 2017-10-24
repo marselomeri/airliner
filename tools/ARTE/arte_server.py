@@ -190,7 +190,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             logging.debug('server sent response %s', cur_thread)
             # increment the sequence count
             if self.command_packet.PriHdr.Sequence.bits.count == 16383:
-                self.command_packet.PriHdr.Sequence.bits.count = 1
+                self.command_packet.PriHdr.Sequence.bits.count = 0
             else:
                 self.command_packet.PriHdr.Sequence.bits.count += 1
             returnBool = True

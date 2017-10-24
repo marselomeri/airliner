@@ -65,6 +65,8 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             print ("received message timestamp :", self.telemetry_packet.get_time())
 
     def send_response(self):
+        print("sequence count = ", self.command_packet.PriHdr.Sequence.bits.count)
+        self.command_packet.PriHdr.Sequence.bits.count += 1
         self.request.sendall(self.command_packet.get_encoded())
         print("server sent response")
 
@@ -73,6 +75,10 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         while(1):
             self.recv_message()
             input("Press Enter to continue...")
+            for x in range(0, 100):
+                self.send_response()
+                self.recv_message()
+                x += 1
             self.send_response()
 
 class ArteRepl(object):

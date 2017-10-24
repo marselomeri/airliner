@@ -107,7 +107,10 @@ class ArteClient(object):
     def decode_sequence(self):
         """Get and set the sequence count from a received 
         ArteServer command packet."""
-        self.sequence = self.command_packet.PriHdr.Sequence.bits.count
+        if self.command_packet.PriHdr.Sequence.bits.count == 0:
+            self.sequence = 1
+        else:
+            self.sequence = self.command_packet.PriHdr.Sequence.bits.count
         print("sequence count from ARTE server = ", self.sequence)
         
     def close_conn(self):
