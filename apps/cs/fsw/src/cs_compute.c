@@ -136,7 +136,7 @@ int32 CS_ComputeTables (CS_Res_Tables_Table_Entry_t    * ResultsEntry,
     /* variables to get the table address */
     CFE_TBL_Handle_t                        LocalTblHandle = CFE_TBL_BAD_TABLE_HANDLE;
     uint32                                  LocalAddress   = 0;
-    CFE_TBL_Info_t                          TblInfo;
+    CFE_TBL_Info_t                          TblInfo = {0};
     
 
     /* By the time we get here, we know we have an enabled entry */    
@@ -370,7 +370,7 @@ int32 CS_ComputeApp (CS_Res_App_Table_Entry_t       * ResultsEntry,
     
     /* variables to get applications address */
     uint32              AppID = 0;
-    CFE_ES_AppInfo_t    AppInfo;
+    CFE_ES_AppInfo_t    AppInfo = {0};
     
     /* By the time we get here, we know we have an enabled entry */    
 
@@ -387,7 +387,7 @@ int32 CS_ComputeApp (CS_Res_App_Table_Entry_t       * ResultsEntry,
         ResultGetAppInfo = CFE_ES_GetAppInfo(&AppInfo, AppID);
         Result = ResultGetAppInfo;
     }
-    
+
     if (Result == CFE_SUCCESS)
     {
         /* We got a valid AppID and good App info, so check the for valid addresses */
