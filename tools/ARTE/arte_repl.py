@@ -93,5 +93,11 @@ class ArteRepl(object):
         print("waiting for connection...")
         self.server.handle_request()
 
+
+def init_repl():
+    r = ArteRepl
+    r.__init__(r)
+    r.run(r)
+
     
 
