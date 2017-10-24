@@ -100,5 +100,5 @@ add_airliner_app_unit_test(md-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         
     VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit-test/md-ut.supp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/md-ut.supp
 )
