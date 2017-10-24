@@ -567,7 +567,7 @@ int32 SC_ValidateAppend (void *TableData)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void SC_UpdateAppend (void)
 {
-    SC_AtsEntryHeader_t *Entry;
+    SC_AtsEntryHeader_t *Entry = {0};
     CFE_SB_MsgPtr_t  CmdPacket;
     int32 CommandBytes;
     int32 CommandWords;
