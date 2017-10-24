@@ -1319,15 +1319,14 @@ void SC_ProcessCommand_Test_TableManageAppendTableNominal(void)
      **  combine the tests for each command with the tests for reaching the command from SC_ProcessCommand.
      **/
 
-    CFE_TBL_NotifyCmd_t    CmdPacket;
-    SC_AtsEntryHeader_t*   Entry;
-    uint16 AtsAppendTable[SC_APPEND_BUFF_SIZE];
+    CFE_TBL_NotifyCmd_t    CmdPacket = {0};
+    SC_AtsEntryHeader_t*   Entry = 0;
+    uint16 AtsAppendTable[SC_APPEND_BUFF_SIZE] = {0};
 
     SC_InitTables();
-
     SC_OperData.AppendTblAddr = (uint16*)&AtsAppendTable[0];
 
-    Entry = (SC_AtsEntryHeader_t *) &SC_OperData.AppendTblAddr;
+    Entry = (SC_AtsEntryHeader_t *) SC_OperData.AppendTblAddr;
     Entry->CmdNumber = 0;
 
     CFE_SB_InitMsg (&CmdPacket, SC_CMD_MID, sizeof(CFE_TBL_NotifyCmd_t), TRUE);
@@ -1766,11 +1765,11 @@ void SC_Cmds_Test_AddTestCases(void)
     UtTest_Add(SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsA, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsA");
     UtTest_Add(SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsB, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsB");
     UtTest_Add(SC_ProcessAtpCmd_Test_CmdNotLoaded, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessAtpCmd_Test_CmdNotLoaded");
-    
+
     UtTest_Add(SC_ProcessRtpCommand_Test_Nominal, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessRtpCommand_Test_Nominal");
     UtTest_Add(SC_ProcessRtpCommand_Test_BadSoftwareBusReturn, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessRtpCommand_Test_BadSoftwareBusReturn");
     UtTest_Add(SC_ProcessRtpCommand_Test_BadChecksum, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessRtpCommand_Test_BadChecksum");
-    
+
     UtTest_Add(SC_SendHkPacket_Test, SC_Test_Setup, SC_Test_TearDown, "SC_SendHkPacket_Test");
     UtTest_Add(SC_ProcessRequest_Test_CmdMID, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessRequest_Test_CmdMID");
     UtTest_Add(SC_ProcessRequest_Test_HkMID, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessRequest_Test_HkMID");
@@ -1783,7 +1782,7 @@ void SC_Cmds_Test_AddTestCases(void)
     UtTest_Add(SC_ProcessCommand_Test_ResetCounters, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_ResetCounters");
     UtTest_Add(SC_ProcessCommand_Test_StartAts, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_StartAts");
     UtTest_Add(SC_ProcessCommand_Test_StopAts, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_StopAts");
-    
+
     UtTest_Add(SC_ProcessCommand_Test_StartRts, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_StartRts");
     UtTest_Add(SC_ProcessCommand_Test_StopRts, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_StopRts");
     UtTest_Add(SC_ProcessCommand_Test_DisableRts, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_DisableRts");
@@ -1795,7 +1794,7 @@ void SC_Cmds_Test_AddTestCases(void)
 
     UtTest_Add(SC_ProcessCommand_Test_TableManageAtsTableNominal, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageAtsTableNominal");
     UtTest_Add(SC_ProcessCommand_Test_TableManageAtsTableGetAddressError, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageAtsTableGetAddressError");
-    UtTest_Add(SC_ProcessCommand_Test_TableManageAppendTableNominal, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageAppendTableNominal");
+    /*fail*/UtTest_Add(SC_ProcessCommand_Test_TableManageAppendTableNominal, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageAppendTableNominal");
     UtTest_Add(SC_ProcessCommand_Test_TableManageAppendTableGetAddressError, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageAppendTableGetAddressError");
     UtTest_Add(SC_ProcessCommand_Test_TableManageRtsTableNominal, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageRtsTableNominal");
     UtTest_Add(SC_ProcessCommand_Test_TableManageRtsTableGetAddressError, SC_Test_Setup, SC_Test_TearDown, "SC_ProcessCommand_Test_TableManageRtsTableGetAddressError");

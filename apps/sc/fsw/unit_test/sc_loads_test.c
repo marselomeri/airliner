@@ -115,7 +115,7 @@ void SC_LoadAts_Test_Nominal(void)
 {
     SC_NoArgsCmd_t   CmdPacket;
     SC_AtsEntryHeader_t*   Entry;
-    uint16 AtsTable[SC_ATS_BUFF_SIZE];
+    uint16 AtsTable[SC_ATS_BUFF_SIZE] = {0};
     uint8  AtsIndex = 0;
 
     SC_InitTables();
@@ -180,7 +180,7 @@ void SC_LoadAts_Test_CmdLengthInvalid(void)
 {
     SC_NoArgsCmd_t   CmdPacket;
     SC_AtsEntryHeader_t*   Entry;
-    uint16 AtsTable[SC_ATS_BUFF_SIZE];
+    uint16 AtsTable[SC_ATS_BUFF_SIZE] = {0};
     uint8  AtsIndex = 0;
 
     SC_InitTables();
@@ -256,7 +256,7 @@ void SC_LoadAts_Test_AtsBufferTooSmall(void)
     /* Runs through the nominal case one time, at the end of which the condition is set for this case */
 
     SC_AtsEntryHeader_t*   Entry;
-    uint16 AtsTable[SC_ATS_BUFF_SIZE];
+    uint16 AtsTable[SC_ATS_BUFF_SIZE] = {0};
     uint32   AtsIndex = 0;
     uint32   i;
 
@@ -413,7 +413,7 @@ void SC_ValidateRts_Test(void)
     SC_RtsEntryHeader_t*   Entry;
     uint8 RtsIndex = 0;
     int16 Result;
-    uint16 RtsTable[SC_RTS_BUFF_SIZE];
+    uint16 RtsTable[SC_RTS_BUFF_SIZE] = {0};
 
     SC_InitTables();
 
@@ -564,7 +564,7 @@ void SC_ParseRts_Test_CmdRunsOffEndOfBuffer(void)
     SC_RtsEntryHeader_t*   Entry;
     uint8 RtsIndex = 0;
     int16 Result;
-    uint16 RtsTable[SC_RTS_BUFF_SIZE];
+    uint16 RtsTable[SC_RTS_BUFF_SIZE] = {0};
 
     SC_InitTables();
 
@@ -601,7 +601,7 @@ void SC_ParseRts_Test_CmdLengthEqualsBufferLength(void)
     SC_RtsEntryHeader_t*   Entry;
     uint8 RtsIndex = 0;
     int16 Result;
-    uint16 RtsTable[SC_RTS_BUFF_SIZE];
+    uint16 RtsTable[SC_RTS_BUFF_SIZE] = {0};
 
     SC_InitTables();
 
@@ -633,7 +633,7 @@ void SC_ParseRts_Test_CmdDoesNotFitBufferEmpty(void)
     SC_RtsEntryHeader_t*   Entry2;
     uint8 RtsIndex = 0;
     int16 Result;
-    uint16 RtsTable[SC_RTS_BUFF_SIZE];
+    uint16 RtsTable[SC_RTS_BUFF_SIZE] = {0};
 
     SC_InitTables();
 
@@ -669,7 +669,7 @@ void SC_ParseRts_Test_CmdDoesNotFitBufferNotEmpty(void)
     SC_RtsEntryHeader_t*   Entry2;
     uint8 RtsIndex = 0;
     int16 Result;
-    uint16 RtsTable[SC_RTS_BUFF_SIZE];
+    uint16 RtsTable[SC_RTS_BUFF_SIZE] = {0};
 
     SC_InitTables();
 
@@ -707,9 +707,9 @@ void SC_UpdateAppend_Test_Nominal(void)
 {
     /* Also tests the case where CmdLength is less than the buffer length */
 
-    SC_AtsEntryHeader_t*   Entry;
+    SC_AtsEntryHeader_t*   Entry = 0;
     uint8 EntryIndex = 0;
-    uint16 AtsAppendTable[SC_APPEND_BUFF_SIZE];
+    uint16 AtsAppendTable[SC_APPEND_BUFF_SIZE] = {0};
 
     SC_InitTables();
 
