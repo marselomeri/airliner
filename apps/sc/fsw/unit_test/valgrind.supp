@@ -1,0 +1,15 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:Ut_CFE_TBL_RegisterTable
+   fun:Ut_CFE_TBL_RegisterHook
+   fun:CFE_TBL_Register
+   fun:SC_RegisterAllTables
+   fun:SC_InitTables
+   fun:SC_VerifyAtsEntry_Test_DuplicateCmdNumber
+   fun:UtTest_Run
+   fun:main
+}
+
