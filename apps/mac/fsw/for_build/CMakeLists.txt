@@ -94,7 +94,7 @@ add_airliner_app_unit_test(MAC-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         
-    VALGRIND_SUPPRESSIONS_FILE
+    VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-ut.supp
 )
 
@@ -114,7 +114,7 @@ add_airliner_app_unit_test(MAC-V3F-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         
-    VALGRIND_SUPPRESSIONS_FILE
+    VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-v3f-ut.supp
 )
 
@@ -134,7 +134,7 @@ add_airliner_app_unit_test(MAC-V4F-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         
-    VALGRIND_SUPPRESSIONS_FILE
+    VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-v4f-ut.supp
 )
 
@@ -160,7 +160,7 @@ add_airliner_app_unit_test(MAC-QUATERNION-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         
-    VALGRIND_SUPPRESSIONS_FILE
+    VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-quaternion-ut.supp
 )
 
@@ -201,6 +201,6 @@ add_airliner_app_unit_test(MAC-MATRIX4F4-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         
-    VALGRIND_SUPPRESSIONS_FILE
+    VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-matrix4f4-ut.supp
 )

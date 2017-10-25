@@ -110,3 +110,61 @@
    fun:UtTest_Run
    fun:main
 }
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:HK_SendCombinedHkPacket
+   fun:HK_SendCombinedHKCmd
+   fun:HK_AppPipe
+   fun:HK_AppPipe_Test_SendCombinedPktNominal
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:bcmp
+   fun:HK_ProcessIncomingHkData_Test_Nominal
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:HK_SetFlagsToNotPresent
+   fun:HK_SetFlagsToNotPresent_Test
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:HK_SetFlagsToNotPresent
+   fun:HK_SetFlagsToNotPresent_Test
+   fun:UtTest_Run
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value4
+   fun:memcpy
+   fun:CFE_PSP_MemCpy
+   fun:HK_ProcessIncomingHkData
+   fun:HK_ProcessIncomingHkData_Test_Nominal
+   fun:UtTest_Run
+   fun:main
+}
+
+    {
+   <insert_a_suppression_name_here>
+   Memcheck:Value4
+   fun:bcmp
+   fun:HK_ProcessIncomingHkData_Test_Nominal
+   fun:UtTest_Run
+   fun:main
+}
