@@ -153,6 +153,9 @@ add_airliner_app_unit_test(pblib-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 		${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )
 
 set(ES_PROTOBUF_MSGS_DIR ${ES_PROTOBUF_MSGS_DIR} PARENT_SCOPE)

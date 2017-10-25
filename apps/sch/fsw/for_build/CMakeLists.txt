@@ -79,11 +79,11 @@ add_airliner_app_def(sch
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_app_test.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_cmds_test.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_cmds_test.h
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_custom_test.c
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_custom_test.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_test_utils.c
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_test_utils.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_testrunner.c
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_mock_os.c
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sch_mock_os.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../mission_inc/sch_perfids.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/sch_msgids.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/sch_platform_cfg.h
@@ -115,4 +115,10 @@ add_airliner_app_def(sch
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
 #        ${PROJECT_SOURCE_DIR}/tools/ut_assert/inc/
+#        
+#    WRAPPERS
+#        OS_RtmEndFrame
+#        OS_RtmGetRunMode
+#        OS_RtmSetMajorAndMinorFrame
+#        OS_RtmGetCurrentMinorFrame       
 #)
