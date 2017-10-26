@@ -17,7 +17,8 @@ def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf name}, {\bf config}, {\
 \item 
 def {\bf count\+\_\+clients} (self)
 \begin{DoxyCompactList}\small\item\em Count the number of clients specified in the configuration file. \end{DoxyCompactList}\item 
-def {\bf test\+\_\+setup} (self, sender)
+def {\bf test\+\_\+setup} (self, sender)\label{classarte__test_1_1_arte_test_fixture_abc57d7ecb680c0d4c46c8bea1f2c9001}
+
 \begin{DoxyCompactList}\small\item\em Launches all clients specified in the configuration file with the command, output path, and current working directory to be used when launching the client. \end{DoxyCompactList}\item 
 def {\bf test\+\_\+teardown} (self, sender)
 \begin{DoxyCompactList}\small\item\em Terminates or kills all the clients in the client list. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -75,19 +76,7 @@ The test fixture uses Arte\+Launcher to startup and terminate clients. The confi
 
 Count the number of clients specified in the configuration file. 
 
-Sets the client\+\_\+count attribute. \index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!test\+\_\+setup@{test\+\_\+setup}}
-\index{test\+\_\+setup@{test\+\_\+setup}!arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}}
-\subsubsection[{test\+\_\+setup(self, sender)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+test.\+Arte\+Test\+Fixture.\+test\+\_\+setup (
-\begin{DoxyParamCaption}
-\item[{}]{self, }
-\item[{}]{sender}
-\end{DoxyParamCaption}
-)}\label{classarte__test_1_1_arte_test_fixture_abc57d7ecb680c0d4c46c8bea1f2c9001}
-
-
-Launches all clients specified in the configuration file with the command, output path, and current working directory to be used when launching the client. 
-
-\index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!test\+\_\+teardown@{test\+\_\+teardown}}
+Sets the client\+\_\+count attribute. \index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!test\+\_\+teardown@{test\+\_\+teardown}}
 \index{test\+\_\+teardown@{test\+\_\+teardown}!arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}}
 \subsubsection[{test\+\_\+teardown(self, sender)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+test.\+Arte\+Test\+Fixture.\+test\+\_\+teardown (
 \begin{DoxyParamCaption}

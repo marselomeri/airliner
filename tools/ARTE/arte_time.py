@@ -37,21 +37,21 @@ class ArteWatchdog(object):
     """A watchdog timer for threads or any long running task.
 
     Note:
-        ArteWatchdog implements threading.Timer. An instance of 
-        ArteWatchdog will instantiate a threading.Timer in the 
+        ArteWatchdog implements threading.Timer. An instance of
+        ArteWatchdog will instantiate a threading.Timer in the
         constructor and a new threading.Timer every reset.
 
     Args:
         timeout (unsigned int): The timeout in seconds.
-        event_handler (:obj: ArteEventHandler): An instance of an 
-        ArteEventHandler object.
+        event_handler (:obj: ArteEventHandler): An instance of an
+            ArteEventHandler object.
 
     Attributes:
         timeout (unsigned int): The timeout in seconds.
         event_handler (:obj: ArteEventHandler): An instance of an 
-        ArteEventHandler object. 
+            ArteEventHandler object. 
         timer (:obj: threading.Timer): The current threading.Timer 
-        object.
+            object.
     """
     def __init__(self, timeout, event_handler):
         self.timeout = timeout
@@ -76,7 +76,8 @@ class ArteWatchdog(object):
     
     def timeoutHandler(self):
         """The handler called when watchdog timer expires. Triggers 
-        the expired_watchdog event."""
+            the expired_watchdog event.
+        """
         self.event_handler.expired_watchdog()
 
 

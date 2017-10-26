@@ -40,9 +40,9 @@ class ArteSubprocess(object):
         command (str): A single string with program path and arguments.
         fileName (str): Filename to save stdout to.
         cwd (path): The path that the command should use as the current
-        working directory.
+            working directory.
         terminalBool (boolean, optional): Optionally pipe output to a
-        terminal. Not implemented.
+            terminal. Not implemented.
 
     Attributes:
         command: A single string with program path and arguments.

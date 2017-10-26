@@ -81,7 +81,7 @@ def count_clients(config):
 
     Args:
         config (:obj: deserialized JSON): The deserialized JSON 
-        configuration file.
+            configuration file.
 
     Returns:
         unsigned int: the number of clients counted.
@@ -102,11 +102,11 @@ def get_timeouts(config):
 
     Args:
         config (:obj: deserialized JSON): The deserialized JSON 
-        configuration file.
+            configuration file.
         
     Returns:
         unsigned int: the timeout in seconds as specified in the 
-        configuration file.
+            configuration file.
      """
     return config['timeouts']
 
@@ -116,16 +116,16 @@ def get_timeout(config):
 
     Note:
         timeout is the overall timeout for all test(s). This value 
-        needs to be greater than the maximum amount of time test(s)
-        could take.
+            needs to be greater than the maximum amount of time test(s)
+            could take.
 
     Args:
         config (:obj: deserialized JSON): The deserialized JSON 
-        configuration file.
+            configuration file.
 
     Returns:
         unsigned int: the timeout in seconds as specified in the 
-        configuration file.
+            configuration file.
      """
     return config['timeout']
 
@@ -135,17 +135,17 @@ def get_watchdog(config):
 
     Note:
         watchdog is the timeout for all watchdog timers. This value 
-        needs to be greater than the maximum amount of time any thread
-        would take before resetting its watchdog. The same goes for any
-        task that is assigned a watchdog.
+        needs to be greater than the maximum amount of time any 
+        thread would take before resetting its watchdog. The same 
+        goes for any task that is assigned a watchdog.
 
     Args:
         config (:obj: deserialized JSON): The deserialized JSON 
-        configuration file.
+            configuration file.
 
     Returns:
         unsigned int: the timeout in seconds as specified in the 
-        configuration file.
+            configuration file.
      """
     return config['watchdog']
 

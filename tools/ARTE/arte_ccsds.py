@@ -311,13 +311,13 @@ class CCSDS_CmdSecHdr_t(ctypes.Structure):
         
         Args:
             header (bytes): The encoded secondary header to decode and 
-            set.
+                set.
         """
         self.Command.data, = struct.unpack('>H', sec_header)
 
     def get_header_size(self):
         """Returns the length of the command secondary header using 
-        ctypes.sizeof.
+            ctypes.sizeof.
         
         Returns:
             int: Total primary header size in bytes.
@@ -376,7 +376,7 @@ class CCSDS_TlmSecHdr_t(ctypes.Structure):
         
         Args:
             header (bytes): The encoded secondary header to decode and 
-            set.
+                set.
         """
         self.Time.Seconds, self.Time.Subseconds = struct.unpack('>iH', sec_header)
         
@@ -385,7 +385,7 @@ class CCSDS_TlmSecHdr_t(ctypes.Structure):
 
         Note:
             CFS has other time formats besides 32 bits seconds + 16 bits
-            subseconds.
+                subseconds.
 
         Args:
             Seconds (int32): Time seconds since epoch.
@@ -404,7 +404,7 @@ class CCSDS_TlmSecHdr_t(ctypes.Structure):
 
     def get_header_size(self):
         """Returns the length of the telemetry secondary header using 
-        ctypes.sizeof.
+            ctypes.sizeof.
         
         Returns:
             int: Total primary header size in bytes.
@@ -469,7 +469,7 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         
         Args:
             cmd_packet (bytes): The encoded command packet to decode 
-            and set.
+                and set.
         """
         self.PriHdr.set_decoded(cmd_packet[0:6])
         self.SecHdr.set_decoded(cmd_packet[6:8])
@@ -492,7 +492,7 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
 
     def get_packet_size(self):
         """Returns the length of the combined command packet using 
-        ctypes.sizeof.
+            ctypes.sizeof.
         
         Returns:
             int: Total combined command packet size in bytes.
@@ -515,7 +515,7 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         
         Note:
             This function automatically subtracts the length of the 
-            packet.
+                packet.
             
         Returns:
             The length of the user payload in bytes.
@@ -632,7 +632,7 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         
         Args:
             cmd_packet (bytes): The encoded telemetry packet to decode 
-            and set.
+                and set.
         """
         self.PriHdr.set_decoded(telemetry_packet[0:6])
         self.SecHdr.set_decoded(telemetry_packet[6:12])
@@ -658,9 +658,10 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 
         Note:
             CFS has other time formats besides 32 bits seconds + 16 bits
-            subseconds. time.time() returns time in seconds since the
-            epoch as a floating point number. A conversion from a 
-            floating point fraction to binary fraction i.e. MSB = 2^-1.
+                subseconds. time.time() returns time in seconds since 
+                the epoch as a floating point number. A conversion from 
+                a floating point fraction to binary fraction i.e. MSB = 
+                2^-1.
         """
         float_time = time.time()
         int_time = int(float_time)
@@ -678,7 +679,7 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 
         Returns:
             tuple: Seconds (int32) and subseconds (int16) converted to
-            a fraction.
+                a fraction.
         """
         bin_subseconds = self.SecHdr.Time.Subseconds
         fraction_subseconds = 0
@@ -689,7 +690,7 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 
     def get_packet_size(self):
         """Returns the length of the combined telemetry packet using 
-        ctypes.sizeof.
+            ctypes.sizeof.
 
         Returns:
             int: Total combined telemetry packet size in bytes.
@@ -712,7 +713,7 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
 
         Note:
             This function automatically subtracts the length of the 
-            packet.
+                packet.
             
         Returns:
             The length of the user payload in bytes.

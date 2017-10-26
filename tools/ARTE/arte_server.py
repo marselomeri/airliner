@@ -49,8 +49,8 @@ except Exception:
 
 class EventDrivenTCPServer(socketserver.TCPServer):
     """Base class for various socket-based server classes extended
-       to add an event_handler argument. The request handler will be
-       called with an event_handler object.
+        to add an event_handler argument. The request handler will be
+        called with an event_handler object.
     """
     def __init__(self, server_address, RequestHandlerClass, event_handler, client_count, timeout, bind_and_activate=True):
         self.event_handler = event_handler
@@ -60,7 +60,7 @@ class EventDrivenTCPServer(socketserver.TCPServer):
         
     def finish_request(self, request, client_address):
         """Finish one request by instantiating RequestHandlerClass.
-           Now extended with an event_handler argument.
+            Now extended with an event_handler argument.
         """
         self.RequestHandlerClass(request, client_address, self, self.event_handler, self.client_count, self.timeout)
 
@@ -71,23 +71,21 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     
     Args:
         event_handler (:obj: ArteEventHandler): An instance of an 
-        ArteEventHandler object.
+            ArteEventHandler object.
         client_count (int): Number of clients that will connect.
         timeout (unsigned int): The timeout value used for anything
-        that pends forever.
+            that pends forever.
     
     Class Attributes:
         client_count (unsigned int): The total client count.
         client_ready_count (unsigned int): The client counter used for
-        counting "ready" clients each frame step.
+            counting "ready" clients each frame step.
         client_ready_condition (:obj: threading.Condition()): A 
-        conditional variable object for thread synchronization.
+            conditional variable object for thread synchronization.
         shutdown_flag (boolean): A while loop flag for threads.
         
     Attributes:
         
-    
-
     """
     client_count = 0
     client_ready_count = 0
@@ -146,7 +144,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         
         Args:
             returnCode (unsigned int): The return code that ARTE should
-            use when it exits. 
+                use when it exits. 
         """
         # set the return code
         self.event_handler.returnCode = returnCode
@@ -265,24 +263,24 @@ class ArteServer(object):
         port (int): Port number.
         client_count (int): Number of clients that will connect.
         event_handler (:obj: ArteEventHandler): An instance of an 
-        ArteEventHandler object.
+            ArteEventHandler object.
         timeouts (unsigned int): The timeouts value used for anything
-        that pends forever.
+            that pends forever.
 
     Attributes:
         host (str): IP address.
         port (int): Port number.
         client_count (unsigned int): The number of clients in the 
-        configuration file.
+            configuration file.
         event_handler (:obj: ArteEventHandler): An instance of an 
-        ArteEventHandler object. Callbacks are assigned to the 
-        server_startup and server_shutdown EventHandler objects.
+            ArteEventHandler object. Callbacks are assigned to the 
+            server_startup and server_shutdown EventHandler objects.
         timeouts (unsigned int): The timeouts value used for anything
-        that pends forever.
+            that pends forever.
         server (:obj: ThreadedTCPServer) An extended instance of
-        socketserver ThreadingMixIn and TCPServer.
+            socketserver ThreadingMixIn and TCPServer.
         server_thread (:obj: threading.Thread) The main server thread
-        which will spawn other threads for each new connection.
+            which will spawn other threads for each new connection.
 
     """
     def __init__(self, host, port, client_count, event_handler, timeouts):
