@@ -120,6 +120,7 @@
 #define SCH_SDT_BAD_ACTIVITY     (-4)
 #define SCH_SDT_BAD_MSG_INDEX    (-5)
 #define SCH_SDT_BAD_ENABLE_STATE (-6)
+#define SCH_SDT_BAD_DEADLINE 	 (-7)
 
 /*
 ** MDT Table Validation Error Codes
