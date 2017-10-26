@@ -1276,7 +1276,10 @@ void SCH_ProcessScheduleTable_Test_MultiSlotsProcessCountTooLargeSynchronizedPro
 {
     int32   Result;
 
-    MINOR_FRAME = 99;
+    /* Note: This value was 99 in the previous version of this test. The way the custom code, which was
+     * replaced, handled this number resulted in it being set to 0. Since that logic is no longer
+     * the same we are doing that assignment manually here. */
+    MINOR_FRAME = 0;
 
     SCH_AppData.NextSlotNumber = SCH_TOTAL_SLOTS - SCH_MAX_LAG_COUNT + 1;
 
@@ -1290,8 +1293,7 @@ void SCH_ProcessScheduleTable_Test_MultiSlotsProcessCountTooLargeSynchronizedPro
     
     /* Verify results */
     UtAssert_True(SCH_AppData.LastProcessCount == SCH_MAX_LAG_COUNT, "SCH_AppData.LastProcessCount == SCH_MAX_LAG_COUNT");
-    printf("SCH_AppData.LastProcessCount: %i\n", SCH_AppData.LastProcessCount);
-    printf("SCH_MAX_LAG_COUNT: %i\n", SCH_MAX_LAG_COUNT);
+
     UtAssert_True(SCH_AppData.MultipleSlotsCount == 1, "SCH_AppData.MultipleSlotsCount == 1");
 
     UtAssert_True
