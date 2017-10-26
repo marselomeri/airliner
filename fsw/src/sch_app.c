@@ -1315,6 +1315,105 @@ int32 SCH_ValidateScheduleData(void *TableData)
 
 } /* End of SCH_ValidateScheduleData() */
 
+/*******************************************************************
+**
+** SCH_ValidateScheduleDeadlines
+**
+** NOTE: For complete prolog information, see above
+********************************************************************/
+
+int32 SCH_ValidateScheduleDeadlines(void *TableData)
+{
+    SCH_ScheduleEntry_t *TableArray = (SCH_ScheduleEntry_t *) TableData;
+    int32 TableResult = CFE_SUCCESS;
+    int32 TableIndex;
+    int32 DeadlineSearchIndex = 0;
+
+    uint16 MessageIndex;
+    uint32 Deadline;
+    uint16 SearchMessageIndex;
+
+    int32 FrameCount = 0;
+    int32 FailCount = 0;
+
+    boolean FoundNextEntry = FALSE;
+
+    /* Iterate over each entry in SCH schedule table */
+    for (TableIndex = 0; TableIndex < SCH_TABLE_ENTRIES; TableIndex++)
+    {
+    	/* Get data for this index */
+        MessageIndex = TableArray[TableIndex].MessageIndex;
+        Deadline     = TableArray[TableIndex].Deadline;
+
+        /* If deadline is set to 0 we don't care about it */
+        if (Deadline == 0)
+        {
+        	FoundNextEntry = TRUE;
+        }
+
+        /* Search for next occurrence of this message */
+        DeadlineSearchIndex = TableIndex + 1;
+        while(!FoundNextEntry)
+        {
+        	FrameCount++;
+
+        	/* TODO: Remove. As long as a msg exists in the table it will always loop back to itself and break out */
+			if(FrameCount > (2 * SCH_TABLE_ENTRIES))
+			{
+				FoundNextEntry = TRUE;
+			}
+
+        	/* Need to have safeguard in case rollover into next major frame */
+        	if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
+        	{
+        		DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
+        	}
+
+        	/* Get message index for the current search index */
+        	SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
+
+        	if(SearchMessageIndex == MessageIndex)
+        	{
+        		/* We found the next occurrence, did it overrun? */
+        		if(FrameCount < Deadline)
+        		{
+        			TableResult = SCH_SDT_BAD_DEADLINE;
+        			FailCount++;
+        			CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
+									  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %i frames",
+									  MessageIndex, Deadline - FrameCount);
+        			//printf("msg %i overran: %i\n", MessageIndex, Deadline - FrameCount);
+        		}
+        		FoundNextEntry = TRUE;
+        	}
+
+        	DeadlineSearchIndex++;
+        }
+
+        FoundNextEntry = FALSE;
+        FrameCount = 0;
+    }
+
+    /* Send event describing results */
+	CFE_EVS_SendEvent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG,
+					  "Schedule table deadline verify results -- fails[%i]", FailCount);
+
+	/*
+	** Maintain table verification statistics
+	*/
+	if (TableResult == CFE_SUCCESS)
+	{
+		SCH_AppData.TableVerifySuccessCount++;
+	}
+	else
+	{
+		SCH_AppData.TableVerifyFailureCount++;
+	}
+
+    return(TableResult);
+
+} /* End of SCH_ValidateScheduleDeadlines() */
+
 
 /*******************************************************************
 **
