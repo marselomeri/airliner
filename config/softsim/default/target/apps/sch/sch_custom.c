@@ -128,6 +128,7 @@ int32 SCH_CustomLateInit(void)
     /* Step one minor frame to get the machine going. */
     OS_BinSemGive(SCH_AppData.TimeSemaphore);
 
+    return Status;
 } /* End of SCH_CustomLateInit() */
 
 
