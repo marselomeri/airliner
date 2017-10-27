@@ -5,10 +5,6 @@
 An event handler which provides a central location for event callbacks.  
 
 
-
-
-Inherits object.
-
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -22,12 +18,10 @@ def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self)\label{classarte__events_1_1_
 \begin{DoxyCompactList}\small\item\em Event\+Handler)\+: A shutdown handler. \end{DoxyCompactList}\item 
 {\bf startup}
 \begin{DoxyCompactList}\small\item\em Event\+Handler)\+: A startup handler. \end{DoxyCompactList}\item 
-{\bf expired\+\_\+watchdog}\label{classarte__events_1_1_arte_event_handler_ae90e4f227876937bc6a4532e61cb3818}
-
-\begin{DoxyCompactList}\small\item\em Event\+Handler)\+: An expired watchdog. \end{DoxyCompactList}\item 
-{\bf shutdown\+\_\+notification}\label{classarte__events_1_1_arte_event_handler_a700abfec6c03df636eb76be12d92c2c1}
-
-\begin{DoxyCompactList}\small\item\em threading.\+Event)\+: An event \end{DoxyCompactList}\item 
+{\bf expired\+\_\+watchdog}
+\begin{DoxyCompactList}\small\item\em Event\+Handler)\+: An expired watchdog handler. \end{DoxyCompactList}\item 
+{\bf shutdown\+\_\+notification}
+\begin{DoxyCompactList}\small\item\em threading.\+Event)\+: An event notification (to main) set to indicate that a client has received a shutdown request or a timeout has occurred. \end{DoxyCompactList}\item 
 {\bf return\+Code}
 \begin{DoxyCompactList}\small\item\em The return code to use for an exit code. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -36,6 +30,13 @@ def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self)\label{classarte__events_1_1_
 An event handler which provides a central location for event callbacks. 
 
 \subsection{Member Data Documentation}
+\index{arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}!expired\+\_\+watchdog@{expired\+\_\+watchdog}}
+\index{expired\+\_\+watchdog@{expired\+\_\+watchdog}!arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}}
+\subsubsection[{expired\+\_\+watchdog}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+events.\+Arte\+Event\+Handler.\+expired\+\_\+watchdog}\label{classarte__events_1_1_arte_event_handler_ae90e4f227876937bc6a4532e61cb3818}
+
+
+Event\+Handler)\+: An expired watchdog handler. 
+
 \index{arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}!return\+Code@{return\+Code}}
 \index{return\+Code@{return\+Code}!arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}}
 \subsubsection[{return\+Code}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+events.\+Arte\+Event\+Handler.\+return\+Code}\label{classarte__events_1_1_arte_event_handler_a0f2b65658b2c24816140c085d2f749d0}
@@ -49,6 +50,13 @@ The return code to use for an exit code.
 
 
 Event\+Handler)\+: A shutdown handler. 
+
+\index{arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}!shutdown\+\_\+notification@{shutdown\+\_\+notification}}
+\index{shutdown\+\_\+notification@{shutdown\+\_\+notification}!arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}}
+\subsubsection[{shutdown\+\_\+notification}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+events.\+Arte\+Event\+Handler.\+shutdown\+\_\+notification}\label{classarte__events_1_1_arte_event_handler_a700abfec6c03df636eb76be12d92c2c1}
+
+
+threading.\+Event)\+: An event notification (to main) set to indicate that a client has received a shutdown request or a timeout has occurred. 
 
 \index{arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}!startup@{startup}}
 \index{startup@{startup}!arte\+\_\+events\+::\+Arte\+Event\+Handler@{arte\+\_\+events\+::\+Arte\+Event\+Handler}}

@@ -5,14 +5,10 @@
 A watchdog timer for threads or any long running task.  
 
 
-
-
-Inherits object.
-
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, timeout, {\bf event\+\_\+handler})\label{classarte__time_1_1_arte_watchdog_aa6c135ae350a7cd51902d807f9be5b83}
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf timeout}, {\bf event\+\_\+handler})\label{classarte__time_1_1_arte_watchdog_aa6c135ae350a7cd51902d807f9be5b83}
 
 \item 
 def {\bf start} (self)
@@ -26,15 +22,12 @@ def {\bf timeout\+Handler} (self)
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries timeout}\label{classarte__time_1_1_arte_watchdog_a1bfd86b03b484990c0b4a73d2ea87513}
-
-\item 
-{\bf event\+\_\+handler}\label{classarte__time_1_1_arte_watchdog_a81f95337317efb489aa9edd810476da0}
-
-\begin{DoxyCompactList}\small\item\em Arte\+Event\+Handler)\+: An instance of an. \end{DoxyCompactList}\item 
-{\bf timer}\label{classarte__time_1_1_arte_watchdog_a0ff04f1ffa05cfa492eaecf97a88fafa}
-
-\begin{DoxyCompactList}\small\item\em threading.\+Timer)\+: The current threading.\+Timer \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf timeout}
+\begin{DoxyCompactList}\small\item\em The timeout in seconds. \end{DoxyCompactList}\item 
+{\bf event\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em An instance of an Arte\+Event\+Handler object. \end{DoxyCompactList}\item 
+{\bf timer}
+\begin{DoxyCompactList}\small\item\em The current threading.\+Timer object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -43,15 +36,16 @@ A watchdog timer for threads or any long running task.
 \begin{DoxyNote}{Note}
 \doxyref{Arte\+Watchdog}{p.}{classarte__time_1_1_arte_watchdog} implements threading.\+Timer. An instance of \doxyref{Arte\+Watchdog}{p.}{classarte__time_1_1_arte_watchdog} will instantiate a threading.\+Timer in the constructor and a new threading.\+Timer every reset.
 \end{DoxyNote}
-\begin{DoxyVerb}    timeout (unsigned int): The timeout in seconds.
-\end{DoxyVerb}
- 
+
 \begin{DoxyParams}{Parameters}
-{\em event\+\_\+handler} & Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object.\\
+{\em timeout} & The timeout in seconds. \\
+\hline
+{\em event\+\_\+handler} & An instance of an Arte\+Event\+Handler object.
+
+\\
 \hline
 \end{DoxyParams}
-\begin{DoxyVerb}    timeout (unsigned int): The timeout in seconds.\end{DoxyVerb}
- 
+
 
 \subsection{Member Function Documentation}
 \index{arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}!reset@{reset}}
@@ -99,6 +93,30 @@ Stops the watchdog timer.
 The handler called when watchdog timer expires. 
 
 Triggers the expired\+\_\+watchdog event. 
+
+\subsection{Member Data Documentation}
+\index{arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}!event\+\_\+handler@{event\+\_\+handler}}
+\index{event\+\_\+handler@{event\+\_\+handler}!arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}}
+\subsubsection[{event\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+time.\+Arte\+Watchdog.\+event\+\_\+handler}\label{classarte__time_1_1_arte_watchdog_a81f95337317efb489aa9edd810476da0}
+
+
+An instance of an Arte\+Event\+Handler object. 
+
+\index{arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}!timeout@{timeout}}
+\index{timeout@{timeout}!arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}}
+\subsubsection[{timeout}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+time.\+Arte\+Watchdog.\+timeout}\label{classarte__time_1_1_arte_watchdog_a1bfd86b03b484990c0b4a73d2ea87513}
+
+
+The timeout in seconds. 
+
+\index{arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}!timer@{timer}}
+\index{timer@{timer}!arte\+\_\+time\+::\+Arte\+Watchdog@{arte\+\_\+time\+::\+Arte\+Watchdog}}
+\subsubsection[{timer}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+time.\+Arte\+Watchdog.\+timer}\label{classarte__time_1_1_arte_watchdog_a0ff04f1ffa05cfa492eaecf97a88fafa}
+
+
+The current threading.\+Timer object. 
+
+
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

@@ -80,7 +80,7 @@ def count_clients(config):
     """Count the number of clients in the deserialized configuration.
 
     Args:
-        config (:obj: deserialized JSON): The deserialized JSON 
+        config (:obj:`deserialized JSON`): The deserialized JSON 
             configuration file.
 
     Returns:
@@ -101,7 +101,7 @@ def get_timeouts(config):
         forever like recv.
 
     Args:
-        config (:obj: deserialized JSON): The deserialized JSON 
+        config (:obj:`deserialized JSON`): The deserialized JSON 
             configuration file.
         
     Returns:
@@ -120,11 +120,11 @@ def get_timeout(config):
             could take.
 
     Args:
-        config (:obj: deserialized JSON): The deserialized JSON 
+        config (:obj:`deserialized JSON`): The deserialized JSON 
             configuration file.
 
     Returns:
-        unsigned int: the timeout in seconds as specified in the 
+        uint: the timeout in seconds as specified in the 
             configuration file.
      """
     return config['timeout']
@@ -140,11 +140,11 @@ def get_watchdog(config):
         goes for any task that is assigned a watchdog.
 
     Args:
-        config (:obj: deserialized JSON): The deserialized JSON 
+        config (:obj:`deserialized JSON`): The deserialized JSON 
             configuration file.
 
     Returns:
-        unsigned int: the timeout in seconds as specified in the 
+        uint: the timeout in seconds as specified in the 
             configuration file.
      """
     return config['watchdog']

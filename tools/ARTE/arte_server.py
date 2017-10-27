@@ -70,17 +70,17 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     """The request handler for ARTE server.
     
     Args:
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object.
         client_count (int): Number of clients that will connect.
-        timeout (unsigned int): The timeout value used for anything
+        timeout (uint): The timeout value used for anything
             that pends forever.
     
     Class Attributes:
-        client_count (unsigned int): The total client count.
-        client_ready_count (unsigned int): The client counter used for
+        client_count (uint): The total client count.
+        client_ready_count (uint): The client counter used for
             counting "ready" clients each frame step.
-        client_ready_condition (:obj: threading.Condition()): A 
+        client_ready_condition (:obj:`threading.Condition`): A 
             conditional variable object for thread synchronization.
         shutdown_flag (boolean): A while loop flag for threads.
         
@@ -117,7 +117,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Receive an ARTE client message over TCP socket.
         
         Args:
-            cur_thread ("obj" threading.thread): The current thread.
+            cur_thread (:obj:`threading.thread`): The current thread.
         
         Returns:
             True for success, and False for failure.
@@ -143,7 +143,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Shutdown for use when ARTE cannot continue.
         
         Args:
-            returnCode (unsigned int): The return code that ARTE should
+            returnCode (uint): The return code that ARTE should
                 use when it exits. 
         """
         # set the return code
@@ -177,7 +177,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Send a response to an ARTE client.
         
         Args:
-            cur_thread ("obj" threading.thread): The current thread.
+            cur_thread (:obj:`threading.thread`): The current thread.
         
         Returns:
             True for success, and False for failure.
@@ -262,24 +262,24 @@ class ArteServer(object):
         host (str): IP address.
         port (int): Port number.
         client_count (int): Number of clients that will connect.
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object.
-        timeouts (unsigned int): The timeouts value used for anything
+        timeouts (uint): The timeouts value used for anything
             that pends forever.
 
     Attributes:
         host (str): IP address.
         port (int): Port number.
-        client_count (unsigned int): The number of clients in the 
+        client_count (uint): The number of clients in the 
             configuration file.
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object. Callbacks are assigned to the 
             server_startup and server_shutdown EventHandler objects.
-        timeouts (unsigned int): The timeouts value used for anything
+        timeouts (uint): The timeouts value used for anything
             that pends forever.
-        server (:obj: ThreadedTCPServer) An extended instance of
+        server (:obj:`ThreadedTCPServer`) An extended instance of
             socketserver ThreadingMixIn and TCPServer.
-        server_thread (:obj: threading.Thread) The main server thread
+        server_thread (:obj:`threading.Thread`) The main server thread
             which will spawn other threads for each new connection.
 
     """

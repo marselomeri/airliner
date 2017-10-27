@@ -1,2 +1,2 @@
 #!/bin/bash
-python -m doxypypy.doxypypy -a -c $1
+python -m doxypypy/doxypypy/doxypypy -a -c $1

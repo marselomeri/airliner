@@ -42,15 +42,15 @@ class ArteWatchdog(object):
         constructor and a new threading.Timer every reset.
 
     Args:
-        timeout (unsigned int): The timeout in seconds.
-        event_handler (:obj: ArteEventHandler): An instance of an
+        timeout (uint): The timeout in seconds.
+        event_handler (:obj:`ArteEventHandler`): An instance of an
             ArteEventHandler object.
 
     Attributes:
-        timeout (unsigned int): The timeout in seconds.
-        event_handler (:obj: ArteEventHandler): An instance of an 
-            ArteEventHandler object. 
-        timer (:obj: threading.Timer): The current threading.Timer 
+        timeout (uint): The timeout in seconds.
+        event_handler (:obj:`ArteEventHandler`):  An instance of an
+            ArteEventHandler object.
+        timer (:obj:`threading.Timer`): The current threading.Timer 
             object.
     """
     def __init__(self, timeout, event_handler):

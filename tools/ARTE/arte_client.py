@@ -42,12 +42,12 @@ class ArteClient(object):
         port (unsigned int): The port number of the server.
         
     Attributes:
-        socket (:obj: socket object): The instantiated socket object.
+        socket (:obj:`socket`): The instantiated socket object.
         sequence (unsigned int): The current sequence count as received
             from ArteServer.
-        telemetry_packet (:obj: CCSDS_TlmPkt_t): A CCSDS telemetry 
+        telemetry_packet (:obj:`CCSDS_TlmPkt_t`): A CCSDS telemetry 
             packet used for all communication to ArteServer.
-        command_packet (:obj: CCSDS_CmdPkt_t): A CCSDS command packet
+        command_packet (:obj:`CCSDS_CmdPkt_t`): A CCSDS command packet
             used for all communication from ArteServer.
     """
     def __init__(self, ip, port):

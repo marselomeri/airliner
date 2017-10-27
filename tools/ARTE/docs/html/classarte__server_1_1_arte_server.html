@@ -99,8 +99,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><a class="el" href="classarte__server_1_1_arte_server.html" title="ArteServer used for inter-process TCP synchronization. ">ArteServer</a> used for inter-process TCP synchronization.  
  <a href="classarte__server_1_1_arte_server.html#details">More...</a></p>
-
-<p>Inherits object.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,17 +126,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a940e8ff96e73f4bd840ae5a07fa778ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a940e8ff96e73f4bd840ae5a07fa778ef"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>timeouts</b></td></tr>
 <tr class="separator:a940e8ff96e73f4bd840ae5a07fa778ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a039f1677b1c2807df6b816594655bc51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a039f1677b1c2807df6b816594655bc51"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__server_1_1_arte_server.html#a039f1677b1c2807df6b816594655bc51">event_handler</a></td></tr>
-<tr class="memdesc:a039f1677b1c2807df6b816594655bc51"><td class="mdescLeft">&#160;</td><td class="mdescRight">ArteEventHandler): An instance of an. <br /></td></tr>
+<tr class="memitem:a039f1677b1c2807df6b816594655bc51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__server_1_1_arte_server.html#a039f1677b1c2807df6b816594655bc51">event_handler</a></td></tr>
+<tr class="memdesc:a039f1677b1c2807df6b816594655bc51"><td class="mdescLeft">&#160;</td><td class="mdescRight">ArteEventHandler): An instance of an ArteEventHandler object.  <a href="#a039f1677b1c2807df6b816594655bc51">More...</a><br /></td></tr>
 <tr class="separator:a039f1677b1c2807df6b816594655bc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66bd2ec73bd6bf835a26c8be21522180"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66bd2ec73bd6bf835a26c8be21522180"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__server_1_1_arte_server.html#a66bd2ec73bd6bf835a26c8be21522180">server</a></td></tr>
-<tr class="memdesc:a66bd2ec73bd6bf835a26c8be21522180"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classarte__server_1_1_threaded_t_c_p_server.html">ThreadedTCPServer</a>) An extended instance of. <br /></td></tr>
+<tr class="memitem:a66bd2ec73bd6bf835a26c8be21522180"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__server_1_1_arte_server.html#a66bd2ec73bd6bf835a26c8be21522180">server</a></td></tr>
+<tr class="memdesc:a66bd2ec73bd6bf835a26c8be21522180"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classarte__server_1_1_threaded_t_c_p_server.html">ThreadedTCPServer</a>) An extended instance of socketserver ThreadingMixIn and TCPServer.  <a href="#a66bd2ec73bd6bf835a26c8be21522180">More...</a><br /></td></tr>
 <tr class="separator:a66bd2ec73bd6bf835a26c8be21522180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29f3eb7b7ec2a8561e87cab05c0fa1fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29f3eb7b7ec2a8561e87cab05c0fa1fc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__server_1_1_arte_server.html#a29f3eb7b7ec2a8561e87cab05c0fa1fc">server_thread</a></td></tr>
-<tr class="memdesc:a29f3eb7b7ec2a8561e87cab05c0fa1fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">threading.Thread) The main server thread <br /></td></tr>
+<tr class="memdesc:a29f3eb7b7ec2a8561e87cab05c0fa1fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">threading.Thread) The main server thread which will spawn other threads for each new connection. <br /></td></tr>
 <tr class="separator:a29f3eb7b7ec2a8561e87cab05c0fa1fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -148,11 +144,27 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">host</td><td>IP address. </td></tr>
     <tr><td class="paramname">port</td><td>Port number. </td></tr>
     <tr><td class="paramname">client_count</td><td>Number of clients that will connect. </td></tr>
-    <tr><td class="paramname">event_handler</td><td>ArteEventHandler): An instance of an ArteEventHandler object. timeouts (unsigned int): The timeouts value used for anything that pends forever.</td></tr>
+    <tr><td class="paramname">event_handler</td><td>ArteEventHandler): An instance of an ArteEventHandler object. </td></tr>
   </table>
   </dd>
 </dl>
-<pre class="fragment">        which will spawn other threads for each new connection.</pre> </div><h2 class="groupheader">Member Data Documentation</h2>
+<p>timeouts (unsigned int): The timeouts value used for anything that pends forever. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a039f1677b1c2807df6b816594655bc51"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">arte_server.ArteServer.event_handler</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ArteEventHandler): An instance of an ArteEventHandler object. </p>
+<p>Callbacks are assigned to the server_startup and server_shutdown EventHandler objects. </p>
+
+</div>
+</div>
 <a class="anchor" id="ad388c85c6afa4a2edb77b50741c1ab33"></a>
 <div class="memitem">
 <div class="memproto">
@@ -178,6 +190,20 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Port number. </p>
+
+</div>
+</div>
+<a class="anchor" id="a66bd2ec73bd6bf835a26c8be21522180"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">arte_server.ArteServer.server</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classarte__server_1_1_threaded_t_c_p_server.html">ThreadedTCPServer</a>) An extended instance of socketserver ThreadingMixIn and TCPServer. </p>
 
 </div>
 </div>

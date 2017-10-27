@@ -5,10 +5,6 @@
 \doxyref{Arte\+Client}{p.}{classarte__client_1_1_arte_client} for communicating with Arte\+Server over T\+CP.  
 
 
-
-
-Inherits object.
-
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -21,8 +17,7 @@ def {\bf send\+\_\+shutdown} (self, success\+Bool)
 \begin{DoxyCompactList}\small\item\em Sends a shutdown notification to Arte\+Server. \end{DoxyCompactList}\item 
 def {\bf receive\+\_\+response} (self)
 \begin{DoxyCompactList}\small\item\em Receive a response from Arte\+Server. \end{DoxyCompactList}\item 
-def {\bf decode\+\_\+sequence} (self)\label{classarte__client_1_1_arte_client_a589b334e3c13cb3cec198186b13dcb67}
-
+def {\bf decode\+\_\+sequence} (self)
 \begin{DoxyCompactList}\small\item\em Get and set the sequence count from a received Arte\+Server command packet. \end{DoxyCompactList}\item 
 def {\bf close\+\_\+conn} (self)
 \begin{DoxyCompactList}\small\item\em Close the T\+CP socket object. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -35,15 +30,13 @@ def {\bf close\+\_\+conn} (self)
 {\bfseries sequence}\label{classarte__client_1_1_arte_client_a94d3327a2bb9d6a45072aa4df8ba7b72}
 
 \item 
-{\bf telemetry\+\_\+packet}\label{classarte__client_1_1_arte_client_a410d70447caff4e8501c72dc63388cb2}
-
-\begin{DoxyCompactList}\small\item\em C\+C\+S\+D\+S\+\_\+\+Tlm\+Pkt\+\_\+t)\+: A C\+C\+S\+DS telemetry. \end{DoxyCompactList}\item 
+{\bf telemetry\+\_\+packet}
+\begin{DoxyCompactList}\small\item\em C\+C\+S\+D\+S\+\_\+\+Tlm\+Pkt\+\_\+t)\+: A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. \end{DoxyCompactList}\item 
 {\bfseries telemetry\+\_\+packet\+\_\+size}\label{classarte__client_1_1_arte_client_a356d61ce6f69381d1a44070baea435cb}
 
 \item 
-{\bf command\+\_\+packet}\label{classarte__client_1_1_arte_client_af3a791ca627971da0b479c6e1d4de8ef}
-
-\begin{DoxyCompactList}\small\item\em C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t)\+: A C\+C\+S\+DS command packet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\bf command\+\_\+packet}
+\begin{DoxyCompactList}\small\item\em C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t)\+: A C\+C\+S\+DS command packet used for all communication from Arte\+Server. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -51,11 +44,10 @@ def {\bf close\+\_\+conn} (self)
 
 
 \begin{DoxyParams}{Parameters}
-{\em ip} & The IP address of the server. port (unsigned int)\+: The port number of the server.\\
+{\em ip} & The IP address of the server. port (unsigned int)\+: The port number of the server. \\
 \hline
 \end{DoxyParams}
-\begin{DoxyVerb}        used for all communication from ArteServer.\end{DoxyVerb}
- 
+
 
 \subsection{Member Function Documentation}
 \index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!close\+\_\+conn@{close\+\_\+conn}}
@@ -68,6 +60,17 @@ def {\bf close\+\_\+conn} (self)
 
 
 Close the T\+CP socket object. 
+
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!decode\+\_\+sequence@{decode\+\_\+sequence}}
+\index{decode\+\_\+sequence@{decode\+\_\+sequence}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{decode\+\_\+sequence(self)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+client.\+Arte\+Client.\+decode\+\_\+sequence (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classarte__client_1_1_arte_client_a589b334e3c13cb3cec198186b13dcb67}
+
+
+Get and set the sequence count from a received Arte\+Server command packet. 
 
 \index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!receive\+\_\+response@{receive\+\_\+response}}
 \index{receive\+\_\+response@{receive\+\_\+response}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
@@ -111,6 +114,23 @@ Sends a shutdown notification to Arte\+Server.
 {\em success\+Bool} & (boolean)\+: Notify Arte\+Server that that test(s) completed with success or failure. \\
 \hline
 \end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!command\+\_\+packet@{command\+\_\+packet}}
+\index{command\+\_\+packet@{command\+\_\+packet}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{command\+\_\+packet}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+command\+\_\+packet}\label{classarte__client_1_1_arte_client_af3a791ca627971da0b479c6e1d4de8ef}
+
+
+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t)\+: A C\+C\+S\+DS command packet used for all communication from Arte\+Server. 
+
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!telemetry\+\_\+packet@{telemetry\+\_\+packet}}
+\index{telemetry\+\_\+packet@{telemetry\+\_\+packet}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{telemetry\+\_\+packet}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+telemetry\+\_\+packet}\label{classarte__client_1_1_arte_client_a410d70447caff4e8501c72dc63388cb2}
+
+
+C\+C\+S\+D\+S\+\_\+\+Tlm\+Pkt\+\_\+t)\+: A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. 
+
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
