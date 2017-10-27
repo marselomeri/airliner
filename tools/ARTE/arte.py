@@ -213,7 +213,7 @@ def main():
     my_event_handler = ArteEventHandler()
     
     # Create a server
-    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts)
+    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts, majorframe)
 
     # Create a test fixture
     my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
