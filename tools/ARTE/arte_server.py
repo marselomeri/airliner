@@ -199,7 +199,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             else:
                 self.command_packet.PriHdr.Sequence.bits.count += 1
             # increment the minor frame count
-            if self.command_packet.PriHdr.StreamId.bits.app_id == ThreadedTCPRequestHandler.major_frame:
+            if self.command_packet.PriHdr.StreamId.bits.app_id == ThreadedTCPRequestHandler.major_frame -1 :
                 self.command_packet.PriHdr.StreamId.bits.app_id  = 0
             else:
                 self.command_packet.PriHdr.StreamId.bits.app_id  += 1
