@@ -79,7 +79,6 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             pass
         else:
             self.command_packet.PriHdr.StreamId.bits.app_id += 1
-        self.command_packet.print_base2()
         # Send the packet
         self.request.sendall(self.command_packet.get_encoded())
         print("server sent response")
@@ -88,7 +87,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.initial_setup()
         while(1):
             self.recv_message()
-            input("Press Enter to continue...")
+            #input("Press Enter to continue...")
             for x in range(0, 199):
                 self.send_response()
                 self.recv_message()

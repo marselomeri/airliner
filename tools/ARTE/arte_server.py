@@ -52,17 +52,18 @@ class EventDrivenTCPServer(socketserver.TCPServer):
         to add an event_handler argument. The request handler will be
         called with an event_handler object.
     """
-    def __init__(self, server_address, RequestHandlerClass, event_handler, client_count, timeout, bind_and_activate=True):
+    def __init__(self, server_address, RequestHandlerClass, event_handler, client_count, timeout, majorframe, bind_and_activate=True):
         self.event_handler = event_handler
         self.client_count = client_count
         self.timeout = timeout
+        self.majorframe = majorframe
         socketserver.TCPServer.__init__(self, server_address, RequestHandlerClass, bind_and_activate=True)
         
     def finish_request(self, request, client_address):
         """Finish one request by instantiating RequestHandlerClass.
             Now extended with an event_handler argument.
         """
-        self.RequestHandlerClass(request, client_address, self, self.event_handler, self.client_count, self.timeout)
+        self.RequestHandlerClass(request, client_address, self, self.event_handler, self.client_count, self.timeout, self.majorframe)
 
 
 
@@ -166,6 +167,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             # if app_id == 1 the client test(s) succeeded
             if self.telemetry_packet.PriHdr.StreamId.bits.app_id == 1:
                 logging.info('received shutdown message and success %s', cur_thread)
+                returnCode = 0
             # if app_id == 2 the client test(s) failed
             elif self.telemetry_packet.PriHdr.StreamId.bits.app_id == 2:
                 logging.info('received shutdown message and failure %s', cur_thread)
