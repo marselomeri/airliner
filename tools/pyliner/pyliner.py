@@ -11,8 +11,8 @@ import socket
 import SocketServer
 import threading
 
-DEFAULT_CI_PORT = 5009
-DEFAULT_TO_PORT = 5012
+DEFAULT_CI_PORT = 5008
+DEFAULT_TO_PORT = 5011
 
 # Custom exceptions
 class InvalidCommandException(Exception): pass
