@@ -150,6 +150,22 @@ def get_watchdog(config):
     return config['watchdog']
 
 
+def get_majorframe(config):
+    """Get the minor in major frame count from the configuration file.
+
+    Note:
+        Default value is 200.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        uint: the number of minor frames in a major frame.
+     """
+    return config['majorframe']
+
+
 def main():
     """The entry point for ARTE.
     
@@ -189,6 +205,9 @@ def main():
     
     # Get the watchdog timeout
     watchdog = get_watchdog(config)
+    
+    # Get the minor frame in major frame count
+    majorframe = get_majorframe(config)
     
     # Create an event handler for event callbacks
     my_event_handler = ArteEventHandler()

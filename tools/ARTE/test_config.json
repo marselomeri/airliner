@@ -5,6 +5,7 @@
   "timeout": 300,
   "timeouts": 5,
   "watchdog": 5,
+  "majorframe": 200,
   "clients": [
     {
       "name": "Airliner",

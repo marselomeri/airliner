@@ -78,8 +78,8 @@ class command_bits(ctypes.Structure):
     command function code
     reserved, set to 0
     """
-    _fields_ = [("checksum", ctypes.c_uint16, 8),
-                ("code", ctypes.c_uint16, 7),
+    _fields_ = [("code", ctypes.c_uint16, 7),
+                ("checksum", ctypes.c_uint16, 8),
                 ("reserved", ctypes.c_uint16, 1)]
 
 
