@@ -45,19 +45,19 @@ class ArteTestFixture(object):
 
     Args:
         name (str): The name of the test fixture.
-        config (:obj: deserialized JSON object): The deserialized JSON
+        config (:obj:`deserialized JSON object`): The deserialized JSON
             configuration file.
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object.
 
     Attributes:
         name (str): The name of the test fixture.
-        config (:obj: deserialized JSON object): The deserialized JSON
+        config (:obj:`deserialized JSON object`): The deserialized JSON
             configuration file.
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object. Callbacks are assigned to the 
             test_setup and test_teardown EventHandler objects.
-        timer (:obj: threading.Timer): The current threading.Timer 
+        timer (:obj:`threading.Timer`): The current threading.Timer 
             object.
         client_count (unsigned int): The number of clients in the 
             configuration file.

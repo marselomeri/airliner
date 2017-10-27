@@ -57,6 +57,8 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.command_packet.clear_packet()
         self.command_packet.init_packet()
         self.command_packet.set_user_data_length(0)
+        self.command_packet.PriHdr.Sequence.bits.count = 1
+        self.command_packet.PriHdr.StreamId.bits.app_id = 1
 
     def recv_message(self):
         packet = self.request.recv(self.telemetry_packet_size)
@@ -66,7 +68,19 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
 
     def send_response(self):
         print("sequence count = ", self.command_packet.PriHdr.Sequence.bits.count)
-        self.command_packet.PriHdr.Sequence.bits.count += 1
+        # increment the sequence count
+        if self.command_packet.PriHdr.Sequence.bits.count == 16383:
+            self.command_packet.PriHdr.Sequence.bits.count = 0
+        else:
+            self.command_packet.PriHdr.Sequence.bits.count += 1
+        # increment the minor frame count
+        if self.command_packet.PriHdr.StreamId.bits.app_id == 200:
+            self.command_packet.PriHdr.StreamId.bits.app_id  = 0
+            pass
+        else:
+            self.command_packet.PriHdr.StreamId.bits.app_id += 1
+        self.command_packet.print_base2()
+        # Send the packet
         self.request.sendall(self.command_packet.get_encoded())
         print("server sent response")
 

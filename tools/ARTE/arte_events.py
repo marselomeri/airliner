@@ -38,11 +38,11 @@ class ArteEventHandler(object):
         event callbacks.
         
     Attributes:
-        shutdown (:obj: EventHandler): A shutdown handler.
-        startup (:obj: EventHandler): A startup handler.
-        expired_watchdog (:obj: EventHandler): An expired watchdog 
+        shutdown (:obj:`EventHandler`): A shutdown handler.
+        startup (:obj:`EventHandler`): A startup handler.
+        expired_watchdog (:obj:`EventHandler`): An expired watchdog 
             handler.
-        shutdown_notification (:obj: threading.Event): An event 
+        shutdown_notification (:obj:`threading.Event`): An event 
             notification (to main) set to indicate that a client has 
             received a shutdown request or a timeout has occurred.
         returnCode (int): The return code to use for an exit code.

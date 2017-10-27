@@ -2,11 +2,6 @@
 \label{classarte__ccsds_1_1_c_c_s_d_s___cmd_pkt__t}\index{arte\+\_\+ccsds.\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t@{arte\+\_\+ccsds.\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t}}
 
 
-Generic combined command header.  
-
-
-
-
 Inherits Structure.
 
 \subsection*{Public Member Functions}
@@ -45,11 +40,6 @@ def {\bf validate\+\_\+checksum} (self, payload)
 \begin{DoxyCompactList}\small\item\em Validate checksum for a command packet. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-Generic combined command header. 
-
-
-
 \subsection{Member Function Documentation}
 \index{arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t@{arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t}!clear\+\_\+packet@{clear\+\_\+packet}}
 \index{clear\+\_\+packet@{clear\+\_\+packet}!arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t@{arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t}}
@@ -81,7 +71,9 @@ pass 0 as an argument if there is no payload.
 \end{DoxyNote}
 
 \begin{DoxyParams}{Parameters}
-{\em payload} & The encoded payload.\\
+{\em payload} & The encoded payload.
+
+\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -259,7 +251,7 @@ Set the length of the user payload.
 \begin{DoxyNote}{Note}
 This function automatically sets the length of the packet.
 \end{DoxyNote}
-\begin{DoxyVerb}        The length of the user payload in bytes.\end{DoxyVerb}
+\begin{DoxyVerb}        The length of the user payload in bytes. \end{DoxyVerb}
  \index{arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t@{arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t}!validate\+\_\+checksum@{validate\+\_\+checksum}}
 \index{validate\+\_\+checksum@{validate\+\_\+checksum}!arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t@{arte\+\_\+ccsds\+::\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t}}
 \subsubsection[{validate\+\_\+checksum(self, payload)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+ccsds.\+C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t.\+validate\+\_\+checksum (

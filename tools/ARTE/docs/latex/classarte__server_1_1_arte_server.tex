@@ -5,10 +5,6 @@
 \doxyref{Arte\+Server}{p.}{classarte__server_1_1_arte_server} used for inter-\/process T\+CP synchronization.  
 
 
-
-
-Inherits object.
-
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -34,15 +30,13 @@ def {\bfseries server\+\_\+shutdown} (self, sender)\label{classarte__server_1_1_
 {\bfseries timeouts}\label{classarte__server_1_1_arte_server_a940e8ff96e73f4bd840ae5a07fa778ef}
 
 \item 
-{\bf event\+\_\+handler}\label{classarte__server_1_1_arte_server_a039f1677b1c2807df6b816594655bc51}
-
-\begin{DoxyCompactList}\small\item\em Arte\+Event\+Handler)\+: An instance of an. \end{DoxyCompactList}\item 
-{\bf server}\label{classarte__server_1_1_arte_server_a66bd2ec73bd6bf835a26c8be21522180}
-
-\begin{DoxyCompactList}\small\item\em \doxyref{Threaded\+T\+C\+P\+Server}{p.}{classarte__server_1_1_threaded_t_c_p_server}) An extended instance of. \end{DoxyCompactList}\item 
+{\bf event\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. \end{DoxyCompactList}\item 
+{\bf server}
+\begin{DoxyCompactList}\small\item\em \doxyref{Threaded\+T\+C\+P\+Server}{p.}{classarte__server_1_1_threaded_t_c_p_server}) An extended instance of socketserver Threading\+Mix\+In and T\+C\+P\+Server. \end{DoxyCompactList}\item 
 {\bf server\+\_\+thread}\label{classarte__server_1_1_arte_server_a29f3eb7b7ec2a8561e87cab05c0fa1fc}
 
-\begin{DoxyCompactList}\small\item\em threading.\+Thread) The main server thread \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em threading.\+Thread) The main server thread which will spawn other threads for each new connection. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -56,14 +50,20 @@ def {\bfseries server\+\_\+shutdown} (self, sender)\label{classarte__server_1_1_
 \hline
 {\em client\+\_\+count} & Number of clients that will connect. \\
 \hline
-{\em event\+\_\+handler} & Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. timeouts (unsigned int)\+: The timeouts value used for anything that pends forever.\\
+{\em event\+\_\+handler} & Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. \\
 \hline
 \end{DoxyParams}
-\begin{DoxyVerb}        which will spawn other threads for each new connection.\end{DoxyVerb}
- 
+timeouts (unsigned int)\+: The timeouts value used for anything that pends forever. 
 
 \subsection{Member Data Documentation}
-\index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!host@{host}}
+\index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!event\+\_\+handler@{event\+\_\+handler}}
+\index{event\+\_\+handler@{event\+\_\+handler}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}
+\subsubsection[{event\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+server.\+Arte\+Server.\+event\+\_\+handler}\label{classarte__server_1_1_arte_server_a039f1677b1c2807df6b816594655bc51}
+
+
+Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. 
+
+Callbacks are assigned to the server\+\_\+startup and server\+\_\+shutdown Event\+Handler objects. \index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!host@{host}}
 \index{host@{host}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}
 \subsubsection[{host}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+server.\+Arte\+Server.\+host}\label{classarte__server_1_1_arte_server_ad388c85c6afa4a2edb77b50741c1ab33}
 
@@ -76,6 +76,13 @@ IP address.
 
 
 Port number. 
+
+\index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!server@{server}}
+\index{server@{server}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}
+\subsubsection[{server}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+server.\+Arte\+Server.\+server}\label{classarte__server_1_1_arte_server_a66bd2ec73bd6bf835a26c8be21522180}
+
+
+\doxyref{Threaded\+T\+C\+P\+Server}{p.}{classarte__server_1_1_threaded_t_c_p_server}) An extended instance of socketserver Threading\+Mix\+In and T\+C\+P\+Server. 
 
 
 

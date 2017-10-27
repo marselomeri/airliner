@@ -42,18 +42,21 @@ class ArteClient(object):
         port (unsigned int): The port number of the server.
         
     Attributes:
-        socket (:obj: socket object): The instantiated socket object.
-        sequence (unsigned int): The current sequence count as received
+        socket (:obj:`socket`): The instantiated socket object.
+        sequence (uint): The current sequence count as received
             from ArteServer.
-        telemetry_packet (:obj: CCSDS_TlmPkt_t): A CCSDS telemetry 
+        frame (uint): The current frame count as received from 
+            ArteServer.
+        telemetry_packet (:obj:`CCSDS_TlmPkt_t`): A CCSDS telemetry 
             packet used for all communication to ArteServer.
-        command_packet (:obj: CCSDS_CmdPkt_t): A CCSDS command packet
+        command_packet (:obj:`CCSDS_CmdPkt_t`): A CCSDS command packet
             used for all communication from ArteServer.
     """
     def __init__(self, ip, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((ip, port))
         self.sequence = 0
+        self.frame = 0
         # Set up telemetry packet
         self.telemetry_packet = CCSDS_TlmPkt_t()
         self.telemetry_packet.clear_packet()
@@ -108,6 +111,13 @@ class ArteClient(object):
         """
         self.sequence = self.command_packet.PriHdr.Sequence.bits.count
         print("sequence count from ARTE server = ", self.sequence)
+        
+    def decode_frame(self):
+        """Get and set the frame count from a received ArteServer 
+            command packet.
+        """
+        self.frame = self.command_packet.SecHdr.Command.bits.code
+        print("frame count from ARTE server = ", self.frame)
         
     def close_conn(self):
         """Close the TCP socket object."""

@@ -70,19 +70,21 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     """The request handler for ARTE server.
     
     Args:
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object.
         client_count (int): Number of clients that will connect.
-        timeout (unsigned int): The timeout value used for anything
+        timeout (uint): The timeout value used for anything
             that pends forever.
     
     Class Attributes:
-        client_count (unsigned int): The total client count.
-        client_ready_count (unsigned int): The client counter used for
+        client_count (uint): The total client count.
+        client_ready_count (uint): The client counter used for
             counting "ready" clients each frame step.
-        client_ready_condition (:obj: threading.Condition()): A 
+        client_ready_condition (:obj:`threading.Condition`): A 
             conditional variable object for thread synchronization.
+        major_frame (uint): Total minor frames in a major frame.
         shutdown_flag (boolean): A while loop flag for threads.
+        
         
     Attributes:
         
@@ -90,12 +92,14 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     client_count = 0
     client_ready_count = 0
     client_ready_condition = threading.Condition()
+    major_frame = 0
     shutdown_flag = True
 
-    def __init__(self, request, client_address, server, event_handler, client_count, timeout):
+    def __init__(self, request, client_address, server, event_handler, client_count, timeout, major_frame):
         self.event_handler = event_handler
         ThreadedTCPRequestHandler.client_count = client_count
         ThreadedTCPRequestHandler.client_ready_count = client_count
+        ThreadedTCPRequestHandler.major_frame = major_frame
         # Set up telemetry packet
         self.telemetry_packet = CCSDS_TlmPkt_t()
         self.telemetry_packet.clear_packet()
@@ -108,6 +112,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.command_packet.init_packet()
         self.command_packet.set_user_data_length(0)
         self.command_packet.PriHdr.Sequence.bits.count = 1
+        self.command_packet.PriHdr.StreamId.bits.app_id = 1
         self.timeout = timeout
         # call the parent constructor
         socketserver.BaseRequestHandler.__init__(self, request, client_address, server)
@@ -117,7 +122,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Receive an ARTE client message over TCP socket.
         
         Args:
-            cur_thread ("obj" threading.thread): The current thread.
+            cur_thread (:obj:`threading.thread`): The current thread.
         
         Returns:
             True for success, and False for failure.
@@ -143,7 +148,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Shutdown for use when ARTE cannot continue.
         
         Args:
-            returnCode (unsigned int): The return code that ARTE should
+            returnCode (uint): The return code that ARTE should
                 use when it exits. 
         """
         # set the return code
@@ -177,7 +182,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         """Send a response to an ARTE client.
         
         Args:
-            cur_thread ("obj" threading.thread): The current thread.
+            cur_thread (:obj:`threading.thread`): The current thread.
         
         Returns:
             True for success, and False for failure.
@@ -191,6 +196,11 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.command_packet.PriHdr.Sequence.bits.count = 0
             else:
                 self.command_packet.PriHdr.Sequence.bits.count += 1
+            # increment the minor frame count
+            if self.command_packet.PriHdr.StreamId.bits.app_id == ThreadedTCPRequestHandler.major_frame:
+                self.command_packet.PriHdr.StreamId.bits.app_id  = 0
+            else:
+                self.command_packet.PriHdr.StreamId.bits.app_id  += 1
             returnBool = True
         except socket.error as e:
             if e.errno == errno.EPIPE:
@@ -262,32 +272,35 @@ class ArteServer(object):
         host (str): IP address.
         port (int): Port number.
         client_count (int): Number of clients that will connect.
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object.
-        timeouts (unsigned int): The timeouts value used for anything
+        timeouts (uint): The timeouts value used for anything
             that pends forever.
+        major_frame (uint): The number of minor frames in a major frame.
 
     Attributes:
         host (str): IP address.
         port (int): Port number.
-        client_count (unsigned int): The number of clients in the 
+        client_count (uint): The number of clients in the 
             configuration file.
-        event_handler (:obj: ArteEventHandler): An instance of an 
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
             ArteEventHandler object. Callbacks are assigned to the 
             server_startup and server_shutdown EventHandler objects.
-        timeouts (unsigned int): The timeouts value used for anything
+        timeouts (uint): The timeouts value used for anything
             that pends forever.
-        server (:obj: ThreadedTCPServer) An extended instance of
+        major_frame (uint): The number of minor frames in a major frame.
+        server (:obj:`ThreadedTCPServer`) An extended instance of
             socketserver ThreadingMixIn and TCPServer.
-        server_thread (:obj: threading.Thread) The main server thread
+        server_thread (:obj:`threading.Thread`) The main server thread
             which will spawn other threads for each new connection.
 
     """
-    def __init__(self, host, port, client_count, event_handler, timeouts):
+    def __init__(self, host, port, client_count, event_handler, timeouts, major_frame):
         self.host = host
         self.port = port
         self.client_count = client_count
         self.timeouts = timeouts
+        self.major_frame = major_frame
         # register server_startup and shutdown with the event handler
         self.event_handler = event_handler
         self.event_handler.startup += self.server_startup
@@ -296,7 +309,9 @@ class ArteServer(object):
     def server_startup(self, sender):
         # prevent error 98 Address already in use when relaunching 
         socketserver.TCPServer.allow_reuse_address = True
-        self.server = ThreadedTCPServer((self.host, self.port), ThreadedTCPRequestHandler, self.event_handler, self.client_count, self.timeouts)
+        self.server = ThreadedTCPServer((self.host, self.port), 
+            ThreadedTCPRequestHandler, self.event_handler, self.client_count, 
+            self.timeouts, self.major_frame)
         # start a thread with the server -- that thread will then start one
         # more thread for each request
         self.server_thread = threading.Thread(target=self.server.serve_forever)
