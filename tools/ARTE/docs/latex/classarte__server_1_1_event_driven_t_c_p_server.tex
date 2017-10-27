@@ -1,0 +1,61 @@
+\section{arte\+\_\+server.\+Event\+Driven\+T\+C\+P\+Server Class Reference}
+\label{classarte__server_1_1_event_driven_t_c_p_server}\index{arte\+\_\+server.\+Event\+Driven\+T\+C\+P\+Server@{arte\+\_\+server.\+Event\+Driven\+T\+C\+P\+Server}}
+
+
+Base class for various socket-\/based server classes extended to add an event\+\_\+handler argument.  
+
+
+
+
+Inherits T\+C\+P\+Server.
+
+
+
+Inherited by {\bf arte\+\_\+server.\+Threaded\+T\+C\+P\+Server}.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, server\+\_\+address, Request\+Handler\+Class, event\+\_\+handler, client\+\_\+count, timeout, bind\+\_\+and\+\_\+activate=True)\label{classarte__server_1_1_event_driven_t_c_p_server_a11efb989565b9338d9f1204fa5e2e781}
+
+\item 
+def {\bf finish\+\_\+request} (self, request, client\+\_\+address)
+\begin{DoxyCompactList}\small\item\em Finish one request by instantiating Request\+Handler\+Class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries event\+\_\+handler}\label{classarte__server_1_1_event_driven_t_c_p_server_ae16df161725349e69a81d04b5e44149e}
+
+\item 
+{\bfseries client\+\_\+count}\label{classarte__server_1_1_event_driven_t_c_p_server_af98a3575518e0eb2c2f2ddace357cbb1}
+
+\item 
+{\bfseries timeout}\label{classarte__server_1_1_event_driven_t_c_p_server_ad5526185d299676292d760a782b7c0fa}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class for various socket-\/based server classes extended to add an event\+\_\+handler argument. 
+
+The request handler will be called with an event\+\_\+handler object. 
+
+\subsection{Member Function Documentation}
+\index{arte\+\_\+server\+::\+Event\+Driven\+T\+C\+P\+Server@{arte\+\_\+server\+::\+Event\+Driven\+T\+C\+P\+Server}!finish\+\_\+request@{finish\+\_\+request}}
+\index{finish\+\_\+request@{finish\+\_\+request}!arte\+\_\+server\+::\+Event\+Driven\+T\+C\+P\+Server@{arte\+\_\+server\+::\+Event\+Driven\+T\+C\+P\+Server}}
+\subsubsection[{finish\+\_\+request(self, request, client\+\_\+address)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+server.\+Event\+Driven\+T\+C\+P\+Server.\+finish\+\_\+request (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{request, }
+\item[{}]{client\+\_\+address}
+\end{DoxyParamCaption}
+)}\label{classarte__server_1_1_event_driven_t_c_p_server_a9378db37e577d39080c0d1da4e0f1d64}
+
+
+Finish one request by instantiating Request\+Handler\+Class. 
+
+Now extended with an event\+\_\+handler argument. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+arte\+\_\+server.\+py\end{DoxyCompactItemize}

@@ -31,48 +31,100 @@
 
 """
 import time
+from threading import Timer
 
-class ArteTimeSource(object):
-    """
+class ArteWatchdog(object):
+    """A watchdog timer for threads or any long running task.
+
+    Note:
+        ArteWatchdog implements threading.Timer. An instance of
+        ArteWatchdog will instantiate a threading.Timer in the
+        constructor and a new threading.Timer every reset.
+
     Args:
-        seconds_increment (int): 
-        subseconds_increment (float):
-    
-    """
-    def __init__(self, seconds_increment, subseconds_increment):
-        self.start_time = 0
-        self.float_time = 0
-        self.seconds = 0
-        self.subseconds = 0
-        self.seconds_increment = seconds_increment
-        self.subseconds_increment = subseconds_increment
-    
-    def convert_subseconds(self, fraction_time):
-        converted_time = 0
-        for n in range(16):
-            if (fraction_time/(2**-(n+1))) >= 1:
-                converted_time |= 1 << (16 - (n+1)) 
-                fraction_time -= 2**-(n+1)
-        return converted_time
+        timeout (uint): The timeout in seconds.
+        event_handler (:obj:`ArteEventHandler`): An instance of an
+            ArteEventHandler object.
 
-    def set_start_time(self):
-        self.start_time = self.float_time = time.time()
-        int_time = int(self.float_time)
-        fraction_time = self.float_time - int_time
-        self.seconds = int_time
-        self.subseconds = self.convert_subseconds(fraction_time)
-        
-    def add_step_time(self):
-        # add a step increment to the time in floating point format.
-        self.float_time += (self.seconds_increment + self.subseconds_increment)
-        # add a step increment to the time in seconds.
-        self.seconds = int(self.float_time)
-        # add a step increment to the time in subseconds.
-        self.subseconds = self.convert_subseconds(self.float_time - int(self.float_time))
+    Attributes:
+        timeout (uint): The timeout in seconds.
+        event_handler (:obj:`ArteEventHandler`):  An instance of an
+            ArteEventHandler object.
+        timer (:obj:`threading.Timer`): The current threading.Timer 
+            object.
+    """
+    def __init__(self, timeout, event_handler):
+        self.timeout = timeout
+        self.event_handler = event_handler
+        self.timer = Timer(self.timeout, self.timeoutHandler)
+
+    def start(self):
+        """Starts the watchdog timer."""
+        self.timer.start()
+
+    def reset(self):
+        """Resets the watchdog timer."""
+        self.timer.cancel()
+        #self.timer.join()
+        self.timer = Timer(self.timeout, self.timeoutHandler)
+        self.timer.start()
+
+    def stop(self):
+        """Stops the watchdog timer."""
+        self.timer.cancel()
+        self.timer.join()
     
-    def get_time(self):
-        return self.seconds, self.subseconds
+    def timeoutHandler(self):
+        """The handler called when watchdog timer expires. Triggers 
+            the expired_watchdog event.
+        """
+        self.event_handler.expired_watchdog()
+
+
+# TODO delete me not currently used
+#class ArteTimeSource(object):
+    #"""
+    #Args:
+        #seconds_increment (int): 
+        #subseconds_increment (float):
+    
+    #"""
+    #def __init__(self, seconds_increment, subseconds_increment):
+        #self.start_time = 0
+        #self.float_time = 0
+        #self.seconds = 0
+        #self.subseconds = 0
+        #self.seconds_increment = seconds_increment
+        #self.subseconds_increment = subseconds_increment
+    
+    #def convert_subseconds(self, fraction_time):
+        #converted_time = 0
+        #for n in range(16):
+            #if (fraction_time/(2**-(n+1))) >= 1:
+                #converted_time |= 1 << (16 - (n+1)) 
+                #fraction_time -= 2**-(n+1)
+        #return converted_time
+
+    #def set_start_time(self):
+        #self.start_time = self.float_time = time.time()
+        #int_time = int(self.float_time)
+        #fraction_time = self.float_time - int_time
+        #self.seconds = int_time
+        #self.subseconds = self.convert_subseconds(fraction_time)
         
-    def print_time(self):
-        print("seconds ", self.seconds)
-        print("subseconds ", bin(self.subseconds))
+    #def add_step_time(self):
+        ## add a step increment to the time in floating point format.
+        #self.float_time += (self.seconds_increment + self.subseconds_increment)
+        ## add a step increment to the time in seconds.
+        #self.seconds = int(self.float_time)
+        ## add a step increment to the time in subseconds.
+        #self.subseconds = self.convert_subseconds(self.float_time - int(self.float_time))
+    
+    #def get_time(self):
+        #return self.seconds, self.subseconds
+        
+    #def print_time(self):
+        #print("seconds ", self.seconds)
+        #print("subseconds ", bin(self.subseconds))
+        
+

@@ -57,6 +57,8 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.command_packet.clear_packet()
         self.command_packet.init_packet()
         self.command_packet.set_user_data_length(0)
+        self.command_packet.PriHdr.Sequence.bits.count = 1
+        self.command_packet.PriHdr.StreamId.bits.app_id = 1
 
     def recv_message(self):
         packet = self.request.recv(self.telemetry_packet_size)
@@ -65,6 +67,20 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             print ("received message timestamp :", self.telemetry_packet.get_time())
 
     def send_response(self):
+        print("sequence count = ", self.command_packet.PriHdr.Sequence.bits.count)
+        # increment the sequence count
+        if self.command_packet.PriHdr.Sequence.bits.count == 16383:
+            self.command_packet.PriHdr.Sequence.bits.count = 0
+        else:
+            self.command_packet.PriHdr.Sequence.bits.count += 1
+        # increment the minor frame count
+        if self.command_packet.PriHdr.StreamId.bits.app_id == 200:
+            self.command_packet.PriHdr.StreamId.bits.app_id  = 0
+            pass
+        else:
+            self.command_packet.PriHdr.StreamId.bits.app_id += 1
+        self.command_packet.print_base2()
+        # Send the packet
         self.request.sendall(self.command_packet.get_encoded())
         print("server sent response")
 
@@ -73,6 +89,10 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         while(1):
             self.recv_message()
             input("Press Enter to continue...")
+            for x in range(0, 199):
+                self.send_response()
+                self.recv_message()
+                x += 1
             self.send_response()
 
 class ArteRepl(object):
@@ -86,6 +106,12 @@ class ArteRepl(object):
     def run(self):
         print("waiting for connection...")
         self.server.handle_request()
+
+
+def init_repl():
+    r = ArteRepl
+    r.__init__(r)
+    r.run(r)
 
     
 

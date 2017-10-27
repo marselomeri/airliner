@@ -1,6 +1,0 @@
-- ARTE python2 pclient_test.py 20171012_18:08:07 - 
-- ARTE python2 pclient_test.py 20171012_18:08:44 - 
-coercing to Unicode: need string or buffer, NoneType found
-sending ready to ARTE server
-waiting for response from ARTE server
-('sequence count from ARTE server = ', 1)

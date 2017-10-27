@@ -99,8 +99,6 @@ int32 SCH_CustomEarlyInit(void)
                                  SCH_TIMER_NAME,
                                  &SCH_AppData.ClockAccuracy,
                                  SCH_MinorFrameCallback);
-    
-    OS_RtmSetMajorAndMinorFrame(SCH_MICROS_PER_MAJOR_FRAME, SCH_TOTAL_SLOTS);
 
     return Status;
 
@@ -123,7 +121,10 @@ int32 SCH_CustomLateInit(void)
 
     CFE_ES_WaitForStartupSync(SCH_STARTUP_SYNC_TIMEOUT);
 
-    Status = OS_TimerSet(SCH_AppData.TimerId, SCH_NORMAL_SLOT_PERIOD, SCH_NORMAL_SLOT_PERIOD);
+    OS_RtmSetMajorAndMinorFrame(SCH_MICROS_PER_MAJOR_FRAME, SCH_TOTAL_SLOTS);
+    OS_RtmEngageStepMode();
+
+    Status = OS_TimerSet(SCH_AppData.TimerId, 0, SCH_NORMAL_SLOT_PERIOD);
 
     /* Step one minor frame to get the machine going. */
     OS_BinSemGive(SCH_AppData.TimeSemaphore);
@@ -161,14 +162,9 @@ void SCH_CustomCleanup(void)
 } /* End of SH_CustomCleanup() */
 
 
-
-
 void SCH_MinorFrameCallback(uint32 TimerId)
 {
-    OS_BinSemGive(SCH_AppData.TimeSemaphore);
-
-    return;
-
+	OS_BinSemGive(SCH_AppData.TimeSemaphore);
 } /* End of SCH_MinorFrameCallback() */
 
 
