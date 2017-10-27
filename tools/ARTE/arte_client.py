@@ -33,6 +33,7 @@
 import socket
 from arte_ccsds import *
 
+
 class ArteClient(object):
     """ArteClient for communicating with ArteServer over TCP.
     
@@ -43,11 +44,11 @@ class ArteClient(object):
     Attributes:
         socket (:obj: socket object): The instantiated socket object.
         sequence (unsigned int): The current sequence count as received
-        from ArteServer.
+            from ArteServer.
         telemetry_packet (:obj: CCSDS_TlmPkt_t): A CCSDS telemetry 
-        packet used for all communication to ArteServer.
+            packet used for all communication to ArteServer.
         command_packet (:obj: CCSDS_CmdPkt_t): A CCSDS command packet
-        used for all communication from ArteServer.
+            used for all communication from ArteServer.
     """
     def __init__(self, ip, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -77,7 +78,7 @@ class ArteClient(object):
         
         Args:
             successBool: (boolean): Notify ArteServer that that test(s)
-            completed with success or failure.
+                completed with success or failure.
         """
         #TODO add try catch
         print("sending shutdown to ARTE server")
@@ -102,8 +103,9 @@ class ArteClient(object):
         self.decode_sequence()
     
     def decode_sequence(self):
-        """Get and set the sequence count from a received 
-        ArteServer command packet."""
+        """Get and set the sequence count from a received ArteServer 
+            command packet.
+        """
         self.sequence = self.command_packet.PriHdr.Sequence.bits.count
         print("sequence count from ARTE server = ", self.sequence)
         

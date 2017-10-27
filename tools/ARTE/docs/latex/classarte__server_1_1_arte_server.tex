@@ -1,0 +1,84 @@
+\section{arte\+\_\+server.\+Arte\+Server Class Reference}
+\label{classarte__server_1_1_arte_server}\index{arte\+\_\+server.\+Arte\+Server@{arte\+\_\+server.\+Arte\+Server}}
+
+
+\doxyref{Arte\+Server}{p.}{classarte__server_1_1_arte_server} used for inter-\/process T\+CP synchronization.  
+
+
+
+
+Inherits object.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf host}, {\bf port}, client\+\_\+count, {\bf event\+\_\+handler}, timeouts)\label{classarte__server_1_1_arte_server_aceb80bb9458dc52c286923ba22595f0a}
+
+\item 
+def {\bfseries server\+\_\+startup} (self, sender)\label{classarte__server_1_1_arte_server_a86c2ea1731f48233c75afd582803f39d}
+
+\item 
+def {\bfseries server\+\_\+shutdown} (self, sender)\label{classarte__server_1_1_arte_server_a1bf23f060fc403aba145bdbd62db7151}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\bf host}
+\begin{DoxyCompactList}\small\item\em IP address. \end{DoxyCompactList}\item 
+{\bf port}
+\begin{DoxyCompactList}\small\item\em Port number. \end{DoxyCompactList}\item 
+{\bfseries client\+\_\+count}\label{classarte__server_1_1_arte_server_a38d4e0742a1842225760e3f292e2b531}
+
+\item 
+{\bfseries timeouts}\label{classarte__server_1_1_arte_server_a940e8ff96e73f4bd840ae5a07fa778ef}
+
+\item 
+{\bf event\+\_\+handler}\label{classarte__server_1_1_arte_server_a039f1677b1c2807df6b816594655bc51}
+
+\begin{DoxyCompactList}\small\item\em Arte\+Event\+Handler)\+: An instance of an. \end{DoxyCompactList}\item 
+{\bf server}\label{classarte__server_1_1_arte_server_a66bd2ec73bd6bf835a26c8be21522180}
+
+\begin{DoxyCompactList}\small\item\em \doxyref{Threaded\+T\+C\+P\+Server}{p.}{classarte__server_1_1_threaded_t_c_p_server}) An extended instance of. \end{DoxyCompactList}\item 
+{\bf server\+\_\+thread}\label{classarte__server_1_1_arte_server_a29f3eb7b7ec2a8561e87cab05c0fa1fc}
+
+\begin{DoxyCompactList}\small\item\em threading.\+Thread) The main server thread \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\doxyref{Arte\+Server}{p.}{classarte__server_1_1_arte_server} used for inter-\/process T\+CP synchronization. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em host} & IP address. \\
+\hline
+{\em port} & Port number. \\
+\hline
+{\em client\+\_\+count} & Number of clients that will connect. \\
+\hline
+{\em event\+\_\+handler} & Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. timeouts (unsigned int)\+: The timeouts value used for anything that pends forever.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyVerb}        which will spawn other threads for each new connection.\end{DoxyVerb}
+ 
+
+\subsection{Member Data Documentation}
+\index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!host@{host}}
+\index{host@{host}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}
+\subsubsection[{host}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+server.\+Arte\+Server.\+host}\label{classarte__server_1_1_arte_server_ad388c85c6afa4a2edb77b50741c1ab33}
+
+
+IP address. 
+
+\index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!port@{port}}
+\index{port@{port}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}
+\subsubsection[{port}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+server.\+Arte\+Server.\+port}\label{classarte__server_1_1_arte_server_a8d6b1569e27f5a7197953343c262af5e}
+
+
+Port number. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+arte\+\_\+server.\+py\end{DoxyCompactItemize}
