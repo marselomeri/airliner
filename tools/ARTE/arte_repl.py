@@ -74,7 +74,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         else:
             self.command_packet.PriHdr.Sequence.bits.count += 1
         # increment the minor frame count
-        if self.command_packet.PriHdr.StreamId.bits.app_id == 200:
+        if self.command_packet.PriHdr.StreamId.bits.app_id == 199:
             self.command_packet.PriHdr.StreamId.bits.app_id  = 0
             pass
         else:
