@@ -92,6 +92,10 @@ class ArteTestFixture(object):
         """Launches all clients specified in the configuration file
             with the command, output path, and current working directory 
             to be used when launching the client.
+
+        Args:
+            sender (:obj:): The responsible object that executes the
+                event handler.
         """
         # Loop through the client list
         for i in self.config['clients']:

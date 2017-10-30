@@ -51,6 +51,24 @@ class EventDrivenTCPServer(socketserver.TCPServer):
     """Base class for various socket-based server classes extended
         to add an event_handler argument. The request handler will be
         called with an event_handler object.
+        
+        Args:
+            event_handler (:obj:`ArteEventHandler`): An instance of an 
+                ArteEventHandler object.
+            client_count (int): Number of clients that will connect.
+            major_frame (uint): Total minor frames in a major frame.
+            timeout (uint): The timeout value used for anything
+                that pends forever.
+            shutdown_flag (boolean): A while loop flag for threads.
+            
+        Attributes:
+            event_handler (:obj:`ArteEventHandler`): An instance of an 
+                ArteEventHandler object.
+            client_count (uint): The total client count.
+            timeout (uint): The timeout value used for anything
+                that pends forever.
+            major_frame (uint): Total minor frames in a major frame.
+            
     """
     def __init__(self, server_address, RequestHandlerClass, event_handler, client_count, timeout, majorframe, bind_and_activate=True):
         self.event_handler = event_handler
@@ -61,7 +79,7 @@ class EventDrivenTCPServer(socketserver.TCPServer):
         
     def finish_request(self, request, client_address):
         """Finish one request by instantiating RequestHandlerClass.
-            Now extended with an event_handler argument.
+            Now extended with an event_handler and other arguments.
         """
         self.RequestHandlerClass(request, client_address, self, self.event_handler, self.client_count, self.timeout, self.majorframe)
 
@@ -86,9 +104,15 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         major_frame (uint): Total minor frames in a major frame.
         shutdown_flag (boolean): A while loop flag for threads.
         
-        
     Attributes:
-        
+        event_handler (:obj:`ArteEventHandler`): An instance of an 
+            ArteEventHandler object.
+        telemetry_packet (:obj:`CCSDS_TlmPkt_t`): A CCSDS telemetry 
+            packet used for all communication to ArteServer.
+        command_packet (:obj:`CCSDS_CmdPkt_t`): A CCSDS command packet
+            used for all communication from ArteServer.
+        timeout (uint): The timeout value used for anything
+            that pends forever.
     """
     client_count = 0
     client_ready_count = 0
@@ -160,7 +184,15 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         ThreadedTCPRequestHandler.shutdown_flag = False
         
     def decode_message(self, cur_thread):
-        """Decode a message from ARTE clients."""
+        """Decode a message from ARTE clients.
+
+        Note:
+            This method will initiate shutdown if a shutdown requests
+            has been received.
+
+        Args:
+            cur_thread (:obj:`threading.thread`): The current thread
+        """
         returnCode = 0
         # if app_id > 0 we've received a shutdown requests
         if self.telemetry_packet.PriHdr.StreamId.bits.app_id > 0:
@@ -220,7 +252,6 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         cur_thread = threading.current_thread()
 
         while ThreadedTCPRequestHandler.shutdown_flag:
-
             if self.recv_message(cur_thread):
                 with ThreadedTCPRequestHandler.client_ready_condition:
                     # decrement the client count
@@ -264,6 +295,13 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, EventDrivenTCPServer):
+    """A threaded TCP server with some extended event driven additions.
+    
+        Note:
+            This class has multiple inheritance from the standard 
+            socketserver threadingmixin and a slightly customized
+            TCP server.
+    """
     pass
 
 
@@ -309,6 +347,16 @@ class ArteServer(object):
         self.event_handler.shutdown += self.server_shutdown
 
     def server_startup(self, sender):
+        """Startup ARTE server to and wait for clients to connect.
+        
+        Note:
+            This will startup the server thread which will spawn a new
+            thread for each new client connection.
+        
+        Args:
+            sender (:obj:): The responsible object that executes the
+                event handler.
+        """
         # prevent error 98 Address already in use when relaunching 
         socketserver.TCPServer.allow_reuse_address = True
         self.server = ThreadedTCPServer((self.host, self.port), 
@@ -323,6 +371,16 @@ class ArteServer(object):
         logging.info('ARTE server loop running in thread %s', self.server_thread.name)
 
     def server_shutdown(self, sender):
+        """Shutdown ARTE server.
+        
+        Note:
+            Wakes up any waiting threads and briefly waits for them to
+            end.
+
+        Args:
+            sender (:obj:): The responsible object that executes the
+                event handler.
+        """
         logging.info('reached server_shutdown()')
         ThreadedTCPRequestHandler.shutdown_flag = False
         # Go ahead and notify any waiting threads

@@ -36,11 +36,11 @@ from arte_ccsds import *
 
 class ArteClient(object):
     """ArteClient for communicating with ArteServer over TCP.
-    
+
     Args:
         ip (str): The IP address of the server.
         port (unsigned int): The port number of the server.
-        
+
     Attributes:
         socket (:obj:`socket`): The instantiated socket object.
         sequence (uint): The current sequence count as received
@@ -80,7 +80,7 @@ class ArteClient(object):
         """Sends a shutdown notification to ArteServer.
         
         Args:
-            successBool: (boolean): Notify ArteServer that that test(s)
+            successBool (boolean): Notify ArteServer that that test(s)
                 completed with success or failure.
         """
         #TODO add try catch
