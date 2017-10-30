@@ -65,3 +65,8 @@ uint32 __wrap_OS_RtmGetCurrentMinorFrame(void)
 	return MINOR_FRAME;
 }
 
+
+void __wrap_OS_RtmEngageStepMode(void)
+{
+
+}
