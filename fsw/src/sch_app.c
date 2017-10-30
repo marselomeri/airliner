@@ -189,9 +189,7 @@ void SCH_AppMain(void)
         /*
         ** Wait for the next slot (Major or Minor Frame)
         */
-        OS_printf("SCH:  OS_BinSemTake() (before)\n");
         Status = OS_BinSemTake(SCH_AppData.TimeSemaphore);
-        OS_printf("SCH:  OS_BinSemTake() (after)\n");
 
         /*
         ** Performance Log (start time counter)
@@ -246,9 +244,7 @@ void SCH_AppMain(void)
         }
 
         SCH_CheckDeadlines();
-        OS_printf("SCH:  OS_RtmEndFrame() (before)\n");
         OS_RtmEndFrame();
-        OS_printf("SCH:  OS_RtmEndFrame() (after)\n");
     } /* End of while */
 
     /*
