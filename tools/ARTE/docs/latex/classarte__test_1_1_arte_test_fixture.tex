@@ -8,7 +8,7 @@ A test fixture to handle test setup and teardown.
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf name}, {\bf config}, {\bf event\+\_\+handler})\label{classarte__test_1_1_arte_test_fixture_a619a89b940d44328e2625532f29275f9}
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf name}, config, {\bf event\+\_\+handler})\label{classarte__test_1_1_arte_test_fixture_a619a89b940d44328e2625532f29275f9}
 
 \item 
 def {\bf count\+\_\+clients} (self)
@@ -22,13 +22,14 @@ def {\bf test\+\_\+teardown} (self, sender)
 \item 
 {\bf name}
 \begin{DoxyCompactList}\small\item\em The name of the test fixture. \end{DoxyCompactList}\item 
-{\bf config}
-\begin{DoxyCompactList}\small\item\em deserialized J\+S\+ON object)\+: The deserialized J\+S\+ON configuration file. \end{DoxyCompactList}\item 
+{\bfseries config}\label{classarte__test_1_1_arte_test_fixture_a7e447fee46d5124e5d7ba9797ecc4120}
+
+\item 
 {\bfseries client\+\_\+count}\label{classarte__test_1_1_arte_test_fixture_ac02585f8f6c1fa8cae84ac394002bc84}
 
 \item 
 {\bf event\+\_\+handler}
-\begin{DoxyCompactList}\small\item\em Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em An instance of an Arte\+Event\+Handler object. \end{DoxyCompactList}\item 
 {\bfseries clients}\label{classarte__test_1_1_arte_test_fixture_a0ce25bc979d417989f0ae2d4d30e828b}
 
 \item 
@@ -48,11 +49,9 @@ The test fixture uses Arte\+Launcher to startup and terminate clients. The confi
 \end{DoxyNote}
 
 \begin{DoxyParams}{Parameters}
-{\em name} & The name of the test fixture. \\
+{\em name} & The name of the test fixture. config (\+:obj\+:{\ttfamily deserialized J\+S\+ON object})\+: The deserialized J\+S\+ON configuration file. \\
 \hline
-{\em config} & deserialized J\+S\+ON object)\+: The deserialized J\+S\+ON configuration file. \\
-\hline
-{\em event\+\_\+handler} & Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object.
+{\em event\+\_\+handler} & An instance of an Arte\+Event\+Handler object.
 
 \\
 \hline
@@ -83,6 +82,11 @@ Sets the client\+\_\+count attribute. \index{arte\+\_\+test\+::\+Arte\+Test\+Fix
 
 Launches all clients specified in the configuration file with the command, output path, and current working directory to be used when launching the client. 
 
+
+\begin{DoxyParams}{Parameters}
+{\em sender} & The responsible object that executes the event handler. \\
+\hline
+\end{DoxyParams}
 \index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!test\+\_\+teardown@{test\+\_\+teardown}}
 \index{test\+\_\+teardown@{test\+\_\+teardown}!arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}}
 \subsubsection[{test\+\_\+teardown(self, sender)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+test.\+Arte\+Test\+Fixture.\+test\+\_\+teardown (
@@ -106,19 +110,12 @@ test\+\_\+teardown will first try to stop the client subprocess. stop\+\_\+subpr
 
 
 \subsection{Member Data Documentation}
-\index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!config@{config}}
-\index{config@{config}!arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}}
-\subsubsection[{config}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+test.\+Arte\+Test\+Fixture.\+config}\label{classarte__test_1_1_arte_test_fixture_a7e447fee46d5124e5d7ba9797ecc4120}
-
-
-deserialized J\+S\+ON object)\+: The deserialized J\+S\+ON configuration file. 
-
 \index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!event\+\_\+handler@{event\+\_\+handler}}
 \index{event\+\_\+handler@{event\+\_\+handler}!arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}}
 \subsubsection[{event\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+test.\+Arte\+Test\+Fixture.\+event\+\_\+handler}\label{classarte__test_1_1_arte_test_fixture_acbd27814c30171ebeb3bc3b0dd2d7978}
 
 
-Arte\+Event\+Handler)\+: An instance of an Arte\+Event\+Handler object. 
+An instance of an Arte\+Event\+Handler object. 
 
 Callbacks are assigned to the test\+\_\+setup and test\+\_\+teardown Event\+Handler objects. \index{arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}!name@{name}}
 \index{name@{name}!arte\+\_\+test\+::\+Arte\+Test\+Fixture@{arte\+\_\+test\+::\+Arte\+Test\+Fixture}}

@@ -36,19 +36,20 @@ from arte_ccsds import *
 
 class ArteClient(object):
     """ArteClient for communicating with ArteServer over TCP.
-    
+
     Args:
         ip (str): The IP address of the server.
-        port (unsigned int): The port number of the server.
-        
+        port (uint): The port number of the server.
+
     Attributes:
-        socket (:obj:`socket`): The instantiated socket object.
+        sock (:obj:`socket`): The instantiated socket object.
         sequence (uint): The current sequence count as received
             from ArteServer.
         frame (uint): The current frame count as received from 
             ArteServer.
         telemetry_packet (:obj:`CCSDS_TlmPkt_t`): A CCSDS telemetry 
             packet used for all communication to ArteServer.
+        telemetry_packet_size (uint): The packet size in bytes.
         command_packet (:obj:`CCSDS_CmdPkt_t`): A CCSDS command packet
             used for all communication from ArteServer.
     """
@@ -80,7 +81,7 @@ class ArteClient(object):
         """Sends a shutdown notification to ArteServer.
         
         Args:
-            successBool: (boolean): Notify ArteServer that that test(s)
+            successBool (boolean): Notify ArteServer that that test(s)
                 completed with success or failure.
         """
         #TODO add try catch

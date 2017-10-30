@@ -3,6 +3,8 @@ var searchData=
   ['send_5fready',['send_ready',['../classarte__client_1_1_arte_client.html#a4ab2123c76349d9940cbb52318350085',1,'arte_client::ArteClient']]],
   ['send_5fresponse',['send_response',['../classarte__server_1_1_threaded_t_c_p_request_handler.html#abb7a8512a84ce71e752984b3ed809539',1,'arte_server::ThreadedTCPRequestHandler']]],
   ['send_5fshutdown',['send_shutdown',['../classarte__client_1_1_arte_client.html#af616a078629f16d5c0809c898867de9b',1,'arte_client::ArteClient']]],
+  ['server_5fshutdown',['server_shutdown',['../classarte__server_1_1_arte_server.html#a1bf23f060fc403aba145bdbd62db7151',1,'arte_server::ArteServer']]],
+  ['server_5fstartup',['server_startup',['../classarte__server_1_1_arte_server.html#a86c2ea1731f48233c75afd582803f39d',1,'arte_server::ArteServer']]],
   ['set_5fapp_5fid',['set_app_id',['../classarte__ccsds_1_1_c_c_s_d_s___pri_hdr__t.html#af1efd5a5c09076830e39764568882804',1,'arte_ccsds::CCSDS_PriHdr_t']]],
   ['set_5fchecksum',['set_checksum',['../classarte__ccsds_1_1_c_c_s_d_s___cmd_pkt__t.html#a269a11a7a269ce2b050c71d282d1ef06',1,'arte_ccsds::CCSDS_CmdPkt_t']]],
   ['set_5fcount',['set_count',['../classarte__ccsds_1_1_c_c_s_d_s___pri_hdr__t.html#a0aa2228c0b9c5a161e6cd5c26f89e8ad',1,'arte_ccsds::CCSDS_PriHdr_t']]],
