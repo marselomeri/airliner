@@ -59,9 +59,9 @@ class ArteTestFixture(object):
             test_setup and test_teardown EventHandler objects.
         timer (:obj:`threading.Timer`): The current threading.Timer 
             object.
-        client_count (unsigned int): The number of clients in the 
+        client_count (uint): The number of clients in the 
             configuration file.
-        clients (:obj:`list` of :obj:`ArteSubprocess`): A list of client
+        clients (:obj:`list`:obj:`ArteSubprocess`): A list of client
             subprocess objects.
         return_code (int): The return code of a terminated or killed 
             subprocess.
