@@ -87,7 +87,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.initial_setup()
         while(1):
             self.recv_message()
-            input("Press Enter to continue...")
+            #input("Press Enter to continue...")
             for x in range(0, 199):
                 self.send_response()
                 self.recv_message()

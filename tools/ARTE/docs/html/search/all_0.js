@@ -8,5 +8,6 @@ var searchData=
   ['arteserver',['ArteServer',['../classarte__server_1_1_arte_server.html',1,'arte_server']]],
   ['artesubprocess',['ArteSubprocess',['../classarte__launcher_1_1_arte_subprocess.html',1,'arte_launcher']]],
   ['artetestfixture',['ArteTestFixture',['../classarte__test_1_1_arte_test_fixture.html',1,'arte_test']]],
-  ['artewatchdog',['ArteWatchdog',['../classarte__time_1_1_arte_watchdog.html',1,'arte_time']]]
+  ['artewatchdog',['ArteWatchdog',['../classarte__time_1_1_arte_watchdog.html',1,'arte_time']]],
+  ['arte_20usage',['ARTE Usage',['../index.html',1,'']]]
 ];

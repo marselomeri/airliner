@@ -16,7 +16,7 @@ Inherited by {\bf arte\+\_\+server.\+Threaded\+T\+C\+P\+Server}.
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, server\+\_\+address, Request\+Handler\+Class, {\bf event\+\_\+handler}, {\bf client\+\_\+count}, {\bf timeout}, majorframe, bind\+\_\+and\+\_\+activate=True)\label{classarte__server_1_1_event_driven_t_c_p_server_a1b67d692e00b8a7a412c6583999be742}
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, server\+\_\+address, Request\+Handler\+Class, {\bf event\+\_\+handler}, {\bf client\+\_\+count}, {\bf timeout}, {\bf majorframe}, bind\+\_\+and\+\_\+activate=True)\label{classarte__server_1_1_event_driven_t_c_p_server_a1b67d692e00b8a7a412c6583999be742}
 
 \item 
 def {\bf finish\+\_\+request} (self, request, client\+\_\+address)
@@ -30,9 +30,9 @@ def {\bf finish\+\_\+request} (self, request, client\+\_\+address)
 \begin{DoxyCompactList}\small\item\em The total client count. \end{DoxyCompactList}\item 
 {\bf timeout}
 \begin{DoxyCompactList}\small\item\em The timeout value used for anything that pends forever. \end{DoxyCompactList}\item 
-{\bfseries majorframe}\label{classarte__server_1_1_event_driven_t_c_p_server_ac00a7ee310cfc5b7c50f547ab90c9608}
+{\bf majorframe}\label{classarte__server_1_1_event_driven_t_c_p_server_ac00a7ee310cfc5b7c50f547ab90c9608}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Total minor frames in a major frame. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -46,7 +46,7 @@ The request handler will be called with an event\+\_\+handler object.
 \hline
 {\em client\+\_\+count} & Number of clients that will connect. \\
 \hline
-{\em major\+\_\+frame} & Total minor frames in a major frame. \\
+{\em majorframe} & Total minor frames in a major frame. \\
 \hline
 {\em timeout} & The timeout value used for anything that pends forever. \\
 \hline

@@ -103,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a924f9ab8a4ede522aa7cc20b3fc8d9bb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a924f9ab8a4ede522aa7cc20b3fc8d9bb"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, <a class="el" href="classarte__launcher_1_1_arte_subprocess.html#a2f2234c509ca92771215f2b2a95afed6">command</a>, <a class="el" href="classarte__launcher_1_1_arte_subprocess.html#a4bf10c0321dce3e47b996696f388df2f">fileName</a>, cwd, terminalBool=False)</td></tr>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, <a class="el" href="classarte__launcher_1_1_arte_subprocess.html#a2f2234c509ca92771215f2b2a95afed6">command</a>, <a class="el" href="classarte__launcher_1_1_arte_subprocess.html#a4bf10c0321dce3e47b996696f388df2f">fileName</a>, <a class="el" href="classarte__launcher_1_1_arte_subprocess.html#aacec782b5576e6f9129ff03edc729a66">cwd</a>, terminalBool=False)</td></tr>
 <tr class="separator:a924f9ab8a4ede522aa7cc20b3fc8d9bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad50d60494c46d9d6a8764d5ca86675c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__launcher_1_1_arte_subprocess.html#aad50d60494c46d9d6a8764d5ca86675c">stop_subprocess</a> (self)</td></tr>
 <tr class="memdesc:aad50d60494c46d9d6a8764d5ca86675c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mimics subprocess terminate which sends SIGTERM.  <a href="#aad50d60494c46d9d6a8764d5ca86675c">More...</a><br /></td></tr>
@@ -129,8 +129,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4bf10c0321dce3e47b996696f388df2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__launcher_1_1_arte_subprocess.html#a4bf10c0321dce3e47b996696f388df2f">fileName</a></td></tr>
 <tr class="memdesc:a4bf10c0321dce3e47b996696f388df2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filename to save stdout to.  <a href="#a4bf10c0321dce3e47b996696f388df2f">More...</a><br /></td></tr>
 <tr class="separator:a4bf10c0321dce3e47b996696f388df2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacec782b5576e6f9129ff03edc729a66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacec782b5576e6f9129ff03edc729a66"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>cwd</b></td></tr>
+<tr class="memitem:aacec782b5576e6f9129ff03edc729a66"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__launcher_1_1_arte_subprocess.html#aacec782b5576e6f9129ff03edc729a66">cwd</a></td></tr>
+<tr class="memdesc:aacec782b5576e6f9129ff03edc729a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path that the command should use as the current working directory.  <a href="#aacec782b5576e6f9129ff03edc729a66">More...</a><br /></td></tr>
 <tr class="separator:aacec782b5576e6f9129ff03edc729a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae02d6c7060dea02ddb7f9cebca23d305"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__launcher_1_1_arte_subprocess.html#ae02d6c7060dea02ddb7f9cebca23d305">proc</a></td></tr>
 <tr class="memdesc:ae02d6c7060dea02ddb7f9cebca23d305"><td class="mdescLeft">&#160;</td><td class="mdescRight">The subprocess object.  <a href="#ae02d6c7060dea02ddb7f9cebca23d305">More...</a><br /></td></tr>
@@ -147,10 +147,12 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">command</td><td>A single string with program path and arguments. </td></tr>
     <tr><td class="paramname">fileName</td><td>Filename to save stdout to. </td></tr>
     <tr><td class="paramname">cwd</td><td>The path that the command should use as the current working directory. </td></tr>
+    <tr><td class="paramname">terminalBool</td><td><p class="starttd">Optionally pipe output to a terminal. Not implemented.</p>
+<p class="endtd"></p>
+</td></tr>
   </table>
   </dd>
 </dl>
-<p>terminalBool (boolean, optional): Optionally pipe output to a terminal. Not implemented. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ad7f2f9f8686e2122fb3519215ab76b77"></a>
 <div class="memitem">
@@ -258,6 +260,20 @@ int The subprocess return code. </dd></dl>
 </div><div class="memdoc">
 
 <p>A single string with program path and arguments. </p>
+
+</div>
+</div>
+<a class="anchor" id="aacec782b5576e6f9129ff03edc729a66"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">arte_launcher.ArteSubprocess.cwd</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The path that the command should use as the current working directory. </p>
 
 </div>
 </div>

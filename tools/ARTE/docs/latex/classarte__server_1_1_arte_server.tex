@@ -30,12 +30,11 @@ def {\bf server\+\_\+shutdown} (self, sender)
 \begin{DoxyCompactList}\small\item\em The number of minor frames in a major frame. \end{DoxyCompactList}\item 
 {\bf event\+\_\+handler}
 \begin{DoxyCompactList}\small\item\em An instance of an Arte\+Event\+Handler object. \end{DoxyCompactList}\item 
-{\bfseries server}\label{classarte__server_1_1_arte_server_a66bd2ec73bd6bf835a26c8be21522180}
+{\bf server}
+\begin{DoxyCompactList}\small\item\em An extended instance of socketserver Threading\+Mix\+In and T\+C\+P\+Server. \end{DoxyCompactList}\item 
+{\bf server\+\_\+thread}\label{classarte__server_1_1_arte_server_a29f3eb7b7ec2a8561e87cab05c0fa1fc}
 
-\item 
-{\bfseries server\+\_\+thread}\label{classarte__server_1_1_arte_server_a29f3eb7b7ec2a8561e87cab05c0fa1fc}
-
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The main server thread which will spawn other threads for each new connection. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -58,11 +57,7 @@ def {\bf server\+\_\+shutdown} (self, sender)
 \\
 \hline
 \end{DoxyParams}
-\begin{DoxyVerb}    server (:obj:`ThreadedTCPServer`) An extended instance of
-        socketserver ThreadingMixIn and TCPServer.
-    server_thread (:obj:`threading.Thread`) The main server thread
-        which will spawn other threads for each new connection.\end{DoxyVerb}
- 
+
 
 \subsection{Member Function Documentation}
 \index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!server\+\_\+shutdown@{server\+\_\+shutdown}}
@@ -142,6 +137,13 @@ The number of minor frames in a major frame.
 
 
 Port number. 
+
+\index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!server@{server}}
+\index{server@{server}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}
+\subsubsection[{server}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+server.\+Arte\+Server.\+server}\label{classarte__server_1_1_arte_server_a66bd2ec73bd6bf835a26c8be21522180}
+
+
+An extended instance of socketserver Threading\+Mix\+In and T\+C\+P\+Server. 
 
 \index{arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}!timeouts@{timeouts}}
 \index{timeouts@{timeouts}!arte\+\_\+server\+::\+Arte\+Server@{arte\+\_\+server\+::\+Arte\+Server}}

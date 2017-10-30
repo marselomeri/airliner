@@ -56,7 +56,7 @@ class EventDrivenTCPServer(socketserver.TCPServer):
             event_handler (:obj:`ArteEventHandler`): An instance of an 
                 ArteEventHandler object.
             client_count (int): Number of clients that will connect.
-            major_frame (uint): Total minor frames in a major frame.
+            majorframe (uint): Total minor frames in a major frame.
             timeout (uint): The timeout value used for anything
                 that pends forever.
             shutdown_flag (boolean): A while loop flag for threads.
@@ -67,7 +67,7 @@ class EventDrivenTCPServer(socketserver.TCPServer):
             client_count (uint): The total client count.
             timeout (uint): The timeout value used for anything
                 that pends forever.
-            major_frame (uint): Total minor frames in a major frame.
+            majorframe (uint): Total minor frames in a major frame.
             
     """
     def __init__(self, server_address, RequestHandlerClass, event_handler, client_count, timeout, majorframe, bind_and_activate=True):

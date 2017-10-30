@@ -26,18 +26,16 @@ def {\bf close\+\_\+conn} (self)
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries sock}\label{classarte__client_1_1_arte_client_ad2265332e9cacb7bee57afae0454c480}
-
-\item 
+{\bf sock}
+\begin{DoxyCompactList}\small\item\em The instantiated socket object. \end{DoxyCompactList}\item 
 {\bf sequence}
 \begin{DoxyCompactList}\small\item\em The current sequence count as received from Arte\+Server. \end{DoxyCompactList}\item 
 {\bf frame}
 \begin{DoxyCompactList}\small\item\em The current frame count as received from Arte\+Server. \end{DoxyCompactList}\item 
 {\bf telemetry\+\_\+packet}
 \begin{DoxyCompactList}\small\item\em A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. \end{DoxyCompactList}\item 
-{\bfseries telemetry\+\_\+packet\+\_\+size}\label{classarte__client_1_1_arte_client_a356d61ce6f69381d1a44070baea435cb}
-
-\item 
+{\bf telemetry\+\_\+packet\+\_\+size}
+\begin{DoxyCompactList}\small\item\em The packet size in bytes. \end{DoxyCompactList}\item 
 {\bf command\+\_\+packet}
 \begin{DoxyCompactList}\small\item\em A C\+C\+S\+DS command packet used for all communication from Arte\+Server. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -47,7 +45,11 @@ def {\bf close\+\_\+conn} (self)
 
 
 \begin{DoxyParams}{Parameters}
-{\em ip} & The IP address of the server. port (unsigned int)\+: The port number of the server. \\
+{\em ip} & The IP address of the server. \\
+\hline
+{\em port} & The port number of the server.
+
+\\
 \hline
 \end{DoxyParams}
 
@@ -152,12 +154,26 @@ The current frame count as received from Arte\+Server.
 
 The current sequence count as received from Arte\+Server. 
 
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!sock@{sock}}
+\index{sock@{sock}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{sock}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+sock}\label{classarte__client_1_1_arte_client_ad2265332e9cacb7bee57afae0454c480}
+
+
+The instantiated socket object. 
+
 \index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!telemetry\+\_\+packet@{telemetry\+\_\+packet}}
 \index{telemetry\+\_\+packet@{telemetry\+\_\+packet}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
 \subsubsection[{telemetry\+\_\+packet}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+telemetry\+\_\+packet}\label{classarte__client_1_1_arte_client_a410d70447caff4e8501c72dc63388cb2}
 
 
 A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. 
+
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!telemetry\+\_\+packet\+\_\+size@{telemetry\+\_\+packet\+\_\+size}}
+\index{telemetry\+\_\+packet\+\_\+size@{telemetry\+\_\+packet\+\_\+size}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{telemetry\+\_\+packet\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+telemetry\+\_\+packet\+\_\+size}\label{classarte__client_1_1_arte_client_a356d61ce6f69381d1a44070baea435cb}
+
+
+The packet size in bytes. 
 
 
 
