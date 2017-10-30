@@ -120,5 +120,6 @@ add_airliner_app_unit_test(sch-ut
         OS_RtmEndFrame
         OS_RtmGetRunMode
         OS_RtmSetMajorAndMinorFrame
-        OS_RtmGetCurrentMinorFrame       
+        OS_RtmGetCurrentMinorFrame     
+        OS_RtmEngageStepMode  
 )
