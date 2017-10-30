@@ -504,7 +504,7 @@ void DS_AppProcessHK(void)
     DS_HkPacket_t HkPacket;
     int32 i;
     char FilterTblName[CFE_TBL_MAX_NAME_LENGTH];
-    CFE_TBL_Info_t FilterTblInfo;
+    CFE_TBL_Info_t FilterTblInfo = {0};
 
     /*
     ** Initialize housekeeping packet...

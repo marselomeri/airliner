@@ -88,7 +88,7 @@ void LC_AppPipe_Test_SampleAPRequest(void)
 void LC_AppPipe_Test_HousekeepingRequest(void)
 {
     int32               Result;
-    LC_NoArgsCmd_t      CmdPacket;
+    LC_NoArgsCmd_t      CmdPacket = {0};
 
     CFE_SB_InitMsg (&CmdPacket, LC_SEND_HK_MID, 1, TRUE);
 

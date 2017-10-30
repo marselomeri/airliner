@@ -27,4 +27,7 @@ add_airliner_app_unit_test(ci-custom-ut
     WRAPPERS
         socket
         bind
+    
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/ci-custom.supp
 )

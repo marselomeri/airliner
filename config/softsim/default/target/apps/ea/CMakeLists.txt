@@ -30,6 +30,9 @@ add_airliner_app_unit_test(ea-custom-ut
         execvp
         waitpid
         kill
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ea-custom-ut.supp
 )
 
 add_airliner_app_unit_test(ea-perfmon-ut
@@ -48,6 +51,9 @@ add_airliner_app_unit_test(ea-perfmon-ut
 	INCLUDES
 	    ${EA_PROTOBUF_MSGS_DIR}
         ${PROJECT_SOURCE_DIR}/apps/ea/fsw/src/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ea-perfmon-ut.supp
 )
 
 add_custom_target(

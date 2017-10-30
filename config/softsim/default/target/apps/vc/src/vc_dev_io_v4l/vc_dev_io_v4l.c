@@ -132,9 +132,9 @@ int32 VC_Ioctl(int fh, int request, void *arg)
 int32 VC_ConfigureDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
-    struct v4l2_format              Format;
-    struct v4l2_capability          Capabilities;
-    struct v4l2_requestbuffers      Request;
+    struct v4l2_format              Format = {};
+    struct v4l2_capability          Capabilities = {};
+    struct v4l2_requestbuffers      Request = {};
 
     bzero(&Format, sizeof(Format));
     Format.type                = VC_AppCustomDevice.Channel[DeviceID].BufferType;

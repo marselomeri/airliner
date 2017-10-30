@@ -135,8 +135,8 @@ uint32 FM_GetOpenFilesData(FM_OpenFilesEntry_t *OpenFilesData)
 
 uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, boolean FileInfoCmd)
 {
-    OS_FDTableEntry FDTableEntry;
-    os_fstat_t FileStatus;
+    OS_FDTableEntry FDTableEntry = {0};
+    os_fstat_t FileStatus = {0};
     uint32     FilenameState = FM_NAME_IS_INVALID;
     boolean    FilenameIsValid = FALSE;
     int32      StringLength = 0;
