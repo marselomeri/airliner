@@ -33,6 +33,7 @@
 import socket
 from arte_ccsds import *
 
+
 class ArteClient(object):
     """ArteClient for communicating with ArteServer over TCP.
     
@@ -41,20 +42,21 @@ class ArteClient(object):
         port (unsigned int): The port number of the server.
         
     Attributes:
-        socket (:obj: socket object): The instantiated socket object.
-        sequence (unsigned int): The current sequence count as received
-        from ArteServer.
-        telemetry_packet (:obj: CCSDS_TlmPkt_t): A CCSDS telemetry 
-        packet used for all communication to ArteServer.
-        command_packet (:obj: CCSDS_CmdPkt_t): A CCSDS command packet
-        used for all communication from ArteServer.
+        socket (:obj:`socket`): The instantiated socket object.
+        sequence (uint): The current sequence count as received
+            from ArteServer.
+        frame (uint): The current frame count as received from 
+            ArteServer.
+        telemetry_packet (:obj:`CCSDS_TlmPkt_t`): A CCSDS telemetry 
+            packet used for all communication to ArteServer.
+        command_packet (:obj:`CCSDS_CmdPkt_t`): A CCSDS command packet
+            used for all communication from ArteServer.
     """
     def __init__(self, ip, port):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
-        self.sock.setblocking(True)
         self.sock.connect((ip, port))
         self.sequence = 0
+        self.frame = 0
         # Set up telemetry packet
         self.telemetry_packet = CCSDS_TlmPkt_t()
         self.telemetry_packet.clear_packet()
@@ -72,15 +74,14 @@ class ArteClient(object):
         #TODO add try catch
         print("sending ready to ARTE server")
         self.telemetry_packet.set_current_time()
-        print(self.sock)
         self.sock.sendall(self.telemetry_packet.get_encoded())
-            
+        
     def send_shutdown(self, successBool):
         """Sends a shutdown notification to ArteServer.
         
         Args:
             successBool: (boolean): Notify ArteServer that that test(s)
-            completed with success or failure.
+                completed with success or failure.
         """
         #TODO add try catch
         print("sending shutdown to ARTE server")
@@ -100,18 +101,23 @@ class ArteClient(object):
         """
         #TODO add timeout to the recv or use select().
         print("waiting for response from ARTE server")
-        
-        response = self.sock.recv(self.command_packet.get_packet_size(), socket.MSG_WAITALL)
+        response = self.sock.recv(self.command_packet.get_packet_size())
+        self.command_packet.set_decoded(response)
         self.decode_sequence()
     
     def decode_sequence(self):
-        """Get and set the sequence count from a received 
-        ArteServer command packet."""
-        if self.command_packet.PriHdr.Sequence.bits.count == 0:
-            self.sequence = 1
-        else:
-            self.sequence = self.command_packet.PriHdr.Sequence.bits.count
+        """Get and set the sequence count from a received ArteServer 
+            command packet.
+        """
+        self.sequence = self.command_packet.PriHdr.Sequence.bits.count
         print("sequence count from ARTE server = ", self.sequence)
+        
+    def decode_frame(self):
+        """Get and set the frame count from a received ArteServer 
+            command packet.
+        """
+        self.frame = self.command_packet.SecHdr.Command.bits.code
+        print("frame count from ARTE server = ", self.frame)
         
     def close_conn(self):
         """Close the TCP socket object."""

@@ -7,9 +7,15 @@
   "watchdog": 5,
   "majorframe": 200,
   "clients": [
+      {
+      "name": "Pyliner",
+      "command": "python2 challenge.py",
+      "output": "test_script1.txt",
+      "cwd": "../../tools/pyliner/"
+    },
     {
       "name": "Airliner",
-      "command": "./core-bin -M TEST",
+      "command": "taskset -c 1 ./core-bin -M TEST",
       "output": "test_script2.txt",
       "cwd": "../../build/softsim/default/target/exe/"
 

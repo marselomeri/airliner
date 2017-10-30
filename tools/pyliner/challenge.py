@@ -26,7 +26,7 @@ while run_flag:
     client.send_ready()
     client.receive_response()
     
-    if client.sequence % 2000 == 0:
+    if client.sequence % 200 == 0:
         print"sending no-op"
         airliner.send_command({'name':'/Airliner/ES/Noop'})
         sent_frame = client.sequence

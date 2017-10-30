@@ -41,7 +41,7 @@ class ArteSubprocess(object):
         fileName (str): Filename to save stdout to.
         cwd (path): The path that the command should use as the current
             working directory.
-        terminalBool (boolean, optional): Optionally pipe output to a
+        terminalBool (boolean): Optionally pipe output to a
             terminal. Not implemented.
 
     Attributes:
@@ -49,6 +49,8 @@ class ArteSubprocess(object):
         fileName: Filename to save stdout to.
         args: The tokenized command string.
         lastStatus: Return code.
+        cwd: The path that the command should use as the current
+            working directory.
         proc: The subprocess object.
     """
     def __init__(self, command, fileName, cwd, terminalBool = False):

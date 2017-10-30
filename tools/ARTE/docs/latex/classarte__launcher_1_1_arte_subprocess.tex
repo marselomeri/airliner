@@ -8,7 +8,7 @@ A subprocess of A\+R\+TE.
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf command}, {\bf file\+Name}, cwd, terminal\+Bool=False)\label{classarte__launcher_1_1_arte_subprocess_a924f9ab8a4ede522aa7cc20b3fc8d9bb}
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, {\bf command}, {\bf file\+Name}, {\bf cwd}, terminal\+Bool=False)\label{classarte__launcher_1_1_arte_subprocess_a924f9ab8a4ede522aa7cc20b3fc8d9bb}
 
 \item 
 def {\bf stop\+\_\+subprocess} (self)
@@ -28,9 +28,8 @@ def {\bf poll\+\_\+subprocess} (self)
 \begin{DoxyCompactList}\small\item\em The tokenized command string. \end{DoxyCompactList}\item 
 {\bf file\+Name}
 \begin{DoxyCompactList}\small\item\em Filename to save stdout to. \end{DoxyCompactList}\item 
-{\bfseries cwd}\label{classarte__launcher_1_1_arte_subprocess_aacec782b5576e6f9129ff03edc729a66}
-
-\item 
+{\bf cwd}
+\begin{DoxyCompactList}\small\item\em The path that the command should use as the current working directory. \end{DoxyCompactList}\item 
 {\bf proc}
 \begin{DoxyCompactList}\small\item\em The subprocess object. \end{DoxyCompactList}\item 
 {\bf last\+Status}
@@ -50,8 +49,12 @@ Subprocesses have the following properties\+:
 \hline
 {\em cwd} & The path that the command should use as the current working directory. \\
 \hline
+{\em terminal\+Bool} & Optionally pipe output to a terminal. Not implemented.
+
+\\
+\hline
 \end{DoxyParams}
-terminal\+Bool (boolean, optional)\+: Optionally pipe output to a terminal. Not implemented. 
+
 
 \subsection{Member Function Documentation}
 \index{arte\+\_\+launcher\+::\+Arte\+Subprocess@{arte\+\_\+launcher\+::\+Arte\+Subprocess}!kill\+\_\+subprocess@{kill\+\_\+subprocess}}
@@ -130,6 +133,13 @@ The tokenized command string.
 
 
 A single string with program path and arguments. 
+
+\index{arte\+\_\+launcher\+::\+Arte\+Subprocess@{arte\+\_\+launcher\+::\+Arte\+Subprocess}!cwd@{cwd}}
+\index{cwd@{cwd}!arte\+\_\+launcher\+::\+Arte\+Subprocess@{arte\+\_\+launcher\+::\+Arte\+Subprocess}}
+\subsubsection[{cwd}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+launcher.\+Arte\+Subprocess.\+cwd}\label{classarte__launcher_1_1_arte_subprocess_aacec782b5576e6f9129ff03edc729a66}
+
+
+The path that the command should use as the current working directory. 
 
 \index{arte\+\_\+launcher\+::\+Arte\+Subprocess@{arte\+\_\+launcher\+::\+Arte\+Subprocess}!file\+Name@{file\+Name}}
 \index{file\+Name@{file\+Name}!arte\+\_\+launcher\+::\+Arte\+Subprocess@{arte\+\_\+launcher\+::\+Arte\+Subprocess}}
