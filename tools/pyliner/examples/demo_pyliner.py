@@ -13,7 +13,7 @@ def cb_2(data):
     print "%s = %s" % (data['name'], data['value'])
 
 # Initialize pyliner object
-airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "test_name": "demo_test"})
+airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json", "script_name": "demo_test"})
 
 # Subscribe to only CmdCounter for callback 1
 airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter']}, cb_1)       
