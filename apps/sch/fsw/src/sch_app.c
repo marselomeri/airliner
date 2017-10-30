@@ -1357,17 +1357,18 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
         {
         	FrameCount++;
 
-        	/* TODO: Remove. As long as a msg exists in the table it will always loop back to itself and break out */
-			if(FrameCount > (2 * SCH_TABLE_ENTRIES))
-			{
-				FoundNextEntry = TRUE;
-			}
-
         	/* Need to have safeguard in case rollover into next major frame */
         	if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
         	{
         		DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
         	}
+
+        	/* If we've already checked every frame within the deadline without finding
+        	 * it we can stop looking */
+			if(FrameCount > Deadline)
+			{
+				FoundNextEntry = TRUE;
+			}
 
         	/* Get message index for the current search index */
         	SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
@@ -1382,7 +1383,7 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
         			CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
 									  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %i frames",
 									  MessageIndex, Deadline - FrameCount);
-        			//printf("msg %i overran: %i\n", MessageIndex, Deadline - FrameCount);
+        			printf("msg %i overran: %i\n", MessageIndex, Deadline - FrameCount);
         		}
         		FoundNextEntry = TRUE;
         	}
@@ -1393,7 +1394,7 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
         FoundNextEntry = FALSE;
         FrameCount = 0;
     }
-
+    printf("fails[%i]\n", FailCount);
     /* Send event describing results */
 	CFE_EVS_SendEvent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG,
 					  "Schedule table deadline verify results -- fails[%i]", FailCount);
