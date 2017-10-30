@@ -19,6 +19,8 @@ def {\bf receive\+\_\+response} (self)
 \begin{DoxyCompactList}\small\item\em Receive a response from Arte\+Server. \end{DoxyCompactList}\item 
 def {\bf decode\+\_\+sequence} (self)
 \begin{DoxyCompactList}\small\item\em Get and set the sequence count from a received Arte\+Server command packet. \end{DoxyCompactList}\item 
+def {\bf decode\+\_\+frame} (self)
+\begin{DoxyCompactList}\small\item\em Get and set the frame count from a received Arte\+Server command packet. \end{DoxyCompactList}\item 
 def {\bf close\+\_\+conn} (self)
 \begin{DoxyCompactList}\small\item\em Close the T\+CP socket object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
@@ -27,16 +29,17 @@ def {\bf close\+\_\+conn} (self)
 {\bfseries sock}\label{classarte__client_1_1_arte_client_ad2265332e9cacb7bee57afae0454c480}
 
 \item 
-{\bfseries sequence}\label{classarte__client_1_1_arte_client_a94d3327a2bb9d6a45072aa4df8ba7b72}
-
-\item 
+{\bf sequence}
+\begin{DoxyCompactList}\small\item\em The current sequence count as received from Arte\+Server. \end{DoxyCompactList}\item 
+{\bf frame}
+\begin{DoxyCompactList}\small\item\em The current frame count as received from Arte\+Server. \end{DoxyCompactList}\item 
 {\bf telemetry\+\_\+packet}
-\begin{DoxyCompactList}\small\item\em C\+C\+S\+D\+S\+\_\+\+Tlm\+Pkt\+\_\+t)\+: A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. \end{DoxyCompactList}\item 
 {\bfseries telemetry\+\_\+packet\+\_\+size}\label{classarte__client_1_1_arte_client_a356d61ce6f69381d1a44070baea435cb}
 
 \item 
 {\bf command\+\_\+packet}
-\begin{DoxyCompactList}\small\item\em C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t)\+: A C\+C\+S\+DS command packet used for all communication from Arte\+Server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em A C\+C\+S\+DS command packet used for all communication from Arte\+Server. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -60,6 +63,17 @@ def {\bf close\+\_\+conn} (self)
 
 
 Close the T\+CP socket object. 
+
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!decode\+\_\+frame@{decode\+\_\+frame}}
+\index{decode\+\_\+frame@{decode\+\_\+frame}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{decode\+\_\+frame(self)}]{\setlength{\rightskip}{0pt plus 5cm}def arte\+\_\+client.\+Arte\+Client.\+decode\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}\label{classarte__client_1_1_arte_client_aec4b78e9a8df406a50c911983b8fe492}
+
+
+Get and set the frame count from a received Arte\+Server command packet. 
 
 \index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!decode\+\_\+sequence@{decode\+\_\+sequence}}
 \index{decode\+\_\+sequence@{decode\+\_\+sequence}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
@@ -111,7 +125,7 @@ Sends a shutdown notification to Arte\+Server.
 
 
 \begin{DoxyParams}{Parameters}
-{\em success\+Bool} & (boolean)\+: Notify Arte\+Server that that test(s) completed with success or failure. \\
+{\em success\+Bool} & Notify Arte\+Server that that test(s) completed with success or failure. \\
 \hline
 \end{DoxyParams}
 
@@ -122,14 +136,28 @@ Sends a shutdown notification to Arte\+Server.
 \subsubsection[{command\+\_\+packet}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+command\+\_\+packet}\label{classarte__client_1_1_arte_client_af3a791ca627971da0b479c6e1d4de8ef}
 
 
-C\+C\+S\+D\+S\+\_\+\+Cmd\+Pkt\+\_\+t)\+: A C\+C\+S\+DS command packet used for all communication from Arte\+Server. 
+A C\+C\+S\+DS command packet used for all communication from Arte\+Server. 
+
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!frame@{frame}}
+\index{frame@{frame}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{frame}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+frame}\label{classarte__client_1_1_arte_client_a00830659bfd6bd63e271c5866afbef96}
+
+
+The current frame count as received from Arte\+Server. 
+
+\index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!sequence@{sequence}}
+\index{sequence@{sequence}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
+\subsubsection[{sequence}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+sequence}\label{classarte__client_1_1_arte_client_a94d3327a2bb9d6a45072aa4df8ba7b72}
+
+
+The current sequence count as received from Arte\+Server. 
 
 \index{arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}!telemetry\+\_\+packet@{telemetry\+\_\+packet}}
 \index{telemetry\+\_\+packet@{telemetry\+\_\+packet}!arte\+\_\+client\+::\+Arte\+Client@{arte\+\_\+client\+::\+Arte\+Client}}
 \subsubsection[{telemetry\+\_\+packet}]{\setlength{\rightskip}{0pt plus 5cm}arte\+\_\+client.\+Arte\+Client.\+telemetry\+\_\+packet}\label{classarte__client_1_1_arte_client_a410d70447caff4e8501c72dc63388cb2}
 
 
-C\+C\+S\+D\+S\+\_\+\+Tlm\+Pkt\+\_\+t)\+: A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. 
+A C\+C\+S\+DS telemetry packet used for all communication to Arte\+Server. 
 
 
 

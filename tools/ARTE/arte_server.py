@@ -329,9 +329,9 @@ class ArteServer(object):
         timeouts (uint): The timeouts value used for anything
             that pends forever.
         major_frame (uint): The number of minor frames in a major frame.
-        server (:obj:`ThreadedTCPServer`) An extended instance of
+        server (:obj:`ThreadedTCPServer`): An extended instance of
             socketserver ThreadingMixIn and TCPServer.
-        server_thread (:obj:`threading.Thread`) The main server thread
+        server_thread (:obj:`threading.Thread`): The main server thread
             which will spawn other threads for each new connection.
 
     """

@@ -103,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a619a89b940d44328e2625532f29275f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a619a89b940d44328e2625532f29275f9"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, <a class="el" href="classarte__test_1_1_arte_test_fixture.html#abe682da10ac998fb93aa256004362abb">name</a>, <a class="el" href="classarte__test_1_1_arte_test_fixture.html#a7e447fee46d5124e5d7ba9797ecc4120">config</a>, <a class="el" href="classarte__test_1_1_arte_test_fixture.html#acbd27814c30171ebeb3bc3b0dd2d7978">event_handler</a>)</td></tr>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, <a class="el" href="classarte__test_1_1_arte_test_fixture.html#abe682da10ac998fb93aa256004362abb">name</a>, config, <a class="el" href="classarte__test_1_1_arte_test_fixture.html#acbd27814c30171ebeb3bc3b0dd2d7978">event_handler</a>)</td></tr>
 <tr class="separator:a619a89b940d44328e2625532f29275f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95f9c5bdcfd12fa711a2401bc503d642"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__test_1_1_arte_test_fixture.html#a95f9c5bdcfd12fa711a2401bc503d642">count_clients</a> (self)</td></tr>
 <tr class="memdesc:a95f9c5bdcfd12fa711a2401bc503d642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the number of clients specified in the configuration file.  <a href="#a95f9c5bdcfd12fa711a2401bc503d642">More...</a><br /></td></tr>
@@ -120,14 +120,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:abe682da10ac998fb93aa256004362abb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__test_1_1_arte_test_fixture.html#abe682da10ac998fb93aa256004362abb">name</a></td></tr>
 <tr class="memdesc:abe682da10ac998fb93aa256004362abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the test fixture.  <a href="#abe682da10ac998fb93aa256004362abb">More...</a><br /></td></tr>
 <tr class="separator:abe682da10ac998fb93aa256004362abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e447fee46d5124e5d7ba9797ecc4120"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__test_1_1_arte_test_fixture.html#a7e447fee46d5124e5d7ba9797ecc4120">config</a></td></tr>
-<tr class="memdesc:a7e447fee46d5124e5d7ba9797ecc4120"><td class="mdescLeft">&#160;</td><td class="mdescRight">deserialized JSON object): The deserialized JSON configuration file.  <a href="#a7e447fee46d5124e5d7ba9797ecc4120">More...</a><br /></td></tr>
+<tr class="memitem:a7e447fee46d5124e5d7ba9797ecc4120"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e447fee46d5124e5d7ba9797ecc4120"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>config</b></td></tr>
 <tr class="separator:a7e447fee46d5124e5d7ba9797ecc4120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac02585f8f6c1fa8cae84ac394002bc84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac02585f8f6c1fa8cae84ac394002bc84"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>client_count</b></td></tr>
 <tr class="separator:ac02585f8f6c1fa8cae84ac394002bc84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbd27814c30171ebeb3bc3b0dd2d7978"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarte__test_1_1_arte_test_fixture.html#acbd27814c30171ebeb3bc3b0dd2d7978">event_handler</a></td></tr>
-<tr class="memdesc:acbd27814c30171ebeb3bc3b0dd2d7978"><td class="mdescLeft">&#160;</td><td class="mdescRight">ArteEventHandler): An instance of an ArteEventHandler object.  <a href="#acbd27814c30171ebeb3bc3b0dd2d7978">More...</a><br /></td></tr>
+<tr class="memdesc:acbd27814c30171ebeb3bc3b0dd2d7978"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instance of an ArteEventHandler object.  <a href="#acbd27814c30171ebeb3bc3b0dd2d7978">More...</a><br /></td></tr>
 <tr class="separator:acbd27814c30171ebeb3bc3b0dd2d7978"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ce25bc979d417989f0ae2d4d30e828b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ce25bc979d417989f0ae2d4d30e828b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>clients</b></td></tr>
@@ -145,9 +145,8 @@ Public Attributes</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>The test fixture uses ArteLauncher to startup and terminate clients. The configuration file specifies the clients to be included in setup and teardown.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the test fixture. </td></tr>
-    <tr><td class="paramname">config</td><td>deserialized JSON object): The deserialized JSON configuration file. </td></tr>
-    <tr><td class="paramname">event_handler</td><td><p class="starttd">ArteEventHandler): An instance of an ArteEventHandler object.</p>
+    <tr><td class="paramname">name</td><td>The name of the test fixture. config (:obj:<code>deserialized JSON object</code>): The deserialized JSON configuration file. </td></tr>
+    <tr><td class="paramname">event_handler</td><td><p class="starttd">An instance of an ArteEventHandler object.</p>
 <p class="endtd"></p>
 </td></tr>
   </table>
@@ -198,6 +197,12 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Launches all clients specified in the configuration file with the command, output path, and current working directory to be used when launching the client. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sender</td><td>The responsible object that executes the event handler. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -237,20 +242,6 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a7e447fee46d5124e5d7ba9797ecc4120"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">arte_test.ArteTestFixture.config</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>deserialized JSON object): The deserialized JSON configuration file. </p>
-
-</div>
-</div>
 <a class="anchor" id="acbd27814c30171ebeb3bc3b0dd2d7978"></a>
 <div class="memitem">
 <div class="memproto">
@@ -261,7 +252,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>ArteEventHandler): An instance of an ArteEventHandler object. </p>
+<p>An instance of an ArteEventHandler object. </p>
 <p>Callbacks are assigned to the test_setup and test_teardown EventHandler objects. </p>
 
 </div>
