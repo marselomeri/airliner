@@ -40,6 +40,7 @@
 *************************************************************************/
 #include <string.h>
 #include <errno.h>
+#include <float.h>
 
 #include "cfe.h"
 
@@ -1026,17 +1027,6 @@ void MAC::ControlAttitude(float dt)
 	/* get current rotation matrix from control state quaternions */
 	math::Quaternion q_att(CVT.ControlState.Q[0], CVT.ControlState.Q[1], CVT.ControlState.Q[2], CVT.ControlState.Q[3]);
 	math::Matrix3F3 R = q_att.RotationMatrix();
-	//for(uint32 x = 0; x < 4; ++x)
-	//{
-	//	OS_printf("q_att[%u] = %f\n", x,q_att[x]);
-	//}
-	//for(uint32 x = 0; x < 3; ++x)
-	//{
-	//	for(uint32 y = 0; y < 3; ++y)
-	//	{
-	//		OS_printf("R[%u][%u] = %f\n", x, y, R[x][y]);
-	//	}
-	//}
 
 	/* all input data is ready, run controller itself */
 
@@ -1100,18 +1090,6 @@ void MAC::ControlAttitude(float dt)
 
 	/* calculate angular rates setpoint */
 	m_AngularRatesSetpoint = m_Params.att_p.EMult(e_R);
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("e_R[%u] = %f\n", x, e_R[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_Params.att_p[%u] = %f\n", x, m_Params.att_p[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_Params.att_p.EMult(e_R)[%u] = %f\n", x, m_Params.att_p.EMult(e_R)[x]);
-//	}
 
 	/* limit rates */
 	for (uint32 i = 0; i < 3; i++) {
@@ -1152,7 +1130,7 @@ void MAC::ControlAttitudeRates(float dt)
 //	OS_printf("CVT.VehicleStatus.IsRotaryWing = %u\n", CVT.VehicleStatus.IsRotaryWing);
 
 	/* get transformation matrix from sensor/board to body frame */
-	boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->board_rotation);
+	boardRotation = boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->board_rotation);
 
 //	OS_printf("ParamTblPtr->board_rotation = %i\n", ParamTblPtr->board_rotation);
 //
@@ -1166,7 +1144,7 @@ void MAC::ControlAttitudeRates(float dt)
 
 	/* fine tune the rotation */
 	math::Matrix3F3 boardRotationOffset;
-	boardRotationOffset.FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
+	boardRotationOffset = boardRotationOffset.FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[1],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[2]);
 	boardRotation = boardRotationOffset * boardRotation;
@@ -1258,6 +1236,7 @@ void MAC::ControlAttitudeRates(float dt)
 			m_AngularRatesIntegralError +
 		    rates_d_scaled.EMult(m_AngularRatesPrevious - rates) / dt +
 		    m_Params.rate_ff.EMult(m_AngularRatesSetpoint);
+
 //	for(uint32 x = 0; x < 3; ++x)
 //	{
 //		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);

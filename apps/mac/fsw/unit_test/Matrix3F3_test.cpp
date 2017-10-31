@@ -99,20 +99,66 @@ void Test_Matrix3F3_Transpose(void)
 			{4.0f, 5.0f, 6.0f},
 			{7.0f, 8.0f, 9.0f}
 	);
+	/* This is actual flight data collected from PX4 code. */
+	math::Matrix3F3 matrixB(
+			{-0.006345f, -0.999761f, -0.020913f},
+			{0.999639f, -0.005796f, -0.026238f},
+			{0.026111f, -0.021072f, 0.999437f}
+	);
+	math::Matrix3F3 matrixC(
+			{-0.006324f, -0.999762f, -0.020890f},
+			{0.999638f, -0.005774f, -0.026283f},
+			{0.026156f, -0.021049f, 0.999436f}
+	);
+	math::Matrix3F3 matrixD(
+			{-0.006324f, -0.999762f, -0.020890f},
+			{0.999638f, -0.005774f, -0.026283f},
+			{0.026156f, -0.021049f, 0.999436f}
+	);
+	math::Matrix3F3 matrixAT = matrixA.Transpose();
+	math::Matrix3F3 matrixBT = matrixB.Transpose();
+	math::Matrix3F3 matrixCT = matrixC.Transpose();
+	math::Matrix3F3 matrixDT = matrixD.Transpose();
 
-	math::Matrix3F3 matrixB = matrixA.Transpose();
+    UtAssert_True(matrixA[0][0] == matrixAT[0][0], "[0][0]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[0][1] == matrixAT[1][0], "[0][1]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[0][2] == matrixAT[2][0], "[0][2]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[1][0] == matrixAT[0][1], "[1][0]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[1][1] == matrixAT[1][1], "[1][1]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[1][2] == matrixAT[2][1], "[1][2]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[2][0] == matrixAT[0][2], "[2][0]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[2][1] == matrixAT[1][2], "[2][1]:  matrixA.Transpose()");
+    UtAssert_True(matrixA[2][2] == matrixAT[2][2], "[2][2]:  matrixA.Transpose()");
 
-    UtAssert_True(matrixA[0][0] == matrixB[0][0], "[0][0]:  matrix.Transpose()");
-    UtAssert_True(matrixA[0][1] == matrixB[1][0], "[0][1]:  matrix.Transpose()");
-    UtAssert_True(matrixA[0][2] == matrixB[2][0], "[0][2]:  matrix.Transpose()");
+    UtAssert_True(matrixB[0][0] == matrixBT[0][0], "[0][0]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[0][1] == matrixBT[1][0], "[0][1]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[0][2] == matrixBT[2][0], "[0][2]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[1][0] == matrixBT[0][1], "[1][0]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[1][1] == matrixBT[1][1], "[1][1]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[1][2] == matrixBT[2][1], "[1][2]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[2][0] == matrixBT[0][2], "[2][0]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[2][1] == matrixBT[1][2], "[2][1]:  matrixB.Transpose()");
+    UtAssert_True(matrixB[2][2] == matrixBT[2][2], "[2][2]:  matrixB.Transpose()");
 
-    UtAssert_True(matrixA[1][0] == matrixB[0][1], "[1][0]:  matrix.Transpose()");
-    UtAssert_True(matrixA[1][1] == matrixB[1][1], "[1][1]:  matrix.Transpose()");
-    UtAssert_True(matrixA[1][2] == matrixB[2][1], "[1][2]:  matrix.Transpose()");
+    UtAssert_True(matrixC[0][0] == matrixCT[0][0], "[0][0]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[0][1] == matrixCT[1][0], "[0][1]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[0][2] == matrixCT[2][0], "[0][2]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[1][0] == matrixCT[0][1], "[1][0]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[1][1] == matrixCT[1][1], "[1][1]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[1][2] == matrixCT[2][1], "[1][2]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[2][0] == matrixCT[0][2], "[2][0]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[2][1] == matrixCT[1][2], "[2][1]:  matrixC.Transpose()");
+    UtAssert_True(matrixC[2][2] == matrixCT[2][2], "[2][2]:  matrixC.Transpose()");
 
-    UtAssert_True(matrixA[2][0] == matrixB[0][2], "[2][0]:  matrix.Transpose()");
-    UtAssert_True(matrixA[2][1] == matrixB[1][2], "[2][1]:  matrix.Transpose()");
-    UtAssert_True(matrixA[2][2] == matrixB[2][2], "[2][2]:  matrix.Transpose()");
+    UtAssert_True(matrixD[0][0] == matrixDT[0][0], "[0][0]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[0][1] == matrixDT[1][0], "[0][1]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[0][2] == matrixDT[2][0], "[0][2]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[1][0] == matrixDT[0][1], "[1][0]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[1][1] == matrixDT[1][1], "[1][1]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[1][2] == matrixDT[2][1], "[1][2]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[2][0] == matrixDT[0][2], "[2][0]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[2][1] == matrixDT[1][2], "[2][1]:  matrixD.Transpose()");
+    UtAssert_True(matrixD[2][2] == matrixDT[2][2], "[2][2]:  matrixD.Transpose()");
 }
 
 

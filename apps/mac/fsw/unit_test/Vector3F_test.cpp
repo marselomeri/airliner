@@ -123,17 +123,74 @@ void Test_Vector3F_CrossProductOperator(void)
 	/* vectorActual = vectorA % vectorB */
 	math::Vector3F vectorA(1.5f, 2.5f, 3.5f);
 	math::Vector3F vectorB(10.5f, 20.5f, 30.5f);
-	math::Vector3F vectorActual = vectorA % vectorB;
-	math::Vector3F vectorExpected;
+	/* This is actual flight data collected from PX4 code */
+	math::Vector3F vectorRzA(-0.019039f, -0.024143f, 0.999527f);
+	math::Vector3F vectorRzB(-0.019038f, -0.024110f, 0.999528f);
+	math::Vector3F vectorRzC(-0.019047f, -0.024071f, 0.999529f);
+	math::Vector3F vectorRspzA(-0.019387f, -0.022884f, 0.999550f);
+	math::Vector3F vectorRspzB(-0.019367f, -0.023088f, 0.999546f);
+	math::Vector3F vectorRspzC(-0.019475f, -0.022664f, 0.999553f);
+	math::Vector3F vectorRspxA(0.999726f, -0.023411f, -0.000000f);
+	math::Vector3F vectorRspxB(0.999726f, -0.023411f, -0.000000f);
+	math::Vector3F vectorRspxC(0.999726f, -0.023411f, -0.000000f);
+	math::Vector3F vectorRrpxA(0.028136f, 0.999604f, 0.000000f);
+	math::Vector3F vectorRrpxB(0.028086f, 0.999606f, 0.000000f);
+	math::Vector3F vectorRrpxC(0.028102f, 0.999605f, 0.000000f);
+
+	math::Vector3F vectorABActual = vectorA % vectorB;
+	math::Vector3F vectorRPAActual = vectorRzA % vectorRspzA;
+	math::Vector3F vectorRPBActual = vectorRzB % vectorRspzB;
+	math::Vector3F vectorRPCActual = vectorRzC % vectorRspzC;
+	math::Vector3F vectorRRRAActual = vectorRrpxA % vectorRspxA;
+	math::Vector3F vectorRRRBActual = vectorRrpxB % vectorRspxB;
+	math::Vector3F vectorRRRCActual = vectorRrpxC % vectorRspxC;
+
+	math::Vector3F vectorABExpected;
+	math::Vector3F vectorRPAExpected;
+	math::Vector3F vectorRPBExpected;
+	math::Vector3F vectorRPCExpected;
+	math::Vector3F vectorRRRAExpected;
+	math::Vector3F vectorRRRBExpected;
+	math::Vector3F vectorRRRCExpected;
 
 	/* Verify results */
-	vectorExpected[0] = 4.5;
-	vectorExpected[1] = -9.0;
-	vectorExpected[2] = 4.5;
+	vectorABExpected[0] = 4.5f;
+	vectorABExpected[1] = -9.0f;
+	vectorABExpected[2] = 4.5f;
+	vectorRPAExpected[0] = -0.001259f;
+	vectorRPAExpected[1] = -0.000347f;
+	vectorRPAExpected[2] = -0.000032f;
+	vectorRPBExpected[0] = -0.001022f;
+	vectorRPBExpected[1] = -0.000329f;
+	vectorRPBExpected[2] = -0.000027f;
+	vectorRPCExpected[0] = -0.001407f;
+	vectorRPCExpected[1] = -0.000427f;
+	vectorRPCExpected[2] = -0.000037f;
+	vectorRRRAExpected[0] = 0.000000f;
+	vectorRRRAExpected[1] = 0.000000f;
+	vectorRRRAExpected[2] = -0.999989f;
+	vectorRRRBExpected[0] = 0.000000f;
+	vectorRRRBExpected[1] = 0.000000f;
+	vectorRRRBExpected[2] = -0.999989f;
+	vectorRRRCExpected[0] = 0.000000f;
+	vectorRRRCExpected[1] = 0.000000f;
+	vectorRRRCExpected[2] = -0.999989f;
 
-	UtAssert_True(vectorExpected[0] == vectorActual[0], "[0] vectorExpected == vectorA % vectorB");
-	UtAssert_True(vectorExpected[1] == vectorActual[1], "[1] vectorExpected == vectorA % vectorB");
-	UtAssert_True(vectorExpected[2] == vectorActual[2], "[2] vectorExpected == vectorA % vectorB");
+	UtAssert_True(fabs(vectorABExpected[0]-vectorABActual[0]) < 0.00001, "[0] vectorExpected == vectorA % vectorB");
+	UtAssert_True(fabs(vectorABExpected[1]-vectorABActual[1]) < 0.00001, "[1] vectorExpected == vectorA % vectorB");
+	UtAssert_True(fabs(vectorABExpected[2]-vectorABActual[2]) < 0.00001, "[2] vectorExpected == vectorA % vectorB");
+	UtAssert_True(fabs(vectorRPAExpected[0]-vectorRPAActual[0]) < 0.00001, "[0] vectorRPAExpected == vectorRzA % vectorRspzA");
+	UtAssert_True(fabs(vectorRPAExpected[1]-vectorRPAActual[1]) < 0.00001, "[1] vectorRPAExpected == vectorRzA % vectorRspzA");
+	UtAssert_True(fabs(vectorRPAExpected[2]-vectorRPAActual[2]) < 0.00001, "[2] vectorRPAExpected == vectorRzA % vectorRspzA");
+	UtAssert_True(fabs(vectorRPBExpected[0]-vectorRPBActual[0]) < 0.00001, "[0] vectorRPBExpected == vectorRzB % vectorRspzB");
+	UtAssert_True(fabs(vectorRPBExpected[1]-vectorRPBActual[1]) < 0.00001, "[1] vectorRPBExpected == vectorRzB % vectorRspzB");
+	UtAssert_True(fabs(vectorRPBExpected[2]-vectorRPBActual[2]) < 0.00001, "[2] vectorRPBExpected == vectorRzB % vectorRspzB");
+	UtAssert_True(fabs(vectorRPCExpected[0]-vectorRPCActual[0]) < 0.00001, "[0] vectorRPCExpected == vectorRzC % vectorRspzC");
+	UtAssert_True(fabs(vectorRPCExpected[1]-vectorRPCActual[1]) < 0.00001, "[1] vectorRPCExpected == vectorRzC % vectorRspzC");
+	UtAssert_True(fabs(vectorRPCExpected[2]-vectorRPCActual[2]) < 0.00001, "[2] vectorRPCExpected == vectorRzC % vectorRspzC");
+	UtAssert_True(fabs(vectorRRRAExpected[0]-vectorRRRAActual[0]) < 0.00001, "[2] vectorRRRAExpected == vectorRrpxA % vectorRspxA");
+	UtAssert_True(fabs(vectorRRRBExpected[0]-vectorRRRBActual[0]) < 0.00001, "[2] vectorRRRBExpected == vectorRrpxB % vectorRspxB");
+	UtAssert_True(fabs(vectorRRRCExpected[0]-vectorRRRCActual[0]) < 0.00001, "[2] vectorRRRCExpected == vectorRrpxC % vectorRspxC");
 }
 
 
@@ -180,11 +237,29 @@ void Test_Vector3F_DotProductOperator(void)
 	/* actual = vectorA * vectorB */
 	math::Vector3F vectorA(1.5f, 2.5f, 3.5f);
 	math::Vector3F vectorB(10.5f, 20.5f, 30.5f);
-	float actual = vectorA * vectorB;
-	float expected = 173.75;
+	/* This is actual flight data collected from PX4 code */
+	math::Vector3F vectorRzA(-0.019784f, -0.024276f, 0.999510f);
+	math::Vector3F vectorRzB(-0.019808f, -0.024276f, 0.999509f);
+	math::Vector3F vectorRzC(-0.019828f, -0.024274f, 0.999509f);
+	math::Vector3F vectorRspzA(-0.019997f, -0.025087f, 0.999485f);
+	math::Vector3F vectorRspzB(-0.019883f, -0.024780f, 0.999495f);
+	math::Vector3F vectorRspzC(-0.019977f, -0.024787f, 0.999493f);
+
+	float actualAB = vectorA * vectorB;
+	float actualeRzcosA = vectorRzA * vectorRspzA;
+	float actualeRzcosB = vectorRzB * vectorRspzB;
+	float actualeRzcosC = vectorRzC * vectorRspzC;
+
+	float expectedAB = 173.75;
+	float expectedeRzcosA = 1.000000;
+	float expectedeRzcosB = 1.000000;
+	float expectedeRzcosC = 1.000000;
 
 	/* Verify results */
-	UtAssert_True(actual == expected, "expected == vectorA * vectorB");
+	UtAssert_True(actualAB == expectedAB, "expected == vectorA dot vectorB");
+	UtAssert_True(actualeRzcosA == expectedeRzcosA, "expected == vectorRzA dot vectorRspzA");
+	UtAssert_True(actualeRzcosB == expectedeRzcosB, "expected == vectorRzB dot vectorRspzB");
+	UtAssert_True(actualeRzcosC == expectedeRzcosC, "expected == vectorRzC dot vectorRspzC");
 }
 
 

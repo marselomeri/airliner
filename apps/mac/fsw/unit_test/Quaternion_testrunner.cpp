@@ -40,12 +40,16 @@ int main(void)
 {   
 	UtTest_Add(Test_Quaternion_Constructor, Quaternion_Test_Setup, Quaternion_Test_TearDown,
 	         "Test_Quaternion_Constructor");
+	UtTest_Add(Test_Quaternion_Matrix3F3Constructor, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_Matrix3F3Constructor");
+	UtTest_Add(Test_Quaternion_RotationMatrix, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_RotationMatrix");
 	UtTest_Add(Test_Quaternion_IndexOutOfBounds, Quaternion_Test_Setup, Quaternion_Test_TearDown,
 	         "Test_Quaternion_IndexOutOfBounds");
 	UtTest_Add(Test_Quaternion_ArrayOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
 			 "Test_Quaternion_ArrayOperator");
-	UtTest_Add(Test_Quaternion_NegateOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
-	         "Test_Quaternion_NegateOperator");
+	UtTest_Add(Test_Quaternion_Imaginary, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_Imaginary");
 
     return(UtTest_Run());
 

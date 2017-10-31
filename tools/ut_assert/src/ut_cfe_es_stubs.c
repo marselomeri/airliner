@@ -478,7 +478,7 @@ int32 CFE_ES_RestoreFromCDS(void *RestoreToMemory, CFE_ES_CDSHandle_t Handle)
     return CFE_SUCCESS;
 }
 
-int32 CFE_ES_PoolCreate(uint32 *HandlePtr, uint8 *MemPtr, uint32 Size)
+int32 CFE_ES_PoolCreate(CFE_ES_MemHandle_t *HandlePtr, uint8 *MemPtr, uint32 Size)
 {
     /* Check for specified return */
     if (Ut_CFE_ES_UseReturnCode(UT_CFE_ES_POOLCREATE_INDEX))
@@ -491,7 +491,7 @@ int32 CFE_ES_PoolCreate(uint32 *HandlePtr, uint8 *MemPtr, uint32 Size)
     return CFE_SUCCESS;
 }
 
-int32 CFE_ES_PoolCreateEx(uint32 *HandlePtr, uint8 *MemPtr, uint32 Size, uint32 NumBlockSizes, uint32 *BlockSizes, uint16 UseMutex)
+int32 CFE_ES_PoolCreateEx(CFE_ES_MemHandle_t *HandlePtr, uint8 *MemPtr, uint32 Size, uint32 NumBlockSizes, uint32 *BlockSizes, uint16 UseMutex)
 {
     /* Check for specified return */
     if (Ut_CFE_ES_UseReturnCode(UT_CFE_ES_POOLCREATEEX_INDEX))
