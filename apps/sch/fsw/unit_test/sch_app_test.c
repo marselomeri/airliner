@@ -1864,11 +1864,11 @@ void SCH_ValidateScheduleData_Test_EnableStateUnusedAllFieldsUnused(void)
         (Ut_CFE_EVS_EventSent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG, "Schedule table verify results -- good[0] bad[0] unused[500]"),
         "Schedule table verify results -- good[0] bad[0] unused[500]");
 
-    UtAssert_True (SCH_AppData.TableVerifySuccessCount == 1, "SCH_AppData.TableVerifySuccessCount == 1");
+    UtAssert_True (SCH_AppData.TableVerifySuccessCount == 2, "SCH_AppData.TableVerifySuccessCount == 2");
 
     UtAssert_True (Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
-    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
+    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 2, "Ut_CFE_EVS_GetEventQueueDepth() == 2");
 
 } /* end SCH_ValidateScheduleData_Test_EnableStateUnusedAllFieldsUnused */
 
@@ -2106,11 +2106,11 @@ void SCH_ValidateScheduleData_Test_ValidEntryResult(void)
         (Ut_CFE_EVS_EventSent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG, "Schedule table verify results -- good[500] bad[0] unused[0]"),
         "Schedule table verify results -- good[500] bad[0] unused[0]");
 
-    UtAssert_True (SCH_AppData.TableVerifySuccessCount == 1, "SCH_AppData.TableVerifySuccessCount == 1");
+    UtAssert_True (SCH_AppData.TableVerifySuccessCount == 2, "SCH_AppData.TableVerifySuccessCount == 2");
 
     UtAssert_True (Result == CFE_SUCCESS, "Result == CFE_SUCCESS");
 
-    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 1, "Ut_CFE_EVS_GetEventQueueDepth() == 1");
+    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 2, "Ut_CFE_EVS_GetEventQueueDepth() == 2");
 
 } /* end SCH_ValidateScheduleData_Test_ValidEntryResult */
 
