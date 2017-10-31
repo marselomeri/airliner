@@ -1293,6 +1293,11 @@ int32 SCH_ValidateScheduleData(void *TableData)
         }
     }
 
+    if (TableResult == CFE_SUCCESS)
+    {
+    	TableResult = SCH_ValidateScheduleDeadlines(TableArray);
+    }
+
     /*
     ** Send event describing results
     */
