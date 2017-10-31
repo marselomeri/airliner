@@ -1326,16 +1326,13 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
 {
     SCH_ScheduleEntry_t *TableArray = (SCH_ScheduleEntry_t *) TableData;
     int32 TableResult = CFE_SUCCESS;
-    int32 TableIndex;
-    int32 DeadlineSearchIndex = 0;
-
+    uint32 TableIndex;
+    uint32 DeadlineSearchIndex = 0;
     uint16 MessageIndex;
-    uint32 Deadline;
     uint16 SearchMessageIndex;
-
-    int32 FrameCount = 0;
+    uint32 Deadline;
     int32 FailCount = 0;
-
+    uint16 SearchMinorFrames = 0;
     boolean FoundNextEntry = FALSE;
 
     /* Iterate over each entry in SCH schedule table */
@@ -1353,19 +1350,24 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
 
         /* Search for next occurrence of this message */
         DeadlineSearchIndex = TableIndex + 1;
+        SearchMinorFrames = 0;
         while(!FoundNextEntry)
         {
-        	FrameCount++;
-
-        	/* Need to have safeguard in case rollover into next major frame */
+        	/* Need an index safeguard in case rollover into next major frame */
         	if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
         	{
         		DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
         	}
 
+        	/* Update search minor frame number */
+            if (DeadlineSearchIndex % SCH_ENTRIES_PER_SLOT == 0)
+            {
+            	SearchMinorFrames++;
+            }
+
         	/* If we've already checked every frame within the deadline without finding
         	 * it we can stop looking */
-			if(FrameCount > Deadline)
+			if(SearchMinorFrames > Deadline)
 			{
 				FoundNextEntry = TRUE;
 			}
@@ -1375,15 +1377,14 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
 
         	if(SearchMessageIndex == MessageIndex)
         	{
-        		/* We found the next occurrence, did it overrun? */
-        		if(FrameCount < Deadline)
+        		/* We found the next occurrence, did it overlap? */
+        		if(SearchMinorFrames < Deadline)
         		{
         			TableResult = SCH_SDT_BAD_DEADLINE;
         			FailCount++;
         			CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
 									  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %i frames",
-									  MessageIndex, Deadline - FrameCount);
-        			printf("msg %i overran: %i\n", MessageIndex, Deadline - FrameCount);
+									  MessageIndex, Deadline - SearchMinorFrames);
         		}
         		FoundNextEntry = TRUE;
         	}
@@ -1392,16 +1393,13 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
         }
 
         FoundNextEntry = FALSE;
-        FrameCount = 0;
     }
-    printf("fails[%i]\n", FailCount);
+
     /* Send event describing results */
 	CFE_EVS_SendEvent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG,
 					  "Schedule table deadline verify results -- fails[%i]", FailCount);
 
-	/*
-	** Maintain table verification statistics
-	*/
+	/* Maintain table verification statistics */
 	if (TableResult == CFE_SUCCESS)
 	{
 		SCH_AppData.TableVerifySuccessCount++;
