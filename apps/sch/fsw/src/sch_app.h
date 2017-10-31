@@ -498,6 +498,8 @@ int32 SCH_ValidateScheduleData(void *TableData);
 *************************************************************************/
 int32 SCH_ValidateMessageData(void *TableData);
 
+int32 SCH_ValidateScheduleDeadlines(void *TableData);
+
 #endif /* _sch_app_ */
 
 /************************/

@@ -10,6 +10,7 @@
 #include "cfe_time_msg.h"
 #include "cfe_psp.h"
 #include "sch_app.h"
+#include "osapi.h"
 
 
 /*************************************************************************
