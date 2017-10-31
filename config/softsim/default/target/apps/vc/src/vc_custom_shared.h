@@ -39,7 +39,7 @@
 #include "cfe.h"
 #include "vc_app.h"
 #include "vc_custom.h"
-#include "vc_dev_io_v4l/vc_dev_io_v4l.h"
+#include "vc_dev_io_udp/vc_dev_io_udp.h"
 
 /************************************************************************
 ** Local Defines

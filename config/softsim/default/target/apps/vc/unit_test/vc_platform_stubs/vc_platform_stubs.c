@@ -53,6 +53,7 @@ int __real_socket(int domain, int type, int protocol);
 int __real_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 int __real_sendto(int sockfd, const void *buf, size_t len, int flags,
                const struct sockaddr *dest_addr, socklen_t addrlen);
+ssize_t __real_recv(int s, void *buf, size_t len, int flags); 
 
 
 VC_Platform_Stubs_Returns_t VC_Platform_Stubs_Returns = {0};
@@ -119,7 +120,7 @@ int __wrap_ioctl(int fh, int request, void *arg)
         }
         else
         {
-        returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
+            returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_Return;
         }
 
         VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount++;
@@ -201,6 +202,35 @@ int __wrap_socket(int domain, int type, int protocol)
     }
     return returnCode;
 }
+
+
+ssize_t __wrap_recv(int s, void *buf, size_t len, int flags)
+{
+    ssize_t returnCode = 0;
+    if(enable_wrappers == 0)
+    {
+        returnCode = __real_recv(s, buf, len, flags);
+    }
+    else
+    {
+        if (VC_Platform_Stubs_Returns.VC_Wrap_Recv_Errno)
+        {
+            errno = VC_Platform_Stubs_Returns.VC_Wrap_Recv_Errno_Value;
+        }
+        if (1 == VC_Platform_Stubs_Returns.VC_Wrap_Recv_CallCount)
+        {
+            returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return1;
+        }
+        else 
+        {
+            returnCode = VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return;
+        }
+
+        VC_Platform_Stubs_Returns.VC_Wrap_Recv_CallCount++;
+    }
+    return returnCode;
+}
+
 
 int __wrap_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {

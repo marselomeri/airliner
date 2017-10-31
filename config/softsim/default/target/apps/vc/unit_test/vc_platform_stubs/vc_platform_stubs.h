@@ -66,6 +66,11 @@ typedef struct
     int     VC_Wrap_SendTo_Errno;
     int     VC_Wrap_SendTo_Errno_Value;
     int     VC_Wrap_Ioctl_CallCount;
+    int     VC_Wrap_Recv_Return;
+    int     VC_Wrap_Recv_Return1;
+    int     VC_Wrap_Recv_Errno;
+    int     VC_Wrap_Recv_Errno_Value;
+    int     VC_Wrap_Recv_CallCount;
 } VC_Platform_Stubs_Returns_t;
 
 
