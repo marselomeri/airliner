@@ -387,7 +387,7 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
-private:
+//private:
 
     /************************************************************************/
     /** \brief Initialize the MAC configuration tables.
@@ -445,7 +445,7 @@ public:
     *************************************************************************/
     static int32  ValidateParamTbl(void*);
 
-private:
+//private:
     void RunController(void);
     void UpdateParams(void);
 
@@ -461,7 +461,7 @@ private:
 
 	math::Vector3F PidAttenuations(float tpa_breakpoint, float tpa_rate);
 
-private:
+//private:
 	float m_ThrustSp;		/**< thrust setpoint */
 
 };

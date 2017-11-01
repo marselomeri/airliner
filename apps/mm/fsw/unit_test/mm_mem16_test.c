@@ -223,7 +223,7 @@ void MM_DumpMem16ToFile_Test_ReadError (void)
 {
     boolean Result;
     uint32 FileHandle = 1;
-    MM_LoadDumpFileHeader_t FileHeader;
+    MM_LoadDumpFileHeader_t FileHeader = {0};
     char ErrorMessage[125];
 
     FileHeader.NumOfBytes = 2;

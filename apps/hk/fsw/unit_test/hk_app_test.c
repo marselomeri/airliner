@@ -86,8 +86,8 @@ void HK_APP_TEST_CFE_ES_ExitAppHook(uint32 ExitStatus)
 
 void HK_AppMain_Test_Nominal(void)
 {
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -129,8 +129,8 @@ void HK_AppMain_Test_Nominal(void)
 
 void HK_AppMain_Test_AppInitError(void)
 {
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -172,8 +172,8 @@ void HK_AppMain_Test_AppInitError(void)
 
 void HK_AppMain_Test_RcvMsgError(void)
 {
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -1038,11 +1038,11 @@ void HK_AppPipe_Test_Reset(void)
 
 void HK_AppPipe_Test_InvalidCommandCode(void)
 {
-    HK_Send_Out_Msg_t   CmdPacket;
+    HK_Send_Out_Msg_t   CmdPacket = {0};
     char ExpectedEventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -1072,10 +1072,10 @@ void HK_AppPipe_Test_InvalidCommandCode(void)
 
 void HK_AppPipe_Test_ProcessIncomingHkData(void)
 {
-    HK_Send_Out_Msg_t   CmdPacket;
+    HK_Send_Out_Msg_t   CmdPacket = {0};
 
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -1093,7 +1093,7 @@ void HK_AppPipe_Test_ProcessIncomingHkData(void)
 
 void HK_HousekeepingCmd_Test(void)
 {
-    HK_Send_Out_Msg_t   CmdPacket;
+    HK_Send_Out_Msg_t   CmdPacket = {0};
 
     /* Set to ensure there are no segmentation faults in subfunctions that use CmdPacket */
     CFE_SB_InitMsg (&CmdPacket, HK_CMD_MID, CFE_SB_CMD_HDR_SIZE, TRUE);
@@ -1120,10 +1120,10 @@ void HK_HousekeepingCmd_Test(void)
 
 void HK_NoopCmd_Test_Nominal(void)
 {
-    HK_Send_Out_Msg_t   CmdPacket;
+    HK_Send_Out_Msg_t   CmdPacket = {0};
 
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -1148,10 +1148,10 @@ void HK_NoopCmd_Test_Nominal(void)
 
 void HK_NoopCmd_Test_BadMsgLength(void)
 {
-    HK_Send_Out_Msg_t   CmdPacket;
+    HK_Send_Out_Msg_t   CmdPacket = {0};
 
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;
@@ -1198,10 +1198,10 @@ void HK_ResetCtrsCmd_Test_Nominal(void)
 
 void HK_ResetCtrsCmd_Test_BadMsgLength(void)
 {
-    HK_Send_Out_Msg_t   CmdPacket;
+    HK_Send_Out_Msg_t   CmdPacket = {0};
 
-    hk_copy_table_entry_t    CopyTable;
-    hk_runtime_tbl_entry_t   RuntimeTable;
+    hk_copy_table_entry_t    CopyTable = {0};
+    hk_runtime_tbl_entry_t   RuntimeTable = {0};
     
     HK_AppData.CopyTablePtr = &CopyTable;
     HK_AppData.RuntimeTablePtr = &RuntimeTable;

@@ -56,7 +56,7 @@ $(TARGET_NAMES)::
         done; \
 	TARGET_PATH=$$(echo ${TARGET_PATHS} | cut -d " " -f $$idx); \
 	mkdir -p build/$$TARGET_PATH; \
-	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DNATIVE_BUILD=${NATIVE_BUILD} -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) --no-print-directory -j 4);
+	(cd build/$$TARGET_PATH; cmake -DBUILDNAME:STRING=$$TARGET_PATH -G"Eclipse CDT4 - Unix Makefiles" -DNATIVE_BUILD=${NATIVE_BUILD} -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE CMAKE_BUILD_TYPE=Debug ../../..; $(MAKE) --no-print-directory);
 	
 
 clean::

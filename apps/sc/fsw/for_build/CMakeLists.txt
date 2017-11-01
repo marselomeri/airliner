@@ -65,9 +65,6 @@ add_airliner_app_def(sc
 
 
 add_airliner_app_unit_test(sc-ut
-    NO_MEMCHECK
-    NO_HELGRIND
-    NO_MASSIF
     UTASSERT 
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/sc_app_test.c
@@ -115,4 +112,7 @@ add_airliner_app_unit_test(sc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
         ${CMAKE_CURRENT_SOURCE_DIR}/../mission_inc/
         ${CMAKE_CURRENT_SOURCE_DIR}/../platform_inc/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )

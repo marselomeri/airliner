@@ -34,6 +34,7 @@
 #include "mac_app_test.hpp"
 #include "mac_app.hpp"
 #include "mac_test_utils.hpp"
+#include <float.h>
 
 #include "uttest.h"
 #include "ut_osapi_stubs.h"
@@ -451,6 +452,188 @@ void Test_MAC_AppMain_ProcessNewData_InvalidMsgID(void)
 
 
 
+void Test_MAC_RunController(void)
+{
+	/* Set inputs */
+    oMAC.CVT.VAttSp.Thrust = 0.3333882987f;
+
+}
+
+
+
+void Test_MAC_ControlAttitude(void)
+{
+	/* Set inputs */
+    oMAC.CVT.VAttSp.Thrust = 0.3333882987f;
+    oMAC.CVT.VAttSp.Q_D[0] = 0.7084835768f;
+    oMAC.CVT.VAttSp.Q_D[1] = -0.0144501235f;
+    oMAC.CVT.VAttSp.Q_D[2] = -0.0355133303f;
+    oMAC.CVT.VAttSp.Q_D[3] = 0.7046850324f;
+    oMAC.CVT.ControlState.Q[0] = 0.7083791494f;
+    oMAC.CVT.ControlState.Q[1] = -0.0311437733f;
+    oMAC.CVT.ControlState.Q[2] = -0.0508509092f;
+    oMAC.CVT.ControlState.Q[3] = 0.7033087611f;
+    oMAC.m_Params.att_p[0] = 6.0000000000f;
+    oMAC.m_Params.att_p[1] = 6.0000000000f;
+    oMAC.m_Params.att_p[2] = 2.7999999523f;
+    oMAC.CVT.VControlMode.ControlVelocityEnabled = TRUE;
+    oMAC.CVT.VControlMode.ControlAutoEnabled = TRUE;
+    oMAC.CVT.VControlMode.ControlManualEnabled = FALSE;
+    oMAC.CVT.VAttSp.YawSpMoveRate = 0.0000000000f;
+    oMAC.m_Params.yaw_ff = 0.5000000000f;
+    oMAC.CVT.VAttSp.DisableMcYawControl = FALSE;
+    oMAC.m_Params.auto_rate_max[0] = 3.8397247791f;
+    oMAC.m_Params.auto_rate_max[1] = 3.8397247791f;
+    oMAC.m_Params.auto_rate_max[2] = 0.7853982449f;
+    oMAC.m_Params.vtol_wv_yaw_rate_scale = 0.1500000060f;
+    oMAC.m_AngularRatesSetpoint[0] = 0.5145305991f;
+    oMAC.m_AngularRatesSetpoint[1] = -0.0270411316f;
+    oMAC.m_AngularRatesSetpoint[2] = 0.0020858147f;
+    oMAC.m_Params.mc_rate_max[0] = 3.8397247791f;
+    oMAC.m_Params.mc_rate_max[1] = 3.8397247791f;
+    oMAC.m_Params.mc_rate_max[2] = 3.4906587601f;
+    oMAC.m_AngularRatesIntegralError[0] = 0.000000f;
+    oMAC.m_AngularRatesIntegralError[1] = 0.000000f;
+    oMAC.m_AngularRatesIntegralError[2] = -0.0000685215f;
+
+    /* Run the function */
+    oMAC.ControlAttitude(0.0199999996f);
+
+	/* Check outputs */
+    UtAssert_True(oMAC.CVT.VAttSp.DisableMcYawControl == FALSE,"oMAC.CVT.VAttSp.DisableMcYawControl = FALSE");
+    UtAssert_DoubleCmpAbs(oMAC.m_ThrustSp, 0.33338829875, FLT_EPSILON, "oMAC.m_ThrustSp = 0.33338829875");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesSetpoint[0], 0.27225777507, FLT_EPSILON,"oMAC.m_AngularRatesSetpoint[0] = 0.27225777507");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesSetpoint[1], -0.01081879158, FLT_EPSILON,"oMAC.m_AngularRatesSetpoint[1] = -0.01081879158");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesSetpoint[2], 0.00295280106, FLT_EPSILON,"oMAC.m_AngularRatesSetpoint[2] = 0.00295280106");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesIntegralError[2], -0.00006852150, FLT_EPSILON,"oMAC.m_AngularRatesIntegralError[2] = -0.00006852150");
+}
+
+
+void Test_MAC_ControlAttitudeRates(void)
+{
+    oMAC.InitApp();
+
+	/* Set inputs */
+    oMAC.CVT.Armed.Armed = TRUE;
+    oMAC.CVT.VehicleStatus.IsRotaryWing = TRUE;
+    oMAC.m_Params.board_rotation = 0;
+    oMAC.m_Params.board_offset[0] = 0.0000010000f;
+    oMAC.m_Params.board_offset[1] = 0.0000000000f;
+    oMAC.m_Params.board_offset[2] = 0.0000000000f;
+
+    oMAC.ParamTblPtr->board_rotation = 0;
+    oMAC.ParamTblPtr->board_offset[0] = 0.0000010000f;
+    oMAC.ParamTblPtr->board_offset[1] = 0.0000000000f;
+    oMAC.ParamTblPtr->board_offset[2] = 0.0000000000f;
+
+    oMAC.CVT.SensorGyro.X = 4.8167719841f;
+    oMAC.CVT.SensorGyro.Y = -0.0151427072f;
+    oMAC.CVT.SensorGyro.Z = 0.0483480841f;
+    oMAC.m_SelectedGyro = 0;
+    oMAC.CVT.SensorCorrection.gyro_offset_0[0] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_0[1] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_0[2] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_1[0] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_1[1] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_1[2] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_2[0] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_2[1] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_offset_2[2] = 0.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_0[0] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_0[1] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_0[2] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_1[0] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_1[1] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_1[2] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_2[0] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_2[1] = 1.0000000000f;
+    oMAC.CVT.SensorCorrection.gyro_scale_2[2] = 1.0000000000f;
+    oMAC.CVT.ControlState.RollRateBias = 0.0094868243f;
+    oMAC.CVT.ControlState.PitchRateBias = -0.0056171287f;
+    oMAC.CVT.ControlState.YawRateBias = -0.0006096615f;
+    oMAC.m_Params.tpa_breakpoint_p = 1.0000000000f;
+    oMAC.m_Params.tpa_rate_p = 0.0000000000f;
+    oMAC.m_Params.tpa_rate_i = 0.0000000000f;
+    oMAC.m_Params.tpa_rate_d = 0.0000000000f;
+    oMAC.m_Params.rate_p[0] = 0.2000000030f;
+    oMAC.m_Params.rate_p[1] = 0.2000000030f;
+    oMAC.m_Params.rate_p[2] = 0.2000000030f;
+    oMAC.m_Params.rate_i[0] = 0.0500000007f;
+    oMAC.m_Params.rate_i[1] = 0.0500000007f;
+    oMAC.m_Params.rate_i[2] = 0.1000000015f;
+    oMAC.m_Params.rate_d[0] = 0.0030000000f;
+    oMAC.m_Params.rate_d[1] = 0.0030000000f;
+    oMAC.m_Params.rate_d[2] = 0.0000000000f;
+    oMAC.m_AngularRatesSetpoint[0] = 1.7969323397f;
+    oMAC.m_AngularRatesSetpoint[1] = -0.0226559788f;
+    oMAC.m_AngularRatesSetpoint[2] = 0.0123897465f;
+    oMAC.m_AngularRatesIntegralError[0] = -0.0424203314f;
+    oMAC.m_AngularRatesIntegralError[1] = -0.0129340524f;
+    oMAC.m_AngularRatesIntegralError[2] = 0.0011736545f;
+    oMAC.m_ThrustSp = 0.4697688818f;
+    oMAC.CVT.MotorLimits.SaturationStatus.Flags.RollPos = FALSE;
+    oMAC.CVT.MotorLimits.SaturationStatus.Flags.PitchPos = FALSE;
+    oMAC.CVT.MotorLimits.SaturationStatus.Flags.YawPos = FALSE;
+    oMAC.CVT.MotorLimits.SaturationStatus.Flags.RollNeg = FALSE;
+    oMAC.CVT.MotorLimits.SaturationStatus.Flags.PitchNeg = FALSE;
+    oMAC.CVT.MotorLimits.SaturationStatus.Flags.YawNeg = FALSE;
+    oMAC.m_AngularRatesIntegralError[0] = -0.0424203314f;
+    oMAC.m_AngularRatesIntegralError[1] = -0.0129340524f;
+    oMAC.m_AngularRatesIntegralError[2] = 0.0011736545f;
+    oMAC.m_Params.rate_ff[0] = 0.0000000000f;
+    oMAC.m_Params.rate_ff[1] = 0.0000000000f;
+    oMAC.m_Params.rate_ff[2] = 0.0000000000f;
+    oMAC.m_Params.rate_int_lim[0] = 0.3000000119f;
+    oMAC.m_Params.rate_int_lim[1] = 0.3000000119f;
+    oMAC.m_Params.rate_int_lim[2] = 0.3000000119f;
+    oMAC.m_AngularRatesPrevious[0] = 2.6428866386f;
+    oMAC.m_AngularRatesPrevious[1] = 0.0073689236f;
+    oMAC.m_AngularRatesPrevious[2] = 0.0280616768f;
+
+
+    /* Run the function */
+    oMAC.ControlAttitudeRates(0.0199999996f);
+
+	/* Check outputs */
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesIntegralError[0], -0.0454306826, FLT_EPSILON, "oMAC.m_AngularRatesIntegralError[0]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesIntegralError[1], -0.0129471831, FLT_EPSILON, "oMAC.m_AngularRatesIntegralError[1]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesIntegralError[2], 0.0011005185, FLT_EPSILON, "oMAC.m_AngularRatesIntegralError[2]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AttControl[0], -0.9691507816, FLT_EPSILON, "oMAC.m_AttControl[0]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AttControl[1], -0.0130259572, FLT_EPSILON, "oMAC.m_AttControl[1]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AttControl[2], -0.0061399457, FLT_EPSILON, "oMAC.m_AttControl[2]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesSetpointPrevious[0], 1.7969323397, FLT_EPSILON, "oMAC.m_AngularRatesSetpointPrevious[0]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesSetpointPrevious[1], -0.0226559788, FLT_EPSILON, "oMAC.m_AngularRatesSetpointPrevious[1]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesSetpointPrevious[2], 0.0123897465, FLT_EPSILON, "oMAC.m_AngularRatesSetpointPrevious[2]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesPrevious[0], 4.8072853088, FLT_EPSILON, "oMAC.m_AngularRatesPrevious[0]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesPrevious[1], -0.0095255794, FLT_EPSILON, "oMAC.m_AngularRatesPrevious[1]");
+    UtAssert_DoubleCmpAbs(oMAC.m_AngularRatesPrevious[2], 0.0489577465, FLT_EPSILON, "oMAC.m_AngularRatesPrevious[2]");
+}
+
+
+
+void Test_MAC_PidAttenuations(void)
+{
+	/* Set inputs */
+    oMAC.CVT.VAttSp.Thrust = 0.5615526438f;
+
+    /* Run the function */
+    math::Vector3F pidAttenuations = oMAC.PidAttenuations(1.0000000000f, 0.0000000000f);
+
+	/* Check outputs */
+    UtAssert_DoubleCmpAbs(pidAttenuations[0], 1.0000000000, FLT_EPSILON, "PidAttenuations[0]");
+    UtAssert_DoubleCmpAbs(pidAttenuations[1], 1.0000000000, FLT_EPSILON, "PidAttenuations[1]");
+    UtAssert_DoubleCmpAbs(pidAttenuations[2], 1.0000000000, FLT_EPSILON, "PidAttenuations[2]");
+}
+
+
+
+void Test_MAC_UpdateParams(void)
+{
+
+}
+
+
+
 /**************************************************************************
  * Rollup Test Cases
  **************************************************************************/
@@ -500,6 +683,22 @@ void MAC_App_Test_AddTestCases(void)
                "Test_MAC_AppMain_Nominal_Wakeup");
     UtTest_Add(Test_MAC_AppMain_ProcessNewData_InvalidMsgID, MAC_Test_Setup, MAC_Test_TearDown,
                "Test_MAC_AppMain_ProcessNewData_InvalidMsgID");
+
+    UtTest_Add(Test_MAC_RunController, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_RunController");
+
+    UtTest_Add(Test_MAC_ControlAttitude, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_ControlAttitude");
+
+    UtTest_Add(Test_MAC_ControlAttitudeRates, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_ControlAttitudeRates");
+
+    UtTest_Add(Test_MAC_PidAttenuations, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_PidAttenuations");
+
+    UtTest_Add(Test_MAC_UpdateParams, MAC_Test_Setup, MAC_Test_TearDown,
+               "Test_MAC_UpdateParams");
+
 
 }
 

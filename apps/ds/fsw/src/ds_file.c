@@ -496,10 +496,10 @@ void DS_FileCreateName(uint32 FileIndex)
 {
     DS_DestFileEntry_t *DestFile = &DS_AppData.DestFileTblPtr->File[FileIndex];
     DS_AppFileStatus_t *FileStatus = &DS_AppData.FileStatus[FileIndex];
-    int32 TotalLength;
+    int32 TotalLength = 0;
 
-    char Workname[2 * DS_TOTAL_FNAME_BUFSIZE];
-    char Sequence[DS_TOTAL_FNAME_BUFSIZE];
+    char Workname[2 * DS_TOTAL_FNAME_BUFSIZE] = "\0";
+    char Sequence[DS_TOTAL_FNAME_BUFSIZE] = "\0";
 
     Workname[0] = DS_STRING_TERMINATOR;
     Sequence[0] = DS_STRING_TERMINATOR;

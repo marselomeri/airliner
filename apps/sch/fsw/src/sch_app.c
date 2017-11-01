@@ -44,6 +44,7 @@
 #include "cfe_time_msg.h"
 #include "sch_verify.h"
 #include "sch_apipriv.h"
+#include "osapi.h"
 
 /*************************************************************************
 **
@@ -508,7 +509,7 @@ int32 SCH_SbInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_CR_PIPE_ERR_EID, CFE_EVS_ERROR,
-                          "Error Creating SB Pipe, RC=0x%08X", Status);
+                          "Error Creating SB Pipe, RC=0x%08lX", Status);
         return(Status);
     }
 
@@ -543,7 +544,7 @@ int32 SCH_SbInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_SUB_GND_CMD_ERR_EID, CFE_EVS_ERROR,
-                "Error Subscribing to activity done msg(MID=0x%04X), RC=0x%08X",
+                "Error Subscribing to activity done msg(MID=0x%04X), RC=0x%08lX",
 				SCH_ACTIVITY_DONE_MID, Status);
         return(Status);
     }
@@ -627,7 +628,7 @@ int32 SCH_TblInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent( SCH_DEADLINE_REG_ERR_EID, CFE_EVS_ERROR,
-                "Error Registering Deadline, RC=0x%08X", Status);
+                "Error Registering Deadline, RC=0x%08lX", Status);
         return(Status);
     }
 
@@ -641,8 +642,8 @@ int32 SCH_TblInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_SDT_LOAD_ERR_EID, CFE_EVS_ERROR,
-                          "Error (RC=0x%08X) Loading SDT with %s", 
-                          (unsigned int)Status, SCH_SCHEDULE_FILENAME);    
+                          "Error (RC=0x%08X) Loading SDT with %s",
+                          (unsigned int)Status, SCH_SCHEDULE_FILENAME);
         return(Status);
     }
 
@@ -656,7 +657,7 @@ int32 SCH_TblInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_MDT_LOAD_ERR_EID, CFE_EVS_ERROR,
-                          "Error (RC=0x%08X) Loading MDT with %s", 
+                          "Error (RC=0x%08X) Loading MDT with %s",
                           (unsigned int)Status, SCH_MESSAGE_FILENAME);    
         return(Status);
     }
@@ -1089,13 +1090,13 @@ void SCH_ProcessNextEntry(SCH_ScheduleEntry_t *NextEntry, int32 EntryNumber)
                 	if(ActivityDeadline == 0)
                 	{
                         CFE_EVS_SendEvent(SCH_SLOT_DEADLINE_FULL_ERR_EID, CFE_EVS_ERROR,
-                                          "Slot deadline full: slot = %d, entry = %d, err = 0x%08X",
+                                          "Slot deadline full: slot = %d, entry = %ld, err = 0x%08lX",
                                           SCH_AppData.NextSlotNumber, EntryNumber, Status);
                 	}
                 	else
                 	{
                 		ActivityDeadline->State = SCH_DEADLINE_STATE_PENDED;
-                		ActivityDeadline->MsgID = CFE_SB_GetMsgId(Message);
+                		ActivityDeadline->MsgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)Message);
                 	}
         		    OS_MutSemGive(SCH_AppData.ADChildTaskMutex);
                 }
@@ -1293,6 +1294,11 @@ int32 SCH_ValidateScheduleData(void *TableData)
         }
     }
 
+    if (TableResult == CFE_SUCCESS)
+    {
+    	TableResult = SCH_ValidateScheduleDeadlines(TableArray);
+    }
+
     /*
     ** Send event describing results
     */
@@ -1314,6 +1320,104 @@ int32 SCH_ValidateScheduleData(void *TableData)
     return(TableResult);
 
 } /* End of SCH_ValidateScheduleData() */
+
+/*******************************************************************
+**
+** SCH_ValidateScheduleDeadlines
+**
+** NOTE: For complete prolog information, see above
+********************************************************************/
+
+int32 SCH_ValidateScheduleDeadlines(void *TableData)
+{
+    SCH_ScheduleEntry_t *TableArray = (SCH_ScheduleEntry_t *) TableData;
+    int32 TableResult = CFE_SUCCESS;
+    uint32 TableIndex;
+    uint32 DeadlineSearchIndex = 0;
+    uint16 MessageIndex;
+    uint16 SearchMessageIndex;
+    uint32 Deadline;
+    uint32 FailCount = 0;
+    uint16 SearchMinorFrames = 0;
+    boolean FoundNextEntry = FALSE;
+
+    /* Iterate over each entry in SCH schedule table */
+    for (TableIndex = 0; TableIndex < SCH_TABLE_ENTRIES; TableIndex++)
+    {
+    	/* Get data for this index */
+        MessageIndex = TableArray[TableIndex].MessageIndex;
+        Deadline     = TableArray[TableIndex].Deadline;
+
+        /* If deadline is set to 0 we don't care about it */
+        if (Deadline == 0)
+        {
+        	FoundNextEntry = TRUE;
+        }
+
+        /* Search for next occurrence of this message */
+        DeadlineSearchIndex = TableIndex + 1;
+        SearchMinorFrames = 0;
+        while(!FoundNextEntry)
+        {
+        	/* Need an index safeguard in case rollover into next major frame */
+        	if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
+        	{
+        		DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
+        	}
+
+        	/* Update search minor frame number */
+            if (DeadlineSearchIndex % SCH_ENTRIES_PER_SLOT == 0)
+            {
+            	SearchMinorFrames++;
+            }
+
+        	/* If we've already checked every frame within the deadline without finding
+        	 * it we can stop looking */
+			if(SearchMinorFrames > Deadline)
+			{
+				FoundNextEntry = TRUE;
+			}
+
+        	/* Get message index for the current search index */
+        	SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
+
+        	if(SearchMessageIndex == MessageIndex)
+        	{
+        		/* We found the next occurrence, did it overlap? */
+        		if(SearchMinorFrames < Deadline)
+        		{
+        			TableResult = SCH_SDT_BAD_DEADLINE;
+        			FailCount++;
+        			CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
+									  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %u frames",
+									  MessageIndex, Deadline - SearchMinorFrames);
+        		}
+        		FoundNextEntry = TRUE;
+        	}
+
+        	DeadlineSearchIndex++;
+        }
+
+        FoundNextEntry = FALSE;
+    }
+
+    /* Send event describing results */
+	CFE_EVS_SendEvent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG,
+					  "Schedule table deadline verify results -- fails[%lu]", FailCount);
+
+	/* Maintain table verification statistics */
+	if (TableResult == CFE_SUCCESS)
+	{
+		SCH_AppData.TableVerifySuccessCount++;
+	}
+	else
+	{
+		SCH_AppData.TableVerifyFailureCount++;
+	}
+
+    return(TableResult);
+
+} /* End of SCH_ValidateScheduleDeadlines() */
 
 
 /*******************************************************************
@@ -1445,7 +1549,7 @@ int32 SCH_ChildTaskInit(void)
     if (Status != OS_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_MUTEX_CREATE_ERR_EID, CFE_EVS_ERROR,
-                          "OS_MutSemCreate - err = 0x%08X",
+                          "OS_MutSemCreate - err = 0x%08lX",
                           Status);
         return Status;
     }
@@ -1458,7 +1562,7 @@ int32 SCH_ChildTaskInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_SEM_CREATE_ERR_EID, CFE_EVS_ERROR,
-                          "Error creating Holdup Semaphore (RC=0x%08X)",
+                          "Error creating Holdup Semaphore (RC=0x%08lX)",
                           Status);
         return(Status);
     }
@@ -1473,7 +1577,7 @@ int32 SCH_ChildTaskInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_AD_CHILD_TASK_CREATE_ERR_EID, CFE_EVS_ERROR,
-                          "AD child task create failed - err = 0x%08X",
+                          "AD child task create failed - err = 0x%08lX",
                           Status);
     }
 

@@ -120,6 +120,7 @@
 #define SCH_SDT_BAD_ACTIVITY     (-4)
 #define SCH_SDT_BAD_MSG_INDEX    (-5)
 #define SCH_SDT_BAD_ENABLE_STATE (-6)
+#define SCH_SDT_BAD_DEADLINE 	 (-7)
 
 /*
 ** MDT Table Validation Error Codes
@@ -478,6 +479,26 @@ int32  SCH_ProcessCommands(void);
 int32 SCH_ValidateScheduleData(void *TableData);
 
 /************************************************************************/
+/** \brief Validates deadlines of Schedule Definition Table
+**
+**  \par Description
+**       This function is called by the schedule table validation
+**       function.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \returns
+**  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+**  \retstmt Return codes from #CFE_EVS_Register         \endcode
+**  \retstmt Return codes from #CFE_SB_CreatePipe        \endcode
+**  \retstmt Return codes from #CFE_SB_Subscribe         \endcode
+**  \endreturns
+**
+*************************************************************************/
+int32 SCH_ValidateScheduleDeadlines(void *TableData);
+
+/************************************************************************/
 /** \brief Validates contents of Message Definition Table
 **  
 **  \par Description
@@ -496,6 +517,8 @@ int32 SCH_ValidateScheduleData(void *TableData);
 **
 *************************************************************************/
 int32 SCH_ValidateMessageData(void *TableData);
+
+int32 SCH_ValidateScheduleDeadlines(void *TableData);
 
 #endif /* _sch_app_ */
 

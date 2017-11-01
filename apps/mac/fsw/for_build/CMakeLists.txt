@@ -93,6 +93,9 @@ add_airliner_app_unit_test(MAC-UT
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-ut.supp
 )
 
 
@@ -110,6 +113,9 @@ add_airliner_app_unit_test(MAC-V3F-UT
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-v3f-ut.supp
 )
 
 
@@ -127,6 +133,9 @@ add_airliner_app_unit_test(MAC-V4F-UT
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-v4f-ut.supp
 )
 
 
@@ -150,26 +159,32 @@ add_airliner_app_unit_test(MAC-QUATERNION-UT
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-)
-
-
-add_airliner_app_unit_test(MAC-MATRIX3F3-UT
-    UTASSERT
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_testrunner.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
         
-    INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-quaternion-ut.supp
 )
+
+
+#add_airliner_app_unit_test(MAC-MATRIX3F3-UT
+#    UTASSERT
+#    SOURCES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.cpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.hpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_testrunner.cpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.cpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.hpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
+#        
+#    INCLUDES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+#        
+#    VALGRIND_SUPPRESSION_FILE
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-matrix3f3-ut.supp
+#)
 
 
 add_airliner_app_unit_test(MAC-MATRIX4F4-UT
@@ -188,4 +203,7 @@ add_airliner_app_unit_test(MAC-MATRIX4F4-UT
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-matrix4f4-ut.supp
 )

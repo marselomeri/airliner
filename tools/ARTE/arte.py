@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 
    Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
@@ -33,17 +34,26 @@
 from arte_config import ArteSplash
 from arte_launcher import ArteSubprocess
 from arte_server import ArteServer
-from arte_server import ArteServerGlobals
 from arte_test import ArteTestFixture
+from arte_events import ArteEventHandler
 
 import time
 import argparse
 import os
 import sys
 import json
+import logging
 
 
 def path_exists(file_path):
+    """Check if a path exists.
+    
+    Args: 
+        file_path (path): The path to the configuration file.
+    
+    Returns:
+        boolean: True for success, otherwise failure.
+    """
     if not os.path.exists(file_path):
         return False
     else:
@@ -51,13 +61,124 @@ def path_exists(file_path):
 
 
 def check_path(file_path):
+    """Check if the configuration file exists.
+    
+    Args:
+        file_path (path): The path to the configuration file.
+
+    Note:
+        Exits with a string notification that the path could not be 
+        resolved.
+    """
     if path_exists(file_path):
-        print ("Configuration file resolved:", str(file_path))
+        logging.info('Configuration file resolved %s', str(file_path))
     else:
         sys.exit("Configuration file not found: " + str(file_path))
 
 
+def count_clients(config):
+    """Count the number of clients in the deserialized configuration.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        unsigned int: the number of clients counted.
+    """
+    
+    client_count = 0
+    for i in config['clients']:
+        client_count += 1
+    return client_count
+
+
+def get_timeouts(config):
+    """Get the value of timeouts in the configuration file.
+    
+    Note:
+        timeouts is for generic timeouts i.e. anything that could pend
+        forever like recv.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+        
+    Returns:
+        unsigned int: the timeout in seconds as specified in the 
+            configuration file.
+     """
+    return config['timeouts']
+
+
+def get_timeout(config):
+    """Get the value of timeout in the configuration file.
+
+    Note:
+        timeout is the overall timeout for all test(s). This value 
+            needs to be greater than the maximum amount of time test(s)
+            could take.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        uint: the timeout in seconds as specified in the 
+            configuration file.
+     """
+    return config['timeout']
+
+
+def get_watchdog(config):
+    """Get the value of the watchdog timeout in the configuration file.
+
+    Note:
+        watchdog is the timeout for all watchdog timers. This value 
+        needs to be greater than the maximum amount of time any 
+        thread would take before resetting its watchdog. The same 
+        goes for any task that is assigned a watchdog.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        uint: the timeout in seconds as specified in the 
+            configuration file.
+     """
+    return config['watchdog']
+
+
+def get_majorframe(config):
+    """Get the minor in major frame count from the configuration file.
+
+    Note:
+        Default value is 200.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        uint: the number of minor frames in a major frame.
+     """
+    return config['majorframe']
+
+
 def main():
+    """The entry point for ARTE.
+    
+    Exit status codes:
+        0: A client shutdown requests returned success.
+        1: The main timeout was reached.
+        2: The watchdog timeout was reached.
+        3: A shutdown requests was received with an unknown status.
+        4: A socket error caused an early shutdown.
+        
+    """
+    logging.basicConfig(level=logging.DEBUG)
+
     ArteSplash()
     
     parser = argparse.ArgumentParser()
@@ -66,38 +187,53 @@ def main():
     
     # Check the path to the configuration file
     check_path(args.configpath)
-    
+
+    # TODO write a helper function to verify the config file
     # Open and decode the configuration file
     with open(args.configpath) as config_file:
         config = json.load(config_file)
         
-    # TODO write a helper function to verify the config file
-    my_test_fixture = ArteTestFixture("test1", config)
+    # Count the number of clients specified in the config file
+    client_count = count_clients(config)
+    logging.info('client count %d', client_count)
     
-    server = ArteServer("localhost", 9999, my_test_fixture.client_count, my_test_fixture.timeout)
+    # Get the configured timeouts value for things like recv etc
+    timeouts = get_timeouts(config)
     
-    print("client count = ", my_test_fixture.client_count)
+    # Get the timeout for the complete test(s)
+    timeout = get_timeout(config)
     
-    # startup the clients
-    my_test_fixture.test_setup()
+    # Get the watchdog timeout
+    watchdog = get_watchdog(config)
+    
+    # Get the minor frame in major frame count
+    majorframe = get_majorframe(config)
+    
+    # Create an event handler for event callbacks
+    my_event_handler = ArteEventHandler()
+    
+    # Create a server
+    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts, majorframe)
+
+    # Create a test fixture
+    my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
+    
+    # Startup the clients
+    my_event_handler.startup()
      
-    # wait on a shutdown event or timeout
-    # this timeout needs to be changed to a watchdog that gets kicked.
-    if ArteServerGlobals.shutdown_notification.wait(my_test_fixture.timeout):
+    # Wait on a shutdown event or timeout
+    if my_event_handler.shutdown_notification.wait(timeout):
         # A shutdown request was received from a client.
-        server.server_shutdown()
-        time.sleep(1)
-        my_test_fixture.test_teardown()
-        sys.exit(0)
+        my_event_handler.shutdown()
+        sys.exit(my_event_handler.returnCode)
     
     # The event wait returned false so a timeout was reached.
     # Shutdown the server.
-    print ("configured timeout reached")
-    server.server_shutdown()
-    
+    logging.error('Configured timeout reached %d seconds', timeout)
+
     # Terminate clients.
-    my_test_fixture.test_teardown()
-    sys.exit(0)
+    my_event_handler.shutdown()
+    sys.exit(1)
 
 if __name__ == '__main__':
     main()
