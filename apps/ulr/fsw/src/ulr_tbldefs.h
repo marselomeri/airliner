@@ -31,8 +31,8 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_TBLDEFS_H
-#define {{cookiecutter.app_name}}_TBLDEFS_H
+#ifndef ULR_TBLDEFS_H
+#define ULR_TBLDEFS_H
 
 /************************************************************************
 ** Pragmas
@@ -46,7 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
+#include "ulr_platform_cfg.h"
 
 /************************************************************************
 ** Local Defines
@@ -56,7 +56,7 @@ extern "C" {
  * \brief Defines the table identification name used for the
  * configuration table registration.
  */
-#define {{cookiecutter.app_name}}_CONFIG_TABLENAME ("CONFIG_TBL")
+#define ULR_CONFIG_TABLENAME ("CONFIG_TBL")
 
 
 /** \brief Definition for a single config table entry */
@@ -64,14 +64,14 @@ typedef struct
 {
     /* TODO:  Define the configuration table. */
 	uint32  temp;
-} {{cookiecutter.app_name}}_ConfigTbl_t;
+} ULR_ConfigTbl_t;
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* {{cookiecutter.app_name}}_TBLDEFS_H */
+#endif /* ULR_TBLDEFS_H */
 
 /************************/
 /*  End of File Comment */

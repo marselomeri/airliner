@@ -3,11 +3,6 @@
     "output_dir": "/home/vagrant/git/airliner/apps",
     "app_full_name": "uLanding Radar",
     "wakeup_mid_macro": "ULR_READ_SENSOR_MID",
-    "input_messages": {
-        "a": {"var_name": "ActuatorArmed", "mid_macro": "PX4_ACTUATOR_ARMED_MID", "datatype": "PX4_ActuatorArmedMsg_t"},
-        "b": {"var_name": "ActuatorControls0", "mid_macro": "PX4_ACTUATOR_CONTROLS_0_MID", "datatype": "PX4_ActuatorControlsMsg_t"}
-        },
-    "output_messages": {
-        "a": {"var_name": "DistanceSensor", "mid_macro": "PX4_DISTANCE_SENSOR_MID", "datatype": "PX4_DistanceSensorMsg_t"}
-        }
+    "input_messages": {},
+    "output_messages": {}
 }

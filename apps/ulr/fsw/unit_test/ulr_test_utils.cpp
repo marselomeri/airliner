@@ -31,48 +31,51 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_TBLDEFS_H
-#define {{cookiecutter.app_name}}_TBLDEFS_H
-
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
+#include "ulr_test_utils.h"
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_tbl_hooks.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_osapi_stubs.h"
+#include "ut_osfileapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_evs_stubs.h"
 
-/************************************************************************
-** Local Defines
-*************************************************************************/
+#include <time.h>
 
-/**
- * \brief Defines the table identification name used for the
- * configuration table registration.
+/*
+ * Config table for testing
  */
-#define {{cookiecutter.app_name}}_CONFIG_TABLENAME ("CONFIG_TBL")
+ULR_ConfigTbl_t ConfigTbl = {
+        /* TODO:  Define table */
+		0
+};
 
+/*
+ * Function Definitions
+ */
 
-/** \brief Definition for a single config table entry */
-typedef struct
+void ULR_Test_Setup(void)
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
-} {{cookiecutter.app_name}}_ConfigTbl_t;
+    /* initialize test environment to default state for every test */
 
+    Ut_CFE_EVS_Reset();
+    Ut_CFE_FS_Reset();
+    Ut_CFE_TIME_Reset();
+    Ut_CFE_TBL_Reset();
+    Ut_CFE_SB_Reset();
+    Ut_CFE_ES_Reset();
+    Ut_OSAPI_Reset();
+    Ut_OSFILEAPI_Reset();
 
-#ifdef __cplusplus
+    Ut_CFE_TBL_AddTable(ULR_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
 }
-#endif
 
-#endif /* {{cookiecutter.app_name}}_TBLDEFS_H */
+void ULR_Test_TearDown(void) {
 
-/************************/
-/*  End of File Comment */
-/************************/
+}

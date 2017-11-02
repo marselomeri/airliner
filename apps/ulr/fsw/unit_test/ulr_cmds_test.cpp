@@ -31,48 +31,60 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_TBLDEFS_H
-#define {{cookiecutter.app_name}}_TBLDEFS_H
-
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
+#include "ulr_msg.h"
+#include "ulr_cmds_test.h"
+#include "ulr_test_utils.h"
+#include "uttest.h"
+#include "ut_osapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_es_hooks.h"
+#include "ut_cfe_evs_stubs.h"
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
 
-/************************************************************************
-** Local Defines
-*************************************************************************/
-
-/**
- * \brief Defines the table identification name used for the
- * configuration table registration.
- */
-#define {{cookiecutter.app_name}}_CONFIG_TABLENAME ("CONFIG_TBL")
-
-
-/** \brief Definition for a single config table entry */
-typedef struct
+int32 ULR_Cmds_Test_UT_CFE_SB_SubscribeHook1(CFE_SB_MsgId_t MsgId, CFE_SB_PipeId_t PipeId,
+                                                CFE_SB_Qos_t Quality, uint16 MsgLim)
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
-} {{cookiecutter.app_name}}_ConfigTbl_t;
-
-
-#ifdef __cplusplus
+    return 5;
 }
-#endif
 
-#endif /* {{cookiecutter.app_name}}_TBLDEFS_H */
 
-/************************/
-/*  End of File Comment */
-/************************/
+int32 ULR_Cmds_Test_UT_CFE_SB_SubscribeHook2(CFE_SB_MsgId_t MsgId, CFE_SB_PipeId_t PipeId,
+                                                CFE_SB_Qos_t Quality, uint16 MsgLim)
+{
+    return 6;
+}
+
+
+void ULR_Function2_Test_Case1(void)
+{
+/*    int32 Result;
+
+    Variable3 = 3;
+
+    Ut_CFE_SB_SetFunctionHook(UT_CFE_SB_SUBSCRIBE_INDEX, &ULR_Cmds_Test_UT_CFE_SB_SubscribeHook1);
+*/
+    /* Execute the function being tested */
+/*    Result = ULR_Function2();*/
+    
+    /* Verify results */
+/*    UtAssert_True (Variable4 == 4, "Variable4 == 4");
+    UtAssert_True (Result == 25, "Result == 25");
+
+    UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 0, "Ut_CFE_EVS_GetEventQueueDepth() == 0");
+*/
+} /* end ULR_Function2_Test_Case1 */
+
+
+void ULR_Cmds_Test_AddTestCases(void)
+{
+    UtTest_Add(ULR_Function2_Test_Case1, ULR_Test_Setup, ULR_Test_TearDown, "ULR_Function2_Test_Case1");
+} /* end ULR_Cmds_Test_AddTestCases */
+
+

@@ -49,10 +49,11 @@
 #include <time.h>
 
 /*
- * PWM Config table for testing
+ * Config table for testing
  */
 {{cookiecutter.app_name}}_ConfigTbl_t ConfigTbl = {
         /* TODO:  Define table */
+		0
 };
 
 /*

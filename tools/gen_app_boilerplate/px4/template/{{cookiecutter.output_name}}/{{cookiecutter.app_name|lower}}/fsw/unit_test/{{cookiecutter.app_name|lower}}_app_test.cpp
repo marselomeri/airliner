@@ -448,7 +448,7 @@ void Test_{{cookiecutter.app_name}}_AppMain_Nominal_Wakeup(void)
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, {{cookiecutter.app_name}}_UPDATE_MOTORS_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, {{cookiecutter.wakeup_mid_macro}}, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
