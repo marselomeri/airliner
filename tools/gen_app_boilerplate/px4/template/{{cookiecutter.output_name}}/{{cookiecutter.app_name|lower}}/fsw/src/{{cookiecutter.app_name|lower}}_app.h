@@ -66,7 +66,7 @@ extern "C" {
 
 typedef struct
 {
-  {% for message in cookiecutter.input_messages %}
+  {% for dict, message in cookiecutter.input_messages.iteritems() %}
     {{message.datatype}} {{message.var_name}};
   {% endfor %}
 } {{cookiecutter.app_name}}_CurrentValueTable_t;
@@ -101,7 +101,7 @@ public:
     {{cookiecutter.app_name}}_ConfigTbl_t* ConfigTblPtr;
 
     /** \brief Output Data published at the end of cycle */
-    {% for message in output_messages %}
+    {% for dict, message in cookiecutter.output_messages.iteritems() %}
       {{message.datatype}} {{message.var_name}};
     {% endfor %}
 
@@ -267,7 +267,7 @@ public:
      *************************************************************************/
     void ReportHousekeeping(void);
 
-  {% for message in output_messages %}
+  {% for dict,message in cookiecutter.output_messages.iteritems() %}
     /************************************************************************/
     /** \brief Sends the {{message.var_name}} message.
      **

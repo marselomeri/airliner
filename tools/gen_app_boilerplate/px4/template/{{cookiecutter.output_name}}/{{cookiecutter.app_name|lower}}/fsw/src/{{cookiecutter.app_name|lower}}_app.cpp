@@ -148,7 +148,7 @@ int32 {{cookiecutter.app_name}}::InitPipe()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void {{cookiecutter.app_name}}::InitData()
 {
-  {% for message in cookiecutter.output_messages %}
+  {% for dict, message in cookiecutter.output_messages.iteritems() %}
     /* Init actuator outputs message */
     CFE_SB_InitMsg(&ActuatorOutputs,
             PX4_ACTUATOR_OUTPUTS_MID, sizeof(ActuatorOutputs), TRUE);
@@ -260,7 +260,7 @@ int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
 
-		{% for message in cookiecutter.input_messages %}
+		{% for dict, message in cookiecutter.input_messages.iteritems() %}
             case {{message.mid_macro}}:
                 memcpy(&CVT.{{message.var_name}}, MsgPtr, sizeof(CVT.{{message.var_name}}));
                 break;
@@ -402,7 +402,7 @@ void {{cookiecutter.app_name}}::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-{% for message in cookiecutter.output_messages %}
+{% for dict, message in cookiecutter.output_messages.iteritems() %}
 void {{cookiecutter.app_name}}::Send{{message.var_name}}()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&{{message.var_name}});
