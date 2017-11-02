@@ -63,6 +63,7 @@ extern "C" {
 typedef struct
 {
     /* TODO:  Define the configuration table. */
+	uint32  temp;
 } {{cookiecutter.app_name}}_ConfigTbl_t;
 
 

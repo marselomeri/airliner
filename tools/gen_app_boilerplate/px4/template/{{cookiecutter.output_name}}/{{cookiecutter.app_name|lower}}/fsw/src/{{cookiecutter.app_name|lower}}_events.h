@@ -234,22 +234,6 @@ typedef enum {
 */
 	{{cookiecutter.app_name}}_CFGTBL_REG_ERR_EID,
 
-/** \brief <tt> 'Failed to register Mixer table (0x%08X)' </tt>
-**  \event <tt> 'Failed to register Mixer table (0x%08X)' </tt>
-**
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task fails to
-**  register the Mixer configuration table.
-**
-**  The 32 bit hexadecimal number is the error code returned by CFE
-**  #CFE_TBL_Register function.
-**
-*/
-	{{cookiecutter.app_name}}_CFGTBL_REG_ERR_EID,
-
 /** \brief <tt> 'Failed to load Config Table (0x%08X)' </tt>
 **  \event <tt> 'Failed to load Config Table (0x%08X)' </tt>
 **

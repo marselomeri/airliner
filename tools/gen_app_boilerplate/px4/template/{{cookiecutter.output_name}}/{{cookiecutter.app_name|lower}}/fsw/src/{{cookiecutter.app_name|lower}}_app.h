@@ -66,9 +66,9 @@ extern "C" {
 
 typedef struct
 {
-  {% for message in input_messages %}
+  {% for message in cookiecutter.input_messages %}
     {{message.datatype}} {{message.var_name}};
-  {% end for %}
+  {% endfor %}
 } {{cookiecutter.app_name}}_CurrentValueTable_t;
 
 
@@ -103,7 +103,7 @@ public:
     /** \brief Output Data published at the end of cycle */
     {% for message in output_messages %}
       {{message.datatype}} {{message.var_name}};
-    {% end for %}
+    {% endfor %}
 
     /** \brief Housekeeping Telemetry for downlink */
     {{cookiecutter.app_name}}_HkTlm_t HkTlm;
@@ -280,7 +280,7 @@ public:
      **
      *************************************************************************/
     void Send{{message.var_name}}(void);
-  {% end for %}
+  {% endfor %}
 
     /************************************************************************/
     /** \brief Verify Command Length

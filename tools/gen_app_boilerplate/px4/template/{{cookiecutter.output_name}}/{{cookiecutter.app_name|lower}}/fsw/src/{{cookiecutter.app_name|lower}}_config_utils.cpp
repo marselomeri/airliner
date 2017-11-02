@@ -57,7 +57,7 @@ int32 {{cookiecutter.app_name}}::InitConfigTbl()
 		{{cookiecutter.app_name}}_CONFIG_TABLENAME,
 		(sizeof({{cookiecutter.app_name}}_ConfigTbl_t)),
 		CFE_TBL_OPT_DEFAULT,
-		{{cookiecutter.app_name}}::ValidateCfgTbl);
+		{{cookiecutter.app_name}}::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -84,7 +84,7 @@ int32 {{cookiecutter.app_name}}::InitConfigTbl()
 
     iStatus = AcquireConfigPointers();
 
-    {{cookiecutter.app_name}}_InitConfigTbl_Exit_Tag:
+{{cookiecutter.app_name}}_InitConfigTbl_Exit_Tag:
     return iStatus;
 }
 
@@ -94,14 +94,14 @@ int32 {{cookiecutter.app_name}}::InitConfigTbl()
 /* Validate {{cookiecutter.app_name}} Configuration Table                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::ValidateCfgTbl(void* ConfigTblPtr)
+int32 {{cookiecutter.app_name}}::ValidateConfigTbl(void* ConfigTblPtr)
 {
     int32  iStatus=0;
     {{cookiecutter.app_name}}_ConfigTbl_t* {{cookiecutter.app_name}}_ConfigTblPtr = ({{cookiecutter.app_name}}_ConfigTbl_t*)(ConfigTblPtr);
 
     /* TODO:  Add validation code here. */
 
-    {{cookiecutter.app_name}}_ValidateCfgTbl_Exit_Tag:
+{{cookiecutter.app_name}}_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
 
@@ -152,8 +152,7 @@ int32 {{cookiecutter.app_name}}::AcquireConfigPointers(void)
     }
 
 {{cookiecutter.app_name}}_AcquireConfigPointers_Exit_Tag:
-    return (iStatus);
-
+    return iStatus;
 }
 
 

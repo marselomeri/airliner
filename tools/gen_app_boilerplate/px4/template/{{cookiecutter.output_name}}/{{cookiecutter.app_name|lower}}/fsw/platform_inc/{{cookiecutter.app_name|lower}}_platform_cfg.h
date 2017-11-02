@@ -8,7 +8,7 @@ extern "C" {
 /*
 ** {{cookiecutter.app_name}} Platform Configuration Parameter Definitions
 */
-{{cookiecutter.app_name}}
+
 /** \brief Mission specific version number for {{cookiecutter.app_name}} application
 **  
 **  \par Description:
@@ -52,19 +52,19 @@ extern "C" {
 **
 **  \par Limits:
 **       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
-**       {{cookiecutter.app_name}}_SCH_PIPE_WAKEUP_RESERVED and {{cookiecutter.app_name}}_SCH_PIPE_SEND_HK_RESERVED
+**       {{cookiecutter.wakeup_mid_macro}}_MAX_MSG_COUNT and {{cookiecutter.app_name}}_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than {{cookiecutter.app_name}}_SCH_PIPE_DEPTH.
 */
-#define {{cookiecutter.app_name}}_SCH_PIPE_WAKEUP_RESERVED   (1)
+#define {{cookiecutter.wakeup_mid_macro}}_MAX_MSG_COUNT   (1)
 
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
-**       {{cookiecutter.app_name}}_SCH_PIPE_WAKEUP_RESERVED and {{cookiecutter.app_name}}_SCH_PIPE_SEND_HK_RESERVED
+**       {{cookiecutter.wakeup_mid_macro}}_MAX_MSG_COUNT and {{cookiecutter.app_name}}_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than {{cookiecutter.app_name}}_SCH_PIPE_DEPTH.
 */
-#define {{cookiecutter.app_name}}_SCH_PIPE_SEND_HK_RESERVED  (1)
+#define {{cookiecutter.app_name}}_SEND_HK_MID_MAX_MSG_COUNT  (1)
 
 /** \brief Pipe depth for the command pipe
 **

@@ -5,7 +5,10 @@
 extern "C" {
 #endif
 
-#include "msg_ids.h"
+#define {{cookiecutter.app_name}}_HK_TLM_MID    0x0000
+#define {{cookiecutter.app_name}}_SEND_HK_MID   0x0000
+#define {{cookiecutter.wakeup_mid_macro}}       0x0000
+#define {{cookiecutter.app_name}}_CMD_MID       0x0000
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,3 @@
-https://bitbucket.org/windhoverlabs/airliner
-
 /************************************************************************
 ** Includes
 *************************************************************************/
@@ -77,7 +75,7 @@ int32 {{cookiecutter.app_name}}::InitPipe()
 			{{cookiecutter.app_name}}_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx({{cookiecutter.app_name}}_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, {{cookiecutter.app_name}}_SCH_PIPE_WAKEUP_RESERVED);
+        iStatus = CFE_SB_SubscribeEx({{cookiecutter.wakeup_mid_macro}}, SchPipeId, CFE_SB_Default_Qos, {{cookiecutter.wakeup_mid_macro}}_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -86,7 +84,7 @@ int32 {{cookiecutter.app_name}}::InitPipe()
             goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx({{cookiecutter.app_name}}_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, {{cookiecutter.app_name}}_SCH_PIPE_SEND_HK_RESERVED);
+        iStatus = CFE_SB_SubscribeEx({{cookiecutter.app_name}}_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, {{cookiecutter.app_name}}_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -94,8 +92,7 @@ int32 {{cookiecutter.app_name}}::InitPipe()
 					 (unsigned int)iStatus);
             goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
         }
-
-    {% for message in input_messages %}
+    {% for dict,message in cookiecutter.input_messages.iteritems() %}
         iStatus = CFE_SB_SubscribeEx({{message.mid_macro}}, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
@@ -104,7 +101,8 @@ int32 {{cookiecutter.app_name}}::InitPipe()
 					 iStatus);
             goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
         }
-    {% end for %}
+    {% endfor %}
+    }
     else
     {
         (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
@@ -150,7 +148,7 @@ int32 {{cookiecutter.app_name}}::InitPipe()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void {{cookiecutter.app_name}}::InitData()
 {
-  {% for message in output_messages %}
+  {% for message in cookiecutter.output_messages %}
     /* Init actuator outputs message */
     CFE_SB_InitMsg(&ActuatorOutputs,
             PX4_ACTUATOR_OUTPUTS_MID, sizeof(ActuatorOutputs), TRUE);
@@ -166,7 +164,7 @@ void {{cookiecutter.app_name}}::InitData()
 					 iStatus);
             goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
         }
-  {% end for %}
+  {% endfor %}
 }
 
 
@@ -205,16 +203,7 @@ int32 {{cookiecutter.app_name}}::InitApp()
         goto {{cookiecutter.app_name}}_InitApp_Exit_Tag;
     }
 
-    iStatus = InitDevice();
-    if (iStatus != CFE_SUCCESS)
-    {
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_DEVICE_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to init device (0x%08lx)",
-                                 iStatus);
-        goto {{cookiecutter.app_name}}_InitApp_Exit_Tag;
-    }
-
-    {{cookiecutter.app_name}}_InitApp_Exit_Tag:
+{{cookiecutter.app_name}}_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_INIT_INF_EID, CFE_EVS_INFORMATION,
@@ -271,11 +260,11 @@ int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
 
-		{% for message in input_messages %}
+		{% for message in cookiecutter.input_messages %}
             case {{message.mid_macro}}:
                 memcpy(&CVT.{{message.var_name}}, MsgPtr, sizeof(CVT.{{message.var_name}}));
                 break;
-		{% end for %}
+		{% endfor %}
 
             default:
                 (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
@@ -303,7 +292,7 @@ int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
 			  "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return (iStatus);
+    return iStatus;
 }
 
 
@@ -413,7 +402,7 @@ void {{cookiecutter.app_name}}::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-{% for message in output_messages %}
+{% for message in cookiecutter.output_messages %}
 void {{cookiecutter.app_name}}::Send{{message.var_name}}()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&{{message.var_name}});
@@ -421,7 +410,7 @@ void {{cookiecutter.app_name}}::Send{{message.var_name}}()
 }
 
 
-{% end for %}
+{% endfor %}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -453,7 +442,7 @@ boolean {{cookiecutter.app_name}}::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return (bResult);
+    return bResult;
 }
 
 

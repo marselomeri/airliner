@@ -28,7 +28,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
     */
 
     "{{cookiecutter.app_name}}_ConfigTbl", "{{cookiecutter.app_name}}.CONFIG_TBL", "{{cookiecutter.app_name}} default config table",
-    "{{cookiecutter.app_name|LOWER}}_config.tbl", (sizeof({{cookiecutter.app_name}}_ConfigTbl_t))
+    "{{cookiecutter.app_name|lower}}_config.tbl", (sizeof({{cookiecutter.app_name}}_ConfigTbl_t))
 };
 
 /*
