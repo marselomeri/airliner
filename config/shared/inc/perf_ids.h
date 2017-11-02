@@ -37,6 +37,8 @@
 #define AMC_MAIN_TASK_PERF_ID       67
 #define MAC_MAIN_TASK_PERF_ID       68
 #define EA_MAIN_TASK_PERF_ID        69
+#define ULR_MAIN_TASK_PERF_ID       70
+#define RGBLED_MAIN_TASK_PERF_ID    71
 
 #endif
 

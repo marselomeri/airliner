@@ -166,14 +166,67 @@ typedef struct
 /************************************************************************
 ** Function Prototypes
 *************************************************************************/
+/************************************************************************/
+/** \brief Custom function to initialize custom device data structure. 
+**
+**  \par Description
+**       This function is called on app startup, reload, restart etc
+**       to initialize non-zero data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+**  \returns
+**  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
+**  \retstmt Return codes from #CFE_EVS_Register  \endcode
+**  \endreturns
+**
+*************************************************************************/
 int32 RGBLED_Custom_InitData(void);
 
-int32 RGBLED_Custom_Init(void);
+/************************************************************************/
+/** \brief Custom function to initialize custom device(s).
+**
+**  \par Description
+**       This function is called at initialization and allows the
+**       custom layer to provide specific functionality to initialize
+**       internal objects.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+**  \returns
+**  TRUE if successful, FALSE otherwise.
+**  \endreturns
+**
+*************************************************************************/
+boolean RGBLED_Custom_Init(void);
 
 int32 RGBLED_Custom_Send(...);
 
 int32 RGBLED_Custom_Receive(...);
 
+/************************************************************************/
+/** \brief Custom function to uninitialize custom device(s).
+**
+**  \par Description
+**       This function is called in preparation for loading a new
+**       configuration, allowing the custom layer to do whatever it
+**       needs with the current configuration before reconfiguration,
+**       if anything. Also, called in cleanup to close and uninitialize
+**       device resources.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+**  \returns
+**  TRUE if successful, FALSE otherwise.
+**  \endreturns
+**
+*************************************************************************/
 int32 RGBLED_Custom_Uninit(void);
 
 #endif /* RGBLED_CUSTOM_H */

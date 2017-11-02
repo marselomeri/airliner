@@ -238,3 +238,23 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_perfids.h
 )
+
+add_airliner_app(
+    ulr
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ulr_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_perfids.h
+)
+
+add_airliner_app(
+    rgbled
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/rgbled_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rgbled_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rgbled_perfids.h
+)
