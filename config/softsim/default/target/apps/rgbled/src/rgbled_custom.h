@@ -147,15 +147,27 @@
 */
 #define RGBLED_DEVICE_PATH              "/dev/i2c-1"
 
+/** \brief Max device path.
+**
+**  \par Description:
+**       None.
+*/
+#define RGBLED_MAX_DEVICE_PATH          OS_MAX_LOCAL_PATH_LEN
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
 typedef struct
 {
-    uint8   Settings;
-    uint8   RedDutyCycle;
-    uint8   GreenDutyCycle;
-    uint8   BlueDutyCycle;
+    /*! Device file descriptor */
+    int                 DeviceFd;
+    /*! Path to device */
+    char                DevName[RGBLED_MAX_DEVICE_PATH];
+    /*! */
+    uint8               Settings;
+    uint8               RedDutyCycle;
+    uint8               GreenDutyCycle;
+    uint8               BlueDutyCycle;
 } RGBLED_AppCustomData_t;
 
 
@@ -178,12 +190,11 @@ typedef struct
 **       layers will do anything in this function.
 **
 **  \returns
-**  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS \endcode
-**  \retstmt Return codes from #CFE_EVS_Register  \endcode
+**  TRUE if successful, FALSE otherwise.
 **  \endreturns
 **
 *************************************************************************/
-int32 RGBLED_Custom_InitData(void);
+boolean RGBLED_Custom_InitData(void);
 
 /************************************************************************/
 /** \brief Custom function to initialize custom device(s).
@@ -227,6 +238,6 @@ int32 RGBLED_Custom_Receive(...);
 **  \endreturns
 **
 *************************************************************************/
-int32 RGBLED_Custom_Uninit(void);
+boolean RGBLED_Custom_Uninit(void);
 
 #endif /* RGBLED_CUSTOM_H */

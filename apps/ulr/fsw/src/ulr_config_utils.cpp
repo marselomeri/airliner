@@ -35,7 +35,7 @@
 extern "C" {
 #endif
 
-#include "{{cookiecutter.app_name|lower}}_app.h"
+#include "ulr_app.h"
 #include <math.h>
 
 /************************************************************************
@@ -48,60 +48,60 @@ extern "C" {
 /* Initialize Config Table                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::InitConfigTbl()
+int32 ULR::InitConfigTbl()
 {
     int32  iStatus=0;
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		{{cookiecutter.app_name}}_CONFIG_TABLENAME,
-		(sizeof({{cookiecutter.app_name}}_ConfigTbl_t)),
+		ULR_CONFIG_TABLENAME,
+		(sizeof(ULR_ConfigTbl_t)),
 		CFE_TBL_OPT_DEFAULT,
-		{{cookiecutter.app_name}}::ValidateConfigTbl);
+		ULR::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
          * made critical this logic would have to change. */
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CFGTBL_REG_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(ULR_CFGTBL_REG_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to register config table (0x%08lX)",
                                  iStatus);
-        goto {{cookiecutter.app_name}}_InitConfigTbl_Exit_Tag;
+        goto ULR_InitConfigTbl_Exit_Tag;
     }
 
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   {{cookiecutter.app_name}}_CONFIG_TABLE_FILENAME);
+						   ULR_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
            load is desired then this logic would have to change. */
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CFGTBL_LOAD_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(ULR_CFGTBL_LOAD_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to load Config Table (0x%08lX)",
                                  iStatus);
-        goto {{cookiecutter.app_name}}_InitConfigTbl_Exit_Tag;
+        goto ULR_InitConfigTbl_Exit_Tag;
     }
 
     iStatus = AcquireConfigPointers();
 
-{{cookiecutter.app_name}}_InitConfigTbl_Exit_Tag:
+ULR_InitConfigTbl_Exit_Tag:
     return iStatus;
 }
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Validate {{cookiecutter.app_name}} Configuration Table                                */
+/* Validate ULR Configuration Table                                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::ValidateConfigTbl(void* ConfigTblPtr)
+int32 ULR::ValidateConfigTbl(void* ConfigTblPtr)
 {
     int32  iStatus=0;
-    {{cookiecutter.app_name}}_ConfigTbl_t* {{cookiecutter.app_name}}_ConfigTblPtr = ({{cookiecutter.app_name}}_ConfigTbl_t*)(ConfigTblPtr);
+    ULR_ConfigTbl_t* ULR_ConfigTblPtr = (ULR_ConfigTbl_t*)(ConfigTblPtr);
 
     /* TODO:  Add validation code here. */
 
-{{cookiecutter.app_name}}_ValidateConfigTbl_Exit_Tag:
+ULR_ValidateConfigTbl_Exit_Tag:
     return iStatus;
 }
 
@@ -111,7 +111,7 @@ int32 {{cookiecutter.app_name}}::ValidateConfigTbl(void* ConfigTblPtr)
 /* Acquire Config Pointers                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::AcquireConfigPointers(void)
+int32 ULR::AcquireConfigPointers(void)
 {
     int32 iStatus = CFE_SUCCESS;
 
@@ -129,10 +129,10 @@ int32 {{cookiecutter.app_name}}::AcquireConfigPointers(void)
     iStatus = CFE_TBL_Manage(ConfigTblHdl);
     if ((iStatus != CFE_SUCCESS) && (iStatus != CFE_TBL_INFO_UPDATED))
     {
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CFGTBL_MANAGE_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to manage {{cookiecutter.app_name}} Config table (0x%08lX)",
+        (void) CFE_EVS_SendEvent(ULR_CFGTBL_MANAGE_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to manage ULR Config table (0x%08lX)",
                                  iStatus);
-        goto {{cookiecutter.app_name}}_AcquireConfigPointers_Exit_Tag;
+        goto ULR_AcquireConfigPointers_Exit_Tag;
     }
 
     /*
@@ -146,12 +146,12 @@ int32 {{cookiecutter.app_name}}::AcquireConfigPointers(void)
     else if(iStatus != CFE_SUCCESS)
     {
     	ConfigTblPtr = 0;
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(ULR_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);
     }
 
-{{cookiecutter.app_name}}_AcquireConfigPointers_Exit_Tag:
+ULR_AcquireConfigPointers_Exit_Tag:
     return iStatus;
 }
 

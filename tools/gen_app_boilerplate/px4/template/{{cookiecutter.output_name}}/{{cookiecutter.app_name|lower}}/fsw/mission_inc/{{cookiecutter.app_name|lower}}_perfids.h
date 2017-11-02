@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "perf_ids.h"
+#define {{cookiecutter.app_name}}_APPMAIN_PERF_ID      0
 
 #ifdef __cplusplus
 }

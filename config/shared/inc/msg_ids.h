@@ -582,4 +582,5 @@
 #define RGBLED_HK_TLM_MID                           0x0c4f
 
 #define SCH_ACTIVITY_DONE_MID						0x0f00
+
 #endif

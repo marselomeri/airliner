@@ -31,8 +31,8 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_APP_H
-#define {{cookiecutter.app_name}}_APP_H
+#ifndef ULR_APP_H
+#define ULR_APP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,19 +47,16 @@ extern "C" {
  *************************************************************************/
 #include "cfe.h"
 
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
-#include "{{cookiecutter.app_name|lower}}_mission_cfg.h"
-#include "{{cookiecutter.app_name|lower}}_perfids.h"
-#include "{{cookiecutter.app_name|lower}}_msgids.h"
-#include "{{cookiecutter.app_name|lower}}_msg.h"
-#include "{{cookiecutter.app_name|lower}}_events.h"
-#include "{{cookiecutter.app_name|lower}}_tbldefs.h"
-{%- for dict, message in cookiecutter.input_messages.iteritems() %}
-#include "{{message.include_file}}"
-{%- endfor %}
-{%- for dict, message in cookiecutter.output_messages.iteritems() %}
-#include "{{message.include_file}}"
-{%- endfor %}
+#include "ulr_platform_cfg.h"
+#include "ulr_mission_cfg.h"
+#include "ulr_perfids.h"
+#include "ulr_msgids.h"
+#include "ulr_msg.h"
+#include "ulr_events.h"
+#include "ulr_tbldefs.h"
+#include "px4_msgs.h"
+#include "px4_msgs.h"
+#include "px4_msgs.h"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -67,24 +64,21 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
-{%- if cookiecutter.input_messages|length > 0 %}
 typedef struct
 {
-  {%- for dict, message in cookiecutter.input_messages.iteritems() %}
-    {{message.datatype}} {{message.var_name}};
-  {%- endfor %}
-} {{cookiecutter.app_name}}_CurrentValueTable_t;
-{%- endif %}
+    PX4_ActuatorArmedMsg_t ActuatorArmed;
+    PX4_ActuatorControlsMsg_t ActuatorControls0;
+} ULR_CurrentValueTable_t;
 
 
 /**
- **  \brief {{cookiecutter.app_name}} Application Class
+ **  \brief ULR Application Class
  */
-class {{cookiecutter.app_name}}
+class ULR
 {
 public:
-    {{cookiecutter.app_name}}();
-    ~{{cookiecutter.app_name}}();
+    ULR();
+    ~ULR();
 
     /**\brief Scheduling Pipe ID */
     CFE_SB_PipeId_t SchPipeId;
@@ -103,28 +97,19 @@ public:
     CFE_TBL_Handle_t ConfigTblHdl;
 
     /** \brief Config Table Pointer */
-    {{cookiecutter.app_name}}_ConfigTbl_t* ConfigTblPtr;
-
-  {%- if cookiecutter.output_messages|length > 0 %}
+    ULR_ConfigTbl_t* ConfigTblPtr;
     /** \brief Output Data published at the end of cycle */
-  {%- for dict, message in cookiecutter.output_messages.iteritems() %}
-    {{message.datatype}} {{message.var_name}};
-  {%- endfor %}
-  {%- endif %}
+    PX4_DistanceSensorMsg_t DistanceSensor;
 
     /** \brief Housekeeping Telemetry for downlink */
-    {{cookiecutter.app_name}}_HkTlm_t HkTlm;
-
-    {%- if cookiecutter.input_messages|length > 0 %}
+    ULR_HkTlm_t HkTlm;
     /** \brief Current Value Table */
-    {{cookiecutter.app_name}}_CurrentValueTable_t CVT;
-
-    {%- endif %}
+    ULR_CurrentValueTable_t CVT;
     /************************************************************************/
-    /** \brief {{cookiecutter.app_full_name}} ({{cookiecutter.app_name}}) application entry point
+    /** \brief uLanding Radar (ULR) application entry point
      **
      **  \par Description
-     **       {{cookiecutter.app_full_name}} Task application entry point.  This function
+     **       uLanding Radar Task application entry point.  This function
      **       performs app initialization, then waits for the cFE ES Startup
      **       Sync, then executes the main processing loop.
      **
@@ -136,12 +121,12 @@ public:
     void AppMain(void);
 
     /************************************************************************/
-    /** \brief Initialize the {{cookiecutter.app_full_name}} ({{cookiecutter.app_name}}) application
+    /** \brief Initialize the uLanding Radar (ULR) application
      **
      **  \par Description
-     **       {{cookiecutter.app_full_name}} application initialization routine. This
+     **       uLanding Radar application initialization routine. This
      **       function performs all the required startup steps to
-     **       initialize (or restore from CDS) {{cookiecutter.app_name}} data structures and get
+     **       initialize (or restore from CDS) ULR data structures and get
      **       the application registered with the cFE services so it can
      **       begin to receive command messages and send events.
      **
@@ -151,10 +136,10 @@ public:
      **  \returns
      **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS    \endcode
      **  \retstmt Return codes from #CFE_ES_RegisterApp          \endcode
-     **  \retstmt Return codes from #{{cookiecutter.app_name}}_InitEvent               \endcode
-     **  \retstmt Return codes from #{{cookiecutter.app_name}}_InitPipe                \endcode
-     **  \retstmt Return codes from #{{cookiecutter.app_name}}_InitData                \endcode
-     **  \retstmt Return codes from #{{cookiecutter.app_name}}_InitConfigTbl           \endcode
+     **  \retstmt Return codes from #ULR_InitEvent               \endcode
+     **  \retstmt Return codes from #ULR_InitPipe                \endcode
+     **  \retstmt Return codes from #ULR_InitData                \endcode
+     **  \retstmt Return codes from #ULR_InitConfigTbl           \endcode
      **  \retstmt Return codes from #OS_TaskInstallDeleteHandler \endcode
      **  \endreturns
      **
@@ -166,7 +151,7 @@ public:
      **
      **  \par Description
      **       This function performs the steps required to setup
-     **       cFE Event Services for use by the {{cookiecutter.app_name}} application.
+     **       cFE Event Services for use by the ULR application.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -180,11 +165,11 @@ public:
     int32 InitEvent(void);
 
     /************************************************************************/
-    /** \brief Initialize global variables used by {{cookiecutter.app_name}} application
+    /** \brief Initialize global variables used by ULR application
      **
      **  \par Description
      **       This function performs the steps required to initialize
-     **       the {{cookiecutter.app_name}} application data.
+     **       the ULR application data.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -198,7 +183,7 @@ public:
      **  \par Description
      **       This function performs the steps required to setup
      **       initialize the cFE Software Bus message pipes and subscribe to
-     **       messages for the {{cookiecutter.app_name}} application.
+     **       messages for the ULR application.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -218,7 +203,7 @@ public:
      **
      **  \par Description
      **       This function receives and processes messages
-     **       for the {{cookiecutter.app_name}} application from the SCH pipe.  This function
+     **       for the ULR application from the SCH pipe.  This function
      **       will pend for the type defined by iBlocking, allowing
      **       it to wait for messages, i.e. wakeup messages from scheduler.
      **
@@ -237,11 +222,11 @@ public:
     int32 RcvSchPipeMsg(int32 iBlocking);
 
     /************************************************************************/
-    /** \brief {{cookiecutter.app_full_name}} Task incoming command processing
+    /** \brief uLanding Radar Task incoming command processing
      **
      **  \par Description
      **       This function processes incoming commands subscribed
-     **       by {{cookiecutter.app_name}} application
+     **       by ULR application
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -250,11 +235,11 @@ public:
     void ProcessCmdPipe(void);
 
     /************************************************************************/
-    /** \brief {{cookiecutter.app_full_name}} Task application commands
+    /** \brief uLanding Radar Task application commands
      **
      **  \par Description
      **       This function processes command messages
-     **       specific to the {{cookiecutter.app_name}} application
+     **       specific to the ULR application
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -266,7 +251,7 @@ public:
     void ProcessAppCmds(CFE_SB_Msg_t* MsgPtr);
 
     /************************************************************************/
-    /** \brief Sends {{cookiecutter.app_name}} housekeeping message
+    /** \brief Sends ULR housekeeping message
      **
      **  \par Description
      **       This function sends the housekeeping message
@@ -276,26 +261,18 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
-
-
-  {%- if cookiecutter.output_messages|length > 0 %}
-  {%- for dict,message in cookiecutter.output_messages.iteritems() %}
     /************************************************************************/
-    /** \brief Sends the {{message.var_name}} message.
+    /** \brief Sends the DistanceSensor message.
      **
      **  \par Description
-     **       This function publishes the {{message.var_name}} message containing
+     **       This function publishes the DistanceSensor message containing
      **       <TODO>
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
      **
      *************************************************************************/
-    void Send{{message.var_name}}(void);
-
-
-  {%- endfor %}
-  {%- endif %}
+    void SendDistanceSensor(void);
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -318,10 +295,10 @@ public:
 
 private:
     /************************************************************************/
-    /** \brief Initialize the {{cookiecutter.app_name}} configuration tables.
+    /** \brief Initialize the ULR configuration tables.
     **
     **  \par Description
-    **       This function initializes {{cookiecutter.app_name}}'s configuration tables.  This
+    **       This function initializes ULR's configuration tables.  This
     **       includes <TODO>.
     **
     **  \par Assumptions, External Events, and Notes:
@@ -331,14 +308,14 @@ private:
     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
     **  \retstmt Return codes from #CFE_TBL_Register          \endcode
     **  \retstmt Return codes from #CFE_TBL_Load              \endcode
-    **  \retstmt Return codes from #{{cookiecutter.app_name}}_AcquireConfigPointers \endcode
+    **  \retstmt Return codes from #ULR_AcquireConfigPointers \endcode
     **  \endreturns
     **
     *************************************************************************/
     int32  InitConfigTbl(void);
 
     /************************************************************************/
-    /** \brief Obtain {{cookiecutter.app_name}} configuration tables data pointers.
+    /** \brief Obtain ULR configuration tables data pointers.
     **
     **  \par Description
     **       This function manages the configuration tables
@@ -356,10 +333,10 @@ private:
 
 public:
     /************************************************************************/
-    /** \brief Validate {{cookiecutter.app_name}} configuration table
+    /** \brief Validate ULR configuration table
     **
     **  \par Description
-    **       This function validates {{cookiecutter.app_name}}'s configuration table
+    **       This function validates ULR's configuration table
     **
     **  \par Assumptions, External Events, and Notes:
     **       None
@@ -378,7 +355,7 @@ public:
 }
 #endif 
 
-#endif /* {{cookiecutter.app_name}}_APP_H */
+#endif /* ULR_APP_H */
 
 /************************/
 /*  End of File Comment */

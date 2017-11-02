@@ -31,47 +31,61 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_TBLDEFS_H
-#define {{cookiecutter.app_name}}_TBLDEFS_H
+#ifndef ULR_VERSION_H
+#define ULR_VERSION_H
 
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "cfe.h"
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
+/** \brief Major version number for ULR application
+**  
+**  \par Description:
+**       An application version number consists of four parts:
+**       major version number, minor version number, revision
+**       number and mission specific revision number. The mission
+**       specific revision number is defined in "ulr_platform_cfg.h".
+**
+**  \par Limits:
+**       Must be defined as a numeric value that is greater than
+**       or equal to zero.
+*/
+#define ULR_MAJOR_VERSION    (1)
 
-/************************************************************************
-** Local Defines
-*************************************************************************/
+/** \brief Minor version number for ULR application
+**  
+**  \par Description:
+**       An application version number consists of four parts:
+**       major version number, minor version number, revision
+**       number and mission specific revision number. The mission
+**       specific revision number is defined in "ulr_platform_cfg.h".
+**
+**  \par Limits:
+**       Must be defined as a numeric value that is greater than
+**       or equal to zero.
+*/
+#define ULR_MINOR_VERSION    (0)
 
-/**
- * \brief Defines the table identification name used for the
- * configuration table registration.
- */
-#define {{cookiecutter.app_name}}_CONFIG_TABLENAME ("CONFIG_TBL")
-
-
-/** \brief Definition for a single config table entry */
-typedef struct
-{
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
-} {{cookiecutter.app_name}}_ConfigTbl_t;
+/** \brief Revision version number for ULR application
+**  
+**  \par Description:
+**       An application version number consists of four parts:
+**       major version number, minor version number, revision
+**       number and mission specific revision number. The mission
+**       specific revision number is defined in "ulr_platform_cfg.h".
+**
+**  \par Limits:
+**       Must be defined as a numeric value that is greater than
+**       or equal to zero.
+*/
+#define ULR_REVISION         (0)
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* {{cookiecutter.app_name}}_TBLDEFS_H */
+#endif /* ULR_VERSION_H */
 
 /************************/
 /*  End of File Comment */

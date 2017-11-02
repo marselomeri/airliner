@@ -6,7 +6,7 @@
 ** Include Files
 */
 #include "cfe_tbl_filedef.h"
-#include "{{cookiecutter.app_name|lower}}_tbldefs.h"
+#include "ulr_tbldefs.h"
 
 /*
 ** Local Defines
@@ -27,8 +27,8 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
     **    ObjSize - size of the entire table
     */
 
-    "{{cookiecutter.app_name}}_ConfigTbl", "{{cookiecutter.app_name}}.CONFIG_TBL", "{{cookiecutter.app_name}} default config table",
-    "{{cookiecutter.app_name|lower}}_config.tbl", (sizeof({{cookiecutter.app_name}}_ConfigTbl_t))
+    "ULR_ConfigTbl", "ULR.CONFIG_TBL", "ULR default config table",
+    "ulr_config.tbl", (sizeof(ULR_ConfigTbl_t))
 };
 
 /*
@@ -39,8 +39,8 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 ** Global Variables
 */
 
-/* Default {{cookiecutter.app_name}} config table data */
-{{cookiecutter.app_name}}_ConfigTbl_t {{cookiecutter.app_name}}_ConfigTbl =
+/* Default ULR config table data */
+ULR_ConfigTbl_t ULR_ConfigTbl =
 {
 	/* TODO:  Define table. */
 };
@@ -58,6 +58,6 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 */
 
 /*=======================================================================================
-** End of file {{cookiecutter.app_name|lower}}_config.c
+** End of file ulr_config.c
 **=====================================================================================*/
     

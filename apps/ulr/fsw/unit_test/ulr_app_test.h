@@ -31,48 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_TBLDEFS_H
-#define {{cookiecutter.app_name}}_TBLDEFS_H
+#ifndef ULR_APP_TEST_H
+#define ULR_APP_TEST_H
 
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "cfe.h"
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
-
-/************************************************************************
-** Local Defines
-*************************************************************************/
-
-/**
- * \brief Defines the table identification name used for the
- * configuration table registration.
- */
-#define {{cookiecutter.app_name}}_CONFIG_TABLENAME ("CONFIG_TBL")
-
-
-/** \brief Definition for a single config table entry */
-typedef struct
-{
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
-} {{cookiecutter.app_name}}_ConfigTbl_t;
+void ULR_App_Test_AddTestCases(void);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* {{cookiecutter.app_name}}_TBLDEFS_H */
-
-/************************/
-/*  End of File Comment */
-/************************/
+#endif /* ULR_APP_TEST_H */

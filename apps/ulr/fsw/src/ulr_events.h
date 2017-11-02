@@ -31,8 +31,8 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_EVENTS_H
-#define {{cookiecutter.app_name}}_EVENTS_H
+#ifndef ULR_EVENTS_H
+#define ULR_EVENTS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,7 +51,7 @@ extern "C" {
 typedef enum {
 
 /** \brief <tt> Value of zero is reserved, and should not be used. </tt> */
-	{{cookiecutter.app_name}}_RESERVED_EID = 0,  /* Do not use this event ID */
+	ULR_RESERVED_EID = 0,  /* Do not use this event ID */
 
 /** \brief <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
@@ -60,19 +60,19 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the {{cookiecutter.app_name}} task has completed
+**  This event message is issued when the ULR task has completed
 **  initialization.
 **
 **  The first \c %d field contains the application major version defined
-**      in #{{cookiecutter.app_name}}_MAJOR_VERSION.
+**      in #ULR_MAJOR_VERSION.
 **  The second \c %d field contains the application minor version defined
-**      in #{{cookiecutter.app_name}}_MINOR_VERSION.
+**      in #ULR_MINOR_VERSION.
 **  The third \c %d field contains the application revision number defined
-**      in #{{cookiecutter.app_name}}_REVISION.
+**      in #ULR_REVISION.
 **  The fourth \c %d field contains the application revision number defined
-**      in #{{cookiecutter.app_name}}_MISSION_REV.
+**      in #ULR_MISSION_REV.
 */
-	{{cookiecutter.app_name}}_INIT_INF_EID,
+	ULR_INIT_INF_EID,
 
 /** \brief <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
@@ -81,21 +81,21 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task receives a NoOp
+**  This event message is issued when the CFS ULR Task receives a NoOp
 **  command.
 **
 **  The first \c %u field contains the application major version defined
-**      in #{{cookiecutter.app_name}}_MAJOR_VERSION.
+**      in #ULR_MAJOR_VERSION.
 **  The first \c %d field contains the application major version defined
-**      in #{{cookiecutter.app_name}}_MAJOR_VERSION.
+**      in #ULR_MAJOR_VERSION.
 **  The second \c %d field contains the application minor version defined
-**      in #{{cookiecutter.app_name}}_MINOR_VERSION.
+**      in #ULR_MINOR_VERSION.
 **  The third \c %d field contains the application revision number defined
-**      in #{{cookiecutter.app_name}}_REVISION.
+**      in #ULR_REVISION.
 **  The fourth \c %d field contains the application revision number defined
-**      in #{{cookiecutter.app_name}}_MISSION_REV.
+**      in #ULR_MISSION_REV.
 */
-	{{cookiecutter.app_name}}_CMD_NOOP_EID,
+	ULR_CMD_NOOP_EID,
 
     /** \brief <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
     **  \event <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
@@ -104,7 +104,7 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task fails to subscribe
+**  This event message is issued when the CFS ULR Task fails to subscribe
 **  to a message at initialization.
 **
 **  The first \c %s field contains the name of the pipe.
@@ -112,7 +112,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	{{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID,
+	ULR_SUBSCRIBE_ERR_EID,
 
 /** \brief <tt> 'Failed to create \%s pipe (0x\%08X)' </tt>
 **  \event <tt> 'Failed to create \%s pipe (0x\%08X' </tt>
@@ -121,14 +121,14 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task fails to create a
+**  This event message is issued when the CFS ULR Task fails to create a
 **  CFE Software Bus pipe at initialization.
 **
 **  The \c %s field contains the name of the pipe.
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	{{cookiecutter.app_name}}_PIPE_INIT_ERR_EID,
+	ULR_PIPE_INIT_ERR_EID,
 
 /** \brief <tt> 'Failed to manage Config table (0x\%08X)' </tt>
 **  \event <tt> 'Failed to manage Config table (0x\%08X)' </tt>
@@ -141,7 +141,7 @@ typedef enum {
 **  #CFE_TBL_Manage function.
 **
 */
-	{{cookiecutter.app_name}}_CFGTBL_MANAGE_ERR_EID,
+	ULR_CFGTBL_MANAGE_ERR_EID,
 
 /** \brief <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
 **  \event <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
@@ -154,7 +154,7 @@ typedef enum {
 **  #CFE_TBL_GetAddress function.
 **
 */
-	{{cookiecutter.app_name}}_CFGTBL_GETADDR_ERR_EID,
+	ULR_CFGTBL_GETADDR_ERR_EID,
 
 /** \brief <tt> '\%s pipe read error (0x\%08X).' </tt>
 **  \event <tt> '\%s pipe read error (0x\%08X).' </tt>
@@ -163,14 +163,14 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task has
+**  This event message is issued when the CFS ULR Task has
 **  had an error reading from a pipe.
 **
 **  The \c %s field contains the name of the pipe.
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	{{cookiecutter.app_name}}_RCVMSG_ERR_EID,
+	ULR_RCVMSG_ERR_EID,
 
 /** \brief <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
 **  \event <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
@@ -179,13 +179,13 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task has received an invalid
+**  This event message is issued when the CFS ULR Task has received an invalid
 **  message ID.
 **
 **  The \c %s field contains the name of the pipe.
 **  The 16 bit hexadecimal number is the actual message ID received.
 */
-	{{cookiecutter.app_name}}_MSGID_ERR_EID,
+	ULR_MSGID_ERR_EID,
 
 /** \brief <tt> 'Recvd invalid command code (\%u)' </tt>
 **  \event <tt> 'Recvd invalid command code (\%u)' </tt>
@@ -194,12 +194,12 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task has received an invalid
+**  This event message is issued when the CFS ULR Task has received an invalid
 **  message ID.
 **
 **  The %u field contains the actual command code received.
 */
-	{{cookiecutter.app_name}}_CC_ERR_EID,
+	ULR_CC_ERR_EID,
 
 /** \brief <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
 **  \event <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
@@ -208,7 +208,7 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}}Task has
+**  This event message is issued when the CFS ULRTask has
 **  received a message with an invalid length.
 **
 **  The first \c %d field contains the message ID.
@@ -216,7 +216,7 @@ typedef enum {
 **  The third \c %d field contains the actual length.
 **  The fourth \c %d field contains the expected length.
 */
-	{{cookiecutter.app_name}}_MSGLEN_ERR_EID,
+	ULR_MSGLEN_ERR_EID,
 
 /** \brief <tt> 'Failed to register config table (0x%08X)' </tt>
 **  \event <tt> 'Failed to register config table (0x%08X)' </tt>
@@ -225,14 +225,14 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task fails to
-**  register the {{cookiecutter.app_name}} configuration table.
+**  This event message is issued when the CFS ULR Task fails to
+**  register the ULR configuration table.
 **
 **  The 32 bit hexadecimal number is the error code returned by CFE
 **  #CFE_TBL_Register function.
 **
 */
-	{{cookiecutter.app_name}}_CFGTBL_REG_ERR_EID,
+	ULR_CFGTBL_REG_ERR_EID,
 
 /** \brief <tt> 'Failed to load Config Table (0x%08X)' </tt>
 **  \event <tt> 'Failed to load Config Table (0x%08X)' </tt>
@@ -241,25 +241,25 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the CFS {{cookiecutter.app_name}} Task fails to
-**  load the {{cookiecutter.app_name}} configuration table.
+**  This event message is issued when the CFS ULR Task fails to
+**  load the ULR configuration table.
 **
 **  The 32 bit hexadecimal number is the error code returned by CFE
 **  #CFE_TBL_Load function.
 **
 */
-	{{cookiecutter.app_name}}_CFGTBL_LOAD_ERR_EID,
+	ULR_CFGTBL_LOAD_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-	{{cookiecutter.app_name}}_EVT_CNT
-} {{cookiecutter.app_name}}_EventIds_t;
+	ULR_EVT_CNT
+} ULR_EventIds_t;
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* {{cookiecutter.app_name}}_EVENTS_H */
+#endif /* ULR_EVENTS_H */
 
 /************************/
 /*  End of File Comment */

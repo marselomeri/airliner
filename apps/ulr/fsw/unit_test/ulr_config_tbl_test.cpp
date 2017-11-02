@@ -31,48 +31,32 @@
 *
 *****************************************************************************/
 
-#ifndef {{cookiecutter.app_name}}_TBLDEFS_H
-#define {{cookiecutter.app_name}}_TBLDEFS_H
-
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
-#include "{{cookiecutter.app_name|lower}}_platform_cfg.h"
+#include "ulr_msg.h"
+#include "ulr_config_tbl_test.h"
+#include "ulr_test_utils.h"
+#include "uttest.h"
+#include "ut_osapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_es_hooks.h"
+#include "ut_cfe_evs_stubs.h"
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
 
-/************************************************************************
-** Local Defines
-*************************************************************************/
-
-/**
- * \brief Defines the table identification name used for the
- * configuration table registration.
- */
-#define {{cookiecutter.app_name}}_CONFIG_TABLENAME ("CONFIG_TBL")
-
-
-/** \brief Definition for a single config table entry */
-typedef struct
+void ULR_Config_Tbl_Test_Case1(void)
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
-} {{cookiecutter.app_name}}_ConfigTbl_t;
 
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* {{cookiecutter.app_name}}_TBLDEFS_H */
 
-/************************/
-/*  End of File Comment */
-/************************/
+void ULR_Config_Tbl_Test_AddTestCases(void)
+{
+    UtTest_Add(ULR_Config_Tbl_Test_Case1, ULR_Test_Setup, ULR_Test_TearDown, "ULR_Config_Tbl_Test_Case1");
+}
+
+

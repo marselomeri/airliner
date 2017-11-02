@@ -1,13 +1,13 @@
 {
-	"app_name": "AMC",
-	"output_dir": "/home/vagrant/airliner/apps/",
-	"app_full_name": "Actuator Motor Control",
-	"wakeup_mid_macro": "AMC_UPDATE_MOTORS_MID",
-	"input_messages": [
-	    {"var_name": "ActuatorArmed", "mid_macro": "PX4_ACTUATOR_ARMED_MID", "datatype": "PX4_ActuatorArmedMsg_t"},
-	    {"var_name": "ActuatorControls0", "mid_macro": "PX4_ACTUATOR_CONTROLS_0_MID", "datatype": "PX4_ActuatorControlsMsg_t"}
-	    ]
-	"output_messages": [
-	    {"var_name": "ActuatorOutputs", "mid_macro": "PX4_ACTUATOR_OUTPUTS_MID", "datatype": "PX4_ActuatorOutputsMsg_t"}
-	    ]
+    "app_name": "ULR",
+    "output_dir": "/home/vagrant/git/airliner/apps",
+    "app_full_name": "uLanding Radar",
+    "wakeup_mid_macro": "ULR_READ_SENSOR_MID",
+    "input_messages": {
+        "1": {"var_name": "ActuatorArmed", "mid_macro": "PX4_ACTUATOR_ARMED_MID", "datatype": "PX4_ActuatorArmedMsg_t", "include_file":"px4_msgs.h"},
+        "2": {"var_name": "ActuatorControls0", "mid_macro": "PX4_ACTUATOR_CONTROLS_0_MID", "datatype": "PX4_ActuatorControlsMsg_t", "include_file":"px4_msgs.h"}
+        },
+    "output_messages": {
+        "1": {"var_name": "DistanceSensor", "mid_macro": "PX4_DISTANCE_SENSOR_MID", "datatype": "PX4_DistanceSensorMsg_t", "include_file":"px4_msgs.h"}
+        }
 }

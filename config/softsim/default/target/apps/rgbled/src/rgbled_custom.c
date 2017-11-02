@@ -37,15 +37,43 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+#include "cfe.h"
 #include "rgbled_custom.h"
+
+#include <string.h>
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+/* self test command */
+#define RGBLED_SELFTEST_CC  (2)
 
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
+typedef enum {
+
+/** \brief <tt> 'RGBLED - ' </tt>
+**  \event <tt> 'RGBLED - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device resource encounters an 
+**  error.
+**
+*/
+    RGBLED_DEVICE_ERR_EID = RGBLED_EVT_CNT,
+    
+/** \brief Number of custom events 
+**
+**  \par Limits:
+**       int32
+*/
+    RGBLED_CUSTOM_EVT_CNT
+} RGBLED_CustomEventIds_t;
+
 
 /************************************************************************
 ** External Global Variables
@@ -54,7 +82,7 @@
 /************************************************************************
 ** Global Variables
 *************************************************************************/
-
+RGBLED_AppCustomData_t RGBLED_AppCustomData;
 /************************************************************************
 ** Local Variables
 *************************************************************************/
@@ -62,3 +90,35 @@
 /************************************************************************
 ** Local Function Definitions
 *************************************************************************/
+
+boolean RGBLED_Custom_InitData(void)
+{
+    boolean returnBool = TRUE;
+    
+    /* Set all struct zero values */
+    bzero(&RGBLED_AppCustomData, sizeof(RGBLED_AppCustomData));
+    
+    strncpy(RGBLED_AppCustomData.DevName, RGBLED_DEVICE_PATH, RGBLED_MAX_DEVICE_PATH);
+    
+    return returnBool;
+    
+}
+
+
+boolean RGBLED_Custom_Init(void)
+{
+    boolean returnBool = TRUE;
+    
+    RGBLED_AppCustomData.DeviceFd = open(RGBLED_DEVICE_PATH, O_RDWR);
+
+    if (RGBLED_AppCustomData.DeviceFd < 0) 
+    {
+        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "RGBLED Device open errno: %i on channel %u", errno, (unsigned int)i);
+        returnCode = FALSE;
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnBool;
+}
