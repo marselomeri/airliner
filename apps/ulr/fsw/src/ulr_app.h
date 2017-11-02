@@ -54,6 +54,9 @@ extern "C" {
 #include "ulr_msg.h"
 #include "ulr_events.h"
 #include "ulr_tbldefs.h"
+#include "px4_msgs.h"
+#include "px4_msgs.h"
+#include "px4_msgs.h"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -61,6 +64,11 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+typedef struct
+{
+    PX4_ActuatorArmedMsg_t ActuatorArmed;
+    PX4_ActuatorControlsMsg_t ActuatorControls0;
+} ULR_CurrentValueTable_t;
 
 
 /**
@@ -90,9 +98,13 @@ public:
 
     /** \brief Config Table Pointer */
     ULR_ConfigTbl_t* ConfigTblPtr;
+    /** \brief Output Data published at the end of cycle */
+    PX4_DistanceSensorMsg_t DistanceSensor;
 
     /** \brief Housekeeping Telemetry for downlink */
     ULR_HkTlm_t HkTlm;
+    /** \brief Current Value Table */
+    ULR_CurrentValueTable_t CVT;
     /************************************************************************/
     /** \brief uLanding Radar (ULR) application entry point
      **
@@ -249,6 +261,18 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+    /************************************************************************/
+    /** \brief Sends the DistanceSensor message.
+     **
+     **  \par Description
+     **       This function publishes the DistanceSensor message containing
+     **       <TODO>
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void SendDistanceSensor(void);
     /************************************************************************/
     /** \brief Verify Command Length
      **

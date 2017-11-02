@@ -92,6 +92,22 @@ int32 ULR::InitPipe()
 					 (unsigned int)iStatus);
             goto ULR_InitPipe_Exit_Tag;
         }
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(ULR_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
+					 iStatus);
+            goto ULR_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(ULR_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08lX)",
+					 iStatus);
+            goto ULR_InitPipe_Exit_Tag;
+        }
     }
     else
     {
@@ -141,6 +157,9 @@ void ULR::InitData()
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
     		ULR_HK_TLM_MID, sizeof(HkTlm), TRUE);
+      /* Init output messages */
+      CFE_SB_InitMsg(&DistanceSensor,
+      		PX4_DISTANCE_SENSOR_MID, sizeof(PX4_DistanceSensorMsg_t), TRUE);
 }
 
 
@@ -233,6 +252,12 @@ int32 ULR::RcvSchPipeMsg(int32 iBlocking)
 
             case ULR_SEND_HK_MID:
                 ReportHousekeeping();
+                break;
+            case PX4_ACTUATOR_ARMED_MID:
+                memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+                break;
+            case PX4_ACTUATOR_CONTROLS_0_MID:
+                memcpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
                 break;
             default:
                 (void) CFE_EVS_SendEvent(ULR_MSGID_ERR_EID, CFE_EVS_ERROR,
@@ -370,6 +395,11 @@ void ULR::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void ULR::SendDistanceSensor()
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&DistanceSensor);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&DistanceSensor);
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
