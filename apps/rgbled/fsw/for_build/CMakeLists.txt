@@ -26,11 +26,14 @@ add_airliner_app_unit_test(rgbled-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_testrunner.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_custom_stubs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/rgbled_custom_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_version.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_custom.h
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

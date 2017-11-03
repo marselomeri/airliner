@@ -119,16 +119,12 @@ int32 RGBLED_Ioctl(int fh, int request, void *arg)
 }
 
 
-boolean RGBLED_Custom_InitData(void)
+void RGBLED_Custom_InitData(void)
 {
-    boolean returnBool = TRUE;
-
     /* Set all struct zero values */
     bzero(&RGBLED_AppCustomData, sizeof(RGBLED_AppCustomData));
 
     strncpy(RGBLED_AppCustomData.DevName, RGBLED_DEVICE_PATH, RGBLED_MAX_DEVICE_PATH);
-
-    return returnBool;
 }
 
 
@@ -392,6 +388,43 @@ boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
     return returnBool;
 }
 
+
+boolean RGBLED_Custom_SelfTest(void)
+{
+    boolean returnBool = FALSE;
+
+    returnBool = RGBLED_Custom_SetColor(15, 0, 0);
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+
+    returnBool = RGBLED_Custom_SetColor(0, 15, 0);
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+
+    returnBool = RGBLED_Custom_SetColor(0, 0, 15);
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+
+    returnBool = RGBLED_Custom_SetColor(15, 15, 15);
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+
+end_of_function:
+
+    return returnBool;
+}
 
 boolean RGBLED_Custom_Uninit(void)
 {

@@ -147,8 +147,9 @@ RGBLED_InitPipe_Exit_Tag:
 void RGBLED::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    		RGBLED_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm, RGBLED_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    /* Init custom data */
+    RGBLED_Custom_InitData();
 }
 
 
