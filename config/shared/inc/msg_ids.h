@@ -245,6 +245,7 @@
 #define PX4_HIL_SENSOR_MID							0x0a23
 #define PX4_HOME_POSITION_MID						0x0a24
 #define PX4_INPUT_RC_MID							0x0a25
+#define PX4_LED_CONTROL_MID                         0x0a5c
 #define PX4_LOG_MESSAGE_MID							0x0a26
 #define PX4_MANUAL_CONTROL_SETPOINT_MID				0x0a27
 #define PX4_MAVLINK_LOG_MID							0x0a28
@@ -573,6 +574,12 @@
 #define ULR_MEASURE_MID                             0x1c49
 #define ULR_OUT_DATA_MID                            0x0c4a
 #define ULR_HK_TLM_MID                              0x0c4b
+
+/* RGBLED                                               */
+#define RGBLED_CMD_MID                              0x1c4c
+#define RGBLED_SEND_HK_MID                          0x1c4d
+#define RGBLED_WAKEUP_MID                           0x1c4e
+#define RGBLED_HK_TLM_MID                           0x0c4f
 
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 
