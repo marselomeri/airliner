@@ -485,7 +485,7 @@ void ULR::AppMain()
 
 void ULR::ReadSensor()
 {
-	OS_printf("Hello world\n");
+
 }
 
 

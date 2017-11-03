@@ -246,10 +246,18 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
             case RGBLED_SEND_HK_MID:
                 ReportHousekeeping();
                 break;
+
             case PX4_LED_CONTROL_MID:
-                OS_printf("received px4 message from bridge \n");
                 memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
+
+                OS_printf("**************\n");
+                OS_printf("  led_mask: %u\n", CVT.RGBLEDControl.led_mask);
+                OS_printf("  color: %u\n", CVT.RGBLEDControl.color);
+                OS_printf("  mode: %u\n", CVT.RGBLEDControl.mode);
+                OS_printf("  num_blinks: %u\n", CVT.RGBLEDControl.num_blinks);
+                OS_printf("  priority: %u\n", CVT.RGBLEDControl.priority);
                 break;
+
             default:
                 (void) CFE_EVS_SendEvent(RGBLED_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);

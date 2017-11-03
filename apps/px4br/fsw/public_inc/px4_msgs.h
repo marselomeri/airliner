@@ -1774,6 +1774,7 @@ typedef struct
 
 typedef struct
 {
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
     float gyro_offset_0[3];
     float gyro_scale_0[3];
     float gyro_offset_1[3];
@@ -1803,6 +1804,7 @@ typedef struct
 
 typedef struct
 {
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
     uint8 led_mask;
     uint8 color;
     uint8 mode;
