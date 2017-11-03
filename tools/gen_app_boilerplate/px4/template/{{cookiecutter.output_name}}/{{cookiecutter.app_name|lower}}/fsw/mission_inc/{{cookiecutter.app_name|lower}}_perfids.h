@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define {{cookiecutter.app_name}}_APPMAIN_PERF_ID      0
+#define {{cookiecutter.app_name}}_MAIN_TASK_PERF_ID      0
 
 #ifdef __cplusplus
 }
