@@ -7,6 +7,7 @@ add_airliner_app_def(rgbled
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_version.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/rgbled_custom.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

@@ -62,7 +62,7 @@ extern "C" {
  ** Local Structure Definitions
  *************************************************************************/
 /**
- * \brief LED status
+ * \brief LED device status
  */
 typedef enum
 {

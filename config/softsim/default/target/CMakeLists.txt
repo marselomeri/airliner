@@ -254,6 +254,8 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled
     CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled/src/rgbled_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled/src/rgbled_driver.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/rgbled_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rgbled_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rgbled_perfids.h

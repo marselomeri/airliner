@@ -8,7 +8,7 @@
 #include "rgbled_app.h"
 #include "rgbled_msg.h"
 #include "rgbled_version.h"
-
+#include "rgbled_custom.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

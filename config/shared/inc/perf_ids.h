@@ -39,6 +39,8 @@
 #define EA_MAIN_TASK_PERF_ID        69
 #define ULR_MAIN_TASK_PERF_ID       70
 #define RGBLED_MAIN_TASK_PERF_ID    71
+#define RGBLED_SEND_PERF_ID         72
+#define RGBLED_Receive_PERF_ID      73
 
 #endif
 

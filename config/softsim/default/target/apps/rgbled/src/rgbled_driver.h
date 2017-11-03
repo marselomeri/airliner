@@ -38,6 +38,9 @@
 ** Includes
 *************************************************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -171,14 +174,28 @@
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
+
+/**
+ * \brief LED device status
+ */
+typedef enum
+{
+    /*! RGBLED status uninitialized */
+    RGBLED_UNINITIALIZED  = 0,
+    /*! RGBLED status initialized */
+    RGBLED_INITIALIZED   = 1,
+    /*! RGBLED status enabled */
+    RGBLED_ENABLED       = 2
+} RGBLED_Custom_Status_t;
+
+
 typedef struct
 {
-    boolean Enabled;
-    boolean PowerSave;
-    uint8   RedDutyCycle;
-    uint8   GreenDutyCycle;
-    uint8   BlueDutyCycle;
-    
+    boolean     Enabled;
+    boolean     NotPowerSave;
+    uint8       RedDutyCycle;
+    uint8       GreenDutyCycle;
+    uint8       BlueDutyCycle;
 } RGBLED_Device_Settings_t;
 
 
@@ -188,8 +205,10 @@ typedef struct
     int                 DeviceFd;
     /*! Path to device */
     char                DevName[RGBLED_MAX_DEVICE_PATH];
-    /*! */
+    /*! The current device settings */
     RGBLED_Device_Settings_t Settings;
+    /*! The current device status */
+    RGBLED_Custom_Status_t Status;
 } RGBLED_AppCustomData_t;
 
 
@@ -219,54 +238,14 @@ typedef struct
 *************************************************************************/
 int32 RGBLED_Ioctl(int fh, int request, void *arg);
 
-/************************************************************************/
-/** \brief Custom function to initialize custom device data structure. 
-**
-**  \par Description
-**       This function is called on app startup, reload, restart etc
-**       to initialize non-zero data.
-**
-**  \returns
-**  TRUE if successful, FALSE otherwise.
-**  \endreturns
-**
-*************************************************************************/
-boolean RGBLED_Custom_InitData(void);
+boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length);
+boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length);
+boolean RGBLED_Custom_Validate(void);
+boolean RGBLED_Custom_Enable(void);
+boolean RGBLED_Custom_Disable(void);
 
-/************************************************************************/
-/** \brief Custom function to initialize custom device(s).
-**
-**  \par Description
-**       This function is called at initialization and allows the
-**       custom layer to provide specific functionality to initialize
-**       internal objects.
-**
-**  \returns
-**  TRUE if successful, FALSE otherwise.
-**  \endreturns
-**
-*************************************************************************/
-boolean RGBLED_Custom_Init(void);
-
-int32 RGBLED_Custom_Send(uint8 Red, uint8 Green, uint8 Blue);
-
-int32 RGBLED_Custom_Receive(...);
-
-/************************************************************************/
-/** \brief Custom function to uninitialize custom device(s).
-**
-**  \par Description
-**       This function is called in preparation for loading a new
-**       configuration, allowing the custom layer to do whatever it
-**       needs with the current configuration before reconfiguration,
-**       if anything. Also, called in cleanup to close and uninitialize
-**       device resources.
-**
-**  \returns
-**  TRUE if successful, FALSE otherwise.
-**  \endreturns
-**
-*************************************************************************/
-boolean RGBLED_Custom_Uninit(void);
+#ifdef __cplusplus
+}
+#endif 
 
 #endif /* RGBLED_CUSTOM_H */
