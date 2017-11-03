@@ -120,6 +120,7 @@
 #include "vtol_vehicle_status.pb.h"
 #include "wind_estimate.pb.h"
 #include "sensor_correction.pb.h"
+#include "led_control.pb.h"
 
 PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 {
@@ -215,5 +216,5 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"Vision_position_estimate", (PX4_ENCODE_FUNC) PX4BR_VisionPositionEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_VisionPositionEstimate_Dec, PX4_VISION_POSITION_ESTIMATE_MID, px4_vision_position_estimate_pb_size, 1, 0, 0},
 //		{"vtol_vehicle_status", (PX4_ENCODE_FUNC) PX4BR_VtolVehicleStatus_Enc, (PX4_DECODE_FUNC) PX4BR_VtolVehicleStatus_Dec, PX4_VTOL_VEHICLE_STATUS_MID, px4_vtol_vehicle_status_pb_size, 1, 0, 0},
 //		{"wind_estimate", (PX4_ENCODE_FUNC) PX4BR_WindEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_WindEstimate_Dec, PX4_WIND_ESTIMATE_MID, px4_wind_estimate_pb_size, 1, 0, 0}
-
+		{"led_control", (PX4_ENCODE_FUNC)0, (PX4_DECODE_FUNC) PX4BR_LedControl_Dec, PX4_LED_CONTROL_MID, px4_led_control_pb_size, 1, 0, 0}
 };

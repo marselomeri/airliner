@@ -161,6 +161,7 @@ void RGBLED::InitData()
 int32 RGBLED::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
+    boolean returnBool = FALSE;
     int8   hasEvents = 0;
 
     iStatus = InitEvent();
@@ -181,12 +182,14 @@ int32 RGBLED::InitApp()
     }
 
     InitData();
+    
+    returnBool = RGBLED_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        goto RGBLED_InitApp_Exit_Tag;
+    }
 
-    //iStatus = InitConfigTbl();
-    //if (iStatus != CFE_SUCCESS)
-    //{
-        //goto RGBLED_InitApp_Exit_Tag;
-    //}
 
 RGBLED_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)

@@ -1800,6 +1800,16 @@ typedef struct
     uint8 baro_mapping[3];
 } PX4_SensorCorrectionMsg_t;
 
+
+typedef struct
+{
+    uint8 led_mask;
+    uint8 color;
+    uint8 mode;
+    uint8 num_blinks;
+    uint8 priority;
+} PX4_LedControlMsg_t;
+
 #endif
 
 

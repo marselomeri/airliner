@@ -54,6 +54,7 @@ extern "C" {
 #include "rgbled_msg.h"
 #include "rgbled_events.h"
 #include "px4_msgs.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -73,13 +74,6 @@ typedef enum
     /*! RGBLED app status on */
     RGBLED_ON            = 2
 } RGBLED_Status_t;
-
-
-typedef struct
-{
-    /* Move to RGBLED class */
-    RGBLED_Status_t AppState;
-} PX4_LedControlMsg_t;
 
 
 typedef struct
