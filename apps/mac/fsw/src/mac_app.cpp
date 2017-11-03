@@ -404,7 +404,6 @@ int32 MAC::InitData()
 	m_Params.board_offset[2] = 0.0f;
 
 	m_ThrustSp = 0.0f;
-	OS_printf("7) m_ThrustSp = %f\n", m_ThrustSp);
 
     return (iStatus);
 }
@@ -1126,21 +1125,8 @@ void MAC::ControlAttitudeRates(float dt)
 		m_AngularRatesIntegralError.Zero();
 	}
 
-//	OS_printf("CVT.Armed.Armed = %u\n", CVT.Armed.Armed);
-//	OS_printf("CVT.VehicleStatus.IsRotaryWing = %u\n", CVT.VehicleStatus.IsRotaryWing);
-
 	/* get transformation matrix from sensor/board to body frame */
 	boardRotation = boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->board_rotation);
-
-//	OS_printf("ParamTblPtr->board_rotation = %i\n", ParamTblPtr->board_rotation);
-//
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		for(uint32 y = 0; y < 3; ++y)
-//		{
-//			OS_printf("#1 boardRotation[%u][%u] = %f\n", x, y, boardRotation[x][y]);
-//		}
-//	}
 
 	/* fine tune the rotation */
 	math::Matrix3F3 boardRotationOffset;
@@ -1148,13 +1134,6 @@ void MAC::ControlAttitudeRates(float dt)
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[1],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[2]);
 	boardRotation = boardRotationOffset * boardRotation;
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		for(uint32 y = 0; y < 3; ++y)
-//		{
-//			OS_printf("#2 boardRotation[%u][%u] = %f\n", x, y, boardRotation[x][y]);
-//		}
-//	}
 
 	// get the raw gyro data and correct for thermal errors
 	math::Vector3F rates;
@@ -1185,102 +1164,25 @@ void MAC::ControlAttitudeRates(float dt)
 		rates[2] = CVT.SensorGyro.Z;
 	}
 
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("#1 rates[%u] = %f\n", x, rates[x]);
-//	}
-
 	// rotate corrected measurements from sensor to body frame
 	rates = boardRotation * rates;
-
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("#2 rates[%u] = %f\n", x, rates[x]);
-//	}
 
 	// correct for in-run bias errors
 	rates[0] -= CVT.ControlState.RollRateBias;
 	rates[1] -= CVT.ControlState.PitchRateBias;
 	rates[2] -= CVT.ControlState.YawRateBias;
 
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("#3 rates[%u] = %f\n", x, rates[x]);
-//	}
-
 	math::Vector3F rates_p_scaled = m_Params.rate_p.EMult(PidAttenuations(m_Params.tpa_breakpoint_p, m_Params.tpa_rate_p));
 	math::Vector3F rates_i_scaled = m_Params.rate_i.EMult(PidAttenuations(m_Params.tpa_breakpoint_i, m_Params.tpa_rate_i));
 	math::Vector3F rates_d_scaled = m_Params.rate_d.EMult(PidAttenuations(m_Params.tpa_breakpoint_d, m_Params.tpa_rate_d));
 
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_p_scaled[%u] = %f\n", x, rates_p_scaled[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_i_scaled[%u] = %f\n", x, rates_i_scaled[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_d_scaled[%u] = %f\n", x, rates_d_scaled[x]);
-//	}
-
 	/* angular rates error */
 	math::Vector3F rates_err = m_AngularRatesSetpoint - rates;
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);
-//	}
 
 	m_AttControl = rates_p_scaled.EMult(rates_err) +
 			m_AngularRatesIntegralError +
 		    rates_d_scaled.EMult(m_AngularRatesPrevious - rates) / dt +
 		    m_Params.rate_ff.EMult(m_AngularRatesSetpoint);
-
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_p_scaled.EMult(rates_err)[%u] = %f\n", x, rates_p_scaled.EMult(rates_err)[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_AngularRatesIntegralError[%u] = %f\n", x, m_AngularRatesIntegralError[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_AngularRatesPrevious[%u] = %f\n", x, m_AngularRatesPrevious[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates[%u] = %f\n", x, rates[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("(m_AngularRatesPrevious - rates)[%u] = %f\n", x, (m_AngularRatesPrevious - rates)[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("(rates_d_scaled.EMult(m_AngularRatesPrevious - rates))[%u] = %f\n", x, (rates_d_scaled.EMult(m_AngularRatesPrevious - rates))[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("(rates_d_scaled.EMult((m_AngularRatesPrevious - rates))/dt)[%u] = %f\n", x, ((rates_d_scaled.EMult(m_AngularRatesPrevious - rates))/dt)[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_AngularRatesSetpoint[%u] = %f\n", x, m_AngularRatesSetpoint[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_Params.rate_ff[%u] = %f\n", x, m_Params.rate_ff[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_Params.rate_ff.EMult(m_AngularRatesSetpoint)[%u] = %f\n", x, m_Params.rate_ff.EMult(m_AngularRatesSetpoint)[x]);
-//	}
 
 	m_AngularRatesSetpointPrevious = m_AngularRatesSetpoint;
 	m_AngularRatesPrevious = rates;

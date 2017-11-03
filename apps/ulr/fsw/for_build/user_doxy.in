@@ -6,7 +6,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 #DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "uLanding Radar (ULR) Application on @BUILD_CONFIG_NAME@ User's Guide"
+PROJECT_NAME           = "Aerotenna uLanding Radar (ULR) Application on @BUILD_CONFIG_NAME@ User's Guide"
 PROJECT_NUMBER         = 
 OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/users_guide/apps/ulr
 CREATE_SUBDIRS         = NO
@@ -27,7 +27,7 @@ DETAILS_AT_TOP         = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 8
-ALIASES               += "event=\xrefitem cfsulrevents \"Event Message\" \"uLanding Radar Event Message Cross Reference\" "
+ALIASES               += "event=\xrefitem cfsulrevents \"Event Message\" \"Aerotenna uLanding Radar Event Message Cross Reference\" "
 ALIASES               += "retdesc=<TD WIDTH=\"80%\"> "
 ALIASES               += "retcode=<TR><TD WIDTH=\"20%\" VALIGN=TOP> "
 ALIASES               += endcode=</TR>
@@ -35,11 +35,11 @@ ALIASES               += "returns=\return <TABLE BORDER=\"0\" CELLPADDING=\"2\" 
 ALIASES               += endreturns=</TABLE>
 ALIASES               += "retstmt=<TR><TD COLSPAN=2 WIDTH=\"100%\"> "
 ALIASES               += endstmt=</TR>
-ALIASES               += "ulrcmd=\xrefitem cfsulrcmds \"Name\" \"uLanding Radar Commands\"  "
-ALIASES               += "ulrtlm=\xrefitem cfsulrtlm \"Name\" \"uLanding Radar Telemetry\"  "
-ALIASES               += "ulrcmdmnemonic=\xrefitem cfsulrcmdmnems \"Command Mnemonic(s)\" \"uLanding Radar Command Mnemonic Cross Reference\" \b \c  "
-ALIASES               += "ulrtlmmnemonic=\xrefitem cfsulrtlmmnems \"Telemetry Mnemonic(s)\" \"uLanding Radar Telemetry Mnemonic Cross Reference\" \b \c  "
-ALIASES               += "ulrcfg=\xrefitem cfsulrcfg \"Purpose\" \"uLanding Radar Configuration Parameters\"  " 
+ALIASES               += "ulrcmd=\xrefitem cfsulrcmds \"Name\" \"Aerotenna uLanding Radar Commands\"  "
+ALIASES               += "ulrtlm=\xrefitem cfsulrtlm \"Name\" \"Aerotenna uLanding Radar Telemetry\"  "
+ALIASES               += "ulrcmdmnemonic=\xrefitem cfsulrcmdmnems \"Command Mnemonic(s)\" \"Aerotenna uLanding Radar Command Mnemonic Cross Reference\" \b \c  "
+ALIASES               += "ulrtlmmnemonic=\xrefitem cfsulrtlmmnems \"Telemetry Mnemonic(s)\" \"Aerotenna uLanding Radar Telemetry Mnemonic Cross Reference\" \b \c  "
+ALIASES               += "ulrcfg=\xrefitem cfsulrcfg \"Purpose\" \"Aerotenna uLanding Radar Configuration Parameters\"  " 
 OPTIMIZE_OUTPUT_FOR_C  = YES
 OPTIMIZE_OUTPUT_JAVA   = NO
 BUILTIN_STL_SUPPORT    = NO

@@ -75,11 +75,11 @@ int32 ULR::InitPipe()
 			ULR_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(ULR_READ_SENSOR_MID, SchPipeId, CFE_SB_Default_Qos, ULR_READ_SENSOR_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(ULR_MEASURE_MID, SchPipeId, CFE_SB_Default_Qos, ULR_MEASURE_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(ULR_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to ULR_READ_SENSOR_MID. (0x%08lX)",
+            		"Sch Pipe failed to subscribe to ULR_MEASURE_MID. (0x%08lX)",
                     iStatus);
             goto ULR_InitPipe_Exit_Tag;
         }
@@ -90,22 +90,6 @@ int32 ULR::InitPipe()
             (void) CFE_EVS_SendEvent(ULR_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
 					 "CMD Pipe failed to subscribe to ULR_SEND_HK_MID. (0x%08X)",
 					 (unsigned int)iStatus);
-            goto ULR_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(ULR_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
-					 iStatus);
-            goto ULR_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(ULR_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08lX)",
-					 iStatus);
             goto ULR_InitPipe_Exit_Tag;
         }
     }
@@ -246,19 +230,14 @@ int32 ULR::RcvSchPipeMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-            case ULR_READ_SENSOR_MID:
-                /* TODO:  Do something here. */
+            case ULR_MEASURE_MID:
+                ReadSensor();
                 break;
 
             case ULR_SEND_HK_MID:
                 ReportHousekeeping();
                 break;
-            case PX4_ACTUATOR_ARMED_MID:
-                memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
-                break;
-            case PX4_ACTUATOR_CONTROLS_0_MID:
-                memcpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
-                break;
+
             default:
                 (void) CFE_EVS_SendEvent(ULR_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
@@ -501,6 +480,12 @@ void ULR::AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
+}
+
+
+void ULR::ReadSensor()
+{
+	OS_printf("Hello world\n");
 }
 
 

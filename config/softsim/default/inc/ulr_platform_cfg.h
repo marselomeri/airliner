@@ -52,16 +52,16 @@ extern "C" {
 **
 **  \par Limits:
 **       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
-**       ULR_READ_SENSOR_MID_MAX_MSG_COUNT and ULR_SEND_HK_MID_MAX_MSG_COUNT
+**       ULR_MEASURE_MID_MAX_MSG_COUNT and ULR_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than ULR_SCH_PIPE_DEPTH.
 */
-#define ULR_READ_SENSOR_MID_MAX_MSG_COUNT   (1)
+#define ULR_MEASURE_MID_MAX_MSG_COUNT   (1)
 
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
-**       ULR_READ_SENSOR_MID_MAX_MSG_COUNT and ULR_SEND_HK_MID_MAX_MSG_COUNT
+**       ULR_MEASURE_MID_MAX_MSG_COUNT and ULR_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than ULR_SCH_PIPE_DEPTH.
 */
 #define ULR_SEND_HK_MID_MAX_MSG_COUNT  (1)

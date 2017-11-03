@@ -258,6 +258,7 @@ int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
 		{%- endfor %}
+
             default:
                 (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);

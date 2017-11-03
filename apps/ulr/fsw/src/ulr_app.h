@@ -55,8 +55,6 @@ extern "C" {
 #include "ulr_events.h"
 #include "ulr_tbldefs.h"
 #include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -64,11 +62,6 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
-typedef struct
-{
-    PX4_ActuatorArmedMsg_t ActuatorArmed;
-    PX4_ActuatorControlsMsg_t ActuatorControls0;
-} ULR_CurrentValueTable_t;
 
 
 /**
@@ -103,13 +96,11 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     ULR_HkTlm_t HkTlm;
-    /** \brief Current Value Table */
-    ULR_CurrentValueTable_t CVT;
     /************************************************************************/
-    /** \brief uLanding Radar (ULR) application entry point
+    /** \brief Aerotenna uLanding Radar (ULR) application entry point
      **
      **  \par Description
-     **       uLanding Radar Task application entry point.  This function
+     **       Aerotenna uLanding Radar Task application entry point.  This function
      **       performs app initialization, then waits for the cFE ES Startup
      **       Sync, then executes the main processing loop.
      **
@@ -121,10 +112,10 @@ public:
     void AppMain(void);
 
     /************************************************************************/
-    /** \brief Initialize the uLanding Radar (ULR) application
+    /** \brief Initialize the Aerotenna uLanding Radar (ULR) application
      **
      **  \par Description
-     **       uLanding Radar application initialization routine. This
+     **       Aerotenna uLanding Radar application initialization routine. This
      **       function performs all the required startup steps to
      **       initialize (or restore from CDS) ULR data structures and get
      **       the application registered with the cFE services so it can
@@ -222,7 +213,7 @@ public:
     int32 RcvSchPipeMsg(int32 iBlocking);
 
     /************************************************************************/
-    /** \brief uLanding Radar Task incoming command processing
+    /** \brief Aerotenna uLanding Radar Task incoming command processing
      **
      **  \par Description
      **       This function processes incoming commands subscribed
@@ -235,7 +226,7 @@ public:
     void ProcessCmdPipe(void);
 
     /************************************************************************/
-    /** \brief uLanding Radar Task application commands
+    /** \brief Aerotenna uLanding Radar Task application commands
      **
      **  \par Description
      **       This function processes command messages
@@ -349,6 +340,8 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
+
+    void ReadSensor(void);
 };
 
 #ifdef __cplusplus

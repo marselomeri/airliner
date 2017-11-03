@@ -568,11 +568,11 @@
 #define MAC_HK_TLM_MID                              0x0c46
 
 /* ULR                                                  */
-#define ULR_CMD_MID                                 0x1c42
-#define ULR_SEND_HK_MID                             0x1c43
-#define ULR_READ_SENSOR_MID                         0x1c44
-#define ULR_OUT_DATA_MID                            0x0c45
-#define ULR_HK_TLM_MID                              0x0c46
+#define ULR_CMD_MID                                 0x1c47
+#define ULR_SEND_HK_MID                             0x1c48
+#define ULR_MEASURE_MID                             0x1c49
+#define ULR_OUT_DATA_MID                            0x0c4a
+#define ULR_HK_TLM_MID                              0x0c4b
 
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 

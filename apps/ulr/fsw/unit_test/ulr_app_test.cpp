@@ -448,7 +448,7 @@ void Test_ULR_AppMain_Nominal_Wakeup(void)
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, ULR_READ_SENSOR_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, ULR_MEASURE_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 

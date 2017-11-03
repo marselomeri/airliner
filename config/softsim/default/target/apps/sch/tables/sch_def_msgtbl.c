@@ -200,9 +200,9 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #79 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #80 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(ULR_MEASURE_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #81 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(ULR_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #82 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #83 */
