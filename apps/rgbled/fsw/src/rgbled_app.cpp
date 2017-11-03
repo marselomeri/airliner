@@ -149,7 +149,7 @@ void RGBLED::InitData()
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm, RGBLED_HK_TLM_MID, sizeof(HkTlm), TRUE);
     /* Init custom data */
-    RGBLED_Custom_InitData();
+    //RGBLED_Custom_InitData();
 }
 
 
@@ -183,12 +183,12 @@ int32 RGBLED::InitApp()
 
     InitData();
     
-    returnBool = RGBLED_Custom_Init();
-    if (FALSE == returnBool)
-    {
-        iStatus = -1;
-        goto RGBLED_InitApp_Exit_Tag;
-    }
+    //returnBool = RGBLED_Custom_Init();
+    //if (FALSE == returnBool)
+    //{
+        //iStatus = -1;
+        //goto RGBLED_InitApp_Exit_Tag;
+    //}
 
 
 RGBLED_InitApp_Exit_Tag:
@@ -247,6 +247,7 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
                 ReportHousekeeping();
                 break;
             case PX4_LED_CONTROL_MID:
+                OS_printf("received px4 message from bridge \n");
                 memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
                 break;
             default:
