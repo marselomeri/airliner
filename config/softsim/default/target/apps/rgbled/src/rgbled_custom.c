@@ -40,7 +40,12 @@
 #include "cfe.h"
 #include "rgbled_custom.h"
 
+#include <linux/i2c.h>
+#include <linux/i2c-dev.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
 
 /************************************************************************
 ** Local Defines
@@ -90,6 +95,27 @@ RGBLED_AppCustomData_t RGBLED_AppCustomData;
 /************************************************************************
 ** Local Function Definitions
 *************************************************************************/
+int32 RGBLED_Ioctl(int fh, int request, void *arg)
+{
+    int32 returnCode = 0;
+    uint32 i = 0;
+
+    for (i=0; i < RGBLED_MAX_RETRY_ATTEMPTS; i++)
+    {
+        returnCode = ioctl(fh, request, arg);
+            
+        if (-1 == returnCode && EINTR == errno)
+        {
+            usleep(RGBLED_MAX_RETRY_SLEEP_USEC);
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return returnCode;
+}
 
 boolean RGBLED_Custom_InitData(void)
 {
@@ -122,3 +148,54 @@ boolean RGBLED_Custom_Init(void)
 end_of_function:
     return returnBool;
 }
+
+
+int32 RGBLED_Custom_Send(uint8 Red, uint8 Green, uint8 Blue)
+{
+    int32 returnCode = 0;
+    int ret = 0;
+    struct i2c_msg Messages[2];
+    struct i2c_rdwr_ioctl_data Packets;
+    uint8 RedPWM    = Red;
+    uint8 GreenPWM  = Green;
+    uint8 BluePWM   = Blue;
+    
+    if(RedPWM > RGBLED_MAX_BRIGHTNESS)
+    {
+        RedPWM = 15;
+    }
+    
+    if(GreenPWM > RGBLED_MAX_BRIGHTNESS)
+    {
+        GreenPWM = 15;
+    }
+    
+    if(BluePWM > RGBLED_MAX_BRIGHTNESS)
+    {
+        BluePWM = 15;
+    }
+
+    const uint8 Data[6] = { RGBLED_I2C_SUB_ADDR_PWM0, BluePWM,
+                            RGBLED_I2C_SUB_ADDR_PWM1, GreenPWM,
+                            RGBLED_I2C_SUB_ADDR_PWM1, RedPWM };
+
+    Messages[0].addr = RGBLED_I2C_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf = &Data;
+    Messages[0].len = sizeof(Data);
+    
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 1;
+    
+    ret = RGBLED_Ioctl(RGBLED_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    
+    if (-1 == ret) 
+    {            
+        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "RGBLED ioctl returned %i", errno);
+        returnCode = -1;
+    }
+
+    return returnCode;
+}
+

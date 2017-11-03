@@ -154,6 +154,20 @@
 */
 #define RGBLED_MAX_DEVICE_PATH          OS_MAX_LOCAL_PATH_LEN
 
+/** \brief Retry attemps for interrupted ioctl calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define RGBLED_MAX_RETRY_ATTEMPTS       (2)
+
+/** \brief Sleep time micro seconds for interrupted calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define RGBLED_MAX_RETRY_SLEEP_USEC     (10)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -178,16 +192,31 @@ typedef struct
 /************************************************************************
 ** Function Prototypes
 *************************************************************************/
+
+/************************************************************************/
+/** \brief ioctl with limited EINTR retry attempts. 
+**
+**  \par Description
+**       This function is a wrapper for ioctl with retry attempts added.
+**
+**  \param [in] fh file descriptor.
+**  \param [in] request code.
+**  \param [in] arg pointer to a device specific struct.
+**
+**  \returns
+**  usually 0 for success and -1 for failure, see ioctl man-page for 
+**  more info.
+**  \endreturns
+**
+*************************************************************************/
+int32 RGBLED_Ioctl(int fh, int request, void *arg);
+
 /************************************************************************/
 /** \brief Custom function to initialize custom device data structure. 
 **
 **  \par Description
 **       This function is called on app startup, reload, restart etc
 **       to initialize non-zero data.
-**
-**  \par Assumptions, External Events, and Notes:
-**       This function must be defined, but not all custom
-**       layers will do anything in this function.
 **
 **  \returns
 **  TRUE if successful, FALSE otherwise.
@@ -203,10 +232,6 @@ boolean RGBLED_Custom_InitData(void);
 **       This function is called at initialization and allows the
 **       custom layer to provide specific functionality to initialize
 **       internal objects.
-**
-**  \par Assumptions, External Events, and Notes:
-**       This function must be defined, but not all custom
-**       layers will do anything in this function.
 **
 **  \returns
 **  TRUE if successful, FALSE otherwise.
@@ -228,10 +253,6 @@ int32 RGBLED_Custom_Receive(...);
 **       needs with the current configuration before reconfiguration,
 **       if anything. Also, called in cleanup to close and uninitialize
 **       device resources.
-**
-**  \par Assumptions, External Events, and Notes:
-**       This function must be defined, but not all custom
-**       layers will do anything in this function.
 **
 **  \returns
 **  TRUE if successful, FALSE otherwise.
