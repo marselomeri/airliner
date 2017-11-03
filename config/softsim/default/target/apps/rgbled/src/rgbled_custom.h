@@ -173,15 +173,23 @@
 *************************************************************************/
 typedef struct
 {
+    boolean Enabled;
+    boolean PowerSave;
+    uint8   RedDutyCycle;
+    uint8   GreenDutyCycle;
+    uint8   BlueDutyCycle;
+    
+} RGBLED_Device_Settings_t;
+
+
+typedef struct
+{
     /*! Device file descriptor */
     int                 DeviceFd;
     /*! Path to device */
     char                DevName[RGBLED_MAX_DEVICE_PATH];
     /*! */
-    uint8               Settings;
-    uint8               RedDutyCycle;
-    uint8               GreenDutyCycle;
-    uint8               BlueDutyCycle;
+    RGBLED_Device_Settings_t Settings;
 } RGBLED_AppCustomData_t;
 
 
@@ -240,7 +248,7 @@ boolean RGBLED_Custom_InitData(void);
 *************************************************************************/
 boolean RGBLED_Custom_Init(void);
 
-int32 RGBLED_Custom_Send(...);
+int32 RGBLED_Custom_Send(uint8 Red, uint8 Green, uint8 Blue);
 
 int32 RGBLED_Custom_Receive(...);
 
