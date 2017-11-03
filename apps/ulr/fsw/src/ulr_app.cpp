@@ -182,6 +182,12 @@ int32 ULR::InitApp()
         goto ULR_InitApp_Exit_Tag;
     }
 
+    iStatus = InitDevice();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto ULR_InitApp_Exit_Tag;
+    }
+
 ULR_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -231,7 +237,7 @@ int32 ULR::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case ULR_MEASURE_MID:
-                ReadSensor();
+                GetDistance();
                 break;
 
             case ULR_SEND_HK_MID:
@@ -483,9 +489,9 @@ void ULR::AppMain()
 }
 
 
-void ULR::ReadSensor()
+int32  ULR::GetDistance(void)
 {
-	OS_printf("Hello world\n");
+	ReadDevice();
 }
 
 

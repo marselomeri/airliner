@@ -322,6 +322,63 @@ private:
     *************************************************************************/
     int32  AcquireConfigPointers(void);
 
+    /************************************************************************/
+    /** \brief Initialize device
+     **
+     **  \par Description
+     **       This function is defined in the platform specific package and
+     **       initializes the device, whatever it is, to allow the application
+     **       to read the sensor.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  Meaning of actual return value is platform specific.
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32  InitDevice(void);
+
+    /************************************************************************/
+    /** \brief Get the distance to the ground.
+     **
+     **  \par Description
+     **       This function measures the distance, applies limits, and publishes
+     **       the results.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32  GetDistance(void);
+
+    /************************************************************************/
+    /** \brief Read a measurement from the device.
+     **
+     **  \par Description
+     **       This function retrieves a measurement from the device.  This
+     **       function is defined in the platform specific package.  It
+     **       provides the platform specific interface to the device, and
+     **       applies any platform specific calibrations to return a
+     **       measurement in <TODO: Get units>.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  Meaning of actual return value is platform specific.
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32  ReadDevice(void);
+
 public:
     /************************************************************************/
     /** \brief Validate ULR configuration table
@@ -340,8 +397,6 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
-
-    void ReadSensor(void);
 };
 
 #ifdef __cplusplus
