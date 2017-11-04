@@ -86,7 +86,7 @@
  */
 
 // Impacts the responce rate of some of the responsive elements (lower value affects CPU but improves speed)
-$.throttle_delay = 350;
+$.throttle_delay = 20;
 
 // The rate at which the menu expands revealing child elements on click
 $.menu_speed = 235;

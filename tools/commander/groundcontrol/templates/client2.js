@@ -42,11 +42,19 @@ var Session = function(){
 Session.prototype = {
     startHPS:function(name,route,message,cb){
         var hps = new PrioritySocket();
-        //console.log(hps);
+        console.log('$$$$$$$$$$$$$$$$$$$$$',message);
         hps.setName(name);
         hps.subscribe(route,message,cb);
         //console.log(hps);
         this.subscribers.push(hps);
+    },
+
+    unsubscribe:function(name,route,message,cb){
+        var hps_unsubscribe = new PrioritySocket();
+        hps_unsubscribe.setName(name)
+        hps_unsubscribe.unsubscribe2(route,message,cb);//SEND UNSUBSCRIBE SIGNAL OVER SUBSCRIBE
+
+
     },
 
     stopPS:function(name){
@@ -69,11 +77,8 @@ Session.prototype = {
 
     pull:function(name,route,message,cb){
         var puller = new PrioritySocket();
-        //console.log(puller);
         puller.setName(name);
         puller.socketPull(route,message,cb);
-       // console.log(puller);
-
     },
 
     push:function(name,route,message){
@@ -87,7 +92,27 @@ Session.prototype = {
 
     setDefaultInstance:function(instance){
         this.defaultInstance = instance;
+        var pusher = new PrioritySocket();
+        pusher.socketPush('defaultInst',instance);
 
+    },
+    unsubscribeAll:function(){
+        //for( var i=0; i<this.subscribers.length;i++){
+        //    var name = 'LooseTelemetry';
+        //    var msg = this.subscribers[i]['msg'];
+        //    this.unsubscribe(name,'tlm_cmd_u',msg,function(d){
+        //    console.log('Unssubscribing object ',i);
+        //    });
+        //    this.subscribers.splice(i,1);
+        //}
+    },
+
+    sendCommand:function(a,b){
+        var obj = {"name":a,"args":b}
+        obj = JSON.stringify(obj)
+        var pusher = new PrioritySocket();
+        pusher.socketPush('cmd_s',obj);
+        console.log(a,'======',b);
     },
 
 };
@@ -115,22 +140,25 @@ PrioritySocket.prototype = {
 
         socket.onopen = function(){
           socket.send('START_COMM_HS');
-          console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : HIGH]');
+          //console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : HIGH]');
           };
 
         socket.onmessage = function(event){
           if(event.data == 'START_COMM_ACK'){
-            console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : HIGH]');
+            //console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : HIGH]');
+            //socket.send(msg);
             this.isSocketConnected = true;
           }
-          if(this.isSocketConnected){
-
-            socket.send(msg);
-            cb(event);
+          if(this.isSocketConnected ){
+            if(counter<1 ){
+            socket.send(msg);}
+            if(event.data!='START_COMM_ACK'){
+            cb(event);}
             counter = counter+1;
-            console.log('[',getDate('d'),'] Packet#',counter,' Received From Socket : ',name,' [PRIORITY : HIGH]');
+            //console.log('[',getDate('d'),'] Packet#',counter,' Received From Socket : ',name,' [PRIORITY : HIGH]');
           }else{
             this.isSocketConnected = false;
+            console.log('closeed here')
             socket.close();
           }
         };
@@ -160,12 +188,12 @@ PrioritySocket.prototype = {
 
         socket.onopen = function(){
           socket.send('START_COMM_HS');
-          console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : LOW]');
+          //console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : LOW]');
           };
 
         socket.onmessage = function(event){
           if(event.data == 'START_COMM_ACK'){
-            console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : LOW]');
+            //console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : LOW]');
             this.isSocketConnected = true;
           }
           if(this.isSocketConnected){
@@ -200,6 +228,53 @@ PrioritySocket.prototype = {
         }
     },
 
+
+
+    unsubscribe2:function(routing,message,cb){
+        this.socket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/'+routing+'/');
+        this.msg = message;
+        this.cb = cb;
+        var name = this.name;
+        var socket = this.socket;
+        var msg = this.msg;
+        var cb = this.cb;
+        var counter = 0;
+
+        socket.onopen = function(){
+          socket.send('START_COMM_HS');
+          //console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : HIGH]');
+          };
+
+        socket.onmessage = function(event){
+          if(event.data == 'START_COMM_ACK'){
+            //console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : HIGH]');
+            //socket.send(msg);
+
+            this.isSocketConnected = true;
+          }
+          if(this.isSocketConnected ){
+            //console.log('************',msg);
+            if(counter<1 ){
+            socket.send(msg);
+            console.log('99999999999999999   ',msg)
+
+            }
+            if(String(event.data).includes('[1,2')){//kk cleand
+            socket.send('CLOSE_COMM_NOFBCK');
+            console.log('closing message channel')
+            this.isSocketConnected = false;
+            cb(event);}
+            counter = counter+1;
+            console.log('[',getDate('d'),'] Packet#',counter,' Received From Socket : ',name,' [PRIORITY : HIGH]');
+          }else{
+            this.isSocketConnected = false;
+            console.log('closeed here')
+            socket.close();
+          }
+        };
+
+    },
+
     socketPull:function(routing,message,cb){
         this.socket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/'+routing+'/');
         this.msg = message;
@@ -212,12 +287,12 @@ PrioritySocket.prototype = {
 
         socket.onopen = function(){
           socket.send('START_COMM_HS');
-          console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : NA]');
+          //console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : NA]');
         };
 
         socket.onmessage = function(event){
           if(event.data == 'START_COMM_ACK'){
-            console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : NA]');
+            //console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : NA]');
             socket.send(msg);
           }
           else{
@@ -245,12 +320,12 @@ PrioritySocket.prototype = {
 
         socket.onopen = function(){
           socket.send('START_COMM_HS');
-          console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : NA]');
+          //console.log('[',getDate('d'),'] Initiating Handshake [PRIORITY : NA]');
         };
 
         socket.onmessage = function(event){
           if(event.data == 'START_COMM_ACK'){
-            console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : NA]');
+            //console.log('[',getDate('d'),'] Handshake Complete [PRIORITY : NA]');
             socket.send(msg);
             console.log('[',getDate('d'),'] Packet#',counter,' Pushing Through Socket : ',name,' [PRIORITY : NA]');
             console.log('[',getDate('d'),'] Closing Socket [PRIORITY : NA]');

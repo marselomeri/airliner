@@ -1,6 +1,8 @@
 import os,json
 from websocket import create_connection
 import datetime
+import ast
+import re
 
 try:
     working_dir = os.environ['YAMCS_WORKSPACE']+'web'
@@ -60,18 +62,30 @@ def byteify(input):
     else:
         return input
 
-data = [1,4,0,{"dt":"PARAMETER","data":{"parameter":[{"id":{"name":"/CFS/CFE_EVS/ErrCounter"},"rawValue":{"type":"UINT32","uint32Value":0},"engValue":{"type":"UINT32","uint32Value":0},"acquisitionTime":1509120382791,"generationTime":316989422671,"acquisitionStatus":"ACQUIRED","processingStatus":true,"acquisitionTimeUTC":"2017-10-27T16:05:45.791","generationTimeUTC":"1980-01-17T20:36:43.671","expirationTime":1509120384291,"expirationTimeUTC":"2017-10-27T16:05:47.291"}]}}]
 
-def preprocessAtServer(d):
-    if d[1] == 4:
-        print 'GOT VALID DATA RESPONSE.'
-        #for parameter in d[3]:
+def log(name,status,status_type):
+    date = getDate()
+    print str(date)+' - '+str(status_type)+' - '+str(status)+' ( NAME : '+str(name)+' )'
 
 
+def preProcess(d):
+        dealing_with_incompat = re.sub(r"\btrue\b", "True", d)
+        array_obj = ast.literal_eval(dealing_with_incompat)
+        if array_obj[1] == 4:
+            x = array_obj[3]["data"]
+            x1 = x['parameter']
+            for i in range(len(x1)):
+                x['parameter'][i]['instance']='softsim'
+            return str(x)
 
 
 
+def readSESSION():
+    with open('/home/vagrant/git/airliner/tools/commander/groundcontrol/session.json') as json_data:
+        d = json.load(json_data)
+        json_data.close()
+        return d
 
-
-
-preprocessAtServer(data)
+def writeSESSION(j):
+    with open('/home/vagrant/git/airliner/tools/commander/groundcontrol/session.json', 'w') as f:
+        json.dump(j, f)

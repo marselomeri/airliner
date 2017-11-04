@@ -398,9 +398,14 @@ html(lang='en-us')
       }
 
       var processTelemetryUpdate = function (param) {
+        //pre-processing telemetry
+        param = JSON.parse((param.data).replace(/'/g, "\"").replace('True','true'));
+        param = param.parameter[0];
         var found = false;
         for (var i = 0; i < CommanderTlmDataElements.length; i++) {
-          var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-sage'));
+          pre_process = CommanderTlmDataElements[i].attr('data-sage');
+          pre_process = pre_process.replace(/'/g, '"');
+          var jsonObj = JSON.parse(pre_process);
           for (var j = 0; j < jsonObj.tlm.length; j++) {
             if (jsonObj.tlm[j].name == param.id.name){
               var correctInstance = false;
@@ -497,7 +502,7 @@ html(lang='en-us')
             return str.replace(new RegExp(find, 'g'), replace);
         }
       var BindHtmlToCommanderInstance = function (instanceName) {
-        console.log('***********BINDIBG INSTATACE*******************');
+        //console.log('***********BINDIBG INSTATACE*******************');
         var self = this;
         var tlm = [];
         var self = this;
@@ -534,7 +539,8 @@ html(lang='en-us')
             /* This is a command object. */
             var cmdObj = jsonObj.cmd;
             var btnObj = $(this);
-            session.getCommandInfo({name:cmdObj.name}, function (cmdInfo) {//TODO
+            session.startHPS('GetTelemetry','data',{name:cmdObj.name},function (cmdInfo) {
+            //session.getCommandInfo({name:cmdObj.name}, function (cmdInfo) {//TODO
               if (cmdObj.hasOwnProperty('uuid')) {
                 /* We already bound this element. */
               } else {
