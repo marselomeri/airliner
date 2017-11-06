@@ -1389,8 +1389,8 @@ int32 SCH_ValidateScheduleDeadlines(void *TableData)
         			TableResult = SCH_SDT_BAD_DEADLINE;
         			FailCount++;
         			CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
-									  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %u frames",
-									  MessageIndex, Deadline - SearchMinorFrames);
+						  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %lu frames",
+						  MessageIndex, Deadline - SearchMinorFrames);
         		}
         		FoundNextEntry = TRUE;
         	}
