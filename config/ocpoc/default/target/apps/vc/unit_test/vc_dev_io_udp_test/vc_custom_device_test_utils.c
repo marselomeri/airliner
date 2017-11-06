@@ -31,51 +31,46 @@
 *
 *****************************************************************************/
 
-#ifndef TO_APP_STUBS_H
-#define TO_APP_STUBS_H
+#include "vc_custom_device_test_utils.h"
+#include "vc_platform_stubs.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_tbl_hooks.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_osapi_stubs.h"
+#include "ut_osfileapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_evs_stubs.h"
 
-/************************************************************************
-** Includes
-*************************************************************************/
-#include "cfe.h"
-#include "to_custom_test_utils.h"
+#include <time.h>
 
-/************************************************************************
-** Structure Declarations
-*************************************************************************/
-typedef struct
+/*
+ * Function Definitions
+ */
+
+void VC_Custom_Device_Test_Setup(void)
 {
-    int32 TO_Channel_OpenChannel_Return; 
-    uint8 TO_Channel_State_Return;
-    uint8 TO_Channel_State_Return1;
-    uint8 TO_Channel_State_CallCount;
-} TO_App_Returns_t;
+    /* initialize test environment to default state for every test */
 
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-extern TO_App_Returns_t TO_App_Return;
+    CFE_PSP_MemSet(&VC_AppCustomDevice, 0x00, sizeof(VC_AppCustomDevice_t));
 
-/************************************************************************
-** Function Prototypes (Stubs)
-*************************************************************************/
-int32 TO_Channel_OpenChannel(uint32 index, char *ChannelName,
-        char *ConfigTableName, char *ConfigTableFileName,
-        char *DumpTableName);
-
-void  TO_Channel_LockByIndex(uint32 index);
-
-void  TO_Channel_UnlockByIndex(uint32 index);
-
-uint8 TO_Channel_State(uint32 index);
-
-
-#ifdef __cplusplus
+    Ut_CFE_EVS_Reset();
+    Ut_CFE_FS_Reset();
+    Ut_CFE_TIME_Reset();
+    Ut_CFE_TBL_Reset();
+    Ut_CFE_SB_Reset();
+    Ut_CFE_ES_Reset();
+    Ut_OSAPI_Reset();
+    Ut_OSFILEAPI_Reset();
 }
-#endif
 
-#endif /* TO_APP_STUBS_H */
+void VC_Custom_Device_Test_TearDown(void) {
+    VC_Platform_Stubs_Returns.VC_Wrap_Ioctl_CallCount = 0;
+    CFE_PSP_MemSet(&VC_AppCustomDevice, 0x00, sizeof(VC_AppCustomDevice_t));
+    CFE_PSP_MemSet(&VC_Platform_Stubs_Returns, 0x00, sizeof(VC_Platform_Stubs_Returns_t));
+}

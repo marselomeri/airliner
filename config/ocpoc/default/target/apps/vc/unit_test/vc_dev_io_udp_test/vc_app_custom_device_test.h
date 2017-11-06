@@ -31,51 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef TO_APP_STUBS_H
-#define TO_APP_STUBS_H
+#ifndef VC_APP_CUSTOM_DEVICE_TEST_H
+#define VC_APP_CUSTOM_DEVICE_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/************************************************************************
-** Includes
-*************************************************************************/
-#include "cfe.h"
-#include "to_custom_test_utils.h"
-
-/************************************************************************
-** Structure Declarations
-*************************************************************************/
-typedef struct
-{
-    int32 TO_Channel_OpenChannel_Return; 
-    uint8 TO_Channel_State_Return;
-    uint8 TO_Channel_State_Return1;
-    uint8 TO_Channel_State_CallCount;
-} TO_App_Returns_t;
-
-/************************************************************************
-** External Global Variables
-*************************************************************************/
-extern TO_App_Returns_t TO_App_Return;
-
-/************************************************************************
-** Function Prototypes (Stubs)
-*************************************************************************/
-int32 TO_Channel_OpenChannel(uint32 index, char *ChannelName,
-        char *ConfigTableName, char *ConfigTableFileName,
-        char *DumpTableName);
-
-void  TO_Channel_LockByIndex(uint32 index);
-
-void  TO_Channel_UnlockByIndex(uint32 index);
-
-uint8 TO_Channel_State(uint32 index);
+void VC_Custom_App_Device_Test_AddTestCases(void);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* TO_APP_STUBS_H */
+#endif /* VC_APP_CUSTOM_DEVICE_TEST_H */

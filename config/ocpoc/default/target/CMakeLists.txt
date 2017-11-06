@@ -17,12 +17,13 @@ build_airliner_cfe(
         /ram
     STARTUP_SCRIPT
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
-    
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/osconfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
+    UNIT_TEST_WRAPPER
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test_wrapper
 )
 
 add_airliner_app(
@@ -194,8 +195,10 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/vc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.h
+        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
+        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_custom.c
