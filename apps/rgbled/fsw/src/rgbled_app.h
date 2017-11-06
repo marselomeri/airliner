@@ -54,6 +54,7 @@ extern "C" {
 #include "rgbled_msg.h"
 #include "rgbled_events.h"
 #include "px4_msgs.h"
+#include "rgbled_custom.h"
 
 /************************************************************************
  ** Local Defines

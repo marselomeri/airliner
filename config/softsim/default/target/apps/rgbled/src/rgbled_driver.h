@@ -31,12 +31,13 @@
 *
 *****************************************************************************/
 
-#ifndef RGBLED_CUSTOM_H
-#define RGBLED_CUSTOM_H
+#ifndef RGBLED_DRIVER_H
+#define RGBLED_DRIVER_H
 
 /************************************************************************
 ** Includes
 *************************************************************************/
+#include "rgbled_custom.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -92,7 +93,7 @@ extern "C" {
 **       is the auto-increment OFF (bit set to "H") or auto-increment ON
 **       (bit set to "L"). This is the 8-bit address with AI OFF.
 */
-#define RGBLED_I2C_SUB_ADDR_PWM1        (0x83)
+#define RGBLED_I2C_SUB_ADDR_PWM2        (0x83)
 
 /** \brief I2C sub-address for settings.
 **
@@ -171,6 +172,13 @@ extern "C" {
 */
 #define RGBLED_MAX_RETRY_SLEEP_USEC     (10)
 
+/** \brief Read data, from slave to master.
+**
+**  \par Limits:
+**       None.
+*/
+#define RGBLED_I2C_M_READ               (0x0001)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -181,11 +189,11 @@ extern "C" {
 typedef enum
 {
     /*! RGBLED status uninitialized */
-    RGBLED_UNINITIALIZED  = 0,
+    RGBLED_CUSTOM_UNINITIALIZED  = 0,
     /*! RGBLED status initialized */
-    RGBLED_INITIALIZED   = 1,
+    RGBLED_CUSTOM_INITIALIZED   = 1,
     /*! RGBLED status enabled */
-    RGBLED_ENABLED       = 2
+    RGBLED_CUSTOM_ENABLED       = 2
 } RGBLED_Custom_Status_t;
 
 
@@ -248,4 +256,4 @@ boolean RGBLED_Custom_Disable(void);
 }
 #endif 
 
-#endif /* RGBLED_CUSTOM_H */
+#endif /* RGBLED_DRIVER_H */

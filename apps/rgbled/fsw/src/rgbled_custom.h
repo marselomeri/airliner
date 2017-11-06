@@ -41,8 +41,6 @@
 ** Includes
 *************************************************************************/
 
-#include "cfe.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

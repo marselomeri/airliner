@@ -38,8 +38,9 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "rgbled_custom.h"
 #include "rgbled_driver.h"
+#include "rgbled_events.h"
+#include "rgbled_perfids.h"
 
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
@@ -47,6 +48,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#include <errno.h>
 
 /************************************************************************
 ** Local Defines
@@ -143,7 +145,7 @@ boolean RGBLED_Custom_Init(void)
     }
     else
     {
-        RGBLED_AppCustomData.Status = RGBLED_INITIALIZED;
+        RGBLED_AppCustomData.Status = RGBLED_CUSTOM_INITIALIZED;
     }
     
     returnBool = RGBLED_Custom_Enable();
@@ -155,7 +157,7 @@ boolean RGBLED_Custom_Init(void)
     }
     else
     {
-        RGBLED_AppCustomData.Status = RGBLED_ENABLED;
+        RGBLED_AppCustomData.Status = RGBLED_CUSTOM_ENABLED;
     }
 
 end_of_function:
@@ -172,9 +174,9 @@ boolean RGBLED_Custom_Enable(void)
     settings |= RGBLED_I2C_SET_ENABLE;
     settings |= RGBLED_I2C_SET_NOT_POWERSAVE;
 
-    const uint8 data[2] = { RGBLED_I2C_SUB_ADDR_SETTINGS, settings };
+    uint8 data[2] = { RGBLED_I2C_SUB_ADDR_SETTINGS, settings };
 
-    returnBool = RGBLED_Custom_Send(&data, sizeof(data));
+    returnBool = RGBLED_Custom_Send(&data[0], sizeof(data));
     if(TRUE == returnBool)
     {
         RGBLED_AppCustomData.Settings.Enabled = TRUE;
@@ -196,9 +198,9 @@ boolean RGBLED_Custom_Disable(void)
     boolean returnBool = FALSE;
     uint8 settings = 0;
     
-    const uint8 data[2] = { RGBLED_I2C_SUB_ADDR_SETTINGS, settings };
+    uint8 data[2] = { RGBLED_I2C_SUB_ADDR_SETTINGS, settings };
     
-    returnBool = RGBLED_Custom_Send(&data, sizeof(data));
+    returnBool = RGBLED_Custom_Send(&data[0], sizeof(data));
     if(TRUE == returnBool)
     {
         RGBLED_AppCustomData.Settings.Enabled = FALSE;
@@ -228,7 +230,7 @@ boolean RGBLED_Custom_Validate(void)
     /* The TCA62724FMG LED driver returns 2-bytes */
     uint8 Result[2] = {0, 0};
 
-    returnBool = RGBLED_Custom_Receive(&Result, sizeof(Result));
+    returnBool = RGBLED_Custom_Receive(&Result[0], sizeof(Result));
 
     if(FALSE == returnBool)
     {
@@ -254,7 +256,7 @@ boolean RGBLED_Custom_Validate(void)
     /* if settings bit 4 is set (1) powersave mode is not set */
     if(16 == settings & (1<<4))
     {
-        powerSave = TRUE;
+        notPowerSave = TRUE;
     }
     
     if( RGBLED_AppCustomData.Settings.Enabled        == enabled &&
@@ -314,10 +316,10 @@ boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length)
     int returnCode = 0;
     boolean returnBool = FALSE;
     struct i2c_msg messages[1];
-    struct i2c_rdwr_ioctl_data packets;
+    struct i2c_rdwr_ioctl_data Packets;
 
     messages[0].addr  = RGBLED_I2C_ADDRESS;
-    messages[0].flags = I2C_M_READ;
+    messages[0].flags = RGBLED_I2C_M_READ;
     messages[0].buf   = Buffer;
     messages[0].len   = Length;
 
@@ -325,7 +327,7 @@ boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length)
     Packets.nmsgs = 1;
 
     CFE_ES_PerfLogEntry(RGBLED_RECEIVE_PERF_ID);
-    returnCode = RGBLED_Ioctl(RGBLED_AppCustomData.DeviceFd, I2C_RDWR, &packets);
+    returnCode = RGBLED_Ioctl(RGBLED_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
     CFE_ES_PerfLogExit(RGBLED_RECEIVE_PERF_ID);
 
     if (-1 == returnCode) 
@@ -367,11 +369,11 @@ boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
         bluePWM = RGBLED_MAX_BRIGHTNESS;
     }
 
-    const uint8 data[6] = { RGBLED_I2C_SUB_ADDR_PWM0, BluePWM,
-                            RGBLED_I2C_SUB_ADDR_PWM1, GreenPWM,
-                            RGBLED_I2C_SUB_ADDR_PWM1, RedPWM };
+    uint8 data[6] = { RGBLED_I2C_SUB_ADDR_PWM0, bluePWM,
+                      RGBLED_I2C_SUB_ADDR_PWM1, greenPWM,
+                      RGBLED_I2C_SUB_ADDR_PWM1, redPWM };
 
-    returnBool = RGBLED_Custom_Send(&data, sizeof(data));
+    returnBool = RGBLED_Custom_Send(&data[0], sizeof(data));
     
     /* Set the current value */
     RGBLED_AppCustomData.Settings.RedDutyCycle   = redPWM;
@@ -426,6 +428,7 @@ end_of_function:
     return returnBool;
 }
 
+
 boolean RGBLED_Custom_Uninit(void)
 {
     boolean returnBool = TRUE;
@@ -439,7 +442,7 @@ boolean RGBLED_Custom_Uninit(void)
     }
     else
     {
-        RGBLED_AppCustomData.Status == RGBLED_INITIALIZED;
+        RGBLED_AppCustomData.Status == RGBLED_CUSTOM_INITIALIZED;
     }
 
     returnCode = close(RGBLED_AppCustomData.DeviceFd);
@@ -451,7 +454,7 @@ boolean RGBLED_Custom_Uninit(void)
     }
     else
     {
-        RGBLED_AppCustomData.Status = RGBLED_UNINITIALIZED;
+        RGBLED_AppCustomData.Status = RGBLED_CUSTOM_UNINITIALIZED;
     }
     return returnBool;
 }
