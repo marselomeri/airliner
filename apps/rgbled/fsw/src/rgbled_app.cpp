@@ -189,6 +189,7 @@ int32 RGBLED::InitApp()
         iStatus = -1;
         goto RGBLED_InitApp_Exit_Tag;
     }
+    HkTlm.State = RGBLED_INITIALIZED;
 
 
 RGBLED_InitApp_Exit_Tag:
@@ -224,6 +225,7 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
     int32           iStatus=CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
     CFE_SB_MsgId_t  MsgId;
+    static uint8 lastColor = 0;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(RGBLED_MAIN_TASK_PERF_ID);
@@ -240,53 +242,65 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case RGBLED_WAKEUP_MID:
-                switch (CVT.RGBLEDControl.color) 
+                ProcessCmdPipe();
+                /* If the same color is not the current value update */
+                if (lastColor != CVT.RGBLEDControl.color)
                 {
-                    case RGBLED_COLOR_RED:
-                    RGBLED_Custom_SetColor(255, 0, 0);
+                    switch (CVT.RGBLEDControl.color) 
+                    {
+                        HkTlm.State = RGBLED_ON;
+                        lastColor = CVT.RGBLEDControl.color;
+                        case RGBLED_COLOR_RED:
+                        RGBLED_Custom_SetColor(255, 0, 0);
+                        
+                        break;
+    
+                        case RGBLED_COLOR_GREEN:
+                        RGBLED_Custom_SetColor(0, 255, 0);
+                        break;
+    
+                        case RGBLED_COLOR_BLUE:
+                        RGBLED_Custom_SetColor(0, 0, 255);
+                        break;
+    
+                        case RGBLED_COLOR_AMBER: 
+                        RGBLED_Custom_SetColor(255, 255, 0);
+                        break;
+                        
+                        case RGBLED_COLOR_YELLOW:
+                        RGBLED_Custom_SetColor(255, 255, 0);
+                        break;
+    
+                        case RGBLED_COLOR_PURPLE:
+                        RGBLED_Custom_SetColor(255, 0, 255);
+                        break;
+    
+                        case RGBLED_COLOR_CYAN:
+                        RGBLED_Custom_SetColor(0, 255, 255);
+                        break;
+    
+                        case RGBLED_COLOR_WHITE:
+                        RGBLED_Custom_SetColor(255, 255, 255);
+                        break;
+    
+                        default: // COLOR_OFF
+                        RGBLED_Custom_SetColor(0, 0, 0);
+                        HkTlm.State = RGBLED_INITIALIZED;
+                        break;
+                    }
                     break;
-
-                    case RGBLED_COLOR_GREEN:
-                    RGBLED_Custom_SetColor(0, 255, 0);
-                    break;
-
-                    case RGBLED_COLOR_BLUE:
-                    RGBLED_Custom_SetColor(0, 0, 255);
-                    break;
-
-                    case RGBLED_COLOR_AMBER: 
-                    RGBLED_Custom_SetColor(255, 255, 0);
-                    break;
-                    
-                    case RGBLED_COLOR_YELLOW:
-                    RGBLED_Custom_SetColor(255, 255, 0);
-                    break;
-
-                    case RGBLED_COLOR_PURPLE:
-                    RGBLED_Custom_SetColor(255, 0, 255);
-                    break;
-
-                    case RGBLED_COLOR_CYAN:
-                    RGBLED_Custom_SetColor(0, 255, 255);
-                    break;
-
-                    case RGBLED_COLOR_WHITE:
-                    RGBLED_Custom_SetColor(255, 255, 255);
-                    break;
-
-                    default: // COLOR_OFF
-                    RGBLED_Custom_SetColor(0, 0, 0);
+    
+                case RGBLED_SEND_HK_MID:
+                    ReportHousekeeping();
                     break;
                 }
-                break;
-
-            case RGBLED_SEND_HK_MID:
-                ReportHousekeeping();
-                break;
-
+                /* if the color is still the same break */
+                else
+                {
+                    break;
+                }
             case PX4_LED_CONTROL_MID:
                 memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
-
                 OS_printf("**************\n");
                 OS_printf("  led_mask: %u\n", CVT.RGBLEDControl.led_mask);
                 OS_printf("  color: %u\n", CVT.RGBLEDControl.color);
@@ -386,29 +400,39 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
     if (MsgPtr != NULL)
     {
-        uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
-        switch (uiCmdCode)
+        /* All three commands currently have no arguments */
+        uint16 ExpectedLength = sizeof(RGBLED_NoArgCmd_t); 
+        /* Length verification is then the same for all three commands */
+        if (VerifyCmdLength(MsgPtr, ExpectedLength))
         {
-            case RGBLED_NOOP_CC:
-                HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent(RGBLED_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					RGBLED_MAJOR_VERSION,
-					RGBLED_MINOR_VERSION,
-					RGBLED_REVISION,
-					RGBLED_MISSION_REV);
-                break;
-
-            case RGBLED_RESET_CC:
-                HkTlm.usCmdCnt = 0;
-                HkTlm.usCmdErrCnt = 0;
-                break;
-
-            default:
-                HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent(RGBLED_CC_ERR_EID, CFE_EVS_ERROR,
-                                  "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
-                break;
+            uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
+            switch (uiCmdCode)
+            {
+                case RGBLED_NOOP_CC:
+                    HkTlm.usCmdCnt++;
+                    (void) CFE_EVS_SendEvent(RGBLED_CMD_NOOP_EID, CFE_EVS_INFORMATION,
+                        "Recvd NOOP. Version %d.%d.%d.%d",
+                        RGBLED_MAJOR_VERSION,
+                        RGBLED_MINOR_VERSION,
+                        RGBLED_REVISION,
+                        RGBLED_MISSION_REV);
+                    break;
+    
+                case RGBLED_RESET_CC:
+                    HkTlm.usCmdCnt = 0;
+                    HkTlm.usCmdErrCnt = 0;
+                    break;
+    
+                case RGBLED_SELFTEST_CC:
+                    RGBLED_Custom_SelfTest();
+                    break;
+    
+                default:
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(RGBLED_CC_ERR_EID, CFE_EVS_ERROR,
+                                      "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
+                    break;
+            }
         }
     }
 }
