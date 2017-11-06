@@ -124,9 +124,8 @@ extern "C" {
 */
 #define CI_STARTUP_TIMEOUT_MSEC    (5000)
 
-/* TODO:  Add Doxygen markup. */
-#define CI_CUSTOM_DEV_PATH       "/dev/ttyUSB0"
-
+//#define CI_SERIALIZED	(1)
+//#define CI_DEBUG_SERIALIZED	(1)
 #define CI_MAX_ENC_LEN (32768)
 
 

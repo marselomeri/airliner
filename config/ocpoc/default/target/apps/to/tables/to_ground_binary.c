@@ -32,8 +32,8 @@
 */
 static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
-    "TO_ConfigTbl", "TO.GROUND_CFG", "TO ground config table",
-    "to_ground.tbl", (sizeof(TO_ChannelTbl_t))
+    "TO_ConfigTbl", "TO.GRND_BIN_CFG", "TO ground config table",
+    "to_grnd_bin.tbl", (sizeof(TO_ChannelTbl_t))
 };
 
 /************************************************************************
@@ -57,6 +57,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
 {
 	/* Table ID */
 	1,
+	TO_OUTPUT_TYPE_BINARY,
 	{
 		/* Message Flows */
 		/* Ground Queues */
