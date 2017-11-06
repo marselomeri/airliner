@@ -240,7 +240,44 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case RGBLED_WAKEUP_MID:
-                /* TODO:  Do something here. */
+                switch (CVT.RGBLEDControl.color) 
+                {
+                    case RGBLED_COLOR_RED:
+                    RGBLED_Custom_SetColor(255, 0, 0);
+                    break;
+
+                    case RGBLED_COLOR_GREEN:
+                    RGBLED_Custom_SetColor(0, 255, 0);
+                    break;
+
+                    case RGBLED_COLOR_BLUE:
+                    RGBLED_Custom_SetColor(0, 0, 255);
+                    break;
+
+                    case RGBLED_COLOR_AMBER: 
+                    RGBLED_Custom_SetColor(255, 255, 0);
+                    break;
+                    
+                    case RGBLED_COLOR_YELLOW:
+                    RGBLED_Custom_SetColor(255, 255, 0);
+                    break;
+
+                    case RGBLED_COLOR_PURPLE:
+                    RGBLED_Custom_SetColor(255, 0, 255);
+                    break;
+
+                    case RGBLED_COLOR_CYAN:
+                    RGBLED_Custom_SetColor(0, 255, 255);
+                    break;
+
+                    case RGBLED_COLOR_WHITE:
+                    RGBLED_Custom_SetColor(255, 255, 255);
+                    break;
+
+                    default: // COLOR_OFF
+                    RGBLED_Custom_SetColor(0, 0, 0);
+                    break;
+                }
                 break;
 
             case RGBLED_SEND_HK_MID:

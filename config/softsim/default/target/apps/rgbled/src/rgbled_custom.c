@@ -348,26 +348,10 @@ boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length)
 boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
 {
     boolean returnBool = FALSE;
-    uint8 redPWM    = Red;
-    uint8 greenPWM  = Green;
-    uint8 bluePWM   = Blue;
-    
-    /* If any brightness value is greater than max brightness... */
-    if(redPWM > RGBLED_MAX_BRIGHTNESS)
-    {
-        /* Set the value to max brightness */
-        redPWM = RGBLED_MAX_BRIGHTNESS;
-    }
-
-    if(greenPWM > RGBLED_MAX_BRIGHTNESS)
-    {
-        greenPWM = RGBLED_MAX_BRIGHTNESS;
-    }
-    
-    if(bluePWM > RGBLED_MAX_BRIGHTNESS)
-    {
-        bluePWM = RGBLED_MAX_BRIGHTNESS;
-    }
+    /* Scale from 0-255 to 0-15 */
+    uint8 redPWM    = Red >> 4;
+    uint8 greenPWM  = Green >> 4;
+    uint8 bluePWM   = Blue >> 4;
 
     uint8 data[6] = { RGBLED_I2C_SUB_ADDR_PWM0, bluePWM,
                       RGBLED_I2C_SUB_ADDR_PWM1, greenPWM,

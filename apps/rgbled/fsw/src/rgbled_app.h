@@ -77,6 +77,38 @@ typedef enum
 } RGBLED_Status_t;
 
 
+/**
+ * \brief LED colors
+ */
+typedef enum
+{
+    RGBLED_COLOR_OFF    = 0,
+    RGBLED_COLOR_RED    = 1,
+    RGBLED_COLOR_GREEN  = 2,
+    RGBLED_COLOR_BLUE   = 3,
+    RGBLED_COLOR_AMBER  = 4,
+    RGBLED_COLOR_YELLOW = 5,
+    RGBLED_COLOR_PURPLE = 6,
+    RGBLED_COLOR_CYAN   = 7,
+    RGBLED_COLOR_WHITE  = 8
+} RGBLED_Colors_t;
+
+
+/**
+ * \brief LED modes (not currently implemented).
+ */
+typedef enum
+{
+    RGBLED_MODE_OFF          = 0,
+    RGBLED_MODE_ON           = 1,
+    RGBLED_MODE_DISABLED     = 2,
+    RGBLED_MODE_BLINK_SLOW   = 3,
+    RGBLED_MODE_BLINK_NORMAL = 4,
+    RGBLED_MODE_BLINK_FAST   = 5,
+    RGBLED_MODE_BREATHE      = 6
+}
+
+
 typedef struct
 {
     PX4_LedControlMsg_t RGBLEDControl;
