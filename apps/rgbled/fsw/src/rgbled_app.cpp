@@ -183,12 +183,12 @@ int32 RGBLED::InitApp()
 
     InitData();
     
-    //returnBool = RGBLED_Custom_Init();
-    //if (FALSE == returnBool)
-    //{
-        //iStatus = -1;
-        //goto RGBLED_InitApp_Exit_Tag;
-    //}
+    returnBool = RGBLED_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        goto RGBLED_InitApp_Exit_Tag;
+    }
 
 
 RGBLED_InitApp_Exit_Tag:
