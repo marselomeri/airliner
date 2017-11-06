@@ -106,7 +106,7 @@ typedef enum
     RGBLED_MODE_BLINK_NORMAL = 4,
     RGBLED_MODE_BLINK_FAST   = 5,
     RGBLED_MODE_BREATHE      = 6
-}
+} RGBLED_Modes_t;
 
 
 typedef struct
