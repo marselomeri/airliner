@@ -178,7 +178,19 @@ extern "C" {
 **       None.
 */
 #define RGBLED_I2C_M_READ               (0x0001)
+/** \brief Streaming task priority
+**
+**  \par Limits:
+**       0 to MAX_PRIORITY (usually 255)
+*/
+#define RGBLED_SELFTEST_TASK_PRIORITY      (50)
 
+/** \brief Streaming task name
+**
+**  \par Limits:
+**       OS_MAX_API_NAME
+*/
+#define RGBLED_SELFTEST_TASK_NAME          "RGBLED_TEST"
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -210,13 +222,19 @@ typedef struct
 typedef struct
 {
     /*! Device file descriptor */
-    int                 DeviceFd;
+    int                             DeviceFd;
     /*! Path to device */
-    char                DevName[RGBLED_MAX_DEVICE_PATH];
+    char                            DevName[RGBLED_MAX_DEVICE_PATH];
     /*! The current device settings */
-    RGBLED_Device_Settings_t Settings;
+    RGBLED_Device_Settings_t        Settings;
     /*! The current device status */
-    RGBLED_Custom_Status_t Status;
+    RGBLED_Custom_Status_t          Status;
+    /*! Streaming task priority */
+    uint8                           Priority;
+    /*! Streaming child task identifier */
+    uint32                          ChildTaskID;
+    /*! Streaming task function pointer */
+    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
 } RGBLED_AppCustomData_t;
 
 
@@ -248,6 +266,7 @@ int32 RGBLED_Ioctl(int fh, int request, void *arg);
 
 boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length);
 boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length);
+void RGBLED_Custom_SelfTest_Task(void);
 boolean RGBLED_Custom_GetSettings(void);
 boolean RGBLED_Custom_Validate(void);
 boolean RGBLED_Custom_Enable(void);

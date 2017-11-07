@@ -198,6 +198,8 @@ typedef enum {
 } RGBLED_EventIds_t;
 
 
+void RGBLED_SelfTest_Complete(void);
+
 #ifdef __cplusplus
 }
 #endif

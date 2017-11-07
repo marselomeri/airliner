@@ -73,7 +73,9 @@ typedef enum
     /*! RGBLED app status uninitialized */
     RGBLED_INITIALIZED   = 1,
     /*! RGBLED app status on */
-    RGBLED_ON            = 2
+    RGBLED_ON            = 2,
+    /*! RGBLED app status self-test */
+    RGBLED_SELFTEST      = 3
 } RGBLED_Status_t;
 
 
@@ -134,6 +136,9 @@ public:
 
     /** \brief Task Run Status */
     uint32 uiRunStatus;
+    
+    /** \brief The previous state of the app */
+    uint8 previousState;
 
     /** \brief Housekeeping Telemetry for downlink */
     RGBLED_HkTlm_t HkTlm;

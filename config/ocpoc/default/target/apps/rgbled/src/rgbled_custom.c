@@ -125,6 +125,8 @@ void RGBLED_Custom_InitData(void)
     bzero(&RGBLED_AppCustomData, sizeof(RGBLED_AppCustomData));
 
     strncpy(RGBLED_AppCustomData.DevName, RGBLED_DEVICE_PATH, RGBLED_MAX_DEVICE_PATH);
+    RGBLED_AppCustomData.Priority      = RGBLED_SELFTEST_TASK_PRIORITY;
+    RGBLED_AppCustomData.StreamingTask = RGBLED_Custom_SelfTest_Task;
 }
 
 
@@ -165,8 +167,6 @@ boolean RGBLED_Custom_Init(void)
     {
         RGBLED_AppCustomData.Status = RGBLED_CUSTOM_ENABLED;
     }
-    
-    RGBLED_Custom_SetColor(0,0,255);
 
 end_of_function:
     return returnBool;
@@ -238,28 +238,23 @@ boolean RGBLED_Custom_GetSettings(void)
     /* The TCA62724FMG LED driver returns 2-bytes */
     uint8 Result[2] = {0, 0};
 
-    returnBool = RGBLED_Custom_Receive(&Result[0], sizeof(Result));
+    returnBool = RGBLED_Custom_Receive(Result, sizeof(Result));
 
     if(FALSE == returnBool)
     {
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
-    
+
     /* Settings are bits 7 - 4 of returned byte 0 */
     settings    = Result[0] & 0xf0;
-    /* Red LED duty cycle is bits 3 - 0 of returned byte 0 */
-    redPWM      = Result[0] & 0x0f;
+    /* Blue LED duty cycle is bits 3 - 0 of returned byte 0 */
+    bluePWM     = Result[0] & 0x0f;
     /* Green LED duty cycle is bits 7 - 4 of returned byte 1 */ 
     greenPWM    = (Result[1] & 0xf0) >> 4;
-    /* Blue LED duty cycle is bits 3 - 0 of returned byte 1 */
-    bluePWM     = Result[1] & 0x0f;
-    
-    OS_printf("RGBLED settings = %d \n",settings);
-    OS_printf("RGBLED redPWM = %d \n",redPWM);
-    OS_printf("RGBLED greenPWM = %d \n",greenPWM);
-    OS_printf("RGBLED bluePWM = %d \n",bluePWM);
-    
+    /* Red LED duty cycle is bits 3 - 0 of returned byte 1 */
+    redPWM      = Result[1] & 0x0f;
+
     /* If settings bit 5 is set (1) output is enabled */
     /* if settings bit 4 is set (1) powersave mode is not set */
     if(48 == settings)
@@ -275,15 +270,12 @@ boolean RGBLED_Custom_GetSettings(void)
     {
         notPowerSave = TRUE;
     }
-    
-    OS_printf("RGBLED enabled = %d\n", enabled);
-    OS_printf("RGBLED notpowersave = %d\n", notPowerSave);
-    
-    RGBLED_AppCustomData.Settings.Enabled            = enabled;
-    RGBLED_AppCustomData.Settings.NotPowerSave       = notPowerSave;
-    RGBLED_AppCustomData.Settings.RedDutyCycle       = redPWM;
-    RGBLED_AppCustomData.Settings.GreenDutyCycle     = greenPWM;
-    RGBLED_AppCustomData.Settings.BlueDutyCycle      = bluePWM;
+
+    RGBLED_AppCustomData.Settings.Enabled        = enabled;
+    RGBLED_AppCustomData.Settings.NotPowerSave   = notPowerSave;
+    RGBLED_AppCustomData.Settings.RedDutyCycle   = redPWM;
+    RGBLED_AppCustomData.Settings.GreenDutyCycle = greenPWM;
+    RGBLED_AppCustomData.Settings.BlueDutyCycle  = bluePWM;
 
 end_of_function:
     return returnBool;
@@ -303,7 +295,7 @@ boolean RGBLED_Custom_Validate(void)
     /* The TCA62724FMG LED driver returns 2-bytes */
     uint8 Result[2] = {0, 0};
 
-    returnBool = RGBLED_Custom_Receive(&Result[0], sizeof(Result));
+    returnBool = RGBLED_Custom_Receive(Result, sizeof(Result));
 
     if(FALSE == returnBool)
     {
@@ -313,18 +305,13 @@ boolean RGBLED_Custom_Validate(void)
     
     /* Settings are bits 7 - 4 of returned byte 0 */
     settings    = Result[0] & 0xf0;
-    /* Red LED duty cycle is bits 3 - 0 of returned byte 0 */
-    redPWM      = Result[0] & 0x0f;
+    /* Blue LED duty cycle is bits 3 - 0 of returned byte 0 */
+    bluePWM     = Result[0] & 0x0f;
     /* Green LED duty cycle is bits 7 - 4 of returned byte 1 */ 
     greenPWM    = (Result[1] & 0xf0) >> 4;
-    /* Blue LED duty cycle is bits 3 - 0 of returned byte 1 */
-    bluePWM     = Result[1] & 0x0f;
-    
-    OS_printf("RGBLED settings = %d \n",settings);
-    OS_printf("RGBLED redPWM = %d \n",redPWM);
-    OS_printf("RGBLED greenPWM = %d \n",greenPWM);
-    OS_printf("RGBLED bluePWM = %d \n",bluePWM);
-    
+    /* Red LED duty cycle is bits 3 - 0 of returned byte 1 */
+    redPWM      = Result[1] & 0x0f;
+
     /* If settings bit 5 is set (1) output is enabled */
     /* if settings bit 4 is set (1) powersave mode is not set */
     if(48 == settings)
@@ -341,12 +328,10 @@ boolean RGBLED_Custom_Validate(void)
         notPowerSave = TRUE;
     }
 
-        OS_printf("RGBLED enabled = %d\n", enabled);
-    OS_printf("RGBLED notpowersave = %d\n", notPowerSave);
-    if( RGBLED_AppCustomData.Settings.Enabled        == enabled &&
+    if( RGBLED_AppCustomData.Settings.Enabled        == enabled      &&
         RGBLED_AppCustomData.Settings.NotPowerSave   == notPowerSave &&
-        RGBLED_AppCustomData.Settings.RedDutyCycle   == redPWM &&
-        RGBLED_AppCustomData.Settings.GreenDutyCycle == greenPWM &&
+        RGBLED_AppCustomData.Settings.RedDutyCycle   == redPWM       &&
+        RGBLED_AppCustomData.Settings.GreenDutyCycle == greenPWM     &&
         RGBLED_AppCustomData.Settings.BlueDutyCycle  == bluePWM )
     {
         returnBool = TRUE;
@@ -437,9 +422,9 @@ boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
     uint8 greenPWM  = Green >> 4;
     uint8 bluePWM   = Blue >> 4;
 
-    uint8 data[6] = { RGBLED_I2C_SUB_ADDR_PWM0, bluePWM,
+    uint8 data[6] = { RGBLED_I2C_SUB_ADDR_PWM0, redPWM,
                       RGBLED_I2C_SUB_ADDR_PWM1, greenPWM,
-                      RGBLED_I2C_SUB_ADDR_PWM2, redPWM };
+                      RGBLED_I2C_SUB_ADDR_PWM2, bluePWM };
 
     returnBool = RGBLED_Custom_Send(&data[0], sizeof(data));
     
@@ -462,39 +447,58 @@ boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
 boolean RGBLED_Custom_SelfTest(void)
 {
     boolean returnBool = FALSE;
+    int32 returnCode = 0;
+    
+    /* Create the self-test task */
+    returnCode = CFE_ES_CreateChildTask(
+        &RGBLED_AppCustomData.ChildTaskID,
+        RGBLED_SELFTEST_TASK_NAME,
+        RGBLED_AppCustomData.StreamingTask,
+        0,
+        CFE_ES_DEFAULT_STACK_SIZE,
+        RGBLED_AppCustomData.Priority,
+        0);
 
-    returnBool = RGBLED_Custom_SetColor(15, 0, 0);
-    if(returnBool == FALSE)
+    if(returnCode != CFE_SUCCESS)
     {
-        goto end_of_function;
+        return FALSE;
     }
-    usleep(1000);
-
-    returnBool = RGBLED_Custom_SetColor(0, 15, 0);
-    if(returnBool == FALSE)
-    {
-        goto end_of_function;
-    }
-    usleep(1000);
-
-    returnBool = RGBLED_Custom_SetColor(0, 0, 15);
-    if(returnBool == FALSE)
-    {
-        goto end_of_function;
-    }
-    usleep(1000);
-
-    returnBool = RGBLED_Custom_SetColor(15, 15, 15);
-    if(returnBool == FALSE)
-    {
-        goto end_of_function;
-    }
-    usleep(1000);
-
-end_of_function:
-
-    return returnBool;
+    return TRUE;
 }
+
+
+void RGBLED_Custom_SelfTest_Task(void)
+{
+    uint32 iStatus = -1;
+
+    iStatus = CFE_ES_RegisterChildTask();
+
+    if (iStatus == CFE_SUCCESS)
+    {
+        RGBLED_Custom_SetColor(255, 0, 0);
+        sleep(1);
+
+        RGBLED_Custom_SetColor(0, 255, 0);
+        sleep(1);
+
+        RGBLED_Custom_SetColor(0, 0, 255);
+        sleep(1);
+
+        RGBLED_Custom_SetColor(255, 255, 255);
+        sleep(1);
+    
+        RGBLED_Custom_SetColor(0, 0, 0);
+    }
+
+    /* Set app status in none custom code back to previous value */
+    RGBLED_SelfTest_Complete();
+    /* The child task was successfully created so exit from it */
+    if (iStatus == CFE_SUCCESS)
+    {
+        CFE_ES_ExitChildTask();
+    }
+}
+
 
 
 boolean RGBLED_Custom_Uninit(void)

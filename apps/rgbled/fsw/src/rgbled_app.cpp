@@ -243,62 +243,63 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
         {
             case RGBLED_WAKEUP_MID:
                 ProcessCmdPipe();
-                /* If the same color is not the current value update */
-                if (lastColor != CVT.RGBLEDControl.color)
+                if(HkTlm.State != RGBLED_SELFTEST)
                 {
-                    switch (CVT.RGBLEDControl.color) 
+                    /* If the same color is not the current value update */
+                    if (lastColor != CVT.RGBLEDControl.color)
                     {
                         HkTlm.State = RGBLED_ON;
                         lastColor = CVT.RGBLEDControl.color;
-                        case RGBLED_COLOR_RED:
-                        RGBLED_Custom_SetColor(255, 0, 0);
-                        
-                        break;
-    
-                        case RGBLED_COLOR_GREEN:
-                        RGBLED_Custom_SetColor(0, 255, 0);
-                        break;
-    
-                        case RGBLED_COLOR_BLUE:
-                        RGBLED_Custom_SetColor(0, 0, 255);
-                        break;
-    
-                        case RGBLED_COLOR_AMBER: 
-                        RGBLED_Custom_SetColor(255, 255, 0);
-                        break;
-                        
-                        case RGBLED_COLOR_YELLOW:
-                        RGBLED_Custom_SetColor(255, 255, 0);
-                        break;
-    
-                        case RGBLED_COLOR_PURPLE:
-                        RGBLED_Custom_SetColor(255, 0, 255);
-                        break;
-    
-                        case RGBLED_COLOR_CYAN:
-                        RGBLED_Custom_SetColor(0, 255, 255);
-                        break;
-    
-                        case RGBLED_COLOR_WHITE:
-                        RGBLED_Custom_SetColor(255, 255, 255);
-                        break;
-    
-                        default: // COLOR_OFF
-                        RGBLED_Custom_SetColor(0, 0, 0);
-                        HkTlm.State = RGBLED_INITIALIZED;
+                        switch (CVT.RGBLEDControl.color) 
+                        {
+                            case RGBLED_COLOR_RED:
+                            RGBLED_Custom_SetColor(255, 0, 0);
+                            break;
+        
+                            case RGBLED_COLOR_GREEN:
+                            RGBLED_Custom_SetColor(0, 255, 0);
+                            break;
+        
+                            case RGBLED_COLOR_BLUE:
+                            RGBLED_Custom_SetColor(0, 0, 255);
+                            break;
+        
+                            case RGBLED_COLOR_AMBER: 
+                            RGBLED_Custom_SetColor(255, 255, 0);
+                            break;
+                            
+                            case RGBLED_COLOR_YELLOW:
+                            RGBLED_Custom_SetColor(255, 255, 0);
+                            break;
+        
+                            case RGBLED_COLOR_PURPLE:
+                            RGBLED_Custom_SetColor(255, 0, 255);
+                            break;
+        
+                            case RGBLED_COLOR_CYAN:
+                            RGBLED_Custom_SetColor(0, 255, 255);
+                            break;
+        
+                            case RGBLED_COLOR_WHITE:
+                            RGBLED_Custom_SetColor(255, 255, 255);
+                            break;
+        
+                            default: // COLOR_OFF
+                            RGBLED_Custom_SetColor(0, 0, 0);
+                            HkTlm.State = RGBLED_INITIALIZED;
+                            break;
+                        }
+                    }
+                    /* if the color is still the same break */
+                    else
+                    {
                         break;
                     }
-                    break;
-    
-                case RGBLED_SEND_HK_MID:
-                    ReportHousekeeping();
-                    break;
                 }
-                /* if the color is still the same break */
-                else
-                {
-                    break;
-                }
+            case RGBLED_SEND_HK_MID:
+                ReportHousekeeping();
+                break;
+
             case PX4_LED_CONTROL_MID:
                 memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
                 OS_printf("**************\n");
@@ -332,7 +333,7 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(RGBLED_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+              "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -424,6 +425,9 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     break;
     
                 case RGBLED_SELFTEST_CC:
+                    HkTlm.usCmdCnt++;
+                    previousState = HkTlm.State;
+                    HkTlm.State = RGBLED_SELFTEST;
                     RGBLED_Custom_SelfTest();
                     break;
     
@@ -542,13 +546,6 @@ void RGBLED::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(RGBLED_SCH_PIPE_PEND_TIME);
-
-        //iStatus = AcquireConfigPointers();
-        //if(iStatus != CFE_SUCCESS)
-        //{
-            ///* We apparently tried to load a new table but failed.  Terminate the application. */
-            //uiRunStatus = CFE_ES_APP_ERROR;
-        //}
     }
 
     /* Stop Performance Log entry */
@@ -558,6 +555,11 @@ void RGBLED::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
+
+void RGBLED_SelfTest_Complete(void)
+{
+    oRGBLED.HkTlm.State = oRGBLED.previousState;
+}
 
 /************************/
 /*  End of File Comment */
