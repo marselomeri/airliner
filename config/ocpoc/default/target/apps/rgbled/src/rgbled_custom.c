@@ -71,7 +71,19 @@ typedef enum {
 **
 */
     RGBLED_DEVICE_ERR_EID = RGBLED_EVT_CNT,
-    
+
+/** \brief <tt> 'RGBLED - ' </tt>
+**  \event <tt> 'RGBLED - ' </tt>
+**  
+**  \par Type: Info
+**
+**  \par Cause:
+**
+**  This event message is issued when a device successfully complete a
+**  self test.
+**
+*/
+    RGBLED_DEVICE_INF_EID,
 /** \brief Number of custom events 
 **
 **  \par Limits:
@@ -489,7 +501,8 @@ void RGBLED_Custom_SelfTest_Task(void)
     
         RGBLED_Custom_SetColor(0, 0, 0);
     }
-
+    CFE_EVS_SendEvent(RGBLED_DEVICE_INF_EID, CFE_EVS_INFORMATION,
+            "RGBLED Device completed self test");
     /* Set app status in none custom code back to previous value */
     RGBLED_SelfTest_Complete();
     /* The child task was successfully created so exit from it */
