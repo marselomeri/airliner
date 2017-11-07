@@ -180,13 +180,14 @@ boolean RGBLED_Custom_Enable(void)
         RGBLED_AppCustomData.Settings.Enabled = TRUE;
         RGBLED_AppCustomData.Settings.NotPowerSave = TRUE;
     }
-
-    returnBool = RGBLED_Custom_Validate();
-    if(FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "RGBLED device settings validation failedin custom enable");
-    }
+    
+    RGBLED_Custom_SetColor(255, 255, 255);
+    //returnBool = RGBLED_Custom_Validate();
+    //if(FALSE == returnBool)
+    //{
+        //CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            //"RGBLED device settings validation failed in custom enable");
+    //}
     return returnBool;
 }
 

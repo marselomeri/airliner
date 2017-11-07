@@ -126,7 +126,7 @@ extern "C" {
 **       Bit-1 of the "ENABLE/NOT SHDN DATA" byte. Set to "H" output
 **       blinks at PWM0, PWM1, PWM2 rate.
 */
-#define RGBLED_I2C_SET_ENABLE           (0x01)
+#define RGBLED_I2C_SET_ENABLE           (0x02)
 
 /** \brief I2C setting NOT enable (ENABLE).
 **
@@ -248,6 +248,7 @@ int32 RGBLED_Ioctl(int fh, int request, void *arg);
 
 boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length);
 boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length);
+boolean RGBLED_Custom_GetSettings(void);
 boolean RGBLED_Custom_Validate(void);
 boolean RGBLED_Custom_Enable(void);
 boolean RGBLED_Custom_Disable(void);
