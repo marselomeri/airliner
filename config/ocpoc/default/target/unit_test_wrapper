@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 HOST_PATH=$1
 FULL_COMMAND=${*:2}
 TARGET_DIR="/root/unit-test"
