@@ -47,6 +47,8 @@
 
 #define VC_SEND_HK_MIDX				45
 #define VC_WAKEUP_MIDX				46
+#define RGBLED_SEND_HK_MIDX			47
+#define RGBLED_WAKEUP_MIDX			48
 
 #define CI_READ_CMD_MIDX			50
 #define CI_1HZ_PROCESS_TIMEOUT_MIDX 51
