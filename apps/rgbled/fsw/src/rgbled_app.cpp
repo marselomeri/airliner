@@ -190,7 +190,17 @@ int32 RGBLED::InitApp()
         goto RGBLED_InitApp_Exit_Tag;
     }
     HkTlm.State = RGBLED_INITIALIZED;
-
+    
+    /* Register the cleanup callback */
+    iStatus = OS_TaskInstallDeleteHandler(&RGBLED_CleanupCallback);
+    if (iStatus != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(RGBLED_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init register cleanup callback (0x%08X)",
+                                 (unsigned int)iStatus);
+        goto RGBLED_InitApp_Exit_Tag;
+    }
+    
 
 RGBLED_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -297,7 +307,6 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
                     }
                 }
             case RGBLED_SEND_HK_MID:
-                OS_printf("RGBLED Hit Send HK Mid\n");
                 ReportHousekeeping();
                 break;
 
@@ -426,10 +435,19 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     break;
     
                 case RGBLED_SELFTEST_CC:
-                    HkTlm.usCmdCnt++;
-                    previousState = HkTlm.State;
-                    HkTlm.State = RGBLED_SELFTEST;
-                    RGBLED_Custom_SelfTest();
+                    if(HkTlm.State != RGBLED_SELFTEST)
+                    {
+                        HkTlm.usCmdCnt++;
+                        previousState = HkTlm.State;
+                        HkTlm.State = RGBLED_SELFTEST;
+                        RGBLED_Custom_SelfTest();
+                    }
+                    else
+                    {
+                        HkTlm.usCmdErrCnt++;
+                        CFE_EVS_SendEvent(RGBLED_CMD_ERR_EID, CFE_EVS_ERROR, 
+                                "RGBLED is already running self-test");
+                    }
                     break;
     
                 default:
@@ -561,6 +579,16 @@ void RGBLED_SelfTest_Complete(void)
 {
     oRGBLED.HkTlm.State = oRGBLED.previousState;
 }
+
+
+void RGBLED_CleanupCallback(void)
+{
+    if(RGBLED_Custom_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(RGBLED_UNINIT_ERR_EID, CFE_EVS_ERROR,"RGBLED_Uninit failed");
+    }
+}
+
 
 /************************/
 /*  End of File Comment */

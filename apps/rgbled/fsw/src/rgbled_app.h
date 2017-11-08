@@ -322,6 +322,21 @@ public:
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 };
 
+
+/************************************************************************/
+/** \brief RGBLED cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void RGBLED_CleanupCallback(void);
+
+
 #ifdef __cplusplus
 }
 #endif 

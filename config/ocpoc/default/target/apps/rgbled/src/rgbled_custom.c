@@ -482,6 +482,13 @@ boolean RGBLED_Custom_SelfTest(void)
 void RGBLED_Custom_SelfTest_Task(void)
 {
     uint32 iStatus = -1;
+    uint8 redPWM;
+    uint8 greenPWM;
+    uint8 bluePWM;
+    /* Save the original settings */
+    redPWM = RGBLED_AppCustomData.Settings.RedDutyCycle;
+    greenPWM = RGBLED_AppCustomData.Settings.GreenDutyCycle;
+    bluePWM = RGBLED_AppCustomData.Settings.BlueDutyCycle;
 
     iStatus = CFE_ES_RegisterChildTask();
 
@@ -500,6 +507,10 @@ void RGBLED_Custom_SelfTest_Task(void)
         sleep(1);
     
         RGBLED_Custom_SetColor(0, 0, 0);
+        sleep(1);
+        /* Restore the original settings */
+        RGBLED_Custom_SetColor(redPWM, greenPWM, bluePWM);
+        
     }
     CFE_EVS_SendEvent(RGBLED_DEVICE_INF_EID, CFE_EVS_INFORMATION,
             "RGBLED Device completed self test");
