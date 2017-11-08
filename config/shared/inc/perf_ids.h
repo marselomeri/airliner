@@ -41,6 +41,7 @@
 #define RGBLED_MAIN_TASK_PERF_ID    71
 #define RGBLED_SEND_PERF_ID         72
 #define RGBLED_RECEIVE_PERF_ID      73
+#define MS5611_MAIN_TASK_PERF_ID    74
 
 #endif
 

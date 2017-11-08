@@ -324,6 +324,7 @@
 #define MS5611_MEASURE_MID							0x1b64
 #define MS5611_RAW_MEAS_MID							0x0b65
 #define MS5611_CAL_MEAS_MID							0x0b66
+#define MS5611_WAKEUP_MID                           0x0b67
 
 #define NEOM8N_SEND_HK_MID							0x1b70
 #define NEOM8N_HK_TLM_MID							0x0b71
