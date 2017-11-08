@@ -297,6 +297,7 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
                     }
                 }
             case RGBLED_SEND_HK_MID:
+                OS_printf("RGBLED Hit Send HK Mid\n");
                 ReportHousekeeping();
                 break;
 
