@@ -1774,6 +1774,7 @@ typedef struct
 
 typedef struct
 {
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
     float gyro_offset_0[3];
     float gyro_scale_0[3];
     float gyro_offset_1[3];
@@ -1799,6 +1800,17 @@ typedef struct
     uint8 accel_mapping[3];
     uint8 baro_mapping[3];
 } PX4_SensorCorrectionMsg_t;
+
+
+typedef struct
+{
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8 led_mask;
+    uint8 color;
+    uint8 mode;
+    uint8 num_blinks;
+    uint8 priority;
+} PX4_LedControlMsg_t;
 
 #endif
 
