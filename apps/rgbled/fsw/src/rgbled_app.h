@@ -54,6 +54,7 @@ extern "C" {
 #include "rgbled_msg.h"
 #include "rgbled_events.h"
 #include "px4_msgs.h"
+#include "rgbled_custom.h"
 
 /************************************************************************
  ** Local Defines
@@ -72,8 +73,42 @@ typedef enum
     /*! RGBLED app status uninitialized */
     RGBLED_INITIALIZED   = 1,
     /*! RGBLED app status on */
-    RGBLED_ON            = 2
+    RGBLED_ON            = 2,
+    /*! RGBLED app status self-test */
+    RGBLED_SELFTEST      = 3
 } RGBLED_Status_t;
+
+
+/**
+ * \brief LED colors
+ */
+typedef enum
+{
+    RGBLED_COLOR_OFF    = 0,
+    RGBLED_COLOR_RED    = 1,
+    RGBLED_COLOR_GREEN  = 2,
+    RGBLED_COLOR_BLUE   = 3,
+    RGBLED_COLOR_AMBER  = 4,
+    RGBLED_COLOR_YELLOW = 5,
+    RGBLED_COLOR_PURPLE = 6,
+    RGBLED_COLOR_CYAN   = 7,
+    RGBLED_COLOR_WHITE  = 8
+} RGBLED_Colors_t;
+
+
+/**
+ * \brief LED modes (not currently implemented).
+ */
+typedef enum
+{
+    RGBLED_MODE_OFF          = 0,
+    RGBLED_MODE_ON           = 1,
+    RGBLED_MODE_DISABLED     = 2,
+    RGBLED_MODE_BLINK_SLOW   = 3,
+    RGBLED_MODE_BLINK_NORMAL = 4,
+    RGBLED_MODE_BLINK_FAST   = 5,
+    RGBLED_MODE_BREATHE      = 6
+} RGBLED_Modes_t;
 
 
 typedef struct
@@ -101,6 +136,9 @@ public:
 
     /** \brief Task Run Status */
     uint32 uiRunStatus;
+    
+    /** \brief The previous state of the app */
+    uint8 previousState;
 
     /** \brief Housekeeping Telemetry for downlink */
     RGBLED_HkTlm_t HkTlm;
@@ -283,6 +321,21 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 };
+
+
+/************************************************************************/
+/** \brief RGBLED cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void RGBLED_CleanupCallback(void);
+
 
 #ifdef __cplusplus
 }

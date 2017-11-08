@@ -121,6 +121,38 @@ extern "C" {
 */
 #define RGBLED_RESET_CC                (1)
 
+/** \rgbledcmd Run Self-Tests
+**  
+**  \par Description
+**       Run an RGBLED self test.
+**
+**  \rgbledcmdmnemonic \RGBLED_TLMRST
+**
+**  \par Command Structure
+**       #RGBLED_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - \b \c \RGBLED_CMDACPTCNT - command counter will increment
+**       - The #RGBLED_CMD_INF_EID informational event message will be 
+**         generated when the command is received
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Command packet length not as expected
+** 
+**  \par Evidence of failure may be found in the following telemetry: 
+**       - \b \c \RGBLED_CMDRJCTCNT - command error counter will increment
+**       - Error specific event message #RGBLED_MSGID_ERR_EID
+**
+**  \par Criticality
+**       None
+**
+**  \sa #RGBLED_SELFTEST_CC
+*/
+#define RGBLED_SELFTEST_CC             (2)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -150,8 +182,10 @@ typedef struct
     /** \rgbledtlmmnemonic \RGBLED_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
-
+    /** \brief RGBLED App State */
+    uint8                 State;
 } RGBLED_HkTlm_t;
+
 
 
 #ifdef __cplusplus

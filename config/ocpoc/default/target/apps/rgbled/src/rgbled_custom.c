@@ -509,7 +509,7 @@ void RGBLED_Custom_SelfTest_Task(void)
         RGBLED_Custom_SetColor(0, 0, 0);
         sleep(1);
         /* Restore the original settings */
-        RGBLED_Custom_SetColor(redPWM, greenPWM, bluePWM);
+        RGBLED_Custom_SetColor((redPWM << 4), (greenPWM << 4), (bluePWM << 4));
         
     }
     CFE_EVS_SendEvent(RGBLED_DEVICE_INF_EID, CFE_EVS_INFORMATION,
