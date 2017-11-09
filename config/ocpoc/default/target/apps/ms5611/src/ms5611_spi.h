@@ -42,7 +42,7 @@
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define MS5611_SPI_DEVICE_PATH              "/dev/spidev32766.1"
+#define MS5611_SPI_DEVICE_PATH              "/dev/spidev1.0"
 #define MS5611_SPI_DEVICE_MODE              (3)
 #define MS5611_SPI_DEVICE_BITS              (8)
 #define MS5611_SPI_DEVICE_SPEED             (1000000)

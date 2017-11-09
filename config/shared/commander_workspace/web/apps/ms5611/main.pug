@@ -27,6 +27,10 @@ block main
                     th Error Count
                     td
                       span(data-sage={tlm:{name:'/CFS/MS5611/ErrCounter'}}) ---
+                  tr
+                    th State
+                    td
+                      span(data-sage={tlm:{name:'/CFS/MS5611/State'}}) ---
             footer
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/Reset'}}) Reset
