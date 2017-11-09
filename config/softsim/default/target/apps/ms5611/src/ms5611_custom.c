@@ -343,10 +343,11 @@ end_of_function:
 }
 
 
-void MS5611_D1Conversion(void)
+boolean MS5611_D1Conversion(void)
 {
     int ret = 0;
     int32 result = 0;
+    boolean returnBool = TRUE;
 
     unsigned char   txBuf[1];
     unsigned char   rxBuf[1];
@@ -364,18 +365,21 @@ void MS5611_D1Conversion(void)
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
+        returnBool = FALSE;
     }
     else
     {
         usleep(20000);
     }
+    return returnBool;
 }
 
 
-void MS5611_D2Conversion(void)
+boolean MS5611_D2Conversion(void)
 {
     int ret = 0;
     int32 result = 0;
+    boolean returnBool = TRUE;
 
     unsigned char   txBuf[1];
     unsigned char   rxBuf[1];
@@ -393,23 +397,34 @@ void MS5611_D2Conversion(void)
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
+        returnBool = FALSE;
     }
     else
     {
         usleep(20000);
     }
+    return returnBool;
 }
 
 
-int32 MS5611_ReadADCResult(void)
+boolean MS5611_ReadADCResult(uint32 *returnVal)
 {
     int ret = 0;
     int32 result = 0;
     uint32 i = 0;
-
     unsigned char   txBuf[30];
     unsigned char   rxBuf[30];
+    boolean returnBool = TRUE;
 
+    /* Null pointer check */
+    if(0 == returnVal)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MS5611 ReadProm Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
     memset(txBuf, 0, sizeof(txBuf));
     memset(rxBuf, 0, sizeof(rxBuf));
     txBuf[0] = MS5611_SPI_CMD_ADC_READ;
@@ -423,9 +438,13 @@ int32 MS5611_ReadADCResult(void)
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
+        returnBool = FALSE;
+        goto end_of_function;
     }
-    result = (rxBuf[1] << 16) + (rxBuf[2] << 8) + rxBuf[3];
+    *returnVal = (rxBuf[1] << 16) + (rxBuf[2] << 8) + rxBuf[3];
 
-    return result;
+end_of_function:
+
+    return returnBool;
 }
 

@@ -138,9 +138,7 @@ int32 MS5611_Ioctl(int fh, int request, void *arg);
 
 int32 MS5611_ResetDevice(void);
 uint8 MS5611_ReadReg(uint8 Addr);
-void MS5611_D1Conversion(void);
-void MS5611_D2Conversion(void);
-int32 MS5611_ReadADCResult(void);
+
 
 #ifdef __cplusplus
 extern "C" {
