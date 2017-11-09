@@ -37,10 +37,17 @@
 ** Includes
 *************************************************************************/
 #include "ms5611_custom.h"
+#include "cfe.h"
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+#define MS5611_SPI_DEVICE_PATH              "/dev/spidev32766.1"
+#define MS5611_SPI_DEVICE_MODE              (3)
+#define MS5611_SPI_DEVICE_BITS              (8)
+#define MS5611_SPI_DEVICE_SPEED             (1000000)
+#define MS5611_SPI_TX_DELAY                 (0)
+#define MS5611_SPI_RX_DELAY                 (0)
 // SPI Commands
 #define MS5611_SPI_CMD_RESET                (0x1e)
 #define MS5611_SPI_CMD_CONVERT_D1_MASK      (0x40)
@@ -67,18 +74,40 @@
 **  \par Limits:
 **       None.
 */
-#define RGBLED_MAX_RETRY_ATTEMPTS           (2)
+#define MS5611_MAX_RETRY_ATTEMPTS           (2)
 
 /** \brief Sleep time micro seconds for interrupted calls.
 **
 **  \par Limits:
 **       None.
 */
-#define RGBLED_MAX_RETRY_SLEEP_USEC         (10)
+#define MS5611_MAX_RETRY_SLEEP_USEC         (10)
+
+
 
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
+/**
+ * \brief MS5611 device status
+ */
+typedef enum
+{
+    /*! MS5611 status uninitialized */
+    MS5611_CUSTOM_UNINITIALIZED  = 0,
+    /*! RGBLED status initialized */
+    MS5611_CUSTOM_INITIALIZED   = 1
+} MS5611_Custom_Status_t;
+
+
+typedef struct
+{
+    /*! Device file descriptor */
+    int                             DeviceFd;
+    /*! The current device status */
+    MS5611_Custom_Status_t          Status;
+} MS5611_AppCustomData_t;
+
 
 /************************************************************************
 ** External Global Variables
@@ -106,6 +135,13 @@
 *************************************************************************/
 int32 MS5611_Ioctl(int fh, int request, void *arg);
 
+
+int32 MS5611_ResetDevice(void);
+uint8 MS5611_ReadReg(uint8 Addr);
+uint16 MS5611_ReadPROM(uint8 Addr);
+void MS5611_D1Conversion(void);
+void MS5611_D2Conversion(void);
+int32 MS5611_ReadADCResult(void);
 
 #ifdef __cplusplus
 extern "C" {

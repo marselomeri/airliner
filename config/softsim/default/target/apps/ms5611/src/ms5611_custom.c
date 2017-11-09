@@ -37,17 +37,19 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "ms5611_spi.h"
 #include "cfe.h"
+#include "ms5611_spi.h"
 #include "ms5611_events.h"
 #include "ms5611_perfids.h"
 
+#include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <string.h>
 
 /************************************************************************
 ** Local Defines
@@ -99,6 +101,7 @@ typedef enum {
 /************************************************************************
 ** Global Variables
 *************************************************************************/
+MS5611_AppCustomData_t MS5611_AppCustomData;
 struct spi_ioc_transfer MS5611_SPI_Xfer[2];
 
 /************************************************************************
@@ -108,18 +111,18 @@ struct spi_ioc_transfer MS5611_SPI_Xfer[2];
 /************************************************************************
 ** Local Function Definitions
 *************************************************************************/
-int32 RGBLED_Ioctl(int fh, int request, void *arg)
+int32 MS5611_Ioctl(int fh, int request, void *arg)
 {
     int32 returnCode = 0;
     uint32 i = 0;
 
-    for (i=0; i < RGBLED_MAX_RETRY_ATTEMPTS; i++)
+    for (i=0; i < MS5611_MAX_RETRY_ATTEMPTS; i++)
     {
         returnCode = ioctl(fh, request, arg);
             
         if (-1 == returnCode && EINTR == errno)
         {
-            usleep(RGBLED_MAX_RETRY_SLEEP_USEC);
+            usleep(MS5611_MAX_RETRY_SLEEP_USEC);
         }
         else
         {
@@ -133,25 +136,119 @@ int32 RGBLED_Ioctl(int fh, int request, void *arg)
 
 void MS5611_Custom_InitData(void)
 {
-    
+    /* Set all struct zero values */
+    bzero(&MS5611_AppCustomData, sizeof(MS5611_AppCustomData));
 }
 
 
-boolean MS5611_Custom_Init(void)
+boolean MS5611_Custom_Init()
 {
+    boolean returnBool = TRUE;
+    int ret = 0;
+    int i = 0;
+    int8 mode = MS5611_SPI_DEVICE_MODE;
+    int8 bits = MS5611_SPI_DEVICE_BITS;
+    uint32 speed = MS5611_SPI_DEVICE_SPEED;
+
+    MS5611_AppCustomData.DeviceFd = open(MS5611_SPI_DEVICE_PATH, O_RDWR);
+    if (MS5611_AppCustomData.DeviceFd < 0) 
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MS5611 Device open errno: %i", errno);
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_WR_MODE, &mode);
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't set SPI mode.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_RD_MODE, &mode);
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't get SPI mode.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_WR_BITS_PER_WORD, &bits);
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't set bits per word.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_RD_BITS_PER_WORD, &bits);
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't get bits per word.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't set max speed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't get max speed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Keep CS activated */
+    MS5611_SPI_Xfer[0].cs_change = 0; 
+    MS5611_SPI_Xfer[0].delay_usecs = 0; 
+    MS5611_SPI_Xfer[0].speed_hz = speed; 
+    MS5611_SPI_Xfer[0].bits_per_word = 8;
+    ///* Keep CS activated */
+    //MS5611_SPI_Xfer[1].cs_change = 0; 
+    //MS5611_SPI_Xfer[0].delay_usecs = 0;
+    //MS5611_SPI_Xfer[0].speed_hz = speed;
+    //MS5611_SPI_Xfer[0].bits_per_word = 8;
+    
+    ret = MS5611_ResetDevice();
+    if (-1 == ret)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Reset device failed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    MS5611_AppCustomData.Status = MS5611_CUSTOM_INITIALIZED;
+
+end_of_function:
+    return returnBool;
 }
 
 
 boolean MS5611_Custom_Uninit(void)
 {
-    
+    return TRUE;
 }
 
 
 int32 MS5611_ResetDevice(void)
 {
-    int ret;
+    int ret = 0;
 
     unsigned char   txBuf[2];
     unsigned char   rxBuf[2];
@@ -164,36 +261,15 @@ int32 MS5611_ResetDevice(void)
     MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
     MS5611_SPI_Xfer[0].len = 2;
 
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
     }
-    return ret;
-};
-
-
-int32 MS5611_WriteReg(uint8 reg, uint8 val)
-{
-    int ret;
-
-    unsigned char   txBuf[2];
-    unsigned char   rxBuf[2];
-
-    memset(txBuf, 0, sizeof(txBuf));
-    memset(rxBuf, 0, sizeof(rxBuf));
-    txBuf[0] = reg;
-
-    MS5611_SPI_Xfer[0].tx_buf = (unsigned long)txBuf;
-    MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
-    MS5611_SPI_Xfer[0].len = 2;
-
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
-    if (-1 == ret) 
-    {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "MS5611 ioctl returned %i", errno);
+    else
+    {
+        usleep(100000);
     }
     return ret;
 }
@@ -201,7 +277,7 @@ int32 MS5611_WriteReg(uint8 reg, uint8 val)
 
 uint8 MS5611_ReadReg(uint8 Addr)
 {
-    int ret;
+    int ret = 0;
 
     unsigned char   txBuf[2];
     unsigned char   rxBuf[2];
@@ -214,7 +290,7 @@ uint8 MS5611_ReadReg(uint8 Addr)
     MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
     MS5611_SPI_Xfer[0].len = 2;
 
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -223,12 +299,12 @@ uint8 MS5611_ReadReg(uint8 Addr)
     /* TODO - Add error checking. */
 
     return (uint8) rxBuf[1];
-};
+}
 
 
 uint16 MS5611_ReadPROM(uint8 Addr)
 {
-    int ret;
+    int ret = 0;
     uint32 i = 0;
 
     unsigned char   txBuf[30];
@@ -242,7 +318,7 @@ uint16 MS5611_ReadPROM(uint8 Addr)
     MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
     MS5611_SPI_Xfer[0].len = 30;
 
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -254,7 +330,7 @@ uint16 MS5611_ReadPROM(uint8 Addr)
 
 void MS5611_D1Conversion(void)
 {
-    int ret;
+    int ret = 0;
     int32 result = 0;
 
     unsigned char   txBuf[1];
@@ -268,7 +344,7 @@ void MS5611_D1Conversion(void)
     MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
     MS5611_SPI_Xfer[0].len = 1;
 
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -276,14 +352,14 @@ void MS5611_D1Conversion(void)
     }
     else
     {
-    usleep(20000);
+        usleep(20000);
     }
 }
 
 
 void MS5611_D2Conversion(void)
 {
-    int ret;
+    int ret = 0;
     int32 result = 0;
 
     unsigned char   txBuf[1];
@@ -297,7 +373,7 @@ void MS5611_D2Conversion(void)
     MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
     MS5611_SPI_Xfer[0].len = 1;
 
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -305,14 +381,14 @@ void MS5611_D2Conversion(void)
     }
     else
     {
-    usleep(20000);
+        usleep(20000);
     }
 }
 
 
 int32 MS5611_ReadADCResult(void)
 {
-    int ret;
+    int ret = 0;
     int32 result = 0;
     uint32 i = 0;
 
@@ -327,7 +403,7 @@ int32 MS5611_ReadADCResult(void)
     MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
     MS5611_SPI_Xfer[0].len = 30;
 
-    ret = RGBLED_Ioctl(MS5611_AppData.FD, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
+    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
