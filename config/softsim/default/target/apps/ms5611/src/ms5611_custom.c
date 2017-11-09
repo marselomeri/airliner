@@ -302,10 +302,20 @@ uint8 MS5611_ReadReg(uint8 Addr)
 }
 
 
-uint16 MS5611_ReadPROM(uint8 Addr)
+boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 {
     int ret = 0;
     uint32 i = 0;
+    boolean returnBool = TRUE;
+    
+    /* Null pointer check */
+    if(0 == returnVal)
+    {
+        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MS5611 ReadProm Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
     unsigned char   txBuf[30];
     unsigned char   rxBuf[30];
@@ -323,8 +333,13 @@ uint16 MS5611_ReadPROM(uint8 Addr)
     {            
         CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
+        returnBool = FALSE;
+        goto end_of_function;
     }
-    return (rxBuf[1] << 8) + rxBuf[2];
+    *returnVal = (rxBuf[1] << 8) + rxBuf[2];
+    
+end_of_function:
+    return returnBool;
 }
 
 
