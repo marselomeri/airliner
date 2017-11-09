@@ -1,10 +1,14 @@
 {
-    "app_name": "ULR",
-    "output_dir": "/home/vagrant/git/airliner/apps",
-    "app_full_name": "Aerotenna uLanding Radar",
-    "wakeup_mid_macro": "ULR_READ_SENSOR_MID",
-    "input_messages": {},
+    "app_name": "GPS",
+    "output_dir": "/home/vagrant/airliner/apps",
+    "app_full_name": "Global Positioning System",
+    "wakeup_mid_macro": "GPS_READ_SENSOR_MID",
+    "input_messages": {
+            "1": {"var_name": "GpsInjectData", "mid_macro": "PX4_GPS_INJECT_DATA_MID", "datatype": "PX4_GpsInjectDataMsg_t", "include_file":"px4_msgs.h"}
+        },
     "output_messages": {
-        "1": {"var_name": "DistanceSensor", "mid_macro": "PX4_DISTANCE_SENSOR_MID", "datatype": "PX4_DistanceSensorMsg_t", "include_file":"px4_msgs.h"}
+        "1": {"var_name": "GpsDump", "mid_macro": "PX4_GPS_DUMP_MID", "datatype": "PX4_GpsDumpMsg_t", "include_file":"px4_msgs.h"},
+        "2": {"var_name": "SatelliteInfo", "mid_macro": "PX4_SATELLITE_INFO_MID", "datatype": "PX4_SatelliteInfoMsg_t", "include_file":"px4_msgs.h"},
+        "3": {"var_name": "VehicleGps", "mid_macro": "PX4_VEHICLE_GPS_POSITION_MID", "datatype": "PX4_VehicleGpsPositionMsg_t", "include_file":"px4_msgs.h"}
         }
 }

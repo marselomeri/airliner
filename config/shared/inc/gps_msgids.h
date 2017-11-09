@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-
+#include "msg_ids.h"
 
 #ifdef __cplusplus
 }

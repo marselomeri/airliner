@@ -83,6 +83,9 @@
 #define CFE_TIME_TONE_CMD_MIDX		110
 #define CFE_TIME_1HZ_CMD_MIDX		111
 
+#define GPS_READ_SENSOR_MIDX 	    122
+#define GPS_SEND_HK_MIDX        	123
+
 #define EA_WAKEUP_MIDX 				125
 #define EA_PERFMON_MIDX 			126
 #define EA_SEND_HK_MIDX 			127
