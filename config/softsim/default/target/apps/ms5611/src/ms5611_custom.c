@@ -424,7 +424,7 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
         returnBool = FALSE;
         goto end_of_function;
     }
-    
+
     memset(txBuf, 0, sizeof(txBuf));
     memset(rxBuf, 0, sizeof(rxBuf));
     txBuf[0] = MS5611_SPI_CMD_ADC_READ;
@@ -446,5 +446,22 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 end_of_function:
 
     return returnBool;
+}
+
+
+void MS5611_DisplayRegisters(void)
+{
+    uint8 reg = 0;
+
+    OS_printf("MS5611 registers.\n");
+    for (reg=0; reg <= 126; reg++)
+    {
+        uint8 v = MS5611_ReadReg(reg);
+        OS_printf("%02x:%02x ", (unsigned)reg, (unsigned)v);
+        if ((reg - (1)) % 16 == 0) {
+            OS_printf("\n");
+        }
+    }
+    OS_printf("\n");
 }
 

@@ -55,7 +55,7 @@ extern "C" {
 **       MS5611_WAKEUP_MID_MAX_MSG_COUNT and MS5611_SEND_HK_MID_MAX_MSG_COUNT
 **       must be less than MS5611_SCH_PIPE_DEPTH.
 */
-#define MS5611_WAKEUP_MID_MAX_MSG_COUNT   (1)
+#define MS5611_MEASURE_MID_MAX_MSG_COUNT   (1)
 
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
