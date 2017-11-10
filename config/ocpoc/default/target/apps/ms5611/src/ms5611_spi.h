@@ -135,6 +135,23 @@ typedef struct
 *************************************************************************/
 int32 MS5611_Ioctl(int fh, int request, void *arg);
 
+/************************************************************************/
+/** \brief Determines if the maximum of event filters has been reached.
+**
+**  \par Description
+**       This function checks if an index has reached the maximum
+**       number of events.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    ind    The current index to check.
+**                             
+**
+**  \returns    boolean
+**
+*************************************************************************/
+boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
 
 int32 MS5611_ResetDevice(void);
 uint8 MS5611_ReadReg(uint8 Addr);

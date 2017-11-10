@@ -73,18 +73,6 @@ typedef enum {
 */
     MS5611_DEVICE_ERR_EID = MS5611_EVT_CNT,
 
-/** \brief <tt> 'RGBLED - ' </tt>
-**  \event <tt> 'RGBLED - ' </tt>
-**  
-**  \par Type: Info
-**
-**  \par Cause:
-**
-**  This event message is issued when a device successfully complete a
-**  self test.
-**
-*/
-    MS5611_DEVICE_INF_EID,
 /** \brief Number of custom events 
 **
 **  \par Limits:
@@ -477,5 +465,46 @@ void MS5611_DisplayRegisters(void)
         }
     }
     OS_printf("\n");
+}
+
+
+boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind)
+{
+    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+
+int32 MS5611_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
+{
+    int32 customEventCount = ind;
+    
+    /* Null check */
+    if(0 == EventTbl)
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+
+    if(TRUE == MS5611_Custom_Max_Events_Not_Reached(customEventCount))
+    {
+        EventTbl[  customEventCount].EventID = MS5611_DEVICE_ERR_EID;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+    }
+    else
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+    
+end_of_function:
+
+    return customEventCount;
 }
 
