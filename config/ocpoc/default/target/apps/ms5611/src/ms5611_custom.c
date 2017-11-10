@@ -219,7 +219,7 @@ boolean MS5611_Custom_Init()
     MS5611_SPI_Xfer[0].speed_hz = speed; 
     MS5611_SPI_Xfer[0].bits_per_word = 8;
     ///* Keep CS activated */
-    //MS5611_SPI_Xfer[1].cs_change = 0; 
+    MS5611_SPI_Xfer[1].cs_change = 0; 
     //MS5611_SPI_Xfer[0].delay_usecs = 0;
     //MS5611_SPI_Xfer[0].speed_hz = speed;
     //MS5611_SPI_Xfer[0].bits_per_word = 8;
