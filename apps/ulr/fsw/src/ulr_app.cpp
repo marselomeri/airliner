@@ -141,9 +141,10 @@ void ULR::InitData()
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
     		ULR_HK_TLM_MID, sizeof(HkTlm), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&DistanceSensor,
-      		PX4_DISTANCE_SENSOR_MID, sizeof(PX4_DistanceSensorMsg_t), TRUE);
+
+	/* Init output messages */
+	CFE_SB_InitMsg(&DistanceSensor,
+		PX4_DISTANCE_SENSOR_MID, sizeof(PX4_DistanceSensorMsg_t), TRUE);
 }
 
 
