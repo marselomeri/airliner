@@ -110,7 +110,8 @@ extern "C" {
 #define ULR_STARTUP_TIMEOUT_MSEC    (1000)
 
 /* TODO:  Add Doxygen */
-#define ULR_CUSTOM_PORT_PATH "/dev/ttyS6"
+#define ULR_CUSTOM_PORT_PATH 	"/dev/ttyS6"
+#define ULR_SENS_VARIANCE 		(0.045f * 0.045f)
 
 
 #ifdef __cplusplus

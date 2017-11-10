@@ -55,6 +55,8 @@ softsim:
            - type: "sheet"
              spec: "/mdb/VC.xls"
            - type: "sheet"
+             spec: "/mdb/RGBLED.xls"
+           - type: "sheet"
              spec: "/mdb/EA.xls"
 
 mavlink:

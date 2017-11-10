@@ -191,12 +191,50 @@ typedef enum {
 **  The fourth \c %d field contains the expected length.
 */
     RGBLED_MSGLEN_ERR_EID,
-
+/** \brief <tt> 'RGBLED - $commandError' </tt>
+**  \event <tt> 'RGBLED - $commandError' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when RGBLED has
+**  had an error processing a command.
+**
+*/
+    RGBLED_CMD_ERR_EID,
+/** \brief <tt> 'RGBLED - ' </tt>
+**  \event <tt> 'RGBLED - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when RGBLED has
+**  had an error in uninitialization.
+**
+*/
+    RGBLED_UNINIT_ERR_EID,
+/** \brief <tt> 'RGBLED - ' </tt>
+**  \event <tt> 'RGBLED - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the RGBLED has
+**  had an error in initialization.
+**
+*/
+    RGBLED_INIT_ERR_EID,
+    
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	RGBLED_EVT_CNT
 } RGBLED_EventIds_t;
 
+
+void RGBLED_SelfTest_Complete(void);
 
 #ifdef __cplusplus
 }

@@ -96,6 +96,7 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     ULR_HkTlm_t HkTlm;
+
     /************************************************************************/
     /** \brief Aerotenna uLanding Radar (ULR) application entry point
      **

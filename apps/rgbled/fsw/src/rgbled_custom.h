@@ -41,8 +41,6 @@
 ** Includes
 *************************************************************************/
 
-#include "cfe.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -95,11 +93,11 @@ boolean RGBLED_Custom_Init(void);
 **  \par Description
 **       This function sets the color of the LED.
 **
-**  \param [in] Red brightness value from 0-15.
+**  \param [in] Red brightness value from 0-255.
 **
-**  \param [in] Green brightness value from 0-15.
+**  \param [in] Green brightness value from 0-255.
 **
-**  \param [in] Blue brightness value from 0-15.
+**  \param [in] Blue brightness value from 0-255.
 **
 **  \returns
 **  TRUE if successful, FALSE otherwise.

@@ -58,6 +58,14 @@
 
 typedef enum
 {
+	PX4_DISTANCE_SENSOR_LASER           = 0,
+	PX4_DISTANCE_SENSOR_ULTRASOUND      = 1,
+	PX4_DISTANCE_SENSOR_INFRARED        = 2,
+	PX4_DISTANCE_SENSOR_RADAR           = 3
+} PX4_DistanceSensorType_t;
+
+typedef enum
+{
     PX4_ACTUATOR_CONTROL_ROLL 			= 0,
 	PX4_ACTUATOR_CONTROL_PITCH 			= 1,
 	PX4_ACTUATOR_CONTROL_YAW 			= 2,
@@ -638,7 +646,7 @@ typedef struct
 	float MaxDistance;
 	float CurrentDistance;
 	float Covariance;
-	uint8 Type;
+	PX4_DistanceSensorType_t Type;
 	uint8 ID;
 	uint8 Orientation;
 } PX4_DistanceSensorMsg_t;

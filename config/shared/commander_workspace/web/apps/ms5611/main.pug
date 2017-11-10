@@ -27,16 +27,21 @@ block main
                     th Error Count
                     td
                       span(data-sage={tlm:{name:'/CFS/MS5611/ErrCounter'}}) ---
+                  tr
+                    th State
+                    td
+                      span(data-sage={tlm:{name:'/CFS/MS5611/State'}}) ---
             footer
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/Reset'}}) Reset
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/Diag'}}) Diag
               
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-MS5611-Config.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+      #wid-MS5611-Diagnostics.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Configuration
+          h2 Diagnostics
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -44,10 +49,6 @@ block main
             .table-responsive
               table.table.table-condensed
                 tbody
-                  tr
-                    th AppID
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MS5611/AppID'}}) ---
                   tr
                     th Coef 0
                     td
@@ -80,21 +81,6 @@ block main
                     th Coef 7
                     td
                       span(data-sage={tlm:{name:'/CFS/MS5611/Coef7'}}) ---
-                      
-              
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-MS5611-Measurements.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Measurements
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
                   tr
                     th Temperature
                     td

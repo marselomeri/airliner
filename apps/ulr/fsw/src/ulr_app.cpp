@@ -145,6 +145,15 @@ void ULR::InitData()
 	/* Init output messages */
 	CFE_SB_InitMsg(&DistanceSensor,
 		PX4_DISTANCE_SENSOR_MID, sizeof(PX4_DistanceSensorMsg_t), TRUE);
+
+	DistanceSensor.MinDistance = 0.0f;
+	DistanceSensor.MaxDistance = 0.0f;
+	/* Make evident that this range sample is invalid */
+	DistanceSensor.CurrentDistance = -1.0f;
+	DistanceSensor.Covariance = ULR_SENS_VARIANCE;
+	DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
+	DistanceSensor.ID = 0;
+	DistanceSensor.Orientation = 8;
 }
 
 
