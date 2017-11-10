@@ -206,12 +206,7 @@ boolean MS5611_Custom_Init()
     MS5611_SPI_Xfer[0].delay_usecs = 0; 
     MS5611_SPI_Xfer[0].speed_hz = speed; 
     MS5611_SPI_Xfer[0].bits_per_word = 8;
-    ///* Keep CS activated */
-    MS5611_SPI_Xfer[1].cs_change = 0; 
-    //MS5611_SPI_Xfer[0].delay_usecs = 0;
-    //MS5611_SPI_Xfer[0].speed_hz = speed;
-    //MS5611_SPI_Xfer[0].bits_per_word = 8;
-    
+
     ret = MS5611_ResetDevice();
     if (-1 == ret)
     {
@@ -274,33 +269,6 @@ int32 MS5611_ResetDevice(void)
         usleep(100000);
     }
     return ret;
-}
-
-
-uint8 MS5611_ReadReg(uint8 Addr)
-{
-    int ret = 0;
-
-    unsigned char   txBuf[2];
-    unsigned char   rxBuf[2];
-
-    memset(txBuf, 0, sizeof(txBuf));
-    memset(rxBuf, 0, sizeof(rxBuf));
-    txBuf[0] = Addr | MS5611_READ_FLAG;
-
-    MS5611_SPI_Xfer[0].tx_buf = (unsigned long)txBuf;
-    MS5611_SPI_Xfer[0].rx_buf = (unsigned long)rxBuf;
-    MS5611_SPI_Xfer[0].len = 2;
-
-    ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
-    if (-1 == ret) 
-    {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "MS5611 ioctl returned %i", errno);
-    }
-    /* TODO - Add error checking. */
-
-    return (uint8) rxBuf[1];
 }
 
 
@@ -448,23 +416,6 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 end_of_function:
 
     return returnBool;
-}
-
-
-void MS5611_DisplayRegisters(void)
-{
-    uint8 reg = 0;
-
-    OS_printf("MS5611 registers.\n");
-    for (reg=0; reg <= 126; reg++)
-    {
-        uint8 v = MS5611_ReadReg(reg);
-        OS_printf("%02x:%02x ", (unsigned)reg, (unsigned)v);
-        if ((reg - (1)) % 16 == 0) {
-            OS_printf("\n");
-        }
-    }
-    OS_printf("\n");
 }
 
 

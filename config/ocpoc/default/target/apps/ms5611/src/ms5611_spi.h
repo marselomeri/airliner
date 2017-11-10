@@ -153,9 +153,20 @@ int32 MS5611_Ioctl(int fh, int request, void *arg);
 *************************************************************************/
 boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
 
+/************************************************************************/
+/** \brief Reset the device.
+**
+**  \par Description
+**       This function must be used at initialization.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \returns    ioctl return code.
+**
+*************************************************************************/
 int32 MS5611_ResetDevice(void);
-uint8 MS5611_ReadReg(uint8 Addr);
-void MS5611_DisplayRegisters(void);
+
 
 #ifdef __cplusplus
 extern "C" {
