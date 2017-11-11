@@ -5,178 +5,13 @@ from threading import Thread
 from multiprocessing import Process
 import psutil
 import requests
-from pprint import pprint
-class IO:
+import time
 
-    def __init__(self,instance,socket_name,address,port):
-        self.socket_name = socket_name
-        self.instance = instance
-        self.address = address
-        self.port = port
-        self.isConnActive = True
-        self.counter = 0
+import socket
+
+import base64
 
 
-    def connect(self,message):
-        self.isConnActive = True
-        message.reply_channel.send({'accept': True})
-        tk.log(self.socket_name,'CONNETED TO IO','INFO')
-
-
-
-    def disconnect(self,message):
-        self.isConnActive = False
-        message.reply_channel.send({'close': True})
-        tk.log(self.socket_name, 'DISCONNECTED FROM IO', 'INFO')
-
-    def get(self):
-        pass
-    def post(self):
-        pass
-
-
-    def subscribe(self,message):
-
-        message_text = message.content['text']
-
-
-        if message_text == 'START_COMM_HS':
-            tk.log(self.socket_name, 'GOT HS SIGNAL FROM CLIENT', 'INFO')
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            tk.log(self.socket_name, 'GOT CLOSE SIGNAL FROM CLIENT', 'INFO')
-            self.unsubscribe()
-        else:
-            received = ''
-            to_send = ''
-
-            if self.socket_name == 'PARAMETER':
-                temp = tk.byteify(message_text)
-                temp = json.loads(temp)
-                temp = ' {"parameter":"subscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
-                temp = temp.replace("\'", "\"")
-                to_send = '[1,1,' + str(self.counter) + ',' + str(temp) + ']'
-
-
-            elif self.socket_name == 'EVENT':
-                temp = '{"events": "subscribe"}'
-                temp = temp.replace("\'", "\"")
-                to_send = '[1,1,' + str(self.counter) + ',' + str(temp) + ']'
-
-            elif self.socket_name == 'EVENT':
-                temp = '{"alarms": "subscribe"}'
-                temp = temp.replace("\'", "\"")
-                to_send = '[1,1,' + str(self.counter) + ',' + str(temp) + ']'
-            #while True:
-            ws = create_connection('ws://' + self.address + ':' + self.port + '/' + self.instance + '/_websocket')
-            ws.send(to_send)
-            ## LAUNCING THREADS
-            t = Thread(target=self.special_looping_over, args=[ws, message,self.counter])
-            t.start()
-            #while True:#self.isConnActive:
-            #    result = ws.recv()
-            #    print result
-            #    if result != '[1,2,'+str(self.counter)+']':
-            #        result = tk.preProcess(result)
-            #        message.reply_channel.send({'text': result})
-            #        tk.log(self.socket_name, 'BOUND', 'INFO')
-
-
-
-
-    def unsubscribe(self):
-        self.disconnect()
-
-    def sokcetPost(self):
-        pass
-
-    def directoryListing(self,message):
-        name = message.content['text']
-        print '[' + tk.getDate() + ']' + name
-        if name == 'START_COMM_HS':
-            # Group('users').add(message.reply_channel)
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-        elif name == 'CLOSE_COMM_NOFBCK':
-            print '[' + tk.getDate() + ']' + ' Server disconnecting...'
-        else:
-            response = tk.get_directory(name)
-            data = json.dumps(response)
-            # Group('users').add(message.reply_channel)
-            message.reply_channel.send({'text': data})
-            print '[' + tk.getDate() + ']' + ' Packet ' + name + ' sent.'
-
-    def special_looping_over(self,websocket_obj,message_obj,counter):
-        while self.isConnActive:
-            result = websocket_obj.recv()
-            print result
-            if result != '[1,2,' + str(counter) + ']':
-                result = tk.preProcess(result)
-                message_obj.reply_channel.send({'text': result})
-                tk.log(self.socket_name, 'BOUND', 'INFO')
-
-
-
-
-defaultInstance =None
-
-
-
-class UnsubscribeTlmCommand:
-
-    def __init__(self):
-        self.defaultInstance= None
-        self.port = 8090
-        self.address = '127.0.0.1'
-        self.tlmSeqNum = 0
-
-
-
-    def connect(self,message):
-        self.housekeeping()
-        message.reply_channel.send({'accept': True})
-        tk.log('','CONNETED TO IO','INFO')
-
-    def disconnect(self,message):
-        message.reply_channel.send({'close': True})
-        tk.log('', 'DISCONNECTED FROM IO', 'INFO')
-
-
-    def looseTlmCommand(self,message):
-        message_text = message.content['text']
-        if message_text == 'START_COMM_HS':
-            tk.log('LOSTCOMM_HS', 'GOT HS SIGNAL FROM CLIENT', 'INFO')
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            tk.log('LOSTCOMM_ACK', 'GOT CLOSE SIGNAL FROM CLIENT', 'INFO')
-        else:
-            tk.log('LOSTCOMM_MSG', 'GOT CLOSE SIGNAL FROM CLIENT', 'INFO')
-            temp = tk.byteify(message_text)
-            temp = json.loads(temp)
-            temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
-            temp = temp.replace("\'", "\"")
-            to_send = '[1,1,' + str(self.tlmSeqNum) + ',' + str(temp) + ']'
-            ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.defaultInstance+'/_websocket')
-            ws.send(to_send)
-            print '*******DISCON',to_send
-            result = ws.recv()
-            message.reply_channel.send({'text': result})
-            tk.log('', 'BOUND', 'INFO')
-
-            #ws.send(to_send)
-            #t = Thread(target=self.special_looping_over, args=[ws, message, self.tlmSeqNum])
-            #t.start()
-
-    def housekeeping(self):
-        json = tk.readSESSION()
-        self.defaultInstance = json["InstanceName"]
-
-    def special_looping_over(self,websocket_obj,message_obj,counter):
-        while True:
-            result = websocket_obj.recv()
-
-            if result != '[1,2,' + str(counter) + ']':
-                result = tk.preProcess(result)
 
 # COMPLETE
 class Telemetry:
@@ -233,6 +68,15 @@ class Telemetry:
 
         elif message_text == 'CLOSE_COMM_NOFBCK':
             self.disconnect(message)
+        elif message_text == 'US_ALL':
+            for each in self.subscribers.keys():
+                pid = self.subscribers[each]['pid']
+                process = self.subscribers[each]['process']
+                if process.is_alive():
+                    to_kill = psutil.Process(pid)
+                    to_kill.kill()
+                del self.subscribers[each]
+                tk.log(each, 'Telemetry push process is now killed.', 'INFO')
 
         elif message_text.find('tlm')!=-1:
 
@@ -257,6 +101,7 @@ class Telemetry:
                 to_kill = psutil.Process(pid)
                 to_kill.kill()
                 self.killed=self.killed+1
+            #del self.subscribers[prepare2]
             ws.send(to_send)
             self.subscribers.pop(prepare2,None)
             tk.log(message.content['text'], 'Telemetry push process is now killed.', 'INFO')
@@ -270,13 +115,13 @@ class Telemetry:
         message_text = message.content['text']
         unit = {}
 
-        if message_text == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
+        #if message_text == 'START_COMM_HS':
+        #    message.reply_channel.send({'text': 'START_COMM_ACK'})
 
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            self.disconnect(message)
+        #elif message_text == 'CLOSE_COMM_NOFBCK':
+        #    self.disconnect(message)
 
-        elif message_text.find('tlm')!=-1:
+        if message_text.find('tlm')!=-1:
 
         # Converting message text to hashable key.
             prepare1 =json.loads(tk.byteify(message_text))
@@ -340,7 +185,14 @@ class Telemetry:
             result = websocket_obj.recv()
             if result != '[1,2,0]':
                 result = tk.preProcess(result)
-                message_obj.reply_channel.send({'text': result})
+                try:
+                    #print '***************'
+                    #print result
+                    #print '***************'
+                    message_obj.reply_channel.send({'text': result})
+                except:
+                    time.sleep(1)
+                    message_obj.reply_channel.send({'text': result})
                 tk.log(message_obj.content['text'], 'Telemetry packet sent to client', 'INFO')
 
 class Command:
@@ -363,8 +215,9 @@ class Command:
         :param message: message object
         :return: void
         """
-        self.housekeeping()
+
         message.reply_channel.send({'accept': True})
+        self.housekeeping()
         tk.log(self.defaultInstance,'Got Commanding connection request from client','INFO')
 
     def disconnect(self, message):
@@ -377,56 +230,66 @@ class Command:
         tk.log('self.defaultInstance', 'Got Commanding (dis)connection request from client', 'INFO')
 
     def getCommandInfo(self, message):
+
+
+
+
         message_text = message.content['text']
-
-
-        if message_text == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            self.disconnect(message)
-
+        print '**************************'
+        print '==> ', message_text
+        print '**************************'
+        if message_text == 'HS':
+            message.reply_channel.send({'text': 'HSOK'})
         else:
-            print '**************************'
-            print message_text
-            print '**************************'
             if self.defaultInstance!=None:
                 response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/'+ str(self.defaultInstance)+'/commands'+message_text)
             else:
                 response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/'+ self.getInstanceName()+'/commands'+message_text)
+
             data = json.loads(json.dumps(response.read()))
             data = data.replace("\"", "\'")
+
+
             message.reply_channel.send({'text':data})
+            #time.sleep(5);
+            message.reply_channel.send({'text': 'HSOK'})
 
 
     def postCommand(self, message):
         message_text = message.content['text']
 
 
-        if message_text == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
+        #if message_text == 'START_COMM_HS':
+        #    message.reply_channel.send({'text': 'START_COMM_ACK'})
 
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            self.disconnect(message)
+        #elif message_text == 'CLOSE_COMM_NOFBCK':
+        #    self.disconnect(message)
 
+        #else:
+        print '**************************'
+        print message_text
+        to_post = json.loads(message_text)
+        print '**************************'
+        url=''
+        if self.defaultInstance!=None:
+            url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + str(self.defaultInstance) + '/realtime/commands' + to_post['name'] + '?nolink'
         else:
-            print '**************************'
-            print message_text
-            to_post = json.loads(message_text)
-            print '**************************'
-            url=''
-            if self.defaultInstance!=None:
-                url = 'http://' + str(self.address) + ':' + str(self.port) +'/ api / processors / ' + str(self.defaultInstance) + ' / realtime / commands / ' + to_post['name'] + '?nolink'
-            else:
-                url = 'http://' + str(self.address) + ':' + str(self.port) +'/ api / processors / ' + self.getInstanceName() + ' / realtime / commands / ' + to_post['name'] + '?nolink'
+            url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + self.getInstanceName() + '/realtime/commands' + to_post['name'] + '?nolink'
 
-            msg = {
-                'assignment': to_post['args'],
-                'origin': 'user@host',
-                'sequenceNumber': 0,
-                'dryRun': False
-            }
-            requests.post(url=url, data=msg)
+        msg = '{"sequenceNumber": 0,"origin": "user@my-machine","assignment":'+ str(json.dumps(to_post['args']))+',"dryRun": false}'
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        #msg = json.dumps(msg)
+        r = requests.post(url=url, data=msg, headers = headers)
+        got = r.text
+        message.reply_channel.send({'text': got})
+        print '**************************'
+        print msg
+        print got
+        #to_post = json.loads(message_text)
+        print '**************************'
 
 
 
@@ -454,57 +317,47 @@ class Instance:
 
     def connect(self, message):
         message.reply_channel.send({'accept': True})
-        tk.log('INSTANCE', 'CONNETED TO SOCKET', 'INFO')
+
 
     def disconnect(self, message):
         message.reply_channel.send({'close': True})
-        tk.log('INSTANCE', 'DISCONNECTED FROM SOCKET', 'INFO')
+
 
     def getInstanceList(self, message):
+
         name = message.content['text']
+        if name == 'SPLREQ':
+            message.reply_channel.send({'text': 'HI DEVELOPER!'})
 
-        if name == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
+        response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/instances')
+        data = json.loads(json.dumps(response.read()))
+        message.reply_channel.send({'text': data})
 
-        elif name == 'CLOSE_COMM_NOFBCK':
-            tk.log('GET INSTANCE LIST', 'DISCONNECTING FROM SOCKET', 'INFO')
-        else:
-            response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/instances')
-            data = json.loads(json.dumps(response.read()))
-            message.reply_channel.send({'text': data})
-            tk.log(name, 'PACKET SENT', 'INFO')
 
     def setDefaultInstance(self,message):
         name = message.content['text']
-        if name == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-        else:
-            json = tk.readSESSION()
-            json["InstanceName"]=name
-            tk.writeSESSION(json)
+        json = tk.readSESSION()
+        json["InstanceName"]=name
+        tk.writeSESSION(json)
+
+
+        #message.reply_channel.send({'close': True})
 
 class Directory:
     def connect(self,message):
         message.reply_channel.send({'accept': True})
-        tk.log('','CONNETED TO IO','INFO')
 
     def disconnect(self,message):
         message.reply_channel.send({'close': True})
-        tk.log('', 'DISCONNECTED FROM IO', 'INFO')
+
 
 
     def directoryListing(self,message):
         name = message.content['text']
-
-        if name == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-        elif name == 'CLOSE_COMM_NOFBCK':
-            print '[' + tk.getDate() + ']' + ' Server disconnecting...'
-        else:
-            response = tk.get_directory(name)
-            data = json.dumps(response)
-            message.reply_channel.send({'text': data})
-            print '[' + tk.getDate() + ']' + ' Packet ' + name + ' sent.'
+        response = tk.get_directory(name)
+        data = json.dumps(response)
+        message.reply_channel.send({'text': data})
+        print '[' + tk.getDate() + ']' + ' Packet ' + name + ' sent.'
 
 class Event:
     def __init__(self):
@@ -518,26 +371,20 @@ class Event:
     def connect(self,message):
         self.housekeeping()
         message.reply_channel.send({'accept': True})
-        tk.log('','CONNETED TO IO','INFO')
+
 
     def disconnect(self,message):
         message.reply_channel.send({'close': True})
-        tk.log('', 'DISCONNECTED FROM IO', 'INFO')
+
 
 
     def getEvents(self,message):
         message_text = message.content['text']
-        if message_text == 'START_COMM_HS':
-            tk.log('', 'GOT HS SIGNAL FROM CLIENT', 'INFO')
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            tk.log('', 'GOT CLOSE SIGNAL FROM CLIENT', 'INFO')
-        else:
-            data = '[1, 1, 1, {"events": "subscribe"}]'
-            ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.getDefaultInstance()+'/_websocket')
-            ws.send(data)
-            t = Thread(target=self.special_looping_over, args=[ws, message, self.tlmSeqNum])
-            t.start()
+        data = '[1, 1, 1, {"events": "subscribe"}]'
+        ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.getDefaultInstance()+'/_websocket')
+        ws.send(data)
+        t = Thread(target=self.push, args=[ws, message])
+        t.start()
 
     def getDefaultInstance(self):
         json = tk.readSESSION()
@@ -549,12 +396,82 @@ class Event:
 
 
 
-    def special_looping_over(self,websocket_obj,message_obj,counter):
+    def push(self,websocket_obj,message_obj):
         while True:
             result = websocket_obj.recv()
 
-            if result.find('[1,2,')==-1 :
+            if result.find('[1,4,')!=-1 :
                 #result = tk.preProcess(result)
                 message_obj.reply_channel.send({'text': result})
                 print result
                 tk.log('', 'BOUND', 'INFO')
+
+class Misc:
+    def __init__(self):
+
+        self.mapping = {
+            'ADSB':'http://127.0.0.1:9000/test'
+        }
+        self.port = 8090
+        self.address = '127.0.0.1'
+
+    def connect(self, message):
+        message.reply_channel.send({'accept': True})
+        tk.log('INSTANCE', 'CONNETED TO SOCKET', 'INFO')
+
+    def disconnect(self, message):
+        message.reply_channel.send({'close': True})
+        tk.log('INSTANCE', 'DISCONNECTED FROM SOCKET', 'INFO')
+
+    def getMisc(self, message):
+        name = message.content['text']
+
+        if name == 'START_COMM_HS':
+            message.reply_channel.send({'text': 'START_COMM_ACK'})
+
+        elif name == 'CLOSE_COMM_NOFBCK':
+            tk.log('GET INSTANCE LIST', 'DISCONNECTING FROM SOCKET', 'INFO')
+        else:
+            response = urllib.urlopen(self.mapping[name])
+            data = json.loads(json.dumps(response.read()))
+            message.reply_channel.send({'text': data})
+            tk.log(name, 'PACKET SENT', 'INFO')
+
+class Video:
+    def __init__(self):
+        self.address = '127.0.0.1'
+        self.video_port = 3001
+        self.video_frame_counter = 0
+        self.video_socket = None
+
+    def connect(self, message):
+        message.reply_channel.send({'accept': True})
+        tk.log('INSTANCE', 'CONNETED TO SOCKET', 'INFO')
+
+    def disconnect(self, message):
+        message.reply_channel.send({'close': True})
+        tk.log('INSTANCE', 'DISCONNECTED FROM SOCKET', 'INFO')
+
+    def getMisc(self, message):
+        name = message.content['text']
+
+        if name == 'START_COMM_HS':
+            message.reply_channel.send({'text': 'START_COMM_ACK'})
+
+        elif name == 'CLOSE_COMM_NOFBCK':
+            tk.log('GET INSTANCE LIST', 'DISCONNECTING FROM SOCKET', 'INFO')
+        else:
+            buff = self.VideoThroughUDP().next()
+            message.reply_channel.send({'text': buff})
+
+    def VideoThroughUDP(self):
+        UDP_IP = self.address
+        UDP_PORT = self.video_port
+        self.video_socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)  # UDP
+        self.video_socket.bind(("", UDP_PORT))
+        while True:
+            data, addr = self.video_socket.recvfrom(65527)  # buffer size is 1024 bytes
+            b64_img = base64.b64encode(data)
+            self.video_frame_counter = self.video_frame_counter + 1
+            print 'Frame# : ['+self.video_frame_counter+'] sent.'
+            yield b64_img

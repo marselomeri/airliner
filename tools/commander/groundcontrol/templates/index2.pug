@@ -245,7 +245,7 @@ html(lang='en-us')
 
     //
     //  PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
-    //  <script data-pace-options='{ "restartOnRequestAfter": true }' src="static/js/plugin/pace/pace.min.js"></script>
+
     // #PLUGINS
     // Link to Google CDN's jQuery + jQueryUI; fall back to local
     script(src='static/bower_components/jquery/dist/jquery.js')
@@ -335,17 +335,44 @@ html(lang='en-us')
     //script(src = 'client2.js')
     script.
        var session = new Session();
-       session.pull('GetInstanceList','inst','getInstances',processInstance);
+       var inst = new Instance();
+       var dir =  new Directory();
+       var cmd_o = new Command();
+       var tlm_o = new Telemetry();
+       var ev = new Event();
+       var page_change_counter=0;
 
 
-      session.startHPS('GetEvents','event','empty',function(event) {
+
+       //var loadstate = true;
+
+      window.onload= function(){
+        session.saveSockets([inst,dir,cmd_o,tlm_o,ev]);
+        cmd_o.cleanSlate();
+        tlm_o.unSubscribeAll();
+      }
+      window.onhashchange= function(){//TODO
+        console.log('HASH CHANFGE DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        var newInstance = session.getCurrentInstance();
+        cmd_o.cleanSlate();
+        if($("#yamcs-instance-selected").text() != 'Select'){
+        page_change_counter = page_change_counter+1;}
+
+
+      };
+
+
+
+      // INSTANCES
+      inst.getInstanceList('invoke_string',processInstance);
+
+      // EVENTS
+      ev.eventSubscription(function(event) {
         var eventCount = parseInt($('#EventCount').text());
         eventCount++;
         $('#EventCount').text(eventCount);
         $('#EventCount').addClass("bg-color-red bounceIn animated");
       });
-
-
 
       function processInstance(instances) {
           instances = JSON.parse(instances.data);
@@ -354,18 +381,21 @@ html(lang='en-us')
               $("#yamcs-instance-list").append(
                 $('<li>').append(
                   $('<a>').attr('href', 'javascript:void(0);').on("click", function (item) {
-                    var newInstance = item.target.text;
+                    session.setCurrentInstance(item.target.text);
+                    var newInstance = session.getCurrentInstance();
+                    page_change_counter=0;
                     $("#yamcs-instance-selected").text(newInstance);
-                    session.setDefaultInstance(newInstance);
-                    BindHtmlToCommanderInstance(newInstance);
+                    inst.transmitCurrentInstance(newInstance);
+                    BindHtmlToCommanderInstance(newInstance); //first time binding
                   }).append(selected.name)));
             });
             getWorkspaceDir('');
         }
 
-      //BindHtmlToCommanderInstance(instanceName);
 
-      var CommanderTlmDataElements = [];
+
+
+      var CommanderTlmDataElements = [];//TODO
 
       var procDirectoryListing = function (listing) {
         /* Add 'url', and 'ext' attributes */
@@ -399,6 +429,8 @@ html(lang='en-us')
         addNavMenu();
       };
 
+
+
       var trimNull = function (a) {
         var c = a.indexOf('\0');
         if (c>-1) {
@@ -406,6 +438,9 @@ html(lang='en-us')
         }
         return a;
       }
+
+
+
 
       var processTelemetryUpdate = function (param) {
 
@@ -517,32 +552,58 @@ html(lang='en-us')
           }
         }
         if (found == false) {
-          session.unsubscribe('LooseTelemetry','tlm_u',JSON.stringify({tlm:[{'name':param.id.name}]}),function(d){console.log('UNSUBSCRIBED : ',d);});
-          //session.unsubscribe();
+          tlm_o.unSubscribeTelemetry(JSON.stringify({tlm:[{'name':param.id.name}]}),function(d){console.log('UNSUBSCRIBED : ',d);});
+
         }
       };
+
+
+
+
       var replaceAll=function(str, find, replace) {
+            str = str.toString();
             return str.replace(new RegExp(find, 'g'), replace);
         }
+
+
+
+
       var BindHtmlToCommanderInstance = function (instanceName) {
 
-        var self = this;
+
         var tlm = [];
         var self = this;
 
+        console.log('***********BINDING***********');
+        console.log(page_change_counter);
+        if(page_change_counter>=1){
+
+            console.log('called all unsubscription');
+            tlm_o.unSubscribeAll();
+
+
+        }
+
+        //console.log($('[data-sage]'));
+        //cmd_o.cleanSlate();
+        //tlm_o.unSubscribeAll();
         CommanderTlmDataElements.length = 0;
-        console.log('up');
         $('[data-sage]').each(function () {
-          console.log('in');
+
           var obj = $(this).attr('data-sage');
-          console.log(obj);
           var jsonObj;
+          //console.log(obj);
+
           if (typeof obj === 'string' || obj instanceof String) {
             // it's a string
             obj= replaceAll(obj,"\'","\"");
-
-            jsonObj = JSON.parse(obj);
-
+            try{
+                jsonObj = JSON.parse(obj);
+                }
+            catch(err){
+                log('ERROR','cannot parse string from data-sage.',err);
+                return;
+            }
           }
           else if (typeof obj === 'object' || obj instanceof Object) {
             // it's an object
@@ -551,128 +612,157 @@ html(lang='en-us')
           else {
             // it's something else
             return;
+
           }
-          //console.log('***********BINDIBG INSTATACE*******************',jsonObj);
+
+          //console.log(jsonObj);
           if (jsonObj.hasOwnProperty('tlm')) {
             /* This is a telemetry object. */
-            //session.subscribe(jsonObj, processTelemetryUpdate);//kkk
-            session.startHPS('GetTelemetry','tlm_s',JSON.stringify(jsonObj),processTelemetryUpdate);
+
+            tlm_o.subscribeTelemetry(JSON.stringify(jsonObj),processTelemetryUpdate);
             CommanderTlmDataElements.push($(this));
           }
+
+
           if (jsonObj.hasOwnProperty('cmd')) {
             /* This is a command object. */
+
             var cmdObj = jsonObj.cmd;
             var btnObj = $(this);
+            try{
+                cmd_o.prepareCmds(cmdObj.name,jsonObj,btnObj);
+            }
+            catch(err){
+                log('ERROR','cannot parse command string from data-sage.',err);
 
-            session.startHPS('GetCommandInfo','cmd_i',cmdObj.name,function (cmdInfo) {
-            //session.getCommandInfo({name:cmdObj.name}, function (cmdInfo) {//TODO
-              //console.log('***************');
-              //console.log(cmdInfo);
-              //console.log('***************');
-              cmdInfo = cmdInfo.data
-              cmdInfo = replaceAll(cmdInfo,"\'","\"");
-              cmdInfo = JSON.parse(cmdInfo)
-              if (cmdObj.hasOwnProperty('uuid')) {
-                /* We already bound this element. */
-              } else {
-                if ((cmdObj.name == cmdInfo.qualifiedName) &&
-                    (cmdObj.instance == cmdInfo.instance)) {
-                  var uuid = generateUUID();
-                  cmdInfo.uuid = uuid;
-                  cmdObj.uuid = uuid;
-                  btnObj.attr('data-sage', JSON.stringify(jsonObj));
-                  /* Copy any arguments we have from the command button into the cmdInfo struct. */
-                  if (cmdObj.hasOwnProperty('argument')) {
-                    for (i = 0; i < cmdObj.argument.length; i++) {
-                      for (j = 0; j < cmdInfo.argument.length; j++) {
-                        if (cmdInfo.argument[j].name == cmdObj.argument[i].name) {
-                          cmdInfo.argument[j].value = cmdObj.argument[i].value;
-                        }
-                      }
+            }
+
+          }
+
+
+
+        });
+
+
+
+
+        //Do Your Moves Here
+
+        var c = 0;
+        cmd_o.ProcessCmds(function(cmdInfo,jsonObj,btnObj){
+          //console.log('got here ',c);
+
+          c = c+1
+          var cmdObj = jsonObj.cmd;
+          var temp = cmdInfo.data;
+          temp = replaceAll(temp,"\'","\"");
+
+          cmdInfo = JSON.parse(temp);
+
+          if (cmdObj.hasOwnProperty('uuid')) {
+            /* We already bound this element. */
+          } else {
+            if ((cmdObj.name == cmdInfo.qualifiedName) &&
+                (cmdObj.instance == cmdInfo.instance)) {
+              var uuid = generateUUID();
+              cmdInfo.uuid = uuid;
+              cmdObj.uuid = uuid;
+              btnObj.attr('data-sage', JSON.stringify(jsonObj));
+              /* Copy any arguments we have from the command button into the cmdInfo struct. */
+              if (cmdObj.hasOwnProperty('argument')) {
+                for (i = 0; i < cmdObj.argument.length; i++) {
+                  for (j = 0; j < cmdInfo.argument.length; j++) {
+                    if (cmdInfo.argument[j].name == cmdObj.argument[i].name) {
+                      cmdInfo.argument[j].value = cmdObj.argument[i].value;
                     }
-                  }
-                  var cmdOut = JSON.parse(JSON.stringify(cmdInfo));
-                  if (isTemplateCommand(cmdOut) == false) {
-                    btnObj.click(function (eventObject) {
-                      if (cmdOut.hasOwnProperty('argument')) {
-                        var args = [];
-                        for (i = 0; i < cmdOut.argument.length; i++) {
-                          args.push({name: cmdOut.argument[i].name, value: cmdOut.argument[i].value});
-                        }
-                        session.sendCommand(cmdOut.qualifiedName, args);//TODO
-                      } else {
-                        session.sendCommand(cmdOut.qualifiedName, []);//TODO
-                      }
-                    });
-                  } else {
-                    /* First, generate UUIDs to be used later as element IDs. */
-                    for (i = 0; i < cmdOut.argument.length; i++) {
-                      cmdOut.argument[i].uuid = uuid + "_" + cmdOut.argument[i].name;
-                    }
-                    /* Next set stringLength for string parameters to be used for form validation later. */
-                    for (i = 0; i < cmdOut.argument.length; i++) {
-                      if (cmdOut.argument[i].type == "STRING") {
-                        /* Add a new stringLength (in bytes) attribute for parameter validation later. */
-                        cmdOut.argument[i].stringLength = cmdOut.argument[i].type.dataEncoding.sizeInBits / 8;
-                      }
-                    }
-                    var source = $.trim($('#cmdTemplate').html());
-                    var template = Handlebars.compile(source);
-                    var html = template(cmdOut);
-                    var dlg = $("<div id='" + uuid + "'></div>")
-                      .append(html);
-                    // Modal Link
-                    btnObj.click(function () {
-                      dlg.dialog('open');
-                      return false;
-                    });
-                    $(dlg).dialog({
-                      autoOpen: false,
-                      modal: true,
-                      html: true,
-                      content: html,
-                      buttons: [
-                        {
-                          html: "Cancel",
-                          "class": "btn btn-default",
-                          click: function () {
-                            $(this).dialog("close");
-                          }
-                        },
-                        {
-                          html: "<i class='fa fa-check'></i>&nbsp; Send",
-                          "class": "btn btn-primary",
-                          click: function () {
-                            var args = [];
-                            for (i = 0; i < cmdOut.argument.length; i++) {
-                              if (cmdOut.argument[i].type.engType == 'enumeration') {
-                                args.push({
-                                  'name': cmdOut.argument[i].name,
-                                  'value': $('#' + cmdOut.argument[i].uuid + ' option:selected').text()
-                                });
-                              } else {
-                                args.push({
-                                  'name': cmdOut.argument[i].name,
-                                  'value': $('#' + cmdOut.argument[i].uuid).val()
-                                });
-                              }
-                            }
-                            $(this).dialog(session.sendCommand(cmdOut.qualifiedName, args));//TODO
-                            $(this).dialog("close");
-                          }
-                        }
-                      ]
-                    });
                   }
                 }
               }
-            });
+              //console.log('TESTING CONCEPT======>',c,'  ',cmdObj);
+              var cmdOut = JSON.parse(JSON.stringify(cmdInfo));
+
+              if(isTemplateCommand(cmdOut) == false) {
+
+                btnObj.click(function (eventObject) {
+                  if (cmdOut.hasOwnProperty('argument')) {
+                    var args = [];
+                    for (i = 0; i < cmdOut.argument.length; i++) {
+                      args.push({name: cmdOut.argument[i].name, value: cmdOut.argument[i].value});
+                    }
+
+                    cmd_o.sendCommand(cmdOut.qualifiedName, args);//TODO
+
+                  } else {
+
+                    cmd_o.sendCommand(cmdOut.qualifiedName, []);//TODO
+
+                  }
+                });
+              } else {
+                /* First, generate UUIDs to be used later as element IDs. */
+                for (i = 0; i < cmdOut.argument.length; i++) {
+                  cmdOut.argument[i].uuid = uuid + "_" + cmdOut.argument[i].name;
+                }
+                /* Next set stringLength for string parameters to be used for form validation later. */
+                for (i = 0; i < cmdOut.argument.length; i++) {
+                  if (cmdOut.argument[i].type == "STRING") {
+                    /* Add a new stringLength (in bytes) attribute for parameter validation later. */
+                    cmdOut.argument[i].stringLength = cmdOut.argument[i].type.dataEncoding.sizeInBits / 8;
+                  }
+                }
+                var source = $.trim($('#cmdTemplate').html());
+                var template = Handlebars.compile(source);
+                var html = template(cmdOut);
+                var dlg = $("<div id='" + uuid + "'></div>")
+                  .append(html);
+                // Modal Link
+                btnObj.click(function () {
+                  dlg.dialog('open');
+                  return false;
+                });
+                $(dlg).dialog({
+                  autoOpen: false,
+                  modal: true,
+                  html: true,
+                  content: html,
+                  buttons: [
+                    {
+                      html: "Cancel",
+                      "class": "btn btn-default",
+                      click: function () {
+                        $(this).dialog("close");
+                      }
+                    },
+                    {
+                      html: "<i class='fa fa-check'></i>&nbsp; Send",
+                      "class": "btn btn-primary",
+                      click: function () {
+                        var args = [];
+                        for (i = 0; i < cmdOut.argument.length; i++) {
+                          if (cmdOut.argument[i].type.engType == 'enumeration') {
+                            args.push({
+                              'name': cmdOut.argument[i].name,
+                              'value': $('#' + cmdOut.argument[i].uuid + ' option:selected').text()
+                            });
+                          } else {
+                            args.push({
+                              'name': cmdOut.argument[i].name,
+                              'value': $('#' + cmdOut.argument[i].uuid).val()
+                            });
+                          }
+                        }
+                        $(this).dialog(cmd_o.sendCommand(cmdOut.qualifiedName, args));//TODO
+                        $(this).dialog("close");
+                      }
+                    }
+                  ]
+                });
+              }
+            }
           }
         });
-
-        //self.get_events_list(instanceName, null, null, null, null, null, null);
-        //get_streams_list(instanceName);
       };
+
 
       var setupEventSummaryDisplay = function () {
         var event_summary_jqgrid_data = [{
@@ -939,9 +1029,7 @@ html(lang='en-us')
           }
         });
       });
-      window.onhashchange= function(){
-        session.unsubscribeAll();//TODO
-      };
+
 
       function isTemplateCommand(commandInfo) {
         if(commandInfo.hasOwnProperty('argument')){
@@ -974,7 +1062,9 @@ html(lang='en-us')
         return uuid;
       }
       function getWorkspaceDir(s){
-        session.pull('GetDirectoryList','dir',s,procDirectoryListing);
+        console.log(s,'DIR');
+        dir.getDirectoryListing(s,procDirectoryListing);
+
       };
       function getNavEntry(path){
         return $( "nav" ).find( "ul[data-path='" + path + "']" );
@@ -1119,6 +1209,7 @@ html(lang='en-us')
           }
         });
       };
+
     {% verbatim %}
     script#cmdTemplate(type='text/x-handlebars-template').
       <h4>{{ name }}</h4>

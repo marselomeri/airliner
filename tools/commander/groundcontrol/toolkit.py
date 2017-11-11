@@ -10,9 +10,12 @@ except:
     working_dir ='/home/vagrant/git/airliner/config/shared/commander_workspace/web'
 
 #TOOLS
+
 def getDate():
     return str(datetime.datetime.now())
 
+
+"""
 def get_directory_structure(rootdir):
     dir = {}
     rootdir = rootdir.rstrip(os.sep)
@@ -23,7 +26,7 @@ def get_directory_structure(rootdir):
         parent = reduce(dict.get, folders[:-1], dir)
         parent[folders[-1]] = subdir
     return dir
-
+"""
 
 def get_directory(path):
 

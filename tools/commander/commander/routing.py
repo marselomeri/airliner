@@ -52,10 +52,12 @@ command_info = [
     route('websocket.receive',cmd.getCommandInfo)
 ]
 
+cmds = Command()
+
 command_send = [
-    route('websocket.connect',cmd.connect),
-    route('websocket.disconnect',cmd.disconnect),
-    route('websocket.receive',cmd.postCommand)
+    route('websocket.connect',cmds.connect),
+    route('websocket.disconnect',cmds.disconnect),
+    route('websocket.receive',cmds.postCommand)
 ]
 #-----------------------------------------------------------
 event=Event()
@@ -65,16 +67,6 @@ event_channels = [
     route('websocket.disconnect',event.disconnect),
     route('websocket.receive',event.getEvents)
 ]
-#-----------------------------------------------------------
-testc = tester()
-testr = tester()
-testProto = [#route_class(tester, path=r"^/chat/"),
-route('websocket.connect',tester().connect),
-    route('websocket.disconnect',tester().disconnect),
-    route('websocket.receive',tester().receive)
-]
-
-
 
 #-----------------------------------------------------------
 channel_routing = [
@@ -87,7 +79,7 @@ channel_routing = [
                    include(command_info,path='^/cmd_i/'),
                    include(command_send,path='^/cmd_s/'),
                    include(event_channels,path='^/event/'),
-                   route_class(nontester, path='^/proto/'),
+
 
 ]
 
