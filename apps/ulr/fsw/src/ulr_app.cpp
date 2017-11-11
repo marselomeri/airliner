@@ -10,6 +10,16 @@
 #include "ulr_version.h"
 
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Local Defines                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ULR_MIN_DISTANCE		(0.315f)
+#define ULR_MAX_DISTANCE		(50.0f)
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
@@ -154,6 +164,9 @@ void ULR::InitData()
 	DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
 	DistanceSensor.ID = 0;
 	DistanceSensor.Orientation = 8;
+
+	ParserState = ULR_PARSER_STATE_UNINITIALIZED;
+	memset(ParserBuffer, 0, sizeof(ParserBuffer));
 }
 
 
@@ -499,9 +512,108 @@ void ULR::AppMain()
 }
 
 
+bool   ULR::IsChecksumOk(void)
+{
+	uint8 checksum = 0;
+
+	checksum = (UartMessage.VersionID + UartMessage.AltitudeH +
+			UartMessage.AltitudeL + UartMessage.SNR) & 0xFF;
+
+	return UartMessage.Checksum = checksum;
+}
+
+
 int32  ULR::GetDistance(void)
 {
-	ReadDevice();
+	int32 iStatus = CFE_SUCCESS;
+	uint8 buf[ULR_BUF_LEN];
+	uint32 size = ULR_BUF_LEN;
+
+	iStatus = ReadDevice(buf, &size);
+	if(iStatus != CFE_SUCCESS)
+	{
+		for(uint32 i = 0; i < size; i++)
+		{
+			switch(ParserState)
+			{
+				case ULR_PARSER_STATE_UNINITIALIZED:
+					if(buf[i] == 0xfe)
+					{
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
+					}
+					break;
+
+				case ULR_PARSER_STATE_WAITING_FOR_HEADER:
+					if(buf[i] == 0xfe)
+					{
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
+					}
+					else
+					{
+						/* TODO:  Send a loss of sync event. */
+						ParserState = ULR_PARSER_STATE_UNINITIALIZED;
+					}
+					break;
+
+				case ULR_PARSER_STATE_WAITING_FOR_VERSION_ID:
+					if(buf[i] == 0x01)
+					{
+						UartMessage.VersionID = buf[i];
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1;
+					}
+					else
+					{
+						/* TODO:  Send a loss of sync event. */
+						ParserState = ULR_PARSER_STATE_UNINITIALIZED;
+					}
+					break;
+
+				case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1:
+					UartMessage.AltitudeL = buf[i];
+					ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2;
+					break;
+
+				case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2:
+					UartMessage.AltitudeH = buf[i];
+					ParserState = ULR_PARSER_STATE_WAITING_FOR_SNR;
+					break;
+
+				case ULR_PARSER_STATE_WAITING_FOR_SNR:
+					UartMessage.SNR = buf[i];
+					ParserState = ULR_PARSER_STATE_WAITING_FOR_CHECKSUM;
+					break;
+
+				case ULR_PARSER_STATE_WAITING_FOR_CHECKSUM:
+					UartMessage.Checksum = buf[i];
+					if(IsChecksumOk())
+					{
+						DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
+						DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
+						DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f;
+						DistanceSensor.Covariance = ULR_SENS_VARIANCE;
+						DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
+						DistanceSensor.ID = 0;
+						DistanceSensor.Orientation = 8;
+
+				        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &DistanceSensor);
+				        CFE_SB_SendMsg((CFE_SB_Msg_t *) &DistanceSensor);
+					}
+					else
+					{
+						/* TODO:  Send a bad checksum event. */
+					}
+					break;
+
+				default:
+					/* TODO:  Send a WTF event */
+					break;
+			}
+		}
+	}
+
+end_of_function:
+	return iStatus;
+
 }
 
 

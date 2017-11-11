@@ -55,13 +55,36 @@ extern "C" {
 #include "ulr_events.h"
 #include "ulr_tbldefs.h"
 #include "px4_msgs.h"
+
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define ULR_BUF_LEN 	(18)
+
 
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+typedef enum
+{
+	ULR_PARSER_STATE_UNINITIALIZED           = 0,
+	ULR_PARSER_STATE_WAITING_FOR_HEADER      = 1,
+	ULR_PARSER_STATE_WAITING_FOR_VERSION_ID  = 2,
+	ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1  = 3,
+	ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2  = 4,
+	ULR_PARSER_STATE_WAITING_FOR_SNR         = 5,
+	ULR_PARSER_STATE_WAITING_FOR_CHECKSUM    = 6
+} ULR_ParserState_t;
+
+typedef struct
+{
+	uint8  VersionID;
+    uint8  AltitudeH;
+    uint8  AltitudeL;
+    uint8  SNR;
+    uint8  Checksum;
+} ULR_UartMessage_t;
 
 
 /**
@@ -80,6 +103,10 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
+
+    ULR_ParserState_t ParserState;
+    uint8             ParserBuffer[ULR_BUF_LEN];
+    ULR_UartMessage_t UartMessage;
 
     /** \brief Task Run Status */
     uint32 uiRunStatus;
@@ -378,7 +405,11 @@ private:
      **  \endreturns
      **
      *************************************************************************/
-    int32  ReadDevice(void);
+    int32 ReadDevice(uint8 *Buffer, uint32 *Size);
+
+
+    /* TODO - Add doxygen */
+    void  CloseDevice(void);
 
 public:
     /************************************************************************/
@@ -398,6 +429,7 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
+    bool   IsChecksumOk(void);
 };
 
 #ifdef __cplusplus

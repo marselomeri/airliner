@@ -3,9 +3,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <unistd.h>
 
 #define ULR_PORT_SPEED  (115200)
-#define ULR_BUF_LEN 	(18)
 
 typedef struct
 {
@@ -94,20 +94,29 @@ end_of_function:
 }
 
 
-int32 ULR::ReadDevice(void)
+int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
 {
-	uint8 buf[ULR_BUF_LEN];
-	nfds_t nfds = sizeof(fds) / sizeof(fds[0]);
+	int32 iStatus = CFE_SUCCESS;
+	int32 bytesRead = 0;
+
+	bytesRead = read(ULR_CustomData.FD, (void*)&Buffer[0], (int)*Size);
+	if(bytesRead < 0)
+	{
+		iStatus = -1;
+	}
+	else
+	{
+		*Size = bytesRead;
+	}
+
+end_of_function:
+	return iStatus;
+}
 
 
+void ULR::CloseDevice(void)
+{
+	close(ULR_CustomData.FD);
 
-
-
-
-
-
-	OS_printf("ULR::ReadDevice\n");
-
-	return 0;
 }
 
