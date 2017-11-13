@@ -377,7 +377,7 @@ boolean MPU9250_WriteReg(uint8 Addr, uint8 Data)
         returnBool = FALSE;
     }
     return returnBool;
-};
+}
 
 
 boolean MPU9250_ReadReg(uint8 Addr, uint8 *returnVal)
@@ -531,3 +531,438 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
 end_of_function:
     return returnBool;
 }
+
+
+boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z)
+{
+    uint8 hValue = 0;
+    uint8 lValue = 0;
+    boolean returnBool = TRUE;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_Gyro Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_XOUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_XOUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *X = (hValue << 8) | lValue;
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_YOUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_YOUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *Y = (hValue << 8) | lValue;
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_ZOUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_ZOUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *Z = (hValue << 8) | lValue;
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in Read_Gyro");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z)
+{
+    uint8 hValue = 0;
+    uint8 lValue = 0;
+    boolean returnBool = TRUE;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_Accel Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_XOUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_XOUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *X = (hValue << 8) | lValue;
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_YOUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_YOUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *Y = (hValue << 8) | lValue;
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_ZOUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_ZOUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *Z = (hValue << 8) | lValue;
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in Read_Accel");
+    }
+    return returnBool;
+};
+
+
+boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
+{
+    uint8 hValue = 0;
+    uint8 lValue = 0;
+    boolean returnBool = TRUE;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_Mag Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    hValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HXH, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    lValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HXL, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *X = (hValue << 8) | lValue;
+
+    hValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HYH, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    lValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HYL, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *Y = (hValue << 8) | lValue;
+
+    hValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HZH, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    lValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HZL, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    *Z = (hValue << 8) | lValue;
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in Read_Mag");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_Temp(uint16 *Temp)
+{
+    uint8 hValue = 0;
+    uint8 lValue = 0;
+    boolean returnBool = TRUE;
+
+    /* Null pointer check */
+    if(0 == Temp)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_Temp Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_TEMP_OUT_H, &hValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_TEMP_OUT_L, &lValue);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    *Temp = (hValue << 8) | lValue;
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in Read_Temp");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_WhoAmI(uint8 *Value)
+{
+    boolean returnBool = TRUE;
+    /* Null pointer check */
+    if(0 == Value)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_WhoAmI Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_WHOAMI, Value);
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in WhoAmI");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_MagDeviceID(uint8 *Value)
+{
+    boolean returnBool = TRUE;
+    /* Null pointer check */
+    if(0 == Value)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_MagDeviceID Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    *Value = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_WIA, Value);
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in MagDeviceID");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_MagInfo(uint8 *Value)
+{
+    boolean returnBool = TRUE;
+    /* Null pointer check */
+    if(0 == Value)
+    {
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_MagInfo Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    *Value = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_INFO, Value);
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in MagInfo");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Perform_AccelSelfTest(void)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Perform_GyroSelfTest(void)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Start_MagSelfTest(void)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Stop_MagSelfTest(void)
+{
+    return TRUE;
+}
+
+
+/* TODO */
+boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
+{
+    MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST1);
+
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit)
+{
+    uint8 value = 0;
+    boolean returnBool = TRUE;
+    
+    /* Null pointer check */
+    if(0 == Overrun || 0 == DataReady || 0 == Overflow || 0 == Output16Bit)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_MagStatus Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST1, &value);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    *Overrun = value & MPU9250_ST1_DOR_MASK;
+    *DataReady = value & MPU9250_ST1_DRDY_MASK;
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST2, &value);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    *Overflow = value & MPU9250_ST2_HOFL_MASK;
+    *Output16Bit = value & MPU9250_ST2_BITM_MASK;
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in MagStatus");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+{
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_MagAdj Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ASAX, X);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ASAY, Y);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ASAZ, Z);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in MagAdj");
+    }
+    return returnBool;
+};
