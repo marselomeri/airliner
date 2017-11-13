@@ -163,7 +163,7 @@ void ULR::InitData()
 	DistanceSensor.Covariance = ULR_SENS_VARIANCE;
 	DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
 	DistanceSensor.ID = 0;
-	DistanceSensor.Orientation = 8;
+	DistanceSensor.Orientation = PX4_SENSOR_ORIENTATION_ROLL_180;
 
 	ParserState = ULR_PARSER_STATE_UNINITIALIZED;
 	memset(ParserBuffer, 0, sizeof(ParserBuffer));
@@ -593,7 +593,7 @@ int32  ULR::GetDistance(void)
 						DistanceSensor.Covariance = ULR_SENS_VARIANCE;
 						DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
 						DistanceSensor.ID = 0;
-						DistanceSensor.Orientation = 8;
+						DistanceSensor.Orientation = PX4_SENSOR_ORIENTATION_ROLL_180;
 
 				        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &DistanceSensor);
 				        CFE_SB_SendMsg((CFE_SB_Msg_t *) &DistanceSensor);
