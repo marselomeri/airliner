@@ -60,8 +60,8 @@
 *************************************************************************/
 typedef enum {
 
-/** \brief <tt> 'RGBLED - ' </tt>
-**  \event <tt> 'RGBLED - ' </tt>
+/** \brief <tt> 'MS5611 - ' </tt>
+**  \event <tt> 'MS5611 - ' </tt>
 **  
 **  \par Type: ERROR
 **
@@ -73,8 +73,8 @@ typedef enum {
 */
     MS5611_DEVICE_ERR_EID = MS5611_EVT_CNT,
 
-/** \brief <tt> 'RGBLED - ' </tt>
-**  \event <tt> 'RGBLED - ' </tt>
+/** \brief <tt> 'MS5611 - ' </tt>
+**  \event <tt> 'MS5611 - ' </tt>
 **  
 **  \par Type: Info
 **
@@ -91,7 +91,7 @@ typedef enum {
 **       int32
 */
     MS5611_CUSTOM_EVT_CNT
-} RGBLED_CustomEventIds_t;
+} MS5611_CustomEventIds_t;
 
 
 /************************************************************************
