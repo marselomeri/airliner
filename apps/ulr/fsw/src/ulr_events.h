@@ -264,6 +264,11 @@ typedef enum {
 	**
 	*/
 	ULR_CUSTOM_INIT_ERR_EID,
+    ULR_UNEXPECTED_DATA_BEFORE_VERSION_ID,
+	ULR_UNEXPECTED_DATA_BEFORE_HEADER,
+	ULR_INVALID_CHECKSUM,
+	ULR_INVALID_PARSER_STATE,
+	ULR_LISTENER_CREATE_CHDTASK_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	ULR_EVT_CNT

@@ -81,7 +81,6 @@ block main
               },
               yaxis : {
                 min : 0.0,
-                max : 50.0,
                 font : {
                   color: "#ffffff"
                 }
@@ -146,8 +145,8 @@ block main
                       Data = Data.slice(1);
                     }
         
-                    var timeStamp = new Date(params[0].acquisitionTime);
-                    var D = params[0].engValue.floatValue;
+                    var timeStamp = new Date(params.acquisitionTime);
+                    var D = params.engValue.floatValue;
                      
                     Data.push([timeStamp, D]);
                   }

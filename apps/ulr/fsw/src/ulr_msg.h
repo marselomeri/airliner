@@ -46,6 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
+#include "px4_msgs.h"
 
 
 /************************************************************************
@@ -150,6 +151,14 @@ typedef struct
     /** \ulrtlmmnemonic \ULR_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
+
+	float 			   MinDistance;
+	float              MaxDistance;
+	float              CurrentDistance;
+	float              Covariance;
+	PX4_DistanceSensorType_t Type;
+	uint32             SensorID;
+	PX4_SensorOrientation_t  SensorOrientation;
 
 } ULR_HkTlm_t;
 

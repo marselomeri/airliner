@@ -60,7 +60,7 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define ULR_BUF_LEN 	(18)
+#define ULR_BUF_LEN 	(6)
 
 
 /************************************************************************
@@ -85,6 +85,12 @@ typedef struct
     uint8  SNR;
     uint8  Checksum;
 } ULR_UartMessage_t;
+
+
+#define ULR_LISTENER_TASK_NAME  		"ULR_LISTENER"
+#define ULR_LISTENER_TASK_STACK_SIZE	16000
+#define ULR_LISTENER_TASK_PRIORITY		100
+#define ULR_MUTEX_NAME 					"ULR_MUTEX"
 
 
 /**
@@ -118,11 +124,19 @@ public:
 
     /** \brief Config Table Pointer */
     ULR_ConfigTbl_t* ConfigTblPtr;
+
     /** \brief Output Data published at the end of cycle */
     PX4_DistanceSensorMsg_t DistanceSensor;
 
     /** \brief Housekeeping Telemetry for downlink */
     ULR_HkTlm_t HkTlm;
+
+    /** \brief ID of listener child task */
+    uint32 ListenerTaskID;
+
+    uint32 Mutex;
+
+    bool ChildContinueFlag;
 
     /************************************************************************/
     /** \brief Aerotenna uLanding Radar (ULR) application entry point
@@ -138,6 +152,10 @@ public:
      **
      *************************************************************************/
     void AppMain(void);
+
+    void ListenerTaskMain(void);
+    int32 InitListenerTask(void);
+
 
     /************************************************************************/
     /** \brief Initialize the Aerotenna uLanding Radar (ULR) application
@@ -370,7 +388,28 @@ private:
     int32  InitDevice(void);
 
     /************************************************************************/
-    /** \brief Get the distance to the ground.
+    /** \brief Report the distance to the ground.
+     **
+     **  \par Description
+     **       This function publishes a most current distance measurement onto
+     **       the software bus.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  \endreturns
+     **
+     *************************************************************************/
+    void  ReportDistance(void);
+
+    bool  ChildContinueExec(void);
+    void  StopChild(void);
+
+
+    /************************************************************************/
+    /** \brief Get the distance measurements.
      **
      **  \par Description
      **       This function measures the distance, applies limits, and publishes
@@ -385,6 +424,8 @@ private:
      **
      *************************************************************************/
     int32  GetDistance(void);
+
+
 
     /************************************************************************/
     /** \brief Read a measurement from the device.

@@ -25,7 +25,6 @@ int32 ULR::InitDevice(void)
 	ULR_CustomData.FD = open(ULR_CUSTOM_PORT_PATH, O_RDWR | O_NOCTTY);
 	if (ULR_CustomData.FD < 0)
 	{
-		OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
         (void) CFE_EVS_SendEvent(ULR_CUSTOM_INIT_ERR_EID, CFE_EVS_ERROR,
         		"Failed to open device speed.  errno=%u ('%s').", errno,
 				strerror(errno));
@@ -76,39 +75,30 @@ int32 ULR::InitDevice(void)
 	/* set baud rate */
 	if ((termios_state = cfsetispeed(&uart_config, ULR_PORT_SPEED)) < 0)
 	{
-		OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
         (void) CFE_EVS_SendEvent(ULR_CUSTOM_INIT_ERR_EID, CFE_EVS_ERROR,
         		"Failed to set input speed.  errno=%u ('%s').", errno,
 				strerror(errno));
 		iStatus = -1;
-		OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
 		goto end_of_function;
 	}
 
 	if ((termios_state = cfsetospeed(&uart_config, ULR_PORT_SPEED)) < 0)
 	{
-		OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
         (void) CFE_EVS_SendEvent(ULR_CUSTOM_INIT_ERR_EID, CFE_EVS_ERROR,
         		"Failed to set output speed.  errno=%u ('%s').", errno,
 				strerror(errno));
-    	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
 		iStatus = -1;
 		goto end_of_function;
 	}
 
 	if ((termios_state = tcsetattr(ULR_CustomData.FD, TCSANOW, &uart_config)) < 0)
 	{
-		OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
         (void) CFE_EVS_SendEvent(ULR_CUSTOM_INIT_ERR_EID, CFE_EVS_ERROR,
         		"Failed to set port attributes.  errno=%u ('%s').", errno,
 				strerror(errno));
-    	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
 		iStatus = -1;
 		goto end_of_function;
 	}
-
-	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
-	OS_printf("iStatus = %li\n", iStatus);
 
 end_of_function:
 	return iStatus;

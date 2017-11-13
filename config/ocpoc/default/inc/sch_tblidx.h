@@ -72,6 +72,9 @@
 #define MS5611_SEND_HK_MIDX			76
 #define MS5611_MEASURE_MIDX			77
 
+#define ULR_SEND_HK_MIDX			80
+#define ULR_MEASURE_MIDX			81
+
 
 #define NEOM8N_SEND_HK_MIDX			85
 #define NEOM8N_MEASURE_MIDX			86

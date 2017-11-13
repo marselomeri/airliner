@@ -11,7 +11,7 @@ block main
         header
           span.widget-icon
             i.fa.fa-table
-          h2 uLanding Radar
+          h2 Housekeeping
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -28,14 +28,37 @@ block main
                     td
                       span(data-sage={tlm: [{name:'/CFS/ULR/ErrCounter'}]}) ---
                   tr
-                    th State
+                    th Maximum Distance
                     td
-                      span(data-sage={tlm: [{name:'/CFS/ULR/State'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/ULR/MaxDistance'}]}) ---
+                  tr
+                    th Minimum Distance
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/ULR/MinDistance'}]}) ---
+                  tr
+                    th Current Distance
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/ULR/CurrentDistance'}]}) ---
+                  tr
+                    th Covariance
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/ULR/Covariance'}]}) ---
+                  tr
+                    th Sensor Type
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/ULR/Type'}]}) ---
+                  tr
+                    th Sensor ID
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/ULR/SensorID'}]}) ---
+                  tr
+                    th Sensor Orientation
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/ULR/Orientation'}]}) ---
+
             footer
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/ULR/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/ULR/Reset'}}) Reset
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/ULR/StartStreaming'}}) Start Streaming
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/ULR/StopStreaming'}}) Stop Streaming
        
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3(style={width:'500px'})
       #wid-CFE-ES-AppCtrl-ApplicationControl.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')

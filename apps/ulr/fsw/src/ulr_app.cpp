@@ -152,12 +152,20 @@ void ULR::InitData()
     CFE_SB_InitMsg(&HkTlm,
     		ULR_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
+	HkTlm.MinDistance = ULR_MIN_DISTANCE;
+	HkTlm.MaxDistance = ULR_MAX_DISTANCE;
+	HkTlm.CurrentDistance = -1.0f;
+	HkTlm.Covariance = ULR_SENS_VARIANCE;
+	HkTlm.Type = PX4_DISTANCE_SENSOR_RADAR;
+	HkTlm.SensorID = 0;
+	HkTlm.SensorOrientation = PX4_SENSOR_ORIENTATION_ROLL_180;
+
 	/* Init output messages */
 	CFE_SB_InitMsg(&DistanceSensor,
 		PX4_DISTANCE_SENSOR_MID, sizeof(PX4_DistanceSensorMsg_t), TRUE);
 
-	DistanceSensor.MinDistance = 0.0f;
-	DistanceSensor.MaxDistance = 0.0f;
+	DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
+	DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
 	/* Make evident that this range sample is invalid */
 	DistanceSensor.CurrentDistance = -1.0f;
 	DistanceSensor.Covariance = ULR_SENS_VARIANCE;
@@ -205,13 +213,17 @@ int32 ULR::InitApp()
         goto ULR_InitApp_Exit_Tag;
     }
 
-	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
     iStatus = InitDevice();
     if (iStatus != CFE_SUCCESS)
     {
         goto ULR_InitApp_Exit_Tag;
     }
-	OS_printf("iStatus = %i %s %s %u\n", iStatus, __FILE__, __FUNCTION__, __LINE__);
+
+    iStatus = InitListenerTask();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto ULR_InitApp_Exit_Tag;
+    }
 
 ULR_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -262,10 +274,11 @@ int32 ULR::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case ULR_MEASURE_MID:
-                GetDistance();
+                ReportDistance();
                 break;
 
             case ULR_SEND_HK_MID:
+            	ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
 
@@ -395,6 +408,16 @@ void ULR::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void ULR::ReportHousekeeping()
 {
+    OS_MutSemTake(Mutex);
+	HkTlm.MinDistance = DistanceSensor.MinDistance;
+	HkTlm.MaxDistance = DistanceSensor.MaxDistance;
+	HkTlm.CurrentDistance = DistanceSensor.CurrentDistance;
+	HkTlm.Covariance = DistanceSensor.Covariance;
+	HkTlm.Type = DistanceSensor.Type;
+	HkTlm.SensorID = DistanceSensor.ID;
+	HkTlm.SensorOrientation = DistanceSensor.Orientation;
+    OS_MutSemGive(Mutex);
+
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
@@ -405,10 +428,11 @@ void ULR::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void ULR::SendDistanceSensor()
+void ULR::ReportDistance()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&DistanceSensor);
+    OS_MutSemTake(Mutex);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&DistanceSensor);
+    OS_MutSemGive(Mutex);
 }
 
 
@@ -453,6 +477,11 @@ boolean ULR::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 extern "C" void ULR_AppMain()
 {
     oULR.AppMain();
+}
+
+extern "C" void ULR_ListenerTaskMain()
+{
+    oULR.ListenerTaskMain();
 }
 
 
@@ -506,6 +535,8 @@ void ULR::AppMain()
         }
     }
 
+    StopChild();
+
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(ULR_MAIN_TASK_PERF_ID);
 
@@ -525,97 +556,165 @@ bool   ULR::IsChecksumOk(void)
 }
 
 
-int32  ULR::GetDistance(void)
+bool  ULR::ChildContinueExec(void)
+{
+	bool result;
+
+    OS_MutSemTake(Mutex);
+    result = ChildContinueFlag;
+    OS_MutSemGive(Mutex);
+
+	return result;
+}
+
+
+void ULR::StopChild(void)
+{
+    OS_MutSemTake(Mutex);
+    ChildContinueFlag = false;
+    OS_MutSemGive(Mutex);
+}
+
+
+void  ULR::ListenerTaskMain(void)
 {
 	int32 iStatus = CFE_SUCCESS;
 	uint8 buf[ULR_BUF_LEN];
 	uint32 size = ULR_BUF_LEN;
 
-	iStatus = ReadDevice(buf, &size);
-	if(iStatus != CFE_SUCCESS)
+	CFE_ES_RegisterChildTask();
+
+	while(ChildContinueExec())
 	{
-		for(uint32 i = 0; i < size; i++)
+		iStatus = ReadDevice(buf, &size);
+		if(iStatus == CFE_SUCCESS)
 		{
-			switch(ParserState)
+			for(uint32 i = 0; i < size; i++)
 			{
-				case ULR_PARSER_STATE_UNINITIALIZED:
-					if(buf[i] == 0xfe)
-					{
-						ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
-					}
-					break;
+				switch(ParserState)
+				{
+					case ULR_PARSER_STATE_UNINITIALIZED:
+						if(buf[i] == 0xfe)
+						{
+							ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
+						}
+						break;
 
-				case ULR_PARSER_STATE_WAITING_FOR_HEADER:
-					if(buf[i] == 0xfe)
-					{
-						ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
-					}
-					else
-					{
-						/* TODO:  Send a loss of sync event. */
+					case ULR_PARSER_STATE_WAITING_FOR_HEADER:
+						if(buf[i] == 0xfe)
+						{
+							ParserState = ULR_PARSER_STATE_WAITING_FOR_VERSION_ID;
+						}
+						else
+						{
+							(void) CFE_EVS_SendEvent(ULR_UNEXPECTED_DATA_BEFORE_HEADER, CFE_EVS_ERROR,
+									"Received 0x%02x before header.", buf[i]);
+							ParserState = ULR_PARSER_STATE_UNINITIALIZED;
+						}
+						break;
+
+					case ULR_PARSER_STATE_WAITING_FOR_VERSION_ID:
+						if(buf[i] == 0x01)
+						{
+							UartMessage.VersionID = buf[i];
+							ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1;
+						}
+						else
+						{
+							(void) CFE_EVS_SendEvent(ULR_UNEXPECTED_DATA_BEFORE_VERSION_ID, CFE_EVS_ERROR,
+									"Received 0x%02x before version ID.", buf[i]);
+							ParserState = ULR_PARSER_STATE_UNINITIALIZED;
+						}
+						break;
+
+					case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1:
+						UartMessage.AltitudeL = buf[i];
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2;
+						break;
+
+					case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2:
+						UartMessage.AltitudeH = buf[i];
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_SNR;
+						break;
+
+					case ULR_PARSER_STATE_WAITING_FOR_SNR:
+						UartMessage.SNR = buf[i];
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_CHECKSUM;
+						break;
+
+					case ULR_PARSER_STATE_WAITING_FOR_CHECKSUM:
+						UartMessage.Checksum = buf[i];
+						if(IsChecksumOk())
+						{
+						    OS_MutSemTake(Mutex);
+							DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
+							DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
+							DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f;
+							DistanceSensor.Covariance = ULR_SENS_VARIANCE;
+							DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
+							DistanceSensor.ID = 0;
+							DistanceSensor.Orientation = PX4_SENSOR_ORIENTATION_ROLL_180;
+
+						    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&DistanceSensor);
+						    OS_MutSemGive(Mutex);
+						}
+						else
+						{
+							(void) CFE_EVS_SendEvent(ULR_INVALID_CHECKSUM, CFE_EVS_ERROR,
+									"Invalid checksum.");
+						}
+						ParserState = ULR_PARSER_STATE_WAITING_FOR_HEADER;
+						break;
+
+					default:
+						(void) CFE_EVS_SendEvent(ULR_INVALID_PARSER_STATE, CFE_EVS_ERROR,
+								"Parser in invalid state.");
 						ParserState = ULR_PARSER_STATE_UNINITIALIZED;
-					}
-					break;
-
-				case ULR_PARSER_STATE_WAITING_FOR_VERSION_ID:
-					if(buf[i] == 0x01)
-					{
-						UartMessage.VersionID = buf[i];
-						ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1;
-					}
-					else
-					{
-						/* TODO:  Send a loss of sync event. */
-						ParserState = ULR_PARSER_STATE_UNINITIALIZED;
-					}
-					break;
-
-				case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_1:
-					UartMessage.AltitudeL = buf[i];
-					ParserState = ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2;
-					break;
-
-				case ULR_PARSER_STATE_WAITING_FOR_ALT_BYTE_2:
-					UartMessage.AltitudeH = buf[i];
-					ParserState = ULR_PARSER_STATE_WAITING_FOR_SNR;
-					break;
-
-				case ULR_PARSER_STATE_WAITING_FOR_SNR:
-					UartMessage.SNR = buf[i];
-					ParserState = ULR_PARSER_STATE_WAITING_FOR_CHECKSUM;
-					break;
-
-				case ULR_PARSER_STATE_WAITING_FOR_CHECKSUM:
-					UartMessage.Checksum = buf[i];
-					if(IsChecksumOk())
-					{
-						DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
-						DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
-						DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f;
-						DistanceSensor.Covariance = ULR_SENS_VARIANCE;
-						DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
-						DistanceSensor.ID = 0;
-						DistanceSensor.Orientation = PX4_SENSOR_ORIENTATION_ROLL_180;
-
-				        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &DistanceSensor);
-				        CFE_SB_SendMsg((CFE_SB_Msg_t *) &DistanceSensor);
-					}
-					else
-					{
-						/* TODO:  Send a bad checksum event. */
-					}
-					break;
-
-				default:
-					/* TODO:  Send a WTF event */
-					break;
+						break;
+				}
 			}
 		}
 	}
 
-end_of_function:
-	return iStatus;
+	CFE_ES_ExitChildTask();
+}
 
+
+int32 ULR::InitListenerTask(void)
+{
+    int32 Status = CFE_SUCCESS;
+
+    /* Create mutex for shared data */
+    Status = OS_MutSemCreate(&Mutex, ULR_MUTEX_NAME, 0);
+	if (Status != CFE_SUCCESS)
+	{
+		goto end_of_function;
+	}
+
+	ChildContinueFlag = true;
+
+	Status= CFE_ES_CreateChildTask(&ListenerTaskID,
+								   ULR_LISTENER_TASK_NAME,
+								   ULR_ListenerTaskMain,
+								   NULL,
+								   ULR_LISTENER_TASK_STACK_SIZE,
+								   ULR_LISTENER_TASK_PRIORITY,
+								   0);
+	if (Status != CFE_SUCCESS)
+	{
+		goto end_of_function;
+	}
+
+	end_of_function:
+	if (Status != CFE_SUCCESS)
+	{
+		CFE_EVS_SendEvent (ULR_LISTENER_CREATE_CHDTASK_ERR_EID,
+						   CFE_EVS_ERROR,
+						   "Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",
+						   Status);
+	}
+
+    return Status;
 }
 
 
