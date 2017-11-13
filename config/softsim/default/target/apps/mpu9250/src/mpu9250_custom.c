@@ -232,6 +232,81 @@ boolean MPU9250_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
+    
+    
+    uint8 MPU_Init_Data[MPU_InitRegNum][2] = {
+        /* Reset Device */
+        {0x80, MPU9250_REG_PWR_MGMT_1},
+        /* Clock Source */
+        {0x01, MPU9250_REG_PWR_MGMT_1},
+        /* Enable Acc & Gyro */
+        {0x00, MPU9250_REG_PWR_MGMT_2},
+        /* Use DLPF set Gyroscope bandwidth 184Hz, temperature bandwidth 188Hz */
+        {MPU9250_DEFAULT_LOWPASS_FILTER, MPU9250_REG_CONFIG},
+        /* +-2000dps */
+        {0x18, MPU9250_REG_GYRO_CONFIG},
+        /* +-4G */
+        {0x08, MPU9250_REG_ACCEL_CONFIG},
+        /* Set Acc Data Rates, Enable Acc LPF , Bandwidth 184Hz */
+        {0x09, MPU9250_REG_ACCEL_CONFIG2},
+        {0x30, MPU9250_REG_INT_PIN_CFG},
+        /* I2C Speed 348 kHz */
+        //{0x40, MPUREG_I2C_MST_CTRL},
+        /* Enable AUX */
+        //{0x20, MPUREG_USER_CTRL},
+        /* I2C Master mode */
+        {0x20, MPU9250_REG_USER_CTRL},
+        /* I2C configuration multi-master  IIC 400KHz */
+        {0x0D, MPU9250_REG_I2C_MST_CTRL},
+        /* Set the I2C slave addres of AK8963 and set for write. */
+        {MPU9250_AK8963_I2C_ADDR, MPU9250_REG_I2C_SLV0_ADDR},
+        //{0x09, MPUREG_I2C_SLV4_CTRL},
+        /* Enable I2C delay */
+        //{0x81, MPUREG_I2C_MST_DELAY_CTRL},
+        /* I2C slave 0 register address from where to begin data transfer */
+        {MPU9250_AK8963_CNTL2, MPU9250_REG_I2C_SLV0_REG},
+        /* Reset AK8963 */
+        {0x01, MPU9250_REG_I2C_SLV0_DO},
+        /* Enable I2C and set 1 byte */
+        {0x81, MPU9250_REG_I2C_SLV0_CTRL},
+        /* I2C slave 0 register address from where to begin data transfer */
+        {MPU9250_AK8963_CNTL1, MPU9250_REG_I2C_SLV0_REG},
+        /* Register value to continuous measurement in 16bit */
+        {0x12, MPU9250_REG_I2C_SLV0_DO},
+        /* Enable I2C and set 1 byte */
+        {0x81, MPU9250_REG_I2C_SLV0_CTRL},
+        /* Set the I2C slave address of AK8963 and set for read. */
+        {MPU9250_AK8963_I2C_ADDR | 0x80, MPU9250_REG_I2C_SLV0_ADDR},
+        /* I2C slave 0 register address from where to begin data transfer */
+        {MPU9250_AK8963_WIA, MPU9250_REG_I2C_SLV0_REG},
+        /* Enable I2C and set 1 byte */
+        {0x8f, MPU9250_REG_I2C_SLV0_CTRL}
+    };
+
+    for(i = 0; i < MPU_InitRegNum; i++) {
+        returnBool = MPU9250_WriteReg(MPU_Init_Data[i][1], MPU_Init_Data[i][0]);
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
+        usleep(100000);
+    }
+    
+    // Move to regular init 
+    //#define MPU9250_ACC_SCALE                   (2)
+    //#define MPU9250_GYRO_SCALE                  (250)
+
+    //returnBool = MPU9250_SetAccScale(MPU9250_ACC_SCALE, &AccDivider);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    //returnBool = MPU9250_SetGyroScale(MPU9250_GYRO_SCALE, &GyroDivider);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
     MPU9250_AppCustomData.Status = MPU9250_CUSTOM_INITIALIZED;
 
@@ -310,7 +385,7 @@ boolean MPU9250_ReadReg(uint8 Addr, uint8 *returnVal)
     int ret = 0;
     unsigned char   buf[32];
     boolean returnBool = TRUE;
-    
+
     /* Null pointer check */
     if(0 == returnVal)
     {
@@ -336,6 +411,122 @@ boolean MPU9250_ReadReg(uint8 Addr, uint8 *returnVal)
     }
 
     *returnVal = (uint8) buf[1];
+
+end_of_function:
+    return returnBool;
+}
+
+
+boolean MPU9250_SetAccScale(uint8 Scale, float *AccDivider)
+{
+    boolean returnBool = TRUE;
+    uint8 value = 0;
+
+    /* Null pointer check */
+    if(0 == AccDivider)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 SetAccScale Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_CONFIG, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    switch (Scale)
+    {
+        case 2:
+            *AccDivider = 16384;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_2G;
+            break;
+
+        case 4:
+            *AccDivider = 8192;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_4G;
+            break;
+
+        case 8:
+            *AccDivider = 4096;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_8G;
+            break;
+
+        case 16:
+            *AccDivider = 2048;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_16G;
+            break;
+
+        default:
+            returnBool = FALSE;
+            goto end_of_function;
+    }
+
+    returnBool = MPU9250_WriteReg(MPU9250_REG_ACCEL_CONFIG, value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnBool;
+}
+
+
+boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
+{
+    boolean returnBool = TRUE;
+    uint8 value = 0;
+
+    /* Null pointer check */
+    if(0 == AccDivider)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 SetGyroScale Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_CONFIG, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    switch (Scale)
+    {
+        case 250:
+            *GyroDivider = 131;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_250DPS;
+            break;
+
+        case 500:
+            *GyroDivider = 65.5;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_500DPS;
+            break;
+
+        case 1000:
+            *GyroDivider = 32.8;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_1000DPS;
+            break;
+
+        case 2000:
+            *GyroDivider = 16.4;
+            value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_2000DPS;
+            break;
+
+        default:
+            returnBool = FALSE;
+            goto end_of_function;
+    }
+
+    returnBool = MPU9250_WriteReg(MPU9250_REG_GYRO_CONFIG, value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
 end_of_function:
     return returnBool;
