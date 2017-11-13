@@ -274,5 +274,4 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ms5611_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5611_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5611_perfids.h
->>>>>>> WINDEV-65-port-px4-ms5611-baro-app
 )

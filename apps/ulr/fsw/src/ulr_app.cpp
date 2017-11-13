@@ -205,11 +205,13 @@ int32 ULR::InitApp()
         goto ULR_InitApp_Exit_Tag;
     }
 
+	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
     iStatus = InitDevice();
     if (iStatus != CFE_SUCCESS)
     {
         goto ULR_InitApp_Exit_Tag;
     }
+	OS_printf("iStatus = %i %s %s %u\n", iStatus, __FILE__, __FUNCTION__, __LINE__);
 
 ULR_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)

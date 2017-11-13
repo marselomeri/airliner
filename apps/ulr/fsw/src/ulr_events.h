@@ -250,6 +250,21 @@ typedef enum {
 */
 	ULR_CFGTBL_LOAD_ERR_EID,
 
+	/** \brief <tt> Platform specific message </tt>
+	**  \event <tt> Platform specificmessage </tt>
+	**
+	**  \par Type: ERROR
+	**
+	**  \par Cause:
+	**
+	**  This event message is issued when the CustomInit call fails.  This is
+	**  sent by the custom platform specific code so the exact text is
+	**  specific to the platform.  See the platform developer for the exact
+	**  meaning.
+	**
+	*/
+	ULR_CUSTOM_INIT_ERR_EID,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	ULR_EVT_CNT
 } ULR_EventIds_t;
