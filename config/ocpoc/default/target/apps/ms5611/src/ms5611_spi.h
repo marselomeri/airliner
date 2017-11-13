@@ -42,7 +42,7 @@
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define MS5611_SPI_DEVICE_PATH              "/dev/spidev1.0"
+#define MS5611_SPI_DEVICE_PATH              "/dev/spidev1.1"
 #define MS5611_SPI_DEVICE_MODE              (3)
 #define MS5611_SPI_DEVICE_BITS              (8)
 #define MS5611_SPI_DEVICE_SPEED             (1000000)
@@ -82,7 +82,6 @@
 **       None.
 */
 #define MS5611_MAX_RETRY_SLEEP_USEC         (10)
-
 
 
 /************************************************************************
@@ -135,10 +134,38 @@ typedef struct
 *************************************************************************/
 int32 MS5611_Ioctl(int fh, int request, void *arg);
 
+/************************************************************************/
+/** \brief Determines if the maximum of event filters has been reached.
+**
+**  \par Description
+**       This function checks if an index has reached the maximum
+**       number of events.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    ind    The current index to check.
+**                             
+**
+**  \returns    boolean
+**
+*************************************************************************/
+boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
 
+/************************************************************************/
+/** \brief Reset the device.
+**
+**  \par Description
+**       This function must be used at initialization.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \returns    ioctl return code.
+**
+*************************************************************************/
 int32 MS5611_ResetDevice(void);
-uint8 MS5611_ReadReg(uint8 Addr);
-void MS5611_DisplayRegisters(void);
+
 
 #ifdef __cplusplus
 extern "C" {

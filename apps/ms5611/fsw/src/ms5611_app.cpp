@@ -50,13 +50,42 @@ MS5611::~MS5611()
 int32 MS5611::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
+    int32 customEventCount = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset(EventTbl, 0x00, sizeof(EventTbl));
+    
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    EventTbl[  ind].EventID = MS5611_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = MS5611_READ_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    
+    
+    /* Add custom events to the filter table */
+    customEventCount = MS5611_Custom_Init_EventFilters(ind, EventTbl);
+    
+    if(-1 == customEventCount)
+    {
+        iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
+        goto end_of_function;
+    }
 
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, (ind + customEventCount), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("MS5611 - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
+
+end_of_function:
 
     return iStatus;
 }
@@ -204,6 +233,17 @@ int32 MS5611::InitApp()
             goto MS5611_InitApp_Exit_Tag; 
         }
     }
+    
+    /* Validate the CRC code */
+    returnBool = ValidateCRC();
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MS5611_INIT_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 failed CRC check");
+        iStatus = -1;
+        goto MS5611_InitApp_Exit_Tag;
+    }
+    
     HkTlm.State = MS5611_INITIALIZED;
 
     /* Register the cleanup callback */
@@ -514,7 +554,7 @@ void MS5611::AppMain()
 }
 
 
-void MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
+boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
 {
     uint32 D1 = 0;  //ADC value of the pressure conversion
     uint32 D2 = 0;  //ADC value of the temperature conversion
@@ -525,37 +565,62 @@ void MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     int64 OFF2 = 0;
     int64 SENS2 = 0;
     int64 TEMP = 0;
+    int32 TempValidate = 0;
+    int32 PressValidate = 0;
     boolean returnBool = TRUE;
 
     returnBool = MS5611_D1Conversion();
     if (FALSE == returnBool)
     {
-        /* Handle error condition */
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 get measurement D1 conversion failed");
+        returnBool = FALSE;
+        goto end_of_function;
     }
 
     returnBool = MS5611_ReadADCResult(&D1);
     if (FALSE == returnBool)
     {
-        /* Handle error condition */
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 read ADC result D1 failed");
+        returnBool = FALSE;
+        goto end_of_function;
     }
 
     returnBool = MS5611_D2Conversion();
     if (FALSE == returnBool)
     {
-        /* Handle error condition */
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 get measurement D2 conversion failed");
+        returnBool = FALSE;
+        goto end_of_function;
     }
     
     returnBool = MS5611_ReadADCResult(&D2);
     if (FALSE == returnBool)
     {
-        /* Handle error condition */
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 read ADC result D2 failed");
+        returnBool = FALSE;
+        goto end_of_function;
     }
 
     dT    = D2 - MS5611_Coefficients[5] * (1 << 8);
+    
     OFF   = MS5611_Coefficients[2] * (1 << 16) + (dT * MS5611_Coefficients[4]) / (1 << 7);
     SENS  = MS5611_Coefficients[1] * (1 << 15) + (dT * MS5611_Coefficients[3]) / (1 << 8);
-    *Temperature = 2000 + dT * MS5611_Coefficients[6] / (1 << 23);
-
+    TempValidate = 2000 + dT * MS5611_Coefficients[6] / (1 << 23);
+    if(TempValidate > MS5611_TEMP_MIN && TempValidate < MS5611_TEMP_MAX)
+    {
+        *Temperature = TempValidate;
+    }
+    else
+    {
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 temperature out of range value = %ld", TempValidate);
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     /* Second order temperature compensation */
     if(*Temperature < 2000)
     {
@@ -575,11 +640,25 @@ void MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
         OFF   -= OFF2;
         SENS  -= SENS2;
     }
-
-    *Pressure = (int32)((D1 * SENS / (1 << 21) - OFF) / (1 << 15) );
+    
+    PressValidate = (int32)((D1 * SENS / (1 << 21) - OFF) / (1 << 15) );
+    if(PressValidate > MS5611_PRESS_MIN && PressValidate < MS5611_PRESS_MAX)
+    {
+        *Pressure = PressValidate;
+    }
+    else
+    {
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 pressure out of range value = %ld", PressValidate);
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     /* Update diagnostic message */
     Diag.Pressure = *Pressure;
     Diag.Temperature = *Temperature;
+
+end_of_function:
+    return returnBool;
 }
 
 
@@ -587,41 +666,115 @@ void MS5611::ReadDevice(void)
 {
     int32 pressure = 0;
     int32 temperature = 0;
+    boolean returnBool = TRUE;
 
-    GetMeasurement(&pressure, &temperature);
+    returnBool = GetMeasurement(&pressure, &temperature);
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 read failure, altitude not updated");
+        /* TODO handle error condition */
+    }
+    else
+    {
+        SensorBaro.Temperature = temperature / 100.0f;
+        /* convert to millibar */
+        SensorBaro.Pressure = pressure / 100.0f;
+    
+        /* tropospheric properties (0-11km) for standard atmosphere */
+        /* temperature at base height in Kelvin */
+        const double T1 = 15.0 + 273.15;
+        /* temperature gradient in degrees per metre */
+        const double a  = -6.5 / 1000;
+        /* gravity constant in m/s/s */
+        const double g  = 9.80665;
+        /* ideal gas constant in J/kg/K */
+        const double R  = 287.05;
+    
+        /* current pressure at MSL in kPa */
+        double p1 = 101325 / 1000.0;
+        /* measured pressure in kPa */
+        double p = pressure / 1000.0;
+    
+        /*
+         * Solve:
+         *
+         *     /        -(aR / g)     \
+         *    | (p / p1)          . T1 | - T1
+         *     \                      /
+         * h = -------------------------------  + h1
+         *                   a
+         */
+        SensorBaro.Altitude = (((pow((p / p1), (-(a * R) / g))) * T1) - T1) / a;
+    
+        /* Update diagnostic message */
+        Diag.Altitude = SensorBaro.Altitude;
 
-    SensorBaro.Temperature = temperature / 100.0f;
-    /* convert to millibar */
-    SensorBaro.Pressure = pressure / 100.0f;
+        CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorBaro);
+        CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorBaro);
+    }
+}
 
-    /* tropospheric properties (0-11km) for standard atmosphere */
-    /* temperature at base height in Kelvin */
-    const double T1 = 15.0 + 273.15;
-    /* temperature gradient in degrees per metre */
-    const double a  = -6.5 / 1000;
-    /* gravity constant in m/s/s */
-    const double g  = 9.80665;
-    /* ideal gas constant in J/kg/K */
-    const double R  = 287.05;
 
-    /* current pressure at MSL in kPa */
-    double p1 = 101325 / 1000.0;
-    /* measured pressure in kPa */
-    double p = pressure / 1000.0;
+uint8 MS5611::CRC4(uint16 n_prom[])
+{
+    int cnt; 
+    /* crc remainder */
+    uint16 n_rem; 
+    /* original crc value */
+    uint16 crc_read; 
+    uint8 n_bit;
+    n_rem = 0x00;
 
-    /*
-     * Solve:
-     *
-     *     /        -(aR / g)     \
-     *    | (p / p1)          . T1 | - T1
-     *     \                      /
-     * h = -------------------------------  + h1
-     *                   a
-     */
-    SensorBaro.Altitude = (((pow((p / p1), (-(a * R) / g))) * T1) - T1) / a;
+    /* save the original CRC */
+    crc_read = n_prom[7];
+    /* replace the crc byte with 0 */
+    n_prom[7] = (0xFF00 & (n_prom[7])); 
+    /* operation is performed on bytes */
+    for (cnt = 0; cnt < 16; cnt++) 
+    {
+        /* choose LSB or MSB */
+        if (cnt%2==1) n_rem ^= (uint16) ((n_prom[cnt>>1]) & 0x00FF);
+        else n_rem ^= (uint16) (n_prom[cnt>>1]>>8);
+        for (n_bit = 8; n_bit > 0; n_bit--)
+        {
+            if (n_rem & (0x8000))
+            {
+            n_rem = (n_rem << 1) ^ 0x3000;
+            }
+            else
+            {
+                n_rem = (n_rem << 1);
+            }
+        }
+    }
+    /* the final 4-bit remainder is the CRC code */
+    n_rem = (0x000F & (n_rem >> 12));
+    /* Restore the crc_read to its original value */
+    n_prom[7] = crc_read;
+    return (n_rem ^ 0x00);
+}
 
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorBaro);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorBaro);
+
+boolean MS5611::ValidateCRC(void)
+{
+    unsigned char returnedCRC = 0;
+    uint16 promCRC = 0;
+    /* CRC code is in the last 4-bits */
+    uint16 bitmask = 0x0F;
+    /* Get CRC value from PROM */
+    promCRC = bitmask & MS5611_Coefficients[7];
+    /* Calculate CRC */
+    returnedCRC = CRC4(MS5611_Coefficients);
+
+    if(promCRC == returnedCRC)
+    {
+        return TRUE;
+    }
+    CFE_EVS_SendEvent(MS5611_INIT_ERR_EID, CFE_EVS_ERROR,
+            "MS5611 CRC check failed PROM = %u: CRC = %u",
+            (unsigned int)promCRC, (unsigned int) returnedCRC);
+    return FALSE;
 }
 
 

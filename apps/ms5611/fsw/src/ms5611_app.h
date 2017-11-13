@@ -58,6 +58,11 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define MS5611_TEMP_MIN                     (-4000)
+#define MS5611_TEMP_MAX                     (8500)
+
+#define MS5611_PRESS_MIN                    (1000)
+#define MS5611_PRESS_MAX                    (120000)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -295,7 +300,27 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
-    void GetMeasurement(int32 *Pressure, int32 *Temperature);
+    /************************************************************************/
+    /** \brief Get pressure and temperature from the MS5611.
+     **
+     **  \par Description
+     **       This function gets MS5611 pressure and temperature from 
+     **       the MS5611 barometric altimeter.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [out]   Pressure    Pointer to store value.
+     **
+     **  \param [out]   Temperature    Pointer to store value.
+     **
+     **  \returns
+     **  TRUE if successful, FALSE for failure.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean GetMeasurement(int32 *Pressure, int32 *Temperature);
+
     /************************************************************************/
     /** \brief Sends the SensorBaro message.
      **
@@ -308,7 +333,42 @@ public:
      **
      *************************************************************************/
     void ReadDevice(void);
+    
+    /************************************************************************/
+    /** \brief Calculate the CRC code.
+     **
+     **  \par Description
+     **       This calculates the CRC code saved in the last 4 bits of
+     **       MS5611 PROM.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]    n_prom    The PROM memory array of the MS5611.
+     **
+     ** 
+     **  \returns The calculated crc code.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    uint8 CRC4(uint16 n_prom[]);
 
+    /************************************************************************/
+    /** \brief Validate the CRC code.
+     **
+     **  \par Description
+     **       This validates the CRC code saved in the last 4 bits of
+     **       MS5611 PROM.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns TRUE for success, FALSE for failure.
+     **
+     *************************************************************************/
+    boolean ValidateCRC(void);
 };
 
 

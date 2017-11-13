@@ -321,7 +321,7 @@
 #define MS5611_HK_TLM_MID							0x0b61
 #define MS5611_DIAG_TLM_MID							0x0b62
 #define MS5611_CMD_MID								0x1b63
-#define MS5611_MEASURE_MID							0x0b64
+#define MS5611_MEASURE_MID							0x1b64
 //#define MS5611_RAW_MEAS_MID						  0x0b65
 //#define MS5611_CAL_MEAS_MID						  0x0b66
 //#define MS5611_WAKEUP_MID                           0x0b67

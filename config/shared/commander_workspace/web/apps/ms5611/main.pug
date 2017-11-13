@@ -5,8 +5,8 @@ block header
         | MS5611 Barometric Altimeter Driver
 
 block main
-  .row
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
       #wid-MS5611-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
@@ -22,15 +22,15 @@ block main
                   tr
                     th Cmd Count
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MS5611/CmdCounter'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/CmdCounter'}]}) ---
                   tr
                     th Error Count
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/ErrCounter'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/ErrCounter'}]}) ---
                   tr
                     th State
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/State'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/State'}]}) ---
             footer
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MS5611/Reset'}}) Reset
@@ -52,40 +52,44 @@ block main
                   tr
                     th Coef 0
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef0'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef0'}]}) ---
                   tr
                     th Coef 1
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef1'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef1'}]}) ---
                   tr
                     th Coef 2
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef2'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef2'}]}) ---
                   tr
                     th Coef 3
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef3'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef3'}]}) ---
                   tr
                     th Coef 4
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef4'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef4'}]}) ---
                   tr
                     th Coef 5
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef5'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef5'}]}) ---
                   tr
                     th Coef 6
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef6'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef6'}]}) ---
                   tr
                     th Coef 7
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Coef7'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Coef7'}]}) ---
                   tr
                     th Temperature
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MS5611/Temperature'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Temperature'}]}) ---
                   tr
                     th Pressure
                     td
-                      span(data-sage={tlm:{name:'/CFS/MS5611/Pressure'}}) ---
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Pressure'}]}) ---
+                  tr
+                    th Altitude
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/MS5611/Altitude'}]}) ---
