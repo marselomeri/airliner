@@ -248,7 +248,44 @@ typedef enum {
 **  #CFE_TBL_Load function.
 **
 */
-	MPU9250_CFGTBL_LOAD_ERR_EID,
+    MPU9250_CFGTBL_LOAD_ERR_EID,
+
+/** \brief <tt> 'MPU9250 - ' </tt>
+**  \event <tt> 'MPU9250 - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when MPU9250 has
+**  had an error in uninitialization.
+**
+*/
+    MS5611_UNINIT_ERR_EID,
+/** \brief <tt> 'MPU9250 - ' </tt>
+**  \event <tt> 'MPU9250 - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the MPU9250 has
+**  had an error in initialization.
+**
+*/
+    MS5611_INIT_ERR_EID,
+/** \brief <tt> 'Failed to read device' </tt>
+**  \event <tt> 'Failed to read device' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device read error occurs.
+**
+**
+*/
+    MPU9250_READ_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	MPU9250_EVT_CNT

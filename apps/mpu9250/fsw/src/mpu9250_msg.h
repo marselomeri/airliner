@@ -150,8 +150,103 @@ typedef struct
     /** \mpu9250tlmmnemonic \MPU9250_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
-
+    /** \brief App State */
+    uint8                 State;
 } MPU9250_HkTlm_t;
+
+
+typedef struct
+{
+    float AccDivider;
+    float GyroDivider;
+
+    float AccXCoef;
+    float AccYCoef;
+    float AccZCoef;
+    float AccXBias;
+    float AccYBias;
+    float AccZBias;
+    float GyroXCoef;
+    float GyroYCoef;
+    float GyroZCoef;
+    float GyroXBias;
+    float GyroYBias;
+    float GyroZBias;
+    float MagXCoef;
+    float MagYCoef;
+    float MagZCoef;
+    float MagXBias;
+    float MagYBias;
+    float MagZBias;
+
+    float RoomTempOffset;
+    float TempSensitivity;
+} MPU9250_CalibrationMsg_t;
+
+typedef struct
+{
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+
+    int16 AccelX;
+    int16 AccelY;
+    int16 AccelZ;
+
+    int16 GyroX;
+    int16 GyroY;
+    int16 GyroZ;
+
+    int16 MagX;
+    int16 MagY;
+    int16 MagZ;
+
+    uint8 Spare;
+    uint8 MagXAdj;
+    uint8 MagYAdj;
+    uint8 MagZAdj;
+
+    uint16 Temp;
+
+    boolean WOM;
+    boolean FifoOvflw;
+    boolean Fsync;
+    boolean ImuDataReady;
+    boolean Overrun;
+    boolean MagDataReady;
+    boolean Overflow;
+    boolean Output16Bit;
+} MPU9250_RawMeasMsg_t;
+
+
+typedef struct
+{
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+
+    float AccelX;
+    float AccelY;
+    float AccelZ;
+
+    float GyroX;
+    float GyroY;
+    float GyroZ;
+    
+    float MagX;
+    float MagY;
+    float MagZ;
+
+    float Temp;
+} MPU9250_CalMeasMsg_t;
+
+
+/** 
+**  \brief MPU9250 diagnostic data
+*/
+typedef struct
+{
+    uint8           TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    MPU9250_CalibrationMsg_t          Calibration;
+    MPU9250_RawMeasMsg_t              RawMeasure;
+    MPU9250_CalMeasMsg_t              CalMeasure;
+} MPU9250_DiagPacket_t;
 
 
 #ifdef __cplusplus

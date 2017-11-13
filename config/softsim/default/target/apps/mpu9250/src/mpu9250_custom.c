@@ -291,22 +291,6 @@ boolean MPU9250_Custom_Init()
         }
         usleep(100000);
     }
-    
-    // Move to regular init 
-    //#define MPU9250_ACC_SCALE                   (2)
-    //#define MPU9250_GYRO_SCALE                  (250)
-
-    //returnBool = MPU9250_SetAccScale(MPU9250_ACC_SCALE, &AccDivider);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
-    //returnBool = MPU9250_SetGyroScale(MPU9250_GYRO_SCALE, &GyroDivider);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
 
     MPU9250_AppCustomData.Status = MPU9250_CUSTOM_INITIALIZED;
 

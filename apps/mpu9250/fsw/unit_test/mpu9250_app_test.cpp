@@ -296,26 +296,6 @@ void Test_MPU9250_InitApp_Fail_InitData(void)
 
 
 /**
- * Test MPU9250_InitApp(), fail init config table
- */
-void Test_MPU9250_InitApp_Fail_InitConfigTbl(void)
-{
-    MPU9250 oMPU9250;
-
-    int32 result = CFE_SUCCESS;
-    int32 expected = CFE_TBL_ERR_INVALID_NAME;
-
-    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, expected, 1);
-
-    /* Execute the function being tested */
-    result = oMPU9250.InitApp();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init config table");
-}
-
-
-/**
  * Test MPU9250_InitApp(), Nominal
  */
 void Test_MPU9250_InitApp_Nominal(void)
@@ -361,21 +341,6 @@ void Test_MPU9250_AppMain_Fail_InitApp(void)
 
     /* fail the register app */
     Ut_CFE_EVS_SetReturnCode(UT_CFE_EVS_REGISTER_INDEX, CFE_EVS_APP_NOT_REGISTERED, 1);
-
-    /* Execute the function being tested */
-    oMPU9250.AppMain();
-}
-
-
-/**
- * Test MPU9250_AppMain(), Fail AcquireConfigPtrs
- */
-void Test_MPU9250_AppMain_Fail_AcquireConfigPtrs(void)
-{
-    MPU9250 oMPU9250;
-
-    /* fail the register app */
-    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_GETADDRESS_INDEX, CFE_TBL_ERR_INVALID_HANDLE, 2);
 
     /* Execute the function being tested */
     oMPU9250.AppMain();
@@ -489,8 +454,6 @@ void MPU9250_App_Test_AddTestCases(void)
                "Test_MPU9250_InitApp_Fail_InitPipe");
     UtTest_Add(Test_MPU9250_InitApp_Fail_InitData, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_InitApp_Fail_InitData");
-    UtTest_Add(Test_MPU9250_InitApp_Fail_InitConfigTbl, MPU9250_Test_Setup, MPU9250_Test_TearDown,
-               "Test_MPU9250_InitApp_Fail_InitConfigTbl");
     UtTest_Add(Test_MPU9250_InitApp_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_InitApp_Nominal");
 
@@ -498,8 +461,6 @@ void MPU9250_App_Test_AddTestCases(void)
                "Test_MPU9250_AppMain_Fail_RegisterApp");
     UtTest_Add(Test_MPU9250_AppMain_Fail_InitApp, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_AppMain_Fail_InitApp");
-    UtTest_Add(Test_MPU9250_AppMain_Fail_AcquireConfigPtrs, MPU9250_Test_Setup, MPU9250_Test_TearDown,
-               "Test_MPU9250_AppMain_Fail_AcquireConfigPtrs");
     UtTest_Add(Test_MPU9250_AppMain_InvalidSchMessage, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_AppMain_InvalidSchMessage");
     UtTest_Add(Test_MPU9250_AppMain_Nominal_SendHK, MPU9250_Test_Setup, MPU9250_Test_TearDown,

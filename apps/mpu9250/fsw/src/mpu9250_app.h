@@ -53,18 +53,28 @@ extern "C" {
 #include "mpu9250_msgids.h"
 #include "mpu9250_msg.h"
 #include "mpu9250_events.h"
-#include "mpu9250_tbldefs.h"
 #include "px4_msgs.h"
 #include "px4_msgs.h"
 #include "px4_msgs.h"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define MPU9250_ACC_SCALE                   (2)
+#define MPU9250_GYRO_SCALE                  (250)
 
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
-
+/**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    MPU9250_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    MPU9250_INITIALIZED   = 1
+} MPU9250_Status_t;
 
 /**
  **  \brief MPU9250 Application Class
@@ -86,13 +96,6 @@ public:
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
-    /* Config table-related */
-
-    /** \brief Config Table Handle */
-    CFE_TBL_Handle_t ConfigTblHdl;
-
-    /** \brief Config Table Pointer */
-    MPU9250_ConfigTbl_t* ConfigTblPtr;
     /** \brief Output Data published at the end of cycle */
     PX4_SensorAccelMsg_t SensorAccel;
     PX4_SensorMagMsg_t SensorMag;
@@ -100,6 +103,10 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     MPU9250_HkTlm_t HkTlm;
+
+    /** \brief Diagnostic data for downlink */
+    MPU9250_DiagPacket_t Diag;
+
     /************************************************************************/
     /** \brief MPU9250 (MPU9250) application entry point
      **
@@ -311,64 +318,34 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
-
-private:
     /************************************************************************/
-    /** \brief Initialize the MPU9250 configuration tables.
-    **
-    **  \par Description
-    **       This function initializes MPU9250's configuration tables.  This
-    **       includes <TODO>.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
-    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
-    **  \retstmt Return codes from #MPU9250_AcquireConfigPointers \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  InitConfigTbl(void);
-
-    /************************************************************************/
-    /** \brief Obtain MPU9250 configuration tables data pointers.
-    **
-    **  \par Description
-    **       This function manages the configuration tables
-    **       and obtains a pointer to their data.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  AcquireConfigPointers(void);
-
-public:
-    /************************************************************************/
-    /** \brief Validate MPU9250 configuration table
-    **
-    **  \par Description
-    **       This function validates MPU9250's configuration table
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ValidateConfigTbl(void*);
+    /** \brief Read from the MPU9250 and send PX4 messages.
+     **
+     **  \par Description
+     **       This function publishes to the associated PX4 messages.
+     **       <TODO>
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReadDevice(void);
 };
+
+
+/************************************************************************/
+/** \brief Cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void MPU9250_CleanupCallback(void);
+
 
 #ifdef __cplusplus
 }
