@@ -240,14 +240,14 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    #ulr
-    #DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
-    #CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr
-    #CONFIG_SOURCES
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr/ulr_custom.cpp
-        #${CMAKE_CURRENT_SOURCE_DIR}/../inc/ulr_platform_cfg.h
-        #${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_msgids.h
-        #${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_perfids.h
+    ulr
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr/ulr_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ulr_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_perfids.h
 )
 
 add_airliner_app(
@@ -282,5 +282,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/gps_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_perfids.h
-    )
+)
+
 
