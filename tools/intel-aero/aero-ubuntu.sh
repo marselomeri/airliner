@@ -43,3 +43,6 @@ sudo service xinetd restart
 # Install protobuf compiler
 sudo apt-get install -y protobuf-compiler
 sudo apt-get install -y python-protobuf
+
+# Install sshpass for jenkins access
+sudo apt-get install -y sshpass
