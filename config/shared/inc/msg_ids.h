@@ -588,6 +588,12 @@
 #define GPS_READ_SENSOR_MID                         0x1c53
 #define GPS_HK_TLM_MID                              0x0c54
 
+/* SENS                                                 */
+#define SENS_HK_TLM_MID                             0x1c55
+#define SENS_SEND_HK_MID                            0x1c56
+#define SENS_WAKEUP_MID                             0x1c57
+#define SENS_CMD_MID                                0x0c58
+
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 
 #endif

@@ -284,4 +284,14 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_perfids.h
 )
 
+add_airliner_app(
+    sens
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sens/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sens
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sens_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sens_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sens_perfids.h
+)
+
 
