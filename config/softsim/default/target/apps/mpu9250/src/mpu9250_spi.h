@@ -237,7 +237,9 @@ typedef struct
 int32 MPU9250_Ioctl(int fh, int request, void *arg);
 
 
-int32 MS5611_ResetDevice(void);
+int32 MPU9250_ResetDevice(void);
+boolean MPU9250_Read_MagInfo(uint8 *Value);
+boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);
 
 #ifdef __cplusplus
 extern "C" {

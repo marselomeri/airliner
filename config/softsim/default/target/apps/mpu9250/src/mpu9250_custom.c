@@ -353,7 +353,7 @@ boolean MPU9250_WriteReg(uint8 Addr, uint8 Data)
     MPU9250_SPI_Xfer[0].rx_buf = (unsigned long)buf;
     MPU9250_SPI_Xfer[0].len = 2;
 
-    ret = ioctl(MPU9250_AppData.FD, SPI_IOC_MESSAGE(1), MPU9250_SPI_Xfer);
+    ret = ioctl(MPU9250_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MPU9250_SPI_Xfer);
     if (-1 == ret) 
     {            
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -465,7 +465,7 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
     uint8 value = 0;
 
     /* Null pointer check */
-    if(0 == AccDivider)
+    if(0 == GyroDivider)
     {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MPU9250 SetGyroScale Null Pointer");
@@ -819,7 +819,6 @@ boolean MPU9250_Read_MagInfo(uint8 *Value)
     /* Null pointer check */
     if(0 == Value)
     {
-    {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MPU9250 Read_MagInfo Null Pointer");
         returnBool = FALSE;
@@ -864,7 +863,8 @@ boolean MPU9250_Stop_MagSelfTest(void)
 /* TODO */
 boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
 {
-    MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST1);
+    uint8 value = 0;
+    MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST1, &value);
 
     return TRUE;
 }
@@ -914,6 +914,7 @@ end_of_function:
 
 boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 {
+    boolean returnBool = TRUE;
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
     {
@@ -949,4 +950,4 @@ end_of_function:
             "MPU9250 read error in MagAdj");
     }
     return returnBool;
-};
+}

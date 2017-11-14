@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "cfe.h"
+#include "mpu9250_custom.h"
 
 #include "mpu9250_app.h"
 #include "mpu9250_msg.h"
@@ -183,28 +184,28 @@ void MPU9250::InitData()
     CFE_SB_InitMsg(&SensorGyro,
             PX4_SENSOR_GYRO_MID, sizeof(PX4_SensorGyroMsg_t), TRUE);
 
-    //Diag.AccDivider      = 1.0;
-    //Diag.GyroDivider     = 1.0;
-    Diag.AccXCoef        = 1.0;
-    Diag.AccYCoef        = 1.0;
-    Diag.AccZCoef        = 1.0;
-    //Diag.AccXBias = 0.0;
-    //Diag.AccYBias = 0.0;
-    //Diag.AccZBias = 0.0;
-    Diag.GyroXCoef       = 1.0;
-    Diag.GyroYCoef       = 1.0;
-    Diag.GyroZCoef       = 1.0;
-    //Diag.GyroXBias = 0.0;
-    //Diag.GyroYBias = 0.0;
-    //Diag.GyroZBias = 0.0;
-    Diag.MagXCoef        = 1.0;
-    Diag.MagYCoef        = 1.0;
-    Diag.MagZCoef        = 1.0;
-    //Diag.MagXBias = 0.0;
-    //Diag.MagYBias = 0.0;
-    //Diag.MagZBias = 0.0;
-    //Diag.RoomTempOffset = 0.0;
-    Diag.TempSensitivity = 333.87;
+    //Diag.Calibration.AccDivider      = 1.0;
+    //Diag.Calibration.GyroDivider     = 1.0;
+    Diag.Calibration.AccXCoef        = 1.0;
+    Diag.Calibration.AccYCoef        = 1.0;
+    Diag.Calibration.AccZCoef        = 1.0;
+    //Diag.Calibration.AccXBias = 0.0;
+    //Diag.Calibration.AccYBias = 0.0;
+    //Diag.Calibration.AccZBias = 0.0;
+    Diag.Calibration.GyroXCoef       = 1.0;
+    Diag.Calibration.GyroYCoef       = 1.0;
+    Diag.Calibration.GyroZCoef       = 1.0;
+    //Diag.Calibration.GyroXBias = 0.0;
+    //Diag.Calibration.GyroYBias = 0.0;
+    //Diag.Calibration.GyroZBias = 0.0;
+    Diag.Calibration.MagXCoef        = 1.0;
+    Diag.Calibration.MagYCoef        = 1.0;
+    Diag.Calibration.MagZCoef        = 1.0;
+    //Diag.Calibration.MagXBias = 0.0;
+    //Diag.Calibration.MagYBias = 0.0;
+    //Diag.Calibration.MagZBias = 0.0;
+    //Diag.Calibration.RoomTempOffset = 0.0;
+    Diag.Calibration.TempSensitivity = 333.87;
 }
 
 
@@ -245,14 +246,14 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    returnBool = MPU9250_SetAccScale(MPU9250_ACC_SCALE, &Diag.AccDivider);
+    returnBool = MPU9250_SetAccScale(MPU9250_ACC_SCALE, &Diag.Calibration.AccDivider);
     if(FALSE == returnBool)
     {
         iStatus = -1;
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    returnBool = MPU9250_SetGyroScale(MPU9250_GYRO_SCALE, &Diag.GyroDivider);
+    returnBool = MPU9250_SetGyroScale(MPU9250_GYRO_SCALE, &Diag.Calibration.GyroDivider);
     if(FALSE == returnBool)
     {
         iStatus = -1;
@@ -569,13 +570,6 @@ void MPU9250::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(MPU9250_SCH_PIPE_PEND_TIME);
-
-        iStatus = AcquireConfigPointers();
-        if(iStatus != CFE_SUCCESS)
-        {
-            /* We apparently tried to load a new table but failed.  Terminate the application. */
-            uiRunStatus = CFE_ES_APP_ERROR;
-        }
     }
 
     /* Stop Performance Log entry */
@@ -631,19 +625,19 @@ void MPU9250::ReadDevice(void)
     //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &rawMsg);
     //CFE_SB_SendMsg((CFE_SB_Msg_t *) &rawMsg);
 
-    calMsg.AccelX = ((rawMsg.AccelX / Diag.AccDivider) * Diag.AccXCoef) + Diag.AccXBias;
-    calMsg.AccelY = ((rawMsg.AccelY / Diag.AccDivider) * Diag.AccYCoef) + Diag.AccYBias;
-    calMsg.AccelZ = ((rawMsg.AccelZ / Diag.AccDivider) * Diag.AccZCoef) + Diag.AccZBias;
+    calMsg.AccelX = ((rawMsg.AccelX / Diag.Calibration.AccDivider) * Diag.Calibration.AccXCoef) + Diag.Calibration.AccXBias;
+    calMsg.AccelY = ((rawMsg.AccelY / Diag.Calibration.AccDivider) * Diag.Calibration.AccYCoef) + Diag.Calibration.AccYBias;
+    calMsg.AccelZ = ((rawMsg.AccelZ / Diag.Calibration.AccDivider) * Diag.Calibration.AccZCoef) + Diag.Calibration.AccZBias;
 
-    calMsg.GyroX = ((rawMsg.GyroX / Diag.GyroDivider) * Diag.GyroXCoef) + Diag.GyroXBias;
-    calMsg.GyroY = ((rawMsg.GyroY / Diag.GyroDivider) * Diag.GyroYCoef) + Diag.GyroYBias;
-    calMsg.GyroZ = ((rawMsg.GyroZ / Diag.GyroDivider) * Diag.GyroZCoef) + Diag.GyroZBias;
+    calMsg.GyroX = ((rawMsg.GyroX / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroXCoef) + Diag.Calibration.GyroXBias;
+    calMsg.GyroY = ((rawMsg.GyroY / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroYCoef) + Diag.Calibration.GyroYBias;
+    calMsg.GyroZ = ((rawMsg.GyroZ / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroZCoef) + Diag.Calibration.GyroZBias;
 
-    calMsg.MagX = (rawMsg.MagX * ((((rawMsg.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.MagXCoef) + Diag.MagXBias;
-    calMsg.MagY = (rawMsg.MagY * ((((rawMsg.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.MagYCoef) + Diag.MagYBias;
-    calMsg.MagZ = (rawMsg.MagZ * ((((rawMsg.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.MagZCoef) + Diag.MagZBias;
+    calMsg.MagX = (rawMsg.MagX * ((((rawMsg.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
+    calMsg.MagY = (rawMsg.MagY * ((((rawMsg.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
+    calMsg.MagZ = (rawMsg.MagZ * ((((rawMsg.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
 
-    calMsg.Temp = ((rawMsg.Temp - Diag.RoomTempOffset) / Diag.TempSensitivity) + 21.0;
+    calMsg.Temp = ((rawMsg.Temp - Diag.Calibration.RoomTempOffset) / Diag.Calibration.TempSensitivity) + 21.0;
 
     //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &calMsg);
     //CFE_SB_SendMsg((CFE_SB_Msg_t *) &calMsg);
@@ -653,9 +647,9 @@ end_of_function:
     if(FALSE == returnBool)
     {
         (void) CFE_EVS_SendEvent(MPU9250_READ_ERR_EID, CFE_EVS_ERROR,
-                "MPU9250 read failed";
+                "MPU9250 read failed");
     }
-    return returnBool;
+    //return returnBool;
 }
 
 

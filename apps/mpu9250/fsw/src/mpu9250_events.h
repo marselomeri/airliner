@@ -261,7 +261,7 @@ typedef enum {
 **  had an error in uninitialization.
 **
 */
-    MS5611_UNINIT_ERR_EID,
+    MPU9250_UNINIT_ERR_EID,
 /** \brief <tt> 'MPU9250 - ' </tt>
 **  \event <tt> 'MPU9250 - ' </tt>
 **  
@@ -273,7 +273,7 @@ typedef enum {
 **  had an error in initialization.
 **
 */
-    MS5611_INIT_ERR_EID,
+    MPU9250_INIT_ERR_EID,
 /** \brief <tt> 'Failed to read device' </tt>
 **  \event <tt> 'Failed to read device' </tt>
 **
@@ -288,7 +288,7 @@ typedef enum {
     MPU9250_READ_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-	MPU9250_EVT_CNT
+    MPU9250_EVT_CNT
 } MPU9250_EventIds_t;
 
 

@@ -42,7 +42,7 @@
 #define RGBLED_SEND_PERF_ID         72
 #define RGBLED_RECEIVE_PERF_ID      73
 #define MS5611_MAIN_TASK_PERF_ID    74
-#define MPU9250_APPMAIN_PERF_ID     75
+#define MPU9250_MAIN_TASK_PERF_ID   75
 
 #endif
 
