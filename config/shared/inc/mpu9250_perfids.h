@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define MPU9250_APPMAIN_PERF_ID      0
+#include "perf_ids.h"
 
 #ifdef __cplusplus
 }
