@@ -73,6 +73,7 @@ void  TO_Channel_UnlockByIndex(uint32 index);
 
 uint8 TO_Channel_State(uint32 index);
 
+
 #ifdef __cplusplus
 }
 #endif

@@ -95,8 +95,8 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define TO_GROUND_CONFIG_TABLE_FILENAME      ("/cf/apps/to_ground.tbl")
-#define TO_ONBOARD_CONFIG_TABLE_FILENAME     ("/cf/apps/to_onboard.tbl")
+#define TO_GROUND_BINARY_CONFIG_TABLE_FILENAME      ("/cf/apps/to_grnd_bin.tbl")
+#define TO_GROUND_PROTOBUF_CONFIG_TABLE_FILENAME    ("/cf/apps/to_grnd_pb.tbl")
 
 
 #define TO_MAX_MEMPOOL_BLK_SIZES 8
@@ -126,8 +126,8 @@ extern "C" {
  */
 #define TO_GROUND_BINARY_CONFIG_TABLENAME        ("GRND_BIN_CFG")
 #define TO_GROUND_BINARY_DUMP_TABLENAME          ("GRND_BIN_DMP")
-#define TO_ONBOARD_PROTOBUF_CONFIG_TABLENAME     ("GRND_PB_CFG")
-#define TO_ONBOARD_PROTOBUF_DUMP_TABLENAME       ("GRND_PB_DMP")
+#define TO_GROUND_PROTOBUF_CONFIG_TABLENAME      ("GRND_PB_CFG")
+#define TO_GROUND_PROTOBUF_DUMP_TABLENAME        ("GRND_PB_DMP")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
@@ -157,6 +157,7 @@ extern "C" {
 */
 #define TO_NUM_BYTES_IN_MEM_POOL        (TO_MAX_CHANNELS * TO_OUTPUT_QUEUE_DEPTH * TO_MAX_BLOCK_SIZE)
 
+#define TO_MAX_PROTOBUF_ENC_LEN	5000
 
 
 #ifdef __cplusplus

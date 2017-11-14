@@ -12,8 +12,8 @@
 *    notice, this list of conditions and the following disclaimer in
 *    the documentation and/or other materials provided with the
 *    distribution.
-* 3. Neither the name Windhover Labs nor the names of its 
-*    contributors may be used to endorse or promote products derived 
+* 3. Neither the name Windhover Labs nor the names of its
+*    contributors may be used to endorse or promote products derived
 *    from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -218,8 +218,6 @@ void TO_OutputChannel_CustomCleanupAll()
     {
         if(TO_OutputChannel_Status(i) == TO_CHANNEL_ENABLED)
         {
-            uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
-
             TO_OutputChannel_Disable(i);
         }
     }
@@ -513,11 +511,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                     &buffer, sizeof(buffer), &msgSize, TO_CUSTOM_CHANNEL_GET_TIMEOUT);
             if(iStatus == OS_SUCCESS)
             {
-                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
-
                 struct sockaddr_in s_addr;
-                int                       status = 0;
-                int32                     returnCode = 0;
+                int status = 0;
                 uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
 
                 bzero((char *) &s_addr, sizeof(s_addr));
@@ -585,7 +580,9 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             {
                 CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
                                 "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
-                TO_Channel_State(ChannelIdx) == TO_CHANNEL_CLOSED;
+                OS_MutSemTake(TO_AppData.MutexID);
+                TO_AppData.ChannelData[ChannelIdx].State = TO_CHANNEL_CLOSED;
+                OS_MutSemGive(TO_AppData.MutexID);
             }
         }
     }

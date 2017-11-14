@@ -120,6 +120,7 @@
 #include "vehicle_status.pb.h"
 #include "vtol_vehicle_status.pb.h"
 #include "wind_estimate.pb.h"
+#include "led_control.pb.h"
 #include "sensor_correction.pb.h"
 
 
@@ -4516,4 +4517,56 @@ uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstim
 	inOutObject->CovarianceEast = pbMsg.covariance_east;
 
 	return sizeof(PX4_WindEstimateMsg_t);
+}
+
+
+uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuffer, uint32 inSize)
+{
+	bool status = false;
+	px4_led_control_pb pbMsg;
+
+    pbMsg.led_mask = inObject->led_mask;
+    pbMsg.color = inObject->color;
+    pbMsg.mode = inObject->mode;
+    pbMsg.num_blinks = inObject->num_blinks;
+    pbMsg.priority = inObject->priority;
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4_led_control_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+
+	return stream.bytes_written;
+}
+
+uint32 PX4BR_LedControl_Dec(const char *inBuffer, uint32 inSize, PX4_LedControlMsg_t *inOutObject)
+{
+	bool status = false;
+	px4_led_control_pb pbMsg;
+
+	/* Create a stream that reads from the buffer. */
+	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4_led_control_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+    
+	inOutObject->led_mask = pbMsg.led_mask;
+	inOutObject->color = pbMsg.color;
+	inOutObject->mode = pbMsg.mode;
+	inOutObject->num_blinks = pbMsg.num_blinks;
+	inOutObject->priority = pbMsg.priority;
+
+	return sizeof(PX4_LedControlMsg_t);
 }

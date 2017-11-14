@@ -366,14 +366,14 @@ void Test_Matrix3F3_RotationMatrix(void)
 	math::Matrix3F3 matrix = math::Matrix3F3::RotationMatrix(math::Matrix3F3::ROTATION_ROLL_90_YAW_45);
 
 	UtAssert_True(fabs(matrix[0][0] - 0.7071068f) < 0.00001,  "[0][0]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
-	UtAssert_True(fabs(matrix[0][1] - 0.5f) < 0.00001,        "[0][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
-	UtAssert_True(fabs(matrix[0][2] - -0.5f) < 0.00001,       "[0][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[0][1] - 0.0f) < 0.00001,        "[0][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[0][2] - 0.7071068f) < 0.00001,  "[0][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
 
-	UtAssert_True(fabs(matrix[1][0] - -0.7071068f) < 0.00001, "[1][0]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
-	UtAssert_True(fabs(matrix[1][1] - 0.5f) < 0.00001,        "[1][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
-	UtAssert_True(fabs(matrix[1][2] - -0.5f) < 0.00001,       "[1][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[1][0] - 0.7071068f) < 0.00001,  "[1][0]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[1][1] - 0.0f) < 0.00001,        "[1][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[1][2] - -0.7071068f) < 0.00001, "[1][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
 
 	UtAssert_True(fabs(matrix[2][0] - 0.0f) < 0.00001,        "[2][0]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
-	UtAssert_True(fabs(matrix[2][1] - 0.7071068f) < 0.00001,  "[2][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
-	UtAssert_True(fabs(matrix[2][2] - 0.7071068f) < 0.00001,  "[2][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[2][1] - 1.0f) < 0.00001,        "[2][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
+	UtAssert_True(fabs(matrix[2][2] - 0.0f) < 0.00001,        "[2][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
 }

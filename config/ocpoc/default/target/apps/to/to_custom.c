@@ -153,8 +153,10 @@ end_of_function:
 int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
     struct sockaddr_in s_addr;
-    int                       status = 0;
-    int32                     returnCode = 0;
+    int    status = 0;
+    int32  returnCode = 0;
+    const char *outBuffer;
+    uint32 outSize;
 
     bzero((char *) &s_addr, sizeof(s_addr));
     s_addr.sin_family      = AF_INET;
@@ -165,11 +167,24 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 
         if(channel->Mode == TO_CHANNEL_ENABLED)
         {
+        	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
+            if(TO_GetChannelType(ChannelID) == TO_OUTPUT_TYPE_PROTOBUF)
+            {
+            	int encSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)Buffer, encBuffer, sizeof(encBuffer));
+                outBuffer = encBuffer;
+                outSize = encSize;
+            }
+            else
+            {
+                outBuffer = Buffer;
+                outSize = Size;
+            }
+
             CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->IP);
             s_addr.sin_port        = htons(channel->DstPort);
-            status = sendto(channel->Socket, (char *)Buffer, Size, 0,
+            status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
                                     (struct sockaddr *) &s_addr,
                                      sizeof(s_addr));
             if (status < 0)
@@ -484,6 +499,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
     int32 iStatus = CFE_SUCCESS;
     int32 msgSize = 0;
     char *buffer;
+    const char *outBuffer;
+    uint32 outSize;
 
     TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
     while(TO_OutputChannel_Status(ChannelIdx) == TO_CHANNEL_ENABLED)
@@ -506,21 +523,37 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                 bzero((char *) &s_addr, sizeof(s_addr));
                 s_addr.sin_family      = AF_INET;
 
-                CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-                /* Send message via UDP socket */
-                s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-                s_addr.sin_port        = htons(channel->DstPort);
-                status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
-                                        (struct sockaddr *) &s_addr,
-                                         sizeof(s_addr));
-                if (status < 0)
+            	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
+                if(TO_GetChannelType(ChannelIdx) == TO_OUTPUT_TYPE_PROTOBUF)
                 {
-                    if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
-                    {
-                        CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-                                "L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, actualMessageSize, channel->IP, channel->DstPort);
-                        TO_OutputChannel_Disable(ChannelIdx);
-                    }
+                	outSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)buffer, encBuffer, sizeof(encBuffer));
+                    outBuffer = encBuffer;
+                }
+                else
+                {
+                    outSize = actualMessageSize;
+                    outBuffer = buffer;
+                }
+
+                if(outSize > 0)
+                {
+                	CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
+
+					/* Send message via UDP socket */
+					s_addr.sin_addr.s_addr = inet_addr(channel->IP);
+					s_addr.sin_port        = htons(channel->DstPort);
+					status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
+											(struct sockaddr *) &s_addr,
+											 sizeof(s_addr));
+					if (status < 0)
+					{
+						if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
+						{
+							CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+									"L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, (unsigned int)outSize, channel->IP, channel->DstPort);
+							TO_OutputChannel_Disable(ChannelIdx);
+						}
+					}
                 }
                 CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
 

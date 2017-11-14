@@ -134,7 +134,7 @@ int32 CFE_EVS_Register (void *Filters, uint16 NumEventFilters, uint16 FilterSche
 int32 CFE_EVS_SendEvent (uint16 EventID, uint16 EventType, const char *Spec, ... )
 {
     char     BigBuf[CFE_EVS_MAX_MESSAGE_LENGTH] = "\0";
-    va_list  Ptr = 0;
+    va_list  Ptr;
   
     va_start(Ptr, Spec);
     vsnprintf(BigBuf, CFE_EVS_MAX_MESSAGE_LENGTH, Spec, Ptr);
