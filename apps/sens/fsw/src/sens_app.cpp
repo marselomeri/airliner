@@ -202,32 +202,35 @@ SENS_InitPipe_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void SENS::InitData()
 {
-    /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
+	/* Init housekeeping message. */
+	CFE_SB_InitMsg(&HkTlm,
     		SENS_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
-      /* Init output messages */
-      CFE_SB_InitMsg(&ActuatorControls3Msg,
-      		PX4_ACTUATOR_CONTROLS_3_MID, sizeof(PX4_ActuatorControlsMsg_t), TRUE);
+	/* Init output messages */
+	CFE_SB_InitMsg(&ActuatorControls3Msg,
+			PX4_ACTUATOR_CONTROLS_3_MID, sizeof(PX4_ActuatorControlsMsg_t), TRUE);
 
-      CFE_SB_InitMsg(&BatteryStatusMsg,
+	CFE_SB_InitMsg(&BatteryStatusMsg,
       		PX4_BATTERY_STATUS_MID, sizeof(PX4_BatteryStatusMsg_t), TRUE);
 
-      CFE_SB_InitMsg(&AirspeedMsg,
+	CFE_SB_InitMsg(&AirspeedMsg,
       		PX4_AIRSPEED_MID, sizeof(PX4_AirspeedMsg_t), TRUE);
 
-      CFE_SB_InitMsg(&RcChannelsMsg,
+	CFE_SB_InitMsg(&RcChannelsMsg,
       		PX4_RC_CHANNELS_MID, sizeof(PX4_RcChannelsMsg_t), TRUE);
 
-      CFE_SB_InitMsg(&ManualControlSetpointMsg,
+	CFE_SB_InitMsg(&ManualControlSetpointMsg,
       		PX4_MANUAL_CONTROL_SETPOINT_MID, sizeof(PX4_ManualControlSetpointMsg_t), TRUE);
 
-      //CFE_SB_InitMsg(&SensorPreflightMsg,
-      //		PX4_SENSOR_PREFLIGHT_MID, sizeof(PX4_SensorPreflightMsg_t), TRUE);
-      /* Init output messages */
+	//CFE_SB_InitMsg(&SensorPreflightMsg,
+	//		PX4_SENSOR_PREFLIGHT_MID, sizeof(PX4_SensorPreflightMsg_t), TRUE);
+	/* Init output messages */
 
-      CFE_SB_InitMsg(&SensorCombinedMsg,
+	CFE_SB_InitMsg(&SensorCombinedMsg,
       		PX4_SENSOR_COMBINED_MID, sizeof(PX4_SensorCombinedMsg_t), TRUE);
+
+	/* Initialized member attributes */
+	Armed = false;
 }
 
 
@@ -315,7 +318,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case SENS_WAKEUP_MID:
-                /* TODO:  Do something here. */
+                CyclicProcessing();
                 break;
 
             case SENS_SEND_HK_MID:
@@ -353,6 +356,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_VEHICLE_CONTROL_MODE_MID:
                 memcpy(&CVT.VehicleControlModeMsg, MsgPtr, sizeof(CVT.VehicleControlModeMsg));
+                Armed = CVT.VehicleControlModeMsg.Armed;
                 break;
 
             default:
@@ -633,6 +637,12 @@ void SENS::AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
+}
+
+
+void SENS::CyclicProcessing(void)
+{
+	/* Check vehicle status for changes to publication state */
 }
 
 

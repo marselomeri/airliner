@@ -125,10 +125,14 @@ public:
     //PX4_SensorPreflightMsg_t SensorPreflightMsg;
     PX4_SensorCombinedMsg_t SensorCombinedMsg;
 
+    bool Armed;
+
     /** \brief Housekeeping Telemetry for downlink */
     SENS_HkTlm_t HkTlm;
+
     /** \brief Current Value Table */
     SENS_CurrentValueTable_t CVT;
+
     /************************************************************************/
     /** \brief Sensors (SENS) application entry point
      **
@@ -426,6 +430,8 @@ private:
     **
     *************************************************************************/
     int32  AcquireConfigPointers(void);
+
+    void CyclicProcessing(void);
 
 public:
     /************************************************************************/
