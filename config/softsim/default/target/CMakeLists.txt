@@ -239,7 +239,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mac_perfids.h
 )
 
-#add_airliner_app(
+add_airliner_app(
     #ulr
     #DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
     #CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr
@@ -248,7 +248,7 @@ add_airliner_app(
         #${CMAKE_CURRENT_SOURCE_DIR}/../inc/ulr_platform_cfg.h
         #${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_msgids.h
         #${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_perfids.h
-#)
+)
 
 add_airliner_app(
     rgbled
@@ -273,3 +273,14 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5611_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5611_perfids.h
 )
+
+add_airliner_app(
+    gps
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/gps/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/gps_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_perfids.h
+    )
+
