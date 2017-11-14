@@ -519,6 +519,52 @@ Event.prototype = {
 //---------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------
 
+
+
+
+//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+var Video = function() {
+        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video/');
+        this.video_subscribers = {}
+
+}
+Video.prototype = {
+
+    getVideoStream(cb){
+        var socket = this.vid_subc;
+        socket.onopen = function (){
+
+            socket.send('SEND VIDEO');
+            //log('INFO','SENDING TELEM REQ', message)
+        };
+        socket.onclose = function (){
+
+            socket.close();
+        };
+        socket.onerror = function (){
+
+            //log('ERR','getInstanceList','')
+        };
+        socket.onmessage = function (event){
+
+            //log('INFO','got resp',event);
+            cb(event);
+            //socket.close();
+        };
+        if (socket.readyState == WebSocket.OPEN) {
+
+          socket.onopen();
+        };
+
+    },
+
+}
+
+//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
 var Session = function(){
     this.DefaultInstance = 'softsim';
     this.CurrentInstance = null;

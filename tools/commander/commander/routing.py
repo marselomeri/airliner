@@ -69,6 +69,21 @@ event_channels = [
 ]
 
 #-----------------------------------------------------------
+vid = Video()
+video = [
+    route('websocket.connect',vid.connect),
+    route('websocket.disconnect',vid.disconnect),
+    route('websocket.receive',vid.getVideo)
+]
+
+#-----------------------------------------------------------
+
+
+
+
+#-----------------------------------------------------------
+
+
 channel_routing = [
 
                    include(instance,path='^/inst/'),
@@ -79,6 +94,8 @@ channel_routing = [
                    include(command_info,path='^/cmd_i/'),
                    include(command_send,path='^/cmd_s/'),
                    include(event_channels,path='^/event/'),
+                   include(video, path='^/video/'),
+
 
 
 ]

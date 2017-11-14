@@ -417,11 +417,12 @@ class Misc:
 
     def connect(self, message):
         message.reply_channel.send({'accept': True})
-        tk.log('INSTANCE', 'CONNETED TO SOCKET', 'INFO')
+
 
     def disconnect(self, message):
         message.reply_channel.send({'close': True})
-        tk.log('INSTANCE', 'DISCONNECTED FROM SOCKET', 'INFO')
+
+
 
     def getMisc(self, message):
         name = message.content['text']
@@ -446,23 +447,16 @@ class Video:
 
     def connect(self, message):
         message.reply_channel.send({'accept': True})
-        tk.log('INSTANCE', 'CONNETED TO SOCKET', 'INFO')
+
 
     def disconnect(self, message):
         message.reply_channel.send({'close': True})
-        tk.log('INSTANCE', 'DISCONNECTED FROM SOCKET', 'INFO')
 
-    def getMisc(self, message):
+
+    def getVideo(self, message):
         name = message.content['text']
-
-        if name == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-
-        elif name == 'CLOSE_COMM_NOFBCK':
-            tk.log('GET INSTANCE LIST', 'DISCONNECTING FROM SOCKET', 'INFO')
-        else:
-            buff = self.VideoThroughUDP().next()
-            message.reply_channel.send({'text': buff})
+        buff = self.VideoThroughUDP().next()
+        message.reply_channel.send({'text': buff})
 
     def VideoThroughUDP(self):
         UDP_IP = self.address
