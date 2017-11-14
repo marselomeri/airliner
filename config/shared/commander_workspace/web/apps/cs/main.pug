@@ -1,12 +1,15 @@
-extends ../../common/layout
+
+{% extends "../../common/layout.pug" %}
+
 
 block header
         i.fa-fw.fa.fa-signal
         | Checksum
 
+
 block main
   .row
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-6(style={width:'800px'})
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-6(style="width:800px")
       #wid-CF-App.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
@@ -20,191 +23,190 @@ block main
               table.table.table-condensed
                 tbody
                   tr
-                    th(style={width:'200px'}) Cmd Count
-                    td(style={width:'95px'})
-                      span(data-sage={tlm:[{name:'/CFS/CS/CmdCounter'}]}) ---
-                    td(style={width:'450px'})
+                    th(style="width:200px") Cmd Count
+                    td(style="width:95px")
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/CmdCounter'}]}") ---
+                    td(style="width:450px")
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CS/NoOp'}}) No-Op
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CS/Reset'}}) Counter Reset
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd': {'name': '/CFS/CS/NoOp'}}") No-Op
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd': {'name': '/CFS/CS/Reset'}}") Counter Reset
                   tr
                     th Cmd Error Count
                     td
-                      span(data-sage={tlm:[{name:'/CFS/CS/ErrCounter'}]}) ---
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/ErrCounter'}]}") ---
                     td
                   tr
                     th Checksum State
                     td
-                      span(data-sage={tlm:[{name:'/CFS/CS/ChecksumState'}]}) ---
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/ChecksumState'}]}") ---
                     td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableAllCS'}}) Ena All
-                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableAllCS'}}) Dis All
-                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaseAllCS'}}) Report All
-                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaseAllCS'}}) Recompute All
+                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableAllCS'}}") Ena All
+                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableAllCS'}}") Dis All
+                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaseAllCS'}}") Report All
+                        button.btn.btn-xs.btn-primary.btn-labeled.btn-space.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaseAllCS'}}") Recompute All
                   tr
                     th EEPROM
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/EepromCSState'}]}) ---
-                    td 
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/EepromCSState'}]}") ---
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableEEPROM'}}) Ena
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableEEPROM'}}) Dis
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaselineEEPROM'}}) Report
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaselineEEPROM'}}) Recompute
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableEntryEEPROM'}}) Ena Entry
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableEntryEEPROM'}}) Dis Entry
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/GetEntryIDEEPROM'}}) Get Entry ID
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableEEPROM'}}") Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableEEPROM'}}") Dis
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaselineEEPROM'}}") Report
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaselineEEPROM'}}") Recompute
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableEntryEEPROM'}}") Ena Entry
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableEntryEEPROM'}}") Dis Entry
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/GetEntryIDEEPROM'}}") Get Entry ID
                   tr
                     th RAM
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/MemoryCSState'}]}) ---
-                    td 
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/MemoryCSState'}]}") ---
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableMemory'}}) Ena
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableMemory'}}) Dis
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaselineMemory'}}) Report
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaselineMemry'}}) Recompute
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableEntryMemory'}}) Ena Entry
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableEntryMemory'}}) Dis Entry
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/GetEntryIDMemory'}}) Get Entry ID
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableMemory'}}") Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableMemory'}}") Dis
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaselineMemory'}}") Report
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaselineMemry'}}") Recompute
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableEntryMemory'}}") Ena Entry
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableEntryMemory'}}") Dis Entry
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/GetEntryIDMemory'}}") Get Entry ID
                   tr
                     th App
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/AppCSState'}]}) ---
-                    td 
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/AppCSState'}]}") ---
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableApps'}}) Ena
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableApps'}}) Dis
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaselineApp'}}) Report
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaselineApp'}}) Recompute
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableApps'}}") Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableApps'}}") Dis
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaselineApp'}}") Report
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaselineApp'}}") Recompute
                   tr
                     th Table
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/TableCSState'}]}) ---
-                    td 
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/TableCSState'}]}") ---
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableTables'}}) Ena
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableTables'}}) Dis
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaselineTable'}}) Report
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaselineTable'}}) Recompute
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableTables'}}") Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableTables'}}") Dis
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaselineTable'}}") Report
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaselineTable'}}") Recompute
                   tr
-                    th OS 
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/OSCSState'}]}) ---
-                    td 
+                    th OS
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/OSCSState'}]}") ---
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableOS'}}) Ena
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableOS'}}) Dis
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaselineOS'}}) Report
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaselineOS'}}) Recompute
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableOS'}}") Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableOS'}}") Dis
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaselineOS'}}") Report
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaselineOS'}}") Recompute
                   tr
-                    th CFE Core 
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/CfeCoreCSState'}]}) ---
-                    td 
+                    th CFE Core
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/CfeCoreCSState'}]}") ---
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/EnableCFECore'}}) Ena
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/DisableCFECore'}}) Dis
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/ReportBaseCFECore'}}) Report
-                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CS/RecomputeBaseCFECore'}}) Recompute
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/EnableCFECore'}}") Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/DisableCFECore'}}") Dis
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/ReportBaseCFECore'}}") Report
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{'cmd':{'name':'/CFS/CS/RecomputeBaseCFECore'}}") Recompute
                   tr
                     th Child Task In Use
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/ChildTaskInUse'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/ChildTaskInUse'}]}") ---
                     td
                   tr
                     th One Shot Task In Use
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/OneShotTaskInUse'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/OneShotTaskInUse'}]}") ---
                     td
                   tr
                     th EEPROM Errors
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/EepromCSErrCounter'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/EepromCSErrCounter'}]}") ---
                     td
                   tr
                     th Memory Errors
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/MemoryCSErrCounter'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/MemoryCSErrCounter'}]}") ---
                     td
                   tr
-                    th App Errors 
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/AppCSErrCounter'}]}) ---
+                    th App Errors
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/AppCSErrCounter'}]}") ---
                     td
                   tr
                     th Table Errors
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/TablesCSErrCounter'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/TablesCSErrCounter'}]}") ---
                     td
                   tr
                     th CFE Core Errors
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/CfeCoreCSErrCounter'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/CfeCoreCSErrCounter'}]}") ---
                     td
                   tr
                     th OS Errors
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/OSCSErrCounter'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/OSCSErrCounter'}]}") ---
                     td
                   tr
                     th Current Table
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/CurrentCSTable'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/CurrentCSTable'}]}") ---
                     td
                   tr
                     th Current Entry In Table
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/CurrentEntryInTable'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/CurrentEntryInTable'}]}") ---
                     td
                   tr
                     th EEPROM Baseline
-                    td 
-                      span(style='font-family: monospace' data-sage={tlm:[{name:'/CFS/CS/EepromBaseline', format:'0x%08x'}]}) ---
+                    td
+                      span(style='font-family: monospace' data-sage="{'tlm':[{'name':'/CFS/CS/EepromBaseline', 'format':'0x%08x'}]}") ---
                     td
                   tr
                     th OS Baseline
-                    td 
-                      span(style='font-family: monospace' data-sage={tlm:[{name:'/CFS/CS/OSBaseline', format:'0x%08x'}]}) ---
+                    td
+                      span(style='font-family: monospace' data-sage="{'tlm':[{'name':'/CFS/CS/OSBaseline', 'format':'0x%08x'}]}") ---
                     td
                   tr
                     th CFE Core Baseline
-                    td 
-                      span(style='font-family: monospace' data-sage={tlm:[{name:'/CFS/CS/CfeCoreBaseline', format:'0x%08x'}]}) ---
+                    td
+                      span(style='font-family: monospace' data-sage="{'tlm':[{'name':'/CFS/CS/CfeCoreBaseline', 'format':'0x%08x'}]}") ---
                     td
                   tr
                     th Last One Shot Address
                     td
-                      span(style='font-family: monospace' data-sage={tlm:[{name:'/CFS/CS/LastOneShotAddress', format:'0x%08x'}]}) ---
+                      span(style='font-family: monospace' data-sage="{'tlm':[{'name':'/CFS/CS/LastOneShotAddress', 'format':'0x%08x'}]}") ---
                     td
                   tr
                     th Last One Shot Size
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/LastOneShotSize'}]}) ---
+                    td
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/LastOneShotSize'}]}") ---
                     td
                   tr
                     th Last One Shot Checksum
-                    td 
-                      span(style='font-family: monospace' data-sage={tlm:[{name:'/CFS/CS/LastOneShotChecksum', format:'0x%08x'}]}) ---
+                    td
+                      span(style='font-family: monospace' data-sage="{'tlm':[{'name':'/CFS/CS/LastOneShotChecksum', 'format':'0x%08x'}]}") ---
                     td
                   tr
                     th Pass Count
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CS/PassCounter'}]}) ---
                     td
-                 
+                      span(data-sage="{'tlm':[{'name':'/CFS/CS/PassCounter'}]}") ---
+                    td
+
               footer
-                button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/OneShot'}}) One Shot
-                button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/CancelOneShot'}}) Cancel One Shot
-                button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/EnableNameTable'}}) Enable Name Table
-                button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/DisableNameTable'}}) Disable Name Table
-                button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/EnableNameApp'}}) Enable Name App
-                button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/DisableNameApp'}}) Disable Name App
-         
-         
+                button.btn.btn-xs.btn-primary(data-sage="{'cmd':{'name':'/CFS/CS/OneShot'}}") One Shot
+                button.btn.btn-xs.btn-primary(data-sage="{'cmd':{'name':'/CFS/CS/CancelOneShot'}}") Cancel One Shot
+                button.btn.btn-xs.btn-primary(data-sage="{'cmd':{'name':'/CFS/CS/EnableNameTable'}}") Enable Name Table
+                button.btn.btn-xs.btn-primary(data-sage="{'cmd':{'name':'/CFS/CS/DisableNameTable'}}") Disable Name Table
+                button.btn.btn-xs.btn-primary(data-sage="{'cmd':{'name':'/CFS/CS/EnableNameApp'}}") Enable Name App
+                button.btn.btn-xs.btn-primary(data-sage="{'cmd':{'name':'/CFS/CS/DisableNameApp'}}") Disable Name App
+
   .row
-    article.col-xs-12.col-sm-12.col-md-10.col-lg-6(style={width:'500px'})               
+    article.col-xs-12.col-sm-12.col-md-10.col-lg-6(style="width:500px")
       #wid-CFE-SB-Events.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
@@ -215,23 +217,23 @@ block main
             input.form-control(type='text')
           .widget-body
             .table-responsive
-              table.table.table-condensed
+              table.table.table-condensed#thistable
                 tbody
                   tr
-                    th(style={width:'250px'}) CFE EVS Cmd Count
-                    td(style={width:'150px'})
-                      span(data-sage={tlm: [{name: '/CFS/CFE_EVS/CmdCounter'}]}) ---
+                    th(style="width:250px") CFE EVS Cmd Count
+                    td(style="width:150px")
+                      span(data-sage="{'tlm': [{'name': '/CFS/CFE_EVS/CmdCounter'}]}") ---
                   tr
                     th CFE EVS Cmd Err Count
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CFE_EVS/ErrCounter'}]}) ---
+                      span(data-sage="{'tlm': [{'name': '/CFS/CFE_EVS/ErrCounter'}]}") ---
                   tr
                     th App Events
-                    td 
+                    td
                       .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEvents', argument:[{name:'AppName', value:'CS'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEvents', argument:[{name:'AppName', value:'CS'}]}}) Disable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/ResetAllFilters', argument:[{name:'AppName', value:'CS'}]}}) Reset
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/EnableAppEvents', 'argument':[{'name':'AppName', 'value':'CS'}]}}") Enable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/DisableAppEvents', 'argument':[{'name':'AppName', 'value':'CS'}]}}") Disable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/ResetAllFilters', 'argument':[{'name':'AppName', 'value':'CS'}]}}") Reset
                   tr
                     th Event Types
                     td
@@ -239,191 +241,202 @@ block main
                     td(style='padding-left: 20px !important') Critical
                     td
                       .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Disable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/EnableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Ignored'},{'name':'Information', 'value':'Set'},{'name':'Debug', 'value':'Ignored'},{'name':'Spare', 'value':'0'}]}}") Enable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/DisableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Ignored'},{'name':'Information', 'value':'Set'},{'name':'Debug', 'value':'Ignored'},{'name':'Spare', 'value':'0'}]}}") Disable
                   tr
                     td(style='padding-left: 20px !important')  Error
                     td
                       .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Set'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Set'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Disable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/EnableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Set'},{'name':'Information', 'value':'Ignored'},{'name':'Debug', 'value':'Ignored'},{'name':'Spare', 'value':'0'}]}}") Enable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/DisableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Set'},{'name':'Information', 'value':'Ignored'},{'name':'Debug', 'value':'Ignored'},{'name':'Spare', 'value':'0'}]}}") Disable
                   tr
                     td(style='padding-left: 20px !important')  Info
                     td
                       .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Error', value:'Ignored'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Disable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/EnableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Ignored'},{'name':'Information', 'value':'Set'},{'name':'Error', 'value':'Ignored'},{'name':'Spare', 'value':'0'}]}}") Enable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/DisableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Ignored'},{'name':'Information', 'value':'Set'},{'name':'Debug', 'value':'Ignored'},{'name':'Spare', 'value':'0'}]}}") Disable
                   tr
                     td(style='padding-left: 20px !important')  Debug
                     td
                       .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Set'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CS'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Set'},{name:'Spare', value:'0'}]}}) Disable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/EnableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Ignored'},{'name':'Information', 'value':'Ignored'},{'name':'Debug', 'value':'Set'},{'name':'Spare', 'value':'0'}]}}") Enable
+                        button.btn.btn-xs.btn-primary(data-sage="{'cmd': {'name':'/CFS/CFE_EVS/DisableAppEventType', 'argument':[{'name':'AppName', 'value':'CS'},{'name':'Critical', 'value':'Ignored'},{'name':'Error', 'value':'Ignored'},{'name':'Information', 'value':'Ignored'},{'name':'Debug', 'value':'Set'},{'name':'Spare', 'value':'0'}]}}") Disable
                   tr
                     th Event IDs
                     td
-                  - 
+                  script.
                     var eventDef = {
-                      appName:'CS',
-                      events:[
-                        {name:'CS_INIT_INF_EID', eventID:1},
-                        {name:'CS_NOOP_INF_EID', eventID:2},
-                        {name:'CS_RESET_DBG_EID', eventID:3},
-                        {name:'CS_DISABLE_ALL_INF_EID', eventID:4},
-                        {name:'CS_ENABLE_ALL_INF_EID', eventID:5},
-                        {name:'CS_DISABLE_CFECORE_INF_EID', eventID:6},
-                        {name:'CS_ENABLE_CFECORE_INF_EID', eventID:7},
-                        {name:'CS_DISABLE_OS_INF_EID', eventID:8},
-                        {name:'CS_ENABLE_OS_INF_EID', eventID:9},
-                        {name:'CS_BASELINE_CFECORE_INF_EID', eventID:10},
-                        {name:'CS_NO_BASELINE_CFECORE_INF_EID', eventID:11},
-                        {name:'CS_BASELINE_OS_INF_EID', eventID:12},
-                        {name:'CS_NO_BASELINE_OS_INF_EID', eventID:13},
-                        {name:'CS_RECOMPUTE_CFECORE_STARTED_DBG_EID', eventID:14},
-                        {name:'CS_RECOMPUTE_CFECORE_CREATE_CHDTASK_ERR_EID', eventID:15},
-                        {name:'CS_RECOMPUTE_CFECORE_CHDTASK_ERR_EID', eventID:16},
-                        {name:'CS_RECOMPUTE_OS_STARTED_DBG_EID', eventID:17},
-                        {name:'CS_RECOMPUTE_OS_CREATE_CHDTASK_ERR_EID', eventID:18},
-                        {name:'CS_RECOMPUTE_OS_CHDTASK_ERR_EID', eventID:19},
-                        {name:'CS_ONESHOT_STARTED_DBG_EID', eventID:20},
-                        {name:'CS_ONESHOT_CREATE_CHDTASK_ERR_EID', eventID:21},
-                        {name:'CS_ONESHOT_CHDTASK_ERR_EID', eventID:22},
-                        {name:'CS_ONESHOT_MEMVALIDATE_ERR_EID', eventID:23},
-                        {name:'CS_ONESHOT_CANCELLED_INF_EID', eventID:24},
-                        {name:'CS_ONESHOT_CANCEL_DELETE_CHDTASK_ERR_EID', eventID:25},
-                        {name:'CS_ONESHOT_CANCEL_NO_CHDTASK_ERR_EID', eventID:26},
-                        {name:'CS_EEPROM_MISCOMPARE_ERR_EID', eventID:27},
-                        {name:'CS_MEMORY_MISCOMPARE_ERR_EID', eventID:28},
-                        {name:'CS_TABLES_MISCOMPARE_ERR_EID', eventID:29},
-                        {name:'CS_APP_MISCOMPARE_ERR_EID', eventID:30},
-                        {name:'CS_CFECORE_MISCOMPARE_ERR_EID', eventID:31},
-                        {name:'CS_OS_MISCOMPARE_ERR_EID', eventID:32},
-                        {name:'CS_MID_ERR_EID', eventID:33},
-                        {name:'CS_CC1_ERR_EID', eventID:34},
-                        {name:'CS_EXIT_ERR_EID', eventID:35},
-                        {name:'CS_LEN_ERR_EID', eventID:36},
-                        {name:'CS_DISABLE_EEPROM_INF_EID', eventID:37},
-                        {name:'CS_ENABLE_EEPROM_INF_EID', eventID:38},
-                        {name:'CS_BASELINE_EEPROM_INF_EID', eventID:39},
-                        {name:'CS_NO_BASELINE_EEPROM_INF_EID', eventID:40},
-                        {name:'CS_BASELINE_INVALID_ENTRY_EEPROM_ERR_EID', eventID:41},
-                        {name:'CS_RECOMPUTE_EEPROM_STARTED_DBG_EID', eventID:42},
-                        {name:'CS_RECOMPUTE_EEPROM_CREATE_CHDTASK_ERR_EID', eventID:43},
-                        {name:'CS_RECOMPUTE_INVALID_ENTRY_EEPROM_ERR_EID', eventID:44},
-                        {name:'CS_RECOMPUTE_EEPROM_CHDTASK_ERR_EID', eventID:45},
-                        {name:'CS_ENABLE_EEPROM_ENTRY_INF_EID', eventID:46},
-                        {name:'CS_ENABLE_EEPROM_INVALID_ENTRY_ERR_EID', eventID:47},
-                        {name:'CS_DISABLE_EEPROM_ENTRY_INF_EID', eventID:48},
-                        {name:'CS_DISABLE_EEPROM_INVALID_ENTRY_ERR_EID', eventID:49},
-                        {name:'CS_GET_ENTRY_ID_EEPROM_INF_EID', eventID:50},
-                        {name:'CS_GET_ENTRY_ID_EEPROM_NOT_FOUND_INF_EID', eventID:51},
-                        {name:'CS_DISABLE_MEMORY_INF_EID', eventID:52},
-                        {name:'CS_ENABLE_MEMORY_INF_EID', eventID:53},
-                        {name:'CS_BASELINE_MEMORY_INF_EID', eventID:54},
-                        {name:'CS_NO_BASELINE_MEMORY_INF_EID', eventID:55},
-                        {name:'CS_BASELINE_INVALID_ENTRY_MEMORY_ERR_EID', eventID:56},
-                        {name:'CS_RECOMPUTE_MEMORY_STARTED_DBG_EID', eventID:57},
-                        {name:'CS_RECOMPUTE_MEMORY_CREATE_CHDTASK_ERR_EID', eventID:58},
-                        {name:'CS_RECOMPUTE_INVALID_ENTRY_MEMORY_ERR_EID', eventID:59},
-                        {name:'CS_RECOMPUTE_MEMORY_CHDTASK_ERR_EID', eventID:60},
-                        {name:'CS_ENABLE_MEMORY_ENTRY_INF_EID', eventID:61},
-                        {name:'CS_ENABLE_MEMORY_INVALID_ENTRY_ERR_EID', eventID:62},
-                        {name:'CS_DISABLE_MEMORY_ENTRY_INF_EID', eventID:63},
-                        {name:'CS_DISABLE_MEMORY_INVALID_ENTRY_ERR_EID', eventID:64},
-                        {name:'CS_GET_ENTRY_ID_MEMORY_INF_EID', eventID:65},
-                        {name:'CS_GET_ENTRY_ID_MEMORY_NOT_FOUND_INF_EID', eventID:66},
-                        {name:'CS_DISABLE_TABLES_INF_EID', eventID:67},
-                        {name:'CS_ENABLE_TABLES_INF_EID', eventID:68},
-                        {name:'CS_BASELINE_TABLES_INF_EID', eventID:69},
-                        {name:'CS_NO_BASELINE_TABLES_INF_EID', eventID:70},
-                        {name:'CS_BASELINE_INVALID_NAME_TABLES_ERR_EID', eventID:71},
-                        {name:'CS_RECOMPUTE_TABLES_STARTED_DBG_EID', eventID:72},
-                        {name:'CS_RECOMPUTE_TABLES_CREATE_CHDTASK_ERR_EID', eventID:73},
-                        {name:'CS_RECOMPUTE_UNKNOWN_NAME_TABLES_ERR_EID', eventID:74},
-                        {name:'CS_RECOMPUTE_TABLES_CHDTASK_ERR_EID', eventID:75},
-                        {name:'CS_ENABLE_TABLES_NAME_INF_EID', eventID:76},
-                        {name:'CS_ENABLE_TABLES_UNKNOWN_NAME_ERR_EID', eventID:77},
-                        {name:'CS_DISABLE_TABLES_NAME_INF_EID', eventID:78},
-                        {name:'CS_DISABLE_TABLES_UNKNOWN_NAME_ERR_EID', eventID:79},
-                        {name:'CS_DISABLE_APP_INF_EID', eventID:80},
-                        {name:'CS_ENABLE_APP_INF_EID', eventID:81},
-                        {name:'CS_BASELINE_APP_INF_EID', eventID:82},
-                        {name:'CS_NO_BASELINE_APP_INF_EID', eventID:83},
-                        {name:'CS_BASELINE_INVALID_NAME_APP_ERR_EID', eventID:84},
-                        {name:'CS_RECOMPUTE_APP_STARTED_DBG_EID', eventID:85},
-                        {name:'CS_RECOMPUTE_APP_CREATE_CHDTASK_ERR_EID', eventID:86},
-                        {name:'CS_RECOMPUTE_UNKNOWN_NAME_APP_ERR_EID', eventID:87},
-                        {name:'CS_RECOMPUTE_APP_CHDTASK_ERR_EID', eventID:88},
-                        {name:'CS_ENABLE_APP_NAME_INF_EID', eventID:89},
-                        {name:'CS_ENABLE_APP_UNKNOWN_NAME_ERR_EID', eventID:90},
-                        {name:'CS_DISABLE_APP_NAME_INF_EID', eventID:91},
-                        {name:'CS_DISABLE_APP_UNKNOWN_NAME_ERR_EID', eventID:92},
-                        {name:'CS_COMPUTE_APP_NOT_FOUND_ERR_EID', eventID:93},
-                        {name:'CS_COMPUTE_TABLES_NOT_FOUND_ERR_EID', eventID:94},
-                        {name:'CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID', eventID:95},
-                        {name:'CS_RECOMPUTE_ERROR_TABLES_ERR_EID', eventID:96},
-                        {name:'CS_RECOMPUTE_ERROR_APP_ERR_EID', eventID:97},
-                        {name:'CS_RECOMPUTE_FINISH_TABLES_INF_EID', eventID:98},
-                        {name:'CS_RECOMPUTE_FINISH_APP_INF_EID', eventID:99},
-                        {name:'CS_ONESHOT_FINISHED_INF_EID', eventID:100},
-                        {name:'CS_VAL_EEPROM_STATE_ERR_EID', eventID:101},
-                        {name:'CS_VAL_EEPROM_RANGE_ERR_EID', eventID:102},
-                        {name:'CS_VAL_MEMORY_STATE_ERR_EID', eventID:103},
-                        {name:'CS_VAL_MEMORY_RANGE_ERR_EID', eventID:104},
-                        {name:'CS_VAL_TABLES_STATE_ERR_EID', eventID:105},
-                        {name:'CS_VAL_APP_STATE_ERR_EID', eventID:106},
-                        {name:'CS_PROCESS_EEPROM_MEMORY_NO_ENTRIES_INF_EID', eventID:107},
-                        {name:'CS_PROCESS_APP_NO_ENTRIES_INF_EID', eventID:108},
-                        {name:'CS_PROCESS_TABLES_NO_ENTRIES_INF_EID', eventID:109},
-                        {name:'CS_TBL_INIT_ERR_EID', eventID:110},
-                        {name:'CS_TBL_UPDATE_ERR_EID', eventID:111},
-                        {name:'CS_INIT_SB_CREATE_ERR_EID', eventID:112},
-                        {name:'CS_INIT_SB_SUBSCRIBE_HK_ERR_EID', eventID:113},
-                        {name:'CS_INIT_SB_SUBSCRIBE_BACK_ERR_EID', eventID:114},
-                        {name:'CS_INIT_SB_SUBSCRIBE_CMD_ERR_EID', eventID:115},
-                        {name:'CS_INIT_EEPROM_ERR_EID', eventID:116},
-                        {name:'CS_INIT_MEMORY_ERR_EID', eventID:117},
-                        {name:'CS_INIT_TABLES_ERR_EID', eventID:118},
-                        {name:'CS_INIT_APP_ERR_EID', eventID:119},
-                        {name:'CS_COMPUTE_TABLES_RELEASE_ERR_EID', eventID:120},
-                        {name:'CS_COMPUTE_TABLES_ERR_EID', eventID:121},
-                        {name:'CS_COMPUTE_APP_ERR_EID', eventID:122},
-                        {name:'CS_UPDATE_EEPROM_ERR_EID', eventID:123},
-                        {name:'CS_UPDATE_MEMORY_ERR_EID', eventID:124},
-                        {name:'CS_UPDATE_TABLES_ERR_EID', eventID:125},
-                        {name:'CS_UPDATE_APP_ERR_EID', eventID:126},
-                        {name:'CS_OS_TEXT_SEG_INF_EID', eventID:127},
-                        {name:'CS_COMPUTE_APP_PLATFORM_DBG_EID', eventID:128},
-                        {name:'CS_ENABLE_TABLE_DEF_NOT_FOUND_DBG_EID', eventID:129},
-                        {name:'CS_DISABLE_TABLE_DEF_NOT_FOUND_DBG_EID', eventID:130},
-                        {name:'CS_ENABLE_APP_DEF_NOT_FOUND_DBG_EID', eventID:131},
-                        {name:'CS_DISABLE_APP_DEF_NOT_FOUND_DBG_EID', eventID:132},
-                        {name:'CS_DISABLE_MEMORY_DEF_EMPTY_DBG_EID', eventID:133},
-                        {name:'CS_ENABLE_MEMORY_DEF_EMPTY_DBG_EID', eventID:134},
-                        {name:'CS_DISABLE_EEPROM_DEF_EMPTY_DBG_EID', eventID:135},
-                        {name:'CS_ENABLE_EEPROM_DEF_EMPTY_DBG_EID', eventID:136},
-                        {name:'CS_VAL_TABLES_DEF_TBL_DUPL_ERR_EID', eventID:137},
-                        {name:'CS_VAL_TABLES_DEF_TBL_ZERO_NAME_ERR_EID', eventID:138},
-                        {name:'CS_VAL_TABLES_INF_EID', eventID:139},
-                        {name:'CS_VAL_APP_DEF_TBL_DUPL_ERR_EID', eventID:140},
-                        {name:'CS_VAL_APP_DEF_TBL_ZERO_NAME_ERR_EID', eventID:141},
-                        {name:'CS_VAL_APP_INF_EID', eventID:142},
-                        {name:'CS_VAL_MEMORY_INF_EID', eventID:143},
-                        {name:'CS_VAL_EEPROM_INF_EID', eventID:144}]
-                      }; 
+                        'appName':'CS',
+                        events:[
+                          {'name':'CS_INIT_INF_EID', 'eventID':1},
+                          {'name':'CS_NOOP_INF_EID', 'eventID':2},
+                          {'name':'CS_RESET_DBG_EID', 'eventID':3},
+                          {'name':'CS_DISABLE_ALL_INF_EID', 'eventID':4},
+                          {'name':'CS_ENABLE_ALL_INF_EID', 'eventID':5},
+                          {'name':'CS_DISABLE_CFECORE_INF_EID', 'eventID':6},
+                          {'name':'CS_ENABLE_CFECORE_INF_EID', 'eventID':7},
+                          {'name':'CS_DISABLE_OS_INF_EID', 'eventID':8},
+                          {'name':'CS_ENABLE_OS_INF_EID', 'eventID':9},
+                          {'name':'CS_BASELINE_CFECORE_INF_EID', 'eventID':10},
+                          {'name':'CS_NO_BASELINE_CFECORE_INF_EID', 'eventID':11},
+                          {'name':'CS_BASELINE_OS_INF_EID', 'eventID':12},
+                          {'name':'CS_NO_BASELINE_OS_INF_EID', 'eventID':13},
+                          {'name':'CS_RECOMPUTE_CFECORE_STARTED_DBG_EID', 'eventID':14},
+                          {'name':'CS_RECOMPUTE_CFECORE_CREATE_CHDTASK_ERR_EID', 'eventID':15},
+                          {'name':'CS_RECOMPUTE_CFECORE_CHDTASK_ERR_EID', 'eventID':16},
+                          {'name':'CS_RECOMPUTE_OS_STARTED_DBG_EID', 'eventID':17},
+                          {'name':'CS_RECOMPUTE_OS_CREATE_CHDTASK_ERR_EID', 'eventID':18},
+                          {'name':'CS_RECOMPUTE_OS_CHDTASK_ERR_EID', 'eventID':19},
+                          {'name':'CS_ONESHOT_STARTED_DBG_EID', 'eventID':20},
+                          {'name':'CS_ONESHOT_CREATE_CHDTASK_ERR_EID', 'eventID':21},
+                          {'name':'CS_ONESHOT_CHDTASK_ERR_EID', 'eventID':22},
+                          {'name':'CS_ONESHOT_MEMVALIDATE_ERR_EID', 'eventID':23},
+                          {'name':'CS_ONESHOT_CANCELLED_INF_EID', 'eventID':24},
+                          {'name':'CS_ONESHOT_CANCEL_DELETE_CHDTASK_ERR_EID', 'eventID':25},
+                          {'name':'CS_ONESHOT_CANCEL_NO_CHDTASK_ERR_EID', 'eventID':26},
+                          {'name':'CS_EEPROM_MISCOMPARE_ERR_EID', 'eventID':27},
+                          {'name':'CS_MEMORY_MISCOMPARE_ERR_EID', 'eventID':28},
+                          {'name':'CS_TABLES_MISCOMPARE_ERR_EID', 'eventID':29},
+                          {'name':'CS_APP_MISCOMPARE_ERR_EID', 'eventID':30},
+                          {'name':'CS_CFECORE_MISCOMPARE_ERR_EID', 'eventID':31},
+                          {'name':'CS_OS_MISCOMPARE_ERR_EID', 'eventID':32},
+                          {'name':'CS_MID_ERR_EID', 'eventID':33},
+                          {'name':'CS_CC1_ERR_EID', 'eventID':34},
+                          {'name':'CS_EXIT_ERR_EID', 'eventID':35},
+                          {'name':'CS_LEN_ERR_EID', 'eventID':36},
+                          {'name':'CS_DISABLE_EEPROM_INF_EID', 'eventID':37},
+                          {'name':'CS_ENABLE_EEPROM_INF_EID', 'eventID':38},
+                          {'name':'CS_BASELINE_EEPROM_INF_EID', 'eventID':39},
+                          {'name':'CS_NO_BASELINE_EEPROM_INF_EID', 'eventID':40},
+                          {'name':'CS_BASELINE_INVALID_ENTRY_EEPROM_ERR_EID', 'eventID':41},
+                          {'name':'CS_RECOMPUTE_EEPROM_STARTED_DBG_EID', 'eventID':42},
+                          {'name':'CS_RECOMPUTE_EEPROM_CREATE_CHDTASK_ERR_EID', 'eventID':43},
+                          {'name':'CS_RECOMPUTE_INVALID_ENTRY_EEPROM_ERR_EID', 'eventID':44},
+                          {'name':'CS_RECOMPUTE_EEPROM_CHDTASK_ERR_EID', 'eventID':45},
+                          {'name':'CS_ENABLE_EEPROM_ENTRY_INF_EID', 'eventID':46},
+                          {'name':'CS_ENABLE_EEPROM_INVALID_ENTRY_ERR_EID', 'eventID':47},
+                          {'name':'CS_DISABLE_EEPROM_ENTRY_INF_EID', 'eventID':48},
+                          {'name':'CS_DISABLE_EEPROM_INVALID_ENTRY_ERR_EID', 'eventID':49},
+                          {'name':'CS_GET_ENTRY_ID_EEPROM_INF_EID', 'eventID':50},
+                          {'name':'CS_GET_ENTRY_ID_EEPROM_NOT_FOUND_INF_EID', 'eventID':51},
+                          {'name':'CS_DISABLE_MEMORY_INF_EID', 'eventID':52},
+                          {'name':'CS_ENABLE_MEMORY_INF_EID', 'eventID':53},
+                          {'name':'CS_BASELINE_MEMORY_INF_EID', 'eventID':54},
+                          {'name':'CS_NO_BASELINE_MEMORY_INF_EID', 'eventID':55},
+                          {'name':'CS_BASELINE_INVALID_ENTRY_MEMORY_ERR_EID', 'eventID':56},
+                          {'name':'CS_RECOMPUTE_MEMORY_STARTED_DBG_EID', 'eventID':57},
+                          {'name':'CS_RECOMPUTE_MEMORY_CREATE_CHDTASK_ERR_EID', 'eventID':58},
+                          {'name':'CS_RECOMPUTE_INVALID_ENTRY_MEMORY_ERR_EID', 'eventID':59},
+                          {'name':'CS_RECOMPUTE_MEMORY_CHDTASK_ERR_EID', 'eventID':60},
+                          {'name':'CS_ENABLE_MEMORY_ENTRY_INF_EID', 'eventID':61},
+                          {'name':'CS_ENABLE_MEMORY_INVALID_ENTRY_ERR_EID', 'eventID':62},
+                          {'name':'CS_DISABLE_MEMORY_ENTRY_INF_EID', 'eventID':63},
+                          {'name':'CS_DISABLE_MEMORY_INVALID_ENTRY_ERR_EID', 'eventID':64},
+                          {'name':'CS_GET_ENTRY_ID_MEMORY_INF_EID', 'eventID':65},
+                          {'name':'CS_GET_ENTRY_ID_MEMORY_NOT_FOUND_INF_EID', 'eventID':66},
+                          {'name':'CS_DISABLE_TABLES_INF_EID', 'eventID':67},
+                          {'name':'CS_ENABLE_TABLES_INF_EID', 'eventID':68},
+                          {'name':'CS_BASELINE_TABLES_INF_EID', 'eventID':69},
+                          {'name':'CS_NO_BASELINE_TABLES_INF_EID', 'eventID':70},
+                          {'name':'CS_BASELINE_INVALID_NAME_TABLES_ERR_EID', 'eventID':71},
+                          {'name':'CS_RECOMPUTE_TABLES_STARTED_DBG_EID', 'eventID':72},
+                          {'name':'CS_RECOMPUTE_TABLES_CREATE_CHDTASK_ERR_EID', 'eventID':73},
+                          {'name':'CS_RECOMPUTE_UNKNOWN_NAME_TABLES_ERR_EID', 'eventID':74},
+                          {'name':'CS_RECOMPUTE_TABLES_CHDTASK_ERR_EID', 'eventID':75},
+                          {'name':'CS_ENABLE_TABLES_NAME_INF_EID', 'eventID':76},
+                          {'name':'CS_ENABLE_TABLES_UNKNOWN_NAME_ERR_EID', 'eventID':77},
+                          {'name':'CS_DISABLE_TABLES_NAME_INF_EID', 'eventID':78},
+                          {'name':'CS_DISABLE_TABLES_UNKNOWN_NAME_ERR_EID', 'eventID':79},
+                          {'name':'CS_DISABLE_APP_INF_EID', 'eventID':80},
+                          {'name':'CS_ENABLE_APP_INF_EID', 'eventID':81},
+                          {'name':'CS_BASELINE_APP_INF_EID', 'eventID':82},
+                          {'name':'CS_NO_BASELINE_APP_INF_EID', 'eventID':83},
+                          {'name':'CS_BASELINE_INVALID_NAME_APP_ERR_EID', 'eventID':84},
+                          {'name':'CS_RECOMPUTE_APP_STARTED_DBG_EID', 'eventID':85},
+                          {'name':'CS_RECOMPUTE_APP_CREATE_CHDTASK_ERR_EID', 'eventID':86},
+                          {'name':'CS_RECOMPUTE_UNKNOWN_NAME_APP_ERR_EID', 'eventID':87},
+                          {'name':'CS_RECOMPUTE_APP_CHDTASK_ERR_EID', 'eventID':88},
+                          {'name':'CS_ENABLE_APP_NAME_INF_EID', 'eventID':89},
+                          {'name':'CS_ENABLE_APP_UNKNOWN_NAME_ERR_EID', 'eventID':90},
+                          {'name':'CS_DISABLE_APP_NAME_INF_EID', 'eventID':91},
+                          {'name':'CS_DISABLE_APP_UNKNOWN_NAME_ERR_EID', 'eventID':92},
+                          {'name':'CS_COMPUTE_APP_NOT_FOUND_ERR_EID', 'eventID':93},
+                          {'name':'CS_COMPUTE_TABLES_NOT_FOUND_ERR_EID', 'eventID':94},
+                          {'name':'CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID', 'eventID':95},
+                          {'name':'CS_RECOMPUTE_ERROR_TABLES_ERR_EID', 'eventID':96},
+                          {'name':'CS_RECOMPUTE_ERROR_APP_ERR_EID', 'eventID':97},
+                          {'name':'CS_RECOMPUTE_FINISH_TABLES_INF_EID', 'eventID':98},
+                          {'name':'CS_RECOMPUTE_FINISH_APP_INF_EID', 'eventID':99},
+                          {'name':'CS_ONESHOT_FINISHED_INF_EID', 'eventID':100},
+                          {'name':'CS_VAL_EEPROM_STATE_ERR_EID', 'eventID':101},
+                          {'name':'CS_VAL_EEPROM_RANGE_ERR_EID', 'eventID':102},
+                          {'name':'CS_VAL_MEMORY_STATE_ERR_EID', 'eventID':103},
+                          {'name':'CS_VAL_MEMORY_RANGE_ERR_EID', 'eventID':104},
+                          {'name':'CS_VAL_TABLES_STATE_ERR_EID', 'eventID':105},
+                          {'name':'CS_VAL_APP_STATE_ERR_EID', 'eventID':106},
+                          {'name':'CS_PROCESS_EEPROM_MEMORY_NO_ENTRIES_INF_EID', 'eventID':107},
+                          {'name':'CS_PROCESS_APP_NO_ENTRIES_INF_EID', 'eventID':108},
+                          {'name':'CS_PROCESS_TABLES_NO_ENTRIES_INF_EID', 'eventID':109},
+                          {'name':'CS_TBL_INIT_ERR_EID', 'eventID':110},
+                          {'name':'CS_TBL_UPDATE_ERR_EID', 'eventID':111},
+                          {'name':'CS_INIT_SB_CREATE_ERR_EID', 'eventID':112},
+                          {'name':'CS_INIT_SB_SUBSCRIBE_HK_ERR_EID', 'eventID':113},
+                          {'name':'CS_INIT_SB_SUBSCRIBE_BACK_ERR_EID', 'eventID':114},
+                          {'name':'CS_INIT_SB_SUBSCRIBE_CMD_ERR_EID', 'eventID':115},
+                          {'name':'CS_INIT_EEPROM_ERR_EID', 'eventID':116},
+                          {'name':'CS_INIT_MEMORY_ERR_EID', 'eventID':117},
+                          {'name':'CS_INIT_TABLES_ERR_EID', 'eventID':118},
+                          {'name':'CS_INIT_APP_ERR_EID', 'eventID':119},
+                          {'name':'CS_COMPUTE_TABLES_RELEASE_ERR_EID', 'eventID':120},
+                          {'name':'CS_COMPUTE_TABLES_ERR_EID', 'eventID':121},
+                          {'name':'CS_COMPUTE_APP_ERR_EID', 'eventID':122},
+                          {'name':'CS_UPDATE_EEPROM_ERR_EID', 'eventID':123},
+                          {'name':'CS_UPDATE_MEMORY_ERR_EID', 'eventID':124},
+                          {'name':'CS_UPDATE_TABLES_ERR_EID', 'eventID':125},
+                          {'name':'CS_UPDATE_APP_ERR_EID', 'eventID':126},
+                          {'name':'CS_OS_TEXT_SEG_INF_EID', 'eventID':127},
+                          {'name':'CS_COMPUTE_APP_PLATFORM_DBG_EID', 'eventID':128},
+                          {'name':'CS_ENABLE_TABLE_DEF_NOT_FOUND_DBG_EID', 'eventID':129},
+                          {'name':'CS_DISABLE_TABLE_DEF_NOT_FOUND_DBG_EID', 'eventID':130},
+                          {'name':'CS_ENABLE_APP_DEF_NOT_FOUND_DBG_EID', 'eventID':131},
+                          {'name':'CS_DISABLE_APP_DEF_NOT_FOUND_DBG_EID', 'eventID':132},
+                          {'name':'CS_DISABLE_MEMORY_DEF_EMPTY_DBG_EID', 'eventID':133},
+                          {'name':'CS_ENABLE_MEMORY_DEF_EMPTY_DBG_EID', 'eventID':134},
+                          {'name':'CS_DISABLE_EEPROM_DEF_EMPTY_DBG_EID', 'eventID':135},
+                          {'name':'CS_ENABLE_EEPROM_DEF_EMPTY_DBG_EID', 'eventID':136},
+                          {'name':'CS_VAL_TABLES_DEF_TBL_DUPL_ERR_EID', 'eventID':137},
+                          {'name':'CS_VAL_TABLES_DEF_TBL_ZERO_NAME_ERR_EID', 'eventID':138},
+                          {'name':'CS_VAL_TABLES_INF_EID', 'eventID':139},
+                          {'name':'CS_VAL_APP_DEF_TBL_DUPL_ERR_EID', 'eventID':140},
+                          {'name':'CS_VAL_APP_DEF_TBL_ZERO_NAME_ERR_EID', 'eventID':141},
+                          {'name':'CS_VAL_APP_INF_EID', 'eventID':142},
+                          {'name':'CS_VAL_MEMORY_INF_EID', 'eventID':143},
+                          {'name':'CS_VAL_EEPROM_INF_EID', 'eventID':144}]
+                        };
 
-                  - for (var idx = 0; idx < eventDef.events.length; ++idx) {
-                      - var strEventID = '' + eventDef.events[idx].eventID;
-                      - var cmdSetFilter = {cmd: {name:'/CFS/CFE_EVS/SetFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      - var cmdResetFilter = {cmd: {name:'/CFS/CFE_EVS/ResetFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      - var cmdAddEventFilter = {cmd: {name:'/CFS/CFE_EVS/AddEventFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      - var cmdDeleteEventFilter = {cmd: {name:'/CFS/CFE_EVS/DeleteEventFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      tr
-                        td(style='padding-left: 20px !important')  #{eventDef.events[idx].name}
-                        td
-                          .btn-group
-                            button.btn.btn-xs.btn-primary(data-sage= cmdSetFilter) Set
-                            button.btn.btn-xs.btn-primary(data-sage= cmdResetFilter) Reset
-                            button.btn.btn-xs.btn-primary(data-sage= cmdAddEventFilter) Add
-                            button.btn.btn-xs.btn-primary(data-sage= cmdDeleteEventFilter) Delete
-                  - };
+                    var table = document.getElementById('thistable');
+
+                    function addrow(str,table){
+                    var tbody = table.children[0];
+                    var length = tbody.children.length;
+                    var row = tbody.insertRow(length-1);
+                    row.innerHTML =str
+                    }
+                    for(var e in eventDef.events){
+                    name = eventDef.events[e]['name'];
+                    id = eventDef.events[e]['eventID'];
+
+                    var txt = "<td  style='padding-left: 20px !important'>"+name+"</td>" +
+                    "<td>"+
+                    "<div class = 'btn-group'>"+
+                    "<button data-sage = \"{'cmd': {'name':'/CFS/CFE_EVS/SetFilter', 'argument':[{'name':'AppName', 'value':'"+name+"'},{'name':'EventID', 'value':"+id+" }]}}\" class = 'btn btn-xs btn-primary'>Set</button>"+
+                    "<button data-sage = \"{'cmd': {'name':'/CFS/CFE_EVS/ResetFilter', 'argument':[{'name':'AppName', 'value':'"+name+"'},{'name':'EventID', 'value':"+id+" }]}}\" class = 'btn btn-xs btn-primary'>Reset</button>"+
+                    "<button data-sage = \"{'cmd': {'name':'/CFS/CFE_EVS/AddEventFilter', 'argument':[{'name':'AppName', 'value':'"+name+"'},{'name':'EventID', 'value':"+id+" }]}}\" class = 'btn btn-xs btn-primary'>Add</button>"+
+                    "<button data-sage = \"{'cmd': {'name':'/CFS/CFE_EVS/DeleteEventFilter', 'argument':[{'name':'AppName', 'value':'"+name+"'},{'name':'EventID', 'value':"+id+" }]}}\" class = 'btn btn-xs btn-primary'>Delete</button>"+
+                    "</div>"+
+                    "</td>";
+                    //console.log(txt);
+                    addrow(txt,table);
+
+
+                    }

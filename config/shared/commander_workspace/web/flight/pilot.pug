@@ -4,7 +4,7 @@ block header
   i.fa-fw.fa.fa-signal
   | Pilot Display (Test)
 
-block main 
+block main
   .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-6
       #wid-Flight-HUD.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false',data-widget-colorbutton='false',data-widget-deletebutton='false')
@@ -58,11 +58,8 @@ block main
     var cameraImage;
     var imageBuffer;
 
-    session.subscribe({
-        homogeneity: {tolerance: 0.5}, tlm: [
-          {name: '/MAV/CMN/A_pitch'},
-          {name: '/MAV/CMN/A_roll'}]
-      },
+
+    tlm_o.subscribeTelemetry("{'homogeneity': {'tolerance': 0.5}, 'tlm': [{'name': '/MAV/CMN/A_pitch'},{'name': '/MAV/CMN/A_roll'}]}",
       function (params) {
         for (var i = 0; i < params.length; ++i) {
           switch (params[i].id.name) {
@@ -84,7 +81,7 @@ block main
         }
       }
     );
-      
+
     setInterval(function () {
       if (HUDStarted == true) {
         updateHUDAltitude(Position.Alt);
@@ -129,9 +126,9 @@ block main
       //updateHUDPitch(30);
       //updateHUDRoll(40);
     });
-    
+
     var toggle = 0;
-    session.subscribeToVideo(function(image) {
+    vid.getVideoStream(function(image) {
       imageBuffer = image;
       cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
     });
@@ -598,5 +595,3 @@ block main
 
     var pitchDirection = 0.2;
     var altitudeDirection = 0.01;
-
-     
