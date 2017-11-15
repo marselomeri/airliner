@@ -55,3 +55,57 @@ int32 MPU9250_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 {
     return 0;
 }
+
+
+boolean MPU9250_SetAccScale(uint8 Scale, float *AccDivider)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
+{
+    return TRUE;
+}
+
+boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_Temp(uint16 *Temp)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+{
+    return TRUE;
+}
+

@@ -260,10 +260,6 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    /* TODO Add Gyroscope Self-Test */
-    /* TODO Add Accelerometer Self-Test */
-    /* TODO Add Magnetometer Self-Test */
-
     HkTlm.State = MPU9250_INITIALIZED;
 
     /* Register the cleanup callback */
@@ -584,6 +580,7 @@ void MPU9250::ReadDevice(void)
 {
     MPU9250_RawMeasMsg_t rawMsg;
     MPU9250_CalMeasMsg_t calMsg;
+
     boolean returnBool =  TRUE;
 
     returnBool = MPU9250_Read_Gyro(&rawMsg.GyroX, &rawMsg.GyroY, &rawMsg.GyroZ);
@@ -591,37 +588,47 @@ void MPU9250::ReadDevice(void)
     {
         goto end_of_function;
     }
+    OS_printf("GyroX = %d, GyroY = %d, GyroZ = %d\n", rawMsg.GyroX, rawMsg.GyroY, rawMsg.GyroZ);
     returnBool = MPU9250_Read_Accel(&rawMsg.AccelX, &rawMsg.AccelY, &rawMsg.AccelZ);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    OS_printf("AccelX = %d, AccelY = %d, AccelZ = %d\n", rawMsg.AccelX, rawMsg.AccelY, rawMsg.AccelZ);
     returnBool = MPU9250_Read_Mag(&rawMsg.MagX, &rawMsg.MagY, &rawMsg.MagZ);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    OS_printf("MagX = %d, MagY = %d, MagZ = %d\n", rawMsg.MagX, rawMsg.MagY, rawMsg.MagZ);
     returnBool = MPU9250_Read_Temp(&rawMsg.Temp);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    OS_printf("Temp = %d\n", rawMsg.Temp);
+
     returnBool = MPU9250_Read_ImuStatus(&rawMsg.WOM, &rawMsg.FifoOvflw, &rawMsg.Fsync, &rawMsg.ImuDataReady);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+
     returnBool = MPU9250_Read_MagStatus(&rawMsg.Overrun, &rawMsg.MagDataReady, &rawMsg.Overflow, &rawMsg.Output16Bit);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    OS_printf("Overrun = %d, MagDataReady = %d, Overflow = %d, Output16Bit = %d\n", 
+            rawMsg.Overrun, rawMsg.MagDataReady, rawMsg.Overflow, rawMsg.Output16Bit);
+
     returnBool = MPU9250_Read_MagAdj(&rawMsg.MagXAdj, &rawMsg.MagYAdj, &rawMsg.MagZAdj);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
-
+    OS_printf("MagXAdj = %d, MagYAdj = %d, MagZAdj = %d\n", 
+            rawMsg.MagXAdj, rawMsg.MagYAdj, rawMsg.MagZAdj);
     //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &rawMsg);
     //CFE_SB_SendMsg((CFE_SB_Msg_t *) &rawMsg);
 

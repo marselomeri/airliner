@@ -232,7 +232,10 @@ boolean MPU9250_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
-    
+
+    /* TODO Add Gyroscope Self-Test */
+    /* TODO Add Accelerometer Self-Test */
+    /* TODO Add Magnetometer Self-Test */
     
     uint8 MPU_Init_Data[MPU_InitRegNum][2] = {
         /* Reset Device */
@@ -801,7 +804,7 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
         returnBool = FALSE;
         goto end_of_function;
     }
-    *Value = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_WIA, Value);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_WIA, Value);
 
 end_of_function:
     if (FALSE == returnBool)
@@ -864,9 +867,33 @@ boolean MPU9250_Stop_MagSelfTest(void)
 boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
 {
     uint8 value = 0;
-    MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST1, &value);
+    boolean returnBool = TRUE;
+    
+    /* Null pointer check */
+    if(0 == WOM || 0 == FifoOvflw || 0 == Fsync|| 0 == DataReady)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Read_ImuStatus Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
+    returnBool = MPU9250_ReadReg(MPU9250_REG_INT_STATUS, &value);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in ImuStatus");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
-    return TRUE;
+    *WOM        = value & MPU9250_ST_INT_WOM_MASK;
+    *FifoOvflw  = value & MPU9250_ST_INT_FIFO_OFL_MASK;
+    *Fsync      = value & MPU9250_ST_INT_FSYNC_MASK;
+    *DataReady  = value & MPU9250_ST_INT_RDY_MASK;
+
+end_of_function:
+    return returnBool;
 }
 
 

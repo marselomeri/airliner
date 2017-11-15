@@ -42,15 +42,53 @@
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-/* MPU 9250 registers */
-#define MPU9250_REG_WHOAMI                  (0x75)
+/* MPU 9250 register map for Gyroscope and Accelerometer */
+/* Self test output generated during manufacturing tests. */
+/** \brief Factory self test output for gyro X-axis.*/
+#define MPU9250_REG_GYRO_X_TEST             (0x00)
+/** \brief Factory self test output for gyro Y-axis.*/
+#define MPU9250_REG_GYRO_Y_TEST             (0x01)
+/** \brief Factory self test output for gyro Z-axis.*/
+#define MPU9250_REG_GYRO_Z_TEST             (0x02)
+/** \brief Factory self test output for accelerometer X-axis.*/
+#define MPU9250_REG_ACCEL_X_TEST            (0x0D)
+/** \brief Factory self test output for accelerometer Y-axis.*/
+#define MPU9250_REG_ACCEL_Y_TEST            (0x0E)
+/** \brief Factory self test output for accelerometer Z-axis.*/
+#define MPU9250_REG_ACCEL_Z_TEST            (0x0F)
+/* Registers used to remove DC bias from the gyro sensor data output for
+ * X, Y, and Z axes. Values are subtracted from the gyro sensor values 
+ * before going into the sensor registers. */
+/** \brief High byte [15:8], offset X-axis. */
+#define MPU9250_REG_GYRO_X_OFF_H            (0x13)
+/** \brief Low byte [7:0], offset X-axis. */
+#define MPU9250_REG_GYRO_X_OFF_L            (0x14)
+/** \brief High byte [15:8], offset Y-axis. */
+#define MPU9250_REG_GYRO_Y_OFF_H            (0x15)
+/** \brief Low byte [7:0], offset Y-axis. */
+#define MPU9250_REG_GYRO_Y_OFF_L            (0x16)
+/** \brief High byte [15:8], offset Z-axis. */
+#define MPU9250_REG_GYRO_Z_OFF_H            (0x17)
+/** \brief Low byte [7:0], offset Z-axis. */
+#define MPU9250_REG_GYRO_Z_OFF_L            (0x18)
+/* Divides the internal sample rate to generate the sample rate that
+ * controls sensor data output rate. Only effective when Fchoice = 2'b11
+ * such that the average filter's output is selected.  */
+/** \brief Sample rate divisor. */
 #define MPU9250_REG_SMPLRT_DIV              (0x19)
+/** \brief Configuration. */
 #define MPU9250_REG_CONFIG                  (0x1A)
+/** \brief Gyroscope configuration. */
 #define MPU9250_REG_GYRO_CONFIG             (0x1B)
+/** \brief Accelerometer configuration 1. */
 #define MPU9250_REG_ACCEL_CONFIG            (0x1C)
+/** \brief Accelerometer configuration 2. */
 #define MPU9250_REG_ACCEL_CONFIG2           (0x1D)
+/** \brief Low Power Accelerometer Output Data Rate (ODR) Control. */
 #define MPU9250_REG_LPACCEL_ODR             (0x1E)
+/** \brief Wake-on Motion Threshold. */
 #define MPU9250_REG_WOM_THRESH              (0x1F)
+/** \brief FIFO Enable. */
 #define MPU9250_REG_FIFO_EN                 (0x23)
 #define MPU9250_REG_I2C_MST_CTRL            (0x24)
 #define MPU9250_REG_I2C_SLV0_ADDR           (0x25)
@@ -71,37 +109,65 @@
 #define MPU9250_REG_I2C_SLV4_CTRL           (0x34)
 #define MPU9250_REG_I2C_SLV4_DI             (0x35)
 #define MPU9250_REG_I2C_MST_STATUS          (0x36)
+/** \brief Interrupt Pin / Bypass Enable Configuration. */
 #define MPU9250_REG_INT_PIN_CFG             (0x37)
+/** \brief Interrupt Enable. */
 #define MPU9250_REG_INT_ENABLE              (0x38)
+/** \brief Interrupt Status. */
 #define MPU9250_REG_INT_STATUS              (0x3A)
+/** \brief High byte accelerometer measurement X-axis. */
 #define MPU9250_REG_ACCEL_XOUT_H            (0x3B)
+/** \brief Low byte accelerometer measurement X-axis. */
 #define MPU9250_REG_ACCEL_XOUT_L            (0x3C)
+/** \brief High byte accelerometer measurement Y-axis. */
 #define MPU9250_REG_ACCEL_YOUT_H            (0x3D)
+/** \brief Low byte accelerometer measurement Y-axis. */
 #define MPU9250_REG_ACCEL_YOUT_L            (0x3E)
+/** \brief High byte accelerometer measurement Z-axis. */
 #define MPU9250_REG_ACCEL_ZOUT_H            (0x3F)
+/** \brief Low byte accelerometer measurement Z-axis. */
 #define MPU9250_REG_ACCEL_ZOUT_L            (0x40)
+/** \brief High byte temperature measurement. */
 #define MPU9250_REG_TEMP_OUT_H              (0x41)
+/** \brief Low byte temperature measurement. */
 #define MPU9250_REG_TEMP_OUT_L              (0x42)
+/** \brief High byte gyroscope measurement X-axis. */
 #define MPU9250_REG_GYRO_XOUT_H             (0x43)
+/** \brief Low byte gyroscope measurement X-axis. */
 #define MPU9250_REG_GYRO_XOUT_L             (0x44)
+/** \brief High byte gyroscope measurement Y-axis. */
 #define MPU9250_REG_GYRO_YOUT_H             (0x45)
+/** \brief Low byte gyroscope measurement Y-axis. */
 #define MPU9250_REG_GYRO_YOUT_L             (0x46)
+/** \brief High byte gyroscope measurement Z-axis. */
 #define MPU9250_REG_GYRO_ZOUT_H             (0x47)
+/** \brief Low byte gyroscope measurement Z-axis. */
 #define MPU9250_REG_GYRO_ZOUT_L             (0x48)
+/** \brief External sensor data 0 */
 #define MPU9250_REG_EXT_SENS_DATA_00        (0x49)
 #define MPU9250_REG_I2C_SLV0_DO             (0x63)
 #define MPU9250_REG_I2C_SLV1_DO             (0x64)
 #define MPU9250_REG_I2C_SLV2_DO             (0x65)
 #define MPU9250_REG_I2C_SLV3_DO             (0x66)
 #define MPU9250_REG_I2C_MST_DELAY_CTRL      (0x67)
+/** \brief Digital signal path reset. */
 #define MPU9250_REG_SIGNAL_PATH_RESET       (0x68)
+/** \brief Accelerometer interrupt control. */
 #define MPU9250_REG_MOT_DETECT_CTRL         (0x69)
+/** \brief User control. */
 #define MPU9250_REG_USER_CTRL               (0x6A)
+/** \brief Power management 1. */
 #define MPU9250_REG_PWR_MGMT_1              (0x6B)
+/** \brief Power management 2. */
 #define MPU9250_REG_PWR_MGMT_2              (0x6C)
+/** \brief High bits, number of written bytes in FIFO. */
 #define MPU9250_REG_FIFO_COUNTH             (0x72)
+/** \brief Low bits, number of written bytes in FIFO. */
 #define MPU9250_REG_FIFO_COUNTL             (0x73)
+/** \brief FIFO read/write command. */
 #define MPU9250_REG_FIFO_R_W                (0x74)
+/** \brief Indicate to user which device is being accessed. */
+#define MPU9250_REG_WHOAMI                  (0x75)
 
 /* Configuration bits mpu9250 */
 #define MPU9250_BIT_SLEEP                   (0x40)
@@ -131,7 +197,6 @@
 #define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
 #define MPU9250_BIT_RAW_RDY_EN              (0x01)
 #define MPU9250_BIT_I2C_IF_DIS              (0x10)
-
 #define MPU9250_READ_FLAG                   (0x80)
 #define MPU9250_BIT_RAW_RDY_EN              (0x01)
 #define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
@@ -139,36 +204,71 @@
 #define MPU9250_AK8963_I2C_ADDR             (0x0c)
 #define MPU9250_AK8963_Device_ID            (0x48)
 
-/* Read-only Reg */
+/* AK8963 Register map for the Magnetometer */
+/* Read-only registers */
+/** \brief Device ID. */
 #define MPU9250_AK8963_WIA                  (0x00)
+/** \brief Device information. */
 #define MPU9250_AK8963_INFO                 (0x01)
+/** \brief Status 1. */
 #define MPU9250_AK8963_ST1                  (0x02)
+/** \brief Measurement data X-axis lower 8-bits */
 #define MPU9250_AK8963_HXL                  (0x03)
+/** \brief Measurement data X-axis upper 8-bits */
 #define MPU9250_AK8963_HXH                  (0x04)
+/** \brief Measurement data Y-axis lower 8-bits */
 #define MPU9250_AK8963_HYL                  (0x05)
+/** \brief Measurement data Y-axis upper 8-bits */
 #define MPU9250_AK8963_HYH                  (0x06)
+/** \brief Measurement data Z-axis lower 8-bits */
 #define MPU9250_AK8963_HZL                  (0x07)
+/** \brief Measurement data Z-axis upper 8-bits */
 #define MPU9250_AK8963_HZH                  (0x08)
+/** \brief Status 2. */
 #define MPU9250_AK8963_ST2                  (0x09)
-
-/* Write/Read Reg */
+/* Write/Read registers */
+/** \brief Control 1. */
 #define MPU9250_AK8963_CNTL1                (0x0A)
+/** \brief Control 2. */
 #define MPU9250_AK8963_CNTL2                (0x0B)
+/** \brief Self-test control. */
 #define MPU9250_AK8963_ASTC                 (0x0C)
-#define MPU9250_AK8963_TS1                  (0x0D)
-#define MPU9250_AK8963_TS2                  (0x0E)
+//#define MPU9250_AK8963_TS1                  (0x0D)
+//#define MPU9250_AK8963_TS2                  (0x0E)
+/** \brief I2C disable. */
 #define MPU9250_AK8963_I2CDIS               (0x0F)
-
-/* Read-only Reg ( ROM ) */
+/* Read-only registers (ROM) */
+/** \brief Sensitivity adjustment value X-axis. */
 #define MPU9250_AK8963_ASAX                 (0x10)
+/** \brief Sensitivity adjustment value Y-axis. */
 #define MPU9250_AK8963_ASAY                 (0x11)
+/** \brief Sensitivity adjustment value Z-axis. */
 #define MPU9250_AK8963_ASAZ                 (0x12)
 
-/* Masks */
+/* Masks Mag */
+/** \brief Data ready. */
 #define MPU9250_ST1_DRDY_MASK               (0x01)
+/** \brief Data overrun. */
 #define MPU9250_ST1_DOR_MASK                (0x02)
+/** \brief Output bit setting (mirror). */
 #define MPU9250_ST2_BITM_MASK               (0x10)
+/** \brief Magnetic sensor overflow. */
 #define MPU9250_ST2_HOFL_MASK               (0x08)
+
+/* Masks IMU */
+/** \brief Data ready. */
+#define MPU9250_ST_INT_RDY_MASK             (0x01)
+/** \brief Fsync interrupt occurred. */
+#define MPU9250_ST_INT_FSYNC_MASK           (0x04)
+/** \brief Fifo overflow interrupt occurred. */
+#define MPU9250_ST_INT_FIFO_OFL_MASK        (0x05)
+/** \brief Wake on motion interrupt occurred. */
+#define MPU9250_ST_INT_WOM_MASK             (0x07)
+
+/** \brief Array initializer. */
+#define MPU_InitRegNum                      (20)
+
+#define MPU9250_DEFAULT_LOWPASS_FILTER MPU9250_BITS_DLPF_CFG_250HZ
 
 /** \brief Retry attemps for interrupted ioctl calls.
 **
@@ -184,7 +284,12 @@
 */
 #define MPU9250_MAX_RETRY_SLEEP_USEC         (10)
 
-
+#define MPU9250_SPI_DEVICE_PATH              "/dev/spidev1.0"
+#define MPU9250_SPI_DEVICE_MODE              (3)
+#define MPU9250_SPI_DEVICE_BITS              (8)
+#define MPU9250_SPI_DEVICE_SPEED             (1000000)
+#define MPU9250_SPI_TX_DELAY                 (0)
+#define MPU9250_SPI_RX_DELAY                 (0)
 
 /************************************************************************
 ** Structure Declarations

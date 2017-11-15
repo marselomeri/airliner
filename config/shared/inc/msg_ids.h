@@ -314,8 +314,8 @@
 #define MPU9250_DIAG_TLM_MID						0x0b52
 #define MPU9250_CMD_MID								0x1b53
 #define MPU9250_MEASURE_MID							0x1b54
-#define MPU9250_RAW_MEAS_MID						0x0b55
-#define MPU9250_CAL_MEAS_MID						0x0b56
+//#define MPU9250_RAW_MEAS_MID						0x0b55
+//#define MPU9250_CAL_MEAS_MID						0x0b56
 
 #define MS5611_SEND_HK_MID							0x1b60
 #define MS5611_HK_TLM_MID							0x0b61

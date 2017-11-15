@@ -20,6 +20,7 @@ CFE_APP, /cf/apps/MAC.so,   	MAC_AppMain,     MAC,       54, 32768, 0x0, 0;
 CFE_APP, /cf/apps/VC.so,      VC_AppMain,      VC,       100, 32768, 0x0, 0;
 CFE_APP, /cf/apps/RGBLED.so,      RGBLED_AppMain,      RGBLED,       100, 32768, 0x0, 0;
 CFE_APP, /cf/apps/MS5611.so,      MS5611_AppMain,      MS5611,       100, 32768, 0x0, 0;
+CFE_APP, /cf/apps/MPU9250.so,     MPU9250_AppMain,     MPU9250,      100, 32768, 0x0, 0;
 CFE_APP, /cf/apps/ULR.so,      ULR_AppMain,     ULR,       90, 32768, 0x0, 0;
 !CFE_APP, /cf/apps/HS.so,      HS_AppMain,      HS,       123, 32768, 0x0, 0;
 CFE_LIB, /cf/apps/schlib.so,    SCH_LibInit,     SCH_LIB,    0,     0, 0x0, 0;
