@@ -198,89 +198,62 @@ var Telemetry =function(){
     this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
     this.subscribers = {}
 
+    this.subsc.onopen = function (){
+    };
 
+    this.subsc.onclose = function (){
+    };
+
+    this.subsc.onerror = function (){
+        //log('ERR','getInstanceList','')
+    };
+
+    this.unsubsc.onopen = function (){
+    }
+   
+    this.unsubsc.onclose = function (){
+    }
+    
+    this.unsubsc.onerror = function (){
+        log('ERR','getInstanceList','')
+    }
 }
 
 Telemetry.prototype = {
-
     subscribeTelemetry: function(message,cb){
-        var socket = this.subsc;
-        socket.onopen = function (){
-
-            socket.send(message);
+        if (this.subsc.readyState == WebSocket.OPEN)
+        {
+            this.subsc.send(message);
             //log('INFO','SENDING TELEM REQ', message)
-        };
-        socket.onclose = function (){
+        }
 
-            socket.close();
-        };
-        socket.onerror = function (){
-
-            //log('ERR','getInstanceList','')
-        };
-        socket.onmessage = function (event){
-
+        this.subsc.onmessage = function (event)
+        {
             //log('INFO','got resp',event);
             cb(event);
             //socket.close();
         };
-        if (socket.readyState == WebSocket.OPEN) {
-
-          socket.onopen();
-        };
-
     },
 
     unSubscribeTelemetry: function(message,cb){
-        var socket = this.unsubsc;
-        socket.onopen = function (){
+        if (this.unsubsc.readyState == WebSocket.OPEN) {
+            this.unsubsc.send(message);
+        };
 
-            socket.send(message);
-        }
-        socket.onclose = function (){
-
-            socket.close();
-        }
-        socket.onerror = function (){
-
-            log('ERR','getInstanceList','')
-        }
-        socket.onmessage = function (event){
-
+        this.unsubsc.onmessage = function (event)
+        {
             //log('INFO','got resp',event);
             cb(event);
             //socket.close();
         }
-        if (socket.readyState == WebSocket.OPEN) {
-
-          socket.onopen();
-        };
-
     },
-
 
     unSubscribeAll: function(){
         var socket = this.unsubsc;
-        socket.onopen = function (){
-
-            socket.send('US_ALL');
-        }
-        socket.onclose = function (){
-
-            socket.close();
-        }
-        socket.onerror = function (){
-
-            //log('ERR','getInstanceList','')
-        }
-
-        if (socket.readyState == WebSocket.OPEN) {
-
-          socket.onopen();
+        if (this.unsubsc.readyState == WebSocket.OPEN) {
+            this.unsubsc.send('US_ALL');
         };
-
     },
-
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -293,8 +266,14 @@ var Command =function(){
     this.SendingQueue = [];
     this.superQ = {};
     this.count=0;
-
-
+    
+    var self = this;
+    this.info.onopen = function (){
+        //self.info.send('HS');
+    }
+        
+    this.info.onclose = function (){
+    }
 
 }
 
@@ -307,8 +286,36 @@ Command.prototype = {
         log('INFO','CLEAN SLATE',this)
     },
 
-    ProcessCmds: function(cb){
+    RequestCmdDef: function(cmdObj, cb){
+        var socket = this.info;
+        var self = this;
+        var cmdName = Object.keys(cmdObj)[0];
+        
+        //console.log("Requesting command definition.");
 
+        if (!Object.keys(self.superQ).includes(cmdName)){
+            //console.log("VIA SOCK     ",cmdName);
+            socket.send(cmdName);
+            return false;
+        }
+        else{
+            try{
+                //console.log("VIA CACHE**     ",cmdName);
+                var btn = cmdObj[cmdName][0];
+                var jsn = cmdObj[cmdName][1];
+                cb(self.superQ[cmdName],jsn,btn);
+                return true;
+            }
+            catch(err){
+                //skip
+                //console.log("[ERR] SKIP**     ",cmdName);
+                //socket.send('HS');
+                return true;
+            }
+        }
+    },
+
+    ProcessCmds: function(cb){
         var socket = this.info;
         var self = this;
         var cq = makeIterator(this.CommandQueue)
@@ -316,129 +323,46 @@ Command.prototype = {
         var jsn = null;
         var Que_obj = null;
         var message = null;
-
+        var i = 0;
 
         //var RQ = this.ReceivingQueue;
+        do{
+            if(cq.done()){        
+                console.log("Completed Processing Commanding Queue!");
+                break;
+            }
 
-
-
-        socket.onopen = function (){
-            socket.send('HS');
-
-        }
-        socket.onclose = function (){
-            socket.close();
-        }
-
-
-
+            Que_obj = cq.next().value; 
+        } while(this.RequestCmdDef(Que_obj, cb) == true);
 
         socket.onmessage = function (event){
+            //console.log("Command definition received");
+            /* Retrieve the object and call the callback. */
+            var cmdName = Object.keys(Que_obj)[0];
+            var btn = Que_obj[cmdName][0];
+            var jsn = Que_obj[cmdName][1];
+            self.superQ[cmdName]= event;
 
-
-            if(event.data === 'HSOK'){
-
-                if(cq.done()){
-
-                console.log("Completed Processing Commanding Queue!");
-
+            cb(event,jsn,btn);
+            
+            do{
+                if(cq.done()){      
+		    console.log("Completed Processing Commanding Queue! ", cq.id());
+                    break;
                 }
-                else{
-
-                Que_obj = cq.next().value;
-                message = Object.keys(Que_obj)[0];
-                btn = Que_obj[message][0];
-                jsn = Que_obj[message][1];
-
-                if (!Object.keys(self.superQ).includes(message)){
-                        console.log("VIA SOCK     ",message);
-                        socket.send(message);
-
-                    }
-                else{
-                     try{
-                     console.log("VIA CACHE**     ",message);
-                     cb(self.superQ[message],jsn,btn);}
-                     catch(err){
-                     //skip
-                      console.log("[ERR] SKIP**     ",message);
-                      socket.send('HS');
-                     }
-
-
-                     while(true){
-
-                        if(cq.done()){
-
-                        console.log("Completed Processing Commanding Queue!");
-                        break;
-
-                        }
-                        else{
-
-                        Que_obj = cq.next().value;
-                        message = Object.keys(Que_obj)[0];
-                        btn = Que_obj[message][0];
-                        jsn = Que_obj[message][1];
-
-                        if (!Object.keys(self.superQ).includes(message)){
-                                console.log("CHANGING PROTOCOL...     ",message)
-                                cq.set(cq.id()-1);
-                                socket.send('HS');
-                                break;
-
-                        }else{
-                            try{
-                            console.log("VIA CACHE     ",message);
-                            cb(self.superQ[message],jsn,btn);}
-                            catch(err){
-                            console.log("[ERR] SKIP     ",message);
-                            socket.send('HS');
-                            break;
-                            }
-                        }
-
-
-                        }
-
-
-
-
-                     }
-
-
-                }
-
-
-                }
-
-            }
-            else{
-                console.log("CACHE LOAD COMPLETE     ",message);
-                self.superQ[message]= event;
-                cb(event,jsn,btn);
-            }
-
-
+    
+                Que_obj = cq.next().value; 
+            } while(self.RequestCmdDef(Que_obj, cb) == true);
         }
-
-
-
-        if (socket.readyState == WebSocket.OPEN) {
-          socket.onopen();
-        };
-
-
-
     },
 
     prepareCmds: function(message,jobj,btn){
-    var lookup_obj = {}
-    lookup_obj[message]=[btn,jobj]
-    this.CommandQueue.push(lookup_obj);
-    if(!this.SendingQueue.includes(message)){
-        this.SendingQueue.push(message);
-    }
+        var lookup_obj = {}
+        lookup_obj[message]=[btn,jobj]
+        this.CommandQueue.push(lookup_obj);
+        if(!this.SendingQueue.includes(message)){
+            this.SendingQueue.push(message);
+        }
     },
 
     sendCommand: function(name,args){

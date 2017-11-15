@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CH_WORKERS=5
+CH_WORKERS=15
 
 
 sudo pkill -9 redis

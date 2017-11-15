@@ -650,15 +650,23 @@ html(lang='en-us')
         //Do Your Moves Here
 
         var c = 0;
-        cmd_o.ProcessCmds(function(cmdInfo,jsonObj,btnObj){
+        cmd_o.ProcessCmds(function(cmdInfoStr,jsonObj,btnObj){
           //console.log('got here ',c);
 
           c = c+1
           var cmdObj = jsonObj.cmd;
-          var temp = cmdInfo.data;
-          temp = replaceAll(temp,"\'","\"");
+          var cmdData = cmdInfoStr.data;
+          cmdData = replaceAll(cmdData,"\'","\"");
+          var cmdInfo;
 
-          cmdInfo = JSON.parse(temp);
+          try {
+              cmdInfo = JSON.parse(cmdData);
+          } catch (e) {
+              /* TODO:  This is not a valid JSON object, probably because the
+                 command itself is not valid.  We need to add a console so we
+                 can present these errors to the user. */
+              return;
+          }
 
           if (cmdObj.hasOwnProperty('uuid')) {
             /* We already bound this element. */

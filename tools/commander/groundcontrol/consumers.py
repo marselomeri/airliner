@@ -252,7 +252,7 @@ class Command:
 
             message.reply_channel.send({'text':data})
             #time.sleep(5);
-            message.reply_channel.send({'text': 'HSOK'})
+            #message.reply_channel.send({'text': 'HSOK'})
 
 
     def postCommand(self, message):

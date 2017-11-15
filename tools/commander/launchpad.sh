@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CH_WORKERS=5
+CH_WORKERS=15
 
 screen -dmS REDIS 
 screen -S REDIS -X stuff "redis-server \n"
