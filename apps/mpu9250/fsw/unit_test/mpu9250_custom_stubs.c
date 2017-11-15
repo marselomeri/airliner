@@ -109,3 +109,15 @@ boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
     return TRUE;
 }
 
+
+boolean MPU9250_Read_WhoAmI(uint8 *Value)
+{
+    return TRUE;
+}
+
+
+boolean MPU9250_Read_MagDeviceID(uint8 *Value)
+{
+    return TRUE;
+}
+

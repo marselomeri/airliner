@@ -318,6 +318,7 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+
     /************************************************************************/
     /** \brief Read from the MPU9250 and send PX4 messages.
      **
@@ -330,6 +331,21 @@ public:
      **
      *************************************************************************/
     void ReadDevice(void);
+
+    /** \brief Validate device IDs.
+     **
+     **  \par Description
+     **       This function validates the device IDs of the IMU and Mag.
+     **       <TODO>
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **  \returns
+     **  TRUE if the device IDs are asexpectated, FALSE if they are not.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean ValidateDevice(void);
 };
 
 

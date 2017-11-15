@@ -138,6 +138,9 @@ boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync,
 boolean MPU9250_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit);
 boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z);
 
+boolean MPU9250_Read_WhoAmI(uint8 *Value);
+boolean MPU9250_Read_MagDeviceID(uint8 *Value);
+
 #ifdef __cplusplus
 }
 #endif 
