@@ -7,7 +7,7 @@ import re
 try:
     working_dir = os.environ['YAMCS_WORKSPACE']+'web'
 except:
-    working_dir ='/home/vagrant/git/airliner/config/shared/commander_workspace/web'
+    working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
 
 #TOOLS
 
@@ -84,11 +84,11 @@ def preProcess(d):
 
 
 def readSESSION():
-    with open('/home/vagrant/git/airliner/tools/commander/groundcontrol/session.json') as json_data:
+    with open(os.path.basename(os.path.dirname(os.path.realpath(__file__))) + '/session.json') as json_data:
         d = json.load(json_data)
         json_data.close()
         return d
 
 def writeSESSION(j):
-    with open('/home/vagrant/git/airliner/tools/commander/groundcontrol/session.json', 'w') as f:
+    with open(os.path.basename(os.path.dirname(os.path.realpath(__file__))) + '/session.json', 'w') as f:
         json.dump(j, f)
