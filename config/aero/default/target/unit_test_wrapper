@@ -1,7 +1,7 @@
 #!/bin/bash
 HOST_PATH=$1
 FULL_COMMAND=${*:2}
-TARGET_DIR="/home/jenkins/airliner/config/aero/default/target"
+TARGET_DIR="/home/jenkins/airliner/build/aero/default"
 TARGET_GCOV_PREFIX="${TARGET_DIR}"
 TARGET_USER="root"
 TARGET_ADDRESS="10.10.0.137"
