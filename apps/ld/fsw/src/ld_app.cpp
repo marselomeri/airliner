@@ -5,9 +5,9 @@
 
 #include "cfe.h"
 
-#include "{{cookiecutter.app_name|lower}}_app.h"
-#include "{{cookiecutter.app_name|lower}}_msg.h"
-#include "{{cookiecutter.app_name|lower}}_version.h"
+#include "ld_app.h"
+#include "ld_msg.h"
+#include "ld_version.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -15,7 +15,7 @@
 /* Instantiate the application object.                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-{{cookiecutter.app_name}} o{{cookiecutter.app_name}};
+LD oLD;
 
 
 
@@ -24,7 +24,7 @@
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-{{cookiecutter.app_name}}::{{cookiecutter.app_name}}()
+LD::LD()
 {
 
 }
@@ -35,7 +35,7 @@
 /* Destructor constructor.                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-{{cookiecutter.app_name}}::~{{cookiecutter.app_name}}()
+LD::~LD()
 {
 
 }
@@ -45,7 +45,7 @@
 /* Initialize event tables.                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::InitEvent()
+int32 LD::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
 
@@ -53,7 +53,7 @@ int32 {{cookiecutter.app_name}}::InitEvent()
     iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
-        (void) CFE_ES_WriteToSysLog("{{cookiecutter.app_name}} - Failed to register with EVS (0x%08lX)\n", iStatus);
+        (void) CFE_ES_WriteToSysLog("LD - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
 
     return iStatus;
@@ -65,79 +65,140 @@ int32 {{cookiecutter.app_name}}::InitEvent()
 /* Initialize Message Pipes                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::InitPipe()
+int32 LD::InitPipe()
 {
     int32  iStatus=CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		{{cookiecutter.app_name}}_SCH_PIPE_DEPTH,
-			{{cookiecutter.app_name}}_SCH_PIPE_NAME);
+    		LD_SCH_PIPE_DEPTH,
+			LD_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx({{cookiecutter.wakeup_mid_macro}}, SchPipeId, CFE_SB_Default_Qos, {{cookiecutter.wakeup_mid_macro}}_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(LD_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, LD_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
-            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to {{cookiecutter.wakeup_mid_macro}}. (0x%08lX)",
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+            		"Sch Pipe failed to subscribe to LD_WAKEUP_MID. (0x%08lX)",
                     iStatus);
-            goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
+            goto LD_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx({{cookiecutter.app_name}}_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, {{cookiecutter.app_name}}_SEND_HK_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(LD_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, LD_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
-            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to {{cookiecutter.app_name}}_SEND_HK_MID. (0x%08X)",
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to LD_SEND_HK_MID. (0x%08X)",
 					 (unsigned int)iStatus);
-            goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
+            goto LD_InitPipe_Exit_Tag;
         }
-
-    {%- for dict,message in cookiecutter.input_messages.iteritems() %}
-        iStatus = CFE_SB_SubscribeEx({{message.mid_macro}}, SchPipeId, CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_ARMED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
-            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to {{message.mid_macro}}. (0x%08lX)",
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_ACTUATOR_ARMED_MID. (0x%08lX)",
 					 iStatus);
-            goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
+            goto LD_InitPipe_Exit_Tag;
         }
-    {%- endfor %}
+        iStatus = CFE_SB_SubscribeEx(PX4_AIRSPEED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_AIRSPEED_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_ACTUATOR_CONTROLS_0_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_ACTUATOR_CONTROLS_0_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_CONTROL_STATE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_CONTROL_STATE_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_BATTERY_STATUS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_BATTERY_STATUS_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_ATTITUDE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_LOCAL_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_VEHICLE_LOCAL_POSITION_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
+        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+					 "CMD Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08lX)",
+					 iStatus);
+            goto LD_InitPipe_Exit_Tag;
+        }
     }
     else
     {
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(LD_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
 			 "Failed to create SCH pipe (0x%08lX)",
 			 iStatus);
-        goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
+        goto LD_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		{{cookiecutter.app_name}}_CMD_PIPE_DEPTH,
-			{{cookiecutter.app_name}}_CMD_PIPE_NAME);
+    		LD_CMD_PIPE_DEPTH,
+			LD_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
-        iStatus = CFE_SB_Subscribe({{cookiecutter.app_name}}_CMD_MID, CmdPipeId);
+        iStatus = CFE_SB_Subscribe(LD_CMD_MID, CmdPipeId);
 
         if (iStatus != CFE_SUCCESS)
         {
-            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to {{cookiecutter.app_name}}_CMD_MID. (0x%08lX)",
+            (void) CFE_EVS_SendEvent(LD_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+				 "CMD Pipe failed to subscribe to LD_CMD_MID. (0x%08lX)",
 				 iStatus);
-            goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
+            goto LD_InitPipe_Exit_Tag;
         }
     }
     else
     {
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(LD_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
 			 "Failed to create CMD pipe (0x%08lX)",
 			 iStatus);
-        goto {{cookiecutter.app_name}}_InitPipe_Exit_Tag;
+        goto LD_InitPipe_Exit_Tag;
     }
 
-{{cookiecutter.app_name}}_InitPipe_Exit_Tag:
+LD_InitPipe_Exit_Tag:
     return iStatus;
 }
     
@@ -147,26 +208,23 @@ int32 {{cookiecutter.app_name}}::InitPipe()
 /* Initialize Global Variables                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void {{cookiecutter.app_name}}::InitData()
+void LD::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
-    		{{cookiecutter.app_name}}_HK_TLM_MID, sizeof(HkTlm), TRUE);
-
-    {%- for dict, message in cookiecutter.output_messages.iteritems() %}
+    		LD_HK_TLM_MID, sizeof(HkTlm), TRUE);
       /* Init output messages */
-      CFE_SB_InitMsg(&{{message.var_name}},
-      		{{message.mid_macro}}, sizeof({{message.datatype}}), TRUE);
-    {%- endfor %}
+      CFE_SB_InitMsg(&VehicleLandDetectedMsg,
+      		PX4_VEHICLE_LAND_DETECTED_MID, sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);
 }
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* {{cookiecutter.app_name}} initialization                                              */
+/* LD initialization                                              */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 {{cookiecutter.app_name}}::InitApp()
+int32 LD::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
@@ -174,8 +232,8 @@ int32 {{cookiecutter.app_name}}::InitApp()
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
     {
-        (void) CFE_ES_WriteToSysLog("{{cookiecutter.app_name}} - Failed to init events (0x%08lX)\n", iStatus);
-        goto {{cookiecutter.app_name}}_InitApp_Exit_Tag;
+        (void) CFE_ES_WriteToSysLog("LD - Failed to init events (0x%08lX)\n", iStatus);
+        goto LD_InitApp_Exit_Tag;
     }
     else
     {
@@ -185,7 +243,7 @@ int32 {{cookiecutter.app_name}}::InitApp()
     iStatus = InitPipe();
     if (iStatus != CFE_SUCCESS)
     {
-        goto {{cookiecutter.app_name}}_InitApp_Exit_Tag;
+        goto LD_InitApp_Exit_Tag;
     }
 
     InitData();
@@ -193,24 +251,24 @@ int32 {{cookiecutter.app_name}}::InitApp()
     iStatus = InitConfigTbl();
     if (iStatus != CFE_SUCCESS)
     {
-        goto {{cookiecutter.app_name}}_InitApp_Exit_Tag;
+        goto LD_InitApp_Exit_Tag;
     }
 
-{{cookiecutter.app_name}}_InitApp_Exit_Tag:
+LD_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_INIT_INF_EID, CFE_EVS_INFORMATION,
+        (void) CFE_EVS_SendEvent(LD_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 {{cookiecutter.app_name}}_MAJOR_VERSION,
-								 {{cookiecutter.app_name}}_MINOR_VERSION,
-								 {{cookiecutter.app_name}}_REVISION,
-								 {{cookiecutter.app_name}}_MISSION_REV);
+								 LD_MAJOR_VERSION,
+								 LD_MINOR_VERSION,
+								 LD_REVISION,
+								 LD_MISSION_REV);
     }
     else
     {
         if (hasEvents == 1)
         {
-            (void) CFE_ES_WriteToSysLog("{{cookiecutter.app_name}} - Application failed to initialize\n");
+            (void) CFE_ES_WriteToSysLog("LD - Application failed to initialize\n");
         }
     }
 
@@ -224,44 +282,64 @@ int32 {{cookiecutter.app_name}}::InitApp()
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
+int32 LD::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
-    CFE_ES_PerfLogExit({{cookiecutter.app_name}}_MAIN_TASK_PERF_ID);
+    CFE_ES_PerfLogExit(LD_MAIN_TASK_PERF_ID);
 
     /* Wait for WakeUp messages from scheduler */
     iStatus = CFE_SB_RcvMsg(&MsgPtr, SchPipeId, iBlocking);
 
     /* Start Performance Log entry */
-    CFE_ES_PerfLogEntry({{cookiecutter.app_name}}_MAIN_TASK_PERF_ID);
+    CFE_ES_PerfLogEntry(LD_MAIN_TASK_PERF_ID);
 
     if (iStatus == CFE_SUCCESS)
     {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-            case {{cookiecutter.wakeup_mid_macro}}:
+            case LD_WAKEUP_MID:
                 /* TODO:  Do something here. */
                 break;
 
-            case {{cookiecutter.app_name}}_SEND_HK_MID:
+            case LD_SEND_HK_MID:
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
-
-		{%- for dict, message in cookiecutter.input_messages.iteritems() %}
-            case {{message.mid_macro}}:
-                memcpy(&CVT.{{message.var_name}}, MsgPtr, sizeof(CVT.{{message.var_name}}));
+            case PX4_ACTUATOR_ARMED_MID:
+                memcpy(&CVT.ActuatorArmedMsg, MsgPtr, sizeof(CVT.ActuatorArmedMsg));
+                break;
+            case PX4_AIRSPEED_MID:
+                memcpy(&CVT.AirspeedMsg, MsgPtr, sizeof(CVT.AirspeedMsg));
+                break;
+            case PX4_ACTUATOR_CONTROLS_0_MID:
+                memcpy(&CVT.ActuatorControls0Msg, MsgPtr, sizeof(CVT.ActuatorControls0Msg));
+                break;
+            case PX4_CONTROL_STATE_MID:
+                memcpy(&CVT.ControlStateMsg, MsgPtr, sizeof(CVT.ControlStateMsg));
+                break;
+            case PX4_BATTERY_STATUS_MID:
+                memcpy(&CVT.BatteryStatusMsg, MsgPtr, sizeof(CVT.BatteryStatusMsg));
+                break;
+            case PX4_VEHICLE_ATTITUDE_MID:
+                memcpy(&CVT.VehicleAttitudeMsg, MsgPtr, sizeof(CVT.VehicleAttitudeMsg));
+                break;
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+                memcpy(&CVT.ManualControlSetpointMsg, MsgPtr, sizeof(CVT.ManualControlSetpointMsg));
+                break;
+            case PX4_VEHICLE_LOCAL_POSITION_MID:
+                memcpy(&CVT.VehicleLocalPositionMsg, MsgPtr, sizeof(CVT.VehicleLocalPositionMsg));
+                break;
+            case PX4_VEHICLE_CONTROL_MODE_MID:
+                memcpy(&CVT.VehicleControlModeMsg, MsgPtr, sizeof(CVT.VehicleControlModeMsg));
                 break;
 
-		{%- endfor %}
-
             default:
-                (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
+                (void) CFE_EVS_SendEvent(LD_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
         }
     }
@@ -282,7 +360,7 @@ int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
     }
     else
     {
-        (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(LD_RCVMSG_ERR_EID, CFE_EVS_ERROR,
 			  "SCH pipe read error (0x%08lX).", iStatus);
     }
 
@@ -296,7 +374,7 @@ int32 {{cookiecutter.app_name}}::RcvSchPipeMsg(int32 iBlocking)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void {{cookiecutter.app_name}}::ProcessCmdPipe()
+void LD::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
     CFE_SB_Msg_t*   CmdMsgPtr=NULL;
@@ -311,7 +389,7 @@ void {{cookiecutter.app_name}}::ProcessCmdPipe()
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
             switch (CmdMsgId)
             {
-                case {{cookiecutter.app_name}}_CMD_MID:
+                case LD_CMD_MID:
                     ProcessAppCmds(CmdMsgPtr);
                     break;
 
@@ -320,7 +398,7 @@ void {{cookiecutter.app_name}}::ProcessCmdPipe()
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
                     HkTlm.usCmdErrCnt++;
-                    (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGID_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(LD_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
             }
@@ -331,7 +409,7 @@ void {{cookiecutter.app_name}}::ProcessCmdPipe()
         }
         else
         {
-            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+            (void) CFE_EVS_SendEvent(LD_RCVMSG_ERR_EID, CFE_EVS_ERROR,
                   "CMD pipe read error (0x%08lX)", iStatus);
             break;
         }
@@ -341,11 +419,11 @@ void {{cookiecutter.app_name}}::ProcessCmdPipe()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Process {{cookiecutter.app_name}} Commands                                            */
+/* Process LD Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void {{cookiecutter.app_name}}::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
+void LD::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
 
@@ -354,24 +432,24 @@ void {{cookiecutter.app_name}}::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         uiCmdCode = CFE_SB_GetCmdCode(MsgPtr);
         switch (uiCmdCode)
         {
-            case {{cookiecutter.app_name}}_NOOP_CC:
+            case LD_NOOP_CC:
                 HkTlm.usCmdCnt++;
-                (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CMD_NOOP_EID, CFE_EVS_INFORMATION,
+                (void) CFE_EVS_SendEvent(LD_CMD_NOOP_EID, CFE_EVS_INFORMATION,
 					"Recvd NOOP. Version %d.%d.%d.%d",
-					{{cookiecutter.app_name}}_MAJOR_VERSION,
-					{{cookiecutter.app_name}}_MINOR_VERSION,
-					{{cookiecutter.app_name}}_REVISION,
-					{{cookiecutter.app_name}}_MISSION_REV);
+					LD_MAJOR_VERSION,
+					LD_MINOR_VERSION,
+					LD_REVISION,
+					LD_MISSION_REV);
                 break;
 
-            case {{cookiecutter.app_name}}_RESET_CC:
+            case LD_RESET_CC:
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
 
             default:
                 HkTlm.usCmdErrCnt++;
-                (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_CC_ERR_EID, CFE_EVS_ERROR,
+                (void) CFE_EVS_SendEvent(LD_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
         }
@@ -380,11 +458,11 @@ void {{cookiecutter.app_name}}::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Send {{cookiecutter.app_name}} Housekeeping                                           */
+/* Send LD Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void {{cookiecutter.app_name}}::ReportHousekeeping()
+void LD::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -396,15 +474,11 @@ void {{cookiecutter.app_name}}::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-{%- for dict, message in cookiecutter.output_messages.iteritems() %}
-void {{cookiecutter.app_name}}::Send{{message.var_name}}()
+void LD::SendVehicleLandDetectedMsg()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&{{message.var_name}});
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&{{message.var_name}});
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);
 }
-
-
-{%- endfor %}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -412,7 +486,7 @@ void {{cookiecutter.app_name}}::Send{{message.var_name}}()
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-boolean {{cookiecutter.app_name}}::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
+boolean LD::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {
     boolean bResult  = TRUE;
@@ -428,7 +502,7 @@ boolean {{cookiecutter.app_name}}::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
             CFE_SB_MsgId_t MsgId = CFE_SB_GetMsgId(MsgPtr);
             uint16 usCmdCode = CFE_SB_GetCmdCode(MsgPtr);
 
-            (void) CFE_EVS_SendEvent({{cookiecutter.app_name}}_MSGLEN_ERR_EID, CFE_EVS_ERROR,
+            (void) CFE_EVS_SendEvent(LD_MSGLEN_ERR_EID, CFE_EVS_ERROR,
                               "Rcvd invalid msgLen: msgId=0x%08X, cmdCode=%d, "
                               "msgLen=%d, expectedLen=%d",
                               MsgId, usCmdCode, usMsgLen, usExpectedLen);
@@ -442,21 +516,21 @@ boolean {{cookiecutter.app_name}}::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* {{cookiecutter.app_name}} Application C style main entry point.                       */
+/* LD Application C style main entry point.                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-extern "C" void {{cookiecutter.app_name}}_AppMain()
+extern "C" void LD_AppMain()
 {
-    o{{cookiecutter.app_name}}.AppMain();
+    oLD.AppMain();
 }
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* {{cookiecutter.app_name}} Application C++ style main entry point.                     */
+/* LD Application C++ style main entry point.                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void {{cookiecutter.app_name}}::AppMain()
+void LD::AppMain()
 {
     /* Register the application with Executive Services */
     uiRunStatus = CFE_ES_APP_RUN;
@@ -464,11 +538,11 @@ void {{cookiecutter.app_name}}::AppMain()
     int32 iStatus = CFE_ES_RegisterApp();
     if (iStatus != CFE_SUCCESS)
     {
-        (void) CFE_ES_WriteToSysLog("{{cookiecutter.app_name}} - Failed to register the app (0x%08lX)\n", iStatus);
+        (void) CFE_ES_WriteToSysLog("LD - Failed to register the app (0x%08lX)\n", iStatus);
     }
 
     /* Start Performance Log entry */
-    CFE_ES_PerfLogEntry({{cookiecutter.app_name}}_MAIN_TASK_PERF_ID);
+    CFE_ES_PerfLogEntry(LD_MAIN_TASK_PERF_ID);
 
     /* Perform application initializations */
     if (iStatus == CFE_SUCCESS)
@@ -479,9 +553,9 @@ void {{cookiecutter.app_name}}::AppMain()
     if (iStatus == CFE_SUCCESS)
     {
         /* Do not perform performance monitoring on startup sync */
-        CFE_ES_PerfLogExit({{cookiecutter.app_name}}_MAIN_TASK_PERF_ID);
-        CFE_ES_WaitForStartupSync({{cookiecutter.app_name}}_STARTUP_TIMEOUT_MSEC);
-        CFE_ES_PerfLogEntry({{cookiecutter.app_name}}_MAIN_TASK_PERF_ID);
+        CFE_ES_PerfLogExit(LD_MAIN_TASK_PERF_ID);
+        CFE_ES_WaitForStartupSync(LD_STARTUP_TIMEOUT_MSEC);
+        CFE_ES_PerfLogEntry(LD_MAIN_TASK_PERF_ID);
     }
     else
     {
@@ -491,7 +565,7 @@ void {{cookiecutter.app_name}}::AppMain()
     /* Application main loop */
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
-        RcvSchPipeMsg({{cookiecutter.app_name}}_SCH_PIPE_PEND_TIME);
+        RcvSchPipeMsg(LD_SCH_PIPE_PEND_TIME);
 
         iStatus = AcquireConfigPointers();
         if(iStatus != CFE_SUCCESS)
@@ -502,7 +576,7 @@ void {{cookiecutter.app_name}}::AppMain()
     }
 
     /* Stop Performance Log entry */
-    CFE_ES_PerfLogExit({{cookiecutter.app_name}}_MAIN_TASK_PERF_ID);
+    CFE_ES_PerfLogExit(LD_MAIN_TASK_PERF_ID);
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
