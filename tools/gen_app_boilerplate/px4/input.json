@@ -1,14 +1,25 @@
 {
-    "app_name": "GPS",
-    "output_dir": "/home/vagrant/airliner/apps",
-    "app_full_name": "Global Positioning System",
-    "wakeup_mid_macro": "GPS_READ_SENSOR_MID",
+    "app_name": "SENS",
+    "output_dir": "/home/vagrant/git/airliner/apps",
+    "app_full_name": "Sensors",
+    "wakeup_mid_macro": "SENS_WAKEUP_MID",
     "input_messages": {
-            "1": {"var_name": "GpsInjectData", "mid_macro": "PX4_GPS_INJECT_DATA_MID", "datatype": "PX4_GpsInjectDataMsg_t", "include_file":"px4_msgs.h"}
-        },
+	"1": {"var_name": "ActuatorControls0Msg", "mid_macro": "PX4_ACTUATOR_CONTROLS_0_MID", "datatype": "PX4_ActuatorControlsMsg_t", "include_file":"px4_msgs.h"},
+	"2": {"var_name": "DifferentialPressureMsg", "mid_macro": "PX4_DIFFERENTIAL_PRESSURE_MID", "datatype": "PX4_DifferentialPressureMsg_t", "include_file":"px4_msgs.h"},
+	"3": {"var_name": "InputRcMsg", "mid_macro": "PX4_INPUT_RC_MID", "datatype": "PX4_InputRcMsg_t", "include_file":"px4_msgs.h"},
+	"4": {"var_name": "SensorAccelMsg", "mid_macro": "PX4_SENSOR_ACCEL_MID", "datatype": "PX4_SensorAccelMsg_t", "include_file":"px4_msgs.h"},
+	"5": {"var_name": "SensorBaroMsg", "mid_macro": "PX4_SENSOR_BARO_MID", "datatype": "PX4_SensorBaroMsg_t", "include_file":"px4_msgs.h"},
+	"6": {"var_name": "SensorGyroMsg", "mid_macro": "PX4_SENSOR_GYRO_MID", "datatype": "PX4_SensorGyroMsg_t", "include_file":"px4_msgs.h"},
+	"7": {"var_name": "SensorMagMsg", "mid_macro": "PX4_SENSOR_MAG_MID", "datatype": "PX4_SensorMagMsg_t", "include_file":"px4_msgs.h"},
+	"8": {"var_name": "VehicleControlModeMsg", "mid_macro": "PX4_VEHICLE_CONTROL_MODE_MID", "datatype": "PX4_VehicleControlModeMsg_t", "include_file":"px4_msgs.h"}
+    },
     "output_messages": {
-        "1": {"var_name": "GpsDump", "mid_macro": "PX4_GPS_DUMP_MID", "datatype": "PX4_GpsDumpMsg_t", "include_file":"px4_msgs.h"},
-        "2": {"var_name": "SatelliteInfo", "mid_macro": "PX4_SATELLITE_INFO_MID", "datatype": "PX4_SatelliteInfoMsg_t", "include_file":"px4_msgs.h"},
-        "3": {"var_name": "VehicleGps", "mid_macro": "PX4_VEHICLE_GPS_POSITION_MID", "datatype": "PX4_VehicleGpsPositionMsg_t", "include_file":"px4_msgs.h"}
-        }
+        "1": {"var_name": "ActuatorControls3Msg", "mid_macro": "PX4_ACTUATOR_CONTROLS_3_MID", "datatype": "PX4_ActuatorControlsMsg_t", "include_file":"px4_msgs.h"},
+        "2": {"var_name": "AirspeedMsg", "mid_macro": "PX4_AIRSPEED_MID", "datatype": "PX4_AirspeedMsg_t", "include_file":"px4_msgs.h"},
+        "3": {"var_name": "BatteryStatusMsg", "mid_macro": "PX4_BATTERY_STATUS_MID", "datatype": "PX4_BatteryStatusMsg_t", "include_file":"px4_msgs.h"},
+        "4": {"var_name": "ManualControlSetpointMsg", "mid_macro": "PX4_MANUAL_CONTROL_SETPOINT_MID", "datatype": "PX4_ManualControlSetpointMsg_t", "include_file":"px4_msgs.h"},
+        "5": {"var_name": "RcChannelsMsg", "mid_macro": "PX4_RC_CHANNELS_MID", "datatype": "PX4_RcChannelsMsg_t", "include_file":"px4_msgs.h"},
+        "6": {"var_name": "SensorCombinedMsg", "mid_macro": "PX4_SENSOR_COMBINED_MID", "datatype": "PX4_SensorCombinedMsg_t", "include_file":"px4_msgs.h"},
+        "7": {"var_name": "SensorPreflightMsg", "mid_macro": "PX4_SENSOR_PREFLIGHT_MID", "datatype": "PX4_SensorPreflightMsg_t", "include_file":"px4_msgs.h"}
+    }
 }

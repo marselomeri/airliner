@@ -1355,7 +1355,7 @@ typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	CFE_TIME_SysTime_t Timestamp;
-	uint64 ErrorCount;
+	uint32 ErrorCount;
 	float Pressure;
 	float Altitude;
 	float Temperature;
