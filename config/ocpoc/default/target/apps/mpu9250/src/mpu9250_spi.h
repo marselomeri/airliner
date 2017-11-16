@@ -145,6 +145,11 @@
 #define MPU9250_REG_GYRO_ZOUT_L             (0x48)
 /** \brief External sensor data 0 */
 #define MPU9250_REG_EXT_SENS_DATA_00        (0x49)
+/** \brief External sensor data 1 */
+#define MPU9250_REG_EXT_SENS_DATA_01        (0x4A)
+/** \brief External sensor data 2 */
+#define MPU9250_REG_EXT_SENS_DATA_02        (0x4B)
+
 #define MPU9250_REG_I2C_SLV0_DO             (0x63)
 #define MPU9250_REG_I2C_SLV1_DO             (0x64)
 #define MPU9250_REG_I2C_SLV2_DO             (0x65)
@@ -201,7 +206,7 @@
 #define MPU9250_BIT_RAW_RDY_EN              (0x01)
 #define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
 #define MPU9250_WHOAMI_9250                 (0x71)
-#define MPU9250_AK8963_I2C_ADDR             (0x0c)
+#define MPU9250_AK8963_I2C_ADDR             (0x0C)
 #define MPU9250_AK8963_Device_ID            (0x48)
 
 /* AK8963 Register map for the Magnetometer */
@@ -254,6 +259,13 @@
 #define MPU9250_ST2_BITM_MASK               (0x10)
 /** \brief Magnetic sensor overflow. */
 #define MPU9250_ST2_HOFL_MASK               (0x08)
+/** \brief AK8963 fuse ROM access mode. */
+#define MPU9250_AK8963_FUSE_MODE            (0x0F)
+/** \brief AK8963 continues measurement mode 1 */
+#define MPU9250_AK8963_MEA1_MODE            (0x02)
+/** \brief AK8963 output bit setting. */
+#define MPU9250_AK8963_16BIT_ADC            (0x10)
+
 
 /* Masks IMU */
 /** \brief Data ready. */
@@ -264,9 +276,16 @@
 #define MPU9250_ST_INT_FIFO_OFL_MASK        (0x05)
 /** \brief Wake on motion interrupt occurred. */
 #define MPU9250_ST_INT_WOM_MASK             (0x07)
-
 /** \brief Array initializer. */
 #define MPU_InitRegNum                      (20)
+/** \brief Array initializer 2. */
+#define MPU_InitRegNum2                     (10)
+/** \brief Stop between slave reads. */
+#define MPU9250_I2C_MST_P_NSR               (0x10)
+/** \brief Delay data ready int until external sensor data is loaded. */
+#define MPU9250_I2C_MST_WAIT_FOR_ES         (0x40)
+/** \brief I2C master clock speed */
+#define MPU9250_I2C_MST_CLOCK_400HZ         (0x0D)
 
 #define MPU9250_DEFAULT_LOWPASS_FILTER MPU9250_BITS_DLPF_CFG_250HZ
 
@@ -312,6 +331,9 @@ typedef struct
     int                             DeviceFd;
     /*! The current device status */
     MPU9250_Custom_Status_t          Status;
+    uint8                           MagAdjX;
+    uint8                           MagAdjY;
+    uint8                           MagAdjZ;
 } MPU9250_AppCustomData_t;
 
 
@@ -345,7 +367,7 @@ int32 MPU9250_Ioctl(int fh, int request, void *arg);
 int32 MPU9250_ResetDevice(void);
 boolean MPU9250_Read_MagInfo(uint8 *Value);
 boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);
-
+boolean MPU9250_Custom_Read_MagAdj(void);
 boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
 
 #ifdef __cplusplus

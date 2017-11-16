@@ -286,6 +286,18 @@ typedef enum {
 **
 */
     MPU9250_READ_ERR_EID,
+/** \brief <tt> 'Failed to validate device' </tt>
+**  \event <tt> 'Failed to validate device' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device ID isn't as expected.
+**
+**
+*/
+    MPU9250_VALIDATE_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     MPU9250_EVT_CNT

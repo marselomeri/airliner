@@ -179,6 +179,10 @@ typedef struct
     float MagYBias;
     float MagZBias;
 
+    uint8 MagXAdj;
+    uint8 MagYAdj;
+    uint8 MagZAdj;
+
     float RoomTempOffset;
     float TempSensitivity;
 } MPU9250_CalibrationMsg_t;
@@ -200,9 +204,6 @@ typedef struct
     int16 MagZ;
 
     uint8 Spare;
-    uint8 MagXAdj;
-    uint8 MagYAdj;
-    uint8 MagZAdj;
 
     uint16 Temp;
 

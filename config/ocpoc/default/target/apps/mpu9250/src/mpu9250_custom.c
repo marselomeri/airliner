@@ -252,6 +252,9 @@ boolean MPU9250_Custom_Init()
         {0x08, MPU9250_REG_ACCEL_CONFIG},
         /* Set Acc Data Rates, Enable Acc LPF , Bandwidth 184Hz */
         {0x09, MPU9250_REG_ACCEL_CONFIG2},
+        /* LATCH_INT_EN INT pin level held unitl interrupt status is 
+         * cleared. IN_ANYRD_2CLEAR interrupt status is cleared if
+         * any read operation is performed. */
         {0x30, MPU9250_REG_INT_PIN_CFG},
         /* I2C Speed 348 kHz */
         //{0x40, MPUREG_I2C_MST_CTRL},
@@ -259,8 +262,10 @@ boolean MPU9250_Custom_Init()
         //{0x20, MPUREG_USER_CTRL},
         /* I2C Master mode */
         {0x20, MPU9250_REG_USER_CTRL},
-        /* I2C configuration multi-master  IIC 400KHz */
-        {0x0D, MPU9250_REG_I2C_MST_CTRL},
+        /* I2C 400KHz */
+        {MPU9250_I2C_MST_P_NSR | MPU9250_I2C_MST_WAIT_FOR_ES |
+                MPU9250_I2C_MST_CLOCK_400HZ, MPU9250_REG_I2C_MST_CTRL},
+        //{0x0D, MPU9250_REG_I2C_MST_CTRL},
         /* Set the I2C slave addres of AK8963 and set for write. */
         {MPU9250_AK8963_I2C_ADDR, MPU9250_REG_I2C_SLV0_ADDR},
         //{0x09, MPUREG_I2C_SLV4_CTRL},
@@ -274,20 +279,64 @@ boolean MPU9250_Custom_Init()
         {0x81, MPU9250_REG_I2C_SLV0_CTRL},
         /* I2C slave 0 register address from where to begin data transfer */
         {MPU9250_AK8963_CNTL1, MPU9250_REG_I2C_SLV0_REG},
-        /* Register value to continuous measurement in 16bit */
-        {0x12, MPU9250_REG_I2C_SLV0_DO},
+        /* Fused ROM read mode */
+        {MPU9250_AK8963_FUSE_MODE | MPU9250_AK8963_16BIT_ADC,  MPU9250_REG_I2C_SLV0_DO},
+        /* Register value to continuous measurement mode 1 in 16bit */
+        //{0x12, MPU9250_REG_I2C_SLV0_DO},
+        /* Register value to continuous measurement mode 2 in 16bit */
+        //{0x16, MPU9250_REG_I2C_SLV0_DO},
+        /* Enable I2C and set 1 byte */
+        {0x81, MPU9250_REG_I2C_SLV0_CTRL},
+        /* Set the I2C slave address of AK8963 and set for read. */
+        {MPU9250_AK8963_I2C_ADDR | 0x80, MPU9250_REG_I2C_SLV0_ADDR},
+        /* I2C slave 0 register address from where to begin data transfer */
+        //{MPU9250_AK8963_WIA, MPU9250_REG_I2C_SLV0_REG},
+        {MPU9250_AK8963_ASAX, MPU9250_REG_I2C_SLV0_REG},
+        /* Enable I2C and set 1 byte */
+        //{0x8f, MPU9250_REG_I2C_SLV0_CTRL}
+        {0x83, MPU9250_REG_I2C_SLV0_CTRL}
+    };
+
+    for(i = 0; i < MPU_InitRegNum; i++) {
+        returnBool = MPU9250_WriteReg(MPU_Init_Data[i][1], MPU_Init_Data[i][0]);
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
+        usleep(100000);
+    }
+    
+    returnBool = MPU9250_Custom_Read_MagAdj();
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    uint8 MPU_Init_Data2[MPU_InitRegNum2][2] = {
+        /* Set the I2C slave addres of AK8963 and set for write. */
+        {MPU9250_AK8963_I2C_ADDR, MPU9250_REG_I2C_SLV0_ADDR},
+        /* I2C slave 0 register address from where to begin data transfer */
+        {MPU9250_AK8963_CNTL2, MPU9250_REG_I2C_SLV0_REG},
+        /* Reset AK8963 */
+        {0x01, MPU9250_REG_I2C_SLV0_DO},
+        /* Enable I2C and set 1 byte */
+        {0x81, MPU9250_REG_I2C_SLV0_CTRL},
+        /* I2C slave 0 register address from where to begin data transfer */
+        {MPU9250_AK8963_CNTL1, MPU9250_REG_I2C_SLV0_REG},
+        /* Register value to continuous measurement mode 2 in 16bit */
+        {0x16, MPU9250_REG_I2C_SLV0_DO},
         /* Enable I2C and set 1 byte */
         {0x81, MPU9250_REG_I2C_SLV0_CTRL},
         /* Set the I2C slave address of AK8963 and set for read. */
         {MPU9250_AK8963_I2C_ADDR | 0x80, MPU9250_REG_I2C_SLV0_ADDR},
         /* I2C slave 0 register address from where to begin data transfer */
         {MPU9250_AK8963_WIA, MPU9250_REG_I2C_SLV0_REG},
-        /* Enable I2C and set 1 byte */
+        /* Enable I2C and set 1 byte, copy the max 15 reg from mag */
         {0x8f, MPU9250_REG_I2C_SLV0_CTRL}
     };
 
-    for(i = 0; i < MPU_InitRegNum; i++) {
-        returnBool = MPU9250_WriteReg(MPU_Init_Data[i][1], MPU_Init_Data[i][0]);
+    for(i = 0; i < MPU_InitRegNum2; i++) {
+        returnBool = MPU9250_WriteReg(MPU_Init_Data2[i][1], MPU_Init_Data2[i][0]);
         if(FALSE == returnBool)
         {
             goto end_of_function;
@@ -664,6 +713,7 @@ boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 {
     uint8 hValue = 0;
     uint8 lValue = 0;
+    uint8 st2    = 0;
     boolean returnBool = TRUE;
 
     /* Null pointer check */
@@ -675,13 +725,13 @@ boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
         goto end_of_function;
     }
 
-    hValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HXH, &hValue);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HXH, &hValue);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
         goto end_of_function;
     }
-    lValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HXL, &lValue);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HXL, &lValue);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
@@ -690,13 +740,13 @@ boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 
     *X = (hValue << 8) | lValue;
 
-    hValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HYH, &hValue);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HYH, &hValue);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
         goto end_of_function;
     }
-    lValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HYL, &lValue);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HYL, &lValue);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
@@ -705,20 +755,28 @@ boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 
     *Y = (hValue << 8) | lValue;
 
-    hValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HZH, &hValue);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HZH, &hValue);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
         goto end_of_function;
     }
-    lValue = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HZL, &lValue);
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_HZL, &lValue);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
         goto end_of_function;
     }
-
     *Z = (hValue << 8) | lValue;
+    
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ST2, &st2);
+    if(st2 & MPU9250_ST2_HOFL_MASK)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "Mag sensor data overflow");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
 end_of_function:
     if (FALSE == returnBool)
@@ -938,13 +996,54 @@ end_of_function:
     return returnBool;
 }
 
-
-boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+boolean MPU9250_Custom_Read_MagAdj(void)
 {
     boolean returnBool = TRUE;
     uint8 validateX = 0;
     uint8 validateY = 0;
     uint8 validateZ = 0;
+
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00, &validateX);
+    OS_printf("SENS ADJ X*** %u\n", validateX);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* TODO validate X*/
+    MPU9250_AppCustomData.MagAdjX = validateX;
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_01, &validateY);
+    OS_printf("SENS ADJ Y*** %u\n", validateY);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* TODO validate Y*/
+    MPU9250_AppCustomData.MagAdjY = validateY;
+    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_02, &validateZ);
+    OS_printf("SENS ADJ Z*** %u\n", validateZ);
+    if(FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* TODO validate Z*/
+    MPU9250_AppCustomData.MagAdjZ = validateZ;
+
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read or write error in Custom MagAdj");
+    }
+    return returnBool;
+}
+
+
+boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+{
+    boolean returnBool = TRUE;
 
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
@@ -955,37 +1054,12 @@ boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
         goto end_of_function;
     }
 
-    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ASAX, &validateX);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    /* TODO validate X*/
-    *X = validateX;
-    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ASAY, &validateY);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    /* TODO validate Y*/
-    *Y = validateY;
-    returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_ASAZ, &validateZ);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    /* TODO validate Z*/
-    *Z = validateZ;
-    
+    *X = MPU9250_AppCustomData.MagAdjX;
+    *Y = MPU9250_AppCustomData.MagAdjY;
+    *Z = MPU9250_AppCustomData.MagAdjZ;
+
 end_of_function:
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU9250 read error in MagAdj");
-    }
+
     return returnBool;
 }
 

@@ -61,7 +61,10 @@ extern "C" {
  *************************************************************************/
 #define MPU9250_ACC_SCALE                   (2)
 #define MPU9250_GYRO_SCALE                  (250)
-
+/** \brief Magnetometer device ID. */
+#define MPU9250_AK8963_ID                   (0x48)
+/** \brief IMU device ID. */
+#define MPU9250_DEVICE_ID                   (0x71)
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/

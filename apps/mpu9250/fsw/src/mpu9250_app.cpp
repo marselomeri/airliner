@@ -274,7 +274,22 @@ int32 MPU9250::InitApp()
                 "Set gyroscope scale failed");
         goto MPU9250_InitApp_Exit_Tag;
     }
-
+    /*  Get the factory magnetometer sensitivity adjustment values */
+    while (Diag.Calibration.MagXAdj == 0)
+    {
+    returnBool = MPU9250_Read_MagAdj(&Diag.Calibration.MagXAdj, 
+            &Diag.Calibration.MagYAdj, &Diag.Calibration.MagZAdj);
+    if(FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Get Mag adjustment values failed.");
+        goto MPU9250_InitApp_Exit_Tag;
+    }
+    
+    OS_printf("MagXAdj = %u, MagYAdj = %u, MagZAdj = %u\n", 
+            Diag.Calibration.MagXAdj, Diag.Calibration.MagYAdj, Diag.Calibration.MagZAdj);
+    }
     HkTlm.State = MPU9250_INITIALIZED;
 
     /* Register the cleanup callback */
@@ -640,14 +655,6 @@ void MPU9250::ReadDevice(void)
     OS_printf("Overrun = %d, MagDataReady = %d, Overflow = %d, Output16Bit = %d\n", 
             rawMsg.Overrun, rawMsg.MagDataReady, rawMsg.Overflow, rawMsg.Output16Bit);
 
-    /* TODO move to init, fuse ROM values on shipment */
-    returnBool = MPU9250_Read_MagAdj(&rawMsg.MagXAdj, &rawMsg.MagYAdj, &rawMsg.MagZAdj);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    OS_printf("MagXAdj = %d, MagYAdj = %d, MagZAdj = %d\n", 
-            rawMsg.MagXAdj, rawMsg.MagYAdj, rawMsg.MagZAdj);
     //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &rawMsg);
     //CFE_SB_SendMsg((CFE_SB_Msg_t *) &rawMsg);
 
@@ -663,16 +670,14 @@ void MPU9250::ReadDevice(void)
 
     OS_printf("calGyroX = %lf, calGyroY = %lf, calGyroZ = %lf\n", calMsg.GyroX, calMsg.GyroY, calMsg.GyroZ);
 
-    calMsg.MagX = (rawMsg.MagX * ((((rawMsg.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
-    calMsg.MagY = (rawMsg.MagY * ((((rawMsg.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
-    calMsg.MagZ = (rawMsg.MagZ * ((((rawMsg.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
+    calMsg.MagX = (rawMsg.MagX * ((((Diag.Calibration.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
+    calMsg.MagY = (rawMsg.MagY * ((((Diag.Calibration.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
+    calMsg.MagZ = (rawMsg.MagZ * ((((Diag.Calibration.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
 
     OS_printf("calMagX = %lf, calMagY = %lf, calMagZ = %lf\n", calMsg.MagX, calMsg.MagY, calMsg.MagZ);
 
     calMsg.Temp = ((rawMsg.Temp - Diag.Calibration.RoomTempOffset) / Diag.Calibration.TempSensitivity) + 21.0;
 
-    OS_printf("Diag.Calibration.RoomTempOffset = %lf\n", Diag.Calibration.RoomTempOffset);
-    OS_printf("Diag.Calibration.TempSensitivity = %lf\n", Diag.Calibration.TempSensitivity);
     OS_printf("calTemp = %lf\n", calMsg.Temp);
     //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &calMsg);
     //CFE_SB_SendMsg((CFE_SB_Msg_t *) &calMsg);
@@ -697,15 +702,31 @@ boolean MPU9250::ValidateDevice(void)
     {
         goto end_of_function;
     }
-    OS_printf("WHOAMI = %u\n", value);
+    if (MPU9250_DEVICE_ID != value)
+    {
+        (void) CFE_EVS_SendEvent(MPU9250_VALIDATE_ERR_EID, CFE_EVS_ERROR,
+                "MPU9250 device ID match failed");
+        returnBool = FALSE;
+    }
+
     returnBool = MPU9250_Read_MagDeviceID(&value);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
-    OS_printf("MAGDEVICEID = %u\n", value);
+    if (MPU9250_AK8963_ID != value)
+    {
+        (void) CFE_EVS_SendEvent(MPU9250_VALIDATE_ERR_EID, CFE_EVS_ERROR,
+                "AK8963 device ID match failed");
+        returnBool = FALSE;
+    }
 
 end_of_function:
+    if(FALSE == returnBool)
+    {
+        (void) CFE_EVS_SendEvent(MPU9250_VALIDATE_ERR_EID, CFE_EVS_ERROR,
+                "MPU9250 validate failed");
+    }
     return returnBool;
 }
 
