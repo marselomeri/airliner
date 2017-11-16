@@ -24,7 +24,7 @@ build_airliner_cfe(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/osconfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
     UNIT_TEST_WRAPPER
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test_wrapper
+        unit_test_wrapper
 )
 
 add_airliner_app(
