@@ -80,7 +80,8 @@ Integrator::put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral,
     // Integrate:
     // Leave dt at 0 if the integration time does not make sense.
     // Without this check the integral is likely to explode.
-    if (timestamp >= _last_integration_time) {
+    if (timestamp >= _last_integration_time) 
+    {
         dt = (double)(timestamp - _last_integration_time) / 1000000.0;
     }
 
@@ -89,7 +90,8 @@ Integrator::put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral,
     _last_val = val;
 
     // Calculate coning corrections if required
-    if (_coning_comp_on) {
+    if (TRUE == _coning_comp_on) 
+    {
         // Coning compensation derived by Paul Riseborough and Jonathan Challinger,
         // following:
         // Tian et al (2010) Three-loop Integration of GPS and Strapdown INS with Coning and Sculling Compensation
@@ -102,26 +104,27 @@ Integrator::put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral,
 
     // accumulate delta integrals
     _alpha = _alpha + delta_alpha;
-
     _last_integration_time = timestamp;
 
     // Only do auto reset if auto reset interval is not 0.
-    if (_auto_reset_interval > 0 && (timestamp - _last_reset_time) > _auto_reset_interval) {
-
+    if (_auto_reset_interval > 0 && (timestamp - _last_reset_time) > _auto_reset_interval) 
+    {
         // apply coning corrections if required
-        if (_coning_comp_on) {
+        if (TRUE == _coning_comp_on) 
+        {
             integral = _alpha + _beta;
-
-        } else {
+        } 
+        else 
+        {
             integral = _alpha;
         }
-
         // reset the integrals and coning corrections
         _reset(integral_dt);
 
         return TRUE;
-
-    } else {
+    } 
+    else 
+    {
         return FALSE;
     }
 }
@@ -156,7 +159,7 @@ Integrator::get(boolean reset, uint64 &integral_dt)
 {
 	math::Vector3F val = _alpha;
 
-	if (reset) 
+	if (TRUE == reset) 
     {
 		_reset(integral_dt);
 	}

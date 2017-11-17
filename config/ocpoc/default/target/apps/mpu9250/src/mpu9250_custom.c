@@ -1005,7 +1005,6 @@ boolean MPU9250_Custom_Read_MagAdj(void)
     uint8 validateZ = 0;
 
     returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00, &validateX);
-    OS_printf("SENS ADJ X*** %u\n", validateX);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
@@ -1014,7 +1013,6 @@ boolean MPU9250_Custom_Read_MagAdj(void)
     /* TODO validate X*/
     MPU9250_AppCustomData.MagAdjX = validateX;
     returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_01, &validateY);
-    OS_printf("SENS ADJ Y*** %u\n", validateY);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
@@ -1023,7 +1021,6 @@ boolean MPU9250_Custom_Read_MagAdj(void)
     /* TODO validate Y*/
     MPU9250_AppCustomData.MagAdjY = validateY;
     returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_02, &validateZ);
-    OS_printf("SENS ADJ Z*** %u\n", validateZ);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;

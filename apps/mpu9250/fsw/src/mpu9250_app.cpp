@@ -638,6 +638,7 @@ void MPU9250::ReadDevice(void)
     math::Vector3F aval_integrated;
 
     timeStamp = MPU9250_Custom_Get_Time();
+
     /* TODO timestamp */
     //SensorGyro.Timestamp = ;
     //SensorAccel.Timestamp = ;
@@ -680,7 +681,6 @@ void MPU9250::ReadDevice(void)
     SensorGyro.ZIntegral = gval_integrated[2];
     
     /* Gyro Scale, Range, DeviceID */
-    
     SensorGyro.Scaling = -1.0f;
     SensorGyro.Range = -1.0f;
     /* TODO deviceID */
@@ -723,6 +723,9 @@ void MPU9250::ReadDevice(void)
     SensorAccel.XIntegral = aval_integrated[0];
     SensorAccel.YIntegral = aval_integrated[1];
     SensorAccel.ZIntegral = aval_integrated[2];
+    
+    OS_printf("Accel X Y Z Integrated %f, %f, %f\n", aval_integrated[0], aval_integrated[1], aval_integrated[2]);
+    OS_printf("Accel det %lld\n", SensorAccel.IntegralDt);
     
     /* Accel Scale, Range, DeviceID */
     SensorAccel.Scaling = -1.0f;
