@@ -1,20 +1,22 @@
 {
-    "app_name": "LD",
+    "app_name": "MPC",
     "output_dir": "/home/vagrant/git/airliner/apps",
-    "app_full_name": "Landing Detector",
-    "wakeup_mid_macro": "LD_WAKEUP_MID",
+    "app_full_name": "Multicopter Position Control",
+    "wakeup_mid_macro": "MPC_WAKEUP_MID",
     "input_messages": {
-	"1": {"var_name": "ActuatorArmedMsg", "mid_macro": "PX4_ACTUATOR_ARMED_MID", "datatype": "PX4_ActuatorArmedMsg_t", "include_file":"px4_msgs.h"},
-	"2": {"var_name": "ActuatorControls0Msg", "mid_macro": "PX4_ACTUATOR_CONTROLS_0_MID", "datatype": "PX4_ActuatorControlsMsg_t", "include_file":"px4_msgs.h"},
-        "3": {"var_name": "AirspeedMsg", "mid_macro": "PX4_AIRSPEED_MID", "datatype": "PX4_AirspeedMsg_t", "include_file":"px4_msgs.h"},
-        "4": {"var_name": "BatteryStatusMsg", "mid_macro": "PX4_BATTERY_STATUS_MID", "datatype": "PX4_BatteryStatusMsg_t", "include_file":"px4_msgs.h"},
-	"5": {"var_name": "ControlStateMsg", "mid_macro": "PX4_CONTROL_STATE_MID", "datatype": "PX4_ControlStateMsg_t", "include_file":"px4_msgs.h"},
-        "6": {"var_name": "ManualControlSetpointMsg", "mid_macro": "PX4_MANUAL_CONTROL_SETPOINT_MID", "datatype": "PX4_ManualControlSetpointMsg_t", "include_file":"px4_msgs.h"},
-	"7": {"var_name": "VehicleAttitudeMsg", "mid_macro": "PX4_VEHICLE_ATTITUDE_MID", "datatype": "PX4_VehicleAttitudeMsg_t", "include_file":"px4_msgs.h"},
-	"8": {"var_name": "VehicleControlModeMsg", "mid_macro": "PX4_VEHICLE_CONTROL_MODE_MID", "datatype": "PX4_VehicleControlModeMsg_t", "include_file":"px4_msgs.h"},
-	"9": {"var_name": "VehicleLocalPositionMsg", "mid_macro": "PX4_VEHICLE_LOCAL_POSITION_MID", "datatype": "PX4_VehicleLocalPositionMsg_t", "include_file":"px4_msgs.h"}
+	"1": {"var_name": "ControlStateMsg", "mid_macro": "PX4_CONTROL_STATE_MID", "datatype": "PX4_ControlStateMsg_t", "include_file":"px4_msgs.h"},
+	"2": {"var_name": "HomePositionMsg", "mid_macro": "PX4_HOME_POSITION_MID", "datatype": "PX4_HomePositionMsg_t", "include_file":"px4_msgs.h"},
+        "3": {"var_name": "ManualControlSetpointMsg", "mid_macro": "PX4_MANUAL_CONTROL_SETPOINT_MID", "datatype": "PX4_ManualControlSetpointMsg_t", "include_file":"px4_msgs.h"},
+	"4": {"var_name": "PositionSetpointTripletMsg", "mid_macro": "PX4_POSITION_SETPOINT_TRIPLET_MID", "datatype": "PX4_PositionSetpointTripletMsg_t", "include_file":"px4_msgs.h"},
+	"5": {"var_name": "VehicleControlModeMsg", "mid_macro": "PX4_VEHICLE_CONTROL_MODE_MID", "datatype": "PX4_VehicleControlModeMsg_t", "include_file":"px4_msgs.h"},
+	"6": {"var_name": "VehicleLandDetectedMsg", "mid_macro": "PX4_VEHICLE_LAND_DETECTED_MID", "datatype": "PX4_VehicleLandDetectedMsg_t", "include_file":"px4_msgs.h"},
+	"7": {"var_name": "VehicleStatusMsg", "mid_macro": "PX4_VEHICLE_STATUS_MID", "datatype": "PX4_VehicleStatusMsg_t", "include_file":"px4_msgs.h"},
+	"8": {"var_name": "VehicleLocalPositionMsg", "mid_macro": "PX4_VEHICLE_LOCAL_POSITION_MID", "datatype": "PX4_VehicleLocalPositionMsg_t", "include_file":"px4_msgs.h"}
     },
     "output_messages": {
-        "1": {"var_name": "VehicleLandDetectedMsg", "mid_macro": "PX4_VEHICLE_LAND_DETECTED_MID", "datatype": "PX4_VehicleLandDetectedMsg_t", "include_file":"px4_msgs.h"}
+	"1": {"var_name": "VehicleAttitudeSetpointMsg", "mid_macro": "PX4_VEHICLE_ATTITUDE_SETPOINT_MID", "datatype": "PX4_VehicleAttitudeSetpointMsg_t", "include_file":"px4_msgs.h"},
+        "2": {"var_name": "VehicleGlobalVelocitySetpointMsg", "mid_macro": "PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID", "datatype": "PX4_VehicleGlobalVelocitySetpointMsg_t", "include_file":"px4_msgs.h"},
+        "3": {"var_name": "VehicleLocalVelocitySetpointMsg", "mid_macro": "PX4_VEHICLE_LOCAL_VELOCITY_SETPOINT_MID", "datatype": "PX4_VehicleLocalVelocitySetpointMsg_t", "include_file":"px4_msgs.h"}
     }
 }
+

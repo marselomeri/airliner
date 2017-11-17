@@ -6,7 +6,7 @@
 ** Include Files
 */
 #include "cfe_tbl_filedef.h"
-#include "ulr_tbldefs.h"
+#include "sens_tbldefs.h"
 
 /*
 ** Local Defines
@@ -27,8 +27,8 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
     **    ObjSize - size of the entire table
     */
 
-    "ULR_ConfigTbl", "ULR.CONFIG_TBL", "ULR default config table",
-    "ulr_config.tbl", (sizeof(ULR_ConfigTbl_t))
+    "SENS_ConfigTbl", "SENS.CONFIG_TBL", "SENS default config table",
+    "sens_config.tbl", (sizeof(SENS_ConfigTbl_t))
 };
 
 /*
@@ -40,7 +40,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 */
 
 /* Default ULR config table data */
-ULR_ConfigTbl_t ULR_ConfigTbl =
+SENS_ConfigTbl_t SENS_ConfigTbl =
 {
 	/* TODO:  Define table. */
 };
@@ -58,6 +58,6 @@ ULR_ConfigTbl_t ULR_ConfigTbl =
 */
 
 /*=======================================================================================
-** End of file ulr_config.c
+** End of file sens_config.c
 **=====================================================================================*/
     

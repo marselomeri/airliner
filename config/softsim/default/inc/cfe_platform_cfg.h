@@ -479,7 +479,7 @@
 **       There is a lower limit of 6 and an upper limit of 64 on this configuration
 **       paramater. The lower limit corresponds to the cFE internal applications.
 */
-#define CFE_ES_MAX_APPLICATIONS 32
+#define CFE_ES_MAX_APPLICATIONS 64
 
 
 /**

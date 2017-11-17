@@ -244,33 +244,33 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #101 */
    { { SCH_FIX_HEADER(PX4BR_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #102 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(AE_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #103 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(AE_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #104 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(LD_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #105 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(LD_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #106 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(MPC_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #107 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(MPC_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #108 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(NAV_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #109 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(NAV_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #110 */
    { { SCH_FIX_HEADER(CFE_TIME_TONE_CMD_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #111 */
    { { SCH_FIX_HEADER(CFE_TIME_1HZ_CMD_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #112 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(RCIN_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #113 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(RCIN_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #114 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(VM_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #115 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(VM_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #116 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #117 */

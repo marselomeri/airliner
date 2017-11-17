@@ -165,23 +165,6 @@
 #define MD_DWELL_PKT_MID_BASE			0x09c7
 
 
-/* NAV										*/
-/* Range: 0x9d0 - 0x9df						*/
-#define NAV_CMD_MID						0x19d0
-#define NAV_SEND_HK_MID					0x19d1
-#define NAV_FUNC2_MID					0x19d2
-#define NAV_FUNC3_MID					0x19d3
-#define NAV_FUNC4_MID					0x19d4
-#define NAV_FUNC5_MID					0x19d5
-#define NAV_FUNC6_MID					0x19d6
-#define NAV_FUNC7_MID					0x19d7
-#define NAV_FUNC8_MID					0x19d8
-#define NAV_FUNC9_MID					0x19d9
-#define NAV_FUNC10_MID					0x19da
-#define NAV_HK_TLM_MID					0x09db
-#define NAV_HIGH_RATE_NAV_MID			0x09dc
-
-
 /* SC										*/
 /* Range: 0x9e0 - 0x9e3						*/
 #define SC_CMD_MID                      0x19e0
@@ -593,6 +576,42 @@
 #define SENS_SEND_HK_MID                            0x1c56
 #define SENS_WAKEUP_MID                             0x1c57
 #define SENS_CMD_MID                                0x0c58
+
+/* AE                                                   */
+#define AE_HK_TLM_MID                               0x1c59
+#define AE_SEND_HK_MID                              0x1c5a
+#define AE_WAKEUP_MID                               0x1c5b
+#define AE_CMD_MID                                  0x0c5c
+
+/* LD                                                   */
+#define LD_HK_TLM_MID                               0x1c5d
+#define LD_SEND_HK_MID                              0x1c5e
+#define LD_WAKEUP_MID                               0x1c5f
+#define LD_CMD_MID                                  0x0c60
+
+/* MPC                                                  */
+#define MPC_HK_TLM_MID                              0x1c61
+#define MPC_SEND_HK_MID                             0x1c62
+#define MPC_WAKEUP_MID                              0x1c63
+#define MPC_CMD_MID                                 0x0c64
+
+/* NAV                                                  */
+#define NAV_HK_TLM_MID                              0x1c65
+#define NAV_SEND_HK_MID                             0x1c66
+#define NAV_WAKEUP_MID                              0x1c67
+#define NAV_CMD_MID                                 0x0c68
+
+/* RCIN                                                 */
+#define RCIN_HK_TLM_MID                             0x1c69
+#define RCIN_SEND_HK_MID                            0x1c6a
+#define RCIN_WAKEUP_MID                             0x1c6b
+#define RCIN_CMD_MID                                0x0c6c
+
+/* VM                                                   */
+#define VM_HK_TLM_MID                               0x1c6d
+#define VM_SEND_HK_MID                              0x1c6e
+#define VM_WAKEUP_MID                               0x1c6f
+#define VM_CMD_MID                                  0x0c70
 
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 

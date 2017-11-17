@@ -294,4 +294,62 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sens_perfids.h
 )
 
+add_airliner_app(
+    mpc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpc
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpc_perfids.h
+)
 
+add_airliner_app(
+    ae
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ae/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ae
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ae_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_perfids.h
+)
+
+add_airliner_app(
+    vm
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/vm/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vm
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/vm_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vm_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vm_perfids.h
+)
+
+add_airliner_app(
+    ld
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ld/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ld
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ld_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ld_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ld_perfids.h
+)
+
+add_airliner_app(
+    nav
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/nav/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/nav
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/nav_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/nav_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/nav_perfids.h
+)
+
+add_airliner_app(
+    rcin
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/rcin/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/rcin
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/rcin_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rcin_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rcin_perfids.h
+)

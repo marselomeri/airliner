@@ -82,9 +82,20 @@
 
 #define PX4BR_PROC_CMD_MIDX			100
 #define PX4BR_SEND_HK_MIDX			101
-
+#define AE_SEND_HK_MIDX			    102
+#define AE_WAKEUP_MIDX			    103
+#define LD_SEND_HK_MIDX			    104
+#define LD_WAKEUP_MIDX			    105
+#define MPC_SEND_HK_MIDX			106
+#define MPC_WAKEUP_MIDX			    107
+#define NAV_SEND_HK_MIDX	        108
+#define NAV_WAKEUP_MIDX			    109
 #define CFE_TIME_TONE_CMD_MIDX		110
 #define CFE_TIME_1HZ_CMD_MIDX		111
+#define RCIN_SEND_HK_MIDX			112
+#define RCIN_WAKEUP_MIDX			113
+#define VM_SEND_HK_MIDX			    114
+#define VM_WAKEUP_MIDX			    115
 
 #define GPS_READ_SENSOR_MIDX 	    122
 #define GPS_SEND_HK_MIDX        	123

@@ -43,6 +43,12 @@
 #define RGBLED_RECEIVE_PERF_ID      73
 #define MS5611_MAIN_TASK_PERF_ID    74
 #define SENS_MAIN_TASK_PERF_ID      75
+#define AE_MAIN_TASK_PERF_ID        76
+#define LD_MAIN_TASK_PERF_ID        77
+#define MPC_MAIN_TASK_PERF_ID       78
+#define NAV_MAIN_TASK_PERF_ID       79
+#define RCIN_MAIN_TASK_PERF_ID      80
+#define VM_MAIN_TASK_PERF_ID        81
 
 #endif
 
