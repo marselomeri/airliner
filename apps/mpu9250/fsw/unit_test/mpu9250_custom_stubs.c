@@ -121,3 +121,14 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
     return TRUE;
 }
 
+
+uint64 MPU9250_Custom_Get_Time(void)
+{
+    return 0;
+}
+
+
+boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
+{
+    return TRUE;
+}

@@ -54,8 +54,9 @@ extern "C" {
 #include "mpu9250_msg.h"
 #include "mpu9250_events.h"
 #include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
+#include "LowPassFilter2p.h"
+#include "integrator.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -65,6 +66,17 @@ extern "C" {
 #define MPU9250_AK8963_ID                   (0x48)
 /** \brief IMU device ID. */
 #define MPU9250_DEVICE_ID                   (0x71)
+/** \brief IMU accelerometer sample rate. */
+#define MPU9250_ACCEL_SAMPLE_RATE           (50)
+/** \brief IMU accelerometer filter cutoff frequency. */
+#define MPU9250_ACCEL_FILTER_CUTOFF_FREQ    (30)
+/** \brief IMU gyroscope sample rate. */
+#define MPU9250_GYRO_SAMPLE_RATE            (50)
+/** \brief IMU gyroscope filter cutoff frequency. */
+#define MPU9250_GYRO_FILTER_CUTOFF_FREQ     (30)
+/** \brief We don't want to auto publish, therefore set this to 0. */
+#define MPU9250_NEVER_AUTOPUBLISH_US        (0)
+
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -349,6 +361,16 @@ public:
      **
      *************************************************************************/
     boolean ValidateDevice(void);
+    
+private:
+    math::LowPassFilter2p   _accel_filter_x;
+    math::LowPassFilter2p   _accel_filter_y;
+    math::LowPassFilter2p   _accel_filter_z;
+    math::LowPassFilter2p   _gyro_filter_x;
+    math::LowPassFilter2p   _gyro_filter_y;
+    math::LowPassFilter2p   _gyro_filter_z;
+    Integrator              _accel_int;
+    Integrator              _gyro_int;
 };
 
 

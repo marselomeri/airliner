@@ -9,7 +9,7 @@
 #include "mpu9250_app.h"
 #include "mpu9250_msg.h"
 #include "mpu9250_version.h"
-
+#include "Vector3F.hpp"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -25,7 +25,15 @@ MPU9250 oMPU9250;
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-MPU9250::MPU9250()
+MPU9250::MPU9250() :
+    _accel_filter_x(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
+    _accel_filter_y(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
+    _accel_filter_z(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
+    _gyro_filter_x(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
+    _gyro_filter_y(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
+    _gyro_filter_z(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
+    _accel_int(MPU9250_NEVER_AUTOPUBLISH_US, FALSE),
+    _gyro_int(MPU9250_NEVER_AUTOPUBLISH_US, TRUE)
 {
 
 }
@@ -611,77 +619,168 @@ void MPU9250::ReadDevice(void)
 {
     MPU9250_RawMeasMsg_t rawMsg;
     MPU9250_CalMeasMsg_t calMsg;
-
+    
+    float rawX_f = 0;
+    float rawY_f = 0;
+    float rawZ_f = 0;
+    float calX_f = 0;
+    float calY_f = 0;
+    float calZ_f = 0;
+    uint64 timeStamp = 0;
+    uint16 rawTemp = 0;
+    int16 calTemp = 0;
+    
     boolean returnBool =  TRUE;
 
-    returnBool = MPU9250_Read_Gyro(&rawMsg.GyroX, &rawMsg.GyroY, &rawMsg.GyroZ);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    OS_printf("rawGyroX = %d, rawGyroY = %d, rawGyroZ = %d\n", rawMsg.GyroX, rawMsg.GyroY, rawMsg.GyroZ);
-    returnBool = MPU9250_Read_Accel(&rawMsg.AccelX, &rawMsg.AccelY, &rawMsg.AccelZ);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    OS_printf("rawAccelX = %d, rawAccelY = %d, rawAccelZ = %d\n", rawMsg.AccelX, rawMsg.AccelY, rawMsg.AccelZ);
-    returnBool = MPU9250_Read_Mag(&rawMsg.MagX, &rawMsg.MagY, &rawMsg.MagZ);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    OS_printf("rawMagX = %d, rawMagY = %d, rawMagZ = %d\n", rawMsg.MagX, rawMsg.MagY, rawMsg.MagZ);
-    returnBool = MPU9250_Read_Temp(&rawMsg.Temp);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    OS_printf("rawTemp = %d\n", rawMsg.Temp);
+    math::Vector3F gval;
+    math::Vector3F gval_integrated;
+    math::Vector3F aval;
+    math::Vector3F aval_integrated;
 
-    returnBool = MPU9250_Read_ImuStatus(&rawMsg.WOM, &rawMsg.FifoOvflw, &rawMsg.Fsync, &rawMsg.ImuDataReady);
+    timeStamp = MPU9250_Custom_Get_Time();
+    /* TODO timestamp */
+    //SensorGyro.Timestamp = ;
+    //SensorAccel.Timestamp = ;
+
+    /* Gyro */
+    returnBool = MPU9250_Read_Gyro(&SensorGyro.XRaw, &SensorGyro.YRaw, &SensorGyro.ZRaw);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
-    OS_printf("WOM = %d, FifoOvflw = %d, Fsync = %d, ImuDataReady = %d\n", 
-            rawMsg.WOM, rawMsg.FifoOvflw, rawMsg.Fsync, rawMsg.ImuDataReady);
 
-    returnBool = MPU9250_Read_MagStatus(&rawMsg.Overrun, &rawMsg.MagDataReady, &rawMsg.Overflow, &rawMsg.Output16Bit);
+    rawX_f = (float) SensorGyro.XRaw;
+    rawY_f = (float) SensorGyro.YRaw;
+    rawZ_f = (float) SensorGyro.ZRaw;
+
+    returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
-    OS_printf("Overrun = %d, MagDataReady = %d, Overflow = %d, Output16Bit = %d\n", 
-            rawMsg.Overrun, rawMsg.MagDataReady, rawMsg.Overflow, rawMsg.Output16Bit);
+    /* Gyro Calibrate */
+    calX_f = ((rawX_f / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroXCoef) + Diag.Calibration.GyroXBias;
+    calY_f = ((rawY_f / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroYCoef) + Diag.Calibration.GyroYBias;
+    calZ_f = ((rawZ_f / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroZCoef) + Diag.Calibration.GyroZBias;
 
-    //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &rawMsg);
-    //CFE_SB_SendMsg((CFE_SB_Msg_t *) &rawMsg);
+    /* Gyro Filter */
+    SensorGyro.X = _gyro_filter_x.apply(calX_f);
+    SensorGyro.Y = _gyro_filter_y.apply(calY_f);
+    SensorGyro.Z = _gyro_filter_z.apply(calZ_f);
 
-    calMsg.AccelX = ((rawMsg.AccelX / Diag.Calibration.AccDivider) * Diag.Calibration.AccXCoef) + Diag.Calibration.AccXBias;
-    calMsg.AccelY = ((rawMsg.AccelY / Diag.Calibration.AccDivider) * Diag.Calibration.AccYCoef) + Diag.Calibration.AccYBias;
-    calMsg.AccelZ = ((rawMsg.AccelZ / Diag.Calibration.AccDivider) * Diag.Calibration.AccZCoef) + Diag.Calibration.AccZBias;
+    /* Gyro Integrate */
+    gval[0] = SensorGyro.X;
+    gval[1] = SensorGyro.Y;
+    gval[2] = SensorGyro.Z;
+
+    _gyro_int.put(timeStamp, gval, gval_integrated, SensorGyro.IntegralDt);
     
-    OS_printf("calAccelX = %lf, calAccelY = %lf, calAccelZ = %lf\n", calMsg.AccelX, calMsg.AccelY, calMsg.AccelZ);
+    SensorGyro.XIntegral = gval_integrated[0];
+    SensorGyro.YIntegral = gval_integrated[1];
+    SensorGyro.ZIntegral = gval_integrated[2];
     
-    calMsg.GyroX = ((rawMsg.GyroX / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroXCoef) + Diag.Calibration.GyroXBias;
-    calMsg.GyroY = ((rawMsg.GyroY / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroYCoef) + Diag.Calibration.GyroYBias;
-    calMsg.GyroZ = ((rawMsg.GyroZ / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroZCoef) + Diag.Calibration.GyroZBias;
-
-    OS_printf("calGyroX = %lf, calGyroY = %lf, calGyroZ = %lf\n", calMsg.GyroX, calMsg.GyroY, calMsg.GyroZ);
-
-    calMsg.MagX = (rawMsg.MagX * ((((Diag.Calibration.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
-    calMsg.MagY = (rawMsg.MagY * ((((Diag.Calibration.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
-    calMsg.MagZ = (rawMsg.MagZ * ((((Diag.Calibration.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
-
-    OS_printf("calMagX = %lf, calMagY = %lf, calMagZ = %lf\n", calMsg.MagX, calMsg.MagY, calMsg.MagZ);
-
-    calMsg.Temp = ((rawMsg.Temp - Diag.Calibration.RoomTempOffset) / Diag.Calibration.TempSensitivity) + 21.0;
-
-    OS_printf("calTemp = %lf\n", calMsg.Temp);
-    //CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &calMsg);
-    //CFE_SB_SendMsg((CFE_SB_Msg_t *) &calMsg);
+    /* Gyro Scale, Range, DeviceID */
     
+    SensorGyro.Scaling = -1.0f;
+    SensorGyro.Range = -1.0f;
+    /* TODO deviceID */
+    //SensorGyro.DeviceID = ;
+
+    /* Accel */
+    returnBool = MPU9250_Read_Accel(&SensorAccel.XRaw, &SensorAccel.YRaw, &SensorAccel.ZRaw);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    rawX_f = (float) SensorAccel.XRaw;
+    rawY_f = (float) SensorAccel.YRaw;
+    rawZ_f = (float) SensorAccel.ZRaw;
+
+    returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    
+    /* Accel Calibrate */
+    calX_f = ((rawX_f / Diag.Calibration.AccDivider) * Diag.Calibration.AccXCoef) + Diag.Calibration.AccXBias;
+    calY_f = ((rawY_f / Diag.Calibration.AccDivider) * Diag.Calibration.AccYCoef) + Diag.Calibration.AccYBias;
+    calZ_f = ((rawZ_f / Diag.Calibration.AccDivider) * Diag.Calibration.AccZCoef) + Diag.Calibration.AccZBias;
+    
+    /* Accel Filter */
+    SensorAccel.X = _accel_filter_x.apply(calX_f);
+    SensorAccel.Y = _accel_filter_y.apply(calY_f);
+    SensorAccel.Z = _accel_filter_z.apply(calZ_f);
+
+    /* Accel Integrate */
+    aval[0] = SensorAccel.X;
+    aval[1] = SensorAccel.Y;
+    aval[2] = SensorAccel.Z;
+
+    _accel_int.put(timeStamp, aval, aval_integrated, SensorAccel.IntegralDt);
+    
+    SensorAccel.XIntegral = aval_integrated[0];
+    SensorAccel.YIntegral = aval_integrated[1];
+    SensorAccel.ZIntegral = aval_integrated[2];
+    
+    /* Accel Scale, Range, DeviceID */
+    SensorAccel.Scaling = -1.0f;
+    SensorAccel.Range_m_s2 = -1.0f;
+    /* TODO deviceID */
+    //SensorAccel.DeviceID = ;
+
+    /* Mag */
+    returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    rawX_f = (float) SensorMag.XRaw;
+    rawY_f = (float) SensorMag.YRaw;
+    rawZ_f = (float) SensorMag.ZRaw;
+
+    returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Mag Calibrate */
+    SensorMag.X = (rawX_f  * ((((Diag.Calibration.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
+    SensorMag.Y = (rawY_f * ((((Diag.Calibration.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
+    SensorMag.Z = (rawZ_f  * ((((Diag.Calibration.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
+
+    /* Mag Scale, Range, DeviceID */
+    SensorMag.Scaling = -1.0f;
+    SensorMag.Range = -1.0f;
+    /* TODO deviceID */
+    //SensorMag.DeviceID = ;
+
+    /* Temp */
+    returnBool = MPU9250_Read_Temp(&rawTemp);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
+
+    //returnBool = MPU9250_Read_ImuStatus(&rawMsg.WOM, &rawMsg.FifoOvflw, &rawMsg.Fsync, &rawMsg.ImuDataReady);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    //returnBool = MPU9250_Read_MagStatus(&rawMsg.Overrun, &rawMsg.MagDataReady, &rawMsg.Overflow, &rawMsg.Output16Bit);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    calTemp = ((SensorAccel.TemperatureRaw - Diag.Calibration.RoomTempOffset) / Diag.Calibration.TempSensitivity) + 21.0;
+    SensorGyro.Temperature = SensorAccel.Temperature = SensorMag.Temperature = calTemp;
+
 end_of_function:
 
     if(FALSE == returnBool)

@@ -39,7 +39,13 @@ add_airliner_app_def(mpu9250
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mpu9250_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mpu9250_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mpu9250_custom.h
-   
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/LowPassFilter2p.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/LowPassFilter2p.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/integrator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/integrator.h
+    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
@@ -64,7 +70,13 @@ add_airliner_app_unit_test(mpu9250-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mpu9250_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mpu9250_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mpu9250_version.h
-        
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/LowPassFilter2p.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/LowPassFilter2p.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/integrator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/integrator.h
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

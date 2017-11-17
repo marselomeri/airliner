@@ -50,6 +50,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
 
 /************************************************************************
 ** Local Defines
@@ -244,7 +245,7 @@ boolean MPU9250_Custom_Init()
         {0x01, MPU9250_REG_PWR_MGMT_1},
         /* Enable Acc & Gyro */
         {0x00, MPU9250_REG_PWR_MGMT_2},
-        /* Use DLPF set Gyroscope bandwidth 184Hz, temperature bandwidth 188Hz */
+        /* Use DLPF set Gyroscope bandwidth 250Hz, temperature bandwidth 4000Hz */
         {MPU9250_DEFAULT_LOWPASS_FILTER, MPU9250_REG_CONFIG},
         /* +-2000dps */
         {0x18, MPU9250_REG_GYRO_CONFIG},
@@ -1061,6 +1062,53 @@ boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 end_of_function:
 
     return returnBool;
+}
+
+
+boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
+{
+    boolean returnBool = TRUE;
+    float temp;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Apply_Platform_Rotation Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* ROTATION_ROLL_180_YAW_90 */
+    temp = *X; 
+    *X = *Y; 
+    *Y = temp; 
+    *Z = -*Z;
+
+end_of_function:
+
+    return returnBool;
+}
+
+
+uint64 MPU9250_Custom_Get_Time(void)
+{
+    struct timespec ts;
+    uint64 result = 0;
+    int returnCode = 0;
+
+    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
+    if (-1 == returnCode)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 clock_gettime errno: %i", errno);
+        goto end_of_function;
+    }
+
+    result = (uint64)(ts.tv_sec) * 1000000;
+    result += ts.tv_nsec / 1000;
+
+end_of_function:
+    return result;
 }
 
 
