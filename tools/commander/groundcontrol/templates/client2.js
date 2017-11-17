@@ -475,8 +475,8 @@ var Video = function() {
 
         this.vid_subc.onopen = function (){
             log('DEBUG','Connection open.','getVideoStream');
-            //self.vid_subc.send('INVOKE');
-            //log('INFO','Message Sent.','getVideoStream');
+            self.vid_subc.send('INVOKE');
+            log('INFO','Message Sent.','getVideoStream');
         }
 
         this.vid_subc.onclose = function(){
@@ -496,10 +496,10 @@ Video.prototype = {
             log('INFO','Message received.','getVideoStream');
             cb(event);
         }
-        if (socket.readyState == WebSocket.OPEN) {
-          socket.send('INVOKE');
-          log('INFO','Message Sent.','getVideoStream');
-        };
+        //if (socket.readyState == WebSocket.OPEN) {
+        //  socket.send('INVOKE');
+        //  log('INFO','Message Sent.','getVideoStream');
+        //};
 
 
     },
