@@ -3,6 +3,10 @@
 
 
 //Tools
+var DEBUG = false;
+var ERROR = false;
+var INFO = true;
+
 function getDate(format){
     var tempstore =new Date();
     try{
@@ -18,31 +22,20 @@ function getDate(format){
     }
 }
 
-function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
-
-async function delay(socket,msg,te) {
-  await sleep(te);
-  socket.send(msg);
-
-}
-
 function log(logtype, message, specials){
-    if(logtype == 'ERROR'){
-        console.log(logtype+' - '+message+' - '+'['+specials+']' );
+    if(logtype == 'ERR' && ERROR){
+        console.log(logtype+' - '+message+' - '+'[',specials,']' );
     }
-    else if (logtype == 'INFO'){
-        console.log(logtype+' - '+message+' - '+'['+specials+']' );
+    else if (logtype == 'INFO' && INFO){
+        console.log(logtype+' - '+message+' - '+'[',specials,']' );
     }
-    else if (logtype == 'DEBUG'){
-        console.log(logtype+' - '+message+' - '+'['+specials+']' );
+    else if (logtype == 'DEBUG' && DEBUG){
+        console.log(logtype+' - '+message+' - '+'[',specials,']' );
     }
-    else{
-        console.log(message+' - '+'['+specials+']' );
-    }
+
 
 
 }
-
 
 function makeIterator(array) {
     var nextIndex = 0;
@@ -87,176 +80,210 @@ function getSockets(obj){
 
 }
 
+
+
+
 //---------------------------------------------------------------------------------------------------------------
+/* INSTANCE:
+   A web socket function to establish instance specific communication between server and client.
+   Initializes two websockets:
+    1. receives instance list.
+    2. Informs server about the instance selected. */
 //---------------------------------------------------------------------------------------------------------------
 
 var Instance = function(){
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst/');
     this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/defaultInst/');
+    var self = this;
+
+
+    /*getInstanceList*/
+    this.websocket1.onopen = function(){
+        log('DEBUG','Connection open.','getInstanceList');
+        self.websocket1.send('INVOKE');
+        log('INFO','Message Sent.','getInstanceList');
+    };
+    this.websocket1.onclose = function(){
+        log('DEBUG','Connection closed.','getInstanceList');
+    };
+    this.websocket1.onerror = function(){
+        log('ERR','Connection closed.','getInstanceList');
+    };
+
+
+    /*transmitCurrentInstance*/
+    this.websocket2.onopen = function(){
+        log('DEBUG','Connection open.','transmitCurrentInstance');
+    };
+    this.websocket2.onclose = function(){
+        log('DEBUG','Connection closed.','transmitCurrentInstance');
+    };
+    this.websocket2.onerror = function(){
+        log('ERR','Connection closed.','transmitCurrentInstance');
+    };
+
 
 }
 
 Instance.prototype = {
 
     /*getInstanceList*/
-    getInstanceList: function (message, cb){
-        var socket = this.websocket1
-        socket.onopen = function (){
-            socket.send(message);
-        }
-        socket.onclose = function (){
-            socket.close();
-        }
-        socket.onerror = function (){
-
-        }
+    getInstanceList: function (cb){
+        var socket = this.websocket1;
         socket.onmessage = function (event){
+            log('INFO','Message received.','getInstanceList');
             cb(event);
-            //socket.close();
         }
-        if (socket.readyState == WebSocket.OPEN) {
-          socket.onopen();
-        };
     },
 
     /*transmitCurrentInstance*/
     transmitCurrentInstance: function(message){
-        var socket = this.websocket2
-
-
-        socket.onopen = function (){
-
-        socket.send(message);
-
-        }
-        socket.onclose = function (){
-        socket.close();
-        }
-        socket.onerror = function (){
-        log('ERR','setDefaultInstance','')
-        }
+        var socket = this.websocket2;
         socket.onmessage = function (event){
-        //log('INFO','SENT',event);
-        //socket.close();
-
+            log('INFO','Message received.','transmitCurrentInstance');
         }
         if (socket.readyState == WebSocket.OPEN) {
-
-        socket.onopen();
+            log('INFO','Message sent.','transmitCurrentInstance');
+            socket.send(message);
         };
-
     },
-
-
 
 }
 //---------------------------------------------------------------------------------------------------------------
+/* DIRECTORY:
+   A web socket function to establish directory specific communication between server and client.
+   Initializes a websocket to retrive directory listing*/
 //---------------------------------------------------------------------------------------------------------------
 
 var Directory = function(){
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.websocket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/dir/');
+    var self = this;
+
+    this.websocket.onopen = function(){
+        log('DEBUG','Connection open.','getDirectoryList');
+        self.websocket.send('');
+        log('INFO','Message Sent.','getDirectoryList');
+    }
+    this.websocket.onclose = function(){
+        log('DEBUG','Connection closed.','getDirectoryList');
+    };
+    this.websocket.onerror = function(){
+        log('ERR','Connection closed.','getDirectoryList');
+    };
+
 }
 
 Directory.prototype = {
 
     getDirectoryListing: function(message,cb){
-        var socket = this.websocket
-        socket.onopen = function (){
-
-            socket.send(message);
-        }
-        socket.onclose = function (){
-
-            socket.close();
-        }
-        socket.onerror = function (){
-
-            log('ERR','getInstanceList','')
-        }
+        var socket = this.websocket;
         socket.onmessage = function (event){
-
-            //log('INFO','got resp',event);
-            //console.log(event);
+            log('INFO','Message received.','getDirectoryList');
             cb(event);
-            //socket.close();
         }
         if (socket.readyState == WebSocket.OPEN) {
-
-          socket.onopen();
+            log('INFO','Message sent.','getDirectoryList');
+            socket.send(message);
         };
+
     },
 
 }
 
 //---------------------------------------------------------------------------------------------------------------
+/* TELEMETRY:
+   A web socket function to establish telemetry specific communication between server and client.
+   Initialized web sockets to:
+   1. Send, subscribe and continously receive telemetry.
+   2. Unsubscribe a specific telemetry.
+   3. Unsubscribe all telemetry.*/
 //---------------------------------------------------------------------------------------------------------------
+
 var Telemetry =function(){
+
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
     this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
-    this.subscribers = {}
-
+    this.subscribers = [];
+    var self = this;
+    /*subscribeTelemetry*/
     this.subsc.onopen = function (){
+        log('DEBUG','Connection open.','subscribeTelemetry');
     };
 
     this.subsc.onclose = function (){
+        log('DEBUG','Connection closed.','subscribeTelemetry');
     };
 
     this.subsc.onerror = function (){
-        //log('ERR','getInstanceList','')
+        log('ERR','Connection closed.','subscribeTelemetry');
     };
 
+    /*unSubscribeTelemetry && unSubscribeAll*/
     this.unsubsc.onopen = function (){
+        log('DEBUG','Connection open.','unSubscribeTelemetry');
     }
    
     this.unsubsc.onclose = function (){
+        log('DEBUG','Connection closed.','unSubscribeTelemetry');
     }
     
     this.unsubsc.onerror = function (){
-        log('ERR','getInstanceList','')
+        log('ERR','Connection closed.','unSubscribeTelemetry');
+
     }
 }
 
 Telemetry.prototype = {
+
     subscribeTelemetry: function(message,cb){
-        if (this.subsc.readyState == WebSocket.OPEN)
-        {
-            this.subsc.send(message);
-            //log('INFO','SENDING TELEM REQ', message)
+        var socket = this.subsc;
+        if (socket.readyState == WebSocket.OPEN){
+            log('INFO','Message sent.','subscribeTelemetry');
+            socket.send(message);
+            /*SUBSCRIPTION OPTIMIZATION TODO*/
+            //this.subscribers.push(message)
         }
 
-        this.subsc.onmessage = function (event)
-        {
-            //log('INFO','got resp',event);
+        socket.onmessage = function (event){
+            log('INFO','Message received.','subscribeTelemetry');
             cb(event);
-            //socket.close();
         };
     },
 
-    unSubscribeTelemetry: function(message,cb){
-        if (this.unsubsc.readyState == WebSocket.OPEN) {
-            this.unsubsc.send(message);
+    unSubscribeTelemetry: function(message){
+        var socket = this.unsubsc;
+        if (socket.readyState == WebSocket.OPEN) {
+            socket.send(message);
+            console.log(message);
+            log('INFO','Message sent.','unSubscribeTelemetry');
         };
 
-        this.unsubsc.onmessage = function (event)
-        {
-            //log('INFO','got resp',event);
-            cb(event);
-            //socket.close();
+        socket.onmessage = function (event){
+            log('INFO','Message received.','unSubscribeTelemetry');
+            //cb(event);
         }
     },
 
     unSubscribeAll: function(){
         var socket = this.unsubsc;
-        if (this.unsubsc.readyState == WebSocket.OPEN) {
-            this.unsubsc.send('US_ALL');
+        if (socket.readyState == WebSocket.OPEN) {
+            socket.send('US_ALL');
+            log('INFO','Message sent.','unSubscribeAll');
         };
     },
 }
 
 //---------------------------------------------------------------------------------------------------------------
+/* COMMAND:
+   A web socket function to establish command specific communication between server and client.
+   Initialized web sockets to:
+   1. Clean command object variables.
+   2. Populate command object variables.
+   3. Request command information.
+   4. Send commands.*/
 //---------------------------------------------------------------------------------------------------------------
 var Command =function(){
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
@@ -266,13 +293,30 @@ var Command =function(){
     this.SendingQueue = [];
     this.superQ = {};
     this.count=0;
-    
     var self = this;
+
+    /*getCommandInfo*/
     this.info.onopen = function (){
-        //self.info.send('HS');
+        log('DEBUG','Connection open.','getCommandInfo');
     }
         
     this.info.onclose = function (){
+        log('DEBUG','Connection closed.','getCommandInfo');
+    }
+    this.info.onerror = function (){
+        log('ERR','Connection closed.','getCommandInfo');
+    }
+
+    /*sendCommand*/
+    this.cmd.onopen = function (){
+        log('DEBUG','Connection open.','sendCommand');
+    }
+
+    this.cmd.onclose = function (){
+        log('DEBUG','Connection closed.','sendCommand');
+    }
+    this.info.onerror = function (){
+        log('ERR','Connection closed.','sendCommand');
     }
 
 }
@@ -283,33 +327,28 @@ Command.prototype = {
         this.CommandQueue = [];
         this.SendingQueue = [];
         this.count=0;
-        log('INFO','CLEAN SLATE',this)
+        log('DEBUG','Clean slate executed.','commandCleanSlate')
     },
 
     RequestCmdDef: function(cmdObj, cb){
         var socket = this.info;
         var self = this;
         var cmdName = Object.keys(cmdObj)[0];
-        
-        //console.log("Requesting command definition.");
 
         if (!Object.keys(self.superQ).includes(cmdName)){
-            //console.log("VIA SOCK     ",cmdName);
+
             socket.send(cmdName);
             return false;
         }
         else{
             try{
-                //console.log("VIA CACHE**     ",cmdName);
+
                 var btn = cmdObj[cmdName][0];
                 var jsn = cmdObj[cmdName][1];
                 cb(self.superQ[cmdName],jsn,btn);
                 return true;
             }
             catch(err){
-                //skip
-                //console.log("[ERR] SKIP**     ",cmdName);
-                //socket.send('HS');
                 return true;
             }
         }
@@ -325,10 +364,10 @@ Command.prototype = {
         var message = null;
         var i = 0;
 
-        //var RQ = this.ReceivingQueue;
+
         do{
             if(cq.done()){        
-                console.log("Completed Processing Commanding Queue!");
+                log('INFO','Commanding Queue processing complete.!','sendCommand');
                 break;
             }
 
@@ -336,7 +375,6 @@ Command.prototype = {
         } while(this.RequestCmdDef(Que_obj, cb) == true);
 
         socket.onmessage = function (event){
-            //console.log("Command definition received");
             /* Retrieve the object and call the callback. */
             var cmdName = Object.keys(Que_obj)[0];
             var btn = Que_obj[cmdName][0];
@@ -347,7 +385,7 @@ Command.prototype = {
             
             do{
                 if(cq.done()){      
-		    console.log("Completed Processing Commanding Queue! ", cq.id());
+		            log('INFO','Commanding Queue processing complete.!','sendCommand');
                     break;
                 }
     
@@ -368,78 +406,56 @@ Command.prototype = {
     sendCommand: function(name,args){
         var obj = {"name":name,"args":args}
         var message = JSON.stringify(obj)
-        //log('HEEEEEEEEREEEEEEEEEE','',obj);
         var socket = this.cmd;
-        socket.onopen = function (){
 
-            socket.send(message);
-        }
-        socket.onclose = function (){
-
-            socket.close();
-        }
-        socket.onerror = function (){
-
-            //log('ERR','getInstanceList','')
-        }
         socket.onmessage = function (event){
-
-            //log('INFO','got resp',event);
-            console.log('do nothing with');
-            //cb(event);
-            //socket.close();
+            log('INFO','Button feedback.','sendCommand');
         }
-        if (socket.readyState == WebSocket.OPEN) {
 
-          socket.onopen();
+        if (socket.readyState == WebSocket.OPEN) {
+          socket.send(message);
         };
 
     },
 
 }
 //---------------------------------------------------------------------------------------------------------------
+/* EVENT:
+   A web socket function to establish event specific communication between server and client.
+   Initializes web socket to receive events.*/
 //---------------------------------------------------------------------------------------------------------------
 
 var Event = function(){
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.event = new WebSocket(this.ws_scheme+'://' + window.location.host + '/event/');
+    var self = this;
 
+    this.event.onopen = function (){
+        log('DEBUG','Connection open.','getEvents');
+        self.event.send('INVOKE');
+        log('INFO','Message Sent.','getEvents');
+    }
+
+    this.event.onclose = function(){
+        log('DEBUG','Connection closed.','getEvents');
+    }
+    this.event.onerror = function(){
+        log('ERR','Connection closed.','getEvents');
+    }
 }
-
 
 Event.prototype = {
 
     eventSubscription: function(cb){
         var socket = this.event
-
-
-        socket.onopen = function (){
-
-            socket.send('HS');
-        }
-        socket.onclose = function (){
-
-            socket.close();
-        }
-        socket.onerror = function (){
-
-            log('ERR','getInstanceList','')
-        }
         socket.onmessage = function (event){
-
-            //log('INFO','got resp',event);
+            log('INFO','Message received.','getEvents');
             cb(event);
-            //socket.close();
         }
-        if (socket.readyState == WebSocket.OPEN) {
-
-          socket.onopen();
-        };
     },
 
 }
 
-
 //---------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------
 
@@ -447,46 +463,53 @@ Event.prototype = {
 
 
 //---------------------------------------------------------------------------------------------------------------
+/* VIDEO:
+   A web socket function to establish video specific communication between server and client.
+   Initializes web socket to receive video frames.*/
 //---------------------------------------------------------------------------------------------------------------
 var Video = function() {
         this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
         this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video/');
-        this.video_subscribers = {}
+        this.video_subscribers = {};
+        var self = this;
+
+        this.vid_subc.onopen = function (){
+            log('DEBUG','Connection open.','getVideoStream');
+            //self.vid_subc.send('INVOKE');
+            //log('INFO','Message Sent.','getVideoStream');
+        }
+
+        this.vid_subc.onclose = function(){
+            log('DEBUG','Connection closed.','getVideoStream');
+        }
+        this.vid_subc.onerror = function(){
+            log('ERR','Connection closed.','getVideoStream');
+        }
 
 }
 Video.prototype = {
 
     getVideoStream(cb){
         var socket = this.vid_subc;
-        socket.onopen = function (){
 
-            socket.send('SEND VIDEO');
-            //log('INFO','SENDING TELEM REQ', message)
-        };
-        socket.onclose = function (){
-
-            socket.close();
-        };
-        socket.onerror = function (){
-
-            //log('ERR','getInstanceList','')
-        };
         socket.onmessage = function (event){
-
-            //log('INFO','got resp',event);
+            log('INFO','Message received.','getVideoStream');
             cb(event);
-            //socket.close();
-        };
+        }
         if (socket.readyState == WebSocket.OPEN) {
-
-          socket.onopen();
+          socket.send('INVOKE');
+          log('INFO','Message Sent.','getVideoStream');
         };
+
 
     },
 
 }
 
 //---------------------------------------------------------------------------------------------------------------
+/* SESSION:
+   A data management function to supervise all above communications.
+   It is a collection of utilities to perform advanced operations on communication channels and data.*/
 //---------------------------------------------------------------------------------------------------------------
 
 var Session = function(){
@@ -496,7 +519,7 @@ var Session = function(){
 
 }
 Session.prototype ={
-
+    //TODO
 
     setCurrentInstance : function(instance){
         this.CurrentInstance = instance;
@@ -507,7 +530,6 @@ Session.prototype ={
     },
 
     saveSockets : function(list){
-        console.log('here');
         for(var i in list){
             this.sockets = this.sockets.concat(getSockets(list[i]));
         }

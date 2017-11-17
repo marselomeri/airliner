@@ -62,6 +62,7 @@ class Telemetry:
         :return: void
         """
         message_text = message.content['text']
+        print message_text
 
         if message_text == 'START_COMM_HS':
             message.reply_channel.send({'text': 'START_COMM_ACK'})
@@ -70,41 +71,46 @@ class Telemetry:
             self.disconnect(message)
         elif message_text == 'US_ALL':
             for each in self.subscribers.keys():
-                pid = self.subscribers[each]['pid']
-                process = self.subscribers[each]['process']
-                if process.is_alive():
-                    to_kill = psutil.Process(pid)
-                    to_kill.kill()
-                del self.subscribers[each]
-                tk.log(each, 'Telemetry push process is now killed.', 'INFO')
-
+                try:
+                    pid = self.subscribers[each]['pid']
+                    process = self.subscribers[each]['process']
+                    if process.is_alive():
+                        to_kill = psutil.Process(pid)
+                        to_kill.kill()
+                    del self.subscribers[each]
+                    tk.log(each, 'Telemetry push process is now killed.', 'INFO')
+                except:
+                    tk.log(each, 'Telemetry push process ALREADY KILLED.', 'INFO')
         elif message_text.find('tlm')!=-1:
 
         # Converting message text to hashable key.
-            prepare1 = json.loads(tk.byteify(message_text))
-            prepare1['tlm'][0].pop('format', None)
-            prepare2 = json.dumps(prepare1)
-            myUnit = self.subscribers[prepare2]
+            try:
+                prepare1 = json.loads(tk.byteify(message_text))
+                prepare1['tlm'][0].pop('format', None)
+                prepare2 = json.dumps(prepare1)
+                myUnit = self.subscribers[prepare2]
 
-        # Converting message text to a format understood by pyliner or YAMCS.
-            temp = tk.byteify(message_text)
-            temp = json.loads(temp)
-            temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
-            temp = temp.replace("\'", "\"")
-            to_send = '[1,1,0,' + str(temp) + ']'
+            # Converting message text to a format understood by pyliner or YAMCS.
+                temp = tk.byteify(message_text)
+                temp = json.loads(temp)
+                temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
+                temp = temp.replace("\'", "\"")
+                to_send = '[1,1,0,' + str(temp) + ']'
 
-        # Get websocket object and process ID, kill process and send unsubscribe signal to pyliner or YAMCS
-            ws = myUnit['ws']
-            pid = myUnit['pid']
-            process = myUnit['process']
-            if process.is_alive():
-                to_kill = psutil.Process(pid)
-                to_kill.kill()
-                self.killed=self.killed+1
-            #del self.subscribers[prepare2]
-            ws.send(to_send)
-            self.subscribers.pop(prepare2,None)
-            tk.log(message.content['text'], 'Telemetry push process is now killed.', 'INFO')
+            # Get websocket object and process ID, kill process and send unsubscribe signal to pyliner or YAMCS
+                ws = myUnit['ws']
+                pid = myUnit['pid']
+                process = myUnit['process']
+                if process.is_alive():
+                    to_kill = psutil.Process(pid)
+                    to_kill.kill()
+                    self.killed=self.killed+1
+                #del self.subscribers[prepare2]
+                ws.send(to_send)
+                self.subscribers.pop(prepare2,None)
+                tk.log(message.content['text'], 'Telemetry push process is now killed.', 'INFO')
+            except:
+                tk.log(message_text, 'Telemetry push process ALREADY KILLED.', 'INFO')
 
     def getTelemetry(self, message):
         """
@@ -326,9 +332,6 @@ class Instance:
     def getInstanceList(self, message):
 
         name = message.content['text']
-        if name == 'SPLREQ':
-            message.reply_channel.send({'text': 'HI DEVELOPER!'})
-
         response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/instances')
         data = json.loads(json.dumps(response.read()))
         message.reply_channel.send({'text': data})
@@ -354,6 +357,7 @@ class Directory:
 
     def directoryListing(self,message):
         name = message.content['text']
+        print message
         response = tk.get_directory(name)
         data = json.dumps(response)
         message.reply_channel.send({'text': data})
@@ -446,6 +450,7 @@ class Video:
         self.video_socket = None
 
     def connect(self, message):
+        print 'plug0'
         message.reply_channel.send({'accept': True})
 
 
@@ -454,18 +459,23 @@ class Video:
 
 
     def getVideo(self, message):
+        print 'plug0.5'
         name = message.content['text']
-        buff = self.VideoThroughUDP().next()
-        message.reply_channel.send({'text': buff})
+        #buff = \
+        self.VideoThroughUDP(message)
+        #message.reply_channel.send({'text': buff})
 
-    def VideoThroughUDP(self):
+    def VideoThroughUDP(self,msg_obj):
         UDP_IP = self.address
         UDP_PORT = self.video_port
         self.video_socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)  # UDP
         self.video_socket.bind(("", UDP_PORT))
+        print 'plug1'
         while True:
+            print 'plug2'
             data, addr = self.video_socket.recvfrom(65527)  # buffer size is 1024 bytes
             b64_img = base64.b64encode(data)
             self.video_frame_counter = self.video_frame_counter + 1
-            print 'Frame# : ['+self.video_frame_counter+'] sent.'
-            yield b64_img
+            print 'Frame# : ['+str(self.video_frame_counter)+'] sent.'
+            msg_obj.reply_channel.send({'text': b64_img})
+            #yield b64_img

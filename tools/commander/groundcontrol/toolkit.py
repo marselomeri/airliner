@@ -3,6 +3,7 @@ from websocket import create_connection
 import datetime
 import ast
 import re
+import pprint
 
 try:
     working_dir = os.environ['YAMCS_WORKSPACE']+'web'
@@ -46,10 +47,12 @@ def get_directory(path):
                 type = 'file'
             entry = {'absolute_path': absolutePath,'path':urlPath,'name':e,'type':type}
             outFiles.append(entry)
+            outFiles.sort()
 
     except IOError:
         error=IOError
         pass
+
 
 
     return {'err':error,'path':path,'files': outFiles}

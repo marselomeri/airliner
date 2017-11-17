@@ -15,7 +15,7 @@ class Test_toolkit(unittest.TestCase):
 
 
     def test_directory_outputs(self):
-
+        get_directory('');
         self.assertEquals(get_directory('')['path'], '')
         self.assertNotEqual(get_directory('/flight')['path'],'/flidfght')
         self.assertEquals(get_directory('/apps/cs')['path'], '/apps/cs')

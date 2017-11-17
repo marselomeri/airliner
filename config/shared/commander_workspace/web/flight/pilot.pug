@@ -59,28 +59,6 @@ block main
     var imageBuffer;
 
 
-    tlm_o.subscribeTelemetry("{'homogeneity': {'tolerance': 0.5}, 'tlm': [{'name': '/MAV/CMN/A_pitch'},{'name': '/MAV/CMN/A_roll'}]}",
-      function (params) {
-        for (var i = 0; i < params.length; ++i) {
-          switch (params[i].id.name) {
-            case '/MAV/CMN/A_pitch':
-              Attitude.Pitch = params[i].engValue.floatValue;
-              break;
-
-            case '/MAV/CMN/A_roll':
-              Attitude.Roll = params[i].engValue.floatValue;
-              break;
-          }
-        }
-
-        if (HUDStarted == false) {
-          /* Skip the first one. */
-          HUDStarted = true;
-        } else {
-          HUDCount++;
-        }
-      }
-    );
 
     setInterval(function () {
       if (HUDStarted == true) {
@@ -128,10 +106,29 @@ block main
     });
 
     var toggle = 0;
-    vid.getVideoStream(function(image) {
-      imageBuffer = image;
+
+    $("#yamcs-instance-selected").change(function(){
+      //if($("#yamcs-instance-selected").text() != 'Select'){
+      console.log('hello');
+      vid.getVideoStream(function(image) {
+
+      imageBuffer = image.data;
+      console.log(imageBuffer);
       cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
     });
+
+    //}
+
+    });
+    /*if($("#yamcs-instance-selected").text() != 'Select'){
+    vid.getVideoStream(function(image) {
+      imageBuffer = image.data;
+      console.log(imageBuffer);
+      cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
+    });
+
+    }*/
+
 
     function drawHUD() {
       var aspectRatio = 320.0 / 180.0;
@@ -595,3 +592,26 @@ block main
 
     var pitchDirection = 0.2;
     var altitudeDirection = 0.01;
+    tlm_o.subscribeTelemetry("{'homogeneity': {'tolerance': 0.5}, 'tlm': [{'name': '/MAV/CMN/A_pitch'},{'name': '/MAV/CMN/A_roll'}]}",
+      function (params) {
+        console.log(params);
+        for (var i = 0; i < params.length; ++i) {
+          switch (params[i].id.name) {
+            case '/MAV/CMN/A_pitch':
+              Attitude.Pitch = params[i].engValue.floatValue;
+              break;
+
+            case '/MAV/CMN/A_roll':
+              Attitude.Roll = params[i].engValue.floatValue;
+              break;
+          }
+        }
+
+        if (HUDStarted == false) {
+          /* Skip the first one. */
+          HUDStarted = true;
+        } else {
+          HUDCount++;
+        }
+      }
+    );
