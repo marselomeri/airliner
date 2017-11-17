@@ -1,7 +1,7 @@
 #!/bin/bash
 HOST_PATH=$1
 
-echo $2
+TARGET_TEST=$2 | cut -d'/' -f5-
 FULL_COMMAND=${*:2}
 TARGET_DIR="/home/jenkins/airliner/build/aero/default"
 TARGET_GCOV_PREFIX="${TARGET_DIR}"
