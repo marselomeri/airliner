@@ -140,15 +140,27 @@ Instance.prototype = {
     /*transmitCurrentInstance*/
     transmitCurrentInstance: function(message){
         var socket = this.websocket2;
+        
+        /* Flush the queuedSubscribers queue, if there are any. */
+        if (tlm_o.subsc.readyState == WebSocket.OPEN) {
+            if(tlm_o.queuedSubscribers.length > 0)
+            {
+                log('INFO','Flushing queued subscribers.','transmitCurrentInstance');
+                tlm_o.queuedSubscribers.forEach(function(subscriber){
+                    tlm_o.subscribeTelemetry(subscriber.message, subscriber.callback);
+                });
+            }
+        }
+        
         socket.onmessage = function (event){
             log('INFO','Message received.','transmitCurrentInstance');
         }
+        
         if (socket.readyState == WebSocket.OPEN) {
             log('INFO','Message sent.','transmitCurrentInstance');
             socket.send(message);
         };
     },
-
 }
 //---------------------------------------------------------------------------------------------------------------
 /* DIRECTORY:
@@ -207,6 +219,8 @@ var Telemetry =function(){
     this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
     this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
     this.subscribers = [];
+    this.queuedSubscribers = [];
+    
     var self = this;
     /*subscribeTelemetry*/
     this.subsc.onopen = function (){
@@ -238,23 +252,103 @@ var Telemetry =function(){
 
 Telemetry.prototype = {
 
-    subscribeTelemetry: function(message,cb){
+    subscribeTelemetry: function(msgObj,cb){
         var socket = this.subsc;
+        var message = "";
+        var self = this;
+        
+        /* If this msgObj is an object, stringify it. */
+        if(typeof msgObj === 'object')
+        {
+            /* This is an object.  Stringify it. */
+            message = JSON.stringify(msgObj);
+        }
+        else
+        {
+            /* This is not an object.  Its probably already 
+               stringify, so just use the string as is, but
+               set msgObj to the JSON object so we can parse
+               it later.
+             */
+            message = msgObj;
+            msgObj = JSON.parse(message);
+        }
+        
         if (socket.readyState == WebSocket.OPEN){
             log('INFO','Message sent.','subscribeTelemetry');
             socket.send(message);
-            /*SUBSCRIPTION OPTIMIZATION TODO*/
-            //this.subscribers.push(message)
+
+			/* Store the subscription away so we can route the updates
+			 * to the callback later.  We could have received multiple
+			 * telemetry items, so store each one off individually.
+			 */
+            msgObj.tlm.forEach(function(tlmItem){
+                var subscription;
+                
+                /* First check to see if we've ever subscribed to this
+                 * telemetry item.  This is so we can support sending updates
+                 * to multiple subscriber callbacks for the same telemetry
+                 * item.
+                 */
+                if(!(tlmItem.name in self.subscribers)){
+                    /* This telemetry item has not been subscribed to.  Create
+                     * an empty array with this key.
+                     */
+                    self.subscribers[tlmItem.name] = [];
+                }
+                
+                /* Now push the new subscription onto the subscribers array. */
+                self.subscribers[tlmItem.name].push({'callback': cb});
+            });
+        }
+        else
+        {
+            log('INFO','Message queued.','subscribeTelemetry');
+            this.queuedSubscribers.push({'message':message, 'callback':cb});
         }
 
-        socket.onmessage = function (event){
+        socket.onmessage = function (message){
             log('INFO','Message received.','subscribeTelemetry');
-            cb(event);
+            var fixedDataString = message.data.replace(/\'/g, '"')
+            fixedDataString = fixedDataString.replace(new RegExp('True', 'g'),'true');
+            fixedDataString = fixedDataString.replace(new RegExp('False', 'g'),'false');
+            var data = JSON.parse(fixedDataString);
+            //console.log(message);
+            data.parameter.forEach(function(param){
+                var tlmName = param.id.name;
+                
+                if(tlmName in self.subscribers){
+                    var subscriptions = self.subscribers[tlmName];
+                    subscriptions.forEach(function(subscription){
+                        subscription.callback(param);
+                    });
+                }
+            });
+            //this.subscribers[event.data.parameter.data.keys(obj).forEach(function(key,index) {
+            //console.log(event);
+            //cb(event);
         };
     },
 
-    unSubscribeTelemetry: function(message){
+    unSubscribeTelemetry: function(msgObj){
         var socket = this.unsubsc;
+        var message = "";
+        
+        /* If this msgObj is an object, stringify it. */
+        if(typeof msgObj === 'object')
+        {
+            /* This is an object.  Stringify it. */
+            message = JSON.stringify(msgObj);
+            console.log(message);
+        }
+        else
+        {
+            /* This is not an object.  Its probably already 
+               stringify, so just use the string as is.
+             */
+            message = msgObj;
+        }
+        
         if (socket.readyState == WebSocket.OPEN) {
             socket.send(message);
             console.log(message);

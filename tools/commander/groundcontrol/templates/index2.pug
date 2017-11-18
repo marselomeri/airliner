@@ -568,10 +568,9 @@ html(lang='en-us')
             }
           }
         }
-        if (found == false) {
-          tlm_o.unSubscribeTelemetry(JSON.stringify({tlm:[{'name':param.id.name}]}));
-
-        }
+        //if (found == false) {
+        //  tlm_o.unSubscribeTelemetry({'tlm':[{'name':param.id.name}]});
+        //}
       };
 
 
@@ -633,8 +632,7 @@ html(lang='en-us')
 
           if (jsonObj.hasOwnProperty('tlm')) {
             /* This is a telemetry object. */
-
-            tlm_o.subscribeTelemetry(JSON.stringify(jsonObj),processTelemetryUpdate);
+            tlm_o.subscribeTelemetry(jsonObj,processTelemetryUpdate);
             CommanderTlmDataElements.push($(this));
           }
 
