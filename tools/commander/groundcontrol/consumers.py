@@ -34,6 +34,8 @@ class Telemetry:
         #self.tlmSeqNum = 0
         self.specialSeqNumber =0
         self.killed = 0
+        self.tracker =0
+        self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.getInstanceName())+'/_websocket')
 
 
     def connect(self, message):
@@ -145,24 +147,25 @@ class Telemetry:
             temp = temp.replace("\'", "\"")
             to_send = '[1,1,0,' + str(temp) + ']'
 
-        # Connecting to pyliner or YAMCS via web sockets.
-            if self.defaultInstance!=None:
-                ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.defaultInstance)+'/_websocket')
-            else:
-                ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.getInstanceName())+'/_websocket')
 
         # Send message, start a system process, store current data in a local dict.
-            ws.send(to_send)
-            process = Process(target=self.push, args=(ws,message))
-            process.start()
-            pid = process.pid
-            self.specialSeqNumber = self.specialSeqNumber + 1
-            unit['myID'] = myID
-            unit['message'] = message
-            unit['process'] = process
-            unit['pid'] = pid
-            unit['ws'] = ws
-            self.subscribers[key]=unit
+            self.yamcs_ws.send(to_send)
+            if self.tracker < 1:
+                process = Process(target=self.push, args=(self.yamcs_ws, message))
+                process.start()
+            self.tracker=self.tracker+1
+                #pid = process.pid
+
+            #process = Process(target=self.push, args=(ws,message))
+            #process.start()
+            #pid = process.pid
+            #self.specialSeqNumber = self.specialSeqNumber + 1
+            #unit['myID'] = myID
+            #unit['message'] = message
+            #unit['process'] = process
+            #unit['pid'] = pid
+            #unit['ws'] = ws
+            #self.subscribers[key]=unit
 
     def housekeeping(self):
         """
@@ -192,9 +195,9 @@ class Telemetry:
             if result != '[1,2,0]':
                 result = tk.preProcess(result)
                 try:
-                    #print '***************'
-                    #print result
-                    #print '***************'
+                    print '***************'
+                    print result
+                    print '***************'
                     message_obj.reply_channel.send({'text': result})
                 except:
                     time.sleep(1)
