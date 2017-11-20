@@ -27,15 +27,18 @@ class Telemetry:
         """
         Initializes data structures and assigned default values to constants.
         """
-        self.subscribers = {}
+        self.subscribers = []
+
         self.defaultInstance= None
         self.port = 8090
         self.address = '127.0.0.1'
-        #self.tlmSeqNum = 0
-        self.specialSeqNumber =0
-        self.killed = 0
-        self.tracker =0
         self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.getInstanceName())+'/_websocket')
+
+        self.tlmSeqNum = 0
+        self.processArray = []
+        #self.specialSeqNumber =0
+        self.killed = 0
+        self.ignition =True
 
 
     def connect(self, message):
@@ -90,7 +93,7 @@ class Telemetry:
                 prepare1 = json.loads(tk.byteify(message_text))
                 prepare1['tlm'][0].pop('format', None)
                 prepare2 = json.dumps(prepare1)
-                myUnit = self.subscribers[prepare2]
+                #myUnit = self.subscribers[prepare2]
 
             # Converting message text to a format understood by pyliner or YAMCS.
                 temp = tk.byteify(message_text)
@@ -98,18 +101,21 @@ class Telemetry:
                 temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
                 temp = temp.replace("\'", "\"")
                 to_send = '[1,1,0,' + str(temp) + ']'
-
+                print '********************************'
+                print to_send
+                print '********************************'
             # Get websocket object and process ID, kill process and send unsubscribe signal to pyliner or YAMCS
-                ws = myUnit['ws']
-                pid = myUnit['pid']
-                process = myUnit['process']
-                if process.is_alive():
-                    to_kill = psutil.Process(pid)
-                    to_kill.kill()
-                    self.killed=self.killed+1
+                #ws = myUnit['ws']
+                #pid = myUnit['pid']
+                #process = myUnit['process']
+                #if process.is_alive():
+                #    to_kill = psutil.Process(pid)
+                #    to_kill.kill()
+                #    self.killed=self.killed+1
                 #del self.subscribers[prepare2]
-                ws.send(to_send)
-                self.subscribers.pop(prepare2,None)
+                self.yamcs_ws.send(to_send)
+                if  prepare2 in self.subscribers : self.subscribers.remove(prepare2)
+                #self.subscribers.pop(prepare2,None)
                 tk.log(message.content['text'], 'Telemetry push process is now killed.', 'INFO')
             except:
                 tk.log(message_text, 'Telemetry push process ALREADY KILLED.', 'INFO')
@@ -123,12 +129,6 @@ class Telemetry:
         message_text = message.content['text']
         unit = {}
 
-        #if message_text == 'START_COMM_HS':
-        #    message.reply_channel.send({'text': 'START_COMM_ACK'})
-
-        #elif message_text == 'CLOSE_COMM_NOFBCK':
-        #    self.disconnect(message)
-
         if message_text.find('tlm')!=-1:
 
         # Converting message text to hashable key.
@@ -137,8 +137,9 @@ class Telemetry:
             prepare2 = json.dumps(prepare1)
 
             key = prepare2
+            self.subscribers.append(key)
             process = None
-            myID = self.specialSeqNumber
+            #myID = self.specialSeqNumber
 
         # Converting message text to a format understood by pyliner or YAMCS.
             temp = tk.byteify(message_text)
@@ -150,10 +151,11 @@ class Telemetry:
 
         # Send message, start a system process, store current data in a local dict.
             self.yamcs_ws.send(to_send)
-            if self.tracker < 1:
+            if self.ignition:
                 process = Process(target=self.push, args=(self.yamcs_ws, message))
                 process.start()
-            self.tracker=self.tracker+1
+                self.processArray.append(process)
+            self.ignition=False
                 #pid = process.pid
 
             #process = Process(target=self.push, args=(ws,message))
@@ -195,9 +197,6 @@ class Telemetry:
             if result != '[1,2,0]':
                 result = tk.preProcess(result)
                 try:
-                    print '***************'
-                    print result
-                    print '***************'
                     message_obj.reply_channel.send({'text': result})
                 except:
                     time.sleep(1)
