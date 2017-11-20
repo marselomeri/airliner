@@ -129,30 +129,30 @@ Integrator::put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral,
     }
 }
 
-boolean
-Integrator::put_with_interval(unsigned interval_us, math::Vector3F &val, 
-        math::Vector3F &integral, uint64 &integral_dt)
-{
-    int32 returnCode;
-    OS_time_t time_struct;
-    uint64 now = 0;
+//boolean
+//Integrator::put_with_interval(unsigned interval_us, math::Vector3F &val, 
+        //math::Vector3F &integral, uint64 &integral_dt)
+//{
+    //int32 returnCode;
+    //OS_time_t time_struct;
+    //uint64 now = 0;
 
-    if (0 == _last_integration_time)
-    {
-        /* this is the first item in the integrator */
-        now = MPU9250_Custom_Get_Time();
-        _last_integration_time = now;
-        _last_reset_time = now;
-        _last_val = val;
+    //if (0 == _last_integration_time)
+    //{
+        ///* this is the first item in the integrator */
+        //now = MPU9250_Custom_Get_Time();
+        //_last_integration_time = now;
+        //_last_reset_time = now;
+        //_last_val = val;
 
-        return FALSE;
-    }
+        //return FALSE;
+    //}
 
-	// Create the timestamp artifically.
-	uint64 timestamp = _last_integration_time + interval_us;
+	//// Create the timestamp artifically.
+	//uint64 timestamp = _last_integration_time + interval_us;
 
-	return put(timestamp, val, integral, integral_dt);
-}
+	//return put(timestamp, val, integral, integral_dt);
+//}
 
 math::Vector3F
 Integrator::get(boolean reset, uint64 &integral_dt)

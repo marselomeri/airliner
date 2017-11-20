@@ -1087,11 +1087,11 @@ end_of_function:
 }
 
 
-uint64 MPU9250_Custom_Get_Time(void)
+CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
 {
     struct timespec ts;
-    uint64 result = 0;
     int returnCode = 0;
+    CFE_TIME_SysTime_t Timestamp = {0, 0};
 
     returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
     if (-1 == returnCode)
@@ -1101,13 +1101,9 @@ uint64 MPU9250_Custom_Get_Time(void)
         goto end_of_function;
     }
 
-    result = (uint64)(ts.tv_sec) * 1000000;
-    result += ts.tv_nsec / 1000;
-
 end_of_function:
-    return result;
+    return Timestamp;
 }
-
 
 
 boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind)

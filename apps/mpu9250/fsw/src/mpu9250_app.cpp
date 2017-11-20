@@ -283,8 +283,6 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
     /*  Get the factory magnetometer sensitivity adjustment values */
-    while (Diag.Calibration.MagXAdj == 0)
-    {
     returnBool = MPU9250_Read_MagAdj(&Diag.Calibration.MagXAdj, 
             &Diag.Calibration.MagYAdj, &Diag.Calibration.MagZAdj);
     if(FALSE == returnBool)
@@ -295,9 +293,6 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
     
-    OS_printf("MagXAdj = %u, MagYAdj = %u, MagZAdj = %u\n", 
-            Diag.Calibration.MagXAdj, Diag.Calibration.MagYAdj, Diag.Calibration.MagZAdj);
-    }
     HkTlm.State = MPU9250_INITIALIZED;
 
     /* Register the cleanup callback */
@@ -617,9 +612,6 @@ void MPU9250::AppMain()
 
 void MPU9250::ReadDevice(void)
 {
-    MPU9250_RawMeasMsg_t rawMsg;
-    MPU9250_CalMeasMsg_t calMsg;
-    
     float rawX_f = 0;
     float rawY_f = 0;
     float rawZ_f = 0;
@@ -627,21 +619,26 @@ void MPU9250::ReadDevice(void)
     float calY_f = 0;
     float calZ_f = 0;
     uint64 timeStamp = 0;
+    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
     uint16 rawTemp = 0;
     int16 calTemp = 0;
-    
     boolean returnBool =  TRUE;
-
     math::Vector3F gval;
     math::Vector3F gval_integrated;
     math::Vector3F aval;
     math::Vector3F aval_integrated;
 
-    timeStamp = MPU9250_Custom_Get_Time();
-
-    /* TODO timestamp */
-    //SensorGyro.Timestamp = ;
-    //SensorAccel.Timestamp = ;
+    cfeTimeStamp = MPU9250_Custom_Get_Time();
+    
+    /* Timestamps */
+    SensorGyro.Timestamp.Seconds = SensorMag.Timestamp.Seconds = 
+            SensorAccel.Timestamp.Seconds = cfeTimeStamp.Seconds;
+    SensorGyro.Timestamp.Subseconds = SensorMag.Timestamp.Subseconds =
+            SensorAccel.Timestamp.Subseconds = cfeTimeStamp.Subseconds;
+    
+    /* Timestamp for low pass filter and integrator */
+    timeStamp = cfeTimeStamp.Seconds * 1000000;
+    timeStamp += cfeTimeStamp.Subseconds / 1000;
 
     /* Gyro */
     returnBool = MPU9250_Read_Gyro(&SensorGyro.XRaw, &SensorGyro.YRaw, &SensorGyro.ZRaw);
@@ -723,10 +720,7 @@ void MPU9250::ReadDevice(void)
     SensorAccel.XIntegral = aval_integrated[0];
     SensorAccel.YIntegral = aval_integrated[1];
     SensorAccel.ZIntegral = aval_integrated[2];
-    
-    OS_printf("Accel X Y Z Integrated %f, %f, %f\n", aval_integrated[0], aval_integrated[1], aval_integrated[2]);
-    OS_printf("Accel det %lld\n", SensorAccel.IntegralDt);
-    
+
     /* Accel Scale, Range, DeviceID */
     SensorAccel.Scaling = -1.0f;
     SensorAccel.Range_m_s2 = -1.0f;

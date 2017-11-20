@@ -79,8 +79,8 @@ public:
 	 * @return		true if putting the item triggered an integral reset and the integral should be
 	 *			published.
 	 */
-	boolean put_with_interval(unsigned interval_us, math::Vector3F &val, math::Vector3F &integral,
-			       uint64 &integral_dt);
+	//boolean put_with_interval(unsigned interval_us, math::Vector3F &val, math::Vector3F &integral,
+			       //uint64 &integral_dt);
 
 	/**
 	 * Get the current integral and reset the integrator if needed.
