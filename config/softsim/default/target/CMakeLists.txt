@@ -349,8 +349,8 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/rcin/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/rcin
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled/src/rcin_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled/src/rcin_sbus.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/rcin/src/rcin_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/rcin/src/rcin_sbus.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/rcin_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rcin_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rcin_perfids.h

@@ -61,6 +61,16 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+/**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    RCIN_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    RCIN_INITIALIZED   = 1
+} RCIN_Status_t;
 
 
 /**
@@ -275,8 +285,35 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
-
+    
+    /************************************************************************/
+    /** \brief Sends the RCInput message.
+     **
+     **  \par Description
+     **       This function publishes the RCInput message containing
+     **       <TODO>
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReadDevice(void);
 };
+
+
+/************************************************************************/
+/** \brief Cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void RCIN_CleanupCallback(void);
+
 
 #ifdef __cplusplus
 }

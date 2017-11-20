@@ -169,10 +169,12 @@ void RCIN::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
-    		RCIN_HK_TLM_MID, sizeof(HkTlm), TRUE);
+            RCIN_HK_TLM_MID, sizeof(HkTlm), TRUE);
       /* Init output messages */
       CFE_SB_InitMsg(&InputRcMsg,
-      		PX4_INPUT_RC_MID, sizeof(PX4_InputRcMsg_t), TRUE);
+            PX4_INPUT_RC_MID, sizeof(PX4_InputRcMsg_t), TRUE);
+    /* Init custom data */
+    RCIN_Custom_InitData();
 }
 
 
@@ -185,6 +187,7 @@ int32 RCIN::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
+    boolean returnBool = TRUE;
 
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
@@ -204,7 +207,25 @@ int32 RCIN::InitApp()
     }
 
     InitData();
+    
+    returnBool = RCIN_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        goto RCIN_InitApp_Exit_Tag;
+    }
 
+    HkTlm.State = RCIN_INITIALIZED;
+
+    /* Register the cleanup callback */
+    iStatus = OS_TaskInstallDeleteHandler(&RCIN_CleanupCallback);
+    if (iStatus != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(RCIN_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init register cleanup callback (0x%08X)",
+                                 (unsigned int)iStatus);
+        goto RCIN_InitApp_Exit_Tag;
+    }
 
 RCIN_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -255,7 +276,7 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case RCIN_WAKEUP_MID:
-                /* TODO:  Do something here. */
+                ReadDevice();
                 break;
 
             case RCIN_SEND_HK_MID:
@@ -439,6 +460,31 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 }
 
 
+void RCIN::ReadDevice(void)
+{
+    boolean returnBool = FALSE;
+    uint16 errorCount = 0;
+    /* TODO remove temp */
+    int temp = 0;
+
+    while(FALSE == returnBool)
+    {
+        returnBool = RCIN_Custom_Measure(&InputRcMsg);
+        errorCount++;
+    }
+    InputRcMsg.RcLostFrameCount = errorCount;
+
+    /* TODO remove */
+    OS_printf("RCIN errorCount = %u\n", errorCount);
+
+    for (temp = 0; temp < 25; temp++)
+    {
+        OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
+    }
+
+}
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* RCIN Application C style main entry point.                       */
@@ -500,6 +546,16 @@ void RCIN::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
+
+void RCIN_CleanupCallback(void)
+{
+    oRCIN.HkTlm.State = RCIN_UNINITIALIZED;
+    if(RCIN_Custom_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(RCIN_UNINIT_ERR_EID, CFE_EVS_ERROR,"RCIN_Uninit failed");
+        oRCIN.HkTlm.State = RCIN_INITIALIZED;
+    }
+}
 
 /************************/
 /*  End of File Comment */

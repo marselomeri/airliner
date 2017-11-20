@@ -219,6 +219,8 @@ int32 RCIN_Ioctl(int fh, int request, void *arg);
 *************************************************************************/
 boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind);
 
+CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
+
 #ifdef __cplusplus
 }
 #endif 

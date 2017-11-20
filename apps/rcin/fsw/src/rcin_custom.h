@@ -146,4 +146,4 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl);
 }
 #endif 
 
-#endif /* RGBLED_CUSTOM_H */
+#endif /* RCIN_CUSTOM_H */

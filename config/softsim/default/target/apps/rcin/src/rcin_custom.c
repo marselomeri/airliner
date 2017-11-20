@@ -38,6 +38,8 @@
 ** Includes
 *************************************************************************/
 #include "rcin_sbus.h"
+#include "rcin_events.h"
+
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -109,7 +111,7 @@ int32 RCIN_Ioctl(int fh, int request, void *arg)
 
 int32 RCIN_Read(int fd, void *buf, size_t count)
 {
-    in32 returnSize = 0;
+    int32 returnSize = 0;
     uint32 i = 0;
     
     for (i=0; i < RCIN_MAX_RETRY_ATTEMPTS; i++)
@@ -201,7 +203,7 @@ boolean RCIN_Custom_Init(void)
     }
     else
     {
-        RGBLED_AppCustomData.Status = RGBLED_CUSTOM_ENABLED;
+        RCIN_AppCustomData.Status = RCIN_CUSTOM_ENABLED;
     }
 
 end_of_function:
