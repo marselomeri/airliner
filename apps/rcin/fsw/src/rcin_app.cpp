@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "cfe.h"
-
+#include "rcin_custom.h"
 #include "rcin_app.h"
 #include "rcin_msg.h"
 #include "rcin_version.h"
@@ -48,13 +48,42 @@ RCIN::~RCIN()
 int32 RCIN::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
+    int32 customEventCount = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset(EventTbl, 0x00, sizeof(EventTbl));
+    
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    EventTbl[  ind].EventID = RCIN_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_READ_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    
+    
+    /* Add custom events to the filter table */
+    customEventCount = RCIN_Custom_Init_EventFilters(ind, EventTbl);
+    
+    if(-1 == customEventCount)
+    {
+        iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
+        goto end_of_function;
+    }
 
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, (ind + customEventCount), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("RCIN - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
+
+end_of_function:
 
     return iStatus;
 }
