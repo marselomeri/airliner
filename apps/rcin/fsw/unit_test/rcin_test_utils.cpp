@@ -49,14 +49,6 @@
 #include <time.h>
 
 /*
- * Config table for testing
- */
-RCIN_ConfigTbl_t ConfigTbl = {
-        /* TODO:  Define table */
-		0
-};
-
-/*
  * Function Definitions
  */
 

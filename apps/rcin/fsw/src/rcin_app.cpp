@@ -176,11 +176,6 @@ int32 RCIN::InitApp()
 
     InitData();
 
-    iStatus = InitConfigTbl();
-    if (iStatus != CFE_SUCCESS)
-    {
-        goto RCIN_InitApp_Exit_Tag;
-    }
 
 RCIN_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -467,13 +462,6 @@ void RCIN::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(RCIN_SCH_PIPE_PEND_TIME);
-
-        iStatus = AcquireConfigPointers();
-        if(iStatus != CFE_SUCCESS)
-        {
-            /* We apparently tried to load a new table but failed.  Terminate the application. */
-            uiRunStatus = CFE_ES_APP_ERROR;
-        }
     }
 
     /* Stop Performance Log entry */
