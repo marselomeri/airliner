@@ -73,7 +73,6 @@ void RCIN_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
-    Ut_CFE_TBL_AddTable(RCIN_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
 }
 
 void RCIN_Test_TearDown(void) {
