@@ -209,7 +209,7 @@ end_of_function:
 }
 
 
-boolean RCIN_Measure(PX4_InputRcMsg_t *Measure)
+boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 {
     // error Count currently handled outside measure
     //uint16 errorCount = 0;
