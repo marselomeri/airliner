@@ -248,7 +248,7 @@ var Telemetry =function(){
     /*subscribeTelemetry*/
     this.subsc.onopen = function (){
         log('DEBUG','Connection open.','subscribeTelemetry');
-        self.subsc.send('HS');
+        //self.subsc.send('HS');
     };
 
     this.subsc.onclose = function (){
@@ -389,7 +389,25 @@ Telemetry.prototype = {
 
     unSubscribeAll: function(){
         var self = this;
+        for(var i=0;i<20;i++){
+        console.log('usall');
         self.unsubsc.send('USALL');
+        }
+
+        for(var i =0; i<self.allSubscibers.length;i++){
+            var rem = self.allSubscibers.pop();
+            self.unSubscribeTelemetry(rem);
+            //console.log('removed',rem)
+        }
+    },
+
+    unSubscribeAll2: function(){
+        var self = this;
+        //for(var i=0;i<20;i++){
+        //console.log('usall');
+        //self.unsubsc.send('USALL');
+        //}
+
         for(var i =0; i<self.allSubscibers.length;i++){
             var rem = self.allSubscibers.pop();
             self.unSubscribeTelemetry(rem);

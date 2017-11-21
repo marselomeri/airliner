@@ -2,19 +2,24 @@ import toolkit as tk
 import urllib,json
 from websocket import create_connection
 from threading import Thread
-from multiprocessing import Process,Lock,Array
+import threading
+from multiprocessing import Process,Lock,Array,Value
 import psutil
 import requests
 import time
-
+import numpy
 import socket
 
 import base64
+import os
+
 
 
 
 # COMPLETE
 class Telemetry:
+    counter = Value('d', 0.0)
+    lock = Lock()
 
     """
     All telemetry requests from the client side are channeled through an instance of Telemetry class.
@@ -37,7 +42,10 @@ class Telemetry:
         self.tracker =0
         self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.getInstanceName())+'/_websocket')
         self.proc =[]
-        self.lock = Lock()
+        self.lockswitch =True
+        #self.counter = 0
+
+
 
     def connect(self, message):
         """
@@ -64,6 +72,8 @@ class Telemetry:
         :param message:message object
         :return: void
         """
+        #self.tracker = 0
+        #self.proc = []
         message_text = message.content['text']
         print message_text
 
@@ -73,21 +83,27 @@ class Telemetry:
         elif message_text == 'CLOSE_COMM_NOFBCK':
             self.disconnect(message)
         elif message_text == 'USALL':
+            print 'array  from',self, '--->',self.proc
             print '+'*250
-            for proc in psutil.process_iter():
-                print proc
-                if proc.name =='kproc':
-                    print proc
-                    proc.kill()
+            for p in self.proc:
+                to_kill = psutil.Process(p.pid)
+                print 'tokil  from',self, '--->',to_kill
+                to_kill.kill()
+                time.sleep(2)
+                print 'array  from',self, '--->',self.proc
+            self.tracker = 0
+            self.proc = []
+                    #print proc
+                    #proc.kill()
 
         elif message_text.find('tlm')!=-1:
-
+            #os.sched_setaffinity(0, {0})  # current process on 0-th core
         # Converting message text to hashable key.
             try:
                 prepare1 = json.loads(tk.byteify(message_text))
                 prepare1['tlm'][0].pop('format', None)
                 prepare2 = json.dumps(prepare1)
-                myUnit = self.subscribers[prepare2]
+                #myUnit = self.subscribers[prepare2]
 
             # Converting message text to a format understood by pyliner or YAMCS.
                 temp = tk.byteify(message_text)
@@ -97,21 +113,22 @@ class Telemetry:
                 to_send = '[1,1,0,' + str(temp) + ']'
 
             # Get websocket object and process ID, kill process and send unsubscribe signal to pyliner or YAMCS
-                ws = myUnit['ws']
-                pid = myUnit['pid']
-                process = myUnit['process']
-                if process.is_alive():
-                    to_kill = psutil.Process(pid)
-                    to_kill.kill()
-                    self.killed=self.killed+1
+                #ws = myUnit['ws']
+                #pid = myUnit['pid']
+                #process = myUnit['process']
+                #if process.is_alive():
+                    #to_kill = psutil.Process(pid)
+                    #to_kill.kill()
+                    #self.killed=self.killed+1
                 #del self.subscribers[prepare2]
-                ws.send(to_send)
+                self.yamcs_ws.send(to_send)
                 self.subscribers.pop(prepare2,None)
                 tk.log(message.content['text'], 'Telemetry push process is now killed.', 'INFO')
             except:
                 tk.log(message_text, 'Telemetry push process ALREADY KILLED.', 'INFO')
 
     def getTelemetry(self, message):
+        #global lock
         """
         Process subscribe requests for telemetry and creates system processes which pushes data to client.
         :param message: message object
@@ -149,18 +166,29 @@ class Telemetry:
             self.yamcs_ws.send(to_send)
 
 
+            #print 'many',self.tracker
+            #print message.__dict__
+            #print message.content['order']
+            #print message.__dict__
+            #print '+++++++++++++++++++++++++++++++++++++++'
+            #print message.content['reply_channel']
+            #print message.channel_layer.__dict__
+            #print message.channel.__dict__
+            #print message.reply_channel.__dict__
+            #print '+++++++++++++++++++++++++++++++++++++++'
+            if self.tracker==0:
 
-            if self.tracker < 1:
+                print 'atomic'
+                process = Process(target=self.push,args=(self.yamcs_ws, message,Telemetry.lock))
 
-                process = Process(target=self.push, name ='kproc',args=(self.yamcs_ws, message))
-                process.name ='kproc'
                 process.start()
                 print '*******************'
-                self.proc.append(process.pid)
-                print process.name,process.pid,'\n',self.proc
-                print process
+                self.proc.append(process)
+                tk.log(process,message_text,'DEBUG')
+                tk.log(self,'Objcet IDD:::','')
+                    #print process
 
-                print '*******************'
+
                 self.tracker=self.tracker+1
 
 
@@ -181,17 +209,34 @@ class Telemetry:
         json = tk.readSESSION()
         return json["InstanceName"]
 
-    def push(self, websocket_obj, message_obj):
+    def push(self, websocket_obj, message_obj,loc):
         """
         A forever loop to receive and push telemetry to client.
         :param websocket_obj:  websocket object
         :param message_obj: message object
         :return: void
         """
+        #lock = Lock()
+        """
+        global counter
+
+        with loc:
+            tk.log(message_obj['text'],'locked by','DEBUG')
+            counter.value=counter.value+1
+            tk.log(counter,'concurrent','DEBUG')
+
+        tk.log(message_obj['text'], 'lock RELEASED by', 'DEBUG')
+        print '*******************'
+        """
+
+
         while True:
+            self.lockswitch= False
             result = websocket_obj.recv()
             if result != '[1,2,0]':
                 result = tk.preProcess(result)
+                #print result
+                #print message_obj.__dict__
                 try:
                     #print '***************'
                     #print result
@@ -200,6 +245,8 @@ class Telemetry:
                 except:
                     time.sleep(1)
                     message_obj.reply_channel.send({'text': result})
+
+                print message_obj.content['text']
                 #tk.log(message_obj.content['text'], 'Telemetry packet sent to client', 'INFO')
 
 class Command:
@@ -242,9 +289,9 @@ class Command:
 
 
         message_text = message.content['text']
-        print '**************************'
-        print '==> ', message_text
-        print '**************************'
+        #print '**************************'
+        #print '==> ', message_text
+        #print '**************************'
         if message_text == 'HS':
             message.reply_channel.send({'text': 'HSOK'})
         else:
@@ -273,10 +320,10 @@ class Command:
         #    self.disconnect(message)
 
         #else:
-        print '**************************'
-        print message_text
+        #print '**************************'
+        #print message_text
         to_post = json.loads(message_text)
-        print '**************************'
+        #print '**************************'
         url=''
         if self.defaultInstance!=None:
             url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + str(self.defaultInstance) + '/realtime/commands' + to_post['name'] + '?nolink'
@@ -292,11 +339,11 @@ class Command:
         r = requests.post(url=url, data=msg, headers = headers)
         got = r.text
         message.reply_channel.send({'text': got})
-        print '**************************'
-        print msg
-        print got
+        #print '**************************'
+        #print msg
+        #print got
         #to_post = json.loads(message_text)
-        print '**************************'
+        #print '**************************'
 
 
 

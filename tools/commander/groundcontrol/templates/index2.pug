@@ -371,7 +371,8 @@ html(lang='en-us')
       }
       window.onbeforeunload = function () {
        tlm_o.unSubscribeAll()
-       window.alert('Are You Sure!!!')
+       //tlm_o.setTracker()
+       console.log('Are You Sure!!!')
       }
 
       /*HAPPENS WHENEVER URL CHANGES*/
@@ -379,6 +380,7 @@ html(lang='en-us')
         console.log('HASH CHANFGE DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         var newInstance = session.getCurrentInstance();
         cmd_o.cleanSlate();
+        //tlm_o.unSubscribeAll()
         if($("#yamcs-instance-selected").text() != 'Select'){
         page_change_counter = page_change_counter+1;}
 
@@ -605,7 +607,7 @@ html(lang='en-us')
         if(page_change_counter>=1){
 
             console.log('called all unsubscription');
-            tlm_o.unSubscribeAll();
+            //tlm_o.unSubscribeAll2();
 
 
         }
