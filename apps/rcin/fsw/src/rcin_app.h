@@ -69,7 +69,11 @@ typedef enum
     /*! App status uninitialized */
     RCIN_UNINITIALIZED = 0,
     /*! App status uninitialized */
-    RCIN_INITIALIZED   = 1
+    RCIN_INITIALIZED   = 1,
+    /*! App status not publishing */
+    RCIN_NOTPUBLISHING = 2,
+    /*! App status publishing */
+    RCIN_PUBLISHING    = 3
 } RCIN_Status_t;
 
 

@@ -134,14 +134,36 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define RCIN_MAX_RETRY_ATTEMPTS       (2)
+#define RCIN_MAX_RETRY_ATTEMPTS         (2)
 
 /** \brief Sleep time micro seconds for interrupted calls.
 **
 **  \par Limits:
 **       None.
 */
-#define RCIN_MAX_RETRY_SLEEP_USEC     (10)
+#define RCIN_MAX_RETRY_SLEEP_USEC       (10)
+/* Timeout settings */
+
+/** \brief Wait time for data in seconds.
+**
+**  \par Limits:
+**       None.
+*/
+#define RCIN_BUFFER_FILL_TIMEOUT_SEC    (0)
+
+/** \brief Wait time for data in microseconds.
+**
+**  \par Limits:
+**       None.
+*/
+#define RCIN_BUFFER_FILL_TIMEOUT_USEC   (4700)
+
+/** \brief Streaming task priority
+**
+**  \par Limits:
+**       0 to MAX_PRIORITY (usually 255)
+*/
+#define RCIN_STREAMING_TASK_PRIORITY    (50)
 
 /************************************************************************
 ** Structure Declarations
@@ -153,11 +175,15 @@ extern "C" {
 typedef enum
 {
     /*! Status uninitialized */
-    RCIN_CUSTOM_UNINITIALIZED  = 0,
+    RCIN_CUSTOM_UNINITIALIZED   = 0,
     /*! Status initialized */
-    RCIN_CUSTOM_INITIALIZED   = 1,
+    RCIN_CUSTOM_INITIALIZED     = 1,
     /*! Status initialized */
-    RCIN_CUSTOM_ENABLED   = 2
+    RCIN_CUSTOM_ENABLED         = 2,
+    /*! Status not streaming */
+    RCIN_CUSTOM_NOTSTREAMING    = 3,
+    /*! Status streaming */
+    RCIN_CUSTOM_STREAMING       = 4,
 } RCIN_Custom_Status_t;
 
 
@@ -171,6 +197,16 @@ typedef struct
     struct termios2                 TerminalConfig;
     /*! The current device status */
     RCIN_Custom_Status_t            Status;
+    /*! Flag to start and stop streaming */
+    boolean                         ContinueFlag;
+    /*! Streaming task priority */
+    uint8                           Priority;
+    /*! Streaming child task identifier */
+    uint32                          ChildTaskID;
+    /*! Streaming task function pointer */
+    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    /*! RCInput message for storing SBUS data */
+    PX4_InputRcMsg_t                Measure;
 } RCIN_AppCustomData_t;
 
 
