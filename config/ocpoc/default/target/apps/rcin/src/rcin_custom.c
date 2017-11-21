@@ -236,7 +236,6 @@ boolean RCIN_Custom_Init(void)
             "RCIN create streaming task failed");
         goto end_of_function;
     }
-    
     else
     {
         RCIN_AppCustomData.Status = RCIN_CUSTOM_ENABLED;
@@ -350,7 +349,13 @@ end_of_function:
 void RCIN_Custom_Read(void)
 {
     int bytesRead = 0;
-    uint8 sbusData[RCIN_SERIAL_READ_SIZE] = {0};
+    uint8 sbusData[RCIN_SERIAL_READ_SIZE] = {
+                                        0x0f, 0x01, 0x04, 0x20, 0x00,
+                                        0xff, 0x07, 0x40, 0x00, 0x02,
+                                        0x10, 0x80, 0x2c, 0x64, 0x21,
+                                        0x0b, 0x59, 0x08, 0x40, 0x00,
+                                        0x02, 0x10, 0x80, 0x00, 0x00 };
+
     boolean syncSuccess = FALSE;
 
     /* Timestamp */
@@ -391,17 +396,12 @@ void RCIN_Custom_Read(void)
                 CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN back in sync");
             }
-            else
-            {
-                goto end_of_function;
-            }
         }
     }
     else
     {
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error");
-            goto end_of_function;
     }
 
     RCIN_AppCustomData.Measure.Values[0] = (uint16)(((sbusData[1] | sbusData[2] << 8) 
@@ -451,9 +451,6 @@ void RCIN_Custom_Read(void)
     RCIN_AppCustomData.Measure.RcFailsafe = (sbusData[23] & (1 << 3)) ? TRUE : FALSE;
     RCIN_AppCustomData.Measure.RcLost = (sbusData[23] & (1 << 2)) ? TRUE : FALSE;
     RCIN_AppCustomData.Measure.InputSource = PX4_RC_INPUT_SOURCE_PX4IO_SBUS;
-
-end_of_function:
-;
 }
 
 
