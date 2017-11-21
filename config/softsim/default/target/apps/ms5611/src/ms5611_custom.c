@@ -60,8 +60,8 @@
 *************************************************************************/
 typedef enum {
 
-/** \brief <tt> 'RGBLED - ' </tt>
-**  \event <tt> 'RGBLED - ' </tt>
+/** \brief <tt> 'MS5611 - ' </tt>
+**  \event <tt> 'MS5611 - ' </tt>
 **  
 **  \par Type: ERROR
 **
@@ -73,13 +73,25 @@ typedef enum {
 */
     MS5611_DEVICE_ERR_EID = MS5611_EVT_CNT,
 
+/** \brief <tt> 'MS5611 - ' </tt>
+**  \event <tt> 'MS5611 - ' </tt>
+**  
+**  \par Type: Info
+**
+**  \par Cause:
+**
+**  This event message is issued when a device successfully complete a
+**  self test.
+**
+*/
+    MS5611_DEVICE_INF_EID,
 /** \brief Number of custom events 
 **
 **  \par Limits:
 **       int32
 */
     MS5611_CUSTOM_EVT_CNT
-} RGBLED_CustomEventIds_t;
+} MS5611_CustomEventIds_t;
 
 
 /************************************************************************
