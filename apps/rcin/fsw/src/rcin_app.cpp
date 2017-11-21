@@ -8,7 +8,7 @@
 #include "rcin_app.h"
 #include "rcin_msg.h"
 #include "rcin_version.h"
-
+#include <unistd.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -471,6 +471,7 @@ void RCIN::ReadDevice(void)
     {
         returnBool = RCIN_Custom_Measure(&InputRcMsg);
         errorCount++;
+        usleep(4700);
     }
     InputRcMsg.RcLostFrameCount = errorCount;
 

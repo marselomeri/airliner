@@ -120,11 +120,15 @@ int32 RCIN_Read(int fd, void *buf, size_t count)
         /* Interrupted */
         if (-1 == returnSize && EINTR == errno)
         {
+            CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "RCIN device read EINTR");
             usleep(RCIN_MAX_RETRY_SLEEP_USEC);
         }
         /* No data available */
         else if (-1 == returnSize && EAGAIN == errno)
         {
+            CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "RCIN device read EAGAIN");
             usleep(RCIN_MAX_RETRY_SLEEP_USEC);
         }
         else
@@ -233,6 +237,8 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 
     /* Read */
     bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, &sbusData, sizeof(sbusData));
+    
+    OS_printf("RCIN bytesRead %d\n", bytesRead);
 
     /* TODO handle partial read */
     /* TODO handle out of sync */
