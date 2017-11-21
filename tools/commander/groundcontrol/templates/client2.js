@@ -7,6 +7,26 @@ var DEBUG = false;
 var ERROR = false;
 var INFO = true;
 
+function replaceAll(str, find, replace) {
+            var st = str.toString();
+            return st.replace(new RegExp(find, 'g'), replace);
+        }
+
+function introspectTlm(string_data){
+    //console.log(string_data);
+    var clean_data1 = replaceAll(string_data.data,"\'", "\"")
+    var clean_data2 = replaceAll(clean_data1,'True','true');
+    //console.log(clean_data2);
+    var j = JSON.parse(clean_data2);
+    var items = j['parameter']
+    //console.log(j);
+    for(var i in items){
+        //console.log(i)
+        console.log(items[i]['id']['name'])
+    }
+
+}
+
 function getDate(format){
     var tempstore =new Date();
     try{
@@ -63,6 +83,7 @@ function makeIterator(array) {
        }
     };
 }
+
 
 function getSockets(obj){
     var ws_hold =[];
@@ -218,13 +239,16 @@ var Telemetry =function(){
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
     this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
+
     this.subscribers = [];
     this.queuedSubscribers = [];
+    this.allSubscibers = [];
     
     var self = this;
     /*subscribeTelemetry*/
     this.subsc.onopen = function (){
         log('DEBUG','Connection open.','subscribeTelemetry');
+        self.subsc.send('HS');
     };
 
     this.subsc.onclose = function (){
@@ -248,15 +272,18 @@ var Telemetry =function(){
         log('ERR','Connection closed.','unSubscribeTelemetry');
 
     }
+
+
 }
 
 Telemetry.prototype = {
 
     subscribeTelemetry: function(msgObj,cb){
+
         var socket = this.subsc;
         var message = "";
         var self = this;
-        
+        self.allSubscibers.push(msgObj)
         /* If this msgObj is an object, stringify it. */
         if(typeof msgObj === 'object')
         {
@@ -339,7 +366,7 @@ Telemetry.prototype = {
         {
             /* This is an object.  Stringify it. */
             message = JSON.stringify(msgObj);
-            console.log(message);
+            //console.log(message);
         }
         else
         {
@@ -351,7 +378,6 @@ Telemetry.prototype = {
         
         if (socket.readyState == WebSocket.OPEN) {
             socket.send(message);
-            console.log(message);
             log('INFO','Message sent.','unSubscribeTelemetry');
         };
 
@@ -362,11 +388,13 @@ Telemetry.prototype = {
     },
 
     unSubscribeAll: function(){
-        var socket = this.unsubsc;
-        if (socket.readyState == WebSocket.OPEN) {
-            socket.send('US_ALL');
-            log('INFO','Message sent.','unSubscribeAll');
-        };
+        var self = this;
+        self.unsubsc.send('USALL');
+        for(var i =0; i<self.allSubscibers.length;i++){
+            var rem = self.allSubscibers.pop();
+            self.unSubscribeTelemetry(rem);
+            console.log('removed',rem)
+        }
     },
 }
 
@@ -569,7 +597,7 @@ var Video = function() {
 
         this.vid_subc.onopen = function (){
             log('DEBUG','Connection open.','getVideoStream');
-            self.vid_subc.send('INVOKE');
+            //self.vid_subc.send('INVOKE');
             log('INFO','Message Sent.','getVideoStream');
         }
 

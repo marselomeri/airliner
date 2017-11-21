@@ -358,14 +358,22 @@ html(lang='en-us')
 
 
       /*ONLY HAPPENS ONE TIME ON LAUNCH OR RELOAD*/
-      content.onload= function(){
+      window.onload= function(){
 
         cmd_o.cleanSlate();
-        tlm_o = new Telemetry()
-        tlm_o.unSubscribeAll();
-        console.log('here33333333333');
+        tlm_o = new Telemetry();
+
+
+        console.log('here33333333333',tlm_o);
         session.saveSockets([inst,dir,cmd_o,tlm_o,ev]);
+
+
       }
+      window.onbeforeunload = function () {
+       tlm_o.unSubscribeAll()
+       window.alert('Are You Sure!!!')
+      }
+
       /*HAPPENS WHENEVER URL CHANGES*/
       window.onhashchange= function(){//TODO
         console.log('HASH CHANFGE DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -382,6 +390,7 @@ html(lang='en-us')
       // INSTANCES
 
       inst.getInstanceList(processInstance);
+
 
       // EVENTS
       ev.eventSubscription(function(event) {
@@ -462,10 +471,11 @@ html(lang='en-us')
       var processTelemetryUpdate = function (param) {
 
         //preprocess
-
+        //console.log(param);
         try{
         param = JSON.parse((param.data).replace(/'/g, "\"").replace('True','true'));
         param = param.parameter[0];
+        //console.log(param);
 
         }catch(err){
          log('ERR', 'JSON - PARSE error!','ln 541')
@@ -568,16 +578,16 @@ html(lang='en-us')
             }
           }
         }
-        //if (found == false) {
-        //  tlm_o.unSubscribeTelemetry({'tlm':[{'name':param.id.name}]});
-        //}
+        if (found == false) {
+          tlm_o.unSubscribeTelemetry({'tlm':[{'name':param.id.name}]});
+        }
       };
 
 
 
 
       var replaceAll=function(str, find, replace) {
-            str = str.toString();
+            var str = str.toString();
             return str.replace(new RegExp(find, 'g'), replace);
         }
 
