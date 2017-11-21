@@ -471,7 +471,7 @@ void RCIN::ReadDevice(void)
     {
         returnBool = RCIN_Custom_Measure(&InputRcMsg);
         errorCount++;
-        usleep(4700);
+        //usleep(4700);
     }
     InputRcMsg.RcLostFrameCount = errorCount;
 

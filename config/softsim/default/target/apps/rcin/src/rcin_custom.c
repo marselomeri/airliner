@@ -153,6 +153,7 @@ boolean RCIN_Custom_Init(void)
 {
     boolean returnBool = TRUE;
     int32 returnCode = 0;
+    int32 Status = CFE_SUCCESS;
     
     /* Open */
     RCIN_AppCustomData.DeviceFd = open(RCIN_DEVICE_PATH, O_RDWR | O_NONBLOCK | O_CLOEXEC);
@@ -167,7 +168,17 @@ boolean RCIN_Custom_Init(void)
     {
         RCIN_AppCustomData.Status = RCIN_CUSTOM_INITIALIZED;
     }
-    
+
+    /* Create mutex for shared data */
+        Status = OS_MutSemCreate(&RCIN_AppCustomData.Mutex, RCIN_MUTEX_NAME, 0);
+        if (Status != CFE_SUCCESS)
+        {
+        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "RCIN mutex create failed in custom init");
+        returnBool = FALSE;
+        goto end_of_function;
+        }
+
     /* Get configuration */
     returnCode = RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TCGETS2, 
             &RCIN_AppCustomData.TerminalConfig);

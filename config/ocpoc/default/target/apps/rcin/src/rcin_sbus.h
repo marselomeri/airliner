@@ -165,6 +165,16 @@ extern "C" {
 */
 #define RCIN_STREAMING_TASK_PRIORITY    (50)
 
+/** \brief RCIN shared data mutex name. */
+#define RCIN_MUTEX_NAME                "RCIN_MUTEX"
+
+/** \brief Streaming task name
+**
+**  \par Limits:
+**       OS_MAX_API_NAME
+*/
+#define RCIN_STREAMING_TASK_NAME          "RCIN_STREAM"
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -207,6 +217,8 @@ typedef struct
     CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
     /*! RCInput message for storing SBUS data */
     PX4_InputRcMsg_t                Measure;
+    /*! The shared data mutex */
+    uint32                          Mutex;
 } RCIN_AppCustomData_t;
 
 
@@ -256,6 +268,10 @@ int32 RCIN_Ioctl(int fh, int request, void *arg);
 boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind);
 
 CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
+
+void RCIN_Stream_Task(void);
+
+void RCIN_Custom_Read(void);
 
 #ifdef __cplusplus
 }

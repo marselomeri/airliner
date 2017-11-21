@@ -143,6 +143,9 @@ extern "C" {
 */
 #define RCIN_MAX_RETRY_SLEEP_USEC     (10)
 
+/** \brief RCIN shared data mutex name. */
+#define RCIN_MUTEX_NAME                "RCIN_MUTEX"
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -171,6 +174,8 @@ typedef struct
     struct termios2                 TerminalConfig;
     /*! The current device status */
     RCIN_Custom_Status_t            Status;
+    /*! The shared data mutex */
+    uint32                          Mutex;
 } RCIN_AppCustomData_t;
 
 
