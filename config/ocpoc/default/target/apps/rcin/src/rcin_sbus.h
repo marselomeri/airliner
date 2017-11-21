@@ -156,7 +156,7 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define RCIN_BUFFER_FILL_TIMEOUT_USEC   (4700)
+#define RCIN_BUFFER_FILL_TIMEOUT_USEC   (14000)
 
 /** \brief Streaming task priority
 **
@@ -272,6 +272,14 @@ CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
 void RCIN_Stream_Task(void);
 
 void RCIN_Custom_Read(void);
+
+void RCIN_Custom_SetDefaultValues(void);
+
+boolean RCIN_Custom_Sync(uint8 *data, int size);
+
+boolean RCIN_Custom_Validate(uint8 *data, int size);
+
+boolean RCIN_Custom_PWM_Translate(uint8 *data, int size);
 
 #ifdef __cplusplus
 }

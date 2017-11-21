@@ -463,20 +463,20 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 void RCIN::ReadDevice(void)
 {
     boolean returnBool = FALSE;
-    uint16 errorCount = 0;
     /* TODO remove temp */
     int temp = 0;
 
-    while(FALSE == returnBool)
+    returnBool = RCIN_Custom_Measure(&InputRcMsg);
+    if(FALSE == returnBool)
     {
-        returnBool = RCIN_Custom_Measure(&InputRcMsg);
-        errorCount++;
-        //usleep(4700);
+        /* Measure is returning FALSE set state to not publishing */
+        HkTlm.State = RCIN_NOTPUBLISHING;
     }
-    InputRcMsg.RcLostFrameCount = errorCount;
-
-    /* TODO remove */
-    OS_printf("RCIN errorCount = %u\n", errorCount);
+    else
+    {
+        /* Measure is returning TRUE set state to publishing */
+        HkTlm.State = RCIN_PUBLISHING;
+    }
 
     for (temp = 0; temp < 25; temp++)
     {
