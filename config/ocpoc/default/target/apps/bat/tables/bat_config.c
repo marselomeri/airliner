@@ -42,16 +42,16 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MPC config table data */
 BAT_ConfigTbl_t BAT_ConfigTbl =
 {
-	/* V_EMPTY       */  18.0f,
-    /* V_CHARGED     */  25.0f,
+	/* V_EMPTY       */  3.1f,
+    /* V_CHARGED     */  4.2f,
 	/* N_CELLS       */  6,
-	/* CAPACITY      */  0.0f,
-	/* V_LOAD_DROP   */  0.0f,
+	/* CAPACITY      */  12000.0f,
+	/* V_LOAD_DROP   */  0.5f,
 	/* R_INTERNAL    */  0.0f,
 	/* LOW_THR       */  22.0f,
 	/* CRIT_THR      */  20.0f,
 	/* EMERGEN_THR   */  19.0f,
-	/* Voltage Scale */  1.0f,
+	/* Voltage Scale */  1.00998f, /* Calibrated on 11/21/2017 */
 	/* Current Scale */  1.0f,
 };
 

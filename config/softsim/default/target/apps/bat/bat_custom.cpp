@@ -1,4 +1,5 @@
 #include "bat_app.h"
+#include <unistd.h>
 
 
 int32 BAT::InitDevice(void)
@@ -17,7 +18,7 @@ int32 BAT::ReadDevice(float &Voltage, float &Current)
 	Voltage = 0.0f;
 	Current = 0.0f;
 
-	OS_TaskDelay(100);
+	usleep(1000);
 
 	return 0;
 }

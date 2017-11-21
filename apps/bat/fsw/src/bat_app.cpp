@@ -616,10 +616,10 @@ void BAT::ListenerTaskMain(void)
 		{
 			CFE_TIME_SysTime_t msgTime;
 
+		    OS_MutSemTake(Mutex);
+
 		    voltage = voltage * ConfigTblPtr->VoltageScale;
 		    current = current * ConfigTblPtr->CurrentScale;
-
-		    OS_MutSemTake(Mutex);
 
 		    BatteryStatusMsg.Voltage = voltage;
 		    BatteryStatusMsg.VoltageFiltered = GetFilteredVoltage(voltage);
@@ -718,7 +718,7 @@ float BAT::GetDischarged(float Current)
 float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, bool Armed)
 {
 	float remaining = 0.0f;
-	float batVEmptyDynamic = ConfigTblPtr->VEmpty;
+	float batVEmptyDynamic = 0.0f;
 	float voltageRange = 0.0f;
 	float rVoltage = 0.0f;
 	float rVoltageFilt = 0.0f;
@@ -727,14 +727,14 @@ float BAT::GetRemaining(float Voltage, float Current, float ThrottleNormalized, 
 
 	if(ConfigTblPtr->RInternal >= 0.0f)
 	{
-		batVEmptyDynamic -= Current * ConfigTblPtr->RInternal;
+		batVEmptyDynamic = ConfigTblPtr->VEmpty - (Current * ConfigTblPtr->RInternal);
 	}
 	else
 	{
 		/* Assume 10% voltage drop of the full drop range with motors idle */
 		float thr = (Armed) ? ((fabsf(ThrottleNormalized) + 0.1f) / 1.1f) : 0.0f;
 
-		batVEmptyDynamic -= ConfigTblPtr->VLoadDrop * thr;
+		batVEmptyDynamic = ConfigTblPtr->VEmpty - (ConfigTblPtr->VLoadDrop * thr);
 	}
 
 	/* The range from full to empty is the same for batteries under load and

@@ -2,7 +2,9 @@
 #include <unistd.h>
 
 #define BAT_VOLTAGE_PATH "/sys/bus/iio/devices/iio:device0/in_voltage8_raw"
-#define BAT_BATTERY1_V_DIV   (0.00694783573f)
+
+/* 28V / 4096 counts = 0.0068359375f V per count */
+#define BAT_BATTERY1_V_DIV   (0.0068359375f)
 
 
 int32 BAT::InitDevice(void)
@@ -51,12 +53,13 @@ int32 BAT::ReadDevice(float &Voltage, float &Current)
 			ret = ret_tmp;
 		}
 
+		Voltage *= BAT_BATTERY1_V_DIV;
+
 		fclose(FD);
 	}
 
-	usleep(100000);
+	usleep(10000);
 
-	Voltage *= BAT_BATTERY1_V_DIV;
 	Current = 0.0f;
 
 	return ret;
