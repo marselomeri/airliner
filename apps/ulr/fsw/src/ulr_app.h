@@ -92,6 +92,8 @@ typedef struct
 #define ULR_LISTENER_TASK_PRIORITY		100
 #define ULR_MUTEX_NAME 					"ULR_MUTEX"
 
+extern "C" void ULR_ListenerTaskMain();
+
 
 /**
  **  \brief ULR Application Class
@@ -298,6 +300,7 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
     /************************************************************************/
     /** \brief Sends the DistanceSensor message.
      **
@@ -310,6 +313,7 @@ public:
      **
      *************************************************************************/
     void SendDistanceSensor(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **

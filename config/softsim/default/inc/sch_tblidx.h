@@ -47,6 +47,8 @@
 
 #define VC_SEND_HK_MIDX				45
 #define VC_WAKEUP_MIDX				46
+#define RGBLED_WAKEUP_MIDX			47
+#define RGBLED_SEND_HK_MIDX			48
 
 #define CI_READ_CMD_MIDX			50
 #define CI_1HZ_PROCESS_TIMEOUT_MIDX 51
@@ -96,6 +98,9 @@
 #define RCIN_WAKEUP_MIDX			113
 #define VM_SEND_HK_MIDX			    114
 #define VM_WAKEUP_MIDX			    115
+
+#define BAT_SEND_HK_MIDX		    117
+#define BAT_WAKEUP_MIDX			    118
 
 #define GPS_READ_SENSOR_MIDX 	    122
 #define GPS_SEND_HK_MIDX        	123

@@ -49,6 +49,7 @@ typedef enum
     UT_CFE_TIME_GETUTC_INDEX,
     UT_CFE_TIME_GETTAI_INDEX,
     UT_CFE_TIME_GETTIME_INDEX,
+    UT_CFE_TIME_GETMET_INDEX,
     UT_CFE_TIME_SUB2MICROSECS_INDEX,
     UT_CFE_TIME_SUBTRACT_INDEX,
     UT_CFE_TIME_MICRO2SUBSECS_INDEX,
@@ -66,6 +67,7 @@ typedef struct
     CFE_TIME_SysTime_t (*CFE_TIME_GetUTC)(void);
     CFE_TIME_SysTime_t (*CFE_TIME_GetTAI)(void);
     CFE_TIME_SysTime_t (*CFE_TIME_GetTime)(void);
+    CFE_TIME_SysTime_t (*CFE_TIME_GetMET)(void);
     uint32 (*CFE_TIME_Micro2SubSecs)(uint32 MicroSeconds);
     uint32 (*CFE_TIME_Sub2MicroSecs)(uint32 SubSeconds);
     CFE_TIME_SysTime_t (*CFE_TIME_Add)(CFE_TIME_SysTime_t Time1, CFE_TIME_SysTime_t Time2);

@@ -68,6 +68,7 @@ void Ut_CFE_TIME_SetFunctionHook(uint32 Index, void *FunPtr)
     if      (Index == UT_CFE_TIME_GETUTC_INDEX)        { Ut_CFE_TIME_HookTable.CFE_TIME_GetUTC = FunPtr; }
     else if (Index == UT_CFE_TIME_GETTAI_INDEX)        { Ut_CFE_TIME_HookTable.CFE_TIME_GetTAI = FunPtr; }
     else if (Index == UT_CFE_TIME_GETTIME_INDEX)       { Ut_CFE_TIME_HookTable.CFE_TIME_GetTime = FunPtr; }
+    else if (Index == UT_CFE_TIME_GETMET_INDEX)       { Ut_CFE_TIME_HookTable.CFE_TIME_GetMET = FunPtr; }
     else if (Index == UT_CFE_TIME_MICRO2SUBSECS_INDEX) { Ut_CFE_TIME_HookTable.CFE_TIME_Micro2SubSecs = FunPtr; }
     else if (Index == UT_CFE_TIME_SUB2MICROSECS_INDEX) { Ut_CFE_TIME_HookTable.CFE_TIME_Sub2MicroSecs = FunPtr; }
     else if (Index == UT_CFE_TIME_ADD_INDEX)           { Ut_CFE_TIME_HookTable.CFE_TIME_Add = FunPtr; }
@@ -156,6 +157,20 @@ CFE_TIME_SysTime_t  CFE_TIME_GetTime(void)
     Time.Seconds = 0;
     Time.Subseconds = 0;
     
+    return Time;
+}
+
+CFE_TIME_SysTime_t  CFE_TIME_GetMET(void)
+{
+    CFE_TIME_SysTime_t  Time;
+
+    /* Check for Function Hook */
+    if (Ut_CFE_TIME_HookTable.CFE_TIME_GetMET)
+        return Ut_CFE_TIME_HookTable.CFE_TIME_GetMET();
+
+    Time.Seconds = 0;
+    Time.Subseconds = 0;
+
     return Time;
 }
 

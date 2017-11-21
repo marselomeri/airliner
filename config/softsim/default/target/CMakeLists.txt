@@ -353,3 +353,14 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rcin_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/rcin_perfids.h
 )
+
+add_airliner_app(
+    bat
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/bat/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/bat
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/bat/bat_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/bat_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/bat_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/bat_perfids.h
+)
