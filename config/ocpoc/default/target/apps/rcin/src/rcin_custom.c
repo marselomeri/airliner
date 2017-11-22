@@ -484,31 +484,19 @@ end_of_function:
 
 void RCIN_Custom_Read(void)
 {
-    int bytesRead = 0;
+    static int bytesRead = 0;
     uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0 };
     boolean returnBool = TRUE;
     boolean validPacket = TRUE;
     boolean syncSuccess = FALSE;
 
     /* Read */
-    bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+    bytesRead += RCIN_Read(RCIN_AppCustomData.DeviceFd, 
             &RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
-            
-    OS_printf("RCIN Custom Read %d\n", bytesRead);
 
-    /* A partial read occured  */
-    if (bytesRead > 0 && bytesRead < RCIN_SERIAL_READ_SIZE) 
+    if (RCIN_SERIAL_READ_SIZE == bytesRead)
     {
-        /* We're out of sync */
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "RCIN partial read error");
-        RCIN_AppCustomData.Sync = RCIN_CUSTOM_OUT_OF_SYNC;
-        validPacket = FALSE;
-        goto end_of_function;
-    }
-    /* If we received a size of packet that might be complete...*/
-    else if (RCIN_SERIAL_READ_SIZE == bytesRead)
-    {
+        bytesRead = 0;
         /* Validate SBUS header and end byte */
         validPacket = RCIN_Custom_Validate(sbusData, sizeof(sbusData));
 
@@ -571,8 +559,8 @@ void RCIN_Custom_Sync(void)
         /* read 24 bytes */
         for(i = 0; i < RCIN_SERIAL_READ_SIZE - 1; i++)
         {
-        /* Read one byte at a time */
-        byteCount = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+            /* Read one byte at a time */
+            byteCount = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
                     &byteRead, 1);
         }
         /* The end byte should be 0x00 */
