@@ -398,7 +398,7 @@ boolean RCIN_Custom_Validate(uint8 *data, int size)
 end_of_function:
     if (FALSE == returnBool)
     {
-        /* Increment the error counter */
+        /* Increment the message error counter */
         RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
     }
     return returnBool;
@@ -421,7 +421,7 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
     }
 
     /* Size check */
-    if(RCIN_SERIAL_READ_SIZE == size)
+    if(RCIN_SERIAL_READ_SIZE != size)
     {
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN_Custom_PWM_Translate size error");
@@ -493,6 +493,8 @@ void RCIN_Custom_Read(void)
     /* Read */
     bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
             &RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
+            
+    OS_printf("RCIN Custom Read %d\n", bytesRead);
 
     /* A partial read occured  */
     if (bytesRead > 0 && bytesRead < RCIN_SERIAL_READ_SIZE) 
@@ -546,14 +548,15 @@ void RCIN_Custom_Sync(void)
 {
     uint32 i = 0;
     uint8 byteRead = 0;
+    uint8 byteCount = 0;
     static boolean headerFound = FALSE;
     static boolean footerFound = FALSE;
 
     /* Iterate through a packets worth of data */
-    for(i = 0; i < RCIN_SERIAL_READ_SIZE - 1; i++)
+    for(i = 0; i < RCIN_SERIAL_READ_SIZE; i++)
     {
         /* Read one byte at a time */
-        byteRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+        byteCount = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
                 &byteRead, 1);
         if(0x0f == byteRead)
         {
@@ -565,10 +568,11 @@ void RCIN_Custom_Sync(void)
     /* If we found the header search for the footer */
     if(TRUE == headerFound)
     {
-        for(i = 0; i < RCIN_SERIAL_READ_SIZE - 2; i++)
+        /* read 24 bytes */
+        for(i = 0; i < RCIN_SERIAL_READ_SIZE - 1; i++)
         {
-            /* Read one byte at a time */
-            byteRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+        /* Read one byte at a time */
+        byteCount = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
                     &byteRead, 1);
         }
         /* The end byte should be 0x00 */
@@ -582,8 +586,8 @@ void RCIN_Custom_Sync(void)
     if(TRUE == headerFound && TRUE == footerFound)
     {
         RCIN_AppCustomData.Sync = RCIN_CUSTOM_IN_SYNC;
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "RCIN device back in sync");
+        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                //"RCIN device in sync");
         headerFound = FALSE;
         footerFound = FALSE;
     }
