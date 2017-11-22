@@ -39,6 +39,7 @@
 *************************************************************************/
 #include "rcin_sbus.h"
 #include "rcin_events.h"
+#include "perf_ids.h"
 
 /************************************************************************
 ** Local Defines
@@ -144,6 +145,7 @@ void RCIN_Custom_InitData(void)
     RCIN_AppCustomData.ContinueFlag          = TRUE;
     RCIN_AppCustomData.Priority              = RCIN_STREAMING_TASK_PRIORITY;
     RCIN_AppCustomData.StreamingTask         = RCIN_Stream_Task;
+    RCIN_AppCustomData.Sync                  = RCIN_CUSTOM_OUT_OF_SYNC;
 }
 
 
@@ -323,7 +325,16 @@ void RCIN_Stream_Task(void)
             {
                 OS_MutSemTake(RCIN_AppCustomData.Mutex);
                 RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
-                RCIN_Custom_Read();
+
+                if (RCIN_CUSTOM_IN_SYNC == RCIN_AppCustomData.Sync)
+                {
+                    RCIN_Custom_Read();
+                }
+                else
+                {
+                    RCIN_Custom_Sync();
+                    RCIN_Custom_SetDefaultValues();
+                }
                 OS_MutSemGive(RCIN_AppCustomData.Mutex);
                 continue;
             }
@@ -475,17 +486,21 @@ void RCIN_Custom_Read(void)
 {
     int bytesRead = 0;
     uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0 };
+    boolean returnBool = TRUE;
     boolean validPacket = TRUE;
     boolean syncSuccess = FALSE;
 
     /* Read */
-    bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, &sbusData, sizeof(sbusData));
+    bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+            &RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
 
-    /* If a partial read occurs for now error */
+    /* A partial read occured  */
     if (bytesRead > 0 && bytesRead < RCIN_SERIAL_READ_SIZE) 
     {
+        /* We're out of sync */
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN partial read error");
+        RCIN_AppCustomData.Sync = RCIN_CUSTOM_OUT_OF_SYNC;
         validPacket = FALSE;
         goto end_of_function;
     }
@@ -493,33 +508,33 @@ void RCIN_Custom_Read(void)
     else if (RCIN_SERIAL_READ_SIZE == bytesRead)
     {
         /* Validate SBUS header and end byte */
-        if (FALSE == RCIN_Custom_Validate(sbusData, sizeof(sbusData))) 
+        validPacket = RCIN_Custom_Validate(sbusData, sizeof(sbusData));
+
+        if (FALSE == validPacket) 
         {
             /* Validate failed so we're out of sync */
-            /* TODO */
-            while(FALSE == RCIN_Custom_Validate(sbusData, sizeof(sbusData)))
-            {
-                CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "RCIN device out of sync error");
-                RCIN_Custom_Sync(sbusData, bytesRead);
-            }
             CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "RCIN back in sync");
+                        "RCIN device out of sync error");
+            RCIN_AppCustomData.Sync = RCIN_CUSTOM_OUT_OF_SYNC;
+            goto end_of_function;
         }
     }
+    /* Read returned an error */
     else
     {
-        /* Read returned an error */
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error, errno: %i", errno);
+        /* read returned an error so we're now out of sync */
+        RCIN_AppCustomData.Sync = RCIN_CUSTOM_OUT_OF_SYNC;
         validPacket = FALSE;
         goto end_of_function;
     }
 
-    /* Translate SBUS data */
-    RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
+    /* We have a validated packet, translate SBUS data */
+    RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
 
 end_of_function:
+
     if(FALSE == validPacket)
     {
         RCIN_Custom_SetDefaultValues();
@@ -527,62 +542,51 @@ end_of_function:
 }
 
 
-boolean RCIN_Custom_Sync(uint8 *data, int size)
+void RCIN_Custom_Sync(void)
 {
     uint32 i = 0;
-    int bytesRemaining = 0;
-    int bytesRead = 0;
-    uint8 sbusTemp[RCIN_SERIAL_READ_SIZE] = {0};
-    boolean headerFound = FALSE;
-    boolean returnBool = TRUE;
-    
-    if(0 == data)
+    uint8 byteRead = 0;
+    static boolean headerFound = FALSE;
+    static boolean footerFound = FALSE;
+
+    /* Iterate through a packets worth of data */
+    for(i = 0; i < RCIN_SERIAL_READ_SIZE - 1; i++)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "RCIN_Custom_Sync null pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    
-    /* Iterate through the data received */
-    for(i = 0; i < size - 1; i++)
-    {
-        /* Search for the SBUS header */
-        if(0x0f == data[i])
+        /* Read one byte at a time */
+        byteRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+                &byteRead, 1);
+        if(0x0f == byteRead)
         {
             headerFound = TRUE;
-            /* Determine how many bytes remain */
-            bytesRemaining = RCIN_SERIAL_READ_SIZE - (i + 1);
-            /* TODO */
-            while (bytesRead != bytesRemaining)
-            {
-                /* Read bytes remaining to sync */
-                bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, &sbusTemp, bytesRemaining);
-            }
             break;
         }
     }
-    /* For now try again on the next read if the header wasn't found */
-    if (FALSE == headerFound)
+    
+    /* If we found the header search for the footer */
+    if(TRUE == headerFound)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "RCIN_Custom_Sync header not found");
-        returnBool = FALSE;
-        goto end_of_function;
+        for(i = 0; i < RCIN_SERIAL_READ_SIZE - 2; i++)
+        {
+            /* Read one byte at a time */
+            byteRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
+                    &byteRead, 1);
+        }
+        /* The end byte should be 0x00 */
+        if(0x00 == byteRead)
+        {
+            footerFound = TRUE;
+        }
     }
 
-    if (RCIN_SERIAL_READ_SIZE == bytesRemaining + i + 1)
+    /* Back in sync */
+    if(TRUE == headerFound && TRUE == footerFound)
     {
-        /* shift messaage */
-        memcpy(data, &data[i], (i + 1));
-        memcpy(&data[i + 1], sbusTemp, bytesRemaining);
+        RCIN_AppCustomData.Sync = RCIN_CUSTOM_IN_SYNC;
+        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "RCIN device back in sync");
+        headerFound = FALSE;
+        footerFound = FALSE;
     }
-    else
-    {
-        OS_printf("bytes remaining size error\n");
-    }
-end_of_function:
-    return returnBool;
 }
 
 

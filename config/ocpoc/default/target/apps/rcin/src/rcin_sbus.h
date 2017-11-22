@@ -194,7 +194,23 @@ typedef enum
     RCIN_CUSTOM_NOTSTREAMING    = 3,
     /*! Status streaming */
     RCIN_CUSTOM_STREAMING       = 4,
+    /*! Status out of sync */
+    RCIN_OUT_OF_SYNC            = 5
 } RCIN_Custom_Status_t;
+
+
+/**
+ * \brief Device synchronization status
+ */
+typedef enum
+{
+    /*! Status unknown */
+    RCIN_CUSTOM_UNKNOWN         = 0,
+    /*! Status out of sync */
+    RCIN_CUSTOM_OUT_OF_SYNC     = 1,
+    /*! Status in of sync */
+    RCIN_CUSTOM_IN_SYNC         = 2
+} RCIN_Custom_Sync_t;
 
 
 typedef struct
@@ -207,6 +223,8 @@ typedef struct
     struct termios2                 TerminalConfig;
     /*! The current device status */
     RCIN_Custom_Status_t            Status;
+    /*! The current device sync status */
+    RCIN_Custom_Sync_t              Sync;
     /*! Flag to start and stop streaming */
     boolean                         ContinueFlag;
     /*! Streaming task priority */
@@ -219,6 +237,8 @@ typedef struct
     PX4_InputRcMsg_t                Measure;
     /*! The shared data mutex */
     uint32                          Mutex;
+    /*! Current raw SBUS data */
+    uint8 sbusData[RCIN_SERIAL_READ_SIZE];
 } RCIN_AppCustomData_t;
 
 
@@ -275,7 +295,7 @@ void RCIN_Custom_Read(void);
 
 void RCIN_Custom_SetDefaultValues(void);
 
-boolean RCIN_Custom_Sync(uint8 *data, int size);
+void RCIN_Custom_Sync(void);
 
 boolean RCIN_Custom_Validate(uint8 *data, int size);
 
