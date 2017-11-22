@@ -50,6 +50,7 @@
 #define RCIN_MAIN_TASK_PERF_ID      80
 #define VM_MAIN_TASK_PERF_ID        81
 #define BAT_MAIN_TASK_PERF_ID       82
+#define MAVLINK_MAIN_TASK_PERF_ID   83
 
 #endif
 

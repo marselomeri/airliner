@@ -619,6 +619,16 @@
 #define BAT_WAKEUP_MID                              0x1c73
 #define BAT_CMD_MID                                 0x1c74
 
+/* MAVLINK 										    */
+#define MAVLINK_CMD_MID                             0x1c77
+#define MAVLINK_SEND_HK_MID                         0x1c78
+#define MAVLINK_HK_TLM_MID                          0x0c79
+#define MAVLINK_WAKEUP_MID                          0x1c7a
+#define MAVLINK_OUT_DATA_MID                        0x1c7b
+#define MAVLINK_PROCESS_TIMEOUTS_MID                0x1c7c
+
+
+
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 
 #endif
