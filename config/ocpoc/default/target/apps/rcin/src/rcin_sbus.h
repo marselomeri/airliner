@@ -200,17 +200,41 @@ typedef enum
 
 
 /**
- * \brief Device synchronization status
+ * \brief Device status
  */
 typedef enum
 {
-    /*! Status unknown */
-    RCIN_CUSTOM_UNKNOWN         = 0,
-    /*! Status out of sync */
-    RCIN_CUSTOM_OUT_OF_SYNC     = 1,
-    /*! Status in of sync */
-    RCIN_CUSTOM_IN_SYNC         = 2
-} RCIN_Custom_Sync_t;
+    /*! State unknown */
+    RCIN_PARSER_STATE_UNKNOWN             = 0,
+    /*! State waiting for header  */
+    RCIN_PARSER_STATE_WAITING_FOR_HEADER  = 1,
+    /*! State waiting for data1  */
+    RCIN_PARSER_STATE_WAITING_FOR_DATA1   = 2,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA2   = 3,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA3   = 4,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA4   = 5,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA5   = 6,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA6   = 7,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA7   = 8,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA8   = 9,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA9   = 10,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA10  = 11,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA11  = 12,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA12  = 13,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA13  = 14,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA14  = 15,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA15  = 16,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA16  = 17,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA17  = 18,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA18  = 19,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA19  = 20,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA20  = 21,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA21  = 22,
+    RCIN_PARSER_STATE_WAITING_FOR_DATA22  = 23,
+    RCIN_PARSER_STATE_WAITING_FOR_FLAGS   = 24,
+    /*! State waiting for footer  */
+    RCIN_PARSER_STATE_WAITING_FOR_FOOTER  = 25
+} RCIN_Custom_ParserState_t;
 
 
 typedef struct
@@ -223,8 +247,8 @@ typedef struct
     struct termios2                 TerminalConfig;
     /*! The current device status */
     RCIN_Custom_Status_t            Status;
-    /*! The current device sync status */
-    RCIN_Custom_Sync_t              Sync;
+    /*! The current device parser state */
+    RCIN_Custom_ParserState_t       ParserState;
     /*! Flag to start and stop streaming */
     boolean                         ContinueFlag;
     /*! Streaming task priority */
@@ -295,9 +319,9 @@ void RCIN_Custom_Read(void);
 
 void RCIN_Custom_SetDefaultValues(void);
 
-void RCIN_Custom_Sync(void);
+//void RCIN_Custom_Sync(void);
 
-boolean RCIN_Custom_Validate(uint8 *data, int size);
+//boolean RCIN_Custom_Validate(uint8 *data, int size);
 
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size);
 
