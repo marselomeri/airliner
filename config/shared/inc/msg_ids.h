@@ -625,7 +625,6 @@
 #define MAVLINK_HK_TLM_MID                          0x0c79
 #define MAVLINK_WAKEUP_MID                          0x1c7a
 #define MAVLINK_OUT_DATA_MID                        0x1c7b
-#define MAVLINK_PROCESS_TIMEOUTS_MID                0x1c7c
 
 
 
