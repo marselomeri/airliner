@@ -202,8 +202,10 @@ boolean RCIN_Custom_Init(void)
             | PARENB | BOTHER | CREAD);
     RCIN_AppCustomData.TerminalConfig.c_ispeed = RCIN_SERIAL_INPUT_SPEED;
     RCIN_AppCustomData.TerminalConfig.c_ospeed = RCIN_SERIAL_OUTPUT_SPEED;
-    RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = RCIN_SERIAL_VMIN_SETTING;
-    RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = RCIN_SERIAL_VTIME_SETTING;
+    //RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = RCIN_SERIAL_VMIN_SETTING;
+    //RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = RCIN_SERIAL_VTIME_SETTING;
+    RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = 0;
+    RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = 0;
     
     returnCode = RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TCSETS2, 
             &RCIN_AppCustomData.TerminalConfig);
@@ -261,6 +263,7 @@ void RCIN_Stream_Task(void)
     
     if (iStatus == CFE_SUCCESS)
     {
+        /* Task should continue forever until cleanup (uninit) */
         while (RCIN_AppCustomData.ContinueFlag == TRUE)
         {
             maxFd = 0;
@@ -281,10 +284,10 @@ void RCIN_Stream_Task(void)
             /* Get the greatest fd value for select() */
             maxFd = RCIN_AppCustomData.DeviceFd; 
 
-            //CFE_ES_PerfLogEntry(RCIN_DEVICE_GET_PERF_ID);
+            CFE_ES_PerfLogEntry(RCIN_DEVICE_GET_PERF_ID);
             /* Wait for RC data */
             returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
-            //CFE_ES_PerfLogExit(RCIN_DEVICE_GET_PERF_ID);
+            CFE_ES_PerfLogExit(RCIN_DEVICE_GET_PERF_ID);
 
             /* select() wasn't successful */
             if (-1 == returnCode)
@@ -292,14 +295,9 @@ void RCIN_Stream_Task(void)
                 /* select was interrupted, try again */
                 if (EINTR == errno)
                 {
-                    if (retryAttempts == RCIN_MAX_RETRY_ATTEMPTS)
-                    {
-                        goto end_of_function;
-                    }
-                    retryAttempts++;
-                    usleep(RCIN_MAX_RETRY_SLEEP_USEC);
                     CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RCIN select was interrupted");
+                    usleep(RCIN_MAX_RETRY_SLEEP_USEC);
                     continue;
                 }
                 else
@@ -307,7 +305,8 @@ void RCIN_Stream_Task(void)
                     /* select returned an error other than EINTR */
                     CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RCIN stream failed select() returned %i", errno);
-                    goto end_of_function;
+                    usleep(RCIN_MAX_RETRY_SLEEP_USEC);
+                    continue;
                 }
             }
             /* select timed out */
@@ -325,20 +324,19 @@ void RCIN_Stream_Task(void)
                 OS_MutSemTake(RCIN_AppCustomData.Mutex);
                 RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
                 RCIN_Custom_Read();
-                OS_MutSemGive(RCIN_AppCustomData.Mutex); 
-            }    
+                OS_MutSemGive(RCIN_AppCustomData.Mutex);
+                continue;
+            }
         } /* end while loop */
     } /* end if status == success */
-
-end_of_function:
 
     /* Streaming task is exiting so set app flag to initialized */
     RCIN_AppCustomData.Status = RCIN_CUSTOM_ENABLED;
     CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-        "RCIN streaming task exited with return code %li task status (0x%08lX)",
+        "RCIN receive task exited with return code %li task status (0x%08lX)",
         returnCode, iStatus);
 
-    /* The child task was successfully created so exit from it */
+    /* The child task was successfully registered so exit from it */
     if (iStatus == CFE_SUCCESS)
     {
         CFE_ES_ExitChildTask();
@@ -348,12 +346,11 @@ end_of_function:
 
 void RCIN_Custom_SetDefaultValues(void)
 {
-    uint8 sbusData[RCIN_SERIAL_READ_SIZE] = {
-                                        0x0f, 0x01, 0x04, 0x20, 0x00,
-                                        0xff, 0x07, 0x40, 0x00, 0x02,
-                                        0x10, 0x80, 0x2c, 0x64, 0x21,
-                                        0x0b, 0x59, 0x08, 0x40, 0x00,
-                                        0x02, 0x10, 0x80, 0x00, 0x00 };
+    uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0x0f, 0x01, 0x04, 0x20, 0x00,
+                                              0xff, 0x07, 0x40, 0x00, 0x02,
+                                              0x10, 0x80, 0x2c, 0x64, 0x21,
+                                              0x0b, 0x59, 0x08, 0x40, 0x00,
+                                              0x02, 0x10, 0x80, 0x00, 0x00 };
 
     RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
 }
@@ -388,6 +385,11 @@ boolean RCIN_Custom_Validate(uint8 *data, int size)
     }
 
 end_of_function:
+    if (FALSE == returnBool)
+    {
+        /* Increment the error counter */
+        RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
+    }
     return returnBool;
 }
 
@@ -395,6 +397,8 @@ end_of_function:
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
 {
     boolean returnBool = TRUE;
+    /* Currently never modified */
+    uint16 errorCount = 0;
 
     /* Null pointer check */
     if(0 == data)
@@ -456,8 +460,6 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
     /* Channel count */
     RCIN_AppCustomData.Measure.ChannelCount = RCIN_SBUS_CHANNEL_COUNT;
     RCIN_AppCustomData.Measure.RSSI = 100;
-    // For now handle outside measure function call.
-    //Measure->RcLostFrameCount = errorCount;
     RCIN_AppCustomData.Measure.RcTotalFrameCount = 1;
     RCIN_AppCustomData.Measure.RcPpmFrameLength = 0;
     RCIN_AppCustomData.Measure.RcFailsafe = (data[23] & (1 << 3)) ? TRUE : FALSE;
@@ -487,11 +489,14 @@ void RCIN_Custom_Read(void)
         validPacket = FALSE;
         goto end_of_function;
     }
+    /* If we received a size of packet that might be complete...*/
     else if (RCIN_SERIAL_READ_SIZE == bytesRead)
     {
         /* Validate SBUS header and end byte */
         if (FALSE == RCIN_Custom_Validate(sbusData, sizeof(sbusData))) 
         {
+            /* Validate failed so we're out of sync */
+            /* TODO */
             while(FALSE == RCIN_Custom_Validate(sbusData, sizeof(sbusData)))
             {
                 CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -504,12 +509,14 @@ void RCIN_Custom_Read(void)
     }
     else
     {
+        /* Read returned an error */
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "RCIN device read error");
+                "RCIN device read error, errno: %i", errno);
         validPacket = FALSE;
         goto end_of_function;
     }
 
+    /* Translate SBUS data */
     RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
 
 end_of_function:
@@ -524,6 +531,7 @@ boolean RCIN_Custom_Sync(uint8 *data, int size)
 {
     uint32 i = 0;
     int bytesRemaining = 0;
+    int bytesRead = 0;
     uint8 sbusTemp[RCIN_SERIAL_READ_SIZE] = {0};
     boolean headerFound = FALSE;
     boolean returnBool = TRUE;
@@ -536,16 +544,21 @@ boolean RCIN_Custom_Sync(uint8 *data, int size)
         goto end_of_function;
     }
     
-     /* Find the SBUS header */
+    /* Iterate through the data received */
     for(i = 0; i < size - 1; i++)
     {
+        /* Search for the SBUS header */
         if(0x0f == data[i])
         {
+            headerFound = TRUE;
             /* Determine how many bytes remain */
             bytesRemaining = RCIN_SERIAL_READ_SIZE - (i + 1);
-            /* Read bytes remaining to sync */
-            bytesRemaining = RCIN_Read(RCIN_AppCustomData.DeviceFd, &sbusTemp, bytesRemaining);
-            headerFound = TRUE;
+            /* TODO */
+            while (bytesRead != bytesRemaining)
+            {
+                /* Read bytes remaining to sync */
+                bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, &sbusTemp, bytesRemaining);
+            }
             break;
         }
     }
@@ -592,6 +605,8 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
         returnBool = FALSE;
     }
     memcpy(Measure, &RCIN_AppCustomData.Measure, sizeof(PX4_InputRcMsg_t));
+    /* Reset the error counter */
+    RCIN_AppCustomData.Measure.RcLostFrameCount = 0;
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:

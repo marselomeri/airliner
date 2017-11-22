@@ -94,12 +94,16 @@ boolean RCIN_Custom_Init(void);
 /** \brief Custom function to read radio control input.
 **
 **  \par Description
-**       This function populates an PX4_InputRcMsg_t message.
+**       This function always populates an PX4_InputRcMsg_t message. If
+**       FALSE is returned indicating RCIN is not publishing default
+**       values are returned.
 **
-**  \param [out] The RCIN message to populate.
+**  \param [out] The RCIN message to populate. Default values if the 
+**               RCIN device is not publishing.
+**               
 **
 **  \returns
-**  TRUE if successful, FALSE otherwise.
+**  TRUE if RCIN is publishing, FALSE otherwise.
 **  \endreturns
 **
 *************************************************************************/

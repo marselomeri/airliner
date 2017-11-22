@@ -48,7 +48,8 @@
 #define MPC_MAIN_TASK_PERF_ID       78
 #define NAV_MAIN_TASK_PERF_ID       79
 #define RCIN_MAIN_TASK_PERF_ID      80
-#define VM_MAIN_TASK_PERF_ID        81
+#define RCIN_DEVICE_GET_PERF_ID     81
+#define VM_MAIN_TASK_PERF_ID        82
 
 #endif
 

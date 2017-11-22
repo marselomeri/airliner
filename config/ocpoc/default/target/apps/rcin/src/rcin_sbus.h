@@ -173,7 +173,7 @@ extern "C" {
 **  \par Limits:
 **       OS_MAX_API_NAME
 */
-#define RCIN_STREAMING_TASK_NAME          "RCIN_STREAM"
+#define RCIN_STREAMING_TASK_NAME       "RCIN_STREAM"
 
 /************************************************************************
 ** Structure Declarations
