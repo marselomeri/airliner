@@ -10,6 +10,8 @@ killgroup(){
 }
 cd ../
 
+cat art/head
+
 for i in `seq 1 $WORKERS`
 do
   python manage.py runworker &
