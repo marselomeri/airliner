@@ -277,6 +277,7 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
         {
             case RCIN_WAKEUP_MID:
                 ReadDevice();
+                SendInputRcMsg();
                 break;
 
             case RCIN_SEND_HK_MID:
@@ -478,11 +479,11 @@ void RCIN::ReadDevice(void)
         HkTlm.State = RCIN_PUBLISHING;
     }
 
-    OS_printf("RCIN State %u\n", HkTlm.State);
-    for (temp = 0; temp < 25; temp++)
-    {
-        OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
-    }
+    //OS_printf("RCIN State %u\n", HkTlm.State);
+    //for (temp = 0; temp < 25; temp++)
+    //{
+        //OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
+    //}
 
 }
 
