@@ -314,7 +314,7 @@ boolean MPU9250_Custom_Init()
     }
 
     uint8 MPU_Init_Data2[MPU_InitRegNum2][2] = {
-        /* Set the I2C slave addres of AK8963 and set for write. */
+        /* Set the I2C slave address of AK8963 and set for write. */
         {MPU9250_AK8963_I2C_ADDR, MPU9250_REG_I2C_SLV0_ADDR},
         /* I2C slave 0 register address from where to begin data transfer */
         {MPU9250_AK8963_CNTL2, MPU9250_REG_I2C_SLV0_REG},
@@ -863,6 +863,7 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
         returnBool = FALSE;
         goto end_of_function;
     }
+
     returnBool = MPU9250_ReadReg(MPU9250_REG_EXT_SENS_DATA_00 + MPU9250_AK8963_WIA, Value);
 
 end_of_function:

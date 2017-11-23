@@ -151,7 +151,7 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
     /** \brief App State */
-    uint8                 State;
+    uint8              State;
 } MPU9250_HkTlm_t;
 
 

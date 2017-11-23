@@ -355,7 +355,9 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
         {
             case MPU9250_MEASURE_MID:
                 ReadDevice();
-                /* TODO:  Do something here. */
+                SendSensorAccel();
+                SendSensorGyro();
+                SendSensorMag();
                 break;
 
             case MPU9250_SEND_HK_MID:
@@ -503,11 +505,13 @@ void MPU9250::SendSensorAccel()
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorAccel);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorAccel);
 }
+
 void MPU9250::SendSensorMag()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
 }
+
 void MPU9250::SendSensorGyro()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorGyro);
@@ -805,17 +809,17 @@ boolean MPU9250::ValidateDevice(void)
         returnBool = FALSE;
     }
 
-    returnBool = MPU9250_Read_MagDeviceID(&value);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    if (MPU9250_AK8963_ID != value)
-    {
-        (void) CFE_EVS_SendEvent(MPU9250_VALIDATE_ERR_EID, CFE_EVS_ERROR,
-                "AK8963 device ID match failed");
-        returnBool = FALSE;
-    }
+//    returnBool = MPU9250_Read_MagDeviceID(&value);
+//    if(FALSE == returnBool)
+//    {
+//        goto end_of_function;
+//    }
+//    if (MPU9250_AK8963_ID != value)
+//    {
+//        (void) CFE_EVS_SendEvent(MPU9250_VALIDATE_ERR_EID, CFE_EVS_ERROR,
+//                "AK8963 device ID match failed.  Returned 0x%02hx", value);
+//        returnBool = FALSE;
+//    }
 
 end_of_function:
     if(FALSE == returnBool)

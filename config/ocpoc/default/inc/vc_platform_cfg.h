@@ -201,7 +201,7 @@ extern "C" {
 **  \par Limits:
 **       INET_ADDRSTRLEN
 */
-#define VC_DESTINATION_IP               "127.0.0.1"
+#define VC_DESTINATION_IP               "10.10.0.10"
 
 /** \brief Ground system port 
 **

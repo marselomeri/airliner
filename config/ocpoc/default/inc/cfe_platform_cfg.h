@@ -705,7 +705,7 @@
 **       There is a lower limit of 8192 and an upper limit of 2097152 (2MBytes) on
 **       this configuration paramater.
 */
-#define CFE_ES_CDS_SIZE                  ( 128 * 1024 )
+#define CFE_ES_CDS_SIZE                  ( 128 * 2048 )
 
 
 /**
@@ -726,7 +726,7 @@
 **       There is a lower limit of 1024 and an upper limit of 33554432 (32Mbytes) on
 **       this configuration paramater.
 */
-#define CFE_ES_USER_RESERVED_SIZE         ( 1024 * 1024 )
+#define CFE_ES_USER_RESERVED_SIZE         ( 1024 * 2048 )
 
 
 /**
@@ -750,7 +750,7 @@
 **       There is a lower limit of 153600 (150KBytes) and an upper limit of 2097152
 **       (2MBytes) on this configuration paramater.
 */
-#define CFE_ES_RESET_AREA_SIZE  ( 170 * 1024 )
+#define CFE_ES_RESET_AREA_SIZE  ( 170 * 2048 )
 
 /**
 **  \cfeescfg Define Default Memory Pool Alignment Mode
@@ -1300,8 +1300,8 @@
 #define CFE_ES_MEM_BLOCK_SIZE_13           4096
 #define CFE_ES_MEM_BLOCK_SIZE_14           8192
 #define CFE_ES_MEM_BLOCK_SIZE_15          16384
-#define CFE_ES_MEM_BLOCK_SIZE_16          32768
-#define CFE_ES_MAX_BLOCK_SIZE             80000
+#define CFE_ES_MEM_BLOCK_SIZE_16          80000
+#define CFE_ES_MAX_BLOCK_SIZE            200000
 
 
 /**
@@ -1482,7 +1482,7 @@
 **  \par Limits
 **       The cFE does not place a limit on the size of this parameter.
 */
-#define CFE_TBL_BUF_MEMORY_BYTES        524288
+#define CFE_TBL_BUF_MEMORY_BYTES        1048576
 
 /**
 **  \cfetblcfg Maximum Size Allowed for a Double Buffered Table
@@ -1494,7 +1494,7 @@
 **       The cFE does not place a limit on the size of this parameter but it must be
 **       less than half of #CFE_TBL_BUF_MEMORY_BYTES.
 */
-#define CFE_TBL_MAX_DBL_TABLE_SIZE    16384
+#define CFE_TBL_MAX_DBL_TABLE_SIZE    65535
 
 /**
 **  \cfetblcfg Maximum Size Allowed for a Single Buffered Table
@@ -1510,7 +1510,7 @@
 **       small enough to allow for #CFE_TBL_MAX_SIMULTANEOUS_LOADS number of tables
 **       to fit into #CFE_TBL_BUF_MEMORY_BYTES.
 */
-#define CFE_TBL_MAX_SNGL_TABLE_SIZE   16384
+#define CFE_TBL_MAX_SNGL_TABLE_SIZE   65535
 
 /**
 **  \cfetblcfg Maximum Number of Tables Allowed to be Registered

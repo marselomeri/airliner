@@ -560,10 +560,10 @@
 #define ULR_HK_TLM_MID                              0x0c4b
 
 /* RGBLED                                               */
-#define RGBLED_CMD_MID                              0x0c4c
+#define RGBLED_CMD_MID                              0x1c4c
 #define RGBLED_SEND_HK_MID                          0x1c4d
 #define RGBLED_WAKEUP_MID                           0x1c4e
-#define RGBLED_HK_TLM_MID                           0x1c4f
+#define RGBLED_HK_TLM_MID                           0x0c4f
 
 /* GPS                                                  */
 #define GPS_CMD_MID                                 0x1c51
@@ -618,6 +618,18 @@
 #define BAT_SEND_HK_MID                             0x1c72
 #define BAT_WAKEUP_MID                              0x1c73
 #define BAT_CMD_MID                                 0x1c74
+
+/* HMC5883                                              */
+#define HMC5883_HK_TLM_MID                          0x0c75
+#define HMC5883_SEND_HK_MID                         0x1c76
+#define HMC5883_WAKEUP_MID                          0x1c77
+#define HMC5883_CMD_MID                             0x1c78
+
+/* PE                                                    */
+#define PE_HK_TLM_MID                               0x0c79
+#define PE_SEND_HK_MID                              0x1c7a
+#define PE_WAKEUP_MID                               0x1c7b
+#define PE_CMD_MID                                  0x1c7c
 
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 

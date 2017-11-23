@@ -6,30 +6,6 @@ block header
 
 block main
     .row.row-fluid
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
-        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-          header(style="overflow:hidden;")
-            span.widget-icon
-              i.fa.fa-table
-            h2 Voltage
-          div
-            .jarviswidget-editbox
-              input.form-control(type='text')
-            .widget-body
-              #Voltage(style='width:100%; height:300px;')
-              
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
-        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-          header(style="overflow:hidden;")
-            span.widget-icon
-              i.fa.fa-table
-            h2 Current
-          div
-            .jarviswidget-editbox
-              input.form-control(type='text')
-            .widget-body
-              #Current(style='width:100%; height:300px;')
-
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
@@ -79,10 +55,34 @@ block main
                       th Warning:
                       td 
                         span(data-sage={tlm: [{name: "/CFS/PX4/BS_Warning"}]}) ---
-
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Voltage
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #Voltage(style='width:100%; height:300px;')
+              
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Current
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #Current(style='width:100%; height:300px;')
 
       script.
-        var MaxCount = 2500;
+        var MaxCount = 3600;
         var VData = [];
         var VFData = [];
         var CData = [];
@@ -103,6 +103,7 @@ block main
                 }
               },
               yaxis : {
+                min : 0.0,
                 font : {
                   color: "#ffffff"
                 }
@@ -148,7 +149,7 @@ block main
             }
           );
         
-          var MaxCount = 120;
+          var MaxCount = 3600;
           var ignoreCountV = 3;
           var updateInterval = 100;
           var countV = 0;
@@ -204,7 +205,7 @@ block main
                label + '</div>';
           };
     
-          var VGraph = $.plot($("#Current"), [],{
+          var CGraph = $.plot($("#Current"), [],{
               xaxis : {
                 mode : 'time',
                 font : {
@@ -212,6 +213,7 @@ block main
                 }
               },
               yaxis : {
+                min : 0.0,
                 font : {
                   color: "#ffffff"
                 }
@@ -257,7 +259,7 @@ block main
             }
           );
         
-          var MaxCount = 120;
+          var MaxCount = 3600;
           var ignoreCountC = 3;
           var updateInterval = 100;
           var countC = 0;
@@ -303,7 +305,7 @@ block main
             setTimeout(updateC, updateInterval);
           }
                   
-          updateV();
+          updateC();
         });
 
 
