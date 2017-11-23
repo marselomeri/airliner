@@ -321,7 +321,7 @@ void RCIN_Custom_SetDefaultValues(void);
 
 //void RCIN_Custom_Sync(void);
 
-//boolean RCIN_Custom_Validate(uint8 *data, int size);
+boolean RCIN_Custom_Validate(uint8 *data, int size);
 
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size);
 

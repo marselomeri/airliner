@@ -357,42 +357,42 @@ void RCIN_Custom_SetDefaultValues(void)
 }
 
 
-//boolean RCIN_Custom_Validate(uint8 *data, int size)
-//{
-    //boolean returnBool = TRUE;
+boolean RCIN_Custom_Validate(uint8 *data, int size)
+{
+    boolean returnBool = TRUE;
 
-    ///* Null pointer check */
-    //if(0 == data)
-    //{
-        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    //"RCIN_Custom_Validate null pointer");
-        //returnBool = FALSE;
-        //goto end_of_function;
-    //}
+    /* Null pointer check */
+    if(0 == data)
+    {
+        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "RCIN_Custom_Validate null pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
-    ///* Size check */
-    //if(RCIN_SERIAL_READ_SIZE == size)
-    //{
-        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    //"RCIN_Custom_Validate size error");
-        //returnBool = FALSE;
-        //goto end_of_function;
-    //}
+    /* Size check */
+    if(RCIN_SERIAL_READ_SIZE != size)
+    {
+        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "RCIN_Custom_Validate size error");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
-    ///* Validate SBUS packet */
-    //if(0x0f != data[0] && 0x00 != data[24])
-    //{
-        //returnBool = FALSE;
-    //}
+    /* Validate SBUS packet */
+    if(0x0f != data[0] && 0x00 != data[24])
+    {
+        returnBool = FALSE;
+    }
 
-//end_of_function:
-    //if (FALSE == returnBool)
-    //{
-        ///* Increment the message error counter */
-        //RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
-    //}
-    //return returnBool;
-//}
+end_of_function:
+    if (FALSE == returnBool)
+    {
+        /* Increment the message error counter */
+        RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
+    }
+    return returnBool;
+}
 
 
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
@@ -475,9 +475,9 @@ end_of_function:
 void RCIN_Custom_Read(void)
 {
     uint32 i = 0;
-    static int bytesRead = 0;
+    int bytesRead = 0;
     uint8 sbusTemp[RCIN_SERIAL_READ_SIZE] = { 0 };
-    boolean validPacket = TRUE;
+    static boolean sync = FALSE;
 
     /* Read */
     bytesRead = RCIN_Read(RCIN_AppCustomData.DeviceFd, &sbusTemp, sizeof(sbusTemp));
@@ -486,20 +486,27 @@ void RCIN_Custom_Read(void)
     {
         for(i = 0; i < bytesRead; i++)
         {
+            //OS_printf("read %hhx\n", sbusTemp[i]);
             switch(RCIN_AppCustomData.ParserState)
             {
                 case RCIN_PARSER_STATE_UNKNOWN:
-                    if(0x0f == sbusTemp[i])
                     {
-                        RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
+                        /* If header is found move to next state */
+                        if(0x0f == sbusTemp[i])
+                        {
+                            RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
+                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
+                        }
                     }
                     break;
                 case RCIN_PARSER_STATE_WAITING_FOR_HEADER:
-                    if(0x0f == sbusTemp[i])
                     {
-                        RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
+                        /* If header is found move to next state */
+                        if(0x0f == sbusTemp[i])
+                        {
+                            RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
+                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
+                        }
                     }
                     break;
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA1:
@@ -644,14 +651,23 @@ void RCIN_Custom_Read(void)
                     if(0x00 == sbusTemp[i])
                     {
                         RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
+                        
                         RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                        if (FALSE == sync)
+                        {
+                            sync = TRUE;
+                            (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                    "RCIN in sync.");
+                        }
                         /* We have a valid packet, translate SBUS data */
                         RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
                     }
                     else
                     {
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                         (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                             "RCIN out of sync.");
+                        sync = FALSE;
                         RCIN_Custom_SetDefaultValues();
                     }
                     break;
@@ -826,7 +842,8 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     if(TRUE == RCIN_Custom_Max_Events_Not_Reached(customEventCount))
     {
         EventTbl[  customEventCount].EventID = RCIN_DEVICE_ERR_EID;
-        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+        //EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+        EventTbl[customEventCount++].Mask = CFE_EVS_NO_FILTER;
     }
     else
     {
