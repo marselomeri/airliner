@@ -47,10 +47,10 @@ typedef struct
 {
 	int  Socket;
 	uint16 Port;
-} MAVLINK_AppCustomData_t;
+} MAVLINK_SocketData_t;
 
-MAVLINK_AppCustomData_t MAVLINK_AppCustomData = {0, 5010};
-MAVLINK_AppCustomData_t MAVLINK_AppSerialCustomData = {0, 5009};
+MAVLINK_SocketData_t MAVLINK_IngestSocketData = {0, 5014};
+MAVLINK_SocketData_t MAVLINK_OutputSocketData = {0, 5015};
 
 int32 MAVLINK_InitCustom(void)
 {
@@ -59,57 +59,31 @@ int32 MAVLINK_InitCustom(void)
 	struct sockaddr_in address;
 	struct sockaddr_in serial_address;
 
-    if((MAVLINK_AppCustomData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+    if((MAVLINK_IngestSocketData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
     {
-/*    	CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,*/
-/*    		   "Socket errno: %i", errno);*/
+    	CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,
+    		   "Socket errno: %i", errno);
     		Status = -1;
     		goto end_of_function;
     }
 
-    setsockopt(MAVLINK_AppCustomData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+    setsockopt(MAVLINK_IngestSocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
     address.sin_addr.s_addr = htonl (INADDR_ANY);
-    address.sin_port        = htons(MAVLINK_AppCustomData.Port);
+    address.sin_port        = htons(MAVLINK_IngestSocketData.Port);
 
-	if ( (bind(MAVLINK_AppCustomData.Socket, (struct sockaddr *) &address, sizeof(address)) < 0) )
+	if ( (bind(MAVLINK_IngestSocketData.Socket, (struct sockaddr *) &address, sizeof(address)) < 0) )
 	{
-		//CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
+		CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
 		Status = -1;
 		goto end_of_function;
 	}
 
-/*	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,*/
-/*					  "UDP command input enabled on port %u.",*/
-/*					  MAVLINK_AppCustomData.Port);*/
-
-	if((MAVLINK_AppSerialCustomData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
-	{
-/*		CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,*/
-/*			   "Socket errno: %i", errno);*/
-			Status = -1;
-			goto end_of_function;
-	}
-
-	setsockopt(MAVLINK_AppSerialCustomData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
-
-	bzero((char *) &serial_address, sizeof(serial_address));
-	serial_address.sin_family      = AF_INET;
-	serial_address.sin_addr.s_addr = htonl (INADDR_ANY);
-	serial_address.sin_port        = htons(MAVLINK_AppSerialCustomData.Port);
-
-	if ( (bind(MAVLINK_AppSerialCustomData.Socket, (struct sockaddr *) &serial_address, sizeof(serial_address)) < 0) )
-	{
-		//CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
-		Status = -1;
-		goto end_of_function;
-	}
-
-/*	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,*/
-/*					  "UDP serialized command input enabled on port %u.",*/
-/*					  MAVLINK_AppSerialCustomData.Port);*/
+	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,
+					  "Mavlink UDP command input enabled on port %u.",
+					  MAVLINK_IngestSocketData.Port);
 
 end_of_function:
     return Status;
@@ -119,22 +93,17 @@ end_of_function:
 
 int32 MAVLINK_ReadMessage(char* buffer, uint32* size)
 {
-	*size = recv(MAVLINK_AppCustomData.Socket,
+    OS_printf("In MAVLINK read message\n");
+	*size = recv(MAVLINK_IngestSocketData.Socket,
 					   (char *)buffer,
 					   (size_t)size, 0);
 }
 
-int32 MAVLINK_ReadSerializedMessage(char* buffer, uint32* size)
-{
-	*size = recv(MAVLINK_AppSerialCustomData.Socket,
-					   (char *)buffer,
-					   (size_t)size, 0);
-}
+
 
 
 int32 MAVLINK_CleanupCustom(void)
 {
-    return close(MAVLINK_AppCustomData.Socket);
-    return close(MAVLINK_AppSerialCustomData.Socket);
+    return close(MAVLINK_IngestSocketData.Socket);
 }
 
