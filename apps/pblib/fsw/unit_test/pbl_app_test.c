@@ -73,8 +73,9 @@ void Test_PBLIB_RegisterCmdMessage_Inv_MsgID(void)
 void Test_PBLIB_RegisterCmdMessage_Full(void)
 {
 	int32 retCode = -1;
+	int32 i = 0;
 
-	for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+	for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
 	{
 		PBLIB_RegisterCmdMessage(TEST_MSG_ID + i, TEST_CC, TEST_MSG_NAME);
 	}

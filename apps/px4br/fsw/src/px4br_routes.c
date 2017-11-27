@@ -126,9 +126,9 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 {
 		{"actuator_armed", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorArmed_Dec, PX4_ACTUATOR_ARMED_MID, px4_actuator_armed_pb_size, 1, 0, 0},
 		{"actuator_controls_0", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
-//        {"actuator_controls_1", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_1_MID, px4_actuator_controls_pb_size, 1, 0, 0},
-//        {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
-//        {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//      {"actuator_controls_1", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_1_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//      {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//      {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //		{"actuator_direct", (PX4_ENCODE_FUNC) PX4BR_ActuatorDirect_Enc, (PX4_DECODE_FUNC) PX4BR_ActuatorDirect_Dec, PX4_ACTUATOR_DIRECT_MID, px4_actuator_direct_pb_size, 1, 0, 0},
 //		{"actuator_outputs", (PX4_ENCODE_FUNC) PX4BR_ActuatorOutputs_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_OUTPUTS_MID, px4_actuator_outputs_pb_size, 1, 0, 0},
 //		{"adc_report", (PX4_ENCODE_FUNC) PX4BR_AdcReport_Enc, (PX4_DECODE_FUNC) PX4BR_AdcReport_Dec, PX4_ADC_REPORT_MID, px4_adc_report_pb_size, 1, 0, 0},
@@ -216,5 +216,5 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"Vision_position_estimate", (PX4_ENCODE_FUNC) PX4BR_VisionPositionEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_VisionPositionEstimate_Dec, PX4_VISION_POSITION_ESTIMATE_MID, px4_vision_position_estimate_pb_size, 1, 0, 0},
 //		{"vtol_vehicle_status", (PX4_ENCODE_FUNC) PX4BR_VtolVehicleStatus_Enc, (PX4_DECODE_FUNC) PX4BR_VtolVehicleStatus_Dec, PX4_VTOL_VEHICLE_STATUS_MID, px4_vtol_vehicle_status_pb_size, 1, 0, 0},
 //		{"wind_estimate", (PX4_ENCODE_FUNC) PX4BR_WindEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_WindEstimate_Dec, PX4_WIND_ESTIMATE_MID, px4_wind_estimate_pb_size, 1, 0, 0}
-		{"led_control", (PX4_ENCODE_FUNC)0, (PX4_DECODE_FUNC) PX4BR_LedControl_Dec, PX4_LED_CONTROL_MID, px4_led_control_pb_size, 1, 0, 0}
+//		{"led_control", (PX4_ENCODE_FUNC)0, (PX4_DECODE_FUNC) PX4BR_LedControl_Dec, PX4_LED_CONTROL_MID, px4_led_control_pb_size, 1, 0, 0}
 };

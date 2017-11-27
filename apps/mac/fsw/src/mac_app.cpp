@@ -928,7 +928,8 @@ void MAC::RunController(void)
 		/* scale effort by battery status */
 		if (m_Params.bat_scale_en && CVT.BatteryStatus.Scale > 0.0f)
 		{
-			for (int i = 0; i < 4; i++)
+			int32 i = 0;
+			for (i = 0; i < 4; i++)
 			{
 				m_ActuatorControls.Control[i] *= CVT.BatteryStatus.Scale;
 			}

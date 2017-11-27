@@ -145,13 +145,17 @@ void PwmLimit_Calc(const boolean armed, const boolean pre_armed, const unsigned 
     switch (local_limit_state) {
     case PWM_LIMIT_STATE_OFF:
     case PWM_LIMIT_STATE_INIT:
-        for (unsigned i = 0; i < num_channels; i++) {
-            effective_pwm[i] = disarmed_pwm[i];
-        }
+        {
+		unsigned i = 0;
+        	for (i = 0; i < num_channels; i++) {
+            		effective_pwm[i] = disarmed_pwm[i];
+        	}
+	}
 
         break;
 
     case PWM_LIMIT_STATE_RAMP: {
+            unsigned i = 0;
             hrt_abstime diff = hrt_elapsed_time(&limit->time_armed);
 
             progress = diff * PROGRESS_INT_SCALING / RAMP_TIME_US;
@@ -160,7 +164,7 @@ void PwmLimit_Calc(const boolean armed, const boolean pre_armed, const unsigned 
                 progress = PROGRESS_INT_SCALING;
             }
 
-            for (unsigned i = 0; i < num_channels; i++) {
+            for (i = 0; i < num_channels; i++) {
 
                 float control_value = output[i];
 
@@ -209,8 +213,9 @@ void PwmLimit_Calc(const boolean armed, const boolean pre_armed, const unsigned 
         break;
 
     case PWM_LIMIT_STATE_ON:
-
-        for (unsigned i = 0; i < num_channels; i++) {
+    {
+	unsigned i = 0;
+        for (i = 0; i < num_channels; i++) {
 
             float control_value = output[i];
 
@@ -237,6 +242,7 @@ void PwmLimit_Calc(const boolean armed, const boolean pre_armed, const unsigned 
         }
 
         break;
+    }
 
     default:
         break;

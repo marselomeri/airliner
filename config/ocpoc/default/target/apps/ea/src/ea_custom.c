@@ -226,7 +226,8 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	int utime_ln = 13;
 	int stime_ln = 14;
 	int count_ndx = 0;
-	for (char *tok = strtok(data," "); tok != NULL; tok = strtok(NULL, " "))
+	char *tok;
+	for (*tok = strtok(data," "); tok != NULL; tok = strtok(NULL, " "))
 	{
 		if (count_ndx == utime_ln)
 		{
