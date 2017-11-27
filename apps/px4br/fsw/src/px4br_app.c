@@ -751,7 +751,17 @@ int32 PX4BR_InitPeers(void)
 			PX4BR_Peer_t *peer = &PX4BR_AppData.Peer[i];
 
 			/* This is a valid peer that needs to be initialized. */
-			PX4BR_InitPeerFifo(peer);
+			Status = PX4BR_InitPeerFifo(peer);
+			if(Status != PX4BR_OK)
+			{
+				/* Failed to create the task.  Raise an event. */
+				CFE_EVS_SendEvent(PX4BR_HK_CREATE_CHDTASK_ERR_EID,
+						CFE_EVS_ERROR,
+						"listener child task failed. PX4BR_InitPeerFifo returned: 0x%08lX",
+						Status);
+				exit(1);
+				goto end_of_function;
+			}
 
 			/* Now create the 3 worker threads.*/
 			char *peerName = PX4BR_AppData.Peer[i].Name;
@@ -842,6 +852,7 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 	{
 		/* TODO:  Send event. */
 		OS_printf("Status = %i   errno = %i\n", Status, errno);
+		exit(0);
 		goto end_of_function;
 	}
 
@@ -850,8 +861,11 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 	{
 		/* TODO:  Send event. */
 		OS_printf("Status = %i   errno = %i\n", Status, errno);
+		exit(0);
 		goto end_of_function;
 	}
+
+	Status = PX4BR_OK;
 
 	inPeer->InFD = open(inPeer->FifoPathIn, O_RDONLY);
 	if(inPeer->InFD <= 0)
@@ -868,6 +882,7 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 	{
 		/* TODO:  Send event. */
 		OS_printf("inPeer->OutFD = %i   errno = %i\n", inPeer->OutFD, errno);
+		exit(0);
 		Status = -1;
 		goto end_of_function;
     }
@@ -965,26 +980,30 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
 
             for(i = 0; i < PX4BR_MAX_NETWORK_PEERS; ++i)
             {
-                n = write(PX4BR_AppData.Peer[i].OutFD, buffer, totalSize);
-				if(n < 0)
-				{
-					/* TODO - Add event */
-					OS_printf("PX4BR:  FIFO write failed.  errno=%d '%s'", errno, strerror(errno));
-					PX4BR_AppData.Peer[i].OutFD = open(PX4BR_AppData.Peer[i].FifoPathOut, O_WRONLY);
-				}
-				else
-				{
-					route->OutCount++;
-					if(route->OutCount == 1)
+            	if(PX4BR_AppData.Peer[i].State == PX4BR_PEER_STATE_IDLE)
+            	{
+            		OS_printf("PX4BR_AppData.Peer[%u].OutFD = %i", i, PX4BR_AppData.Peer[i].OutFD);
+					n = write(PX4BR_AppData.Peer[i].OutFD, buffer, totalSize);
+					if(n < 0)
 					{
-						OS_printf("PX4BR:  Sent '%s'\n", route->OrbName);
+						/* TODO - Add event */
+						OS_printf("PX4BR:  FIFO write failed.  errno=%d '%s'", errno, strerror(errno));
+						PX4BR_AppData.Peer[i].OutFD = open(PX4BR_AppData.Peer[i].FifoPathOut, O_WRONLY);
 					}
-					if(route->OutCount == 0)
+					else
 					{
-						/* Skip the 0 to avoid roll over issues. */
 						route->OutCount++;
+						if(route->OutCount == 1)
+						{
+							OS_printf("PX4BR:  Sent '%s'\n", route->OrbName);
+						}
+						if(route->OutCount == 0)
+						{
+							/* Skip the 0 to avoid roll over issues. */
+							route->OutCount++;
+						}
 					}
-				}
+            	}
             }
 		}
     }

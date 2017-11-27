@@ -514,7 +514,7 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case MAC_RUN_CONTROLLER_MID:
-                //RunController();
+                RunController();
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
