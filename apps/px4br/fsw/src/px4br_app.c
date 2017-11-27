@@ -395,6 +395,7 @@ void PX4BR_PeerListenerTaskMain(void)
 				{
 					/* TODO - Add event */
 					OS_printf("PX4BR:  FIFO read failed.  errno=%d '%s'\n", errno, strerror(errno));
+					peer->InFD = open(peer->FifoPathIn, O_RDONLY);
 				}
 				else
 				{
@@ -410,6 +411,7 @@ void PX4BR_PeerListenerTaskMain(void)
 					{
 						/* TODO - Add event */
 						OS_printf("PX4BR:  FIFO read failed.  errno=%d '%s'\n", errno, strerror(errno));
+						peer->InFD = open(peer->FifoPathIn, O_RDONLY);
 					}
 					else
 					{
@@ -429,6 +431,7 @@ void PX4BR_PeerListenerTaskMain(void)
 						{
 							/* TODO - Add event */
 							OS_printf("PX4BR:  FIFO read failed.  errno=%d '%s'\n", errno, strerror(errno));
+							peer->InFD = open(peer->FifoPathIn, O_RDONLY);
 						}
 						else
 						{
@@ -835,16 +838,18 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 
 	/* Create FIFO node. */
 	Status = mkfifo(inPeer->FifoPathIn, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
-	if(Status != 0)
+	if((Status != 0) && (errno != EEXIST))
 	{
 		/* TODO:  Send event. */
+		OS_printf("Status = %i   errno = %i\n", Status, errno);
 		goto end_of_function;
 	}
 
 	Status = mkfifo(inPeer->FifoPathOut, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
-	if(Status != 0)
+	if((Status != 0) && (errno != EEXIST))
 	{
 		/* TODO:  Send event. */
+		OS_printf("Status = %i   errno = %i\n", Status, errno);
 		goto end_of_function;
 	}
 
@@ -852,6 +857,8 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 	if(inPeer->InFD <= 0)
 	{
 		/* TODO:  Send event. */
+		OS_printf("inPeer->InFD = %i   errno = %i\n", inPeer->InFD, errno);
+		exit(0);
 		Status = -1;
 		goto end_of_function;
     }
@@ -860,6 +867,7 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 	if(inPeer->OutFD <= 0)
 	{
 		/* TODO:  Send event. */
+		OS_printf("inPeer->OutFD = %i   errno = %i\n", inPeer->OutFD, errno);
 		Status = -1;
 		goto end_of_function;
     }
@@ -962,6 +970,7 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
 				{
 					/* TODO - Add event */
 					OS_printf("PX4BR:  FIFO write failed.  errno=%d '%s'", errno, strerror(errno));
+					PX4BR_AppData.Peer[i].OutFD = open(PX4BR_AppData.Peer[i].FifoPathOut, O_WRONLY);
 				}
 				else
 				{
