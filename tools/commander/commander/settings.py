@@ -40,14 +40,7 @@ INSTALLED_APPS = [
     'channels',
     'groundcontrol',
 ]
-"""
-CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND':'asgiref.inmemory.ChannelLayer',
-        'ROUTING':'commander.routing.channel_routing',
-    }
-}
-"""
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
@@ -96,15 +89,7 @@ TEMPLATES = [
     },
 ]
 
-#USELESS################
 
-TEMPLATE_DIRS = (
-
-    #os.path.join(os.environ['YAMCS_WORKSPACE'],'web/flight'),
-    #os.path.join(BASE_DIR,  'groundcontrol/templates'),
-)
-
-#USELESS################
 
 WSGI_APPLICATION = 'commander.wsgi.application'
 
@@ -153,8 +138,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR),'static/'

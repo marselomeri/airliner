@@ -15,20 +15,6 @@ except:
 def getDate():
     return str(datetime.datetime.now())
 
-
-"""
-def get_directory_structure(rootdir):
-    dir = {}
-    rootdir = rootdir.rstrip(os.sep)
-    start = rootdir.rfind(os.sep) + 1
-    for path, dirs, files in os.walk(rootdir):
-        folders = path[start:].split(os.sep)
-        subdir = dict.fromkeys(files)
-        parent = reduce(dict.get, folders[:-1], dir)
-        parent[folders[-1]] = subdir
-    return dir
-"""
-
 def get_directory(path):
 
     outFiles=[]
@@ -68,11 +54,9 @@ def byteify(input):
     else:
         return input
 
-
 def log(name,status,status_type):
     date = getDate()
     print str(date)+' - '+str(status_type)+' - '+str(status)+' ( NAME : '+str(name)+' )'
-
 
 def preProcess(d):
         dealing_with_incompat = re.sub(r"\btrue\b", "True", d)
@@ -84,8 +68,6 @@ def preProcess(d):
                 x['parameter'][i]['instance']='softsim'
             return str(x)
 
-
-
 def readSESSION():
     with open(os.path.basename(os.path.dirname(os.path.realpath(__file__))) + '/session.json') as json_data:
         d = json.load(json_data)
@@ -95,3 +77,14 @@ def readSESSION():
 def writeSESSION(j):
     with open(os.path.basename(os.path.dirname(os.path.realpath(__file__))) + '/session.json', 'w') as f:
         json.dump(j, f)
+
+def getStuffFromSession(word):
+    jdata = readSESSION()
+    if word == 'address':
+        return jdata['Host']
+    elif word =='port':
+        return jdata['Port']
+    elif word == 'ins_name':
+        return jdata['InstanceName']
+    elif word == 'name':
+        return jdata['Name']

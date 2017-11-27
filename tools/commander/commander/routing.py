@@ -35,7 +35,8 @@ tlm = Telemetry()
 telemetry_subscribe = [
     route('websocket.connect',tlm.connect),
     route('websocket.disconnect',tlm.disconnect),
-    route('websocket.receive',tlm.getTelemetry)
+    route('websocket.receive',tlm.getTelemetry),
+
 ]
 
 telemetry_unsubscribe  = [
@@ -43,6 +44,9 @@ telemetry_unsubscribe  = [
     route('websocket.disconnect',tlm.disconnect),
     route('websocket.receive',tlm.looseTelemetry)
 ]
+
+
+
 #-----------------------------------------------------------
 cmd = Command()
 

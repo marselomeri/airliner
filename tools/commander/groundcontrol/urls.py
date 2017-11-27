@@ -5,6 +5,8 @@ from . import views
 
 admin.autodiscover()
 
+
+
 urlpatterns = [url(r'^$', views.index, name='index'),  # Routing in url like [127.0.0.1:8000/abc]
                url(r'^(\w+)/(\w+)/(\w+)/$', views.router, name ='router_3_layers'),  # Routing in url like [127.0.0.1:8000/abc/def]
                url(r'^(\w+)/(\w+)/$', views.router, name ='router_2_layer'),  # Routing in url like [127.0.0.1:8000/abc/def/ghi]

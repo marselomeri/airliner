@@ -278,7 +278,9 @@ var Telemetry =function(){
 
 Telemetry.prototype = {
 
-    subscribeTelemetry: function(msgObj,cb){
+
+    subscribeTelemetry:function(msgObj,cb)
+    {
 
         var socket = this.subsc;
         var message = "";
@@ -292,7 +294,7 @@ Telemetry.prototype = {
         }
         else
         {
-            /* This is not an object.  Its probably already 
+            /* This is not an object.  Its probably already
                stringify, so just use the string as is, but
                set msgObj to the JSON object so we can parse
                it later.
@@ -300,18 +302,18 @@ Telemetry.prototype = {
             message = msgObj;
             msgObj = JSON.parse(message);
         }
-        
+
         if (socket.readyState == WebSocket.OPEN){
             log('INFO','Message sent.','subscribeTelemetry');
             socket.send(message);
 
-			/* Store the subscription away so we can route the updates
-			 * to the callback later.  We could have received multiple
-			 * telemetry items, so store each one off individually.
-			 */
+            /* Store the subscription away so we can route the updates
+             * to the callback later.  We could have received multiple
+             * telemetry items, so store each one off individually.
+             */
             msgObj.tlm.forEach(function(tlmItem){
                 var subscription;
-                
+
                 /* First check to see if we've ever subscribed to this
                  * telemetry item.  This is so we can support sending updates
                  * to multiple subscriber callbacks for the same telemetry
@@ -323,7 +325,7 @@ Telemetry.prototype = {
                      */
                     self.subscribers[tlmItem.name] = [];
                 }
-                
+
                 /* Now push the new subscription onto the subscribers array. */
                 self.subscribers[tlmItem.name].push({'callback': cb});
             });
@@ -343,7 +345,7 @@ Telemetry.prototype = {
             //console.log(message);
             data.parameter.forEach(function(param){
                 var tlmName = param.id.name;
-                
+
                 if(tlmName in self.subscribers){
                     var subscriptions = self.subscribers[tlmName];
                     subscriptions.forEach(function(subscription){
@@ -354,7 +356,7 @@ Telemetry.prototype = {
             //this.subscribers[event.data.parameter.data.keys(obj).forEach(function(key,index) {
             //console.log(event);
             //cb(event);
-        };
+        }
     },
 
     unSubscribeTelemetry: function(msgObj){

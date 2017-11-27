@@ -2,46 +2,40 @@ import toolkit as tk
 import urllib,json
 from websocket import create_connection
 from threading import Thread
-import threading
-from multiprocessing import Process,Lock,Array,Value
+from multiprocessing import Process,Lock,Value
 import psutil
 import requests
 import time
-import numpy
 import socket
-
 import base64
-import os
 
 
 
 
-# COMPLETE
 class Telemetry:
+
     counter = Value('d', 0.0)
     lock = Lock()
 
-    """
-    All telemetry requests from the client side are channeled through an instance of Telemetry class.
-    These requests are forwarded to pyliner or YAMCS through web sockets. A system process is created to listen to data on these sockets.
-    All the information required to track each subscription is stored in a data structure called 'subscribers' which will be used later to
-    properly unsubscribe to data and kill process generated.
-    """
 
     def __init__(self):
         """
         Initializes data structures and assigned default values to constants.
         """
+        self.defaultInstance= tk.getStuffFromSession('ins_name');
+        self.port = tk.getStuffFromSession('port');
+        self.address = tk.getStuffFromSession('address');
+        self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.defaultInstance)+'/_websocket')
+
         self.subscribers = {}
-        self.defaultInstance= None
-        self.port = 8090
-        self.address = '127.0.0.1'
+        self.process = []
+
         #self.tlmSeqNum = 0
         self.specialSeqNumber =0
+        self.unsubscribed =0
         self.killed = 0
         self.tracker =0
-        self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.getInstanceName())+'/_websocket')
-        self.proc =[]
+
         self.lockswitch =True
         #self.counter = 0
 
@@ -55,7 +49,7 @@ class Telemetry:
         """
         self.housekeeping()
         message.reply_channel.send({'accept': True})
-        tk.log(self.defaultInstance,'Got Telemetry connection request from client','INFO')
+        tk.log('Instance','Connected.','INFO')
 
     def disconnect(self, message):
         """
@@ -64,7 +58,7 @@ class Telemetry:
         :return: void
         """
         message.reply_channel.send({'close': True})
-        tk.log('self.defaultInstance', 'Got Telemetry (dis)connection request from client', 'INFO')
+        tk.log('Instance', '(Dis)connected.', 'INFO')
 
     def looseTelemetry(self, message):
         """
@@ -72,60 +66,32 @@ class Telemetry:
         :param message:message object
         :return: void
         """
-        #self.tracker = 0
-        #self.proc = []
         message_text = message.content['text']
-        print message_text
-
-        if message_text == 'START_COMM_HS':
-            message.reply_channel.send({'text': 'START_COMM_ACK'})
-
-        elif message_text == 'CLOSE_COMM_NOFBCK':
-            self.disconnect(message)
-        elif message_text == 'USALL':
-            print 'array  from',self, '--->',self.proc
-            print '+'*250
-            for p in self.proc:
+        if message_text == 'USALL':
+            for p in self.process:
                 to_kill = psutil.Process(p.pid)
-                print 'tokil  from',self, '--->',to_kill
                 to_kill.kill()
-                time.sleep(2)
-                print 'array  from',self, '--->',self.proc
+                time.sleep(1)
             self.tracker = 0
-            self.proc = []
-                    #print proc
-                    #proc.kill()
-
+            self.process = []
         elif message_text.find('tlm')!=-1:
-            #os.sched_setaffinity(0, {0})  # current process on 0-th core
         # Converting message text to hashable key.
             try:
                 prepare1 = json.loads(tk.byteify(message_text))
                 prepare1['tlm'][0].pop('format', None)
                 prepare2 = json.dumps(prepare1)
-                #myUnit = self.subscribers[prepare2]
-
             # Converting message text to a format understood by pyliner or YAMCS.
                 temp = tk.byteify(message_text)
                 temp = json.loads(temp)
                 temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
                 temp = temp.replace("\'", "\"")
                 to_send = '[1,1,0,' + str(temp) + ']'
-
-            # Get websocket object and process ID, kill process and send unsubscribe signal to pyliner or YAMCS
-                #ws = myUnit['ws']
-                #pid = myUnit['pid']
-                #process = myUnit['process']
-                #if process.is_alive():
-                    #to_kill = psutil.Process(pid)
-                    #to_kill.kill()
-                    #self.killed=self.killed+1
-                #del self.subscribers[prepare2]
                 self.yamcs_ws.send(to_send)
                 self.subscribers.pop(prepare2,None)
-                tk.log(message.content['text'], 'Telemetry push process is now killed.', 'INFO')
+                self.unsubscribed = self.unsubscribed + 1
+                tk.log('Instance', 'Telemetry push process killed.', 'INFO')
             except:
-                tk.log(message_text, 'Telemetry push process ALREADY KILLED.', 'INFO')
+                tk.log('Instance', 'Telemetry push process ALREADY KILLED.', 'INFO')
 
     def getTelemetry(self, message):
         #global lock
@@ -183,7 +149,7 @@ class Telemetry:
 
                 process.start()
                 print '*******************'
-                self.proc.append(process)
+                self.process.append(process)
                 tk.log(process,message_text,'DEBUG')
                 tk.log(self,'Objcet IDD:::','')
                     #print process
@@ -527,3 +493,4 @@ class Video:
             print 'Frame# : ['+str(self.video_frame_counter)+'] sent.'
             msg_obj.reply_channel.send({'text': b64_img})
             #yield b64_img
+
