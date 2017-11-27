@@ -115,6 +115,8 @@ int32 BAT::AcquireConfigPointers(void)
 {
     int32 iStatus = CFE_SUCCESS;
 
+    OS_MutSemTake(Mutex);
+
     /*
     ** Release the table
     */
@@ -152,6 +154,7 @@ int32 BAT::AcquireConfigPointers(void)
     }
 
 BAT_AcquireConfigPointers_Exit_Tag:
+    OS_MutSemGive(Mutex);
     return iStatus;
 }
 

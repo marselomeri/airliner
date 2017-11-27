@@ -188,9 +188,9 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #73 */
    { { SCH_FIX_HEADER(MPU9250_MEASURE_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #74 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(PE_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #75 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(PE_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #76 */
    { { SCH_FIX_HEADER(MS5611_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #77 */
@@ -206,9 +206,9 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #82 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #83 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(HMC5883_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #84 */
-   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
+   { { SCH_FIX_HEADER(HMC5883_WAKEUP_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #85 */
    { { SCH_FIX_HEADER(NEOM8N_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #86 */
