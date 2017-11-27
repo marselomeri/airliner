@@ -51,11 +51,8 @@
 #include "px4br_cmds.h"
 #include "px4br_msg.h"
 #include "px4br_events.h"
-
+#include "px4br_platform_cfg.h"
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
 
 /*
  ** Local Defines
@@ -102,12 +99,13 @@ typedef enum {
 
 typedef struct {
     char            	Name[PX4BR_MAX_PEERNAME_LENGTH];
-    int 				Socket;
-    struct sockaddr_in	ServAddr;
+    int 				InFD;
+    int 				OutFD;
+    char				FifoPathIn[PX4BR_MAX_FIFO_PATH_LENGTH];
+    char				FifoPathOut[PX4BR_MAX_FIFO_PATH_LENGTH];
     PX4BR_PeerState_t   State;
     uint32				ListenerTaskID;
     uint32				DataOutTaskID;
-    boolean				IsConnected;
 } PX4BR_Peer_t;
 
 typedef struct

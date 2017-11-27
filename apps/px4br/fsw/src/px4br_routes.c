@@ -124,8 +124,8 @@
 
 PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 {
-//		{"actuator_armed", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorArmed_Dec, PX4_ACTUATOR_ARMED_MID, px4_actuator_armed_pb_size, 1, 0, 0},
-//		{"actuator_controls_0", (PX4_ENCODE_FUNC) PX4BR_ActuatorControls_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+		{"actuator_armed", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorArmed_Dec, PX4_ACTUATOR_ARMED_MID, px4_actuator_armed_pb_size, 1, 0, 0},
+		{"actuator_controls_0", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //        {"actuator_controls_1", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_1_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //        {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //        {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
