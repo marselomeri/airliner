@@ -65,7 +65,7 @@ void Test_CI_InitCustom_Bad_Socket(void)
 	retCode = CI_InitCustom();
 
 	/* Verify results */
-	UtAssert_True(retCode==-2,"Return = -1");
+	UtAssert_True(retCode==-1,"Return = -1");
 	UtAssert_EventSent(CI_SOCKET_ERR_EID, CFE_EVS_ERROR, "", "Socket error");
 	UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
 }
