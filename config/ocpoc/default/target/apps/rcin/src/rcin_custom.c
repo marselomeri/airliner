@@ -152,7 +152,9 @@ boolean RCIN_Custom_Init(void)
 {
     boolean returnBool = TRUE;
     int32 returnCode = 0;
-    
+    int baud = 100000;
+    struct serial_struct serials;
+
     /* Open */
     RCIN_AppCustomData.DeviceFd = open(RCIN_DEVICE_PATH, O_RDWR | O_NONBLOCK | O_CLOEXEC);
     if (RCIN_AppCustomData.DeviceFd < 0) 
@@ -178,7 +180,7 @@ boolean RCIN_Custom_Init(void)
     }
 
     /* Get configuration */
-    returnCode = RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TCGETS2, 
+    returnCode = tcgetattr(RCIN_AppCustomData.DeviceFd, 
             &RCIN_AppCustomData.TerminalConfig);
     if (0 != returnCode)
     {
@@ -187,28 +189,26 @@ boolean RCIN_Custom_Init(void)
         goto end_of_function;
     }
     
-    /* Setting serial port, 8E2, non-blocking. 100Kbps */
-    /* https://linux.die.net/man/3/termios */
-    RCIN_AppCustomData.TerminalConfig.c_iflag &= ~(IGNBRK | BRKINT | 
-            PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
-    RCIN_AppCustomData.TerminalConfig.c_oflag &= ~OPOST;
-    RCIN_AppCustomData.TerminalConfig.c_lflag &= ~(ECHO | ECHONL | 
-            ICANON | ISIG | IEXTEN);
+    tcflush(RCIN_AppCustomData.DeviceFd, TCIFLUSH);
+    bzero(&RCIN_AppCustomData.TerminalConfig, 
+            sizeof(RCIN_AppCustomData.TerminalConfig));
+    RCIN_AppCustomData.TerminalConfig.c_cflag |= (CLOCAL | CREAD);
+    RCIN_AppCustomData.TerminalConfig.c_cflag &= ~CSIZE;
+    RCIN_AppCustomData.TerminalConfig.c_cflag |= CS8;
+    RCIN_AppCustomData.TerminalConfig.c_cflag |= PARENB;
+    RCIN_AppCustomData.TerminalConfig.c_cflag &= ~PARODD;
+    RCIN_AppCustomData.TerminalConfig.c_iflag |= INPCK;
+    RCIN_AppCustomData.TerminalConfig.c_cflag |= CSTOPB;
 
-    RCIN_AppCustomData.TerminalConfig.c_cflag &= ~(CSIZE | CRTSCTS | 
-            PARODD | CBAUD);
-    RCIN_AppCustomData.TerminalConfig.c_iflag |= (INPCK | IGNPAR);
-    /* Use BOTHER to specify speed directly in c_[io]speed member */
-    RCIN_AppCustomData.TerminalConfig.c_cflag |= (CS8 | CSTOPB | CLOCAL 
-            | PARENB | BOTHER | CREAD);
-    RCIN_AppCustomData.TerminalConfig.c_ispeed = RCIN_SERIAL_INPUT_SPEED;
-    RCIN_AppCustomData.TerminalConfig.c_ospeed = RCIN_SERIAL_OUTPUT_SPEED;
-    //RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = RCIN_SERIAL_VMIN_SETTING;
-    //RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = RCIN_SERIAL_VTIME_SETTING;
-    RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = 0;
     RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = 0;
+    RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = 0;
+
+    cfsetispeed(&RCIN_AppCustomData.TerminalConfig, B38400);
+    cfsetospeed(&RCIN_AppCustomData.TerminalConfig, B38400);
     
-    returnCode = RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TCSETS2, 
+    tcflush(RCIN_AppCustomData.DeviceFd, TCIFLUSH);
+    
+    returnCode = tcsetattr(RCIN_AppCustomData.DeviceFd, TCSANOW, 
             &RCIN_AppCustomData.TerminalConfig);
     if (0 != returnCode)
     {
@@ -217,6 +217,31 @@ boolean RCIN_Custom_Init(void)
         goto end_of_function;
     }
     
+    returnCode = RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TIOCGSERIAL, 
+            &serials);
+    if (0 > returnCode)
+    {
+        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "RCIN custom get serial line info errno: %i", errno);
+        goto end_of_function;
+    }
+
+    serials.flags = ASYNC_SPD_CUST;
+    serials.custom_divisor = serials.baud_base / baud;
+
+    returnCode = RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TIOCSSERIAL, 
+            &serials);
+    if (0 > returnCode)
+    {
+        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "RCIN custom set serial line info errno: %i", errno);
+        goto end_of_function;
+    }
+
+    RCIN_Ioctl(RCIN_AppCustomData.DeviceFd, TIOCGSERIAL, &serials);
+
+    tcflush(RCIN_AppCustomData.DeviceFd, TCIFLUSH);
+
     /* Create streaming task */
     /* Set loop flag to continue forever */
     RCIN_AppCustomData.ContinueFlag = TRUE;
@@ -348,51 +373,51 @@ void RCIN_Stream_Task(void)
 void RCIN_Custom_SetDefaultValues(void)
 {
     uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0x0f, 0x01, 0x04, 0x20, 0x00,
-                                              0xff, 0x07, 0x40, 0x00, 0x02,
-                                              0x10, 0x80, 0x2c, 0x64, 0x21,
-                                              0x0b, 0x59, 0x08, 0x40, 0x00,
-                                              0x02, 0x10, 0x80, 0x00, 0x00 };
+                                              0xff, 0x07, 0x40, 0x00, 0x00,
+                                              0x00, 0x00, 0x00, 0x00, 0x00,
+                                              0x00, 0x00, 0x00, 0x00, 0x00,
+                                              0x00, 0x00, 0x00, 0x00, 0x00 };
 
     RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
 }
 
 
-boolean RCIN_Custom_Validate(uint8 *data, int size)
-{
-    boolean returnBool = TRUE;
+//boolean RCIN_Custom_Validate(uint8 *data, int size)
+//{
+    //boolean returnBool = TRUE;
 
-    /* Null pointer check */
-    if(0 == data)
-    {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "RCIN_Custom_Validate null pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    ///* Null pointer check */
+    //if(0 == data)
+    //{
+        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    //"RCIN_Custom_Validate null pointer");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
-    /* Size check */
-    if(RCIN_SERIAL_READ_SIZE != size)
-    {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "RCIN_Custom_Validate size error");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    ///* Size check */
+    //if(RCIN_SERIAL_READ_SIZE != size)
+    //{
+        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    //"RCIN_Custom_Validate size error");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
-    /* Validate SBUS packet */
-    if(0x0f != data[0] && 0x00 != data[24])
-    {
-        returnBool = FALSE;
-    }
+    ///* Validate SBUS packet */
+    //if(0x0f != data[0] && 0x00 != data[24])
+    //{
+        //returnBool = FALSE;
+    //}
 
-end_of_function:
-    if (FALSE == returnBool)
-    {
-        /* Increment the message error counter */
-        RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
-    }
-    return returnBool;
-}
+//end_of_function:
+    //if (FALSE == returnBool)
+    //{
+        ///* Increment the message error counter */
+        //RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
+    //}
+    //return returnBool;
+//}
 
 
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
@@ -437,35 +462,40 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
             & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
     RCIN_AppCustomData.Measure.Values[7] = (uint16)(((data[10] >> 5 | data[11] << 3)
             & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET; // & the other 8 + 2 channels if you need them
-    RCIN_AppCustomData.Measure.Values[8] = (uint16)(((data[12] | data[13] << 8)
-            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[9] = (uint16)(((data[13] >> 3 | data[14] << 5)
-            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[10] = (uint16)(((data[14] >> 6 | data[15] << 2
-            | data[16] << 10) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
-            + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[11] = (uint16)(((data[16] >> 1 | data[17] << 7)
-            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[12] = (uint16)(((data[17] >> 4 | data[18] << 4)
-            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[13] = (uint16)(((data[18] >> 7 | data[19] << 1
-            | data[20] << 9) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
-            + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[14] = (uint16)(((data[20] >> 2 | data[21] << 6)
-            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
-    RCIN_AppCustomData.Measure.Values[15] = (uint16)(((data[21] >> 5 | data[22] << 3)
-            & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[8] = (uint16)(((data[12] | data[13] << 8)
+            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[9] = (uint16)(((data[13] >> 3 | data[14] << 5)
+            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[10] = (uint16)(((data[14] >> 6 | data[15] << 2
+            //| data[16] << 10) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
+            //+ RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[11] = (uint16)(((data[16] >> 1 | data[17] << 7)
+            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[12] = (uint16)(((data[17] >> 4 | data[18] << 4)
+            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[13] = (uint16)(((data[18] >> 7 | data[19] << 1
+            //| data[20] << 9) & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f)
+            //+ RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[14] = (uint16)(((data[20] >> 2 | data[21] << 6)
+            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
+    //RCIN_AppCustomData.Measure.Values[15] = (uint16)(((data[21] >> 5 | data[22] << 3)
+            //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
 
     /* Timestamp */
     RCIN_AppCustomData.Measure.Timestamp = RCIN_Custom_Get_Time();
+    RCIN_AppCustomData.Measure.TimestampLastSignal = 
+            RCIN_AppCustomData.Measure.Timestamp.Seconds * 1000000;
+    RCIN_AppCustomData.Measure.TimestampLastSignal += 
+            RCIN_AppCustomData.Measure.Timestamp.Subseconds / 1000;
     /* Channel count */
     RCIN_AppCustomData.Measure.ChannelCount = RCIN_SBUS_CHANNEL_COUNT;
     RCIN_AppCustomData.Measure.RSSI = 100;
+    RCIN_AppCustomData.Measure.RcLostFrameCount = 0;
     RCIN_AppCustomData.Measure.RcTotalFrameCount = 1;
-    RCIN_AppCustomData.Measure.RcPpmFrameLength = 0;
+    RCIN_AppCustomData.Measure.RcPpmFrameLength = 100;
     RCIN_AppCustomData.Measure.RcFailsafe = (data[23] & (1 << 3)) ? TRUE : FALSE;
     RCIN_AppCustomData.Measure.RcLost = (data[23] & (1 << 2)) ? TRUE : FALSE;
-    RCIN_AppCustomData.Measure.InputSource = PX4_RC_INPUT_SOURCE_PX4IO_SBUS;
+    RCIN_AppCustomData.Measure.InputSource = PX4_RC_INPUT_SOURCE_PX4FMU_SBUS;
 
 end_of_function:
     return returnBool;
@@ -476,7 +506,7 @@ void RCIN_Custom_Read(void)
 {
     uint32 i = 0;
     int bytesRead = 0;
-    uint8 sbusTemp[RCIN_SERIAL_READ_SIZE] = { 0 };
+    uint8 sbusTemp[RCIN_SERIAL_READ_SIZE*2] = { 0 };
     static boolean sync = FALSE;
 
     /* Read */
@@ -648,29 +678,58 @@ void RCIN_Custom_Read(void)
                     }
                     break;
                 case RCIN_PARSER_STATE_WAITING_FOR_FOOTER:
-                    if(0x00 == sbusTemp[i])
+                    //if(0x00 == sbusTemp[i])
+                    //{
                     {
+                        OS_printf("end byte %hhx\n", sbusTemp[i]);
                         RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
-                        
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
-                        if (FALSE == sync)
-                        {
-                            sync = TRUE;
-                            (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                                    "RCIN in sync.");
-                        }
-                        /* We have a valid packet, translate SBUS data */
-                        RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
-                    }
-                    else
-                    {
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
-                        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                            "RCIN out of sync.");
-                        sync = FALSE;
-                        RCIN_Custom_SetDefaultValues();
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER2;
+                        //if (FALSE == sync)
+                        //{
+                            //sync = TRUE;
+                            //(void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                    //"RCIN in sync.");
+                        //}
+                        ///* We have a valid packet, translate SBUS data */
+                        //RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
+                    //}
+                    //else
+                    //{
+                        //OS_printf("end byte %hhx\n", sbusTemp[i]);
+                        ///* The end byte wasn't found so find a header candidate */
+                        //RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                        //(void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                            //"RCIN out of sync.");
+                        //sync = FALSE;
+                        //RCIN_Custom_SetDefaultValues();
+                    //}
                     }
                     break;
+                case RCIN_PARSER_STATE_WAITING_FOR_HEADER2:
+                    {
+                        if(0x0f == sbusTemp[i])
+                        {
+                            RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
+                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
+                            if (FALSE == sync)
+                            {
+                                sync = TRUE;
+                                (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                        "RCIN in sync.");
+                            }
+                            /* We have a valid packet, translate SBUS data */
+                            RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
+                        }
+                        else
+                        {
+                            /* The next header byte wasn't found */
+                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                            (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                "RCIN out of sync.");
+                            sync = FALSE;
+                            RCIN_Custom_SetDefaultValues();
+                        }
+                    }
             
                 default:
                     (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -689,56 +748,6 @@ void RCIN_Custom_Read(void)
         RCIN_Custom_SetDefaultValues();
     }
 }
-
-
-//void RCIN_Custom_Sync(void)
-//{
-    //uint32 i = 0;
-    //uint8 byteRead = 0;
-    //uint8 byteCount = 0;
-    //static boolean headerFound = FALSE;
-    //static boolean footerFound = FALSE;
-
-    ///* Iterate through a packets worth of data */
-    //for(i = 0; i < RCIN_SERIAL_READ_SIZE; i++)
-    //{
-        ///* Read one byte at a time */
-        //byteCount = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
-                //&byteRead, 1);
-        //if(0x0f == byteRead)
-        //{
-            //headerFound = TRUE;
-            //break;
-        //}
-    //}
-    
-    ///* If we found the header search for the footer */
-    //if(TRUE == headerFound)
-    //{
-        ///* read 24 bytes */
-        //for(i = 0; i < RCIN_SERIAL_READ_SIZE - 1; i++)
-        //{
-            ///* Read one byte at a time */
-            //byteCount = RCIN_Read(RCIN_AppCustomData.DeviceFd, 
-                    //&byteRead, 1);
-        //}
-        ///* The end byte should be 0x00 */
-        //if(0x00 == byteRead)
-        //{
-            //footerFound = TRUE;
-        //}
-    //}
-
-    ///* Back in sync */
-    //if(TRUE == headerFound && TRUE == footerFound)
-    //{
-        //RCIN_AppCustomData.Sync = RCIN_CUSTOM_IN_SYNC;
-        ////CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                ////"RCIN device in sync");
-        //headerFound = FALSE;
-        //footerFound = FALSE;
-    //}
-//}
 
 
 boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)

@@ -39,12 +39,13 @@
 *************************************************************************/
 #include "rcin_custom.h"
 #include "px4_msgs.h"
-
-#include <asm-generic/termbits.h>
+#include <termios.h>
+//#include <asm-generic/termbits.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#include <linux/serial_core.h>
 #include <errno.h>
 #include <time.h>
 
@@ -110,7 +111,7 @@ extern "C" {
 **  \par Description:
 **       The SBUS channel count.
 */
-#define RCIN_SBUS_CHANNEL_COUNT         (10)
+#define RCIN_SBUS_CHANNEL_COUNT         (8)
 
 /* define range mapping here, -+100% -> 1000..2000 */
 #define RCIN_SBUS_RANGE_MIN             (200.0f)
@@ -156,7 +157,7 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define RCIN_BUFFER_FILL_TIMEOUT_USEC   (14000)
+#define RCIN_BUFFER_FILL_TIMEOUT_USEC   (13000)
 
 /** \brief Streaming task priority
 **
@@ -233,7 +234,8 @@ typedef enum
     RCIN_PARSER_STATE_WAITING_FOR_DATA22  = 23,
     RCIN_PARSER_STATE_WAITING_FOR_FLAGS   = 24,
     /*! State waiting for footer  */
-    RCIN_PARSER_STATE_WAITING_FOR_FOOTER  = 25
+    RCIN_PARSER_STATE_WAITING_FOR_FOOTER  = 25,
+    RCIN_PARSER_STATE_WAITING_FOR_HEADER2 = 26
 } RCIN_Custom_ParserState_t;
 
 
@@ -244,7 +246,7 @@ typedef struct
     /*! Path to device */
     char                            DevName[RCIN_MAX_DEVICE_PATH];
     /*! The terminal configuration */
-    struct termios2                 TerminalConfig;
+    struct termios                  TerminalConfig;
     /*! The current device status */
     RCIN_Custom_Status_t            Status;
     /*! The current device parser state */
@@ -319,9 +321,7 @@ void RCIN_Custom_Read(void);
 
 void RCIN_Custom_SetDefaultValues(void);
 
-//void RCIN_Custom_Sync(void);
-
-boolean RCIN_Custom_Validate(uint8 *data, int size);
+//boolean RCIN_Custom_Validate(uint8 *data, int size);
 
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size);
 
