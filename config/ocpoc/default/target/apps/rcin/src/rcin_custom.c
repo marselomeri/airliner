@@ -63,6 +63,18 @@ typedef enum {
 **
 */
     RCIN_DEVICE_ERR_EID = RCIN_EVT_CNT,
+/** \brief <tt> 'RCIN - ' </tt>
+**  \event <tt> 'RCIN - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the RC input stream is out of 
+**  sync.
+**
+*/
+    RCIN_SYNC_ERR_EID,
 
 /** \brief Number of custom events 
 **
@@ -382,44 +394,6 @@ void RCIN_Custom_SetDefaultValues(void)
 }
 
 
-//boolean RCIN_Custom_Validate(uint8 *data, int size)
-//{
-    //boolean returnBool = TRUE;
-
-    ///* Null pointer check */
-    //if(0 == data)
-    //{
-        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    //"RCIN_Custom_Validate null pointer");
-        //returnBool = FALSE;
-        //goto end_of_function;
-    //}
-
-    ///* Size check */
-    //if(RCIN_SERIAL_READ_SIZE != size)
-    //{
-        //CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    //"RCIN_Custom_Validate size error");
-        //returnBool = FALSE;
-        //goto end_of_function;
-    //}
-
-    ///* Validate SBUS packet */
-    //if(0x0f != data[0] && 0x00 != data[24])
-    //{
-        //returnBool = FALSE;
-    //}
-
-//end_of_function:
-    //if (FALSE == returnBool)
-    //{
-        ///* Increment the message error counter */
-        //RCIN_AppCustomData.Measure.RcLostFrameCount += 1;
-    //}
-    //return returnBool;
-//}
-
-
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
 {
     boolean returnBool = TRUE;
@@ -500,6 +474,29 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
 end_of_function:
     return returnBool;
 }
+
+
+void RCIN_Custom_RC_Lost(boolean notReset)
+{
+    static int errorCount = 0;
+    
+    if (FALSE == notReset)
+    {
+        errorCount = 0;
+    }
+
+    if(RCIN_MAX_ERROR_COUNT == errorCount)
+    {
+        RCIN_AppCustomData.Measure.RcFailsafe = TRUE;
+        RCIN_AppCustomData.Measure.RcLost = TRUE;
+        errorCount = 0;
+    }
+    else
+    {
+        errorCount++;
+    }
+}
+
 
 void RCIN_Custom_Read(void)
 {
@@ -680,35 +677,42 @@ void RCIN_Custom_Read(void)
                     {
                         if(0x00 == sbusTemp[i])
                         {
-                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
                             RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                            RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
                             if (FALSE == sync)
                             {
                                 sync = TRUE;
-                                (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                         "RCIN in sync.");
                             }
                             /* We have a valid packet, translate SBUS data */
                             RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
+                            RCIN_Custom_RC_Lost(FALSE);
                         }
                         else
                         {
-                            OS_printf("end byte %hhx\n", sbusTemp[i]);
+                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
                             /* The end byte wasn't found so find a header candidate */
+                            /* TODO handle error, set failsafe if error count reaches a certain number? */
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
-                            (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                            (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "RCIN out of sync.");
                             sync = FALSE;
-                            RCIN_Custom_SetDefaultValues();
+                            RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
+                            RCIN_Custom_RC_Lost(TRUE);
                         }
                     }
                     break;
                 default:
-                    (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                            "Parser in invalid state.");
-                    /* TODO handle error, set failsafe if error count reaches a certain number? */
-                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
+                    {
+                        (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
+                                "Parser in invalid state.");
+                        /* TODO handle error, set failsafe if error count reaches a certain number? */
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
+                        RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
+                        RCIN_Custom_RC_Lost(TRUE);
+                    }
                     break;
             }
         }
@@ -716,9 +720,11 @@ void RCIN_Custom_Read(void)
     /* Read returned an error */
     else
     {
+        /* TODO handle error, set failsafe if error count reaches a certain number? */
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error, errno: %i", errno);
-        /* TODO handle error, set failsafe if error count reaches a certain number? */
+        RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
+        RCIN_Custom_RC_Lost(TRUE);
     }
 }
 
@@ -742,8 +748,6 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
         returnBool = FALSE;
     }
     memcpy(Measure, &RCIN_AppCustomData.Measure, sizeof(PX4_InputRcMsg_t));
-    /* Reset the error counter */
-    RCIN_AppCustomData.Measure.RcLostFrameCount = 0;
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:
@@ -824,8 +828,9 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     if(TRUE == RCIN_Custom_Max_Events_Not_Reached(customEventCount))
     {
         EventTbl[  customEventCount].EventID = RCIN_DEVICE_ERR_EID;
-        //EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
-        EventTbl[customEventCount++].Mask = CFE_EVS_NO_FILTER;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+        EventTbl[  customEventCount].EventID = RCIN_SYNC_ERR_EID;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
     }
     else
     {

@@ -76,19 +76,19 @@ extern "C" {
 **  \par Description:
 **       The serial input speed.
 */
-#define RCIN_SERIAL_INPUT_SPEED         (100000)
+//#define RCIN_SERIAL_INPUT_SPEED         (100000)
 
 /** \brief Output speed.
 **
 **  \par Description:
 **       The serial ouput speed.
 */
-#define RCIN_SERIAL_OUTPUT_SPEED        (100000)
+//#define RCIN_SERIAL_OUTPUT_SPEED        (100000)
 
 /** \brief Size of the raw RCIN message block.
 **
 **  \par Description:
-**       The size of 
+**       The size of an SBUS packet.
 */
 #define RCIN_SERIAL_READ_SIZE           (25)
 
@@ -97,14 +97,14 @@ extern "C" {
 **  \par Description:
 **       Minimum number of characters for noncanonical read (MIN).
 */
-#define RCIN_SERIAL_VMIN_SETTING        RCIN_SERIAL_READ_SIZE
+//#define RCIN_SERIAL_VMIN_SETTING        RCIN_SERIAL_READ_SIZE
 
 /** \brief Serial c_cc VTIME setting.
 **
 **  \par Description:
 **       Timeout in deciseconds for noncanonical read (TIME).
 */
-#define RCIN_SERIAL_VTIME_SETTING       (0)
+//#define RCIN_SERIAL_VTIME_SETTING       (0)
 
 /** \brief SBUS channels
 **
@@ -176,6 +176,10 @@ extern "C" {
 */
 #define RCIN_STREAMING_TASK_NAME       "RCIN_STREAM"
 
+/** \brief Maximum amount of errors before going to failsafe.
+*/
+#define RCIN_MAX_ERROR_COUNT            (50)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -209,7 +213,7 @@ typedef enum
     RCIN_PARSER_STATE_UNKNOWN             = 0,
     /*! State waiting for header  */
     RCIN_PARSER_STATE_WAITING_FOR_HEADER  = 1,
-    /*! State waiting for data1  */
+    /*! State waiting for data  */
     RCIN_PARSER_STATE_WAITING_FOR_DATA1   = 2,
     RCIN_PARSER_STATE_WAITING_FOR_DATA2   = 3,
     RCIN_PARSER_STATE_WAITING_FOR_DATA3   = 4,
@@ -232,10 +236,10 @@ typedef enum
     RCIN_PARSER_STATE_WAITING_FOR_DATA20  = 21,
     RCIN_PARSER_STATE_WAITING_FOR_DATA21  = 22,
     RCIN_PARSER_STATE_WAITING_FOR_DATA22  = 23,
+    /*! State waiting for flags  */
     RCIN_PARSER_STATE_WAITING_FOR_FLAGS   = 24,
     /*! State waiting for footer  */
-    RCIN_PARSER_STATE_WAITING_FOR_FOOTER  = 25,
-    RCIN_PARSER_STATE_WAITING_FOR_HEADER2 = 26
+    RCIN_PARSER_STATE_WAITING_FOR_FOOTER  = 25
 } RCIN_Custom_ParserState_t;
 
 
@@ -264,7 +268,7 @@ typedef struct
     /*! The shared data mutex */
     uint32                          Mutex;
     /*! Current raw SBUS data */
-    uint8 sbusData[RCIN_SERIAL_READ_SIZE];
+    uint8                           sbusData[RCIN_SERIAL_READ_SIZE];
 } RCIN_AppCustomData_t;
 
 
@@ -313,16 +317,90 @@ int32 RCIN_Ioctl(int fh, int request, void *arg);
 *************************************************************************/
 boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind);
 
+
+/************************************************************************/
+/** \brief Gets the current monotonic time.
+**
+**  \par Description
+**       This function gets the current monotonic time and returns a 
+**       populated CFE_TIME_SysTime_t struct. 
+**
+**  \returns    CFE_TIME_SysTime_t
+**
+*************************************************************************/
 CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
 
+
+/************************************************************************/
+/** \brief The stream task that actively reads the RCIN input stream.
+**
+**  \par Description
+**       This thread runs until uninit.
+**
+*************************************************************************/
 void RCIN_Stream_Task(void);
 
+
+/************************************************************************/
+/** \brief Attempt to read from the serial RCIN file descriptor.
+**
+**  \par Description
+**       Attempts to read and parse the raw SBUS input stream.
+**
+*************************************************************************/
 void RCIN_Custom_Read(void);
 
+
+/************************************************************************/
+/** \brief Set initial startup values if the RCIN receiver is not
+ *         writing data yet. I.e. select() is timing out.
+**
+**  \par Description
+**       Sets inital RC_Input message values if the RC receiver is 
+**       silent on startup before the remote control is turned on.
+**
+*************************************************************************/
 void RCIN_Custom_SetDefaultValues(void);
 
-//boolean RCIN_Custom_Validate(uint8 *data, int size);
 
+/************************************************************************/
+/** \brief Called if the input stream is out of sync or a device read
+**         error occurs.
+**
+**  \par Description
+**       This function keeps an internal counter that is incremented 
+**       with every call. If the max error count is reached the failsafe
+**       and RC lost booleans in the RC_Input message are set.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    notReset    TRUE to not reset the counter, FALSE to 
+**                             reset the counter.
+**
+*************************************************************************/
+void RCIN_Custom_RC_Lost(boolean notReset);
+
+
+/************************************************************************/
+/** \brief Translate raw SBUS data to channel pulse-position modulation
+**         values.
+**
+**  \par Description
+**       This function converts the raw SBUS array to PPM (1000-2000)
+**       and populates the RC_Input message.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    data    The array of raw SBUS input data.
+**                             
+**  \param [in]    size    The size of the array.
+**
+**
+**  \returns    boolean    TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size);
 
 #ifdef __cplusplus

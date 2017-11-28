@@ -150,9 +150,9 @@ typedef struct
     /** \rcintlmmnemonic \RCIN_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
-        /** \brief App State */
-    uint8                 State;
 
+    /** \brief App State */
+    uint8              State;
 } RCIN_HkTlm_t;
 
 
