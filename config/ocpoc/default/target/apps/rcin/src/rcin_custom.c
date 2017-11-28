@@ -501,12 +501,11 @@ end_of_function:
     return returnBool;
 }
 
-
 void RCIN_Custom_Read(void)
 {
     uint32 i = 0;
     int bytesRead = 0;
-    uint8 sbusTemp[RCIN_SERIAL_READ_SIZE*2] = { 0 };
+    uint8 sbusTemp[RCIN_SERIAL_READ_SIZE*4] = { 0 };
     static boolean sync = FALSE;
 
     /* Read */
@@ -522,7 +521,7 @@ void RCIN_Custom_Read(void)
                 case RCIN_PARSER_STATE_UNKNOWN:
                     {
                         /* If header is found move to next state */
-                        if(0x0f == sbusTemp[i])
+                        if(0x0f == sbusTemp[i] || 0x8f == sbusTemp[i])
                         {
                             RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
@@ -532,7 +531,7 @@ void RCIN_Custom_Read(void)
                 case RCIN_PARSER_STATE_WAITING_FOR_HEADER:
                     {
                         /* If header is found move to next state */
-                        if(0x0f == sbusTemp[i])
+                        if(0x0f == sbusTemp[i] || 0x8f == sbusTemp[i])
                         {
                             RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
@@ -678,39 +677,12 @@ void RCIN_Custom_Read(void)
                     }
                     break;
                 case RCIN_PARSER_STATE_WAITING_FOR_FOOTER:
-                    //if(0x00 == sbusTemp[i])
-                    //{
                     {
-                        OS_printf("end byte %hhx\n", sbusTemp[i]);
-                        RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER2;
-                        //if (FALSE == sync)
-                        //{
-                            //sync = TRUE;
-                            //(void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                                    //"RCIN in sync.");
-                        //}
-                        ///* We have a valid packet, translate SBUS data */
-                        //RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
-                    //}
-                    //else
-                    //{
-                        //OS_printf("end byte %hhx\n", sbusTemp[i]);
-                        ///* The end byte wasn't found so find a header candidate */
-                        //RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
-                        //(void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                            //"RCIN out of sync.");
-                        //sync = FALSE;
-                        //RCIN_Custom_SetDefaultValues();
-                    //}
-                    }
-                    break;
-                case RCIN_PARSER_STATE_WAITING_FOR_HEADER2:
-                    {
-                        if(0x0f == sbusTemp[i])
+                        if(0x00 == sbusTemp[i])
                         {
-                            RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
-                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
+                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
+                            RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
+                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             if (FALSE == sync)
                             {
                                 sync = TRUE;
@@ -722,7 +694,8 @@ void RCIN_Custom_Read(void)
                         }
                         else
                         {
-                            /* The next header byte wasn't found */
+                            OS_printf("end byte %hhx\n", sbusTemp[i]);
+                            /* The end byte wasn't found so find a header candidate */
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                                 "RCIN out of sync.");
@@ -730,11 +703,11 @@ void RCIN_Custom_Read(void)
                             RCIN_Custom_SetDefaultValues();
                         }
                     }
-            
+                    break;
                 default:
                     (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                             "Parser in invalid state.");
-                        RCIN_Custom_SetDefaultValues();
+                    /* TODO handle error, set failsafe if error count reaches a certain number? */
                     RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
                     break;
             }
@@ -745,7 +718,7 @@ void RCIN_Custom_Read(void)
     {
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error, errno: %i", errno);
-        RCIN_Custom_SetDefaultValues();
+        /* TODO handle error, set failsafe if error count reaches a certain number? */
     }
 }
 

@@ -465,7 +465,7 @@ void RCIN::ReadDevice(void)
 {
     boolean returnBool = FALSE;
     /* TODO remove temp */
-    int temp = 0;
+    //int temp = 0;
 
     returnBool = RCIN_Custom_Measure(&InputRcMsg);
     if(FALSE == returnBool)
@@ -478,13 +478,11 @@ void RCIN::ReadDevice(void)
         /* Measure is returning TRUE set state to publishing */
         HkTlm.State = RCIN_PUBLISHING;
     }
-
-    OS_printf("RCIN State %u\n", HkTlm.State);
-    for (temp = 0; temp < 25; temp++)
-    {
-        OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
-    }
-
+    //OS_printf("RCIN State %u\n", HkTlm.State);
+    //for (temp = 0; temp < 25; temp++)
+    //{
+        //OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
+    //}
 }
 
 
