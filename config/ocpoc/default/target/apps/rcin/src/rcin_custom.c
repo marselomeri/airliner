@@ -93,6 +93,7 @@ typedef enum {
 ** Global Variables
 *************************************************************************/
 RCIN_AppCustomData_t RCIN_AppCustomData;
+
 /************************************************************************
 ** Local Variables
 *************************************************************************/
@@ -164,7 +165,7 @@ boolean RCIN_Custom_Init(void)
 {
     boolean returnBool = TRUE;
     int32 returnCode = 0;
-    int baud = 100000;
+    int baud = RCIN_SERIAL_INPUT_SPEED;
     struct serial_struct serials;
 
     /* Open */
@@ -397,8 +398,6 @@ void RCIN_Custom_SetDefaultValues(void)
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
 {
     boolean returnBool = TRUE;
-    /* Currently never modified */
-    uint16 errorCount = 0;
 
     /* Null pointer check */
     if(0 == data)
@@ -679,22 +678,22 @@ void RCIN_Custom_Read(void)
                         {
                             RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
-                            RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
                             if (FALSE == sync)
                             {
+                                RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
                                 sync = TRUE;
                                 (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                         "RCIN in sync.");
                             }
                             /* We have a valid packet, translate SBUS data */
                             RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
+                            /* Reset the error counter */
                             RCIN_Custom_RC_Lost(FALSE);
                         }
                         else
                         {
-                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
                             /* The end byte wasn't found so find a header candidate */
-                            /* TODO handle error, set failsafe if error count reaches a certain number? */
+                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "RCIN out of sync.");
@@ -706,9 +705,9 @@ void RCIN_Custom_Read(void)
                     break;
                 default:
                     {
+                        /* Unknown parser state */
                         (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "Parser in invalid state.");
-                        /* TODO handle error, set failsafe if error count reaches a certain number? */
                         RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
                         RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
                         RCIN_Custom_RC_Lost(TRUE);
@@ -720,7 +719,6 @@ void RCIN_Custom_Read(void)
     /* Read returned an error */
     else
     {
-        /* TODO handle error, set failsafe if error count reaches a certain number? */
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error, errno: %i", errno);
         RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
@@ -825,7 +823,7 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
         goto end_of_function;
     }
 
-    if(TRUE == RCIN_Custom_Max_Events_Not_Reached(customEventCount))
+    if(TRUE == RCIN_Custom_Max_Events_Not_Reached(customEventCount + 2))
     {
         EventTbl[  customEventCount].EventID = RCIN_DEVICE_ERR_EID;
         EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
@@ -837,7 +835,7 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
         customEventCount = -1;
         goto end_of_function;
     }
-    
+
 end_of_function:
 
     return customEventCount;

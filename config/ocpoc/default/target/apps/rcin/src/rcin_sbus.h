@@ -76,7 +76,7 @@ extern "C" {
 **  \par Description:
 **       The serial input speed.
 */
-//#define RCIN_SERIAL_INPUT_SPEED         (100000)
+#define RCIN_SERIAL_INPUT_SPEED         (100000)
 
 /** \brief Output speed.
 **
@@ -297,6 +297,25 @@ typedef struct
 **
 *************************************************************************/
 int32 RCIN_Ioctl(int fh, int request, void *arg);
+
+
+/************************************************************************/
+/** \brief read with limited EINTR retry attempts. 
+**
+**  \par Description
+**       This function is a wrapper for read with retry attempts added.
+**
+**  \param [in] fh file descriptor.
+**  \param [in] buffer.
+**  \param [in] size.
+**
+**  \returns
+**  bytes read for success and -1 for failure, see read man-page for 
+**  more info.
+**  \endreturns
+**
+*************************************************************************/
+int32 RCIN_Read(int fd, void *buf, size_t count);
 
 
 /************************************************************************/
