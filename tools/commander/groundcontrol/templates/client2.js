@@ -238,7 +238,9 @@ var Telemetry =function(){
 
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
-    this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
+    //this.subsc = new WebSocket(this.ws_scheme+'://127.0.0.1:8090/softsim/_websocket');
+    //this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
+    //this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
 
     this.subscribers = [];
     this.queuedSubscribers = [];
@@ -255,12 +257,13 @@ var Telemetry =function(){
         log('DEBUG','Connection closed.','subscribeTelemetry');
     };
 
-    this.subsc.onerror = function (){
+    this.subsc.onerror = function (evt){
+        log(evt,'','');
         log('ERR','Connection closed.','subscribeTelemetry');
     };
 
     /*unSubscribeTelemetry && unSubscribeAll*/
-    this.unsubsc.onopen = function (){
+    /*this.unsubsc.onopen = function (){
         log('DEBUG','Connection open.','unSubscribeTelemetry');
     }
    
@@ -271,7 +274,7 @@ var Telemetry =function(){
     this.unsubsc.onerror = function (){
         log('ERR','Connection closed.','unSubscribeTelemetry');
 
-    }
+    }*/
 
 
 }
@@ -305,6 +308,7 @@ Telemetry.prototype = {
 
         if (socket.readyState == WebSocket.OPEN){
             log('INFO','Message sent.','subscribeTelemetry');
+
             socket.send(message);
 
             /* Store the subscription away so we can route the updates
@@ -360,7 +364,7 @@ Telemetry.prototype = {
     },
 
     unSubscribeTelemetry: function(msgObj){
-        var socket = this.unsubsc;
+        var socket = this.subsc;
         var message = "";
         
         /* If this msgObj is an object, stringify it. */
@@ -378,22 +382,18 @@ Telemetry.prototype = {
             message = msgObj;
         }
         
-        if (socket.readyState == WebSocket.OPEN) {
-            socket.send(message);
-            log('INFO','Message sent.','unSubscribeTelemetry');
-        };
+        var msg = 'kill_tlm'+message
+        socket.send(msg);
 
-        socket.onmessage = function (event){
-            log('INFO','Message received.','unSubscribeTelemetry');
-            //cb(event);
-        }
+
+
     },
 
     unSubscribeAll: function(){
         var self = this;
         for(var i=0;i<20;i++){
         console.log('usall');
-        self.unsubsc.send('USALL');
+        self.subsc.send('USALL');
         }
 
         for(var i =0; i<self.allSubscibers.length;i++){
@@ -405,11 +405,6 @@ Telemetry.prototype = {
 
     unSubscribeAll2: function(){
         var self = this;
-        //for(var i=0;i<20;i++){
-        //console.log('usall');
-        //self.unsubsc.send('USALL');
-        //}
-
         for(var i =0; i<self.allSubscibers.length;i++){
             var rem = self.allSubscibers.pop();
             self.unSubscribeTelemetry(rem);
@@ -560,6 +555,21 @@ Command.prototype = {
 
     },
 
+    sendCommand2: function(name,args){
+    var obj = {"name":name,"args":args}
+    var message = JSON.stringify(name)
+    var socket = this.cmd;
+
+    socket.onmessage = function (event){
+        log('INFO','Button feedback.','sendCommand');
+    }
+
+    if (socket.readyState == WebSocket.OPEN) {
+      socket.send(message);
+    };
+
+    },
+
 }
 //---------------------------------------------------------------------------------------------------------------
 /* EVENT:
@@ -657,6 +667,7 @@ Video.prototype = {
 var Session = function(){
     this.DefaultInstance = 'softsim';
     this.CurrentInstance = null;
+    this.Master = false;
     this.sockets = [];
 
 }

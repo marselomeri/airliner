@@ -35,7 +35,7 @@ tput setaf 7;
 # WORKERS
 for i in `seq 1 $WORKERS`
 do
-  python manage.py runworker &
+  python manage.py runworker  &
   arr+=($!)
 
 done
@@ -43,5 +43,6 @@ done
 # DAPHNE
 daphne commander.asgi:channel_layer --port 8000 &
 arr+=($!)
+
 wait
 

@@ -3,42 +3,36 @@ import urllib,json
 from websocket import create_connection
 from threading import Thread
 from multiprocessing import Process,Lock,Value
+from channels.sessions import channel_session
 import psutil
 import requests
 import time
 import socket
 import base64
+from channels import Group
 
-
+import redis
 
 
 class Telemetry:
-
-    counter = Value('d', 0.0)
-    lock = Lock()
-
 
     def __init__(self):
         """
         Initializes data structures and assigned default values to constants.
         """
-        self.defaultInstance= tk.getStuffFromSession('ins_name');
-        self.port = tk.getStuffFromSession('port');
-        self.address = tk.getStuffFromSession('address');
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.defaultInstance= tk.getStuffFromSession('ins_name')
+        self.port = tk.getStuffFromSession('port')
+        self.address = tk.getStuffFromSession('address')
         self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.defaultInstance)+'/_websocket')
 
-        self.subscribers = {}
-        self.process = []
 
+        self.sock_map = {}
+        self.proc_map = {}
+        self.subscribers = []
         #self.tlmSeqNum = 0
-        self.specialSeqNumber =0
-        self.unsubscribed =0
-        self.killed = 0
+        self.process = []
         self.tracker =0
-
-        self.lockswitch =True
-        #self.counter = 0
-
 
 
     def connect(self, message):
@@ -48,8 +42,12 @@ class Telemetry:
         :return: void
         """
         self.housekeeping()
+
+        #message.reply_channel.send({'close': True})
+        Group('tlm_bc').add(message.reply_channel)
         message.reply_channel.send({'accept': True})
-        tk.log('Instance','Connected.','INFO')
+        #print self.sock_map
+
 
     def disconnect(self, message):
         """
@@ -57,8 +55,12 @@ class Telemetry:
         :param message: message object
         :return: void
         """
+
         message.reply_channel.send({'close': True})
+        Group('tlm_bc').discard(message.reply_channel)
         tk.log('Instance', '(Dis)connected.', 'INFO')
+
+
 
     def looseTelemetry(self, message):
         """
@@ -67,95 +69,120 @@ class Telemetry:
         :return: void
         """
         message_text = message.content['text']
-        if message_text == 'USALL':
-            for p in self.process:
-                to_kill = psutil.Process(p.pid)
-                to_kill.kill()
-                time.sleep(1)
-            self.tracker = 0
-            self.process = []
-        elif message_text.find('tlm')!=-1:
-        # Converting message text to hashable key.
-            try:
-                prepare1 = json.loads(tk.byteify(message_text))
-                prepare1['tlm'][0].pop('format', None)
-                prepare2 = json.dumps(prepare1)
-            # Converting message text to a format understood by pyliner or YAMCS.
-                temp = tk.byteify(message_text)
-                temp = json.loads(temp)
-                temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
-                temp = temp.replace("\'", "\"")
-                to_send = '[1,1,0,' + str(temp) + ']'
-                self.yamcs_ws.send(to_send)
-                self.subscribers.pop(prepare2,None)
-                self.unsubscribed = self.unsubscribed + 1
-                tk.log('Instance', 'Telemetry push process killed.', 'INFO')
-            except:
-                tk.log('Instance', 'Telemetry push process ALREADY KILLED.', 'INFO')
+        if message_text.find('tlm')!=-1:
+            """
+            msg_text_obj = json.loads(message_text)
+            tlm_name = msg_text_obj['tlm'][0]['name']
+            message_client_id = message.content['reply_channel']
+            cl_obj = json.loads(self.r.get('clients'))
+
+            validation_counter = 0
+
+            for each_key in cl_obj:
+                if each_key == message_client_id:
+                    print 'skip'
+                else:
+                    if tlm_name in cl_obj[each_key]['subscribers']:
+                        validation_counter +=1
+
+            if validation_counter == 0:
+                try:
+                    # Converting message text to a format understood by pyliner or YAMCS.
+                    temp = tk.byteify(message_text)
+                    temp = json.loads(temp)
+                    temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
+                    temp = temp.replace("\'", "\"")
+                    to_send = '[1,1,0,' + str(temp) + ']'
+                    self.yamcs_ws.send(to_send)
+
+                    for each_key in cl_obj:
+                        try:
+                            cl_obj[each_key]['subscribers'].remove(tlm_name)
+                        except:
+                            print 'pass'
+                            pass
+
+                    tk.log(message_text, 'Telemetry push process killed.', 'INFO')
+                except:
+                    tk.log(message_text, 'Telemetry push process ALREADY KILLED.', 'INFO')
+            #this_obj = cl_obj[message_client_id]
+        #subscribers = this_obj['subscribers']
+
+        elif message_text == 'USALL' :
+            #for p in self.process:
+            self.yamcs_ws.send_close(500, 'hello')
+            #ws.abort()
+            #to_kill = psutil.Process(self.process[i].pid)
+            #to_kill.kill()
+            #time.sleep(1)
+            #self.tracker = 0
+            #self.process = []
+        """
+
+
+
 
     def getTelemetry(self, message):
-        #global lock
         """
         Process subscribe requests for telemetry and creates system processes which pushes data to client.
         :param message: message object
         :return: void
         """
-        message_text = message.content['text']
-        unit = {}
+        message_client_id = message.content['reply_channel']
 
-        #if message_text == 'START_COMM_HS':
-        #    message.reply_channel.send({'text': 'START_COMM_ACK'})
 
-        #elif message_text == 'CLOSE_COMM_NOFBCK':
-        #    self.disconnect(message)
+        message_text = tk.byteify(message.content['text'])
+        print message_client_id,message_text
 
-        if message_text.find('tlm')!=-1:
+        if message_text.find('kill_tlm') != -1:
+            msg = message_text.replace('kill_tlm', '')
+            msg_text_obj = json.loads(msg)
+            temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(msg_text_obj['tlm'])) + '}}'
+            temp = temp.replace("\'", "\"")
+            to_send = '[1,1,0,' + str(temp) + ']'
+            self.sock_map[message_client_id].send(to_send)
+            print 'killed'
 
-        # Converting message text to hashable key.
-            prepare1 =json.loads(tk.byteify(message_text))
-            prepare1['tlm'][0].pop('format',None)
-            prepare2 = json.dumps(prepare1)
+        elif message_text.find('usall')!=-1:
+            try:
+                to_kill_pid = self.proc_map[message_client_id]
+                to_kill = psutil.Process(to_kill_pid)
+                to_kill.kill()
+                print 'killed processs'
 
-            key = prepare2
-            process = None
-            myID = self.specialSeqNumber
+            except:
+                pass
+        elif message_text.find('tlm')!=-1:
 
-        # Converting message text to a format understood by pyliner or YAMCS.
-            temp = tk.byteify(message_text)
-            temp = json.loads(temp)
-            temp = ' {"parameter":"subscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
+            msg_text_obj = json.loads(message_text)
+            tlm_name = msg_text_obj['tlm'][0]['name']
+
+            #if tlm_name not in self.subscribers:
+            # Converting message text to a format understood by pyliner or YAMCS.
+
+            #self.subscribers.append(tlm_name)
+            temp = ' {"parameter":"subscribe", "data":{"list":' + str(tk.byteify(msg_text_obj['tlm'])) + '}}'
             temp = temp.replace("\'", "\"")
             to_send = '[1,1,0,' + str(temp) + ']'
 
-
         # Send message, start a system process, store current data in a local dict.
-            self.yamcs_ws.send(to_send)
 
-
-            #print 'many',self.tracker
-            #print message.__dict__
-            #print message.content['order']
-            #print message.__dict__
-            #print '+++++++++++++++++++++++++++++++++++++++'
-            #print message.content['reply_channel']
-            #print message.channel_layer.__dict__
-            #print message.channel.__dict__
-            #print message.reply_channel.__dict__
-            #print '+++++++++++++++++++++++++++++++++++++++'
-            if self.tracker==0:
-
-                print 'atomic'
-                process = Process(target=self.push,args=(self.yamcs_ws, message,Telemetry.lock))
-
+            # Qne time per application cycle.
+            if message_client_id not in self.sock_map.keys():
+                client_id = message.content['reply_channel']
+                ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/' + str(self.defaultInstance) + '/_websocket')
+                self.sock_map[client_id] = ws
+                self.sock_map[message_client_id].send(to_send)
+                process = Process(target=self.push,args=(self.sock_map[message_client_id],))
                 process.start()
-                print '*******************'
-                self.process.append(process)
-                tk.log(process,message_text,'DEBUG')
-                tk.log(self,'Objcet IDD:::','')
-                    #print process
-
-
+                self.proc_map[client_id] = process.pid
                 self.tracker=self.tracker+1
+                #print self.sock_map
+            else:
+                self.sock_map[message_client_id].send(to_send)
+
+
+
 
 
 
@@ -175,45 +202,37 @@ class Telemetry:
         json = tk.readSESSION()
         return json["InstanceName"]
 
-    def push(self, websocket_obj, message_obj,loc):
+    def push(self, websocket_obj):
         """
         A forever loop to receive and push telemetry to client.
         :param websocket_obj:  websocket object
         :param message_obj: message object
         :return: void
         """
-        #lock = Lock()
-        """
-        global counter
-
-        with loc:
-            tk.log(message_obj['text'],'locked by','DEBUG')
-            counter.value=counter.value+1
-            tk.log(counter,'concurrent','DEBUG')
-
-        tk.log(message_obj['text'], 'lock RELEASED by', 'DEBUG')
-        print '*******************'
-        """
-
 
         while True:
-            self.lockswitch= False
-            result = websocket_obj.recv()
-            if result != '[1,2,0]':
-                result = tk.preProcess(result)
-                #print result
-                #print message_obj.__dict__
-                try:
-                    #print '***************'
-                    #print result
-                    #print '***************'
-                    message_obj.reply_channel.send({'text': result})
-                except:
-                    time.sleep(1)
-                    message_obj.reply_channel.send({'text': result})
+            try:
 
-                print message_obj.content['text']
-                #tk.log(message_obj.content['text'], 'Telemetry packet sent to client', 'INFO')
+                result = websocket_obj.recv()
+
+                if result != '[1,2,0]':
+                    #print message_obj.content['reply_channel'], tk.introspectResult(result)
+                    result2 = tk.preProcess(result)
+                    try:
+                        Group('tlm_bc').send({'text': result2})
+                    except:
+                        time.sleep(1)
+                        Group('tlm_bc').send({'text': result2})
+                time.sleep(0.01)
+                #print message_obj.content['reply_channel'], tk.introspectResult(result)
+            except:
+                print 'EOWHILE'
+                break
+                #print '\n\n---batch---\n'
+
+
+                #print '\n---eob---\n\n'
+
 
 class Command:
 
@@ -235,7 +254,6 @@ class Command:
         :param message: message object
         :return: void
         """
-
         message.reply_channel.send({'accept': True})
         self.housekeeping()
         tk.log(self.defaultInstance,'Got Commanding connection request from client','INFO')
@@ -250,9 +268,6 @@ class Command:
         tk.log('self.defaultInstance', 'Got Commanding (dis)connection request from client', 'INFO')
 
     def getCommandInfo(self, message):
-
-
-
 
         message_text = message.content['text']
         #print '**************************'
@@ -278,18 +293,12 @@ class Command:
     def postCommand(self, message):
         message_text = message.content['text']
 
+        #self.preProcessCommand(message_text)
 
-        #if message_text == 'START_COMM_HS':
-        #    message.reply_channel.send({'text': 'START_COMM_ACK'})
-
-        #elif message_text == 'CLOSE_COMM_NOFBCK':
-        #    self.disconnect(message)
-
-        #else:
-        #print '**************************'
-        #print message_text
         to_post = json.loads(message_text)
-        #print '**************************'
+        print to_post
+        print type(to_post)
+
         url=''
         if self.defaultInstance!=None:
             url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + str(self.defaultInstance) + '/realtime/commands' + to_post['name'] + '?nolink'
@@ -311,8 +320,14 @@ class Command:
         #to_post = json.loads(message_text)
         #print '**************************'
 
+    def preProcessCommand(self,message_text):
 
-
+        tk.log(type(message_text),'','')
+        cmd_slug = json.loads(tk.byteify(message_text))
+        tk.log(cmd_slug,'','')
+        response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/' + self.getInstanceName() + '/commands' + cmd_slug['cmd']['name'])
+        data = json.loads(json.dumps(response.read()))
+        tk.log(data, '', '')
 
     def housekeeping(self):
         """

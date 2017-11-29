@@ -345,18 +345,6 @@ html(lang='en-us')
     // <script src="static/bower_components/ui-contextmenu/jquery.ui-contextmenu.min.js"></script>
     //script(src = 'client2.js')
     script.
-       /*var session = new Session();
-       var inst = new Instance();
-       var dir =  new Directory();
-       var cmd_o = new Command();
-       var tlm_o = null
-       var ev = new Event();
-       var vid = new Video();
-       var page_change_counter=0;
-        */
-
-
-
       /*ONLY HAPPENS ONE TIME ON LAUNCH OR RELOAD*/
       window.onload= function(){
 
@@ -369,6 +357,7 @@ html(lang='en-us')
 
 
       }
+
       window.onbeforeunload = function () {
        tlm_o.unSubscribeAll()
        //tlm_o.setTracker()
@@ -377,8 +366,10 @@ html(lang='en-us')
 
       /*HAPPENS WHENEVER URL CHANGES*/
       window.onhashchange= function(){//TODO
+
         console.log('HASH CHANFGE DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         var newInstance = session.getCurrentInstance();
+        tlm_o.unSubscribeAll2();
         cmd_o.cleanSlate();
         //tlm_o.unSubscribeAll()
         if($("#yamcs-instance-selected").text() != 'Select'){
@@ -581,7 +572,7 @@ html(lang='en-us')
           }
         }
         if (found == false) {
-          tlm_o.unSubscribeTelemetry({'tlm':[{'name':param.id.name}]});
+          //tlm_o.unSubscribeTelemetry({'tlm':[{'name':param.id.name}]});
         }
       };
 

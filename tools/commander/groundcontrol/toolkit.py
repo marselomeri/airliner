@@ -81,10 +81,22 @@ def writeSESSION(j):
 def getStuffFromSession(word):
     jdata = readSESSION()
     if word == 'address':
-        return jdata['Host']
+        return str(jdata['Host'])
     elif word =='port':
-        return jdata['Port']
+        return str(jdata['Port'])
     elif word == 'ins_name':
-        return jdata['InstanceName']
+        return str(jdata['InstanceName'])
     elif word == 'name':
-        return jdata['Name']
+        return str(jdata['Name'])
+
+def introspectResult(d):
+    the_d = json.loads(d)
+
+
+    tlm_data = the_d[3]['data']
+
+    #print type(tlm_data), '----', tlm_data
+    tlm_list = tlm_data['parameter']
+    for e in tlm_list:
+        to_print = e['id']['name']
+        print getDate(),'  ',to_print

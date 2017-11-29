@@ -5,7 +5,6 @@ from groundcontrol.websock_test import *
 
 
 
-
 #-----------------------------------------------------------
 
 ins = Instance()
@@ -39,11 +38,6 @@ telemetry_subscribe = [
 
 ]
 
-telemetry_unsubscribe  = [
-    route('websocket.connect',tlm.connect),
-    route('websocket.disconnect',tlm.disconnect),
-    route('websocket.receive',tlm.looseTelemetry)
-]
 
 
 
@@ -94,7 +88,6 @@ channel_routing = [
                    include(directory,path='^/dir/'),
                    include(default_instance,path='^/defaultInst/'),
                    include(telemetry_subscribe,path='^/tlm_s/'),
-                   include(telemetry_unsubscribe,path = '^/tlm_u/'),
                    include(command_info,path='^/cmd_i/'),
                    include(command_send,path='^/cmd_s/'),
                    include(event_channels,path='^/event/'),
