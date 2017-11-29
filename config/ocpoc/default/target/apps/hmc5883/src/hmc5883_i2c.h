@@ -39,6 +39,9 @@
 #include "hmc5883_custom.h"
 #include "cfe.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -56,6 +59,13 @@
 
 /** \brief HMC5883 expected ID C value. */
 #define HMC5883_ID_C                              ('3')
+
+/** \brief Read data, from slave to master.
+**
+**  \par Limits:
+**       None.
+*/
+#define HMC5883_I2C_M_READ               (0x0001)
 
 /* HMC5883 device registers */
 /** \brief Configuration register A.
@@ -277,10 +287,6 @@ boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind);
 *************************************************************************/
 int32 HMC5883_ResetDevice(void);
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifdef __cplusplus
 }
