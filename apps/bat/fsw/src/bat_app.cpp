@@ -533,9 +533,9 @@ void BAT::PublishBatteryStatus(void)
 {
     OS_MutSemTake(Mutex);
 
-    OS_printf("Voltage = %f (%f)  Current = %f (%f)\n",
-    		BatteryStatusMsg.Voltage, BatteryStatusMsg.VoltageFiltered,
-    		BatteryStatusMsg.Current, BatteryStatusMsg.CurrentFiltered);
+//    OS_printf("Voltage = %f (%f)  Current = %f (%f)\n",
+//    		BatteryStatusMsg.Voltage, BatteryStatusMsg.VoltageFiltered,
+//    		BatteryStatusMsg.Current, BatteryStatusMsg.CurrentFiltered);
 
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&BatteryStatusMsg);
 

@@ -93,13 +93,40 @@ end_of_function:
 
 int32 MAVLINK_ReadMessage(char* buffer, uint32* size)
 {
-    OS_printf("In MAVLINK read message\n");
+    //OS_printf("In MAVLINK read message\n");
 	*size = recv(MAVLINK_IngestSocketData.Socket,
 					   (char *)buffer,
 					   (size_t)size, 0);
 }
 
+int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
+{
+    //OS_printf("In MAVLINK send message\n");
 
+	struct sockaddr_in s_addr;
+    int    status = 0;
+    int32  returnCode = 0;
+
+    bzero((char *) &s_addr, sizeof(s_addr));
+
+
+    /* Send message via UDP socket */
+/*    s_addr.sin_addr.s_addr = inet_addr(MAVLINK_IngestSocketData.Socket);*/
+/*    s_addr.sin_port        = htons(MAVLINK_IngestSocketData.Port);*/
+    s_addr.sin_family      = AF_INET;
+    s_addr.sin_addr.s_addr = htonl (INADDR_ANY);
+    s_addr.sin_port        = htons(MAVLINK_IngestSocketData.Port);
+
+    status = sendto(MAVLINK_IngestSocketData.Socket, (char *)buffer, Size, 0,
+                            (struct sockaddr *) &s_addr,
+                             sizeof(s_addr));
+    if (status < 0)
+    {
+        OS_printf("MAVLINK send error\n");
+        returnCode = -1;
+    }
+    //OS_printf("End MAVLINK send message\n");
+}
 
 
 int32 MAVLINK_CleanupCustom(void)
