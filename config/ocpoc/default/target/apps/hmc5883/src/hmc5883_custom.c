@@ -150,12 +150,129 @@ boolean HMC5883_Custom_Init()
         goto end_of_function;
     }
     
+    returnBool = HMC5883_Custom_Set_Range();
+    if (TRUE != returnBool)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed set range");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     else
     {
         HMC5883_AppCustomData.Status = HMC5883_CUSTOM_INITIALIZED;
     }
 
 end_of_function:
+    return returnBool;
+}
+
+
+boolean HMC5883_Custom_Set_Range(void)
+{
+    boolean returnBool = FALSE;
+    
+    uint8 Message[1] = { HMC5883_BITS_CONFIG_B_RANGE_1GA3 };
+    
+    returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_CONFIG_B, 
+            Message, sizeof(Message));
+            
+    return returnBool;
+}
+
+
+boolean HMC5883_Custom_Check_Range(void)
+{
+    boolean returnBool = FALSE;
+    
+    uint8 Result[1] = { 0 };
+    
+    returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_B, 
+            Result, sizeof(Result));
+    /* If the gain setting is corrupt, reset the value */
+    if (HMC5883_BITS_CONFIG_B_RANGE_1GA3 != Result[0])
+    {
+        returnBool = HMC5883_Custom_Set_Range();
+    }
+
+    return returnBool;
+}
+
+
+boolean HMC5883_Custom_Set_Config(void)
+{
+    boolean returnBool = FALSE;
+    
+    uint8 Message[1] = { HMC5883_BITS_CONFIG_A_DEFAULT };
+    
+    returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_CONFIG_A, 
+            Message, sizeof(Message));
+
+    return returnBool;
+}
+
+
+boolean HMC5883_Custom_Check_Config(void)
+{
+    boolean returnBool = FALSE;
+    
+    uint8 Result[1] = { 0 };
+    
+    returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_A, 
+            Result, sizeof(Result));
+    if (HMC5883_BITS_CONFIG_A_DEFAULT != Result[0])
+    {
+        returnBool = HMC5883_Custom_Set_Config();
+    }
+
+    return returnBool;
+}
+
+
+boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
+{
+    boolean returnBool = FALSE;
+    
+    uint8 Message[1] = { HMC5883_BITS_MODE_SINGLE_MODE };
+
+    /* to store x, z, and y raw values*/
+    uint8 Result[6] = { 0 };
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Read_Gyro Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Issue a measure command */
+    returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_MODE, 
+            Message, sizeof(Message));
+    if(FALSE == returnBool)
+    {
+        /* If send was unsuccessful return FALSE */
+        goto end_of_function;
+    }
+    /* wait for it to complete */
+    usleep(HMC5883_CONVERSION_INTERVAL_US);
+    
+    /* Read the x, z, and y values from the device */
+    returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_DATA_OUT_X_MSB, 
+            Result, sizeof(Result));
+    if(FALSE == returnBool)
+    {
+        /* If receive was unsuccessful return FALSE */
+        goto end_of_function;
+    }
+
+    *X = (((int16)Result[0]) << 8) + Result[1];
+    *Z = (((int16)Result[2]) << 8) + Result[3];
+    *Y = (((int16)Result[4]) << 8) + Result[5];
+
+end_of_function:
+
     return returnBool;
 }
 
@@ -335,5 +452,25 @@ int32 HMC5883_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 end_of_function:
 
     return customEventCount;
+}
+
+
+
+CFE_TIME_SysTime_t HMC5883_Custom_Get_Time(void)
+{
+    struct timespec ts;
+    int returnCode = 0;
+    CFE_TIME_SysTime_t Timestamp = {0, 0};
+
+    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
+    if (-1 == returnCode)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 clock_gettime errno: %i", errno);
+        goto end_of_function;
+    }
+
+end_of_function:
+    return Timestamp;
 }
 

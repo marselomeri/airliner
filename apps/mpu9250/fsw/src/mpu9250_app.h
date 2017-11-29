@@ -361,7 +361,7 @@ public:
      **
      *************************************************************************/
     boolean ValidateDevice(void);
-    
+
 private:
     math::LowPassFilter2p   _accel_filter_x;
     math::LowPassFilter2p   _accel_filter_y;

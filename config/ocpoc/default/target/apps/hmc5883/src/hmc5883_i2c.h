@@ -65,7 +65,14 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define HMC5883_I2C_M_READ               (0x0001)
+#define HMC5883_I2C_M_READ                        (0x0001)
+
+/** \brief The measurement interval (150Hz).
+**
+**  \par Limits:
+**       Max for the HMC5883 is 160Hz.
+*/
+#define HMC5883_CONVERSION_INTERVAL_US            (1000000/150)
 
 /* HMC5883 device registers */
 /** \brief Configuration register A.
@@ -165,7 +172,9 @@ extern "C" {
 **  \par Description:
 **       Sets the maximum rate for continuous measurement mode.
 */
-#define HMC5883_BITS_CONFIG_A_CONTINUOUS_75HZ     (0x6 << 2)
+//#define HMC5883_BITS_CONFIG_A_CONTINUOUS_75HZ     (0x6 << 2)
+
+#define HMC5883_BITS_CONFIG_A_DEFAULT               (0)
 
 /** \brief Gain setting default.
 **
