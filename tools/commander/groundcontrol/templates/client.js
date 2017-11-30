@@ -13,15 +13,11 @@ function replaceAll(str, find, replace) {
         }
 
 function introspectTlm(string_data){
-    //console.log(string_data);
     var clean_data1 = replaceAll(string_data.data,"\'", "\"")
     var clean_data2 = replaceAll(clean_data1,'True','true');
-    //console.log(clean_data2);
     var j = JSON.parse(clean_data2);
     var items = j['parameter']
-    //console.log(j);
     for(var i in items){
-        //console.log(i)
         console.log(items[i]['id']['name'])
     }
 
@@ -123,13 +119,13 @@ var Instance = function(){
     this.websocket1.onopen = function(){
         log('DEBUG','Connection open.','getInstanceList');
         self.websocket1.send('INVOKE');
-        log('INFO','Message Sent.','getInstanceList');
+        log('INFO','Invoke Sent.','getInstanceList');
     };
     this.websocket1.onclose = function(){
         log('DEBUG','Connection closed.','getInstanceList');
     };
-    this.websocket1.onerror = function(){
-        log('ERR','Connection closed.','getInstanceList');
+    this.websocket1.onerror = function(evt){
+        log('ERR','Connection closed with error - '+String(evt),'getInstanceList');
     };
 
 
@@ -140,8 +136,8 @@ var Instance = function(){
     this.websocket2.onclose = function(){
         log('DEBUG','Connection closed.','transmitCurrentInstance');
     };
-    this.websocket2.onerror = function(){
-        log('ERR','Connection closed.','transmitCurrentInstance');
+    this.websocket2.onerror = function(evt){
+        log('ERR','Connection closed with error - '+String(evt),'getInstanceList');
     };
 
 
@@ -161,7 +157,7 @@ Instance.prototype = {
     /*transmitCurrentInstance*/
     transmitCurrentInstance: function(message){
         var socket = this.websocket2;
-        
+
         /* Flush the queuedSubscribers queue, if there are any. */
         if (tlm_o.subsc.readyState == WebSocket.OPEN) {
             if(tlm_o.queuedSubscribers.length > 0)
@@ -172,11 +168,11 @@ Instance.prototype = {
                 });
             }
         }
-        
+
         socket.onmessage = function (event){
             log('INFO','Message received.','transmitCurrentInstance');
         }
-        
+
         if (socket.readyState == WebSocket.OPEN) {
             log('INFO','Message sent.','transmitCurrentInstance');
             socket.send(message);
@@ -202,8 +198,8 @@ var Directory = function(){
     this.websocket.onclose = function(){
         log('DEBUG','Connection closed.','getDirectoryList');
     };
-    this.websocket.onerror = function(){
-        log('ERR','Connection closed.','getDirectoryList');
+    this.websocket.onerror = function(evt){
+        log('ERR','Connection closed with error - '+String(evt),'getInstanceList');
     };
 
 }
@@ -238,14 +234,11 @@ var Telemetry =function(){
 
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
-    //this.subsc = new WebSocket(this.ws_scheme+'://127.0.0.1:8090/softsim/_websocket');
-    //this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
-    //this.unsubsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_u/');
 
     this.subscribers = [];
     this.queuedSubscribers = [];
     this.allSubscibers = [];
-    
+
     var self = this;
     /*subscribeTelemetry*/
     this.subsc.onopen = function (){
@@ -261,20 +254,6 @@ var Telemetry =function(){
         log(evt,'','');
         log('ERR','Connection closed.','subscribeTelemetry');
     };
-
-    /*unSubscribeTelemetry && unSubscribeAll*/
-    /*this.unsubsc.onopen = function (){
-        log('DEBUG','Connection open.','unSubscribeTelemetry');
-    }
-   
-    this.unsubsc.onclose = function (){
-        log('DEBUG','Connection closed.','unSubscribeTelemetry');
-    }
-    
-    this.unsubsc.onerror = function (){
-        log('ERR','Connection closed.','unSubscribeTelemetry');
-
-    }*/
 
 
 }
@@ -366,7 +345,7 @@ Telemetry.prototype = {
     unSubscribeTelemetry: function(msgObj){
         var socket = this.subsc;
         var message = "";
-        
+
         /* If this msgObj is an object, stringify it. */
         if(typeof msgObj === 'object')
         {
@@ -376,12 +355,12 @@ Telemetry.prototype = {
         }
         else
         {
-            /* This is not an object.  Its probably already 
+            /* This is not an object.  Its probably already
                stringify, so just use the string as is.
              */
             message = msgObj;
         }
-        
+
         var msg = 'kill_tlm'+message
         socket.send(msg);
 
@@ -389,26 +368,21 @@ Telemetry.prototype = {
 
     },
 
-    unSubscribeAll: function(){
+    killAll: function(){
         var self = this;
         for(var i=0;i<20;i++){
-        console.log('usall');
         self.subsc.send('USALL');
         }
 
-        for(var i =0; i<self.allSubscibers.length;i++){
-            var rem = self.allSubscibers.pop();
-            self.unSubscribeTelemetry(rem);
-            //console.log('removed',rem)
-        }
+
     },
 
-    unSubscribeAll2: function(){
+    unSubscribeAll: function(){
         var self = this;
         for(var i =0; i<self.allSubscibers.length;i++){
             var rem = self.allSubscibers.pop();
             self.unSubscribeTelemetry(rem);
-            console.log('removed',rem)
+            log('DEBUG','Unsubscribed to telemetry.','count'+String(i));
         }
     },
 }
@@ -436,7 +410,7 @@ var Command =function(){
     this.info.onopen = function (){
         log('DEBUG','Connection open.','getCommandInfo');
     }
-        
+
     this.info.onclose = function (){
         log('DEBUG','Connection closed.','getCommandInfo');
     }
@@ -503,12 +477,12 @@ Command.prototype = {
 
 
         do{
-            if(cq.done()){        
+            if(cq.done()){
                 log('INFO','Commanding Queue processing complete.!','sendCommand');
                 break;
             }
 
-            Que_obj = cq.next().value; 
+            Que_obj = cq.next().value;
         } while(this.RequestCmdDef(Que_obj, cb) == true);
 
         socket.onmessage = function (event){
@@ -519,14 +493,14 @@ Command.prototype = {
             self.superQ[cmdName]= event;
 
             cb(event,jsn,btn);
-            
+
             do{
-                if(cq.done()){      
+                if(cq.done()){
 		            log('INFO','Commanding Queue processing complete.!','sendCommand');
                     break;
                 }
-    
-                Que_obj = cq.next().value; 
+
+                Que_obj = cq.next().value;
             } while(self.RequestCmdDef(Que_obj, cb) == true);
         }
     },
@@ -555,20 +529,6 @@ Command.prototype = {
 
     },
 
-    sendCommand2: function(name,args){
-    var obj = {"name":name,"args":args}
-    var message = JSON.stringify(name)
-    var socket = this.cmd;
-
-    socket.onmessage = function (event){
-        log('INFO','Button feedback.','sendCommand');
-    }
-
-    if (socket.readyState == WebSocket.OPEN) {
-      socket.send(message);
-    };
-
-    },
 
 }
 //---------------------------------------------------------------------------------------------------------------
@@ -604,7 +564,17 @@ Event.prototype = {
             log('INFO','Message received.','getEvents');
             cb(event);
         }
+
     },
+
+    kill:function(){
+    var socket = this.event
+    for(var i=0;i<20;i++){
+        socket.send('KILLSWITCH');
+        }
+    },
+
+
 
 }
 
@@ -627,7 +597,7 @@ var Video = function() {
 
         this.vid_subc.onopen = function (){
             log('DEBUG','Connection open.','getVideoStream');
-            //self.vid_subc.send('INVOKE');
+            //self.vid_subc.send('INVOKE');//TODO
             log('INFO','Message Sent.','getVideoStream');
         }
 

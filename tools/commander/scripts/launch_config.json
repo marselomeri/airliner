@@ -1,3 +1,11 @@
 {
-"number_of_workers":10
+  "pyliner":{
+    "address":"127.0.0.1",
+    "port":8090,
+    "video_port":3001,
+    "adsb_port":9000,
+    "default_instance":"softsim"
+  },
+  "daphne_port":8000,
+  "number_of_workers":20
 }

@@ -1,13 +1,29 @@
 from channels.routing import route,include,route_class
 from groundcontrol.consumers import *
-from groundcontrol.websock_test import *
+
+
+mc = MyCache()
+mc.initialize()
+
+ins = Instance()
+dir = Directory()
+
+evt = Event()
+vid = Video()
+
+tlm = Telemetry()
+cmd = Command()
+cmds = Command()
+
+
+
 
 
 
 
 #-----------------------------------------------------------
 
-ins = Instance()
+#ins = Instance()
 
 instance = [
     route('websocket.connect',ins.connect),
@@ -21,7 +37,7 @@ default_instance = [
     route('websocket.receive',ins.setDefaultInstance)
 ]
 #-----------------------------------------------------------
-dir = Directory()
+#dir = Directory()
 
 directory = [
     route('websocket.connect',dir.connect),
@@ -29,7 +45,7 @@ directory = [
     route('websocket.receive',dir.directoryListing)
 ]
 #-----------------------------------------------------------
-tlm = Telemetry()
+#tlm = Telemetry()
 
 telemetry_subscribe = [
     route('websocket.connect',tlm.connect),
@@ -42,7 +58,7 @@ telemetry_subscribe = [
 
 
 #-----------------------------------------------------------
-cmd = Command()
+#cmd = Command()
 
 command_info = [
     route('websocket.connect',cmd.connect),
@@ -50,7 +66,7 @@ command_info = [
     route('websocket.receive',cmd.getCommandInfo)
 ]
 
-cmds = Command()
+#cmds = Command()
 
 command_send = [
     route('websocket.connect',cmds.connect),
@@ -58,16 +74,16 @@ command_send = [
     route('websocket.receive',cmds.postCommand)
 ]
 #-----------------------------------------------------------
-event=Event()
+#event=Event()
 
 event_channels = [
-    route('websocket.connect',event.connect),
-    route('websocket.disconnect',event.disconnect),
-    route('websocket.receive',event.getEvents)
+    route('websocket.connect',evt.connect),
+    route('websocket.disconnect',evt.disconnect),
+    route('websocket.receive',evt.getEvents)
 ]
 
 #-----------------------------------------------------------
-vid = Video()
+#vid = Video()
 video = [
     route('websocket.connect',vid.connect),
     route('websocket.disconnect',vid.disconnect),

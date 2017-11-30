@@ -66,9 +66,7 @@ ROOT_URLCONF = 'commander.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        #'BACKEND':'pypugjs.ext.django.templatetags',
         'DIRS': [os.path.join(os.environ['YAMCS_WORKSPACE'],'web'),os.path.join(BASE_DIR,  'groundcontrol/templates'),],
-        #'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -140,5 +138,4 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR),'static/'
-                    ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR),'static/']

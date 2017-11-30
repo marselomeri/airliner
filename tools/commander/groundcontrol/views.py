@@ -9,11 +9,9 @@ from django.http import HttpResponse
 
 
 def index(r,a=None):
-    #cons.ws_disconnect()
     if a==None:
         print '[REQUEST] Index page requested. [index.pug] '
-        #return render(r, 'layout.pug')
-        return render(r,'index2.pug')
+        return render(r,'index.pug')
     elif a.find('.js')!=-1:
         print '[REQUEST] Javascript document requested. [/', a, ']'
         return render(r, str(a))
@@ -23,10 +21,6 @@ def index(r,a=None):
     else:
         print '[REQUEST] Document requested. [/',a,'.pug]'
         return render(r, str(a+'.pug'))
-
-
-
-
 def router(r,a,b,c=None,d=None):
     if c==None and d==None:
         print '[REQUEST] Document requested. [/', a,'/',b, '.pug]'

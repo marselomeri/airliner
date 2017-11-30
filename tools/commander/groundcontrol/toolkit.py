@@ -1,17 +1,20 @@
 import os,json
-from websocket import create_connection
 import datetime
 import ast
 import re
-import pprint
+import redis
 
 try:
     working_dir = os.environ['YAMCS_WORKSPACE']+'web'
 except:
     working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+###########TOOLS###########
 
-#TOOLS
 
+
+
+#DEBUG
 def getDate():
     return str(datetime.datetime.now())
 
@@ -65,37 +68,16 @@ def preProcess(d):
             x = array_obj[3]["data"]
             x1 = x['parameter']
             for i in range(len(x1)):
-                x['parameter'][i]['instance']='softsim'
+                if r.get('instance')==None:
+                    x['parameter'][i]['instance']=r.get('default_instance')
+                else:
+                    x['parameter'][i]['instance'] = r.get('instance')
             return str(x)
 
-def readSESSION():
-    with open(os.path.basename(os.path.dirname(os.path.realpath(__file__))) + '/session.json') as json_data:
-        d = json.load(json_data)
-        json_data.close()
-        return d
-
-def writeSESSION(j):
-    with open(os.path.basename(os.path.dirname(os.path.realpath(__file__))) + '/session.json', 'w') as f:
-        json.dump(j, f)
-
-def getStuffFromSession(word):
-    jdata = readSESSION()
-    if word == 'address':
-        return str(jdata['Host'])
-    elif word =='port':
-        return str(jdata['Port'])
-    elif word == 'ins_name':
-        return str(jdata['InstanceName'])
-    elif word == 'name':
-        return str(jdata['Name'])
-
+#DEBUG
 def introspectResult(d):
     the_d = json.loads(d)
-
-
     tlm_data = the_d[3]['data']
-
-    #print type(tlm_data), '----', tlm_data
     tlm_list = tlm_data['parameter']
     for e in tlm_list:
         to_print = e['id']['name']

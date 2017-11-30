@@ -5,6 +5,8 @@ trap bomb SIGINT
 
 # get number of wrokers from json file.
 WORKERS=`jq '.number_of_workers' launch_config.json`
+PORT=`jq '.daphne_port' launch_config.json`
+#ADDRESS=`jq '.daphne_address' launch_config.json`
 
 
 # Executes when program is interrupted.
@@ -41,7 +43,7 @@ do
 done
 
 # DAPHNE
-daphne commander.asgi:channel_layer --port 8000 &
+daphne commander.asgi:channel_layer --port "$PORT" &
 arr+=($!)
 
 wait

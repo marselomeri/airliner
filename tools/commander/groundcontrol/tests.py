@@ -15,7 +15,7 @@ class Test_toolkit(unittest.TestCase):
 
 
     def test_directory_outputs(self):
-        get_directory('');
+        get_directory('')
         self.assertEquals(get_directory('')['path'], '')
         self.assertNotEqual(get_directory('/flight')['path'],'/flidfght')
         self.assertEquals(get_directory('/apps/cs')['path'], '/apps/cs')
@@ -36,12 +36,16 @@ class Test_bitefy(unittest.TestCase):
         self.assertEquals(byteify(24), 24)
         self.assertEquals(byteify('hello'), 'hello')
         self.assertEquals(byteify({u'a':u'b'}), {'a':'b'})
-        #print {u'a':u'b'}['a']
         self.assertEquals(byteify(24), 24)
+
+class Test_logging(unittest.TestCase):
+
+    def numeric_inputs(self):
+        self.assertEquals(log('1','2','3.32'),None)
 
 
 
 
 
 if __name__ == '__main__':
-    unittest.main();
+    unittest.main()

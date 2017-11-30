@@ -1,9 +1,8 @@
 import toolkit as tk
-import urllib,json
+import urllib,json,os
 from websocket import create_connection
 from threading import Thread
-from multiprocessing import Process,Lock,Value
-from channels.sessions import channel_session
+from multiprocessing import Process
 import psutil
 import requests
 import time
@@ -21,16 +20,12 @@ class Telemetry:
         Initializes data structures and assigned default values to constants.
         """
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
-        self.defaultInstance= tk.getStuffFromSession('ins_name')
-        self.port = tk.getStuffFromSession('port')
-        self.address = tk.getStuffFromSession('address')
-        self.yamcs_ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/'+str(self.defaultInstance)+'/_websocket')
-
-
+        self.defaultInstance= self.r.get('instance')
+        self.port = self.r.get('port')
+        self.address = self.r.get('address')
         self.sock_map = {}
         self.proc_map = {}
         self.subscribers = []
-        #self.tlmSeqNum = 0
         self.process = []
         self.tracker =0
 
@@ -41,13 +36,9 @@ class Telemetry:
         :param message: message object
         :return: void
         """
-        self.housekeeping()
-
-        #message.reply_channel.send({'close': True})
         Group('tlm_bc').add(message.reply_channel)
         message.reply_channel.send({'accept': True})
-        #print self.sock_map
-
+        tk.log('Instance', 'Connected.', 'INFO')
 
     def disconnect(self, message):
         """
@@ -55,71 +46,9 @@ class Telemetry:
         :param message: message object
         :return: void
         """
-
         message.reply_channel.send({'close': True})
         Group('tlm_bc').discard(message.reply_channel)
         tk.log('Instance', '(Dis)connected.', 'INFO')
-
-
-
-    def looseTelemetry(self, message):
-        """
-        Process unsubscribe requests for telemetry and kills all processes related to a particular telemetry.
-        :param message:message object
-        :return: void
-        """
-        message_text = message.content['text']
-        if message_text.find('tlm')!=-1:
-            """
-            msg_text_obj = json.loads(message_text)
-            tlm_name = msg_text_obj['tlm'][0]['name']
-            message_client_id = message.content['reply_channel']
-            cl_obj = json.loads(self.r.get('clients'))
-
-            validation_counter = 0
-
-            for each_key in cl_obj:
-                if each_key == message_client_id:
-                    print 'skip'
-                else:
-                    if tlm_name in cl_obj[each_key]['subscribers']:
-                        validation_counter +=1
-
-            if validation_counter == 0:
-                try:
-                    # Converting message text to a format understood by pyliner or YAMCS.
-                    temp = tk.byteify(message_text)
-                    temp = json.loads(temp)
-                    temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(temp['tlm'])) + '}}'
-                    temp = temp.replace("\'", "\"")
-                    to_send = '[1,1,0,' + str(temp) + ']'
-                    self.yamcs_ws.send(to_send)
-
-                    for each_key in cl_obj:
-                        try:
-                            cl_obj[each_key]['subscribers'].remove(tlm_name)
-                        except:
-                            print 'pass'
-                            pass
-
-                    tk.log(message_text, 'Telemetry push process killed.', 'INFO')
-                except:
-                    tk.log(message_text, 'Telemetry push process ALREADY KILLED.', 'INFO')
-            #this_obj = cl_obj[message_client_id]
-        #subscribers = this_obj['subscribers']
-
-        elif message_text == 'USALL' :
-            #for p in self.process:
-            self.yamcs_ws.send_close(500, 'hello')
-            #ws.abort()
-            #to_kill = psutil.Process(self.process[i].pid)
-            #to_kill.kill()
-            #time.sleep(1)
-            #self.tracker = 0
-            #self.process = []
-        """
-
-
 
 
     def getTelemetry(self, message):
@@ -129,38 +58,36 @@ class Telemetry:
         :return: void
         """
         message_client_id = message.content['reply_channel']
-
-
         message_text = tk.byteify(message.content['text'])
-        print message_client_id,message_text
+
 
         if message_text.find('kill_tlm') != -1:
-            msg = message_text.replace('kill_tlm', '')
-            msg_text_obj = json.loads(msg)
-            temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(msg_text_obj['tlm'])) + '}}'
-            temp = temp.replace("\'", "\"")
-            to_send = '[1,1,0,' + str(temp) + ']'
-            self.sock_map[message_client_id].send(to_send)
-            print 'killed'
+            try:
+                msg = message_text.replace('kill_tlm', '')
+                msg_text_obj = json.loads(msg)
+                temp = ' {"parameter":"unsubscribe", "data":{"list":' + str(tk.byteify(msg_text_obj['tlm'])) + '}}'
+                temp = temp.replace("\'", "\"")
+                to_send = '[1,1,0,' + str(temp) + ']'
+                self.sock_map[message_client_id].send(to_send)
+                tk.log('Instance', '[UNSUBSCRIBED] - '+message_client_id+' - '+msg, 'DEBUG')
+            except:
+                tk.log('Instance', '[ERR - UNSUBSCRIBED] - ' + message_client_id + ' - ' + message_text, 'ERROR')
+                pass
+
 
         elif message_text.find('usall')!=-1:
             try:
                 to_kill_pid = self.proc_map[message_client_id]
                 to_kill = psutil.Process(to_kill_pid)
                 to_kill.kill()
-                print 'killed processs'
+                tk.log('Instance', '[KILLED] - ' + to_kill_pid, 'DEBUG')
 
             except:
                 pass
         elif message_text.find('tlm')!=-1:
 
             msg_text_obj = json.loads(message_text)
-            tlm_name = msg_text_obj['tlm'][0]['name']
-
-            #if tlm_name not in self.subscribers:
-            # Converting message text to a format understood by pyliner or YAMCS.
-
-            #self.subscribers.append(tlm_name)
+            #tlm_name = msg_text_obj['tlm'][0]['name']
             temp = ' {"parameter":"subscribe", "data":{"list":' + str(tk.byteify(msg_text_obj['tlm'])) + '}}'
             temp = temp.replace("\'", "\"")
             to_send = '[1,1,0,' + str(temp) + ']'
@@ -169,38 +96,27 @@ class Telemetry:
 
             # Qne time per application cycle.
             if message_client_id not in self.sock_map.keys():
-                client_id = message.content['reply_channel']
-                ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/' + str(self.defaultInstance) + '/_websocket')
-                self.sock_map[client_id] = ws
-                self.sock_map[message_client_id].send(to_send)
-                process = Process(target=self.push,args=(self.sock_map[message_client_id],))
-                process.start()
-                self.proc_map[client_id] = process.pid
-                self.tracker=self.tracker+1
-                #print self.sock_map
+                try:
+                    client_id = message.content['reply_channel']
+                    ws = create_connection('ws://' + str(self.address) + ':' + str(self.port) + '/' + self.r.get('instance') + '/_websocket')
+                    self.sock_map[client_id] = ws
+                    self.sock_map[message_client_id].send(to_send)
+                    process = Process(target=self.push,args=(self.sock_map[message_client_id],))
+                    process.start()
+                    self.proc_map[client_id] = process.pid
+                    self.tracker=self.tracker+1
+                    tk.log('Instance', '[PROCESS] - ' + str(process.pid) , 'DEBUG')
+                except:
+                    tk.log('Instance', '[ERR - PROCESS] - ' + message_client_id + ' - ' + message_text, 'ERROR')
+                    pass
             else:
                 self.sock_map[message_client_id].send(to_send)
+                tk.log('Instance', '[SUBSCRIBED] - ' + message_client_id + ' - ' + message_text, 'DEBUG')
 
 
 
 
 
-
-    def housekeeping(self):
-        """
-        Reads config file 'session.json' and sets default instance value.
-        :return: void
-        """
-        json = tk.readSESSION()
-        self.defaultInstance = json["InstanceName"]
-
-    def getInstanceName(self):
-        """
-        Reads config file 'session.json' and returns default instance value.
-        :return: string
-        """
-        json = tk.readSESSION()
-        return json["InstanceName"]
 
     def push(self, websocket_obj):
         """
@@ -209,12 +125,9 @@ class Telemetry:
         :param message_obj: message object
         :return: void
         """
-
         while True:
             try:
-
                 result = websocket_obj.recv()
-
                 if result != '[1,2,0]':
                     #print message_obj.content['reply_channel'], tk.introspectResult(result)
                     result2 = tk.preProcess(result)
@@ -226,12 +139,8 @@ class Telemetry:
                 time.sleep(0.01)
                 #print message_obj.content['reply_channel'], tk.introspectResult(result)
             except:
-                print 'EOWHILE'
+                tk.log('Instance', 'Not able to push messages to client. Process killed.', 'ERROR')
                 break
-                #print '\n\n---batch---\n'
-
-
-                #print '\n---eob---\n\n'
 
 
 class Command:
@@ -240,13 +149,11 @@ class Command:
         """
         Initializes data structures and assigned default values to constants.
         """
-        #self.subscribers = {}
-        self.defaultInstance = None
-        self.port = 8090
-        self.address = '127.0.0.1'
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.defaultInstance = self.r.get('instance')
+        self.port = self.r.get('port')
+        self.address = self.r.get('address')
         # self.tlmSeqNum = 0
-        #self.specialSeqNumber = 0
-        #self.killed = 0
 
     def connect(self, message):
         """
@@ -255,7 +162,6 @@ class Command:
         :return: void
         """
         message.reply_channel.send({'accept': True})
-        self.housekeeping()
         tk.log(self.defaultInstance,'Got Commanding connection request from client','INFO')
 
     def disconnect(self, message):
@@ -270,85 +176,45 @@ class Command:
     def getCommandInfo(self, message):
 
         message_text = message.content['text']
-        #print '**************************'
-        #print '==> ', message_text
-        #print '**************************'
         if message_text == 'HS':
             message.reply_channel.send({'text': 'HSOK'})
         else:
-            if self.defaultInstance!=None:
+            if self.defaultInstance!='None':
                 response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/'+ str(self.defaultInstance)+'/commands'+message_text)
             else:
-                response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/'+ self.getInstanceName()+'/commands'+message_text)
-
+                response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/'+ self.r.get('default_instance')+'/commands'+message_text)
             data = json.loads(json.dumps(response.read()))
             data = data.replace("\"", "\'")
-
-
             message.reply_channel.send({'text':data})
-            #time.sleep(5);
-            #message.reply_channel.send({'text': 'HSOK'})
+
 
 
     def postCommand(self, message):
         message_text = message.content['text']
-
-        #self.preProcessCommand(message_text)
-
         to_post = json.loads(message_text)
-        print to_post
-        print type(to_post)
-
         url=''
-        if self.defaultInstance!=None:
+        if self.defaultInstance!='None':
             url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + str(self.defaultInstance) + '/realtime/commands' + to_post['name'] + '?nolink'
         else:
-            url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + self.getInstanceName() + '/realtime/commands' + to_post['name'] + '?nolink'
+            url = 'http://' + str(self.address) + ':' + str(self.port) +'/api/processors/' + self.r.get('default_instance') + '/realtime/commands' + to_post['name'] + '?nolink'
 
         msg = '{"sequenceNumber": 0,"origin": "user@my-machine","assignment":'+ str(json.dumps(to_post['args']))+',"dryRun": false}'
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        #msg = json.dumps(msg)
         r = requests.post(url=url, data=msg, headers = headers)
         got = r.text
         message.reply_channel.send({'text': got})
-        #print '**************************'
-        #print msg
-        #print got
-        #to_post = json.loads(message_text)
-        #print '**************************'
 
-    def preProcessCommand(self,message_text):
-
-        tk.log(type(message_text),'','')
-        cmd_slug = json.loads(tk.byteify(message_text))
-        tk.log(cmd_slug,'','')
-        response = urllib.urlopen('http://' + str(self.address) + ':' + str(self.port) + '/api/mdb/' + self.getInstanceName() + '/commands' + cmd_slug['cmd']['name'])
-        data = json.loads(json.dumps(response.read()))
-        tk.log(data, '', '')
-
-    def housekeeping(self):
-        """
-        Reads config file 'session.json' and sets default instance value.
-        :return: void
-        """
-        json = tk.readSESSION()
-        self.defaultInstance = json["InstanceName"]
-
-    def getInstanceName(self):
-        """
-        Reads config file 'session.json' and returns default instance value.
-        :return: string
-        """
-        json = tk.readSESSION()
-        return json["InstanceName"]
 
 class Instance:
     def __init__(self):
-        self.port = 8090
-        self.address = '127.0.0.1'
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.defaultInstance = self.r.get('instance')
+        self.port = self.r.get('port')
+        self.address = self.r.get('address')
+
 
     def connect(self, message):
         message.reply_channel.send({'accept': True})
@@ -368,12 +234,8 @@ class Instance:
 
     def setDefaultInstance(self,message):
         name = message.content['text']
-        json = tk.readSESSION()
-        json["InstanceName"]=name
-        tk.writeSESSION(json)
+        self.r.set('instance',name)
 
-
-        #message.reply_channel.send({'close': True})
 
 class Directory:
     def connect(self,message):
@@ -386,23 +248,22 @@ class Directory:
 
     def directoryListing(self,message):
         name = message.content['text']
-        print message
         response = tk.get_directory(name)
         data = json.dumps(response)
         message.reply_channel.send({'text': data})
-        print '[' + tk.getDate() + ']' + ' Packet ' + name + ' sent.'
+        tk.log('Directory',' Packet ' + name + ' sent.','INFO')
 
-class Event:
+class Event:#TODO
     def __init__(self):
-
-        self.port = 8090
-        self.address = '127.0.0.1'
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.defaultInstance = self.r.get('instance')
+        self.port = self.r.get('port')
+        self.address = self.r.get('address')
+        self.proc_map = {}
+        self.sock_map = {}
         self.tlmSeqNum = 0
 
-
-
     def connect(self,message):
-        self.housekeeping()
         message.reply_channel.send({'accept': True})
 
 
@@ -413,19 +274,42 @@ class Event:
 
     def getEvents(self,message):
         message_text = message.content['text']
-        data = '[1, 1, 1, {"events": "subscribe"}]'
-        ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.getDefaultInstance()+'/_websocket')
-        ws.send(data)
-        t = Thread(target=self.push, args=[ws, message])
-        t.start()
+        client_id = message.content['reply_channel']
+        if message_text == 'INVOKE':
 
-    def getDefaultInstance(self):
-        json = tk.readSESSION()
-        return json["InstanceName"]
+            data = '[1, 1, 1, {"events": "subscribe"}]'
+            ws = None
+            if self.defaultInstance == 'None':
+                ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.r.get('default_instance')+'/_websocket')
+            else:
+                ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.defaultInstance+'/_websocket')
+            ws.send(data)
+            t = Process(target=self.push, args=(ws, message))
+            self.proc_map[client_id] = t.pid
+            self.sock_map[client_id] = ws
+            t.start()
 
-    def housekeeping(self):
-        json = tk.readSESSION()
-        self.defaultInstance = json["InstanceName"]
+
+        elif message_text =='KILLSWITCH':
+
+            try:
+                us_sock = self.sock_map[client_id]
+                data = '[1, 1, 1, {"events": "unsubscribe"}]'
+                us_sock.send(data)
+                tk.log('Event', '[UNSIBSCRIBED] - ' + client_id+' events', 'DEBUG')
+            except:
+                tk.log('Event','Unable to unsubscribe.','ERROR')
+                pass
+            try:
+                to_kill_pid = self.proc_map[client_id]
+                to_kill = psutil.Process(to_kill_pid)
+                to_kill.kill()
+                tk.log('Event', '[KILLED] - ' + to_kill_pid, 'DEBUG')
+            except:
+                tk.log('Event', 'Unable to kill.', 'ERROR')
+                pass
+
+
 
 
 
@@ -445,8 +329,10 @@ class Misc:
         self.mapping = {
             'ADSB':'http://127.0.0.1:9000/test'
         }
-        self.port = 8090
-        self.address = '127.0.0.1'
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.defaultInstance = self.r.get('instance')
+        self.port = self.r.get('port')
+        self.address = self.r.get('address')
 
     def connect(self, message):
         message.reply_channel.send({'accept': True})
@@ -473,13 +359,14 @@ class Misc:
 
 class Video:
     def __init__(self):
-        self.address = '127.0.0.1'
-        self.video_port = 3001
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.defaultInstance = self.r.get('instance')
+        self.video_port = self.r.get('video_port')
+        self.address = self.r.get('address')
         self.video_frame_counter = 0
         self.video_socket = None
 
     def connect(self, message):
-        print 'plug0'
         message.reply_channel.send({'accept': True})
 
 
@@ -488,24 +375,36 @@ class Video:
 
 
     def getVideo(self, message):
-        print 'plug0.5'
         name = message.content['text']
-        #buff = \
         self.VideoThroughUDP(message)
-        #message.reply_channel.send({'text': buff})
+
 
     def VideoThroughUDP(self,msg_obj):
         UDP_IP = self.address
         UDP_PORT = self.video_port
         self.video_socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)  # UDP
         self.video_socket.bind(("", UDP_PORT))
-        print 'plug1'
         while True:
-            print 'plug2'
             data, addr = self.video_socket.recvfrom(65527)  # buffer size is 1024 bytes
             b64_img = base64.b64encode(data)
             self.video_frame_counter = self.video_frame_counter + 1
             print 'Frame# : ['+str(self.video_frame_counter)+'] sent.'
             msg_obj.reply_channel.send({'text': b64_img})
             #yield b64_img
+
+
+class MyCache:
+
+    def __init__(self):
+        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+    def initialize(self):
+        with open(os.getcwd() + '/scripts/launch_config.json') as file:
+            config = json.load(file)
+            self.r.set ('instance',None)
+            self.r.set('default_instance', config['pyliner']['default_instance'])
+            self.r.set('address', config['pyliner']['address'])
+            self.r.set('port', config['pyliner']['port'])
+            self.r.set('video_port', config['pyliner']['video_port'])
+            self.r.set('adsb_port', config['pyliner']['adsb_port'])
 

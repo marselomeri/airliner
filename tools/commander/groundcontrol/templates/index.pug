@@ -37,7 +37,9 @@ html(lang='en-us')
     link(rel='apple-touch-startup-image', href='static/img/splash/ipad-portrait.png', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)')
     link(rel='apple-touch-startup-image', href='static/img/splash/iphone.png', media='screen and (max-device-width: 320px)')
     link(rel='stylesheet', type='text/css', href='static/bower_components/jquery-flight-indicators/css/flightindicators.css')
-    script(src='client2.js')
+    script(src='toolkit.js)
+    script(src='client.js')
+
     script.
        var session = new Session();
        var inst = new Instance();
@@ -320,8 +322,6 @@ html(lang='en-us')
     script(src='static/bower_components/eventEmitter/EventEmitter.js')
     script(src='static/bower_components/jqGrid/js/jquery.jqGrid.js')
     script(src='static/bower_components/jqGrid/js/i18n/grid.locale-en.js')
-    //script(src='client2.js')
-    //script(src='tools.js')
     // <script src="static/bower_components/jsyg-events/JSYG.Events.js"></script>
     // <script src="static/bower_components/jQuery.Hotkeys/jquery.hotkeys.js"></script>
     // <script src="static/bower_components/jsyg-stdconstruct/JSYG.StdConstruct.js"></script>
@@ -343,45 +343,43 @@ html(lang='en-us')
     // <script src="static/bower_components/ng-contextmenu/dist/ng-contextmenu.min.js"></script>
     // <script src="static/bower_components/react-contextmenu/src/contextmenu-layer.js"></script>
     // <script src="static/bower_components/ui-contextmenu/jquery.ui-contextmenu.min.js"></script>
-    //script(src = 'client2.js')
     script.
-      /*ONLY HAPPENS ONE TIME ON LAUNCH OR RELOAD*/
+
+
+      /*This Event happens on page reload*/
+
       window.onload= function(){
-
         cmd_o.cleanSlate();
-        tlm_o = new Telemetry();
-
-
-        console.log('here33333333333',tlm_o);
+        tlm_o = new Telemetry(); //idk if this line is needed.
         session.saveSockets([inst,dir,cmd_o,tlm_o,ev]);
+      };
 
 
-      }
+
+      /*This event happens just before the page is closed or unloaded*/
 
       window.onbeforeunload = function () {
-       tlm_o.unSubscribeAll()
-       //tlm_o.setTracker()
-       console.log('Are You Sure!!!')
-      }
+       tlm_o.unSubscribeAll();
+       tlm_o.killAll();
+       ev.kill();
+      };
 
-      /*HAPPENS WHENEVER URL CHANGES*/
-      window.onhashchange= function(){//TODO
 
-        console.log('HASH CHANFGE DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
+
+      /*This event happens when browser detects url change*/
+
+      window.onhashchange= function(){
         var newInstance = session.getCurrentInstance();
-        tlm_o.unSubscribeAll2();
+        tlm_o.unSubscribeAll();
         cmd_o.cleanSlate();
-        //tlm_o.unSubscribeAll()
         if($("#yamcs-instance-selected").text() != 'Select'){
         page_change_counter = page_change_counter+1;}
-
-
       };
 
 
 
       // INSTANCES
-
       inst.getInstanceList(processInstance);
 
 
@@ -406,6 +404,9 @@ html(lang='en-us')
                     $("#yamcs-instance-selected").text(newInstance);
                     inst.transmitCurrentInstance(newInstance);
                     BindHtmlToCommanderInstance(newInstance); //first time binding
+
+
+
                   }).append(selected.name)));
             });
             getWorkspaceDir('');
@@ -465,14 +466,14 @@ html(lang='en-us')
 
         //preprocess
         //console.log(param);
-        try{
-        param = JSON.parse((param.data).replace(/'/g, "\"").replace('True','true'));
-        param = param.parameter[0];
-        //console.log(param);
+        //try{
+        //param = JSON.parse((param).replace(/'/g, "\"").replace('True','true'));
+        //param = param.parameter[0];
+        //console.log('sdfsdfsdfsdf',param);
 
-        }catch(err){
-         log('ERR', 'JSON - PARSE error!','ln 541')
-        }
+        //}catch(err){
+         //log('ERR', 'JSON - PARSE error!'+String(err),'ln 471')
+        //}
         var found = false;
         for (var i = 0; i < CommanderTlmDataElements.length; i++) {
           pre_process = CommanderTlmDataElements[i].attr('data-sage');
@@ -594,7 +595,7 @@ html(lang='en-us')
         var self = this;
 
         console.log('***********BINDING***********');
-        console.log(page_change_counter);
+        console.log('Application #',page_change_counter+1);
         if(page_change_counter>=1){
 
             console.log('called all unsubscription');
@@ -646,9 +647,7 @@ html(lang='en-us')
             var cmdObj = jsonObj.cmd;
             var btnObj = $(this);
             try{
-                  btnObj.click(function (eventObject) {
-                    cmd_o.sendCommand2(jsonObj);//TODO
-                });
+                cmd_o.prepareCmds(cmdObj.name,jsonObj,btnObj);
             }
             catch(err){
                 log('ERROR','cannot parse command string from data-sage.',err);
@@ -661,6 +660,133 @@ html(lang='en-us')
 
         });
 
+
+
+
+        //Do Your Moves Here
+
+        var c = 0;
+        cmd_o.ProcessCmds(function(cmdInfoStr,jsonObj,btnObj){
+
+
+          c = c+1
+          var cmdObj = jsonObj.cmd;
+          var cmdData = cmdInfoStr.data;
+          cmdData = replaceAll(cmdData,"\'","\"");
+          var cmdInfo;
+
+          try {
+              cmdInfo = JSON.parse(cmdData);
+          } catch (e) {
+              /* TODO:  This is not a valid JSON object, probably because the
+                 command itself is not valid.  We need to add a console so we
+                 can present these errors to the user. */
+              return;
+          }
+
+          if (cmdObj.hasOwnProperty('uuid')) {
+            /* We already bound this element. */
+          } else {
+            if ((cmdObj.name == cmdInfo.qualifiedName) &&
+                (cmdObj.instance == cmdInfo.instance)) {
+              var uuid = generateUUID();
+              cmdInfo.uuid = uuid;
+              cmdObj.uuid = uuid;
+              btnObj.attr('data-sage', JSON.stringify(jsonObj));
+              /* Copy any arguments we have from the command button into the cmdInfo struct. */
+              if (cmdObj.hasOwnProperty('argument')) {
+                for (i = 0; i < cmdObj.argument.length; i++) {
+                  for (j = 0; j < cmdInfo.argument.length; j++) {
+                    if (cmdInfo.argument[j].name == cmdObj.argument[i].name) {
+                      cmdInfo.argument[j].value = cmdObj.argument[i].value;
+                    }
+                  }
+                }
+              }
+
+              var cmdOut = JSON.parse(JSON.stringify(cmdInfo));
+
+              if(isTemplateCommand(cmdOut) == false) {
+
+                btnObj.click(function (eventObject) {
+                  if (cmdOut.hasOwnProperty('argument')) {
+                    var args = [];
+                    for (i = 0; i < cmdOut.argument.length; i++) {
+                      args.push({name: cmdOut.argument[i].name, value: cmdOut.argument[i].value});
+                    }
+
+                    cmd_o.sendCommand(cmdOut.qualifiedName, args);//TODO
+
+                  } else {
+
+                    cmd_o.sendCommand(cmdOut.qualifiedName, []);//TODO
+
+                  }
+                });
+              } else {
+                /* First, generate UUIDs to be used later as element IDs. */
+                for (i = 0; i < cmdOut.argument.length; i++) {
+                  cmdOut.argument[i].uuid = uuid + "_" + cmdOut.argument[i].name;
+                }
+                /* Next set stringLength for string parameters to be used for form validation later. */
+                for (i = 0; i < cmdOut.argument.length; i++) {
+                  if (cmdOut.argument[i].type == "STRING") {
+                    /* Add a new stringLength (in bytes) attribute for parameter validation later. */
+                    cmdOut.argument[i].stringLength = cmdOut.argument[i].type.dataEncoding.sizeInBits / 8;
+                  }
+                }
+                var source = $.trim($('#cmdTemplate').html());
+                var template = Handlebars.compile(source);
+                var html = template(cmdOut);
+                var dlg = $("<div id='" + uuid + "'></div>")
+                  .append(html);
+                // Modal Link
+                btnObj.click(function () {
+                  dlg.dialog('open');
+                  return false;
+                });
+                $(dlg).dialog({
+                  autoOpen: false,
+                  modal: true,
+                  html: true,
+                  content: html,
+                  buttons: [
+                    {
+                      html: "Cancel",
+                      "class": "btn btn-default",
+                      click: function () {
+                        $(this).dialog("close");
+                      }
+                    },
+                    {
+                      html: "<i class='fa fa-check'></i>&nbsp; Send",
+                      "class": "btn btn-primary",
+                      click: function () {
+                        var args = [];
+                        for (i = 0; i < cmdOut.argument.length; i++) {
+                          if (cmdOut.argument[i].type.engType == 'enumeration') {
+                            args.push({
+                              'name': cmdOut.argument[i].name,
+                              'value': $('#' + cmdOut.argument[i].uuid + ' option:selected').text()
+                            });
+                          } else {
+                            args.push({
+                              'name': cmdOut.argument[i].name,
+                              'value': $('#' + cmdOut.argument[i].uuid).val()
+                            });
+                          }
+                        }
+                        $(this).dialog(cmd_o.sendCommand(cmdOut.qualifiedName, args));//TODO
+                        $(this).dialog("close");
+                      }
+                    }
+                  ]
+                });
+              }
+            }
+          }
+        });
+      console.log('************BOUND************');
       };
 
 
