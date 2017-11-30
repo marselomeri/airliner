@@ -51,6 +51,7 @@
 #define VM_MAIN_TASK_PERF_ID        81
 #define BAT_MAIN_TASK_PERF_ID       82
 #define MPU9250_MAIN_TASK_PERF_ID   83
+#define HMC5883_MAIN_TASK_PERF_ID   84
 
 #endif
 

@@ -158,12 +158,30 @@ boolean HMC5883_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
+
+    returnBool = HMC5883_Custom_Calibration();
+    if (TRUE != returnBool)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed calibration");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     else
     {
         HMC5883_AppCustomData.Status = HMC5883_CUSTOM_INITIALIZED;
     }
 
 end_of_function:
+    return returnBool;
+}
+
+
+/* TODO implement self calibration */
+boolean HMC5883_Custom_Calibration(void)
+{
+    boolean returnBool = TRUE;
+
     return returnBool;
 }
 

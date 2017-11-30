@@ -297,6 +297,9 @@ boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind);
 int32 HMC5883_ResetDevice(void);
 
 
+boolean HMC5883_Custom_Calibration(void);
+
+
 #ifdef __cplusplus
 }
 #endif 
