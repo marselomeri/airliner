@@ -298,6 +298,14 @@ int32 HMC5883_ResetDevice(void);
 
 
 boolean HMC5883_Custom_Calibration(void);
+boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length);
+boolean HMC5883_Custom_Send(uint8 Address, uint8 *Buffer, size_t Length);
+boolean HMC5883_Custom_Check_Config(void);
+boolean HMC5883_Custom_Set_Config(void);
+boolean HMC5883_Custom_Check_Range(void);
+boolean HMC5883_Custom_Set_Range(void);
+
+boolean HMC5883_Custom_ValidateID(void);
 
 
 #ifdef __cplusplus

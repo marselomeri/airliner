@@ -52,6 +52,8 @@
 #define BAT_MAIN_TASK_PERF_ID       82
 #define MPU9250_MAIN_TASK_PERF_ID   83
 #define HMC5883_MAIN_TASK_PERF_ID   84
+#define HMC5883_RECEIVE_PERF_ID     85
+#define HMC5883_SEND_PERF_ID        86
 
 #endif
 

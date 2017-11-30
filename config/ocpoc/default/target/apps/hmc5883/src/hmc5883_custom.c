@@ -49,6 +49,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <errno.h>
+#include <time.h>
 
 /************************************************************************
 ** Local Defines
@@ -394,7 +395,7 @@ boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length)
     Packets.nmsgs = 1;
 
     CFE_ES_PerfLogEntry(HMC5883_RECEIVE_PERF_ID);
-    returnCode = HMC5883_Ioctl(RGBLED_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    returnCode = HMC5883_Ioctl(HMC5883_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
     CFE_ES_PerfLogExit(HMC5883_RECEIVE_PERF_ID);
 
     if (-1 == returnCode) 
@@ -417,7 +418,7 @@ boolean HMC5883_Custom_Uninit(void)
     boolean returnBool = TRUE;
     int returnCode = 0;
 
-    returnCode = close(MS5611_AppCustomData.DeviceFd);
+    returnCode = close(HMC5883_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
         CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
