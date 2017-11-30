@@ -390,4 +390,3 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
 )
-

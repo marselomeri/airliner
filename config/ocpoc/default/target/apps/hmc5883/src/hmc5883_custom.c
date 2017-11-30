@@ -308,7 +308,7 @@ boolean HMC5883_Custom_ValidateID(void)
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
-    if (HMC5883_ID_A != Result)
+    if (HMC5883_ID_A != Result[0])
     {
         /* If the ID doesn't match return FALSE */
         returnBool = FALSE;
@@ -320,7 +320,7 @@ boolean HMC5883_Custom_ValidateID(void)
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
-    if (HMC5883_ID_B != Result)
+    if (HMC5883_ID_B != Result[0])
     {
         /* If the ID doesn't match return FALSE */
         returnBool = FALSE;
@@ -332,7 +332,7 @@ boolean HMC5883_Custom_ValidateID(void)
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
-    if (HMC5883_ID_C != Result)
+    if (HMC5883_ID_C != Result[0])
     {
         /* If the ID doesn't match return FALSE */
         returnBool = FALSE;
@@ -472,7 +472,6 @@ end_of_function:
 
     return customEventCount;
 }
-
 
 
 CFE_TIME_SysTime_t HMC5883_Custom_Get_Time(void)
