@@ -141,33 +141,6 @@ boolean HMC5883_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
-    
-    returnBool = HMC5883_Custom_ValidateID();
-    if (TRUE != returnBool)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 Device failed validate ID");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    
-    returnBool = HMC5883_Custom_Set_Range();
-    if (TRUE != returnBool)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 Device failed set range");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    returnBool = HMC5883_Custom_Calibration();
-    if (TRUE != returnBool)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 Device failed calibration");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
     else
     {
         HMC5883_AppCustomData.Status = HMC5883_CUSTOM_INITIALIZED;
@@ -179,28 +152,37 @@ end_of_function:
 
 
 /* TODO implement self calibration */
-boolean HMC5883_Custom_Calibration(void)
+boolean HMC5883_Custom_Calibration(HMC5883_Calibration_t *Calibration)
 {
     boolean returnBool = TRUE;
+    /* Null pointer check */
+    if(0 == Calibration)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Custom Calibration Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
+end_of_function:
     return returnBool;
 }
 
 
-boolean HMC5883_Custom_Set_Range(void)
+boolean HMC5883_Custom_Set_Range(uint8 Range)
 {
     boolean returnBool = FALSE;
-    
-    uint8 Message[1] = { HMC5883_BITS_CONFIG_B_RANGE_1GA3 };
+
+    uint8 Message[1] = { Range };
     
     returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_CONFIG_B, 
             Message, sizeof(Message));
-            
+
     return returnBool;
 }
 
 
-boolean HMC5883_Custom_Check_Range(void)
+boolean HMC5883_Custom_Check_Range(uint8 Range)
 {
     boolean returnBool = FALSE;
     
@@ -209,16 +191,16 @@ boolean HMC5883_Custom_Check_Range(void)
     returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_B, 
             Result, sizeof(Result));
     /* If the gain setting is corrupt, reset the value */
-    if (HMC5883_BITS_CONFIG_B_RANGE_1GA3 != Result[0])
+    if (Range != Result[0])
     {
-        returnBool = HMC5883_Custom_Set_Range();
+        returnBool = HMC5883_Custom_Set_Range(Range);
     }
 
     return returnBool;
 }
 
 
-boolean HMC5883_Custom_Set_Config(void)
+boolean HMC5883_Custom_Set_Config(uint8 Config)
 {
     boolean returnBool = FALSE;
     
@@ -231,7 +213,7 @@ boolean HMC5883_Custom_Set_Config(void)
 }
 
 
-boolean HMC5883_Custom_Check_Config(void)
+boolean HMC5883_Custom_Check_Config(uint8 Config)
 {
     boolean returnBool = FALSE;
     
@@ -241,7 +223,7 @@ boolean HMC5883_Custom_Check_Config(void)
             Result, sizeof(Result));
     if (HMC5883_BITS_CONFIG_A_DEFAULT != Result[0])
     {
-        returnBool = HMC5883_Custom_Set_Config();
+        returnBool = HMC5883_Custom_Set_Config(Config);
     }
 
     return returnBool;
@@ -492,3 +474,29 @@ end_of_function:
     return Timestamp;
 }
 
+
+boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z)
+{
+    boolean returnBool = TRUE;
+    float temp_f = 0;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Apply_Platform_Rotation Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
+    /* The standard external mag by 3DR has x pointing to the
+     * right, y pointing backwards, and z down, therefore switch x
+     * and y and invert y. */
+    temp_f = *X;
+    *X = -*Y;
+    *Y = temp_f;
+
+end_of_function:
+
+    return returnBool;
+}

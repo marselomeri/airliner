@@ -174,15 +174,9 @@ extern "C" {
 */
 //#define HMC5883_BITS_CONFIG_A_CONTINUOUS_75HZ     (0x6 << 2)
 
-#define HMC5883_BITS_CONFIG_A_DEFAULT               (0)
+#define HMC5883_BITS_CONFIG_A_DEFAULT             (0)
 
-/** \brief Gain setting default.
-**
-**  \par Description:
-**       Gain setting Recommended Sensor Field Range +- 1.3 Ga,
-**       Gain (LSb/Gauss) 1090, Digital Resoluation (mG/LSb) 0.92.
-*/
-#define HMC5883_BITS_CONFIG_B_RANGE_1GA3          (0x01 << 5)
+
 
 /** \brief Continuous measurement mode. 
 **
@@ -204,14 +198,14 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define HMC5883_MAX_RETRY_ATTEMPTS           (2)
+#define HMC5883_MAX_RETRY_ATTEMPTS                (2)
 
 /** \brief Sleep time micro seconds for interrupted calls.
 **
 **  \par Limits:
 **       None.
 */
-#define HMC5883_MAX_RETRY_SLEEP_USEC         (10)
+#define HMC5883_MAX_RETRY_SLEEP_USEC              (10)
 
 
 /************************************************************************
@@ -297,15 +291,8 @@ boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind);
 int32 HMC5883_ResetDevice(void);
 
 
-boolean HMC5883_Custom_Calibration(void);
 boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length);
 boolean HMC5883_Custom_Send(uint8 Address, uint8 *Buffer, size_t Length);
-boolean HMC5883_Custom_Check_Config(void);
-boolean HMC5883_Custom_Set_Config(void);
-boolean HMC5883_Custom_Check_Range(void);
-boolean HMC5883_Custom_Set_Range(void);
-
-boolean HMC5883_Custom_ValidateID(void);
 
 
 #ifdef __cplusplus
