@@ -377,3 +377,15 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_perfids.h
 )
 
+add_airliner_app(
+    hmc5883
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/hmc5883/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883/src/hmc5883_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883/src/hmc5883_i2c.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hmc5883_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
+)
+

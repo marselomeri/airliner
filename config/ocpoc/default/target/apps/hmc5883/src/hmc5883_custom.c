@@ -109,6 +109,7 @@ int32 HMC5883_Ioctl(int fh, int request, void *arg)
             
         if (-1 == returnCode && EINTR == errno)
         {
+            OS_printf("-1 ioctl error\n");
             usleep(HMC5883_MAX_RETRY_SLEEP_USEC);
         }
         else
@@ -143,6 +144,7 @@ boolean HMC5883_Custom_Init()
     }
     else
     {
+        OS_printf("HMC5883 FD = %d\n", HMC5883_AppCustomData.DeviceFd);
         HMC5883_AppCustomData.Status = HMC5883_CUSTOM_INITIALIZED;
     }
 
@@ -204,7 +206,7 @@ boolean HMC5883_Custom_Set_Config(uint8 Config)
 {
     boolean returnBool = FALSE;
     
-    uint8 Message[1] = { HMC5883_BITS_CONFIG_A_DEFAULT };
+    uint8 Message[1] = { Config };
     
     returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_CONFIG_A, 
             Message, sizeof(Message));
@@ -221,7 +223,7 @@ boolean HMC5883_Custom_Check_Config(uint8 Config)
     
     returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_A, 
             Result, sizeof(Result));
-    if (HMC5883_BITS_CONFIG_A_DEFAULT != Result[0])
+    if (Config != Result[0])
     {
         returnBool = HMC5883_Custom_Set_Config(Config);
     }
@@ -284,9 +286,10 @@ boolean HMC5883_Custom_ValidateID(void)
     
     uint8 Result[1] = { 0 };
     
-    returnBool = HMC5883_Custom_Receive(HMC5883_REG_ID_A, Result, sizeof(Result));
+    returnBool = HMC5883_Custom_Receive(HMC5883_REG_ID_A, &Result[0], 1);
     if(FALSE == returnBool)
     {
+        OS_printf("Reg A read failed\n");
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
@@ -296,9 +299,10 @@ boolean HMC5883_Custom_ValidateID(void)
         returnBool = FALSE;
         goto end_of_function;
     }
-    returnBool = HMC5883_Custom_Receive(HMC5883_REG_ID_B, Result, sizeof(Result));
+    returnBool = HMC5883_Custom_Receive(HMC5883_REG_ID_B, &Result[0], 1);
     if(FALSE == returnBool)
     {
+        OS_printf("Reg B read failed\n");
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
@@ -308,9 +312,10 @@ boolean HMC5883_Custom_ValidateID(void)
         returnBool = FALSE;
         goto end_of_function;
     }
-    returnBool = HMC5883_Custom_Receive(HMC5883_REG_ID_C, Result, sizeof(Result));
+    returnBool = HMC5883_Custom_Receive(HMC5883_REG_ID_C, &Result[0], 1);
     if(FALSE == returnBool)
     {
+        OS_printf("Reg C read failed\n");
         /* If receive was unsuccessful return FALSE */
         goto end_of_function;
     }
@@ -327,20 +332,26 @@ end_of_function:
 }
 
 
-boolean HMC5883_Custom_Send(uint8 Address, uint8 *Buffer, size_t Length)
+boolean HMC5883_Custom_Send(uint8 Reg, uint8 *Buffer, size_t Length)
 {
     int returnCode = 0;
     boolean returnBool = FALSE;
-    struct i2c_msg Messages[1];
+    struct i2c_msg Messages[2];
     struct i2c_rdwr_ioctl_data Packets;
-
-    Messages[0].addr  = Address;
+    uint8 cmd = Reg;
+    
+    Messages[0].addr  = HMC5883_I2C_SLAVE_ADDRESS;
     Messages[0].flags = 0;
-    Messages[0].buf   = Buffer;
-    Messages[0].len   = Length;
+    Messages[0].buf   = &cmd;
+    Messages[0].len   = 1;
+    
+    Messages[1].addr  = HMC5883_I2C_SLAVE_ADDRESS;
+    Messages[1].flags = 0;
+    Messages[1].buf   = Buffer;
+    Messages[1].len   = Length;
 
     Packets.msgs  = Messages;
-    Packets.nmsgs = 1;
+    Packets.nmsgs = 2;
 
     CFE_ES_PerfLogEntry(HMC5883_SEND_PERF_ID);
     returnCode = HMC5883_Ioctl(HMC5883_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
@@ -349,7 +360,7 @@ boolean HMC5883_Custom_Send(uint8 Address, uint8 *Buffer, size_t Length)
     if (-1 == returnCode) 
     {            
         CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "HMC5883 ioctl returned %i", errno);
+                        "HMC5883 ioctl returned errno %i", errno);
         returnBool = FALSE;
     }
     else
@@ -361,20 +372,27 @@ boolean HMC5883_Custom_Send(uint8 Address, uint8 *Buffer, size_t Length)
 }
 
 
-boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length)
+boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length)
 {
     int returnCode = 0;
     boolean returnBool = FALSE;
-    struct i2c_msg messages[1];
+    struct i2c_msg Messages[2];
     struct i2c_rdwr_ioctl_data Packets;
+    uint8 cmd = Reg;
+    
+    /* send */
+    Messages[0].addr  = HMC5883_I2C_SLAVE_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf   = &cmd;
+    Messages[0].len   = 1;
+    /* receive */
+    Messages[1].addr  = HMC5883_I2C_SLAVE_ADDRESS;
+    Messages[1].flags = HMC5883_I2C_M_READ;
+    Messages[1].buf   = Buffer;
+    Messages[1].len   = Length;
 
-    messages[0].addr  = Address;
-    messages[0].flags = HMC5883_I2C_M_READ;
-    messages[0].buf   = Buffer;
-    messages[0].len   = Length;
-
-    Packets.msgs  = messages;
-    Packets.nmsgs = 1;
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 2;
 
     CFE_ES_PerfLogEntry(HMC5883_RECEIVE_PERF_ID);
     returnCode = HMC5883_Ioctl(HMC5883_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
@@ -383,7 +401,7 @@ boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length)
     if (-1 == returnCode) 
     {            
         CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "HMC5883 ioctl returned %i", errno);
+                        "HMC5883 ioctl returned errno %i", errno);
         returnBool = FALSE;
     }
     else
@@ -393,6 +411,7 @@ boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length)
 
     return returnBool;
 }
+
 
 
 boolean HMC5883_Custom_Uninit(void)

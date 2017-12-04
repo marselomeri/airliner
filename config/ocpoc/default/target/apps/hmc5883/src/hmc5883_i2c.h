@@ -46,7 +46,7 @@ extern "C" {
 ** Local Defines
 *************************************************************************/
 /** \brief I2C device path. */
-#define HMC5883_I2C_DEVICE_PATH                   "/dev/i2c-2"
+#define HMC5883_I2C_DEVICE_PATH                   "/dev/i2c-4"
 
 /** \brief I2C slave address of the HMC5883 device in hex. */
 #define HMC5883_I2C_SLAVE_ADDRESS                 (0x1e)
@@ -176,8 +176,6 @@ extern "C" {
 
 #define HMC5883_BITS_CONFIG_A_DEFAULT             (0)
 
-
-
 /** \brief Continuous measurement mode. 
 **
 **  \par Description:
@@ -198,7 +196,7 @@ extern "C" {
 **  \par Limits:
 **       None.
 */
-#define HMC5883_MAX_RETRY_ATTEMPTS                (2)
+#define HMC5883_MAX_RETRY_ATTEMPTS                (5)
 
 /** \brief Sleep time micro seconds for interrupted calls.
 **
@@ -276,23 +274,10 @@ int32 HMC5883_Ioctl(int fh, int request, void *arg);
 *************************************************************************/
 boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind);
 
-/************************************************************************/
-/** \brief Reset the device.
-**
-**  \par Description
-**       This function must be used at initialization.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None
-**
-**  \returns    ioctl return code.
-**
-*************************************************************************/
-int32 HMC5883_ResetDevice(void);
+boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length);
 
-
-boolean HMC5883_Custom_Receive(uint8 Address, uint8 *Buffer, size_t Length);
 boolean HMC5883_Custom_Send(uint8 Address, uint8 *Buffer, size_t Length);
+
 
 
 #ifdef __cplusplus
