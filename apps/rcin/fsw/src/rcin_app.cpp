@@ -4,11 +4,11 @@
 #include <string.h>
 
 #include "cfe.h"
-
+#include "rcin_custom.h"
 #include "rcin_app.h"
 #include "rcin_msg.h"
 #include "rcin_version.h"
-
+#include <unistd.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -48,13 +48,42 @@ RCIN::~RCIN()
 int32 RCIN::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
+    int32 customEventCount = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset(EventTbl, 0x00, sizeof(EventTbl));
+    
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    EventTbl[  ind].EventID = RCIN_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = RCIN_READ_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    
+    
+    /* Add custom events to the filter table */
+    customEventCount = RCIN_Custom_Init_EventFilters(ind, EventTbl);
+    
+    if(-1 == customEventCount)
+    {
+        iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
+        goto end_of_function;
+    }
 
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, (ind + customEventCount), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("RCIN - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
+
+end_of_function:
 
     return iStatus;
 }
@@ -70,16 +99,15 @@ int32 RCIN::InitPipe()
     int32  iStatus=CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
-    iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		RCIN_SCH_PIPE_DEPTH,
-			RCIN_SCH_PIPE_NAME);
+    iStatus = CFE_SB_CreatePipe(&SchPipeId, RCIN_SCH_PIPE_DEPTH,
+            RCIN_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(RCIN_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, RCIN_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RCIN_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to RCIN_WAKEUP_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to RCIN_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto RCIN_InitPipe_Exit_Tag;
         }
@@ -88,23 +116,22 @@ int32 RCIN::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RCIN_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to RCIN_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                    "CMD Pipe failed to subscribe to RCIN_SEND_HK_MID. (0x%08X)",
+                    (unsigned int)iStatus);
             goto RCIN_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(RCIN_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+            "Failed to create SCH pipe (0x%08lX)",
+            iStatus);
         goto RCIN_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
-    iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		RCIN_CMD_PIPE_DEPTH,
-			RCIN_CMD_PIPE_NAME);
+    iStatus = CFE_SB_CreatePipe(&CmdPipeId, RCIN_CMD_PIPE_DEPTH,
+            RCIN_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -113,16 +140,15 @@ int32 RCIN::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RCIN_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to RCIN_CMD_MID. (0x%08lX)",
-				 iStatus);
+                "CMD Pipe failed to subscribe to RCIN_CMD_MID. (0x%08lX)",
+                iStatus);
             goto RCIN_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(RCIN_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+            "Failed to create CMD pipe (0x%08lX)", iStatus);
         goto RCIN_InitPipe_Exit_Tag;
     }
 
@@ -139,11 +165,12 @@ RCIN_InitPipe_Exit_Tag:
 void RCIN::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    		RCIN_HK_TLM_MID, sizeof(HkTlm), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&InputRcMsg,
-      		PX4_INPUT_RC_MID, sizeof(PX4_InputRcMsg_t), TRUE);
+    CFE_SB_InitMsg(&HkTlm, RCIN_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&InputRcMsg, PX4_INPUT_RC_MID, 
+        sizeof(PX4_InputRcMsg_t), TRUE);
+    /* Init custom data */
+    RCIN_Custom_InitData();
 }
 
 
@@ -156,6 +183,7 @@ int32 RCIN::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
+    boolean returnBool = TRUE;
 
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
@@ -175,10 +203,23 @@ int32 RCIN::InitApp()
     }
 
     InitData();
+    
+    returnBool = RCIN_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        goto RCIN_InitApp_Exit_Tag;
+    }
 
-    iStatus = InitConfigTbl();
+    HkTlm.State = RCIN_INITIALIZED;
+
+    /* Register the cleanup callback */
+    iStatus = OS_TaskInstallDeleteHandler(&RCIN_CleanupCallback);
     if (iStatus != CFE_SUCCESS)
     {
+        CFE_EVS_SendEvent(RCIN_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init register cleanup callback (0x%08X)",
+                                 (unsigned int)iStatus);
         goto RCIN_InitApp_Exit_Tag;
     }
 
@@ -187,10 +228,10 @@ RCIN_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(RCIN_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 RCIN_MAJOR_VERSION,
-								 RCIN_MINOR_VERSION,
-								 RCIN_REVISION,
-								 RCIN_MISSION_REV);
+                                 RCIN_MAJOR_VERSION,
+                                 RCIN_MINOR_VERSION,
+                                 RCIN_REVISION,
+                                 RCIN_MISSION_REV);
     }
     else
     {
@@ -231,7 +272,8 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case RCIN_WAKEUP_MID:
-                /* TODO:  Do something here. */
+                ReadDevice();
+                SendInputRcMsg();
                 break;
 
             case RCIN_SEND_HK_MID:
@@ -262,7 +304,7 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(RCIN_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+                "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -336,11 +378,11 @@ void RCIN::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case RCIN_NOOP_CC:
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(RCIN_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					RCIN_MAJOR_VERSION,
-					RCIN_MINOR_VERSION,
-					RCIN_REVISION,
-					RCIN_MISSION_REV);
+                    "Recvd NOOP. Version %d.%d.%d.%d",
+                    RCIN_MAJOR_VERSION,
+                    RCIN_MINOR_VERSION,
+                    RCIN_REVISION,
+                    RCIN_MISSION_REV);
                 break;
 
             case RCIN_RESET_CC:
@@ -415,6 +457,32 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 }
 
 
+void RCIN::ReadDevice(void)
+{
+    boolean returnBool = FALSE;
+    /* TODO remove temp */
+    //int temp = 0;
+
+    returnBool = RCIN_Custom_Measure(&InputRcMsg);
+    if(FALSE == returnBool)
+    {
+        /* Measure is returning FALSE set state to not publishing */
+        HkTlm.State = RCIN_NOTPUBLISHING;
+    }
+    else
+    {
+        /* Measure is returning TRUE set state to publishing */
+        HkTlm.State = RCIN_PUBLISHING;
+    }
+
+    //OS_printf("RCIN State %u\n", HkTlm.State);
+    //for (temp = 0; temp < 25; temp++)
+    //{
+        //OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
+    //}
+}
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* RCIN Application C style main entry point.                       */
@@ -467,13 +535,6 @@ void RCIN::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(RCIN_SCH_PIPE_PEND_TIME);
-
-        iStatus = AcquireConfigPointers();
-        if(iStatus != CFE_SUCCESS)
-        {
-            /* We apparently tried to load a new table but failed.  Terminate the application. */
-            uiRunStatus = CFE_ES_APP_ERROR;
-        }
     }
 
     /* Stop Performance Log entry */
@@ -483,6 +544,16 @@ void RCIN::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
+
+void RCIN_CleanupCallback(void)
+{
+    oRCIN.HkTlm.State = RCIN_UNINITIALIZED;
+    if(RCIN_Custom_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(RCIN_UNINIT_ERR_EID, CFE_EVS_ERROR,"RCIN_Uninit failed");
+        oRCIN.HkTlm.State = RCIN_INITIALIZED;
+    }
+}
 
 /************************/
 /*  End of File Comment */

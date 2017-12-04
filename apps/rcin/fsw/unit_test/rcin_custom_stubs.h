@@ -12,8 +12,8 @@
 *    notice, this list of conditions and the following disclaimer in
 *    the documentation and/or other materials provided with the
 *    distribution.
-* 3. Neither the name Windhover Labs nor the names of its
-*    contributors may be used to endorse or promote products derived
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
 *    from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -31,17 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef RCIN_CONFIG_TBL_TEST_H
-#define RCIN_CONFIG_TBL_TEST_H
+#ifndef RCIN_CUSTOM_STUBS_H
+#define RCIN_CUSTOM_STUBS_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void RCIN_Config_Tbl_Test_AddTestCases(void);
+#include "cfe.h"
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* RCIN_CONFIG_TBL_TEST_H */
+#endif /* RCIN_CUSTOM_STUBS_H */

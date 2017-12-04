@@ -12,8 +12,8 @@
 *    notice, this list of conditions and the following disclaimer in
 *    the documentation and/or other materials provided with the
 *    distribution.
-* 3. Neither the name Windhover Labs nor the names of its
-*    contributors may be used to endorse or promote products derived
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
 *    from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -31,48 +31,34 @@
 *
 *****************************************************************************/
 
-#ifndef RCIN_TBLDEFS_H
-#define RCIN_TBLDEFS_H
+#include "rcin_custom_stubs.h"
+#include "px4_msgs.h"
 
-/************************************************************************
-** Pragmas
-*************************************************************************/
-
-/************************************************************************
-** Includes
-*************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "cfe.h"
-#include "rcin_platform_cfg.h"
-
-/************************************************************************
-** Local Defines
-*************************************************************************/
-
-/**
- * \brief Defines the table identification name used for the
- * configuration table registration.
- */
-#define RCIN_CONFIG_TABLENAME ("CONFIG_TBL")
-
-
-/** \brief Definition for a single config table entry */
-typedef struct
+void RCIN_Custom_InitData(void)
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
-} RCIN_ConfigTbl_t;
-
-
-#ifdef __cplusplus
+    
 }
-#endif
 
-#endif /* RCIN_TBLDEFS_H */
 
-/************************/
-/*  End of File Comment */
-/************************/
+boolean RCIN_Custom_Init(void)
+{
+    return TRUE;
+}
+
+
+boolean RCIN_Custom_Uninit(void)
+{
+    return TRUE;
+}
+
+
+boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
+{
+    return TRUE;
+}
+
+
+int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
+{
+    return 0;
+}

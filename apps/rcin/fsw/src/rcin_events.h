@@ -248,7 +248,46 @@ typedef enum {
 **  #CFE_TBL_Load function.
 **
 */
-	RCIN_CFGTBL_LOAD_ERR_EID,
+    RCIN_CFGTBL_LOAD_ERR_EID,
+
+/** \brief <tt> 'RCIN - ' </tt>
+**  \event <tt> 'RCIN - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when MS5611 has
+**  had an error in uninitialization.
+**
+*/
+    RCIN_UNINIT_ERR_EID,
+
+/** \brief <tt> 'RCIN - ' </tt>
+**  \event <tt> 'RCIN - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the MS5611 has
+**  had an error in initialization.
+**
+*/
+    RCIN_INIT_ERR_EID,
+
+/** \brief <tt> 'RCIN - ' </tt>
+**  \event <tt> 'RCIN - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the MS5611 has
+**  had an error in initialization.
+**
+*/
+    RCIN_READ_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	RCIN_EVT_CNT
