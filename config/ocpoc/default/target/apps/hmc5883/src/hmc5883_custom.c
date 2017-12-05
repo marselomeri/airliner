@@ -162,6 +162,17 @@ boolean HMC5883_Custom_Set_Range(uint8 Range)
 }
 
 
+boolean HMC5883_Custom_Get_Range(uint8 *Range)
+{
+    boolean returnBool = FALSE;
+
+    returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_B, 
+            Range, 1);
+
+    return returnBool;
+}
+
+
 boolean HMC5883_Custom_Check_Range(uint8 Range)
 {
     boolean returnBool = FALSE;
