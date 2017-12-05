@@ -191,6 +191,17 @@ boolean HMC5883_Custom_Set_Config(uint8 Config)
 }
 
 
+boolean HMC5883_Custom_Get_Config(uint8 *Config)
+{
+    boolean returnBool = FALSE;
+
+    returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_A, 
+            Config, 1);
+
+    return returnBool;
+}
+
+
 boolean HMC5883_Custom_Check_Config(uint8 Config)
 {
     boolean returnBool = FALSE;
@@ -249,6 +260,38 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     *X = (((int16)Result[0]) << 8) + Result[1];
     *Z = (((int16)Result[2]) << 8) + Result[3];
     *Y = (((int16)Result[4]) << 8) + Result[5];
+
+end_of_function:
+
+    return returnBool;
+}
+
+
+boolean HMC5883_Custom_Measure_Temp(int16 *Temp)
+{
+    boolean returnBool = FALSE;
+    
+    /* to store temperature raw values*/
+    uint8 Result[2] = { 0 };
+    
+    /* Null pointer check */
+    if(0 == Temp)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Read Temp Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* Read the device temperature value */
+    returnBool = HMC5883_Custom_Receive(HMC5983_REG_TEMP_OUT_MSB, 
+            Result, sizeof(Result));
+    if(FALSE == returnBool)
+    {
+        /* If receive was unsuccessful return FALSE */
+        goto end_of_function;
+    }
+
+    *Temp = (((int16)Result[0]) << 8) + Result[1];
 
 end_of_function:
 

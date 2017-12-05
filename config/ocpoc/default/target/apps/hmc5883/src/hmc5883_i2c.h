@@ -166,6 +166,20 @@ extern "C" {
 */
 #define HMC5883_REG_ID_C                          (0x0c)
 
+/** \brief Temperature output register (HMC5983).
+**
+**  \par Description:
+**       MSB for temperature measurements.
+*/
+#define HMC5983_REG_TEMP_OUT_MSB                  (0x31)
+
+/** \brief Temperature output register (HMC5983).
+**
+**  \par Description:
+**       LSB for temperature measurements.
+*/
+#define HMC5983_REG_TEMP_OUT_LSB                  (0x32)
+
 /* HMC5883 mask */
 /** \brief Continuous measurement mode with a rate of 75Hz.
 **
