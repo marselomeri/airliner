@@ -522,6 +522,33 @@ end_of_function:
 boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z)
 {
     boolean returnBool = TRUE;
+    int16 temp = 0;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Apply_Platform_Rotation Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
+    /* The standard external mag by 3DR has x pointing to the
+     * right, y pointing backwards, and z down, therefore switch x
+     * and y and invert y. */
+    temp = *X;
+    *X = -*Y;
+    *Y = temp;
+
+end_of_function:
+
+    return returnBool;
+}
+
+
+boolean HMC5883_Apply_Platform_Rotation_Float(float *X, float *Y, float *Z)
+{
+    boolean returnBool = TRUE;
     float temp_f = 0;
 
     /* Null pointer check */
