@@ -279,7 +279,6 @@ boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length);
 boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data);
 
 
-
 #ifdef __cplusplus
 }
 #endif 

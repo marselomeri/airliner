@@ -151,24 +151,6 @@ end_of_function:
 }
 
 
-/* TODO implement self calibration */
-boolean HMC5883_Custom_Calibration(HMC5883_Calibration_t *Calibration)
-{
-    boolean returnBool = TRUE;
-    /* Null pointer check */
-    if(0 == Calibration)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 Custom Calibration Null Pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-end_of_function:
-    return returnBool;
-}
-
-
 boolean HMC5883_Custom_Set_Range(uint8 Range)
 {
     boolean returnBool = FALSE;
