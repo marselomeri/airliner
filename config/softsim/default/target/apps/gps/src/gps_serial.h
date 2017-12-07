@@ -55,9 +55,87 @@ extern "C" {
 */
 #define GPS_SERIAL_IO_SPEED                       B38400
 
+/** \brief Wait time (ms) before read.
+**
+**  \par Description:
+**       ms, wait before reading to save read() calls.
+*/
+#define GPS_WAIT_BEFORE_READ                      (20)
+
+/** \brief GPS read buffer size.
+**
+**  \par Description:
+**       MON_VER from u-blox modules can be ~190 bytes
+*/
+#define GPS_READ_BUFFER_SIZE                      (250)
+
+
+/* TX CFG-PRT message contents */
+/** \brief UART 1 port number.
+**
+**  \par Description:
+**       Port interface number.
+*/
+#define GPS_TX_CFG_PRT_PORTID                     (0x01)
+
+/** \brief Mode bitfield configuration.
+**
+**  \par Description:
+**       0b0000100011010000: 8N1
+*/
+#define GPS_TX_CFG_PRT_MODE                       (0x000008D0)
+
+/** \brief Input protocol configuration.
+**
+**  \par Description:
+**       RTCM3 in and UBX in.
+*/
+#define GPS_TX_CFG_PRT_INPROTOMASK_GPS            ((1<<5) | 0x01)
+
+/** \brief Output protocol configuration.
+**
+**  \par Description:
+**       UBX out.
+*/
+#define GPS_TX_CFG_PRT_OUTPROTOMASK_GPS           (0x01)
+
+/** \brief USB port number.
+**
+**  \par Description:
+**       Port interface number.
+*/
+#define UBX_TX_CFG_PRT_PORTID_USB                 (0x03)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
+
+/**
+ * \brief GPS port configuration payload message.
+ */
+typedef struct 
+{
+    /*! Port Identifier Number */
+    uint8       portID;
+    /*! Reserved */
+    uint8       reserved1;
+    /*! TX ready PIN configuration */
+    uint16      txReady;
+    /*! A bit mask describing the UART mode */
+    uint32      mode;
+    /*! Baud rate in bits/second */
+    uint32      baudRate;
+    /*! A mask describing which input protocols are active. */
+    uint16      inProtoMask;
+    /*! A mask describing which output protocols are active. */
+    uint16      outProtoMask;
+    /*! Flags bit mask */
+    uint16      flags;
+    /*! Reserved */
+    uint16      reserved2;
+} GPS_Payload_TX_CFG_PRT_t;
+
+
 /**
  * \brief GPS device status
  */
@@ -73,7 +151,7 @@ typedef enum
 typedef struct
 {
     /*! Device file descriptor */
-    int                             DeviceFd;
+    int                          DeviceFd;
     /*! The current device status */
     GPS_Custom_Status_t          Status;
 } GPS_AppCustomData_t;
