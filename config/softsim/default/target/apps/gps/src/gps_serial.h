@@ -53,7 +53,7 @@ extern "C" {
 **  \par Description:
 **       The serial IO speed 38400 baud.
 */
-#define GPS_SERIAL_IO_SPEED                       B38400
+#define GPS_SERIAL_IO_SPEED                       38400
 
 /** \brief Wait time (ms) before read.
 **
@@ -62,12 +62,44 @@ extern "C" {
 */
 #define GPS_WAIT_BEFORE_READ                      (20)
 
+/** \brief GPS packet timeout (ms).
+**
+**  \par Description:
+**       ms, timeout to receive packet.
+*/
+#define GPS_PACKET_TIMEOUT                        (2)
+
+/** \brief GPS ack timeout.
+**
+**  \par Description:
+**       ms, timeout to wait for ack.
+*/
+#define GPS_ACK_TIMEOUT                           (200)
+
+
+
 /** \brief GPS read buffer size.
 **
 **  \par Description:
 **       MON_VER from u-blox modules can be ~190 bytes
 */
 #define GPS_READ_BUFFER_SIZE                      (250)
+
+/* Message Classes */
+/** \brief Configuration input class.
+**
+**  \par Description:
+**       UBX class ID configuration.
+*/
+#define GPS_MESSAGE_CLASS_CFG                      (0x06)
+
+/* Message IDs */
+/** \brief Message ID port configuration.
+**
+**  \par Description:
+**       Message ID for port configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_PRT                     (0x00)
 
 
 /* TX CFG-PRT message contents */
@@ -106,6 +138,24 @@ extern "C" {
 */
 #define UBX_TX_CFG_PRT_PORTID_USB                 (0x03)
 
+/* UBX header contents */
+/** \brief Header symbol 1.
+**
+**  \par Description:
+**       UBX header symbol 1.
+*/
+#define GPS_HEADER_SYNC1_VALUE                    (0xb5)
+
+/** \brief Header symbol 2.
+**
+**  \par Description:
+**       UBX header symbol 2.
+*/
+#define GPS_HEADER_SYNC2_VALUE                    (0x62)
+
+
+/* Message Classes & IDs */
+#define GPS_MESSAGE_CFG_PRT          ((GPS_MESSAGE_CLASS_CFG) | GPS_MESSAGE_ID_CFG_PRT << 8)
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -135,6 +185,31 @@ typedef struct
     uint16      reserved2;
 } GPS_Payload_TX_CFG_PRT_t;
 
+/**
+ * \brief GPS UBX protocal header.
+ */
+typedef struct 
+{
+    /*! Sync symbol 1 */
+    uint8       sync1;
+    /*! Sync symbol 1 */
+    uint8       sync2;
+    /*! Message */
+    uint16      msg;
+    /*! Message length */
+    uint16      length;
+} GPS_Header_t;
+
+/**
+ * \brief GPS UBX protocal checksum.
+ */
+typedef struct 
+{
+    /*! checksum check A*/
+    uint8       ck_a;
+    /*! checksum check B*/
+    uint8       ck_b;
+} GPS_Checksum_t;
 
 /**
  * \brief GPS device status
@@ -154,6 +229,8 @@ typedef struct
     int                          DeviceFd;
     /*! The current device status */
     GPS_Custom_Status_t          Status;
+    /*! The current baud */
+    uint32                       Baud;
 } GPS_AppCustomData_t;
 
 

@@ -118,12 +118,14 @@ void GPS_Custom_InitData(void)
 {
     /* Set all struct zero values */
     bzero(&GPS_AppCustomData, sizeof(GPS_AppCustomData));
+    GPS_AppCustomData.Baud = GPS_SERIAL_IO_SPEED;
 }
 
 
 boolean GPS_Custom_Init()
 {
     boolean returnBool = TRUE;
+    uint32 baudRateSet = 0;
 
     GPS_AppCustomData.DeviceFd = open(GPS_SERIAL_DEVICE_PATH, O_RDWR | O_NOCTTY);
     if (GPS_AppCustomData.DeviceFd < 0) 
@@ -133,11 +135,26 @@ boolean GPS_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
+
+    returnBool = GPS_Custom_Negotiate_Baud(&baudRateSet);
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "GPS Device negotiate baud error");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    else if (baudRateSet != GPS_AppCustomData.Baud)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "GPS Device baud rate set is not the baud configured");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     else
     {
         GPS_AppCustomData.Status = HMC5883_CUSTOM_INITIALIZED;
     }
-    
     
 end_of_function:
     return returnBool;
@@ -223,12 +240,19 @@ end_of_function:
     return Timestamp;
 }
 
+/* TODO */
+boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
+{
+    return FALSE;
+}
+
 
 boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet)
 {
     uint8 i = 0;
     uint32 baudRate = 0;
     boolean returnBool = TRUE;
+    boolean success = FALSE;
     GPS_Payload_TX_CFG_PRT_t portConfig[2];
     const uint32 baudRates[] = {38400, 57600, 9600, 19200, 115200};
     
@@ -249,23 +273,85 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet)
             returnBool = FALSE;
             goto end_of_function;
         }
+        /* TODO verify this works as expected */
         /* flush input and wait for at least 20 ms silence */
         tcflush(GPS_AppCustomData.DeviceFd, TCIFLUSH);
         usleep(20 * 1000);
         /* Send a CFG-PRT message to set the UBX protocol for in and out
          * and leave the baudrate as it is, we just want an ACK-ACK for this */
         memset(portConfig, 0, 2 * sizeof(GPS_Payload_TX_CFG_PRT_t));
-        
-        portConfig[0].portID        = UBX_TX_CFG_PRT_PORTID;
-        portConfig[0].mode          = UBX_TX_CFG_PRT_MODE;
+        portConfig[0].portID        = GPS_TX_CFG_PRT_PORTID;
+        portConfig[0].mode          = GPS_TX_CFG_PRT_MODE;
         portConfig[0].baudRate      = baudRate;
-        portConfig[0].inProtoMask   = UBX_TX_CFG_PRT_INPROTOMASK_GPS;
-        portConfig[0].outProtoMask  = UBX_TX_CFG_PRT_OUTPROTOMASK_GPS;
-        portConfig[1].portID        = UBX_TX_CFG_PRT_PORTID_USB;
-        portConfig[1].mode          = UBX_TX_CFG_PRT_MODE;
+        portConfig[0].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
+        portConfig[0].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
+        portConfig[1].portID        = GPS_TX_CFG_PRT_PORTID_USB;
+        portConfig[1].mode          = GPS_TX_CFG_PRT_MODE;
         portConfig[1].baudRate      = baudRate;
-        portConfig[1].inProtoMask   = UBX_TX_CFG_PRT_INPROTOMASK_GPS;
-        portConfig[1].outProtoMask  = UBX_TX_CFG_PRT_OUTPROTOMASK_GPS;
+        portConfig[1].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
+        portConfig[1].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
+        
+        /* send config message */
+        returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_PRT, 
+                (uint8 *)portConfig, 2 * sizeof(GPS_Payload_TX_CFG_PRT_t));
+        if(FALSE == returnBool)
+        {
+            /* SendMessage failed try the next baud rate */
+            continue;
+        }
+
+        returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
+                GPS_ACK_TIMEOUT);
+        if(FALSE == returnBool)
+        {
+            /* WaitForAck failed try the next baud rate */
+            continue;
+        }
+
+        /* Send a CFG-PRT message again, this time change the baudrate */
+        memset(portConfig, 0, 2 * sizeof(GPS_Payload_TX_CFG_PRT_t));
+        portConfig[0].portID        = GPS_TX_CFG_PRT_PORTID;
+        portConfig[0].mode          = GPS_TX_CFG_PRT_MODE;
+        portConfig[0].baudRate      = GPS_AppCustomData.Baud;
+        portConfig[0].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
+        portConfig[0].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
+        portConfig[1].portID        = GPS_TX_CFG_PRT_PORTID_USB;
+        portConfig[1].mode          = GPS_TX_CFG_PRT_MODE;
+        portConfig[1].baudRate      = GPS_AppCustomData.Baud;
+        portConfig[1].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
+        portConfig[1].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
+
+        /* send config message */
+        returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_PRT, 
+                (uint8 *)portConfig, 2 * sizeof(GPS_Payload_TX_CFG_PRT_t));
+        if(FALSE == returnBool)
+        {
+            continue;
+        }
+        
+        /* no ACK is expected here, but read the buffer anyway in case 
+         * we actually get an ACK */
+        returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
+                GPS_ACK_TIMEOUT);
+        
+        if (GPS_AppCustomData.Baud != baudRate)
+        {
+            returnBool = GPS_Custom_Set_Baud(baudRate);
+            if (FALSE == returnBool)
+            {
+                returnBool = FALSE;
+                goto end_of_function;
+            }
+            *BaudRateSet = baudRate;
+        }
+        /* at this point we have correct baudrate on both ends */
+        success = TRUE;
+        break;
+    }
+    
+    if(TRUE != success)
+    {
+        returnBool = FALSE;
     }
 
 end_of_function:
@@ -387,8 +473,30 @@ int32 GPS_Custom_Receive(void)
 {
     uint8 buf[GPS_READ_BUFFER_SIZE];
     int32 returnCode = 0;
+    int32 bytesRead = 0;
+
+    returnCode = GPS_Custom_Select(0, 20);
+    if (returnCode <= 0)
+    {
+        /* Select timeout or error */
+        goto end_of_function;
+    }
+    /* Select returned > 0, data is ready to be read, wait for more
+     * data to be available before calling read */
+    usleep(GPS_WAIT_BEFORE_READ * 1000);
+    
+    /* Read GPS data */
+    bytesRead = GPS_Custom_Read(buf, sizeof(buf));
+    if (bytesRead <= 0)
+    {
+        /* Read failed */
+        goto end_of_function;
+    }
     
     
+    
+end_of_function:
+
     return returnCode;
 }
 
@@ -464,3 +572,86 @@ int32 GPS_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec)
 
     return returnCode;
 }
+
+
+boolean GPS_Custom_SetChecksum(const uint8 *buffer, const uint16 length, GPS_Checksum_t *checksum)
+{
+    uint16 i = 0;
+    returnBool = TRUE;
+    
+    /* Null check */
+    if(0 == checksum || 0 == buffer)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "GPS set checksum null pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
+    for (i = 0; i < length; i++) 
+    {
+        checksum->ck_a = checksum->ck_a + buffer[i];
+        checksum->ck_b = checksum->ck_b + checksum->ck_a;
+    }
+
+end_of_function:
+    return returnBool;
+}
+
+
+boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uint16 length)
+{
+    GPS_Header_t   header = { GPS_HEADER_SYNC1_VALUE, 
+                              GPS_HEADER_SYNC2_VALUE, 
+                              0, 
+                              0 };
+
+    GPS_Checksum_t checksum = { 0, 0 };
+    boolean returnBool = TRUE;
+    int bytesWritten = 0;
+
+    /* Null check */
+    if(0 == payload)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "GPS send message null pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Populate header */
+    header.msg    = msg;
+    header.length = length;
+
+    /* Calculate checksum */
+    returnBool = GPS_Custom_SetChecksum(payload, length, &checksum); 
+    if (TRUE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* Send message */
+    bytesWritten = write((void *)&header, sizeof(header));
+    if (bytesWritten != sizeof(header)) 
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    bytesWritten = write((void *)payload, length);
+    if (bytesWritten != length) 
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    bytesWritten = write((void *)&checksum, sizeof(checksum));
+    if (bytesWritten != sizeof(checksum)) 
+    {
+        returnBool = FALSE;
+    }
+
+end_of_function;
+    return returnBool;
+}
+
