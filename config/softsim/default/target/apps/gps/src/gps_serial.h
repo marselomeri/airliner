@@ -77,13 +77,19 @@ extern "C" {
 #define GPS_ACK_TIMEOUT                           (200)
 
 
-
 /** \brief GPS read buffer size.
 **
 **  \par Description:
 **       MON_VER from u-blox modules can be ~190 bytes
 */
 #define GPS_READ_BUFFER_SIZE                      (250)
+
+/** \brief GPS payload scanner buffer size.
+**
+**  \par Description:
+**       GPS payload scanner length.
+*/
+#define GPS_SCANNER_BUFFER_LENGTH              (1024)
 
 /* Message Classes */
 /** \brief Configuration input class.
@@ -100,7 +106,6 @@ extern "C" {
 **       Message ID for port configuration.
 */
 #define GPS_MESSAGE_ID_CFG_PRT                     (0x00)
-
 
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
@@ -120,9 +125,9 @@ extern "C" {
 /** \brief Input protocol configuration.
 **
 **  \par Description:
-**       RTCM3 in and UBX in.
+**       UBX in.
 */
-#define GPS_TX_CFG_PRT_INPROTOMASK_GPS            ((1<<5) | 0x01)
+#define GPS_TX_CFG_PRT_INPROTOMASK_GPS            (0x01)
 
 /** \brief Output protocol configuration.
 **
@@ -152,7 +157,6 @@ extern "C" {
 **       UBX header symbol 2.
 */
 #define GPS_HEADER_SYNC2_VALUE                    (0x62)
-
 
 /* Message Classes & IDs */
 #define GPS_MESSAGE_CFG_PRT          ((GPS_MESSAGE_CLASS_CFG) | GPS_MESSAGE_ID_CFG_PRT << 8)
@@ -212,6 +216,13 @@ typedef struct
 } GPS_Checksum_t;
 
 
+typedef struct
+{
+    /*! \brief cFE Software Bus Telemetry Message Header */
+    uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];          
+    uint8       Payload[GPS_SCANNER_BUFFER_LENGTH];
+} GPS_DeviceMessage_t;
+
 /**
  * \brief Decoder state.
  */
@@ -227,8 +238,7 @@ typedef enum
     GPS_PARSE_STATE_GOT_LENGTH2,
     GPS_PARSE_STATE_GOT_PAYLOAD,
     GPS_PARSE_STATE_GOT_CHECKSUMA,
-    GPS_PARSE_STATE_GOT_CHECKSUMB,
-    GPS_PARSE_STATE_GOT_RTCM3
+    GPS_PARSE_STATE_GOT_CHECKSUMB
 } GPS_ParserState_t;
 
 

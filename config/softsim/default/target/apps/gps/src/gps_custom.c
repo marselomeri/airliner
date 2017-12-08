@@ -65,6 +65,8 @@ typedef enum {
 **
 */
     GPS_DEVICE_ERR_EID = GPS_EVT_CNT,
+    
+    GPS_INIT_DEVICE_PARSER_ERR_EID,
 
 /** \brief Number of custom events 
 **
@@ -655,90 +657,6 @@ end_of_function;
     return returnBool;
 }
 
-
-
-
-
-/* Move to gps_parser_ubx */
-void GPS_Parser_StateChange(GPS_ParserState_t newState)
-{
-    switch(newState)
-    {
-        case GPS_PARSE_STATE_UNINIT:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_IDLE:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_SYNC1:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_SYNC2:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_CLASS:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_ID:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_LENGTH1:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_LENGTH2:
-        {
-            GPS_AppCustomData.ParserStatus.PayloadCursor = 0;
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_PAYLOAD:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_CHECKSUMA:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_CHECKSUMB:
-        {
-            break;
-        }
-
-        case GPS_PARSE_STATE_GOT_RTCM3:
-        {
-            break;
-        }
-
-        default:
-        {
-            break;
-        }
-    }
-
-    GPS_AppCustomData.ParserStatus.ParseState = newState;
-}
-
-/* Move to gps_parser_ubx */
-void GPS_Parser_Reset()
-{
-    GPS_AppCustomData.ParserStatus.ParseState = GPS_PARSE_STATE_IDLE;
-}
 
 
 
