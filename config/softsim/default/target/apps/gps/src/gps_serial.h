@@ -186,7 +186,7 @@ typedef struct
 } GPS_Payload_TX_CFG_PRT_t;
 
 /**
- * \brief GPS UBX protocal header.
+ * \brief GPS UBX protocol header.
  */
 typedef struct 
 {
@@ -201,7 +201,7 @@ typedef struct
 } GPS_Header_t;
 
 /**
- * \brief GPS UBX protocal checksum.
+ * \brief GPS UBX protocol checksum.
  */
 typedef struct 
 {
@@ -210,6 +210,27 @@ typedef struct
     /*! checksum check B*/
     uint8       ck_b;
 } GPS_Checksum_t;
+
+
+/**
+ * \brief Decoder state.
+ */
+typedef enum 
+{
+    GPS_PARSE_STATE_UNINIT=0,
+    GPS_PARSE_STATE_IDLE,
+    GPS_PARSE_STATE_GOT_SYNC1,
+    GPS_PARSE_STATE_GOT_SYNC2,
+    GPS_PARSE_STATE_GOT_CLASS,
+    GPS_PARSE_STATE_GOT_ID,
+    GPS_PARSE_STATE_GOT_LENGTH1,
+    GPS_PARSE_STATE_GOT_LENGTH2,
+    GPS_PARSE_STATE_GOT_PAYLOAD,
+    GPS_PARSE_STATE_GOT_CHECKSUMA,
+    GPS_PARSE_STATE_GOT_CHECKSUMB,
+    GPS_PARSE_STATE_GOT_RTCM3
+} GPS_ParserState_t;
+
 
 /**
  * \brief GPS device status
@@ -225,12 +246,30 @@ typedef enum
 
 typedef struct
 {
+    /*! Number of received messages */
+    uint32 MsgReceived;
+    /*! Number of parse errors */
+    uint32 ParseError;
+    /*! Parsing state machine */
+    GPS_ParserState_t ParseState;
+    uint16 PayloadCursor;
+    uint8 ClassID;
+    uint8 MsgID;
+    uint16 MsgLength;
+    uint16 ChecksumA;
+} GPS_ParserStatus_t;
+
+
+typedef struct
+{
     /*! Device file descriptor */
     int                          DeviceFd;
     /*! The current device status */
     GPS_Custom_Status_t          Status;
     /*! The current baud */
     uint32                       Baud;
+    /*! The current parser status */
+    GPS_ParserStatus_t           ParserStatus;
 } GPS_AppCustomData_t;
 
 
