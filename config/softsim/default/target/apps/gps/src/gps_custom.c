@@ -51,31 +51,6 @@
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
-typedef enum {
-
-/** \brief <tt> 'GPS - ' </tt>
-**  \event <tt> 'GPS - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a device resource encounters an 
-**  error.
-**
-*/
-    GPS_DEVICE_ERR_EID = GPS_EVT_CNT,
-    
-    GPS_INIT_DEVICE_PARSER_ERR_EID,
-
-/** \brief Number of custom events 
-**
-**  \par Limits:
-**       int32
-*/
-    GPS_CUSTOM_EVT_CNT
-} GPS_CustomEventIds_t;
-
 
 /************************************************************************
 ** External Global Variables
@@ -240,12 +215,6 @@ CFE_TIME_SysTime_t GPS_Custom_Get_Time(void)
 
 end_of_function:
     return Timestamp;
-}
-
-/* TODO */
-boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
-{
-    return FALSE;
 }
 
 
@@ -470,14 +439,21 @@ end_of_function:
 }
 
 
-
-int32 GPS_Custom_Receive(void)
+int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
 {
-    uint8 buf[GPS_READ_BUFFER_SIZE];
     int32 returnCode = 0;
     int32 bytesRead = 0;
 
-    returnCode = GPS_Custom_Select(0, 20);
+    /* Null check */
+    if(0 == Buffer)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "GPS receive null pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnCode = GPS_Custom_Select(0, 1000 * Timeout);
     if (returnCode <= 0)
     {
         /* Select timeout or error */
@@ -488,15 +464,13 @@ int32 GPS_Custom_Receive(void)
     usleep(GPS_WAIT_BEFORE_READ * 1000);
     
     /* Read GPS data */
-    bytesRead = GPS_Custom_Read(buf, sizeof(buf));
+    bytesRead = GPS_Custom_Read(Buffer, Length);
     if (bytesRead <= 0)
     {
         /* Read failed */
         goto end_of_function;
     }
-    
-    
-    
+
 end_of_function:
 
     return returnCode;
@@ -659,6 +633,41 @@ end_of_function;
 
 
 
+boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
+{
+    uint32 i = 0;
+    int32 bytesRead = 0;
+    uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
+    boolean done = FALSE;
+    boolean returnBool = FALSE;
+    
+    GPS_AppCustomData.AckState = GPS_ACK_WAITING;
+    GPS_AppCustomData.AckWaitingMsg = msg;
+    GPS_AppCustomData.AckWaitingRcvd = FALSE;
+
+    while(!done)
+    {
+        bytesRead = GPS_Custom_Receive(from_gps_data, sizeof(from_gps_data), Timeout);
+        for(i = 0; (!done) && (i < bytesRead); ++i)
+        {
+            GPS_DeviceMessage_t message;
+            GPS_ParserStatus_t status;
+
+            if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
+            {
+                if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
+                   GPS_AppCustomData.AckWaitingRcvd == TRUE)
+                {
+                    return TRUE;
+                }
+                else
+                {
+                    return FALSE;
+                }
+            }
+        }
+    }
+}
 
 
 

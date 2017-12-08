@@ -346,6 +346,12 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
                             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
+                            /* We have an ack, we still need to determine if
+                             * it is the one we're waiting on */
+                            if(GPS_AppCustomData.AckState == GPS_ACK_WAITING)
+                            {
+                                GPS_AppCustomData.AckState = GPS_ACK_GOT_ACK;
+                            }
                             break;
                         }
 
@@ -371,6 +377,11 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                         case GPS_PARSER_CFG_DAT_ID_VALUE:
                         case GPS_PARSER_CFG_RATE_ID_VALUE:
                         case GPS_PARSER_CFG_CFG_ID_VALUE:
+                        {
+                            GPS_AppCustomData.ParserStatus.MsgID = byte;
+                            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
+                            break;
+                        }
                         case GPS_PARSER_CFG_RXM_ID_VALUE:
                         case GPS_PARSER_CFG_ANT_ID_VALUE:
                         case GPS_PARSER_CFG_SBAS_ID_VALUE:
@@ -905,6 +916,7 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
                 case GPS_PARSER_CLASS_CFG_VALUE:
                 {
+                    /* */
                     OS_printf("GPS:  GPS_PARSER_CLASS_CFG_VALUE not yet implemented.\n");
                     GPS_Parser_StateChange(GPS_PARSE_STATE_IDLE);
                     break;
@@ -1212,6 +1224,7 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
         case GPS_PARSER_CLASS_INF_VALUE:
         case GPS_PARSER_CLASS_ACK_VALUE:
         case GPS_PARSER_CLASS_CFG_VALUE:
+        /* TODO */
         case GPS_PARSER_CLASS_UPD_VALUE:
         case GPS_PARSER_CLASS_MON_VALUE:
         {

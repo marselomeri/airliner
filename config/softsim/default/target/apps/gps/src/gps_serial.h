@@ -89,7 +89,7 @@ extern "C" {
 **  \par Description:
 **       GPS payload scanner length.
 */
-#define GPS_SCANNER_BUFFER_LENGTH              (1024)
+//#define GPS_SCANNER_BUFFER_LENGTH              (1024)
 
 /* Message Classes */
 /** \brief Configuration input class.
@@ -163,6 +163,31 @@ extern "C" {
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
+typedef enum {
+
+/** \brief <tt> 'GPS - ' </tt>
+**  \event <tt> 'GPS - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device resource encounters an 
+**  error.
+**
+*/
+    GPS_DEVICE_ERR_EID = GPS_EVT_CNT,
+    
+    GPS_INIT_DEVICE_PARSER_ERR_EID,
+
+/** \brief Number of custom events 
+**
+**  \par Limits:
+**       int32
+*/
+    GPS_CUSTOM_EVT_CNT
+} GPS_CustomEventIds_t;
+
 
 /**
  * \brief GPS port configuration payload message.
@@ -220,11 +245,11 @@ typedef struct
 {
     /*! \brief cFE Software Bus Telemetry Message Header */
     uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];          
-    uint8       Payload[GPS_SCANNER_BUFFER_LENGTH];
+    uint8       Payload[GPS_READ_BUFFER_SIZE];
 } GPS_DeviceMessage_t;
 
 /**
- * \brief Decoder state.
+ * \brief Parser state.
  */
 typedef enum 
 {
@@ -270,6 +295,15 @@ typedef struct
 } GPS_ParserStatus_t;
 
 
+typedef enum 
+{
+    GPS_ACK_IDLE = 0,
+    GPS_ACK_WAITING,
+    GPS_ACK_GOT_ACK,
+    GPS_ACK_GOT_NAK
+} GPS_Ack_State_t;
+
+
 typedef struct
 {
     /*! Device file descriptor */
@@ -280,6 +314,10 @@ typedef struct
     uint32                       Baud;
     /*! The current parser status */
     GPS_ParserStatus_t           ParserStatus;
+    
+    GPS_Ack_State_t              AckState;
+    uint16                       AckWaitingMsg;
+    boolean                      AckWaitingRcvd;
 } GPS_AppCustomData_t;
 
 
