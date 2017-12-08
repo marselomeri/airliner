@@ -317,6 +317,7 @@ typedef struct
     
     GPS_Ack_State_t              AckState;
     uint16                       AckWaitingMsg;
+    uint16                       LastMsg;
     boolean                      AckWaitingRcvd;
 } GPS_AppCustomData_t;
 

@@ -96,6 +96,7 @@ typedef enum
     GPS_PARSER_CLASS_HNR_VALUE          = 0x28
 } GPS_ParserClassValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_NAV_POSECEF_ID_VALUE     = 0x01,
@@ -126,6 +127,7 @@ typedef enum
     GPS_PARSER_NAV_EOE_ID_VALUE         = 0x61,
 } GPS_ParserNavIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_RXM_SFRBX_ID_VALUE       = 0x13,
@@ -137,11 +139,13 @@ typedef enum
     GPS_PARSER_RXM_IMES_ID_VALUE        = 0x61
 } GPS_ParserRxmIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_ACK_NAK_ID_VALUE         = 0x00,
     GPS_PARSER_ACK_ACK_ID_VALUE         = 0x01
 } GPS_ParserAckIDValue_t;
+
 
 typedef enum
 {
@@ -179,10 +183,12 @@ typedef enum
     GPS_PARSER_CFG_PMS_ID_VALUE         = 0x86
 } GPS_ParserCfgIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_UPD_SOS_ID_VALUE         = 0x14,
 } GPS_ParserUpdIDValue_t;
+
 
 typedef enum
 {
@@ -199,6 +205,7 @@ typedef enum
     GPS_PARSER_MON_SMGR_ID_VALUE        = 0x2E
 } GPS_ParserMonIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_AID_INI_ID_VALUE         = 0x01,
@@ -207,6 +214,7 @@ typedef enum
     GPS_PARSER_AID_EPH_ID_VALUE         = 0x31,
     GPS_PARSER_AID_AOP_ID_VALUE         = 0x33
 } GPS_ParserAidIDValue_t;
+
 
 typedef enum
 {
@@ -222,6 +230,7 @@ typedef enum
     GPS_PARSER_TIM_HOC_ID_VALUE         = 0x17
 } GPS_ParserTimIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_ESF_MEAS_ID_VALUE        = 0x02,
@@ -229,6 +238,7 @@ typedef enum
     GPS_PARSER_ESF_INS_ID_VALUE         = 0x15,
     GPS_PARSER_ESF_STATUS_ID_VALUE      = 0x10
 } GPS_ParserEsfIDValue_t;
+
 
 typedef enum
 {
@@ -244,6 +254,7 @@ typedef enum
     GPS_PARSER_MGA_DBD_ID_VALUE         = 0x80
 } GPS_ParserMgaIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_LOG_ERASE_ID_VALUE            = 0x03,
@@ -257,16 +268,19 @@ typedef enum
     GPS_PARSER_LOG_RETRIEVEPOSEXTRA_ID_VALUE = 0x0F
 } GPS_ParserLogIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_SEC_SIGN_ID_VALUE             = 0x01,
     GPS_PARSER_SEC_UNIQID_ID_VALUE           = 0x03,
 } GPS_ParserSecIDValue_t;
 
+
 typedef enum
 {
     GPS_PARSER_HNR_PVT_ID_VALUE              = 0x00,
 } GPS_ParserHnrIDValue_t;
+
 
 typedef enum
 {
