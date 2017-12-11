@@ -1110,6 +1110,14 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 }
 
 
+CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
+{
+    CFE_SB_MsgId_t sbMsgID = 0x0000;
+    return sbMsgID;
+}
+
+
+
 //CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
 //{
     //CFE_SB_MsgId_t sbMsgID = 0;

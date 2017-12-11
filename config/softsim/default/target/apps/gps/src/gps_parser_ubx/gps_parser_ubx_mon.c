@@ -125,23 +125,23 @@ void GPS_Mon_ParseChar_TXBUF(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Mon_ParseChar_HW(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_MON_HW_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_MON_HW_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received TIMEUTC message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received TIMEUTC message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_MON_HW_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->pinSel = byte;
@@ -274,7 +274,7 @@ void GPS_Mon_ParseChar_HW(uint8 byte, GPS_DeviceMessage_t* message)
             case 42:
             case 43:
             case 44:
-                payload->vp[GPS_AppData.Hk.ParserStatus.PayloadCursor - 28] = byte;
+                payload->vp[GPS_AppCustomData.ParserStatus.PayloadCursor - 28] = byte;
                 break;
 
             case 45:

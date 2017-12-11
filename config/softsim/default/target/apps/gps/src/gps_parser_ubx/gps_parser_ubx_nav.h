@@ -107,7 +107,7 @@ void GPS_Nav_ParseChar_GEOFENCE(uint8 byte, GPS_DeviceMessage_t* message);
 void GPS_Nav_ParseChar_AOPSTATUS(uint8 byte, GPS_DeviceMessage_t* message);
 void GPS_Nav_ParseChar_EOE(uint8 byte, GPS_DeviceMessage_t* message);
 
-int32 GPS_Nav_EnablePOSLLH(void);
+//int32 GPS_Nav_EnablePOSLLH(void);
 
 #ifdef __cplusplus
 }

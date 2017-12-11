@@ -42,6 +42,8 @@
 #include "../gps_custom_shared.h"
 //#include "GPS_events.h"
 //#include "GPS_msgids.h"
+#include "gps_parser_ubx_common.h"
+#include "gps_ubx_msg.h"
 
 #ifdef __cplusplus
 extern "C" {

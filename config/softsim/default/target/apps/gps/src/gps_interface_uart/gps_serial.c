@@ -90,6 +90,8 @@ boolean GPS_Custom_Init()
     uint32 baudRateSet = 0;
 
     GPS_AppCustomData.DeviceFd = open(GPS_SERIAL_DEVICE_PATH, O_RDWR | O_NOCTTY);
+    /* TODO remove me */
+    OS_printf("GPS FD = %d\n\n", GPS_AppCustomData.DeviceFd);
     if (GPS_AppCustomData.DeviceFd < 0) 
     {
         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,

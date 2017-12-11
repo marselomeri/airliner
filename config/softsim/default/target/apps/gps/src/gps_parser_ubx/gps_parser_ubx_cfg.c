@@ -195,7 +195,7 @@ void GPS_Cfg_ParseChar_NAV5(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_CFG_NAV5_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
@@ -369,7 +369,7 @@ void GPS_Cfg_ParseChar_SBAS(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_CFG_SBAS_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
@@ -431,7 +431,7 @@ void GPS_Cfg_ParseChar_TMODE3(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_CFG_TMODE3_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
@@ -621,7 +621,7 @@ void GPS_Cfg_ParseChar_PRT(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_CFG_PRT_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
@@ -731,7 +731,7 @@ void GPS_Cfg_ParseChar_MSG(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_CFG_MSG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:

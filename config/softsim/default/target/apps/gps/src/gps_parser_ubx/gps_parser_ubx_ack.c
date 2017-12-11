@@ -101,7 +101,7 @@ void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_ACK_ACK_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
@@ -145,7 +145,7 @@ void GPS_Ack_ParseChar_NAK(uint8 byte, GPS_DeviceMessage_t* message)
     }
     else
     {
-        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        GPS_ACK_NAK_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:

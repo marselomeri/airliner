@@ -116,23 +116,23 @@
 **************************************************************************/
 void GPS_Nav_ParseChar_POSECEF(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_POSECEF_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_POSECEF_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received POSECEF message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received POSECEF message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_POSECEF_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
         {
-            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
             uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
             CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
             payload->iTOW = byte;
@@ -226,23 +226,23 @@ void GPS_Nav_ParseChar_POSECEF(uint8 byte, GPS_DeviceMessage_t* message)
 /* Incoming messages. */
 void GPS_Nav_ParseChar_POSLLH(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_POSLLH_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_POSLLH_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received POSLLH message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received POSLLH message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_POSLLH_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -368,23 +368,23 @@ void GPS_Nav_ParseChar_POSLLH(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_STATUS(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_STATUS_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_STATUS_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received STATUS message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received STATUS message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_STATUS_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -463,23 +463,23 @@ void GPS_Nav_ParseChar_STATUS(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_DOP(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_DOP_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_DOP_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received DOP message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received DOP message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_DOP_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
         case 0:
         {
-            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
             uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
             CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
             payload->iTOW = byte;
@@ -622,23 +622,23 @@ void GPS_Nav_ParseChar_DOP(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_ATT(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_ATT_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_ATT_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received ATT message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received ATT message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_ATT_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -774,23 +774,23 @@ void GPS_Nav_ParseChar_ATT(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_SOL(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_SOL_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_SOL_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received SOL message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received SOL message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_SOL_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -996,23 +996,23 @@ void GPS_Nav_ParseChar_SOL(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_PVT(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_PVT_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_PVT_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received PVT message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received PVT message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_PVT_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1369,23 +1369,23 @@ void GPS_Nav_ParseChar_PVT(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_ODO(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_ODO_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_ODO_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received ODO message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received ODO message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_ODO_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->version = byte;
@@ -1501,23 +1501,23 @@ void GPS_Nav_ParseChar_TIMEGPS(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_TIMEUTC(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_TIMEUTC_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_TIMEUTC_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received TIMEUTC message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received TIMEUTC message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_TIMEUTC_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1661,23 +1661,23 @@ void GPS_Nav_ParseChar_DGPS(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_SBAS(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_SBAS_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_SBAS_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received SBAS message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received SBAS message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_SBAS_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1728,23 +1728,23 @@ void GPS_Nav_ParseChar_SBAS(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_ORB(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_ORB_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_ORB_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received ORB message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received ORB message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_ORB_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1786,23 +1786,23 @@ void GPS_Nav_ParseChar_ORB(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_SAT(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_SAT_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_SAT_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received SAT message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received SAT message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_SAT_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1845,23 +1845,23 @@ void GPS_Nav_ParseChar_SAT(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_GEOFENCE(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_GEOFENCE_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_GEOFENCE_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received GEOFENCE message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received GEOFENCE message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_GEOFENCE_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1907,23 +1907,23 @@ void GPS_Nav_ParseChar_GEOFENCE(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_AOPSTATUS(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_AOPSTATUS_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_AOPSTATUS_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received AOPSTATUS message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received AOPSTATUS message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_AOPSTATUS_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -1974,23 +1974,23 @@ void GPS_Nav_ParseChar_AOPSTATUS(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_EOE(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    if(GPS_AppData.Hk.ParserStatus.MsgLength != GPS_PARSER_NAV_EOE_MSG_LENGTH)
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_NAV_EOE_MSG_LENGTH)
     {
-        GPS_AppData.Hk.ParserStatus.ParseError++;
+        GPS_AppCustomData.ParserStatus.ParseError++;
         CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                      "Received EOE message with incorrect length (%u).", GPS_AppData.Hk.ParserStatus.MsgLength);
+                      "Received EOE message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
         GPS_Parser_Reset();
     }
     else
     {
         GPS_NAV_EOE_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
-        switch(GPS_AppData.Hk.ParserStatus.PayloadCursor)
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
             {
-                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppData.Hk.ParserStatus.ClassID, GPS_AppData.Hk.ParserStatus.MsgID);
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
-                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppData.Hk.ParserStatus.MsgLength;
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
                 payload->iTOW = byte;
@@ -2023,54 +2023,54 @@ void GPS_Nav_ParseChar_EOE(uint8 byte, GPS_DeviceMessage_t* message)
 
 /* Outgoing messages */
 
-int32 GPS_NAV_EnablePOSLLH(void)
-{
-    uint8 cmd[] = {
-            GPS_PARSER_SYNC1_VALUE,            /* Header */
-            GPS_PARSER_SYNC2_VALUE,             /*        */
-            GPS_PARSER_CLASS_NAV_VALUE,         /* Class         */
-            GPS_PARSER_NAV_POSLLH_ID_VALUE,     /* ID             */
-            0x00, 0x00,                         /* Length         */
-            0x00, 0x00                            /* Checksum        */
-    };
-    uint8 resp[sizeof(cmd)];
-    GPS_SetChecksum(cmd, sizeof(cmd));
-    return GPS_Transfer(cmd, resp, sizeof(cmd));
-}
+//int32 GPS_NAV_EnablePOSLLH(void)
+//{
+    //uint8 cmd[] = {
+            //GPS_PARSER_SYNC1_VALUE,            /* Header */
+            //GPS_PARSER_SYNC2_VALUE,             /*        */
+            //GPS_PARSER_CLASS_NAV_VALUE,         /* Class         */
+            //GPS_PARSER_NAV_POSLLH_ID_VALUE,     /* ID             */
+            //0x00, 0x00,                         /* Length         */
+            //0x00, 0x00                            /* Checksum        */
+    //};
+    //uint8 resp[sizeof(cmd)];
+    //GPS_SetChecksum(cmd, sizeof(cmd));
+    //return GPS_Transfer(cmd, resp, sizeof(cmd));
+//}
 
 
 
 
-int32 GPS_Ena_EnableSBAS()
-{
-    uint8 cmd[] = {
-            GPS_PARSER_SYNC1_VALUE,            /* Header */
-            GPS_PARSER_SYNC2_VALUE,             /*        */
-            GPS_PARSER_CLASS_NAV_VALUE,        /* Class         */
-            GPS_PARSER_NAV_SBAS_ID_VALUE,    /* ID             */
-            0x19, 0x00,                         /* Length         */
-            0x00, 0x00, 0x00, 0x00,                /* iTOW            */
-            0x00, 0x00, 0x00, 0x00,                /* geo            */
-            0x00, 0x00, 0x00, 0x00,                /* mode            */
-            0x00, 0x00, 0x00, 0x00,                /* sys            */
-            0x00, 0x00, 0x00, 0x00,                /* service        */
-            0x00, 0x00, 0x00, 0x00,                /* cnt            */
-            0x00, 0x00, 0x00, 0x00,                /* reserved        */
-            0x00, 0x00, 0x00, 0x00,                /* svid            */
-            0x00, 0x00, 0x00, 0x00,                /* flags        */
-            0x00, 0x00, 0x00, 0x00,                /* udre            */
-            0x00, 0x00, 0x00, 0x00,                /* svSys        */
-            0x00, 0x00, 0x00, 0x00,                /* svService    */
-            0x00, 0x00, 0x00, 0x00,                /* reserved2    */
-            0x00, 0x00, 0x00, 0x00,                /* prc            */
-            0x00, 0x00, 0x00, 0x00,                /* reserved3    */
-            0x00, 0x00, 0x00, 0x00,                /* ic            */
-            0x00, 0x00                            /* Checksum        */
-    };
-    uint8 resp[sizeof(cmd)];
-    GPS_SetChecksum(cmd, sizeof(cmd));
-    return GPS_Transfer(cmd, resp, sizeof(cmd));
-}
+//int32 GPS_Ena_EnableSBAS()
+//{
+    //uint8 cmd[] = {
+            //GPS_PARSER_SYNC1_VALUE,            /* Header */
+            //GPS_PARSER_SYNC2_VALUE,             /*        */
+            //GPS_PARSER_CLASS_NAV_VALUE,        /* Class         */
+            //GPS_PARSER_NAV_SBAS_ID_VALUE,    /* ID             */
+            //0x19, 0x00,                         /* Length         */
+            //0x00, 0x00, 0x00, 0x00,                /* iTOW            */
+            //0x00, 0x00, 0x00, 0x00,                /* geo            */
+            //0x00, 0x00, 0x00, 0x00,                /* mode            */
+            //0x00, 0x00, 0x00, 0x00,                /* sys            */
+            //0x00, 0x00, 0x00, 0x00,                /* service        */
+            //0x00, 0x00, 0x00, 0x00,                /* cnt            */
+            //0x00, 0x00, 0x00, 0x00,                /* reserved        */
+            //0x00, 0x00, 0x00, 0x00,                /* svid            */
+            //0x00, 0x00, 0x00, 0x00,                /* flags        */
+            //0x00, 0x00, 0x00, 0x00,                /* udre            */
+            //0x00, 0x00, 0x00, 0x00,                /* svSys        */
+            //0x00, 0x00, 0x00, 0x00,                /* svService    */
+            //0x00, 0x00, 0x00, 0x00,                /* reserved2    */
+            //0x00, 0x00, 0x00, 0x00,                /* prc            */
+            //0x00, 0x00, 0x00, 0x00,                /* reserved3    */
+            //0x00, 0x00, 0x00, 0x00,                /* ic            */
+            //0x00, 0x00                            /* Checksum        */
+    //};
+    //uint8 resp[sizeof(cmd)];
+    //GPS_SetChecksum(cmd, sizeof(cmd));
+    //return GPS_Transfer(cmd, resp, sizeof(cmd));
+//}
 
 
 
