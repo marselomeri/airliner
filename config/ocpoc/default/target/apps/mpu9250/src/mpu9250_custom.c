@@ -1102,6 +1102,9 @@ CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
         goto end_of_function;
     }
 
+    Timestamp.Seconds = (uint32) ts.tv_sec;
+    Timestamp.Subseconds = (uint32) ts.tv_nsec; 
+
 end_of_function:
     return Timestamp;
 }

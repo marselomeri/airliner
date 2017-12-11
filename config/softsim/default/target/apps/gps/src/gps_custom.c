@@ -68,27 +68,27 @@ GPS_AppCustomData_t GPS_AppCustomData;
 /************************************************************************
 ** Local Function Definitions
 *************************************************************************/
-int32 GPS_Ioctl(int fh, int request, void *arg)
-{
-    int32 returnCode = 0;
-    uint32 i = 0;
+//int32 GPS_Ioctl(int fh, int request, void *arg)
+//{
+    //int32 returnCode = 0;
+    //uint32 i = 0;
 
-    for (i=0; i < GPS_MAX_RETRY_ATTEMPTS; i++)
-    {
-        returnCode = ioctl(fh, request, arg);
+    //for (i=0; i < GPS_MAX_RETRY_ATTEMPTS; i++)
+    //{
+        //returnCode = ioctl(fh, request, arg);
             
-        if (-1 == returnCode && EINTR == errno)
-        {
-            usleep(GPS_MAX_RETRY_SLEEP_USEC);
-        }
-        else
-        {
-            break;
-        }
-    }
+        //if (-1 == returnCode && EINTR == errno)
+        //{
+            //usleep(GPS_MAX_RETRY_SLEEP_USEC);
+        //}
+        //else
+        //{
+            //break;
+        //}
+    //}
 
-    return returnCode;
-}
+    //return returnCode;
+//}
 
 
 void GPS_Custom_InitData(void)
@@ -212,6 +212,9 @@ CFE_TIME_SysTime_t GPS_Custom_Get_Time(void)
             "GPS clock_gettime errno: %i", errno);
         goto end_of_function;
     }
+
+    Timestamp.Seconds = (uint32) ts.tv_sec;
+    Timestamp.Subseconds = (uint32) ts.tv_nsec; 
 
 end_of_function:
     return Timestamp;
@@ -452,7 +455,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
         returnBool = FALSE;
         goto end_of_function;
     }
-
+    /* Wait for GPS data */
     returnCode = GPS_Custom_Select(0, 1000 * Timeout);
     if (returnCode <= 0)
     {
@@ -633,22 +636,54 @@ end_of_function;
 
 
 
-boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
+boolean GPS_Custom_WaitForAck(const uint16 msg, uint32 timeout)
 {
     uint32 i = 0;
     int32 bytesRead = 0;
     uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
     boolean done = FALSE;
+    boolean timedOut = FALSE;
     boolean returnBool = FALSE;
+    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
+    uint64 timeStamp = 0;
+    uint64 startTime = 0;
     
+    /* Get the start time */
+    cfeTimeStamp = GPS_Custom_Get_Time();
+    if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
+    {
+        goto end_of_function;
+    }
+    startTime = cfeTimeStamp.Seconds * 1000000;
+    startTime += cfeTimeStamp.Subseconds / 1000;
+
+    /* Set the ack state to waiting */
     GPS_AppCustomData.AckState = GPS_ACK_WAITING;
+    /* Set the message we're looking for */
     GPS_AppCustomData.AckWaitingMsg = msg;
+    /* Set the received ack boolean to false */
     GPS_AppCustomData.AckWaitingRcvd = FALSE;
 
-    while(!done)
+    /* while we haven't timed out keep looking for the message */
+    while(FALSE == timedOut)
     {
-        bytesRead = GPS_Custom_Receive(from_gps_data, sizeof(from_gps_data), Timeout);
-        for(i = 0; (!done) && (i < bytesRead); ++i)
+        /* Get the loop iteration time */
+        cfeTimeStamp = GPS_Custom_Get_Time();
+        if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
+        {
+            goto end_of_function;
+        }
+        timeStamp = cfeTimeStamp.Seconds * 1000000;
+        timeStamp += cfeTimeStamp.Subseconds / 1000;
+        
+        /* If we've timeout out set the flag to true */
+        if(timeStamp >= startTime + timeout * 1000)
+        {
+            timedOut = TRUE;
+        }
+
+        bytesRead = GPS_Custom_Receive(from_gps_data, sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
+        for(i = 0; (FALSE == done) && (FALSE == timedOut) && (i < bytesRead); ++i)
         {
             GPS_DeviceMessage_t message;
             GPS_ParserStatus_t status;
@@ -658,15 +693,23 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
                 if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
                    GPS_AppCustomData.AckWaitingRcvd == TRUE)
                 {
-                    return TRUE;
+                    returnBool = TRUE;
+                    done = TRUE;
+                    break;
                 }
-                else
+                (GPS_AppCustomData.AckState == GPS_ACK_GOT_NAK &&
+                   GPS_AppCustomData.AckWaitingRcvd == TRUE)
                 {
-                    return FALSE;
+                    done = TRUE;
+                    break;
                 }
             }
         }
     }
+
+end_of_function:
+
+return returnBool;
 }
 
 

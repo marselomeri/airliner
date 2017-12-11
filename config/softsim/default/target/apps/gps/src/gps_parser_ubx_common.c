@@ -342,16 +342,15 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                     switch(byte)
                     {
                         case GPS_PARSER_ACK_NAK_ID_VALUE:
+                        { 
+                            GPS_AppCustomData.ParserStatus.MsgID = byte;
+                            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
+                            break;
+                        }
                         case GPS_PARSER_ACK_ACK_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
                             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
-                            /* We have an ack, we still need to determine if
-                             * it is the one we're waiting on */
-                            if(GPS_AppCustomData.AckState == GPS_ACK_WAITING)
-                            {
-                                GPS_AppCustomData.AckState = GPS_ACK_GOT_ACK;
-                            }
                             break;
                         }
 
@@ -909,8 +908,22 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
                 case GPS_PARSER_CLASS_ACK_VALUE:
                 {
-                    OS_printf("GPS:  GPS_PARSER_CLASS_ACK_VALUE not yet implemented.\n");
-                    GPS_Parser_StateChange(GPS_PARSE_STATE_IDLE);
+                    switch(GPS_AppCustomData.ParserStatus.MsgID)
+                    {
+                        case GPS_PARSER_ACK_NAK_ID_VALUE:
+                        {
+                            GPS_Ack_ParseChar_NAK(byte, message);
+                            GPS_AppCustomData.ParserStatus.PayloadCursor++;
+                            break;
+                        }
+                        
+                        case GPS_PARSER_ACK_ACK_ID_VALUE:
+                        {
+                            GPS_Ack_ParseChar_ACK(byte, message);
+                            GPS_AppCustomData.ParserStatus.PayloadCursor++;
+                            break;
+                        }
+                    }
                     break;
                 }
 
@@ -1097,13 +1110,9 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 }
 
 
-
-
 CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
 {
     CFE_SB_MsgId_t sbMsgID = 0;
-
-    GPS_AppCustomData.LastMsg = MsgID;
 
     switch(ClassID)
     {
@@ -1224,6 +1233,7 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
 
         case GPS_PARSER_CLASS_RXM_VALUE:
         case GPS_PARSER_CLASS_INF_VALUE:
+        /* TODO */
         case GPS_PARSER_CLASS_ACK_VALUE:
         /* TODO */
         case GPS_PARSER_CLASS_CFG_VALUE:

@@ -488,6 +488,19 @@ typedef struct
 } GPS_CFG_MSG_t;
 
 
+typedef struct
+{
+    uint8 clsID;
+    uint8 msgID;
+} GPS_ACK_ACK_t;
+
+
+typedef struct
+{
+    uint8 clsID;
+    uint8 msgID;
+} GPS_ACK_NAK_t;
+
 
 #ifdef __cplusplus
 }

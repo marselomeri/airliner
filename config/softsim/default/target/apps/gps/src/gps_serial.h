@@ -67,7 +67,7 @@ extern "C" {
 **  \par Description:
 **       ms, timeout to receive packet.
 */
-#define GPS_PACKET_TIMEOUT                        (2)
+#define GPS_PACKET_TIMEOUT                        (20)
 
 /** \brief GPS ack timeout.
 **
@@ -317,7 +317,6 @@ typedef struct
     
     GPS_Ack_State_t              AckState;
     uint16                       AckWaitingMsg;
-    uint16                       LastMsg;
     boolean                      AckWaitingRcvd;
 } GPS_AppCustomData_t;
 
@@ -346,7 +345,7 @@ typedef struct
 **  \endreturns
 **
 *************************************************************************/
-int32 GPS_Ioctl(int fh, int request, void *arg);
+//int32 GPS_Ioctl(int fh, int request, void *arg);
 
 /************************************************************************/
 /** \brief Determines if the maximum of event filters has been reached.
