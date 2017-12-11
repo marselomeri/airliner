@@ -368,7 +368,7 @@ int32 MPU9250_ResetDevice(void);
 boolean MPU9250_Read_MagInfo(uint8 *Value);
 boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);
 boolean MPU9250_Custom_Read_MagAdj(void);
-boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
+boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind);
 
 #ifdef __cplusplus
 extern "C" {

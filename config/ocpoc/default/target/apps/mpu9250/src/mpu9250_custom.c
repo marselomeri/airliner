@@ -1131,7 +1131,7 @@ int32 MPU9250_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
         goto end_of_function;
     }
 
-    if(TRUE == MS5611_Custom_Max_Events_Not_Reached(customEventCount))
+    if(TRUE == MPU9250_Custom_Max_Events_Not_Reached(customEventCount))
     {
         EventTbl[  customEventCount].EventID = MPU9250_DEVICE_ERR_EID;
         EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
