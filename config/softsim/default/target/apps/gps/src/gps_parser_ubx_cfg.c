@@ -47,15 +47,14 @@
 ** Macro definitions
 **
 **************************************************************************/
-
 #define GPS_PARSER_CFG_CFG_MSG_LENGTH1    (12)
 #define GPS_PARSER_CFG_CFG_MSG_LENGTH2    (13)
 #define GPS_PARSER_CFG_NAV5_MSG_LENGTH    (36)
 #define GPS_PARSER_CFG_SBAS_MSG_LENGTH    (8)
 #define GPS_PARSER_CFG_TMODE3_MSG_LENGTH  (40)
 #define GPS_PARSER_CFG_PRT_MSG_LENGTH     (20)
-#define GPS_PARSER_CFG_MSG_MSG_LENGTH1     (8)
-#define GPS_PARSER_CFG_MSG_MSG_LENGTH2     (8)
+#define GPS_PARSER_CFG_MSG_MSG_LENGTH1    (8)
+#define GPS_PARSER_CFG_MSG_MSG_LENGTH2    (8)
 
 /*************************************************************************
 **
@@ -348,6 +347,430 @@ void GPS_Cfg_ParseChar_NAV5(uint8 byte, GPS_DeviceMessage_t* message)
 
         case 35:
             payload->reserved3 += byte << 24;
+            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+            break;
+
+        default:
+            GPS_Parser_Reset();
+            return;
+        }
+    }
+}
+
+
+void GPS_Cfg_ParseChar_SBAS(uint8 byte, GPS_DeviceMessage_t* message)
+{
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_CFG_SBAS_MSG_LENGTH)
+    {
+        GPS_AppCustomData.ParserStatus.ParseError++;
+        CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
+                      "Received NAV5 message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
+        GPS_Parser_Reset();
+    }
+    else
+    {
+        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
+        {
+        case 0:
+        {
+            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
+            uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
+            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
+            CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
+
+            payload->mode = byte;
+            break;
+        }
+
+        case 1:
+            payload->usage = byte;
+            break;
+
+        case 2:
+            payload->maxSBAS = byte;
+            break;
+
+        case 3:
+            payload->scanmode2 = byte;
+            break;
+
+        case 4:
+            payload->scanmode1 = byte;
+            break;
+
+        case 5:
+            payload->scanmode1 += byte << 8;
+            break;
+
+        case 6:
+            payload->scanmode1 += byte << 16;
+            break;
+
+        case 7:
+            payload->scanmode1 += byte << 24;
+            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+            break;
+
+        default:
+            GPS_Parser_Reset();
+            return;
+        }
+    }
+}
+
+
+void GPS_Cfg_ParseChar_TMODE3(uint8 byte, GPS_DeviceMessage_t* message)
+{
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_CFG_SBAS_MSG_LENGTH)
+    {
+        GPS_AppCustomData.ParserStatus.ParseError++;
+        CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
+                      "Received NAV5 message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
+        GPS_Parser_Reset();
+    }
+    else
+    {
+        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
+        {
+        case 0:
+        {
+            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
+            uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
+            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
+            CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
+
+            payload->version = byte;
+            break;
+        }
+
+        case 1:
+            payload->reserved1 = byte;
+            break;
+
+        case 2:
+            payload->flags = byte;
+            break;
+
+        case 3:
+            payload->flags = byte << 8;
+            break;
+
+        case 4:
+            payload->ecefXOrLat = byte;
+            break;
+
+        case 5:
+            payload->ecefXOrLat += byte << 8;
+            break;
+
+        case 6:
+            payload->ecefXOrLat += byte << 16;
+            break;
+
+        case 7:
+            payload->ecefXOrLat += byte << 24;
+            break;
+            
+        case 8:
+            payload->ecefYOrLon = byte;
+            break;            
+            
+        case 9:
+            payload->ecefYOrLon += byte << 8;
+            break;
+
+        case 10:
+            payload->ecefYOrLon += byte << 16;
+            break;
+
+        case 11:
+            payload->ecefYOrLon += byte << 24;
+            break;
+
+        case 12:
+            payload->ecefZOrAlt = byte;
+            break;
+            
+        case 13:
+            payload->ecefZOrAlt += byte << 8;
+            break;
+
+        case 14:
+            payload->ecefZOrAlt += byte << 16;
+            break;
+
+        case 15:
+            payload->ecefZOrAlt += byte << 24;
+            break;
+
+        case 16:
+            payload->ecefXOrLatHP = byte;
+            break;
+
+        case 17:
+            payload->ecefYOrLonHP = byte;
+            break;
+
+        case 18:
+            payload->ecefZOrAltHP = byte;
+            break;
+
+        case 19:
+            payload->reserved2 = byte;
+            break;
+
+        case 20:
+            payload->fixedPosAcc = byte;
+            break;
+
+        case 21:
+            payload->fixedPosAcc += byte << 8;
+            break;
+
+        case 22:
+            payload->fixedPosAcc += byte << 16;
+            break;
+
+        case 23:
+            payload->fixedPosAcc += byte << 24;
+            break;
+
+        case 24:
+            payload->svinMinDur = byte;
+            break;
+
+        case 25:
+            payload->svinMinDur += byte << 8;
+            break;
+
+        case 26:
+            payload->svinMinDur += byte << 16;
+            break;
+
+        case 27:
+            payload->svinMinDur += byte << 24;
+            break;
+
+        case 28:
+            payload->svinAccLimit = byte;
+            break;
+
+        case 29:
+            payload->svinAccLimit += byte << 8;
+            break;
+
+        case 30:
+            payload->svinAccLimit += byte << 16;
+            break;
+
+        case 31:
+            payload->svinAccLimit += byte << 24;
+            break;
+
+        case 32:
+            payload->reserved3[0] = byte;
+            break;
+
+        case 33:
+            payload->reserved3[1] = byte;
+            break;
+
+        case 34:
+            payload->reserved3[2] = byte;
+            break;
+
+        case 35:
+            payload->reserved3[3] = byte;
+            break;
+
+        case 36:
+            payload->reserved3[4] = byte;
+            break;
+
+        case 37:
+            payload->reserved3[5] = byte;
+            break;
+
+        case 38:
+            payload->reserved3[6] = byte;
+            break;
+
+        case 39:
+            payload->reserved3[7] = byte;
+            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+            break;
+
+        default:
+            GPS_Parser_Reset();
+            return;
+        }
+    }
+}
+
+
+void GPS_Cfg_ParseChar_PRT(uint8 byte, GPS_DeviceMessage_t* message)
+{
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_CFG_SBAS_MSG_LENGTH)
+    {
+        GPS_AppCustomData.ParserStatus.ParseError++;
+        CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
+                      "Received NAV5 message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
+        GPS_Parser_Reset();
+    }
+    else
+    {
+        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
+        {
+        case 0:
+        {
+            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
+            uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
+            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
+            CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
+
+            payload->portID = byte;
+            break;
+        }
+
+        case 1:
+            payload->reserved1 = byte;
+            break;
+
+        case 2:
+            payload->txReady = byte;
+            break;
+
+        case 3:
+            payload->txReady = byte << 8;
+            break;
+
+        case 4:
+            payload->mode = byte;
+            break;
+
+        case 5:
+            payload->mode += byte << 8;
+            break;
+
+        case 6:
+            payload->mode += byte << 16;
+            break;
+
+        case 7:
+            payload->mode += byte << 24;
+            break;
+            
+        case 8:
+            payload->baudRate = byte;
+            break;            
+            
+        case 9:
+            payload->baudRate += byte << 8;
+            break;
+
+        case 10:
+            payload->baudRate += byte << 16;
+            break;
+
+        case 11:
+            payload->baudRate += byte << 24;
+            break;
+
+        case 12:
+            payload->inProtoMask = byte;
+            break;
+            
+        case 13:
+            payload->inProtoMask += byte << 8;
+            break;
+
+        case 14:
+            payload->outProtoMask = byte;
+            break;
+
+        case 15:
+            payload->outProtoMask += byte << 8;
+            break;
+
+        case 16:
+            payload->flags = byte;
+            break;
+
+        case 17:
+            payload->flags += byte << 8;
+            break;
+
+        case 18:
+            payload->reserved2 = byte;
+            break;
+
+        case 19:
+            payload->reserved2 += byte << 8;
+            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+            break;
+
+        default:
+            GPS_Parser_Reset();
+            return;
+        }
+    }
+}
+
+
+void GPS_Cfg_ParseChar_MSG(uint8 byte, GPS_DeviceMessage_t* message)
+{
+    if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_CFG_SBAS_MSG_LENGTH)
+    {
+        GPS_AppCustomData.ParserStatus.ParseError++;
+        CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
+                      "Received NAV5 message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
+        GPS_Parser_Reset();
+    }
+    else
+    {
+        GPS_CFG_CFG_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
+        {
+        case 0:
+        {
+            CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
+            uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
+            uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
+            CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
+
+            payload->msgClass = byte;
+            break;
+        }
+
+        case 1:
+            payload->msgID = byte;
+            break;
+
+        case 2:
+            payload->rate[0] = byte;
+            break;
+
+        case 3:
+            payload->rate[1] = byte;
+            break;
+
+        case 4:
+            payload->rate[2] = byte;
+            break;
+
+        case 5:
+            payload->rate[3] = byte;
+            break;
+
+        case 6:
+            payload->rate[4] = byte;
+            break;
+
+        case 7:
+            payload->rate[5] = byte;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
             break;
 
