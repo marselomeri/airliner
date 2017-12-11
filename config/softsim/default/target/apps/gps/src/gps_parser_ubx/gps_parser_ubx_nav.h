@@ -39,7 +39,7 @@
 #define _GPS_PARSER_UBX_NAV_H_
 
 #include "cfe.h"
-#include "gps_serial.h"
+#include "../gps_custom_shared.h"
 //#include "GPS_events.h"
 //#include "GPS_msgids.h"
 

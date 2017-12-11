@@ -30,75 +30,142 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-/************************************************************************
-** Pragmas
-*************************************************************************/
 
+#ifndef GPS_CUSTOM_SHARED_H
+#define GPS_CUSTOM_SHARED_H
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "gps_custom_shared.h"
+#include "gps_events.h"
+#include "cfe.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
 
+/** \brief GPS read buffer size.
+**
+**  \par Description:
+**       MON_VER from u-blox modules can be ~190 bytes
+*/
+#define GPS_READ_BUFFER_SIZE                      (250)
+
 /************************************************************************
-** Local Structure Declarations
+** Structure Declarations
 *************************************************************************/
+typedef enum 
+{
+
+/** \brief <tt> 'GPS - ' </tt>
+**  \event <tt> 'GPS - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device resource encounters an 
+**  error.
+**
+*/
+    GPS_DEVICE_ERR_EID = GPS_EVT_CNT,
+
+/** \brief <tt> 'GPS - ' </tt>
+**  \event <tt> 'GPS - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a GPS message parser encounters an 
+**  error.
+**
+*/
+    GPS_INIT_DEVICE_PARSER_ERR_EID,
+
+/** \brief Number of custom events 
+**
+**  \par Limits:
+**       int32
+*/
+    GPS_CUSTOM_EVT_CNT
+} GPS_CustomEventIds_t;
+
+
+typedef struct
+{
+    /*! \brief cFE Software Bus Telemetry Message Header */
+    uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];          
+    uint8       Payload[GPS_READ_BUFFER_SIZE];
+} GPS_DeviceMessage_t;
+
+
+/**
+ * \brief Parser state.
+ */
+typedef enum 
+{
+    GPS_PARSE_STATE_UNINIT=0,
+    GPS_PARSE_STATE_IDLE,
+    GPS_PARSE_STATE_GOT_SYNC1,
+    GPS_PARSE_STATE_GOT_SYNC2,
+    GPS_PARSE_STATE_GOT_CLASS,
+    GPS_PARSE_STATE_GOT_ID,
+    GPS_PARSE_STATE_GOT_LENGTH1,
+    GPS_PARSE_STATE_GOT_LENGTH2,
+    GPS_PARSE_STATE_GOT_PAYLOAD,
+    GPS_PARSE_STATE_GOT_CHECKSUMA,
+    GPS_PARSE_STATE_GOT_CHECKSUMB
+} GPS_ParserState_t;
+
+
+typedef struct
+{
+    /*! Number of received messages */
+    uint32 MsgReceived;
+    /*! Number of parse errors */
+    uint32 ParseError;
+    /*! Parsing state machine */
+    GPS_ParserState_t ParseState;
+    uint16 PayloadCursor;
+    uint8 ClassID;
+    uint8 MsgID;
+    uint16 MsgLength;
+    uint16 ChecksumA;
+} GPS_ParserStatus_t;
+
 
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
 
 /************************************************************************
-** Global Variables
+** Function Prototypes
 *************************************************************************/
 
-/************************************************************************
-** Local Variables
+/************************************************************************/
+/** \brief Determines if the maximum of event filters has been reached.
+**
+**  \par Description
+**       This function checks if an index has reached the maximum
+**       number of events.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    ind    The current index to check.
+**                             
+**
+**  \returns    boolean
+**
 *************************************************************************/
+boolean GPS_Custom_Max_Events_Not_Reached(int32 ind);
 
-/************************************************************************
-** Local Function Definitions
-*************************************************************************/
 
-boolean GPS_Custom_Max_Events_Not_Reached(int32 ind)
-{
-    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+#ifdef __cplusplus
 }
+#endif 
 
-
-int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
-{
-    int32 customEventCount = ind;
-    
-    /* Null check */
-    if(0 == EventTbl)
-    {
-        customEventCount = -1;
-        goto end_of_function;
-    }
-
-    if(TRUE == GPS_Custom_Max_Events_Not_Reached(customEventCount))
-    {
-        EventTbl[  customEventCount].EventID = GPS_DEVICE_ERR_EID;
-        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
-    }
-    else
-    {
-        customEventCount = -1;
-        goto end_of_function;
-    }
-    
-end_of_function:
-
-    return customEventCount;
-}
+#endif /* GPS_CUSTOM_SHARED_H */

@@ -37,7 +37,7 @@
 **************************************************************************/
 
 #include "cfe.h"
-#include "gps_serial.h"
+#include "../gps_custom_shared.h"
 //#include "GPS_events.h"
 //#include "GPS_msgids.h"
 #include "gps_parser_ubx_cfg.h"

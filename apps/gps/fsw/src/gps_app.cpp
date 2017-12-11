@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "cfe.h"
+#include "gps_custom.h"
 
 #include "gps_app.h"
 #include "gps_msg.h"
@@ -48,13 +49,42 @@ GPS::~GPS()
 int32 GPS::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
+    int32 customEventCount = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset(EventTbl, 0x00, sizeof(EventTbl));
+    
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    EventTbl[  ind].EventID = GPS_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = GPS_READ_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    
+    
+    /* Add custom events to the filter table */
+    customEventCount = GPS_Custom_Init_EventFilters(ind, EventTbl);
+    
+    if(-1 == customEventCount)
+    {
+        iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
+        goto end_of_function;
+    }
 
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, (ind + customEventCount), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
-        (void) CFE_ES_WriteToSysLog("GPS - Failed to register with EVS (0x%08lX)\n", iStatus);
+        (void) CFE_ES_WriteToSysLog("MPU9250 - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
+
+end_of_function:
 
     return iStatus;
 }
@@ -148,16 +178,18 @@ void GPS::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
-    		GPS_HK_TLM_MID, sizeof(HkTlm), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&GpsDump,
-      		PX4_GPS_DUMP_MID, sizeof(PX4_GpsDumpMsg_t), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&VehicleGps,
-      		PX4_VEHICLE_GPS_POSITION_MID, sizeof(PX4_VehicleGpsPositionMsg_t), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&SatelliteInfo,
-      		PX4_SATELLITE_INFO_MID, sizeof(PX4_SatelliteInfoMsg_t), TRUE);
+            GPS_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&GpsDump,
+            PX4_GPS_DUMP_MID, sizeof(PX4_GpsDumpMsg_t), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&VehicleGps,
+            PX4_VEHICLE_GPS_POSITION_MID, sizeof(PX4_VehicleGpsPositionMsg_t), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&SatelliteInfo,
+            PX4_SATELLITE_INFO_MID, sizeof(PX4_SatelliteInfoMsg_t), TRUE);
+    /* Init custom data */
+    GPS_Custom_InitData();
 }
 
 
@@ -169,6 +201,7 @@ void GPS::InitData()
 int32 GPS::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
+    boolean returnBool = TRUE;
     int8   hasEvents = 0;
 
     iStatus = InitEvent();
@@ -193,6 +226,25 @@ int32 GPS::InitApp()
     iStatus = InitConfigTbl();
     if (iStatus != CFE_SUCCESS)
     {
+        goto GPS_InitApp_Exit_Tag;
+    }
+
+    returnBool = GPS_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        goto GPS_InitApp_Exit_Tag;
+    }
+    
+    HkTlm.State = GPS_INITIALIZED;
+
+    /* Register the cleanup callback */
+    iStatus = OS_TaskInstallDeleteHandler(&GPS_CleanupCallback);
+    if (iStatus != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(GPS_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init register cleanup callback (0x%08X)",
+                                 (unsigned int)iStatus);
         goto GPS_InitApp_Exit_Tag;
     }
 
@@ -509,6 +561,16 @@ void GPS::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
+
+void GPS_CleanupCallback(void)
+{
+    oGPS.HkTlm.State = GPS_UNINITIALIZED;
+    if(GPS_Custom_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(GPS_UNINIT_ERR_EID, CFE_EVS_ERROR,"GPS_Uninit failed");
+        oGPS.HkTlm.State = GPS_INITIALIZED;
+    }
+}
 
 /************************/
 /*  End of File Comment */

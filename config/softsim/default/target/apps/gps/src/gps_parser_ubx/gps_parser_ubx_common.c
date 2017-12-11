@@ -35,10 +35,10 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "gps_serial.h"
+#include "gps_parser_ubx_common.h"
 //#include "GPS_events.h"
 //#include "GPS_msgids.h"
-#include "gps_parser_ubx_common.h"
+
 
 /************************************************************************
 ** Local Defines
@@ -1110,338 +1110,338 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 }
 
 
-CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
-{
-    CFE_SB_MsgId_t sbMsgID = 0;
-
-    switch(ClassID)
-    {
-        case GPS_PARSER_CLASS_NAV_VALUE:
-        {
-            switch(MsgID)
-            {
-                case GPS_PARSER_NAV_POSECEF_ID_VALUE:
-                    sbMsgID = GPS_NAV_POSECEF_MID;
-                    break;
-
-                case GPS_PARSER_NAV_POSLLH_ID_VALUE:
-                    sbMsgID = GPS_NAV_POSLLH_MID;
-                    break;
-
-                case GPS_PARSER_NAV_STATUS_ID_VALUE:
-                    sbMsgID = GPS_NAV_STATUS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_DOP_ID_VALUE:
-                    sbMsgID = GPS_NAV_DOP_MID;
-                    break;
-
-                case GPS_PARSER_NAV_ATT_ID_VALUE:
-                    sbMsgID = GPS_NAV_ATT_MID;
-                    break;
-
-                case GPS_PARSER_NAV_SOL_ID_VALUE:
-                    sbMsgID = GPS_NAV_SOL_MID;
-                    break;
-
-                case GPS_PARSER_NAV_NAVPVT_ID_VALUE:
-                    sbMsgID = GPS_NAV_NAVPVT_MID;
-                    break;
-
-                case GPS_PARSER_NAV_ODO_ID_VALUE:
-                    sbMsgID = GPS_NAV_ODO_MID;
-                    break;
-
-                case GPS_PARSER_NAV_RESETODO_ID_VALUE:
-                    sbMsgID = GPS_NAV_RESETODO_MID;
-                    break;
-
-                case GPS_PARSER_NAV_VELECEF_ID_VALUE:
-                    sbMsgID = GPS_NAV_VELECEF_MID;
-                    break;
-
-                case GPS_PARSER_NAV_VELNED_ID_VALUE:
-                    sbMsgID = GPS_NAV_VELNED_MID;
-                    break;
-
-                case GPS_PARSER_NAV_TIMEGPS_ID_VALUE:
-                    sbMsgID = GPS_NAV_TIMEGPS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_TIMEUTC_ID_VALUE:
-                    sbMsgID = GPS_NAV_TIMEUTC_MID;
-                    break;
-
-                case GPS_PARSER_NAV_CLOCK_ID_VALUE:
-                    sbMsgID = GPS_NAV_CLOCK_MID;
-                    break;
-
-                case GPS_PARSER_NAV_TIMEGLO_ID_VALUE:
-                    sbMsgID = GPS_NAV_TIMEGLO_MID;
-                    break;
-
-                case GPS_PARSER_NAV_TIMEBDS_ID_VALUE:
-                    sbMsgID = GPS_NAV_TIMEBDS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_TIMEGAL_ID_VALUE:
-                    sbMsgID = GPS_NAV_TIMEGAL_MID;
-                    break;
-
-                case GPS_PARSER_NAV_TIMELS_ID_VALUE:
-                    sbMsgID = GPS_NAV_TIMELS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_SVINFO_ID_VALUE:
-                    sbMsgID = GPS_NAV_SVINFO_MID;
-                    break;
-
-                case GPS_PARSER_NAV_DGPS_ID_VALUE:
-                    sbMsgID = GPS_NAV_DGPS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_SBAS_ID_VALUE:
-                    sbMsgID = GPS_NAV_SBAS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_ORB_ID_VALUE:
-                    sbMsgID = GPS_NAV_ORB_MID;
-                    break;
-
-                case GPS_PARSER_NAV_NAVSAT_ID_VALUE:
-                    sbMsgID = GPS_NAV_NAVSAT_MID;
-                    break;
-
-                case GPS_PARSER_NAV_GEOFENCE_ID_VALUE:
-                    sbMsgID = GPS_NAV_GEOFENCE_MID;
-                    break;
-
-                case GPS_PARSER_NAV_AOPSTATUS_ID_VALUE:
-                    sbMsgID = GPS_NAV_AOPSTATUS_MID;
-                    break;
-
-                case GPS_PARSER_NAV_EOE_ID_VALUE:
-                    sbMsgID = GPS_NAV_EOE_MID;
-                    break;
-
-                default:
-                    break;
-
-            }
-            break;
-        }
-
-        case GPS_PARSER_CLASS_RXM_VALUE:
-        case GPS_PARSER_CLASS_INF_VALUE:
-        /* TODO */
-        case GPS_PARSER_CLASS_ACK_VALUE:
-        /* TODO */
-        case GPS_PARSER_CLASS_CFG_VALUE:
-        {
-            switch(MsgID)
-            {
-                case GPS_PARSER_CFG_PRT_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_MSG_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_INF_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_RST_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_DAT_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_RATE_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_CFG_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_RXM_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_ANT_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_SBAS_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_NMEA_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_USB_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_ODO_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_NAVX5_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_NAV5_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_TP5_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_RINV_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_ITFM_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_PM2_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_TMOD2_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_GNSS_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_LOGFILTER_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_PWR_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_TXSLOT_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_HNR_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_ESRC_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_DOSC_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_SMGR_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_GEOFENCE_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_FIXSEED_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_DYNSEED_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                case GPS_PARSER_CFG_PMS_ID_VALUE:
-                    //sbMsgID = ;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        case GPS_PARSER_CLASS_UPD_VALUE:
-        case GPS_PARSER_CLASS_MON_VALUE:
-        {
-            switch(MsgID)
-            {
-                case GPS_PARSER_MON_IO_ID_VALUE:
-                    sbMsgID = GPS_MON_IO_MID;
-                    break;
-
-                case GPS_PARSER_MON_VER_ID_VALUE:
-                    sbMsgID = GPS_MON_VER_MID;
-                    break;
-
-                case GPS_PARSER_MON_MSGPP_ID_VALUE:
-                    sbMsgID = GPS_MON_MSGPP_MID;
-                    break;
-
-                case GPS_PARSER_MON_RXBUF_ID_VALUE:
-                    sbMsgID = GPS_MON_RXBUF_MID;
-                    break;
-
-                case GPS_PARSER_MON_TXBUF_ID_VALUE:
-                    sbMsgID = GPS_MON_TXBUF_MID;
-                    break;
-
-                case GPS_PARSER_MON_HW_ID_VALUE:
-                    sbMsgID = GPS_MON_HW_MID;
-                    break;
-
-                case GPS_PARSER_MON_HW2_ID_VALUE:
-                    sbMsgID = GPS_MON_HW2_MID;
-                    break;
-
-                case GPS_PARSER_MON_RXR_ID_VALUE:
-                    sbMsgID = GPS_MON_RXR_MID;
-                    break;
-
-                case GPS_PARSER_MON_PATCH_ID_VALUE:
-                    sbMsgID = GPS_MON_PATCH_MID;
-                    break;
-
-                case GPS_PARSER_MON_GNSS_ID_VALUE:
-                    sbMsgID = GPS_MON_GNSS_MID;
-                    break;
-
-                case GPS_PARSER_MON_SMGR_ID_VALUE:
-                    sbMsgID = GPS_MON_SMGR_MID;
-                    break;
-
-                default:
-                    break;
-
-            }
-        }
-
-        case GPS_PARSER_CLASS_AID_VALUE:
-        case GPS_PARSER_CLASS_TIM_VALUE:
-        case GPS_PARSER_CLASS_ESF_VALUE:
-        case GPS_PARSER_CLASS_MGA_VALUE:
-        case GPS_PARSER_CLASS_LOG_VALUE:
-        case GPS_PARSER_CLASS_SEC_VALUE:
-        case GPS_PARSER_CLASS_HNR_VALUE:
-            break;
-
-        default:
-            break;
-    }
-
-    return sbMsgID;
-}
+//CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
+//{
+    //CFE_SB_MsgId_t sbMsgID = 0;
+
+    //switch(ClassID)
+    //{
+        //case GPS_PARSER_CLASS_NAV_VALUE:
+        //{
+            //switch(MsgID)
+            //{
+                //case GPS_PARSER_NAV_POSECEF_ID_VALUE:
+                    //sbMsgID = GPS_NAV_POSECEF_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_POSLLH_ID_VALUE:
+                    //sbMsgID = GPS_NAV_POSLLH_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_STATUS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_STATUS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_DOP_ID_VALUE:
+                    //sbMsgID = GPS_NAV_DOP_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_ATT_ID_VALUE:
+                    //sbMsgID = GPS_NAV_ATT_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_SOL_ID_VALUE:
+                    //sbMsgID = GPS_NAV_SOL_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_NAVPVT_ID_VALUE:
+                    //sbMsgID = GPS_NAV_NAVPVT_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_ODO_ID_VALUE:
+                    //sbMsgID = GPS_NAV_ODO_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_RESETODO_ID_VALUE:
+                    //sbMsgID = GPS_NAV_RESETODO_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_VELECEF_ID_VALUE:
+                    //sbMsgID = GPS_NAV_VELECEF_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_VELNED_ID_VALUE:
+                    //sbMsgID = GPS_NAV_VELNED_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_TIMEGPS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_TIMEGPS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_TIMEUTC_ID_VALUE:
+                    //sbMsgID = GPS_NAV_TIMEUTC_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_CLOCK_ID_VALUE:
+                    //sbMsgID = GPS_NAV_CLOCK_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_TIMEGLO_ID_VALUE:
+                    //sbMsgID = GPS_NAV_TIMEGLO_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_TIMEBDS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_TIMEBDS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_TIMEGAL_ID_VALUE:
+                    //sbMsgID = GPS_NAV_TIMEGAL_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_TIMELS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_TIMELS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_SVINFO_ID_VALUE:
+                    //sbMsgID = GPS_NAV_SVINFO_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_DGPS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_DGPS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_SBAS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_SBAS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_ORB_ID_VALUE:
+                    //sbMsgID = GPS_NAV_ORB_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_NAVSAT_ID_VALUE:
+                    //sbMsgID = GPS_NAV_NAVSAT_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_GEOFENCE_ID_VALUE:
+                    //sbMsgID = GPS_NAV_GEOFENCE_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_AOPSTATUS_ID_VALUE:
+                    //sbMsgID = GPS_NAV_AOPSTATUS_MID;
+                    //break;
+
+                //case GPS_PARSER_NAV_EOE_ID_VALUE:
+                    //sbMsgID = GPS_NAV_EOE_MID;
+                    //break;
+
+                //default:
+                    //break;
+
+            //}
+            //break;
+        //}
+
+        //case GPS_PARSER_CLASS_RXM_VALUE:
+        //case GPS_PARSER_CLASS_INF_VALUE:
+        ///* TODO */
+        //case GPS_PARSER_CLASS_ACK_VALUE:
+        ///* TODO */
+        //case GPS_PARSER_CLASS_CFG_VALUE:
+        //{
+            //switch(MsgID)
+            //{
+                //case GPS_PARSER_CFG_PRT_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_MSG_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_INF_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_RST_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_DAT_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_RATE_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_CFG_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_RXM_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_ANT_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_SBAS_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_NMEA_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_USB_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_ODO_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_NAVX5_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_NAV5_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_TP5_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_RINV_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_ITFM_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_PM2_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_TMOD2_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_GNSS_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_LOGFILTER_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_PWR_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_TXSLOT_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_HNR_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_ESRC_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_DOSC_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_SMGR_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_GEOFENCE_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_FIXSEED_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_DYNSEED_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //case GPS_PARSER_CFG_PMS_ID_VALUE:
+                    ////sbMsgID = ;
+                    //break;
+
+                //default:
+                    //break;
+            //}
+        //}
+        //case GPS_PARSER_CLASS_UPD_VALUE:
+        //case GPS_PARSER_CLASS_MON_VALUE:
+        //{
+            //switch(MsgID)
+            //{
+                //case GPS_PARSER_MON_IO_ID_VALUE:
+                    //sbMsgID = GPS_MON_IO_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_VER_ID_VALUE:
+                    //sbMsgID = GPS_MON_VER_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_MSGPP_ID_VALUE:
+                    //sbMsgID = GPS_MON_MSGPP_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_RXBUF_ID_VALUE:
+                    //sbMsgID = GPS_MON_RXBUF_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_TXBUF_ID_VALUE:
+                    //sbMsgID = GPS_MON_TXBUF_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_HW_ID_VALUE:
+                    //sbMsgID = GPS_MON_HW_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_HW2_ID_VALUE:
+                    //sbMsgID = GPS_MON_HW2_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_RXR_ID_VALUE:
+                    //sbMsgID = GPS_MON_RXR_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_PATCH_ID_VALUE:
+                    //sbMsgID = GPS_MON_PATCH_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_GNSS_ID_VALUE:
+                    //sbMsgID = GPS_MON_GNSS_MID;
+                    //break;
+
+                //case GPS_PARSER_MON_SMGR_ID_VALUE:
+                    //sbMsgID = GPS_MON_SMGR_MID;
+                    //break;
+
+                //default:
+                    //break;
+
+            //}
+        //}
+
+        //case GPS_PARSER_CLASS_AID_VALUE:
+        //case GPS_PARSER_CLASS_TIM_VALUE:
+        //case GPS_PARSER_CLASS_ESF_VALUE:
+        //case GPS_PARSER_CLASS_MGA_VALUE:
+        //case GPS_PARSER_CLASS_LOG_VALUE:
+        //case GPS_PARSER_CLASS_SEC_VALUE:
+        //case GPS_PARSER_CLASS_HNR_VALUE:
+            //break;
+
+        //default:
+            //break;
+    //}
+
+    //return sbMsgID;
+//}
 
 /************************/
 /*  End of File Comment */

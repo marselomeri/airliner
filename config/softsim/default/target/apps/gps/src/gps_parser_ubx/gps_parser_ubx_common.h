@@ -38,19 +38,22 @@
 ** Includes
 *************************************************************************/
 #include "gps_parser_ubx_ack.h"
-#include "gps_parser_ubx_aid.h"
+//#include "gps_parser_ubx_aid.h"
 #include "gps_parser_ubx_cfg.h"
-#include "gps_parser_ubx_esf.h"
-#include "gps_parser_ubx_hnr.h"
-#include "gps_parser_ubx_inf.h"
-#include "gps_parser_ubx_log.h"
-#include "gps_parser_ubx_mga.h"
+//#include "gps_parser_ubx_esf.h"
+//#include "gps_parser_ubx_hnr.h"
+//#include "gps_parser_ubx_inf.h"
+//#include "gps_parser_ubx_log.h"
+//#include "gps_parser_ubx_mga.h"
 #include "gps_parser_ubx_mon.h"
 #include "gps_parser_ubx_nav.h"
-#include "gps_parser_ubx_rxm.h"
-#include "gps_parser_ubx_sec.h"
-#include "gps_parser_ubx_tim.h"
-#include "gps_parser_ubx_upd.h"
+#include "gps_ubx_msg.h"
+//#include "gps_parser_ubx_rxm.h"
+//#include "gps_parser_ubx_sec.h"
+//#include "gps_parser_ubx_tim.h"
+//#include "gps_parser_ubx_upd.h"
+#include "../gps_custom_shared.h"
+#include "../gps_interface_uart/gps_serial.h"
 
 
 #ifdef __cplusplus
@@ -65,14 +68,20 @@ extern "C" {
 **  \par Description:
 **       UBX header symbol 1.
 */
-#define GPS_HEADER_SYNC1_VALUE                    (0xb5)
+#define GPS_PARSER_SYNC1_VALUE                    (0xb5)
 
 /** \brief Header symbol 2.
 **
 **  \par Description:
 **       UBX header symbol 2.
 */
-#define GPS_HEADER_SYNC2_VALUE                    (0x62)
+#define GPS_PARSER_SYNC2_VALUE                    (0x62)
+
+/************************************************************************
+** External Global Variables
+*************************************************************************/
+extern GPS_AppCustomData_t GPS_AppCustomData;
+
 
 /************************************************************************
 ** Structure Declarations
@@ -294,7 +303,7 @@ typedef enum
 
 uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_t* status, boolean *done);
 void GPS_Parser_Reset(void);
-CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID);
+//CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID);
 void GPS_Parser_StateChange(GPS_ParserState_t newState);
 void GPS_SetChecksum(uint8 *Buffer, uint16 Size);
 

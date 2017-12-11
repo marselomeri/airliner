@@ -62,6 +62,18 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+ /**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    GPS_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    GPS_INITIALIZED   = 1
+} GPS_Status_t;
+
+
 typedef struct
 {
     PX4_GpsInjectDataMsg_t GpsInjectData;
@@ -373,6 +385,20 @@ public:
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
 };
+
+/************************************************************************/
+/** \brief Cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void GPS_CleanupCallback(void);
+
 
 #ifdef __cplusplus
 }

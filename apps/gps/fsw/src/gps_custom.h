@@ -30,6 +30,9 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
+
+#ifndef GPS_CUSTOM_H
+#define GPS_CUSTOM_H
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -37,14 +40,17 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "gps_custom_shared.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
 
 /************************************************************************
-** Local Structure Declarations
+** Local Structure Definitions
 *************************************************************************/
 
 /************************************************************************
@@ -52,53 +58,72 @@
 *************************************************************************/
 
 /************************************************************************
-** Global Variables
+** Function Prototypes
 *************************************************************************/
 
-/************************************************************************
-** Local Variables
+/************************************************************************/
+/** \brief Custom function to initialize custom device data structure. 
+**
+**  \par Description
+**       This function is called on app startup, reload, restart etc
+**       to initialize non-zero data.
+**
 *************************************************************************/
+void GPS_Custom_InitData(void);
 
-/************************************************************************
-** Local Function Definitions
+/************************************************************************/
+/** \brief Custom function to initialize custom device(s).
+**
+**  \par Description
+**       This function is called at initialization and allows the
+**       custom layer to provide specific functionality to initialize
+**       internal objects.
+**
+**  \returns
+**  TRUE if successful, FALSE otherwise.
+**  \endreturns
+**
 *************************************************************************/
+boolean GPS_Custom_Init(void);
 
-boolean GPS_Custom_Max_Events_Not_Reached(int32 ind)
-{
-    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+
+/************************************************************************/
+/** \brief Custom function to uninitialize custom device(s).
+**
+**  \par Description
+**       This function is called in preparation for loading a new
+**       configuration, allowing the custom layer to do whatever it
+**       needs with the current configuration before reconfiguration,
+**       if anything. Also, called in cleanup to close and uninitialize
+**       device resources.
+**
+**  \returns
+**  TRUE if successful, FALSE otherwise.
+**  \endreturns
+**
+*************************************************************************/
+boolean GPS_Custom_Uninit(void);
+
+/************************************************************************/
+/** \brief Custom function to initialize custom events. 
+**
+**  \par Description
+**       This function is called in init event before CFE_EVS_Register
+**       to add custom events to the event filter table.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+**  \returns
+**       The number of events written to the filter table and -1 for 
+**       failure i.e. CFE_EVS_MAX_EVENT_FILTERS reached.
+**
+*************************************************************************/
+int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl);
+
+#ifdef __cplusplus
 }
+#endif 
 
-
-int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
-{
-    int32 customEventCount = ind;
-    
-    /* Null check */
-    if(0 == EventTbl)
-    {
-        customEventCount = -1;
-        goto end_of_function;
-    }
-
-    if(TRUE == GPS_Custom_Max_Events_Not_Reached(customEventCount))
-    {
-        EventTbl[  customEventCount].EventID = GPS_DEVICE_ERR_EID;
-        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
-    }
-    else
-    {
-        customEventCount = -1;
-        goto end_of_function;
-    }
-    
-end_of_function:
-
-    return customEventCount;
-}
+#endif /* GPS_CUSTOM_H */

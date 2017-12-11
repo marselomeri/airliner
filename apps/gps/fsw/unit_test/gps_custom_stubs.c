@@ -30,68 +30,29 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-/*************************************************************************
-**
-** Include section
-**
-**************************************************************************/
-#ifndef _GPS_PARSER_UBX_ACK_H_
-#define _GPS_PARSER_UBX_ACK_H_
 
-#include "cfe.h"
-#include "gps_serial.h"
-//#include "GPS_events.h"
-//#include "GPS_msgids.h"
+#include "gps_custom_stubs.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*************************************************************************
-**
-** Macro definitions
-**
-**************************************************************************/
-
-
-/*************************************************************************
-**
-** Type definitions
-**
-**************************************************************************/
-
-/*
-** (none)
-*/
-
-/*************************************************************************
-**
-** Imported data
-**
-**************************************************************************/
-
-/*
-** (none)
-*/
-
-/*************************************************************************
-**
-** Exported data
-**
-**************************************************************************/
-
-
-void GPS_Cfg_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message);
-void GPS_Cfg_ParseChar_NAK(uint8 byte, GPS_DeviceMessage_t* message);
-
-
-#ifdef __cplusplus
+void GPS_Custom_InitData(void)
+{
+    
 }
-#endif 
 
-#endif /* _GPS_PARSER_UBX_CFG_H_ */
 
-/************************/
-/*  End of File Comment */
-/************************/
+boolean GPS_Custom_Init(void)
+{
+    return TRUE;
+}
+
+
+boolean GPS_Custom_Uninit(void)
+{
+    return TRUE;
+}
+
+
+int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
+{
+    return 0;
+}
 

@@ -30,71 +30,19 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-/*************************************************************************
-**
-** Include section
-**
-**************************************************************************/
-#ifndef _GPS_PARSER_UBX_CFG_H_
-#define _GPS_PARSER_UBX_CFG_H_
 
-#include "cfe.h"
-#include "gps_serial.h"
-//#include "GPS_events.h"
-//#include "GPS_msgids.h"
+#ifndef GPS_CUSTOM_STUBS_H
+#define GPS_CUSTOM_STUBS_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*************************************************************************
-**
-** Macro definitions
-**
-**************************************************************************/
+#include "cfe.h"
 
-
-/*************************************************************************
-**
-** Type definitions
-**
-**************************************************************************/
-
-/*
-** (none)
-*/
-
-/*************************************************************************
-**
-** Imported data
-**
-**************************************************************************/
-
-/*
-** (none)
-*/
-
-/*************************************************************************
-**
-** Exported data
-**
-**************************************************************************/
-
-
-void GPS_Cfg_ParseChar_CFG(uint8 byte, GPS_DeviceMessage_t* message);
-void GPS_Cfg_ParseChar_NAV5(uint8 byte, GPS_DeviceMessage_t* message);
-void GPS_Cfg_ParseChar_SBAS(uint8 byte, GPS_DeviceMessage_t* message);
-void GPS_Cfg_ParseChar_TMODE3(uint8 byte, GPS_DeviceMessage_t* message);
-void GPS_Cfg_ParseChar_PRT(uint8 byte, GPS_DeviceMessage_t* message);
-void GPS_Cfg_ParseChar_MSG(uint8 byte, GPS_DeviceMessage_t* message);
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
-#endif /* _GPS_PARSER_UBX_CFG_H_ */
-
-/************************/
-/*  End of File Comment */
-/************************/
-
+#endif /* GPS_CUSTOM_STUBS_H */

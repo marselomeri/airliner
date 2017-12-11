@@ -37,6 +37,7 @@
 ** Includes
 *************************************************************************/
 #include "gps_custom.h"
+#include "../gps_custom_shared.h"
 #include "cfe.h"
 
 #ifdef __cplusplus
@@ -77,13 +78,6 @@ extern "C" {
 #define GPS_ACK_TIMEOUT                           (200)
 
 
-/** \brief GPS read buffer size.
-**
-**  \par Description:
-**       MON_VER from u-blox modules can be ~190 bytes
-*/
-#define GPS_READ_BUFFER_SIZE                      (250)
-
 /** \brief GPS payload scanner buffer size.
 **
 **  \par Description:
@@ -97,7 +91,7 @@ extern "C" {
 **  \par Description:
 **       UBX class ID configuration.
 */
-#define GPS_MESSAGE_CLASS_CFG                      (0x06)
+#define GPS_MESSAGE_CLASS_CFG                     (0x06)
 
 /* Message IDs */
 /** \brief Message ID port configuration.
@@ -105,7 +99,7 @@ extern "C" {
 **  \par Description:
 **       Message ID for port configuration.
 */
-#define GPS_MESSAGE_ID_CFG_PRT                     (0x00)
+#define GPS_MESSAGE_ID_CFG_PRT                    (0x00)
 
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
@@ -141,7 +135,7 @@ extern "C" {
 **  \par Description:
 **       Port interface number.
 */
-#define UBX_TX_CFG_PRT_PORTID_USB                 (0x03)
+#define GPS_TX_CFG_PRT_PORTID_USB                 (0x03)
 
 /* UBX header contents */
 /** \brief Header symbol 1.
@@ -159,35 +153,26 @@ extern "C" {
 #define GPS_HEADER_SYNC2_VALUE                    (0x62)
 
 /* Message Classes & IDs */
-#define GPS_MESSAGE_CFG_PRT          ((GPS_MESSAGE_CLASS_CFG) | GPS_MESSAGE_ID_CFG_PRT << 8)
+#define GPS_MESSAGE_CFG_PRT          ((GPS_MESSAGE_CLASS_CFG) | \
+                                      GPS_MESSAGE_ID_CFG_PRT << 8)
+
+/** \brief Retry attemps for interrupted calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define GPS_MAX_RETRY_ATTEMPTS                     (2)
+
+/** \brief Sleep time micro seconds for interrupted calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define GPS_MAX_RETRY_SLEEP_USEC                   (10)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
-typedef enum {
-
-/** \brief <tt> 'GPS - ' </tt>
-**  \event <tt> 'GPS - ' </tt>
-**  
-**  \par Type: ERROR
-**
-**  \par Cause:
-**
-**  This event message is issued when a device resource encounters an 
-**  error.
-**
-*/
-    GPS_DEVICE_ERR_EID = GPS_EVT_CNT,
-    
-    GPS_INIT_DEVICE_PARSER_ERR_EID,
-
-/** \brief Number of custom events 
-**
-**  \par Limits:
-**       int32
-*/
-    GPS_CUSTOM_EVT_CNT
-} GPS_CustomEventIds_t;
-
 
 /**
  * \brief GPS port configuration payload message.
@@ -241,32 +226,6 @@ typedef struct
 } GPS_Checksum_t;
 
 
-typedef struct
-{
-    /*! \brief cFE Software Bus Telemetry Message Header */
-    uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];          
-    uint8       Payload[GPS_READ_BUFFER_SIZE];
-} GPS_DeviceMessage_t;
-
-/**
- * \brief Parser state.
- */
-typedef enum 
-{
-    GPS_PARSE_STATE_UNINIT=0,
-    GPS_PARSE_STATE_IDLE,
-    GPS_PARSE_STATE_GOT_SYNC1,
-    GPS_PARSE_STATE_GOT_SYNC2,
-    GPS_PARSE_STATE_GOT_CLASS,
-    GPS_PARSE_STATE_GOT_ID,
-    GPS_PARSE_STATE_GOT_LENGTH1,
-    GPS_PARSE_STATE_GOT_LENGTH2,
-    GPS_PARSE_STATE_GOT_PAYLOAD,
-    GPS_PARSE_STATE_GOT_CHECKSUMA,
-    GPS_PARSE_STATE_GOT_CHECKSUMB
-} GPS_ParserState_t;
-
-
 /**
  * \brief GPS device status
  */
@@ -277,22 +236,6 @@ typedef enum
     /*! GPS status initialized */
     GPS_CUSTOM_INITIALIZED   = 1
 } GPS_Custom_Status_t;
-
-
-typedef struct
-{
-    /*! Number of received messages */
-    uint32 MsgReceived;
-    /*! Number of parse errors */
-    uint32 ParseError;
-    /*! Parsing state machine */
-    GPS_ParserState_t ParseState;
-    uint16 PayloadCursor;
-    uint8 ClassID;
-    uint8 MsgID;
-    uint16 MsgLength;
-    uint16 ChecksumA;
-} GPS_ParserStatus_t;
 
 
 typedef enum 
@@ -324,47 +267,152 @@ typedef struct
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
+extern GPS_AppCustomData_t GPS_AppCustomData;
 
 /************************************************************************
 ** Function Prototypes
 *************************************************************************/
-
 /************************************************************************/
-/** \brief ioctl with limited EINTR retry attempts. 
+/** \brief Negotiate GPS baud rate. 
 **
 **  \par Description
-**       This function is a wrapper for ioctl with retry attempts added.
-**
-**  \param [in] fh file descriptor.
-**  \param [in] request code.
-**  \param [in] arg pointer to a device specific struct.
-**
-**  \returns
-**  usually 0 for success and -1 for failure, see ioctl man-page for 
-**  more info.
-**  \endreturns
-**
-*************************************************************************/
-//int32 GPS_Ioctl(int fh, int request, void *arg);
-
-/************************************************************************/
-/** \brief Determines if the maximum of event filters has been reached.
-**
-**  \par Description
-**       This function checks if an index has reached the maximum
-**       number of events.
+**       This function tries different baud rates to initially establish
+**       communication and attempts to set the baud rate specified.
 **
 **  \par Assumptions, External Events, and Notes:
-**       None
+**       A device must be initialized before this function is called.
 **
-**  \param [in]    ind    The current index to check.
-**                             
+**  \param [out]    BaudRateSet    The baud rate that was set.
 **
-**  \returns    boolean
+**  \param [in]     Baud           The baud rate to attempt to set.                             
+**
+**  \returns    boolean, TRUE for success, FALSE for failure.
 **
 *************************************************************************/
-boolean GPS_Custom_Max_Events_Not_Reached(int32 ind);
+boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud);
 
+/************************************************************************/
+/** \brief Set baud rate. 
+**
+**  \par Description
+**       This function attempts to set the baud rate for the opened
+**       device.
+**
+**  \par Assumptions, External Events, and Notes:
+**       A device must be initialized before this function is called.
+**
+**  \param [in]     Baud           The baud rate to attempt to set.
+**
+**  \returns    boolean, TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_Set_Baud(const uint32 Baud);
+
+
+/************************************************************************/
+/** \brief Sends a message to the GPS device.
+**
+**  \par Description
+**       This function attempts to send a message to the GPS device.
+**
+**  \par Assumptions, External Events, and Notes:
+**       A device must be initialized and baudrate configured before
+**       this function is called.
+**
+**  \param [in]    msg          The message id.
+**
+**  \param [in]    payload      The message payload.
+**
+**  \param [in]    length       The message length.
+**
+**  \returns    boolean, TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uint16 length);
+
+
+/************************************************************************/
+/** \brief Set a checksum.
+**
+**  \par Description
+**       This function calculates and populates the checksum structure.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \param [in]    buffer       The buffer to use for checksum 
+**                              calculation.
+**
+**  \param [in]    length       The buffer length.
+**
+**  \param [out]   checksum     The checksum structure to populate with 
+**                              the calculated checksum.
+**
+**  \returns    boolean, TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_SetChecksum(const uint8 *buffer, const uint16 length, GPS_Checksum_t *checksum);
+
+
+/************************************************************************/
+/** \brief Receive data from the GPS device.
+**
+**  \par Description
+**       This receives data by calling select and read.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \param [out]    buffer      The output buffer.
+**
+**  \param [in]    length       The buffer length to attempt to read.
+**
+**  \param [in]    Timeout      The timeout for select.
+**
+**  \returns       int32,       returns bytes read if successful, -1 or
+**                              for failure. Select or read will set
+**                              errno.
+**
+*************************************************************************/
+int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout);
+
+
+/************************************************************************/
+/** \brief Call select and wait for data from the GPS device.
+**
+**  \par Description
+**       This function calls select with the timeout specified.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \param [in]    TimeoutSec    The timeout in seconds.
+**
+**  \param [in]    TimeoutUSec   The timeout in microseconds.
+**
+**  \returns       int32,        returns greater than 0 for success, 0
+**                               for timeout, negative value for error.
+**
+*************************************************************************/
+int32 GPS_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec);
+
+/************************************************************************/
+/** \brief Wait for an acknowledgement.
+**
+**  \par Description
+**       This function waits for a specified period for a message.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \param [in]    msg           The message to wait for an ack for.
+**
+**  \param [in]    timeout       The timeout to wait.
+**
+**  \returns       boolean, TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
 
 #ifdef __cplusplus
 }
