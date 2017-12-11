@@ -53,7 +53,6 @@ extern "C" {
 #include "rcin_msgids.h"
 #include "rcin_msg.h"
 #include "rcin_events.h"
-#include "rcin_tbldefs.h"
 #include "px4_msgs.h"
 /************************************************************************
  ** Local Defines
@@ -62,6 +61,20 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+/**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    RCIN_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    RCIN_INITIALIZED   = 1,
+    /*! App status not publishing */
+    RCIN_NOTPUBLISHING = 2,
+    /*! App status publishing */
+    RCIN_PUBLISHING    = 3
+} RCIN_Status_t;
 
 
 /**
@@ -80,17 +93,9 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
-
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
-    /* Config table-related */
-
-    /** \brief Config Table Handle */
-    CFE_TBL_Handle_t ConfigTblHdl;
-
-    /** \brief Config Table Pointer */
-    RCIN_ConfigTbl_t* ConfigTblPtr;
     /** \brief Output Data published at the end of cycle */
     PX4_InputRcMsg_t InputRcMsg;
 
@@ -283,64 +288,35 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
-
-private:
+    
     /************************************************************************/
-    /** \brief Initialize the RCIN configuration tables.
-    **
-    **  \par Description
-    **       This function initializes RCIN's configuration tables.  This
-    **       includes <TODO>.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
-    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
-    **  \retstmt Return codes from #RCIN_AcquireConfigPointers \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  InitConfigTbl(void);
-
-    /************************************************************************/
-    /** \brief Obtain RCIN configuration tables data pointers.
-    **
-    **  \par Description
-    **       This function manages the configuration tables
-    **       and obtains a pointer to their data.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  AcquireConfigPointers(void);
-
-public:
-    /************************************************************************/
-    /** \brief Validate RCIN configuration table
-    **
-    **  \par Description
-    **       This function validates RCIN's configuration table
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ValidateConfigTbl(void*);
+    /** \brief Sends the RCInput message.
+     **
+     **  \par Description
+     **       This function publishes the RCInput message containing
+     **       <TODO>
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReadDevice(void);
 };
+
+
+/************************************************************************/
+/** \brief Cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void RCIN_CleanupCallback(void);
+
 
 #ifdef __cplusplus
 }

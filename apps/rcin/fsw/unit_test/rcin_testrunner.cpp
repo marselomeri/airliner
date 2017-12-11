@@ -34,13 +34,11 @@
 #include "uttest.h"
 #include "rcin_app_test.h"
 #include "rcin_cmds_test.h"
-#include "rcin_config_tbl_test.h"
 
 int main(void)
 {   
     RCIN_App_Test_AddTestCases();
     RCIN_Cmds_Test_AddTestCases();
-    RCIN_Config_Tbl_Test_AddTestCases();
 
     return(UtTest_Run());
 

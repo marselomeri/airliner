@@ -296,26 +296,6 @@ void Test_RCIN_InitApp_Fail_InitData(void)
 
 
 /**
- * Test RCIN_InitApp(), fail init config table
- */
-void Test_RCIN_InitApp_Fail_InitConfigTbl(void)
-{
-    RCIN oRCIN;
-
-    int32 result = CFE_SUCCESS;
-    int32 expected = CFE_TBL_ERR_INVALID_NAME;
-
-    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, expected, 1);
-
-    /* Execute the function being tested */
-    result = oRCIN.InitApp();
-
-    /* Verify results */
-    UtAssert_True (result == expected, "InitApp, fail init config table");
-}
-
-
-/**
  * Test RCIN_InitApp(), Nominal
  */
 void Test_RCIN_InitApp_Nominal(void)
@@ -361,21 +341,6 @@ void Test_RCIN_AppMain_Fail_InitApp(void)
 
     /* fail the register app */
     Ut_CFE_EVS_SetReturnCode(UT_CFE_EVS_REGISTER_INDEX, CFE_EVS_APP_NOT_REGISTERED, 1);
-
-    /* Execute the function being tested */
-    oRCIN.AppMain();
-}
-
-
-/**
- * Test RCIN_AppMain(), Fail AcquireConfigPtrs
- */
-void Test_RCIN_AppMain_Fail_AcquireConfigPtrs(void)
-{
-    RCIN oRCIN;
-
-    /* fail the register app */
-    Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_GETADDRESS_INDEX, CFE_TBL_ERR_INVALID_HANDLE, 2);
 
     /* Execute the function being tested */
     oRCIN.AppMain();
@@ -489,8 +454,6 @@ void RCIN_App_Test_AddTestCases(void)
                "Test_RCIN_InitApp_Fail_InitPipe");
     UtTest_Add(Test_RCIN_InitApp_Fail_InitData, RCIN_Test_Setup, RCIN_Test_TearDown,
                "Test_RCIN_InitApp_Fail_InitData");
-    UtTest_Add(Test_RCIN_InitApp_Fail_InitConfigTbl, RCIN_Test_Setup, RCIN_Test_TearDown,
-               "Test_RCIN_InitApp_Fail_InitConfigTbl");
     UtTest_Add(Test_RCIN_InitApp_Nominal, RCIN_Test_Setup, RCIN_Test_TearDown,
                "Test_RCIN_InitApp_Nominal");
 
@@ -498,8 +461,6 @@ void RCIN_App_Test_AddTestCases(void)
                "Test_RCIN_AppMain_Fail_RegisterApp");
     UtTest_Add(Test_RCIN_AppMain_Fail_InitApp, RCIN_Test_Setup, RCIN_Test_TearDown,
                "Test_RCIN_AppMain_Fail_InitApp");
-    UtTest_Add(Test_RCIN_AppMain_Fail_AcquireConfigPtrs, RCIN_Test_Setup, RCIN_Test_TearDown,
-               "Test_RCIN_AppMain_Fail_AcquireConfigPtrs");
     UtTest_Add(Test_RCIN_AppMain_InvalidSchMessage, RCIN_Test_Setup, RCIN_Test_TearDown,
                "Test_RCIN_AppMain_InvalidSchMessage");
     UtTest_Add(Test_RCIN_AppMain_Nominal_SendHK, RCIN_Test_Setup, RCIN_Test_TearDown,
