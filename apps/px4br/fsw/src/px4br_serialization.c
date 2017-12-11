@@ -2685,6 +2685,8 @@ uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBu
 	bool status = false;
 	px4_sensor_accel_pb pbMsg;
 
+	OS_printf("Sending ACCEL\n");
+
 	//pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.integral_dt = inObject->IntegralDt;
 	pbMsg.error_count = inObject->ErrorCount;

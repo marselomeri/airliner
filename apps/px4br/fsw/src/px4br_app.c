@@ -31,11 +31,6 @@
  *
  ****************************************************************************/
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 /*
  ** Include Files
  */
@@ -1072,7 +1067,3 @@ end_of_function:
 	return iStatus;
 }
 
-
-#ifdef __cplusplus
-}
-#endif
