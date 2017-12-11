@@ -312,12 +312,6 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_LED_CONTROL_MID:
                 memcpy(&CVT.RGBLEDControl, MsgPtr, sizeof(CVT.RGBLEDControl));
-                OS_printf("**************\n");
-                OS_printf("  led_mask: %u\n", CVT.RGBLEDControl.led_mask);
-                OS_printf("  color: %u\n", CVT.RGBLEDControl.color);
-                OS_printf("  mode: %u\n", CVT.RGBLEDControl.mode);
-                OS_printf("  num_blinks: %u\n", CVT.RGBLEDControl.num_blinks);
-                OS_printf("  priority: %u\n", CVT.RGBLEDControl.priority);
                 break;
 
             default:
