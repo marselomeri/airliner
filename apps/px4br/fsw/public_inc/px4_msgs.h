@@ -58,6 +58,13 @@
 
 typedef enum
 {
+	PX4_GPS_NO_FIX                      = 0,
+	PX4_GPS_2D_FIX                      = 1,
+	PX4_GPS_3D_FIX                      = 2
+} PX4_GpsFixType_t;
+
+typedef enum
+{
 	PX4_DISTANCE_SENSOR_LASER           = 0,
 	PX4_DISTANCE_SENSOR_ULTRASOUND      = 1,
 	PX4_DISTANCE_SENSOR_INFRARED        = 2,

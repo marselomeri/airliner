@@ -372,10 +372,20 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpu9250/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250/src/mpu9250_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250/src/mpu9250_custom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250/src/mpu9250_spi.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ms5611_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_perfids.h
+)
+
+add_airliner_app(
+    sim
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sim_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_perfids.h
 )
 

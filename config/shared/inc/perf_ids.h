@@ -53,7 +53,7 @@
 #define BAT_MAIN_TASK_PERF_ID       82
 #define MPU9250_MAIN_TASK_PERF_ID   83
 #define RCIN_DEVICE_GET_PERF_ID     84
-
+#define SIM_MAIN_TASK_PERF_ID       85
 
 #endif
 

@@ -631,6 +631,14 @@
 #define PE_WAKEUP_MID                               0x1c7b
 #define PE_CMD_MID                                  0x1c7c
 
+/* SIM                                                  */
+#define SIM_HK_TLM_MID                              0x0c7d
+#define SIM_SEND_HK_MID                             0x1c7e
+#define SIM_WAKEUP_MID                              0x1c7f
+#define SIM_CMD_MID                                 0x1c80
+
+
+
 #define SCH_ACTIVITY_DONE_MID						0x0f00
 
 #endif
