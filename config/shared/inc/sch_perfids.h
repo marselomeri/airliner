@@ -1,7 +1,7 @@
 #ifndef SCH_PERFIDS_H
 #define SCH_PERFIDS_H
 
-#define SCH_APPMAIN_PERF_ID    36 
+#include "perf_ids.h"
 
 #endif /* SCH_PERFIDS_H */
 
