@@ -887,6 +887,8 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 		goto end_of_function;
     }
 
+	inPeer->State = PX4BR_PEER_STATE_IDLE;
+
 end_of_function:
 	return Status;
 }
@@ -980,14 +982,12 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
 
             for(i = 0; i < PX4BR_MAX_NETWORK_PEERS; ++i)
             {
-            	if(PX4BR_AppData.Peer[i].State == PX4BR_PEER_STATE_IDLE)
+            	if(PX4BR_AppData.Peer[i].OutFD != 0)
             	{
-            		OS_printf("PX4BR_AppData.Peer[%u].OutFD = %i", i, PX4BR_AppData.Peer[i].OutFD);
 					n = write(PX4BR_AppData.Peer[i].OutFD, buffer, totalSize);
 					if(n < 0)
 					{
 						/* TODO - Add event */
-						OS_printf("PX4BR:  FIFO write failed.  errno=%d '%s'", errno, strerror(errno));
 						PX4BR_AppData.Peer[i].OutFD = open(PX4BR_AppData.Peer[i].FifoPathOut, O_WRONLY);
 					}
 					else
