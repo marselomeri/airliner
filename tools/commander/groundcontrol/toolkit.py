@@ -3,6 +3,8 @@ import datetime
 import ast
 import re
 import redis
+import sqlite3
+
 
 try:
     working_dir = os.environ['YAMCS_WORKSPACE']+'web'
@@ -14,10 +16,10 @@ r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 
-#DEBUG
+#TEST_EXCLUDE
 def getDate():
     return str(datetime.datetime.now())
-
+#DONE
 def get_directory(path):
 
     outFiles=[]
@@ -45,7 +47,7 @@ def get_directory(path):
 
 
     return {'err':error,'path':path,'files': outFiles}
-
+#DONE
 def byteify(input):
     if isinstance(input, dict):
         return {byteify(key): byteify(value)
@@ -57,10 +59,11 @@ def byteify(input):
     else:
         return input
 
+#TEST_EXCLUDE
 def log(name,status,status_type):
     date = getDate()
     print str(date)+' - '+str(status_type)+' - '+str(status)+' ( NAME : '+str(name)+' )'
-
+#DONE
 def preProcess(d):
         dealing_with_incompat = re.sub(r"\btrue\b", "True", d)
         array_obj = ast.literal_eval(dealing_with_incompat)
@@ -68,13 +71,13 @@ def preProcess(d):
             x = array_obj[3]["data"]
             x1 = x['parameter']
             for i in range(len(x1)):
-                if r.get('instance')==None:
+                if r.get('instance')=='None':
                     x['parameter'][i]['instance']=r.get('default_instance')
                 else:
                     x['parameter'][i]['instance'] = r.get('instance')
             return str(x)
 
-#DEBUG
+#TEST_EXCLUDE
 def introspectResult(d):
     the_d = json.loads(d)
     tlm_data = the_d[3]['data']
@@ -82,3 +85,9 @@ def introspectResult(d):
     for e in tlm_list:
         to_print = e['id']['name']
         print getDate(),'  ',to_print
+
+#TEST_EXCLUDE
+def collectTestCases(conn,mapper,input,eo,desc):
+    c = conn.cursor()
+    insert = 'INSERT INTO `TESTCASES`(`mapping`,`input`,`output`,`time_stamp`,`description`)  VALUES (?,?,?,?,?)'
+    c.execute(insert,(mapper,input,eo,getDate(),desc))

@@ -3,68 +3,74 @@
 
 
 //Tools
-var DEBUG = false;
+var DEBUG = true;
 var ERROR = false;
 var INFO = true;
 
 function replaceAll(str, find, replace) {
+            if (typeof str !='string'||typeof find !='string'||typeof replace !='string'){
+                throw new TypeError('A non string argument is passed')
+            }
             var st = str.toString();
             return st.replace(new RegExp(find, 'g'), replace);
         }
-
+/*exempted*/
 function introspectTlm(string_data){
-    var clean_data1 = replaceAll(string_data.data,"\'", "\"")
-    var clean_data2 = replaceAll(clean_data1,'True','true');
-    var j = JSON.parse(clean_data2);
-    var items = j['parameter']
-    for(var i in items){
-        console.log(items[i]['id']['name'])
+    try{
+        var clean_data1 = replaceAll(string_data.data,"\'", "\"")
+        var clean_data2 = replaceAll(clean_data1,'True','true');
+        var j = JSON.parse(clean_data2);
+        var items = j['parameter']
+        for(var i in items){
+            console.log(items[i]['id']['name'])
+        }
+    }
+    catch(e){
+        throw new TypeError('Telemetry format mismatch')
     }
 
 }
 
 function getDate(format){
     var tempstore =new Date();
-    try{
+
         if(format=='d'){
-        return tempstore;
+        return String(tempstore);
         }
         else if (format=='s'){
-        return tempstore.getTime();
+        return String(tempstore.getTime());
         }
-    }
-    catch(err){
-    console.log('DATE_TIME_ERR: ',err);
-    }
+        else{
+        return String(tempstore);
+        }
 }
 
 function log(logtype, message, specials){
-    if(logtype == 'ERR' && ERROR){
-        console.log(logtype+' - '+message+' - '+'[',specials,']' );
-    }
-    else if (logtype == 'INFO' && INFO){
-        console.log(logtype+' - '+message+' - '+'[',specials,']' );
-    }
-    else if (logtype == 'DEBUG' && DEBUG){
-        console.log(logtype+' - '+message+' - '+'[',specials,']' );
-    }
 
+    try{
+        if(logtype == 'ERR' && ERROR){
+            console.log(logtype+' - '+message+' - '+'[',specials,']' );
+        }
+        else if (logtype == 'INFO' && INFO){
+            console.log(logtype+' - '+message+' - '+'[',specials,']' );
+        }
+        else if (logtype == 'DEBUG' && DEBUG){
+            console.log(logtype+' - '+message+' - '+'[',specials,']' );
+        }
+    }
+    catch(e){
+        throw new TypeError('A non string argument was passed')
+    }
 
 
 }
 
 function makeIterator(array) {
     var nextIndex = 0;
-
     return {
        next: function() {
            return nextIndex < (array.length) ?
                {value: array[nextIndex++], done: false} :
-               {done: true};
-       },
-       prev: function() {
-           return nextIndex > 0 ?
-               {value: array[--nextIndex], done: false} :
                {done: true};
        },
        id: function(){
@@ -75,11 +81,18 @@ function makeIterator(array) {
             else{return true;}
        },
        set: function(i){
+
+        if(i<0 || i>array.length){
+            throw new Error('index out of bound')
+        }
+        if(typeof i != 'number'){
+            throw new Error('A non number argument was passed')
+        }
         nextIndex = i;
        }
     };
-}
 
+}
 
 function getSockets(obj){
     var ws_hold =[];
@@ -98,6 +111,10 @@ function getSockets(obj){
 }
 
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 
 //---------------------------------------------------------------------------------------------------------------
@@ -109,10 +126,22 @@ function getSockets(obj){
 //---------------------------------------------------------------------------------------------------------------
 
 var Instance = function(){
+    try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    }
+    catch(e){
+    this.ws_scheme="ws"
+    }
+    try{
     this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst/');
     this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/defaultInst/');
+    }
+    catch(e){
+    this.websocket1 = new WebSocket(this.ws_scheme+'://localhost:8000/inst/');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/defaultInst/');
+    }
     var self = this;
+
 
 
     /*getInstanceList*/
@@ -132,12 +161,14 @@ var Instance = function(){
     /*transmitCurrentInstance*/
     this.websocket2.onopen = function(){
         log('DEBUG','Connection open.','transmitCurrentInstance');
+        //console.log('3333333',this.websocket2)
+        log('INFO','NON Invoke Sent.','transmitCurrentInstance');
     };
     this.websocket2.onclose = function(){
         log('DEBUG','Connection closed.','transmitCurrentInstance');
     };
     this.websocket2.onerror = function(evt){
-        log('ERR','Connection closed with error - '+String(evt),'getInstanceList');
+        log('ERR','Connection closed with error - '+String(evt),'transmitCurrentInstance');
     };
 
 
@@ -159,24 +190,43 @@ Instance.prototype = {
         var socket = this.websocket2;
 
         /* Flush the queuedSubscribers queue, if there are any. */
-        if (tlm_o.subsc.readyState == WebSocket.OPEN) {
-            if(tlm_o.queuedSubscribers.length > 0)
-            {
-                log('INFO','Flushing queued subscribers.','transmitCurrentInstance');
-                tlm_o.queuedSubscribers.forEach(function(subscriber){
-                    tlm_o.subscribeTelemetry(subscriber.message, subscriber.callback);
-                });
+        try{
+            if (tlm_o.subsc.readyState == WebSocket.OPEN) {
+                if(tlm_o.queuedSubscribers.length > 0)
+                {
+                    log('INFO','Flushing queued subscribers.','transmitCurrentInstance');
+                    tlm_o.queuedSubscribers.forEach(function(subscriber){
+                        tlm_o.subscribeTelemetry(subscriber.message, subscriber.callback);
+                    });
+                }
             }
         }
+        catch(e){
+        //console.log('nothing');
+        }
+
 
         socket.onmessage = function (event){
             log('INFO','Message received.','transmitCurrentInstance');
         }
+        //sleep(2000).then(()=>{
+        //console.log(socket.readyState);
+        //console.log(this.websocket2.readyState);
+
+
+
+
+
 
         if (socket.readyState == WebSocket.OPEN) {
+            //console.log('1112');
+
             log('INFO','Message sent.','transmitCurrentInstance');
             socket.send(message);
-        };
+            //console.log(socket);
+            //console.log(this.websocket2);
+            //console.log(message);
+        };//});
     },
 }
 //---------------------------------------------------------------------------------------------------------------
@@ -186,8 +236,13 @@ Instance.prototype = {
 //---------------------------------------------------------------------------------------------------------------
 
 var Directory = function(){
+    try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.websocket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/dir/');
+    }
+    catch(e){
+    this.websocket = new WebSocket('ws://localhost:8000/dir/');
+    }
     var self = this;
 
     this.websocket.onopen = function(){
@@ -232,8 +287,21 @@ Directory.prototype = {
 
 var Telemetry =function(){
 
+    try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    }
+    catch(e){
+    this.ws_scheme="ws"
+    }
+    try{
     this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
+
+    }
+    catch(e){
+    this.subsc = new WebSocket(this.ws_scheme+'://localhost:8000/tlm_s/');
+
+    }
+
 
     this.subscribers = [];
     this.queuedSubscribers = [];
@@ -325,7 +393,7 @@ Telemetry.prototype = {
             fixedDataString = fixedDataString.replace(new RegExp('True', 'g'),'true');
             fixedDataString = fixedDataString.replace(new RegExp('False', 'g'),'false');
             var data = JSON.parse(fixedDataString);
-            //console.log(message);
+            //console.log(data);
             data.parameter.forEach(function(param){
                 var tlmName = param.id.name;
 
@@ -397,9 +465,15 @@ Telemetry.prototype = {
    4. Send commands.*/
 //---------------------------------------------------------------------------------------------------------------
 var Command =function(){
+    try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.info = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd_i/');
     this.cmd = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd_s/');
+    }
+    catch(e){
+    this.info = new WebSocket('ws://localhost:8000/cmd_i/');
+    this.cmd = new WebSocket('ws://localhost:8000/cmd_s/');
+    }
     this.CommandQueue = [];
     this.SendingQueue = [];
     this.superQ = {};
@@ -520,10 +594,12 @@ Command.prototype = {
         var socket = this.cmd;
 
         socket.onmessage = function (event){
-            log('INFO','Button feedback.','sendCommand');
+           //log('DEBUG',event,'')
+            log('INFO','Button feedback.',event);
         }
 
         if (socket.readyState == WebSocket.OPEN) {
+//          #/console.log(message);
           socket.send(message);
         };
 
@@ -538,8 +614,14 @@ Command.prototype = {
 //---------------------------------------------------------------------------------------------------------------
 
 var Event = function(){
+    try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     this.event = new WebSocket(this.ws_scheme+'://' + window.location.host + '/event/');
+    }
+    catch(e){
+
+    this.event=new WebSocket('ws://localhost:8000/event/');
+    }
     var self = this;
 
     this.event.onopen = function (){
@@ -560,6 +642,7 @@ Event.prototype = {
 
     eventSubscription: function(cb){
         var socket = this.event
+
         socket.onmessage = function (event){
             log('INFO','Message received.','getEvents');
             cb(event);
@@ -692,3 +775,20 @@ Session.prototype ={
 
 
 }
+
+
+
+
+module.exports.getDate = getDate;
+module.exports.replaceAll = replaceAll;
+module.exports.introspectTlm = introspectTlm;
+module.exports.log = log;
+module.exports.makeIterator = makeIterator;
+module.exports.getSockets = getSockets;
+module.exports.Instance = Instance;
+module.exports.Directory = Directory;
+module.exports.Telemetry = Telemetry;
+module.exports.Command = Command;
+module.exports.Event = Event;
+module.exports.Video = Video;
+module.exports.Session = Session;
