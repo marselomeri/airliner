@@ -69,15 +69,12 @@ void GPS_SetChecksum(uint8 *Buffer, uint16 Size)
 }
 
 
-
-/* Move to gps_parser_common_ubx */
 void GPS_Parser_Reset()
 {
     GPS_AppCustomData.ParserStatus.ParseState = GPS_PARSE_STATE_IDLE;
 }
 
 
-/* Move to gps_parser_ubx */
 void GPS_Parser_StateChange(GPS_ParserState_t newState)
 {
     switch(newState)
@@ -148,7 +145,6 @@ void GPS_Parser_StateChange(GPS_ParserState_t newState)
 }
 
 
-/* Move to gps_parser_common_ubx */
 uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_t* status, boolean *done)
 {
     uint16 msg_received = 0;

@@ -394,7 +394,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout);
 **                               for timeout, negative value for error.
 **
 *************************************************************************/
-int32 GPS_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec);
+int32 GPS_Custom_Select(const uint32 TimeoutSec, const uint32 TimeoutUSec);
 
 /************************************************************************/
 /** \brief Wait for an acknowledgement.
@@ -413,6 +413,21 @@ int32 GPS_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec);
 **
 *************************************************************************/
 boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
+
+
+/************************************************************************/
+/** \brief Get time in from GPS_Custom_Get_Time in uint64 format.
+**
+**  \par Description
+**       This function is a wrapper for GPS_Custom_Get_Time.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \returns       uint64, monotonic time for success, 0 for failure.
+**
+*************************************************************************/
+uint64 GPS_Custom_Get_Time_Uint64(void);
 
 #ifdef __cplusplus
 }

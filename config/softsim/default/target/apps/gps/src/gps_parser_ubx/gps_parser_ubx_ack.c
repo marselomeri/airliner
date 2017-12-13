@@ -118,7 +118,8 @@ void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message)
         case 1:
             payload->msgID = byte;
             /* */
-            if(byte == GPS_AppCustomData.AckWaitingMsg)
+            if(byte == GPS_AppCustomData.AckWaitingMsg &&
+            GPS_ACK_WAITING == GPS_AppCustomData.AckState)
             {
                 GPS_AppCustomData.AckWaitingRcvd = TRUE;
                 GPS_AppCustomData.AckState = GPS_ACK_GOT_ACK;
@@ -161,7 +162,8 @@ void GPS_Ack_ParseChar_NAK(uint8 byte, GPS_DeviceMessage_t* message)
 
         case 1:
             payload->msgID = byte;
-            if(byte == GPS_AppCustomData.AckWaitingMsg)
+            if(byte == GPS_AppCustomData.AckWaitingMsg &&
+            GPS_ACK_WAITING == GPS_AppCustomData.AckState)
             {
                 GPS_AppCustomData.AckWaitingRcvd = TRUE;
                 GPS_AppCustomData.AckState = GPS_ACK_GOT_NAK;

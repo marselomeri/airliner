@@ -81,6 +81,7 @@ void GPS_Custom_InitData(void)
     /* Set all struct zero values */
     bzero(&GPS_AppCustomData, sizeof(GPS_AppCustomData));
     GPS_AppCustomData.Baud = GPS_SERIAL_IO_SPEED;
+    GPS_Parser_Reset();
 }
 
 
@@ -290,28 +291,28 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud)
 
     switch (Baud) 
     {
-        case 9600:   
-            speed = B9600;   
+        case 9600:
+            speed = B9600;
             break;
 
         case 19200:  
-            speed = B19200;  
+            speed = B19200;
             break;
 
         case 38400:  
-            speed = B38400;  
+            speed = B38400;
             break;
 
         case 57600:  
-            speed = B57600;  
+            speed = B57600;
             break;
 
         case 115200: 
-            speed = B115200; 
+            speed = B115200;
             break;
 
         case 230400: 
-            speed = B230400; 
+            speed = B230400;
             break;
 
         default:
@@ -393,14 +394,13 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
 {
     int32 returnCode = 0;
     int32 bytesRead = 0;
-    boolean returnBool = TRUE;
 
     /* Null check */
     if(0 == Buffer)
     {
         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "GPS receive null pointer");
-        returnBool = FALSE;
+        returnCode = -1;
         goto end_of_function;
     }
     /* Wait for GPS data */
@@ -428,7 +428,7 @@ end_of_function:
 }
 
 
-int32 GPS_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec)
+int32 GPS_Custom_Select(const uint32 TimeoutSec, const uint32 TimeoutUSec)
 {
     int32 returnCode = 0;
     uint32 maxFd = 0;
@@ -480,6 +480,8 @@ int32 GPS_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec)
         /* select timed out */
         if (0 == returnCode)
         {
+            CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "GPS select() timed out");
             break;
         } 
         /* select() returned and data is ready to be read */
@@ -520,14 +522,14 @@ end_of_function:
 
 boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uint16 length)
 {
+    boolean returnBool = TRUE;
+    int bytesWritten = 0;
     GPS_Header_t   header = { GPS_HEADER_SYNC1_VALUE, 
                               GPS_HEADER_SYNC2_VALUE, 
                               0, 
                               0 };
 
     GPS_Checksum_t checksum = { 0, 0 };
-    boolean returnBool = TRUE;
-    int bytesWritten = 0;
 
     /* Null check */
     if(0 == payload)
@@ -579,6 +581,23 @@ end_of_function:
 }
 
 
+uint64 GPS_Custom_Get_Time_Uint64(void)
+{
+    uint64 timeStamp = 0;
+    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
+
+    if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
+    {
+        goto end_of_function;
+    }
+    timeStamp = cfeTimeStamp.Seconds * 1000000;
+    timeStamp += cfeTimeStamp.Subseconds / 1000;
+
+end_of_function;
+
+    return timeStamp;
+}
+
 
 boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
 {
@@ -588,18 +607,8 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
     boolean done = FALSE;
     boolean timedOut = FALSE;
     boolean returnBool = FALSE;
-    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
     uint64 timeStamp = 0;
     uint64 startTime = 0;
-    
-    /* Get the start time */
-    cfeTimeStamp = GPS_Custom_Get_Time();
-    if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
-    {
-        goto end_of_function;
-    }
-    startTime = cfeTimeStamp.Seconds * 1000000;
-    startTime += cfeTimeStamp.Subseconds / 1000;
 
     /* Set the ack state to waiting */
     GPS_AppCustomData.AckState = GPS_ACK_WAITING;
@@ -608,44 +617,64 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
     /* Set the received ack boolean to false */
     GPS_AppCustomData.AckWaitingRcvd = FALSE;
 
+    /* Get the start time */
+    startTime = GPS_Custom_Get_Time_Uint64();
+    if(0 == startTime)
+    {
+        goto end_of_function;
+    }
+
     /* while we haven't timed out keep looking for the message */
     while(FALSE == timedOut)
     {
         /* Get the loop iteration time */
-        cfeTimeStamp = GPS_Custom_Get_Time();
-        if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
+        timeStamp = GPS_Custom_Get_Time_Uint64();
+        if(0 == timeStamp)
         {
             goto end_of_function;
         }
-        timeStamp = cfeTimeStamp.Seconds * 1000000;
-        timeStamp += cfeTimeStamp.Subseconds / 1000;
         
         /* If we've timeout out set the flag to true */
         if(timeStamp >= startTime + timeout * 1000)
         {
+            /* TODO remove after debug*/
+            OS_printf("WaitForAck timed out\n");
+            /* */
             timedOut = TRUE;
         }
 
         bytesRead = GPS_Custom_Receive(from_gps_data, sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
-        for(i = 0; (FALSE == done) && (FALSE == timedOut) && (i < bytesRead); ++i)
+        for(i = 0; (FALSE == timedOut) && (i < bytesRead); ++i)
         {
             GPS_DeviceMessage_t message;
             GPS_ParserStatus_t status;
 
             if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
             {
+                /* TODO remove after debug*/
+                if(TRUE == done)
+                {
+                    OS_printf("ParseChar completed a message\n");
+                }
+                /* */
+                
                 if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
                    GPS_AppCustomData.AckWaitingRcvd == TRUE)
                 {
+                    /* TODO remove after debug*/
+                    OS_printf("Got an ACK\n");
+                    /* */
                     returnBool = TRUE;
-                    done = TRUE;
-                    break;
+                    goto end_of_function;
                 }
                 if(GPS_AppCustomData.AckState == GPS_ACK_GOT_NAK &&
                    GPS_AppCustomData.AckWaitingRcvd == TRUE)
                 {
-                    done = TRUE;
-                    break;
+                    /* TODO remove after debug*/
+                    OS_printf("Got an NAK\n");
+                    /* */
+                    returnBool = FALSE;
+                    goto end_of_function;
                 }
             }
         }
