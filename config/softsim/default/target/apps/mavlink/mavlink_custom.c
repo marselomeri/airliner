@@ -49,7 +49,7 @@ typedef struct
 	uint16 Port;
 } MAVLINK_SocketData_t;
 
-MAVLINK_SocketData_t MAVLINK_IngestSocketData = {0, 14550};
+MAVLINK_SocketData_t MAVLINK_IngestSocketData = {0, 5014};
 MAVLINK_SocketData_t MAVLINK_OutputSocketData = {0, 5015};
 
 int32 MAVLINK_InitCustom(void)
@@ -68,6 +68,7 @@ int32 MAVLINK_InitCustom(void)
     }
 
     setsockopt(MAVLINK_IngestSocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+    //fcntl(MAVLINK_IngestSocketData.Socket, F_SETFL, O_NONBLOCK);
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
@@ -110,7 +111,7 @@ int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
 
     /* Send message via UDP socket */
     s_addr.sin_family      = AF_INET;
-    s_addr.sin_addr.s_addr = inet_addr("10.10.0.13");//htonl (INADDR_ANY);
+    s_addr.sin_addr.s_addr = inet_addr("10.10.0.13");//htonl (INADDR_LOOPBACK);
     s_addr.sin_port        = htons(MAVLINK_IngestSocketData.Port);
 
     status = sendto(MAVLINK_IngestSocketData.Socket, (char *)buffer, Size, 0,
