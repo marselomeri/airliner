@@ -110,7 +110,7 @@ int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
 
     /* Send message via UDP socket */
     s_addr.sin_family      = AF_INET;
-    s_addr.sin_addr.s_addr = htonl (INADDR_ANY);//inet_addr("10.10.0.13");
+    s_addr.sin_addr.s_addr = inet_addr("10.10.0.13");//htonl (INADDR_ANY);
     s_addr.sin_port        = htons(MAVLINK_IngestSocketData.Port);
 
     status = sendto(MAVLINK_IngestSocketData.Socket, (char *)buffer, Size, 0,
