@@ -33,6 +33,7 @@
 
 #include "cfe.h"
 #include "amc_app.h"
+#include "simlib.h"
 
 int32 AMC::InitDevice(void)
 {
@@ -42,5 +43,13 @@ int32 AMC::InitDevice(void)
 
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
+	float controls[16];
+	uint32 controlCount = 16;
 
+	for(uint32 i = 0; i < 16; ++i)
+	{
+		controls[i] = 1.0;
+	}
+
+	SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }
