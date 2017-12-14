@@ -29,6 +29,10 @@ add_airliner_app_unit_test(ulr-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ulr_testrunner.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ulr_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ulr_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_ulr_custom_hooks.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_ulr_custom_hooks.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_ulr_custom_stubs.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_ulr_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ulr_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ulr_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ulr_config_utils.cpp
