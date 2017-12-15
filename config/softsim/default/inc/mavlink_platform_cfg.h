@@ -126,6 +126,9 @@ extern "C" {
 
 #define MAVLINK_MSG_PARAM_NAME_LEN      (64)
 
+#define MAVLINK_PARAM_SYSTEM_ID         (1)
+#define MAVLINK_PARAM_COMPONENT_ID         (1)
+
 #ifdef __cplusplus
 }
 #endif
