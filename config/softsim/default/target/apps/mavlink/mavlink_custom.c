@@ -95,14 +95,9 @@ end_of_function:
 int32 MAVLINK_ReadMessage(char* buffer, uint32* size)
 {
     //OS_printf("In MAVLINK read message\n");
-	struct sockaddr_in client;
-	socklen_t len = sizeof(client);
-
-	*size = recvfrom(MAVLINK_IngestSocketData.Socket,
+	*size = recv(MAVLINK_IngestSocketData.Socket,
 					   (char *)buffer,
-					   (size_t)size, 0,
-					   (struct sockaddr*)&client,
-					   &len);
+					   (size_t)size, 0);
 }
 
 int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
