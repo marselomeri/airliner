@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
 # Application definition
 
 INSTALLED_APPS = [

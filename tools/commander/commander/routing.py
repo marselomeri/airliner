@@ -1,7 +1,7 @@
-from channels.routing import route,include,route_class
+from channels.routing import route,include
 from groundcontrol.consumers import *
 
-
+# Load variables into cache
 mc = MyCache()
 mc.initialize()
 
@@ -20,11 +20,6 @@ cmds = Command()
 
 
 
-
-#-----------------------------------------------------------
-
-#ins = Instance()
-
 instance = [
     route('websocket.connect',ins.connect),
     route('websocket.disconnect',ins.disconnect),
@@ -36,16 +31,14 @@ default_instance = [
     route('websocket.disconnect',ins.disconnect),
     route('websocket.receive',ins.setDefaultInstance)
 ]
-#-----------------------------------------------------------
-#dir = Directory()
+
 
 directory = [
     route('websocket.connect',dir.connect),
     route('websocket.disconnect',dir.disconnect),
     route('websocket.receive',dir.directoryListing)
 ]
-#-----------------------------------------------------------
-#tlm = Telemetry()
+
 
 telemetry_subscribe = [
     route('websocket.connect',tlm.connect),
@@ -56,25 +49,20 @@ telemetry_subscribe = [
 
 
 
-
-#-----------------------------------------------------------
-#cmd = Command()
-
 command_info = [
     route('websocket.connect',cmd.connect),
     route('websocket.disconnect',cmd.disconnect),
     route('websocket.receive',cmd.getCommandInfo)
 ]
 
-#cmds = Command()
+
 
 command_send = [
     route('websocket.connect',cmds.connect),
     route('websocket.disconnect',cmds.disconnect),
     route('websocket.receive',cmds.postCommand)
 ]
-#-----------------------------------------------------------
-#event=Event()
+
 
 event_channels = [
     route('websocket.connect',evt.connect),
@@ -82,20 +70,11 @@ event_channels = [
     route('websocket.receive',evt.getEvents)
 ]
 
-#-----------------------------------------------------------
-#vid = Video()
 video = [
     route('websocket.connect',vid.connect),
     route('websocket.disconnect',vid.disconnect),
     route('websocket.receive',vid.getVideo)
 ]
-
-#-----------------------------------------------------------
-
-
-
-
-#-----------------------------------------------------------
 
 
 channel_routing = [
@@ -108,8 +87,6 @@ channel_routing = [
                    include(command_send,path='^/cmd_s/'),
                    include(event_channels,path='^/event/'),
                    include(video, path='^/video/'),
-
-
 
 ]
 

@@ -461,19 +461,43 @@ html(lang='en-us')
 
 
 
+      /*BENCHMARKING FUNCTION*/
+      var avg_list = []
+      var count = 0
+      var ws = new WebSocket('ws://localhost:7000');
+      ws.onopen = function () {
+        ws.send("connected");
+      };
+      ws.onclose = function(){
+      ws.close();
+      }
+      ws.onmessage=function(e){
+      console.log('msg: ',e)
+      }
+      /*BENCHMARKING FUNCTION*/
+
+
+
 
       var processTelemetryUpdate = function (param) {
 
-        //preprocess
-        //console.log(param);
-        //try{
-        //param = JSON.parse((param).replace(/'/g, "\"").replace('True','true'));
-        //param = param.parameter[0];
-        //console.log('sdfsdfsdfsdf',param);
+        /*BENCHMARKING FUNCTION*/
+        count = count + 1 ;
+        var time_now = Date.now()  ;
+        var gen_time = new Date(param.acquisitionTimeUTC);
+        latency = time_now-gen_time.getTime();
+        var dict = "CHANNELS,"+latency+","+count+","+time_now+","+gen_time
+        //{"latency":latency,"recv_time":time_now,"sent_time":gen_time,"counter":count,"from":"SOCKETIO"}
 
-        //}catch(err){
-         //log('ERR', 'JSON - PARSE error!'+String(err),'ln 471')
-        //}
+        //avg_list.push(Date.now()-gen_time.getTime())
+        //var sum = avg_list.reduce((previous, current) => current += previous);
+        //var avg = sum / avg_list.length;
+
+        if (ws.readyState == WebSocket.OPEN) {
+          ws.send(JSON.stringify(dict));
+          console.log(avg);
+        };
+        /*BENCHMARKING FUNCTION*/
         var found = false;
         for (var i = 0; i < CommanderTlmDataElements.length; i++) {
           pre_process = CommanderTlmDataElements[i].attr('data-sage');
