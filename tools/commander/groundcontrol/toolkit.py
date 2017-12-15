@@ -111,7 +111,7 @@ def preProcess(d):
 def collectTestCases(conn,mapper,input,eo,desc):
     """!
     performs insert in a data base given the database connection passed in and parameter.
-    @param conn: sql connection to `tests-database`
+    @param conn: sql connection to `test-database`
     @param mapper: a user defined string, categorizes various database entries.
     @param input: a string object before a certain process is applied on it.
     @param eo: a string object after the process is applied on it.

@@ -481,21 +481,22 @@ html(lang='en-us')
 
       var processTelemetryUpdate = function (param) {
 
-        /*BENCHMARKING FUNCTION*/
+         /*BENCHMARKING FUNCTION*/
         count = count + 1 ;
         var time_now = Date.now()  ;
         var gen_time = new Date(param.acquisitionTimeUTC);
         latency = time_now-gen_time.getTime();
-        var dict = "CHANNELS,"+latency+","+count+","+time_now+","+gen_time
-        //{"latency":latency,"recv_time":time_now,"sent_time":gen_time,"counter":count,"from":"SOCKETIO"}
 
-        //avg_list.push(Date.now()-gen_time.getTime())
-        //var sum = avg_list.reduce((previous, current) => current += previous);
-        //var avg = sum / avg_list.length;
+        //{"latency":latency,"recv_time":time_now,"sent_time":gen_time,"counter":count,"from":"SOCKETIO"}
+        avg_list.push(time_now-gen_time.getTime())
+        var sum = avg_list.reduce((previous, current) => current += previous);
+        var avg = sum / avg_list.length;
+        var dict = "SOCKETIO,"+latency+","+avg+","+count+","+time_now+","+gen_time
+
 
         if (ws.readyState == WebSocket.OPEN) {
           ws.send(JSON.stringify(dict));
-          console.log(avg);
+          //console.log(avg);
         };
         /*BENCHMARKING FUNCTION*/
         var found = false;

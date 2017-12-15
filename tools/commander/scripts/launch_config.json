@@ -7,7 +7,7 @@
     "default_instance": "softsim"
   },
   "daphne_port": 8000,
-  "number_of_workers": 10,
+  "number_of_workers": 15,
   "mode": 2,
   "app_path": "/home/vagrant/git/airliner/tools/commander/"
 }

@@ -30,7 +30,7 @@ class Telemetry:
         ## Initialize mode defined in launch_config.json
         self.mode = int(self.redis_cache.get('mode'))
 
-        ## Initialize tests database path defined in launch_config.json
+        ## Initialize test database path defined in launch_config.json
         self.test_db_path = self.redis_cache.get('app_path')
 
         ## Initialize number or parallel workers defined in launch_config.json
@@ -91,7 +91,7 @@ class Telemetry:
                 conn.close()
                 tk.log('Train', 'Item inserted in database.', 'DEBUG')
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Train', 'NA', 'ERROR')
                 pass
 
@@ -119,7 +119,7 @@ class Telemetry:
                 self.sock_map[message_client_id].send(to_send)
                 tk.log('Instance', '[UNSUBSCRIBED] - '+message_client_id+' - '+msg, 'DEBUG')
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Instance', '[ERR - UNSUBSCRIBED] - ' + message_client_id + ' - ' + message_text, 'ERROR')
                 pass
         ## kill all processes
@@ -131,7 +131,7 @@ class Telemetry:
                 tk.log('Instance', '[KILLED] - ' + str(to_kill_pid), 'DEBUG')
 
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Instance', '[ERR - KILLED] - NA', 'ERROR')
                 pass
         ## Subscribe signal
@@ -155,7 +155,7 @@ class Telemetry:
                     self.proc_map[client_id] = process.pid
                     tk.log('Instance', '[PROCESS] - ' + str(process.pid) , 'DEBUG')
                 except:
-                    ## TODO: safely log error, unit tests required
+                    ## TODO: safely log error, unit test required
                     tk.log('Instance', '[ERR - PROCESS] - ' + message_client_id + ' - ' + message_text, 'ERROR')
                     pass
             ## If already a socket is created then continue and use that socket
@@ -164,7 +164,7 @@ class Telemetry:
                     self.sock_map[message_client_id].send(to_send)
                     tk.log('Instance', '[SUBSCRIBED] - ' + message_client_id + ' - ' + message_text, 'DEBUG')
                 except:
-                    ## TODO: safely log error, unit tests required
+                    ## TODO: safely log error, unit test required
                     tk.log('Instance', '[ERR - SUBSCRIBED] - ' + message_client_id + ' - ' + message_text, 'DEBUG')
                     pass
 
@@ -214,7 +214,7 @@ class Command:
         ## Initialize mode defined in launch_config.json
         self.mode = int(self.redis_cache.get('mode'))
 
-        ## Initialize tests database path defined in launch_config.json
+        ## Initialize test database path defined in launch_config.json
         self.test_db_path = self.redis_cache.get('app_path')
 
         ## Initialize default instance defined in launch_config.json
@@ -261,7 +261,7 @@ class Command:
                 conn.close()
                 tk.log('Train', 'Item inserted in database.', 'DEBUG')
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Train', 'NA', 'ERROR')
                 pass
 
@@ -393,7 +393,7 @@ class Directory:
         ## Initialize mode defined in launch_config.json
         self.mode = int(self.redis_cache.get('mode'))
 
-        ## Initialize tests database path defined in launch_config.json
+        ## Initialize test database path defined in launch_config.json
         self.test_db_path = self.redis_cache.get('app_path')
 
         ## Initialize number or parallel workers defined in launch_config.json
@@ -433,7 +433,7 @@ class Directory:
                 conn.close()
                 tk.log('Train', 'Item inserted in database.', 'DEBUG')
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Train', 'NA', 'ERROR')
                 pass
 
@@ -526,7 +526,7 @@ class Event:
                 us_sock.send(data)
                 tk.log('Event', '[UNSIBSCRIBED] - ' + client_id+' events', 'DEBUG')
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Event','Unable to unsubscribe.','ERROR')
                 pass
             try:
@@ -535,7 +535,7 @@ class Event:
                 to_kill.kill()
                 tk.log('Event', '[KILLED] - ' + to_kill_pid, 'DEBUG')
             except:
-                ## TODO: safely log error, unit tests required
+                ## TODO: safely log error, unit test required
                 tk.log('Event', 'Unable to kill.', 'ERROR')
                 pass
 
@@ -600,14 +600,14 @@ class Misc:
         @param message: invoke message from client.
         @return: void
         """
-        ## TODO: rewrite functionality, unit tests required
+        ## TODO: rewrite functionality, unit test required
         name = message.content['text']
         if name == 'START_COMM_HS':
             message.reply_channel.send({'text': 'START_COMM_ACK'})
         elif name == 'CLOSE_COMM_NOFBCK':
             tk.log('GET INSTANCE LIST', 'DISCONNECTING FROM SOCKET', 'INFO')
         else:
-            response = urllib.urlopen('http://'+self.address+':'+str(self.adsb_port)+'/tests')
+            response = urllib.urlopen('http://'+self.address+':'+str(self.adsb_port)+'/test')
             data = json.loads(json.dumps(response.read()))
             message.reply_channel.send({'text': data})
             tk.log(name, 'PACKET SENT', 'INFO')
@@ -723,7 +723,7 @@ class MyCache:
                 self.redis_cache.set('app_path', config['app_path'])
                 self.redis_cache.set('t_btn_cnt',0)
 
-                ## clean tests database, table
+                ## clean test database, table
                 if int(self.redis_cache.get('mode')) == 0:
                     conn = sqlite3.connect(self.redis_cache.get('app_path') + '/test_database', timeout=5)
                     c = conn.cursor()
@@ -733,7 +733,7 @@ class MyCache:
                     conn.close()
             tk.log('Preconfiguration', 'Successful', 'INFO')
         except:
-            ## TODO: safely log error, unit tests required
+            ## TODO: safely log error, unit test required
             tk.log('Preconfiguration', 'Faliure - NA', 'ERROR')
             pass
 
