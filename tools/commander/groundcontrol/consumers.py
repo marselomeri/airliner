@@ -515,9 +515,10 @@ class Event:
                 ws = create_connection('ws://' + self.address + ':' + str(self.port) + '/'+self.defaultInstance+'/_websocket')
             ws.send(data)
             t = Process(target=self.push, args=(ws, message))
+            t.start()
             self.proc_map[client_id] = t.pid
             self.sock_map[client_id] = ws
-            t.start()
+
         # when kill signal is received
         elif message_text =='KILLSWITCH':
             try:
@@ -531,6 +532,7 @@ class Event:
                 pass
             try:
                 to_kill_pid = self.proc_map[client_id]
+                print '****', to_kill_pid, self.proc_map
                 to_kill = psutil.Process(to_kill_pid)
                 to_kill.kill()
                 tk.log('Event', '[KILLED] - ' + to_kill_pid, 'DEBUG')
