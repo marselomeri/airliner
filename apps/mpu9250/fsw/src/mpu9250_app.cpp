@@ -225,7 +225,7 @@ void MPU9250::InitData()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* MPU9250 initialization                                              */
+/* MPU9250 initialization                                          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MPU9250::InitApp()
@@ -628,6 +628,9 @@ void MPU9250::ReadDevice(void)
     float calX_f = 0;
     float calY_f = 0;
     float calZ_f = 0;
+    float magXAdj_f = Diag.Calibration.MagXAdj;
+    float magYAdj_f = Diag.Calibration.MagYAdj;
+    float magZAdj_f = Diag.Calibration.MagZAdj;
     uint64 timeStamp = 0;
     CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
     uint16 rawTemp = 0;
@@ -758,13 +761,13 @@ void MPU9250::ReadDevice(void)
     //returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     //if(FALSE == returnBool)
     //{
-        //goto end_of_function;
+    //    goto end_of_function;
     //}
 
-    ///* Mag Calibrate */
-    //SensorMag.X = (rawX_f  * ((((Diag.Calibration.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
-    //SensorMag.Y = (rawY_f * ((((Diag.Calibration.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
-    //SensorMag.Z = (rawZ_f  * ((((Diag.Calibration.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
+    /* Mag Calibrate */
+    SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias) / 1000.0f;
+    SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias) / 1000.0f;
+    SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias) / 1000.0f;
 
     ///* Mag Scale, Range, DeviceID */
     //SensorMag.Scaling = -1.0f;
