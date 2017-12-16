@@ -12,8 +12,8 @@
 *    notice, this list of conditions and the following disclaimer in
 *    the documentation and/or other materials provided with the
 *    distribution.
-* 3. Neither the name Windhover Labs nor the names of its
-*    contributors may be used to endorse or promote products derived
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
 *    from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -31,32 +31,18 @@
 *
 *****************************************************************************/
 
+#ifndef HMC5883_CUSTOM_STUBS_H
+#define HMC5883_CUSTOM_STUBS_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cfe.h"
-#include "hmc5883_msg.h"
-#include "hmc5883_config_tbl_test.h"
-#include "hmc5883_test_utils.h"
-#include "uttest.h"
-#include "ut_osapi_stubs.h"
-#include "ut_cfe_sb_stubs.h"
-#include "ut_cfe_es_stubs.h"
-#include "ut_cfe_es_hooks.h"
-#include "ut_cfe_evs_stubs.h"
-#include "ut_cfe_evs_hooks.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_cfe_psp_memutils_stubs.h"
-#include "ut_cfe_tbl_stubs.h"
-#include "ut_cfe_fs_stubs.h"
-#include "ut_cfe_time_stubs.h"
 
-void HMC5883_Config_Tbl_Test_Case1(void)
-{
 
+#ifdef __cplusplus
 }
+#endif
 
-
-void HMC5883_Config_Tbl_Test_AddTestCases(void)
-{
-    UtTest_Add(HMC5883_Config_Tbl_Test_Case1, HMC5883_Test_Setup, HMC5883_Test_TearDown, "HMC5883_Config_Tbl_Test_Case1");
-}
-
-
+#endif /* HMC5883_CUSTOM_STUBS_H */

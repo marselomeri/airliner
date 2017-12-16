@@ -159,32 +159,35 @@ typedef struct
 {
     float AccDivider;
     float GyroDivider;
-
-    float AccXCoef;
-    float AccYCoef;
-    float AccZCoef;
-    float AccXBias;
-    float AccYBias;
-    float AccZBias;
-    float GyroXCoef;
-    float GyroYCoef;
-    float GyroZCoef;
-    float GyroXBias;
-    float GyroYBias;
-    float GyroZBias;
-    float MagXCoef;
-    float MagYCoef;
-    float MagZCoef;
-    float MagXBias;
-    float MagYBias;
-    float MagZBias;
-
+    float AccXScale;
+    float AccYScale;
+    float AccZScale;
+    float AccXOffset;
+    float AccYOffset;
+    float AccZOffset;
+    float GyroXScale;
+    float GyroYScale;
+    float GyroZScale;
+    float GyroXOffset;
+    float GyroYOffset;
+    float GyroZOffset;
+    float MagXScale;
+    float MagYScale;
+    float MagZScale;
+    float MagXOffset;
+    float MagYOffset;
+    float MagZOffset;
     uint8 MagXAdj;
     uint8 MagYAdj;
     uint8 MagZAdj;
-
     float RoomTempOffset;
     float TempSensitivity;
+    uint16 AccScale;
+    uint16 GyroScale;
+    float AccRange;
+    float GyroRange;
+    float AccUnit;
+    float GyroUnit;
 } MPU9250_CalibrationMsg_t;
 
 typedef struct

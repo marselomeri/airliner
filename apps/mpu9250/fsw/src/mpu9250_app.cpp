@@ -194,24 +194,30 @@ void MPU9250::InitData()
 
     Diag.Calibration.AccDivider      = 1.0;
     Diag.Calibration.GyroDivider     = 1.0;
-    Diag.Calibration.AccXCoef        = 1.0;
-    Diag.Calibration.AccYCoef        = 1.0;
-    Diag.Calibration.AccZCoef        = 1.0;
-    Diag.Calibration.AccXBias        = 0.0;
-    Diag.Calibration.AccYBias        = 0.0;
-    Diag.Calibration.AccZBias        = 0.0;
-    Diag.Calibration.GyroXCoef       = 1.0;
-    Diag.Calibration.GyroYCoef       = 1.0;
-    Diag.Calibration.GyroZCoef       = 1.0;
-    Diag.Calibration.GyroXBias       = 0.0;
-    Diag.Calibration.GyroYBias       = 0.0;
-    Diag.Calibration.GyroZBias       = 0.0;
-    Diag.Calibration.MagXCoef        = 1.0;
-    Diag.Calibration.MagYCoef        = 1.0;
-    Diag.Calibration.MagZCoef        = 1.0;
-    Diag.Calibration.MagXBias        = 0.0;
-    Diag.Calibration.MagYBias        = 0.0;
-    Diag.Calibration.MagZBias        = 0.0;
+    Diag.Calibration.AccUnit         = MPU9250_ONE_G;
+    Diag.Calibration.GyroUnit        = MPU9250_RADIANS_PER_DEGREE;
+    Diag.Calibration.AccRange        = (MPU9250_ACC_SCALE * MPU9250_ONE_G);
+    Diag.Calibration.GyroRange       = MPU9250_2000_DEG_S;
+    Diag.Calibration.AccScale        = MPU9250_ACC_SCALE;
+    Diag.Calibration.GyroScale       = MPU9250_GYRO_SCALE;
+    Diag.Calibration.AccXScale       = 1.0;
+    Diag.Calibration.AccYScale       = 1.0;
+    Diag.Calibration.AccZScale       = 1.0;
+    Diag.Calibration.AccXOffset      = 0.0;
+    Diag.Calibration.AccYOffset      = 0.0;
+    Diag.Calibration.AccZOffset      = 0.0;
+    Diag.Calibration.GyroXScale      = 1.0;
+    Diag.Calibration.GyroYScale      = 1.0;
+    Diag.Calibration.GyroZScale      = 1.0;
+    Diag.Calibration.GyroXOffset     = 0.0;
+    Diag.Calibration.GyroYOffset     = 0.0;
+    Diag.Calibration.GyroZOffset     = 0.0;
+    Diag.Calibration.MagXScale       = 1.0;
+    Diag.Calibration.MagYScale       = 1.0;
+    Diag.Calibration.MagZScale       = 1.0;
+    Diag.Calibration.MagXOffset      = 0.0;
+    Diag.Calibration.MagYOffset      = 0.0;
+    Diag.Calibration.MagZOffset      = 0.0;
     Diag.Calibration.RoomTempOffset  = 0.0;
     Diag.Calibration.TempSensitivity = 333.87;
 }
@@ -282,16 +288,16 @@ int32 MPU9250::InitApp()
                 "Set gyroscope scale failed");
         goto MPU9250_InitApp_Exit_Tag;
     }
-    /*  Get the factory magnetometer sensitivity adjustment values */
-    returnBool = MPU9250_Read_MagAdj(&Diag.Calibration.MagXAdj, 
-            &Diag.Calibration.MagYAdj, &Diag.Calibration.MagZAdj);
-    if(FALSE == returnBool)
-    {
-        iStatus = -1;
-        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
-                "Get Mag adjustment values failed.");
-        goto MPU9250_InitApp_Exit_Tag;
-    }
+    ///*  Get the factory magnetometer sensitivity adjustment values */
+    //returnBool = MPU9250_Read_MagAdj(&Diag.Calibration.MagXAdj, 
+            //&Diag.Calibration.MagYAdj, &Diag.Calibration.MagZAdj);
+    //if(FALSE == returnBool)
+    //{
+        //iStatus = -1;
+        //CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+                //"Get Mag adjustment values failed.");
+        //goto MPU9250_InitApp_Exit_Tag;
+    //}
     
     HkTlm.State = MPU9250_INITIALIZED;
 
@@ -357,7 +363,7 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
                 ReadDevice();
                 SendSensorAccel();
                 SendSensorGyro();
-                SendSensorMag();
+                //SendSensorMag();
                 break;
 
             case MPU9250_SEND_HK_MID:
@@ -661,9 +667,12 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
     /* Gyro Calibrate */
-    calX_f = ((rawX_f / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroXCoef) + Diag.Calibration.GyroXBias;
-    calY_f = ((rawY_f / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroYCoef) + Diag.Calibration.GyroYBias;
-    calZ_f = ((rawZ_f / Diag.Calibration.GyroDivider) * Diag.Calibration.GyroZCoef) + Diag.Calibration.GyroZBias;
+    calX_f = (rawX_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
+            Diag.Calibration.GyroXOffset) * Diag.Calibration.GyroXScale;
+    calY_f = (rawY_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
+            Diag.Calibration.GyroYOffset) * Diag.Calibration.GyroYScale;
+    calZ_f = (rawZ_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
+            Diag.Calibration.GyroZOffset) * Diag.Calibration.GyroZScale;
 
     /* Gyro Filter */
     SensorGyro.X = _gyro_filter_x.apply(calX_f);
@@ -682,8 +691,8 @@ void MPU9250::ReadDevice(void)
     SensorGyro.ZIntegral = gval_integrated[2];
     
     /* Gyro Scale, Range, DeviceID */
-    SensorGyro.Scaling = -1.0f;
-    SensorGyro.Range = -1.0f;
+    SensorGyro.Scaling = (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider);
+    SensorGyro.Range = Diag.Calibration.GyroRange;
     /* TODO deviceID */
     //SensorGyro.DeviceID = ;
 
@@ -705,10 +714,13 @@ void MPU9250::ReadDevice(void)
     }
     
     /* Accel Calibrate */
-    calX_f = ((rawX_f / Diag.Calibration.AccDivider) * Diag.Calibration.AccXCoef) + Diag.Calibration.AccXBias;
-    calY_f = ((rawY_f / Diag.Calibration.AccDivider) * Diag.Calibration.AccYCoef) + Diag.Calibration.AccYBias;
-    calZ_f = ((rawZ_f / Diag.Calibration.AccDivider) * Diag.Calibration.AccZCoef) + Diag.Calibration.AccZBias;
-    
+    calX_f = (rawX_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
+            Diag.Calibration.AccXOffset) * Diag.Calibration.AccXScale;
+    calY_f = (rawY_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
+            Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
+    calZ_f = (rawZ_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
+            Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
+
     /* Accel Filter */
     SensorAccel.X = _accel_filter_x.apply(calX_f);
     SensorAccel.Y = _accel_filter_y.apply(calY_f);
@@ -726,36 +738,37 @@ void MPU9250::ReadDevice(void)
     SensorAccel.ZIntegral = aval_integrated[2];
 
     /* Accel Scale, Range, DeviceID */
-    SensorAccel.Scaling = -1.0f;
-    SensorAccel.Range_m_s2 = -1.0f;
+    SensorAccel.Scaling = (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider);
+    SensorAccel.Range_m_s2 = Diag.Calibration.AccRange;
+
     /* TODO deviceID */
     //SensorAccel.DeviceID = ;
 
     /* Mag */
-    returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
-    rawX_f = (float) SensorMag.XRaw;
-    rawY_f = (float) SensorMag.YRaw;
-    rawZ_f = (float) SensorMag.ZRaw;
+    //rawX_f = (float) SensorMag.XRaw;
+    //rawY_f = (float) SensorMag.YRaw;
+    //rawZ_f = (float) SensorMag.ZRaw;
 
-    returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
-    /* Mag Calibrate */
-    SensorMag.X = (rawX_f  * ((((Diag.Calibration.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
-    SensorMag.Y = (rawY_f * ((((Diag.Calibration.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
-    SensorMag.Z = (rawZ_f  * ((((Diag.Calibration.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
+    ///* Mag Calibrate */
+    //SensorMag.X = (rawX_f  * ((((Diag.Calibration.MagXAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias;
+    //SensorMag.Y = (rawY_f * ((((Diag.Calibration.MagYAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias;
+    //SensorMag.Z = (rawZ_f  * ((((Diag.Calibration.MagZAdj - 128) * 0.5) / 128) + 1) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias;
 
-    /* Mag Scale, Range, DeviceID */
-    SensorMag.Scaling = -1.0f;
-    SensorMag.Range = -1.0f;
+    ///* Mag Scale, Range, DeviceID */
+    //SensorMag.Scaling = -1.0f;
+    //SensorMag.Range = -1.0f;
     /* TODO deviceID */
     //SensorMag.DeviceID = ;
 

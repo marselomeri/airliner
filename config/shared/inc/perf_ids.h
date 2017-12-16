@@ -55,6 +55,9 @@
 #define RCIN_DEVICE_GET_PERF_ID     84
 #define SIM_MAIN_TASK_PERF_ID       85
 #define MAVLINK_MAIN_TASK_PERF_ID   86
+#define HMC5883_MAIN_TASK_PERF_ID   87
+#define HMC5883_RECEIVE_PERF_ID     88
+#define HMC5883_SEND_PERF_ID        89
 
 #endif
 

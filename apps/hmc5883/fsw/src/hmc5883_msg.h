@@ -135,6 +135,18 @@ typedef struct
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } HMC5883_NoArgCmd_t;
 
+
+typedef struct
+{
+    float                   x_scale;
+    float                   y_scale;
+    float                   z_scale;
+    float                   x_offset;
+    float                   y_offset;
+    float                   z_offset;
+} HMC5883_Calibration_t;
+
+
 /** 
 **  \brief HMC5883 application housekeeping data
 */
@@ -150,7 +162,18 @@ typedef struct
     /** \hmc5883tlmmnemonic \HMC5883_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
-
+    /** \brief Current HMC5883 calibration values */
+    HMC5883_Calibration_t   Calibration;
+    /** \brief App State */
+    uint8              State;
+    /** \brief Current range value */
+    float              Range;
+    /** \brief Current scale value */
+    float              Scaling;
+    /** \brief Current Device configuration register A value */
+    uint8              ConfigA;
+    /** \brief Current Device configuration register B value */
+    uint8              ConfigB;
 } HMC5883_HkTlm_t;
 
 

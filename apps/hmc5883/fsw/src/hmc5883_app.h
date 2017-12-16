@@ -53,15 +53,71 @@ extern "C" {
 #include "hmc5883_msgids.h"
 #include "hmc5883_msg.h"
 #include "hmc5883_events.h"
-#include "hmc5883_tbldefs.h"
 #include "px4_msgs.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+/** \brief Gain setting 1090 (default).
+**
+**  \par Description:
+**       Gain setting Recommended Sensor Field Range +- 1.3 Ga,
+**       Gain (LSb/Gauss) 1090, Digital Resoluation (mG/LSb) 0.92.
+*/
+#define HMC5883_BITS_CONFIG_B_RANGE_1GA3          (0x01 << 5)
+
+/** \brief Gain setting 660.
+**
+**  \par Description:
+**       Gain setting Recommended Sensor Field Range +- 2.5 Ga,
+**       Gain (LSb/Gauss) 660, Digital Resoluation (mG/LSb) 1.52.
+*/
+#define HMC5883_BITS_CONFIG_B_RANGE_2GA5          (0x03 << 5)
+
+/** \brief Configuration register A default value.
+**
+**  \par Description:
+**       Data output rate default.
+*/
+#define HMC5883_BITS_CONFIG_A_DEFAULT             (0x10)
+
+/** \brief Enabled temperature compensation (HMC5983).
+**
+**  \par Limits:
+**       None.
+*/
+#define HMC5983_TEMP_SENSOR_ENABLE                (1 << 7)
+
+/** \brief Enable positive bias configuration for X, Y, and Z axes.
+** 
+**  \par Description:
+**       In this configuration, a positive current is forced across the 
+**       resistive load for all three axes.
+*/
+#define HMC5883_POS_BIAS_ENABLE                   (0x01)
+
+/** \brief Enable negative bias configuration for X, Y, and Z axes.
+** 
+**  \par Description:
+**       In this configuration, a negative current is forced across the 
+**       resistive load for all three axes.
+*/
+#define HMC5883_NEG_BIAS_ENABLE                   (0x02)
+
 
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+/**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    HMC5883_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    HMC5883_INITIALIZED   = 1
+} HMC5883_Status_t;
 
 
 /**
@@ -84,13 +140,6 @@ public:
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
-    /* Config table-related */
-
-    /** \brief Config Table Handle */
-    CFE_TBL_Handle_t ConfigTblHdl;
-
-    /** \brief Config Table Pointer */
-    HMC5883_ConfigTbl_t* ConfigTblPtr;
     /** \brief Output Data published at the end of cycle */
     PX4_SensorMagMsg_t SensorMagMsg;
 
@@ -252,6 +301,7 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+    
     /************************************************************************/
     /** \brief Sends the SensorMagMsg message.
      **
@@ -264,6 +314,7 @@ public:
      **
      *************************************************************************/
     void SendSensorMagMsg(void);
+    
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -283,64 +334,71 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
-
-private:
+    
     /************************************************************************/
-    /** \brief Initialize the HMC5883 configuration tables.
-    **
-    **  \par Description
-    **       This function initializes HMC5883's configuration tables.  This
-    **       includes <TODO>.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
-    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
-    **  \retstmt Return codes from #HMC5883_AcquireConfigPointers \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  InitConfigTbl(void);
+    /** \brief Read from the HMC5883.
+     **
+     **  \par Description
+     **       This function populates values in the associated PX4 
+     **       message.
+     **       <TODO>
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReadDevice(void);
 
     /************************************************************************/
-    /** \brief Obtain HMC5883 configuration tables data pointers.
+    /** \brief Run the self calibration routine.
     **
     **  \par Description
-    **       This function manages the configuration tables
-    **       and obtains a pointer to their data.
+    **       This function uses the device built in self test to create a
+    **       bias for calibration.
     **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
+    **  \param [out]    Calibration    The calibration result.
     **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
+    **  \returns    TRUE for success, FALSE for failure.
     **
     *************************************************************************/
-    int32  AcquireConfigPointers(void);
+    boolean SelfCalibrate(HMC5883_Calibration_t *Calibration);
 
-public:
     /************************************************************************/
-    /** \brief Validate HMC5883 configuration table
+    /** \brief Validate scale values.
     **
     **  \par Description
-    **       This function validates HMC5883's configuration table
+    **       Sanity check scale values.
     **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
+    **  \returns    TRUE for valid, FALSE for invalid.
     **
     *************************************************************************/
-    static int32  ValidateConfigTbl(void*);
+    boolean CheckScale(float X, float Y, float Z);
+    
+    /************************************************************************/
+    /** \brief Validate offset values.
+    **
+    **  \par Description
+    **       Sanity check offset values.
+    **
+    **  \returns    TRUE for valid, FALSE for invalid.
+    **
+    *************************************************************************/
+    boolean CheckOffset(float X, float Y, float Z);
 };
+
+
+/************************************************************************/
+/** \brief Cleanup prior to exit
+**
+**  \par Description
+**       This function handles any necessary cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void HMC5883_CleanupCallback(void);
 
 #ifdef __cplusplus
 }

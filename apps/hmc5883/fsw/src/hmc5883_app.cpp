@@ -2,9 +2,12 @@
 ** Includes
 *************************************************************************/
 #include <string.h>
+#include <math.h>
+#include <float.h>
 
 #include "cfe.h"
 
+#include "hmc5883_custom.h"
 #include "hmc5883_app.h"
 #include "hmc5883_msg.h"
 #include "hmc5883_version.h"
@@ -48,13 +51,42 @@ HMC5883::~HMC5883()
 int32 HMC5883::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
+    int32 customEventCount = 0;
+    
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset(EventTbl, 0x00, sizeof(EventTbl));
+    
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    EventTbl[  ind].EventID = HMC5883_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = HMC5883_READ_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    
+    
+    /* Add custom events to the filter table */
+    customEventCount = HMC5883_Custom_Init_EventFilters(ind, EventTbl);
+    
+    if(-1 == customEventCount)
+    {
+        iStatus = CFE_EVS_APP_FILTER_OVERLOAD;
+        (void) CFE_ES_WriteToSysLog("Failed to init custom event filters (0x%08X)\n", (unsigned int)iStatus);
+        goto end_of_function;
+    }
 
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, (ind + customEventCount), CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("HMC5883 - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
+
+end_of_function:
 
     return iStatus;
 }
@@ -139,23 +171,38 @@ HMC5883_InitPipe_Exit_Tag:
 void HMC5883::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    		HMC5883_HK_TLM_MID, sizeof(HkTlm), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&SensorMagMsg,
-      		PX4_SENSOR_MAG_MID, sizeof(PX4_SensorMagMsg_t), TRUE);
+    CFE_SB_InitMsg(&HkTlm, HMC5883_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&SensorMagMsg, PX4_SENSOR_MAG_MID, 
+            sizeof(PX4_SensorMagMsg_t), TRUE);
+    /* Init custom data */
+    HMC5883_Custom_InitData();
+    /* Set initial values for calibration */
+    HkTlm.Calibration.x_scale  = 1.0f;
+    HkTlm.Calibration.y_scale  = 1.0f;
+    HkTlm.Calibration.z_scale  = 1.0f;
+    HkTlm.Calibration.x_offset = 0.0f;
+    HkTlm.Calibration.y_offset = 0.0f;
+    HkTlm.Calibration.z_offset = 0.0f;
+
+    HkTlm.ConfigA              = (HMC5883_BITS_CONFIG_A_DEFAULT | HMC5983_TEMP_SENSOR_ENABLE);
+    HkTlm.ConfigB              = HMC5883_BITS_CONFIG_B_RANGE_1GA3;
+    /* Set range and scale */
+    HkTlm.Range                = 1.3f;
+    HkTlm.Scaling              = 1.0f / 1090.0f;
 }
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* HMC5883 initialization                                              */
+/* HMC5883 initialization                                          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 HMC5883::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
+    boolean returnBool = TRUE;
 
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
@@ -175,10 +222,70 @@ int32 HMC5883::InitApp()
     }
 
     InitData();
-
-    iStatus = InitConfigTbl();
+    returnBool = HMC5883_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Custom init failed");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    returnBool = HMC5883_Custom_ValidateID();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed validate ID");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    returnBool = SelfCalibrate(&HkTlm.Calibration);
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed calibration");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    returnBool = HMC5883_Custom_Set_Range(HkTlm.ConfigB);
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed set range");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    returnBool = HMC5883_Custom_Check_Range(HkTlm.ConfigB);
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed check range");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    returnBool = HMC5883_Custom_Set_Config(HkTlm.ConfigA);
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed set config");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    returnBool = HMC5883_Custom_Check_Config(HkTlm.ConfigA);
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 Device failed check config");
+        goto HMC5883_InitApp_Exit_Tag;
+    }
+    
+    /* Register the cleanup callback */
+    iStatus = OS_TaskInstallDeleteHandler(&HMC5883_CleanupCallback);
     if (iStatus != CFE_SUCCESS)
     {
+        CFE_EVS_SendEvent(HMC5883_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 "Failed to init register cleanup callback (0x%08X)",
+                                 (unsigned int)iStatus);
         goto HMC5883_InitApp_Exit_Tag;
     }
 
@@ -186,11 +293,13 @@ HMC5883_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
         (void) CFE_EVS_SendEvent(HMC5883_INIT_INF_EID, CFE_EVS_INFORMATION,
-                                 "Initialized.  Version %d.%d.%d.%d",
-								 HMC5883_MAJOR_VERSION,
-								 HMC5883_MINOR_VERSION,
-								 HMC5883_REVISION,
-								 HMC5883_MISSION_REV);
+                                "Initialized.  Version %d.%d.%d.%d",
+                                HMC5883_MAJOR_VERSION,
+                                HMC5883_MINOR_VERSION,
+                                HMC5883_REVISION,
+                                HMC5883_MISSION_REV);
+        /* Set the app state to initialized */
+        oHMC5883.HkTlm.State = HMC5883_INITIALIZED;
     }
     else
     {
@@ -231,6 +340,8 @@ int32 HMC5883::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case HMC5883_WAKEUP_MID:
+                ReadDevice();
+                SendSensorMagMsg();
                 /* TODO:  Do something here. */
                 break;
 
@@ -241,7 +352,7 @@ int32 HMC5883::RcvSchPipeMsg(int32 iBlocking)
 
             default:
                 (void) CFE_EVS_SendEvent(HMC5883_MSGID_ERR_EID, CFE_EVS_ERROR,
-                     "Recvd invalid SCH msgId (0x%04X)", MsgId);
+                    "Recvd invalid SCH msgId (0x%04X)", MsgId);
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -262,7 +373,7 @@ int32 HMC5883::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(HMC5883_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+            "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -320,7 +431,7 @@ void HMC5883::ProcessCmdPipe()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Process HMC5883 Commands                                            */
+/* Process HMC5883 Commands                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -336,11 +447,11 @@ void HMC5883::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case HMC5883_NOOP_CC:
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(HMC5883_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					HMC5883_MAJOR_VERSION,
-					HMC5883_MINOR_VERSION,
-					HMC5883_REVISION,
-					HMC5883_MISSION_REV);
+                    "Recvd NOOP. Version %d.%d.%d.%d",
+                    HMC5883_MAJOR_VERSION,
+                    HMC5883_MINOR_VERSION,
+                    HMC5883_REVISION,
+                    HMC5883_MISSION_REV);
                 break;
 
             case HMC5883_RESET_CC:
@@ -359,7 +470,7 @@ void HMC5883::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Send HMC5883 Housekeeping                                           */
+/* Send HMC5883 Housekeeping                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -417,7 +528,7 @@ boolean HMC5883::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* HMC5883 Application C style main entry point.                       */
+/* HMC5883 Application C style main entry point.                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 extern "C" void HMC5883_AppMain()
@@ -428,7 +539,7 @@ extern "C" void HMC5883_AppMain()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* HMC5883 Application C++ style main entry point.                     */
+/* HMC5883 Application C++ style main entry point.                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void HMC5883::AppMain()
@@ -467,13 +578,6 @@ void HMC5883::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(HMC5883_SCH_PIPE_PEND_TIME);
-
-        iStatus = AcquireConfigPointers();
-        if(iStatus != CFE_SUCCESS)
-        {
-            /* We apparently tried to load a new table but failed.  Terminate the application. */
-            uiRunStatus = CFE_ES_APP_ERROR;
-        }
     }
 
     /* Stop Performance Log entry */
@@ -484,6 +588,254 @@ void HMC5883::AppMain()
 }
 
 
+void HMC5883::ReadDevice(void)
+{
+    boolean returnBool = FALSE;
+    static uint8 temp_count = 0;
+    int16 temp = 0;
+    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
+
+    cfeTimeStamp = HMC5883_Custom_Get_Time();
+    
+    /* Timestamp */
+    SensorMagMsg.Timestamp.Seconds = cfeTimeStamp.Seconds;
+    SensorMagMsg.Timestamp.Subseconds = cfeTimeStamp.Subseconds;
+
+    /* Mag */
+    returnBool = HMC5883_Custom_Measure(&SensorMagMsg.XRaw, &SensorMagMsg.YRaw, &SensorMagMsg.ZRaw);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Apply any rotation */
+    returnBool = HMC5883_Apply_Platform_Rotation(&SensorMagMsg.XRaw, &SensorMagMsg.YRaw, &SensorMagMsg.ZRaw);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Set calibrated values */
+    SensorMagMsg.X = ((SensorMagMsg.XRaw * HkTlm.Scaling) - 
+            HkTlm.Calibration.x_offset) * HkTlm.Calibration.x_scale;
+    SensorMagMsg.Y = ((SensorMagMsg.YRaw * HkTlm.Scaling) - 
+            HkTlm.Calibration.y_offset) * HkTlm.Calibration.y_scale;
+    SensorMagMsg.Z = ((SensorMagMsg.ZRaw * HkTlm.Scaling) - 
+            HkTlm.Calibration.z_offset) * HkTlm.Calibration.z_scale;
+
+    /* Set range */
+    SensorMagMsg.Range = HkTlm.Range;
+    
+    /* Set scale */
+    SensorMagMsg.Scaling = HkTlm.Scaling;
+    
+    /* Measure temperature every 10 mag samples */
+    if(temp_count == 10)
+    {
+        returnBool = HMC5883_Custom_Measure_Temp(&temp);
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
+        
+        SensorMagMsg.Temperature = 25 + (temp / (16 * 8.0f));
+        temp_count = 0;
+    }
+    else
+    {
+        temp_count++;
+    }
+
+end_of_function:
+;
+}
+
+
+boolean HMC5883::SelfCalibrate(HMC5883_Calibration_t *Calibration)
+{
+    uint8 range = 0;
+    uint8 config = 0;
+    uint8 i = 0;
+    uint8 good_count = 0;
+    int16 rawX = 0;
+    int16 rawY = 0;
+    int16 rawZ = 0;
+    float rangeScale = 0.0f;
+    boolean returnBool = FALSE;
+    boolean rangeSet = FALSE;
+    boolean configSet = FALSE;
+    
+    /* expected axis scaling. The datasheet says that 766 will
+     * be places in the X and Y axes and 713 in the Z
+     * axis. Experiments show that in fact 766 is placed in X,
+     * and 713 in Y and Z. This is relative to a base of 660
+     * LSM/Ga, giving 1.16 and 1.08 */
+    float expected_cal[3] = { 1.16f, 1.08f, 1.08f };
+    float sum_excited[3]  = { 0.0f, 0.0f, 0.0f };
+    float cal[3]          = { 0.0f, 0.0f, 0.0f };
+    float scaling[3]      = { 0.0f, 0.0f, 0.0f };
+    
+    /* Save the current range setting */
+    returnBool = HMC5883_Custom_Get_Range(&range);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    /* Save the current configuration */
+    returnBool = HMC5883_Custom_Get_Config(&config);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    /* Set to 2.5 Gauss.*/
+    returnBool = HMC5883_Custom_Set_Range(HMC5883_BITS_CONFIG_B_RANGE_2GA5);
+    if (FALSE == returnBool)
+    {
+        rangeSet = TRUE;
+        goto end_of_function;
+    }
+    /* Set the range scale to the range setting above */
+    rangeScale = 1.0f / 660.0f;
+    /* Set negative bias enable */
+    config |= HMC5883_NEG_BIAS_ENABLE;
+    returnBool = HMC5883_Custom_Set_Config(config);
+    if (FALSE == returnBool)
+    {
+        configSet = TRUE;
+        goto end_of_function;
+    }
+    /* Set the saved config back to normal */
+    config &= ~HMC5883_NEG_BIAS_ENABLE;
+
+    /* Discard 10 samples to let the sensor settle */
+    for (i = 0; i < 10; i++) 
+    {
+        returnBool = HMC5883_Custom_Measure(&rawX, &rawY, &rawZ);
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
+    }
+
+    /* read the sensor up to 150x, stopping when we have 50 good values */
+    for (i = 0; i < 150 && good_count < 50; i++) 
+    {
+        returnBool = HMC5883_Custom_Measure(&rawX, &rawY, &rawZ);
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
+
+        cal[0] = fabsf(expected_cal[0] / (rawX * rangeScale));
+        cal[1] = fabsf(expected_cal[1] / (rawY * rangeScale));
+        cal[2] = fabsf(expected_cal[2] / (rawZ * rangeScale));
+
+
+        if (cal[0] > 0.3f && cal[0] < 1.7f &&
+            cal[1] > 0.3f && cal[1] < 1.7f &&
+            cal[2] > 0.3f && cal[2] < 1.7f) 
+        {
+            good_count++;
+            sum_excited[0] += cal[0];
+            sum_excited[1] += cal[1];
+            sum_excited[2] += cal[2];
+        }
+    }
+
+    /* Check that we have at least 5 good values for an average */
+    if (good_count < 5) 
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Get the average */
+    scaling[0] = sum_excited[0] / good_count;
+    scaling[1] = sum_excited[1] / good_count;
+    scaling[2] = sum_excited[2] / good_count;
+
+    /* Apply platform rotation to the calibration scale factors */
+    returnBool = HMC5883_Apply_Platform_Rotation_Float(&scaling[0], &scaling[1], &scaling[2]);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Sanity check scale values */
+    returnBool = CheckScale(scaling[0], scaling[1], scaling[2]);
+    if (TRUE == returnBool)
+    {
+        /* Set scaling  */
+        Calibration->x_scale  = 1.0f / scaling[0];
+        Calibration->y_scale  = 1.0f / scaling[1];
+        Calibration->z_scale  = 1.0f / scaling[2];
+    }
+
+end_of_function:
+
+    if (TRUE == rangeSet)
+    {
+        /* return the range setting back to normal */
+        HMC5883_Custom_Set_Range(range);
+    }
+    if (TRUE == configSet)
+    {   
+        /* return the configuration setting back to normal */
+        HMC5883_Custom_Set_Config(config);
+    }
+    return returnBool;
+}
+
+
+boolean HMC5883::CheckScale(float X, float Y, float Z)
+{
+    boolean returnBool = FALSE;
+
+    if ((-FLT_EPSILON + 1.0f < X && X < FLT_EPSILON + 1.0f) &&
+        (-FLT_EPSILON + 1.0f < Y && Y < FLT_EPSILON + 1.0f) &&
+        (-FLT_EPSILON + 1.0f < Z && Z < FLT_EPSILON + 1.0f))
+    {
+        CFE_EVS_SendEvent(HMC5883_SCALE_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 device failed check scale");
+    }
+    else
+    {
+        returnBool = TRUE;
+    }
+
+    return returnBool;
+}
+
+
+boolean CheckOffset(float X, float Y, float Z)
+{
+    boolean returnBool = FALSE;
+
+    if ((-2.0f * FLT_EPSILON < X && X < 2.0f * FLT_EPSILON) &&
+        (-2.0f * FLT_EPSILON < Y && Y < 2.0f * FLT_EPSILON) &&
+        (-2.0f * FLT_EPSILON < Z && Z < 2.0f * FLT_EPSILON))
+    {
+        CFE_EVS_SendEvent(HMC5883_OFFSET_ERR_EID, CFE_EVS_ERROR,
+            "HMC5883 device failed check offset");
+    } 
+    else 
+    {
+        returnBool = TRUE;
+    }
+
+    return returnBool;
+}
+
+
+void HMC5883_CleanupCallback(void)
+{
+    oHMC5883.HkTlm.State = HMC5883_UNINITIALIZED;
+    if(HMC5883_Custom_Uninit() != TRUE)
+    {
+        CFE_EVS_SendEvent(HMC5883_UNINIT_ERR_EID, CFE_EVS_ERROR,"HMC5883_Uninit failed");
+        oHMC5883.HkTlm.State = HMC5883_INITIALIZED;
+    }
+}
 /************************/
 /*  End of File Comment */
 /************************/
