@@ -115,7 +115,7 @@
    ** loadable modules in the system. If the the table is filled up at runtime, a new module load
    ** would fail.
    */
-   #define OS_MAX_MODULES 32
+   #define OS_MAX_MODULES 64
 
    /*
    ** The Static Loader define is used for switching between the Dynamic and Static loader implementations.

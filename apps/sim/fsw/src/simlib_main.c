@@ -6,6 +6,8 @@
 #include "px4_msgs.h"
 #include "sim_mission_cfg.h"
 #include "sim_platform_cfg.h"
+#include "mavlink.h"
+#include <arpa/inet.h>
 
 /*************************************************************************
 ** Macro Definitions
@@ -98,6 +100,18 @@ typedef struct
 	SIMLIB_DataState_t DataState;
 } SIMLIB_ActuatorControlsData_t;
 
+typedef struct
+{
+	uint16 Minimum;
+	uint16 Maximum;
+	uint16 Current;
+	uint16 Covariance;
+	PX4_DistanceSensorType_t Type;
+	uint8  ID;
+	PX4_SensorOrientation_t  Orientation;
+	SIMLIB_DataState_t DataState;
+} SIMLIB_DistanceSensorData_t;
+
 
 typedef struct
 {
@@ -111,6 +125,10 @@ typedef struct
 	SIMLIB_GPSData_t GPSData;
 	SIMLIB_RCInputData_t RCInputData;
 	SIMLIB_ActuatorControlsData_t ActuatorControlsData;
+	SIMLIB_DistanceSensorData_t  DistanceSensorData;
+    int Socket;
+    int SendPort;
+    char SendAddress[255];
 } SIMLIB_LibData_t;
 
 SIMLIB_LibData_t SIMLIB_LibData;
@@ -152,6 +170,18 @@ int32 SIM_LibInit(void)
     return iStatus;
  
 }/* End SIM_LibInit */
+
+
+void SIMLIB_SetSocket(int Socket, int Port, char *Address)
+{
+	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
+	SIMLIB_LibData.Socket = Socket;
+	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
+	SIMLIB_LibData.SendPort = Port;
+	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
+	strncpy(SIMLIB_LibData.SendAddress, Address, sizeof(SIMLIB_LibData.SendAddress));
+	OS_printf("%s %s %u\n", __FILE__, __FUNCTION__, __LINE__);
+}
 
 int32 SIMLIB_GetAccel(float *X, float *Y, float *Z)
 {
@@ -499,23 +529,29 @@ int32 SIMLIB_SetGPS(
 
 
 int32 SIMLIB_GetRCInputs(
-		uint16 *Channel[12],
+		uint16 *Channels,
+		uint16 *ChannelCount,
 		uint8  *RSSI)
 {
 	int32 iStatus = SIMLIB_OK_NO_VALUE;
     uint32 i = 0;
 
-	if(Channel == 0)
+	if((Channels == 0) || (ChannelCount == 0))
 	{
 		iStatus = SIMLIB_INVALID_PARAM;
 		goto end_of_function;
 	}
 
+	if(*ChannelCount > 12)
+	{
+		*ChannelCount = 12;
+	}
+
 	OS_MutSemTake(SIMLIB_LibData.MutexID);
 
-	for(i=0; i < 12; ++i)
+	for(i=0; i < *ChannelCount; ++i)
 	{
-		*Channel[i] = SIMLIB_LibData.RCInputData.Channel[i];
+		Channels[i] = SIMLIB_LibData.RCInputData.Channel[i];
 	}
 	*RSSI = SIMLIB_LibData.RCInputData.RSSI;
 
@@ -532,13 +568,20 @@ end_of_function:
 }
 
 int32 SIMLIB_SetRCInputs(
-		const uint16 *Channel[12],
+		const uint16 *Channels,
+		uint16 ChannelCount,
 		uint8  RSSI)
 {
 	int32 iStatus = SIMLIB_OK_NO_VALUE;
     uint32 i = 0;
 
-	if(Channel == 0)
+	if(Channels == 0)
+	{
+		iStatus = SIMLIB_INVALID_PARAM;
+		goto end_of_function;
+	}
+
+	if(ChannelCount > 12)
 	{
 		iStatus = SIMLIB_INVALID_PARAM;
 		goto end_of_function;
@@ -546,9 +589,9 @@ int32 SIMLIB_SetRCInputs(
 
 	OS_MutSemTake(SIMLIB_LibData.MutexID);
 
-	for(i=0; i < 12; ++i)
+	for(i=0; i < ChannelCount; ++i)
 	{
-		SIMLIB_LibData.RCInputData.Channel[i] = *Channel[i];
+		SIMLIB_LibData.RCInputData.Channel[i] = Channels[i];
 	}
 	SIMLIB_LibData.RCInputData.RSSI = RSSI;
 	SIMLIB_LibData.RCInputData.DataState = SIMLIB_OK_FRESH;
@@ -563,23 +606,29 @@ end_of_function:
 
 
 int32 SIMLIB_GetActuatorControls(
-		float  *Control[16],
+		float  *Control,
+		uint32 *ControlCount,
 		uint8  *Mode)
 {
 	int32 iStatus = SIMLIB_OK_NO_VALUE;
 	uint32 i = 0;
 
-	if(Control == 0)
+	if((Control == 0) || (ControlCount == 0))
 	{
 		iStatus = SIMLIB_INVALID_PARAM;
 		goto end_of_function;
 	}
 
+	if(*ControlCount > 16)
+	{
+		*ControlCount = 16;
+	}
+
 	OS_MutSemTake(SIMLIB_LibData.MutexID);
 
-	for(i=0; i < 16; ++i)
+	for(i=0; i < *ControlCount; ++i)
 	{
-		*Control[i] = SIMLIB_LibData.ActuatorControlsData.Control[i];
+		Control[i] = SIMLIB_LibData.ActuatorControlsData.Control[i];
 	}
 	*Mode = SIMLIB_LibData.ActuatorControlsData.Mode;
 
@@ -596,11 +645,21 @@ end_of_function:
 }
 
 int32 SIMLIB_SetActuatorControls(
-		const float *Control[16],
+		const float *Control,
+		uint32 ControlCount,
 		uint8  Mode)
 {
 	int32 iStatus = SIMLIB_OK_NO_VALUE;
 	uint32 i = 0;
+	mavlink_message_t msg;
+	uint8 buffer[MAVLINK_MAX_PACKET_LEN];
+	mavlink_hil_actuator_controls_t actuatorControlsMsg;
+	uint32 length = 0;
+    //struct sockaddr_in si_sim;
+
+    //si_sim.sin_family = AF_INET;
+    //si_sim.sin_port = htons(36985);
+    //si_sim.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
 	if(Control == 0)
 	{
@@ -608,21 +667,124 @@ int32 SIMLIB_SetActuatorControls(
 		goto end_of_function;
 	}
 
+	if(ControlCount > 16)
+	{
+		iStatus = SIMLIB_INVALID_PARAM;
+		goto end_of_function;
+	}
+
 	OS_MutSemTake(SIMLIB_LibData.MutexID);
 
-	for(i=0; i < 16; ++i)
+	for(i=0; i < ControlCount; ++i)
 	{
-		SIMLIB_LibData.ActuatorControlsData.Control[i] = *Control[i];
+		SIMLIB_LibData.ActuatorControlsData.Control[i] = Control[i];
 	}
 	SIMLIB_LibData.ActuatorControlsData.Mode = Mode;
 	SIMLIB_LibData.ActuatorControlsData.DataState = SIMLIB_OK_FRESH;
 
 	OS_MutSemGive(SIMLIB_LibData.MutexID);
 
+	actuatorControlsMsg.time_usec = 0;
+	actuatorControlsMsg.flags = 0;
+	for(i=0; i < ControlCount; ++i)
+	{
+		actuatorControlsMsg.controls[i] = Control[i];
+	}
+	actuatorControlsMsg.mode = 129;
+
+	mavlink_msg_hil_actuator_controls_encode(1, 1, &msg, &actuatorControlsMsg);
+	length = mavlink_msg_to_send_buffer(buffer, &msg);
+
+	if(SIMLIB_LibData.Socket != 0)
+	{
+		struct sockaddr_in simAddr;
+		int len = sizeof(simAddr);
+
+	    bzero((char *) &simAddr, sizeof(simAddr));
+	    simAddr.sin_family      = AF_INET;
+	    simAddr.sin_addr.s_addr = inet_addr(SIMLIB_LibData.SendAddress);
+	    simAddr.sin_port        = htons(SIMLIB_LibData.SendPort);
+
+		sendto(SIMLIB_LibData.Socket, (char *)buffer, length, 0, (const struct sockaddr *)&simAddr, (socklen_t )len);
+	}
+
 	iStatus = SIMLIB_OK;
 
 end_of_function:
     return iStatus;
+}
+
+
+
+int32 SIMLIB_GetDistanceSensor(
+		uint16 *Minimum,
+		uint16 *Maximum,
+		uint16 *Current,
+		PX4_DistanceSensorType_t *Type,
+		uint8  *ID,
+		PX4_SensorOrientation_t  *Orientation,
+		uint8  *Covariance)
+{
+	int32 iStatus = SIMLIB_OK_NO_VALUE;
+
+	if(
+			(Minimum == 0) ||
+			(Maximum == 0) ||
+			(Current == 0) ||
+			(Type == 0) ||
+			(ID == 0) ||
+			(Orientation == 0) ||
+			(Covariance == 0))
+	{
+		iStatus = SIMLIB_INVALID_PARAM;
+		goto end_of_function;
+	}
+
+	OS_MutSemTake(SIMLIB_LibData.MutexID);
+
+	*Minimum = SIMLIB_LibData.DistanceSensorData.Minimum;
+	*Maximum = SIMLIB_LibData.DistanceSensorData.Maximum;
+	*Current = SIMLIB_LibData.DistanceSensorData.Current;
+	*Type = SIMLIB_LibData.DistanceSensorData.Type;
+	*ID = SIMLIB_LibData.DistanceSensorData.ID;
+	*Orientation = SIMLIB_LibData.DistanceSensorData.Orientation;
+	*Covariance = SIMLIB_LibData.DistanceSensorData.Covariance;
+
+	iStatus = SIMLIB_LibData.DistanceSensorData.DataState;
+	if(iStatus == SIMLIB_OK_FRESH)
+	{
+		SIMLIB_LibData.DistanceSensorData.DataState = SIMLIB_OK_STALE;
+	}
+
+	OS_MutSemGive(SIMLIB_LibData.MutexID);
+
+end_of_function:
+    return iStatus;
+}
+
+int32 SIMLIB_SetDistanceSensor(
+		uint16 Minimum,
+		uint16 Maximum,
+		uint16 Current,
+		PX4_DistanceSensorType_t Type,
+		uint8  ID,
+		PX4_SensorOrientation_t  Orientation,
+		uint8  Covariance)
+{
+	OS_MutSemTake(SIMLIB_LibData.MutexID);
+
+	SIMLIB_LibData.DistanceSensorData.Minimum = Minimum;
+	SIMLIB_LibData.DistanceSensorData.Maximum = Maximum;
+	SIMLIB_LibData.DistanceSensorData.Current = Current;
+	SIMLIB_LibData.DistanceSensorData.Type = Type;
+	SIMLIB_LibData.DistanceSensorData.ID = ID;
+	SIMLIB_LibData.DistanceSensorData.Orientation = Orientation;
+	SIMLIB_LibData.DistanceSensorData.Covariance = Covariance;
+	SIMLIB_LibData.DistanceSensorData.DataState = SIMLIB_OK_FRESH;
+
+	OS_MutSemGive(SIMLIB_LibData.MutexID);
+
+	return SIMLIB_OK;
 }
 
 

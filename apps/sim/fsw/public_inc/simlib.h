@@ -67,18 +67,41 @@ int32 SIMLIB_SetGPS(
 		uint8            SatellitesVisible);
 
 int32 SIMLIB_GetRCInputs(
-		uint16 *Channel[12],
+		uint16 *Channels,
+		uint16 *ChannelCount,
 		uint8  *RSSI);
 int32 SIMLIB_SetRCInputs(
-		const uint16 *Channel[12],
+		const uint16 *Channels,
+		uint16 ChannelCount,
 		uint8  RSSI);
 
 int32 SIMLIB_GetActuatorControls(
-		float  *Control[16],
+		float  *Control,
+		uint32 *ControlCount,
 		uint8  *Mode);
 int32 SIMLIB_SetActuatorControls(
-		const float *Control[16],
+		const float *Control,
+		uint32 ControlCount,
 		uint8  Mode);
+
+int32 SIMLIB_GetDistanceSensor(
+		uint16 *Minimum,
+		uint16 *Maximum,
+		uint16 *Current,
+		PX4_DistanceSensorType_t *Type,
+		uint8  *ID,
+		PX4_SensorOrientation_t  *Orientation,
+		uint8  *Covariance);
+int32 SIMLIB_SetDistanceSensor(
+		uint16 Minimum,
+		uint16 Maximum,
+		uint16 Current,
+		PX4_DistanceSensorType_t Type,
+		uint8  ID,
+		PX4_SensorOrientation_t  Orientation,
+		uint8  Covariance);
+
+void SIMLIB_SetSocket(int Socket, int Port, char *Address);
 
 
 #ifdef __cplusplus

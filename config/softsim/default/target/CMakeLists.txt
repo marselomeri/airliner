@@ -267,8 +267,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/ms5611/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5611
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5611/src/ms5611_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5611/src/ms5611_spi.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5611/src/ms5611_custom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ms5611_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5611_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5611_perfids.h
