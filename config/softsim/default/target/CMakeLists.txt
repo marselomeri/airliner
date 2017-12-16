@@ -389,3 +389,13 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_perfids.h
 )
 
+add_airliner_app(
+    mavlink
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mavlink
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mavlink/mavlink_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mavlink_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mavlink_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mavlink_perfids.h
+)

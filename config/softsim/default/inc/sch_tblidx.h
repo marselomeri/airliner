@@ -102,6 +102,9 @@
 #define BAT_SEND_HK_MIDX		    117
 #define BAT_WAKEUP_MIDX			    118
 
+#define MAVLINK_WAKEUP_MIDX         119
+#define MAVLINK_SEND_HK_MIDX        120
+
 #define GPS_READ_SENSOR_MIDX 	    122
 #define GPS_SEND_HK_MIDX        	123
 
