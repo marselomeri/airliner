@@ -38,10 +38,6 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
 
 add_airliner_app(
-    sim
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build)
-
-add_airliner_app(
     sch
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
