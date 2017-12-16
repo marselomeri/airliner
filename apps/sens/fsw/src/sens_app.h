@@ -55,20 +55,7 @@ extern "C" {
 #include "sens_events.h"
 #include "sens_tbldefs.h"
 #include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -78,14 +65,14 @@ extern "C" {
  *************************************************************************/
 typedef struct
 {
-    PX4_ActuatorControlsMsg_t ActuatorControls0Msg;
-    PX4_InputRcMsg_t InputRcMsg;
+    PX4_ActuatorControlsMsg_t     ActuatorControls0Msg;
+    PX4_InputRcMsg_t              InputRcMsg;
     PX4_DifferentialPressureMsg_t DifferentialPressureMsg;
-    PX4_SensorBaroMsg_t SensorBaroMsg;
-    PX4_SensorAccelMsg_t SensorAccelMsg;
-    PX4_SensorMagMsg_t SensorMagMsg;
-    PX4_SensorGyroMsg_t SensorGyroMsg;
-    PX4_VehicleControlModeMsg_t VehicleControlModeMsg;
+    PX4_SensorBaroMsg_t           SensorBaroMsg;
+    PX4_SensorAccelMsg_t          SensorAccelMsg;
+    PX4_SensorMagMsg_t            SensorMagMsg;
+    PX4_SensorGyroMsg_t           SensorGyroMsg;
+    PX4_VehicleControlModeMsg_t   VehicleControlModeMsg;
 } SENS_CurrentValueTable_t;
 
 
@@ -116,14 +103,15 @@ public:
 
     /** \brief Config Table Pointer */
     SENS_ConfigTbl_t* ConfigTblPtr;
+
     /** \brief Output Data published at the end of cycle */
-    PX4_ActuatorControlsMsg_t ActuatorControls3Msg;
-    PX4_BatteryStatusMsg_t BatteryStatusMsg;
-    PX4_AirspeedMsg_t AirspeedMsg;
-    PX4_RcChannelsMsg_t RcChannelsMsg;
+    PX4_ActuatorControlsMsg_t      ActuatorControls3Msg;
+    PX4_BatteryStatusMsg_t         BatteryStatusMsg;
+    PX4_AirspeedMsg_t              AirspeedMsg;
+    PX4_RcChannelsMsg_t            RcChannelsMsg;
     PX4_ManualControlSetpointMsg_t ManualControlSetpointMsg;
-    //PX4_SensorPreflightMsg_t SensorPreflightMsg;
-    PX4_SensorCombinedMsg_t SensorCombinedMsg;
+    //PX4_SensorPreflightMsg_t     SensorPreflightMsg;
+    PX4_SensorCombinedMsg_t        SensorCombinedMsg;
 
     bool Armed;
 

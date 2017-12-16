@@ -642,7 +642,7 @@ void SENS::AppMain()
 
 void SENS::CyclicProcessing(void)
 {
-	/* Check vehicle status for changes to publication state */
+	SensorCombinedMsg.
 }
 
 
