@@ -119,9 +119,9 @@ boolean MPU9250_Read_Gyro(int16 *rawX_f, int16 *rawY_f, int16 *rawZ_f)
 
 	MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
-	*rawX_f = ((calX_f - oMPU9250.Diag.Calibration.GyroXBias) / oMPU9250.Diag.Calibration.GyroXCoef) * oMPU9250.Diag.Calibration.GyroDivider;
-	*rawY_f = ((calY_f - oMPU9250.Diag.Calibration.GyroYBias) / oMPU9250.Diag.Calibration.GyroYCoef) * oMPU9250.Diag.Calibration.GyroDivider;
-	*rawZ_f = ((calZ_f - oMPU9250.Diag.Calibration.GyroZBias) / oMPU9250.Diag.Calibration.GyroZCoef) * oMPU9250.Diag.Calibration.GyroDivider;
+	*rawX_f = ((calX_f - oMPU9250.Diag.Calibration.GyroXOffset) / oMPU9250.Diag.Calibration.GyroXScale) * oMPU9250.Diag.Calibration.GyroDivider;
+	*rawY_f = ((calY_f - oMPU9250.Diag.Calibration.GyroYOffset) / oMPU9250.Diag.Calibration.GyroYScale) * oMPU9250.Diag.Calibration.GyroDivider;
+	*rawZ_f = ((calZ_f - oMPU9250.Diag.Calibration.GyroZOffset) / oMPU9250.Diag.Calibration.GyroZScale) * oMPU9250.Diag.Calibration.GyroDivider;
 
 	return TRUE;
 }
@@ -141,9 +141,9 @@ boolean MPU9250_Read_Accel(int16 *rawX, int16 *rawY, int16 *rawZ)
 
 	MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
-	*rawX = ((calX_f - oMPU9250.Diag.Calibration.AccXBias) / oMPU9250.Diag.Calibration.AccXCoef) * oMPU9250.Diag.Calibration.AccDivider;
-	*rawY = ((calY_f - oMPU9250.Diag.Calibration.AccYBias) / oMPU9250.Diag.Calibration.AccYCoef) * oMPU9250.Diag.Calibration.AccDivider;
-	*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.AccZBias) / oMPU9250.Diag.Calibration.AccZCoef) * oMPU9250.Diag.Calibration.AccDivider;
+	*rawX = ((calX_f - oMPU9250.Diag.Calibration.AccXOffset) / oMPU9250.Diag.Calibration.AccXScale) * oMPU9250.Diag.Calibration.AccDivider;
+	*rawY = ((calY_f - oMPU9250.Diag.Calibration.AccYOffset) / oMPU9250.Diag.Calibration.AccYScale) * oMPU9250.Diag.Calibration.AccDivider;
+	*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.AccZOffset) / oMPU9250.Diag.Calibration.AccZScale) * oMPU9250.Diag.Calibration.AccDivider;
 
 	return TRUE;
 }
@@ -165,9 +165,9 @@ boolean MPU9250_Read_Mag(int16 *rawX, int16 *rawY, int16 *rawZ)
 
 	//MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
-	rawX_f = ((calX_f * 1000.0f) - oMPU9250.Diag.Calibration.MagXBias) / (((((magXAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagXCoef);
-	rawY_f = ((calY_f * 1000.0f) - oMPU9250.Diag.Calibration.MagYBias) / (((((magYAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagYCoef);
-	rawZ_f = ((calZ_f * 1000.0f) - oMPU9250.Diag.Calibration.MagZBias) / (((((magZAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagZCoef);
+	rawX_f = ((calX_f * 1000.0f) - oMPU9250.Diag.Calibration.MagXOffset) / (((((magXAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagXScale);
+	rawY_f = ((calY_f * 1000.0f) - oMPU9250.Diag.Calibration.MagYOffset) / (((((magYAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagYScale);
+	rawZ_f = ((calZ_f * 1000.0f) - oMPU9250.Diag.Calibration.MagZOffset) / (((((magZAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagZScale);
 
 	*rawX = rawX_f;
 	*rawY = rawY_f;

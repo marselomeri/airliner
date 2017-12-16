@@ -765,9 +765,9 @@ void MPU9250::ReadDevice(void)
     //}
 
     /* Mag Calibrate */
-    SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXCoef) + Diag.Calibration.MagXBias) / 1000.0f;
-    SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagYCoef) + Diag.Calibration.MagYBias) / 1000.0f;
-    SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZCoef) + Diag.Calibration.MagZBias) / 1000.0f;
+    SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXScale) + Diag.Calibration.MagXOffset) / 1000.0f;
+    SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagYScale) + Diag.Calibration.MagYOffset) / 1000.0f;
+    SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZScale) + Diag.Calibration.MagZOffset) / 1000.0f;
 
     ///* Mag Scale, Range, DeviceID */
     //SensorMag.Scaling = -1.0f;

@@ -642,7 +642,7 @@ void SENS::AppMain()
 
 void SENS::CyclicProcessing(void)
 {
-	SensorCombinedMsg.
+	//SensorCombinedMsg.
 }
 
 

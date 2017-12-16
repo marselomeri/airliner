@@ -593,8 +593,7 @@ uint64 GPS_Custom_Get_Time_Uint64(void)
     timeStamp = cfeTimeStamp.Seconds * 1000000;
     timeStamp += cfeTimeStamp.Subseconds / 1000;
 
-end_of_function;
-
+end_of_function:
     return timeStamp;
 }
 
