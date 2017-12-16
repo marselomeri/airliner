@@ -112,7 +112,7 @@ int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
 
 	if((Buffer == 0) || (Size == 0))
 	{
-		Status = -1;
+		iStatus = -1;
 		goto end_of_function;
 	}
 
