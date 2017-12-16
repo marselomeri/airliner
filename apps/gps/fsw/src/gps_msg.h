@@ -150,7 +150,8 @@ typedef struct
     /** \gpstlmmnemonic \GPS_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
-
+    /** \brief App State */
+    uint8              State;
 } GPS_HkTlm_t;
 
 

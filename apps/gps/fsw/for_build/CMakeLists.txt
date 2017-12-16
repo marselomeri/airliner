@@ -5,6 +5,7 @@ add_airliner_app_def(gps
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_config_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_custom.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_tbldefs.h
@@ -29,6 +30,8 @@ add_airliner_app_unit_test(gps-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_testrunner.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_custom_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/gps_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/gps_config_utils.cpp

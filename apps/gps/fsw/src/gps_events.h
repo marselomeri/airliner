@@ -248,7 +248,45 @@ typedef enum {
 **  #CFE_TBL_Load function.
 **
 */
-	GPS_CFGTBL_LOAD_ERR_EID,
+    GPS_CFGTBL_LOAD_ERR_EID,
+/** \brief <tt> 'GPS - ' </tt>
+**  \event <tt> 'GPS - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when GPS has
+**  had an error in uninitialization.
+**
+*/
+    GPS_UNINIT_ERR_EID,
+
+/** \brief <tt> 'GPS - ' </tt>
+**  \event <tt> 'GPS - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the GPS has
+**  had an error in initialization.
+**
+*/
+    GPS_INIT_ERR_EID,
+
+/** \brief <tt> 'GPS - ' </tt>
+**  \event <tt> 'GPS - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the GPS has
+**  had an error in initialization.
+**
+*/
+    GPS_READ_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	GPS_EVT_CNT
