@@ -41,15 +41,45 @@ int32 AMC::InitDevice(void)
 }
 
 
+
+float AMC_Map(float x, uint16 in_min, uint16 in_max)
+{
+	float out = (x - in_min) * (1.0f - 0.0f) / (in_max - in_min) + 0.0f;
+
+	if(out > 1.0f)
+	{
+		out = 1.0f;
+	}
+
+	if(out < 0.0f)
+	{
+		out = 0.0f;
+	}
+
+	return out;
+}
+
+
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
 	float controls[16];
 	uint32 controlCount = 16;
+	uint32 i = 0;
 
-	for(uint32 i = 0; i < 16; ++i)
+	//OS_printf("*********************\n");
+	//OS_printf("Min = %u  Max = %u\n", PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
+    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
+    {
+    	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
+    //	OS_printf("%f(%u) ", controls[i], PWM[i]);
+    }
+
+	for(i = AMC_MAX_MOTOR_OUTPUTS; i < 16; ++i)
 	{
-		controls[i] = 1.0;
+		controls[i] = 0.0f;
+	//	OS_printf("%f ", controls[i]);
 	}
+    //OS_printf("\n");
 
 	SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }
