@@ -163,7 +163,7 @@ boolean MPU9250_Read_Mag(int16 *rawX, int16 *rawY, int16 *rawZ)
 
 	SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
 
-	//MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
+	MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
 	rawX_f = ((calX_f * 1000.0f) - oMPU9250.Diag.Calibration.MagXOffset) / (((((magXAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagXScale);
 	rawY_f = ((calY_f * 1000.0f) - oMPU9250.Diag.Calibration.MagYOffset) / (((((magYAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagYScale);
@@ -256,4 +256,3 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
 
 	return TRUE;
 }
-
