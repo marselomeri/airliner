@@ -709,7 +709,7 @@ int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum)
        /* Add "!" in case this is the last line read from file */
        /* Declaration of SBN.FileData[SBN_MAX_NETWORK_PEERS + 1] ensures */
        /* writing to array element [LineNum + 1] is safe */
-       strncpy((char *)&PX4BR_AppData.Peer[LineNum + 1].Name,"!", PX4BR_MAX_PEERNAME_LENGTH);
+       PX4BR_AppData.Peer[LineNum + 1].Name[0] = "!";
    }
 
    return PX4BR_OK;

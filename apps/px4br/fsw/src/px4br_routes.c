@@ -185,7 +185,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 		{"sensor_baro", (PX4_ENCODE_FUNC) PX4BR_SensorBaro_Enc, (PX4_DECODE_FUNC) 0, PX4_SENSOR_BARO_MID, px4_sensor_baro_pb_size, 1, 0, 0},
 //		{"sensor_combined", (PX4_ENCODE_FUNC) PX4BR_SensorCombined_Enc, (PX4_DECODE_FUNC) PX4BR_SensorCombined_Dec, PX4_SENSOR_COMBINED_MID, px4_sensor_combined_pb_size, 1, 0, 0},
 		{"sensor_correction", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_SensorCorrection_Dec, PX4_SENSOR_CORRECTION_MID, px4_sensor_correction_pb_size, 1, 0, 0},
-		{"sensor_gyro", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_SensorGyro_Dec, PX4_SENSOR_GYRO_MID, px4_sensor_gyro_pb_size, 1, 0, 0},
+		{"sensor_gyro", (PX4_ENCODE_FUNC) PX4BR_SensorGyro_Enc, (PX4_DECODE_FUNC) 0, PX4_SENSOR_GYRO_MID, px4_sensor_gyro_pb_size, 1, 0, 0},
 		{"sensor_mag", (PX4_ENCODE_FUNC) PX4BR_SensorMag_Enc, (PX4_DECODE_FUNC) 0, PX4_SENSOR_MAG_MID, px4_sensor_mag_pb_size, 1, 0, 0},
 //		{"servorail_status", (PX4_ENCODE_FUNC) PX4BR_ServorailStatus_Enc, (PX4_DECODE_FUNC) PX4BR_ServorailStatus_Dec, PX4_SERVORAIL_STATUS_MID, px4_servorail_status_pb_size, 1, 0, 0},
 //		{"subsystem_info", (PX4_ENCODE_FUNC) PX4BR_SubsystemInfo_Enc, (PX4_DECODE_FUNC) PX4BR_SubsystemInfo_Dec, PX4_SUBSYSTEM_INFO_MID, px4_subsystem_info_pb_size, 1, 0, 0},
