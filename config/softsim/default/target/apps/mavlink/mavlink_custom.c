@@ -68,7 +68,7 @@ int32 MAVLINK_InitCustom(void)
     }
 
     setsockopt(MAVLINK_IngestSocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
-    //fcntl(MAVLINK_IngestSocketData.Socket, F_SETFL, O_NONBLOCK);
+    fcntl(MAVLINK_IngestSocketData.Socket, F_SETFL, O_NONBLOCK);
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
