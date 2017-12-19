@@ -39,7 +39,6 @@ incremental==17.5.0
 itsdangerous==0.24
 Jinja2==2.8
 lxml==3.5.0
-Magic-file-extensions==0.2
 MarkupSafe==0.23
 matplotlib==2.1.0
 meld==3.14.2
@@ -70,7 +69,6 @@ redis==2.10.6
 requests==2.18.4
 selenium==3.8.0
 six==1.11.0
-snowballstemmer==1.2.1
 SOAPpy==0.12.22
 socketIO-client==0.7.2
 Sphinx==1.6.5
