@@ -49,16 +49,16 @@ typedef struct
 	uint16 Port;
 } MAVLINK_SocketData_t;
 
-MAVLINK_SocketData_t MAVLINK_IngestSocketData = {0, 5014};
-MAVLINK_SocketData_t MAVLINK_OutputSocketData = {0, 14550};
+MAVLINK_SocketData_t MAVLINK_IngestSocketData = {0, MAVLINK_INGEST_PORT};
+MAVLINK_SocketData_t MAVLINK_OutputSocketData = {0, MAVLINK_GCS_PORT};
 
 int32 MAVLINK_InitCustom(void)
 {
     int32 Status = 0;
     int reuseaddr = 1;
 	struct sockaddr_in address;
-	struct sockaddr_in serial_address;
 
+	/* Initialize ingest socket */
     if((MAVLINK_IngestSocketData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
     {
     	CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,
@@ -68,7 +68,7 @@ int32 MAVLINK_InitCustom(void)
     }
 
     setsockopt(MAVLINK_IngestSocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
-    fcntl(MAVLINK_IngestSocketData.Socket, F_SETFL, O_NONBLOCK);
+    //fcntl(MAVLINK_IngestSocketData.Socket, F_SETFL, O_NONBLOCK);
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
@@ -83,9 +83,10 @@ int32 MAVLINK_InitCustom(void)
 	}
 
 	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,
-					  "Mavlink UDP command input enabled on port %u.",
+					  "Mavlink UDP ingest enabled on port %u.",
 					  MAVLINK_IngestSocketData.Port);
 
+	/* Initialize output socket */
 	if((MAVLINK_OutputSocketData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
 	{
 		CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,
@@ -109,7 +110,7 @@ int32 MAVLINK_InitCustom(void)
 	}
 
 	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,
-					  "Mavlink UDP telemetry enabled on port %u.",
+					  "Mavlink UDP output enabled on IP: %s Port: %u.", MAVLINK_GCS_IP,
 					  MAVLINK_OutputSocketData.Port);
 
 end_of_function:
@@ -120,7 +121,6 @@ end_of_function:
 
 int32 MAVLINK_ReadMessage(char* buffer, uint32* size)
 {
-    //OS_printf("In MAVLINK read message\n");
 	*size = recv(MAVLINK_IngestSocketData.Socket,
 					   (char *)buffer,
 					   (size_t)size, 0);
@@ -137,7 +137,7 @@ int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
 
     /* Send message via UDP socket */
     s_addr.sin_family      = AF_INET;
-    s_addr.sin_addr.s_addr = inet_addr("10.10.0.13");//htonl (INADDR_LOOPBACK);
+    s_addr.sin_addr.s_addr = inet_addr(MAVLINK_GCS_IP);
     s_addr.sin_port        = htons(MAVLINK_OutputSocketData.Port);
 
     status = sendto(MAVLINK_OutputSocketData.Socket, (char *)buffer, Size, 0,
@@ -153,6 +153,7 @@ int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
 
 int32 MAVLINK_CleanupCustom(void)
 {
+	close(MAVLINK_OutputSocketData.Socket);
     return close(MAVLINK_IngestSocketData.Socket);
 }
 

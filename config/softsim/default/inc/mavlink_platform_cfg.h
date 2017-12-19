@@ -124,10 +124,15 @@ extern "C" {
 */
 #define MAVLINK_STARTUP_TIMEOUT_MSEC    (5000)
 
+
 #define MAVLINK_MSG_PARAM_NAME_LEN      (64)
 
 #define MAVLINK_PARAM_SYSTEM_ID         (1)
-#define MAVLINK_PARAM_COMPONENT_ID         (1)
+#define MAVLINK_PARAM_COMPONENT_ID      (1)
+#define MAVLINK_GCS_IP                  ("10.10.0.13")
+#define MAVLINK_GCS_PORT                (14550)
+#define MAVLINK_INGEST_PORT             (5014)
+
 
 #ifdef __cplusplus
 }
