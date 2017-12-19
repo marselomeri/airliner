@@ -50,7 +50,7 @@ typedef struct
 } MAVLINK_SocketData_t;
 
 MAVLINK_SocketData_t MAVLINK_IngestSocketData = {0, 5014};
-MAVLINK_SocketData_t MAVLINK_OutputSocketData = {0, 5015};
+MAVLINK_SocketData_t MAVLINK_OutputSocketData = {0, 14550};
 
 int32 MAVLINK_InitCustom(void)
 {
@@ -86,6 +86,32 @@ int32 MAVLINK_InitCustom(void)
 					  "Mavlink UDP command input enabled on port %u.",
 					  MAVLINK_IngestSocketData.Port);
 
+	if((MAVLINK_OutputSocketData.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+	{
+		CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,
+			   "Socket errno: %i", errno);
+			Status = -1;
+			goto end_of_function;
+	}
+
+	setsockopt(MAVLINK_OutputSocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+
+	bzero((char *) &address, sizeof(address));
+	address.sin_family      = AF_INET;
+	address.sin_addr.s_addr = htonl (INADDR_ANY);
+	address.sin_port        = htons(MAVLINK_OutputSocketData.Port);
+
+	if ( (bind(MAVLINK_OutputSocketData.Socket, (struct sockaddr *) &address, sizeof(address)) < 0) )
+	{
+		CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
+		Status = -1;
+		goto end_of_function;
+	}
+
+	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,
+					  "Mavlink UDP telemetry enabled on port %u.",
+					  MAVLINK_OutputSocketData.Port);
+
 end_of_function:
     return Status;
 
@@ -111,10 +137,10 @@ int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
 
     /* Send message via UDP socket */
     s_addr.sin_family      = AF_INET;
-    s_addr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);//inet_addr("10.10.0.13");
-    s_addr.sin_port        = htons(MAVLINK_IngestSocketData.Port);
+    s_addr.sin_addr.s_addr = inet_addr("10.10.0.13");//htonl (INADDR_LOOPBACK);
+    s_addr.sin_port        = htons(MAVLINK_OutputSocketData.Port);
 
-    status = sendto(MAVLINK_IngestSocketData.Socket, (char *)buffer, Size, 0,
+    status = sendto(MAVLINK_OutputSocketData.Socket, (char *)buffer, Size, 0,
                             (struct sockaddr *) &s_addr,
                              sizeof(s_addr));
     if (status < 0)
