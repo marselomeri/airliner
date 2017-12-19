@@ -12,7 +12,7 @@ class Test_Toolkit(unittest.TestCase):
     def setUp(self):
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
         self.mode = int(self.r.get('mode'))
-        self.db_path = self.r.get('app_path')
+        self.db_path = '../../'#self.r.get('app_path')
         self.number_of_workers = self.r.get('number_of_workers')
         self.r.set('instance', self.r.get('default_instance'))
         self.conn = sqlite3.connect(self.db_path + '/test_database', timeout=5)
