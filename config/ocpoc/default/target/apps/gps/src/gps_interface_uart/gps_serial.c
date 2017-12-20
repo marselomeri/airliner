@@ -206,7 +206,7 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
         /* flush input and wait for at least 20 ms silence */
         tcflush(GPS_AppCustomData.DeviceFd, TCIFLUSH);
         usleep(20 * 1000);
-        fcflush(GPS_AppCustomData.DeviceFd, TCIFLUSH);
+        tcflush(GPS_AppCustomData.DeviceFd, TCIFLUSH);
 
         /* Send a CFG-PRT message to set the UBX protocol for in and out
          * and leave the baudrate as it is, we just want an ACK-ACK for this */
@@ -587,7 +587,7 @@ boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uin
     header.length = length;
     
     /* Calculate header checksum, skip two sync bytes */
-    returnBool = GPS_Custom_SetChecksum(((uint8_t *)&header) + 2, 
+    returnBool = GPS_Custom_SetChecksum((uint8 *)&header + 2, 
             sizeof(header) - 2, &checksum); 
     if (FALSE == returnBool)
     {
@@ -703,10 +703,11 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
         OS_printf("bytesRead custom receive = %d\n", bytesRead);
         for(i = 0; i < bytesRead; ++i)
         {
-            OS_printf("bytes = %hhx\n", from_gps_data[i]);
+            OS_printf("bytes = %hhx ", from_gps_data[i]);
             /* TODO remove me */
             fprintf(fp, "bytes = %hhx\n", from_gps_data[i]);
         }
+        OS_printf("\n");
         
         /* end todo*/
         for(i = 0; (FALSE == timedOut) && (i < bytesRead); ++i)
