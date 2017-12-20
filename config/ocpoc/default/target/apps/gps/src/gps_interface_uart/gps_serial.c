@@ -863,18 +863,18 @@ boolean GPS_Custom_Configure(void)
         goto end_of_function;
     }
     
-    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_PVT, 1);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_PVT, 1);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
-    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
-            GPS_ACK_TIMEOUT);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            //GPS_ACK_TIMEOUT);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
     //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_DOP, 1);
     //if(FALSE == returnBool)
