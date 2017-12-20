@@ -68,10 +68,6 @@
 *************************************************************************/
 GPS_AppCustomData_t GPS_AppCustomData;
 
-/* TODO remove me */
-FILE *fp;
-FILE *fp2;
-
 /************************************************************************
 ** Local Variables
 *************************************************************************/
@@ -87,17 +83,12 @@ void GPS_Custom_InitData(void)
     bzero(&GPS_AppCustomData, sizeof(GPS_AppCustomData));
     GPS_AppCustomData.Baud = GPS_SERIAL_IO_SPEED;
     GPS_Parser_Reset();
-    
-    /* TODO remove me */
-    fp = fopen("gps.txt", "w");
-    fp2 = fopen("gps_out.txt", "wb");
 }
 
 
 boolean GPS_Custom_Init()
 {
     boolean returnBool = TRUE;
-    uint32 baudRateSet = 0;
 
     GPS_AppCustomData.DeviceFd = open(GPS_SERIAL_DEVICE_PATH, O_RDWR | O_NOCTTY);
     if (GPS_AppCustomData.DeviceFd < 0) 
@@ -108,19 +99,11 @@ boolean GPS_Custom_Init()
         goto end_of_function;
     }
 
-    returnBool = GPS_Custom_Negotiate_Baud(&baudRateSet, GPS_AppCustomData.Baud);
+    returnBool = GPS_Custom_Negotiate_Baud(GPS_AppCustomData.Baud);
     if (FALSE == returnBool)
     {
         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "GPS Device negotiate baud error");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    else if (baudRateSet != GPS_AppCustomData.Baud)
-    {
-        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "GPS Device baud rate set %lu is not the baud configured", 
-            baudRateSet);
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -176,22 +159,14 @@ end_of_function:
 }
 
 
-boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
+boolean GPS_Custom_Negotiate_Baud(const uint32 Baud)
 {
     uint8 i = 0;
     uint32 baudRate = 0;
     boolean returnBool = TRUE;
-    boolean success = FALSE;
+    /* TODO use struct defined in gps_ubx_msg instead */
     GPS_Payload_TX_CFG_PRT_t portConfig[2];
     const uint32 baudRates[] = {9600, 38400, 19200, 57600, 115200, 230400};
-    
-    if(0 == BaudRateSet)
-    {
-        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "GPS negotiate baud null pointer error");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
 
     for (i = 0; i < sizeof(baudRates) / sizeof(baudRates[0]); i++)
     {
@@ -231,7 +206,6 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
         printf("portConfig[0].outProtoMask %hu \n", portConfig[0].outProtoMask);
         printf("portConfig[0].flags %hu \n", portConfig[0].flags);
         printf("portConfig[0].reserved2 %hu \n", portConfig[0].reserved2);
-        
         printf("portConfig[1].portID %hhu \n", portConfig[1].portID);
         printf("portConfig[1].reserved1 %hhu \n", portConfig[1].reserved1);
         printf("portConfig[1].txReady %hu \n", portConfig[1].txReady);
@@ -252,6 +226,7 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
             continue;
         }
 
+        /* If an ACK is received here we've matched baud rates */
         returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
                GPS_ACK_TIMEOUT);
         if(FALSE == returnBool)
@@ -259,21 +234,38 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
             /* WaitForAck failed try the next baud rate */
             continue;
         }
-
+        
         /* Send a CFG-PRT message again, this time change the baudrate */
         memset(portConfig, 0, 2 * sizeof(GPS_Payload_TX_CFG_PRT_t));
         portConfig[0].portID        = GPS_TX_CFG_PRT_PORTID;
         portConfig[0].mode          = GPS_TX_CFG_PRT_MODE;
-        //portConfig[0].baudRate      = Baud;
-        portConfig[0].baudRate      = GPS_SERIAL_IO_SPEED;
+        portConfig[0].baudRate      = Baud;
         portConfig[0].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
         portConfig[0].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
         portConfig[1].portID        = GPS_TX_CFG_PRT_PORTID_USB;
         portConfig[1].mode          = GPS_TX_CFG_PRT_MODE;
-        //portConfig[1].baudRate      = Baud;
-        portConfig[1].baudRate      = GPS_SERIAL_IO_SPEED;
+        portConfig[1].baudRate      = Baud;
         portConfig[1].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
         portConfig[1].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
+
+        printf("portConfig[0].portID %hhu \n", portConfig[0].portID);
+        printf("portConfig[0].reserved1 %hhu \n", portConfig[0].reserved1);
+        printf("portConfig[0].txReady %hu \n", portConfig[0].txReady);
+        printf("portConfig[0].mode %u \n", portConfig[0].mode);
+        printf("portConfig[0].baudRate %u \n", portConfig[0].baudRate);
+        printf("portConfig[0].inProtoMask %hu \n", portConfig[0].inProtoMask);
+        printf("portConfig[0].outProtoMask %hu \n", portConfig[0].outProtoMask);
+        printf("portConfig[0].flags %hu \n", portConfig[0].flags);
+        printf("portConfig[0].reserved2 %hu \n", portConfig[0].reserved2);
+        printf("portConfig[1].portID %hhu \n", portConfig[1].portID);
+        printf("portConfig[1].reserved1 %hhu \n", portConfig[1].reserved1);
+        printf("portConfig[1].txReady %hu \n", portConfig[1].txReady);
+        printf("portConfig[1].mode %u \n", portConfig[1].mode);
+        printf("portConfig[1].baudRate %u \n", portConfig[1].baudRate);
+        printf("portConfig[1].inProtoMask %hu \n", portConfig[1].inProtoMask);
+        printf("portConfig[1].outProtoMask %hu \n", portConfig[1].outProtoMask);
+        printf("portConfig[1].flags %hu \n", portConfig[1].flags);
+        printf("portConfig[1].reserved2 %hu \n", portConfig[1].reserved2);
 
         /* send config message */
         returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_PRT, 
@@ -285,31 +277,31 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
         
         /* no ACK is expected here, but read the buffer anyway in case 
          * we actually get an ACK */
-        returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
-                GPS_ACK_TIMEOUT);
+        //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
+                //GPS_ACK_TIMEOUT);
         
-        if (GPS_AppCustomData.Baud != baudRate)
+        /* If the originally baud negotiated is not the baud just set... */
+        if (Baud != baudRate)
         {
-            OS_printf("Didn't set correct baud %d\n", GPS_AppCustomData.Baud);
-            returnBool = GPS_Custom_Set_Baud(baudRate);
+            /* Set the same baudrate we configured so both sides 
+             * now match speeds */
+            returnBool = GPS_Custom_Set_Baud(Baud);
             if (FALSE == returnBool)
             {
                 returnBool = FALSE;
                 goto end_of_function;
             }
-            *BaudRateSet = baudRate;
         }
         /* at this point we have correct baudrate on both ends */
-        success = TRUE;
         break;
     }
     
-    if(TRUE != success)
+    /* If connection or baudrate detection failed */
+    if (i >= sizeof(baudRates) / sizeof(baudRates[0]))
     {
-        /* TODO remove me */
-        fclose(fp);
-        fclose(fp2);
         returnBool = FALSE;
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "GPS connection or baudrate detection failed");
     }
 
 end_of_function:
@@ -320,9 +312,6 @@ end_of_function:
 
 boolean GPS_Custom_Set_Baud(const uint32 Baud)
 {
-    /* TODO remove me */
-    fprintf(fp, "baud set = %d\n", Baud);
-
     int speed = 0;
     int termios_state = 0;
     boolean returnBool = TRUE;
@@ -699,16 +688,12 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
         }
 
         bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
-        /* TODO remove me*/
-        OS_printf("bytesRead custom receive = %d\n", bytesRead);
+        /* REMOVE ME */
         for(i = 0; i < bytesRead; ++i)
         {
             OS_printf("bytes = %hhx ", from_gps_data[i]);
-            /* TODO remove me */
-            fprintf(fp, "bytes = %hhx\n", from_gps_data[i]);
         }
         OS_printf("\n");
-        
         /* end todo*/
         for(i = 0; (FALSE == timedOut) && (i < bytesRead); ++i)
         {
@@ -751,5 +736,51 @@ end_of_function:
 return returnBool;
 }
 
+
+boolean GPS_Custom_Configure_Msg_Rates(void)
+{
+    boolean returnBool = TRUE;
+
+    /* TODO move this struct define to gps_ubx_msg */
+    GPS_Payload_TX_CFG_Rate_t rateConfig;
+    
+    GPS_CFG_NAV5_t navConfig;
+    
+    
+    /* Setup rate configuration */
+    memset(rateConfig, 0, sizeof(GPS_Payload_TX_CFG_Rate_t));
+    rateConfig.measRate = GPS_TX_CFG_RATE_MEASINTERVAL;
+    rateConfig.navRate  = GPS_TX_CFG_RATE_NAVRATE;
+    rateConfig.timeRef  = GPS_TX_CFG_RATE_TIMEREF;
+    
+    /* Setup NAV5 configuration */
+    memset(navConfig, 0, sizeof(GPS_CFG_NAV5_t));
+    navConfig.mask     = GPS_TX_CFG_NAV5_MASK;
+    navConfig.dynModel = GPS_TX_CFG_NAV5_FIXMODE;
+    navConfig.fixMode  = GPS_TX_CFG_NAV5_DYNMODEL;
+    
+    
+    /* Setup SBAS configuration */
+    
+     
+    ///* Send a CFG-RATE message to define update rate */
+    //returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RATE, 
+                //(uint8 *)rateConfig, sizeof(GPS_Payload_TX_CFG_Rate_t));
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+    
+    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_RATE, 
+           //GPS_ACK_TIMEOUT);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+    
+end_of_function:
+
+    return returnBool;
+}
 
 

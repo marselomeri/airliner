@@ -101,6 +101,13 @@ extern "C" {
 */
 #define GPS_MESSAGE_ID_CFG_PRT                    (0x00)
 
+/** \brief Message ID rate configuration.
+**
+**  \par Description:
+**       Message ID for rate configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_RATE                   (0x08)
+
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
 **
@@ -136,6 +143,52 @@ extern "C" {
 **       Port interface number.
 */
 #define GPS_TX_CFG_PRT_PORTID_USB                 (0x03)
+/* TX CFG-Rate message contents */
+
+/** \brief Measurement interval.
+**
+**  \par Description:
+**       The elapsed time between GNSS measurements. 200ms for 5Hz.
+*/
+#define GPS_TX_CFG_RATE_MEASINTERVAL              (200)
+
+/** \brief Navigation measurement rate.
+**
+**  \par Description:
+**       This parameter is ignosed and the navRate is fixed to 1 in 
+**       protocol versions less than 18.
+*/
+#define GPS_TX_CFG_RATE_NAVRATE                   (1)
+
+/** \brief Time reference.
+**
+**  \par Description:
+**       0: UTC, 1: GPS time.
+*/
+#define GPS_TX_CFG_RATE_TIMEREF                   (0)
+
+/* TX CFG-NAV5 message contents */
+
+/** \brief Nav5 parameters bitmask.
+**
+**  \par Description:
+**       Only update dynamic model and fix mode.
+*/
+#define GPS_TX_CFG_NAV5_MASK                      (0x0005)
+
+/** \brief Nav5 position fixing mode.
+**
+**  \par Description:
+**       1 2D only, 2 3D only, 3 Auto 2D/3D.
+*/
+#define GPS_TX_CFG_NAV5_FIXMODE                   (2)
+
+/** \brief Nav5 dynamic platform model.
+**
+**  \par Description:
+**       7 = airborne with <2g acceleration.
+*/
+#define GPS_TX_CFG_NAV5_DYNMODEL                  (7)
 
 /* UBX header contents */
 /** \brief Header symbol 1.
@@ -154,7 +207,11 @@ extern "C" {
 
 /* Message Classes & IDs */
 #define GPS_MESSAGE_CFG_PRT          ((GPS_MESSAGE_CLASS_CFG) | \
-                                      GPS_MESSAGE_ID_CFG_PRT << 8)
+                                       GPS_MESSAGE_ID_CFG_PRT << 8)
+                                      
+#define GPS_MESSAGE_CFG_RATE         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_RATE << 8)
+                                      
 
 /** \brief Retry attemps for interrupted calls.
 **
@@ -178,6 +235,7 @@ extern "C" {
 /**
  * \brief GPS port configuration payload message.
  */
+ /* TODO use struct defined in gps_ubx_msg instead */
 typedef struct 
 {
     /*! Port Identifier Number */
@@ -199,6 +257,22 @@ typedef struct
     /*! Reserved */
     uint16      reserved2;
 } GPS_Payload_TX_CFG_PRT_t;
+
+
+/**
+ * \brief GPS message rate configuration payload message.
+ */
+/* TODO move to gps_ubx_msg */
+typedef struct 
+{
+    /*! Measurement Rate */
+    uint16       measRate;
+    /*! Navigation Rate */
+    uint16       navRate;
+    /*! Alignment to reference time: 0 = UTC time, 1 = GPS time */
+    uint16      timeRef;
+} GPS_Payload_TX_CFG_Rate_t;
+
 
 /**
  * \brief GPS UBX protocol header.
@@ -284,14 +358,12 @@ extern GPS_AppCustomData_t GPS_AppCustomData;
 **  \par Assumptions, External Events, and Notes:
 **       A device must be initialized before this function is called.
 **
-**  \param [out]    BaudRateSet    The baud rate that was set.
-**
-**  \param [in]     Baud           The baud rate to attempt to set.                             
+**  \param [in]     Baud           The baud rate to attempt to set.
 **
 **  \returns    boolean, TRUE for success, FALSE for failure.
 **
 *************************************************************************/
-boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud);
+boolean GPS_Custom_Negotiate_Baud(const uint32 Baud);
 
 /************************************************************************/
 /** \brief Set baud rate. 
@@ -431,6 +503,11 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
 **
 *************************************************************************/
 uint64 GPS_Custom_Get_Time_Uint64(void);
+
+boolean GPS_Custom_Configure_Msg_Rates(void);
+
+
+
 
 #ifdef __cplusplus
 }
