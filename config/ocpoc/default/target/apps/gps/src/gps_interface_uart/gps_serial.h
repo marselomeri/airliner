@@ -93,6 +93,11 @@ extern "C" {
 */
 #define GPS_MESSAGE_CLASS_CFG                     (0x06)
 
+
+#define GPS_MESSAGE_CLASS_NAV                     (0x01)
+
+#define GPS_MESSAGE_CLASS_MON                     (0x0A)
+
 /* Message IDs */
 /** \brief Message ID port configuration.
 **
@@ -108,6 +113,13 @@ extern "C" {
 */
 #define GPS_MESSAGE_ID_CFG_RATE                   (0x08)
 
+/** \brief Message ID for message rate configuration.
+**
+**  \par Description:
+**       Message ID for message rate configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_MSG                    (0x01)
+
 /** \brief Message ID NAV5 configuration.
 **
 **  \par Description:
@@ -121,6 +133,34 @@ extern "C" {
 **       Message ID for SBAS configuration.
 */
 #define GPS_MESSAGE_ID_CFG_SBAS                   (0x16)
+
+/** \brief Message ID navigation position velocity time solution.
+**
+**  \par Description:
+**       Message ID for NAV-PVT.
+*/
+#define GPS_MESSAGE_ID_NAV_PVT                    (0x07)
+
+/** \brief Message ID dilution of precision.
+**
+**  \par Description:
+**       Message ID for NAV-DOP.
+*/
+#define GPS_MESSAGE_ID_NAV_DOP                    (0x04)
+
+/** \brief Message ID space vehicle information.
+**
+**  \par Description:
+**       Message ID for NAV-SVINFO.
+*/
+#define GPS_MESSAGE_ID_NAV_SVINFO                 (0x30)
+
+/** \brief Message ID extended hardware status.
+**
+**  \par Description:
+**       Message ID for MON-HW.
+*/
+#define GPS_MESSAGE_ID_MON_HW                     (0x09)
 
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
@@ -243,6 +283,21 @@ extern "C" {
 #define GPS_MESSAGE_CFG_SBAS         ((GPS_MESSAGE_CLASS_CFG) | \
                                        GPS_MESSAGE_ID_CFG_SBAS << 8)
 
+#define GPS_MESSAGE_CFG_MSG          ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_MSG << 8)
+
+#define GPS_MESSAGE_NAV_PVT          ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_PVT << 8)
+                                       
+#define GPS_MESSAGE_NAV_DOP          ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_DOP << 8)
+
+#define GPS_MESSAGE_NAV_SVINFO       ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_SVINFO << 8)
+
+#define GPS_MESSAGE_MON_HW           ((GPS_MESSAGE_CLASS_MON) | \
+                                       GPS_MESSAGE_ID_MON_HW << 8)
+                                       
 /** \brief Retry attemps for interrupted calls.
 **
 **  \par Limits:
@@ -300,9 +355,19 @@ typedef struct
     /*! Navigation Rate */
     uint16       navRate;
     /*! Alignment to reference time: 0 = UTC time, 1 = GPS time */
-    uint16      timeRef;
+    uint16       timeRef;
 } GPS_Payload_TX_CFG_Rate_t;
 
+
+/* TODO move to gps_ubx_msg*/
+/**
+ * \brief GPS message rate configuration message.
+ */
+typedef struct 
+{
+    uint16       msg;
+    uint8        rate;
+} GPS_Payload_TX_CFG_Rate_Msg_t;
 
 /**
  * \brief GPS UBX protocol header.
@@ -436,6 +501,23 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud);
 *************************************************************************/
 boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uint16 length);
 
+/************************************************************************/
+/** \brief Sends a empty message to the GPS device.
+**
+**  \par Description
+**       This function attempts to send an empty (no payload) message 
+**       to the GPS device.
+**
+**  \par Assumptions, External Events, and Notes:
+**       A device must be initialized and baudrate configured before
+**       this function is called.
+**
+**  \param [in]    msg          The message id.
+**
+**  \returns    boolean, TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_SendEmptyMessage(const uint16 msg);
 
 /************************************************************************/
 /** \brief Set a checksum.
@@ -537,7 +619,24 @@ uint64 GPS_Custom_Get_Time_Uint64(void);
 
 boolean GPS_Custom_Configure(void);
 
-
+/************************************************************************/
+/** \brief Configure a message rate.
+**
+**  \par Description
+**       Configure message rates. 
+**
+**  \par Assumptions, External Events, and Notes:
+**       The rate argument is the divisor for the measurement rate. 
+**       i.e. 1 means 5Hz.
+**
+**  \param [in]    msg        The message to set a rate for.
+**
+**  \param [in]    rate       The divisor for the measurement rate.
+**
+**  \returns       TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_SendMessageRate(const uint16 msg, const uint8 rate);
 
 
 #ifdef __cplusplus

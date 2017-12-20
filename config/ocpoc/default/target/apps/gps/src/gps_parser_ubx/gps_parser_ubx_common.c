@@ -374,6 +374,11 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                     {
                         case GPS_PARSER_CFG_PRT_ID_VALUE:
                         case GPS_PARSER_CFG_MSG_ID_VALUE:
+                        {
+                            GPS_AppCustomData.ParserStatus.MsgID = byte;
+                            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
+                            break;
+                        }
                         case GPS_PARSER_CFG_INF_ID_VALUE:
                         case GPS_PARSER_CFG_RST_ID_VALUE:
                         case GPS_PARSER_CFG_DAT_ID_VALUE:
@@ -401,12 +406,12 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                         case GPS_PARSER_CFG_USB_ID_VALUE:
                         case GPS_PARSER_CFG_ODO_ID_VALUE:
                         case GPS_PARSER_CFG_NAVX5_ID_VALUE:
+                        case GPS_PARSER_CFG_NAV5_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
                             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
                             break;
                         }
-                        case GPS_PARSER_CFG_NAV5_ID_VALUE:
                         case GPS_PARSER_CFG_TP5_ID_VALUE:
                         case GPS_PARSER_CFG_RINV_ID_VALUE:
                         case GPS_PARSER_CFG_ITFM_ID_VALUE:

@@ -561,6 +561,53 @@ end_of_function:
 }
 
 
+boolean GPS_Custom_SendEmptyMessage(const uint16 msg)
+{
+    boolean returnBool = TRUE;
+    int bytesWritten = 0;
+    GPS_Header_t   header = { GPS_HEADER_SYNC1_VALUE, 
+                              GPS_HEADER_SYNC2_VALUE, 
+                              0, 
+                              0 };
+
+    GPS_Checksum_t checksum = { 0, 0 };
+
+    /* Populate header */
+    header.msg    = msg;
+    header.length = 0;
+    
+    /* Calculate header checksum, skip two sync bytes */
+    returnBool = GPS_Custom_SetChecksum((uint8 *)&header + 2, 
+            sizeof(header) - 2, &checksum); 
+    if (FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Send message */
+    bytesWritten = write(GPS_AppCustomData.DeviceFd, (void *)&header, 
+            sizeof(header));
+    if (bytesWritten != sizeof(header)) 
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    bytesWritten = write(GPS_AppCustomData.DeviceFd, (void *)&checksum, 
+            sizeof(checksum));
+
+    if (bytesWritten != sizeof(checksum)) 
+    {
+        returnBool = FALSE;
+    }
+
+end_of_function:
+
+    return returnBool;
+}
+
+
 boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uint16 length)
 {
     boolean returnBool = TRUE;
@@ -815,6 +862,58 @@ boolean GPS_Custom_Configure(void)
     {
         goto end_of_function;
     }
+    
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_PVT, 1);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_DOP, 1);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            //GPS_ACK_TIMEOUT);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            //GPS_ACK_TIMEOUT);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+    
+    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_MON_HW, 1);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
+
+    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            //GPS_ACK_TIMEOUT);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
 end_of_function:
 
@@ -822,3 +921,14 @@ end_of_function:
 }
 
 
+boolean GPS_Custom_SendMessageRate(const uint16 msg, const uint8 rate)
+{
+    GPS_Payload_TX_CFG_Rate_Msg_t rateMsgConfig;
+    memset(&rateMsgConfig, 0, sizeof(rateMsgConfig));
+    rateMsgConfig.msg = msg;
+    rateMsgConfig.rate = rate;
+    
+    return GPS_Custom_SendMessage(GPS_MESSAGE_CFG_MSG, 
+                (uint8 *)&rateMsgConfig, sizeof(rateMsgConfig));
+    
+}
