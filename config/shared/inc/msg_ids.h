@@ -643,7 +643,8 @@
 #define MAVLINK_HK_TLM_MID                          0x0c83
 #define MAVLINK_WAKEUP_MID                          0x1c84
 #define MAVLINK_OUT_DATA_MID                        0x1c85
-#define MAVLINK_PARAM_VALUE_MID                     0x1c86
+#define MAVLINK_PARAM_DATA_MID                      0x1c86
+#define MAVLINK_REQUEST_PARAMS_MID                  0x1c87
 
 
 
