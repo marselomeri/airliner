@@ -319,7 +319,8 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud);
 **
 **  \par Assumptions, External Events, and Notes:
 **       A device must be initialized and baudrate configured before
-**       this function is called.
+**       this function is called. This function does not send empty 
+**       messages. A payload must be supplied. 
 **
 **  \param [in]    msg          The message id.
 **

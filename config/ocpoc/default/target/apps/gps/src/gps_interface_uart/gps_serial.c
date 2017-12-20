@@ -206,6 +206,8 @@ boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud)
         /* flush input and wait for at least 20 ms silence */
         tcflush(GPS_AppCustomData.DeviceFd, TCIFLUSH);
         usleep(20 * 1000);
+        fcflush(GPS_AppCustomData.DeviceFd, TCIFLUSH);
+
         /* Send a CFG-PRT message to set the UBX protocol for in and out
          * and leave the baudrate as it is, we just want an ACK-ACK for this */
         memset(portConfig, 0, 2 * sizeof(GPS_Payload_TX_CFG_PRT_t));
@@ -453,6 +455,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     
     /* Read GPS data */
     bytesRead = read(GPS_AppCustomData.DeviceFd, Buffer, Length);
+    OS_printf("OS read returned %d\n", bytesRead);
     if (bytesRead <= 0)
     {
         /* Read failed */
@@ -493,6 +496,8 @@ int32 GPS_Custom_Select(const uint32 TimeoutSec, const uint32 TimeoutUSec)
         /* Wait for RC data */
         returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
         //CFE_ES_PerfLogExit(GPS_DEVICE_GET_PERF_ID);
+        
+        OS_printf("OS select returned %d\n", returnCode);
     
         /* select() wasn't successful */
         if (-1 == returnCode)
@@ -580,8 +585,17 @@ boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uin
     /* Populate header */
     header.msg    = msg;
     header.length = length;
+    
+    /* Calculate header checksum, skip two sync bytes */
+    returnBool = GPS_Custom_SetChecksum(((uint8_t *)&header) + 2, 
+            sizeof(header) - 2, &checksum); 
+    if (FALSE == returnBool)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
-    /* Calculate checksum */
+    /* Calculate (add) payload checksum */
     returnBool = GPS_Custom_SetChecksum(payload, length, &checksum); 
     if (FALSE == returnBool)
     {
@@ -687,7 +701,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
         bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
         /* TODO remove me*/
         OS_printf("bytesRead custom receive = %d\n", bytesRead);
-        for(i = 0; (FALSE == timedOut) && (i < bytesRead); ++i)
+        for(i = 0; i < bytesRead; ++i)
         {
             OS_printf("bytes = %hhx\n", from_gps_data[i]);
             /* TODO remove me */
