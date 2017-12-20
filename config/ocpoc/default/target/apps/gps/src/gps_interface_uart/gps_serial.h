@@ -108,6 +108,20 @@ extern "C" {
 */
 #define GPS_MESSAGE_ID_CFG_RATE                   (0x08)
 
+/** \brief Message ID NAV5 configuration.
+**
+**  \par Description:
+**       Message ID for NAV5 configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_NAV5                   (0x24)
+
+/** \brief Message ID SBAS configuration.
+**
+**  \par Description:
+**       Message ID for SBAS configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_SBAS                   (0x16)
+
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
 **
@@ -190,6 +204,16 @@ extern "C" {
 */
 #define GPS_TX_CFG_NAV5_DYNMODEL                  (7)
 
+/* TX CFG-SBAS message contents */
+/** \brief SBAS configuration mode.
+**
+**  \par Description:
+**       1 = SBAS enabled, 2 = SBAS disabled.
+*/
+#define  GPS_TX_CFG_SBAS_MODE                     (1)
+
+
+
 /* UBX header contents */
 /** \brief Header symbol 1.
 **
@@ -212,6 +236,12 @@ extern "C" {
 #define GPS_MESSAGE_CFG_RATE         ((GPS_MESSAGE_CLASS_CFG) | \
                                        GPS_MESSAGE_ID_CFG_RATE << 8)
                                       
+
+#define GPS_MESSAGE_CFG_NAV5         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_NAV5 << 8)
+
+#define GPS_MESSAGE_CFG_SBAS         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_SBAS << 8)
 
 /** \brief Retry attemps for interrupted calls.
 **
@@ -316,10 +346,10 @@ typedef enum
 
 typedef enum 
 {
-    GPS_ACK_IDLE = 0,
-    GPS_ACK_WAITING,
-    GPS_ACK_GOT_ACK,
-    GPS_ACK_GOT_NAK
+    GPS_ACK_IDLE    = 0,
+    GPS_ACK_WAITING = 1,
+    GPS_ACK_GOT_ACK = 2,
+    GPS_ACK_GOT_NAK = 3
 } GPS_Ack_State_t;
 
 
@@ -336,6 +366,7 @@ typedef struct
     
     GPS_Ack_State_t              AckState;
     uint16                       AckWaitingMsg;
+    uint8                        AckRcvdMsgCls;
     boolean                      AckWaitingRcvd;
 } GPS_AppCustomData_t;
 
@@ -504,7 +535,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
 *************************************************************************/
 uint64 GPS_Custom_Get_Time_Uint64(void);
 
-boolean GPS_Custom_Configure_Msg_Rates(void);
+boolean GPS_Custom_Configure(void);
 
 
 

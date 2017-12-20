@@ -98,12 +98,22 @@ boolean GPS_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
-
+    /* Negatiate and set the baud rate */
     returnBool = GPS_Custom_Negotiate_Baud(GPS_AppCustomData.Baud);
     if (FALSE == returnBool)
     {
         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "GPS Device negotiate baud error");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    OS_printf("ABOUT TO CONFIGURE MESSAGE RATES\n");
+    /* Configure all the message rates */
+    returnBool = GPS_Custom_Configure();
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "GPS Device set configuration error");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -227,8 +237,8 @@ boolean GPS_Custom_Negotiate_Baud(const uint32 Baud)
         }
 
         /* If an ACK is received here we've matched baud rates */
-        returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
-               GPS_ACK_TIMEOUT);
+        returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT,
+                GPS_ACK_TIMEOUT);
         if(FALSE == returnBool)
         {
             /* WaitForAck failed try the next baud rate */
@@ -277,8 +287,8 @@ boolean GPS_Custom_Negotiate_Baud(const uint32 Baud)
         
         /* no ACK is expected here, but read the buffer anyway in case 
          * we actually get an ACK */
-        //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT, 
-                //GPS_ACK_TIMEOUT);
+        returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_PRT,
+                GPS_ACK_TIMEOUT);
         
         /* If the originally baud negotiated is not the baud just set... */
         if (Baud != baudRate)
@@ -737,7 +747,7 @@ return returnBool;
 }
 
 
-boolean GPS_Custom_Configure_Msg_Rates(void)
+boolean GPS_Custom_Configure(void)
 {
     boolean returnBool = TRUE;
 
@@ -745,39 +755,67 @@ boolean GPS_Custom_Configure_Msg_Rates(void)
     GPS_Payload_TX_CFG_Rate_t rateConfig;
     
     GPS_CFG_NAV5_t navConfig;
-    
+    GPS_CFG_SBAS_t sbasConfig;
     
     /* Setup rate configuration */
-    memset(rateConfig, 0, sizeof(GPS_Payload_TX_CFG_Rate_t));
+    memset(&rateConfig, 0, sizeof(GPS_Payload_TX_CFG_Rate_t));
     rateConfig.measRate = GPS_TX_CFG_RATE_MEASINTERVAL;
     rateConfig.navRate  = GPS_TX_CFG_RATE_NAVRATE;
     rateConfig.timeRef  = GPS_TX_CFG_RATE_TIMEREF;
     
     /* Setup NAV5 configuration */
-    memset(navConfig, 0, sizeof(GPS_CFG_NAV5_t));
-    navConfig.mask     = GPS_TX_CFG_NAV5_MASK;
-    navConfig.dynModel = GPS_TX_CFG_NAV5_FIXMODE;
-    navConfig.fixMode  = GPS_TX_CFG_NAV5_DYNMODEL;
-    
-    
+    memset(&navConfig, 0, sizeof(GPS_CFG_NAV5_t));
+    navConfig.mask      = GPS_TX_CFG_NAV5_MASK;
+    navConfig.dynModel  = GPS_TX_CFG_NAV5_DYNMODEL;
+    navConfig.fixMode   = GPS_TX_CFG_NAV5_FIXMODE;;
+
     /* Setup SBAS configuration */
-    
+    memset(&sbasConfig, 0, sizeof(GPS_CFG_SBAS_t));
+    sbasConfig.mode     = GPS_TX_CFG_SBAS_MODE;
      
-    ///* Send a CFG-RATE message to define update rate */
-    //returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RATE, 
-                //(uint8 *)rateConfig, sizeof(GPS_Payload_TX_CFG_Rate_t));
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    /* Send a CFG-RATE message to define update rate */
+    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RATE, 
+                (uint8 *)&rateConfig, sizeof(GPS_Payload_TX_CFG_Rate_t));
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
     
-    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_RATE, 
-           //GPS_ACK_TIMEOUT);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_RATE, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    /* send a NAV5 message to set the options for the internal filter */
+    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_NAV5, 
+                (uint8 *)&navConfig, sizeof(GPS_CFG_NAV5_t));
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
     
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_NAV5, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    /* send a SBAS message to set the SBAS options */
+    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_SBAS, 
+                (uint8 *)&sbasConfig, sizeof(GPS_CFG_SBAS_t));
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_SBAS, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
 end_of_function:
 
     return returnBool;

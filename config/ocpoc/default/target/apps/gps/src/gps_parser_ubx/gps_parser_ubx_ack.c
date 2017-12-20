@@ -92,7 +92,7 @@
 **************************************************************************/
 void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message)
 {
-    
+    uint16 checkMsg = 0;
     if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_ACK_ACK_MSG_LENGTH)
     {
         GPS_AppCustomData.ParserStatus.ParseError++;
@@ -111,22 +111,29 @@ void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message)
             uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
             uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
             CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
-            OS_printf("ACK parser class id = %hhu\n", byte);
-            payload->clsID = byte;
 
-            if(byte == GPS_AppCustomData.AckWaitingMsg &&
-            GPS_ACK_WAITING == GPS_AppCustomData.AckState)
-            {
-                OS_printf("Ack Waiting Rcved = TRUE\n");
-                GPS_AppCustomData.AckWaitingRcvd = TRUE;
-                GPS_AppCustomData.AckState = GPS_ACK_GOT_ACK;
-            }
+            payload->clsID = byte;
+            GPS_AppCustomData.AckRcvdMsgCls = byte;
             break;
         }
 
         case 1:
-            OS_printf("ACK parser msg id = %hhu\n", byte);
             payload->msgID = byte;
+    
+            OS_printf("ACK clsID = %hhu\n", payload->clsID);
+            OS_printf("ACK msgId= %hhu\n", payload->msgID);
+            
+            checkMsg = ((GPS_AppCustomData.AckRcvdMsgCls) | byte << 8);
+                    
+            if(GPS_ACK_WAITING == GPS_AppCustomData.AckState)
+            {
+                if(checkMsg == GPS_AppCustomData.AckWaitingMsg)
+                {                
+                    OS_printf("Rcved = TRUE\n");
+                    GPS_AppCustomData.AckState = GPS_ACK_GOT_ACK;
+                    GPS_AppCustomData.AckWaitingRcvd = TRUE;
+                }
+            }
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
             break;
 
@@ -140,6 +147,7 @@ void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Ack_ParseChar_NAK(uint8 byte, GPS_DeviceMessage_t* message)
 {
+    uint16 checkMsg = 0;
     if(GPS_AppCustomData.ParserStatus.MsgLength != GPS_PARSER_ACK_NAK_MSG_LENGTH)
     {
         GPS_AppCustomData.ParserStatus.ParseError++;
@@ -160,19 +168,23 @@ void GPS_Ack_ParseChar_NAK(uint8 byte, GPS_DeviceMessage_t* message)
             CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
 
             payload->clsID = byte;
-
-            if(byte == GPS_AppCustomData.AckWaitingMsg &&
-            GPS_ACK_WAITING == GPS_AppCustomData.AckState)
-            {
-                GPS_AppCustomData.AckWaitingRcvd = TRUE;
-                GPS_AppCustomData.AckState = GPS_ACK_GOT_NAK;
-            }
-
+            GPS_AppCustomData.AckRcvdMsgCls = byte;
             break;
         }
 
         case 1:
             payload->msgID = byte;
+
+            checkMsg = ((GPS_AppCustomData.AckRcvdMsgCls) | byte << 8);
+            if(GPS_ACK_WAITING == GPS_AppCustomData.AckState)
+            {
+                if(checkMsg == GPS_AppCustomData.AckWaitingMsg)
+                {                
+                    OS_printf("Rcved = TRUE\n");
+                    GPS_AppCustomData.AckState = GPS_ACK_GOT_NAK;
+                    GPS_AppCustomData.AckWaitingRcvd = TRUE;
+                }
+            }
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
             break;
 
