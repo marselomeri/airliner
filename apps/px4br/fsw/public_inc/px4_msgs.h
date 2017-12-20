@@ -1046,7 +1046,7 @@ typedef struct
 	uint16 RcLostFrameCount;
 	uint16 RcTotalFrameCount;
 	uint16 RcPpmFrameLength;
-	uint16 Values[18];
+	uint16 Values[PX4_RC_INPUT_MAX_CHANNELS];
 	boolean RcFailsafe;
 	boolean RcLost;
 	PX4_RcInputSource_t InputSource;
@@ -1312,7 +1312,7 @@ typedef struct
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	CFE_TIME_SysTime_t Timestamp;
 	CFE_TIME_SysTime_t TimestampLastValid;
-	float Channels[18];
+	float Channels[PX4_RC_INPUT_MAX_CHANNELS];
 	uint32 FrameDropCount;
 	uint8 ChannelCount;
 	PX4_RcChannelFunction_t Function[PX4_RC_CHANNELS_FUNCTION_COUNT];
