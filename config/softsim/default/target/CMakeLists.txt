@@ -426,3 +426,14 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
 )
 
+add_airliner_app(
+    params
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/params/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/params
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/params/params_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/params_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/params_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/params_perfids.h
+)
+
