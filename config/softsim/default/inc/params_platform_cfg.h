@@ -124,6 +124,8 @@ extern "C" {
 */
 #define PARAMS_STARTUP_TIMEOUT_MSEC    (5000)
 
+#define PARAMS_MSG_PARAM_NAME_LEN      (64)
+
 
 #ifdef __cplusplus
 }

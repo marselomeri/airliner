@@ -59,10 +59,10 @@ typedef struct
     /* Config table-related */
 
     /** \brief Config Table Handle */
-    CFE_TBL_Handle_t  ConfigTblHdl;
+    CFE_TBL_Handle_t  ParamTblHdl;
 
     /** \brief Config Table Pointer */
-    PARAMS_ParamsTblEntry_t*  ConfigTblPtr;
+    PARAMS_ParamsTblEntry_t*  ParamTblPtr;
 
     /* Critical Data Storage (CDS) table-related */
 
@@ -306,6 +306,9 @@ void  PARAMS_SendOutData(void);
 **
 *************************************************************************/
 boolean  PARAMS_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+
+void PARAMS_AddParam(PARAMS_ParamData_t param);
+void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg);
 
 #ifdef __cplusplus
 }

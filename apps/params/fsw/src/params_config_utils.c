@@ -49,7 +49,7 @@ int32 PARAMS_InitConfigTbl()
     int32  iStatus=0;
 
     /* Register Config table */
-    iStatus = CFE_TBL_Register(&PARAMS_AppData.ConfigTblHdl,
+    iStatus = CFE_TBL_Register(&PARAMS_AppData.ParamTblHdl,
                                PARAMS_PARAM_TABLENAME,
                                (sizeof(PARAMS_ParamsTblEntry_t) * PARAMS_PARAM_TABLE_MAX_ENTRIES),
                                CFE_TBL_OPT_DEFAULT,
@@ -65,7 +65,7 @@ int32 PARAMS_InitConfigTbl()
     }
 
     /* Load Config table file */
-    iStatus = CFE_TBL_Load(PARAMS_AppData.ConfigTblHdl,
+    iStatus = CFE_TBL_Load(PARAMS_AppData.ParamTblHdl,
                            CFE_TBL_SRC_FILE,
                            PARAMS_PARAM_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
@@ -91,12 +91,12 @@ PARAMS_InitConfigTbl_Exit_Tag:
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 PARAMS_ValidateConfigTbl(void* ConfigTblPtr)
+int32 PARAMS_ValidateConfigTbl(void* ParamTblPtr)
 {
     int32  iStatus=0;
-    PARAMS_ParamsTblEntry_t* PARAMS_ConfigTblPtr = (PARAMS_ParamsTblEntry_t*)(ConfigTblPtr);
+    PARAMS_ParamsTblEntry_t* PARAMS_ParamTblPtr = (PARAMS_ParamsTblEntry_t*)(ParamTblPtr);
 
-    if (ConfigTblPtr == NULL)
+    if (ParamTblPtr == NULL)
     {
         iStatus = -1;
         goto PARAMS_ValidateConfigTbl_Exit_Tag;
@@ -105,10 +105,10 @@ int32 PARAMS_ValidateConfigTbl(void* ConfigTblPtr)
     /* TODO:  Add code to validate new data values here.
     **
     ** Examples:
-    ** if (PARAMS_ConfigTblPtr->iParam <= 16) {
+    ** if (PARAMS_ParamTblPtr->iParam <= 16) {
     **   (void) CFE_EVS_SendEvent(PARAMS_CONFIG_TABLE_INF_EID, CFE_EVS_ERROR,
      *                         "Invalid value for Config parameter sParam (%d)",
-    **                         PARAMS_ConfigTblPtr->iParam);
+    **                         PARAMS_ParamTblPtr->iParam);
     ** }
     **/
 
@@ -129,8 +129,8 @@ void PARAMS_ProcessNewConfigTbl()
     **
     ** Examples:
     **
-    **    PARAMS_AppData.latest_sParam = PARAMS_AppData.ConfigTblPtr->sParam;
-    **    PARAMS_AppData.latest_fParam = PARAMS.AppData.ConfigTblPtr->fParam;
+    **    PARAMS_AppData.latest_sParam = PARAMS_AppData.ParamTblPtr->sParam;
+    **    PARAMS_AppData.latest_fParam = PARAMS.AppData.ParamTblPtr->fParam;
     */
 }
 
@@ -149,12 +149,12 @@ int32 PARAMS_AcquireConfigPointers(void)
     /* TODO: This return value can indicate success, error, or that the info has been 
      * updated.  We ignore this return value in favor of checking CFE_TBL_Manage(), but
      * be sure this is the behavior you want. */
-    (void) CFE_TBL_ReleaseAddress(PARAMS_AppData.ConfigTblHdl);
+    (void) CFE_TBL_ReleaseAddress(PARAMS_AppData.ParamTblHdl);
 
     /*
     ** Manage the table
     */
-    iStatus = CFE_TBL_Manage(PARAMS_AppData.ConfigTblHdl);
+    iStatus = CFE_TBL_Manage(PARAMS_AppData.ParamTblHdl);
     if ((iStatus != CFE_SUCCESS) && (iStatus != CFE_TBL_INFO_UPDATED))
     {
         (void) CFE_EVS_SendEvent(PARAMS_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
@@ -166,8 +166,8 @@ int32 PARAMS_AcquireConfigPointers(void)
     /*
     ** Get a pointer to the table
     */
-    iStatus = CFE_TBL_GetAddress((void*)&PARAMS_AppData.ConfigTblPtr,
-                                 PARAMS_AppData.ConfigTblHdl);
+    iStatus = CFE_TBL_GetAddress((void*)&PARAMS_AppData.ParamTblPtr,
+                                 PARAMS_AppData.ParamTblHdl);
     if (iStatus == CFE_TBL_INFO_UPDATED)
     {
         PARAMS_ProcessNewConfigTbl();
@@ -175,7 +175,7 @@ int32 PARAMS_AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-	PARAMS_AppData.ConfigTblPtr = 0;
+	PARAMS_AppData.ParamTblPtr = 0;
         (void) CFE_EVS_SendEvent(PARAMS_CONFIG_TABLE_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08X)",
                                  (unsigned int)iStatus);

@@ -12,6 +12,7 @@
 
 #include "params_app.h"
 #include "params_msg.h"
+#include "params_data.h"
 #include "params_version.h"
 
 /************************************************************************
@@ -293,6 +294,51 @@ PARAMS_InitApp_Exit_Tag:
     }
 
     return (iStatus);
+}
+
+
+void PARAMS_AddParam(PARAMS_ParamData_t param)
+{
+	/* Iterate over table to find first empty index */
+	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
+	{
+		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 0)
+		{
+			/* Update parameter message with current table index values */
+			PARAMS_AppData.ParamTblPtr->params[i].enabled = 1;
+			PARAMS_AppData.ParamTblPtr->params[i].param_data.value = param.value;
+			memcpy(PARAMS_AppData.ParamTblPtr->params[i].param_data.name, param.name,
+					sizeof(param.name)); //need to clear string?
+			PARAMS_AppData.ParamTblPtr->params[i].param_data.type = param.type;
+		}
+	}
+}
+
+
+void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
+{
+	boolean paramExists = FALSE;
+
+	/* Iterate over table to find parameter */
+	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
+	{
+		/* Only check enabled parameters */
+		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
+		{
+			if (strcmp(SetParamMsg->param_data.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name))
+			{
+				/* Update parameter message with current table index values */
+				paramExists = TRUE;
+				PARAMS_AppData.ParamTblPtr->params[i].param_data.value = SetParamMsg->param_data.value;
+				PARAMS_AppData.ParamTblPtr->params[i].param_data.type = SetParamMsg->param_data.type;
+			}
+		}
+	}
+
+	if (!paramExists)
+	{
+		PARAMS_AddParam(SetParamMsg->param_data);
+	}
 }
 
 

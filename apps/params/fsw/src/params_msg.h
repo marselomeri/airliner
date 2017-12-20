@@ -10,6 +10,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "params_data.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -146,6 +147,25 @@ typedef struct
     uint8              usCmdErrCnt; 
 
 } PARAMS_HkTlm_t;
+
+/**
+**  \brief MAVLINK parameter broadcast
+*/
+typedef struct
+{
+	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+	char name[PARAMS_MSG_PARAM_NAME_LEN];
+	uint16 param_index;
+} PARAMS_GetParamCmd_t;
+
+/**
+**  \brief MAVLINK parameter broadcast
+*/
+typedef struct
+{
+	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+	PARAMS_ParamData_t param_data;
+} PARAMS_SetParamCmd_t;
 
 
 #ifdef __cplusplus

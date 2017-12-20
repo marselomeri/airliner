@@ -15,9 +15,15 @@ add_airliner_app_def(params
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_version.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/params_data.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
+
+    # This application has a public include header.  Add it so all the other applications can access it.
+    PUBLIC_INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in   
     DESIGN_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in   
