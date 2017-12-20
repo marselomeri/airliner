@@ -109,6 +109,38 @@ extern "C" {
 */
 #define SENS_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief The maximum time difference, in microseconds, between accelerometer
+**         measurements to be considered valid.
+**
+**  \par Limits:
+**       This parameter must be greater than 0.
+*/
+#define SENS_MAX_ACC_TIME_DELTA (25)
+
+/** \brief The maximum time difference, in microseconds, between gyro
+**         measurements to be considered valid.
+**
+**  \par Limits:
+**       This parameter must be greater than 0.
+*/
+#define SENS_MAX_GYRO_TIME_DELTA (25)
+
+/** \brief The maximum time difference, in microseconds, between magnetometer
+**         measurements to be considered valid.
+**
+**  \par Limits:
+**       This parameter must be greater than 0.
+*/
+#define SENS_MAX_MAG_TIME_DELTA (25)
+
+/** \brief The maximum time difference, in microseconds, between barometer
+**         measurements to be considered valid.
+**
+**  \par Limits:
+**       This parameter must be greater than 0.
+*/
+#define SENS_MAX_BARO_TIME_DELTA (100)
+
 
 #ifdef __cplusplus
 }

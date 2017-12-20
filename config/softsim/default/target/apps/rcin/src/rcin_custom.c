@@ -124,9 +124,14 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     }
 
     /* Timestamp */
-    Measure->Timestamp = RCIN_Custom_Get_Time();
+    Measure->LastSignal = RCIN_Custom_Get_Time();
 
     SIMLIB_GetRCInputs(Measure->Values, &ChannelCount, &RSSI);
+
+    for(uint32 i = 0; i < 12; i++)
+    {
+    	Measure->Values[i] = 2000;
+    }
 
     /* Channel count */
     Measure->ChannelCount = 12;
@@ -157,6 +162,9 @@ CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void)
             "RCIN clock_gettime errno: %i", errno);
         goto end_of_function;
     }
+
+    Timestamp.Seconds = ts.tv_sec;
+    Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
 
 end_of_function:
     return Timestamp;

@@ -363,7 +363,7 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
                 ReadDevice();
                 SendSensorAccel();
                 SendSensorGyro();
-                //SendSensorMag();
+                SendSensorMag();
                 break;
 
             case MPU9250_SEND_HK_MID:
@@ -651,7 +651,7 @@ void MPU9250::ReadDevice(void)
     
     /* Timestamp for low pass filter and integrator */
     timeStamp = cfeTimeStamp.Seconds * 1000000;
-    timeStamp += cfeTimeStamp.Subseconds / 1000;
+    timeStamp += CFE_TIME_Sub2MicroSecs(cfeTimeStamp.Subseconds);
 
     /* Gyro */
     returnBool = MPU9250_Read_Gyro(&SensorGyro.XRaw, &SensorGyro.YRaw, &SensorGyro.ZRaw);
@@ -697,7 +697,7 @@ void MPU9250::ReadDevice(void)
     SensorGyro.Scaling = (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider);
     SensorGyro.Range = Diag.Calibration.GyroRange;
     /* TODO deviceID */
-    //SensorGyro.DeviceID = ;
+    SensorGyro.DeviceID = MPU9250_PX4_DEVICE_ID;
 
     /* Accel */
     returnBool = MPU9250_Read_Accel(&SensorAccel.XRaw, &SensorAccel.YRaw, &SensorAccel.ZRaw);
@@ -745,24 +745,24 @@ void MPU9250::ReadDevice(void)
     SensorAccel.Range_m_s2 = Diag.Calibration.AccRange;
 
     /* TODO deviceID */
-    //SensorAccel.DeviceID = ;
+    SensorAccel.DeviceID = MPU9250_PX4_DEVICE_ID;
 
     /* Mag */
-    //returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
-    //rawX_f = (float) SensorMag.XRaw;
-    //rawY_f = (float) SensorMag.YRaw;
-    //rawZ_f = (float) SensorMag.ZRaw;
+    rawX_f = (float) SensorMag.XRaw;
+    rawY_f = (float) SensorMag.YRaw;
+    rawZ_f = (float) SensorMag.ZRaw;
 
-    //returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
-    //if(FALSE == returnBool)
-    //{
-    //    goto end_of_function;
-    //}
+    returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
     /* Mag Calibrate */
     SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXScale) + Diag.Calibration.MagXOffset) / 1000.0f;
@@ -770,10 +770,10 @@ void MPU9250::ReadDevice(void)
     SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZScale) + Diag.Calibration.MagZOffset) / 1000.0f;
 
     ///* Mag Scale, Range, DeviceID */
-    //SensorMag.Scaling = -1.0f;
-    //SensorMag.Range = -1.0f;
+    SensorMag.Scaling = -1.0f;
+    SensorMag.Range = -1.0f;
     /* TODO deviceID */
-    //SensorMag.DeviceID = ;
+    SensorMag.DeviceID = MPU9250_PX4_DEVICE_ID;
 
     /* Temp */
     returnBool = MPU9250_Read_Temp(&rawTemp);

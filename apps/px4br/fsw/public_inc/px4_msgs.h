@@ -56,6 +56,8 @@
 #define PX4_NUM_MOTOR_OUTPUTS			8
 #define PX4_ADSB_CALLSIGN_LEN			8
 
+#define PX4_RELATIVE_TIMESTAMP_INVALID  0x7fffffff
+
 typedef enum
 {
 	PX4_GPS_NO_FIX                      = 0,
@@ -185,6 +187,13 @@ typedef enum
 
 typedef enum
 {
+	PX4_MANUAL_CONTROL_SOURCE_RC = 1
+} PX4_ManualControlDataSource_t;
+
+
+typedef enum
+{
+	PX4_MODE_SLOT_NONE	= -1,
 	PX4_MODE_SLOT_1		= 0,
 	PX4_MODE_SLOT_2		= 1,
 	PX4_MODE_SLOT_3		= 2,
@@ -230,7 +239,11 @@ typedef enum
 	PX4_RC_CHANNELS_FUNCTION_RATTITUDE = 19,
 	PX4_RC_CHANNELS_FUNCTION_KILLSWITCH = 20,
 	PX4_RC_CHANNELS_FUNCTION_TRANSITION = 21,
-	PX4_RC_CHANNELS_FUNCTION_COUNT = 22
+	PX4_RC_CHANNELS_FUNCTION_GEAR       = 22,
+	PX4_RC_CHANNELS_FUNCTION_ARMSWITCH  = 23,
+	PX4_RC_CHANNELS_FUNCTION_STAB       = 24,
+	PX4_RC_CHANNELS_FUNCTION_MAN        = 25,
+	PX4_RC_CHANNELS_FUNCTION_COUNT      = 26
 } PX4_RcChannelFunction_t;
 
 typedef enum
@@ -550,8 +563,8 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-	CFE_TIME_SysTime_t Timestamp;
-	CFE_TIME_SysTime_t SampleTime;
+    CFE_TIME_SysTime_t Timestamp;
+	uint64 SampleTime;
     uint64 timestamp;
     uint64 timestamp_sample;
 	float Control[PX4_ACTUATOR_CONTROL_COUNT];
@@ -1027,9 +1040,7 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-	CFE_TIME_SysTime_t Timestamp;
-	uint64 TimestampPublication;
-	uint64 TimestampLastSignal;
+	CFE_TIME_SysTime_t LastSignal;
 	uint32 ChannelCount;
 	int32 RSSI;
 	uint16 RcLostFrameCount;
@@ -1052,7 +1063,7 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-	CFE_TIME_SysTime_t Timestamp;
+    CFE_TIME_SysTime_t Timestamp;
 	float X;
 	float Y;
 	float Z;
@@ -1072,7 +1083,12 @@ typedef struct
 	PX4_SwitchPos_t OffboardSwitch;
 	PX4_SwitchPos_t KillSwitch;
 	PX4_SwitchPos_t TransitionSwitch;
+	PX4_SwitchPos_t GearSwitch;
+	PX4_SwitchPos_t ArmSwitch;
+	PX4_SwitchPos_t StabSwitch;
+	PX4_SwitchPos_t ManSwitch;
 	PX4_ModeSlot_t ModeSlot;
+	PX4_ManualControlDataSource_t DataSource;
 } PX4_ManualControlSetpointMsg_t;
 
 typedef struct
@@ -1372,17 +1388,16 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-	CFE_TIME_SysTime_t Timestamp;
 	float GyroRad[3];
 	float GyroIntegralDt;
-	CFE_TIME_SysTime_t AccTimestampRelative;
+	uint32 AccTimestampRelative;
 	boolean AccRelTimeInvalid;
 	float Acc[3];
 	float AccIntegralDt;
-	CFE_TIME_SysTime_t MagTimestampRelative;
+	uint32 MagTimestampRelative;
 	boolean MagRelTimeInvalid;
 	float Mag[3];
-	CFE_TIME_SysTime_t BaroTimestampRelative;
+	uint32 BaroTimestampRelative;
 	boolean BaroRelTimeInvalid;
 	float BaroAlt;
 	float BaroTemp;

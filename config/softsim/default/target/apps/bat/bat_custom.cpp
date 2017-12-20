@@ -15,7 +15,7 @@ void BAT::CloseDevice(void)
 
 int32 BAT::ReadDevice(float &Voltage, float &Current)
 {
-	Voltage = 0.0f;
+	Voltage = 28.0f;
 	Current = 0.0f;
 
 	usleep(1000);

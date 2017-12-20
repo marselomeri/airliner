@@ -102,6 +102,8 @@ extern "C" {
 */
 #define MPU9250_STARTUP_TIMEOUT_MSEC    (1000)
 
+#define MPU9250_PX4_DEVICE_ID (4288784)
+
 
 #ifdef __cplusplus
 }

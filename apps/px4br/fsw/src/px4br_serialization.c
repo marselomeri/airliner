@@ -123,6 +123,24 @@
 #include "led_control.pb.h"
 #include "sensor_correction.pb.h"
 
+#define PX4BR_MICROSECONDS_PER_SECOND (1000000)
+
+uint64 PX4BR_CfeTimeToPx4Time(CFE_TIME_SysTime_t *Time)
+{
+	uint64 px4Time;
+
+	if(Time == 0)
+	{
+		return 0;
+	}
+
+	uint32 micros = CFE_TIME_Sub2MicroSecs(Time->Subseconds);
+
+	px4Time = ((Time->Seconds) * PX4BR_MICROSECONDS_PER_SECOND) + micros;
+
+	return px4Time;
+}
+
 
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
 {
@@ -256,10 +274,13 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 
 	inOutObject->timestamp = pbMsg.timestamp;
 	inOutObject->timestamp_sample = pbMsg.timestamp_sample;
+	//OS_printf("*************************************\n");
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		inOutObject->Control[i] = pbMsg.control[i];
+		//OS_printf("%f ", inOutObject->Control[i]);
 	}
+    //OS_printf("\n");
 
 	return sizeof(PX4_ActuatorControlsMsg_t);
 }
@@ -1672,14 +1693,15 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 	bool status = false;
 	px4_input_rc_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
-	//pbMsg.timestamp_publication = inObject->timestamp_publication;
-	//pbMsg.timestamp_last_signal = inObject->timestamp_last_signal;
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&inObject->LastSignal);
+	//pbMsg.timestamp_publication = &inObject->TimestampPublication;
+	pbMsg.timestamp_last_signal = PX4BR_CfeTimeToPx4Time(&inObject->LastSignal);
 	pbMsg.channel_count = inObject->ChannelCount;
 	pbMsg.rssi = inObject->RSSI;
 	pbMsg.rc_lost_frame_count = inObject->RcLostFrameCount;
 	pbMsg.rc_total_frame_count = inObject->RcTotalFrameCount;
 	pbMsg.rc_ppm_frame_length = inObject->RcPpmFrameLength;
+	pbMsg.values_count = PX4_RC_INPUT_MAX_CHANNELS;
 	for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
 	{
 		pbMsg.values[i] = inObject->Values[i];
@@ -1801,7 +1823,7 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 	bool status = false;
 	px4_manual_control_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&inObject->Timestamp);
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
@@ -2490,18 +2512,20 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_rc_channels_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->Timestamp;
-	//pbMsg.timestamp_last_valid = inObject->TimestampLastValid;
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&inObject->Timestamp);
+	pbMsg.timestamp_last_valid = PX4BR_CfeTimeToPx4Time(&inObject->TimestampLastValid);
 	for(iChannel = 0; iChannel < PX4_RC_INPUT_MAX_CHANNELS; ++iChannel)
 	{
 		pbMsg.channels[iChannel] = inObject->Channels[iChannel];
 	}
+	pbMsg.channels_count = PX4_RC_INPUT_MAX_CHANNELS;
 	pbMsg.frame_drop_count = inObject->FrameDropCount;
 	pbMsg.channel_count = inObject->ChannelCount;
 	for(iFunction = 0; iFunction < 22; ++iFunction)
 	{
 		pbMsg.function[iFunction] = inObject->Function[iFunction];
 	}
+	pbMsg.function_count = 22;
 	pbMsg.rssi = inObject->RSSI;
 	pbMsg.signal_lost = inObject->SignalLost;
 
@@ -2684,8 +2708,11 @@ uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBu
 {
 	bool status = false;
 	px4_sensor_accel_pb pbMsg;
+	CFE_TIME_SysTime_t timestamp;
 
-	//pbMsg.timestamp = inObject->Timestamp;
+	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
+
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
 	pbMsg.integral_dt = inObject->IntegralDt;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.x = inObject->X;
@@ -2760,8 +2787,11 @@ uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuff
 {
 	bool status = false;
 	px4_sensor_baro_pb pbMsg;
+	CFE_TIME_SysTime_t timestamp;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
+
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.pressure = inObject->Pressure;
 	pbMsg.altitude = inObject->Altitude;
@@ -2814,20 +2844,23 @@ uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *i
 	px4_sensor_combined_pb pbMsg;
 
 	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.gyro_rad_count = 3;
 	pbMsg.gyro_rad[0] = inObject->GyroRad[0];
 	pbMsg.gyro_rad[1] = inObject->GyroRad[1];
 	pbMsg.gyro_rad[2] = inObject->GyroRad[2];
 	pbMsg.gyro_integral_dt = inObject->GyroIntegralDt;
-	//pbMsg.accelerometer_timestamp_relative = inObject->AccTimestampRelative;
+	pbMsg.accelerometer_timestamp_relative = inObject->AccTimestampRelative;
+	pbMsg.accelerometer_m_s2_count = 3;
 	pbMsg.accelerometer_m_s2[0] = inObject->Acc[0];
 	pbMsg.accelerometer_m_s2[1] = inObject->Acc[1];
 	pbMsg.accelerometer_m_s2[2] = inObject->Acc[2];
 	pbMsg.accelerometer_integral_dt = inObject->AccIntegralDt;
-	//pbMsg.magnetometer_timestamp_relative = inObject->MagTimestampRelative;
+	pbMsg.magnetometer_timestamp_relative = inObject->MagTimestampRelative;
+	pbMsg.magnetometer_ga_count = 3;
 	pbMsg.magnetometer_ga[0] = inObject->Mag[0];
 	pbMsg.magnetometer_ga[1] = inObject->Mag[1];
 	pbMsg.magnetometer_ga[2] = inObject->Mag[2];
-	//pbMsg.baro_timestamp_relative = inObject->BaroTimestampRelative;
+	pbMsg.baro_timestamp_relative = inObject->BaroTimestampRelative;
 	pbMsg.baro_alt_meter = inObject->BaroAlt;
 	pbMsg.baro_temp_celcius = inObject->BaroTemp;
 
@@ -2867,16 +2900,16 @@ uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorC
 	inOutObject->GyroRad[1] = pbMsg.gyro_rad[1];
 	inOutObject->GyroRad[2] = pbMsg.gyro_rad[2];
 	inOutObject->GyroIntegralDt = pbMsg.gyro_integral_dt;
-	//inOutObject->accelerometer_timestamp_relative = pbMsg.accelerometer_timestamp_relative;
+	inOutObject->AccTimestampRelative = pbMsg.accelerometer_timestamp_relative;
 	inOutObject->Acc[0] = pbMsg.accelerometer_m_s2[0];
 	inOutObject->Acc[1] = pbMsg.accelerometer_m_s2[1];
 	inOutObject->Acc[2] = pbMsg.accelerometer_m_s2[2];
 	inOutObject->AccIntegralDt = pbMsg.accelerometer_integral_dt;
-	//inOutObject->magnetometer_timestamp_relative = pbMsg.magnetometer_timestamp_relative;
+	inOutObject->MagTimestampRelative = pbMsg.magnetometer_timestamp_relative;
 	inOutObject->Mag[0] = pbMsg.magnetometer_ga[0];
 	inOutObject->Mag[1] = pbMsg.magnetometer_ga[1];
 	inOutObject->Mag[2] = pbMsg.magnetometer_ga[2];
-	//inOutObject->baro_timestamp_relative = pbMsg.baro_timestamp_relative;
+	inOutObject->BaroTimestampRelative = pbMsg.baro_timestamp_relative;
 	inOutObject->BaroAlt = pbMsg.baro_alt_meter;
 	inOutObject->BaroTemp = pbMsg.baro_temp_celcius;
 
@@ -2888,8 +2921,10 @@ uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, cha
 {
 	bool status = false;
 	px4_sensor_correction_pb pbMsg;
+	CFE_TIME_SysTime_t timestamp;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
+
 	pbMsg.gyro_offset_0_count = 3;
 	pbMsg.gyro_offset_0[0] = inObject->gyro_offset_0[0];
 	pbMsg.gyro_offset_0[1] = inObject->gyro_offset_0[1];
@@ -3037,8 +3072,11 @@ uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuff
 {
 	bool status = false;
 	px4_sensor_gyro_pb pbMsg;
+	CFE_TIME_SysTime_t timestamp;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
+
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
 	pbMsg.integral_dt = inObject->IntegralDt;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.x = inObject->X;
@@ -3112,8 +3150,11 @@ uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer
 {
 	bool status = false;
 	px4_sensor_mag_pb pbMsg;
+	CFE_TIME_SysTime_t timestamp;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
+
+	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;

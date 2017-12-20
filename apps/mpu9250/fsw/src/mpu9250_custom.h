@@ -131,7 +131,7 @@ boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z);
 
 boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z);
 boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z);
-//boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z);
+boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z);
 boolean MPU9250_Read_Temp(uint16 *Temp);
 
 

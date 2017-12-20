@@ -237,6 +237,10 @@ CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
 
     clock_gettime(CLOCK_MONOTONIC, &ts);
 
+    Timestamp.Seconds = ts.tv_sec;
+
+    Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
+
 end_of_function:
     return Timestamp;
 }

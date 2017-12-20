@@ -1,12 +1,7 @@
-add_subdirectory(filter filter)
-
 set(PX4LIB_SOURCES
     ${PX4LIB_SOURCES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Limits.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Limits.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Matrix.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Quaternion.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Vector.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/LowPassFilter2p.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/LowPassFilter2p.hpp
 )
 
 set(PX4LIB_INCLUDES

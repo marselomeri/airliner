@@ -87,7 +87,6 @@
 #define PX4BR_OK                        0
 #define PX4BR_ERROR                     (-1)
 
-#define PX4BR_MAX_FIFO_PATH_LENGTH 255
 /*
  ** Local Structures
  */

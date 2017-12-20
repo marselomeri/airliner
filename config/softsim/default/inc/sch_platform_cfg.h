@@ -34,7 +34,7 @@
 **  \par Limits
 **       Must be 2 or more and less than 65536
 */
-#define SCH_TOTAL_SLOTS         200    /* SCH wake-up rate (Hz) */
+#define SCH_TOTAL_SLOTS         250    /* SCH wake-up rate (Hz) */
 
 
 /**
@@ -46,7 +46,7 @@
 **  \par Limits
 **       Must be at least one
 */
-#define SCH_ENTRIES_PER_SLOT    5
+#define SCH_ENTRIES_PER_SLOT    15
 
 
 /**
