@@ -35,6 +35,7 @@
 #define _GPS_UBX_MSG_H_
 
 #include "common_types.h"
+#include "px4_msgs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -408,21 +409,23 @@ typedef struct
 
 typedef struct
 {
-    int32  pinSel;
-    int32  pinBank;
-    int32  pinDir;
-    int32  pinVal;
+    uint32 pinSel;
+    uint32 pinBank;
+    uint32 pinDir;
+    uint32 pinVal;
     uint16 noisePerMS;
     uint16 agcCnt;
     uint8  aStatus;
     uint8  aPower;
-    int8   flags;
+    uint8  flags;
+    uint8  reserved1;
     uint32 usedMask;
     uint8  vp[GPS_MON_HW_VP_PIN_COUNT];
     uint8  jamInd;
-    int32  pinIrq;
-    int32  pullH;
-    int32  pullL;
+    uint16 reserved2;
+    uint32 pinIrq;
+    uint32 pullH;
+    uint32 pullL;
 } GPS_MON_HW_t;
 
 

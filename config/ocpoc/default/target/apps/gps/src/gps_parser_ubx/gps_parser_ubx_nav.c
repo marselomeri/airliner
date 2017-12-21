@@ -63,7 +63,8 @@
 #define GPS_PARSER_NAV_SBAS_MSG_LENGTH       (12)
 #define GPS_PARSER_NAV_SOL_MSG_LENGTH        (52)
 #define GPS_PARSER_NAV_STATUS_MSG_LENGTH     (16)
-#define GPS_PARSER_NAV_SVINFO_MSG_LENGTH     (8)
+#define GPS_PARSER_NAV_SVINFOP1_MSG_LENGTH   (8)
+#define GPS_PARSER_NAV_SVINFOP2_MSG_LENGTH   (8)
 #define GPS_PARSER_NAV_TIMEBDS_MSG_LENGTH    (20)
 #define GPS_PARSER_NAV_TIMEGAL_MSG_LENGTH    (20)
 #define GPS_PARSER_NAV_TIMEGLO_MSG_LENGTH    (20)
@@ -1603,7 +1604,8 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
     /* SVINFO is variable length 8 + 12*numCH so no length check here */
     GPS_NAV_SVINFO_Combined_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
     /* If we're in part 1 of the SVINFO message*/
-    if(GPS_AppCustomData.ParserStatus.PayloadCursor < 9)
+    if(GPS_AppCustomData.ParserStatus.PayloadCursor < 8)
+    {
         switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
         {
             case 0:
@@ -1617,18 +1619,18 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
                 break;
             }
     
-            case 2:
+            case 1:
                 payload->svinfo.iTOW += byte << 8;
                 break;
     
-            case 3:
+            case 2:
                 payload->svinfo.iTOW += byte << 16;
                 break;
     
-            case 4:
+            case 3:
                 payload->svinfo.iTOW += byte << 24;
                 break;
-            case 5:
+            case 4:
                 payload->svinfo.numCh = byte;
                 /* Length check */
                 if (byte != (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
@@ -1639,14 +1641,20 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
                     GPS_Parser_Reset();
                 }
                 break;
-            case 6:
+            case 5:
                 payload->svinfo.globalFlags = byte;
                 break;
-            case 7:
+            case 6:
                 payload->svinfo.reserved2 = byte;
                 break;
-            case 8:
+            case 7:
                 payload->svinfo.reserved2 += byte << 8;
+                /* If we don't have any part 2 messages */
+                /* TODO verify this is possible */
+                if (0 == (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+                {
+                    GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+                }
                 break;
             default:
                 GPS_Parser_Reset();
@@ -1654,26 +1662,67 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
         }
     }
     /* If we're in part 2 of the SVINFO message */
-    else if(GPS_AppCustomData.ParserStatus.PayloadCursor >= 9)
+    else if(GPS_AppCustomData.ParserStatus.PayloadCursor >= 8)
     {
-        
-        //payload->numCh[i].chn       = byte;
-        //payload->numCh[i].svid      = byte;
-        //payload->numCh[i].flags     = byte;
-        //payload->numCh[i].quality   = byte;
-        //payload->numCh[i].cno       = byte;
-        //payload->numCh[i].elev      = byte;
-        //payload->numCh[i].azim      = byte;
-        //payload->numCh[i].azim      += byte << 8;
-        //payload->numCh[i].prRes     = byte;
-        //payload->numCh[i].prRes     += byte << 8;
-        //payload->numCh[i].prRes     += byte << 16;
-        //payload->numCh[i].prRes     += byte << 24;
+        if (i < (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+        {
+            switch((GPS_AppCustomData.ParserStatus.PayloadCursor - 8) % 12)
+            {
+                case 0:
+                    payload->numCh[i].chn       = byte;
+                    break;
+
+                case 1:
+                    payload->numCh[i].svid      = byte;
+                    break;
+
+                case 2:
+                    payload->numCh[i].flags     = byte;
+                    break;
+                case 3:
+                    payload->numCh[i].quality   = byte;
+                    break;
+                case 4:
+                    payload->numCh[i].cno       = byte;
+                    break;
+                case 5:
+                    payload->numCh[i].elev      = byte;
+                    break;
+                case 6:
+                    payload->numCh[i].azim      = byte;
+                    break;
+                case 7:
+                    payload->numCh[i].azim      += byte << 8;
+                    break;
+                case 8:
+                    payload->numCh[i].prRes     = byte;
+                    break;
+                case 9:
+                    payload->numCh[i].prRes     += byte << 8;
+                    break;
+                case 10:
+                    payload->numCh[i].prRes     += byte << 16;
+                    break;
+                    
+                case 11:
+                    payload->numCh[i].prRes     += byte << 24;
+                    i++;
+                    break;
+                default:
+                    GPS_Parser_Reset();
+                    return;
+            }
+        }
+        else if (i = (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+        {
+            i = 0;
+            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+        }
+        else
+        {
+            GPS_Parser_Reset();
+        }
     }
-
-     
-
-
 }
 
 
