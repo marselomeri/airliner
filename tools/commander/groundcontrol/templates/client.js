@@ -540,6 +540,7 @@ Command.prototype = {
     },
 
     ProcessCmds: function(cb){
+        /*
         var socket = this.info;
         var self = this;
         var cq = makeIterator(this.CommandQueue)
@@ -560,7 +561,7 @@ Command.prototype = {
         } while(this.RequestCmdDef(Que_obj, cb) == true);
 
         socket.onmessage = function (event){
-            /* Retrieve the object and call the callback. */
+            /* Retrieve the object and call the callback. *//*
             var cmdName = Object.keys(Que_obj)[0];
             var btn = Que_obj[cmdName][0];
             var jsn = Que_obj[cmdName][1];
@@ -576,7 +577,8 @@ Command.prototype = {
 
                 Que_obj = cq.next().value;
             } while(self.RequestCmdDef(Que_obj, cb) == true);
-        }
+        }*/
+
     },
 
     prepareCmds: function(message,jobj,btn){

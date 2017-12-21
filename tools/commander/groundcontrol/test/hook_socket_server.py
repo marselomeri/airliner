@@ -5,7 +5,7 @@ thres = 1000
 
 count = 0
 count2 = 0
-name = 'xx_socketio_1000'
+name = 'channel_8_10000'
 open(name+'.txt','w').close()
 f = open(name+'.txt','w')
 

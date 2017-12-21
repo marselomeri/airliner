@@ -234,7 +234,7 @@ if __name__ =='__main__':
     """
     file_a = 'socketio_1000'
     file_b = 'channel_10_1000'
-    file_c = 'channel_30_1000'
+    file_c = 'channel_8_10000'
 
 
     ##LOADING##############
@@ -260,8 +260,8 @@ if __name__ =='__main__':
     print channels30
 
     ###############
-    num = 4  #COLUMN NUMBER
-    type = 1
+    num = 2  #COLUMN NUMBER
+    type = 0
     noise = 500
 
 
@@ -309,7 +309,7 @@ if __name__ =='__main__':
     #print len(x),x
     #print len(y), y
     #print len(z), z
-    plots2(x,y,z,'SocketIO','Channels_10','Channels_30')
+    plots2(x,y,z,'SocketIO','Channels_10','Channels_8')
    
 
 
