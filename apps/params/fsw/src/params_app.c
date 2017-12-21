@@ -9,11 +9,11 @@
 #include <string.h>
 
 #include "cfe.h"
-
+#include "mavlink.h"
 #include "params_app.h"
 #include "params_msg.h"
-#include "params_data.h"
 #include "params_version.h"
+#include "params_data.h"
 
 /************************************************************************
 ** Local Defines
@@ -339,6 +339,43 @@ void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
 	{
 		PARAMS_AddParam(SetParamMsg->param_data);
 	}
+}
+
+void PARAMS_SendParamsToSB(void)
+{
+	int32 Status;
+	uint32 i =0;
+	uint16 msg_size 		= 0;
+	uint8 msgBuf[MAVLINK_MAX_PACKET_LEN] = {0};
+	PARAMS_ParamData_t ParamValueMsg = {0};
+	CFE_SB_MsgPtr_t 	CmdMsgPtr;
+
+	/* Iterate over table and send each parameter */
+	for(i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
+	{
+		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
+		{
+			/* Update parameter message with current table index values */
+			ParamValueMsg.value = PARAMS_AppData.ParamTblPtr->params[i].param_data.value;
+			memcpy(ParamValueMsg.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name,
+					sizeof(PARAMS_AppData.ParamTblPtr->params[i].param_data.name));
+			ParamValueMsg.type = PARAMS_AppData.ParamTblPtr->params[i].param_data.type; // TODO need this?
+
+			/* Init Airliner message and send to SB */
+			CFE_SB_InitMsg(&ParamValueMsg, PARAMS_PARAM_MID, sizeof(PARAMS_ParamData_t), FALSE);
+			CmdMsgPtr = (CFE_SB_MsgPtr_t)&ParamValueMsg;
+
+			CFE_SB_SetCmdCode(CmdMsgPtr, 3); //PARAMS_PARAM_DATA_CC TODO: Why does this fail?
+			Status = CFE_SB_SendMsg(CmdMsgPtr);
+			if (Status != CFE_SUCCESS)
+			{
+				OS_printf("Error sending param to SB");
+				/* TODO: Decide what to do if the send message fails. */
+			}
+			//OS_printf("Param sent to SB");
+		}
+	}
+
 }
 
 
@@ -692,6 +729,7 @@ void PARAMS_AppMain()
         */
         PARAMS_UpdateCdsTbl();
         PARAMS_SaveCdsTbl();
+        PARAMS_SendParamsToSB();
 
         iStatus = PARAMS_AcquireConfigPointers();
         if(iStatus != CFE_SUCCESS)

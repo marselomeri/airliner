@@ -10,6 +10,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "params_platform_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +55,8 @@ extern "C" {
 #define PARAMS_REQUEST_PARAM_CC               (1)
 
 #define PARAMS_SET_PARAM_CC               	  (2)
+
+#define PARAMS_PARAM_DATA_CC               	  (3)
 
 /************************************************************************
 ** Global Structure Declarations
