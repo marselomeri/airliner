@@ -17,7 +17,7 @@ class Test_Toolkit(unittest.TestCase):
         self.r.set('instance', self.r.get('default_instance'))
         self.conn = sqlite3.connect(self.db_path + '/test_database', timeout=5)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_directory_scrapping(self):
         self.assertEquals(get_directory('')['path'], '')
         self.assertNotEqual(get_directory('/flight')['path'],'/flidfght')
@@ -53,7 +53,7 @@ class Test_Instance(unittest.TestCase):
     def setUp(self):
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_getinstance(self):
         expected = json.loads(eval(json.dumps(urllib.urlopen('http://localhost:8090/api/instances').read())))
         ch = channel_plugin('ws://127.0.0.1:8000/inst/')
@@ -61,14 +61,14 @@ class Test_Instance(unittest.TestCase):
         c_actual = ch.rcv()
         self.assertTrue(expected==c_actual)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_setDefaultInstance(self):
         ch = channel_plugin('ws://127.0.0.1:8000/defaultInst/')
         ch.send('EXAMPLE')
         time.sleep(1)#delay
         self.assertTrue('EXAMPLE'==self.r.get('instance'))
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_directoryListing(self):
 
         conn = sqlite3.connect('../../' + '/test_database', timeout=5)
@@ -89,7 +89,7 @@ class Test_Instance(unittest.TestCase):
 
 class Test_Telemetry(unittest.TestCase):
     @classmethod
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def setUpClass(cls):
 
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -102,13 +102,13 @@ class Test_Telemetry(unittest.TestCase):
         cls._sending_list =[]
 
     @classmethod
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def tearDownClass(cls):
         for each in range(int(cls._number_of_workers)):
             cls._ch.send('USALL')
         cls._conn.close()
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_telemetry_subscription(cls):
 
         cursor = cls._conn.cursor()
@@ -138,7 +138,7 @@ class Test_Telemetry(unittest.TestCase):
                 break
         cls.assertTrue(set(sub_names_recv)==set(sub_names_sent))
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_telemetry_unsubscription(cls): #TODO:Implement this method at client side.
 
         cursor = cls._conn.cursor()
@@ -170,7 +170,7 @@ class Test_Telemetry(unittest.TestCase):
 
 class  Test_Commanding(unittest.TestCase):
     @classmethod
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def setUpClass(cls):
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
         cls._mode = int(cls._r.get('mode'))
@@ -183,11 +183,11 @@ class  Test_Commanding(unittest.TestCase):
         #cls._sending_list = []
 
     @classmethod
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def tearDownClass(cls):
         cls._conn.close()
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_get_commanding_info(cls):
         cursor = cls._conn.cursor()
         cursor.execute('SELECT input,output FROM TESTCASES WHERE mapping =\'CMDINFO\'')
@@ -198,7 +198,7 @@ class  Test_Commanding(unittest.TestCase):
             cls.assertEquals(e[1],result)
             cls.assertItemsEqual(e[1], result)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_get_commanding_post(cls):
         cursor = cls._conn.cursor()
         cursor.execute('SELECT input,output FROM TESTCASES WHERE mapping =\'CMDPOST\'')
