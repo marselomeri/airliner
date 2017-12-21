@@ -71,7 +71,7 @@ class Test_Instance(unittest.TestCase):
     #@unittest.skip("demonstrating skipping")
     def test_directoryListing(self):
 
-        conn = sqlite3.connect(self.r.get('app_path') + '/test_database', timeout=5)
+        conn = sqlite3.connect('../../' + '/test_database', timeout=5)
         cursor = conn.cursor()
         cursor.execute('SELECT input, output FROM TESTCASES WHERE mapping =\'DIR\'')
         io_list = cursor.fetchall()
@@ -94,7 +94,7 @@ class Test_Telemetry(unittest.TestCase):
 
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
         cls._mode = int(cls._r.get('mode'))
-        cls._db_path = cls._r.get('app_path')
+        cls._db_path = '../../'#cls._r.get('app_path')
         cls._number_of_workers = cls._r.get('number_of_workers')
         cls._r.set('instance',cls._r.get('default_instance'))
         cls._conn = sqlite3.connect(cls._db_path + '/test_database', timeout=5)
@@ -174,7 +174,7 @@ class  Test_Commanding(unittest.TestCase):
     def setUpClass(cls):
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
         cls._mode = int(cls._r.get('mode'))
-        cls._db_path = cls._r.get('app_path')
+        cls._db_path = '../../'#cls._r.get('app_path')
         cls._number_of_workers = cls._r.get('number_of_workers')
         cls._r.set('instance', cls._r.get('default_instance'))
         cls._conn = sqlite3.connect(cls._db_path + '/test_database', timeout=5)
