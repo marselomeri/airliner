@@ -698,6 +698,45 @@ end_of_function:
 }
 
 
+void GPS_Stream_Task(void)
+{
+    
+}
+
+
+//boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
+//{
+    //boolean returnBool = TRUE;
+    //int32 bytesRead = 0;
+    //uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
+    
+    //bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
+
+    //for(i = 0;  i < bytesRead; ++i)
+    //{
+        //GPS_DeviceMessage_t message;
+        //GPS_ParserStatus_t status;
+
+        //if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
+        //{
+            
+            //if(TRUE == done)
+            //{
+                ///* Populate messages here */
+                ///* TODO remove after debug*/
+                //OS_printf("ParseChar completed a message\n");
+                ///* end todo */
+            //}
+            
+            
+        //}
+    //}
+
+//end_of_function:
+    //return returnBool;
+//}
+
+
 boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
 {
     uint32 i = 0;
@@ -743,7 +782,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
         }
 
         bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
-        /* REMOVE ME */
+        /* TODO REMOVE ME */
         for(i = 0; i < bytesRead; ++i)
         {
             OS_printf(" bytes = %hhx ", from_gps_data[i]);
@@ -762,7 +801,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
                 {
                     OS_printf("ParseChar completed a message\n");
                 }
-                /* */
+                /* end todo */
                 
                 if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
                    GPS_AppCustomData.AckWaitingRcvd == TRUE)

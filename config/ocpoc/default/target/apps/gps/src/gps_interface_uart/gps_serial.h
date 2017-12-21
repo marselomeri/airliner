@@ -312,6 +312,24 @@ extern "C" {
 */
 #define GPS_MAX_RETRY_SLEEP_USEC                   (10)
 
+/** \brief Streaming task priority
+**
+**  \par Limits:
+**       0 to MAX_PRIORITY (usually 255)
+*/
+#define GPS_STREAMING_TASK_PRIORITY    (50)
+
+/** \brief GPS shared data mutex name. */
+#define GPS_MUTEX_NAME                "GPS_MUTEX"
+
+/** \brief Streaming task name
+**
+**  \par Limits:
+**       OS_MAX_API_NAME
+*/
+#define GPS_STREAMING_TASK_NAME       "GPS_STREAM"
+
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -617,6 +635,19 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
 *************************************************************************/
 uint64 GPS_Custom_Get_Time_Uint64(void);
 
+
+/************************************************************************/
+/** \brief Configures the GPS device.
+**
+**  \par Description
+**       This sends all the configuration messages.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \returns       TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean GPS_Custom_Configure(void);
 
 /************************************************************************/
@@ -638,6 +669,30 @@ boolean GPS_Custom_Configure(void);
 *************************************************************************/
 boolean GPS_Custom_SendMessageRate(const uint16 msg, const uint8 rate);
 
+
+/************************************************************************/
+/** \brief The stream task that actively reads the GPS input stream.
+**
+**  \par Description
+**       This thread runs until uninit.
+**
+*************************************************************************/
+void GPS_Stream_Task(void);
+
+
+/************************************************************************/
+/** \brief Reads and parses messages from the GPS device.
+**
+**  \par Description
+**       This should be called from waitforack or in the stream task
+**       thread.
+**
+**  \param [in]    timeout        The read timeout.
+**
+**  \returns       TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_Read_and_Parse(const uint32 timeout);
 
 #ifdef __cplusplus
 }

@@ -625,12 +625,25 @@
 #define HMC5883_WAKEUP_MID                          0x1c77
 #define HMC5883_CMD_MID                             0x1c78
 
-/* PE                                                    */
+/* PE                                                   */
 #define PE_HK_TLM_MID                               0x0c79
 #define PE_SEND_HK_MID                              0x1c7a
 #define PE_WAKEUP_MID                               0x1c7b
 #define PE_CMD_MID                                  0x1c7c
 
-#define SCH_ACTIVITY_DONE_MID						0x0f00
+/* Individual GPS messages                              */
+#define GPS_NAV_DOP_MID                             0x0c80
+#define GPS_NAV_NAVPVT_MID                          0x0c81
+#define GPS_NAV_SVINFO_MID                          0x0c82
+#define GPS_ACK_NAK_MID                             0x0c83
+#define GPS_ACK_ACK_MID                             0x0c84
+#define GPS_CFG_PRT_MID                             0x0c85
+#define GPS_CFG_MSG_MID                             0x0c86
+#define GPS_CFG_RATE_MID                            0x0c87
+#define GPS_CFG_SBAS_MID                            0x0c88
+#define GPS_CFG_NAV5_MID                            0x0c89
+#define GPS_MON_HW_MID                              0x0c8a
+
+#define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif

@@ -64,7 +64,7 @@
 #define GPS_PARSER_NAV_SOL_MSG_LENGTH        (52)
 #define GPS_PARSER_NAV_STATUS_MSG_LENGTH     (16)
 #define GPS_PARSER_NAV_SVINFOP1_MSG_LENGTH   (8)
-#define GPS_PARSER_NAV_SVINFOP2_MSG_LENGTH   (8)
+#define GPS_PARSER_NAV_SVINFOP2_MSG_LENGTH   (12)
 #define GPS_PARSER_NAV_TIMEBDS_MSG_LENGTH    (20)
 #define GPS_PARSER_NAV_TIMEGAL_MSG_LENGTH    (20)
 #define GPS_PARSER_NAV_TIMEGLO_MSG_LENGTH    (20)
@@ -1679,27 +1679,35 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
                 case 2:
                     payload->numCh[i].flags     = byte;
                     break;
+
                 case 3:
                     payload->numCh[i].quality   = byte;
                     break;
+
                 case 4:
                     payload->numCh[i].cno       = byte;
                     break;
+
                 case 5:
                     payload->numCh[i].elev      = byte;
                     break;
+
                 case 6:
                     payload->numCh[i].azim      = byte;
                     break;
+
                 case 7:
                     payload->numCh[i].azim      += byte << 8;
                     break;
+
                 case 8:
                     payload->numCh[i].prRes     = byte;
                     break;
+
                 case 9:
                     payload->numCh[i].prRes     += byte << 8;
                     break;
+
                 case 10:
                     payload->numCh[i].prRes     += byte << 16;
                     break;
