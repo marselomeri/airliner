@@ -109,7 +109,7 @@ extern "C" {
 */
 #define RCIN_STARTUP_TIMEOUT_MSEC    (1000)
 
-#define RCIN_CUSTOM_JOYSTICK_PATH    "/dev/input/js1"
+#define RCIN_CUSTOM_JOYSTICK_PATH    "/dev/input/js0"
 
 
 #ifdef __cplusplus

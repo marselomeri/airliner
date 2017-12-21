@@ -47,16 +47,17 @@
 #include "rcin_platform_cfg.h"
 #include "rcin_custom.h"
 #include <string.h>
+#include <math.h>
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
 
 #define RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH  (80)
-#define RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE      (-32767)
-#define RCIN_CUSTOM_AXIS_INPUT_MAX_VALUE      (32767)
-#define RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE     (1000)
-#define RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE     (2000)
+#define RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE      (-32767.0f)
+#define RCIN_CUSTOM_AXIS_INPUT_MAX_VALUE      (32767.0f)
+#define RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE     (1000.0f)
+#define RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE     (2000.0f)
 
 /************************************************************************
 ** Local Structure Declarations
@@ -110,8 +111,8 @@ RCIN_CustomData_t RCIN_CustomData;
 /************************************************************************
 ** Local Function Definitions
 *************************************************************************/
-int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, uint32 inValue, uint32 *outValueIndex, uint32 *outValue);
-int32 RCIN_Custom_MapJSButtonToRcIn(uint32 inButton, uint32 inValue, uint32 *outValueIndex, uint32 *outValue);
+int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, int32 inValue, uint32 *outValueIndex, uint32 *outValue);
+int32 RCIN_Custom_MapJSButtonToRcIn(uint32 inButton, int32 inValue, uint32 *outValueIndex, uint32 *outValue);
 CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
 
 
@@ -165,9 +166,10 @@ boolean RCIN_Custom_Init(void)
 }
 
 
-int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, uint32 inValue, uint32 *outValueIndex, uint32 *outValue)
+int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, int32 inValue, uint32 *outValueIndex, uint32 *outValue)
 {
 	int32 rc = -1;
+    float fValue = 0.0f;
 
 	/* Check inputs. */
 	if(outValueIndex == 0)
@@ -184,12 +186,46 @@ int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, uint32 inValue, uint32 *outValu
 
 	/* Just map Axis to Value Index directly, for now. */
 	*outValueIndex = inAxis;
+	switch(inAxis)
+	{
+		case 0:
+			*outValueIndex = 3;
+			break;
+
+		case 1:
+			*outValueIndex = 2;
+			inValue = inValue * -1;
+			break;
+
+		case 3:
+			*outValueIndex = 0;
+			break;
+
+		case 4:
+			*outValueIndex = 1;
+			break;
+	}
 
 	/* Use the mapping equation:  Y = (X-A)/(B-A) * (D-C) + C */
-	*outValue = (inValue - RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE) /
+	fValue = (inValue - RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE) /
 			(RCIN_CUSTOM_AXIS_INPUT_MAX_VALUE - RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE) *
 			(RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE - RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE) +
 			RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE;
+
+	*outValue = fValue;
+
+	/* Constrain the value to between the output minimum and maximum
+	 * values.
+	 */
+	if(*outValue < RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE)
+	{
+		*outValue = RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE;
+	}
+
+	if(*outValue > RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE)
+	{
+		*outValue = RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE;
+	}
 
 	rc = 0;
 
@@ -199,7 +235,7 @@ end_of_function:
 }
 
 
-int32 RCIN_Custom_MapJSButtonToRcIn(uint32 inButton, uint32 inValue, uint32 *outValueIndex, uint32 *outValue)
+int32 RCIN_Custom_MapJSButtonToRcIn(uint32 inButton, int32 inValue, uint32 *outValueIndex, uint32 *outValue)
 {
 	int32 rc = -1;
 
@@ -241,6 +277,7 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 	uint16 ChannelCount = 12;
 	struct js_event js;
 	uint32 i = 0;
+    int readStatus;
 
     /* Null pointer check */
     if (0 == Measure)
@@ -256,7 +293,8 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 
 	/* Loop until event queue is empty.  At the start of each iteration,
 	 * read the joystick state. */
-	while(read(RCIN_CustomData.FD, &js, sizeof(struct js_event)))
+    readStatus = read(RCIN_CustomData.FD, &js, sizeof(struct js_event));
+	while(readStatus > 0)
 	{
 		/* Act on what the event is. */
 		switch (js.type & ~JS_EVENT_INIT)
@@ -307,6 +345,8 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 				break;
 			}
 		}
+
+		readStatus = read(RCIN_CustomData.FD, &js, sizeof(struct js_event));
 	}
 
 	/* Now copy the cached values on the struct passed by the caller. */

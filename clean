@@ -1,4 +1,4 @@
 #!/bin/bash
-rm /tmp/Airliner_to_PX4
 rm /tmp/PX4_to_Airliner
+rm /tmp/Airliner_to_PX4
 

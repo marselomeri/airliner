@@ -870,7 +870,7 @@ void SENS::ProcessRCInput(void)
 	RcChannelsMsg.ChannelCount = CVT.InputRcMsg.ChannelCount;
 	RcChannelsMsg.RSSI = CVT.InputRcMsg.RSSI;
 	RcChannelsMsg.SignalLost = signal_lost;
-	RcChannelsMsg.Timestamp = RcChannelsMsg.TimestampLastValid;
+	RcChannelsMsg.Timestamp = CVT.InputRcMsg.LastSignal;
 	RcChannelsMsg.FrameDropCount = CVT.InputRcMsg.RcLostFrameCount;
 
 	/* Publish rc_channels topic even if signal is invalid, for debug */

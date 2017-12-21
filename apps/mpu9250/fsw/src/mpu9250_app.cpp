@@ -514,8 +514,14 @@ void MPU9250::SendSensorAccel()
 
 void MPU9250::SendSensorMag()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
+	static uint32 i = 0;
+	if(i >= 4)
+	{
+		CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
+		CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
+		i = 0;
+	}
+	++i;
 }
 
 void MPU9250::SendSensorGyro()
