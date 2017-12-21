@@ -22,7 +22,7 @@ extern "C" {
 /**
  * \brief Defines the number of entries in the table
  */
-#define PARAMS_PARAM_TABLE_MAX_ENTRIES  (1)
+#define PARAMS_PARAM_TABLE_MAX_ENTRIES  (15)
 
 /**
  * \brief Defines the table identification name used for table registration.

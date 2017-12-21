@@ -78,7 +78,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define PARAMS_CMD_PIPE_DEPTH             (4)
+#define PARAMS_CMD_PIPE_DEPTH             (50)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
@@ -92,7 +92,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define PARAMS_DATA_PIPE_DEPTH            (4)
+#define PARAMS_DATA_PIPE_DEPTH            (CFE_SB_MAX_PIPE_DEPTH)
 
 /** \brief Pipe name for the Scheduler pipe 
 **

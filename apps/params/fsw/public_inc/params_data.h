@@ -82,10 +82,31 @@ typedef struct
 typedef struct
 {
 	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
-	PARAMS_ParamData_t param_data;
     uint16 param_count;
     uint16 param_index;
+	PARAMS_ParamData_t param_data;
 } PARAMS_SendParamDataCmd_t;
+
+/**
+**  \brief PARAMS application housekeeping data
+*/
+typedef struct
+{
+    /** \brief cFE SB Tlm Msg Hdr */
+    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+
+    /** \paramstlmmnemonic \PARAMS_CMDACPTCNT
+        \brief Count of accepted commands */
+    uint8              usCmdCnt;
+
+    /** \paramstlmmnemonic \PARAMS_CMDRJCTCNT
+        \brief Count of failed commands */
+    uint8              usCmdErrCnt;
+
+	/** \brief  */
+	boolean  ParamsInitialized;
+
+} PARAMS_HkTlm_t;
 
 #ifdef __cplusplus
 }

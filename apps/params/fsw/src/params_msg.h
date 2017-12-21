@@ -130,24 +130,6 @@ typedef struct
     uint32  uiCounter;
 } PARAMS_OutData_t;
 
-/** 
-**  \brief PARAMS application housekeeping data
-*/
-typedef struct
-{
-    /** \brief cFE SB Tlm Msg Hdr */
-    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-
-    /** \paramstlmmnemonic \PARAMS_CMDACPTCNT
-        \brief Count of accepted commands */
-    uint8              usCmdCnt;   
-
-    /** \paramstlmmnemonic \PARAMS_CMDRJCTCNT
-        \brief Count of failed commands */
-    uint8              usCmdErrCnt; 
-
-} PARAMS_HkTlm_t;
-
 /**
 **  \brief MAVLINK parameter broadcast
 */
