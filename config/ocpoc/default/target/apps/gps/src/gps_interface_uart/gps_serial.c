@@ -42,6 +42,7 @@
 #include "gps_perfids.h"
 #include "../gps_parser_ubx/gps_ubx_msg.h"
 #include "../gps_parser_ubx/gps_parser_ubx_common.h"
+#include "msg_ids.h"
 
 #include <errno.h>
 #include <unistd.h>
@@ -704,37 +705,95 @@ void GPS_Stream_Task(void)
 }
 
 
-//boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
-//{
-    //boolean returnBool = TRUE;
-    //int32 bytesRead = 0;
-    //uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
+boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
+{
+    boolean returnBool = TRUE;
+    uint32 i = 0;
+    int32 bytesRead = 0;
+    uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
+    boolean done = FALSE;
     
-    //bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
+    bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
 
-    //for(i = 0;  i < bytesRead; ++i)
-    //{
-        //GPS_DeviceMessage_t message;
-        //GPS_ParserStatus_t status;
+    for(i = 0;  i < bytesRead; ++i)
+    {
+        GPS_DeviceMessage_t message;
+        GPS_ParserStatus_t status;
 
-        //if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
-        //{
+        if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
+        {
+            if(TRUE == done)
+            {
+                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t*)&message);
+                switch(msgID)
+                {
+                    case GPS_NAV_DOP_MID:
+                    {
+                        GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
+                        /* from cm to m */
+                        GPS_AppCustomData.GpsPositionMsg.HDOP = msgIn->hDOP * 0.01f;
+                        /* from cm to m */
+                        GPS_AppCustomData.GpsPositionMsg.VDOP = msgIn->vDOP * 0.01f;
+                        break;
+                    }
+                    case GPS_NAV_NAVPVT_MID:
+                    {
+                        break;
+                    }
+                    case GPS_NAV_SVINFO_MID:
+                    {
+                        break;
+                    }
+                    case GPS_ACK_NAK_MID:
+                    {
+                        break;
+                    }
+                    case GPS_ACK_ACK_MID:
+                    {
+                        break;
+                    }
+                    case GPS_CFG_PRT_MID:
+                    {
+                        break;
+                    }
+                    case GPS_CFG_MSG_MID:
+                    {
+                        break;
+                    }
+                    case GPS_CFG_RATE_MID:
+                    {
+                        break;
+                    }
+                    case GPS_CFG_SBAS_MID:
+                    {
+                        break;
+                    }
+                    case GPS_CFG_NAV5_MID:
+                    {
+                        break;
+                    }
+                    case GPS_MON_HW_MID:
+                    {
+                        break;
+                    }
+                    default:
+                    {
+                        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                "GPS parser received unexpected message");
+                    }
+                }
+                /* TODO remove after debug*/
+                OS_printf("ParseChar completed a message\n");
+                /* end todo */
+            }
             
-            //if(TRUE == done)
-            //{
-                ///* Populate messages here */
-                ///* TODO remove after debug*/
-                //OS_printf("ParseChar completed a message\n");
-                ///* end todo */
-            //}
             
-            
-        //}
-    //}
+        }
+    }
 
-//end_of_function:
-    //return returnBool;
-//}
+end_of_function:
+    return returnBool;
+}
 
 
 boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)

@@ -39,6 +39,7 @@
 #include "gps_custom.h"
 #include "../gps_custom_shared.h"
 #include "cfe.h"
+#include "px4_msgs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -446,7 +447,9 @@ typedef struct
     uint32                       Baud;
     /*! The current parser status */
     GPS_ParserStatus_t           ParserStatus;
-    
+    PX4_GpsDumpMsg_t             GpsDumpMsg;
+    PX4_VehicleGpsPositionMsg_t  GpsPositionMsg;
+    PX4_SatelliteInfoMsg_t       GpsSatInfoMsg;
     GPS_Ack_State_t              AckState;
     uint16                       AckWaitingMsg;
     uint8                        AckRcvdMsgCls;
@@ -685,7 +688,7 @@ void GPS_Stream_Task(void);
 **
 **  \par Description
 **       This should be called from waitforack or in the stream task
-**       thread.
+**       thread repeatedly.
 **
 **  \param [in]    timeout        The read timeout.
 **
