@@ -454,6 +454,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     
     /* Read GPS data */
     bytesRead = read(GPS_AppCustomData.DeviceFd, Buffer, Length);
+    OS_printf("bytesread = %d\n", bytesRead);
     if (bytesRead <= 0)
     {
         /* Read failed */
@@ -860,31 +861,31 @@ boolean GPS_Custom_Configure(void)
         goto end_of_function;
     }
     
-    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_PVT, 1);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_PVT, 1);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
-    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
-            //GPS_ACK_TIMEOUT);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
-    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_DOP, 1);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_DOP, 1);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
-    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
-            //GPS_ACK_TIMEOUT);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
     //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
     //if(FALSE == returnBool)

@@ -77,7 +77,6 @@ extern "C" {
 
 #define GPS_MON_HW_VP_PIN_COUNT             (17)
 
-
 typedef struct
 {
     uint32 iTOW;
@@ -200,7 +199,7 @@ typedef struct
     uint8  sec;
     uint8  valid;
     uint32 tAcc;
-    int8   nano;
+    int32   nano;
     uint8  fixType;
     uint8  flags;
     uint8  flags2;
@@ -219,7 +218,11 @@ typedef struct
     uint32 sAcc;
     uint32 headAcc;
     uint16 pDOP;
+    uint16 reserved2;
+    uint32 reserved3;
     int32  headVeh;
+    int16  magDec;
+    uint16 magAcc;
 } GPS_NAV_PVT_t;
 
 
@@ -279,8 +282,28 @@ typedef struct
     uint32 iTOW;
     uint8  numCh;
     uint8  globalFlags;
-} GPS_NAV_SVINFO_t;
+    uint16 reserved2;
+} GPS_NAV_SVINFO_P1_t;
 
+
+typedef struct
+{
+    uint8  chn;
+    uint8  svid;
+    uint8  flags;
+    uint8  quality;
+    uint8  cno;
+    int8   elev;
+    int16  azim;
+    int32  prRes;
+} GPS_NAV_SVINFO_P2_t;
+
+
+typedef struct
+{
+    GPS_NAV_SVINFO_P1_t svinfo;
+    GPS_NAV_SVINFO_P2_t numCh[PX4_SAT_INFO_MAX_SATELLITES];
+} GPS_NAV_SVINFO_Combined_t;
 
 typedef struct
 {

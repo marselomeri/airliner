@@ -147,7 +147,6 @@ void GPS_Parser_StateChange(GPS_ParserState_t newState)
 
 uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_t* status, boolean *done)
 {
-    OS_printf("GPS_ParseChar got byte = %hhx ", byte);
     uint16 msg_received = 0;
 
     switch(GPS_AppCustomData.ParserStatus.ParseState)

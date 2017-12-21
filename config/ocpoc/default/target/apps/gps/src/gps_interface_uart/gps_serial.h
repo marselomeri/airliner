@@ -75,7 +75,7 @@ extern "C" {
 **  \par Description:
 **       ms, timeout to wait for ack.
 */
-#define GPS_ACK_TIMEOUT                           (200)
+#define GPS_ACK_TIMEOUT                           (1000)
 
 
 /** \brief GPS payload scanner buffer size.
