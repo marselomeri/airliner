@@ -454,7 +454,6 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     
     /* Read GPS data */
     bytesRead = read(GPS_AppCustomData.DeviceFd, Buffer, Length);
-    OS_printf("OS read returned %d\n", bytesRead);
     if (bytesRead <= 0)
     {
         /* Read failed */
@@ -495,9 +494,7 @@ int32 GPS_Custom_Select(const uint32 TimeoutSec, const uint32 TimeoutUSec)
         /* Wait for RC data */
         returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
         //CFE_ES_PerfLogExit(GPS_DEVICE_GET_PERF_ID);
-        
-        OS_printf("OS select returned %d\n", returnCode);
-    
+
         /* select() wasn't successful */
         if (-1 == returnCode)
         {
@@ -748,7 +745,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
         /* REMOVE ME */
         for(i = 0; i < bytesRead; ++i)
         {
-            OS_printf("bytes = %hhx ", from_gps_data[i]);
+            OS_printf(" bytes = %hhx ", from_gps_data[i]);
         }
         OS_printf("\n");
         /* end todo*/
