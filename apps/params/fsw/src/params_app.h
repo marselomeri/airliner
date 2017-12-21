@@ -83,6 +83,12 @@ typedef struct
     /** \brief Housekeeping Telemetry for downlink */
     PARAMS_HkTlm_t  HkTlm;
 
+    /** \brief  */
+	uint16  ParamCount;
+
+	/** \brief  */
+	boolean  ParamsInitialized;
+
 } PARAMS_AppData_t;
 
 /************************************************************************

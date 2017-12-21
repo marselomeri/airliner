@@ -152,6 +152,17 @@ int32 PARAMS_InitPipe()
                                      (unsigned int)iStatus);
             goto PARAMS_InitPipe_Exit_Tag;
         }
+
+        /* Subscribe to mavlink commands */
+        iStatus = CFE_SB_Subscribe(MAVLINK_REQUEST_PARAMS_MID, PARAMS_AppData.CmdPipeId);
+
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(PARAMS_INIT_ERR_EID, CFE_EVS_ERROR,
+                                     "CMD Pipe failed to subscribe to PARAMS_CMD_MID. (0x%08X)",
+                                     (unsigned int)iStatus);
+            goto PARAMS_InitPipe_Exit_Tag;
+        }
     }
     else
     {
@@ -208,6 +219,8 @@ int32 PARAMS_InitData()
     memset((void*)&PARAMS_AppData.HkTlm, 0x00, sizeof(PARAMS_AppData.HkTlm));
     CFE_SB_InitMsg(&PARAMS_AppData.HkTlm,
                    PARAMS_HK_TLM_MID, sizeof(PARAMS_AppData.HkTlm), TRUE);
+
+    PARAMS_AppData.ParamsInitialized = FALSE;
 
     return (iStatus);
 }
@@ -344,38 +357,59 @@ void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
 void PARAMS_SendParamsToSB(void)
 {
 	int32 Status;
-	uint32 i =0;
 	uint16 msg_size 		= 0;
 	uint8 msgBuf[MAVLINK_MAX_PACKET_LEN] = {0};
-	PARAMS_ParamData_t ParamValueMsg = {0};
+	PARAMS_SendParamDataCmd_t ParamDataMsg = {0};
 	CFE_SB_MsgPtr_t 	CmdMsgPtr;
+	uint16 param_index = 0;
 
 	/* Iterate over table and send each parameter */
-	for(i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
+	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
 	{
 		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
 		{
 			/* Update parameter message with current table index values */
-			ParamValueMsg.value = PARAMS_AppData.ParamTblPtr->params[i].param_data.value;
-			memcpy(ParamValueMsg.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name,
+			ParamDataMsg.param_data.value = PARAMS_AppData.ParamTblPtr->params[i].param_data.value;
+			memcpy(ParamDataMsg.param_data.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name,
 					sizeof(PARAMS_AppData.ParamTblPtr->params[i].param_data.name));
-			ParamValueMsg.type = PARAMS_AppData.ParamTblPtr->params[i].param_data.type; // TODO need this?
+			ParamDataMsg.param_data.type = PARAMS_AppData.ParamTblPtr->params[i].param_data.type;
+			ParamDataMsg.param_count = PARAMS_AppData.ParamCount;
+			ParamDataMsg.param_index = param_index;
 
 			/* Init Airliner message and send to SB */
-			CFE_SB_InitMsg(&ParamValueMsg, PARAMS_PARAM_MID, sizeof(PARAMS_ParamData_t), FALSE);
-			CmdMsgPtr = (CFE_SB_MsgPtr_t)&ParamValueMsg;
+			CFE_SB_InitMsg(&ParamDataMsg, PARAMS_PARAM_MID, sizeof(PARAMS_ParamData_t), FALSE);
+			CmdMsgPtr = (CFE_SB_MsgPtr_t)&ParamDataMsg;
 
 			CFE_SB_SetCmdCode(CmdMsgPtr, 3); //PARAMS_PARAM_DATA_CC TODO: Why does this fail?
 			Status = CFE_SB_SendMsg(CmdMsgPtr);
 			if (Status != CFE_SUCCESS)
 			{
-				OS_printf("Error sending param to SB");
+				OS_printf("Error sending param to SB\n");
 				/* TODO: Decide what to do if the send message fails. */
 			}
-			//OS_printf("Param sent to SB");
+
+			/* Increment the param index. Can't use loop index since not all entries are enabled */
+			param_index++;
+
+			OS_printf("Param sent to SB\n");
+		}
+	}
+}
+
+void PARAMS_UpdateParamCount(void)
+{
+	uint16 count =0;
+
+	/* Iterate over table and count enabled entries */
+	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
+	{
+		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
+		{
+			count++;
 		}
 	}
 
+	PARAMS_AppData.ParamCount = count;
 }
 
 
@@ -529,13 +563,9 @@ void PARAMS_ProcessNewCmds()
                     PARAMS_ProcessNewAppCmds(CmdMsgPtr);
                     break;
 
-                /* TODO:  Add code to process other subscribed commands here
-                **
-                ** Example:
-                **     case CFE_TIME_DATA_CMD_MID:
-                **         PARAMS_ProcessTimeDataCmd(CmdMsgPtr);
-                **         break;
-                */
+                case MAVLINK_REQUEST_PARAMS_MID:
+                	PARAMS_SendParamsToSB();
+                    break;
 
                 default:
                     /* Bump the command error counter for an unknown command.

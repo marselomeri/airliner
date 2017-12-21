@@ -74,8 +74,18 @@ typedef struct
 	char name[PARAMS_MSG_PARAM_NAME_LEN];
     float value;
     uint8 type;
-    uint16 param_index;
 } PARAMS_ParamData_t;
+
+/**
+**  \brief MAVLINK parameter broadcast
+*/
+typedef struct
+{
+	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+	PARAMS_ParamData_t param_data;
+    uint16 param_count;
+    uint16 param_index;
+} PARAMS_SendParamDataCmd_t;
 
 #ifdef __cplusplus
 }
