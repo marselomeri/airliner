@@ -84,12 +84,17 @@ void GPS_Custom_InitData(void)
     bzero(&GPS_AppCustomData, sizeof(GPS_AppCustomData));
     GPS_AppCustomData.Baud = GPS_SERIAL_IO_SPEED;
     GPS_Parser_Reset();
+        /* Set all non-zero values */
+    GPS_AppCustomData.ContinueFlag          = TRUE;
+    GPS_AppCustomData.Priority              = GPS_STREAMING_TASK_PRIORITY;
+    GPS_AppCustomData.StreamingTask         = GPS_Stream_Task;
 }
 
 
 boolean GPS_Custom_Init()
 {
     boolean returnBool = TRUE;
+    int32 returnCode = 0;
     int32 Status = CFE_SUCCESS;
 
     GPS_AppCustomData.DeviceFd = open(GPS_SERIAL_DEVICE_PATH, O_RDWR | O_NOCTTY);
@@ -102,14 +107,14 @@ boolean GPS_Custom_Init()
     }
     
     /* Create mutex for shared data */
-    Status = OS_MutSemCreate(&GPS_AppCustomData.MutexDump, GPS_MUTEX_DUMP, 0);
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "GPS mutex create failed in custom init");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    //Status = OS_MutSemCreate(&GPS_AppCustomData.MutexDump, GPS_MUTEX_DUMP, 0);
+    //if (Status != CFE_SUCCESS)
+    //{
+        //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            //"GPS mutex create failed in custom init");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
     Status = OS_MutSemCreate(&GPS_AppCustomData.MutexPosition, GPS_MUTEX_POS, 0);
     if (Status != CFE_SUCCESS)
     {
@@ -147,6 +152,24 @@ boolean GPS_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
+
+    /* Create the streaming task */
+    returnCode = CFE_ES_CreateChildTask(
+            &GPS_AppCustomData.ChildTaskID,
+            GPS_STREAMING_TASK_NAME,
+            GPS_AppCustomData.StreamingTask,
+            0,
+            CFE_ES_DEFAULT_STACK_SIZE,
+            GPS_AppCustomData.Priority,
+            0);
+    if(CFE_SUCCESS != returnCode)
+    {
+        GPS_AppCustomData.ContinueFlag = FALSE;
+        returnBool = FALSE;
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "GPS create streaming task failed");
+        goto end_of_function;
+    }
     else
     {
         GPS_AppCustomData.Status = GPS_CUSTOM_INITIALIZED;
@@ -161,6 +184,13 @@ boolean GPS_Custom_Uninit(void)
 {
     boolean returnBool = TRUE;
     int returnCode = 0;
+
+    /* Delete the child task */
+    CFE_ES_DeleteChildTask(GPS_AppCustomData.ChildTaskID);
+    /* Set streaming task loop flag to stop */
+    GPS_AppCustomData.ContinueFlag = FALSE;
+    /* Set app state to initialized */
+    GPS_AppCustomData.Status = GPS_CUSTOM_INITIALIZED;
 
     returnCode = close(GPS_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
@@ -688,7 +718,35 @@ end_of_function:
 
 void GPS_Stream_Task(void)
 {
+    uint32 iStatus = -1;
+    boolean returnBool = FALSE;
     
+    iStatus = CFE_ES_RegisterChildTask();
+    
+    if (iStatus == CFE_SUCCESS)
+    {
+        GPS_AppCustomData.Status = GPS_CUSTOM_STREAMING;
+        while (GPS_AppCustomData.ContinueFlag == TRUE)
+        {
+            returnBool = GPS_Custom_Read_and_Parse(GPS_PACKET_TIMEOUT);
+            if(returnBool == FALSE)
+            {
+                /* TODO remove me*/
+                OS_printf("GPS parse and read failed\n");
+            }
+        }
+    }
+
+    /* Streaming task is exiting so set app flag to initialized */
+    GPS_AppCustomData.Status = GPS_CUSTOM_INITIALIZED;
+    CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        "GPS receive task exited with task status (0x%08lX)", iStatus);
+
+    /* The child task was successfully registered so exit from it */
+    if (iStatus == CFE_SUCCESS)
+    {
+        CFE_ES_ExitChildTask();
+    }
 }
 
 
@@ -696,11 +754,20 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
 {
     boolean returnBool = TRUE;
     uint32 i = 0;
+    uint32 j = 0;
+    uint16 satCount = 0;
     int32 bytesRead = 0;
     uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
     boolean done = FALSE;
     
-    bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
+    bytesRead = GPS_Custom_Receive(&from_gps_data[0], 
+            sizeof(from_gps_data), timeout);
+            
+            
+    if (bytesRead < 0)
+    {
+        returnBool = FALSE;
+    }
 
     for(i = 0;  i < bytesRead; ++i)
     {
@@ -709,11 +776,15 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
 
         if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
         {
-            OS_MutSemTake(GPS_AppCustomData.MutexDump);
-            OS_MutSemGive(GPS_AppCustomData.MutexDump);
-            
+            /* If parsechar completed a message... */
             if(TRUE == done)
             {
+
+                /* TODO remove after debug*/
+                OS_printf("ParseChar completed a message\n");
+                /* end todo */
+
+                /* Copy message to the CVT */
                 CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t*)&message);
                 switch(msgID)
                 {
@@ -834,20 +905,56 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                         }
                         
                         GPS_AppCustomData.GpsPositionMsg.Timestamp = GPS_Custom_Get_Time();
-                        GPS_AppCustomData.LastTimeStamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
+                        //GPS_AppCustomData.LastTimeStamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
 
+                        /* TODO position and velocity update rate functions
+                         * and a reset function */
                         GPS_AppCustomData.RateCountVel++;
                         GPS_AppCustomData.RateCountLatLon++;
                         GPS_AppCustomData.GotPosllh = TRUE;
                         GPS_AppCustomData.GotVelned = TRUE;
+                        
+                        /* TODO verify this for NAV-PVT */
+                        //GPS_AppCustomData.GpsPositionMsg.TimestampTimeRelative = 0;
 
                         OS_MutSemGive(GPS_AppCustomData.MutexPosition);
                         break;
                     }
                     case GPS_NAV_SVINFO_MID:
                     {
-                        OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
 
+                        GPS_NAV_SVINFO_Combined_t *msgIn = (GPS_NAV_SVINFO_Combined_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
+                        
+                        OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
+                        
+                        GPS_AppCustomData.GpsSatInfoMsg.Count = msgIn->svinfo.numCh;
+                        satCount = GPS_AppCustomData.GpsSatInfoMsg.Count;
+
+                        if(GPS_AppCustomData.GpsSatInfoMsg.Count > PX4_SAT_INFO_MAX_SATELLITES)
+                        {
+                            CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                    "GPS sat count %hhu > max buffer length %hhu", 
+                                    GPS_AppCustomData.GpsSatInfoMsg.Count,
+                                    PX4_SAT_INFO_MAX_SATELLITES);
+                            satCount = PX4_SAT_INFO_MAX_SATELLITES;
+                        }
+                        for(j = 0; j< satCount; j++)
+                        {
+                            GPS_AppCustomData.GpsSatInfoMsg.Used[j] = 
+                                    (uint8)(msgIn->numCh[j].flags & 0x01);
+                            GPS_AppCustomData.GpsSatInfoMsg.SNR[j] = 
+                                    (uint8)(msgIn->numCh[j].cno);
+                                    
+                            GPS_AppCustomData.GpsSatInfoMsg.Elevation[j] =
+                                    (uint8)(msgIn->numCh[j].elev);
+                            GPS_AppCustomData.GpsSatInfoMsg.Azimuth[j] =
+                                    (uint8)((float)msgIn->numCh[j].azim * 255.0f / 360.0f);
+                            GPS_AppCustomData.GpsSatInfoMsg.SVID[j] =
+                                    (uint8)(msgIn->numCh[j].svid);
+                        }
+                        
+                        GPS_AppCustomData.GpsSatInfoMsg.Timestamp = GPS_Custom_Get_Time();
+                        
                         OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
                         break;
                     }
@@ -882,7 +989,11 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     case GPS_MON_HW_MID:
                     {
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
+                        GPS_MON_HW_t *msgIn = (GPS_MON_HW_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
 
+                        GPS_AppCustomData.GpsPositionMsg.NoisePerMs = msgIn->noisePerMS;
+                        GPS_AppCustomData.GpsPositionMsg.JammingIndicator = msgIn->jamInd;
+                        
                         OS_MutSemGive(GPS_AppCustomData.MutexPosition);
                         break;
                     }
@@ -892,12 +1003,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                                 "GPS parser received unexpected message");
                     }
                 }
-                /* TODO remove after debug*/
-                OS_printf("ParseChar completed a message\n");
-                /* end todo */
             }
-            
-            
         }
     }
 
@@ -950,48 +1056,72 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
             timedOut = TRUE;
         }
 
-        bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
-        /* TODO REMOVE ME */
-        for(i = 0; i < bytesRead; ++i)
+        returnBool = GPS_Custom_Read_and_Parse(GPS_PACKET_TIMEOUT); 
+        if(TRUE == returnBool && FALSE == timedOut)
         {
-            OS_printf(" bytes = %hhx ", from_gps_data[i]);
-        }
-        OS_printf("\n");
-        /* end todo*/
-        for(i = 0; (FALSE == timedOut) && (i < bytesRead); ++i)
-        {
-            GPS_DeviceMessage_t message;
-            GPS_ParserStatus_t status;
-
-            if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
+            /* TODO move to read and parse message decode */
+            if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
+               GPS_AppCustomData.AckWaitingRcvd == TRUE)
             {
                 /* TODO remove after debug*/
-                if(TRUE == done)
-                {
-                    OS_printf("ParseChar completed a message\n");
-                }
-                /* end todo */
-                
-                if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
-                   GPS_AppCustomData.AckWaitingRcvd == TRUE)
-                {
-                    /* TODO remove after debug*/
-                    OS_printf("Got an ACK\n");
-                    /* */
-                    returnBool = TRUE;
-                    goto end_of_function;
-                }
-                if(GPS_AppCustomData.AckState == GPS_ACK_GOT_NAK &&
-                   GPS_AppCustomData.AckWaitingRcvd == TRUE)
-                {
-                    /* TODO remove after debug*/
-                    OS_printf("Got an NAK\n");
-                    /* */
-                    returnBool = FALSE;
-                    goto end_of_function;
-                }
+                OS_printf("Got an ACK\n");
+                /* */
+                returnBool = TRUE;
+                goto end_of_function;
+            }
+            if(GPS_AppCustomData.AckState == GPS_ACK_GOT_NAK &&
+               GPS_AppCustomData.AckWaitingRcvd == TRUE)
+            {
+                /* TODO remove after debug*/
+                OS_printf("Got an NAK\n");
+                /* */
+                returnBool = FALSE;
+                goto end_of_function;
             }
         }
+
+        //bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), GPS_PACKET_TIMEOUT);
+        ///* TODO REMOVE ME */
+        //for(i = 0; i < bytesRead; ++i)
+        //{
+            //OS_printf(" bytes = %hhx ", from_gps_data[i]);
+        //}
+        //OS_printf("\n");
+        ///* end todo*/
+        //for(i = 0; (FALSE == timedOut) && (i < bytesRead); ++i)
+        //{
+            //GPS_DeviceMessage_t message;
+            //GPS_ParserStatus_t status;
+
+            //if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
+            //{
+                ///* TODO remove after debug*/
+                //if(TRUE == done)
+                //{
+                    //OS_printf("ParseChar completed a message\n");
+                //}
+                ///* end todo */
+                
+                //if(GPS_AppCustomData.AckState == GPS_ACK_GOT_ACK &&
+                   //GPS_AppCustomData.AckWaitingRcvd == TRUE)
+                //{
+                    ///* TODO remove after debug*/
+                    //OS_printf("Got an ACK\n");
+                    ///* */
+                    //returnBool = TRUE;
+                    //goto end_of_function;
+                //}
+                //if(GPS_AppCustomData.AckState == GPS_ACK_GOT_NAK &&
+                   //GPS_AppCustomData.AckWaitingRcvd == TRUE)
+                //{
+                    ///* TODO remove after debug*/
+                    //OS_printf("Got an NAK\n");
+                    ///* */
+                    //returnBool = FALSE;
+                    //goto end_of_function;
+                //}
+            //}
+        //}
     }
 
 end_of_function:
@@ -1140,27 +1270,27 @@ boolean GPS_Custom_SendMessageRate(const uint16 msg, const uint8 rate)
 }
 
 
-boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure)
-{
-    boolean returnBool = TRUE;
-    /* Null check */
-    if(0 == Measure)
-    {
-        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "GPS measure dump message null pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+//boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure)
+//{
+    //boolean returnBool = TRUE;
+    ///* Null check */
+    //if(0 == Measure)
+    //{
+        //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                //"GPS measure dump message null pointer");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
-    OS_MutSemTake(GPS_AppCustomData.MutexDump);
-    memcpy(Measure, &GPS_AppCustomData.GpsDumpMsg, 
-            sizeof(GPS_AppCustomData.GpsDumpMsg));
-    OS_MutSemGive(GPS_AppCustomData.MutexDump);
+    //OS_MutSemTake(GPS_AppCustomData.MutexDump);
+    //memcpy(Measure, &GPS_AppCustomData.GpsDumpMsg, 
+            //sizeof(GPS_AppCustomData.GpsDumpMsg));
+    //OS_MutSemGive(GPS_AppCustomData.MutexDump);
 
-end_of_function:
+//end_of_function:
 
-    return returnBool;
-}
+    //return returnBool;
+//}
 
 
 boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)

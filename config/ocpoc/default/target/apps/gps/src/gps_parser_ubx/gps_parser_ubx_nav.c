@@ -1664,7 +1664,8 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
     /* If we're in part 2 of the SVINFO message */
     else if(GPS_AppCustomData.ParserStatus.PayloadCursor >= 8)
     {
-        if (i < (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+        if (i < (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12 &&
+            i < PX4_SAT_INFO_MAX_SATELLITES)
         {
             switch((GPS_AppCustomData.ParserStatus.PayloadCursor - 8) % 12)
             {
@@ -1721,7 +1722,8 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
                     return;
             }
         }
-        else if (i = (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+        else if (i == (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12
+                 || i == PX4_SAT_INFO_MAX_SATELLITES)
         {
             i = 0;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);

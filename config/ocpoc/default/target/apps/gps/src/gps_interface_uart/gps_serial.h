@@ -434,7 +434,9 @@ typedef enum
     /*! GPS status uninitialized */
     GPS_CUSTOM_UNINITIALIZED  = 0,
     /*! GPS status initialized */
-    GPS_CUSTOM_INITIALIZED   = 1
+    GPS_CUSTOM_INITIALIZED   = 1,
+    /*! GPS status streaming */
+    GPS_CUSTOM_STREAMING     = 2
 } GPS_Custom_Status_t;
 
 
@@ -457,7 +459,13 @@ typedef struct
     uint32                       Baud;
     /*! The current parser status */
     GPS_ParserStatus_t           ParserStatus;
-    PX4_GpsDumpMsg_t             GpsDumpMsg;
+    /*! Streaming task priority */
+    uint8                           Priority;
+    /*! Streaming child task identifier */
+    uint32                          ChildTaskID;
+    /*! Streaming task function pointer */
+    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    //PX4_GpsDumpMsg_t             GpsDumpMsg;
     PX4_VehicleGpsPositionMsg_t  GpsPositionMsg;
     PX4_SatelliteInfoMsg_t       GpsSatInfoMsg;
     GPS_Ack_State_t              AckState;
@@ -465,7 +473,7 @@ typedef struct
     uint8                        AckRcvdMsgCls;
     boolean                      AckWaitingRcvd;
     /*! The shared data mutex */
-    uint32                       MutexDump;
+    //uint32                       MutexDump;
     uint32                       MutexPosition;
     uint32                       MutexSatInfo;
     /*! */
@@ -473,8 +481,10 @@ typedef struct
     uint32                       RateCountLatLon;
     boolean                      GotPosllh;
     boolean                      GotVelned;
+    /*! Flag to start and stop streaming */
+    boolean                         ContinueFlag;
     /*! The last timestamp */
-    CFE_TIME_SysTime_t           LastTimeStamp;
+    //CFE_TIME_SysTime_t           LastTimeStamp;
 } GPS_AppCustomData_t;
 
 
