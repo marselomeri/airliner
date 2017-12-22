@@ -125,22 +125,6 @@
 
 #define PX4BR_MICROSECONDS_PER_SECOND (1000000)
 
-uint64 PX4BR_CfeTimeToPx4Time(CFE_TIME_SysTime_t *Time)
-{
-	uint64 px4Time;
-
-	if(Time == 0)
-	{
-		return 0;
-	}
-
-	uint32 micros = CFE_TIME_Sub2MicroSecs(Time->Subseconds);
-
-	px4Time = ((Time->Seconds) * PX4BR_MICROSECONDS_PER_SECOND) + micros;
-
-	return px4Time;
-}
-
 
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
 {
@@ -2706,11 +2690,8 @@ uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBu
 {
 	bool status = false;
 	px4_sensor_accel_pb pbMsg;
-	CFE_TIME_SysTime_t timestamp;
 
-	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
-
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.integral_dt = inObject->IntegralDt;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.x = inObject->X;
@@ -2785,11 +2766,8 @@ uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuff
 {
 	bool status = false;
 	px4_sensor_baro_pb pbMsg;
-	CFE_TIME_SysTime_t timestamp;
 
-	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
-
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.pressure = inObject->Pressure;
 	pbMsg.altitude = inObject->Altitude;
@@ -3070,11 +3048,8 @@ uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuff
 {
 	bool status = false;
 	px4_sensor_gyro_pb pbMsg;
-	CFE_TIME_SysTime_t timestamp;
 
-	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
-
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.integral_dt = inObject->IntegralDt;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.x = inObject->X;
@@ -3148,11 +3123,8 @@ uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer
 {
 	bool status = false;
 	px4_sensor_mag_pb pbMsg;
-	CFE_TIME_SysTime_t timestamp;
 
-	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
-
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&timestamp);
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;

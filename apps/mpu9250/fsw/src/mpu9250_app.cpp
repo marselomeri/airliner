@@ -364,11 +364,23 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case MPU9250_MEASURE_MID:
+            {
+            	static uint32 i = 0;
+
                 ReadDevice();
                 SendSensorAccel();
                 SendSensorGyro();
-                SendSensorMag();
+                if(i >= 4)
+                {
+                	SendSensorMag();
+                	i = 0;
+                }
+                else
+                {
+                	++i;
+                }
                 break;
+            }
 
             case MPU9250_SEND_HK_MID:
                 ProcessCmdPipe();
