@@ -289,7 +289,8 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     }
 
     /* Timestamp */
-    Measure->LastSignal = RCIN_Custom_Get_Time();
+    Measure->Timestamp = PX4LIB_GetPX4TimeUs();
+    Measure->LastSignal = PX4LIB_GetPX4TimeUs();
 
 	/* Loop until event queue is empty.  At the start of each iteration,
 	 * read the joystick state. */

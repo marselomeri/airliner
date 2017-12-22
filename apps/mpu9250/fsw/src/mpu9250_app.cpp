@@ -10,6 +10,7 @@
 #include "mpu9250_msg.h"
 #include "mpu9250_version.h"
 #include "Vector3F.hpp"
+#include "lib/px4lib.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -182,12 +183,15 @@ void MPU9250::InitData()
     /* Init diagnostic message */
     CFE_SB_InitMsg(&Diag,
             MPU9250_DIAG_TLM_MID, sizeof(MPU9250_DiagPacket_t), TRUE);
+
     /* Init output message accelerometer */
     CFE_SB_InitMsg(&SensorAccel,
             PX4_SENSOR_ACCEL_MID, sizeof(PX4_SensorAccelMsg_t), TRUE);
+
     /* Init output message magnetometer */
     CFE_SB_InitMsg(&SensorMag,
             PX4_SENSOR_MAG_MID, sizeof(PX4_SensorMagMsg_t), TRUE);
+
     /* Init output message gyroscope */
     CFE_SB_InitMsg(&SensorGyro,
             PX4_SENSOR_GYRO_MID, sizeof(PX4_SensorGyroMsg_t), TRUE);
@@ -646,18 +650,13 @@ void MPU9250::ReadDevice(void)
     math::Vector3F gval_integrated;
     math::Vector3F aval;
     math::Vector3F aval_integrated;
+    static uint64 prevTimeStamp = 0;
 
-    cfeTimeStamp = MPU9250_Custom_Get_Time();
+    timeStamp = PX4LIB_GetPX4TimeUs();
     
     /* Timestamps */
-    SensorGyro.Timestamp.Seconds = SensorMag.Timestamp.Seconds = 
-            SensorAccel.Timestamp.Seconds = cfeTimeStamp.Seconds;
-    SensorGyro.Timestamp.Subseconds = SensorMag.Timestamp.Subseconds =
-            SensorAccel.Timestamp.Subseconds = cfeTimeStamp.Subseconds;
-    
-    /* Timestamp for low pass filter and integrator */
-    timeStamp = cfeTimeStamp.Seconds * 1000000;
-    timeStamp += CFE_TIME_Sub2MicroSecs(cfeTimeStamp.Subseconds);
+    SensorGyro.Timestamp = SensorMag.Timestamp =
+            SensorAccel.Timestamp = timeStamp;
 
     /* Gyro */
     returnBool = MPU9250_Read_Gyro(&SensorGyro.XRaw, &SensorGyro.YRaw, &SensorGyro.ZRaw);
@@ -692,6 +691,15 @@ void MPU9250::ReadDevice(void)
     gval[0] = SensorGyro.X;
     gval[1] = SensorGyro.Y;
     gval[2] = SensorGyro.Z;
+    gval_integrated[0] = 0.0f;
+    gval_integrated[1] = 0.0f;
+    gval_integrated[2] = 0.0f;
+
+    /* TODO:  Replace this with real code, not a temporary estimate. */
+    if(prevTimeStamp != 0)
+    {
+    	SensorGyro.IntegralDt = timeStamp - prevTimeStamp;
+    }
 
     _gyro_int.put(timeStamp, gval, gval_integrated, SensorGyro.IntegralDt);
     
@@ -739,6 +747,16 @@ void MPU9250::ReadDevice(void)
     aval[0] = SensorAccel.X;
     aval[1] = SensorAccel.Y;
     aval[2] = SensorAccel.Z;
+    aval_integrated[0] = 0.0f;
+    aval_integrated[1] = 0.0f;
+    aval_integrated[2] = 0.0f;
+
+    /* TODO:  Replace this with real code, not a temporary estimate. */
+    if(prevTimeStamp != 0)
+    {
+    	SensorAccel.IntegralDt = timeStamp - prevTimeStamp;
+    }
+	prevTimeStamp = timeStamp;
 
     _accel_int.put(timeStamp, aval, aval_integrated, SensorAccel.IntegralDt);
     

@@ -500,25 +500,6 @@ end_of_function:
 }
 
 
-CFE_TIME_SysTime_t HMC5883_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    int returnCode = 0;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
-    if (-1 == returnCode)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 clock_gettime errno: %i", errno);
-        goto end_of_function;
-    }
-
-end_of_function:
-    return Timestamp;
-}
-
-
 boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z)
 {
     boolean returnBool = TRUE;

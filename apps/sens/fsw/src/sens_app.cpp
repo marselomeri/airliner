@@ -10,6 +10,7 @@
 #include "sens_version.h"
 #include <lib/mathlib/math/Limits.hpp>
 #include <math.h>
+#include "lib/px4lib.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -877,7 +878,7 @@ void SENS::ProcessRCInput(void)
 	SendRcChannelsMsg();
 
 	/* Only publish manual control if the signal is still present and was present once */
-	if (!signal_lost && (CVT.InputRcMsg.LastSignal.Seconds > 0 || CVT.InputRcMsg.LastSignal.Subseconds > 0))
+	if (!signal_lost && CVT.InputRcMsg.LastSignal > 0)
 	{
 		/* Set mode slot to unassigned */
 		ManualControlSetpointMsg.ModeSlot = PX4_MODE_SLOT_NONE;
@@ -989,6 +990,8 @@ void SENS::CombineSensorInput(void)
 	CFE_TIME_SysTime_t MagMsgTime = CFE_SB_GetMsgTime((CFE_SB_Msg_t*)&CVT.SensorMagMsg);
 	CFE_TIME_SysTime_t BaroMsgTime = CFE_SB_GetMsgTime((CFE_SB_Msg_t*)&CVT.SensorBaroMsg);
 
+    SensorCombinedMsg.Timestamp = CVT.SensorGyroMsg.Timestamp;
+
     /* Accelerometer. */
 	SensorCombinedMsg.Acc[0] = CVT.SensorAccelMsg.X;
 	SensorCombinedMsg.Acc[1] = CVT.SensorAccelMsg.Y;
@@ -996,8 +999,10 @@ void SENS::CombineSensorInput(void)
     if(CFE_TIME_Compare(AccelMsgTime, CVT.AccelPublishedTime) == CFE_TIME_A_GT_B)
     {
     	CFE_TIME_SysTime_t deltaTime = CFE_TIME_Subtract(AccelMsgTime, CVT.AccelPublishedTime);
-    	SensorCombinedMsg.AccTimestampRelative = deltaTime.Seconds * 1000000;
-    	SensorCombinedMsg.AccTimestampRelative += CFE_TIME_Sub2MicroSecs(deltaTime.Subseconds);
+    	uint32 deltaTimeUs = deltaTime.Seconds * 1000000;
+    	deltaTimeUs += CFE_TIME_Sub2MicroSecs(deltaTime.Subseconds);
+
+    	SensorCombinedMsg.AccTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorAccelMsg.Timestamp;
     	if(SensorCombinedMsg.AccTimestampRelative <= SENS_MAX_ACC_TIME_DELTA)
     	{
     		/* Message is within the minimum relative time so it is valid. */
@@ -1011,7 +1016,7 @@ void SENS::CombineSensorInput(void)
 
 		if(CVT.SensorAccelMsg.IntegralDt == 0)
 		{
-			SensorCombinedMsg.AccIntegralDt = SensorCombinedMsg.AccTimestampRelative / 1000000.0f;
+			SensorCombinedMsg.AccIntegralDt = deltaTimeUs / 1000000.0f;
 		}
 		else
 		{
@@ -1045,9 +1050,16 @@ void SENS::CombineSensorInput(void)
 	SensorCombinedMsg.Mag[2] = CVT.SensorMagMsg.Z;
     if(CFE_TIME_Compare(MagMsgTime, CVT.MagPublishedTime) == CFE_TIME_A_GT_B)
     {
-    	CFE_TIME_SysTime_t deltaTime = CFE_TIME_Subtract(MagMsgTime, CVT.MagPublishedTime);
-    	SensorCombinedMsg.MagTimestampRelative = deltaTime.Seconds * 1000000;
-    	SensorCombinedMsg.MagTimestampRelative += CFE_TIME_Sub2MicroSecs(deltaTime.Subseconds);
+    	int64 deltaTimestamp = SensorCombinedMsg.Timestamp - CVT.SensorMagMsg.Timestamp;
+    	if(deltaTimestamp < 0)
+    	{
+    		SensorCombinedMsg.MagTimestampRelative = 0;
+    	}
+    	else
+    	{
+    		SensorCombinedMsg.MagTimestampRelative = deltaTimestamp;
+    	}
+
     	if(SensorCombinedMsg.MagTimestampRelative <= SENS_MAX_MAG_TIME_DELTA)
     	{
     		/* Message is within the minimum relative time so it is valid. */
@@ -1065,9 +1077,16 @@ void SENS::CombineSensorInput(void)
 	SensorCombinedMsg.BaroTemp = CVT.SensorBaroMsg.Temperature;
     if(CFE_TIME_Compare(BaroMsgTime, CVT.BaroPublishedTime) == CFE_TIME_A_GT_B)
     {
-    	CFE_TIME_SysTime_t deltaTime = CFE_TIME_Subtract(BaroMsgTime, CVT.BaroPublishedTime);
-    	SensorCombinedMsg.BaroTimestampRelative = deltaTime.Seconds * 1000000;
-    	SensorCombinedMsg.BaroTimestampRelative += CFE_TIME_Sub2MicroSecs(deltaTime.Subseconds);
+    	int64 deltaTimestamp = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
+    	if(deltaTimestamp < 0)
+    	{
+    		SensorCombinedMsg.BaroTimestampRelative = 0;
+    	}
+    	else
+    	{
+    		SensorCombinedMsg.BaroTimestampRelative = deltaTimestamp;
+    	}
+
     	if(SensorCombinedMsg.BaroTimestampRelative <= SENS_MAX_BARO_TIME_DELTA)
     	{
     		/* Message is within the minimum relative time so it is valid. */

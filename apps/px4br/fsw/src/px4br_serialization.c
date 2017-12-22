@@ -348,7 +348,7 @@ uint32 PX4BR_ActuatorOutputs_Enc(const PX4_ActuatorOutputsMsg_t *inObject, char 
 	bool status = false;
 	px4_actuator_outputs_pb pbMsg;
 
-	pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.noutputs = inObject->Count;
 	pbMsg.output_count = PX4_ACTUATOR_OUTPUTS_MAX;
 	for(i=0; i < PX4_ACTUATOR_OUTPUTS_MAX; ++i)
@@ -480,7 +480,7 @@ uint32 PX4BR_BatteryStatus_Enc(const PX4_BatteryStatusMsg_t *inObject, char *inO
 	bool status = false;
 	px4_battery_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.voltage_v = inObject->Voltage;
 	pbMsg.voltage_filtered_v = inObject->VoltageFiltered;
 	pbMsg.current_a = inObject->Current;
@@ -523,8 +523,7 @@ uint32 PX4BR_BatteryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_BatteryS
 		return 0;
 	}
 
-	inOutObject->Timestamp.Seconds = 0xffffffff;
-	inOutObject->Timestamp.Subseconds = 0x11111111;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Voltage = pbMsg.voltage_v;
 	inOutObject->VoltageFiltered = pbMsg.voltage_filtered_v;
 	inOutObject->Current = pbMsg.current_a;
@@ -1693,9 +1692,8 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 	bool status = false;
 	px4_input_rc_pb pbMsg;
 
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&inObject->LastSignal);
-	//pbMsg.timestamp_publication = &inObject->TimestampPublication;
-	pbMsg.timestamp_last_signal = PX4BR_CfeTimeToPx4Time(&inObject->LastSignal);
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.timestamp_last_signal = inObject->LastSignal;
 	pbMsg.channel_count = inObject->ChannelCount;
 	pbMsg.rssi = inObject->RSSI;
 	pbMsg.rc_lost_frame_count = inObject->RcLostFrameCount;
@@ -1823,7 +1821,7 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 	bool status = false;
 	px4_manual_control_setpoint_pb pbMsg;
 
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&inObject->Timestamp);
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
@@ -2512,8 +2510,8 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_rc_channels_pb pbMsg;
 
-	pbMsg.timestamp = PX4BR_CfeTimeToPx4Time(&inObject->Timestamp);
-	pbMsg.timestamp_last_valid = PX4BR_CfeTimeToPx4Time(&inObject->TimestampLastValid);
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.timestamp_last_valid = inObject->TimestampLastValid;
 	for(iChannel = 0; iChannel < PX4_RC_INPUT_MAX_CHANNELS; ++iChannel)
 	{
 		pbMsg.channels[iChannel] = inObject->Channels[iChannel];
@@ -2843,7 +2841,7 @@ uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *i
 	bool status = false;
 	px4_sensor_combined_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.gyro_rad_count = 3;
 	pbMsg.gyro_rad[0] = inObject->GyroRad[0];
 	pbMsg.gyro_rad[1] = inObject->GyroRad[1];
@@ -4566,11 +4564,11 @@ uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_led_control_pb pbMsg;
 
-    pbMsg.led_mask = inObject->led_mask;
-    pbMsg.color = inObject->color;
-    pbMsg.mode = inObject->mode;
-    pbMsg.num_blinks = inObject->num_blinks;
-    pbMsg.priority = inObject->priority;
+    pbMsg.led_mask = inObject->LedMask;
+    pbMsg.color = inObject->Color;
+    pbMsg.mode = inObject->Mode;
+    pbMsg.num_blinks = inObject->NumBlinks;
+    pbMsg.priority = inObject->Priority;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -4603,11 +4601,11 @@ uint32 PX4BR_LedControl_Dec(const char *inBuffer, uint32 inSize, PX4_LedControlM
 		return 0;
 	}
     
-	inOutObject->led_mask = pbMsg.led_mask;
-	inOutObject->color = pbMsg.color;
-	inOutObject->mode = pbMsg.mode;
-	inOutObject->num_blinks = pbMsg.num_blinks;
-	inOutObject->priority = pbMsg.priority;
+	inOutObject->LedMask = pbMsg.led_mask;
+	inOutObject->Color = pbMsg.color;
+	inOutObject->Mode = pbMsg.mode;
+	inOutObject->NumBlinks = pbMsg.num_blinks;
+	inOutObject->Priority = pbMsg.priority;
 
 	return sizeof(PX4_LedControlMsg_t);
 }

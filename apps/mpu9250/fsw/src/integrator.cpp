@@ -140,7 +140,7 @@ Integrator::put(uint64 timestamp, math::Vector3F &val, math::Vector3F &integral,
     //if (0 == _last_integration_time)
     //{
         ///* this is the first item in the integrator */
-        //now = MPU9250_Custom_Get_Time();
+        //now = PX4LIB_GetPX4TimeUs();
         //_last_integration_time = now;
         //_last_reset_time = now;
         //_last_val = val;

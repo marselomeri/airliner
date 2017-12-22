@@ -256,11 +256,11 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
                 if(HkTlm.State != RGBLED_SELFTEST)
                 {
                     /* If the same color is not the current value update */
-                    if (lastColor != CVT.RGBLEDControl.color)
+                    if (lastColor != CVT.RGBLEDControl.Color)
                     {
                         HkTlm.State = RGBLED_ON;
-                        lastColor = CVT.RGBLEDControl.color;
-                        switch (CVT.RGBLEDControl.color) 
+                        lastColor = CVT.RGBLEDControl.Color;
+                        switch (CVT.RGBLEDControl.Color)
                         {
                             case RGBLED_COLOR_RED:
                             RGBLED_Custom_SetColor(255, 0, 0);
