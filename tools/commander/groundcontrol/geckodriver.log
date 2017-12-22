@@ -20475,3 +20475,23 @@ JavaScript error: http://localhost:8000/#flight/pilot, line 318: TypeError: tlm_
 1513035768154	Marionette	INFO	New connections will no longer be accepted
 [Child 4525] WARNING: pipe error (17): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
 [Child 4525] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+1513842579718	geckodriver	INFO	geckodriver 0.19.1
+1513842579724	geckodriver	INFO	Listening on 127.0.0.1:40473
+1513842580822	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.1rBDvaRsh7Jl"
+1513842581478	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1513842581944	Marionette	INFO	Enabled via --marionette
+1513842583441	Marionette	INFO	Listening on port 37195
+1513842583479	Marionette	WARN	TLS certificate errors will be ignored for this session
+1513842583528	Marionette	DEBUG	Register listener.js for window 2147483649
+1513842583581	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1513842583851	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1513842583851	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+JavaScript error: http://localhost:8000/client.js, line 784: ReferenceError: module is not defined
+JavaScript error: http://localhost:8000/#flight/pilot, line 318: TypeError: tlm_o is null
+1513842584632	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "http://localhost:8000/#flight/pilot"
+1513842584702	Marionette	DEBUG	Received DOM event "pageshow" for "http://localhost:8000/#flight/pilot"
+1513842589364	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1513842589439	Marionette	INFO	New connections will no longer be accepted
+[Child 5439] WARNING: pipe error (31): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 5439] WARNING: pipe error (15): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 5439] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
