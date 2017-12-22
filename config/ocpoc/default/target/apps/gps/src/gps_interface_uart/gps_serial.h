@@ -321,7 +321,13 @@ extern "C" {
 #define GPS_STREAMING_TASK_PRIORITY    (50)
 
 /** \brief GPS shared data mutex name. */
-#define GPS_MUTEX_NAME                "GPS_MUTEX"
+#define GPS_MUTEX_POS                "GPS_MUTEX_POS"
+
+/** \brief GPS shared data mutex name. */
+#define GPS_MUTEX_DUMP               "GPS_MUTEX_DUMP"
+
+/** \brief GPS shared data mutex name. */
+#define GPS_MUTEX_SAT                "GPS_MUTEX_SAT"
 
 /** \brief Streaming task name
 **
@@ -454,6 +460,10 @@ typedef struct
     uint16                       AckWaitingMsg;
     uint8                        AckRcvdMsgCls;
     boolean                      AckWaitingRcvd;
+    /*! The shared data mutex */
+    uint32                       MutexDump;
+    uint32                       MutexPosition;
+    uint32                       MutexSatInfo;
 } GPS_AppCustomData_t;
 
 

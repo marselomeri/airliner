@@ -88,6 +88,54 @@ boolean GPS_Custom_Init(void);
 
 
 /************************************************************************/
+/** \brief Custom function to retrieve the current value message.
+**
+**  \par Description
+**       This function populates a PX4_GpsDumpMsg_t message.
+**
+**  \param [out] Measure, the GPS message to populate. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
+boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure);
+
+
+/************************************************************************/
+/** \brief Custom function to retrieve the current value message.
+**
+**  \par Description
+**       This function populates a PX4_VehicleGpsPositionMsg_t message.
+**
+**  \param [out] Measure, the GPS message to populate. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
+boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure);
+
+
+/************************************************************************/
+/** \brief Custom function to retrieve the current value message.
+**
+**  \par Description
+**       This function populates a PX4_VehicleGpsPositionMsg_t message.
+**
+**  \param [out] Measure, the GPS message to populate. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
+boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure);
+
+
+/************************************************************************/
 /** \brief Custom function to uninitialize custom device(s).
 **
 **  \par Description
