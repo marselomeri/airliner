@@ -590,9 +590,9 @@ block main
               table.table.table-condensed
                 thead
                   tr
-                    th(style={width:'100px'})  Size
-                    th(style={width:'200px'}) Modify Time
-                    th(style={width:'250px'}) Name
+                    th(style="width:100px")  Size
+                    th(style="width:200px") Modify Time
+                    th(style="width:250px") Name
                 tbody
                   tr
                     td
@@ -896,19 +896,11 @@ block main
                         var tlmMsgID = {'tlm':[{'name':'/CFS/SCH/MsgID_'+entryID}]};
                         var cmdEnableEntry = {'cmd': {'name':'/CFS/SCH/EnableEntry', 'argument':[{'name':'Slot', 'value':strSlotID},{'name':'Entry', 'value':strActID}]}};
                         var cmdDisableEntry = {'cmd': {'name':'/CFS/SCH/DisableEntry', 'argument':[{'name':'Slot', 'value':strSlotID},{'name':'Entry', 'value':strActID}]}};
-                        tr
-                          td #{slotID}
-                          td #{strActID}
-                          td
-                            span(data-sage= tlmEntryState) ---
-                          td
-                            span(data-sage= tlmMsgID) ---
-                          td
-                            .btn-group.dropup
-                              button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdEnableEntry) Ena
-                              button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdDisableEntry) Dis
+
                       };
                     };
+
+
             .table-responsive
               table.table.table-bordered.table-condensed
                 thead
@@ -1108,12 +1100,5 @@ block main
                       var cmdResetFilter = {'cmd': {'name':'/CFS/CFE_EVS/ResetFilter', 'argument':[{'name':'AppName', 'value':eventDef.appName},{'name':'EventID', 'value':strEventID}]}};
                       var cmdAddEventFilter = {'cmd': {'name':'/CFS/CFE_EVS/AddEventFilter', 'argument':[{'name':'AppName', 'value':eventDef.appName},{'name':'EventID', 'value':strEventID}]}};
                       var cmdDeleteEventFilter = {'cmd': {'name':'/CFS/CFE_EVS/DeleteEventFilter', 'argument':[{'name':'AppName', 'value':eventDef.appName},{'name':'EventID', 'value':strEventID}]}};
-                    tr
-                      td(style="padding-left: 20px !important")  #{eventDef.events[idx].['name']
-                      td
-                        .btn-group
-                          button.btn.btn-xs.btn-primary(data-sage= cmdSetFilter) Set
-                          button.btn.btn-xs.btn-primary(data-sage= cmdResetFilter) Reset
-                          button.btn.btn-xs.btn-primary(data-sage= cmdAddEventFilter) Add
-                          button.btn.btn-xs.btn-primary(data-sage= cmdDeleteEventFilter) Delete
+                      buildHtml();
                       };
