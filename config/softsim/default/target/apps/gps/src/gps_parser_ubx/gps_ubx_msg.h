@@ -35,6 +35,7 @@
 #define _GPS_UBX_MSG_H_
 
 #include "common_types.h"
+#include "px4_msgs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -76,7 +77,6 @@ extern "C" {
 #define GPS_NAV_TIMEUTC_VALID_UTCSTANDARD   (0xF0)
 
 #define GPS_MON_HW_VP_PIN_COUNT             (17)
-
 
 typedef struct
 {
@@ -200,7 +200,7 @@ typedef struct
     uint8  sec;
     uint8  valid;
     uint32 tAcc;
-    int8   nano;
+    int32   nano;
     uint8  fixType;
     uint8  flags;
     uint8  flags2;
@@ -219,7 +219,11 @@ typedef struct
     uint32 sAcc;
     uint32 headAcc;
     uint16 pDOP;
+    uint16 reserved2;
+    uint32 reserved3;
     int32  headVeh;
+    int16  magDec;
+    uint16 magAcc;
 } GPS_NAV_PVT_t;
 
 
@@ -279,8 +283,28 @@ typedef struct
     uint32 iTOW;
     uint8  numCh;
     uint8  globalFlags;
-} GPS_NAV_SVINFO_t;
+    uint16 reserved2;
+} GPS_NAV_SVINFO_P1_t;
 
+
+typedef struct
+{
+    uint8  chn;
+    uint8  svid;
+    uint8  flags;
+    uint8  quality;
+    uint8  cno;
+    int8   elev;
+    int16  azim;
+    int32  prRes;
+} GPS_NAV_SVINFO_P2_t;
+
+
+typedef struct
+{
+    GPS_NAV_SVINFO_P1_t svinfo;
+    GPS_NAV_SVINFO_P2_t numCh[PX4_SAT_INFO_MAX_SATELLITES];
+} GPS_NAV_SVINFO_Combined_t;
 
 typedef struct
 {
@@ -385,21 +409,23 @@ typedef struct
 
 typedef struct
 {
-    int32  pinSel;
-    int32  pinBank;
-    int32  pinDir;
-    int32  pinVal;
+    uint32 pinSel;
+    uint32 pinBank;
+    uint32 pinDir;
+    uint32 pinVal;
     uint16 noisePerMS;
     uint16 agcCnt;
     uint8  aStatus;
     uint8  aPower;
-    int8   flags;
+    uint8  flags;
+    uint8  reserved1;
     uint32 usedMask;
     uint8  vp[GPS_MON_HW_VP_PIN_COUNT];
     uint8  jamInd;
-    int32  pinIrq;
-    int32  pullH;
-    int32  pullL;
+    uint16 reserved2;
+    uint32 pinIrq;
+    uint32 pullH;
+    uint32 pullL;
 } GPS_MON_HW_t;
 
 

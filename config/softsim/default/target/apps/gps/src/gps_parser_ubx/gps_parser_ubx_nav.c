@@ -47,31 +47,32 @@
 **
 **************************************************************************/
 
-#define GPS_PARSER_NAV_AOPSTATUS_MSG_LENGTH    16
-#define GPS_PARSER_NAV_ATT_MSG_LENGTH        32
-#define GPS_PARSER_NAV_CLOCK_MSG_LENGTH        20
-#define GPS_PARSER_NAV_DGPS_MSG_LENGTH        16
-#define GPS_PARSER_NAV_DOP_MSG_LENGTH        18
-#define GPS_PARSER_NAV_EOE_MSG_LENGTH        4
-#define GPS_PARSER_NAV_GEOFENCE_MSG_LENGTH    8
-#define GPS_PARSER_NAV_ODO_MSG_LENGTH        20
-#define GPS_PARSER_NAV_ORB_MSG_LENGTH        8
-#define GPS_PARSER_NAV_POSECEF_MSG_LENGTH    20
-#define GPS_PARSER_NAV_POSLLH_MSG_LENGTH        28
-#define GPS_PARSER_NAV_PVT_MSG_LENGTH        92
-#define GPS_PARSER_NAV_SAT_MSG_LENGTH        8
-#define GPS_PARSER_NAV_SBAS_MSG_LENGTH        12
-#define GPS_PARSER_NAV_SOL_MSG_LENGTH        52
-#define GPS_PARSER_NAV_STATUS_MSG_LENGTH        16
-#define GPS_PARSER_NAV_SVINFO_MSG_LENGTH        8
-#define GPS_PARSER_NAV_TIMEBDS_MSG_LENGTH    20
-#define GPS_PARSER_NAV_TIMEGAL_MSG_LENGTH    20
-#define GPS_PARSER_NAV_TIMEGLO_MSG_LENGTH    20
-#define GPS_PARSER_NAV_TIMEGPS_MSG_LENGTH    16
-#define GPS_PARSER_NAV_TIMELS_MSG_LENGTH        24
-#define GPS_PARSER_NAV_TIMEUTC_MSG_LENGTH    20
-#define GPS_PARSER_NAV_VELECEF_MSG_LENGTH    20
-#define GPS_PARSER_NAV_VELNED_MSG_LENGTH        36
+#define GPS_PARSER_NAV_AOPSTATUS_MSG_LENGTH  (16)
+#define GPS_PARSER_NAV_ATT_MSG_LENGTH        (32)
+#define GPS_PARSER_NAV_CLOCK_MSG_LENGTH      (20)
+#define GPS_PARSER_NAV_DGPS_MSG_LENGTH       (16)
+#define GPS_PARSER_NAV_DOP_MSG_LENGTH        (18)
+#define GPS_PARSER_NAV_EOE_MSG_LENGTH        (4)
+#define GPS_PARSER_NAV_GEOFENCE_MSG_LENGTH   (8)
+#define GPS_PARSER_NAV_ODO_MSG_LENGTH        (20)
+#define GPS_PARSER_NAV_ORB_MSG_LENGTH        (8)
+#define GPS_PARSER_NAV_POSECEF_MSG_LENGTH    (20)
+#define GPS_PARSER_NAV_POSLLH_MSG_LENGTH     (28)
+#define GPS_PARSER_NAV_PVT_MSG_LENGTH        (92)
+#define GPS_PARSER_NAV_SAT_MSG_LENGTH        (8)
+#define GPS_PARSER_NAV_SBAS_MSG_LENGTH       (12)
+#define GPS_PARSER_NAV_SOL_MSG_LENGTH        (52)
+#define GPS_PARSER_NAV_STATUS_MSG_LENGTH     (16)
+#define GPS_PARSER_NAV_SVINFOP1_MSG_LENGTH   (8)
+#define GPS_PARSER_NAV_SVINFOP2_MSG_LENGTH   (12)
+#define GPS_PARSER_NAV_TIMEBDS_MSG_LENGTH    (20)
+#define GPS_PARSER_NAV_TIMEGAL_MSG_LENGTH    (20)
+#define GPS_PARSER_NAV_TIMEGLO_MSG_LENGTH    (20)
+#define GPS_PARSER_NAV_TIMEGPS_MSG_LENGTH    (16)
+#define GPS_PARSER_NAV_TIMELS_MSG_LENGTH     (24)
+#define GPS_PARSER_NAV_TIMEUTC_MSG_LENGTH    (20)
+#define GPS_PARSER_NAV_VELECEF_MSG_LENGTH    (20)
+#define GPS_PARSER_NAV_VELNED_MSG_LENGTH     (36)
 
 /*************************************************************************
 **
@@ -507,107 +508,51 @@ void GPS_Nav_ParseChar_DOP(uint8 byte, GPS_DeviceMessage_t* message)
             break;
 
         case 6:
-            payload->gDOP += byte << 16;
-            break;
-
-        case 7:
-            payload->gDOP += byte << 24;
-            break;
-
-        case 8:
             payload->pDOP = byte;
             break;
 
-        case 9:
+        case 7:
             payload->pDOP += byte << 8;
             break;
 
-        case 10:
-            payload->pDOP += byte << 16;
-            break;
-
-        case 11:
-            payload->pDOP += byte << 24;
-            break;
-
-        case 12:
+        case 8:
             payload->tDOP = byte;
             break;
 
-        case 13:
+        case 9:
             payload->tDOP += byte << 8;
             break;
 
-        case 14:
-            payload->tDOP += byte << 16;
-            break;
-
-        case 15:
-            payload->tDOP += byte << 24;
-            break;
-
-        case 16:
+        case 10:
             payload->vDOP = byte;
             break;
 
-        case 17:
+        case 11:
             payload->vDOP += byte << 8;
             break;
 
-        case 18:
-            payload->vDOP += byte << 16;
-            break;
-
-        case 19:
-            payload->vDOP += byte << 24;
-            break;
-
-        case 20:
+        case 12:
             payload->hDOP = byte;
             break;
 
-        case 21:
+        case 13:
             payload->hDOP += byte << 8;
             break;
 
-        case 22:
-            payload->hDOP += byte << 16;
-            break;
-
-        case 23:
-            payload->hDOP += byte << 24;
-            break;
-
-        case 24:
+        case 14:
             payload->nDOP = byte;
             break;
 
-        case 25:
+        case 15:
             payload->nDOP += byte << 8;
             break;
 
-        case 26:
-            payload->nDOP += byte << 16;
-            break;
-
-        case 27:
-            payload->nDOP += byte << 24;
-            break;
-
-        case 28:
+        case 16:
             payload->eDOP = byte;
             break;
 
-        case 29:
+        case 17:
             payload->eDOP += byte << 8;
-            break;
-
-        case 30:
-            payload->eDOP += byte << 16;
-            break;
-
-        case 31:
-            payload->eDOP += byte << 24;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
             break;
 
@@ -1349,13 +1294,21 @@ void GPS_Nav_ParseChar_PVT(uint8 byte, GPS_DeviceMessage_t* message)
 
             case 87:
                 payload->headVeh += byte << 24;
-                GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
                 break;
 
             case 88:
+                payload->magDec = byte;
+                break;
+
             case 89:
+                payload->magDec += byte << 8;
+                break;
             case 90:
+                payload->magAcc = byte;
+                break;
             case 91:
+                payload->magAcc += byte << 8;
+                GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
                 break;
 
             default:
@@ -1647,7 +1600,139 @@ void GPS_Nav_ParseChar_TIMELS(uint8 byte, GPS_DeviceMessage_t* message)
 
 void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
 {
+    static int i = 0;
+    /* SVINFO is variable length 8 + 12*numCH so no length check here */
+    GPS_NAV_SVINFO_Combined_t *payload = (void*)CFE_SB_GetUserData((CFE_SB_MsgPtr_t)message);
+    /* If we're in part 1 of the SVINFO message*/
+    if(GPS_AppCustomData.ParserStatus.PayloadCursor < 8)
+    {
+        switch(GPS_AppCustomData.ParserStatus.PayloadCursor)
+        {
+            case 0:
+            {
+                CFE_SB_MsgId_t sbMsgID = GPS_TranslateMsgID(GPS_AppCustomData.ParserStatus.ClassID, GPS_AppCustomData.ParserStatus.MsgID);
+                uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
+                uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
+                CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
+    
+                payload->svinfo.iTOW = byte;
+                break;
+            }
+    
+            case 1:
+                payload->svinfo.iTOW += byte << 8;
+                break;
+    
+            case 2:
+                payload->svinfo.iTOW += byte << 16;
+                break;
+    
+            case 3:
+                payload->svinfo.iTOW += byte << 24;
+                break;
+            case 4:
+                payload->svinfo.numCh = byte;
+                /* Length check */
+                if (byte != (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+                {
+                    GPS_AppCustomData.ParserStatus.ParseError++;
+                    CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
+                          "Received SVINFO message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
+                    GPS_Parser_Reset();
+                }
+                break;
+            case 5:
+                payload->svinfo.globalFlags = byte;
+                break;
+            case 6:
+                payload->svinfo.reserved2 = byte;
+                break;
+            case 7:
+                payload->svinfo.reserved2 += byte << 8;
+                /* If we don't have any part 2 messages */
+                /* TODO verify this is possible */
+                if (0 == (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+                {
+                    GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+                }
+                break;
+            default:
+                GPS_Parser_Reset();
+                return;
+        }
+    }
+    /* If we're in part 2 of the SVINFO message */
+    else if(GPS_AppCustomData.ParserStatus.PayloadCursor >= 8)
+    {
+        if (i < (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12 &&
+            i < PX4_SAT_INFO_MAX_SATELLITES)
+        {
+            switch((GPS_AppCustomData.ParserStatus.PayloadCursor - 8) % 12)
+            {
+                case 0:
+                    payload->numCh[i].chn       = byte;
+                    break;
 
+                case 1:
+                    payload->numCh[i].svid      = byte;
+                    break;
+
+                case 2:
+                    payload->numCh[i].flags     = byte;
+                    break;
+
+                case 3:
+                    payload->numCh[i].quality   = byte;
+                    break;
+
+                case 4:
+                    payload->numCh[i].cno       = byte;
+                    break;
+
+                case 5:
+                    payload->numCh[i].elev      = byte;
+                    break;
+
+                case 6:
+                    payload->numCh[i].azim      = byte;
+                    break;
+
+                case 7:
+                    payload->numCh[i].azim      += byte << 8;
+                    break;
+
+                case 8:
+                    payload->numCh[i].prRes     = byte;
+                    break;
+
+                case 9:
+                    payload->numCh[i].prRes     += byte << 8;
+                    break;
+
+                case 10:
+                    payload->numCh[i].prRes     += byte << 16;
+                    break;
+                    
+                case 11:
+                    payload->numCh[i].prRes     += byte << 24;
+                    i++;
+                    break;
+                default:
+                    GPS_Parser_Reset();
+                    return;
+            }
+        }
+        else if (i == (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12
+                 || i == PX4_SAT_INFO_MAX_SATELLITES)
+        {
+            i = 0;
+            GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+        }
+        else
+        {
+            GPS_Parser_Reset();
+        }
+    }
 }
 
 
