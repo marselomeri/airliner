@@ -10,12 +10,11 @@ add_airliner_app_def(params
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_config_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_custom.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_events.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/params_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_private_ids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/params_version.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/params_data.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

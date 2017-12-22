@@ -10,7 +10,8 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "params_data.h"
+#include "params_platform_cfg.h"
+#include "params_msg.h"
 
 #ifdef __cplusplus
 extern "C" {

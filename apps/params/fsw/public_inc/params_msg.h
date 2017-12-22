@@ -10,7 +10,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "params_data.h"
+#include "mavlink.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -89,6 +89,16 @@ extern "C" {
 */
 #define PARAMS_RESET_CC                (1)
 
+
+
+#define PARAMS_REQUEST_ALL_CC                 (2)
+
+#define PARAMS_REQUEST_PARAM_CC               (3)
+
+#define PARAMS_SET_PARAM_CC               	  (4)
+
+#define PARAMS_PARAM_DATA_CC               	  (5)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -130,6 +140,59 @@ typedef struct
     uint32  uiCounter;
 } PARAMS_OutData_t;
 
+
+typedef struct
+{
+	char name[PARAMS_MSG_PARAM_NAME_LEN];
+    float value;
+    uint8 type;
+} PARAMS_ParamData_t;
+
+/**
+**  \brief MAVLINK parameter broadcast
+*/
+typedef struct
+{
+	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 param_count;
+    uint16 param_index;
+	PARAMS_ParamData_t param_data;
+} PARAMS_SendParamDataCmd_t;
+
+/**
+**  \brief MAVLINK parameter broadcast
+*/
+typedef struct
+{
+	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 param_index;
+    char name[PARAMS_MSG_PARAM_NAME_LEN];
+} PARAMS_RequestParamDataCmd_t;
+
+/**
+**  \brief PARAMS application housekeeping data
+*/
+typedef struct
+{
+    /** \brief cFE SB Tlm Msg Hdr */
+    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+
+    /** \paramstlmmnemonic \PARAMS_CMDACPTCNT
+        \brief Count of accepted commands */
+    uint8              usCmdCnt;
+
+    /** \paramstlmmnemonic \PARAMS_CMDRJCTCNT
+        \brief Count of failed commands */
+    uint8              usCmdErrCnt;
+
+	/** \brief  */
+	boolean  ParamsInitialized;
+
+} PARAMS_HkTlm_t;
+
+
+
+
 /**
 **  \brief MAVLINK parameter broadcast
 */
@@ -148,6 +211,8 @@ typedef struct
 	uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 	PARAMS_ParamData_t param_data;
 } PARAMS_SetParamCmd_t;
+
+
 
 
 #ifdef __cplusplus

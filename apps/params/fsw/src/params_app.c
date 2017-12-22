@@ -13,7 +13,6 @@
 #include "params_app.h"
 #include "params_msg.h"
 #include "params_version.h"
-#include "params_data.h"
 
 /************************************************************************
 ** Local Defines
@@ -354,7 +353,7 @@ void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
 	}
 }
 
-void PARAMS_SendParamsToSB(void)
+void PARAMS_SendAllParamsToSB(void)
 {
 	int32 Status;
 	uint16 msg_size 		= 0;
@@ -390,6 +389,53 @@ void PARAMS_SendParamsToSB(void)
 			{
 				OS_printf("Error sending param to SB\n");
 				/* TODO: Decide what to do if the send message fails. */
+			}
+
+			/* Increment the param index. Can't use loop index since not all entries are enabled */
+			param_index++;
+		}
+	}
+}
+
+void PARAMS_SendParamToSB(PARAMS_RequestParamDataCmd_t requestCmd)
+{
+	int32 Status;
+	uint16 msg_size 		= 0;
+	uint8 msgBuf[MAVLINK_MAX_PACKET_LEN] = {0};
+	PARAMS_SendParamDataCmd_t ParamDataMsg = {0};
+	CFE_SB_MsgPtr_t 	CmdMsgPtr;
+	uint16 param_index = 0;
+
+	/* Iterate over table to reach enabled index */
+	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
+	{
+		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
+		{
+			if (requestCmd.param_index == param_index ||
+				strcmp(requestCmd.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name) == 0)
+			{
+				/* Init Airliner message */
+				CFE_SB_InitMsg(&ParamDataMsg, PARAMS_PARAM_MID, sizeof(PARAMS_SendParamDataCmd_t), FALSE);
+				CmdMsgPtr = (CFE_SB_MsgPtr_t)&ParamDataMsg;
+				CFE_SB_SetCmdCode(CmdMsgPtr, PARAMS_PARAM_DATA_CC);
+
+				/* Update parameter message with current table index values */
+				ParamDataMsg.param_data.value = PARAMS_AppData.ParamTblPtr->params[i].param_data.value;
+				memcpy(ParamDataMsg.param_data.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name,
+						sizeof(PARAMS_AppData.ParamTblPtr->params[i].param_data.name));
+				ParamDataMsg.param_data.type = PARAMS_AppData.ParamTblPtr->params[i].param_data.type;
+				ParamDataMsg.param_count = PARAMS_AppData.ParamCount;
+				ParamDataMsg.param_index = param_index;
+
+				/* Send to SB */
+				Status = CFE_SB_SendMsg(CmdMsgPtr);
+				if (Status != CFE_SUCCESS)
+				{
+					OS_printf("Error sending param to SB\n");
+					/* TODO: Decide what to do if the send message fails. */
+				}
+
+				break;
 			}
 
 			/* Increment the param index. Can't use loop index since not all entries are enabled */
@@ -565,10 +611,6 @@ void PARAMS_ProcessNewCmds()
                     PARAMS_ProcessNewAppCmds(CmdMsgPtr);
                     break;
 
-                case MAVLINK_REQUEST_PARAMS_MID:
-                	PARAMS_SendParamsToSB();
-                    break;
-
                 default:
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
@@ -620,14 +662,24 @@ void PARAMS_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
                                   PARAMS_MISSION_REV);
                 break;
 
-            case PARAMS_RESET_CC:
-                PARAMS_AppData.HkTlm.usCmdCnt = 0;
-                PARAMS_AppData.HkTlm.usCmdErrCnt = 0;
+            case PARAMS_REQUEST_ALL_CC:
+                PARAMS_AppData.HkTlm.usCmdCnt++;
+                PARAMS_SendAllParamsToSB();
                 (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
-                                  "Recvd RESET cmd (%u)", (unsigned int)uiCmdCode);
+                                  "Recvd request all cmd (%u)", (unsigned int)uiCmdCode);
                 break;
 
-            /* TODO:  Add code to process the rest of the PARAMS commands here */
+            case PARAMS_REQUEST_PARAM_CC:
+                PARAMS_AppData.HkTlm.usCmdCnt++;
+                (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
+                                  "Recvd request specified cmd (%u)", (unsigned int)uiCmdCode);
+                break;
+
+            case PARAMS_SET_PARAM_CC:
+            	PARAMS_AppData.HkTlm.usCmdCnt++;
+                (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
+                                  "(%u)", (unsigned int)uiCmdCode);
+                break;
 
             default:
                 PARAMS_AppData.HkTlm.usCmdErrCnt++;
@@ -761,7 +813,7 @@ void PARAMS_AppMain()
         */
         PARAMS_UpdateCdsTbl();
         PARAMS_SaveCdsTbl();
-        //PARAMS_SendParamsToSB();
+        //PARAMS_SendAllParamsToSB();
 
         iStatus = PARAMS_AcquireConfigPointers();
         if(iStatus != CFE_SUCCESS)

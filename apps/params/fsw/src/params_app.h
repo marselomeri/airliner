@@ -11,7 +11,6 @@
 *************************************************************************/
 #include "cfe.h"
 
-#include "params_data.h"
 #include "params_platform_cfg.h"
 #include "params_mission_cfg.h"
 #include "params_private_ids.h"
