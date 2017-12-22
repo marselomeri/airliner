@@ -177,28 +177,6 @@ boolean GPS_Custom_Uninit(void)
 }
 
 
-CFE_TIME_SysTime_t GPS_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    int returnCode = 0;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
-    if (-1 == returnCode)
-    {
-        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "GPS clock_gettime errno: %i", errno);
-        goto end_of_function;
-    }
-
-    Timestamp.Seconds = (uint32) ts.tv_sec;
-    Timestamp.Subseconds = (uint32) ts.tv_nsec; 
-
-end_of_function:
-    return Timestamp;
-}
-
-
 boolean GPS_Custom_Negotiate_Baud(const uint32 Baud)
 {
     uint8 i = 0;
@@ -708,26 +686,6 @@ end_of_function:
 }
 
 
-uint64 GPS_Custom_Get_Time_Uint64(void)
-{
-    uint64 timeStamp = 0;
-    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
-    
-    cfeTimeStamp = GPS_Custom_Get_Time();
-
-    if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
-    {
-        goto end_of_function;
-    }
-    timeStamp = cfeTimeStamp.Seconds * 1000000;
-    timeStamp += cfeTimeStamp.Subseconds / 1000;
-
-end_of_function:
-
-    return timeStamp;
-}
-
-
 void GPS_Stream_Task(void)
 {
     
@@ -761,7 +719,6 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                 {
                     case GPS_NAV_DOP_MID:
                     {
-                        
                         GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* from cm to m */
@@ -773,13 +730,124 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_NAVPVT_MID:
                     {
+                        GPS_NAV_PVT_t *msgIn = (GPS_NAV_PVT_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
+                        /* Check if position fix flag is good */
+                        if ((msgIn->flags & GPS_NAV_PVT_FLAGS_GNSSFIXOK) == 1)
+                        {
+                            uint8 carr_soln = msgIn->flags >> 6;
+                            GPS_AppCustomData.GpsPositionMsg.FixType = msgIn->fixType;
+
+                            if (msgIn->flags & GPS_NAV_PVT_FLAGS_DIFFSOLN)
+                            {
+                                /* DGPS */
+                                GPS_AppCustomData.GpsPositionMsg.FixType = 4;
+                            }
+
+                            if (carr_soln == 1)
+                            {
+                                /* Float RTK */
+                                GPS_AppCustomData.GpsPositionMsg.FixType = 5;
+
+                            }
+                            else if (carr_soln == 2)
+                            {
+                                /* Fixed RTK */
+                                GPS_AppCustomData.GpsPositionMsg.FixType = 6;
+                            }
+
+                            GPS_AppCustomData.GpsPositionMsg.VelNedValid = TRUE;
+                        }
+                        else
+                        {
+                            GPS_AppCustomData.GpsPositionMsg.FixType = 0;
+                            GPS_AppCustomData.GpsPositionMsg.VelNedValid = FALSE;
+                        }
+
+                        GPS_AppCustomData.GpsPositionMsg.SatellitesUsed = 
+                                msgIn->numSV;
+
+                        GPS_AppCustomData.GpsPositionMsg.Lat = 
+                                msgIn->lat;
+                        GPS_AppCustomData.GpsPositionMsg.Lon = 
+                                msgIn->lon;
+                        GPS_AppCustomData.GpsPositionMsg.Alt = 
+                                msgIn->hMSL;
+
+                        GPS_AppCustomData.GpsPositionMsg.EpH = 
+                                (float)msgIn->hAcc * 1e-3f;
+                        GPS_AppCustomData.GpsPositionMsg.EpV = 
+                                (float)msgIn->vAcc * 1e-3f;
+                        GPS_AppCustomData.GpsPositionMsg.SVariance = 
+                                (float)msgIn->sAcc * 1e-3f;
+
+                        GPS_AppCustomData.GpsPositionMsg.Vel_m_s = 
+                                (float)msgIn->gSpeed * 1e-3f;
+
+                        GPS_AppCustomData.GpsPositionMsg.Vel_n_m_s = 
+                                (float)msgIn->velN * 1e-3f;
+                        GPS_AppCustomData.GpsPositionMsg.Vel_e_m_s = 
+                                (float)msgIn->velE * 1e-3f;
+                        GPS_AppCustomData.GpsPositionMsg.Vel_d_m_s = 
+                                (float)msgIn->velD * 1e-3f;
+
+                        GPS_AppCustomData.GpsPositionMsg.COG = 
+                                (float)msgIn->headMot * M_DEG_TO_RAD_F * 1e-5f;
+                        GPS_AppCustomData.GpsPositionMsg.CVariance = 
+                                (float)msgIn->headAcc * M_DEG_TO_RAD_F * 1e-5f;
+
+                        //Check if time and date fix flags are good
+                        if ((msgIn->valid & GPS_NAV_PVT_VALID_VALIDDATE)
+                            && (msgIn->valid & GPS_NAV_PVT_VALID_VALIDTIME)
+                            && (msgIn->valid & GPS_NAV_PVT_VALID_FULLYRESOLVED)) 
+                        {
+                            /* convert to unix timestamp */
+                            struct tm timeinfo;
+                            timeinfo.tm_year = msgIn->year - 1900;
+                            timeinfo.tm_mon  = msgIn->month - 1;
+                            timeinfo.tm_mday = msgIn->day;
+                            timeinfo.tm_hour = msgIn->hour;
+                            timeinfo.tm_min  = msgIn->min;
+                            timeinfo.tm_sec  = msgIn->sec;
+
+                            time_t epoch     = mktime(&timeinfo);
+
+                            if (epoch > GPS_EPOCH_SECS)
+                            {
+                                // FMUv2+ boards have a hardware RTC, but GPS helps us to configure it
+                                // and control its drift. Since we rely on the HRT for our monotonic
+                                // clock, updating it from time to time is safe.
+
+                                struct timespec ts;
+                                ts.tv_sec = epoch;
+                                ts.tv_nsec = msgIn->nano;
+
+                                //setClock(ts);
+
+                                GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec = ((uint64)epoch) * 1000000ULL;
+                                GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec += msgIn->nano / 1000;
+                            }
+                            else
+                            {
+                                GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec = 0;
+                            }
+                        }
+                        
+                        GPS_AppCustomData.GpsPositionMsg.Timestamp = GPS_Custom_Get_Time();
+                        GPS_AppCustomData.LastTimeStamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
+
+                        GPS_AppCustomData.RateCountVel++;
+                        GPS_AppCustomData.RateCountLatLon++;
+                        GPS_AppCustomData.GotPosllh = TRUE;
+                        GPS_AppCustomData.GotVelned = TRUE;
+
                         OS_MutSemGive(GPS_AppCustomData.MutexPosition);
                         break;
                     }
                     case GPS_NAV_SVINFO_MID:
                     {
                         OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
+
                         OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
                         break;
                     }
@@ -814,6 +882,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     case GPS_MON_HW_MID:
                     {
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
+
                         OS_MutSemGive(GPS_AppCustomData.MutexPosition);
                         break;
                     }

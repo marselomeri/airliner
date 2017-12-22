@@ -163,6 +163,8 @@ typedef struct
 *************************************************************************/
 boolean GPS_Custom_Max_Events_Not_Reached(int32 ind);
 
+CFE_TIME_SysTime_t GPS_Custom_Get_Time(void);
+
 
 #ifdef __cplusplus
 }

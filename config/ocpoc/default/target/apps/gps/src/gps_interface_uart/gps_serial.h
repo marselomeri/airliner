@@ -336,6 +336,10 @@ extern "C" {
 */
 #define GPS_STREAMING_TASK_NAME       "GPS_STREAM"
 
+// TODO: this number seems wrong
+#define GPS_EPOCH_SECS                ((time_t)1234567890ULL)
+
+#define M_DEG_TO_RAD_F                0.0174532925f
 
 /************************************************************************
 ** Structure Declarations
@@ -464,6 +468,13 @@ typedef struct
     uint32                       MutexDump;
     uint32                       MutexPosition;
     uint32                       MutexSatInfo;
+    /*! */
+    uint32                       RateCountVel;
+    uint32                       RateCountLatLon;
+    boolean                      GotPosllh;
+    boolean                      GotVelned;
+    /*! The last timestamp */
+    CFE_TIME_SysTime_t           LastTimeStamp;
 } GPS_AppCustomData_t;
 
 
@@ -632,21 +643,6 @@ int32 GPS_Custom_Select(const uint32 TimeoutSec, const uint32 TimeoutUSec);
 **
 *************************************************************************/
 boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
-
-
-/************************************************************************/
-/** \brief Get time in from GPS_Custom_Get_Time in uint64 format.
-**
-**  \par Description
-**       This function is a wrapper for GPS_Custom_Get_Time.
-**
-**  \par Assumptions, External Events, and Notes:
-**       None.
-**
-**  \returns       uint64, monotonic time for success, 0 for failure.
-**
-*************************************************************************/
-uint64 GPS_Custom_Get_Time_Uint64(void);
 
 
 /************************************************************************/

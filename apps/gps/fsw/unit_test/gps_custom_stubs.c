@@ -56,3 +56,4 @@ int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     return 0;
 }
 
+
