@@ -365,22 +365,16 @@ void PARAMS_SendParamsToSB(void)
 
 	/* Ensure param count is up to date */
 	PARAMS_UpdateParamCount();
-	OS_printf("Param count: %i\n", PARAMS_AppData.ParamCount);
 
 	/* Iterate over table and send each parameter */
 	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
 	{
 		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
 		{
-
-			/* Init Airliner message and send to SB */
+			/* Init Airliner message */
 			CFE_SB_InitMsg(&ParamDataMsg, PARAMS_PARAM_MID, sizeof(PARAMS_SendParamDataCmd_t), FALSE);
 			CmdMsgPtr = (CFE_SB_MsgPtr_t)&ParamDataMsg;
-
-			OS_printf("Param count in tbl: %u \n", PARAMS_AppData.ParamCount);
-			OS_printf("Param index in tbl: %u \n", param_index);
-			OS_printf("Param value in tbl: %f \n", PARAMS_AppData.ParamTblPtr->params[i].param_data.value);
-			OS_printf("Param type in tbl: %u \n", PARAMS_AppData.ParamTblPtr->params[i].param_data.type);
+			CFE_SB_SetCmdCode(CmdMsgPtr, PARAMS_PARAM_DATA_CC);
 
 			/* Update parameter message with current table index values */
 			ParamDataMsg.param_data.value = PARAMS_AppData.ParamTblPtr->params[i].param_data.value;
@@ -390,24 +384,16 @@ void PARAMS_SendParamsToSB(void)
 			ParamDataMsg.param_count = PARAMS_AppData.ParamCount;
 			ParamDataMsg.param_index = param_index;
 
-			OS_printf("Param count in msg: %u \n", ParamDataMsg.param_count);
-			OS_printf("Param index in msg: %u \n", ParamDataMsg.param_index);
-			OS_printf("Param value in msg: %f \n", ParamDataMsg.param_data.value);
-			OS_printf("Param type in msg: %u \n", ParamDataMsg.param_data.type);
-
-
-			CFE_SB_SetCmdCode(CmdMsgPtr, PARAMS_PARAM_DATA_CC);
+			/* Send to SB */
 			Status = CFE_SB_SendMsg(CmdMsgPtr);
 			if (Status != CFE_SUCCESS)
 			{
 				OS_printf("Error sending param to SB\n");
 				/* TODO: Decide what to do if the send message fails. */
 			}
-			OS_printf("Param: %i sent to SB\n", param_index);
 
 			/* Increment the param index. Can't use loop index since not all entries are enabled */
 			param_index++;
-
 		}
 	}
 }
