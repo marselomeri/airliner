@@ -762,11 +762,11 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
     
     bytesRead = GPS_Custom_Receive(&from_gps_data[0], 
             sizeof(from_gps_data), timeout);
-            
-            
+
     if (bytesRead < 0)
     {
         returnBool = FALSE;
+        goto end_of_function;
     }
 
     for(i = 0;  i < bytesRead; ++i)
@@ -1198,7 +1198,8 @@ boolean GPS_Custom_Configure(void)
     {
         goto end_of_function;
     }
-    
+
+    /* Set NAV-PVT rate */
     returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_PVT, 1);
     if(FALSE == returnBool)
     {
@@ -1212,6 +1213,7 @@ boolean GPS_Custom_Configure(void)
         goto end_of_function;
     }
 
+    /* Set NAV-DOP rate */
     returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_DOP, 1);
     if(FALSE == returnBool)
     {
@@ -1225,6 +1227,7 @@ boolean GPS_Custom_Configure(void)
         goto end_of_function;
     }
 
+    ///* Set NAV-SVINFO rate */
     //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
     //if(FALSE == returnBool)
     //{
@@ -1238,6 +1241,7 @@ boolean GPS_Custom_Configure(void)
         //goto end_of_function;
     //}
     
+    ///* Set MON-HW rate */
     //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_MON_HW, 1);
     //if(FALSE == returnBool)
     //{

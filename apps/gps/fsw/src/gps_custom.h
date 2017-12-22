@@ -102,7 +102,7 @@ boolean GPS_Custom_Init(void);
 **  \endreturns
 **
 *************************************************************************/
-boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure);
+//boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure);
 
 
 /************************************************************************/
