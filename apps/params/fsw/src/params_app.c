@@ -387,10 +387,10 @@ void PARAMS_SendParamsToSB(void)
 			memcpy(ParamDataMsg.param_data.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name,
 					sizeof(PARAMS_AppData.ParamTblPtr->params[i].param_data.name));
 			ParamDataMsg.param_data.type = PARAMS_AppData.ParamTblPtr->params[i].param_data.type;
-			ParamDataMsg.param_data.type = PARAMS_AppData.ParamCount;
+			ParamDataMsg.param_count = PARAMS_AppData.ParamCount;
 			ParamDataMsg.param_index = param_index;
 
-			OS_printf("Param count in msg: %u \n", ParamDataMsg.param_data.type);
+			OS_printf("Param count in msg: %u \n", ParamDataMsg.param_count);
 			OS_printf("Param index in msg: %u \n", ParamDataMsg.param_index);
 			OS_printf("Param value in msg: %f \n", ParamDataMsg.param_data.value);
 			OS_printf("Param type in msg: %u \n", ParamDataMsg.param_data.type);
