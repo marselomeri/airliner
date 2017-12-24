@@ -216,8 +216,8 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	bool status = false;
 	px4_actuator_controls_pb pbMsg;
 
-	pbMsg.timestamp = inObject->timestamp;
-	pbMsg.timestamp_sample = inObject->timestamp_sample;
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.timestamp_sample = inObject->SampleTime;
     pbMsg.control_count = PX4_ACTUATOR_CONTROL_COUNT;
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
@@ -227,6 +227,7 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
+	OS_printf("%llu\n", pbMsg.timestamp);
 	/* Now we are ready to encode the message. */
 	status = pb_encode(&stream, px4_actuator_controls_pb_fields, &pbMsg);
 	/* Check for errors... */
@@ -256,8 +257,8 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 		return 0;
 	}
 
-	inOutObject->timestamp = pbMsg.timestamp;
-	inOutObject->timestamp_sample = pbMsg.timestamp_sample;
+	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->SampleTime = pbMsg.timestamp_sample;
 	//OS_printf("*************************************\n");
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{

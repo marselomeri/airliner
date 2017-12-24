@@ -9,6 +9,7 @@
 #include "rcin_msg.h"
 #include "rcin_version.h"
 #include <unistd.h>
+#include "lib/px4lib.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -474,6 +475,9 @@ void RCIN::ReadDevice(void)
         /* Measure is returning TRUE set state to publishing */
         HkTlm.State = RCIN_PUBLISHING;
     }
+
+    InputRcMsg.Timestamp = PX4LIB_GetPX4TimeUs();
+    InputRcMsg.LastSignal = InputRcMsg.Timestamp;
 
     //OS_printf("RCIN State %u\n", HkTlm.State);
     //for (temp = 0; temp < 25; temp++)
