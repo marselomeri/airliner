@@ -146,6 +146,8 @@ typedef struct
 	char name[PARAMS_MSG_PARAM_NAME_LEN];
     float value;
     uint8 type;
+	uint8 vehicle_id;
+	uint8 component_id;
 } PARAMS_ParamData_t;
 
 /**

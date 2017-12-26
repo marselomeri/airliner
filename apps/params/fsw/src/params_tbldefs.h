@@ -43,8 +43,6 @@ extern "C" {
 typedef struct
 {
 	uint8 enabled;
-	uint8 vehicle_id;
-	uint8 component_id;
 	PARAMS_ParamData_t param_data;
 } PARAMS_ParamTblData_t;
 
