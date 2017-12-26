@@ -1,4 +1,4 @@
-{% extends "../../common/layout.pug" %}
+extends ../../common/layout
 
 block header
         i.fa-fw.fa.fa-signal
@@ -6,12 +6,12 @@ block header
 
 block main
   style.
-    .table.table-rts-status th:nth-of-type(1) "width:30px; overflow:hidden;"
-    .table.table-rts-status td:nth-of-type(1) "width:50px; overflow:hidden;"
-    .table.table-rts-status td:nth-of-type(2) "width:100px; overflow:hidden;"
-    .table.table-rts-status td:nth-of-type(3) "width:50px; overflow:hidden;"
-    .table.table-rts-status td:nth-of-type(4) "width:100px; overflow:hidden;"
-
+    table.table-rts-status th:nth-of-type(1) {width:30px; overflow:hidden;} 
+    table.table-rts-status td:nth-of-type(1) {width:50px; overflow:hidden;}
+    table.table-rts-status td:nth-of-type(2) {width:100px; overflow:hidden;}
+    table.table-rts-status td:nth-of-type(3) {width:50px; overflow:hidden;}
+    table.table-rts-status td:nth-of-type(4) {width:100px; overflow:hidden;}
+    
   .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-SC-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -29,15 +29,15 @@ block main
                   tr
                     th Cmd Count
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/CmdCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/CmdCtr'}}) ---
                   tr
                     th Cmd Error Count
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/CmdErrCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/CmdErrCtr'}}) ---
             footer
-              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/SC/NoOp'}}") No-Op
-              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/SC/ResetCounters'}}") Reset
-
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/SC/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/SC/ResetCounters'}}) Reset
+              
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-SC-General.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -54,36 +54,36 @@ block main
                   tr
                     th Switch Pending
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/SwitchPendFlag'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/SwitchPendFlag'}}) ---
                   tr
                     th Append Cmd Arg
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AppendCmdArg'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AppendCmdArg'}}) ---
                   tr
                     th Append Entry Count
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AppendEntryCount'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AppendEntryCount'}}) ---
                   tr
                     th Append Byte Count
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AppendByteCount'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AppendByteCount'}}) ---
                   tr
                     th Append Load Count
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AppendLoadCount'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AppendLoadCount'}}) ---
                   tr
                     th ATP Free Bytes[0]
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AtpFreeBytes[0]'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AtpFreeBytes[0]'}}) ---
                   tr
                     th ATP Free Bytes[1]
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AtpFreeBytes[1]'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AtpFreeBytes[1]'}}) ---
             footer
-              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/SC/ManageTable'}}") Manage Table
-
-
-
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/SC/ManageTable'}}) Manage Table
+             
+              
+              
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-SC-ATSGeneral.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -100,35 +100,35 @@ block main
                   tr
                     th ATS Number
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/AtsNumber'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/AtsNumber'}}) ---
                   tr
                     th ATS State
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AtsState'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AtsState'}}) ---
                   tr
                     th ATS On Failure
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/ContinueAtsOnFailureFlag'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/ContinueAtsOnFailureFlag'}}) ---
                   tr
                     th ATS Cmd Counter
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AtsCmdCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AtsCmdCtr'}}) ---
                   tr
                     th ATS Cmd Err Counter
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/AtsCmdErrCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/AtsCmdErrCtr'}}) ---
                   tr
                     th Last ATS Err Seq
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/LastAtsErrSeq'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/LastAtsErrSeq'}}) ---
                   tr
                     th Last ATS Err Cmd
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/LastAtsErrCmd'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/LastAtsErrCmd'}}) ---
                   tr
                     th Next ATS Time
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/NextAtsTime'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/NextAtsTime'}}) ---
             footer
               .btn-group.dropleft
                 button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -136,20 +136,20 @@ block main
                   span.caret
                 ul#GeneralCommands.dropdown-menu(role='menu')
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/StartAts'}}, href='javascript:void(0);'") Start ATS
+                    a(data-sage={cmd:{name:'/CFS/SC/StartAts'}}, href='javascript:void(0);') Start ATS
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/StopAts'}}, href='javascript:void(0);'") Stop ATS
+                    a(data-sage={cmd:{name:'/CFS/SC/StopAts'}}, href='javascript:void(0);') Stop ATS
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/SwitchAts'}}, href='javascript:void(0);'") Switch ATS
+                    a(data-sage={cmd:{name:'/CFS/SC/SwitchAts'}}, href='javascript:void(0);') Switch ATS
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/JumpAts'}}, href='javascript:void(0);'") Jump ATS
+                    a(data-sage={cmd:{name:'/CFS/SC/JumpAts'}}, href='javascript:void(0);') Jump ATS
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/ContinueAtsOnFailure'}}, href='javascript:void(0);'") Continue/Stop ATS on Failure
+                    a(data-sage={cmd:{name:'/CFS/SC/ContinueAtsOnFailure'}}, href='javascript:void(0);') Continue/Stop ATS on Failure
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/AppendAts'}}, href='javascript:void(0);'") Append ATS
-
-
-  .row
+                    a(data-sage={cmd:{name:'/CFS/SC/AppendAts'}}, href='javascript:void(0);') Append ATS
+                    
+                  
+  .row  
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-SC-RTSGeneral.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -166,39 +166,39 @@ block main
                   tr
                     th Num Rts Active
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/NumRtsActive'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/NumRtsActive'}}) ---
                   tr
                     th RTS Number
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/RtsNumber'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/RtsNumber'}}) ---
                   tr
                     th RTS Active Counter
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/RtsActiveCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/RtsActiveCtr'}}) ---
                   tr
                     th RTS Active Err Counter
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/RtsActiveErrCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/RtsActiveErrCtr'}}) ---
                   tr
                     th RTS Cmd Counter
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/RtsCmdCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/RtsCmdCtr'}}) ---
                   tr
                     th RTS Cmd Err Counter
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/RtsCmdErrCtr'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/RtsCmdErrCtr'}}) ---
                   tr
                     th Last RTS Err Seq
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/LastRtsErrSeq'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/LastRtsErrSeq'}}) ---
                   tr
                     th Last RTS Err Cmd
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/LastErrCmd'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/LastErrCmd'}}) ---
                   tr
                     th Next RTS Time
                     td
-                      span(data-sage="{'tlm':{'name':'/CFS/SC/NextRtsTime'}}") ---
+                      span(data-sage={tlm:{name:'/CFS/SC/NextRtsTime'}}) ---
             footer
               .btn-group.dropup
                 button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -206,15 +206,15 @@ block main
                   span.caret
                 ul#GeneralCommands.dropdown-menu(role='menu')
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/StartRtsGroup'}}, href='javascript:void(0);'") Start RTS Group
+                    a(data-sage={cmd:{name:'/CFS/SC/StartRtsGroup'}}, href='javascript:void(0);') Start RTS Group
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/StopRtsGroup'}}, href='javascript:void(0);'") Stop RTS Group
+                    a(data-sage={cmd:{name:'/CFS/SC/StopRtsGroup'}}, href='javascript:void(0);') Stop RTS Group
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRtsGroup'}}, href='javascript:void(0);'") Disable RTS Group
+                    a(data-sage={cmd:{name:'/CFS/SC/DisableRtsGroup'}}, href='javascript:void(0);') Disable RTS Group
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRtsGroup'}}, href='javascript:void(0);'") Enable RTS Group
+                    a(data-sage={cmd:{name:'/CFS/SC/EnableRtsGroup'}}, href='javascript:void(0);') Enable RTS Group
 
-
+      
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-SC-RTSStatus-1-32.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -231,7 +231,7 @@ block main
                   tr
                     th 1
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[0]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[0]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -239,12 +239,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[0]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[0]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -252,13 +252,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'1'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 2
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[1]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[1]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -266,12 +266,12 @@ block main
                           span.caret
                         ul#RTS2ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[1]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[1]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -279,13 +279,13 @@ block main
                           span.caret
                         ul#RTS2DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'2'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 3
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[2]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[2]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -293,12 +293,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[2]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[2]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -306,13 +306,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'3'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 4
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[3]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[3]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -320,12 +320,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[3]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[3]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -333,13 +333,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'4'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 5
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[4]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[4]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -347,12 +347,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[4]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[4]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -360,13 +360,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'5'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 6
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[5]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[5]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -374,12 +374,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[5]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[5]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -387,13 +387,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'6'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 7
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[6]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[6]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -401,12 +401,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[6]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[6]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -414,13 +414,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'7'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 8
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[7]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[7]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -428,12 +428,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[7]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[7]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -441,13 +441,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'8'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 9
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[8]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[8]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -455,12 +455,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[8]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[8]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -468,13 +468,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'9'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 10
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[9]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[9]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -482,12 +482,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[9]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[9]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -495,13 +495,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'10'}]}}, href='javascript:void(0);') Enable
+                  tr        
                     th 11
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[10]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[10]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -509,12 +509,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[10]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[10]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -522,13 +522,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'11'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 12
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[11]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[11]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -536,12 +536,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[11]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[11]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -549,13 +549,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'12'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 13
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[12]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[12]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -563,12 +563,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[12]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[12]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -576,13 +576,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'13'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 14
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[13]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[13]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -590,12 +590,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[13]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[13]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -603,13 +603,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'14'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 15
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[14]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[14]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -617,12 +617,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[14]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[14]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -630,13 +630,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'15'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 16
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[15]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[15]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -644,12 +644,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[15]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[15]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -657,13 +657,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'16'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 17
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[16]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[16]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -671,12 +671,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[16]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[16]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -684,13 +684,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'17'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 18
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[17]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[17]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -698,12 +698,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[17]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[17]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -711,13 +711,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'18'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 19
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[18]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[18]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -725,12 +725,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[18]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[18]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -738,13 +738,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'19'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 20
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[19]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[19]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -752,12 +752,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[19]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[19]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -765,13 +765,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'20'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 21
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[20]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[20]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -779,12 +779,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[20]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[20]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -792,13 +792,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'21'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 22
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[21]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[21]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -806,12 +806,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[21]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[21]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -819,13 +819,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'22'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 23
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[22]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[22]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -833,12 +833,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[22]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[22]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -846,13 +846,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'23'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 24
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[23]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[23]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -860,12 +860,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[23]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[23]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -873,13 +873,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'24'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 25
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[24]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[24]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -887,12 +887,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[24]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[24]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -900,13 +900,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'25'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 26
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[25]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[25]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -914,12 +914,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[25]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[25]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -927,13 +927,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'26'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 27
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[26]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[26]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -941,12 +941,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[26]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[26]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -954,13 +954,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'27'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 28
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[27]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[27]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -968,12 +968,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[27]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[27]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -981,13 +981,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'28'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 29
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[28]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[28]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -995,12 +995,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[28]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[28]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1008,13 +1008,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'29'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 30
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[29]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[29]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1022,12 +1022,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[29]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[29]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1035,13 +1035,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 31
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[30]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[30]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1049,12 +1049,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);') Stop
+                           
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[30]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[30]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1062,13 +1062,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'31'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 32
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[31]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[31]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1076,12 +1076,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[31]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[31]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1089,10 +1089,10 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);'") Enable
-
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'32'}]}}, href='javascript:void(0);') Enable
+                  
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-SC-RTSStatus-33-64.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -1109,7 +1109,7 @@ block main
                   tr
                     th 33
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[32]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[32]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1117,12 +1117,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[32]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[32]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1130,13 +1130,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'33'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 34
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[33]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[33]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1144,12 +1144,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[33]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[33]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1157,13 +1157,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'34'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 35
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[34]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[34]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1171,12 +1171,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[34]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[34]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1184,13 +1184,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'35'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 36
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[35]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[35]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1198,12 +1198,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[35]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[35]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1211,13 +1211,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'36'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 37
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[36]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[36]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1225,12 +1225,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[36]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[36]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1238,13 +1238,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'37'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 38
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[37]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[37]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1252,12 +1252,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[37]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[37]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1265,13 +1265,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'38'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 39
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[38]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[38]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1279,12 +1279,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'39'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'39'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'39'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'39'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[38]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[38]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1292,13 +1292,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'39'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'39'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'30'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 40
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[39]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[39]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1306,12 +1306,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[39]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[39]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1319,13 +1319,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'40'}]}}, href='javascript:void(0);') Enable
+                  tr           
                     th 41
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[40]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[40]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1333,12 +1333,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[40]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[40]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1346,13 +1346,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'41'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 42
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[41]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[41]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1360,12 +1360,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[41]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[41]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1373,13 +1373,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'42'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 43
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[42]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[42]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1387,12 +1387,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[42]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[42]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1400,13 +1400,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'43'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 44
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[43]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[43]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1414,12 +1414,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[43]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[43]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1427,13 +1427,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'44'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 45
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[44]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[44]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1441,12 +1441,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[44]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[44]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1454,13 +1454,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'45'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 46
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[45]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[45]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1468,12 +1468,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[45]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[45]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1481,13 +1481,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'46'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 47
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[46]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[46]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1495,12 +1495,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[46]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[46]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1508,13 +1508,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'47'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 48
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[47]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[47]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1522,12 +1522,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[47]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[47]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1535,13 +1535,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'48'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 49
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[48]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[48]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1549,12 +1549,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[48]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[48]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1562,13 +1562,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'49'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 50
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[49]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[49]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1576,12 +1576,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[49]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[49]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1589,13 +1589,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'50'}]}}, href='javascript:void(0);') Enable
+                  tr        
                     th 51
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[50]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[50]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1603,12 +1603,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[50]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[50]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1616,13 +1616,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'51'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 52
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[51]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[51]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1630,12 +1630,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[51]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[51]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1643,13 +1643,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'52'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 53
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[52]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[52]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1657,12 +1657,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[52]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[52]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1670,13 +1670,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'53'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 54
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[53]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[53]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1684,12 +1684,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[53]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[53]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1697,13 +1697,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'54'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 55
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[54]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[54]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1711,12 +1711,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[54]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[54]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1724,13 +1724,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'55'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 56
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[55]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[55]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1738,12 +1738,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[55]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[55]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1751,13 +1751,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'56'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 57
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[56]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[56]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1765,12 +1765,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[56]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[56]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1778,13 +1778,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'57'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 58
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[57]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[57]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1792,12 +1792,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[57]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[57]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1805,13 +1805,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'58'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 59
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[58]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[58]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1819,12 +1819,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[58]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[58]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1832,13 +1832,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'59'}]}}, href='javascript:void(0);') Enable
+                  tr  
                     th 60
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[59]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[59]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1846,12 +1846,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[59]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[59]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1859,13 +1859,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);'") Enable
-                  tr
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'60'}]}}, href='javascript:void(0);') Enable
+                  tr        
                     th 61
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[60]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[60]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1873,12 +1873,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[60]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[60]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1886,13 +1886,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'61'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 62
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[61]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[61]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1900,12 +1900,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[61]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[61]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1913,13 +1913,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'62'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 63
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[62]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[62]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1927,12 +1927,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[62]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[62]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1940,13 +1940,13 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'63'}]}}, href='javascript:void(0);') Enable
                   tr
                     th 64
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsExecutingStatus[63]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsExecutingStatus[63]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1954,12 +1954,12 @@ block main
                           span.caret
                         ul#RTS1ExecCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StartRts', 'Parameters':[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);'") Start
+                            a(data-sage={cmd:{name:'/CFS/SC/StartRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Start
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/StopRts', 'Parameters':[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);'") Stop
-
+                            a(data-sage={cmd:{name:'/CFS/SC/StopRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Stop
+                            
                     td
-                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/SC/RtsDisabledStatus[63]'}}") ---
+                      span.sage-tlm(data-sage={tlm:{name:'/CFS/SC/RtsDisabledStatus[63]'}}) ---
                     td
                       .btn-group.dropup
                         button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline.dropdown-toggle(type='button', data-toggle='dropdown')
@@ -1967,6 +1967,7 @@ block main
                           span.caret
                         ul#RTS1DisCmds.dropdown-menu(role='menu')
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/DisableRts', 'Parameters':[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);'") Disable
+                            a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Disable
                           li
-                            a(data-sage="{'cmd':{'name':'/CFS/SC/EnableRts', 'Parameters':[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);'") Enable
+                            a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Enable
+                  
