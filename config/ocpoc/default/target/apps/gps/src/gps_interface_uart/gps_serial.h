@@ -69,7 +69,7 @@ extern "C" {
 **  \par Description:
 **       ms, timeout to receive packet.
 */
-#define GPS_PACKET_TIMEOUT                        (20)
+#define GPS_PACKET_TIMEOUT                        (200)
 
 /** \brief GPS ack timeout.
 **

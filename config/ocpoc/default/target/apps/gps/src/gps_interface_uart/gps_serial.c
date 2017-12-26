@@ -421,18 +421,14 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud)
      *                   ONOCR | ONOEOT| OFILL | OLCUC | OPOST);
      */
     uart_config.c_oflag = 0;
-    
     /*
      * No line processing
      * echo off, echo newline off, canonical mode off,
      * extended input processing off, signal chars off
      */
     uart_config.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG);
-
     /* no parity, one stop bit */
     uart_config.c_cflag &= ~(CSTOPB | PARENB);
-    
-    
     /* set baud rate */
     termios_state = cfsetispeed(&uart_config, speed);
     if (termios_state < 0) 
@@ -450,7 +446,6 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud)
         returnBool = FALSE;
         goto end_of_function;
     }
-
     /* set the parameters */
     termios_state = tcsetattr(GPS_AppCustomData.DeviceFd, TCSANOW, &uart_config);
     if (termios_state < 0) 
@@ -482,7 +477,6 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     returnCode = GPS_Custom_Select(0, 1000 * Timeout);
     if (returnCode <= 0)
     {
-        OS_printf("select timed out in custom received\n\n");
         /* Select timeout or error */
         goto end_of_function;
     }
@@ -492,7 +486,6 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     
     /* Read GPS data */
     bytesRead = read(GPS_AppCustomData.DeviceFd, Buffer, Length);
-    OS_printf("bytesread = %d\n", bytesRead);
     if (bytesRead <= 0)
     {
         /* Read failed */
@@ -790,6 +783,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                 {
                     case GPS_NAV_DOP_MID:
                     {
+                        OS_printf("IN GPS_NAV_DOP_MID\n");
                         GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* from cm to m */
@@ -801,6 +795,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_NAVPVT_MID:
                     {
+                        OS_printf("IN GPS_NAV_NAVPVT_MID\n");
                         GPS_NAV_PVT_t *msgIn = (GPS_NAV_PVT_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* Check if position fix flag is good */
@@ -922,7 +917,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_SVINFO_MID:
                     {
-
+                        OS_printf("IN GPS_NAV_SVINFO_MID\n");
                         GPS_NAV_SVINFO_Combined_t *msgIn = (GPS_NAV_SVINFO_Combined_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         
                         OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
@@ -988,6 +983,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_MON_HW_MID:
                     {
+                        OS_printf("IN GPS_MON_HW_MID\n");
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         GPS_MON_HW_t *msgIn = (GPS_MON_HW_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
 
@@ -1227,33 +1223,33 @@ boolean GPS_Custom_Configure(void)
         goto end_of_function;
     }
 
-    ///* Set NAV-SVINFO rate */
-    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    /* Set NAV-SVINFO rate */
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
-    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
-            //GPS_ACK_TIMEOUT);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
     
-    ///* Set MON-HW rate */
-    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_MON_HW, 1);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    /* Set MON-HW rate */
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_MON_HW, 1);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
-    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
-            //GPS_ACK_TIMEOUT);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
 end_of_function:
 
