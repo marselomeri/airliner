@@ -17,15 +17,28 @@ from django.conf.urls import include,url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.conf.urls import include, url
+from django.core.urlresolvers import RegexURLResolver
+
 admin.autodiscover()
 
+
+def lookup_root(urlconf):
+    urlconf_module, app_name, namespace = include(urlconf)
+    resolver = RegexURLResolver('^', urlconf_module, app_name=app_name, namespace=namespace)
+    return resolver.resolve('').func
+
+
 urlpatterns = [
-    #url(r'^groundcontrol_video_socket/', include('groundcontrol.consumers')),
     url(r'^(\w+)/', include('groundcontrol.urls')),# Routing in url like [127.0.0.1:8000/abc]
     url(r'^(\w+.js)/', include('groundcontrol.urls')),# Routing in url like [127.0.0.1:8000/abc.js]
-    url(r'^$', include('groundcontrol.urls')),# Routing in url like [127.0.0.1:8000]
+    url(r'^$', lookup_root('groundcontrol.urls')),# Routing in url like [127.0.0.1:8000]
     url(r'^admin/', admin.site.urls),
 ]
+
+
+
+
 
 
 if settings.DEBUG:
