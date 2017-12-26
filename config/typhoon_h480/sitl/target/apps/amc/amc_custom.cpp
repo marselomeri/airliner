@@ -34,6 +34,12 @@
 #include "cfe.h"
 #include "amc_app.h"
 #include "simlib.h"
+#include <math.h>
+
+
+#define PWM_CUSTOM_OUT_MIN  (1000.0f)
+#define PWM_CUSTOM_OUT_MAX  (2000.0f)
+
 
 int32 AMC::InitDevice(void)
 {
@@ -42,18 +48,22 @@ int32 AMC::InitDevice(void)
 
 
 
-float AMC_Map(float x, uint16 in_min, uint16 in_max)
+float AMC_Map(float inValue, uint16 in_min, uint16 in_max, float out_min, float out_max)
 {
-	float out = (x - in_min) * (1.0f - 0.0f) / (in_max - in_min) + 0.0f;
+	/* Use the mapping equation:  Y = (X-A)/(B-A) * (D-C) + C */
+	float out = (inValue - in_min) /
+			(in_max - in_min) *
+			(out_max - out_min) +
+			out_min;
 
-	if(out > 1.0f)
+	if(out > out_max)
 	{
-		out = 1.0f;
+		out = out_max;
 	}
 
-	if(out < 0.0f)
+	if(out < out_min)
 	{
-		out = 0.0f;
+		out = out_min;
 	}
 
 	return out;
@@ -66,20 +76,15 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 	uint32 controlCount = 16;
 	uint32 i = 0;
 
-	//OS_printf("*********************\n");
-	//OS_printf("Min = %u  Max = %u\n", PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
     for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
     {
-    	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
-    //	OS_printf("%f(%u) ", controls[i], PWM[i]);
+    	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
     }
 
 	for(i = AMC_MAX_MOTOR_OUTPUTS; i < 16; ++i)
 	{
-		controls[i] = 0.0f;
-	//	OS_printf("%f ", controls[i]);
+		controls[i] = NAN;
 	}
-    //OS_printf("\n");
 
 	SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }
