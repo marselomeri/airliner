@@ -46,6 +46,7 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
+#include <math.h>
 
 #include "mpu9250_platform_cfg.h"
 #include "mpu9250_mission_cfg.h"
@@ -76,6 +77,13 @@ extern "C" {
 #define MPU9250_GYRO_FILTER_CUTOFF_FREQ     (30)
 /** \brief Set to never publish (0) in PX4 mpu9250 wrapper. */
 #define MPU9250_NEVER_AUTOPUBLISH_US        (0)
+/** \brief One gravity. */
+#define MPU9250_ONE_G                       (9.80665f)
+/** \brief Radians per degree. */
+#define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
+
+/** \brief 2000 deg/s = (2000/180)*PI = 34.906585 rad/s. */
+#define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -361,7 +369,7 @@ public:
      **
      *************************************************************************/
     boolean ValidateDevice(void);
-    
+
 private:
     math::LowPassFilter2p   _accel_filter_x;
     math::LowPassFilter2p   _accel_filter_y;

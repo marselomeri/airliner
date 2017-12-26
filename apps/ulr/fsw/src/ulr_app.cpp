@@ -8,6 +8,7 @@
 #include "ulr_app.h"
 #include "ulr_msg.h"
 #include "ulr_version.h"
+#include "lib/px4lib.h"
 
 
 
@@ -647,6 +648,7 @@ void  ULR::ListenerTaskMain(void)
 						if(IsChecksumOk())
 						{
 						    OS_MutSemTake(Mutex);
+						    DistanceSensor.Timestamp = PX4LIB_GetPX4TimeUs();
 							DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
 							DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
 							DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f;

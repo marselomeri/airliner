@@ -110,6 +110,12 @@ int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
 	int32 iStatus = CFE_SUCCESS;
 	int32 bytesRead = 0;
 
+	if((Buffer == 0) || (Size == 0))
+	{
+		iStatus = -1;
+		goto end_of_function;
+	}
+
 	bytesRead = read(ULR_CustomData.FD, (void*)&Buffer[0], (int)*Size);
 	if(bytesRead < 0)
 	{

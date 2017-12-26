@@ -279,7 +279,7 @@
 /** \brief Array initializer. */
 #define MPU_InitRegNum                      (20)
 /** \brief Array initializer 2. */
-#define MPU_InitRegNum2                     (10)
+//#define MPU_InitRegNum2                     (10)
 /** \brief Stop between slave reads. */
 #define MPU9250_I2C_MST_P_NSR               (0x10)
 /** \brief Delay data ready int until external sensor data is loaded. */
@@ -365,10 +365,10 @@ int32 MPU9250_Ioctl(int fh, int request, void *arg);
 
 
 int32 MPU9250_ResetDevice(void);
-boolean MPU9250_Read_MagInfo(uint8 *Value);
+//boolean MPU9250_Read_MagInfo(uint8 *Value);
 boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);
-boolean MPU9250_Custom_Read_MagAdj(void);
-boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
+//boolean MPU9250_Custom_Read_MagAdj(void);
+boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind);
 
 #ifdef __cplusplus
 extern "C" {

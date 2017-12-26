@@ -122,7 +122,7 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
 }
 
 
-uint64 MPU9250_Custom_Get_Time(void)
+uint64 PX4LIB_GetPX4TimeUs(void)
 {
     return 0;
 }

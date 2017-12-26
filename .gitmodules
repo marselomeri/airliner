@@ -1,0 +1,3 @@
+[submodule "tools/sitl_gazebo"]
+	path = tools/sitl_gazebo
+	url = git@bitbucket.org:windhoverlabs/sitl_gazebo.git

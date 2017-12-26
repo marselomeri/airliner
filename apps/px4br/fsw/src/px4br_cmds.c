@@ -105,8 +105,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = NAN;
         	cmd.Param2 = NAN;
         	cmd.Param3 = NAN;
@@ -131,8 +130,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = NAN;
         	cmd.Param2 = NAN;
         	cmd.Param3 = NAN;
@@ -157,8 +155,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = 1.0f;
         	cmd.Param2 = NAN;
         	cmd.Param3 = NAN;
@@ -183,8 +180,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = 0.0f;
         	cmd.Param2 = NAN;
         	cmd.Param3 = NAN;
@@ -209,8 +205,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = 0.0f;
         	cmd.Param2 = NAN;
         	cmd.Param3 = NAN;
@@ -235,8 +230,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = 0.0f;
         	cmd.Param2 = NAN;
         	cmd.Param3 = NAN;
@@ -262,8 +256,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmd, PX4_VEHICLE_COMMAND_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
 
-        	cmd.Timestamp.Seconds = 0;
-        	cmd.Timestamp.Subseconds = 0;
+        	cmd.Timestamp = 0;
         	cmd.Param1 = (float)cmdIn->BaseMode;
         	cmd.Param2 = (float)cmdIn->CustomMainMode;
         	cmd.Param3 = (float)cmdIn->CustomSubMode;
@@ -289,8 +282,7 @@ void PX4BR_CmdExec(CFE_SB_MsgPtr_t msg)
 
         	CFE_SB_InitMsg(&cmdOut, PX4_MANUAL_CONTROL_SETPOINT_MID, sizeof(PX4_ManualControlSetpointMsg_t), TRUE);
 
-        	cmdOut.Timestamp.Seconds = 0;
-        	cmdOut.Timestamp.Subseconds = 0;
+        	cmdOut.Timestamp = 0;
         	if(cmdIn->InputMask & PX4_MANUAL_INPUT_MASK_X)
         	{
         		cmdOut.X = cmdIn->X / 1000.0;

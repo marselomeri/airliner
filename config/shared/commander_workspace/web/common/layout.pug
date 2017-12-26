@@ -3,7 +3,7 @@ script(type='text/javascript').
 .row
   .col-xs-12.col-sm-7.col-md-7.col-lg-4
     h1.page-title.txt-color-blueDark
-      block header 
+      block header
 
 #content
   section#widget-grid(data-widget-grid)
@@ -11,6 +11,10 @@ script(type='text/javascript').
 
 script(type='text/javascript').
   pageSetUp();
+  var replaceAll=function(str, find, replace) {
+      str = str.toString();
+      return str.replace(new RegExp(find, 'g'), replace);
+  }
 
   !(function ($, undefined) {
     /// adapted http://jsfiddle.net/drzaus/Hgjfh/5/
@@ -50,12 +54,16 @@ script(type='text/javascript').
     };
 
   })(window.jQuery);
- 
+
+
+  /*
   $('[data-sage]').each(function() {
     var obj = $(this).attr('data-sage');
     var jsonObj;
     if (typeof obj === 'string' || obj instanceof String) {
       // it's a string
+      obj= replaceAll(obj,"\'","\"");
+      console.log('---> ', obj);
       jsonObj = JSON.parse(obj);
     }
     else if(typeof obj === 'object' || obj instanceof Object) {
@@ -63,10 +71,10 @@ script(type='text/javascript').
       jsonObj = obj;
     }
     else {
-      // it's something else 
+      // it's something else
       return;
     }
-
+    console.log('ERROR YAHA H');
     if(typeof $(this).attr('id') === undefined) {
       var uuid = generateUUID();
       $(this).attr('id', uuid);
@@ -77,14 +85,11 @@ script(type='text/javascript').
 
     if(jsonObj.hasOwnProperty('tlm'))
     {
-      /* This is a telemetry object. */
+      // This is a telemetry object.
       var menu = new BootstrapMenu(null, {
-        /* group actions by their id to make use of separators between
-         * them in the context menu. Actions not added to any group with
-         * this option will appear in a default group of their own. */
+
         container: $(this).parent(),
-        /* you can declare 'actions' as an object instead of an array,
-         * and its keys will be used as action ids. */
+
         actions: {
           dataPlot: {
             name: 'Data Plot' + jsonObj.tlm.name,
@@ -99,12 +104,13 @@ script(type='text/javascript').
         }
       });
 
-    } 
+    }
     if(jsonObj.hasOwnProperty('cmd'))
     {
-      /* This is a command object. */
-    } 
-  });
+      // This is a command object.
+    }
+    console.log('ERROR ISSKE AGAE NAI H');
+  });*/
 
 
 block scripts
@@ -112,7 +118,9 @@ block scripts
 
 
 script(type='text/javascript').
+
   if($("#yamcs-instance-selected").text() != 'Select'){
+
     BindHtmlToCommanderInstance($("#yamcs-instance-selected").text());
   }
 

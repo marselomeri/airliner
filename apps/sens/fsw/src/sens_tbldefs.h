@@ -47,6 +47,7 @@ extern "C" {
 
 #include "cfe.h"
 #include "sens_platform_cfg.h"
+#include "px4_msgs.h"
 
 /************************************************************************
 ** Local Defines
@@ -62,8 +63,62 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
+	float Min[PX4_RC_INPUT_MAX_CHANNELS];           /* RC%d_MIN */
+	float Trim[PX4_RC_INPUT_MAX_CHANNELS];          /* RC%d_TRIM */
+	float Max[PX4_RC_INPUT_MAX_CHANNELS];           /* RC%d_MAX */
+	float Rev[PX4_RC_INPUT_MAX_CHANNELS];           /* RC%d_REV */
+	float DZ[PX4_RC_INPUT_MAX_CHANNELS];            /* RC%d_DZ */
+	float ScalingFactor[PX4_RC_INPUT_MAX_CHANNELS];
+
+	int32 MapRoll;                                  /* RC_MAP_ROLL          */
+	int32 MapPitch;                                 /* RC_MAP_PITCH         */
+	int32 MapYaw;                                   /* RC_MAP_YAW           */
+	int32 MapThrottle;                              /* RC_MAP_THROTTLE      */
+	int32 MapFailsafe;                              /* RC_MAP_FAILSAFE      */
+
+	int32 MapModeSw;                                /* RC_MAP_MODE_SW       */
+	int32 MapReturnSw;                              /* RC_MAP_RETURN_SW     */
+	int32 MapRattitudeSw;                           /* RC_MAP_RATT_SW       */
+	int32 MapPosctlSw;                              /* RC_MAP_POSCTL_SW     */
+	int32 MapLoiterSw;                              /* RC_MAP_LOITER_SW     */
+	int32 MapAcroSw;                                /* RC_MAP_ACRO_SW       */
+	int32 MapOffboardSw;                            /* RC_MAP_OFFB_SW       */
+	int32 MapKillSw;                                /* RC_MAP_KILL_SW       */
+	int32 MapArmSw;                                 /* RC_MAP_ARM_SW        */
+	int32 MapTransSw;                               /* RC_MAP_TRANS_SW      */
+	int32 MapGearSw;                                /* RC_MAP_GEAR_SW       */
+	int32 MapStabSw;                                /* RC_MAP_STAB_SW       */
+	int32 MapManSw;                                 /* RC_MAP_MAN_SW        */
+	int32 MapFlaps;                                 /* RC_MAP_FLAPS         */
+
+	int32 MapAux1;                                  /* RC_MAP_AUX1          */
+	int32 MapAux2;                                  /* RC_MAP_AUX2          */
+	int32 MapAux3;                                  /* RC_MAP_AUX3          */
+	int32 MapAux4;                                  /* RC_MAP_AUX4          */
+	int32 MapAux5;                                  /* RC_MAP_AUX5          */
+
+	int32 MapParam[PX4_RC_PARAM_MAP_NCHAN];         /* RC_MAP_PARAM%d       */
+
+	int32 MapFlightMode;                            /* RC_MAP_FLTMODE       */
+
+	int32 FailsThr;                                 /* RC_FAILS_THR         */
+	float AssistTh;                                 /* RC_ASSIT_TH          */
+	float AutoTh;                                   /* RC_AUTO_TH           */
+	float RattitudeTh;                              /* RC_RATT_TH           */
+	float PosctlTh;                                 /* RC_POSCTL_TH         */
+	float ReturnTh;                                 /* RC_RETURN_TH         */
+	float LoiterTh;                                 /* RC_LOITER_TH         */
+	float AcroTh;                                   /* RC_ACRO_TH           */
+	float OffboardTh;                               /* RC_OFFB_TH           */
+	float KillswitchTh;                             /* RC_KILLSWITCH_TH     */
+	float ArmswitchTh;                              /* RC_ARMSWITCH_TH      */
+	float TransTh;                                  /* RC_TRANS_TH          */
+	float GearTh;                                   /* RC_GEAR_TH           */
+	float StabTh;                                   /* RC_STAB_TH           */
+	float ManTh;                                    /* RC_MAN_TH            */
+
+	float FltSmpRate;                               /* RC_FLT_SMP_RATE      */
+	float FltCutoff;                                /* RC_FLT_CUTOFF        */
 } SENS_ConfigTbl_t;
 
 
