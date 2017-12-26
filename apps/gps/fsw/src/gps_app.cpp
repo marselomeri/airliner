@@ -302,27 +302,27 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
                 returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
                 if(TRUE == returnBool)
                 {
-                    //OS_printf("Lat %d ", VehicleGps.Lat);
-                    //OS_printf("Lon %d ", VehicleGps.Lon);
-                    //OS_printf("Alt %d ", VehicleGps.Alt);
-                    //OS_printf("AltEllipsoid %d ", VehicleGps.AltEllipsoid);
-                    //OS_printf("SVariance %f ", VehicleGps.SVariance);
-                    //OS_printf("CVariance %f ", VehicleGps.CVariance);
-                    //OS_printf("EpH %f ", VehicleGps.EpH);
-                    //OS_printf("EpV %f ", VehicleGps.EpV);
-                    //OS_printf("HDOP %f ", VehicleGps.HDOP);
-                    //OS_printf("VDOP %f ", VehicleGps.VDOP);
-                    //OS_printf("NoisePerMs %d ", VehicleGps.NoisePerMs);
-                    //OS_printf("JammingIndicator %d ", VehicleGps.JammingIndicator);
-                    //OS_printf("Vel_m_s %f ", VehicleGps.Vel_m_s);
-                    //OS_printf("Vel_n_m_s %f ", VehicleGps.Vel_n_m_s);
-                    //OS_printf("Vel_e_m_s %f ", VehicleGps.Vel_e_m_s);
-                    //OS_printf("Vel_d_m_s %f ", VehicleGps.Vel_d_m_s);
-                    //OS_printf("COG %f ", VehicleGps.COG);
-                    //OS_printf("TimestampTimeRelative %d ", VehicleGps.TimestampTimeRelative);
-                    //OS_printf("FixType %hhu ", VehicleGps.FixType);
-                    //OS_printf("VelNedValid %u ", VehicleGps.VelNedValid);
-                    //OS_printf("SatellitesUsed %hhu ", VehicleGps.SatellitesUsed);
+                    OS_printf("Lat %d ", VehicleGps.Lat);
+                    OS_printf("Lon %d ", VehicleGps.Lon);
+                    OS_printf("Alt %d ", VehicleGps.Alt);
+                    OS_printf("AltEllipsoid %d ", VehicleGps.AltEllipsoid);
+                    OS_printf("SVariance %f ", VehicleGps.SVariance);
+                    OS_printf("CVariance %f ", VehicleGps.CVariance);
+                    OS_printf("EpH %f ", VehicleGps.EpH);
+                    OS_printf("EpV %f ", VehicleGps.EpV);
+                    OS_printf("HDOP %f ", VehicleGps.HDOP);
+                    OS_printf("VDOP %f ", VehicleGps.VDOP);
+                    OS_printf("NoisePerMs %d ", VehicleGps.NoisePerMs);
+                    OS_printf("JammingIndicator %d ", VehicleGps.JammingIndicator);
+                    OS_printf("Vel_m_s %f ", VehicleGps.Vel_m_s);
+                    OS_printf("Vel_n_m_s %f ", VehicleGps.Vel_n_m_s);
+                    OS_printf("Vel_e_m_s %f ", VehicleGps.Vel_e_m_s);
+                    OS_printf("Vel_d_m_s %f ", VehicleGps.Vel_d_m_s);
+                    OS_printf("COG %f ", VehicleGps.COG);
+                    OS_printf("TimestampTimeRelative %d ", VehicleGps.TimestampTimeRelative);
+                    OS_printf("FixType %hhu ", VehicleGps.FixType);
+                    OS_printf("VelNedValid %u ", VehicleGps.VelNedValid);
+                    OS_printf("SatellitesUsed %hhu ", VehicleGps.SatellitesUsed);
 
                     SendVehicleGps();
                 }

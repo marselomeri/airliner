@@ -761,7 +761,6 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
         returnBool = FALSE;
         goto end_of_function;
     }
-
     for(i = 0;  i < bytesRead; ++i)
     {
         GPS_DeviceMessage_t message;
@@ -1223,19 +1222,19 @@ boolean GPS_Custom_Configure(void)
         goto end_of_function;
     }
 
-    /* Set NAV-SVINFO rate */
-    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    ///* Set NAV-SVINFO rate */
+    //returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_SVINFO, 5);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
-    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
-            GPS_ACK_TIMEOUT);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            //GPS_ACK_TIMEOUT);
+    //if(FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
     
     /* Set MON-HW rate */
     returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_MON_HW, 1);
