@@ -322,14 +322,43 @@ void PARAMS_AddParam(PARAMS_ParamData_t param)
 			memcpy(PARAMS_AppData.ParamTblPtr->params[i].param_data.name, param.name,
 					sizeof(param.name)); //need to clear string?
 			PARAMS_AppData.ParamTblPtr->params[i].param_data.type = param.type;
+			PARAMS_AppData.ParamTblPtr->params[i].param_data.vehicle_id = param.vehicle_id;
+			PARAMS_AppData.ParamTblPtr->params[i].param_data.component_id = param.component_id;
 		}
 	}
 }
 
+boolean PARAMS_ParamsEqual(PARAMS_ParamData_t param1, PARAMS_ParamData_t param2)
+{
+	boolean equal = TRUE;
 
-void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
+	if (param1.vehicle_id != param2.vehicle_id)
+	{
+		equal = FALSE;
+		goto PARAMS_ParamsEqual_Exit_Tag;
+	}
+
+	if (param1.component_id != param2.component_id)
+	{
+		equal = FALSE;
+		goto PARAMS_ParamsEqual_Exit_Tag;
+	}
+
+	if (strcmp(param1.name, param2.name) != 0)
+	{
+		equal = FALSE;
+		goto PARAMS_ParamsEqual_Exit_Tag;
+	}
+
+PARAMS_ParamsEqual_Exit_Tag:
+	return equal;
+}
+
+void PARAMS_SetParam(PARAMS_SendParamDataCmd_t* SetParamMsg)
 {
 	boolean paramExists = FALSE;
+	//PARAMS_SendParamDataCmd_t ParamDataMsg = {0};
+	//CFE_SB_MsgPtr_t 	CmdMsgPtr;
 
 	/* Iterate over table to find parameter */
 	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
@@ -337,7 +366,7 @@ void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
 		/* Only check enabled parameters */
 		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
 		{
-			if (strcmp(SetParamMsg->param_data.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name))
+			if (PARAMS_ParamsEqual(SetParamMsg->param_data, PARAMS_AppData.ParamTblPtr->params[i].param_data))
 			{
 				/* Update parameter message with current table index values */
 				paramExists = TRUE;
@@ -347,12 +376,15 @@ void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg)
 		}
 	}
 
+	// TODO: Verify this is expected
 	if (!paramExists)
 	{
 		PARAMS_AddParam(SetParamMsg->param_data);
 	}
+
 }
 
+// For QGC when requesting vehicle params
 void PARAMS_SendAllParamsToSB(void)
 {
 	int32 Status;
@@ -397,7 +429,8 @@ void PARAMS_SendAllParamsToSB(void)
 	}
 }
 
-void PARAMS_SendParamToSB(PARAMS_RequestParamDataCmd_t requestCmd)
+// For QGC when requesting an individual parameter
+void PARAMS_RequestSingleParam(PARAMS_RequestParamDataCmd_t* requestCmd)
 {
 	int32 Status;
 	uint16 msg_size 		= 0;
@@ -411,8 +444,8 @@ void PARAMS_SendParamToSB(PARAMS_RequestParamDataCmd_t requestCmd)
 	{
 		if (PARAMS_AppData.ParamTblPtr->params[i].enabled == 1)
 		{
-			if (requestCmd.param_index == param_index ||
-				strcmp(requestCmd.name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name) == 0)
+			if (requestCmd->param_index == param_index ||
+				strcmp(requestCmd->name, PARAMS_AppData.ParamTblPtr->params[i].param_data.name) == 0)
 			{
 				/* Init Airliner message */
 				CFE_SB_InitMsg(&ParamDataMsg, PARAMS_PARAM_MID, sizeof(PARAMS_SendParamDataCmd_t), FALSE);
@@ -671,14 +704,16 @@ void PARAMS_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
             case PARAMS_REQUEST_PARAM_CC:
                 PARAMS_AppData.HkTlm.usCmdCnt++;
+                PARAMS_RequestSingleParam((PARAMS_RequestParamDataCmd_t *)MsgPtr);
                 (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
                                   "Recvd request specified cmd (%u)", (unsigned int)uiCmdCode);
                 break;
 
             case PARAMS_SET_PARAM_CC:
             	PARAMS_AppData.HkTlm.usCmdCnt++;
+            	PARAMS_SetParam(PARAMS_SendParamDataCmd_t* MsgPtr);
                 (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
-                                  "(%u)", (unsigned int)uiCmdCode);
+                                  "Recvd set param cmd (%u)", (unsigned int)uiCmdCode);
                 break;
 
             default:
