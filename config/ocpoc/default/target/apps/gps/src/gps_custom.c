@@ -104,38 +104,3 @@ end_of_function:
     return customEventCount;
 }
 
-
-uint64 GPS_Custom_Get_Time_Uint64(void)
-{
-    uint64 timeStamp = 0;
-    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
-    
-    cfeTimeStamp = GPS_Custom_Get_Time();
-
-    if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
-    {
-        goto end_of_function;
-    }
-    timeStamp = cfeTimeStamp.Seconds * 1000000;
-    timeStamp += cfeTimeStamp.Subseconds / 1000;
-
-end_of_function:
-
-    return timeStamp;
-}
-
-
-CFE_TIME_SysTime_t GPS_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    Timestamp.Seconds = ts.tv_sec;
-
-    Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
-
-end_of_function:
-    return Timestamp;
-}

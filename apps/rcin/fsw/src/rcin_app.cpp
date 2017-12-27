@@ -480,7 +480,7 @@ void RCIN::ReadDevice(void)
     InputRcMsg.LastSignal = InputRcMsg.Timestamp;
 
     //OS_printf("RCIN State %u\n", HkTlm.State);
-    //for (temp = 0; temp < 25; temp++)
+    //for (temp = 0; temp < 18; temp++)
     //{
         //OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
     //}
