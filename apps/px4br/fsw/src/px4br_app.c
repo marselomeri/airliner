@@ -862,21 +862,21 @@ int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 
 	Status = PX4BR_OK;
 
-	inPeer->InFD = open(inPeer->FifoPathIn, O_RDONLY);
-	if(inPeer->InFD <= 0)
-	{
-		/* TODO:  Send event. */
-		OS_printf("inPeer->InFD = %i   errno = %i\n", inPeer->InFD, errno);
-		exit(0);
-		Status = -1;
-		goto end_of_function;
-    }
-
 	inPeer->OutFD = open(inPeer->FifoPathOut, O_WRONLY);
 	if(inPeer->OutFD <= 0)
 	{
 		/* TODO:  Send event. */
 		OS_printf("inPeer->OutFD = %i   errno = %i\n", inPeer->OutFD, errno);
+		exit(0);
+		Status = -1;
+		goto end_of_function;
+    }
+
+	inPeer->InFD = open(inPeer->FifoPathIn, O_RDONLY);
+	if(inPeer->InFD <= 0)
+	{
+		/* TODO:  Send event. */
+		OS_printf("inPeer->InFD = %i   errno = %i\n", inPeer->InFD, errno);
 		exit(0);
 		Status = -1;
 		goto end_of_function;

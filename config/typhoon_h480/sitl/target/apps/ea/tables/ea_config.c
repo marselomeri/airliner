@@ -20,25 +20,6 @@
 ** Local Structure Definitions
 *************************************************************************/
 
-/**
-** \brief The cFE EA config table definition.
-**
-** Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
-**    ObjName - variable name of config table, e.g., EA_ConfigDefTbl[]
-**    TblName - app's table name, e.g., EA.CONFIG_TBL, where EA is the same app name
-**              used in cfe_es_startup.scr, and EA_defConfigTbl is the same table
-**              name passed in to CFE_TBL_Register()
-**    Desc - description of table in string format
-**    TgtFileName[20] - table file name, compiled as .tbl file extension
-**    ObjSize - size of the entire table
-**
-*/
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
-{
-    "EA_ConfigTbl", "EA.CONFIG_TBL", "EA default config table",
-    "ea_config.tbl", (sizeof(EA_ConfigTblEntry_t) * EA_CONFIG_TABLE_MAX_ENTRIES)
-};
-
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
@@ -94,6 +75,8 @@ EA_ConfigTblEntry_t EA_ConfigTbl[EA_CONFIG_TABLE_MAX_ENTRIES] =
 /************************************************************************
 ** Function Definitions
 *************************************************************************/
+
+CFE_TBL_FILEDEF(EA_ConfigTbl, EA.CONFIG_TBL, EA default config table, ea_config.tbl )
 
 /************************/
 /*  End of File Comment */

@@ -76,6 +76,12 @@ int32 MultirotorMixer::SetConfigTablePtr(
     return -1;
 }
 
+
+float MultirotorMixer::Contrain(float value, float minimum, float maximum)
+{
+	return (value < minimum) ? minimum : ((value > maximum) ? maximum : value);
+}
+
 uint32
 MultirotorMixer::mix(float *outputs, uint32 space, uint16 *status_reg)
 {
@@ -90,10 +96,10 @@ MultirotorMixer::mix(float *outputs, uint32 space, uint16 *status_reg)
     4) scale all outputs to range [idle_speed,1]
     */
 
-    float       roll    = math::constrain(get_control(0, 0) * m_ConfigTablePtr->RollScale, -1.0f, 1.0f);
-    float       pitch   = math::constrain(get_control(0, 1) * m_ConfigTablePtr->PitchScale, -1.0f, 1.0f);
-    float       yaw     = math::constrain(get_control(0, 2) * m_ConfigTablePtr->YawScale, -1.0f, 1.0f);
-    float       thrust  = math::constrain(get_control(0, 3), 0.0f, 1.0f);
+    float       roll    = Contrain(get_control(0, 0) * m_ConfigTablePtr->RollScale, -1.0f, 1.0f);
+    float       pitch   = Contrain(get_control(0, 1) * m_ConfigTablePtr->PitchScale, -1.0f, 1.0f);
+    float       yaw     = Contrain(get_control(0, 2) * m_ConfigTablePtr->YawScale, -1.0f, 1.0f);
+    float       thrust  = Contrain(get_control(0, 3) * 1.0f, 0.0f, 1.0f);
     float       min_out = 1.0f;
     float       max_out = 0.0f;
 

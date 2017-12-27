@@ -37,8 +37,8 @@
 #include <math.h>
 
 
-#define PWM_CUSTOM_OUT_MIN  (1000.0f)
-#define PWM_CUSTOM_OUT_MAX  (2000.0f)
+#define PWM_CUSTOM_OUT_MIN  (0.0f)
+#define PWM_CUSTOM_OUT_MAX  (1.0f)
 
 
 int32 AMC::InitDevice(void)
@@ -76,15 +76,19 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 	uint32 controlCount = 16;
 	uint32 i = 0;
 
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
+    for (i = 0; i < 6; ++i)
     {
     	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
     }
 
-	for(i = AMC_MAX_MOTOR_OUTPUTS; i < 16; ++i)
+	for(i = 6; i < 16; ++i)
 	{
 		controls[i] = NAN;
 	}
 
 	SIMLIB_SetActuatorControls(controls, controlCount, 0);
+
+
+
+
 }

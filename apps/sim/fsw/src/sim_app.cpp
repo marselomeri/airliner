@@ -494,7 +494,6 @@ int32 SIM::ListenerInit()
 	int32 TaskID = 0;
     int   reuseaddr = 1;
 	struct sockaddr_in address;
-	char addr[] = "127.0.0.1";
 
     if((Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
     {
@@ -526,8 +525,6 @@ int32 SIM::ListenerInit()
 	}
 
 	ChildContinueFlag = true;
-
-	SIMLIB_SetSocket(Socket, 58691, addr);
 
 	Status = CFE_ES_CreateChildTask(&ListenerTaskID,
 				SIM_LISTENER_TASK_NAME,
@@ -664,6 +661,19 @@ void SIM::ListenerTask(void)
 						{
 							mavlink_hil_gps_t 					decodedMsg;
 							mavlink_msg_hil_gps_decode(&msg, &decodedMsg);
+							SIMLIB_SetGPS(
+								(PX4_GpsFixType_t)decodedMsg.fix_type,
+								decodedMsg.lat,
+								decodedMsg.lon,
+								decodedMsg.alt,
+								decodedMsg.eph,
+								decodedMsg.epv,
+								decodedMsg.vel,
+								decodedMsg.vn,
+								decodedMsg.ve,
+								decodedMsg.vd,
+								decodedMsg.cog,
+								decodedMsg.satellites_visible);
 							break;
 						}
 

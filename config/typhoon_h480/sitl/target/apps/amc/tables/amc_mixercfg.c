@@ -16,7 +16,7 @@
 /*
 ** Local Structure Declarations
 */
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     /* Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
     **    ObjName - variable name of config table, e.g., CI_ConfigDefTbl[]
@@ -31,6 +31,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
     "AMC_MixerCfgTbl", "AMC.MIXERCFG_TBL", "AMC default mixer config table",
     "amc_mixercfg.tbl", (sizeof(MultirotorMixer_ConfigTable_t))
 };
+
 
 /*
 ** External Global Variables
@@ -52,12 +53,12 @@ MultirotorMixer_ConfigTable_t AMC_MixerCfgTbl =
 	MIXER_HEX_X,  /* Rotor Geometry */
     {
         /* Rotor # | Roll Scale  |  Pitch Scale  |  Yaw Scale  |  Output Scale */
-		/*  0  */  { -0.684674,      0.728849,       1.000000,     1.000000 },
-		/*  1  */  { -0.684674,      0.728849,      -1.000000,     1.000000 },
-		/*  2  */  { -0.000000,     -1.000000,      -1.000000,     1.000000 },
-		/*  3  */  { -0.000000,     -1.000000,       1.000000,     1.000000 },
-		/*  4  */  {  0.684674,      0.728849,      -1.000000,     1.000000 },
-		/*  5  */  {  0.684674,      0.728849,       1.000000,     1.000000 }
+		/*  0  */  { -1.0,           0.0,           -1.000000,     1.000000 },
+		/*  1  */  {  1.0,           0.0,            1.000000,     1.000000 },
+		/*  2  */  { -0.5,           0.866024971,   -1.000000,     1.000000 },
+		/*  3  */  { -0.5,          -0.866024971,    1.000000,     1.000000 },
+		/*  4  */  { -0.5,           0.866024971,    1.000000,     1.000000 },
+		/*  5  */  {  0.5,          -0.866024971,   -1.000000,     1.000000 }
     }
 };
 

@@ -84,6 +84,8 @@ public:
 	virtual uint16		get_saturation_status(void);
 	virtual void		groups_required(uint32 &groups);
 
+    float Contrain(float Value, float Minimum, float Maximum);
+
 	uint32 set_trim(float trim);
 
 	/**

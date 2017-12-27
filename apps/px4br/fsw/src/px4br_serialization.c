@@ -259,7 +259,6 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 
 	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SampleTime = pbMsg.timestamp_sample;
-	//OS_printf("*************************************\n");
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		inOutObject->Control[i] = pbMsg.control[i];
@@ -1488,12 +1487,9 @@ uint32 PX4BR_GpsDump_Enc(const PX4_GpsDumpMsg_t *inObject, char *inOutBuffer, ui
 	bool status = false;
 	px4_gps_dump_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.len = inObject->Len;
-	for(i=0; i < PX4_GPS_DUMP_DATA_MAX; ++i)
-	{
-		pbMsg.data[i] = inObject->Data[i];
-	}
+	strncpy(pbMsg.data, inObject->Data, PX4_GPS_DUMP_DATA_MAX);
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -1527,12 +1523,9 @@ uint32 PX4BR_GpsDump_Dec(const char *inBuffer, uint32 inSize, PX4_GpsDumpMsg_t *
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Len = pbMsg.len;
-	for(i=0; i < PX4_GPS_DUMP_DATA_MAX; ++i)
-	{
-		inOutObject->Data[i] = pbMsg.data[i];
-	}
+	strncpy(inOutObject->Data, pbMsg.data, PX4_GPS_DUMP_DATA_MAX);
 
 	return sizeof(PX4_GpsDumpMsg_t);
 }
@@ -1544,9 +1537,10 @@ uint32 PX4BR_GpsInjectData_Enc(const PX4_GpsInjectDataMsg_t *inObject, char *inO
 	bool status = false;
 	px4_gps_inject_data_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.len = inObject->Len;
 	pbMsg.flags = inObject->Flags;
+	strncpy(pbMsg.data, inObject->Data, PX4_GPS_INJECT_DATA_MAX);
 	for(i=0; i < PX4_GPS_INJECT_DATA_MAX; ++i)
 	{
 		pbMsg.data[i] = inObject->Data[i];
@@ -1584,13 +1578,10 @@ uint32 PX4BR_GpsInjectData_Dec(const char *inBuffer, uint32 inSize, PX4_GpsInjec
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Len = pbMsg.len;
 	inOutObject->Flags = pbMsg.flags;
-	for(i=0; i < PX4_GPS_INJECT_DATA_MAX; ++i)
-	{
-		inOutObject->Data[i] = pbMsg.data[i];
-	}
+	strncpy(inOutObject->Data, pbMsg.data, PX4_GPS_DUMP_DATA_MAX);
 
 	return sizeof(PX4_GpsInjectDataMsg_t);
 }
@@ -1880,6 +1871,8 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->KillSwitch = pbMsg.kill_switch;
 	inOutObject->TransitionSwitch = pbMsg.transition_switch;
 	inOutObject->ModeSlot = pbMsg.mode_slot;
+
+	OS_printf("MANUAL_CONTROL_SETPOINT\n");
 
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }
@@ -2629,8 +2622,13 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 	bool status = false;
 	px4_satellite_info_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.count = inObject->Count;
+	pbMsg.svid_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.used_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.elevation_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.azimuth_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.snr_count = PX4_SAT_INFO_MAX_SATELLITES;
 	for(i = 0; i < PX4_SAT_INFO_MAX_SATELLITES; ++i)
 	{
 		pbMsg.svid[i] = inObject->SVID[i];
@@ -2672,14 +2670,30 @@ uint32 PX4BR_SatelliteInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Satellit
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Count = pbMsg.count;
-	for(i = 0; i < PX4_SAT_INFO_MAX_SATELLITES; ++i)
+	for(i = 0; i < pbMsg.svid_count; ++i)
 	{
 		inOutObject->SVID[i] = pbMsg.svid[i];
+	}
+
+	for(i = 0; i < pbMsg.used_count; ++i)
+	{
 		inOutObject->Used[i] = pbMsg.used[i];
+	}
+
+	for(i = 0; i < pbMsg.elevation_count; ++i)
+	{
 		inOutObject->Elevation[i] = pbMsg.elevation[i];
+	}
+
+	for(i = 0; i < pbMsg.azimuth_count; ++i)
+	{
 		inOutObject->Azimuth[i] = pbMsg.azimuth[i];
+	}
+
+	for(i = 0; i < pbMsg.snr_count; ++i)
+	{
 		inOutObject->SNR[i] = pbMsg.snr[i];
 	}
 
@@ -4011,7 +4025,7 @@ uint32 PX4BR_VehicleGpsPosition_Enc(const PX4_VehicleGpsPositionMsg_t *inObject,
 	bool status = false;
 	px4_vehicle_gps_position_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.time_utc_usec = inObject->TimeUtcUsec;
 	pbMsg.lat = inObject->Lat;
 	pbMsg.lon = inObject->Lon;
@@ -4047,30 +4061,6 @@ uint32 PX4BR_VehicleGpsPosition_Enc(const PX4_VehicleGpsPositionMsg_t *inObject,
 		return 0;
 	}
 
-	OS_printf("GPS\n");
-	OS_printf("  time_utc_usec = %llu\n", pbMsg.time_utc_usec);
-	OS_printf("  lat = %i\n", pbMsg.lat);
-	OS_printf("  lon = %i\n", pbMsg.lon);
-	OS_printf("  alt = %i\n", pbMsg.alt);
-	OS_printf("  alt_ellipsoid = %i\n", pbMsg.alt_ellipsoid);
-	OS_printf("  s_variance_m_s = %f\n", (double)pbMsg.s_variance_m_s);
-	OS_printf("  c_variance_rad = %f\n", (double)pbMsg.c_variance_rad);
-	OS_printf("  eph = %f\n", (double)pbMsg.eph);
-	OS_printf("  epv = %f\n", (double)pbMsg.epv);
-	OS_printf("  hdop = %f\n", (double)pbMsg.hdop);
-	OS_printf("  vdop = %f\n", (double)pbMsg.vdop);
-	OS_printf("  noise_per_ms = %i\n", pbMsg.noise_per_ms);
-	OS_printf("  jamming_indicator = %i\n", pbMsg.jamming_indicator);
-	OS_printf("  vel_m_s = %f\n", (double)pbMsg.vel_m_s);
-	OS_printf("  vel_n_m_s = %f\n", (double)pbMsg.vel_n_m_s);
-	OS_printf("  vel_e_m_s = %f\n", (double)pbMsg.vel_e_m_s);
-	OS_printf("  vel_d_m_s = %f\n", (double)pbMsg.vel_d_m_s);
-	OS_printf("  cog_rad = %f\n", (double)pbMsg.cog_rad);
-	OS_printf("  timestamp_time_relative = %i\n", pbMsg.timestamp_time_relative);
-	OS_printf("  fix_type = %u\n", pbMsg.fix_type);
-	OS_printf("  vel_ned_valid = %u\n", pbMsg.vel_ned_valid);
-	OS_printf("  satellites_used = %u\n", pbMsg.satellites_used);
-
 	return stream.bytes_written;
 }
 
@@ -4091,7 +4081,7 @@ uint32 PX4BR_VehicleGpsPosition_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->TimeUtcUsec = pbMsg.time_utc_usec;
 	inOutObject->Lat = pbMsg.lat;
 	inOutObject->Lon = pbMsg.lon;
