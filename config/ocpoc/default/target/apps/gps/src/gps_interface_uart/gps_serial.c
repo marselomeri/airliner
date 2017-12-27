@@ -45,6 +45,8 @@
 #include "msg_ids.h"
 #include "lib/px4lib.h"
 
+#include "gps_event_driven.h"
+
 #include <errno.h>
 #include <unistd.h>
 #include <time.h>
@@ -727,6 +729,10 @@ void GPS_Stream_Task(void)
             {
                 /* TODO remove me*/
                 OS_printf("GPS parse and read failed\n");
+            }
+            else
+            {
+                GPS_EventDrivenPublish(); 
             }
         }
     }

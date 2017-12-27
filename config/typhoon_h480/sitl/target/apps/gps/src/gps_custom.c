@@ -45,6 +45,8 @@
 #include "simlib.h"
 #include "lib/px4lib.h"
 
+#include "gps_event_driven.h"
+
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>
@@ -154,6 +156,10 @@ void GPS_Stream_Task(void)
                 /* TODO remove me*/
                 OS_printf("GPS parse and read failed\n");
             }
+            else
+            {
+                GPS_EventDrivenPublish();
+            }
         }
     }
 
@@ -175,10 +181,8 @@ boolean GPS_Custom_Uninit(void)
     boolean returnBool = TRUE;
     int returnCode = 0;
 
-    //else
-    //{
-        //GPS_AppCustomData.Status = GPS_CUSTOM_UNINITIALIZED;
-    //}
+    GPS_AppCustomData.Status = GPS_CUSTOM_UNINITIALIZED;
+
     return returnBool;
 }
 
@@ -573,19 +577,21 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
                               GPS_MESSAGE_NAV_PVT_LENGTH };
     GPS_Checksum_t checksum = { 0, 0 };
     GPS_NAV_PVT_t fakeNavPvt;
+    time_t rawtime;
+    struct tm *info;
 
     PX4_GpsFixType_t FixType = 0;
-    int32 Latitude          = 0;
-    int32 Longitude         = 0;
-    int32 Altitude          = 0;
-    uint16 EPH              = 0;
-    uint16 EPV              = 0;
-    uint16 Velocity         = 0;
-    int16 VN                = 0;
-    int16 VE                = 0;
-    int16 VD                = 0;
-    uint16 COG              = 0;
-    uint8 SatellitesVisible = 0;
+    int32 Latitude           = 0;
+    int32 Longitude          = 0;
+    int32 Altitude           = 0;
+    uint16 EPH               = 0;
+    uint16 EPV               = 0;
+    uint16 Velocity          = 0;
+    int16 VN                 = 0;
+    int16 VE                 = 0;
+    int16 VD                 = 0;
+    uint16 COG               = 0;
+    uint8 SatellitesVisible  = 0;
 
     /* Null check */
     if(0 == Buffer)
@@ -614,6 +620,9 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     {
         goto end_of_function;
     }
+    /* Get time in a */
+    time(&rawtime);
+    info = localtime(&rawtime);
 
     fakeNavPvt.fixType = (uint8)FixType;
     fakeNavPvt.lat     = Latitude;
@@ -629,6 +638,14 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     fakeNavPvt.headMot = (int32)((COG * 3.1415f / (100.0f * 180.0f)) / M_DEG_TO_RAD_F / 1e-5f);
     fakeNavPvt.hAcc    = (uint32)(EPH / 1e-1f);
     fakeNavPvt.vAcc    = (uint32)(EPV / 1e-1f);
+
+    /* Time info (optional) not needed for simulation */
+    fakeNavPvt.year  = (uint16)info->tm_year + 1900;
+    fakeNavPvt.month = (uint8)info->tm_mon + 1;
+    fakeNavPvt.day   = (uint8)info->tm_mday;
+    fakeNavPvt.hour  = (uint8)info->tm_hour;
+    fakeNavPvt.min   = (uint8)info->tm_min;
+    fakeNavPvt.sec   = (uint8)info->tm_sec;
 
     /* Calculate header checksum, skip two sync bytes */
     returnBool = GPS_Custom_SetChecksum((uint8 *)&header + 2, 
@@ -657,13 +674,13 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     //Buffer[7] = iTOW;
     //Buffer[8] = iTOW;
     //Buffer[9] = iTOW;
-    //Buffer[10] = year;
-    //Buffer[11] = year;
-    //Buffer[12] = month;
-    //Buffer[13] = day;
-    //Buffer[14] = hour;
-    //Buffer[15] = min;
-    //Buffer[16] = sec;
+    Buffer[10] = fakeNavPvt.year;
+    Buffer[11] = fakeNavPvt.year >> 8;
+    Buffer[12] = fakeNavPvt.month;
+    Buffer[13] = fakeNavPvt.day;
+    Buffer[14] = fakeNavPvt.hour;
+    Buffer[15] = fakeNavPvt.min;
+    Buffer[16] = fakeNavPvt.sec;
     //Buffer[17] = valid;
     //Buffer[18] = tAcc;
     //Buffer[19] = tAcc;

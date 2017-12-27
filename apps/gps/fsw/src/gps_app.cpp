@@ -9,6 +9,7 @@
 #include "gps_app.h"
 #include "gps_msg.h"
 #include "gps_version.h"
+#include "gps_event_driven.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -299,45 +300,45 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
         {
             case GPS_READ_SENSOR_MID:
             
-                returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
-                if(TRUE == returnBool)
-                {
-                    OS_printf("Lat %d ", VehicleGps.Lat);
-                    OS_printf("Lon %d ", VehicleGps.Lon);
-                    OS_printf("Alt %d ", VehicleGps.Alt);
-                    OS_printf("AltEllipsoid %d ", VehicleGps.AltEllipsoid);
-                    OS_printf("SVariance %f ", VehicleGps.SVariance);
-                    OS_printf("CVariance %f ", VehicleGps.CVariance);
-                    OS_printf("EpH %f ", VehicleGps.EpH);
-                    OS_printf("EpV %f ", VehicleGps.EpV);
-                    OS_printf("HDOP %f ", VehicleGps.HDOP);
-                    OS_printf("VDOP %f ", VehicleGps.VDOP);
-                    OS_printf("NoisePerMs %d ", VehicleGps.NoisePerMs);
-                    OS_printf("JammingIndicator %d ", VehicleGps.JammingIndicator);
-                    OS_printf("Vel_m_s %f ", VehicleGps.Vel_m_s);
-                    OS_printf("Vel_n_m_s %f ", VehicleGps.Vel_n_m_s);
-                    OS_printf("Vel_e_m_s %f ", VehicleGps.Vel_e_m_s);
-                    OS_printf("Vel_d_m_s %f ", VehicleGps.Vel_d_m_s);
-                    OS_printf("COG %f ", VehicleGps.COG);
-                    OS_printf("TimestampTimeRelative %d ", VehicleGps.TimestampTimeRelative);
-                    OS_printf("FixType %hhu ", VehicleGps.FixType);
-                    OS_printf("VelNedValid %u ", VehicleGps.VelNedValid);
-                    OS_printf("SatellitesUsed %hhu ", VehicleGps.SatellitesUsed);
+                //returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
+                //if(TRUE == returnBool)
+                //{
+                    //OS_printf("Lat %d ", VehicleGps.Lat);
+                    //OS_printf("Lon %d ", VehicleGps.Lon);
+                    //OS_printf("Alt %d ", VehicleGps.Alt);
+                    //OS_printf("AltEllipsoid %d ", VehicleGps.AltEllipsoid);
+                    //OS_printf("SVariance %f ", VehicleGps.SVariance);
+                    //OS_printf("CVariance %f ", VehicleGps.CVariance);
+                    //OS_printf("EpH %f ", VehicleGps.EpH);
+                    //OS_printf("EpV %f ", VehicleGps.EpV);
+                    //OS_printf("HDOP %f ", VehicleGps.HDOP);
+                    //OS_printf("VDOP %f ", VehicleGps.VDOP);
+                    //OS_printf("NoisePerMs %d ", VehicleGps.NoisePerMs);
+                    //OS_printf("JammingIndicator %d ", VehicleGps.JammingIndicator);
+                    //OS_printf("Vel_m_s %f ", VehicleGps.Vel_m_s);
+                    //OS_printf("Vel_n_m_s %f ", VehicleGps.Vel_n_m_s);
+                    //OS_printf("Vel_e_m_s %f ", VehicleGps.Vel_e_m_s);
+                    //OS_printf("Vel_d_m_s %f ", VehicleGps.Vel_d_m_s);
+                    //OS_printf("COG %f ", VehicleGps.COG);
+                    //OS_printf("TimestampTimeRelative %d ", VehicleGps.TimestampTimeRelative);
+                    //OS_printf("FixType %hhu ", VehicleGps.FixType);
+                    //OS_printf("VelNedValid %u ", VehicleGps.VelNedValid);
+                    //OS_printf("SatellitesUsed %hhu ", VehicleGps.SatellitesUsed);
 
-                    SendVehicleGps();
-                }
-                returnBool = GPS_Custom_Measure_SatInfoMsg(&SatelliteInfo);
-                if(TRUE == returnBool)
-                {
-                    //OS_printf("Count %hhu ", SatelliteInfo.Count);
-                    //OS_printf("SVID[0] %hhu ", SatelliteInfo.SVID[0]);
-                    //OS_printf("Used[0] %hhu ", SatelliteInfo.Used[0]);
-                    //OS_printf("Elevation[0] %hhu ", SatelliteInfo.Elevation[0]);
-                    //OS_printf("Azimuth[0] %hhu ", SatelliteInfo.Azimuth[0]);
-                    //OS_printf("SNR[0] %hhu ", SatelliteInfo.SNR[0]);
+                    //SendVehicleGps();
+                //}
+                //returnBool = GPS_Custom_Measure_SatInfoMsg(&SatelliteInfo);
+                //if(TRUE == returnBool)
+                //{
+                    ////OS_printf("Count %hhu ", SatelliteInfo.Count);
+                    ////OS_printf("SVID[0] %hhu ", SatelliteInfo.SVID[0]);
+                    ////OS_printf("Used[0] %hhu ", SatelliteInfo.Used[0]);
+                    ////OS_printf("Elevation[0] %hhu ", SatelliteInfo.Elevation[0]);
+                    ////OS_printf("Azimuth[0] %hhu ", SatelliteInfo.Azimuth[0]);
+                    ////OS_printf("SNR[0] %hhu ", SatelliteInfo.SNR[0]);
 
-                    SendSatelliteInfo();
-                }
+                    //SendSatelliteInfo();
+                //}
                 break;
 
             case GPS_SEND_HK_MID:
@@ -610,6 +611,58 @@ void GPS_CleanupCallback(void)
         CFE_EVS_SendEvent(GPS_UNINIT_ERR_EID, CFE_EVS_ERROR,"GPS_Uninit failed");
         oGPS.HkTlm.State = GPS_INITIALIZED;
     }
+}
+
+
+void GPS_EventDrivenPublish(void)
+{
+    oGPS.EventDrivenPublish();
+}
+
+
+void GPS::EventDrivenPublish(void)
+{
+    boolean returnBool = FALSE;
+
+    returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
+    if(TRUE == returnBool)
+    {
+        OS_printf("Lat %d ", VehicleGps.Lat);
+        OS_printf("Lon %d ", VehicleGps.Lon);
+        OS_printf("Alt %d ", VehicleGps.Alt);
+        OS_printf("AltEllipsoid %d ", VehicleGps.AltEllipsoid);
+        OS_printf("SVariance %f ", VehicleGps.SVariance);
+        OS_printf("CVariance %f ", VehicleGps.CVariance);
+        OS_printf("EpH %f ", VehicleGps.EpH);
+        OS_printf("EpV %f ", VehicleGps.EpV);
+        OS_printf("HDOP %f ", VehicleGps.HDOP);
+        OS_printf("VDOP %f ", VehicleGps.VDOP);
+        OS_printf("NoisePerMs %d ", VehicleGps.NoisePerMs);
+        OS_printf("JammingIndicator %d ", VehicleGps.JammingIndicator);
+        OS_printf("Vel_m_s %f ", VehicleGps.Vel_m_s);
+        OS_printf("Vel_n_m_s %f ", VehicleGps.Vel_n_m_s);
+        OS_printf("Vel_e_m_s %f ", VehicleGps.Vel_e_m_s);
+        OS_printf("Vel_d_m_s %f ", VehicleGps.Vel_d_m_s);
+        OS_printf("COG %f ", VehicleGps.COG);
+        OS_printf("TimestampTimeRelative %d ", VehicleGps.TimestampTimeRelative);
+        OS_printf("FixType %hhu ", VehicleGps.FixType);
+        OS_printf("VelNedValid %u ", VehicleGps.VelNedValid);
+        OS_printf("SatellitesUsed %hhu ", VehicleGps.SatellitesUsed);
+
+        SendVehicleGps();
+    }
+    //returnBool = GPS_Custom_Measure_SatInfoMsg(&SatelliteInfo);
+    //if(TRUE == returnBool)
+    //{
+        ////OS_printf("Count %hhu ", SatelliteInfo.Count);
+        ////OS_printf("SVID[0] %hhu ", SatelliteInfo.SVID[0]);
+        ////OS_printf("Used[0] %hhu ", SatelliteInfo.Used[0]);
+        ////OS_printf("Elevation[0] %hhu ", SatelliteInfo.Elevation[0]);
+        ////OS_printf("Azimuth[0] %hhu ", SatelliteInfo.Azimuth[0]);
+        ////OS_printf("SNR[0] %hhu ", SatelliteInfo.SNR[0]);
+
+        //SendSatelliteInfo();
+    //}
 }
 
 /************************/
