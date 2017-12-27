@@ -43,6 +43,7 @@
 #include "../gps_parser_ubx/gps_ubx_msg.h"
 #include "../gps_parser_ubx/gps_parser_ubx_common.h"
 #include "msg_ids.h"
+#include "lib/px4lib.h"
 
 #include <errno.h>
 #include <unistd.h>
@@ -898,7 +899,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                             }
                         }
                         
-                        GPS_AppCustomData.GpsPositionMsg.Timestamp = GPS_Custom_Get_Time();
+                        GPS_AppCustomData.GpsPositionMsg.Timestamp = PX4LIB_GetPX4TimeUs();
                         //GPS_AppCustomData.LastTimeStamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
 
                         /* TODO position and velocity update rate functions
@@ -947,7 +948,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                                     (uint8)(msgIn->numCh[j].svid);
                         }
                         
-                        GPS_AppCustomData.GpsSatInfoMsg.Timestamp = GPS_Custom_Get_Time();
+                        GPS_AppCustomData.GpsSatInfoMsg.Timestamp = PX4LIB_GetPX4TimeUs();
                         
                         OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
                         break;
@@ -1026,7 +1027,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
     GPS_AppCustomData.AckWaitingRcvd = FALSE;
 
     /* Get the start time */
-    startTime = GPS_Custom_Get_Time_Uint64();
+    startTime = PX4LIB_GetPX4TimeUs();
     if(0 == startTime)
     {
         goto end_of_function;
@@ -1036,7 +1037,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
     while(FALSE == timedOut)
     {
         /* Get the loop iteration time */
-        timeStamp = GPS_Custom_Get_Time_Uint64();
+        timeStamp = PX4LIB_GetPX4TimeUs();
         if(0 == timeStamp)
         {
             goto end_of_function;

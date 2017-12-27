@@ -338,19 +338,6 @@ boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind);
 
 
 /************************************************************************/
-/** \brief Gets the current monotonic time.
-**
-**  \par Description
-**       This function gets the current monotonic time and returns a 
-**       populated CFE_TIME_SysTime_t struct. 
-**
-**  \returns    CFE_TIME_SysTime_t
-**
-*************************************************************************/
-CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
-
-
-/************************************************************************/
 /** \brief The stream task that actively reads the RCIN input stream.
 **
 **  \par Description
