@@ -1,4 +1,5 @@
 #!/bin/bash
+pkill -9 core-bin
 rm /tmp/PX4_to_Airliner
 rm /tmp/Airliner_to_PX4
 
