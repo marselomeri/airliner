@@ -1299,7 +1299,7 @@ boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
     if(0 == Measure)
     {
         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "GPS measure dump message null pointer");
+                "GPS position message null pointer");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -1322,7 +1322,7 @@ boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
     if(0 == Measure)
     {
         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "GPS measure dump message null pointer");
+                "GPS measure sat info null pointer");
         returnBool = FALSE;
         goto end_of_function;
     }
