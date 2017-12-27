@@ -125,7 +125,7 @@
 PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 {
 		{"actuator_armed", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorArmed_Dec, PX4_ACTUATOR_ARMED_MID, px4_actuator_armed_pb_size, 1, 0, 0},
-		{"actuator_controls_0", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
+//		{"actuator_controls_0", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_0_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //        {"actuator_controls_1", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_1_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //        {"actuator_controls_2", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_2_MID, px4_actuator_controls_pb_size, 1, 0, 0},
 //        {"actuator_controls_3", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ActuatorControls_Dec, PX4_ACTUATOR_CONTROLS_3_MID, px4_actuator_controls_pb_size, 1, 0, 0},
@@ -198,7 +198,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"uavcan_parameter_request", (PX4_ENCODE_FUNC) PX4BR_UavCanParameterRequest_Enc, (PX4_DECODE_FUNC) PX4BR_UavCanParameterRequest_Dec, PX4_UAVCAN_PARAMETER_REQUEST_MID, px4_uavcan_parameter_request_pb_size, 1, 0, 0},
 //		{"uavcan_parameter_value", (PX4_ENCODE_FUNC) PX4BR_UavCanParameterValue_Enc, (PX4_DECODE_FUNC) PX4BR_UavCanParameterValue_Dec, PX4_UAVCAN_PARAMETER_VALUE_MID, px4_uavcan_parameter_value_pb_size, 1, 0, 0},
 //		{"vehicle_attitude", (PX4_ENCODE_FUNC) PX4BR_VehicleAttitude_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleAttitude_Dec, PX4_VEHICLE_ATTITUDE_MID, px4_vehicle_attitude_pb_size, 1, 0, 0},
-//		{"vehicle_attitude_setpoint", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitudeSetpoint_Dec, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, px4_vehicle_attitude_setpoint_pb_size,  1, 0, 0},
+		{"vehicle_attitude_setpoint", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitudeSetpoint_Dec, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, px4_vehicle_attitude_setpoint_pb_size,  1, 0, 0},
 //		{"vehicle_command_ack", (PX4_ENCODE_FUNC) PX4BR_VehicleCommandAck_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommandAck_Dec, PX4_VEHICLE_COMMAND_ACK_MID, px4_vehicle_command_ack_pb_size, 1, 0, 0},
 //		{"vehicle_command", (PX4_ENCODE_FUNC) PX4BR_VehicleCommand_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommand_Dec, PX4_VEHICLE_COMMAND_MID, px4_vehicle_command_pb_size, 1, 0, 0},
 		{"vehicle_control_mode", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleControlMode_Dec, PX4_VEHICLE_CONTROL_MODE_MID, px4_vehicle_control_mode_pb_size, 1, 0, 0},

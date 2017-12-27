@@ -51,6 +51,7 @@
 #include "cfs_utils.h"
 
 #include "Quaternion.hpp"
+#include "lib/px4lib.h"
 
 
 #define TPA_RATE_LOWER_LIMIT  0.05f
@@ -824,7 +825,8 @@ void MAC::AppMain()
 void MAC::RunController(void)
 {
 	static uint64 last_run = 0;
-	float dt = (CFE_TIME_GetTimeInMicros() - last_run) / 1000000.0f;
+	float dt = (PX4LIB_GetPX4TimeUs() - last_run) / 1000000.0f;
+	last_run = PX4LIB_GetPX4TimeUs();
 
 	UpdateParams();
 
@@ -1010,7 +1012,6 @@ void MAC::RunController(void)
 
 void MAC::ControlAttitude(float dt)
 {
-
 //	vehicle_attitude_setpoint_poll();
 //
 	m_ThrustSp = CVT.VAttSp.Thrust;

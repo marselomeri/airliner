@@ -259,7 +259,6 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 
 	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SampleTime = pbMsg.timestamp_sample;
-	//OS_printf("*************************************\n");
 	for(i=0; i < PX4_ACTUATOR_CONTROL_COUNT; ++i)
 	{
 		inOutObject->Control[i] = pbMsg.control[i];
