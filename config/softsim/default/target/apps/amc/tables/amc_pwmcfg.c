@@ -45,9 +45,11 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 AMC_PwmConfigTbl_t AMC_PwmCfgTbl =
 {
     /*   id      | value |   type    | vehicle_id | component_id */
-    {"PWN_DISARMED", 900, MAV_PARAM_TYPE_INT32, 1, 1},
-    {"PWN_MIN", 1000, MAV_PARAM_TYPE_INT32, 1, 1},
-    {"PWN_MAX", 2000, MAV_PARAM_TYPE_INT32, 1, 1}
+    {
+        {"PWN_DISARMED", 900, MAV_PARAM_TYPE_INT32, 1, 1},
+        {"PWN_MIN", 1000, MAV_PARAM_TYPE_INT32, 1, 1},
+        {"PWN_MAX", 2000, MAV_PARAM_TYPE_INT32, 1, 1}
+    }
 };
 
 /*
