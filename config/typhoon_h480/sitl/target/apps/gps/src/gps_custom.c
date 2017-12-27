@@ -38,13 +38,19 @@
 ** Includes
 *************************************************************************/
 #include "gps_custom_shared.h"
+#include "gps_parser_ubx/gps_ubx_msg.h"
+#include "gps_parser_ubx/gps_parser_ubx_common.h"
+#include "px4_msgs.h"
+#include "msg_ids.h"
+#include "simlib.h"
+#include "lib/px4lib.h"
+
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
-#include "simlib.h"
 
 /************************************************************************
 ** Local Defines
@@ -215,42 +221,6 @@ int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 end_of_function:
 
     return customEventCount;
-}
-
-
-uint64 GPS_Custom_Get_Time_Uint64(void)
-{
-    uint64 timeStamp = 0;
-    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
-    
-    cfeTimeStamp = GPS_Custom_Get_Time();
-
-    if(cfeTimeStamp.Seconds == 0 && cfeTimeStamp.Subseconds == 0)
-    {
-        goto end_of_function;
-    }
-    timeStamp = cfeTimeStamp.Seconds * 1000000;
-    timeStamp += cfeTimeStamp.Subseconds / 1000;
-
-end_of_function:
-
-    return timeStamp;
-}
-
-
-CFE_TIME_SysTime_t GPS_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    Timestamp.Seconds = ts.tv_sec;
-
-    Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
-
-end_of_function:
-    return Timestamp;
 }
 
 
@@ -479,7 +449,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                             }
                         }
                         
-                        GPS_AppCustomData.GpsPositionMsg.Timestamp = GPS_Custom_Get_Time();
+                        GPS_AppCustomData.GpsPositionMsg.Timestamp = PX4LIB_GetPX4TimeUs();
                         //GPS_AppCustomData.LastTimeStamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
 
                         /* TODO position and velocity update rate functions
@@ -528,7 +498,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                                     (uint8)(msgIn->numCh[j].svid);
                         }
                         
-                        GPS_AppCustomData.GpsSatInfoMsg.Timestamp = GPS_Custom_Get_Time();
+                        GPS_AppCustomData.GpsSatInfoMsg.Timestamp = PX4LIB_GetPX4TimeUs();
                         
                         OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
                         break;
@@ -592,8 +562,9 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
 {
     int32 returnCode = 0;
     int32 bytesRead = 0;
+    boolean returnBool = FALSE;
     uint8 *payload;
-    //uint8 fake_gps_data[GPS_READ_BUFFER_SIZE];
+    uint8 fake_gps_data[GPS_READ_BUFFER_SIZE];
     payload = fake_gps_data;
     GPS_Header_t   header = { GPS_HEADER_SYNC1_VALUE,
                               GPS_HEADER_SYNC2_VALUE,
@@ -603,7 +574,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     GPS_Checksum_t checksum = { 0, 0 };
     GPS_NAV_PVT_t fakeNavPvt;
 
-    PX4_GpsFixType_t FixTyp = 0;
+    PX4_GpsFixType_t FixType = 0;
     int32 Latitude          = 0;
     int32 Longitude         = 0;
     int32 Altitude          = 0;
@@ -624,7 +595,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
         goto end_of_function;
     }
 
-    memset(fakeNavPvt, 0, sizeof(GPS_NAV_PVT_t));
+    memset(&fakeNavPvt, 0, sizeof(GPS_NAV_PVT_t));
 
     returnCode = SIMLIB_GetGPS( &FixType, 
                                 &Latitude,
@@ -639,7 +610,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
                                 &COG,
                                 &SatellitesVisible );
 
-    if (SIMLIB_OK_FRESH != returnCode)
+    if (1 != returnCode)
     {
         goto end_of_function;
     }
@@ -718,15 +689,68 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     //Buffer[39] = height;
     //Buffer[40] = height;
     //Buffer[41] = height;
-    //Buffer[42] = hSL;
-    //Buffer[43] = hSL;
-    //Buffer[44] = hSL;
-    //Buffer[45] = hSL;
+    Buffer[42] = fakeNavPvt.hMSL;
+    Buffer[43] = fakeNavPvt.hMSL >> 8;
+    Buffer[44] = fakeNavPvt.hMSL >> 16;
+    Buffer[45] = fakeNavPvt.hMSL >> 24;
+    Buffer[46] = fakeNavPvt.hAcc;
+    Buffer[47] = fakeNavPvt.hAcc >> 8;
+    Buffer[48] = fakeNavPvt.hAcc >> 16;
+    Buffer[49] = fakeNavPvt.hAcc >> 24;
+    Buffer[50] = fakeNavPvt.vAcc;
+    Buffer[51] = fakeNavPvt.vAcc >> 8;
+    Buffer[52] = fakeNavPvt.vAcc >> 16;
+    Buffer[53] = fakeNavPvt.vAcc >> 24;
+    Buffer[54] = fakeNavPvt.velN;
+    Buffer[55] = fakeNavPvt.velN >> 8;
+    Buffer[56] = fakeNavPvt.velN >> 16;
+    Buffer[57] = fakeNavPvt.velN >> 24;
+    Buffer[58] = fakeNavPvt.velE;
+    Buffer[59] = fakeNavPvt.velE >> 8;
+    Buffer[60] = fakeNavPvt.velE >> 16;
+    Buffer[61] = fakeNavPvt.velE >> 24;
+    Buffer[62] = fakeNavPvt.velD;
+    Buffer[63] = fakeNavPvt.velD >> 8;
+    Buffer[64] = fakeNavPvt.velD >> 16;
+    Buffer[65] = fakeNavPvt.velD >> 24;
+    Buffer[66] = fakeNavPvt.gSpeed;
+    Buffer[67] = fakeNavPvt.gSpeed >> 8;
+    Buffer[68] = fakeNavPvt.gSpeed >> 16;
+    Buffer[69] = fakeNavPvt.gSpeed >> 24;
+    Buffer[70] = fakeNavPvt.headMot;
+    Buffer[71] = fakeNavPvt.headMot >> 8;
+    Buffer[72] = fakeNavPvt.headMot >> 16;
+    Buffer[73] = fakeNavPvt.headMot >> 24;
+    //Buffer[74] = sAcc;
+    //Buffer[75] = sAcc;
+    //Buffer[76] = sAcc;
+    //Buffer[77] = sAcc;
+    //Buffer[78] = headAcc;
+    //Buffer[79] = headAcc;
+    //Buffer[80] = headAcc;
+    //Buffer[81] = headAcc;
+    //Buffer[82] = pDOP;
+    //Buffer[83] = pDOP;
+    //Buffer[84] = reserved2;
+    //Buffer[85] = reserved2;
+    //Buffer[86] = reserved3;
+    //Buffer[87] = reserved3;
+    //Buffer[88] = reserved3;
+    //Buffer[89] = reserved3;
+    //Buffer[90] = headVeh;
+    //Buffer[91] = headVeh;
+    //Buffer[92] = headVeh;
+    //Buffer[93] = headVeh;
+    //Buffer[94] = magDec;
+    //Buffer[95] = magDec;
+    //Buffer[96] = magAcc;
+    //Buffer[97] = magAcc;
 
-
-
-
-
+    bytesRead = 98;
+    /* 5 Hz */
+    usleep(200000);
+    
+ 
 end_of_function:
 
     return bytesRead;

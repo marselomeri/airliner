@@ -104,6 +104,16 @@ extern "C" {
 
 #define M_DEG_TO_RAD_F                            (0.0174532925f)
 
+/** \brief GPS packet timeout (ms).
+**
+**  \par Description:
+**       ms, timeout to receive packet.
+*/
+#define GPS_PACKET_TIMEOUT                        (200)
+
+// TODO: this number seems wrong
+#define GPS_EPOCH_SECS                ((time_t)1234567890ULL)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -314,7 +324,6 @@ boolean GPS_Custom_Max_Events_Not_Reached(int32 ind);
 *************************************************************************/
 void GPS_Stream_Task(void);
 
-CFE_TIME_SysTime_t GPS_Custom_Get_Time(void);
 
 /************************************************************************/
 /** \brief Reads and parses messages from the GPS device.
