@@ -39,6 +39,7 @@
 #include "gps_custom.h"
 #include "../gps_custom_shared.h"
 #include "cfe.h"
+#include "px4_msgs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,14 +69,14 @@ extern "C" {
 **  \par Description:
 **       ms, timeout to receive packet.
 */
-#define GPS_PACKET_TIMEOUT                        (20)
+#define GPS_PACKET_TIMEOUT                        (200)
 
 /** \brief GPS ack timeout.
 **
 **  \par Description:
 **       ms, timeout to wait for ack.
 */
-#define GPS_ACK_TIMEOUT                           (200)
+#define GPS_ACK_TIMEOUT                           (1000)
 
 
 /** \brief GPS payload scanner buffer size.
@@ -93,6 +94,11 @@ extern "C" {
 */
 #define GPS_MESSAGE_CLASS_CFG                     (0x06)
 
+
+#define GPS_MESSAGE_CLASS_NAV                     (0x01)
+
+#define GPS_MESSAGE_CLASS_MON                     (0x0A)
+
 /* Message IDs */
 /** \brief Message ID port configuration.
 **
@@ -100,6 +106,62 @@ extern "C" {
 **       Message ID for port configuration.
 */
 #define GPS_MESSAGE_ID_CFG_PRT                    (0x00)
+
+/** \brief Message ID rate configuration.
+**
+**  \par Description:
+**       Message ID for rate configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_RATE                   (0x08)
+
+/** \brief Message ID for message rate configuration.
+**
+**  \par Description:
+**       Message ID for message rate configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_MSG                    (0x01)
+
+/** \brief Message ID NAV5 configuration.
+**
+**  \par Description:
+**       Message ID for NAV5 configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_NAV5                   (0x24)
+
+/** \brief Message ID SBAS configuration.
+**
+**  \par Description:
+**       Message ID for SBAS configuration.
+*/
+#define GPS_MESSAGE_ID_CFG_SBAS                   (0x16)
+
+/** \brief Message ID navigation position velocity time solution.
+**
+**  \par Description:
+**       Message ID for NAV-PVT.
+*/
+#define GPS_MESSAGE_ID_NAV_PVT                    (0x07)
+
+/** \brief Message ID dilution of precision.
+**
+**  \par Description:
+**       Message ID for NAV-DOP.
+*/
+#define GPS_MESSAGE_ID_NAV_DOP                    (0x04)
+
+/** \brief Message ID space vehicle information.
+**
+**  \par Description:
+**       Message ID for NAV-SVINFO.
+*/
+#define GPS_MESSAGE_ID_NAV_SVINFO                 (0x30)
+
+/** \brief Message ID extended hardware status.
+**
+**  \par Description:
+**       Message ID for MON-HW.
+*/
+#define GPS_MESSAGE_ID_MON_HW                     (0x09)
 
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
@@ -136,6 +198,62 @@ extern "C" {
 **       Port interface number.
 */
 #define GPS_TX_CFG_PRT_PORTID_USB                 (0x03)
+/* TX CFG-Rate message contents */
+
+/** \brief Measurement interval.
+**
+**  \par Description:
+**       The elapsed time between GNSS measurements. 200ms for 5Hz.
+*/
+#define GPS_TX_CFG_RATE_MEASINTERVAL              (200)
+
+/** \brief Navigation measurement rate.
+**
+**  \par Description:
+**       This parameter is ignosed and the navRate is fixed to 1 in 
+**       protocol versions less than 18.
+*/
+#define GPS_TX_CFG_RATE_NAVRATE                   (1)
+
+/** \brief Time reference.
+**
+**  \par Description:
+**       0: UTC, 1: GPS time.
+*/
+#define GPS_TX_CFG_RATE_TIMEREF                   (0)
+
+/* TX CFG-NAV5 message contents */
+
+/** \brief Nav5 parameters bitmask.
+**
+**  \par Description:
+**       Only update dynamic model and fix mode.
+*/
+#define GPS_TX_CFG_NAV5_MASK                      (0x0005)
+
+/** \brief Nav5 position fixing mode.
+**
+**  \par Description:
+**       1 2D only, 2 3D only, 3 Auto 2D/3D.
+*/
+#define GPS_TX_CFG_NAV5_FIXMODE                   (2)
+
+/** \brief Nav5 dynamic platform model.
+**
+**  \par Description:
+**       7 = airborne with <2g acceleration.
+*/
+#define GPS_TX_CFG_NAV5_DYNMODEL                  (7)
+
+/* TX CFG-SBAS message contents */
+/** \brief SBAS configuration mode.
+**
+**  \par Description:
+**       1 = SBAS enabled, 2 = SBAS disabled.
+*/
+#define  GPS_TX_CFG_SBAS_MODE                     (1)
+
+
 
 /* UBX header contents */
 /** \brief Header symbol 1.
@@ -154,8 +272,33 @@ extern "C" {
 
 /* Message Classes & IDs */
 #define GPS_MESSAGE_CFG_PRT          ((GPS_MESSAGE_CLASS_CFG) | \
-                                      GPS_MESSAGE_ID_CFG_PRT << 8)
+                                       GPS_MESSAGE_ID_CFG_PRT << 8)
+                                      
+#define GPS_MESSAGE_CFG_RATE         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_RATE << 8)
+                                      
 
+#define GPS_MESSAGE_CFG_NAV5         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_NAV5 << 8)
+
+#define GPS_MESSAGE_CFG_SBAS         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_SBAS << 8)
+
+#define GPS_MESSAGE_CFG_MSG          ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_MSG << 8)
+
+#define GPS_MESSAGE_NAV_PVT          ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_PVT << 8)
+                                       
+#define GPS_MESSAGE_NAV_DOP          ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_DOP << 8)
+
+#define GPS_MESSAGE_NAV_SVINFO       ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_SVINFO << 8)
+
+#define GPS_MESSAGE_MON_HW           ((GPS_MESSAGE_CLASS_MON) | \
+                                       GPS_MESSAGE_ID_MON_HW << 8)
+                                       
 /** \brief Retry attemps for interrupted calls.
 **
 **  \par Limits:
@@ -170,13 +313,43 @@ extern "C" {
 */
 #define GPS_MAX_RETRY_SLEEP_USEC                   (10)
 
+/** \brief Streaming task priority
+**
+**  \par Limits:
+**       0 to MAX_PRIORITY (usually 255)
+*/
+#define GPS_STREAMING_TASK_PRIORITY    (50)
+
+/** \brief GPS shared data mutex name. */
+#define GPS_MUTEX_POS                "GPS_MUTEX_POS"
+
+/** \brief GPS shared data mutex name. */
+#define GPS_MUTEX_DUMP               "GPS_MUTEX_DUMP"
+
+/** \brief GPS shared data mutex name. */
+#define GPS_MUTEX_SAT                "GPS_MUTEX_SAT"
+
+/** \brief Streaming task name
+**
+**  \par Limits:
+**       OS_MAX_API_NAME
+*/
+#define GPS_STREAMING_TASK_NAME       "GPS_STREAM"
+
+// TODO: this number seems wrong
+#define GPS_EPOCH_SECS                ((time_t)1234567890ULL)
+
+#define M_DEG_TO_RAD_F                (0.0174532925f)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
 
+#pragma pack(push, 1)
 /**
  * \brief GPS port configuration payload message.
  */
+ /* TODO use struct defined in gps_ubx_msg instead */
 typedef struct 
 {
     /*! Port Identifier Number */
@@ -198,6 +371,32 @@ typedef struct
     /*! Reserved */
     uint16      reserved2;
 } GPS_Payload_TX_CFG_PRT_t;
+
+
+/**
+ * \brief GPS message rate configuration payload message.
+ */
+/* TODO move to gps_ubx_msg */
+typedef struct 
+{
+    /*! Measurement Rate */
+    uint16       measRate;
+    /*! Navigation Rate */
+    uint16       navRate;
+    /*! Alignment to reference time: 0 = UTC time, 1 = GPS time */
+    uint16       timeRef;
+} GPS_Payload_TX_CFG_Rate_t;
+
+
+/* TODO move to gps_ubx_msg*/
+/**
+ * \brief GPS message rate configuration message.
+ */
+typedef struct 
+{
+    uint16       msg;
+    uint8        rate;
+} GPS_Payload_TX_CFG_Rate_Msg_t;
 
 /**
  * \brief GPS UBX protocol header.
@@ -225,6 +424,7 @@ typedef struct
     uint8       ck_b;
 } GPS_Checksum_t;
 
+#pragma pack(pop)
 
 /**
  * \brief GPS device status
@@ -234,16 +434,18 @@ typedef enum
     /*! GPS status uninitialized */
     GPS_CUSTOM_UNINITIALIZED  = 0,
     /*! GPS status initialized */
-    GPS_CUSTOM_INITIALIZED   = 1
+    GPS_CUSTOM_INITIALIZED   = 1,
+    /*! GPS status streaming */
+    GPS_CUSTOM_STREAMING     = 2
 } GPS_Custom_Status_t;
 
 
 typedef enum 
 {
-    GPS_ACK_IDLE = 0,
-    GPS_ACK_WAITING,
-    GPS_ACK_GOT_ACK,
-    GPS_ACK_GOT_NAK
+    GPS_ACK_IDLE    = 0,
+    GPS_ACK_WAITING = 1,
+    GPS_ACK_GOT_ACK = 2,
+    GPS_ACK_GOT_NAK = 3
 } GPS_Ack_State_t;
 
 
@@ -257,10 +459,32 @@ typedef struct
     uint32                       Baud;
     /*! The current parser status */
     GPS_ParserStatus_t           ParserStatus;
-    
+    /*! Streaming task priority */
+    uint8                           Priority;
+    /*! Streaming child task identifier */
+    uint32                          ChildTaskID;
+    /*! Streaming task function pointer */
+    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    //PX4_GpsDumpMsg_t             GpsDumpMsg;
+    PX4_VehicleGpsPositionMsg_t  GpsPositionMsg;
+    PX4_SatelliteInfoMsg_t       GpsSatInfoMsg;
     GPS_Ack_State_t              AckState;
     uint16                       AckWaitingMsg;
+    uint8                        AckRcvdMsgCls;
     boolean                      AckWaitingRcvd;
+    /*! The shared data mutex */
+    //uint32                       MutexDump;
+    uint32                       MutexPosition;
+    uint32                       MutexSatInfo;
+    /*! */
+    uint32                       RateCountVel;
+    uint32                       RateCountLatLon;
+    boolean                      GotPosllh;
+    boolean                      GotVelned;
+    /*! Flag to start and stop streaming */
+    boolean                         ContinueFlag;
+    /*! The last timestamp */
+    //CFE_TIME_SysTime_t           LastTimeStamp;
 } GPS_AppCustomData_t;
 
 
@@ -282,14 +506,12 @@ extern GPS_AppCustomData_t GPS_AppCustomData;
 **  \par Assumptions, External Events, and Notes:
 **       A device must be initialized before this function is called.
 **
-**  \param [out]    BaudRateSet    The baud rate that was set.
-**
-**  \param [in]     Baud           The baud rate to attempt to set.                             
+**  \param [in]     Baud           The baud rate to attempt to set.
 **
 **  \returns    boolean, TRUE for success, FALSE for failure.
 **
 *************************************************************************/
-boolean GPS_Custom_Negotiate_Baud(uint32 *BaudRateSet, const uint32 Baud);
+boolean GPS_Custom_Negotiate_Baud(const uint32 Baud);
 
 /************************************************************************/
 /** \brief Set baud rate. 
@@ -317,7 +539,8 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud);
 **
 **  \par Assumptions, External Events, and Notes:
 **       A device must be initialized and baudrate configured before
-**       this function is called.
+**       this function is called. This function does not send empty 
+**       messages. A payload must be supplied. 
 **
 **  \param [in]    msg          The message id.
 **
@@ -330,6 +553,23 @@ boolean GPS_Custom_Set_Baud(const uint32 Baud);
 *************************************************************************/
 boolean GPS_Custom_SendMessage(const uint16 msg, const uint8 *payload, const uint16 length);
 
+/************************************************************************/
+/** \brief Sends a empty message to the GPS device.
+**
+**  \par Description
+**       This function attempts to send an empty (no payload) message 
+**       to the GPS device.
+**
+**  \par Assumptions, External Events, and Notes:
+**       A device must be initialized and baudrate configured before
+**       this function is called.
+**
+**  \param [in]    msg          The message id.
+**
+**  \returns    boolean, TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_SendEmptyMessage(const uint16 msg);
 
 /************************************************************************/
 /** \brief Set a checksum.
@@ -416,18 +656,62 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout);
 
 
 /************************************************************************/
-/** \brief Get time in from GPS_Custom_Get_Time in uint64 format.
+/** \brief Configures the GPS device.
 **
 **  \par Description
-**       This function is a wrapper for GPS_Custom_Get_Time.
+**       This sends all the configuration messages.
 **
 **  \par Assumptions, External Events, and Notes:
 **       None.
 **
-**  \returns       uint64, monotonic time for success, 0 for failure.
+**  \returns       TRUE for success, FALSE for failure.
 **
 *************************************************************************/
-uint64 GPS_Custom_Get_Time_Uint64(void);
+boolean GPS_Custom_Configure(void);
+
+/************************************************************************/
+/** \brief Configure a message rate.
+**
+**  \par Description
+**       Configure message rates. 
+**
+**  \par Assumptions, External Events, and Notes:
+**       The rate argument is the divisor for the measurement rate. 
+**       i.e. 1 means 5Hz.
+**
+**  \param [in]    msg        The message to set a rate for.
+**
+**  \param [in]    rate       The divisor for the measurement rate.
+**
+**  \returns       TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_SendMessageRate(const uint16 msg, const uint8 rate);
+
+
+/************************************************************************/
+/** \brief The stream task that actively reads the GPS input stream.
+**
+**  \par Description
+**       This thread runs until uninit.
+**
+*************************************************************************/
+void GPS_Stream_Task(void);
+
+
+/************************************************************************/
+/** \brief Reads and parses messages from the GPS device.
+**
+**  \par Description
+**       This should be called from waitforack or in the stream task
+**       thread repeatedly.
+**
+**  \param [in]    timeout        The read timeout.
+**
+**  \returns       TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+boolean GPS_Custom_Read_and_Parse(const uint32 timeout);
 
 #ifdef __cplusplus
 }

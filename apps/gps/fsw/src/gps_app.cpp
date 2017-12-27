@@ -281,6 +281,7 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
     int32           iStatus=CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
     CFE_SB_MsgId_t  MsgId;
+    boolean returnBool = FALSE;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(GPS_MAIN_TASK_PERF_ID);
@@ -297,7 +298,17 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case GPS_READ_SENSOR_MID:
-                /* TODO:  Do something here. */
+            
+                returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
+                if(TRUE == returnBool)
+                {
+                    SendVehicleGps();
+                }
+                returnBool = GPS_Custom_Measure_SatInfoMsg(&SatelliteInfo);
+                if(TRUE == returnBool)
+                {
+                    SendSatelliteInfo();
+                }
                 break;
 
             case GPS_SEND_HK_MID:

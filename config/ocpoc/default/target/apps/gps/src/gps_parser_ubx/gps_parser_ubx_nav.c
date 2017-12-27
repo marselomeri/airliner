@@ -1633,11 +1633,13 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
             case 4:
                 payload->svinfo.numCh = byte;
                 /* Length check */
-                if (byte != (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
+                if (byte != (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12 &&
+                    byte != 0)
                 {
                     GPS_AppCustomData.ParserStatus.ParseError++;
                     CFE_EVS_SendEvent(GPS_INIT_DEVICE_PARSER_ERR_EID, CFE_EVS_ERROR,
-                          "Received SVINFO message with incorrect length (%u).", GPS_AppCustomData.ParserStatus.MsgLength);
+                          "Received SVINFO message with incorrect length (%u), numCh (%u).", 
+                          GPS_AppCustomData.ParserStatus.MsgLength, byte);
                     GPS_Parser_Reset();
                 }
                 break;
@@ -1664,6 +1666,7 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
     /* If we're in part 2 of the SVINFO message */
     else if(GPS_AppCustomData.ParserStatus.PayloadCursor >= 8)
     {
+        /* Save a max limim of part 2 SVINFO messages */
         if (i < (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12 &&
             i < PX4_SAT_INFO_MAX_SATELLITES)
         {
@@ -1722,11 +1725,16 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
                     return;
             }
         }
-        else if (i == (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12
-                 || i == PX4_SAT_INFO_MAX_SATELLITES)
+        /* end of message */
+        else if (i == (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12)
         {
             i = 0;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_PAYLOAD);
+        }
+        /* Max limit of part 2 SVINFO messages reached */
+        else if (i >= PX4_SAT_INFO_MAX_SATELLITES)
+        {
+            /* Do nothing, continue parsing until end of message */
         }
         else
         {

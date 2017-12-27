@@ -30,40 +30,70 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
+/*************************************************************************
+**
+** Include section
+**
+**************************************************************************/
+#ifndef _GPS_PARSER_UBX_ACK_H_
+#define _GPS_PARSER_UBX_ACK_H_
 
-#include "gps_custom_stubs.h"
-#include "px4_msgs.h"
+#include "cfe.h"
+#include "../gps_custom_shared.h"
+//#include "GPS_events.h"
+//#include "GPS_msgids.h"
+#include "gps_parser_ubx_common.h"
+#include "gps_ubx_msg.h"
 
-void GPS_Custom_InitData(void)
-{
-    
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*************************************************************************
+**
+** Macro definitions
+**
+**************************************************************************/
+
+
+/*************************************************************************
+**
+** Type definitions
+**
+**************************************************************************/
+
+/*
+** (none)
+*/
+
+/*************************************************************************
+**
+** Imported data
+**
+**************************************************************************/
+
+/*
+** (none)
+*/
+
+/*************************************************************************
+**
+** Exported data
+**
+**************************************************************************/
+
+
+void GPS_Ack_ParseChar_ACK(uint8 byte, GPS_DeviceMessage_t* message);
+void GPS_Ack_ParseChar_NAK(uint8 byte, GPS_DeviceMessage_t* message);
+
+
+#ifdef __cplusplus
 }
+#endif 
 
+#endif /* _GPS_PARSER_UBX_CFG_H_ */
 
-boolean GPS_Custom_Init(void)
-{
-    return TRUE;
-}
+/************************/
+/*  End of File Comment */
+/************************/
 
-
-boolean GPS_Custom_Uninit(void)
-{
-    return TRUE;
-}
-
-
-int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
-{
-    return 0;
-}
-
-
-boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
-{
-    return TRUE;
-}
-
-boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
-{
-    return TRUE;
-}
