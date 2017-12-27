@@ -104,3 +104,90 @@ end_of_function:
     return customEventCount;
 }
 
+
+//boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure)
+//{
+    //boolean returnBool = TRUE;
+    //void *userDataPtr = 0;
+    //void *copyDataPtr = 0;
+    //uint16 userDataLength = 0;
+
+    ///* Null check */
+    //if(0 == Measure)
+    //{
+        //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                //"GPS measure dump message null pointer");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
+
+    //OS_MutSemTake(GPS_AppCustomData.MutexDump);
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+    //OS_MutSemGive(GPS_AppCustomData.MutexDump);
+
+//end_of_function:
+
+    //return returnBool;
+//}
+
+
+boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
+{
+    boolean returnBool = TRUE;
+    void *userDataPtr = 0;
+    void *copyDataPtr = 0;
+    uint16 userDataLength = 0;
+    
+    /* Null check */
+    if(0 == Measure)
+    {
+        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "GPS measure dump message null pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    OS_MutSemTake(GPS_AppCustomData.MutexPosition);
+    userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
+    userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
+    copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    
+    memcpy(copyDataPtr, userDataPtr, userDataLength);
+    OS_MutSemGive(GPS_AppCustomData.MutexPosition);
+
+end_of_function:
+
+    return returnBool;
+}
+
+
+boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
+{
+    boolean returnBool = FALSE;
+    //void *userDataPtr = 0;
+    //void *copyDataPtr = 0;
+    //uint16 userDataLength = 0;
+    ///* Null check */
+    //if(0 == Measure)
+    //{
+        //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                //"GPS measure dump message null pointer");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
+
+    //OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+    //OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
+
+end_of_function:
+
+    return returnBool;
+}

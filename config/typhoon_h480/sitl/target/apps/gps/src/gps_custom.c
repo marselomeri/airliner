@@ -231,6 +231,10 @@ end_of_function:
 //boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure)
 //{
     //boolean returnBool = TRUE;
+    //void *userDataPtr = 0;
+    //void *copyDataPtr = 0;
+    //uint16 userDataLength = 0;
+
     ///* Null check */
     //if(0 == Measure)
     //{
@@ -241,8 +245,10 @@ end_of_function:
     //}
 
     //OS_MutSemTake(GPS_AppCustomData.MutexDump);
-    //memcpy(Measure, &GPS_AppCustomData.GpsDumpMsg, 
-            //sizeof(GPS_AppCustomData.GpsDumpMsg));
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
     //OS_MutSemGive(GPS_AppCustomData.MutexDump);
 
 //end_of_function:
@@ -254,6 +260,10 @@ end_of_function:
 boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
 {
     boolean returnBool = TRUE;
+    void *userDataPtr = 0;
+    void *copyDataPtr = 0;
+    uint16 userDataLength = 0;
+    
     /* Null check */
     if(0 == Measure)
     {
@@ -264,8 +274,11 @@ boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
     }
 
     OS_MutSemTake(GPS_AppCustomData.MutexPosition);
-    memcpy(Measure, &GPS_AppCustomData.GpsPositionMsg, 
-            sizeof(GPS_AppCustomData.GpsPositionMsg));
+    userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
+    userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
+    copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    
+    memcpy(copyDataPtr, userDataPtr, userDataLength);
     OS_MutSemGive(GPS_AppCustomData.MutexPosition);
 
 end_of_function:
@@ -277,6 +290,9 @@ end_of_function:
 boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
 {
     boolean returnBool = FALSE;
+    //void *userDataPtr = 0;
+    //void *copyDataPtr = 0;
+    //uint16 userDataLength = 0;
     ///* Null check */
     //if(0 == Measure)
     //{
@@ -287,8 +303,11 @@ boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
     //}
 
     //OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
-    //memcpy(Measure, &GPS_AppCustomData.GpsSatInfoMsg, 
-            //sizeof(GPS_AppCustomData.GpsSatInfoMsg));
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
     //OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
 
 end_of_function:

@@ -728,6 +728,9 @@ void RCIN_Custom_Read(void)
 boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 {
     boolean returnBool = TRUE;
+    void *userDataPtr = 0;
+    void *copyDataPtr = 0;
+    uint16 userDataLength = 0;
 
     /* Null pointer check */
     if (0 == Measure)
@@ -743,7 +746,11 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     {
         returnBool = FALSE;
     }
-    memcpy(Measure, &RCIN_AppCustomData.Measure, sizeof(PX4_InputRcMsg_t));
+    userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
+    userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
+    copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    
+    memcpy(copyDataPtr, userDataPtr, userDataLength);
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:
