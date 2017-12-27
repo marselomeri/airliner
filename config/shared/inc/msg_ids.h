@@ -645,7 +645,18 @@
 #define MAVLINK_OUT_DATA_MID                        0x1c85
 #define MAVLINK_PARAM_VALUE_MID                     0x1c86
 
-
+/* Individual GPS messages                              */
+#define GPS_NAV_DOP_MID                             0x0c87
+#define GPS_NAV_NAVPVT_MID                          0x0c88
+#define GPS_NAV_SVINFO_MID                          0x0c89
+#define GPS_ACK_NAK_MID                             0x0c90
+#define GPS_ACK_ACK_MID                             0x0c91
+#define GPS_CFG_PRT_MID                             0x0c92
+#define GPS_CFG_MSG_MID                             0x0c93
+#define GPS_CFG_RATE_MID                            0x0c94
+#define GPS_CFG_SBAS_MID                            0x0c95
+#define GPS_CFG_NAV5_MID                            0x0c96
+#define GPS_MON_HW_MID                              0x0c97
 
 #define SCH_ACTIVITY_DONE_MID			    0x0f00
 

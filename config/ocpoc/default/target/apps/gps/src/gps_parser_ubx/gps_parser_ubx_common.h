@@ -53,7 +53,7 @@
 //#include "gps_parser_ubx_tim.h"
 //#include "gps_parser_ubx_upd.h"
 #include "../gps_custom_shared.h"
-//#include "../gps_interface_uart/gps_serial.h"
+#include "../gps_interface_uart/gps_serial.h"
 
 
 #ifdef __cplusplus
