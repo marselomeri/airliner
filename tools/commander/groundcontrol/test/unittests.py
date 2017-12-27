@@ -37,11 +37,11 @@ class Test_Toolkit(unittest.TestCase):
 
     #@unittest.skip("demonstrating skipping")
     def test_text_preprocessing(self):
-        print        '   dir:', self.db_path + '/test_database'
+        #print        '   dir:', self.db_path + '/test_database'
 
         conn = sqlite3.connect(self.db_path + '/test_database', timeout=5)
         cursor = conn.cursor()
-        print "info:", conn, 'cursor:',cursor,
+        #print "info:", conn, 'cursor:',cursor,
         cursor.execute('SELECT input, output FROM TESTCASES WHERE mapping =\'PREPROCTLM\'')
         io_list = cursor.fetchall()
         conn.close()
@@ -85,6 +85,8 @@ class Test_Instance(unittest.TestCase):
             ch = channel_plugin('ws://127.0.0.1:8000/dir/')
             ch.send(input)
             c_actual = ch.rcv()
+            #print str(json.dumps(c_actual))
+            #print str(byteify(output))
             self.assertTrue(json.dumps(c_actual) == byteify(output))
 
     def tearDown(self):
@@ -135,8 +137,12 @@ class Test_Telemetry(unittest.TestCase):
             for e in names:
                 if e not in sub_names_recv:
                     sub_names_recv.append(e)
-
-            print len(sub_names_recv), '=?',len(sub_names_sent)
+            sub_names_sent = list(set(sub_names_sent))
+            #for every in sub_names_sent:
+                #print '-----------------------------',every
+            #for every in sub_names_recv:
+                #print every
+            #print len(sub_names_recv), '=?',len(sub_names_sent)
             if len(sub_names_sent) == len(sub_names_recv):
                 break
         cls.assertTrue(set(sub_names_recv)==set(sub_names_sent))
@@ -165,7 +171,7 @@ class Test_Telemetry(unittest.TestCase):
                     tlm = '{\'tlm\':['+str(byteify(name))+']}'
                     tlm = (json.dumps(eval(tlm)),)
                     cls._sending_list.append(tlm)
-            print len(cls._sending_list), '=?', 0
+            #print len(cls._sending_list), '=?', 0
         cls.assertTrue(cls._sending_list==[])
 
     def send_unsubscription_signal(cls,l):
@@ -248,7 +254,8 @@ class timeout:
         self.seconds = seconds
         self.error_message = error_message
     def handle_timeout(self, signum, frame):
-        print 'PROGRAM TIMED OUT!'
+        print ''
+        #print 'PROGRAM TIMED OUT!'
         #raise TimeoutError(self.error_message)
     def __enter__(self):
         signal.signal(signal.SIGALRM, self.handle_timeout)
@@ -265,5 +272,5 @@ if __name__ == '__main__':
     Suite = unittest.TestSuite([Toolkit,INS_DIR,TLM,CMD])
 
     slack = '\n\nRunning Tests for Commander....\n\n'
-    print slack
+    #print slack
     unittest.TextTestRunner(verbosity=2).run(Suite)

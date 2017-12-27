@@ -22,15 +22,18 @@ cd groundcontrol/
 cd test-reports
 touch *.xml
 cd ../
-#npm install
-#./node_modules/.bin/mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=./test-reports/client-results.xml
+npm install
+./node_modules/.bin/mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=./test-reports/client-results.xml
 py.test --junitxml ./test-reports/server-results.xml ./test/unittests.py
-#py.test --junitxml ./test-reports/gui-results.xml ./test/uitests.py
-echo '###################INTENTIONAL WATING####################'
-./killswitch.sh
+py.test --junitxml ./test-reports/gui-results.xml ./test/uitests.py
+
 sleep 20
+echo '###################INTENTIONAL WATING####################'
+../scripts/killswitch.sh
 cd ../
 cd scripts/
+
+
 ./kill_YAMCS_airliner.sh
 
 

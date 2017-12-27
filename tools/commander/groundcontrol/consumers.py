@@ -5,7 +5,7 @@ passing the message as parameter. The response is written in the received messag
 
 ## swiss-knife
 import toolkit as tk
-import urllib,json,os,psutil,requests,time,socket,base64
+import urllib,json,os,psutil,requests,time,socket,base64,ast
 from channels import Group
 from websocket import create_connection
 from multiprocessing import Process
@@ -70,6 +70,7 @@ class Telemetry:
         @param message: disconnection request from client, this message will disconnection headers.
         @return: void
         """
+        #print '###################',message.__dict__
         message.reply_channel.send({'close': True})
         Group('tlm_bc').discard(message.reply_channel)
         tk.log('Instance', '(Dis)connected.', 'INFO')
@@ -107,6 +108,7 @@ class Telemetry:
         message_text = tk.byteify(message.content['text'])
         ## unsubscribe signal
         if message_text.find('kill_tlm') != -1:
+            print message_text
             try:
                 msg = message_text.replace('kill_tlm', '')
                 msg_text_obj = json.loads(msg)
@@ -181,6 +183,11 @@ class Telemetry:
                 ## If result is not a ACK signal, in YAMCS case ACK looks like `[1,2,x]`
                 if result != '[1,2,0]':
                     result2 = tk.preProcess(result)
+                    """INTROSPECTION PURPOSE ONLY"""
+                    e_list =  json.loads(json.dumps(ast.literal_eval(result2)))
+                    for e in e_list['parameter']:
+                        print '-------------------',e['id']['name']
+                    #"""
                     ## gets telemetry once every 10 loops
                     if self.test_sampling_frequency*freq_count == 1 :
                         ## Train
@@ -192,8 +199,8 @@ class Telemetry:
                     except:
                         time.sleep(1)
                         Group('tlm_bc').send({'text': result2})
-            except:
-                tk.log('Instance', 'Not able to push messages to client. Process killed.', 'ERROR')
+            except Exception as e:
+                tk.log('Instance', 'Not able to push messages to client. Process killed. Error = '+str(e), 'ERROR')
                 break
             ## avoids busy-while-loop
             time.sleep(0.01)

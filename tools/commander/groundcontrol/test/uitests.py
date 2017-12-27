@@ -19,7 +19,7 @@ class ApplicationGUI(unittest.TestCase):
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
         cls._db_path = cls._r.get('app_path')
         cls.driver = webdriver.Firefox()
-        cls.arr = ['apps','cfe','common','flight','probe','scripts']
+        cls.arr = ['apps','cfe','common','flight','mpu9250','probe','scripts']
         cls.apps = []
         cls.fixApps = {}
         cls.totalApps = 0

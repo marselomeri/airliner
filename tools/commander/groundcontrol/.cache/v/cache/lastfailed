@@ -1,5 +1,3 @@
 {
-  "test/uitests.py::ApplicationGUI::test_B_directory_listing_superficial": true, 
-  "test/uitests.py::ApplicationGUI::test_D_instance_in_list": true, 
-  "test/uitests.py::ApplicationGUI::test_E_select_instance": true
+  "test/uitests.py::ApplicationGUI::test_B_directory_listing_superficial": true
 }

@@ -306,6 +306,8 @@ var Telemetry =function(){
     this.subscribers = [];
     this.queuedSubscribers = [];
     this.allSubscibers = [];
+    this.activeSubscribers = [];
+    this.toUnsubscribe= [];
 
     var self = this;
     /*subscribeTelemetry*/
@@ -393,7 +395,7 @@ Telemetry.prototype = {
             fixedDataString = fixedDataString.replace(new RegExp('True', 'g'),'true');
             fixedDataString = fixedDataString.replace(new RegExp('False', 'g'),'false');
             var data = JSON.parse(fixedDataString);
-            //console.log(data);
+            console.log(data);
             data.parameter.forEach(function(param){
                 var tlmName = param.id.name;
 
@@ -413,7 +415,9 @@ Telemetry.prototype = {
     unSubscribeTelemetry: function(msgObj){
         var socket = this.subsc;
         var message = "";
-
+        //console.log('/**********/');
+        //console.log(msgObj);
+        //console.log('/**********/');
         /* If this msgObj is an object, stringify it. */
         if(typeof msgObj === 'object')
         {
@@ -430,11 +434,15 @@ Telemetry.prototype = {
         }
 
         var msg = 'kill_tlm'+message
-        socket.send(msg);
+
+        for(var i=0;i<2;i++){
+        socket.send(msg);}
 
 
 
     },
+
+
 
     killAll: function(){
         var self = this;
@@ -540,7 +548,7 @@ Command.prototype = {
     },
 
     ProcessCmds: function(cb){
-        /*
+
         var socket = this.info;
         var self = this;
         var cq = makeIterator(this.CommandQueue)
@@ -561,7 +569,7 @@ Command.prototype = {
         } while(this.RequestCmdDef(Que_obj, cb) == true);
 
         socket.onmessage = function (event){
-            /* Retrieve the object and call the callback. *//*
+            /* Retrieve the object and call the callback. */
             var cmdName = Object.keys(Que_obj)[0];
             var btn = Que_obj[cmdName][0];
             var jsn = Que_obj[cmdName][1];
@@ -577,7 +585,7 @@ Command.prototype = {
 
                 Que_obj = cq.next().value;
             } while(self.RequestCmdDef(Que_obj, cb) == true);
-        }*/
+        }
 
     },
 
