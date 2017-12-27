@@ -745,12 +745,16 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     //Buffer[95] = magDec;
     //Buffer[96] = magAcc;
     //Buffer[97] = magAcc;
+    Buffer[98] = checksum.ck_a;
+    Buffer[99] = checksum.ck_b;
+    
+    /* Header (6) + Payload (92) + Checksum (2) */
+    bytesRead = GPS_MESSAGE_NAV_PVT_LENGTH + 
+        GPS_MESSAGE_UBX_HEADER_LENGTH + GPS_MESSAGE_UBX_CHKSUM_LENGTH;
 
-    bytesRead = 98;
     /* 5 Hz */
     usleep(200000);
-    
- 
+
 end_of_function:
 
     return bytesRead;
