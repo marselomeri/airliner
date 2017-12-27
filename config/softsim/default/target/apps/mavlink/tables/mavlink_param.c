@@ -43,14 +43,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 MAVLINK_ParamTblEntry_t MAVLINK_ParamTbl[MAVLINK_PARAM_TABLE_MAX_ENTRIES] =
 {
 	/* Table ID */
-	1,
-	{
-		/* Default Parameters */
-        {1, 1, 1, "DEFAULT_PARAM", 0.0, 9}
-/*		{0x1806, 2, STEP_2, UNAUTHORIZED, 0, LOG}, // CFE ES Proc/Power Reset*/
-/*		{0x1c29, 0, STEP_1, UNAUTHORIZED, 0, LOG}, // EA Noop*/
-/*		{0x1c29, 1, STEP_2, UNAUTHORIZED, 0, LOG}  // EA Reset*/
-	}
+	1
 };
 
 /*

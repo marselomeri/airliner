@@ -354,11 +354,22 @@ PARAMS_ParamsEqual_Exit_Tag:
 	return equal;
 }
 
+void PARAMS_PrintParam(PARAMS_ParamData_t param_data)
+{
+	OS_printf("name: %s \n", param_data.name);
+	OS_printf("val: %u \n", param_data.value);
+	OS_printf("type: %u \n", param_data.type);
+	OS_printf("vehicle_id: %u \n", param_data.vehicle_id);
+	OS_printf("component_id: %u \n", param_data.component_id);
+}
+
+
+
 void PARAMS_SetParam(PARAMS_SendParamDataCmd_t* SetParamMsg)
 {
+	int32 Status;
+	CFE_SB_MsgPtr_t 	CmdMsgPtr;
 	boolean paramExists = FALSE;
-	//PARAMS_SendParamDataCmd_t ParamDataMsg = {0};
-	//CFE_SB_MsgPtr_t 	CmdMsgPtr;
 
 	/* Iterate over table to find parameter */
 	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
@@ -381,15 +392,27 @@ void PARAMS_SetParam(PARAMS_SendParamDataCmd_t* SetParamMsg)
 	{
 		PARAMS_AddParam(SetParamMsg->param_data);
 	}
+	PARAMS_PrintParam(SetParamMsg->param_data);
 
+	/* Init Airliner message */
+	CFE_SB_InitMsg(&SetParamMsg, PARAMS_PARAM_MID, sizeof(PARAMS_SendParamDataCmd_t), FALSE);
+	CmdMsgPtr = (CFE_SB_MsgPtr_t)&SetParamMsg;
+	CFE_SB_SetCmdCode(CmdMsgPtr, PARAMS_PARAM_DATA_CC);
+
+	/* Send to SB */
+	Status = CFE_SB_SendMsg(CmdMsgPtr);
+	if (Status != CFE_SUCCESS)
+	{
+		OS_printf("Error sending param to SB\n");
+		/* TODO: Decide what to do if the send message fails. */
+	}
 }
 
 // For QGC when requesting vehicle params
-void PARAMS_SendAllParamsToSB(void)
+void PARAMS_SendAllParamsToSB()
 {
 	int32 Status;
 	uint16 msg_size 		= 0;
-	uint8 msgBuf[MAVLINK_MAX_PACKET_LEN] = {0};
 	PARAMS_SendParamDataCmd_t ParamDataMsg = {0};
 	CFE_SB_MsgPtr_t 	CmdMsgPtr;
 	uint16 param_index = 0;
@@ -434,7 +457,6 @@ void PARAMS_RequestSingleParam(PARAMS_RequestParamDataCmd_t* requestCmd)
 {
 	int32 Status;
 	uint16 msg_size 		= 0;
-	uint8 msgBuf[MAVLINK_MAX_PACKET_LEN] = {0};
 	PARAMS_SendParamDataCmd_t ParamDataMsg = {0};
 	CFE_SB_MsgPtr_t 	CmdMsgPtr;
 	uint16 param_index = 0;
@@ -477,7 +499,7 @@ void PARAMS_RequestSingleParam(PARAMS_RequestParamDataCmd_t* requestCmd)
 	}
 }
 
-void PARAMS_UpdateParamCount(void)
+void PARAMS_UpdateParamCount()
 {
 	uint16 count =0;
 
@@ -711,7 +733,7 @@ void PARAMS_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
             case PARAMS_SET_PARAM_CC:
             	PARAMS_AppData.HkTlm.usCmdCnt++;
-            	PARAMS_SetParam(PARAMS_SendParamDataCmd_t* MsgPtr);
+            	PARAMS_SetParam((PARAMS_SendParamDataCmd_t*) MsgPtr);
                 (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
                                   "Recvd set param cmd (%u)", (unsigned int)uiCmdCode);
                 break;

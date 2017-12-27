@@ -46,7 +46,7 @@ PARAMS_ParamsTblEntry_t PARAMS_ParamTbl[PARAMS_PARAM_TABLE_MAX_ENTRIES] =
 	1,
 	{
 		/* Default Parameters */
-        {1, {"TEST_PARAM", 1.0, 9, 1, 1}},
+        {1, {"TEST_PARAM", 1, 6, 1, 1}},
         {1, {"TEST_PARAM2", 2.0, 9, 1, 1}},
         {1, {"TEST_PARAM3", 3.0, 9, 1, 1}},
         {1, {"TEST_PARAM4", 4.0, 9, 1, 1}},

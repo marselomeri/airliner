@@ -310,8 +310,13 @@ void  PARAMS_SendOutData(void);
 *************************************************************************/
 boolean  PARAMS_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
+boolean PARAMS_ParamsEqual(PARAMS_ParamData_t param1, PARAMS_ParamData_t param2);
 void PARAMS_AddParam(PARAMS_ParamData_t param);
-void PARAMS_SetParam(PARAMS_SetParamCmd_t* SetParamMsg);
+void PARAMS_SetParam(PARAMS_SendParamDataCmd_t* SetParamMsg);
+void PARAMS_UpdateParamCount();
+void PARAMS_SendAllParamsToSB();
+
+
 
 #ifdef __cplusplus
 }
