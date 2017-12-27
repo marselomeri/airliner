@@ -76,15 +76,25 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 	uint32 controlCount = 16;
 	uint32 i = 0;
 
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
+    for (i = 0; i < 6; ++i)
     {
     	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
     }
 
-	for(i = AMC_MAX_MOTOR_OUTPUTS; i < 16; ++i)
+	for(i = 6; i < 16; ++i)
 	{
 		controls[i] = NAN;
 	}
 
+	controls[6] = 1500.0f;
+	controls[7] = 1500.0f;
+	controls[8] = 1500.0f;
+	controls[9] = 1000.0f;
+	controls[10] = 1000.0f;
+
 	SIMLIB_SetActuatorControls(controls, controlCount, 0);
+
+
+
+
 }
