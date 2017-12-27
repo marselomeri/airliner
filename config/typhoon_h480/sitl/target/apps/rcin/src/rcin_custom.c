@@ -132,8 +132,7 @@ boolean RCIN_Custom_Init(void)
 	/* Initialize the cached value array.  Set all values to the center positions. */
 	for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
 	{
-		RCIN_CustomData.Values[i] = RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE +
-				((RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE - RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE) / 2);
+		RCIN_CustomData.Values[i] = 0xFFFF;
 	}
 
 	/* Now open the joystick device. */

@@ -37,8 +37,8 @@
 #include <math.h>
 
 
-#define PWM_CUSTOM_OUT_MIN  (1000.0f)
-#define PWM_CUSTOM_OUT_MAX  (2000.0f)
+#define PWM_CUSTOM_OUT_MIN  (0.0f)
+#define PWM_CUSTOM_OUT_MAX  (1.0f)
 
 
 int32 AMC::InitDevice(void)
@@ -85,12 +85,6 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 	{
 		controls[i] = NAN;
 	}
-
-	controls[6] = 1500.0f;
-	controls[7] = 1500.0f;
-	controls[8] = 1500.0f;
-	controls[9] = 1000.0f;
-	controls[10] = 1000.0f;
 
 	SIMLIB_SetActuatorControls(controls, controlCount, 0);
 

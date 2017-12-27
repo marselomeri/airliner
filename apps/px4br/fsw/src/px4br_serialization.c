@@ -1880,6 +1880,8 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->TransitionSwitch = pbMsg.transition_switch;
 	inOutObject->ModeSlot = pbMsg.mode_slot;
 
+	OS_printf("MANUAL_CONTROL_SETPOINT\n");
+
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }
 
