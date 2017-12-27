@@ -11,6 +11,7 @@
 *************************************************************************/
 #include "cfe.h"
 #include "mavlink.h"
+#include "params_platform_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {

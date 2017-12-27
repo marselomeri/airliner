@@ -647,12 +647,12 @@
 #define MAVLINK_REQUEST_PARAMS_MID                  0x1c87
 
 /* PARAMS                   					        */
-#define PARAMS_CMD_MID                             0x1c81
-#define PARAMS_SEND_HK_MID                         0x1c82
-#define PARAMS_HK_TLM_MID                          0x0c83
-#define PARAMS_WAKEUP_MID                          0x1c84
-#define PARAMS_OUT_DATA_MID                        0x1c85
-#define PARAMS_PARAM_MID                           0x1c86
+#define PARAMS_CMD_MID                             0x1c88
+#define PARAMS_SEND_HK_MID                         0x1c89
+#define PARAMS_HK_TLM_MID                          0x0c8a
+#define PARAMS_WAKEUP_MID                          0x1c8b
+#define PARAMS_OUT_DATA_MID                        0x1c8c
+#define PARAMS_PARAM_MID                           0x1c8d
 
 
 

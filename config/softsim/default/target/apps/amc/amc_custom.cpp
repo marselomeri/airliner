@@ -70,7 +70,7 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 	//OS_printf("Min = %u  Max = %u\n", PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
     for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
     {
-    	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
+    	//controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax);
     //	OS_printf("%f(%u) ", controls[i], PWM[i]);
     }
 

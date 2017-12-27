@@ -392,7 +392,7 @@ void PARAMS_SetParam(PARAMS_SendParamDataCmd_t* SetParamMsg)
 	{
 		PARAMS_AddParam(SetParamMsg->param_data);
 	}
-	PARAMS_PrintParam(SetParamMsg->param_data);
+	//PARAMS_PrintParam(SetParamMsg->param_data);
 
 	/* Init Airliner message */
 	CFE_SB_InitMsg(&SetParamMsg, PARAMS_PARAM_MID, sizeof(PARAMS_SendParamDataCmd_t), FALSE);
@@ -733,7 +733,7 @@ void PARAMS_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 
             case PARAMS_SET_PARAM_CC:
             	PARAMS_AppData.HkTlm.usCmdCnt++;
-            	PARAMS_SetParam((PARAMS_SendParamDataCmd_t*) MsgPtr);
+            	PARAMS_SetParam((PARAMS_SendParamDataCmd_t *) MsgPtr);
                 (void) CFE_EVS_SendEvent(PARAMS_CMD_INF_EID, CFE_EVS_INFORMATION,
                                   "Recvd set param cmd (%u)", (unsigned int)uiCmdCode);
                 break;
