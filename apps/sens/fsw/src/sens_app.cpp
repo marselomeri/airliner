@@ -327,7 +327,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case SENS_WAKEUP_MID:
-                CyclicProcessing();
+                //CyclicProcessing();
                 break;
 
             case SENS_SEND_HK_MID:
@@ -361,6 +361,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_SENSOR_GYRO_MID:
                 memcpy(&CVT.SensorGyroMsg, MsgPtr, sizeof(CVT.SensorGyroMsg));
+                CyclicProcessing();
                 break;
 
             case PX4_VEHICLE_CONTROL_MODE_MID:
