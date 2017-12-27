@@ -731,6 +731,7 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     void *userDataPtr = 0;
     void *copyDataPtr = 0;
     uint16 userDataLength = 0;
+    uint16 i = 0;
 
     /* Null pointer check */
     if (0 == Measure)
@@ -746,11 +747,27 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     {
         returnBool = FALSE;
     }
-    userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
-    userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
-    copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
     
-    memcpy(copyDataPtr, userDataPtr, userDataLength);
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+    Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
+    Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
+    Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;
+    Measure->ChannelCount = RCIN_AppCustomData.Measure.ChannelCount;
+    Measure->RSSI = RCIN_AppCustomData.Measure.RSSI;
+    Measure->RcLostFrameCount = RCIN_AppCustomData.Measure.RcLostFrameCount;
+    Measure->RcTotalFrameCount = RCIN_AppCustomData.Measure.RcTotalFrameCount;
+    Measure->RcPpmFrameLength = RCIN_AppCustomData.Measure.RcPpmFrameLength;
+    for(i = 0; i<18; i++)
+    {
+        Measure->Values[i] = RCIN_AppCustomData.Measure.Values[i];
+    }
+    Measure->RcFailsafe = RCIN_AppCustomData.Measure.RcFailsafe;
+    Measure->RcLost = RCIN_AppCustomData.Measure.RcLost;
+    Measure->InputSource = RCIN_AppCustomData.Measure.InputSource;
+
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:

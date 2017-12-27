@@ -278,8 +278,20 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/gps/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps
     CONFIG_SOURCES
+        #${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_custom_sim_simple.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_ubx_msg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_common.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_common.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_nav.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_nav.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_cfg.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_ack.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_ack.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_mon.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_mon.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_custom_shared.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_custom_sim_simple.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/gps_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_perfids.h

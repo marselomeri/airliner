@@ -182,7 +182,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_SYNC1:
         {
-            OS_printf("in got sync 1\n");
             if(byte == GPS_PARSER_SYNC2_VALUE)
             {
                 GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_SYNC2);
@@ -199,7 +198,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_SYNC2:
         {
-            OS_printf("in got sync 2\n");
             switch(byte)
             {
                 case GPS_PARSER_CLASS_NAV_VALUE:
@@ -235,7 +233,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_CLASS:
         {
-            OS_printf("in got class\n");
             switch(GPS_AppCustomData.ParserStatus.ClassID)
             {
                 case GPS_PARSER_CLASS_NAV_VALUE:
@@ -340,7 +337,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
                 case GPS_PARSER_CLASS_ACK_VALUE:
                 {
-                    OS_printf("in class ack value\n");
                     switch(byte)
                     {
                         case GPS_PARSER_ACK_NAK_ID_VALUE:
@@ -351,7 +347,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                         }
                         case GPS_PARSER_ACK_ACK_ID_VALUE:
                         {
-                            OS_printf("in ack ack id value \n");
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
                             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_ID);
                             break;
@@ -676,7 +671,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_ID:
         {
-            OS_printf("in got ID\n");
             GPS_AppCustomData.ParserStatus.MsgLength = byte;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_LENGTH1);
             break;
@@ -684,7 +678,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_LENGTH1:
         {
-            OS_printf("in got length 1\n");
             GPS_AppCustomData.ParserStatus.MsgLength += byte << 8;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_LENGTH2);
             break;
@@ -692,7 +685,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_LENGTH2:
         {
-            OS_printf("in got length 2\n");
             switch(GPS_AppCustomData.ParserStatus.ClassID)
             {
                 case GPS_PARSER_CLASS_NAV_VALUE:
@@ -920,7 +912,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
                         
                         case GPS_PARSER_ACK_ACK_ID_VALUE:
                         {
-                            OS_printf("in ack ack id VALUE\n");
                             GPS_Ack_ParseChar_ACK(byte, message);
                             GPS_AppCustomData.ParserStatus.PayloadCursor++;
                             break;
@@ -1089,7 +1080,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_PAYLOAD:
         {
-            OS_printf("in got payload\n");
             GPS_AppCustomData.ParserStatus.ChecksumA = byte;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_CHECKSUMA);
             break;
@@ -1097,10 +1087,10 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_CHECKSUMA:
         {
-            OS_printf("in got checksum A\n");
             //GPS_AppCustomData.ParserStatus.ChecksumB = byte;
             CFE_SB_TimeStampMsg((CFE_SB_MsgPtr_t)message);
             msg_received = 1;
+            *done = TRUE;
             GPS_Parser_StateChange(GPS_PARSE_STATE_IDLE);
             break;
         }

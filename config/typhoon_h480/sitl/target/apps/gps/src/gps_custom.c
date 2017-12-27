@@ -82,7 +82,7 @@ void GPS_Custom_InitData(void)
 {
     /* Set all struct zero values */
     bzero(&GPS_AppCustomData, sizeof(GPS_AppCustomData));
-    //GPS_Parser_Reset();
+    GPS_Parser_Reset();
     /* Set all non-zero values */
     GPS_AppCustomData.ContinueFlag          = TRUE;
     GPS_AppCustomData.Priority              = GPS_STREAMING_TASK_PRIORITY;
@@ -228,35 +228,6 @@ end_of_function:
 }
 
 
-//boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure)
-//{
-    //boolean returnBool = TRUE;
-    //void *userDataPtr = 0;
-    //void *copyDataPtr = 0;
-    //uint16 userDataLength = 0;
-
-    ///* Null check */
-    //if(0 == Measure)
-    //{
-        //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                //"GPS measure dump message null pointer");
-        //returnBool = FALSE;
-        //goto end_of_function;
-    //}
-
-    //OS_MutSemTake(GPS_AppCustomData.MutexDump);
-    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
-    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
-    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
-    //memcpy(copyDataPtr, userDataPtr, userDataLength);
-    //OS_MutSemGive(GPS_AppCustomData.MutexDump);
-
-//end_of_function:
-
-    //return returnBool;
-//}
-
-
 boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
 {
     boolean returnBool = TRUE;
@@ -273,12 +244,36 @@ boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
         goto end_of_function;
     }
 
-    OS_MutSemTake(GPS_AppCustomData.MutexPosition);
-    userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
-    userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
-    copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
-    
-    memcpy(copyDataPtr, userDataPtr, userDataLength);
+    //OS_MutSemTake(GPS_AppCustomData.MutexPosition);
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+
+    Measure->Timestamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
+    Measure->TimeUtcUsec = GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec;
+    Measure->Lat = GPS_AppCustomData.GpsPositionMsg.Lat;
+    Measure->Lon = GPS_AppCustomData.GpsPositionMsg.Lon;
+    Measure->Alt = GPS_AppCustomData.GpsPositionMsg.Alt;
+    //Measure->AltEllipsoid = GPS_AppCustomData.GpsPositionMsg.AltEllipsoid;
+    //Measure->SVariance = GPS_AppCustomData.GpsPositionMsg.SVariance;
+    //Measure->CVariance = GPS_AppCustomData.GpsPositionMsg.CVariance;
+    Measure->EpH = GPS_AppCustomData.GpsPositionMsg.EpH;
+    Measure->EpV = GPS_AppCustomData.GpsPositionMsg.EpV;
+    //Measure->HDOP = GPS_AppCustomData.GpsPositionMsg.HDOP;
+    //Measure->VDOP = GPS_AppCustomData.GpsPositionMsg.VDOP;
+    //Measure->NoisePerMs = GPS_AppCustomData.GpsPositionMsg.NoisePerMs;
+    //Measure->JammingIndicator = GPS_AppCustomData.GpsPositionMsg.JammingIndicator;
+    Measure->Vel_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_m_s;
+    Measure->Vel_n_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_n_m_s;
+    Measure->Vel_e_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_e_m_s;
+    Measure->Vel_d_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_d_m_s;
+    Measure->COG = GPS_AppCustomData.GpsPositionMsg.COG;
+    //Measure->TimestampTimeRelative = GPS_AppCustomData.GpsPositionMsg.TimestampTimeRelative;
+    Measure->FixType = GPS_AppCustomData.GpsPositionMsg.FixType;
+    Measure->VelNedValid = GPS_AppCustomData.GpsPositionMsg.VelNedValid;
+    Measure->SatellitesUsed = GPS_AppCustomData.GpsPositionMsg.SatellitesUsed;
+
     OS_MutSemGive(GPS_AppCustomData.MutexPosition);
 
 end_of_function:
@@ -290,25 +285,6 @@ end_of_function:
 boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
 {
     boolean returnBool = FALSE;
-    //void *userDataPtr = 0;
-    //void *copyDataPtr = 0;
-    //uint16 userDataLength = 0;
-    ///* Null check */
-    //if(0 == Measure)
-    //{
-        //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                //"GPS measure dump message null pointer");
-        //returnBool = FALSE;
-        //goto end_of_function;
-    //}
-
-    //OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
-    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
-    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
-    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
-    
-    //memcpy(copyDataPtr, userDataPtr, userDataLength);
-    //OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
 
 end_of_function:
 
@@ -345,18 +321,11 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
             /* If parsechar completed a message... */
             if(TRUE == done)
             {
-
-                /* TODO remove after debug*/
-                OS_printf("ParseChar completed a message\n");
-                /* end todo */
-
-                /* Copy message to the CVT */
                 CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t*)&message);
                 switch(msgID)
                 {
                     case GPS_NAV_DOP_MID:
                     {
-                        OS_printf("IN GPS_NAV_DOP_MID\n");
                         GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* from cm to m */
@@ -368,7 +337,6 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_NAVPVT_MID:
                     {
-                        OS_printf("IN GPS_NAV_NAVPVT_MID\n");
                         GPS_NAV_PVT_t *msgIn = (GPS_NAV_PVT_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* Check if position fix flag is good */
@@ -490,7 +458,6 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_SVINFO_MID:
                     {
-                        OS_printf("IN GPS_NAV_SVINFO_MID\n");
                         GPS_NAV_SVINFO_Combined_t *msgIn = (GPS_NAV_SVINFO_Combined_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         
                         OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
@@ -556,7 +523,6 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_MON_HW_MID:
                     {
-                        OS_printf("IN GPS_MON_HW_MID\n");
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         GPS_MON_HW_t *msgIn = (GPS_MON_HW_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
 
@@ -634,11 +600,14 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
                                 &VD,
                                 &COG,
                                 &SatellitesVisible );
+                                
 
-    if (1 != returnCode)
-    {
-        goto end_of_function;
-    }
+    //if (1 != returnCode)
+    //{
+        //OS_printf("sim getGPS failed\n");
+        //goto end_of_function;
+    //}
+
     /* Get time in a */
     time(&rawtime);
     info = localtime(&rawtime);

@@ -123,7 +123,7 @@ end_of_function:
 
     //OS_MutSemTake(GPS_AppCustomData.MutexDump);
     //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
-    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsDumpMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
     //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
     //memcpy(copyDataPtr, userDataPtr, userDataLength);
     //OS_MutSemGive(GPS_AppCustomData.MutexDump);
@@ -151,11 +151,34 @@ boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
     }
 
     OS_MutSemTake(GPS_AppCustomData.MutexPosition);
-    userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
-    userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
-    copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
     
-    memcpy(copyDataPtr, userDataPtr, userDataLength);
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+    Measure->Timestamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
+    Measure->TimeUtcUsec = GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec;
+    Measure->Lat = GPS_AppCustomData.GpsPositionMsg.Lat;
+    Measure->Lon = GPS_AppCustomData.GpsPositionMsg.Lon;
+    Measure->Alt = GPS_AppCustomData.GpsPositionMsg.Alt;
+    Measure->AltEllipsoid = GPS_AppCustomData.GpsPositionMsg.AltEllipsoid;
+    Measure->SVariance = GPS_AppCustomData.GpsPositionMsg.SVariance;
+    Measure->CVariance = GPS_AppCustomData.GpsPositionMsg.CVariance;
+    Measure->EpH = GPS_AppCustomData.GpsPositionMsg.EpH;
+    Measure->EpV = GPS_AppCustomData.GpsPositionMsg.EpV;
+    Measure->HDOP = GPS_AppCustomData.GpsPositionMsg.HDOP;
+    Measure->VDOP = GPS_AppCustomData.GpsPositionMsg.VDOP;
+    Measure->NoisePerMs = GPS_AppCustomData.GpsPositionMsg.NoisePerMs;
+    Measure->JammingIndicator = GPS_AppCustomData.GpsPositionMsg.JammingIndicator;
+    Measure->Vel_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_m_s;
+    Measure->Vel_n_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_n_m_s;
+    Measure->Vel_e_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_e_m_s;
+    Measure->Vel_d_m_s = GPS_AppCustomData.GpsPositionMsg.Vel_d_m_s;
+    Measure->COG = GPS_AppCustomData.GpsPositionMsg.COG;
+    Measure->TimestampTimeRelative = GPS_AppCustomData.GpsPositionMsg.TimestampTimeRelative;
+    Measure->FixType = GPS_AppCustomData.GpsPositionMsg.FixType;
+    Measure->VelNedValid = GPS_AppCustomData.GpsPositionMsg.VelNedValid;
+    Measure->SatellitesUsed = GPS_AppCustomData.GpsPositionMsg.SatellitesUsed;
     OS_MutSemGive(GPS_AppCustomData.MutexPosition);
 
 end_of_function:
@@ -181,7 +204,7 @@ boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
 
     //OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
     //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
-    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsSatInfoMsg);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
     //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
     
     //memcpy(copyDataPtr, userDataPtr, userDataLength);
