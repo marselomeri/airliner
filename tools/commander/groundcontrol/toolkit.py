@@ -13,7 +13,9 @@ import sqlite3
 
 ## Register working_dir
 #try:
-working_dir = os.environ['YAMCS_WORKSPACE']+'web'
+working_dir = os.getenv('YAMCS_WORKSPACE', '/home/vagrant/git/airliner/config/shared/commander_workspace/') + 'web'
+
+#os.environ['YAMCS_WORKSPACE']+'web'
 #except:
     #working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
     #pass

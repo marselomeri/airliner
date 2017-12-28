@@ -81,16 +81,22 @@ class Test_Instance(unittest.TestCase):
         conn.close()
         for each in io_list:
             input = each[0]
-            output = each[1]
+            output = json.loads(byteify(each[1]))
             ch = channel_plugin('ws://127.0.0.1:8000/dir/')
             ch.send(input)
             c_actual = ch.rcv()
-            print str(json.dumps(c_actual))
-            print str(byteify(output))
-            self.assertTrue(json.dumps(len(c_actual['files'])) == byteify(len(output['files'])))
+            #print str(json.dumps(c_actual))
+            #print str(byteify(output))
+            self.assertTrue(len(c_actual['files']) == len(output['files']))
+            temp_hold_values = []
             for e in range(len(c_actual['files'])):
+                temp_hold_values.append(c_actual['files'][e]['path'])
 
-                self.assertTrue(json.dumps(c_actual['files'][e]['path'])) == byteify(len(output['files'][e]['path']))
+            temp_hold_values = byteify(temp_hold_values)
+            #print temp_hold_values
+            for e in range(len(output['files'])):
+                #print output['files'][e], output['files'][e] in temp_hold_values
+                self.assertTrue(output['files'][e]['path'] in temp_hold_values)
             #self.assertTrue(json.dumps(len(c_actual['files'])) == byteify(len(output['files'])))
 
     def tearDown(self):
