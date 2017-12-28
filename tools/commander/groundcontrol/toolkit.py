@@ -41,7 +41,7 @@ def get_directory(path):
     outFiles=[]
     error= None
     try:
-        print '//*/*/*/*/*/*/*/*/**/*/*/*/*/*',working_dir
+        #print '//*/*/*/*/*/*/*/*/**/*/*/*/*/*',working_dir
         rootdir = path.rstrip(os.sep)
         rootdir = working_dir +  path
 
