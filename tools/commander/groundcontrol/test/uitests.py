@@ -1,6 +1,7 @@
 import unittest
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+#from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import requests
 import time
 from .. import toolkit as tk
@@ -16,9 +17,11 @@ class ApplicationGUI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        #cls._capabilities = DesiredCapabilities.FIREFOX.copy()
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
         cls._db_path = cls._r.get('app_path')
         cls.driver = webdriver.Firefox()
+        #webdriver.Firefox()
         cls.arr = ['apps','cfe','common','flight','mpu9250','probe','scripts']
         cls.apps = []
         cls.fixApps = {}
@@ -38,7 +41,7 @@ class ApplicationGUI(unittest.TestCase):
         self.assertEqual(title,'flight  /  pilot.jade')
         time.sleep(2)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_B_directory_listing_superficial(self):
         aside = self.driver.find_element_by_id('left-panel')
         navbox = aside.find_element_by_id('navBox')
@@ -49,7 +52,7 @@ class ApplicationGUI(unittest.TestCase):
             #print span
             self.assertTrue(span.text in self.arr)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_C_recursive_clicks_on_applications(self):
         aside = self.driver.find_element_by_id('left-panel')
         navbox = aside.find_element_by_id('navBox')
@@ -94,7 +97,7 @@ class ApplicationGUI(unittest.TestCase):
             self.freeClicks(ls)
             time.sleep(0.5)
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_D_instance_in_list(self):
         time.sleep(1)
         yis = self.driver.find_element_by_id('yamcs-instance-selected')
@@ -132,7 +135,7 @@ class ApplicationGUI(unittest.TestCase):
         parts = link.split(':8000')
         names = parts[1]
 
-    #@unittest.skip("demonstrating skipping")
+    @unittest.skip("demonstrating skipping")
     def test_E_select_instance(self):
         ul = self.driver.find_element_by_id('yamcs-instance-list')
         a = ul.find_elements_by_tag_name('a')
@@ -146,6 +149,7 @@ class ApplicationGUI(unittest.TestCase):
         time.sleep(5)
         self.driver.implicitly_wait(3)
 
+    @unittest.skip("demonstrating skipping")
     def test_F_application_binding(self):
         c = 0
         yis = self.driver.find_element_by_id('yamcs-instance-selected')
