@@ -87,7 +87,11 @@ class Test_Instance(unittest.TestCase):
             c_actual = ch.rcv()
             print str(json.dumps(c_actual))
             print str(byteify(output))
-            self.assertTrue(json.dumps(c_actual) == byteify(output))
+            self.assertTrue(json.dumps(len(c_actual['files'])) == byteify(len(output['files'])))
+            for e in range(len(c_actual['files'])):
+
+                self.assertTrue(json.dumps(c_actual['files'][e]['path'])) == byteify(len(output['files'][e]['path']))
+            #self.assertTrue(json.dumps(len(c_actual['files'])) == byteify(len(output['files'])))
 
     def tearDown(self):
         r.set('instance',r.get('default_instance'))
