@@ -37,7 +37,7 @@
 #include <math.h>
 
 
-#define PWM_CUSTOM_OUT_MIN  (0.0f)
+#define PWM_CUSTOM_OUT_MIN  (-1.0f)
 #define PWM_CUSTOM_OUT_MAX  (1.0f)
 
 
