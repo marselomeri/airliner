@@ -16,7 +16,7 @@
 sleep 60
 ./Launch_Commander.sh 2 &
 
-sleep 5
+sleep 20
 cd ../
 cd groundcontrol/
 cd test-reports
