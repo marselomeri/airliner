@@ -24,7 +24,7 @@ int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
     uint16 distanceInCm = 0;
     uint32 i = 0;
 
-	OS_TaskDelay(100);
+	OS_TaskDelay(4);
 
 	if((Buffer == 0) || (Size == 0))
 	{
@@ -47,14 +47,14 @@ int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
 		&SensorOrientation,
 		&Covariance);
 
-	//OS_printf("***************************\n");
-	//OS_printf("Minimum = %u\n", MinDistance);
-	//OS_printf("Maximum = %u\n", MaxDistance);
-	//OS_printf("Current = %u\n", CurrentDistance);
-	//OS_printf("SensorType = %u\n", SensorType);
-	//OS_printf("SensorID = %u\n", SensorID);
-	//OS_printf("SensorOrientation = %u\n", SensorOrientation);
-	//OS_printf("Covariance = %u\n", Covariance);
+//	OS_printf("***************************\n");
+//	OS_printf("Minimum = %u\n", MinDistance);
+//	OS_printf("Maximum = %u\n", MaxDistance);
+//	OS_printf("Current = %u\n", CurrentDistance);
+//	OS_printf("SensorType = %u\n", SensorType);
+//	OS_printf("SensorID = %u\n", SensorID);
+//	OS_printf("SensorOrientation = %u\n", SensorOrientation);
+//	OS_printf("Covariance = %u\n", Covariance);
 
 	/* Message sync symbol. */
 	Buffer[0] = 0xfe;
@@ -71,9 +71,8 @@ int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
     {
     	CurrentDistance = MinDistance;
     }
-    distanceInCm = CurrentDistance * 0.001f;
-    Buffer[2] = distanceInCm & 0x00ff;
-    Buffer[3] = (distanceInCm & 0xff00) >> 8;
+    Buffer[2] = (uint8)(CurrentDistance & 0x00ff);
+    Buffer[3] = (uint8)((CurrentDistance & 0xff00) >> 8);
 
     /* Signal to Noise Ratio.  Just map the SNR to the ratio of distance between Min and Max distance. */
 	if((MaxDistance - MinDistance) == 0)

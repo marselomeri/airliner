@@ -180,15 +180,15 @@ void GPS_Stream_Task(void)
         	/* PX4_VehicleGpsPositionMsg_t */
         	timestamp = PX4LIB_GetPX4TimeUs();
         	GPS_AppCustomData.GpsPositionMsg.Timestamp = timestamp;
-        	GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec = timestamp;
+        	GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec = 0;
         	GPS_AppCustomData.GpsPositionMsg.Lat = latitude;
         	GPS_AppCustomData.GpsPositionMsg.Lon = longitude;
         	GPS_AppCustomData.GpsPositionMsg.Alt = altitude;
         	GPS_AppCustomData.GpsPositionMsg.AltEllipsoid = 0;
         	GPS_AppCustomData.GpsPositionMsg.SVariance = 0.0f;
         	GPS_AppCustomData.GpsPositionMsg.CVariance = 0.0f;
-        	GPS_AppCustomData.GpsPositionMsg.EpH = (float)eph * 0.001f;
-        	GPS_AppCustomData.GpsPositionMsg.EpV =  (float)epv * 0.001f;
+        	GPS_AppCustomData.GpsPositionMsg.EpH = (float)eph * 0.01f;
+        	GPS_AppCustomData.GpsPositionMsg.EpV =  (float)epv * 0.01f;
         	GPS_AppCustomData.GpsPositionMsg.HDOP = 0.0f;
         	GPS_AppCustomData.GpsPositionMsg.VDOP = 0.0f;
         	GPS_AppCustomData.GpsPositionMsg.NoisePerMs = 0;
@@ -198,12 +198,14 @@ void GPS_Stream_Task(void)
         	GPS_AppCustomData.GpsPositionMsg.Vel_e_m_s = (float)(ve) / 100.0f;
         	GPS_AppCustomData.GpsPositionMsg.Vel_d_m_s = (float)(vd) / 100.0f;
         	GPS_AppCustomData.GpsPositionMsg.COG = (float)(cog) * 3.1415f / (100.0f * 180.0f);
-        	GPS_AppCustomData.GpsPositionMsg.TimestampTimeRelative;
+        	GPS_AppCustomData.GpsPositionMsg.TimestampTimeRelative = 0;
         	GPS_AppCustomData.GpsPositionMsg.FixType = fixType;
-        	GPS_AppCustomData.GpsPositionMsg.VelNedValid = TRUE;
+        	GPS_AppCustomData.GpsPositionMsg.VelNedValid = FALSE;
         	GPS_AppCustomData.GpsPositionMsg.SatellitesUsed = satellitesVisible;
 
 			OS_MutSemGive(GPS_AppCustomData.MutexSatInfo);
+
+            GPS_EventDrivenPublish();
 
         	OS_TaskDelay(200);
         }

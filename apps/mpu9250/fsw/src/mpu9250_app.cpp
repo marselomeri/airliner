@@ -368,8 +368,8 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
             	static uint32 i = 0;
 
                 ReadDevice();
-                SendSensorAccel();
                 SendSensorGyro();
+                SendSensorAccel();
                 if(i >= 4)
                 {
                 	SendSensorMag();

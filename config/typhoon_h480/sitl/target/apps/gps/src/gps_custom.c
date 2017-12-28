@@ -244,7 +244,7 @@ boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
         goto end_of_function;
     }
 
-    //OS_MutSemTake(GPS_AppCustomData.MutexPosition);
+    OS_MutSemTake(GPS_AppCustomData.MutexPosition);
     //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&GPS_AppCustomData.GpsPositionMsg);
     //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
     //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
@@ -441,6 +441,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                         }
                         
                         GPS_AppCustomData.GpsPositionMsg.Timestamp = PX4LIB_GetPX4TimeUs();
+                        GPS_AppCustomData.GpsPositionMsg.TimeUtcUsec = PX4LIB_GetPX4TimeUs();
                         //GPS_AppCustomData.LastTimeStamp = GPS_AppCustomData.GpsPositionMsg.Timestamp;
 
                         /* TODO position and velocity update rate functions

@@ -767,7 +767,7 @@ uint32 PX4BR_DistanceSensor_Enc(const PX4_DistanceSensorMsg_t *inObject, char *i
 	bool status = false;
 	px4_distance_sensor_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.min_distance = inObject->MinDistance;
 	pbMsg.max_distance = inObject->MaxDistance;
 	pbMsg.current_distance = inObject->CurrentDistance;
@@ -807,7 +807,7 @@ uint32 PX4BR_DistanceSensor_Dec(const char *inBuffer, uint32 inSize, PX4_Distanc
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->MinDistance = pbMsg.min_distance;
 	inOutObject->MaxDistance = pbMsg.max_distance;
 	inOutObject->CurrentDistance = pbMsg.current_distance;
