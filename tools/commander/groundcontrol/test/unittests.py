@@ -85,8 +85,8 @@ class Test_Instance(unittest.TestCase):
             ch = channel_plugin('ws://127.0.0.1:8000/dir/')
             ch.send(input)
             c_actual = ch.rcv()
-            #print str(json.dumps(c_actual))
-            #print str(byteify(output))
+            print str(json.dumps(c_actual))
+            print str(byteify(output))
             self.assertTrue(json.dumps(c_actual) == byteify(output))
 
     def tearDown(self):
