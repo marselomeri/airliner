@@ -1,4 +1,4 @@
-{% extends "../../common/layout.pug" %}
+extends ../../common/layout
 
 block header
         i.fa-fw.fa.fa-signal
@@ -16,9 +16,9 @@ block main
             .jarviswidget-editbox
               input.form-control(type='text')
             .widget-body
-              #Gyro(style="width:100%; height:300px;")
+              #Gyro(style='width:100%; height:300px;')
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
         #wid-SG.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -33,72 +33,72 @@ block main
                   tbody
                     tr
                       th Integral:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Integral'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Integral"}}) ---
                     tr
                       th Error Count:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_ErrorCount'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ErrorCount"}}) ---
                     tr
                       th X:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_X'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_X"}}) ---
                     tr
                       th Y:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Y'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Y"}}) ---
                     tr
                       th Z:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Z'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Z"}}) ---
                     tr
                       th X Int:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_XInt'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XInt"}}) ---
                     tr
                       th Y Int:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_YInt'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YInt"}}) ---
                     tr
                       th Z Int:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_ZInt'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZInt"}}) ---
                     tr
                       th Temp:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Temp'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Temp"}}) ---
                     tr
                       th Range:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Range'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Range"}}) ---
                     tr
                       th Scaling:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Scaling'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Scaling"}}) ---
                     tr
                       th Device ID:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_DeviceID'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_DeviceID"}}) ---
                     tr
                       th X Raw:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_XRaw'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XRaw"}}) ---
                     tr
                       th Y Raw:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_YRaw'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YRaw"}}) ---
                     tr
                       th Z Raw:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_ZRaw'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZRaw"}}) ---
                     tr
                       th Temp Raw:
-                      td
-                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_TempRaw'}}") ---
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_TempRaw"}}) ---
 
       script.
         var MaxCount = 1000;
-
+              
         loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
             var GyroData = [];
             var GyroX = {value: 0, time: 1, utcTime: ''};
@@ -119,7 +119,7 @@ block main
             session.on('connect', function() {
               var GyroCount = 0;
 
-              session.subscribe({'name': '/CFS/PX4/SG_X'}, function(param) {
+              session.subscribe({name: '/CFS/PX4/SG_X'}, function(param) {
                 console.log(JSON.stringify(param));
                 GyroX.value = param.engValue.floatValue;
                 GyroX.time = param.acquisitionTime;
@@ -127,14 +127,14 @@ block main
                 GyroCorrelateData();
               });
 
-              session.subscribe({'name': '/CFS/PX4/SG_Y'}, function(param) {
+              session.subscribe({name: '/CFS/PX4/SG_Y'}, function(param) {
                 GyroY.value = param.engValue.floatValue;
                 GyroY.time = param.acquisitionTime;
                 GyroY.utcTime = param.acquisitionTimeUTC;
                 GyroCorrelateData();
               });
 
-              session.subscribe({'name': '/CFS/PX4/SG_Z'}, function(param) {
+              session.subscribe({name: '/CFS/PX4/SG_Z'}, function(param) {
                 GyroZ.value = param.engValue.floatValue;
                 GyroZ.time = param.acquisitionTime;
                 GyroZ.utcTime = param.acquisitionTimeUTC;
@@ -146,10 +146,10 @@ block main
                       if(GyroStarted == false){
                         /* Skip the first one. */
                         GyroStarted = true;
-                      } else {
+                      } else {        
                         if (GyroData.length >= MaxCount) {
                           GyroData = GyroData.slice(1);
-                        }
+                        }                   
                         GyroData.push([GyroCount, GyroX.value, GyroY.value, GyroZ.value]);
                         GyroCount++;
                       }
@@ -161,3 +161,6 @@ block main
              }, 100);
           });
         });
+
+
+
