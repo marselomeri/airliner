@@ -12,11 +12,11 @@ import sqlite3
 ## Global variables
 
 ## Register working_dir
-try:
-    working_dir = os.environ['YAMCS_WORKSPACE']+'web'
-except:
-    working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
-    pass
+#try:
+working_dir = os.environ['YAMCS_WORKSPACE']+'web'
+#except:
+    #working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
+    #pass
 
 ## Register redis caching server
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -39,6 +39,7 @@ def get_directory(path):
     outFiles=[]
     error= None
     try:
+        print '//*/*/*/*/*/*/*/*/**/*/*/*/*/*',working_dir
         rootdir = path.rstrip(os.sep)
         rootdir = working_dir +  path
 
