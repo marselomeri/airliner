@@ -1,3 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="0" name="pytest" skips="0" tests="10" time="18.749"><testcase classname="test.unittests.Test_Toolkit" file="test/unittests.py" line="31" name="test_bitefy_unicode_correction" time="0.00306367874146"></testcase><testcase classname="test.unittests.Test_Toolkit" file="test/unittests.py" line="20" name="test_directory_scrapping" time="0.00960206985474"></testcase><testcase classname="test.unittests.Test_Toolkit" file="test/unittests.py" line="38" name="test_text_preprocessing" time="0.0352144241333"></testcase><testcase classname="test.unittests.Test_Instance" file="test/unittests.py" line="74" name="test_directoryListing" time="1.7731449604"></testcase><testcase classname="test.unittests.Test_Instance" file="test/unittests.py" line="59" name="test_getinstance" time="0.241880178452"></testcase><testcase classname="test.unittests.Test_Instance" file="test/unittests.py" line="67" name="test_setDefaultInstance" time="1.04615592957"></testcase><testcase classname="test.unittests.Test_Telemetry" file="test/unittests.py" line="116" name="test_telemetry_subscription" time="1.21073484421"></testcase><testcase classname="test.unittests.Test_Telemetry" file="test/unittests.py" line="150" name="test_telemetry_unsubscription" time="10.3617899418"><system-out>
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="1" name="pytest" skips="0" tests="6" time="210.209"><testcase classname="test.unittests.Test_Toolkit" file="test/unittests.py" line="31" name="test_bitefy_unicode_correction" time="0.00332903862"></testcase><testcase classname="test.unittests.Test_Toolkit" file="test/unittests.py" line="20" name="test_directory_scrapping" time="0.00283122062683"></testcase><testcase classname="test.unittests.Test_Toolkit" file="test/unittests.py" line="38" name="test_text_preprocessing" time="0.0628049373627"></testcase><testcase classname="test.unittests.Test_Instance" file="test/unittests.py" line="74" name="test_directoryListing" time="1.7634768486"></testcase><testcase classname="test.unittests.Test_Instance" file="test/unittests.py" line="59" name="test_getinstance" time="0.00685882568359"><failure message="IOError: [Errno socket error] [Errno 111] Connection refused">self = &lt;groundcontrol.test.unittests.Test_Instance testMethod=test_getinstance&gt;
 
-</system-out></testcase><testcase classname="test.unittests.Test_Commanding" file="test/unittests.py" line="202" name="test_get_commanding_info" time="4.02194499969"></testcase><testcase classname="test.unittests.Test_Commanding" file="test/unittests.py" line="213" name="test_get_commanding_post" time="0.000640153884888"></testcase></testsuite>
+    def test_getinstance(self):
+&gt;       expected = json.loads(eval(json.dumps(urllib.urlopen(&apos;http://localhost:8090/api/instances&apos;).read())))
+
+test/unittests.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python2.7/urllib.py:87: in urlopen
+    return opener.open(url)
+/usr/lib/python2.7/urllib.py:213: in open
+    return getattr(self, name)(url)
+/usr/lib/python2.7/urllib.py:350: in open_http
+    h.endheaders(data)
+/usr/lib/python2.7/httplib.py:1053: in endheaders
+    self._send_output(message_body)
+/usr/lib/python2.7/httplib.py:897: in _send_output
+    self.send(msg)
+/usr/lib/python2.7/httplib.py:859: in send
+    self.connect()
+/usr/lib/python2.7/httplib.py:836: in connect
+    self.timeout, self.source_address)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+address = (&apos;localhost&apos;, 8090), timeout = &lt;object object at 0x7efd89a9e130&gt;, source_address = None
+
+    def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
+                          source_address=None):
+        &quot;&quot;&quot;Connect to *address* and return the socket object.
+    
+        Convenience function.  Connect to *address* (a 2-tuple ``(host,
+        port)``) and return the socket object.  Passing the optional
+        *timeout* parameter will set the timeout on the socket instance
+        before attempting to connect.  If no *timeout* is supplied, the
+        global default timeout setting returned by :func:`getdefaulttimeout`
+        is used.  If *source_address* is set it must be a tuple of (host, port)
+        for the socket to bind as a source address before making the connection.
+        A host of &apos;&apos; or port 0 tells the OS to use the default.
+        &quot;&quot;&quot;
+    
+        host, port = address
+        err = None
+        for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            sock = None
+            try:
+                sock = socket(af, socktype, proto)
+                if timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+                    sock.settimeout(timeout)
+                if source_address:
+                    sock.bind(source_address)
+                sock.connect(sa)
+                return sock
+    
+            except error as _:
+                err = _
+                if sock is not None:
+                    sock.close()
+    
+        if err is not None:
+&gt;           raise err
+E           IOError: [Errno socket error] [Errno 111] Connection refused
+
+/usr/lib/python2.7/socket.py:575: IOError</failure></testcase><testcase classname="test.unittests.Test_Instance" file="test/unittests.py" line="67" name="test_setDefaultInstance" time="1.04841661453"></testcase><testcase time="0.0346720218658"></testcase></testsuite>

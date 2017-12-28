@@ -1,3 +1,3 @@
 {
-  "test/uitests.py::ApplicationGUI::test_B_directory_listing_superficial": true
+  "test/unittests.py::Test_Instance::test_getinstance": true
 }

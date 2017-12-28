@@ -20600,3 +20600,23 @@ JavaScript error: http://localhost:8000/client.js, line 792: ReferenceError: mod
 1514409142314	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
 1514409143594	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
 1514409144940	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409146737	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409149279	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409152000	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409153284	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409154468	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409154974	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409156200	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409159959	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409160318	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514409165387	Marionette	DEBUG	Received DOM event "popstate" for "http://localhost:8000/#/apps/ci/main.pug"
+JavaScript error: http://localhost:8000/#/apps/ci/main.pug, line 4: ReferenceError: tbody is not defined
+1514409169940	Marionette	INFO	New connections will no longer be accepted
+[Child 10142] WARNING: pipe error (31): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 10142] WARNING: pipe error (15): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 10142] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+1514418491142	geckodriver	INFO	geckodriver 0.19.1
+1514418491145	geckodriver	INFO	Listening on 127.0.0.1:43398
+1514418492271	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.7kNL70cl6rBM"
+1514418492889	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1514418493394	Marionette	INFO	Enabled via --marionette
