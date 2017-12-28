@@ -85,8 +85,10 @@ class Test_Instance(unittest.TestCase):
             ch = channel_plugin('ws://127.0.0.1:8000/dir/')
             ch.send(input)
             c_actual = ch.rcv()
-            #print str(json.dumps(c_actual))
-            #print str(byteify(output))
+            print str(c_actual['files'])
+            print str(output['files'])
+            print len(c_actual['files'])
+            print len(output['files'])
             self.assertTrue(len(c_actual['files']) == len(output['files']))
             temp_hold_values = []
             for e in range(len(c_actual['files'])):
