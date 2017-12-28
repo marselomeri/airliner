@@ -20680,3 +20680,61 @@ JavaScript error: http://localhost:8000/#/apps/ci/main.pug, line 4: ReferenceErr
 1514478853845	Marionette	INFO	New connections will no longer be accepted
 [Child 4856] WARNING: pipe error (15): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
 [Child 4856] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+1514481713106	geckodriver	INFO	geckodriver 0.19.1
+1514481713109	geckodriver	INFO	Listening on 127.0.0.1:55360
+1514481714211	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.66BMMiplbmaH"
+1514481714494	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1514481714870	Marionette	INFO	Enabled via --marionette
+1514481716754	Marionette	INFO	Listening on port 38694
+1514481716812	Marionette	WARN	TLS certificate errors will be ignored for this session
+1514481716854	Marionette	DEBUG	Register listener.js for window 2147483649
+1514481716899	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1514481717262	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1514481717262	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+JavaScript error: http://localhost:8000/client.js, line 792: ReferenceError: module is not defined
+1514481718233	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "http://localhost:8000/#flight/pilot"
+JavaScript error: http://localhost:8000/static/bower_components/handlebars/handlebars.min.js, line 27: Error: Missing helper: "ifCond"
+1514481718393	Marionette	DEBUG	Received DOM event "pageshow" for "http://localhost:8000/#flight/pilot"
+1514481720967	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481721500	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481723015	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481724714	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481726298	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481727850	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481729585	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481730905	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481732657	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481733811	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481735607	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481737388	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481738624	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481739760	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481740869	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481741974	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481743257	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481745737	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481747601	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481749071	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481750453	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481752205	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481752700	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481755161	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481756675	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481758422	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481759708	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481760936	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481762723	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481765171	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481767723	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481768996	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481770099	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481770607	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481771868	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481775612	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481775944	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
+1514481781003	Marionette	DEBUG	Received DOM event "popstate" for "http://localhost:8000/#/apps/ci/main.pug"
+JavaScript error: http://localhost:8000/#/apps/ci/main.pug, line 4: ReferenceError: tbody is not defined
+1514481784959	Marionette	INFO	New connections will no longer be accepted
+[Child 6811] WARNING: pipe error (15): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 6811] WARNING: pipe error (31): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+[Child 6811] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353

@@ -39,7 +39,7 @@ describe('Introspect specific objects - specially tlm & cmd',()=>{
                 throw err;
             }
             rows.forEach((row) => {
-                expect(()=>cl.introspectTlm('sd')).to.not.throw(TypeError);
+                expect(()=>cl.introspectTlm('sd')).to.throw(TypeError);
                 //expect(()=>cl.introspectTlm(row)).to.not.throw();
             });
         });
