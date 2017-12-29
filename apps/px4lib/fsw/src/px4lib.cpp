@@ -93,8 +93,6 @@ uint64 PX4LIB_GetPX4TimeUs(void)
     struct timespec ts;
     int returnCode = 0;
     uint64 outTime = 0;
-    uint64 seconds;
-    uint64 nanoseconds;
 
     returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
     if (-1 == returnCode)
@@ -103,10 +101,7 @@ uint64 PX4LIB_GetPX4TimeUs(void)
         goto end_of_function;
     }
 
-    seconds = (uint64)ts.tv_sec;
-    nanoseconds = (uint64)ts.tv_nsec;
-    outTime = seconds * 1000000;
-    outTime += nanoseconds / 1000;
+    outTime = ts.tv_sec * 1000 * 1000 + ts.tv_nsec / 1000;
 
 end_of_function:
     return outTime;
