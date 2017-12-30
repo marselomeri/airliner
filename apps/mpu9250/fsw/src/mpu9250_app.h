@@ -61,6 +61,11 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+ /* TODO */
+#define GYROSIM_ACCEL_DEFAULT_RATE	400
+#define GYROSIM_GYRO_DEFAULT_RATE	400
+ 
+ 
 #define MPU9250_ACC_SCALE                   (2)
 #define MPU9250_GYRO_SCALE                  (250)
 /** \brief Magnetometer device ID. */
@@ -121,7 +126,7 @@ public:
 
     /** \brief Output Data published at the end of cycle */
     PX4_SensorAccelMsg_t SensorAccel;
-    PX4_SensorMagMsg_t SensorMag;
+    //PX4_SensorMagMsg_t SensorMag;
     PX4_SensorGyroMsg_t SensorGyro;
 
     /** \brief Housekeeping Telemetry for downlink */
