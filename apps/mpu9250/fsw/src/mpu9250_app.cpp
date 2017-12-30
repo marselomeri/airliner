@@ -225,7 +225,7 @@ void MPU9250::InitData()
     Diag.Calibration.MagYOffset      = 0.0;
     Diag.Calibration.MagZOffset      = 0.0;
     Diag.Calibration.RoomTempOffset  = 0.0;
-    Diag.Calibration.TempSensitivity = 333.87;
+    Diag.Calibration.TempSensitivity = 361.0f;
 }
 
 
@@ -848,28 +848,14 @@ void MPU9250::ReadDevice(void)
     {
         goto end_of_function;
     }
-    /* TODO */
-    //SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
-    calTemp = 32;
-    SensorAccel.TemperatureRaw = ((calTemp - 35.0f) * 361.0f);
-    SensorGyro.TemperatureRaw = ((calTemp - 35.0f) * 361.0f);
-
-    //returnBool = MPU9250_Read_ImuStatus(&rawMsg.WOM, &rawMsg.FifoOvflw, &rawMsg.Fsync, &rawMsg.ImuDataReady);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
-    //returnBool = MPU9250_Read_MagStatus(&rawMsg.Overrun, &rawMsg.MagDataReady, &rawMsg.Overflow, &rawMsg.Output16Bit);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
-    /* TODO */
-    //calTemp = ((SensorAccel.TemperatureRaw - Diag.Calibration.RoomTempOffset) / Diag.Calibration.TempSensitivity) + 21.0;
-    //SensorMag.Temperature
+    SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
+    if (SensorAccel.TemperatureRaw != 0)
+    {
+        calTemp = (SensorAccel.TemperatureRaw / Diag.Calibration.TempSensitivity) + 35.0 - Diag.Calibration.RoomTempOffset;
+    }
     SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
+    
+    //SensorMag.Temperature
 
 end_of_function:
 

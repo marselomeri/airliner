@@ -187,9 +187,8 @@ boolean MPU9250_Read_Temp(uint16 *rawTemp)
 
 	SIMLIB_GetTemp(&calTemp);
 
-	//*rawTemp = ((calTemp - 21.0f) * oMPU9250.Diag.Calibration.TempSensitivity) + oMPU9250.Diag.Calibration.RoomTempOffset;
-    *rawTemp = calTemp;
-    
+	*rawTemp = ((calTemp + oMPU9250.Diag.Calibration.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Calibration.TempSensitivity;
+
 	return TRUE;
 }
 
