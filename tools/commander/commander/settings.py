@@ -100,7 +100,7 @@ DATABASES = {
     }
 }# Database
 #print 'cwd:', os.getcwd()
-print 'DATABASE***:',DATABASES,'->',os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test_database')
+#print 'DATABASE***:',DATABASES,'->',os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test_database')
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 """
 DATABASES = {

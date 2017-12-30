@@ -124,3 +124,9 @@ def collectTestCases(conn,mapper,input,eo,desc):
     c = conn.cursor()
     insert = 'INSERT INTO `TESTCASES`(`mapping`,`input`,`output`,`time_stamp`,`description`)  VALUES (?,?,?,?,?)'
     c.execute(insert,(mapper,input,eo,getDate(),desc))
+
+
+def readJsonFromCloseCirlce(closecircle):
+    with open(working_dir+'/'+closecircle+'/jsondata.json') as jfile:
+        data = json.load(jfile)
+    return data

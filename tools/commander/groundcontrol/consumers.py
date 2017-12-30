@@ -60,6 +60,7 @@ class Telemetry:
         @param message: connection request from client, this message will connection headers.
         @return: void
         """
+        #print 'hello'
         Group('tlm_bc').add(message.reply_channel)
         message.reply_channel.send({'accept': True})
         tk.log('Instance', 'Connected.', 'INFO')
@@ -560,8 +561,14 @@ class Event:
             ## If result is not a ACK signal, in YAMCS case ACK for events looks like `[1,4,x]`
             if result.find('[1,4,')!=-1 :
                 #result = tk.preProcess(result)
+
+
+                message_obj.reply_channel.send({'text': result})
+                message_obj.reply_channel.send({'text': result})
                 message_obj.reply_channel.send({'text': result})
                 tk.log('Event', 'BOUND', 'INFO')
+                print message_obj.reply_channel.__dict__
+                print result
             ## avoids busy-while-loop
             time.sleep(0.01)
 
@@ -741,8 +748,9 @@ class MyCache:
                     conn.commit()
                     conn.close()
             tk.log('Preconfiguration', 'Successful', 'INFO')
-        except:
+        except Exception as e:
             ## TODO: safely log error, unit test required
-            tk.log('Preconfiguration', 'Faliure - NA', 'ERROR')
+            tk.log('Preconfiguration', 'Faliure - '+str(e), 'ERROR')
+            #tk.log('Preconfiguration', 'Faliure - '+str(e), 'ERROR')
             pass
 

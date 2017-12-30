@@ -10,83 +10,76 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/groundcontrol/test/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="unittests.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/groundcontrol/test/unittests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-925">
-              <caret line="162" column="49" lean-forward="false" selection-start-line="162" selection-start-column="49" selection-end-line="162" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="uitests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/groundcontrol/test/uitests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
-              <folding>
-                <element signature="e#343#707#0" expanded="false" />
-                <element signature="e#867#1001#0" expanded="false" />
-                <element signature="e#1109#1497#0" expanded="false" />
-                <element signature="e#1602#1904#0" expanded="false" />
-                <element signature="e#1946#3353#0" expanded="false" />
-                <element signature="e#3442#3838#0" expanded="false" />
-                <element signature="e#3880#3984#0" expanded="false" />
-                <element signature="e#4019#4070#0" expanded="false" />
-                <element signature="e#4111#4394#0" expanded="false" />
-                <element signature="e#4579#4977#0" expanded="false" />
-                <element signature="e#5029#6712#0" expanded="false" />
-                <element signature="e#6798#6875#0" expanded="false" />
-                <element signature="e#6916#7060#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/groundcontrol/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/groundcontrol/views.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="254">
+                  <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#401#440#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/groundcontrol/urls.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="210">
+                  <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/commander/settings.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="388">
+                  <caret line="53" column="14" lean-forward="true" selection-start-line="53" selection-start-column="14" selection-end-line="53" selection-end-column="14" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="toolkit.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/groundcontrol/toolkit.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="585">
+                  <caret line="128" column="27" lean-forward="false" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
+                  <folding>
+                    <element signature="e#661#759#0" expanded="false" />
+                    <element signature="e#790#1794#0" expanded="false" />
+                    <element signature="e#1820#2328#0" expanded="false" />
+                    <element signature="e#2369#2722#0" expanded="false" />
+                    <element signature="e#2749#3384#0" expanded="false" />
+                    <element signature="e#3440#4100#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>eventObject</find>
-      <find>cls</find>
-      <find>next</find>
-      <find>subscribers</find>
-      <find>RequestCmdDef</find>
-      <find>path</find>
-      <find>processess</find>
-      <find>tracker</find>
-      <find>test_flag</find>
-      <find>test_sampling_frequency</find>
       <find>INPUT</find>
       <find>FILE_PATTERNS</find>
       <find>DETAILS</find>
@@ -107,6 +100,16 @@
       <find>* 1000</find>
       <find>2</find>
       <find>int</find>
+      <find>app_path</find>
+      <find>_conn</find>
+      <find>totalApps</find>
+      <find>tk</find>
+      <find>unSubscribeAll</find>
+      <find>Clean slate executed</find>
+      <find>called all unsubscription</find>
+      <find>working_dir</find>
+      <find>requests</find>
+      <find>Preconfiguration</find>
     </findStrings>
     <replaceStrings>
       <replace>{% endif %}</replace>
@@ -150,38 +153,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/groundcontrol/templates/toolkit.js" />
-        <option value="$PROJECT_DIR$/manage.py" />
-        <option value="$PROJECT_DIR$/commander/settings.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/tests2.py" />
-        <option value="$PROJECT_DIR$/scripts/PIP_Requirement.txt" />
-        <option value="$PROJECT_DIR$/scripts/Launch_Commander.sh" />
-        <option value="$PROJECT_DIR$/art/commander" />
-        <option value="$PROJECT_DIR$/commander/routing.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/socketio.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/tests.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/templates/unittests_cl.js" />
-        <option value="$PROJECT_DIR$/groundcontrol/package.json" />
-        <option value="$PROJECT_DIR$/groundcontrol/docs/d_gen.js.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/docs/d_gen.js" />
-        <option value="$PROJECT_DIR$/groundcontrol/Doxyfile" />
-        <option value="$PROJECT_DIR$/groundcontrol/templates/test_template.html" />
         <option value="$PROJECT_DIR$/groundcontrol/test/node_test_server.js" />
         <option value="$PROJECT_DIR$/groundcontrol/uitests.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/templates/client.js" />
-        <option value="$PROJECT_DIR$/groundcontrol/test/test_client_mocha.js" />
         <option value="$PROJECT_DIR$/groundcontrol/docs/conf.py" />
         <option value="$PROJECT_DIR$/docs/conf.py" />
         <option value="$PROJECT_DIR$/docs/index.rst" />
-        <option value="$PROJECT_DIR$/groundcontrol/consumers.py" />
         <option value="$PROJECT_DIR$/groundcontrol/models.py" />
         <option value="$PROJECT_DIR$/groundcontrol/apps.py" />
         <option value="$PROJECT_DIR$/groundcontrol/admin.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/toolkit.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/views.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/urls.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/test/unittests.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/test/uitests.py" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/uitests.py" />
         <option value="$PROJECT_DIR$/groundcontrol/docs/Readme.md" />
         <option value="$PROJECT_DIR$/groundcontrol/docs/Sync.js.cpp" />
@@ -193,21 +172,46 @@
         <option value="$PROJECT_DIR$/groundcontrol/tests/SOCKETIO.txt" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/CHANNELS10.txt" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/hp_REST.py" />
-        <option value="$PROJECT_DIR$/groundcontrol/templates/index.pug" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/channel_4B_30_100000.txt" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/channel_30_10000.txt" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/hook_socket_server.py" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/benchmark.py" />
-        <option value="$PROJECT_DIR$/scripts/launch_config.json" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/__init__.py" />
         <option value="$PROJECT_DIR$/groundcontrol/tests/unittests.py" />
+        <option value="$PROJECT_DIR$/art/commander" />
+        <option value="$PROJECT_DIR$/static/css/windhover.css" />
+        <option value="$PROJECT_DIR$/scripts/launch_config.json" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/hook_socket_server.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/benchmark.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/results.xml" />
+        <option value="$PROJECT_DIR$/groundcontrol/requirement.txt" />
+        <option value="$PROJECT_DIR$/scripts/kill_YAMCS_airliner.sh" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/training_automation.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/templates/index.pug" />
+        <option value="$PROJECT_DIR$/scripts/Launch_Commander.sh" />
+        <option value="$PROJECT_DIR$/groundcontrol/templates/client.js" />
+        <option value="$PROJECT_DIR$/groundcontrol/test-reports/server-results.xml" />
+        <option value="$PROJECT_DIR$/scripts/jenkins_build.sh" />
+        <option value="$PROJECT_DIR$/scripts/Launch_YAMCS_airliner.sh" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/test_client_mocha.js" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/unittests.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/uitests.py" />
+        <option value="$PROJECT_DIR$/commander/settings.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/templates/sock.html" />
+        <option value="$PROJECT_DIR$/groundcontrol/socket_io_consumer.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/consumers.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/test/unit_tests.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/toolkit.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/urls.py" />
+        <option value="$PROJECT_DIR$/groundcontrol/views.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1919" />
+    <option name="x" value="-1" />
+    <option name="y" value="25" />
     <option name="width" value="1922" />
-    <option name="height" value="976" />
+    <option name="height" value="951" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -244,11 +248,22 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="commander" type="b2602c69:ProjectViewProjectNode" />
+              <item name="commander" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="commander" type="b2602c69:ProjectViewProjectNode" />
+              <item name="commander" type="462c0819:PsiDirectoryNode" />
+              <item name="art" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="commander" type="b2602c69:ProjectViewProjectNode" />
+              <item name="commander" type="462c0819:PsiDirectoryNode" />
               <item name="commander" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -271,20 +286,18 @@
             <path>
               <item name="commander" type="b2602c69:ProjectViewProjectNode" />
               <item name="commander" type="462c0819:PsiDirectoryNode" />
-              <item name="groundcontrol" type="462c0819:PsiDirectoryNode" />
-              <item name="test-reports" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="commander" type="b2602c69:ProjectViewProjectNode" />
               <item name="commander" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -313,7 +326,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in uitests.py (1)">
+  <component name="RunManager" selected="Python tests.Unittests in unit_tests.py">
+    <configuration name="Unittests in integration_tests.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="commander" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/groundcontrol/test/integration_tests.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
     <configuration name="Unittests in uitests.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -326,6 +353,20 @@
       <module name="commander" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/groundcontrol/test/uitests.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
+    <configuration name="Unittests in unit_tests.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/groundcontrol/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="commander" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/groundcontrol/test/unit_tests.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
     <configuration name="Unittests in unittests.py" type="tests" factoryName="Unittests" nameIsGenerated="true">
@@ -370,72 +411,55 @@
       <option name="_new_target" value="&quot;$PROJECT_DIR$/groundcontrol/test/unittests.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
-    <configuration name="benchmark" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="socket_io_consumer" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/groundcontrol/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/groundcontrol" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="commander" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/groundcontrol/tests/benchmark.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/groundcontrol/socket_io_consumer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="hook_socket_server" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="training_automation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/groundcontrol/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/groundcontrol/test" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="commander" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/groundcontrol/tests/hook_socket_server.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="hp_REST" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/groundcontrol/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="commander" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/groundcontrol/tests/hp_REST.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/groundcontrol/test/training_automation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in unittests.py" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in uitests.py (1)" />
-      <item index="2" class="java.lang.String" itemvalue="Python.benchmark" />
-      <item index="3" class="java.lang.String" itemvalue="Python.hook_socket_server" />
-      <item index="4" class="java.lang.String" itemvalue="Python.hp_REST" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in unittests.py (1)" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in integration_tests.py" />
+      <item index="2" class="java.lang.String" itemvalue="Python.training_automation" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in uitests.py" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in unit_tests.py" />
+      <item index="5" class="java.lang.String" itemvalue="Python.socket_io_consumer" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in uitests.py (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in unittests.py (1)" />
-        <item index="2" class="java.lang.String" itemvalue="Python.benchmark" />
-        <item index="3" class="java.lang.String" itemvalue="Python.hook_socket_server" />
-        <item index="4" class="java.lang.String" itemvalue="Python.hp_REST" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in unit_tests.py" />
+        <item index="1" class="java.lang.String" itemvalue="Python.socket_io_consumer" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in uitests.py" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in integration_tests.py" />
+        <item index="4" class="java.lang.String" itemvalue="Python.training_automation" />
       </list>
     </recent_temporary>
   </component>
@@ -464,35 +488,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_uitests_py - 2017.12.15 at 20h 38m 59s.xml">
-      <configuration name="Unittests in uitests.py" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.28 at 22h 23m 47s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py - 2017.12.15 at 20h 25m 53s.xml">
-      <configuration name="Unittests in unittests.py" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.28 at 22h 24m 12s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py - 2017.12.15 at 20h 35m 31s.xml">
-      <configuration name="Unittests in unittests.py" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.28 at 22h 25m 50s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 02m 38s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.28 at 22h 26m 05s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 03m 45s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.29 at 00h 37m 44s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 05m 55s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.29 at 00h 38m 46s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 08m 59s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.29 at 00h 39m 04s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 15m 27s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.29 at 00h 40m 22s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 15m 30s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.29 at 00h 42m 59s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_unittests_py_(1) - 2017.12.15 at 20h 16m 59s.xml">
-      <configuration name="Unittests in unittests.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_unit_tests_py - 2017.12.29 at 00h 47m 28s.xml">
+      <configuration name="Unittests in unit_tests.py" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView" selected-index="3">
@@ -505,25 +529,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1919" y="0" width="1922" height="976" extended-state="6" />
+    <frame x="-1" y="25" width="1922" height="951" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18645833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1546875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16823529" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32648402" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33854166" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37899545" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2703125" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4958872" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="1298" y="511" width="1968" height="981" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37214613" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37132785" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32648402" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -541,6 +566,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/groundcontrol/test/unit_tests.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -551,168 +583,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="94" />
+      <option name="time" value="101" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/art/commander_blood">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="36" lean-forward="true" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/index.rst" />
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/conf.py" />
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/d_gen.js" />
-    <entry file="file://$PROJECT_DIR$/docs/conf.py" />
-    <entry file="file://$PROJECT_DIR$/docs/groundcontrol.rst" />
-    <entry file="file://$PROJECT_DIR$/docs/modules.rst" />
-    <entry file="file://$PROJECT_DIR$/docs/index.rst" />
-    <entry file="file://$PROJECT_DIR$/groundcontrol/geckodriver.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="10" lean-forward="false" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="87" lean-forward="false" selection-start-line="0" selection-start-column="87" selection-end-line="0" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="3" lean-forward="false" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/apps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="29" lean-forward="false" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/Readme.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/Sync.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="2" lean-forward="false" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/Sync.js.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="1" lean-forward="false" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/doxygen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="817">
-          <caret line="108" column="3" lean-forward="false" selection-start-line="108" selection-start-column="3" selection-end-line="108" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/docs/Doxyfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="818">
-          <caret line="907" column="24" lean-forward="false" selection-start-line="907" selection-start-column="24" selection-end-line="907" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/socketIO_client/logs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/multiprocessing/forking.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/multiprocessing/process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="1598" column="0" lean-forward="false" selection-start-line="1598" selection-start-column="0" selection-end-line="1598" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/toolkit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1740">
-          <caret line="121" column="36" lean-forward="false" selection-start-line="121" selection-start-column="27" selection-end-line="121" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/socketIO_client/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="84" column="59" lean-forward="true" selection-start-line="84" selection-start-column="59" selection-end-line="84" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/templates/client.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="694" column="19" lean-forward="true" selection-start-line="694" selection-start-column="19" selection-end-line="694" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/test/test_client_mocha.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="742">
-          <caret line="333" column="0" lean-forward="false" selection-start-line="333" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/tests/CHANNELS30.txt" />
-    <entry file="file://$PROJECT_DIR$/groundcontrol/tests/CHANNELS10.txt" />
-    <entry file="file://$PROJECT_DIR$/groundcontrol/tests/CHANNELSBW30.txt" />
     <entry file="file://$PROJECT_DIR$/groundcontrol/tests/SOCKETBW.txt" />
     <entry file="file://$PROJECT_DIR$/groundcontrol/tests/hp_REST.py" />
     <entry file="file://$PROJECT_DIR$/groundcontrol/tests/SOCKETIO.txt" />
@@ -760,55 +635,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/test/hook_socket_server.py">
+    <entry file="file://$PROJECT_DIR$/groundcontrol/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/test/benchmark.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="263" column="12" lean-forward="false" selection-start-line="263" selection-start-column="12" selection-end-line="263" selection-end-column="12" />
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-            <element signature="e#323#596#0" expanded="false" />
-            <marker date="1513367434710" expanded="false" signature="5683:5809" ph="..." />
-            <marker date="1513367434710" expanded="false" signature="5842:6010" ph="..." />
-            <marker date="1513367434710" expanded="false" signature="6036:6206" ph="..." />
-            <marker date="1513367434710" expanded="false" signature="6817:7272" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/consumers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
-          <folding>
-            <element signature="e#390#410#0" expanded="false" />
-            <element signature="e#630#9344#0" expanded="false" />
-            <element signature="e#9365#14802#0" expanded="false" />
-            <element signature="e#14824#17274#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/templates/index.pug">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="498" column="29" lean-forward="false" selection-start-line="498" selection-start-column="29" selection-end-line="498" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/launch_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
-          <folding />
+        <state relative-caret-position="120">
+          <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -816,45 +646,428 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/package.json">
+    <entry file="file://$PROJECT_DIR$/art/commander_blood">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test/hook_socket_server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-          <folding />
+          <caret line="8" column="29" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="8" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/results.xml" />
+    <entry file="file://$PROJECT_DIR$/groundcontrol/requirement.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="68" column="15" lean-forward="false" selection-start-line="68" selection-start-column="15" selection-end-line="68" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/windhover.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="14" lean-forward="false" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test/benchmark.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="262" column="11" lean-forward="false" selection-start-line="262" selection-start-column="11" selection-end-line="262" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test/training_automation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-371">
+          <caret line="23" column="20" lean-forward="true" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/templates/index.pug">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="605" column="12" lean-forward="false" selection-start-line="605" selection-start-column="12" selection-end-line="605" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test-reports/server-results.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/Launch_Commander.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test-reports/client-results.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/kill_YAMCS_airliner.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/templates/client.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="402" column="6" lean-forward="false" selection-start-line="402" selection-start-column="6" selection-end-line="402" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PIP_Requirement.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="21" column="8" lean-forward="false" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/jenkins_build.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test/test_client_mocha.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="41" column="53" lean-forward="false" selection-start-line="41" selection-start-column="53" selection-end-line="41" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/Launch_YAMCS_airliner.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/groundcontrol/test/uitests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="17" column="24" lean-forward="false" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+        <state relative-caret-position="300">
+          <caret line="20" column="9" lean-forward="false" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/art/commander">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="42" lean-forward="false" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/channels/tests/base.py" />
+    <entry file="file://$PROJECT_DIR$/groundcontrol/socket_io_consumer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="5" lean-forward="false" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/templates/sock.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="35" lean-forward="false" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4005">
+          <caret line="274" column="0" lean-forward="false" selection-start-line="274" selection-start-column="0" selection-end-line="274" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test/unit_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding>
-            <element signature="e#343#707#0" expanded="false" />
-            <element signature="e#867#1001#0" expanded="false" />
-            <element signature="e#1109#1497#0" expanded="false" />
-            <element signature="e#1602#1904#0" expanded="false" />
-            <element signature="e#1946#3353#0" expanded="false" />
-            <element signature="e#3442#3838#0" expanded="false" />
-            <element signature="e#3880#3984#0" expanded="false" />
-            <element signature="e#4019#4070#0" expanded="false" />
-            <element signature="e#4111#4394#0" expanded="false" />
-            <element signature="e#4579#4977#0" expanded="false" />
-            <element signature="e#5029#6712#0" expanded="false" />
-            <element signature="e#6798#6875#0" expanded="false" />
-            <element signature="e#6916#7060#0" expanded="false" />
+            <element signature="e#0#15#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/groundcontrol/test/unittests.py">
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/channels/test/base.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-925">
-          <caret line="162" column="49" lean-forward="false" selection-start-line="162" selection-start-column="49" selection-end-line="162" selection-end-column="49" />
+        <state relative-caret-position="1200">
+          <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/channels/asgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding>
+            <marker date="1514563866887" expanded="true" signature="297:2034" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="621:630" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="1507:1634" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="1668:1703" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="1735:2034" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="1744:1937" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1514563866887" expanded="true" signature="2071:2776" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="2076:2239" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1514563866887" expanded="true" signature="2295:2439" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="2473:2522" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="2546:2623" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="2650:2776" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="2818:3040" ph="..." />
+            <marker date="1514563866887" expanded="true" signature="2823:2891" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/copy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1095">
+          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/channels/test/websocket.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/django/apps/registry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3240">
+          <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding>
+            <marker date="1514563837129" expanded="true" signature="297:3144" ph="..." />
+            <marker date="1514563837129" expanded="true" signature="2395:3144" ph="..." />
+            <marker date="1514563837129" expanded="true" signature="2827:3144" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/collections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commander/routing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/test/integration_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="256" column="23" lean-forward="false" selection-start-line="256" selection-start-column="23" selection-end-line="256" selection-end-column="23" />
+          <folding>
+            <element signature="e#24#63#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/launch_config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="24" lean-forward="false" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/consumers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="549" column="20" lean-forward="false" selection-start-line="549" selection-start-column="20" selection-end-line="549" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#373#1" expanded="false" />
+            <element signature="e#390#410#0" expanded="false" />
+            <element signature="e#634#9763#0" expanded="false" />
+            <element signature="e#634#720#1" expanded="false" />
+            <element signature="e#754#2334#0" expanded="false" />
+            <element signature="e#754#1003#1" expanded="false" />
+            <element signature="e#2795#3000#1" expanded="false" />
+            <element signature="e#3279#4210#0" expanded="false" />
+            <element signature="e#3279#3729#1" expanded="false" />
+            <element signature="e#3769#4210#0" expanded="false" />
+            <element signature="e#3790#4060#0" expanded="false" />
+            <element signature="e#4097#4210#0" expanded="false" />
+            <element signature="e#4257#4552#1" expanded="false" />
+            <element signature="e#5516#5696#0" expanded="false" />
+            <element signature="e#5784#6194#0" expanded="false" />
+            <element signature="e#5805#6014#0" expanded="false" />
+            <element signature="e#6052#6185#0" expanded="false" />
+            <element signature="e#6194#6213#0" expanded="false" />
+            <element signature="e#6354#8201#0" expanded="false" />
+            <element signature="e#6832#7687#0" expanded="false" />
+            <element signature="e#6857#7446#0" expanded="false" />
+            <element signature="e#7491#7674#0" expanded="false" />
+            <element signature="e#7789#8201#0" expanded="false" />
+            <element signature="e#7814#7970#0" expanded="false" />
+            <element signature="e#8015#8201#0" expanded="false" />
+            <element signature="e#8246#8392#1" expanded="false" />
+            <element signature="e#9108#9270#0" expanded="false" />
+            <element signature="e#9784#15221#0" expanded="false" />
+            <element signature="e#9784#9871#1" expanded="false" />
+            <element signature="e#9905#10915#0" expanded="false" />
+            <element signature="e#9905#10154#1" expanded="false" />
+            <element signature="e#10957#11286#0" expanded="false" />
+            <element signature="e#10957#11155#1" expanded="false" />
+            <element signature="e#11331#11676#0" expanded="false" />
+            <element signature="e#11331#11536#1" expanded="false" />
+            <element signature="e#11740#12669#0" expanded="false" />
+            <element signature="e#11740#12188#1" expanded="false" />
+            <element signature="e#12228#12669#0" expanded="false" />
+            <element signature="e#12249#12519#0" expanded="false" />
+            <element signature="e#12556#12669#0" expanded="false" />
+            <element signature="e#12718#13801#0" expanded="false" />
+            <element signature="e#12718#12925#1" expanded="false" />
+            <element signature="e#13144#13801#0" expanded="false" />
+            <element signature="e#13847#15221#0" expanded="false" />
+            <element signature="e#13847#14029#1" expanded="false" />
+            <element signature="e#14733#14833#0" expanded="false" />
+            <element signature="e#15243#17693#0" expanded="false" />
+            <element signature="e#15243#15328#1" expanded="false" />
+            <element signature="e#15361#15610#1" expanded="false" />
+            <element signature="e#16169#16420#0" expanded="false" />
+            <element signature="e#16169#16367#1" expanded="false" />
+            <element signature="e#16466#16723#0" expanded="false" />
+            <element signature="e#16466#16671#1" expanded="false" />
+            <element signature="e#16774#17274#0" expanded="false" />
+            <element signature="e#16774#17022#1" expanded="false" />
+            <element signature="e#17327#17693#0" expanded="false" />
+            <element signature="e#17327#17572#1" expanded="false" />
+            <element signature="e#17716#20860#0" expanded="false" />
+            <element signature="e#17716#17802#1" expanded="false" />
+            <element signature="e#17835#18609#0" expanded="false" />
+            <element signature="e#17835#18084#1" expanded="false" />
+            <element signature="e#18651#18902#0" expanded="false" />
+            <element signature="e#18651#18849#1" expanded="false" />
+            <element signature="e#18946#19203#0" expanded="false" />
+            <element signature="e#18946#19151#1" expanded="false" />
+            <element signature="e#19267#20198#0" expanded="false" />
+            <element signature="e#19267#19717#1" expanded="false" />
+            <element signature="e#19757#20198#0" expanded="false" />
+            <element signature="e#19778#20048#0" expanded="false" />
+            <element signature="e#20085#20198#0" expanded="false" />
+            <element signature="e#20249#20537#1" expanded="false" />
+            <element signature="e#20879#20961#1" expanded="false" />
+            <element signature="e#20994#22041#0" expanded="false" />
+            <element signature="e#20994#21243#1" expanded="false" />
+            <element signature="e#22377#22634#0" expanded="false" />
+            <element signature="e#22377#22582#1" expanded="false" />
+            <element signature="e#22677#24717#0" expanded="false" />
+            <element signature="e#22677#22978#1" expanded="false" />
+            <element signature="e#23170#23771#0" expanded="false" />
+            <element signature="e#23866#24717#0" expanded="false" />
+            <element signature="e#23887#24102#0" expanded="false" />
+            <element signature="e#24139#24270#0" expanded="false" />
+            <element signature="e#24304#24554#0" expanded="false" />
+            <element signature="e#24591#24717#0" expanded="false" />
+            <element signature="e#24773#24960#1" expanded="false" />
+            <element signature="e#25625#27910#0" expanded="false" />
+            <element signature="e#25625#25700#1" expanded="false" />
+            <element signature="e#25733#26508#0" expanded="false" />
+            <element signature="e#25733#25982#1" expanded="false" />
+            <element signature="e#26550#26801#0" expanded="false" />
+            <element signature="e#26550#26748#1" expanded="false" />
+            <element signature="e#26846#27103#0" expanded="false" />
+            <element signature="e#26846#27051#1" expanded="false" />
+            <element signature="e#27146#27910#0" expanded="false" />
+            <element signature="e#27146#27320#1" expanded="false" />
+            <element signature="e#27667#27910#0" expanded="false" />
+            <element signature="e#27929#30875#0" expanded="false" />
+            <element signature="e#27929#28011#1" expanded="false" />
+            <element signature="e#28044#29057#0" expanded="false" />
+            <element signature="e#28044#28293#1" expanded="false" />
+            <element signature="e#29100#29351#0" expanded="false" />
+            <element signature="e#29100#29298#1" expanded="false" />
+            <element signature="e#29397#29654#0" expanded="false" />
+            <element signature="e#29397#29602#1" expanded="false" />
+            <element signature="e#29698#29951#0" expanded="false" />
+            <element signature="e#29698#29874#1" expanded="false" />
+            <element signature="e#30001#30875#0" expanded="false" />
+            <element signature="e#30001#30214#1" expanded="false" />
+            <element signature="e#30450#30875#0" expanded="false" />
+            <element signature="e#30793#30807#0" expanded="false" />
+            <element signature="e#30896#33146#0" expanded="false" />
+            <element signature="e#30896#30942#1" expanded="false" />
+            <element signature="e#30975#31224#1" expanded="false" />
+            <element signature="e#31385#31573#1" expanded="false" />
+            <element signature="e#31679#32840#0" expanded="false" />
+            <element signature="e#32566#32840#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/toolkit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="128" column="27" lean-forward="false" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
+          <folding>
+            <element signature="e#661#759#0" expanded="false" />
+            <element signature="e#790#1794#0" expanded="false" />
+            <element signature="e#1820#2328#0" expanded="false" />
+            <element signature="e#2369#2722#0" expanded="false" />
+            <element signature="e#2749#3384#0" expanded="false" />
+            <element signature="e#3440#4100#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commander/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="53" column="14" lean-forward="true" selection-start-line="53" selection-start-column="14" selection-end-line="53" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groundcontrol/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="e#401#440#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

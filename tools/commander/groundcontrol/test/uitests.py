@@ -18,6 +18,7 @@ class ApplicationGUI(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         #cls._capabilities = DesiredCapabilities.FIREFOX.copy()
+        #FirefoxOptions opts = new FirefoxOptions().setLogLevel(Level.ALL);
         cls._r = redis.StrictRedis(host='localhost', port=6379, db=0)
         cls._db_path = cls._r.get('app_path')
         cls.driver = webdriver.Firefox()

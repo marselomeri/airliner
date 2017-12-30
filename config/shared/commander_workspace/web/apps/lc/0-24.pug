@@ -1,0 +1,66 @@
+extends ../../common/layout
+
+
+block header
+        i.fa-fw.fa.fa-signal
+        | {{obj.title}} 0-24
+
+block main
+  style.
+    table.table-results th:nth-of-type(1) {width:40px; overflow:hidden;}
+    table.table-results th:nth-of-type(2) {width:100px; overflow:hidden;}
+    table.table-results th:nth-of-type(3) {width:100px; overflow:hidden;}
+    table.table-results th:nth-of-type(4) {width:130px; overflow:hidden;}
+    table.table-results th:nth-of-type(5) {width:150px; overflow:hidden;}
+    table.table-results td:nth-of-type(1) {width:100px; overflow:hidden;}
+    table.table-results td:nth-of-type(2) {width:100px; overflow:hidden;}
+    table.table-results td:nth-of-type(3) {width:130px; overflow:hidden;}
+    table.table-results td:nth-of-type(4) {width:150px; overflow:hidden;}
+  .row
+      article.col-xs-12.col-sm-12.col-md-6.col-lg-5
+        #wid-LC-WPResults-0-24.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h4#head(style='float: left;padding: 2px 0px 0px 1%;') 0-24
+
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed.table-results
+                  tbody
+                    tr
+                      th #
+                      th Watch
+                      th Action State
+                      th Action Result
+                      th Commands
+                      {% with ''|center:25 as range %}
+                      {% for _ in range %}
+                      tr
+                        th {{ forloop.counter0|add:"0"}}
+                        td
+                          span(data-sage="{'tlm':{'name':'/CFS/LC/WPResults_{{ forloop.counter0 }}}}") ---
+                        td
+                          span(data-sage="{'tlm':{'name':'/CFS/LC/APResults_{{ forloop.counter0 }}_CurrentState'}}") ---
+                        td
+                          span(data-sage="{'tlm':{'name':'/CFS/LC/APResults_{{ forloop.counter0 }}_Result'}}") ---
+                        td
+                         .btn-group.dropup
+                           button.btn.btn-primary.dropdown-toggle.btn-xs(type='button', data-toggle='dropdown')
+                             | Commands
+                             span.caret
+                           ul#Commands.dropdown-menu(role='menu')
+                             li
+                               a(data-sage="{'cmd':{'name':'/CFS/LC/SetAPState', 'Parameters':[{'Name':'APNumber', 'Value':{{ forloop.counter0 }}}]}}") Set AP State
+                             li
+                               a(data-sage="{'cmd':{'name':'/CFS/LC/SetAPPermOff', 'Parameters':[{'Name':'APNumber', 'Value':{{ forloop.counter0 }}}]}}") Set AP Perm Off
+                             li
+                               a(data-sage="{'cmd':{'name':'/CFS/LC/ResetAPStats', 'Parameters':[{'Name':'APNumber', 'Value':{{ forloop.counter0 }}}]}}") Reset AP Stats
+                             li
+                               a(data-sage="{'cmd':{'name':'/CFS/LC/ResetWPStats', 'Parameters':[{'Name':'APNumber', 'Value':{{ forloop.counter0 }}}]}}") Reset WP Stats
+
+                      {% endfor %}
+                      {% endwith %}
