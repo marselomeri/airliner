@@ -71,7 +71,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define MAC_CMD_PIPE_DEPTH             (4)
+#define MAC_CMD_PIPE_DEPTH             (15)
 
 /** \brief Pipe name for the Scheduler pipe 
 **

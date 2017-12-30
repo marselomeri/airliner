@@ -28,7 +28,7 @@
 /* Default MAC config table data */
 MAC_ParamTbl_t MAC_ParamTbl =
 {
-		6.5,		/* MC_ROLL_P 	   */
+		6.0,		/* MC_ROLL_P 	   */
 		0.15,		/* MC_ROLLRATE_P   */
 		0.05,		/* MC_ROLLRATE_I   */
 		0.30,		/* MC_RR_INT_LIM   */
