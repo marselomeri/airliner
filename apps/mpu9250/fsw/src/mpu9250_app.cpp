@@ -258,6 +258,12 @@ int32 MPU9250::InitApp()
     }
 
     InitData();
+    
+    iStatus = InitConfigTbl();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto MPU9250_InitApp_Exit_Tag;
+    }
 
     returnBool = MPU9250_Custom_Init();
     if (FALSE == returnBool)
@@ -634,6 +640,12 @@ void MPU9250::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(MPU9250_SCH_PIPE_PEND_TIME);
+        iStatus = AcquireConfigPointers();
+        if(iStatus != CFE_SUCCESS)
+        {
+            /* We apparently tried to load a new table but failed.  Terminate the application. */
+            uiRunStatus = CFE_ES_APP_ERROR;
+        }
     }
 
     /* Stop Performance Log entry */

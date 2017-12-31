@@ -31,18 +31,32 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
-#include "mpu9250_app_test.h"
-#include "mpu9250_cmds_test.h"
+#include "cfe.h"
+#include "mpu9250_msg.h"
 #include "mpu9250_config_tbl_test.h"
+#include "mpu9250_test_utils.h"
+#include "uttest.h"
+#include "ut_osapi_stubs.h"
+#include "ut_cfe_sb_stubs.h"
+#include "ut_cfe_es_stubs.h"
+#include "ut_cfe_es_hooks.h"
+#include "ut_cfe_evs_stubs.h"
+#include "ut_cfe_evs_hooks.h"
+#include "ut_cfe_time_stubs.h"
+#include "ut_cfe_psp_memutils_stubs.h"
+#include "ut_cfe_tbl_stubs.h"
+#include "ut_cfe_fs_stubs.h"
+#include "ut_cfe_time_stubs.h"
 
-int main(void)
-{   
-    MPU9250_App_Test_AddTestCases();
-    MPU9250_Cmds_Test_AddTestCases();
-    MPU9250_Config_Tbl_Test_AddTestCases();
-
-    return(UtTest_Run());
+void MPU9250_Config_Tbl_Test_Case1(void)
+{
 
 }
+
+
+void MPU9250_Config_Tbl_Test_AddTestCases(void)
+{
+    UtTest_Add(MPU9250_Config_Tbl_Test_Case1, MPU9250_Test_Setup, MPU9250_Test_TearDown, "MPU9250_Config_Tbl_Test_Case1");
+}
+
 

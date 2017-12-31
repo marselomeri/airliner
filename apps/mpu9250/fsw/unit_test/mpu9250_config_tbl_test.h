@@ -31,18 +31,17 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
-#include "mpu9250_app_test.h"
-#include "mpu9250_cmds_test.h"
-#include "mpu9250_config_tbl_test.h"
+#ifndef MPU9250_CONFIG_TBL_TEST_H
+#define MPU9250_CONFIG_TBL_TEST_H
 
-int main(void)
-{   
-    MPU9250_App_Test_AddTestCases();
-    MPU9250_Cmds_Test_AddTestCases();
-    MPU9250_Config_Tbl_Test_AddTestCases();
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    return(UtTest_Run());
+void MPU9250_Config_Tbl_Test_AddTestCases(void);
 
+#ifdef __cplusplus
 }
+#endif
 
+#endif /* MPU9250_CONFIG_TBL_TEST_H */

@@ -54,6 +54,7 @@ extern "C" {
 #include "mpu9250_msgids.h"
 #include "mpu9250_msg.h"
 #include "mpu9250_events.h"
+#include "mpu9250_tbldefs.h"
 #include "px4_msgs.h"
 #include "LowPassFilter2p.h"
 #include "integrator.h"
@@ -123,6 +124,14 @@ public:
 
     /** \brief Task Run Status */
     uint32 uiRunStatus;
+
+   /* Config table-related */
+
+    /** \brief Config Table Handle */
+    CFE_TBL_Handle_t ConfigTblHdl;
+
+    /** \brief Config Table Pointer */
+    MPU9250_ConfigTbl_t* ConfigTblPtr;
 
     /** \brief Output Data published at the end of cycle */
     PX4_SensorAccelMsg_t SensorAccel;
@@ -376,6 +385,43 @@ public:
     boolean ValidateDevice(void);
 
 private:
+    /************************************************************************/
+    /** \brief Initialize the GPS configuration tables.
+    **
+    **  \par Description
+    **       This function initializes GPS's configuration tables.  This
+    **       includes <TODO>.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
+    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
+    **  \retstmt Return codes from #GPS_AcquireConfigPointers \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    int32  InitConfigTbl(void);
+
+    /************************************************************************/
+    /** \brief Obtain GPS configuration tables data pointers.
+    **
+    **  \par Description
+    **       This function manages the configuration tables
+    **       and obtains a pointer to their data.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    int32  AcquireConfigPointers(void);
+
     math::LowPassFilter2p   _accel_filter_x;
     math::LowPassFilter2p   _accel_filter_y;
     math::LowPassFilter2p   _accel_filter_z;
@@ -384,6 +430,25 @@ private:
     math::LowPassFilter2p   _gyro_filter_z;
     Integrator              _accel_int;
     Integrator              _gyro_int;
+
+public:
+    /************************************************************************/
+    /** \brief Validate GPS configuration table
+    **
+    **  \par Description
+    **       This function validates GPS's configuration table
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static int32  ValidateConfigTbl(void*);
 };
 
 

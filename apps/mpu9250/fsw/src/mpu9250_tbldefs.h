@@ -31,18 +31,48 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
-#include "mpu9250_app_test.h"
-#include "mpu9250_cmds_test.h"
-#include "mpu9250_config_tbl_test.h"
+#ifndef MPU9250_TBLDEFS_H
+#define MPU9250_TBLDEFS_H
 
-int main(void)
-{   
-    MPU9250_App_Test_AddTestCases();
-    MPU9250_Cmds_Test_AddTestCases();
-    MPU9250_Config_Tbl_Test_AddTestCases();
+/************************************************************************
+** Pragmas
+*************************************************************************/
 
-    return(UtTest_Run());
+/************************************************************************
+** Includes
+*************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#include "cfe.h"
+#include "mpu9250_platform_cfg.h"
+
+/************************************************************************
+** Local Defines
+*************************************************************************/
+
+/**
+ * \brief Defines the table identification name used for the
+ * configuration table registration.
+ */
+#define MPU9250_CONFIG_TABLENAME ("CONFIG_TBL")
+
+
+/** \brief Definition for a single config table entry */
+typedef struct
+{
+    /* TODO:  Define the configuration table. */
+	uint32  temp;
+} MPU9250_ConfigTbl_t;
+
+
+#ifdef __cplusplus
 }
+#endif
 
+#endif /* MPU9250_TBLDEFS_H */
+
+/************************/
+/*  End of File Comment */
+/************************/
