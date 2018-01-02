@@ -92,23 +92,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'commander.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test_database'),
-        'TEST_NAME': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test_database'),
-    }
-}# Database
-#print 'cwd:', os.getcwd()
-#print 'DATABASE***:',DATABASES,'->',os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test_database')
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}"""
+}
 
 
 # Password validation

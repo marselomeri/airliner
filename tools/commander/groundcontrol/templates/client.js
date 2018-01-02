@@ -133,12 +133,12 @@ var Instance = function(){
     this.ws_scheme="ws"
     }
     try{
-    this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst/');
-    this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/defaultInst/');
+    this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/di');
     }
     catch(e){
-    this.websocket1 = new WebSocket(this.ws_scheme+'://localhost:8000/inst/');
-    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/defaultInst/');
+    this.websocket1 = new WebSocket(this.ws_scheme+'://localhost:8000/inst');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/di/');
     }
     var self = this;
 
@@ -238,10 +238,10 @@ Instance.prototype = {
 var Directory = function(){
     try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    this.websocket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/dir/');
+    this.websocket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/dir');
     }
     catch(e){
-    this.websocket = new WebSocket('ws://localhost:8000/dir/');
+    this.websocket = new WebSocket('ws://localhost:8000/dir');
     }
     var self = this;
 
@@ -294,11 +294,11 @@ var Telemetry =function(){
     this.ws_scheme="ws"
     }
     try{
-    this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
+    this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm');
 
     }
     catch(e){
-    this.subsc = new WebSocket(this.ws_scheme+'://localhost:8000/tlm_s/');
+    this.subsc = new WebSocket(this.ws_scheme+'://localhost:8000/tlm');
 
     }
 
@@ -475,12 +475,12 @@ Telemetry.prototype = {
 var Command =function(){
     try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    this.info = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd_i/');
-    this.cmd = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd_s/');
+    this.info = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd1');
+    this.cmd = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd2');
     }
     catch(e){
-    this.info = new WebSocket('ws://localhost:8000/cmd_i/');
-    this.cmd = new WebSocket('ws://localhost:8000/cmd_s/');
+    this.info = new WebSocket('ws://localhost:8000/cmd1');
+    this.cmd = new WebSocket('ws://localhost:8000/cmd2');
     }
     this.CommandQueue = [];
     this.SendingQueue = [];
@@ -626,11 +626,11 @@ Command.prototype = {
 var Event = function(){
     try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    this.event = new WebSocket(this.ws_scheme+'://' + window.location.host + '/event/');
+    this.event = new WebSocket(this.ws_scheme+'://' + window.location.host + '/event');
     }
     catch(e){
 
-    this.event=new WebSocket('ws://localhost:8000/event/');
+    this.event=new WebSocket('ws://localhost:8000/event');
     }
     var self = this;
 
@@ -684,7 +684,7 @@ Event.prototype = {
 //---------------------------------------------------------------------------------------------------------------
 var Video = function() {
         this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video/');
+        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video');
         this.video_subscribers = {};
         var self = this;
 
