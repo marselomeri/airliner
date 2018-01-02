@@ -107,7 +107,7 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define MAVLINK_PARAM_TABLE_FILENAME      ("/cf/apps/mavlink_param.tbl")
+#define MAVLINK_ACTION_MAP_TABLE_FILENAME      ("/cf/apps/mavlink_action.tbl")
 
 /** \brief The timeout table default filename
 **
@@ -132,6 +132,8 @@ extern "C" {
 #define MAVLINK_GCS_IP                  ("127.0.0.1")
 #define MAVLINK_GCS_PORT                (14556)
 #define MAVLINK_INGEST_PORT             (5014)
+
+#define MAVLINK_ACTION_MAP_ENTRIES         (256)
 
 
 #ifdef __cplusplus
