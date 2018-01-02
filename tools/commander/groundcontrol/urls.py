@@ -14,5 +14,5 @@ urlpatterns = [url(r'^$', views.index, name='index'),  ## Routing in url like [1
                url(r'^(\w+).pug$', views.router, name='router_1_layer'),
                url(r'^(\w+)/(\w+)/(\w+).pug$', views.router, name ='router_3_layers'),  ## Routing in url like [127.0.0.1:8000/abc/def]
                url(r'^(\w+)/(\w+).pug$', views.router, name ='router_2_layer'),  ## Routing in url like [127.0.0.1:8000/abc/def/ghi]
-
+               
                ]
