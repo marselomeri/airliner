@@ -2,6 +2,7 @@ import unittest
 from mock import patch
 from channels import Channel
 from channels.tests import ChannelTestCase,apply_routes,HttpClient
+from channels.routing import route_class
 from channels import route, Group
 from groundcontrol.consumers import *
 
@@ -13,14 +14,16 @@ django.setup()
 
 #settings.configure()
 
-class ConsumerTests(ChannelTestCase):
-    @patch('groundcontrol.consumers.Telemetry.connect', return_value=9)
-    def test_example(self,connect):
-        #tlm = Telemetry()
-        print connect()
-        client = HttpClient()
-        client.send_and_consume('websocket.connect', text='INVOKE', path='/inst')
-        print client.receive()
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     Toolkit = unittest.TestLoader().loadTestsFromTestCase(ConsumerTests)
