@@ -35,8 +35,8 @@ MPU9250::MPU9250() :
     _gyro_filter_z(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
     //_accel_int(MPU9250_NEVER_AUTOPUBLISH_US, FALSE),
     //_gyro_int(MPU9250_NEVER_AUTOPUBLISH_US, TRUE)
-    _accel_int(1000000 / GYROSIM_ACCEL_DEFAULT_RATE, TRUE),
-    _gyro_int(1000000 / GYROSIM_GYRO_DEFAULT_RATE, TRUE)
+    _accel_int(MPU9250_ACCEL_INT_PUB_RATE, TRUE),
+    _gyro_int(MPU9250_GYRO_INT_PUB_RATE, TRUE)
 {
 
 }
@@ -257,13 +257,13 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    InitData();
-    
     iStatus = InitConfigTbl();
     if (iStatus != CFE_SUCCESS)
     {
         goto MPU9250_InitApp_Exit_Tag;
     }
+
+    InitData();
 
     returnBool = MPU9250_Custom_Init();
     if (FALSE == returnBool)
@@ -283,7 +283,7 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    returnBool = MPU9250_SetAccScale(MPU9250_ACC_SCALE, &Diag.Calibration.AccDivider);
+    returnBool = MPU9250_SetAccScale(Diag.Calibration.AccScale, &Diag.Calibration.AccDivider);
     if(FALSE == returnBool)
     {
         iStatus = -1;
@@ -292,7 +292,7 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    returnBool = MPU9250_SetGyroScale(MPU9250_GYRO_SCALE, &Diag.Calibration.GyroDivider);
+    returnBool = MPU9250_SetGyroScale(Diag.Calibration.GyroScale, &Diag.Calibration.GyroDivider);
     if(FALSE == returnBool)
     {
         iStatus = -1;
@@ -749,9 +749,9 @@ void MPU9250::ReadDevice(void)
     //SensorGyro.Range = Diag.Calibration.GyroRange;
     SensorGyro.Scaling = 0;
     SensorGyro.Range = 0;
+
     /* TODO deviceID */
-    //SensorGyro.DeviceID = MPU9250_PX4_DEVICE_ID;
-    SensorGyro.DeviceID = 3467548;
+    SensorGyro.DeviceID = MPU9250_GYRO_PX4_DEVICE_ID;
 
     /* Accel */
     returnBool = MPU9250_Read_Accel(&SensorAccel.XRaw, &SensorAccel.YRaw, &SensorAccel.ZRaw);
@@ -777,15 +777,15 @@ void MPU9250::ReadDevice(void)
     
     /* Accel Calibrate */
     /* TODO */
-    //calX_f = (rawX_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
-            //Diag.Calibration.AccXOffset) * Diag.Calibration.AccXScale;
-    //calY_f = (rawY_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
-            //Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
-    //calZ_f = (rawZ_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
-            //Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
-    calX_f = rawX_f;
-    calY_f = rawY_f;
-    calZ_f = rawZ_f;
+    calX_f = (rawX_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
+            Diag.Calibration.AccXOffset) * Diag.Calibration.AccXScale;
+    calY_f = (rawY_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
+            Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
+    calZ_f = (rawZ_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
+            Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
+    //calX_f = rawX_f;
+    //calY_f = rawY_f;
+    //calZ_f = rawZ_f;
 
     /* Accel Filter */
     //SensorAccel.X = _accel_filter_x.apply(calX_f);
@@ -824,8 +824,7 @@ void MPU9250::ReadDevice(void)
     SensorAccel.Range_m_s2 = 0;
 
     /* TODO deviceID */
-    //SensorAccel.DeviceID = MPU9250_PX4_DEVICE_ID;
-    SensorAccel.DeviceID = 6789478;
+    SensorAccel.DeviceID = MPU9250_ACCEL_PX4_DEVICE_ID;
     ///* Mag */
     //returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
     //if(FALSE == returnBool)
@@ -861,10 +860,9 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
     SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
-    if (SensorAccel.TemperatureRaw != 0)
-    {
-        calTemp = (SensorAccel.TemperatureRaw / Diag.Calibration.TempSensitivity) + 35.0 - Diag.Calibration.RoomTempOffset;
-    }
+
+    calTemp = (SensorAccel.TemperatureRaw / Diag.Calibration.TempSensitivity) + 35.0 - Diag.Calibration.RoomTempOffset;
+
     SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
     
     //SensorMag.Temperature

@@ -62,34 +62,6 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
- /* TODO */
-#define GYROSIM_ACCEL_DEFAULT_RATE	400
-#define GYROSIM_GYRO_DEFAULT_RATE	400
- 
- 
-#define MPU9250_ACC_SCALE                   (2)
-#define MPU9250_GYRO_SCALE                  (250)
-/** \brief Magnetometer device ID. */
-#define MPU9250_AK8963_ID                   (0x48)
-/** \brief IMU device ID. */
-#define MPU9250_DEVICE_ID                   (0x71)
-/** \brief IMU accelerometer sample rate. */
-#define MPU9250_ACCEL_SAMPLE_RATE           (200)
-/** \brief IMU accelerometer filter cutoff frequency. */
-#define MPU9250_ACCEL_FILTER_CUTOFF_FREQ    (30)
-/** \brief IMU gyroscope sample rate. */
-#define MPU9250_GYRO_SAMPLE_RATE            (200)
-/** \brief IMU gyroscope filter cutoff frequency. */
-#define MPU9250_GYRO_FILTER_CUTOFF_FREQ     (30)
-/** \brief Set to never publish (0) in PX4 mpu9250 wrapper. */
-#define MPU9250_NEVER_AUTOPUBLISH_US        (0)
-/** \brief One gravity. */
-#define MPU9250_ONE_G                       (9.80665f)
-/** \brief Radians per degree. */
-#define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
-
-/** \brief 2000 deg/s = (2000/180)*PI = 34.906585 rad/s. */
-#define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
 
 /************************************************************************
  ** Local Structure Definitions

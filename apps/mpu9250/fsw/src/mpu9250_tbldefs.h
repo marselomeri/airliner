@@ -62,8 +62,37 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
+    float AccDivider;
+    float GyroDivider;
+    float AccXScale;
+    float AccYScale;
+    float AccZScale;
+    float AccXOffset;
+    float AccYOffset;
+    float AccZOffset;
+    float GyroXScale;
+    float GyroYScale;
+    float GyroZScale;
+    float GyroXOffset;
+    float GyroYOffset;
+    float GyroZOffset;
+    float MagXScale;
+    float MagYScale;
+    float MagZScale;
+    float MagXOffset;
+    float MagYOffset;
+    float MagZOffset;
+    uint8 MagXAdj;
+    uint8 MagYAdj;
+    uint8 MagZAdj;
+    float RoomTempOffset;
+    float TempSensitivity;
+    uint16 AccScale;
+    uint16 GyroScale;
+    float AccRange;
+    float GyroRange;
+    float AccUnit;
+    float GyroUnit;
 } MPU9250_ConfigTbl_t;
 
 
