@@ -697,11 +697,6 @@ void MPU9250::ReadDevice(void)
     rawY_f = (float) SensorGyro.YRaw;
     rawZ_f = (float) SensorGyro.ZRaw;
 
-    /*TODO */
-    SensorGyro.XRaw = 0;
-    SensorGyro.YRaw = 0;
-    SensorGyro.ZRaw = 0;
-
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
     {
@@ -755,11 +750,6 @@ void MPU9250::ReadDevice(void)
     rawX_f = (float) SensorAccel.XRaw;
     rawY_f = (float) SensorAccel.YRaw;
     rawZ_f = (float) SensorAccel.ZRaw;
-    
-    /*TODO */
-    SensorAccel.XRaw = 0;
-    SensorAccel.YRaw = 0;
-    SensorAccel.ZRaw = 0;
 
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)

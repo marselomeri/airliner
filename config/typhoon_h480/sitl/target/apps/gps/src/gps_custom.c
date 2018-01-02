@@ -618,10 +618,10 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     fakeNavPvt.lon     = Longitude;
     fakeNavPvt.hMSL    = Altitude;
     fakeNavPvt.numSV   = SatellitesVisible;
-    fakeNavPvt.velN    = (int32)(VN / 1e-4f);
-    fakeNavPvt.velE    = (int32)(VE / 1e-4f);
-    fakeNavPvt.velD    = (int32)(VD / 1e-4f);
-    fakeNavPvt.gSpeed  = (int32)(Velocity / 1e-4f);
+    fakeNavPvt.velN    = (int32)(VN / 1e-3f / 100);
+    fakeNavPvt.velE    = (int32)(VE / 1e-3f / 100);
+    fakeNavPvt.velD    = (int32)(VD / 1e-3f / 100);
+    fakeNavPvt.gSpeed  = (int32)(Velocity / 1e-3f / 100);
     /* bit 0 = 1 = valid fix (i.e within DOP & accuracy masks)*/
     fakeNavPvt.flags   = 1;
     fakeNavPvt.headMot = (int32)((COG * 3.1415f / (100.0f * 180.0f)) / M_DEG_TO_RAD_F / 1e-5f);
@@ -758,7 +758,7 @@ int32 GPS_Custom_Receive(uint8 *Buffer, uint32 Length, uint32 Timeout)
     bytesRead = GPS_MESSAGE_NAV_PVT_LENGTH + 
         GPS_MESSAGE_UBX_HEADER_LENGTH + GPS_MESSAGE_UBX_CHKSUM_LENGTH;
 
-    /* 5 Hz */
+    /* ~5 Hz */
     usleep(200000);
 
 end_of_function:

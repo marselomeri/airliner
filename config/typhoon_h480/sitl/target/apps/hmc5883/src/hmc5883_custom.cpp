@@ -169,6 +169,7 @@ boolean HMC5883_Custom_Check_Config(uint8 Config)
 boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
 {
     boolean returnBool = TRUE;
+
     float calX_f = 0.0f;
     float calY_f = 0.0f;
     float calZ_f = 0.0f;
@@ -185,9 +186,9 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
 
     SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
     
-    rawX_f = ((oHMC5883.HkTlm.Calibration.x_scale * oHMC5883.HkTlm.Calibration.x_offset) + calX_f) / (oHMC5883.HkTlm.Calibration.x_scale * oHMC5883.HkTlm.Scaling);
-    rawY_f = ((oHMC5883.HkTlm.Calibration.y_scale * oHMC5883.HkTlm.Calibration.y_offset) + calY_f) / (oHMC5883.HkTlm.Calibration.y_scale * oHMC5883.HkTlm.Scaling);
-    rawZ_f = ((oHMC5883.HkTlm.Calibration.z_scale * oHMC5883.HkTlm.Calibration.z_offset) + calZ_f) / (oHMC5883.HkTlm.Calibration.z_scale * oHMC5883.HkTlm.Scaling);
+    rawX_f = ((oHMC5883.HkTlm.Calibration.x_scale * oHMC5883.HkTlm.Calibration.x_offset) + calX_f) / (oHMC5883.HkTlm.Calibration.x_scale * (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider));
+    rawY_f = ((oHMC5883.HkTlm.Calibration.y_scale * oHMC5883.HkTlm.Calibration.y_offset) + calY_f) / (oHMC5883.HkTlm.Calibration.y_scale * (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider));
+    rawZ_f = ((oHMC5883.HkTlm.Calibration.z_scale * oHMC5883.HkTlm.Calibration.z_offset) + calZ_f) / (oHMC5883.HkTlm.Calibration.z_scale * (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider));
 
     *X = (int16)rawX_f;
     *Y = (int16)rawY_f;

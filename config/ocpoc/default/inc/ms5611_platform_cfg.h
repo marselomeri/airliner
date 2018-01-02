@@ -94,6 +94,14 @@ extern "C" {
 */
 #define MS5611_DATA_PIPE_NAME             ("MS5611_DATA_PIPE")
 
+/** \brief The config table default filename
+**
+**  \par Limits:
+**       The length of each string, including the NULL terminator cannot exceed
+**       the #OS_MAX_PATH_LEN value.
+*/
+#define MS5611_CONFIG_TABLE_FILENAME      ("/cf/apps/ms5611_config.tbl")
+
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:

@@ -109,11 +109,17 @@ extern "C" {
 */
 #define HMC5883_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief Mag divider for calculated scaling */
+#define HMC5883_MAG_DIVIDER             (1090.0f)
+
+/** \brief Mag divider for calculated scaling */
+#define HMC5883_MAG_UNIT                (1.0f)
+
 /** \brief Precalculated mag range */
 #define HMC5883_CALC_MAG_RANGE          (1.3f)
 
 /** \brief Precalculated mag scaling */
-#define HMC5883_CALC_MAG_SCALING        (1.0f / 1090.0f)
+#define HMC5883_CALC_MAG_SCALING        (HMC5883_MAG_UNIT / HMC5883_MAG_DIVIDER)
 
 #ifdef __cplusplus
 }

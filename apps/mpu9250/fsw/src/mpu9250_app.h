@@ -405,7 +405,7 @@ private:
 
 public:
     /************************************************************************/
-    /** \brief Validate GPS configuration table
+    /** \brief Validate configuration table
     **
     **  \par Description
     **       This function validates GPS's configuration table
