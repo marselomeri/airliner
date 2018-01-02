@@ -527,6 +527,7 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case PX4_CONTROL_STATE_MID:
+            	OS_printf("RunController()\n");
                 memcpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
                 RunController();
                 break;
@@ -878,6 +879,7 @@ void MAC::RunController(void)
 //		}
 
 //		/* publish attitude rates setpoint */
+		CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 		CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
 		CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
 		CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
@@ -897,6 +899,7 @@ void MAC::RunController(void)
 			m_ThrustSp = fmin(CVT.ManualControlSp.Z, MANUAL_THROTTLE_MAX_MULTICOPTER);
 
 			/* publish attitude rates setpoint */
+			CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 			CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
 			CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
 			CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
@@ -920,7 +923,8 @@ void MAC::RunController(void)
 		ControlAttitudeRates(dt);
 
 //		/* publish actuator controls */
-
+        m_ActuatorControls.Timestamp = PX4LIB_GetPX4TimeUs();
+        m_ActuatorControls.SampleTime = CVT.ControlState.Timestamp;
 		m_ActuatorControls.Control[0] = (isfinite(m_AttControl[0])) ? m_AttControl[0] : 0.0f;
 		m_ActuatorControls.Control[1] = (isfinite(m_AttControl[1])) ? m_AttControl[1] : 0.0f;
 		m_ActuatorControls.Control[2] = (isfinite(m_AttControl[2])) ? m_AttControl[2] : 0.0f;

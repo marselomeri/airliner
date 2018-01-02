@@ -159,7 +159,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 	bool status = false;
 	px4_actuator_armed_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.armed = inObject->Armed;
 	pbMsg.prearmed = inObject->Prearmed;
 	pbMsg.ready_to_arm = inObject->ReadyToArm;
@@ -172,6 +172,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 
 	/* Now we are ready to encode the message. */
 	status = pb_encode(&stream, px4_actuator_armed_pb_fields, &pbMsg);
+
 	/* Check for errors... */
 	if (!status)
 	{
@@ -198,7 +199,7 @@ uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_Actuator
 		return 0;
 	}
 
-	//inOutMessage->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Armed = pbMsg.armed;
 	inOutObject->Prearmed = pbMsg.prearmed;
 	inOutObject->ReadyToArm = pbMsg.ready_to_arm;
@@ -227,7 +228,6 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
-	OS_printf("%llu\n", pbMsg.timestamp);
 	/* Now we are ready to encode the message. */
 	status = pb_encode(&stream, px4_actuator_controls_pb_fields, &pbMsg);
 	/* Check for errors... */
@@ -264,7 +264,6 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 		inOutObject->Control[i] = pbMsg.control[i];
 		//OS_printf("%f ", inOutObject->Control[i]);
 	}
-    //OS_printf("\n");
 
 	return sizeof(PX4_ActuatorControlsMsg_t);
 }
@@ -276,7 +275,7 @@ uint32 PX4BR_ActuatorDirect_Enc(const PX4_ActuatorDirectMsg_t *inObject, char *i
 	bool status = false;
 	px4_actuator_direct_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.nvalues = inObject->NValues;
 	for(i=0; i < PX4_ACTUATOR_DIRECT_MAX; ++i)
 	{
@@ -315,7 +314,7 @@ uint32 PX4BR_ActuatorDirect_Dec(const char *inBuffer, uint32 inSize, PX4_Actuato
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->NValues = pbMsg.nvalues;
 	for(i=0; i < PX4_ACTUATOR_DIRECT_MAX; ++i)
 	{
@@ -372,7 +371,7 @@ uint32 PX4BR_ActuatorOutputs_Dec(const char *inBuffer, uint32 inSize, PX4_Actuat
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Count = pbMsg.noutputs;
 	for(i=0; i < PX4_ACTUATOR_OUTPUTS_MAX; ++i)
 	{
@@ -399,7 +398,7 @@ uint32 PX4BR_Airspeed_Enc(const PX4_AirspeedMsg_t *inObject, char *inOutBuffer, 
 	bool status = false;
 	px4_airspeed_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.indicated_airspeed_m_s = inObject->IndicatedAirspeed;
 	pbMsg.true_airspeed_m_s = inObject->TrueAirspeed;
 	pbMsg.true_airspeed_unfiltered_m_s = inObject->TrueAirspeedUnfiltered;
@@ -437,7 +436,7 @@ uint32 PX4BR_Airspeed_Dec(const char *inBuffer, uint32 inSize, PX4_AirspeedMsg_t
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->IndicatedAirspeed = pbMsg.indicated_airspeed_m_s;
 	inOutObject->TrueAirspeed = pbMsg.true_airspeed_m_s;
 	inOutObject->TrueAirspeedUnfiltered = pbMsg.true_airspeed_unfiltered_m_s;
@@ -539,7 +538,7 @@ uint32 PX4BR_CommanderState_Enc(const PX4_CommanderStateMsg_t *inObject, char *i
 	bool status = false;
 	px4_commander_state_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.main_state = inObject->MainState;
 
 	/* Create a stream that will write to our buffer. */
@@ -573,7 +572,7 @@ uint32 PX4BR_CommanderState_Dec(const char *inBuffer, uint32 inSize, PX4_Command
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->MainState = pbMsg.main_state;
 
 	return sizeof(PX4_CommanderStateMsg_t);
@@ -584,7 +583,7 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 	bool status = false;
 	px4_control_state_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x_acc = inObject->AccX;
 	pbMsg.y_acc = inObject->AccY;
 	pbMsg.z_acc = inObject->AccZ;
@@ -650,7 +649,7 @@ uint32 PX4BR_ControlState_Dec(const char *inBuffer, uint32 inSize, PX4_ControlSt
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->AccX = pbMsg.x_acc;
 	inOutObject->AccY = pbMsg.y_acc;
 	inOutObject->AccZ = pbMsg.z_acc;
@@ -715,7 +714,7 @@ uint32 PX4BR_DifferentialPressure_Enc(const PX4_DifferentialPressureMsg_t *inObj
 	bool status = false;
 	px4_differential_pressure_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.differential_pressure_raw_pa = inObject->DifferentialPressureRaw;
 	pbMsg.differential_pressure_filtered_pa = inObject->DifferentialPressureFiltered;
@@ -752,7 +751,7 @@ uint32 PX4BR_DifferentialPressure_Dec(const char *inBuffer, uint32 inSize, PX4_D
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->DifferentialPressureRaw = pbMsg.differential_pressure_raw_pa;
 	inOutObject->DifferentialPressureFiltered = pbMsg.differential_pressure_filtered_pa;
@@ -824,7 +823,7 @@ uint32 PX4BR_Ekf2Innovations_Enc(const PX4_Ekf2InnovationsMsg_t *inObject, char 
 	bool status = false;
 	px4_ekf2_innovations_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.vel_pos_innov[0] = inObject->VelPosInnov[0];
 	pbMsg.vel_pos_innov[1] = inObject->VelPosInnov[1];
 	pbMsg.vel_pos_innov[2] = inObject->VelPosInnov[2];
@@ -885,7 +884,7 @@ uint32 PX4BR_Ekf2Innovations_Dec(const char *inBuffer, uint32 inSize, PX4_Ekf2In
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	//inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->VelPosInnov[0] = pbMsg.vel_pos_innov[0];
 	inOutObject->VelPosInnov[1] = pbMsg.vel_pos_innov[1];
 	inOutObject->VelPosInnov[2] = pbMsg.vel_pos_innov[2];
@@ -933,7 +932,7 @@ uint32 PX4BR_EscReport_Enc(const PX4_EscReportMsg_t *inObject, char *inOutBuffer
 	bool status = false;
 	px4_esc_report_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	//pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.esc_errorcount = inObject->Esc.ErrorCount;
 	pbMsg.esc_rpm = inObject->Esc.Rpm;
 	pbMsg.esc_voltage = inObject->Esc.Voltage;
@@ -977,7 +976,7 @@ uint32 PX4BR_EscReport_Dec(const char *inBuffer, uint32 inSize, PX4_EscReportMsg
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	//inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Esc.ErrorCount = pbMsg.esc_errorcount;
 	inOutObject->Esc.Rpm = pbMsg.esc_rpm;
 	inOutObject->Esc.Voltage = pbMsg.esc_voltage;
@@ -999,7 +998,7 @@ uint32 PX4BR_EscStatus_Enc(const PX4_EscStatusMsg_t *inObject, char *inOutBuffer
 	bool status = false;
 	px4_esc_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.counter = inObject->Counter;
 	pbMsg.esc_count = inObject->EscCount;
 	pbMsg.connectiontype = inObject->ConnectionType;
@@ -1051,7 +1050,7 @@ uint32 PX4BR_EscStatus_Dec(const char *inBuffer, uint32 inSize, PX4_EscStatusMsg
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Counter = pbMsg.counter;
 	inOutObject->EscCount = pbMsg.count;
 	inOutObject->ConnectionType = pbMsg.connectiontype;
@@ -1082,7 +1081,7 @@ uint32 PX4BR_EstimatorStatus_Enc(const PX4_EstimatorStatusMsg_t *inObject, char 
 	bool status = false;
 	px4_estimator_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	for(iStates=0; iStates < PX4_ESTIMATOR_STATES_MAX; ++iStates)
 	{
 		pbMsg.states[iStates] = inObject->States[iStates];
@@ -1137,7 +1136,7 @@ uint32 PX4BR_EstimatorStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Estima
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	for(iStates=0; iStates < PX4_ESTIMATOR_STATES_MAX; ++iStates)
 	{
 		inOutObject->States[iStates] = pbMsg.states[iStates];
@@ -1189,7 +1188,7 @@ uint32 PX4BR_FilteredBottomFlow_Enc(const PX4_FilteredBottomFlowMsg_t *inObject,
 	bool status = false;
 	px4_filtered_bottom_flow_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.sumx = inObject->SumX;
 	pbMsg.sumy = inObject->SumY;
 	pbMsg.vx = inObject->VX;
@@ -1226,7 +1225,7 @@ uint32 PX4BR_FilteredBottomFlow_Dec(const char *inBuffer, uint32 inSize, PX4_Fil
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SumX = pbMsg.sumx;
 	inOutObject->SumY = pbMsg.sumy;
 	inOutObject->VX = pbMsg.vx;
@@ -1252,7 +1251,7 @@ uint32 PX4BR_FwPosCtrlStatus_Enc(const PX4_FwPosCtrlStatusMsg_t *inObject, char 
 	bool status = false;
 	px4_fw_pos_ctrl_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.nav_roll = inObject->NavRoll;
 	pbMsg.nav_pitch = inObject->NavPitch;
 	pbMsg.nav_bearing = inObject->NavBearing;
@@ -1296,7 +1295,7 @@ uint32 PX4BR_FwPosCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_FwPosC
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->NavRoll = pbMsg.nav_roll;
 	inOutObject->NavPitch = pbMsg.nav_pitch;
 	inOutObject->NavBearing = pbMsg.nav_bearing;
@@ -1318,7 +1317,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 	bool status = false;
 	px4_fw_virtual_attitude_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_body = inObject->RollBody;
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
@@ -1382,7 +1381,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, 
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->RollBody = pbMsg.roll_body;
 	inOutObject->PitchBody = pbMsg.pitch_body;
 	inOutObject->YawBody = pbMsg.yaw_body;
@@ -1424,7 +1423,7 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Enc(const PX4_FwVirtualRatesSetpointMsg_t *i
 	bool status = false;
 	px4_fw_virtual_rates_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll = inObject->Roll;
 	pbMsg.pitch = inObject->Pitch;
 	pbMsg.yaw = inObject->Yaw;
@@ -1461,7 +1460,7 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Roll = pbMsg.roll;
 	inOutObject->Pitch = pbMsg.pitch;
 	inOutObject->Yaw = pbMsg.yaw;
@@ -1603,7 +1602,7 @@ uint32 PX4BR_HomePosition_Enc(const PX4_HomePositionMsg_t *inObject, char *inOut
 	bool status = false;
 	px4_home_position_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.lat = inObject->Lat;
 	pbMsg.lon = inObject->Lon;
 	pbMsg.alt = inObject->Alt;
@@ -1646,7 +1645,7 @@ uint32 PX4BR_HomePosition_Dec(const char *inBuffer, uint32 inSize, PX4_HomePosit
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Lat = pbMsg.lat;
 	inOutObject->Lon = pbMsg.lon;
 	inOutObject->Alt = pbMsg.alt;
@@ -1684,6 +1683,8 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 	pbMsg.rc_lost = inObject->RcLost;
 	pbMsg.input_source = inObject->InputSource;
 
+	OS_printf("pbMsg.timestamp = %llu   pbMsg.timestamp_last_signal = %llu\n", pbMsg.timestamp, pbMsg.timestamp_last_signal);
+
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
@@ -1716,7 +1717,7 @@ uint32 PX4BR_InputRc_Dec(const char *inBuffer, uint32 inSize, PX4_InputRcMsg_t *
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	//inOutObject->TimestampPublication = pbMsg.timestamp_publication;
 	//inOutObject->timestamp_last_signal = pbMsg.timestamp_last_signal;
 	inOutObject->ChannelCount = pbMsg.channel_count;
@@ -1742,7 +1743,7 @@ uint32 PX4BR_LogMessage_Enc(const PX4_LogMessageMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_log_message_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.severity = inObject->Severity;
 	for(i = 0; i < 127; ++i)
 	{
@@ -1781,7 +1782,7 @@ uint32 PX4BR_LogMessage_Dec(const char *inBuffer, uint32 inSize, PX4_LogMessageM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Severity = pbMsg.severity;
 	for(i = 0; i < 127; ++i)
 	{
@@ -1850,7 +1851,7 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
 	inOutObject->Z = pbMsg.z;
@@ -1872,8 +1873,6 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->TransitionSwitch = pbMsg.transition_switch;
 	inOutObject->ModeSlot = pbMsg.mode_slot;
 
-	OS_printf("MANUAL_CONTROL_SETPOINT\n");
-
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }
 
@@ -1883,7 +1882,7 @@ uint32 PX4BR_MavlinkLog_Enc(const PX4_MavlinkLogMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_mavlink_log_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	for(i = 0; i < 50; ++i)
 	{
 		pbMsg.text[i] = inObject->Text[i];
@@ -1922,7 +1921,7 @@ uint32 PX4BR_MavlinkLog_Dec(const char *inBuffer, uint32 inSize, PX4_MavlinkLogM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	for(i = 0; i < 50; ++i)
 	{
 		inOutObject->Text[i] = pbMsg.text[i];
@@ -1938,7 +1937,7 @@ uint32 PX4BR_McAttCtrlStatus_Enc(const PX4_McAttCtrlStatusMsg_t *inObject, char 
 	bool status = false;
 	px4_mc_att_ctrl_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_rate_integ = inObject->RollRateInteg;
 	pbMsg.pitch_rate_integ = inObject->PitchRateInteg;
 	pbMsg.yaw_rate_integ = inObject->YawRateInteg;
@@ -1974,7 +1973,7 @@ uint32 PX4BR_McAttCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_McAttC
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->RollRateInteg = pbMsg.roll_rate_integ;
 	inOutObject->PitchRateInteg = pbMsg.pitch_rate_integ;
 	inOutObject->YawRateInteg = pbMsg.yaw_rate_integ;
@@ -1987,7 +1986,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 	bool status = false;
 	px4_mc_virtual_attitude_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_body = inObject->RollBody;
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
@@ -2051,7 +2050,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, 
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->RollBody = pbMsg.roll_body;
 	inOutObject->PitchBody = pbMsg.pitch_body;
 	inOutObject->YawBody = pbMsg.yaw_body;
@@ -2093,7 +2092,7 @@ uint32 PX4BR_McVirtualRatesSetpoint_Enc(const PX4_McVirtualRatesSetpointMsg_t *i
 	bool status = false;
 	px4_mc_virtual_rates_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll = inObject->Roll;
 	pbMsg.pitch = inObject->Pitch;
 	pbMsg.yaw = inObject->Yaw;
@@ -2130,7 +2129,7 @@ uint32 PX4BR_McVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Roll = pbMsg.roll;
 	inOutObject->Pitch = pbMsg.pitch;
 	inOutObject->Yaw = pbMsg.yaw;
@@ -2167,7 +2166,7 @@ uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inO
 	bool status = false;
 	px4_multirotor_motor_limits_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.saturation_status = inObject->SaturationStatus.Value;
 
 	/* Create a stream that will write to our buffer. */
@@ -2201,7 +2200,7 @@ uint32 PX4BR_MultirotorMotorLimits_Dec(const char *inBuffer, uint32 inSize, PX4_
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SaturationStatus.Value = pbMsg.saturation_status;
 
 	return sizeof(PX4_MultirotorMotorLimitsMsg_t);
@@ -2213,7 +2212,7 @@ uint32 PX4BR_OffboardControlMode_Enc(const PX4_OffboardControlModeMsg_t *inObjec
 	bool status = false;
 	px4_offboard_control_mode_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.ignore_thrust = inObject->IgnoreThrust;
 	pbMsg.ignore_attitude = inObject->IgnoreAttitude;
 	pbMsg.ignore_bodyrate = inObject->IgnoreBodyrate;
@@ -2252,7 +2251,7 @@ uint32 PX4BR_OffboardControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Of
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->IgnoreThrust = pbMsg.ignore_thrust;
 	inOutObject->IgnoreAttitude = pbMsg.ignore_attitude;
 	inOutObject->IgnoreBodyrate = pbMsg.ignore_bodyrate;
@@ -2269,7 +2268,7 @@ uint32 PX4BR_OpticalFlow_Enc(const PX4_OpticalFlowMsg_t *inObject, char *inOutBu
 	bool status = false;
 	px4_optical_flow_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.pixel_flow_x_integral = inObject->PixelFlowXIntegral;
 	pbMsg.pixel_flow_y_integral = inObject->PixelFlowYIntegral;
 	pbMsg.gyro_x_rate_integral = inObject->GyroXRateIntegral;
@@ -2314,7 +2313,7 @@ uint32 PX4BR_OpticalFlow_Dec(const char *inBuffer, uint32 inSize, PX4_OpticalFlo
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->PixelFlowXIntegral = pbMsg.pixel_flow_x_integral;
 	inOutObject->PixelFlowYIntegral = pbMsg.pixel_flow_y_integral;
 	inOutObject->GyroXRateIntegral = pbMsg.gyro_x_rate_integral;
@@ -2338,7 +2337,7 @@ uint32 PX4BR_OutputPwm_Enc(const PX4_OutputPwmMsg_t *inObject, char *inOutBuffer
 	bool status = false;
 	px4_output_pwm_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.channel_count = inObject->ChannelCount;
 	for(i = 0; i < PX4_PWM_OUTPUT_MAX_CHANNELS; ++i)
 	{
@@ -2377,7 +2376,7 @@ uint32 PX4BR_OutputPwm_Dec(const char *inBuffer, uint32 inSize, PX4_OutputPwmMsg
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->ChannelCount = pbMsg.channel_count;
 	for(i = 0; i < PX4_PWM_OUTPUT_MAX_CHANNELS; ++i)
 	{
@@ -2425,7 +2424,7 @@ uint32 PX4BR_PwmInput_Enc(const PX4_PwmInputMsg_t *inObject, char *inOutBuffer, 
 	bool status = false;
 	px4_pwm_input_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
 	pbMsg.pulse_width = inObject->PulseWidth;
 	pbMsg.period = inObject->Period;
@@ -2461,7 +2460,7 @@ uint32 PX4BR_PwmInput_Dec(const char *inBuffer, uint32 inSize, PX4_PwmInputMsg_t
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->PulseWidth = pbMsg.pulse_width;
 	inOutObject->Period = pbMsg.period;
@@ -2504,6 +2503,9 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	pbMsg.function_count = 22;
 	pbMsg.rssi = inObject->RSSI;
 	pbMsg.signal_lost = inObject->SignalLost;
+
+
+	OS_printf("pbMsg.timestamp = %llu   pbMsg.timestamp_last_valid = %llu\n", pbMsg.timestamp, pbMsg.timestamp_last_valid);
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -2573,7 +2575,7 @@ uint32 PX4BR_Safety_Enc(const PX4_SafetyMsg_t *inObject, char *inOutBuffer, uint
 	bool status = false;
 	px4_safety_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.safety_switch_available = inObject->SafetySwitchAvailable;
 	pbMsg.safety_off = inObject->SafetyOff;
 
@@ -2608,7 +2610,7 @@ uint32 PX4BR_Safety_Dec(const char *inBuffer, uint32 inSize, PX4_SafetyMsg_t *in
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SafetySwitchAvailable = pbMsg.safety_switch_available;
 	inOutObject->SafetyOff = pbMsg.safety_off;
 
@@ -2755,7 +2757,7 @@ uint32 PX4BR_SensorAccel_Dec(const char *inBuffer, uint32 inSize, PX4_SensorAcce
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->IntegralDt = pbMsg.integral_dt;
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->X = pbMsg.x;
@@ -2819,7 +2821,7 @@ uint32 PX4BR_SensorBaro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorBaroM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->Pressure = pbMsg.pressure;
 	inOutObject->Altitude = pbMsg.altitude;
@@ -2886,7 +2888,7 @@ uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorC
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->GyroRad[0] = pbMsg.gyro_rad[0];
 	inOutObject->GyroRad[1] = pbMsg.gyro_rad[1];
 	inOutObject->GyroRad[2] = pbMsg.gyro_rad[2];
@@ -3037,7 +3039,7 @@ uint32 PX4BR_SensorCorrection_Dec(const char *inBuffer, uint32 inSize, PX4_Senso
 //		return 0;
 //	}
 //
-//	//inOutObject->timestamp = pbMsg.timestamp;
+//	inOutObject->Timestamp = pbMsg.timestamp;
 //	inOutObject->GyroRad[0] = pbMsg.gyro_rad[0];
 //	inOutObject->GyroRad[1] = pbMsg.gyro_rad[1];
 //	inOutObject->GyroRad[2] = pbMsg.gyro_rad[2];
@@ -3113,7 +3115,7 @@ uint32 PX4BR_SensorGyro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorGyroM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->IntegralDt = pbMsg.integral_dt;
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->X = pbMsg.x;
@@ -3183,7 +3185,7 @@ uint32 PX4BR_SensorMag_Dec(const char *inBuffer, uint32 inSize, PX4_SensorMagMsg
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->ErrorCount = pbMsg.error_count;
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
@@ -3216,7 +3218,7 @@ uint32 PX4BR_SubsystemInfo_Enc(const PX4_SubsystemInfoMsg_t *inObject, char *inO
 	bool status = false;
 	px4_subsystem_info_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.subsystem_type = inObject->SubsystemType;
 	pbMsg.present = inObject->Present;
 	pbMsg.enabled = inObject->Enabled;
@@ -3253,7 +3255,7 @@ uint32 PX4BR_SubsystemInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Subsyste
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SubsystemType = pbMsg.subsystem_type;
 	inOutObject->Present = pbMsg.present;
 	inOutObject->Enabled = pbMsg.enabled;
@@ -3268,7 +3270,7 @@ uint32 PX4BR_SystemPower_Enc(const PX4_SystemPowerMsg_t *inObject, char *inOutBu
 	bool status = false;
 	px4_system_power_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.voltage5V_v = inObject->Voltage5V;
 	pbMsg.usb_connected = inObject->UsbConnected;
 	pbMsg.brick_valid = inObject->BrickValid;
@@ -3307,7 +3309,7 @@ uint32 PX4BR_SystemPower_Dec(const char *inBuffer, uint32 inSize, PX4_SystemPowe
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Voltage5V = pbMsg.voltage5V_v;
 	inOutObject->UsbConnected = pbMsg.usb_connected;
 	inOutObject->BrickValid = pbMsg.brick_valid;
@@ -3324,7 +3326,7 @@ uint32 PX4BR_TecsStatus_Enc(const PX4_TecsStatusMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_tecs_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.altitudeSp = inObject->AltitudeSp;
 	pbMsg.altitude_filtered = inObject->AltitudeFiltered;
 	pbMsg.flightPathAngleSp = inObject->FlightPathAngleSp;
@@ -3373,7 +3375,7 @@ uint32 PX4BR_TecsStatus_Dec(const char *inBuffer, uint32 inSize, PX4_TecsStatusM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->AltitudeSp = pbMsg.altitudeSp;
 	inOutObject->AltitudeFiltered = pbMsg.altitude_filtered;
 	inOutObject->FlightPathAngleSp = pbMsg.flightPathAngleSp;
@@ -3400,7 +3402,7 @@ uint32 PX4BR_TelemetryStatus_Enc(const PX4_TelemetryStatusMsg_t *inObject, char 
 	bool status = false;
 	px4_telemetry_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.heartbeat_time = inObject->HeartbeatTime;
 	pbMsg.telem_time = inObject->TelemTime;
 	pbMsg.rxerrors = inObject->RxErrors;
@@ -3445,7 +3447,7 @@ uint32 PX4BR_TelemetryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Teleme
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->HeartbeatTime = pbMsg.heartbeat_time;
 	inOutObject->TelemTime = pbMsg.telem_time;
 	inOutObject->RxErrors = pbMsg.rxerrors;
@@ -3479,7 +3481,7 @@ uint32 PX4BR_TimeOffset_Enc(const PX4_TimeOffsetMsg_t *inObject, char *inOutBuff
 	bool status = false;
 	px4_time_offset_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.offset_ns = inObject->OffsetNs;
 
 	/* Create a stream that will write to our buffer. */
@@ -3513,7 +3515,7 @@ uint32 PX4BR_TimeOffset_Dec(const char *inBuffer, uint32 inSize, PX4_TimeOffsetM
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->OffsetNs = pbMsg.offset_ns;
 
 	return sizeof(PX4_TimeOffsetMsg_t);
@@ -3558,7 +3560,7 @@ uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char 
 	bool status = false;
 	px4_vehicle_attitude_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.rollspeed = inObject->RollSpeed;
 	pbMsg.pitchspeed = inObject->PitchSpeed;
 	pbMsg.yawspeed = inObject->YawSpeed;
@@ -3598,7 +3600,7 @@ uint32 PX4BR_VehicleAttitude_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicl
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->RollSpeed = pbMsg.rollspeed;
 	inOutObject->PitchSpeed = pbMsg.pitchspeed;
 	inOutObject->YawSpeed = pbMsg.yawspeed;
@@ -3616,7 +3618,7 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 	bool status = false;
 	px4_vehicle_attitude_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_body = inObject->RollBody;
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
@@ -3666,7 +3668,7 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->RollBody = pbMsg.roll_body;
 	inOutObject->PitchBody = pbMsg.pitch_body;
 	inOutObject->YawBody = pbMsg.yaw_body;
@@ -3705,7 +3707,7 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 	bool status = false;
 	px4_vehicle_command_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.param5 = inObject->Param5;
 	pbMsg.param6 = inObject->Param6;
 	pbMsg.param1 = inObject->Param1;
@@ -3751,7 +3753,7 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Param5 = pbMsg.param5;
 	inOutObject->Param6 = pbMsg.param6;
 	inOutObject->Param1 = pbMsg.param1;
@@ -3775,7 +3777,7 @@ uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject,
 	bool status = false;
 	px4_vehicle_control_mode_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.flag_armed = inObject->Armed;
 	pbMsg.flag_external_manual_override_ok = inObject->ExternalManualOverrideOk;
 	pbMsg.flag_system_hil_enabled = inObject->SystemHilEnabled;
@@ -3824,7 +3826,7 @@ uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Armed = pbMsg.flag_armed;
 	inOutObject->ExternalManualOverrideOk = pbMsg.flag_external_manual_override_ok;
 	inOutObject->SystemHilEnabled = pbMsg.flag_system_hil_enabled;
@@ -3851,7 +3853,7 @@ uint32 PX4BR_VehicleForceSetpoint_Enc(const PX4_VehicleForceSetpointMsg_t *inObj
 	bool status = false;
 	px4_vehicle_force_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
@@ -3888,7 +3890,7 @@ uint32 PX4BR_VehicleForceSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
 	inOutObject->Z = pbMsg.z;
@@ -3903,7 +3905,7 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 	bool status = false;
 	px4_vehicle_global_position_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.time_utc_usec = inObject->TimeUtcUsec;
 	pbMsg.lat = inObject->Lat;
 	pbMsg.lon = inObject->Lon;
@@ -3950,7 +3952,7 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->TimeUtcUsec = pbMsg.time_utc_usec;
 	inOutObject->Lat = pbMsg.lat;
 	inOutObject->Lon = pbMsg.lon;
@@ -3975,7 +3977,7 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySe
 	bool status = false;
 	px4_vehicle_global_velocity_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.vx = inObject->VX;
 	pbMsg.vy = inObject->VY;
 	pbMsg.vz = inObject->VZ;
@@ -4011,7 +4013,7 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Dec(const char *inBuffer, uint32 inSi
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->VX = pbMsg.vx;
 	inOutObject->VY = pbMsg.vy;
 	inOutObject->VZ = pbMsg.vz;
@@ -4114,7 +4116,7 @@ uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObjec
 	bool status = false;
 	px4_vehicle_land_detected_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.landed = inObject->Landed;
 	pbMsg.freefall = inObject->Freefall;
 
@@ -4149,7 +4151,7 @@ uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_Ve
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Landed = pbMsg.landed;
 	inOutObject->Freefall = pbMsg.freefall;
 
@@ -4162,7 +4164,7 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	bool status = false;
 	px4_vehicle_local_position_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	//pbMsg.ref_timestamp = inObject->RefTimetamp;
 	pbMsg.ref_lat = inObject->RefLat;
 	pbMsg.ref_lon = inObject->RefLon;
@@ -4218,7 +4220,7 @@ uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_V
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	//inOutObject->RefTimestamp = pbMsg.ref_timestamp;
 	inOutObject->RefLat = pbMsg.ref_lat;
 	inOutObject->RefLon = pbMsg.ref_lon;
@@ -4252,7 +4254,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Enc(const PX4_VehicleLocalPositionSetp
 	bool status = false;
 	px4_vehicle_local_position_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
@@ -4295,7 +4297,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Dec(const char *inBuffer, uint32 inSiz
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
 	inOutObject->Z = pbMsg.z;
@@ -4316,7 +4318,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Enc(const PX4_VehicleRatesSetpointMsg_t *inObj
 	bool status = false;
 	px4_vehicle_rates_setpoint_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll = inObject->Roll;
 	pbMsg.pitch = inObject->Pitch;
 	pbMsg.yaw = inObject->Yaw;
@@ -4353,7 +4355,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Roll = pbMsg.roll;
 	inOutObject->Pitch = pbMsg.pitch;
 	inOutObject->Yaw = pbMsg.yaw;
@@ -4368,7 +4370,7 @@ uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inO
 	bool status = false;
 	px4_vehicle_status_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.system_id = inObject->SystemID;
 	pbMsg.component_id = inObject->ComponentID;
 	pbMsg.onboard_control_sensors_present = inObject->OnboardControlSensorsPresent;
@@ -4422,7 +4424,7 @@ uint32 PX4BR_VehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleS
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->SystemID = pbMsg.system_id;
 	inOutObject->ComponentID = pbMsg.component_id;
 	inOutObject->OnboardControlSensorsPresent = pbMsg.onboard_control_sensors_present;
@@ -4475,7 +4477,7 @@ uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOut
 	bool status = false;
 	px4_wind_estimate_pb pbMsg;
 
-	//pbMsg.timestamp = inObject->timestamp;
+	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.windspeed_north = inObject->WindspeedNorth;
 	pbMsg.windspeed_east = inObject->WindspeedEast;
 	pbMsg.covariance_north = inObject->CovarianceNorth;
@@ -4512,7 +4514,7 @@ uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstim
 		return 0;
 	}
 
-	//inOutObject->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->WindspeedNorth = pbMsg.windspeed_north;
 	inOutObject->WindspeedEast = pbMsg.windspeed_east;
 	inOutObject->CovarianceNorth = pbMsg.covariance_north;
