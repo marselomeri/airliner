@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include "math.h"
+
 /*
 ** MPU9250 Platform Configuration Parameter Definitions
 */
@@ -142,7 +144,22 @@ extern "C" {
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
 /** \brief 2000 deg/s = (2000/180)*PI = 34.906585 rad/s. */
 #define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
-
+/** \brief Accel divider for calculated scaling */
+//#define MPU9250_ACC_DIVIDER                 (1.0)
+/** \brief Gyro divider for calculated scaling */
+//#define MPU9250_GYRO_DIVIDER                (1.0)
+/** \brief Precalculated accel scaling */
+//#define MPU9250_CALC_ACC_SCALING            MPU9250_ONE_G / MPU9250_ACC_DIVIDER
+#define MPU9250_CALC_ACC_SCALING            (0)
+/** \brief Precalculated accel range */
+//#define MPU9250_CALC_ACC_RANGE              (MPU9250_ACC_SCALE * MPU9250_ONE_G)
+#define MPU9250_CALC_ACC_RANGE              (0)
+/** \brief Precalculated gyro scaling */
+//#define MPU9250_CALC_GYRO_SCALING           MPU9250_RADIANS_PER_DEGREE / MPU9250_GYRO_DIVIDER
+#define MPU9250_CALC_GYRO_SCALING           (0)
+/** \brief Precalculated gyro range */
+//#define MPU9250_CALC_GYRO_RANGE             MPU9250_2000_DEG_S
+#define MPU9250_CALC_GYRO_RANGE             (0)
 
 #ifdef __cplusplus
 }
