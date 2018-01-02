@@ -101,7 +101,8 @@ uint64 PX4LIB_GetPX4TimeUs(void)
         goto end_of_function;
     }
 
-    outTime = ts.tv_sec * 1000 * 1000 + ts.tv_nsec / 1000;
+    outTime = (uint64)(ts.tv_sec) * 1000000;
+    outTime += ts.tv_nsec / 1000;
 
 end_of_function:
     return outTime;

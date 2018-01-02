@@ -476,8 +476,8 @@ void RCIN::ReadDevice(void)
         HkTlm.State = RCIN_PUBLISHING;
     }
 
-    InputRcMsg.Timestamp = PX4LIB_GetPX4TimeUs();
     InputRcMsg.LastSignal = InputRcMsg.Timestamp;
+    InputRcMsg.Timestamp = PX4LIB_GetPX4TimeUs();
 
     //OS_printf("RCIN State %u\n", HkTlm.State);
     //for (temp = 0; temp < 18; temp++)

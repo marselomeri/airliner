@@ -272,11 +272,12 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     int bytesRead = 0;
     boolean returnBool = TRUE;
 	uint16 Channel[12];
-	uint8 RSSI = 0;
+	uint8 RSSI = 100;
 	uint16 ChannelCount = 12;
 	struct js_event js;
 	uint32 i = 0;
     int readStatus;
+    static uint32 totalFrameCount = 0;
 
     /* Null pointer check */
     if (0 == Measure)
@@ -286,10 +287,6 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
         returnBool = FALSE;
         goto end_of_function;
     }
-
-    /* Timestamp */
-    Measure->Timestamp = PX4LIB_GetPX4TimeUs();
-    Measure->LastSignal = PX4LIB_GetPX4TimeUs();
 
 	/* Loop until event queue is empty.  At the start of each iteration,
 	 * read the joystick state. */
@@ -360,12 +357,14 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     Measure->RSSI = RSSI;
     // For now handle outside measure function call.
     //Measure->RcLostFrameCount = errorCount;
-    Measure->RcTotalFrameCount = 1;
+    Measure->RcTotalFrameCount = totalFrameCount;
     Measure->RcPpmFrameLength = 0;
     Measure->RcFailsafe = FALSE;
     Measure->RcLost = FALSE;
     Measure->InputSource = PX4_RC_INPUT_SOURCE_PX4IO_SBUS;
     
+    totalFrameCount++;
+
 end_of_function:
     return returnBool;
 }

@@ -341,6 +341,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_INPUT_RC_MID:
                 memcpy(&CVT.InputRcMsg, MsgPtr, sizeof(CVT.InputRcMsg));
+            	ProcessRCInput();
                 break;
 
             case PX4_DIFFERENTIAL_PRESSURE_MID:
@@ -361,7 +362,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_SENSOR_GYRO_MID:
                 memcpy(&CVT.SensorGyroMsg, MsgPtr, sizeof(CVT.SensorGyroMsg));
-                CyclicProcessing();
+            	CombineSensorInput();
                 break;
 
             case PX4_VEHICLE_CONTROL_MODE_MID:
@@ -850,6 +851,12 @@ void SENS::ProcessRCInput(void)
 				RcChannelsMsg.Channels[i] = (CVT.InputRcMsg.Values[i] - ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]) / (float)(
 						ConfigTblPtr->Max[i] - ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]);
 
+				RcChannelsMsg.ChannelCount = CVT.InputRcMsg.ChannelCount;
+				RcChannelsMsg.RSSI = CVT.InputRcMsg.RSSI;
+				RcChannelsMsg.SignalLost = signal_lost;
+				RcChannelsMsg.Timestamp = CVT.InputRcMsg.Timestamp;
+				RcChannelsMsg.TimestampLastValid = CVT.InputRcMsg.LastSignal;
+				RcChannelsMsg.FrameDropCount = CVT.InputRcMsg.RcLostFrameCount;
 			}
 			else if (CVT.InputRcMsg.Values[i] < (ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]))
 			{

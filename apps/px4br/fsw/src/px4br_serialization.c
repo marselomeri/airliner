@@ -172,6 +172,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 
 	/* Now we are ready to encode the message. */
 	status = pb_encode(&stream, px4_actuator_armed_pb_fields, &pbMsg);
+
 	/* Check for errors... */
 	if (!status)
 	{
@@ -198,7 +199,7 @@ uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_Actuator
 		return 0;
 	}
 
-	//inOutMessage->timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Armed = pbMsg.armed;
 	inOutObject->Prearmed = pbMsg.prearmed;
 	inOutObject->ReadyToArm = pbMsg.ready_to_arm;
@@ -227,7 +228,6 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
-	OS_printf("%llu\n", pbMsg.timestamp);
 	/* Now we are ready to encode the message. */
 	status = pb_encode(&stream, px4_actuator_controls_pb_fields, &pbMsg);
 	/* Check for errors... */
@@ -264,7 +264,6 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 		inOutObject->Control[i] = pbMsg.control[i];
 		//OS_printf("%f ", inOutObject->Control[i]);
 	}
-    //OS_printf("\n");
 
 	return sizeof(PX4_ActuatorControlsMsg_t);
 }
@@ -1874,8 +1873,6 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->KillSwitch = pbMsg.kill_switch;
 	inOutObject->TransitionSwitch = pbMsg.transition_switch;
 	inOutObject->ModeSlot = pbMsg.mode_slot;
-
-	OS_printf("MANUAL_CONTROL_SETPOINT\n");
 
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }

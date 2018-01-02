@@ -37,7 +37,7 @@
 #include <math.h>
 
 
-#define PWM_CUSTOM_OUT_MIN  (-1.0f)
+#define PWM_CUSTOM_OUT_MIN  (0.0f)
 #define PWM_CUSTOM_OUT_MAX  (1.0f)
 
 
@@ -73,7 +73,7 @@ float AMC_Map(float inValue, uint16 in_min, uint16 in_max, float out_min, float 
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
 	float controls[16];
-	uint32 controlCount = 16;
+	uint32 controlCount = 11;
 	uint32 i = 0;
 
     for (i = 0; i < 6; ++i)
