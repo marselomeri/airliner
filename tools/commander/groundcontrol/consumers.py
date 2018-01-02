@@ -291,6 +291,23 @@ def inst_disconnect( message):
     message.reply_channel.send({'close': True})
 
 
+def tid_connect( message):
+    """!
+    Accepts request and establishes a connection with client.
+    @param message: connection request from client, this message will connection headers.
+    @return: void
+    """
+    message.reply_channel.send({'accept': True})
+
+
+def tid_disconnect( message):
+    """!
+    Accepts disconnection message and disconnects with client.
+    @param message: disconnection request from client, this message will disconnection headers.
+    @return: void
+    """
+    message.reply_channel.send({'close': True})
+
 def getInstanceList( message):
     """!
     This function is invoked by the client. Upon such an event, an instance list is requested from
@@ -350,6 +367,7 @@ def directoryListing(message):
     @return: void
     """
     name = message.content['text']
+
     response = tk.get_directory(name)
     data = json.dumps(response)
     ## Train

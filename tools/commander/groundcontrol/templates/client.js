@@ -134,11 +134,11 @@ var Instance = function(){
     }
     try{
     this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst');
-    this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/di');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tid');
     }
     catch(e){
     this.websocket1 = new WebSocket(this.ws_scheme+'://localhost:8000/inst');
-    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/di/');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/tid');
     }
     var self = this;
 
