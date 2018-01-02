@@ -34,11 +34,13 @@
 #include "uttest.h"
 #include "mpu9250_app_test.h"
 #include "mpu9250_cmds_test.h"
+#include "mpu9250_config_tbl_test.h"
 
 int main(void)
 {   
     MPU9250_App_Test_AddTestCases();
     MPU9250_Cmds_Test_AddTestCases();
+    MPU9250_Config_Tbl_Test_AddTestCases();
 
     return(UtTest_Run());
 

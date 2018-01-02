@@ -117,8 +117,6 @@ boolean MPU9250_Read_Gyro(int16 *rawX_f, int16 *rawY_f, int16 *rawZ_f)
 
 	SIMLIB_GetGyro(&calX_f, &calY_f, &calZ_f);
 
-	MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
-
 	*rawX_f = ((calX_f - oMPU9250.Diag.Calibration.GyroXOffset) / oMPU9250.Diag.Calibration.GyroXScale) * oMPU9250.Diag.Calibration.GyroDivider;
 	*rawY_f = ((calY_f - oMPU9250.Diag.Calibration.GyroYOffset) / oMPU9250.Diag.Calibration.GyroYScale) * oMPU9250.Diag.Calibration.GyroDivider;
 	*rawZ_f = ((calZ_f - oMPU9250.Diag.Calibration.GyroZOffset) / oMPU9250.Diag.Calibration.GyroZScale) * oMPU9250.Diag.Calibration.GyroDivider;
@@ -139,8 +137,6 @@ boolean MPU9250_Read_Accel(int16 *rawX, int16 *rawY, int16 *rawZ)
 	calY_f = calY_f / 9.81f;
 	calZ_f = calZ_f / 9.81f;
 
-	MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
-
 	*rawX = ((calX_f - oMPU9250.Diag.Calibration.AccXOffset) / oMPU9250.Diag.Calibration.AccXScale) * oMPU9250.Diag.Calibration.AccDivider;
 	*rawY = ((calY_f - oMPU9250.Diag.Calibration.AccYOffset) / oMPU9250.Diag.Calibration.AccYScale) * oMPU9250.Diag.Calibration.AccDivider;
 	*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.AccZOffset) / oMPU9250.Diag.Calibration.AccZScale) * oMPU9250.Diag.Calibration.AccDivider;
@@ -149,32 +145,30 @@ boolean MPU9250_Read_Accel(int16 *rawX, int16 *rawY, int16 *rawZ)
 }
 
 
-boolean MPU9250_Read_Mag(int16 *rawX, int16 *rawY, int16 *rawZ)
-{
-	float calX_f = 0.0f;
-	float calY_f = 0.0f;
-	float calZ_f = 0.0f;
-	float rawX_f = 0.0f;
-	float rawY_f = 0.0f;
-	float rawZ_f = 0.0f;
-	float magXAdj_f = oMPU9250.Diag.Calibration.MagXAdj;
-	float magYAdj_f = oMPU9250.Diag.Calibration.MagYAdj;
-	float magZAdj_f = oMPU9250.Diag.Calibration.MagZAdj;
+//boolean MPU9250_Read_Mag(int16 *rawX, int16 *rawY, int16 *rawZ)
+//{
+	//float calX_f = 0.0f;
+	//float calY_f = 0.0f;
+	//float calZ_f = 0.0f;
+	//float rawX_f = 0.0f;
+	//float rawY_f = 0.0f;
+	//float rawZ_f = 0.0f;
+	//float magXAdj_f = oMPU9250.Diag.Calibration.MagXAdj;
+	//float magYAdj_f = oMPU9250.Diag.Calibration.MagYAdj;
+	//float magZAdj_f = oMPU9250.Diag.Calibration.MagZAdj;
 
-	SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
+	//SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
 
-	MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
+	//rawX_f = ((calX_f * 1000.0f) - oMPU9250.Diag.Calibration.MagXOffset) / (((((magXAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagXScale);
+	//rawY_f = ((calY_f * 1000.0f) - oMPU9250.Diag.Calibration.MagYOffset) / (((((magYAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagYScale);
+	//rawZ_f = ((calZ_f * 1000.0f) - oMPU9250.Diag.Calibration.MagZOffset) / (((((magZAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagZScale);
 
-	rawX_f = ((calX_f * 1000.0f) - oMPU9250.Diag.Calibration.MagXOffset) / (((((magXAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagXScale);
-	rawY_f = ((calY_f * 1000.0f) - oMPU9250.Diag.Calibration.MagYOffset) / (((((magYAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagYScale);
-	rawZ_f = ((calZ_f * 1000.0f) - oMPU9250.Diag.Calibration.MagZOffset) / (((((magZAdj_f - 128.0f) * 0.5f) / 128.0f) + 1.0) * oMPU9250.Diag.Calibration.MagZScale);
+	//*rawX = rawX_f;
+	//*rawY = rawY_f;
+	//*rawZ = rawZ_f;
 
-	*rawX = rawX_f;
-	*rawY = rawY_f;
-	*rawZ = rawZ_f;
-
-	return TRUE;
-}
+	//return TRUE;
+//}
 
 
 boolean MPU9250_Read_Temp(uint16 *rawTemp)
@@ -183,7 +177,7 @@ boolean MPU9250_Read_Temp(uint16 *rawTemp)
 
 	SIMLIB_GetTemp(&calTemp);
 
-	*rawTemp = ((calTemp - 21.0f) * oMPU9250.Diag.Calibration.TempSensitivity) + oMPU9250.Diag.Calibration.RoomTempOffset;
+    *rawTemp = ((calTemp + oMPU9250.Diag.Calibration.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Calibration.TempSensitivity;
 
 	return TRUE;
 }
@@ -216,13 +210,6 @@ boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
-    float temp;
-
-    /* ROTATION_ROLL_180_YAW_90 */
-    temp = *X;
-    *X = *Y;
-    *Y = temp;
-    *Z = -*Z;
 
 end_of_function:
 
@@ -230,20 +217,20 @@ end_of_function:
 }
 
 
-CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
+//CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
+//{
+    //struct timespec ts;
+    //CFE_TIME_SysTime_t Timestamp = {0, 0};
 
-    clock_gettime(CLOCK_MONOTONIC, &ts);
+    //clock_gettime(CLOCK_MONOTONIC, &ts);
 
-    Timestamp.Seconds = ts.tv_sec;
+    //Timestamp.Seconds = ts.tv_sec;
 
-    Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
+    //Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
 
-end_of_function:
-    return Timestamp;
-}
+//end_of_function:
+    //return Timestamp;
+//}
 
 
 boolean MPU9250_Read_WhoAmI(uint8 *Value)

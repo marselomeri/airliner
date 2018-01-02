@@ -323,25 +323,6 @@ typedef struct
 ** Function Prototypes
 *************************************************************************/
 
-/************************************************************************/
-/** \brief ioctl with limited EINTR retry attempts. 
-**
-**  \par Description
-**       This function is a wrapper for ioctl with retry attempts added.
-**
-**  \param [in] fh file descriptor.
-**  \param [in] request code.
-**  \param [in] arg pointer to a device specific struct.
-**
-**  \returns
-**  usually 0 for success and -1 for failure, see ioctl man-page for 
-**  more info.
-**  \endreturns
-**
-*************************************************************************/
-int32 MPU9250_Ioctl(int fh, int request, void *arg);
-
-
 int32 MPU9250_ResetDevice(void);
 boolean MPU9250_Read_MagInfo(uint8 *Value);
 boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);

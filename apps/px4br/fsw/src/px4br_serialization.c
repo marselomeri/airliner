@@ -884,7 +884,7 @@ uint32 PX4BR_Ekf2Innovations_Dec(const char *inBuffer, uint32 inSize, PX4_Ekf2In
 		return 0;
 	}
 
-	//inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->VelPosInnov[0] = pbMsg.vel_pos_innov[0];
 	inOutObject->VelPosInnov[1] = pbMsg.vel_pos_innov[1];
 	inOutObject->VelPosInnov[2] = pbMsg.vel_pos_innov[2];
@@ -1004,7 +1004,7 @@ uint32 PX4BR_EscStatus_Enc(const PX4_EscStatusMsg_t *inObject, char *inOutBuffer
 	pbMsg.connectiontype = inObject->ConnectionType;
 	for(i=0; i < PX4_ESC_CONNECTED_ESC_MAX; ++i)
 	{
-		//pbMsg.esc[i].timestamp = inObject->Esc[i].timestamp;
+		pbMsg.esc[i].timestamp = inObject->Esc[i].Timestamp;
 		pbMsg.esc[i].esc_errorcount = inObject->Esc[i].ErrorCount;
 		pbMsg.esc[i].esc_rpm = inObject->Esc[i].Rpm;
 		pbMsg.esc[i].esc_voltage = inObject->Esc[i].Voltage;
@@ -1082,15 +1082,18 @@ uint32 PX4BR_EstimatorStatus_Enc(const PX4_EstimatorStatusMsg_t *inObject, char 
 	px4_estimator_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.states_count = PX4_ESTIMATOR_STATES_MAX;
 	for(iStates=0; iStates < PX4_ESTIMATOR_STATES_MAX; ++iStates)
 	{
 		pbMsg.states[iStates] = inObject->States[iStates];
 	}
 	pbMsg.n_states = inObject->NumStates;
+	pbMsg.vibe_count = PX4_ESTIMATOR_VIBE_MAX;
 	for(iVibe=0; iVibe < PX4_ESTIMATOR_VIBE_MAX; ++iVibe)
 	{
 		pbMsg.vibe[iVibe] = inObject->Vibe[iVibe];
 	}
+	pbMsg.covariances_count = PX4_ESTIMATOR_COVARIANCES_MAX;
 	for(iCV=0; iCV < PX4_ESTIMATOR_COVARIANCES_MAX; ++iCV)
 	{
 		pbMsg.covariances[iCV] = inObject->Covariances[iCV];
@@ -1682,8 +1685,6 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 	pbMsg.rc_failsafe = inObject->RcFailsafe;
 	pbMsg.rc_lost = inObject->RcLost;
 	pbMsg.input_source = inObject->InputSource;
-
-	OS_printf("pbMsg.timestamp = %llu   pbMsg.timestamp_last_signal = %llu\n", pbMsg.timestamp, pbMsg.timestamp_last_signal);
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -2339,6 +2340,7 @@ uint32 PX4BR_OutputPwm_Enc(const PX4_OutputPwmMsg_t *inObject, char *inOutBuffer
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.channel_count = inObject->ChannelCount;
+	pbMsg.values_count = PX4_PWM_OUTPUT_MAX_CHANNELS;
 	for(i = 0; i < PX4_PWM_OUTPUT_MAX_CHANNELS; ++i)
 	{
 		pbMsg.values[i] = inObject->Values[i];
@@ -2503,9 +2505,6 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	pbMsg.function_count = 22;
 	pbMsg.rssi = inObject->RSSI;
 	pbMsg.signal_lost = inObject->SignalLost;
-
-
-	OS_printf("pbMsg.timestamp = %llu   pbMsg.timestamp_last_valid = %llu\n", pbMsg.timestamp, pbMsg.timestamp_last_valid);
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -4165,10 +4164,10 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	px4_vehicle_local_position_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
-	//pbMsg.ref_timestamp = inObject->RefTimetamp;
+	pbMsg.ref_timestamp = inObject->RefTimestamp;
 	pbMsg.ref_lat = inObject->RefLat;
 	pbMsg.ref_lon = inObject->RefLon;
-	//pbMsg.surface_bottom_timestamp = inObject->SurfaceBottomTimestamp;
+	pbMsg.surface_bottom_timestamp = inObject->SurfaceBottomTimestamp;
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
@@ -4221,10 +4220,10 @@ uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	}
 
 	inOutObject->Timestamp = pbMsg.timestamp;
-	//inOutObject->RefTimestamp = pbMsg.ref_timestamp;
+	inOutObject->RefTimestamp = pbMsg.ref_timestamp;
 	inOutObject->RefLat = pbMsg.ref_lat;
 	inOutObject->RefLon = pbMsg.ref_lon;
-	//inOutObject->SurfaceBottomTimestamp = pbMsg.surface_bottom_timestamp;
+	inOutObject->SurfaceBottomTimestamp = pbMsg.surface_bottom_timestamp;
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
 	inOutObject->Z = pbMsg.z;

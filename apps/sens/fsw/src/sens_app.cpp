@@ -770,339 +770,393 @@ void SENS::UpdateRcFunctions()
 
 void SENS::ProcessRCInput(void)
 {
-	/* Read low-level values from FMU or IO RC inputs (PPM, Spektrum, S.Bus) */
-	//struct rc_input_values rc_input;
-
-	/* Detect RC signal loss */
-	bool signal_lost;
-
-	/* Check flags and require at least four channels to consider the signal valid */
-	if (CVT.InputRcMsg.RcLost || CVT.InputRcMsg.RcFailsafe || CVT.InputRcMsg.ChannelCount < 4)
+	if(CVT.InputRcMsg.Timestamp > CVT.LastInputRcTime)
 	{
-		/* Signal is lost or no enough channels */
-		signal_lost = true;
-	}
-	else
-	{
-		/* Signal looks good */
-		signal_lost = false;
+		/* Read low-level values from FMU or IO RC inputs (PPM, Spektrum, S.Bus) */
+		//struct rc_input_values rc_input;
 
-		/* Check failsafe */
-		int8 fs_ch = RcChannelsMsg.Function[ConfigTblPtr->MapFailsafe];
+		/* Detect RC signal loss */
+		bool signal_lost;
 
-		/* If not 0, use channel number instead of rc.function mapping */
-		if (ConfigTblPtr->MapFailsafe > 0)
+		/* Check flags and require at least four channels to consider the signal valid */
+		if (CVT.InputRcMsg.RcLost || CVT.InputRcMsg.RcFailsafe || CVT.InputRcMsg.ChannelCount < 4)
 		{
-			fs_ch = ConfigTblPtr->MapFailsafe - 1;
-		}
-
-		if (ConfigTblPtr->FailsThr > 0 && fs_ch >= 0)
-		{
-			/* Failsafe configured */
-			if ((ConfigTblPtr->FailsThr < ConfigTblPtr->Min[fs_ch] && CVT.InputRcMsg.Values[fs_ch] < ConfigTblPtr->FailsThr) ||
-				(ConfigTblPtr->FailsThr > ConfigTblPtr->Max[fs_ch] && CVT.InputRcMsg.Values[fs_ch] > ConfigTblPtr->FailsThr))
-			{
-				/* Failsafe triggered, signal is lost by receiver */
-				signal_lost = true;
-			}
-		}
-	}
-
-	uint32 channel_limit = CVT.InputRcMsg.ChannelCount;
-
-	if (channel_limit > PX4_RC_CHANNELS_FUNCTION_COUNT) {
-		channel_limit = PX4_RC_CHANNELS_FUNCTION_COUNT;
-	}
-
-	/* Read out and scale values from raw message even if signal is invalid */
-	for (uint32 i = 0; i < channel_limit; i++)
-	{
-		/*
-		 * 1) Constrain to min/max values, as later processing depends on bounds.
-		 */
-		if (CVT.InputRcMsg.Values[i] < ConfigTblPtr->Min[i]) {
-			CVT.InputRcMsg.Values[i] = ConfigTblPtr->Min[i];
-		}
-
-		if (CVT.InputRcMsg.Values[i] > ConfigTblPtr->Max[i]) {
-			CVT.InputRcMsg.Values[i] = ConfigTblPtr->Max[i];
-		}
-
-		/*
-		 * 2) Scale around the mid point differently for lower and upper range.
-		 *
-		 * This is necessary as they don't share the same endpoints and slope.
-		 *
-		 * First normalize to 0..1 range with correct sign (below or above center),
-		 * the total range is 2 (-1..1).
-		 * If center (trim) == min, scale to 0..1, if center (trim) == max,
-		 * scale to -1..0.
-		 *
-		 * As the min and max bounds were enforced in step 1), division by zero
-		 * cannot occur, as for the case of center == min or center == max the if
-		 * statement is mutually exclusive with the arithmetic NaN case.
-		 *
-		 * DO NOT REMOVE OR ALTER STEP 1!
-		 */
-		if (CVT.InputRcMsg.Values[i] > (ConfigTblPtr->Trim[i] + ConfigTblPtr->DZ[i]))
-		{
-			RcChannelsMsg.Channels[i] = (CVT.InputRcMsg.Values[i] - ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]) / (float)(
-					ConfigTblPtr->Max[i] - ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]);
-
-		}
-		else if (CVT.InputRcMsg.Values[i] < (ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]))
-		{
-			RcChannelsMsg.Channels[i] = (CVT.InputRcMsg.Values[i] - ConfigTblPtr->Trim[i] + ConfigTblPtr->DZ[i]) / (float)(
-					ConfigTblPtr->Trim[i] - ConfigTblPtr->Min[i] - ConfigTblPtr->DZ[i]);
-
+			/* Signal is lost or no enough channels */
+			signal_lost = true;
 		}
 		else
 		{
-			/* in the configured dead zone, output zero */
-			RcChannelsMsg.Channels[i] = 0.0f;
-		}
+			/* Signal looks good */
+			signal_lost = false;
 
-		RcChannelsMsg.Channels[i] *= ConfigTblPtr->Rev[i];
+			/* Check failsafe */
+			int8 fs_ch = RcChannelsMsg.Function[ConfigTblPtr->MapFailsafe];
 
-		/* handle any parameter-induced blowups */
-		if (!isfinite(RcChannelsMsg.Channels[i])) {
-			RcChannelsMsg.Channels[i] = 0.0f;
-		}
-	}
-
-	RcChannelsMsg.ChannelCount = CVT.InputRcMsg.ChannelCount;
-	RcChannelsMsg.RSSI = CVT.InputRcMsg.RSSI;
-	RcChannelsMsg.SignalLost = signal_lost;
-	RcChannelsMsg.Timestamp = CVT.InputRcMsg.Timestamp;
-	RcChannelsMsg.TimestampLastValid = CVT.InputRcMsg.LastSignal;
-	RcChannelsMsg.FrameDropCount = CVT.InputRcMsg.RcLostFrameCount;
-
-	/* Publish rc_channels topic even if signal is invalid, for debug */
-	SendRcChannelsMsg();
-
-	/* Only publish manual control if the signal is still present and was present once */
-	if (!signal_lost && CVT.InputRcMsg.LastSignal > 0)
-	{
-		/* Set mode slot to unassigned */
-		ManualControlSetpointMsg.ModeSlot = PX4_MODE_SLOT_NONE;
-
-		/* Set the timestamp to the last signal time */
-		ManualControlSetpointMsg.Timestamp = CVT.InputRcMsg.LastSignal;
-		ManualControlSetpointMsg.DataSource = PX4_MANUAL_CONTROL_SOURCE_RC;
-
-		/* Limit controls */
-		ManualControlSetpointMsg.Y = GetRcValue(PX4_RC_CHANNELS_FUNCTION_ROLL, -1.0, 1.0);
-		ManualControlSetpointMsg.X = GetRcValue(PX4_RC_CHANNELS_FUNCTION_PITCH, -1.0, 1.0);
-		ManualControlSetpointMsg.R = GetRcValue(PX4_RC_CHANNELS_FUNCTION_YAW, -1.0, 1.0);
-		ManualControlSetpointMsg.Z = GetRcValue(PX4_RC_CHANNELS_FUNCTION_THROTTLE, 0.0, 1.0);
-		ManualControlSetpointMsg.Flaps = GetRcValue(PX4_RC_CHANNELS_FUNCTION_FLAPS, -1.0, 1.0);
-		ManualControlSetpointMsg.Aux1 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_1, -1.0, 1.0);
-		ManualControlSetpointMsg.Aux2 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_2, -1.0, 1.0);
-		ManualControlSetpointMsg.Aux3 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_3, -1.0, 1.0);
-		ManualControlSetpointMsg.Aux4 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_4, -1.0, 1.0);
-		ManualControlSetpointMsg.Aux5 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_5, -1.0, 1.0);
-
-		/* Filter controls */
-		ManualControlSetpointMsg.Y = math::constrain(FilterRoll.apply(ManualControlSetpointMsg.Y), -1.f, 1.f);
-		ManualControlSetpointMsg.X = math::constrain(FilterPitch.apply(ManualControlSetpointMsg.X), -1.f, 1.f);
-		ManualControlSetpointMsg.R = math::constrain(FilterYaw.apply(ManualControlSetpointMsg.R), -1.f, 1.f);
-		ManualControlSetpointMsg.Z = math::constrain(FilterThrottle.apply(ManualControlSetpointMsg.Z), 0.f, 1.f);
-
-		if (ConfigTblPtr->MapFlightMode > 0)
-		{
-			/* The number of valid slots equals the index of the max marker minus one */
-			const int num_slots = PX4_MODE_SLOT_MAX;
-
-			/* The half width of the range of a slot is the total range
-			 * divided by the number of slots, again divided by two
-			 */
-			const float slot_width_half = 2.0f / num_slots / 2.0f;
-
-			/* min is -1, max is +1, range is 2. We offset below min and max */
-			const float slot_min = -1.0f - 0.05f;
-			const float slot_max = 1.0f + 0.05f;
-
-			/* The slot gets mapped by first normalizing into a 0..1 interval using min
-			 * and max. Then the right slot is obtained by multiplying with the number of
-			 * slots. And finally we add half a slot width to ensure that integer rounding
-			 * will take us to the correct final index.
-			 */
-			ManualControlSetpointMsg.ModeSlot = (PX4_ModeSlot_t)(((((RcChannelsMsg.Channels[ConfigTblPtr->MapFlightMode - 1] - slot_min) * num_slots) + slot_width_half) /
-						 (slot_max - slot_min)) + (1.0f / num_slots));
-
-			if (ManualControlSetpointMsg.ModeSlot >= num_slots)
+			/* If not 0, use channel number instead of rc.function mapping */
+			if (ConfigTblPtr->MapFailsafe > 0)
 			{
-				ManualControlSetpointMsg.ModeSlot = (PX4_ModeSlot_t)(num_slots - 1);
+				fs_ch = ConfigTblPtr->MapFailsafe - 1;
+			}
+
+			if (ConfigTblPtr->FailsThr > 0 && fs_ch >= 0)
+			{
+				/* Failsafe configured */
+				if ((ConfigTblPtr->FailsThr < ConfigTblPtr->Min[fs_ch] && CVT.InputRcMsg.Values[fs_ch] < ConfigTblPtr->FailsThr) ||
+					(ConfigTblPtr->FailsThr > ConfigTblPtr->Max[fs_ch] && CVT.InputRcMsg.Values[fs_ch] > ConfigTblPtr->FailsThr))
+				{
+					/* Failsafe triggered, signal is lost by receiver */
+					signal_lost = true;
+				}
 			}
 		}
 
-		/* Mode switches */
-		ManualControlSetpointMsg.ModeSwitch = GetRcSw3PosPosition(PX4_RC_CHANNELS_FUNCTION_MODE,
-				ConfigTblPtr->AutoTh, (ConfigTblPtr->AutoTh < 0),
-				ConfigTblPtr->AssistTh, (ConfigTblPtr->AssistTh < 0));
-		ManualControlSetpointMsg.RattitudeSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_RATTITUDE,
-				ConfigTblPtr->RattitudeTh, (ConfigTblPtr->RattitudeTh < 0));
-		ManualControlSetpointMsg.PosctlSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_POSCTL,
-				ConfigTblPtr->PosctlTh, (ConfigTblPtr->PosctlTh < 0));
-		ManualControlSetpointMsg.ReturnSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_RETURN,
-				ConfigTblPtr->ReturnTh, (ConfigTblPtr->ReturnTh < 0));
-		ManualControlSetpointMsg.LoiterSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_LOITER,
-				ConfigTblPtr->LoiterTh, (ConfigTblPtr->LoiterTh < 0));
-		ManualControlSetpointMsg.AcroSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_ACRO,
-				ConfigTblPtr->AcroTh, (ConfigTblPtr->AcroTh < 0));
-		ManualControlSetpointMsg.OffboardSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_OFFBOARD,
-				ConfigTblPtr->OffboardTh, (ConfigTblPtr->OffboardTh < 0));
-		ManualControlSetpointMsg.KillSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_KILLSWITCH,
-				ConfigTblPtr->KillswitchTh, (ConfigTblPtr->KillswitchTh < 0));
-		ManualControlSetpointMsg.ArmSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_ARMSWITCH,
-				ConfigTblPtr->ArmswitchTh, (ConfigTblPtr->ArmswitchTh < 0));
-		ManualControlSetpointMsg.TransitionSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_TRANSITION,
-				ConfigTblPtr->TransTh, (ConfigTblPtr->TransTh < 0));
-		ManualControlSetpointMsg.GearSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_GEAR,
-				ConfigTblPtr->GearTh, (ConfigTblPtr->GearTh < 0));
-		ManualControlSetpointMsg.StabSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_STAB,
-				ConfigTblPtr->StabTh, (ConfigTblPtr->StabTh < 0));
-		ManualControlSetpointMsg.ManSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_MAN,
-				ConfigTblPtr->ManTh, (ConfigTblPtr->ManTh < 0));
+		uint32 channel_limit = CVT.InputRcMsg.ChannelCount;
 
-		/* Copy from mapped manual control to control group 3 */
-		ActuatorControls3Msg.Timestamp = CVT.InputRcMsg.LastSignal;
+		if (channel_limit > PX4_RC_CHANNELS_FUNCTION_COUNT) {
+			channel_limit = PX4_RC_CHANNELS_FUNCTION_COUNT;
+		}
 
-		ActuatorControls3Msg.Control[0] = ManualControlSetpointMsg.Y;
-		ActuatorControls3Msg.Control[1] = ManualControlSetpointMsg.X;
-		ActuatorControls3Msg.Control[2] = ManualControlSetpointMsg.R;
-		ActuatorControls3Msg.Control[3] = ManualControlSetpointMsg.Z;
-		ActuatorControls3Msg.Control[4] = ManualControlSetpointMsg.Flaps;
-		ActuatorControls3Msg.Control[5] = ManualControlSetpointMsg.Aux1;
-		ActuatorControls3Msg.Control[6] = ManualControlSetpointMsg.Aux2;
-		ActuatorControls3Msg.Control[7] = ManualControlSetpointMsg.Aux3;
+		/* Read out and scale values from raw message even if signal is invalid */
+		for (uint32 i = 0; i < channel_limit; i++)
+		{
+			/*
+			 * 1) Constrain to min/max values, as later processing depends on bounds.
+			 */
+			if (CVT.InputRcMsg.Values[i] < ConfigTblPtr->Min[i]) {
+				CVT.InputRcMsg.Values[i] = ConfigTblPtr->Min[i];
+			}
 
-		/* Publish Manual Control Setpoint message */
-		SendManualControlSetpointMsg();
+			if (CVT.InputRcMsg.Values[i] > ConfigTblPtr->Max[i]) {
+				CVT.InputRcMsg.Values[i] = ConfigTblPtr->Max[i];
+			}
 
-		/* Publish Actuator Controls 3 message */
-		SendActuatorControls3Msg();
+			/*
+			 * 2) Scale around the mid point differently for lower and upper range.
+			 *
+			 * This is necessary as they don't share the same endpoints and slope.
+			 *
+			 * First normalize to 0..1 range with correct sign (below or above center),
+			 * the total range is 2 (-1..1).
+			 * If center (trim) == min, scale to 0..1, if center (trim) == max,
+			 * scale to -1..0.
+			 *
+			 * As the min and max bounds were enforced in step 1), division by zero
+			 * cannot occur, as for the case of center == min or center == max the if
+			 * statement is mutually exclusive with the arithmetic NaN case.
+			 *
+			 * DO NOT REMOVE OR ALTER STEP 1!
+			 */
+			if (CVT.InputRcMsg.Values[i] > (ConfigTblPtr->Trim[i] + ConfigTblPtr->DZ[i]))
+			{
+				RcChannelsMsg.Channels[i] = (CVT.InputRcMsg.Values[i] - ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]) / (float)(
+						ConfigTblPtr->Max[i] - ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]);
+
+				RcChannelsMsg.ChannelCount = CVT.InputRcMsg.ChannelCount;
+				RcChannelsMsg.RSSI = CVT.InputRcMsg.RSSI;
+				RcChannelsMsg.SignalLost = signal_lost;
+				RcChannelsMsg.Timestamp = CVT.InputRcMsg.Timestamp;
+				RcChannelsMsg.TimestampLastValid = CVT.InputRcMsg.LastSignal;
+				RcChannelsMsg.FrameDropCount = CVT.InputRcMsg.RcLostFrameCount;
+			}
+			else if (CVT.InputRcMsg.Values[i] < (ConfigTblPtr->Trim[i] - ConfigTblPtr->DZ[i]))
+			{
+				RcChannelsMsg.Channels[i] = (CVT.InputRcMsg.Values[i] - ConfigTblPtr->Trim[i] + ConfigTblPtr->DZ[i]) / (float)(
+						ConfigTblPtr->Trim[i] - ConfigTblPtr->Min[i] - ConfigTblPtr->DZ[i]);
+
+			}
+			else
+			{
+				/* in the configured dead zone, output zero */
+				RcChannelsMsg.Channels[i] = 0.0f;
+			}
+
+			RcChannelsMsg.Channels[i] *= ConfigTblPtr->Rev[i];
+
+			/* handle any parameter-induced blowups */
+			if (!isfinite(RcChannelsMsg.Channels[i])) {
+				RcChannelsMsg.Channels[i] = 0.0f;
+			}
+		}
+
+		RcChannelsMsg.ChannelCount = CVT.InputRcMsg.ChannelCount;
+		RcChannelsMsg.RSSI = CVT.InputRcMsg.RSSI;
+		RcChannelsMsg.SignalLost = signal_lost;
+		RcChannelsMsg.Timestamp = CVT.InputRcMsg.LastSignal;
+		RcChannelsMsg.FrameDropCount = CVT.InputRcMsg.RcLostFrameCount;
+
+		/* Publish rc_channels topic even if signal is invalid, for debug */
+		SendRcChannelsMsg();
+
+		/* Only publish manual control if the signal is still present and was present once */
+		if (!signal_lost && CVT.InputRcMsg.LastSignal > 0)
+		{
+			/* Set mode slot to unassigned */
+			ManualControlSetpointMsg.ModeSlot = PX4_MODE_SLOT_NONE;
+
+			/* Set the timestamp to the last signal time */
+			ManualControlSetpointMsg.Timestamp = CVT.InputRcMsg.LastSignal;
+			ManualControlSetpointMsg.DataSource = PX4_MANUAL_CONTROL_SOURCE_RC;
+
+			/* Limit controls */
+			ManualControlSetpointMsg.Y = GetRcValue(PX4_RC_CHANNELS_FUNCTION_ROLL, -1.0, 1.0);
+			ManualControlSetpointMsg.X = GetRcValue(PX4_RC_CHANNELS_FUNCTION_PITCH, -1.0, 1.0);
+			ManualControlSetpointMsg.R = GetRcValue(PX4_RC_CHANNELS_FUNCTION_YAW, -1.0, 1.0);
+			ManualControlSetpointMsg.Z = GetRcValue(PX4_RC_CHANNELS_FUNCTION_THROTTLE, 0.0, 1.0);
+			ManualControlSetpointMsg.Flaps = GetRcValue(PX4_RC_CHANNELS_FUNCTION_FLAPS, -1.0, 1.0);
+			ManualControlSetpointMsg.Aux1 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_1, -1.0, 1.0);
+			ManualControlSetpointMsg.Aux2 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_2, -1.0, 1.0);
+			ManualControlSetpointMsg.Aux3 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_3, -1.0, 1.0);
+			ManualControlSetpointMsg.Aux4 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_4, -1.0, 1.0);
+			ManualControlSetpointMsg.Aux5 = GetRcValue(PX4_RC_CHANNELS_FUNCTION_AUX_5, -1.0, 1.0);
+
+			/* Filter controls */
+			ManualControlSetpointMsg.Y = math::constrain(FilterRoll.apply(ManualControlSetpointMsg.Y), -1.f, 1.f);
+			ManualControlSetpointMsg.X = math::constrain(FilterPitch.apply(ManualControlSetpointMsg.X), -1.f, 1.f);
+			ManualControlSetpointMsg.R = math::constrain(FilterYaw.apply(ManualControlSetpointMsg.R), -1.f, 1.f);
+			ManualControlSetpointMsg.Z = math::constrain(FilterThrottle.apply(ManualControlSetpointMsg.Z), 0.f, 1.f);
+
+			if (ConfigTblPtr->MapFlightMode > 0)
+			{
+				/* The number of valid slots equals the index of the max marker minus one */
+				const int num_slots = PX4_MODE_SLOT_MAX;
+
+				/* The half width of the range of a slot is the total range
+				 * divided by the number of slots, again divided by two
+				 */
+				const float slot_width_half = 2.0f / num_slots / 2.0f;
+
+				/* min is -1, max is +1, range is 2. We offset below min and max */
+				const float slot_min = -1.0f - 0.05f;
+				const float slot_max = 1.0f + 0.05f;
+
+				/* The slot gets mapped by first normalizing into a 0..1 interval using min
+				 * and max. Then the right slot is obtained by multiplying with the number of
+				 * slots. And finally we add half a slot width to ensure that integer rounding
+				 * will take us to the correct final index.
+				 */
+				ManualControlSetpointMsg.ModeSlot = (PX4_ModeSlot_t)(((((RcChannelsMsg.Channels[ConfigTblPtr->MapFlightMode - 1] - slot_min) * num_slots) + slot_width_half) /
+							 (slot_max - slot_min)) + (1.0f / num_slots));
+
+				if (ManualControlSetpointMsg.ModeSlot >= num_slots)
+				{
+					ManualControlSetpointMsg.ModeSlot = (PX4_ModeSlot_t)(num_slots - 1);
+				}
+			}
+
+			/* Mode switches */
+			ManualControlSetpointMsg.ModeSwitch = GetRcSw3PosPosition(PX4_RC_CHANNELS_FUNCTION_MODE,
+					ConfigTblPtr->AutoTh, (ConfigTblPtr->AutoTh < 0),
+					ConfigTblPtr->AssistTh, (ConfigTblPtr->AssistTh < 0));
+			ManualControlSetpointMsg.RattitudeSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_RATTITUDE,
+					ConfigTblPtr->RattitudeTh, (ConfigTblPtr->RattitudeTh < 0));
+			ManualControlSetpointMsg.PosctlSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_POSCTL,
+					ConfigTblPtr->PosctlTh, (ConfigTblPtr->PosctlTh < 0));
+			ManualControlSetpointMsg.ReturnSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_RETURN,
+					ConfigTblPtr->ReturnTh, (ConfigTblPtr->ReturnTh < 0));
+			ManualControlSetpointMsg.LoiterSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_LOITER,
+					ConfigTblPtr->LoiterTh, (ConfigTblPtr->LoiterTh < 0));
+			ManualControlSetpointMsg.AcroSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_ACRO,
+					ConfigTblPtr->AcroTh, (ConfigTblPtr->AcroTh < 0));
+			ManualControlSetpointMsg.OffboardSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_OFFBOARD,
+					ConfigTblPtr->OffboardTh, (ConfigTblPtr->OffboardTh < 0));
+			ManualControlSetpointMsg.KillSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_KILLSWITCH,
+					ConfigTblPtr->KillswitchTh, (ConfigTblPtr->KillswitchTh < 0));
+			ManualControlSetpointMsg.ArmSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_ARMSWITCH,
+					ConfigTblPtr->ArmswitchTh, (ConfigTblPtr->ArmswitchTh < 0));
+			ManualControlSetpointMsg.TransitionSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_TRANSITION,
+					ConfigTblPtr->TransTh, (ConfigTblPtr->TransTh < 0));
+			ManualControlSetpointMsg.GearSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_GEAR,
+					ConfigTblPtr->GearTh, (ConfigTblPtr->GearTh < 0));
+			ManualControlSetpointMsg.StabSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_STAB,
+					ConfigTblPtr->StabTh, (ConfigTblPtr->StabTh < 0));
+			ManualControlSetpointMsg.ManSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_MAN,
+					ConfigTblPtr->ManTh, (ConfigTblPtr->ManTh < 0));
+
+			/* Copy from mapped manual control to control group 3 */
+			ActuatorControls3Msg.Timestamp = CVT.InputRcMsg.LastSignal;
+
+			ActuatorControls3Msg.Control[0] = ManualControlSetpointMsg.Y;
+			ActuatorControls3Msg.Control[1] = ManualControlSetpointMsg.X;
+			ActuatorControls3Msg.Control[2] = ManualControlSetpointMsg.R;
+			ActuatorControls3Msg.Control[3] = ManualControlSetpointMsg.Z;
+			ActuatorControls3Msg.Control[4] = ManualControlSetpointMsg.Flaps;
+			ActuatorControls3Msg.Control[5] = ManualControlSetpointMsg.Aux1;
+			ActuatorControls3Msg.Control[6] = ManualControlSetpointMsg.Aux2;
+			ActuatorControls3Msg.Control[7] = ManualControlSetpointMsg.Aux3;
+
+			/* Publish Manual Control Setpoint message */
+			SendManualControlSetpointMsg();
+
+			/* Publish Actuator Controls 3 message */
+			SendActuatorControls3Msg();
+		}
+
+		CVT.LastInputRcTime = CVT.InputRcMsg.Timestamp;
 	}
 }
 
 
 void SENS::CombineSensorInput(void)
 {
-	CFE_TIME_SysTime_t AccelMsgTime = CFE_SB_GetMsgTime((CFE_SB_Msg_t*)&CVT.SensorAccelMsg);
-	CFE_TIME_SysTime_t GyroMsgTime = CFE_SB_GetMsgTime((CFE_SB_Msg_t*)&CVT.SensorGyroMsg);
-	CFE_TIME_SysTime_t MagMsgTime = CFE_SB_GetMsgTime((CFE_SB_Msg_t*)&CVT.SensorMagMsg);
-	CFE_TIME_SysTime_t BaroMsgTime = CFE_SB_GetMsgTime((CFE_SB_Msg_t*)&CVT.SensorBaroMsg);
-
     SensorCombinedMsg.Timestamp = CVT.SensorGyroMsg.Timestamp;
 
-    /* Accelerometer. */
-	SensorCombinedMsg.Acc[0] = CVT.SensorAccelMsg.X;
-	SensorCombinedMsg.Acc[1] = CVT.SensorAccelMsg.Y;
-	SensorCombinedMsg.Acc[2] = CVT.SensorAccelMsg.Z;
-    if(CFE_TIME_Compare(AccelMsgTime, CVT.AccelPublishedTime) == CFE_TIME_A_GT_B)
+    /* Gyro */
+	/* See if we have a new gyro measurement.  Gyro is a required sensor, so we only
+	 * publish a new message if there is a new gyro measurement. */
+    if(CVT.SensorGyroMsg.Timestamp > CVT.LastGyroTime)
     {
-    	CFE_TIME_SysTime_t deltaTime = CFE_TIME_Subtract(AccelMsgTime, CVT.AccelPublishedTime);
-    	uint32 deltaTimeUs = deltaTime.Seconds * 1000000;
-    	deltaTimeUs += CFE_TIME_Sub2MicroSecs(deltaTime.Subseconds);
+    	/* We do have a new measurement.  Update the fields accordingly.
+    	 * First populate the measurement values.
+    	 */
+    	SensorCombinedMsg.GyroRad[0] = CVT.SensorGyroMsg.X;
+    	SensorCombinedMsg.GyroRad[1] = CVT.SensorGyroMsg.Y;
+    	SensorCombinedMsg.GyroRad[2] = CVT.SensorGyroMsg.Z;
 
-    	SensorCombinedMsg.AccTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorAccelMsg.Timestamp;
-    	if(SensorCombinedMsg.AccTimestampRelative <= SENS_MAX_ACC_TIME_DELTA)
-    	{
-    		/* Message is within the minimum relative time so it is valid. */
-    		SensorCombinedMsg.AccRelTimeInvalid = false;
-    	}
-    	else
-    	{
-    		/* Message is outside the minimum relative time so it is invalid. */
-    		SensorCombinedMsg.AccRelTimeInvalid = true;
-    	}
-
-		if(CVT.SensorAccelMsg.IntegralDt == 0)
+    	/* Finally, calculate and populate the integral dt field, in seconds.  If the incoming
+    	 * message does not include a integral dt field, estimate the integral by using the delta
+    	 * from the previously received message that we calculated above.
+    	 */
+		if(CVT.SensorGyroMsg.IntegralDt == 0)
 		{
-			SensorCombinedMsg.AccIntegralDt = deltaTimeUs / 1000000.0f;
-		}
-		else
-		{
-			SensorCombinedMsg.AccIntegralDt = CVT.SensorAccelMsg.IntegralDt / 1000000.0f;
-		}
-    }
+			/* Calculate an estimate from the previous value.  But use
+			 * an even less accurate estimate if we don't yet have a
+			 * previous time.
+			 */
+	    	uint32 deltaTimeUs = 0;
 
-    /* Gyro. */
-	SensorCombinedMsg.GyroRad[0] = CVT.SensorGyroMsg.X;
-	SensorCombinedMsg.GyroRad[1] = CVT.SensorGyroMsg.Y;
-	SensorCombinedMsg.GyroRad[2] = CVT.SensorGyroMsg.Z;
-    if(CFE_TIME_Compare(GyroMsgTime, CVT.GyroPublishedTime) == CFE_TIME_A_GT_B)
-    {
-    	CFE_TIME_SysTime_t deltaTime = CFE_TIME_Subtract(GyroMsgTime, CVT.GyroPublishedTime);
-    	uint32 deltaTimeUs = deltaTime.Seconds * 1000000;
-    	deltaTimeUs += CFE_TIME_Sub2MicroSecs(deltaTime.Subseconds);
+	    	if(CVT.LastGyroTime == 0)
+	    	{
+	    		deltaTimeUs = CVT.SensorGyroMsg.Timestamp - 1000;
+	    	}
+	    	else
+	    	{
+	    		deltaTimeUs = CVT.SensorGyroMsg.Timestamp - CVT.LastGyroTime;
+	    	}
 
-    	if(CVT.SensorGyroMsg.IntegralDt == 0)
-		{
 			SensorCombinedMsg.GyroIntegralDt = deltaTimeUs / 1000000.0f;
 		}
 		else
 		{
+			/* The sample includes an integral dt time.  Use this but
+			 * convert it to seconds.
+			 */
 			SensorCombinedMsg.GyroIntegralDt = CVT.SensorGyroMsg.IntegralDt / 1000000.0f;
 		}
-    }
 
-    /* Mag. */
-	SensorCombinedMsg.Mag[0] = CVT.SensorMagMsg.X;
-	SensorCombinedMsg.Mag[1] = CVT.SensorMagMsg.Y;
-	SensorCombinedMsg.Mag[2] = CVT.SensorMagMsg.Z;
-    if(CFE_TIME_Compare(MagMsgTime, CVT.MagPublishedTime) == CFE_TIME_A_GT_B)
-    {
-    	int64 deltaTimestamp = SensorCombinedMsg.Timestamp - CVT.SensorMagMsg.Timestamp;
-    	if(deltaTimestamp < 0)
-    	{
-    		SensorCombinedMsg.MagTimestampRelative = 0;
-    	}
-    	else
-    	{
-    		SensorCombinedMsg.MagTimestampRelative = deltaTimestamp;
-    	}
+		/* Store the time so we can use it in the next iteration. */
+    	CVT.LastGyroTime = CVT.SensorGyroMsg.Timestamp;
 
-    	if(SensorCombinedMsg.MagTimestampRelative <= SENS_MAX_MAG_TIME_DELTA)
-    	{
-    		/* Message is within the minimum relative time so it is valid. */
-    		SensorCombinedMsg.MagRelTimeInvalid = false;
-    	}
-    	else
-    	{
-    		/* Message is outside the minimum relative time so it is invalid. */
-    		SensorCombinedMsg.MagRelTimeInvalid = true;
-    	}
-    }
+		/* Accelerometer. */
+		/* See if we have a new accelerometer measurement. */
+		if(CVT.SensorAccelMsg.Timestamp > CVT.LastAccelTime)
+		{
+			/* We do have a new measurement.  Update the fields accordingly.
+			 * First populate the new values.
+			 */
+			SensorCombinedMsg.Acc[0] = CVT.SensorAccelMsg.X;
+			SensorCombinedMsg.Acc[1] = CVT.SensorAccelMsg.Y;
+			SensorCombinedMsg.Acc[2] = CVT.SensorAccelMsg.Z;
 
-    /* Baro. */
-	SensorCombinedMsg.BaroAlt = CVT.SensorBaroMsg.Altitude;
-	SensorCombinedMsg.BaroTemp = CVT.SensorBaroMsg.Temperature;
-    if(CFE_TIME_Compare(BaroMsgTime, CVT.BaroPublishedTime) == CFE_TIME_A_GT_B)
-    {
-    	int64 deltaTimestamp = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
-    	if(deltaTimestamp < 0)
-    	{
-    		SensorCombinedMsg.BaroTimestampRelative = 0;
-    	}
-    	else
-    	{
-    		SensorCombinedMsg.BaroTimestampRelative = deltaTimestamp;
-    	}
+			/* Now calculate and populate the time relative to the main timestamp. */
+			SensorCombinedMsg.AccTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorAccelMsg.Timestamp;
 
-    	if(SensorCombinedMsg.BaroTimestampRelative <= SENS_MAX_BARO_TIME_DELTA)
-    	{
-    		/* Message is within the minimum relative time so it is valid. */
-    		SensorCombinedMsg.BaroRelTimeInvalid = false;
-    	}
-    	else
-    	{
-    		/* Message is outside the minimum relative time so it is invalid. */
-    		SensorCombinedMsg.BaroRelTimeInvalid = true;
-    	}
-    }
+			/* Finally, calculate and pupulate the integral dt field, in seconds.  If the incoming
+			 * message does not include a integral dt field, estimate the integral by using the delta
+			 * from the previously received message that we calculated above.
+			 */
+			if(CVT.SensorAccelMsg.IntegralDt == 0)
+			{
+				/* Calculate an estimate from the previous value.  But use
+				 * an even less accurate estimate if we don't yet have a
+				 * previous time.
+				 */
+				uint32 deltaTimeUs = 0;
 
-	SendSensorCombinedMsg();
+				if(CVT.LastAccelTime == 0)
+				{
+					deltaTimeUs = CVT.SensorAccelMsg.Timestamp - 1000;
+				}
+				else
+				{
+					deltaTimeUs = CVT.SensorAccelMsg.Timestamp - CVT.LastAccelTime;
+				}
+
+				SensorCombinedMsg.AccIntegralDt = deltaTimeUs / 1000000.0f;
+			}
+			else
+			{
+				/* The sample includes an integral dt time.  Use this but
+				 * convert it to seconds.
+				 */
+				SensorCombinedMsg.AccIntegralDt = CVT.SensorAccelMsg.IntegralDt / 1000000.0f;
+			}
+
+			SensorCombinedMsg.AccRelTimeInvalid = false;
+
+			/* Store the time so we can use it in the next iteration. */
+			CVT.LastAccelTime = CVT.SensorAccelMsg.Timestamp;
+		}
+		else
+		{
+			/* No new measurement was received.  Update the fields accordingly.  */
+			CVT.SensorAccelMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			SensorCombinedMsg.AccRelTimeInvalid = true;
+		}
+
+		/* Mag. */
+		/* See if we have a new magnetometer measurement. */
+		if(CVT.SensorMagMsg.Timestamp > CVT.LastMagTime)
+		{
+			/* We do have a new measurement.  Update the fields accordingly.
+			 * First populate the new values.
+			 */
+			SensorCombinedMsg.Mag[0] = CVT.SensorMagMsg.X;
+			SensorCombinedMsg.Mag[1] = CVT.SensorMagMsg.Y;
+			SensorCombinedMsg.Mag[2] = CVT.SensorMagMsg.Z;
+
+			/* Now calculate and populate the time relative to the main timestamp. */
+			SensorCombinedMsg.MagTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorMagMsg.Timestamp;
+
+			SensorCombinedMsg.MagRelTimeInvalid = false;
+
+			/* Store the time so we can use it in the next iteration. */
+			CVT.LastMagTime = CVT.SensorMagMsg.Timestamp;
+		}
+		else
+		{
+			/* No new measurement was received.  Update the fields accordingly.  */
+			CVT.SensorMagMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			SensorCombinedMsg.MagRelTimeInvalid = true;
+		}
+
+		/* Baro. */
+		/* See if we have a new baro measurement. */
+		if(CVT.SensorBaroMsg.Timestamp > CVT.LastBaroTime)
+		{
+			/* We do have a new measurement.  Update the fields accordingly.
+			 * First populate the new values.
+			 */
+			SensorCombinedMsg.BaroAlt = CVT.SensorBaroMsg.Altitude;
+			SensorCombinedMsg.BaroTemp = CVT.SensorBaroMsg.Temperature;
+
+			/* Now calculate and populate the time relative to the main timestamp. */
+			SensorCombinedMsg.BaroTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
+
+			SensorCombinedMsg.BaroRelTimeInvalid = false;
+
+			/* Store the time so we can use it in the next iteration. */
+			CVT.LastBaroTime = CVT.SensorBaroMsg.Timestamp;
+		}
+		else
+		{
+			/* No new measurement was received.  Update the fields accordingly.  */
+			CVT.SensorBaroMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			SensorCombinedMsg.BaroRelTimeInvalid = true;
+		}
+
+		/* The message is ready for publishing.  Push it out the door. */
+		SendSensorCombinedMsg();
+	}
 }
 
 

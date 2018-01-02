@@ -92,23 +92,5 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
     controls[14] = 0.0f;
     controls[15] = 0.0f;
 
-	//OS_printf("- ActuatorOutputs.Count = %u (11)\n" , ActuatorOutputs.Count);
-	OS_printf("- ActuatorOutputs.Output[0] = %f (1396.680176)\n" , controls[0]);
-	OS_printf("- ActuatorOutputs.Output[1] = %f (1391.089600)\n" , controls[1]);
-	OS_printf("- ActuatorOutputs.Output[2] = %f (1385.925171)\n" , controls[2]);
-	OS_printf("- ActuatorOutputs.Output[3] = %f (1401.844604)\n" , controls[3]);
-	OS_printf("- ActuatorOutputs.Output[4] = %f (1407.727173)\n" , controls[4]);
-	OS_printf("- ActuatorOutputs.Output[5] = %f (1380.042480)\n" , controls[5]);
-	OS_printf("- ActuatorOutputs.Output[6] = %f (1500.000000)\n" , controls[6]);
-	OS_printf("- ActuatorOutputs.Output[7] = %f (1500.000000)\n" , controls[7]);
-	OS_printf("- ActuatorOutputs.Output[8] = %f (1500.000000)\n" , controls[8]);
-	OS_printf("- ActuatorOutputs.Output[9] = %f (1000.000000)\n" , controls[9]);
-	OS_printf("- ActuatorOutputs.Output[10] = %f (1000.000000)\n" , controls[10]);
-	OS_printf("- ActuatorOutputs.Output[11] = %f (nan)\n" , controls[11]);
-	OS_printf("- ActuatorOutputs.Output[12] = %f (nan)\n" , controls[12]);
-	OS_printf("- ActuatorOutputs.Output[13] = %f (nan)\n" , controls[13]);
-	OS_printf("- ActuatorOutputs.Output[14] = %f (nan)\n" , controls[14]);
-	OS_printf("- ActuatorOutputs.Output[15] = %f (nan)\n" , controls[15]);
-
 	SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }

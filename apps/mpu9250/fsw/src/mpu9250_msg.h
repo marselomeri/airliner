@@ -188,6 +188,8 @@ typedef struct
     float GyroRange;
     float AccUnit;
     float GyroUnit;
+    float GyroCalcScaling;
+    float AccCalcScaling;
 } MPU9250_CalibrationMsg_t;
 
 typedef struct

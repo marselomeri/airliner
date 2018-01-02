@@ -188,7 +188,7 @@ extern "C" {
 */
 //#define HMC5883_BITS_CONFIG_A_CONTINUOUS_75HZ     (0x6 << 2)
 
-#define HMC5883_BITS_CONFIG_A_DEFAULT             (0)
+//#define HMC5883_BITS_CONFIG_A_DEFAULT             (0)
 
 /** \brief Continuous measurement mode. 
 **
@@ -253,24 +253,6 @@ typedef struct
 *************************************************************************/
 
 /************************************************************************/
-/** \brief ioctl with limited EINTR retry attempts. 
-**
-**  \par Description
-**       This function is a wrapper for ioctl with retry attempts added.
-**
-**  \param [in] fh file descriptor.
-**  \param [in] request code.
-**  \param [in] arg pointer to a device specific struct.
-**
-**  \returns
-**  usually 0 for success and -1 for failure, see ioctl man-page for 
-**  more info.
-**  \endreturns
-**
-*************************************************************************/
-int32 HMC5883_Ioctl(int fh, int request, void *arg);
-
-/************************************************************************/
 /** \brief Determines if the maximum of event filters has been reached.
 **
 **  \par Description
@@ -287,11 +269,6 @@ int32 HMC5883_Ioctl(int fh, int request, void *arg);
 **
 *************************************************************************/
 boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind);
-
-boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length);
-
-boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data);
-
 
 #ifdef __cplusplus
 }
