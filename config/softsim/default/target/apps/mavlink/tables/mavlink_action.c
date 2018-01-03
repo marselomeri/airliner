@@ -28,7 +28,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
     */
 
     "MAVLINK_ActionMapTbl", "MAVLINK.ACTION_MAP", "MAVLINK default action map table",
-    "mavlink_action.tbl", (sizeof(MAVLINK_ActionMapTblEntry_t) * MAVLINK_ACTION_MAP_ENTRIES)
+    "mavlink_action.tbl", (sizeof(MAVLINK_ActionMapTbl_t))
 };
 
 /*
@@ -40,7 +40,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 */
 
 /* Default MAVLINK config table data */
-MAVLINK_ActionMapTblEntry_t MAVLINK_ActionMapTbl[MAVLINK_ACTION_MAP_ENTRIES] =
+MAVLINK_ActionMapTbl_t MAVLINK_ActionMapTbl =
 {
     {
 	    {0 , ACTION_HANDLE},
