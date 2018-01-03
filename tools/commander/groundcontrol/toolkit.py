@@ -98,8 +98,12 @@ def preProcess(d):
     @param d: text
     @return: processed text
     """
+    array_obj = []
     dealing_with_incompat = re.sub(r"\btrue\b", "True", d)
-    array_obj = ast.literal_eval(dealing_with_incompat)
+    if len(dealing_with_incompat)>0:
+        array_obj = ast.literal_eval(dealing_with_incompat)
+    else:
+        raise IOError
     if array_obj[1] == 4:
         x = array_obj[3]["data"]
         x1 = x['parameter']

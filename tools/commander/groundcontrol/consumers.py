@@ -37,8 +37,10 @@ def tlm_connect( message):
     @param message: connection request from client, this message will connection headers.
     @return: void
     """
+
     Group('tlm_bc').add(message.reply_channel)
-    message.reply_channel.send({'accept': True})
+    Feedback = json.dumps("OK")
+    message.reply_channel.send({'accept': True, 'text':Feedback})
     tk.log('Instance', 'Connected.', 'INFO')
 
 def tlm_disconnect( message):
@@ -47,7 +49,8 @@ def tlm_disconnect( message):
     @param message: disconnection request from client, this message will disconnection headers.
     @return: void
     """
-    message.reply_channel.send({'close': True})
+    Feedback = json.dumps("ENDOK")
+    message.reply_channel.send({'close': True, 'text':Feedback})
     Group('tlm_bc').discard(message.reply_channel)
     tk.log('Instance', '(Dis)connected.', 'INFO')
 
@@ -65,7 +68,6 @@ def getTelemetry( message):
     message_text = tk.byteify(message.content['text'])
     ## unsubscribe signal
     if message_text.find('kill_tlm') != -1:
-        print message_text
         try:
             msg = message_text.replace('kill_tlm', '')
             msg_text_obj = json.loads(msg)
@@ -87,6 +89,8 @@ def getTelemetry( message):
             to_kill_pid = proc_map[message_client_id]
             to_kill = psutil.Process(to_kill_pid)
             to_kill.kill()
+            del proc_map[message_client_id]
+            del sock_map[message_client_id]
             tk.log('Instance', '[KILLED] - ' + str(to_kill_pid), 'DEBUG')
 
         except:
@@ -106,9 +110,21 @@ def getTelemetry( message):
         if message_client_id not in sock_map.keys():
             try:
                 client_id = message.content['reply_channel']
-                ws = create_connection('ws://' + str(address) + ':' + str(port) + '/' + redis_cache.get('instance') + '/_websocket')
+                #print client_id
+                #ws = create_connection('ws://' + str(address) + ':' + str(port) + '/' + redis_cache.get('instance') + '/_websocket')
+                ws = create_connection('ws://127.0.0.1:8090/softsim/_websocket')
+
+                #print ws
                 sock_map[client_id] = ws
+                #msg_map[message_client_id] = message
                 sock_map[message_client_id].send(to_send)
+
+
+
+                #print client_id
+                #print sock_map
+                #Feedback = json.dumps("OK")
+                #message.reply_channel.send({'text': Feedback})
                 process = Process(target=push1,args=(sock_map[message_client_id],))
                 process.start()
                 proc_map[client_id] = process.pid
@@ -138,7 +154,7 @@ def push1( websocket_obj):
         try:
             result = websocket_obj.recv()
             ## If result is not a ACK signal, in YAMCS case ACK looks like `[1,2,x]`
-            if result != '[1,2,0]':
+            if result != '[1,2,0]' :
                 result2 = tk.preProcess(result)
                 """INTROSPECTION PURPOSE ONLY"""
                 e_list =  json.loads(json.dumps(ast.literal_eval(result2)))
@@ -152,9 +168,12 @@ def push1( websocket_obj):
                     freq_count = 1
                 freq_count+=1
                 try:
+                    #message.reply_channel.send({'text': result2})
                     Group('tlm_bc').send({'text': result2})
+                    #print result2
                 except:
                     time.sleep(1)
+                    #message.reply_channel.send({'text': result2})
                     Group('tlm_bc').send({'text': result2})
         except Exception as e:
             tk.log('Instance', 'Not able to push messages to client. Process killed. Error = '+str(e), 'ERROR')
@@ -544,7 +563,7 @@ class MyCache:
         @return: void
         """
         try:
-            with open(os.getcwd() + '/scripts/launch_config.json') as file:
+            with open(os.path.dirname(os.path.realpath(os.path.dirname(__file__))) + '/scripts/launch_config.json') as file:
                 config = json.load(file)
                 self.redis_cache.set ('instance',None)
                 self.redis_cache.set('default_instance', config['pyliner']['default_instance'])
