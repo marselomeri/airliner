@@ -241,6 +241,8 @@ typedef struct
     int                             DeviceFd;
     /*! The current device status */
     HMC5883_Custom_Status_t          Status;
+    /*! Simulated Self-Test State */
+    boolean                         SelfTestMode;
 } HMC5883_AppCustomData_t;
 
 

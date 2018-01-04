@@ -105,6 +105,7 @@ void HMC5883_Custom_InitData(void)
 {
     /* Set all struct zero values */
     bzero(&HMC5883_AppCustomData, sizeof(HMC5883_AppCustomData));
+    HMC5883_AppCustomData.SelfTestMode = FALSE;
 }
 
 
@@ -121,6 +122,15 @@ end_of_function:
 boolean HMC5883_Custom_Set_Range(uint8 Range)
 {
     boolean returnBool = TRUE;
+    
+    if(HMC5883_BITS_CONFIG_B_RANGE_2GA5 == Range)
+    {
+        HMC5883_AppCustomData.SelfTestMode = TRUE;
+    }
+    else
+    {
+        HMC5883_AppCustomData.SelfTestMode = FALSE;
+    }
 
     return returnBool;
 }
@@ -185,14 +195,24 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
 
     SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
 
-    /* Apply inverse rotation */
-    temp = calY_f;
-    calY_f = calX_f * -1;
-    calX_f = temp;
-    
-    *X = ((calX_f / oHMC5883.HkTlm.Calibration.x_scale) + oHMC5883.HkTlm.Calibration.x_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
-    *Y = ((calY_f / oHMC5883.HkTlm.Calibration.y_scale) + oHMC5883.HkTlm.Calibration.y_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
-    *Z = ((calZ_f / oHMC5883.HkTlm.Calibration.z_scale) + oHMC5883.HkTlm.Calibration.z_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+
+    if(FALSE == HMC5883_AppCustomData.SelfTestMode)
+    {
+        /* Apply inverse rotation */
+        temp = calY_f;
+        calY_f = calX_f * -1;
+        calX_f = temp;
+        
+        *X = ((calX_f / oHMC5883.HkTlm.Calibration.x_scale) + oHMC5883.HkTlm.Calibration.x_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+        *Y = ((calY_f / oHMC5883.HkTlm.Calibration.y_scale) + oHMC5883.HkTlm.Calibration.y_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+        *Z = ((calZ_f / oHMC5883.HkTlm.Calibration.z_scale) + oHMC5883.HkTlm.Calibration.z_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+    }
+    else if (TRUE == HMC5883_AppCustomData.SelfTestMode)
+    {
+        *X = 1.16f / (1.0f / 660.0f);
+        *Y = 1.08f / (1.0f / 660.0f);
+        *Z = 1.08f / (1.0f / 660.0f);
+    }
 
     return returnBool;
 }
