@@ -116,10 +116,15 @@ boolean MPU9250_Read_Gyro(int16 *rawX, int16 *rawY, int16 *rawZ)
 	float calZ_f = 0.0f;
 
 	SIMLIB_GetGyro(&calX_f, &calY_f, &calZ_f);
+    
+    /* Apply inverse rotation */
+    MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
     *rawX = ((calX_f / oMPU9250.Diag.Calibration.GyroXScale) + oMPU9250.Diag.Calibration.GyroXOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
     *rawY = ((calY_f / oMPU9250.Diag.Calibration.GyroYScale) + oMPU9250.Diag.Calibration.GyroYOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
     *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.GyroZScale) + oMPU9250.Diag.Calibration.GyroZOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
+
+
 
 	return TRUE;
 }
@@ -133,13 +138,8 @@ boolean MPU9250_Read_Accel(int16 *rawX, int16 *rawY, int16 *rawZ)
 
 	SIMLIB_GetAccel(&calX_f, &calY_f, &calZ_f);
 
-	//calX_f = calX_f / 9.81f;
-	//calY_f = calY_f / 9.81f;
-	//calZ_f = calZ_f / 9.81f;
-
-	//*rawX = ((calX_f - oMPU9250.Diag.Calibration.AccXOffset) / oMPU9250.Diag.Calibration.AccXScale) * oMPU9250.Diag.Calibration.AccDivider;
-	//*rawY = ((calY_f - oMPU9250.Diag.Calibration.AccYOffset) / oMPU9250.Diag.Calibration.AccYScale) * oMPU9250.Diag.Calibration.AccDivider;
-	//*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.AccZOffset) / oMPU9250.Diag.Calibration.AccZScale) * oMPU9250.Diag.Calibration.AccDivider;
+    /* Apply inverse rotation */
+    MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
     *rawX = ((calX_f / oMPU9250.Diag.Calibration.AccXScale) + oMPU9250.Diag.Calibration.AccXOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
     *rawY = ((calY_f / oMPU9250.Diag.Calibration.AccYScale) + oMPU9250.Diag.Calibration.AccYOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
@@ -221,27 +221,24 @@ boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
+    float temp;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* ROTATION_ROLL_180_YAW_90 */
+    temp = *X; 
+    *X = *Y; 
+    *Y = temp; 
+    *Z = -*Z;
 
 end_of_function:
 
     return returnBool;
 }
-
-
-//CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
-//{
-    //struct timespec ts;
-    //CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    //clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    //Timestamp.Seconds = ts.tv_sec;
-
-    //Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
-
-//end_of_function:
-    //return Timestamp;
-//}
 
 
 boolean MPU9250_Read_WhoAmI(uint8 *Value)

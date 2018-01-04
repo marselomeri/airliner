@@ -1089,28 +1089,6 @@ end_of_function:
 }
 
 
-CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    int returnCode = 0;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
-    if (-1 == returnCode)
-    {
-        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU9250 clock_gettime errno: %i", errno);
-        goto end_of_function;
-    }
-
-    Timestamp.Seconds = (uint32) ts.tv_sec;
-    Timestamp.Subseconds = (uint32) ts.tv_nsec; 
-
-end_of_function:
-    return Timestamp;
-}
-
-
 boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind)
 {
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))

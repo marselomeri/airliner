@@ -141,9 +141,6 @@ boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync,
 //boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z);
 
 boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z);
-
-CFE_TIME_SysTime_t MPU9250_Custom_Get_Time(void);
-
 boolean MPU9250_Read_WhoAmI(uint8 *Value);
 //boolean MPU9250_Read_MagDeviceID(uint8 *Value);
 

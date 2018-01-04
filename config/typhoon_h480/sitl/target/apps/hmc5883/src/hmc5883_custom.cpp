@@ -173,9 +173,6 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     float calX_f = 0.0f;
     float calY_f = 0.0f;
     float calZ_f = 0.0f;
-    float rawX_f = 0.0f;
-    float rawY_f = 0.0f;
-    float rawZ_f = 0.0f;
 
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
@@ -185,14 +182,13 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     }
 
     SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
-    
-    rawX_f = ((oHMC5883.HkTlm.Calibration.x_scale * oHMC5883.HkTlm.Calibration.x_offset) + calX_f) / (oHMC5883.HkTlm.Calibration.x_scale * (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider));
-    rawY_f = ((oHMC5883.HkTlm.Calibration.y_scale * oHMC5883.HkTlm.Calibration.y_offset) + calY_f) / (oHMC5883.HkTlm.Calibration.y_scale * (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider));
-    rawZ_f = ((oHMC5883.HkTlm.Calibration.z_scale * oHMC5883.HkTlm.Calibration.z_offset) + calZ_f) / (oHMC5883.HkTlm.Calibration.z_scale * (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider));
 
-    *X = (int16)rawX_f;
-    *Y = (int16)rawY_f;
-    *Z = (int16)rawZ_f;
+    /* Apply inverse rotation */
+    HMC5883_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
+
+    *X = ((calX_f / oHMC5883.HkTlm.Calibration.x_scale) + oHMC5883.HkTlm.Calibration.x_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+    *Y = ((calY_f / oHMC5883.HkTlm.Calibration.y_scale) + oHMC5883.HkTlm.Calibration.y_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+    *Z = ((calZ_f / oHMC5883.HkTlm.Calibration.z_scale) + oHMC5883.HkTlm.Calibration.z_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
 
     return returnBool;
 }
@@ -252,10 +248,10 @@ int32 HMC5883_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 }
 
 
-boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z)
+boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
-    int16 temp = 0;
+    float temp = 0;
 
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
@@ -272,33 +268,6 @@ boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z)
     //temp = *X;
     //*X = -*Y;
     //*Y = temp;
-
-end_of_function:
-
-    return returnBool;
-}
-
-
-boolean HMC5883_Apply_Platform_Rotation_Float(float *X, float *Y, float *Z)
-{
-    boolean returnBool = TRUE;
-    float temp_f = 0;
-
-    /* Null pointer check */
-    if(0 == X || 0 == Y || 0 == Z)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 Apply_Platform_Rotation Null Pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    
-    /* The standard external mag by 3DR has x pointing to the
-     * right, y pointing backwards, and z down, therefore switch x
-     * and y and invert y. */
-    //temp_f = *X;
-    //*X = -*Y;
-    //*Y = temp_f;
 
 end_of_function:
 
