@@ -120,9 +120,9 @@ extern "C" {
 /** \brief Integration publish rate */
 #define MPU9250_GYRO_INT_PUB_RATE           (1000000 / 400)
 /** \brief Accel scale */
-#define MPU9250_ACC_SCALE                   (2)
+#define MPU9250_ACC_SCALE                   (16)
 /** \brief Gyro scale */
-#define MPU9250_GYRO_SCALE                  (250)
+#define MPU9250_GYRO_SCALE                  (2000)
 /** \brief Magnetometer device ID. */
 #define MPU9250_AK8963_ID                   (0x48)
 /** \brief IMU device ID. */
@@ -143,16 +143,16 @@ extern "C" {
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
 /** \brief 2000 deg/s = (2000/180)*PI = 34.906585 rad/s. */
 #define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
-/** \brief Accel divider for calculated scaling */
-#define MPU9250_ACC_DIVIDER                 (1.0)
-/** \brief Gyro divider for calculated scaling */
-#define MPU9250_GYRO_DIVIDER                (1.0)
+/** \brief Accel divider for scaling */
+#define MPU9250_PRECALC_ACC_DIVIDER         (2048)
+/** \brief Gyro divider for scaling */
+#define MPU9250_PRECALC_GYRO_DIVIDER        (16.4)
 /** \brief Precalculated accel scaling */
-#define MPU9250_CALC_ACC_SCALING            MPU9250_ONE_G / MPU9250_ACC_DIVIDER
+#define MPU9250_CALC_ACC_SCALING            (MPU9250_ONE_G / MPU9250_PRECALC_ACC_DIVIDER)
 /** \brief Precalculated accel range */
 #define MPU9250_CALC_ACC_RANGE              (MPU9250_ACC_SCALE * MPU9250_ONE_G)
 /** \brief Precalculated gyro scaling */
-#define MPU9250_CALC_GYRO_SCALING           MPU9250_RADIANS_PER_DEGREE / MPU9250_GYRO_DIVIDER
+#define MPU9250_CALC_GYRO_SCALING           (MPU9250_RADIANS_PER_DEGREE / MPU9250_PRECALC_GYRO_DIVIDER)
 /** \brief Precalculated gyro range */
 #define MPU9250_CALC_GYRO_RANGE             MPU9250_2000_DEG_S
 

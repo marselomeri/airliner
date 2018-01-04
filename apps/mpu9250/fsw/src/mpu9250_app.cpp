@@ -200,8 +200,8 @@ void MPU9250::InitData()
     CFE_SB_InitMsg(&SensorGyro,
             PX4_SENSOR_GYRO_MID, sizeof(PX4_SensorGyroMsg_t), TRUE);
 
-    Diag.Calibration.AccDivider      = 1.0;
-    Diag.Calibration.GyroDivider     = 1.0;
+    Diag.Calibration.AccDivider      = MPU9250_PRECALC_ACC_DIVIDER;
+    Diag.Calibration.GyroDivider     = MPU9250_PRECALC_GYRO_DIVIDER;
     Diag.Calibration.AccUnit         = MPU9250_ONE_G;
     Diag.Calibration.GyroUnit        = MPU9250_RADIANS_PER_DEGREE;
     Diag.Calibration.AccRange        = MPU9250_CALC_ACC_RANGE;
@@ -695,6 +695,10 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
 
+    rawX_f = SensorGyro.XRaw;
+    rawY_f = SensorGyro.YRaw;
+    rawZ_f = SensorGyro.ZRaw;
+
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
     {
@@ -734,7 +738,9 @@ void MPU9250::ReadDevice(void)
     SensorGyro.ZIntegral = gval_integrated[2];
     
     /* Gyro Scale, Range, DeviceID */
+    /* TODO  change scaling to rad_per_degree / calculated divider*/
     SensorGyro.Scaling = Diag.Calibration.GyroCalcScaling;
+    /* TODO change range to unit / 180 ) * M_PI_F */
     SensorGyro.Range = Diag.Calibration.GyroRange;
 
     /* TODO deviceID */
@@ -747,9 +753,9 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
 
-    rawX_f = (float) SensorAccel.XRaw;
-    rawY_f = (float) SensorAccel.YRaw;
-    rawZ_f = (float) SensorAccel.ZRaw;
+    rawX_f = SensorAccel.XRaw;
+    rawY_f = SensorAccel.YRaw;
+    rawZ_f = SensorAccel.ZRaw;
 
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
@@ -790,8 +796,9 @@ void MPU9250::ReadDevice(void)
     SensorAccel.ZIntegral = aval_integrated[2];
 
     /* Accel Scale, Range, DeviceID */
-    /* TODO */
+    /* TODO  change scaling to unit / calculated divider */
     SensorAccel.Scaling = Diag.Calibration.AccCalcScaling;
+    /* TODO change range to scale (max_accel_g) / 1G */
     SensorAccel.Range_m_s2 = Diag.Calibration.AccRange;
     //SensorAccel.Scaling = 0;
     //SensorAccel.Range_m_s2 = 0;

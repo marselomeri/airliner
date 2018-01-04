@@ -117,14 +117,6 @@ boolean MPU9250_Read_Gyro(int16 *rawX, int16 *rawY, int16 *rawZ)
 
 	SIMLIB_GetGyro(&calX_f, &calY_f, &calZ_f);
 
-	//*rawX = ((calX_f - oMPU9250.Diag.Calibration.GyroXOffset) / oMPU9250.Diag.Calibration.GyroXScale) * oMPU9250.Diag.Calibration.GyroDivider;
-	//*rawY = ((calY_f - oMPU9250.Diag.Calibration.GyroYOffset) / oMPU9250.Diag.Calibration.GyroYScale) * oMPU9250.Diag.Calibration.GyroDivider;
-	//*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.GyroZOffset) / oMPU9250.Diag.Calibration.GyroZScale) * oMPU9250.Diag.Calibration.GyroDivider;
-
-    //*rawX = (oMPU9250.Diag.Calibration.GyroDivider * (oMPU9250.Diag.Calibration.GyroXOffset * oMPU9250.Diag.Calibration.GyroXScale + calX_f)) / oMPU9250.Diag.Calibration.GyroUnit;
-    //*rawY = (oMPU9250.Diag.Calibration.GyroDivider * (oMPU9250.Diag.Calibration.GyroYOffset * oMPU9250.Diag.Calibration.GyroYScale + calY_f)) / oMPU9250.Diag.Calibration.GyroUnit;
-    //*rawZ = (oMPU9250.Diag.Calibration.GyroDivider * (oMPU9250.Diag.Calibration.GyroZOffset * oMPU9250.Diag.Calibration.GyroZScale + calZ_f)) / oMPU9250.Diag.Calibration.GyroUnit;
-
     *rawX = ((calX_f / oMPU9250.Diag.Calibration.GyroXScale) + oMPU9250.Diag.Calibration.GyroXOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
     *rawY = ((calY_f / oMPU9250.Diag.Calibration.GyroYScale) + oMPU9250.Diag.Calibration.GyroYOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
     *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.GyroZScale) + oMPU9250.Diag.Calibration.GyroZOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
@@ -141,13 +133,17 @@ boolean MPU9250_Read_Accel(int16 *rawX, int16 *rawY, int16 *rawZ)
 
 	SIMLIB_GetAccel(&calX_f, &calY_f, &calZ_f);
 
-	calX_f = calX_f / 9.81f;
-	calY_f = calY_f / 9.81f;
-	calZ_f = calZ_f / 9.81f;
+	//calX_f = calX_f / 9.81f;
+	//calY_f = calY_f / 9.81f;
+	//calZ_f = calZ_f / 9.81f;
 
-	*rawX = ((calX_f - oMPU9250.Diag.Calibration.AccXOffset) / oMPU9250.Diag.Calibration.AccXScale) * oMPU9250.Diag.Calibration.AccDivider;
-	*rawY = ((calY_f - oMPU9250.Diag.Calibration.AccYOffset) / oMPU9250.Diag.Calibration.AccYScale) * oMPU9250.Diag.Calibration.AccDivider;
-	*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.AccZOffset) / oMPU9250.Diag.Calibration.AccZScale) * oMPU9250.Diag.Calibration.AccDivider;
+	//*rawX = ((calX_f - oMPU9250.Diag.Calibration.AccXOffset) / oMPU9250.Diag.Calibration.AccXScale) * oMPU9250.Diag.Calibration.AccDivider;
+	//*rawY = ((calY_f - oMPU9250.Diag.Calibration.AccYOffset) / oMPU9250.Diag.Calibration.AccYScale) * oMPU9250.Diag.Calibration.AccDivider;
+	//*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.AccZOffset) / oMPU9250.Diag.Calibration.AccZScale) * oMPU9250.Diag.Calibration.AccDivider;
+
+    *rawX = ((calX_f / oMPU9250.Diag.Calibration.AccXScale) + oMPU9250.Diag.Calibration.AccXOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
+    *rawY = ((calY_f / oMPU9250.Diag.Calibration.AccYScale) + oMPU9250.Diag.Calibration.AccYOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
+    *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.AccZScale) + oMPU9250.Diag.Calibration.AccZOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
 
 	return TRUE;
 }
