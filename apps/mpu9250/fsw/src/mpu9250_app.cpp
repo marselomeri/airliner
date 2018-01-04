@@ -12,6 +12,8 @@
 #include "Vector3F.hpp"
 #include "lib/px4lib.h"
 
+//#include <unistd.h>
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
@@ -375,7 +377,7 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
         {
             case MPU9250_MEASURE_MID:
             {
-            	static uint32 i = 0;
+            	//static uint32 i = 0;
 
                 ReadDevice();
                 SendSensorGyro();
@@ -693,10 +695,6 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
 
-    rawX_f = (float) SensorGyro.XRaw;
-    rawY_f = (float) SensorGyro.YRaw;
-    rawZ_f = (float) SensorGyro.ZRaw;
-
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
     {
@@ -709,10 +707,12 @@ void MPU9250::ReadDevice(void)
             Diag.Calibration.GyroYOffset) * Diag.Calibration.GyroYScale;
     calZ_f = (rawZ_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
             Diag.Calibration.GyroZOffset) * Diag.Calibration.GyroZScale;
+
     /* Gyro Filter */
     SensorGyro.X = _gyro_filter_x.apply(calX_f);
     SensorGyro.Y = _gyro_filter_y.apply(calY_f);
     SensorGyro.Z = _gyro_filter_z.apply(calZ_f);
+
     /* Gyro Integrate */
     gval[0] = SensorGyro.X;
     gval[1] = SensorGyro.Y;
@@ -764,12 +764,10 @@ void MPU9250::ReadDevice(void)
             Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
     calZ_f = (rawZ_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
             Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
-
     /* Accel Filter */
     SensorAccel.X = _accel_filter_x.apply(calX_f);
     SensorAccel.Y = _accel_filter_y.apply(calY_f);
     SensorAccel.Z = _accel_filter_z.apply(calZ_f);
-
     /* Accel Integrate */
     aval[0] = SensorAccel.X;
     aval[1] = SensorAccel.Y;

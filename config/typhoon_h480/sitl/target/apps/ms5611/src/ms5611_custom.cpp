@@ -263,6 +263,11 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 				SIMLIB_GetPressureAltitude(&Altitude);
 				SIMLIB_GetTemp(&Temperature);
 
+                if(0 == Temperature)
+                {
+                    Temperature = 32;
+                }
+
 		        p = p1*pow(((a*(Altitude)+T1)/T1),(-g/(a*R)));
 		        dT = (0x800000*((Temperature*100)-2000)) / MS5611_CUSTOM_C5;
 

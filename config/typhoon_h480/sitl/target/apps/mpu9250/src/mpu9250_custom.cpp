@@ -109,7 +109,7 @@ end_of_function:
 }
 
 
-boolean MPU9250_Read_Gyro(int16 *rawX_f, int16 *rawY_f, int16 *rawZ_f)
+boolean MPU9250_Read_Gyro(int16 *rawX, int16 *rawY, int16 *rawZ)
 {
 	float calX_f = 0.0f;
 	float calY_f = 0.0f;
@@ -117,9 +117,17 @@ boolean MPU9250_Read_Gyro(int16 *rawX_f, int16 *rawY_f, int16 *rawZ_f)
 
 	SIMLIB_GetGyro(&calX_f, &calY_f, &calZ_f);
 
-	*rawX_f = ((calX_f - oMPU9250.Diag.Calibration.GyroXOffset) / oMPU9250.Diag.Calibration.GyroXScale) * oMPU9250.Diag.Calibration.GyroDivider;
-	*rawY_f = ((calY_f - oMPU9250.Diag.Calibration.GyroYOffset) / oMPU9250.Diag.Calibration.GyroYScale) * oMPU9250.Diag.Calibration.GyroDivider;
-	*rawZ_f = ((calZ_f - oMPU9250.Diag.Calibration.GyroZOffset) / oMPU9250.Diag.Calibration.GyroZScale) * oMPU9250.Diag.Calibration.GyroDivider;
+	//*rawX = ((calX_f - oMPU9250.Diag.Calibration.GyroXOffset) / oMPU9250.Diag.Calibration.GyroXScale) * oMPU9250.Diag.Calibration.GyroDivider;
+	//*rawY = ((calY_f - oMPU9250.Diag.Calibration.GyroYOffset) / oMPU9250.Diag.Calibration.GyroYScale) * oMPU9250.Diag.Calibration.GyroDivider;
+	//*rawZ = ((calZ_f - oMPU9250.Diag.Calibration.GyroZOffset) / oMPU9250.Diag.Calibration.GyroZScale) * oMPU9250.Diag.Calibration.GyroDivider;
+
+    //*rawX = (oMPU9250.Diag.Calibration.GyroDivider * (oMPU9250.Diag.Calibration.GyroXOffset * oMPU9250.Diag.Calibration.GyroXScale + calX_f)) / oMPU9250.Diag.Calibration.GyroUnit;
+    //*rawY = (oMPU9250.Diag.Calibration.GyroDivider * (oMPU9250.Diag.Calibration.GyroYOffset * oMPU9250.Diag.Calibration.GyroYScale + calY_f)) / oMPU9250.Diag.Calibration.GyroUnit;
+    //*rawZ = (oMPU9250.Diag.Calibration.GyroDivider * (oMPU9250.Diag.Calibration.GyroZOffset * oMPU9250.Diag.Calibration.GyroZScale + calZ_f)) / oMPU9250.Diag.Calibration.GyroUnit;
+
+    *rawX = ((calX_f / oMPU9250.Diag.Calibration.GyroXScale) + oMPU9250.Diag.Calibration.GyroXOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
+    *rawY = ((calY_f / oMPU9250.Diag.Calibration.GyroYScale) + oMPU9250.Diag.Calibration.GyroYOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
+    *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.GyroZScale) + oMPU9250.Diag.Calibration.GyroZOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
 
 	return TRUE;
 }
@@ -177,7 +185,14 @@ boolean MPU9250_Read_Temp(uint16 *rawTemp)
 
 	SIMLIB_GetTemp(&calTemp);
 
-    *rawTemp = ((calTemp + oMPU9250.Diag.Calibration.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Calibration.TempSensitivity;
+    if(0 == calTemp)
+    {
+        *rawTemp = -1083;
+    }
+    else
+    {
+        *rawTemp = ((calTemp + oMPU9250.Diag.Calibration.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Calibration.TempSensitivity;
+    }
 
 	return TRUE;
 }
