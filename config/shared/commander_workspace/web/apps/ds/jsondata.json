@@ -1,0 +1,296 @@
+{
+  "table1":
+  {   "bodyType":"ARRYOFDICT",
+      "header":{
+          "cmd":[],
+          "tlm":[]
+        },
+      "body":[
+        {
+          "name":"Cmd Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/CmdAcceptedCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Cmd Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/CmdRejectedCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Dest Tbl Load Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/DestTblErrCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Filter Tbl Load Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FilterTblLoadCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Filter Tbl Err Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FilterTblErrCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"App Enable State",
+          "slug":"{'tlm':[{'name':'/CFS/DS/AppEnableState'}]}",
+          "buttons":[
+            {
+              "name":"Dis",
+              "slug":"{'cmd': {'name':'/CFS/DS/SetAppState', 'argument':[{'name':'State', 'value':'Disabled'}]}}"
+            },
+            {
+              "name":"Ena",
+              "slug":"{'cmd': {'name':'/CFS/DS/SetAppState', 'argument':[{'name':'State', 'value':'Enabled'}]}}"
+            }
+          ]
+        },
+        {
+          "name":"File Write Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FileWriteCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"File Write Err Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FileWriteErrCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"File Update Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FileUpdateCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"File Update Err Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FileUpdateErrCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Disabled Pkt Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/DisabledPktCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Ignored Pkt Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/IgnoredPktCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Filtered Pkt Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/FilteredPktCounter'}]}",
+          "buttons":[]
+        },
+        {
+          "name":"Passed Pkt Count",
+          "slug":"{'tlm':[{'name':'/CFS/DS/PassedPktCounter'}]}",
+          "buttons":[]
+        }
+      ],
+      "footer":{
+        "cmd": [
+          {
+            "name":"Set Filter File",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetFilterFile'}}"
+          },
+          {
+            "name":"Set Filter Type",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetFilterType'}}"
+          },
+          {
+            "name":"Set Filter Params",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetFilterParms'}}"
+          },
+          {
+            "name":"Set Dest Type",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestType'}}"
+          },
+          {
+            "name":"Set Dest State",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestState'}}"
+          },
+          {
+            "name":"Set Dest Path",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestPath'}}"
+          },
+          {
+            "name":"Set Dest Base",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestBase'}}"
+          },
+          {
+            "name":"Set Dest Ext",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestExt'}}"
+          },
+          {
+            "name":"Set Dest Size",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestSize'}}"
+          },
+          {
+            "name":"Set Dest Age",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestAge'}}"
+          },
+          {
+            "name":"Set Dest Count",
+            "slug":"{'cmd':{'name':'/CFS/DS/SetDestCount'}}"
+          },
+          {
+            "name":"Close File",
+            "slug":"{'cmd':{'name':'/CFS/DS/CloseFile'}}"
+          },
+          {
+            "name":"Close All",
+            "slug":"{'cmd':{'name':'/CFS/DS/CloseAll'}}"
+          }
+        ],
+        "tlm":[]
+      }
+  },
+  "table2":
+{     "bodyType":"ARRYOFARRY",
+      "header":{
+        "cmd":[
+          {
+            "name":"Send",
+            "slug":"{'cmd':{'name':'/CFS/DS/GetFileInfo'}}"
+
+          }
+        ],
+        "tlm":[]
+      },
+      "body":[
+        [
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_0_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_1_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_1_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_1_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_1_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_1_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_1_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_1_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_2_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_2_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_2_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_2_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_2_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_2_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_2_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_3_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_3_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_3_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_3_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_3_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_3_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_3_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_4_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_4_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_4_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_4_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_4_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_4_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_4_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_5_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_5_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_5_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_5_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_5_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_5_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_5_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_6_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_6_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_6_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_6_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_6_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_6_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_6_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_7_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_7_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_7_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_7_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_7_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_7_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_7_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_8_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_8_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_8_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_8_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_8_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_8_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_8_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_9_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_9_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_9_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_9_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_9_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_9_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_9_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_10_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_10_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_10_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_10_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_10_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_10_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_10_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_11_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_11_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_11_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_11_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_11_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_11_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_11_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_12_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_12_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_12_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_12_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_12_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_12_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_12_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_13_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_13_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_13_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_13_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_13_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_13_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_13_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_14_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_14_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_14_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_14_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_14_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_14_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_14_FileName'}]}"],
+
+        ["{'tlm':[{'name':'/CFS/DS/FileInfo_15_Age'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_15_Size'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_15_Rate'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_15_SequenceCount'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_15_EnableState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_15_OpenState'}]}",
+        "{'tlm':[{'name':'/CFS/DS/FileInfo_15_FileName'}]}"]
+
+      ],
+      "footer":{
+        "cmd":[],
+        "tlm":[]
+
+      }
+  }
+}

@@ -12,11 +12,13 @@ import sqlite3
 ## Global variables
 
 ## Register working_dir
-try:
-    working_dir = os.environ['YAMCS_WORKSPACE']+'web'
-except:
-    working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
-    pass
+#try:
+working_dir = os.getenv('YAMCS_WORKSPACE', '/home/vagrant/git/airliner/config/shared/commander_workspace/') + 'web'
+
+#os.environ['YAMCS_WORKSPACE']+'web'
+#except:
+    #working_dir = '/home/vagrant/git/airliner/config/shared/commander_workspace/web'
+    #pass
 
 ## Register redis caching server
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -39,6 +41,7 @@ def get_directory(path):
     outFiles=[]
     error= None
     try:
+        #print '//*/*/*/*/*/*/*/*/**/*/*/*/*/*',working_dir
         rootdir = path.rstrip(os.sep)
         rootdir = working_dir +  path
 
@@ -95,8 +98,12 @@ def preProcess(d):
     @param d: text
     @return: processed text
     """
+    array_obj = []
     dealing_with_incompat = re.sub(r"\btrue\b", "True", d)
-    array_obj = ast.literal_eval(dealing_with_incompat)
+    if len(dealing_with_incompat)>0:
+        array_obj = ast.literal_eval(dealing_with_incompat)
+    else:
+        raise IOError
     if array_obj[1] == 4:
         x = array_obj[3]["data"]
         x1 = x['parameter']
@@ -121,3 +128,9 @@ def collectTestCases(conn,mapper,input,eo,desc):
     c = conn.cursor()
     insert = 'INSERT INTO `TESTCASES`(`mapping`,`input`,`output`,`time_stamp`,`description`)  VALUES (?,?,?,?,?)'
     c.execute(insert,(mapper,input,eo,getDate(),desc))
+
+
+def readJsonFromCloseCirlce(closecircle):
+    with open(working_dir+'/'+closecircle+'/jsondata.json') as jfile:
+        data = json.load(jfile)
+    return data

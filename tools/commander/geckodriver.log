@@ -122,3 +122,27 @@ JavaScript error: http://localhost:8000/static/bower_components/handlebars/handl
 1513370327573	Marionette	DEBUG	Canceled page load listener because no navigation has been detected
 1513370332705	Marionette	DEBUG	Received DOM event "popstate" for "http://localhost:8000/#/apps/cs/main.pug"
 1513370338028	Marionette	INFO	New connections will no longer be accepted
+1513623729268	geckodriver	INFO	geckodriver 0.19.1
+1513623729273	geckodriver	INFO	Listening on 127.0.0.1:38165
+1513623730387	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.F3IFc2iM8fMp"
+1513623730883	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1514489425520	geckodriver	INFO	geckodriver 0.19.1
+1514489425523	geckodriver	INFO	Listening on 127.0.0.1:53990
+1514489426683	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.2Yn2eEAtG6rM"
+1514489427025	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1514489427462	Marionette	INFO	Enabled via --marionette
+1514489429653	Marionette	INFO	Listening on port 42972
+1514489429770	Marionette	WARN	TLS certificate errors will be ignored for this session
+1514489429825	Marionette	DEBUG	Register listener.js for window 2147483649
+1514489429859	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1514489430197	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1514489430197	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+JavaScript error: http://localhost:8000/client.js, line 792: ReferenceError: module is not defined
+1514489431419	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "http://localhost:8000/#flight/pilot"
+1514489431555	Marionette	DEBUG	Received DOM event "pageshow" for "http://localhost:8000/#flight/pilot"
+1514489433620	Marionette	INFO	New connections will no longer be accepted
+[Child 9785] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x2400C4,name=PContent::Msg_GraphicsError) Channel error: cannot send/recv
+
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
