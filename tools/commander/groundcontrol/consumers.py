@@ -551,7 +551,7 @@ def VideoThroughUDP(msg_obj):
 
 
 
-
+'''
 adsb_proc = {}
 
 def adsb_connect(message):
@@ -588,7 +588,7 @@ def push_adsb(msg_obj):
         print d
         time.sleep(0.01)
 
-
+'''
 class MyCache:
     """!
    Loads launch variable to cache

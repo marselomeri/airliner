@@ -42,8 +42,5 @@ channel_routing = [
                     route(u'websocket.receive', getTelemetry, path='/video'),
                     route(u'websocket.disconnect', vid_disconnect, path='/video'),
 
-                    route(u'websocket.connect', tlm_connect, path='/tlm'),
-                    route(u'websocket.receive', getTelemetry, path='/tlm'),
-                    route(u'websocket.disconnect', tlm_disconnect, path='/tlm'),
 ]
 
