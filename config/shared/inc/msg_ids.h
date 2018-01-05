@@ -619,12 +619,6 @@
 #define BAT_WAKEUP_MID                              0x1c73
 #define BAT_CMD_MID                                 0x1c74
 
-/* HMC5883                                              */
-#define HMC5883_HK_TLM_MID                          0x0c75
-#define HMC5883_SEND_HK_MID                         0x1c76
-#define HMC5883_WAKEUP_MID                          0x1c77
-#define HMC5883_CMD_MID                             0x1c78
-
 /* PE                                                    */
 #define PE_HK_TLM_MID                               0x0c79
 #define PE_SEND_HK_MID                              0x1c7a
@@ -657,6 +651,13 @@
 #define GPS_CFG_SBAS_MID                            0x0c95
 #define GPS_CFG_NAV5_MID                            0x0c96
 #define GPS_MON_HW_MID                              0x0c97
+
+/* HMC5883                                              */
+#define HMC5883_HK_TLM_MID                          0x0ca1
+#define HMC5883_SEND_HK_MID                         0x1ca2
+#define HMC5883_WAKEUP_MID                          0x1ca3
+#define HMC5883_CMD_MID                             0x1ca4
+#define HMC5883_DIAG_TLM_MID                        0x0ca5
 
 #define SCH_ACTIVITY_DONE_MID			    0x0f00
 
