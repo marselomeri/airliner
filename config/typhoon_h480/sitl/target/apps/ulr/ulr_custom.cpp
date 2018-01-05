@@ -87,10 +87,8 @@ int32 ULR::ReadDevice(uint8 *Buffer, uint32 *Size)
 
     /* Checksum. */
     Buffer[5] = 0;
-    for(i = 1; i < 4; ++i)
-    {
-    	Buffer[5] += Buffer[i];
-    }
+
+    Buffer[5] = (Buffer[1] + Buffer[2] + Buffer[3] + Buffer[4]) & 0xFF;
 
     *Size = ULR_CUSTOM_BUF_LEN;
 

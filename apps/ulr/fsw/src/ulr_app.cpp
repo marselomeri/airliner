@@ -553,7 +553,15 @@ bool   ULR::IsChecksumOk(void)
 	checksum = (UartMessage.VersionID + UartMessage.AltitudeH +
 			UartMessage.AltitudeL + UartMessage.SNR) & 0xFF;
 
-	return UartMessage.Checksum = checksum;
+    if (UartMessage.Checksum == checksum)
+    {
+        return true;
+    }
+    else
+    {
+        OS_printf("UartMessage.Checksum  %hhu != checksum %hhu\n", UartMessage.Checksum, checksum);
+        return false;
+    }
 }
 
 
