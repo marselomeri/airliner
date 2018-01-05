@@ -41,6 +41,8 @@
 #include "mpu9250_spi.h"
 #include "mpu9250_events.h"
 #include "mpu9250_perfids.h"
+#include "lib/px4lib.h"
+
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -1129,3 +1131,21 @@ end_of_function:
     return customEventCount;
 }
 
+
+void MPU9250_Get_Rotation(uint8 *Rotation)
+{
+    
+    /* Null pointer check */
+    if(0 == Rotation)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Get_Rotation Null Pointer");
+        goto end_of_function;
+    }
+    
+    /* TODO move to a table */
+    *Rotation = ROTATION_ROLL_180_YAW_90;
+
+end_of_function:
+;
+}

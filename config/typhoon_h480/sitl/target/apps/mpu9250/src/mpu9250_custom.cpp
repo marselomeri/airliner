@@ -3,6 +3,8 @@
 #include "mpu9250_app.h"
 #include "simlib.h"
 #include <time.h>
+#include "lib/px4lib.h"
+
 
 extern MPU9250 oMPU9250;
 
@@ -120,9 +122,9 @@ boolean MPU9250_Read_Gyro(int16 *rawX, int16 *rawY, int16 *rawZ)
     /* Apply inverse rotation */
     MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
-    *rawX = ((calX_f / oMPU9250.Diag.Calibration.GyroXScale) + oMPU9250.Diag.Calibration.GyroXOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
-    *rawY = ((calY_f / oMPU9250.Diag.Calibration.GyroYScale) + oMPU9250.Diag.Calibration.GyroYOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
-    *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.GyroZScale) + oMPU9250.Diag.Calibration.GyroZOffset) / (oMPU9250.Diag.Calibration.GyroUnit / oMPU9250.Diag.Calibration.GyroDivider);
+    *rawX = ((calX_f / oMPU9250.Diag.Calibration.GyroXScale) + oMPU9250.Diag.Calibration.GyroXOffset) / (oMPU9250.Diag.Conversion.GyroUnit / oMPU9250.Diag.Conversion.GyroDivider);
+    *rawY = ((calY_f / oMPU9250.Diag.Calibration.GyroYScale) + oMPU9250.Diag.Calibration.GyroYOffset) / (oMPU9250.Diag.Conversion.GyroUnit / oMPU9250.Diag.Conversion.GyroDivider);
+    *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.GyroZScale) + oMPU9250.Diag.Calibration.GyroZOffset) / (oMPU9250.Diag.Conversion.GyroUnit / oMPU9250.Diag.Conversion.GyroDivider);
 
 
 
@@ -141,9 +143,9 @@ boolean MPU9250_Read_Accel(int16 *rawX, int16 *rawY, int16 *rawZ)
     /* Apply inverse rotation */
     MPU9250_Apply_Platform_Rotation(&calX_f, &calY_f, &calZ_f);
 
-    *rawX = ((calX_f / oMPU9250.Diag.Calibration.AccXScale) + oMPU9250.Diag.Calibration.AccXOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
-    *rawY = ((calY_f / oMPU9250.Diag.Calibration.AccYScale) + oMPU9250.Diag.Calibration.AccYOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
-    *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.AccZScale) + oMPU9250.Diag.Calibration.AccZOffset) / (oMPU9250.Diag.Calibration.AccUnit / oMPU9250.Diag.Calibration.AccDivider);
+    *rawX = ((calX_f / oMPU9250.Diag.Calibration.AccXScale) + oMPU9250.Diag.Calibration.AccXOffset) / (oMPU9250.Diag.Conversion.AccUnit / oMPU9250.Diag.Conversion.AccDivider);
+    *rawY = ((calY_f / oMPU9250.Diag.Calibration.AccYScale) + oMPU9250.Diag.Calibration.AccYOffset) / (oMPU9250.Diag.Conversion.AccUnit / oMPU9250.Diag.Conversion.AccDivider);
+    *rawZ = ((calZ_f / oMPU9250.Diag.Calibration.AccZScale) + oMPU9250.Diag.Calibration.AccZOffset) / (oMPU9250.Diag.Conversion.AccUnit / oMPU9250.Diag.Conversion.AccDivider);
 
 	return TRUE;
 }
@@ -187,7 +189,7 @@ boolean MPU9250_Read_Temp(uint16 *rawTemp)
     }
     else
     {
-        *rawTemp = ((calTemp + oMPU9250.Diag.Calibration.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Calibration.TempSensitivity;
+        *rawTemp = ((calTemp + oMPU9250.Diag.Conversion.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Conversion.TempSensitivity;
     }
 
 	return TRUE;
@@ -196,6 +198,7 @@ boolean MPU9250_Read_Temp(uint16 *rawTemp)
 
 boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
 {
+    /* Function is unused in platform independent code. */
 	return TRUE;
 }
 
@@ -229,6 +232,7 @@ boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
         returnBool = FALSE;
         goto end_of_function;
     }
+    /* TODO move to a table */
     /* ROTATION_ROLL_180_YAW_90 */
     temp = *X; 
     *X = *Y; 
@@ -255,3 +259,21 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
 
 	return TRUE;
 }
+
+
+void MPU9250_Get_Rotation(uint8 *Rotation)
+{
+    
+    /* Null pointer check */
+    if(0 == Rotation)
+    {
+        goto end_of_function;
+    }
+    
+    /* TODO move to a table */
+    *Rotation = ROTATION_ROLL_180_YAW_90;
+
+end_of_function:
+;
+}
+

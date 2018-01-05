@@ -134,9 +134,9 @@ boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z);
 boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z);
 boolean MPU9250_Read_Temp(uint16 *Temp);
 
+void MPU9250_Get_Rotation(uint8 *Rotation);
 
-
-boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady);
+//boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady);
 //boolean MPU9250_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit);
 //boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z);
 

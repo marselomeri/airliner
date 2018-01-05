@@ -132,3 +132,9 @@ boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     return TRUE;
 }
+
+
+void MPU9250_Get_Rotation(uint8 *Rotation)
+{
+    
+}
