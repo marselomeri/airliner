@@ -154,11 +154,12 @@ typedef struct
     uint8              State;
 } MPU9250_HkTlm_t;
 
-
+/** 
+**  \brief MPU9250 application struct for calibration
+*/
 typedef struct
 {
-    float AccDivider;
-    float GyroDivider;
+
     float AccXScale;
     float AccYScale;
     float AccZScale;
@@ -171,76 +172,101 @@ typedef struct
     float GyroXOffset;
     float GyroYOffset;
     float GyroZOffset;
-    float MagXScale;
-    float MagYScale;
-    float MagZScale;
-    float MagXOffset;
-    float MagYOffset;
-    float MagZOffset;
-    uint8 MagXAdj;
-    uint8 MagYAdj;
-    uint8 MagZAdj;
+    //float MagXScale;
+    //float MagYScale;
+    //float MagZScale;
+    //float MagXOffset;
+    //float MagYOffset;
+    //float MagZOffset;
+    //uint8 MagXAdj;
+    //uint8 MagYAdj;
+    //uint8 MagZAdj;
+    float AccUnit;
+    float GyroUnit;
+    float AccDivider;
+    float GyroDivider;
     float RoomTempOffset;
     float TempSensitivity;
     uint16 AccScale;
     uint16 GyroScale;
     float AccRange;
     float GyroRange;
-    float AccUnit;
-    float GyroUnit;
     float GyroCalcScaling;
     float AccCalcScaling;
 } MPU9250_CalibrationMsg_t;
 
+
+/** 
+**  \brief MPU9250 application struct for unit conversion 
+*/
 typedef struct
 {
-    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    float AccUnit;
+    float GyroUnit;
+    float AccDivider;
+    float GyroDivider;
+    float AccRange;
+    float GyroRange;
+    float GyroCalcScaling;
+    float AccCalcScaling;
+    float RoomTempOffset;
+    float TempSensitivity;
+    uint16 AccScale;
+    uint16 GyroScale;
+    //uint8 MagXAdj;
+    //uint8 MagYAdj;
+    //uint8 MagZAdj;
+} MPU9250_ConversionMsg_t;
 
-    int16 AccelX;
-    int16 AccelY;
-    int16 AccelZ;
+//typedef struct
+//{
+    //uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
-    int16 GyroX;
-    int16 GyroY;
-    int16 GyroZ;
+    //int16 AccelX;
+    //int16 AccelY;
+    //int16 AccelZ;
 
-    int16 MagX;
-    int16 MagY;
-    int16 MagZ;
+    //int16 GyroX;
+    //int16 GyroY;
+    //int16 GyroZ;
 
-    uint8 Spare;
+    //int16 MagX;
+    //int16 MagY;
+    //int16 MagZ;
 
-    uint16 Temp;
+    //uint8 Spare;
 
-    boolean WOM;
-    boolean FifoOvflw;
-    boolean Fsync;
-    boolean ImuDataReady;
-    boolean Overrun;
-    boolean MagDataReady;
-    boolean Overflow;
-    boolean Output16Bit;
-} MPU9250_RawMeasMsg_t;
+    //uint16 Temp;
+
+    //boolean WOM;
+    //boolean FifoOvflw;
+    //boolean Fsync;
+    //boolean ImuDataReady;
+    //boolean Overrun;
+    //boolean MagDataReady;
+    //boolean Overflow;
+    //boolean Output16Bit;
+//} MPU9250_RawMeasMsg_t;
 
 
-typedef struct
-{
-    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+//typedef struct
+//{
+    //uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 
-    float AccelX;
-    float AccelY;
-    float AccelZ;
+    //float AccelX;
+    //float AccelY;
+    //float AccelZ;
 
-    float GyroX;
-    float GyroY;
-    float GyroZ;
+    //float GyroX;
+    //float GyroY;
+    //float GyroZ;
     
-    float MagX;
-    float MagY;
-    float MagZ;
+    //float MagX;
+    //float MagY;
+    //float MagZ;
 
-    float Temp;
-} MPU9250_CalMeasMsg_t;
+    //float Temp;
+//} MPU9250_CalMeasMsg_t;
 
 
 /** 
@@ -250,8 +276,9 @@ typedef struct
 {
     uint8           TlmHeader[CFE_SB_TLM_HDR_SIZE];
     MPU9250_CalibrationMsg_t          Calibration;
-    MPU9250_RawMeasMsg_t              RawMeasure;
-    MPU9250_CalMeasMsg_t              CalMeasure;
+    MPU9250_ConversionMsg_t           Conversion;
+    //MPU9250_RawMeasMsg_t              RawMeasure;
+    //MPU9250_CalMeasMsg_t              CalMeasure;
 } MPU9250_DiagPacket_t;
 
 

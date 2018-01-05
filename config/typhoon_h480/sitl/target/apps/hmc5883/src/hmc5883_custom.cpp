@@ -209,6 +209,7 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     }
     else if (TRUE == HMC5883_AppCustomData.SelfTestMode)
     {
+        /* Expected value from self-calibrate with inverse scaling */
         *X = 1.16f / (1.0f / 660.0f);
         *Y = 1.08f / (1.0f / 660.0f);
         *Z = 1.08f / (1.0f / 660.0f);

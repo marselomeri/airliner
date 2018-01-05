@@ -156,6 +156,8 @@ extern "C" {
 #define MPU9250_CALC_GYRO_SCALING           (MPU9250_RADIANS_PER_DEGREE / MPU9250_PRECALC_GYRO_DIVIDER)
 /** \brief Precalculated gyro range */
 #define MPU9250_CALC_GYRO_RANGE             MPU9250_2000_DEG_S
+/** \brief Temperature sensitivity */
+#define MPU9250_TEMP_SENS                   (361.0f)
 
 
 #ifdef __cplusplus
