@@ -189,7 +189,8 @@ def cmd1_connect( message):
     @param message: connection request from client, this message will connection headers.
     @return: void
     """
-    message.reply_channel.send({'accept': True})
+    Feedback = json.dumps("OK")
+    message.reply_channel.send({'accept': True, 'text':Feedback})
     tk.log(defaultInstance,'Commanding connected to  client','INFO')
 
 def cmd1_disconnect( message):
@@ -198,7 +199,8 @@ def cmd1_disconnect( message):
     @param message: disconnection request from client, this message will disconnection headers.
     @return: void
     """
-    message.reply_channel.send({'close': True})
+    Feedback = json.dumps("ENDOK")
+    message.reply_channel.send({'close': True, 'text':Feedback})
     tk.log('defaultInstance', 'Commanding (dis)connected from client', 'INFO')
 
 def cmd2_connect( message):
@@ -207,7 +209,8 @@ def cmd2_connect( message):
     @param message: connection request from client, this message will connection headers.
     @return: void
     """
-    message.reply_channel.send({'accept': True})
+    Feedback = json.dumps("OK")
+    message.reply_channel.send({'accept': True, 'text': Feedback})
     tk.log(defaultInstance,'Commanding connected to  client','INFO')
 
 def cmd2_disconnect( message):
@@ -216,7 +219,8 @@ def cmd2_disconnect( message):
     @param message: disconnection request from client, this message will disconnection headers.
     @return: void
     """
-    message.reply_channel.send({'close': True})
+    Feedback = json.dumps("ENDOK")
+    message.reply_channel.send({'close': True, 'text': Feedback})
     tk.log('defaultInstance', 'Commanding (dis)connected from client', 'INFO')
 
 def test_db_wrapper(input,output,code,desc):
@@ -542,6 +546,43 @@ def VideoThroughUDP(msg_obj):
         time.sleep(0.01)
 
 
+
+
+adsb_proc = {}
+
+def adsb_connect(message):
+    Feedback = json.dumps("ENDOK")
+    message.reply_channel.send({'accept': True, 'text': Feedback})
+    tk.log('ADSB', 'Connected.', 'INFO')
+
+def adsb_disconnect(medssage):
+    Feedback = json.dumps("ENDOK")
+    message.reply_channel.send({'close': True, 'text': Feedback})
+    tk.log('Instance', '(Dis)connected.', 'INFO')
+
+def getAdsb(message):
+    global adsb_proc,c
+    client_id = message.content['reply_channel']
+    message_text = tk.byteify(message.content['text'])
+    if  message_text.find('initialize')!=-1:
+        process = Process(target=push_adsb,args=(message,))
+        process.start()
+        adsb_proc[client_id]=process.pid
+    elif  message_text.find('disolve')!=-1:
+        for e in adsb_proc.keys():
+            to_kill = psutil.Process(adsb_proc[e])
+            to_kill.kill()
+            del adsb_proc[e]
+        print 'end'
+
+
+def push_adsb(msg_obj):
+    while True:
+        response = urllib.urlopen('http://' + str(address) + ':8080/dump1090/data.json')
+        d = json.loads(json.dumps(response.read()))
+        msg_obj.reply_channel.send({'text':d})
+        print d
+        time.sleep(0.01)
 
 
 class MyCache:

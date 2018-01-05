@@ -672,7 +672,49 @@ Event.prototype = {
 }
 
 //---------------------------------------------------------------------------------------------------------------
+/* ADSB:
+   A web socket function to establish adsb specific communication between server and client.
+   Initializes web socket to receive video frames.*/
 //---------------------------------------------------------------------------------------------------------------
+var ADSB = function() {
+        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/adsb');
+        this.video_subscribers = {};
+        var self = this;
+
+        this.vid_subc.onopen = function (){
+            log('DEBUG','Connection open.','getAdsbStream');
+            //self.vid_subc.send('INVOKE');//TODO
+            //log('INFO','Message Sent.','getAdsbStream');
+        }
+
+        this.vid_subc.onclose = function(){
+            log('DEBUG','Connection closed.','getAdsbStream');
+        }
+        this.vid_subc.onerror = function(){
+            log('ERR','Connection closed.','getAdsbStream');
+        }
+
+}
+ADSB.prototype = {
+
+    getAdsbStream(cb){
+        var socket = this.vid_subc;
+
+        socket.onmessage = function (event){
+            log('INFO','Message received.','getAdsbStream');
+            cosole.log(event)
+            //cb(event);
+        }
+        //if (socket.readyState == WebSocket.OPEN) {
+        //  socket.send('INVOKE');
+        //  log('INFO','Message Sent.','getVideoStream');
+        //};
+
+
+    },
+
+}
 
 
 
