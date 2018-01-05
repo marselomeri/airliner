@@ -14,7 +14,11 @@ import redis,sqlite3
 
 
 redis_cache = redis.StrictRedis(host='localhost', port=6379, db=0)## Initialize redis caching database
-mode = int(redis_cache.get('mode'))## Initialize mode defined in launch_config.json
+
+
+
+print '***********',redis_cache
+mode = 2#int(redis_cache.get('mode'))## Initialize mode defined in launch_config.json
 test_db_path = redis_cache.get('app_path')## Initialize test database path defined in launch_config.json
 number_of_workers = redis_cache.get('number_of_workers')## Initialize number or parallel workers defined in launch_config.json
 defaultInstance= redis_cache.get('instance')## Initialize default instance defined in launch_config.json
