@@ -203,9 +203,9 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
         calY_f = calX_f * -1;
         calX_f = temp;
         
-        *X = ((calX_f / oHMC5883.HkTlm.Calibration.x_scale) + oHMC5883.HkTlm.Calibration.x_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
-        *Y = ((calY_f / oHMC5883.HkTlm.Calibration.y_scale) + oHMC5883.HkTlm.Calibration.y_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
-        *Z = ((calZ_f / oHMC5883.HkTlm.Calibration.z_scale) + oHMC5883.HkTlm.Calibration.z_offset) / (oHMC5883.HkTlm.Unit / oHMC5883.HkTlm.Divider);
+        *X = ((calX_f / oHMC5883.Diag.Calibration.x_scale) + oHMC5883.Diag.Calibration.x_offset) / (oHMC5883.Diag.Conversion.Unit / oHMC5883.Diag.Conversion.Divider);
+        *Y = ((calY_f / oHMC5883.Diag.Calibration.y_scale) + oHMC5883.Diag.Calibration.y_offset) / (oHMC5883.Diag.Conversion.Unit / oHMC5883.Diag.Conversion.Divider);
+        *Z = ((calZ_f / oHMC5883.Diag.Calibration.z_scale) + oHMC5883.Diag.Calibration.z_offset) / (oHMC5883.Diag.Conversion.Unit / oHMC5883.Diag.Conversion.Divider);
     }
     else if (TRUE == HMC5883_AppCustomData.SelfTestMode)
     {
