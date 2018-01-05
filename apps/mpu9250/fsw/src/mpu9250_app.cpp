@@ -200,8 +200,11 @@ void MPU9250::InitData()
     CFE_SB_InitMsg(&SensorGyro,
             PX4_SENSOR_GYRO_MID, sizeof(PX4_SensorGyroMsg_t), TRUE);
 
-    Diag.Calibration.AccDivider      = MPU9250_PRECALC_ACC_DIVIDER;
-    Diag.Calibration.GyroDivider     = MPU9250_PRECALC_GYRO_DIVIDER;
+    //Diag.Calibration.AccDivider      = MPU9250_PRECALC_ACC_DIVIDER;
+    //Diag.Calibration.GyroDivider     = MPU9250_PRECALC_GYRO_DIVIDER;
+    /* Set a sane initial value, should be overwritten in SetScale */
+    Diag.Calibration.AccDivider      = 1.0;
+    Diag.Calibration.GyroDivider     = 1.0;
     Diag.Calibration.AccUnit         = MPU9250_ONE_G;
     Diag.Calibration.GyroUnit        = MPU9250_RADIANS_PER_DEGREE;
     //Diag.Calibration.AccRange        = MPU9250_CALC_ACC_RANGE;
@@ -230,8 +233,8 @@ void MPU9250::InitData()
     //Diag.Calibration.MagZOffset      = 0.0;
     Diag.Calibration.RoomTempOffset  = 0.0;
     Diag.Calibration.TempSensitivity = MPU9250_TEMP_SENS;
-    Diag.Calibration.GyroCalcScaling = MPU9250_CALC_GYRO_SCALING;
-    Diag.Calibration.AccCalcScaling  = MPU9250_CALC_ACC_SCALING;
+    //Diag.Calibration.GyroCalcScaling = MPU9250_CALC_GYRO_SCALING;
+    //Diag.Calibration.AccCalcScaling  = MPU9250_CALC_ACC_SCALING;
 }
 
 
@@ -797,7 +800,7 @@ void MPU9250::ReadDevice(void)
 
     /* Accel Scale, Range, DeviceID */
     SensorAccel.Scaling = (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider);
-    SensorAccel.Range_m_s2 = (Diag.Calibration.AccScale * MPU9250_ONE_G);
+    SensorAccel.Range_m_s2 = Diag.Calibration.AccRange = (Diag.Calibration.AccScale * MPU9250_ONE_G);
     //SensorAccel.Scaling = 0;
     //SensorAccel.Range_m_s2 = 0;
 

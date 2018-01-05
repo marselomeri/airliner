@@ -143,19 +143,19 @@ extern "C" {
 /** \brief Radians per degree. */
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
 /** \brief 2000 deg/s = (2000/180)*PI = 34.906585 rad/s. */
-#define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
+//#define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
 /** \brief Accel divider for scaling */
-#define MPU9250_PRECALC_ACC_DIVIDER         (2048)
+//#define MPU9250_PRECALC_ACC_DIVIDER         (2048)
 /** \brief Gyro divider for scaling */
-#define MPU9250_PRECALC_GYRO_DIVIDER        (16.4)
+//#define MPU9250_PRECALC_GYRO_DIVIDER        (16.4)
 /** \brief Precalculated accel scaling */
-#define MPU9250_CALC_ACC_SCALING            (MPU9250_ONE_G / MPU9250_PRECALC_ACC_DIVIDER)
+//#define MPU9250_CALC_ACC_SCALING            (MPU9250_ONE_G / MPU9250_PRECALC_ACC_DIVIDER)
 /** \brief Precalculated accel range */
-#define MPU9250_CALC_ACC_RANGE              (MPU9250_ACC_SCALE * MPU9250_ONE_G)
+//#define MPU9250_CALC_ACC_RANGE              (MPU9250_ACC_SCALE * MPU9250_ONE_G)
 /** \brief Precalculated gyro scaling */
-#define MPU9250_CALC_GYRO_SCALING           (MPU9250_RADIANS_PER_DEGREE / MPU9250_PRECALC_GYRO_DIVIDER)
+//#define MPU9250_CALC_GYRO_SCALING           (MPU9250_RADIANS_PER_DEGREE / MPU9250_PRECALC_GYRO_DIVIDER)
 /** \brief Precalculated gyro range */
-#define MPU9250_CALC_GYRO_RANGE             MPU9250_2000_DEG_S
+//#define MPU9250_CALC_GYRO_RANGE             MPU9250_2000_DEG_S
 /** \brief Temperature sensitivity */
 #define MPU9250_TEMP_SENS                   (361.0f)
 
