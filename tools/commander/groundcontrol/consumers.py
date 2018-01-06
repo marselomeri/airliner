@@ -29,9 +29,8 @@ proc_map = {}## A dictionary to store processes which push telemetry to frontend
 test_sampling_frequency = (1.0/10)## The number of samples collected everytime the `push` function yields data
 sock_map_e = {}## A dictionary to store websockets which connect backend, mapped with unique id in message object.
 proc_map_e = {}## A dictionary to store processes which push telemetry to frontend, mapped with unique id in message object.
-video_frame_counter= 0## A counter to count the number of frames processed.
 video_socket = None## An empty variable which will be later used to store the video-udp socket object.
-video_port = redis_cache.get('video_port')## Initialize video port to pyliner/yamcs defined in launch_config.json.
+video_port = int(redis_cache.get('video_port'))## Initialize video port to pyliner/yamcs defined in launch_config.json.
 
 
 
@@ -155,15 +154,15 @@ def push1( websocket_obj):
     """
     freq_count = 1
     while True:
-        try:
+        #try:
             result = websocket_obj.recv()
             ## If result is not a ACK signal, in YAMCS case ACK looks like `[1,2,x]`
             if result != '[1,2,0]' :
                 result2 = tk.preProcess(result)
                 """INTROSPECTION PURPOSE ONLY"""
                 e_list =  json.loads(json.dumps(ast.literal_eval(result2)))
-                for e in e_list['parameter']:
-                    print '-------------------',e['id']['name']
+                #for e in e_list['parameter']:
+                #    print '-------------------',e['id']['name']
                 #"""
                 ## gets telemetry once every 10 loops
                 if test_sampling_frequency*freq_count == 1 :
@@ -179,11 +178,11 @@ def push1( websocket_obj):
                     time.sleep(1)
                     #message.reply_channel.send({'text': result2})
                     Group('tlm_bc').send({'text': result2})
-        except Exception as e:
-            tk.log('Instance', 'Not able to push messages to client. Process killed. Error = '+str(e), 'ERROR')
-            break
+        #except Exception as e:
+            #tk.log('Instance', 'Not able to push messages to client. Process killed. Error = '+str(e), 'ERROR')
+            #break
         ## avoids busy-while-loop
-        time.sleep(0.01)
+        #time.sleep(0.01)
 
 
 
@@ -496,8 +495,6 @@ def push(websocket_obj,message_obj):
 
 
 
-
-
 def vid_connect( message):
     """!
     Accepts request and establishes a connection with client.
@@ -532,17 +529,16 @@ def VideoThroughUDP(msg_obj):
     @param msg_obj: ivoke message passed as parameter in `getVideo' function.
     @return: void
     """
-    UDP_IP = address
-    UDP_PORT = video_port
     ## UDP
     video_socket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-    video_socket.bind(("", UDP_PORT))
+    video_socket.bind(('', video_port))
+    video_frame_counter= 0
+    
     while True:
         ## buffer size is 65527 bytes
         data, addr = video_socket.recvfrom(65527)
         b64_img = base64.b64encode(data)
         video_frame_counter = video_frame_counter + 1
-        print 'Frame# : ['+str(video_frame_counter)+'] sent.'
         msg_obj.reply_channel.send({'text': b64_img})
         #yield b64_img
 

@@ -39,7 +39,7 @@ channel_routing = [
                     route(u'websocket.disconnect', eve_disconnect, path='/event'),
 
                     route(u'websocket.connect', vid_connect, path='/video'),
-                    route(u'websocket.receive', getTelemetry, path='/video'),
+                    route(u'websocket.receive', getVideo, path='/video'),
                     route(u'websocket.disconnect', vid_disconnect, path='/video'),
 
 ]

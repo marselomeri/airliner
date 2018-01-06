@@ -123,7 +123,7 @@ block main
         updateHUDPitch(Attitude.Pitch * 57.2958);
         updateHUDRoll(Attitude.Roll * 57.2958);
       }
-    }, 100);
+    }, 33);
 
     drawHUD();
 
@@ -161,10 +161,11 @@ block main
       //updateHUDRoll(40);
     });
     
+    var vid = new Video();
+    
     var toggle = 0;
     vid.getVideoStream(function(image) {
       imageBuffer = image.data;
-      console.log('framr');
       cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
     });
 

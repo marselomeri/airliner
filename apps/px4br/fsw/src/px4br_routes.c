@@ -197,7 +197,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"transponder_report", (PX4_ENCODE_FUNC) PX4BR_TransponderReport_Enc, (PX4_DECODE_FUNC) PX4BR_TransponderReport_Dec, PX4_TRANSPONDER_REPORT_MID, px4_transponder_report_pb_size, 1, 0, 0},
 //		{"uavcan_parameter_request", (PX4_ENCODE_FUNC) PX4BR_UavCanParameterRequest_Enc, (PX4_DECODE_FUNC) PX4BR_UavCanParameterRequest_Dec, PX4_UAVCAN_PARAMETER_REQUEST_MID, px4_uavcan_parameter_request_pb_size, 1, 0, 0},
 //		{"uavcan_parameter_value", (PX4_ENCODE_FUNC) PX4BR_UavCanParameterValue_Enc, (PX4_DECODE_FUNC) PX4BR_UavCanParameterValue_Dec, PX4_UAVCAN_PARAMETER_VALUE_MID, px4_uavcan_parameter_value_pb_size, 1, 0, 0},
-//		{"vehicle_attitude", (PX4_ENCODE_FUNC) PX4BR_VehicleAttitude_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleAttitude_Dec, PX4_VEHICLE_ATTITUDE_MID, px4_vehicle_attitude_pb_size, 1, 0, 0},
+		{"vehicle_attitude", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitude_Dec, PX4_VEHICLE_ATTITUDE_MID, px4_vehicle_attitude_pb_size, 1, 0, 0},
 		{"vehicle_attitude_setpoint", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitudeSetpoint_Dec, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, px4_vehicle_attitude_setpoint_pb_size,  1, 0, 0},
 //		{"vehicle_command_ack", (PX4_ENCODE_FUNC) PX4BR_VehicleCommandAck_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommandAck_Dec, PX4_VEHICLE_COMMAND_ACK_MID, px4_vehicle_command_ack_pb_size, 1, 0, 0},
 //		{"vehicle_command", (PX4_ENCODE_FUNC) PX4BR_VehicleCommand_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommand_Dec, PX4_VEHICLE_COMMAND_MID, px4_vehicle_command_pb_size, 1, 0, 0},

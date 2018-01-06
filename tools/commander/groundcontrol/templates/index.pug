@@ -45,9 +45,8 @@ html(lang='en-us')
        var inst = new Instance();
        var dir =  new Directory();
        var cmd_o = new Command();
-       var tlm_o = null
+       var tlm_o = new Telemetry();
        var ev = new Event();
-       var vid = new Video();
        //var adsb_o = new ADSB();
        var page_change_counter=0;
 
@@ -351,7 +350,7 @@ html(lang='en-us')
 
       window.onload= function(){
         cmd_o.cleanSlate();
-        tlm_o = new Telemetry(); //idk if this line is needed.
+        //tlm_o = new Telemetry(); //idk if this line is needed.
         session.saveSockets([inst,dir,cmd_o,tlm_o,ev]);
       };
 
@@ -468,13 +467,13 @@ html(lang='en-us')
       var count = 0
       var ws = new WebSocket('ws://localhost:7000');
       ws.onopen = function () {
-        ws.send("connected");
+          ws.send("connected");
       };
       ws.onclose = function(){
-      ws.close();
+          ws.close();
       }
       ws.onmessage=function(e){
-      console.log('msg: ',e)
+          console.log('msg: ',e)
       }
       */
       /*BENCHMARKING FUNCTION*/
@@ -628,7 +627,6 @@ html(lang='en-us')
         var tlm = [];
         var self = this;
 
-        console.log('***********BINDING***********');
         console.log('Application #',page_change_counter+1);
         if(page_change_counter>=1){
 
@@ -820,7 +818,6 @@ html(lang='en-us')
             }
           }
         });
-      console.log('************BOUND************');
       };
 
 

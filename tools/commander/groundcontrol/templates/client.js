@@ -3,9 +3,9 @@
 
 
 //Tools
-var DEBUG = true;
-var ERROR = false;
-var INFO = true;
+var DEBUG = false;
+var ERROR = true;
+var INFO = false;
 
 function replaceAll(str, find, replace) {
             if (typeof str !='string'||typeof find !='string'||typeof replace !='string'){
@@ -161,7 +161,6 @@ var Instance = function(){
     /*transmitCurrentInstance*/
     this.websocket2.onopen = function(){
         log('DEBUG','Connection open.','transmitCurrentInstance');
-        //console.log('3333333',this.websocket2)
         log('INFO','NON Invoke Sent.','transmitCurrentInstance');
     };
     this.websocket2.onclose = function(){
@@ -395,17 +394,19 @@ Telemetry.prototype = {
             fixedDataString = fixedDataString.replace(new RegExp('True', 'g'),'true');
             fixedDataString = fixedDataString.replace(new RegExp('False', 'g'),'false');
             var data = JSON.parse(fixedDataString);
-            console.log(data);
-            data.parameter.forEach(function(param){
-                var tlmName = param.id.name;
 
-                if(tlmName in self.subscribers){
-                    var subscriptions = self.subscribers[tlmName];
-                    subscriptions.forEach(function(subscription){
-                        subscription.callback(param);
-                    });
-                }
-            });
+            if(data.hasOwnProperty('parameter')) {
+                data.parameter.forEach(function(param){
+                    var tlmName = param.id.name;
+
+                    if(tlmName in self.subscribers){
+                        var subscriptions = self.subscribers[tlmName];
+                        subscriptions.forEach(function(subscription){
+                            subscription.callback(param);
+                        });
+                    }
+                });
+            }
             //this.subscribers[event.data.parameter.data.keys(obj).forEach(function(key,index) {
             //console.log(event);
             //cb(event);
@@ -725,38 +726,38 @@ ADSB.prototype = {
    Initializes web socket to receive video frames.*/
 //---------------------------------------------------------------------------------------------------------------
 var Video = function() {
-        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video');
         this.video_subscribers = {};
         var self = this;
-
-        this.vid_subc.onopen = function (){
-            log('DEBUG','Connection open.','getVideoStream');
-            //self.vid_subc.send('INVOKE');//TODO
-            log('INFO','Message Sent.','getVideoStream');
-        }
-
-        this.vid_subc.onclose = function(){
-            log('DEBUG','Connection closed.','getVideoStream');
-        }
-        this.vid_subc.onerror = function(){
-            log('ERR','Connection closed.','getVideoStream');
-        }
-
 }
 Video.prototype = {
 
     getVideoStream(cb){
-        var socket = this.vid_subc;
+        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        var socket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video');
 
         socket.onmessage = function (event){
             log('INFO','Message received.','getVideoStream');
             cb(event);
         }
+        
         //if (socket.readyState == WebSocket.OPEN) {
         //  socket.send('INVOKE');
         //  log('INFO','Message Sent.','getVideoStream');
         //};
+
+        socket.onopen = function (){
+            log('DEBUG','Connection open.','getVideoStream');
+            socket.send('INVOKE');//TODO
+            log('INFO','Message Sent.','getVideoStream');
+        }
+
+        socket.onclose = function(){
+            log('DEBUG','Connection closed.','getVideoStream');
+        }
+        
+        socket.onerror = function(){
+            log('ERR','Connection closed.','getVideoStream');
+        }
 
 
     },
@@ -822,25 +823,21 @@ Session.prototype ={
 
 
     }
-
-
-
-
 }
 
 
-
-
-module.exports.getDate = getDate;
-module.exports.replaceAll = replaceAll;
-module.exports.introspectTlm = introspectTlm;
-module.exports.log = log;
-module.exports.makeIterator = makeIterator;
-module.exports.getSockets = getSockets;
-module.exports.Instance = Instance;
-module.exports.Directory = Directory;
-module.exports.Telemetry = Telemetry;
-module.exports.Command = Command;
-module.exports.Event = Event;
-module.exports.Video = Video;
-module.exports.Session = Session;
+if(typeof module != 'undefined') {
+    module.exports.getDate = getDate;
+    module.exports.replaceAll = replaceAll;
+    module.exports.introspectTlm = introspectTlm;
+    module.exports.log = log;
+    module.exports.makeIterator = makeIterator;
+    module.exports.getSockets = getSockets;
+    module.exports.Instance = Instance;
+    module.exports.Directory = Directory;
+    module.exports.Telemetry = Telemetry;
+    module.exports.Command = Command;
+    module.exports.Event = Event;
+    module.exports.Video = Video;
+    module.exports.Session = Session;
+}
