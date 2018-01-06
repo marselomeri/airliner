@@ -118,8 +118,6 @@ extern "C" {
 /** \brief Precalculated mag range */
 #define HMC5883_CALC_MAG_RANGE          (1.3f)
 
-/** \brief Precalculated mag scaling */
-#define HMC5883_CALC_MAG_SCALING        (HMC5883_MAG_UNIT / HMC5883_MAG_DIVIDER)
 
 #ifdef __cplusplus
 }

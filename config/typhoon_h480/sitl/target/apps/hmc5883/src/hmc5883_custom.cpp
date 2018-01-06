@@ -42,6 +42,7 @@
 #include "hmc5883_i2c.h"
 #include "hmc5883_events.h"
 #include "hmc5883_perfids.h"
+#include "lib/px4lib.h"
 
 #include "simlib.h"
 #include <string.h>
@@ -297,4 +298,21 @@ boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 end_of_function:
 
     return returnBool;
+}
+
+
+void HMC5883_Get_Rotation(uint8 *Rotation)
+{
+    
+    /* Null pointer check */
+    if(0 == Rotation)
+    {
+        goto end_of_function;
+    }
+    
+    /* TODO move to a table */
+    *Rotation = ROTATION_NONE;
+
+end_of_function:
+;
 }
