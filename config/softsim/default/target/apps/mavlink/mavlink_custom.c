@@ -45,6 +45,7 @@ typedef struct
 } MAVLINK_SocketData_t;
 
 MAVLINK_SocketData_t MAVLINK_SocketData = {0, MAVLINK_GCS_PORT};
+MAVLINK_SocketData_t MAVLINK_PassThruSocket = {0, MAVLINK_PASSTHRU_INGEST_PORT};
 
 int32 MAVLINK_InitCustom(void)
 {
@@ -63,8 +64,41 @@ int32 MAVLINK_InitCustom(void)
 
 	setsockopt(MAVLINK_SocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
+    if((MAVLINK_PassThruSocket.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+    {
+    	CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,
+    		   "Socket errno: %i", errno);
+    		Status = -1;
+    		goto end_of_function;
+    }
+
+    setsockopt(MAVLINK_PassThruSocket.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
+
+    bzero((char *) &address, sizeof(address));
+    address.sin_family      = AF_INET;
+    address.sin_addr.s_addr = htonl (INADDR_ANY);
+    address.sin_port        = htons(MAVLINK_PassThruSocket.Port);
+
+	if ( (bind(MAVLINK_PassThruSocket.Socket, (struct sockaddr *) &address, sizeof(address)) < 0) )
+	{
+		CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,"Bind socket failed = %d", errno);
+		Status = -1;
+		goto end_of_function;
+	}
+
+	CFE_EVS_SendEvent(MAVLINK_ENA_INF_EID, CFE_EVS_INFORMATION,
+					  "Passthru ingest port enabled on: %u.",
+					  MAVLINK_PassThruSocket.Port);
+
 end_of_function:
     return Status;
+}
+
+int32 MAVLINK_ReadPassThru(char* buffer, uint32* size)
+{
+	*size = recv(MAVLINK_PassThruSocket.Socket,
+					   (char *)buffer,
+					   (size_t)size, 0);
 }
 
 int32 MAVLINK_ReadMessage(char* buffer, uint32* size)

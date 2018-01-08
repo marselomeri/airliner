@@ -419,7 +419,7 @@ void PARAMS_SendAllParamsToSB()
 
 	/* Ensure param count is up to date */
 	PARAMS_UpdateParamCount();
-
+	OS_printf("sending params to SB\n");
 	/* Iterate over table and send each parameter */
 	for(int i = 0; i < PARAMS_PARAM_TABLE_MAX_ENTRIES; ++i)
 	{

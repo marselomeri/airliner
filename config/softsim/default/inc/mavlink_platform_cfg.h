@@ -129,11 +129,11 @@ extern "C" {
 
 #define MAVLINK_PARAM_SYSTEM_ID         (1)
 #define MAVLINK_PARAM_COMPONENT_ID      (1)
-#define MAVLINK_GCS_IP                  ("127.0.0.1")
+#define MAVLINK_GCS_IP                  ("10.10.0.13")
 #define MAVLINK_GCS_PORT                (14556)
-#define MAVLINK_INGEST_PORT             (5014)
+#define MAVLINK_PASSTHRU_INGEST_PORT    (5014)
 
-#define MAVLINK_ACTION_MAP_ENTRIES         (256)
+#define MAVLINK_ACTION_MAP_ENTRIES         (10)
 
 
 #ifdef __cplusplus
