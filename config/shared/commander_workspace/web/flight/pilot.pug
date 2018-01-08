@@ -62,10 +62,10 @@ block main
         var tlm_o = new Telemetry();
         
         tlm_o.subscribeTelemetry({'tlm': [
-           {'name': '/CFS/PX4/VGP_Alt'}
+           {'name': '/CFS/PX4/VGPP_Alt'}
            ]},
            function (param) {
-              Position.Alt = param.engValue.floatValue - 488;
+              Position.Alt = (param.engValue.sint32Value - 488269) / 1000.0;
            }
         );
         
@@ -107,7 +107,10 @@ block main
                       
                       Attitude.Pitch = theta;
                       Attitude.Roll = phi;
-                      Attitude.Yaw = psi;
+                      Attitude.Yaw = 57.2958*psi;
+                      if(Attitude.Yaw < 0){
+                          Attitude.Yaw += 360.0;
+                      }
                       
                       HUDStarted = true;
                   }
