@@ -106,8 +106,8 @@ block main
                       var psi = Math.atan2((q1*q2)-(q0*q3),0.5-((q2*q2)+(q3*q3)));
                       
                       Attitude.Pitch = theta;
-                      Attitude.Roll = phi;
-                      Attitude.Yaw = 57.2958*psi;
+                      Attitude.Roll = -phi;
+                      Attitude.Yaw = -57.2958*psi;
                       if(Attitude.Yaw < 0){
                           Attitude.Yaw += 360.0;
                       }

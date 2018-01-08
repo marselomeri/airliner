@@ -30,7 +30,7 @@ test_sampling_frequency = (1.0/10)## The number of samples collected everytime t
 sock_map_e = {}## A dictionary to store websockets which connect backend, mapped with unique id in message object.
 proc_map_e = {}## A dictionary to store processes which push telemetry to frontend, mapped with unique id in message object.
 video_socket = None## An empty variable which will be later used to store the video-udp socket object.
-video_port = int(redis_cache.get('video_port'))## Initialize video port to pyliner/yamcs defined in launch_config.json.
+video_port = 3001##int(redis_cache.get('video_port'))## Initialize video port to pyliner/yamcs defined in launch_config.json.
 
 
 
