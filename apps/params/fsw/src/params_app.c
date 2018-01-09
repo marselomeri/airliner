@@ -308,7 +308,6 @@ PARAMS_InitApp_Exit_Tag:
     return (iStatus);
 }
 
-
 void PARAMS_AddParam(PARAMS_ParamData_t param)
 {
 	/* Iterate over table to find first empty index */
