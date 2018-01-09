@@ -1240,6 +1240,7 @@ typedef struct
 
 typedef struct
 {
+	uint64 Timestamp;
 	double Lat;
 	double Lon;
 	float X;
@@ -1282,7 +1283,6 @@ typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	uint64 Timestamp;
-	uint8 NavState;
 	PX4_PositionSetpoint_t Previous;
 	PX4_PositionSetpoint_t Current;
 	PX4_PositionSetpoint_t Next;
@@ -1721,10 +1721,12 @@ typedef struct
 
 typedef struct
 {
-    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-	uint64 Timestamp;
+    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE];
+	uint64  Timestamp;
+	float   AltMax;
 	boolean Landed;
 	boolean Freefall;
+	boolean GroundContact;
 } PX4_VehicleLandDetectedMsg_t;
 
 typedef struct
