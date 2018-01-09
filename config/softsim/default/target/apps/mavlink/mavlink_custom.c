@@ -46,6 +46,7 @@ typedef struct
 
 MAVLINK_SocketData_t MAVLINK_SocketData = {0, MAVLINK_GCS_PORT};
 MAVLINK_SocketData_t MAVLINK_PassThruSocket = {0, MAVLINK_PASSTHRU_INGEST_PORT};
+uint16 px4_port = 14556;
 
 int32 MAVLINK_InitCustom(void)
 {
@@ -64,6 +65,7 @@ int32 MAVLINK_InitCustom(void)
 
 	setsockopt(MAVLINK_SocketData.Socket, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(reuseaddr));
 
+	/* Initialize pass thru socket */
     if((MAVLINK_PassThruSocket.Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
     {
     	CFE_EVS_SendEvent(MAVLINK_SOCKET_ERR_EID, CFE_EVS_ERROR,
@@ -96,16 +98,45 @@ end_of_function:
 
 int32 MAVLINK_ReadPassThru(char* buffer, uint32* size)
 {
-	*size = recv(MAVLINK_PassThruSocket.Socket,
+	struct sockaddr_in address;
+	socklen_t len = sizeof(address);
+
+	*size = recvfrom(MAVLINK_PassThruSocket.Socket,
 					   (char *)buffer,
-					   (size_t)size, 0);
+					   (size_t)size, 0,
+					   (struct sockaddr*)&address,
+					   &len);
+
+	px4_port = address.sin_port;
+}
+
+int32 MAVLINK_SendPassThru(const char* buffer, uint32 size)
+{
+	struct sockaddr_in s_addr;
+    int    status = 0;
+    int32  returnCode = 0;
+
+    /* Send message via UDP socket */
+    bzero((char *) &s_addr, sizeof(s_addr));
+    s_addr.sin_family      = AF_INET;
+    s_addr.sin_addr.s_addr = inet_addr(MAVLINK_PASSTHRU_IP);
+    s_addr.sin_port        = htons(px4_port);
+
+    status = sendto(MAVLINK_PassThruSocket.Socket, (char *)buffer, size, 0,
+                            (struct sockaddr *) &s_addr,
+                             sizeof(s_addr));
+    if (status < 0)
+    {
+        OS_printf("MAVLINK passthru send error\n");
+        returnCode = -1;
+    }
 }
 
 int32 MAVLINK_ReadMessage(char* buffer, uint32* size)
 {
 	struct sockaddr_in address;
 	address.sin_family      = AF_INET;
-	address.sin_addr.s_addr = htonl (INADDR_ANY);
+	address.sin_addr.s_addr = htonl (INADDR_ANY);// todo is this needed
 	socklen_t len = sizeof(address);
 
 	*size = recvfrom(MAVLINK_SocketData.Socket,
@@ -115,7 +146,7 @@ int32 MAVLINK_ReadMessage(char* buffer, uint32* size)
 					   &len);
 }
 
-int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
+int32 MAVLINK_SendMessage(const char* buffer, uint32 size)
 {
 	struct sockaddr_in s_addr;
     int    status = 0;
@@ -127,7 +158,7 @@ int32 MAVLINK_SendMessage(const char* buffer, uint32 Size)
     s_addr.sin_addr.s_addr = inet_addr(MAVLINK_GCS_IP);
     s_addr.sin_port        = htons(MAVLINK_SocketData.Port);
 
-    status = sendto(MAVLINK_SocketData.Socket, (char *)buffer, Size, 0,
+    status = sendto(MAVLINK_SocketData.Socket, (char *)buffer, size, 0,
                             (struct sockaddr *) &s_addr,
                              sizeof(s_addr));
     if (status < 0)

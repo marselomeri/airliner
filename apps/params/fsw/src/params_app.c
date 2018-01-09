@@ -541,7 +541,7 @@ int32 PARAMS_RcvMsg(int32 iBlocking)
     {
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
-	{
+        {
             case PARAMS_WAKEUP_MID:
                 PARAMS_ProcessNewCmds();
                 PARAMS_ProcessNewData();
@@ -568,6 +568,7 @@ int32 PARAMS_RcvMsg(int32 iBlocking)
          * nothing.  Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
+        OS_printf("Params no msg\n");
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
@@ -576,6 +577,7 @@ int32 PARAMS_RcvMsg(int32 iBlocking)
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
+        OS_printf("Params timeout\n");
     }
     else
     {
