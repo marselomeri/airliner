@@ -142,18 +142,7 @@ int32 PARAMS_InitPipe()
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
-        iStatus = CFE_SB_Subscribe(PARAMS_CMD_MID, PARAMS_AppData.CmdPipeId);
-
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PARAMS_INIT_ERR_EID, CFE_EVS_ERROR,
-                                     "CMD Pipe failed to subscribe to PARAMS_CMD_MID. (0x%08X)",
-                                     (unsigned int)iStatus);
-            goto PARAMS_InitPipe_Exit_Tag;
-        }
-
-        /* Subscribe to mavlink commands */
-        iStatus = CFE_SB_Subscribe(MAVLINK_REQUEST_PARAMS_MID, PARAMS_AppData.CmdPipeId);
+        iStatus = CFE_SB_SubscribeLocal(PARAMS_CMD_MID, PARAMS_AppData.CmdPipeId, PARAMS_CMD_PIPE_DEPTH);
 
         if (iStatus != CFE_SUCCESS)
         {
