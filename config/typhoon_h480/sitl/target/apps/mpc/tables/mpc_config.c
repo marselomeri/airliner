@@ -600,6 +600,21 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @group Multicopter Position Control
 	 */
 	0.4f,
+
+    /**
+     * MC_YAWRATE_MAX
+     */
+	200.0f,
+
+	/**
+	 * MC_YAW_P
+	 */
+	2.8f,
+
+	/**
+	 * VT_OPT_RECOV_EN
+	 */
+	0
 };
 
 /*
