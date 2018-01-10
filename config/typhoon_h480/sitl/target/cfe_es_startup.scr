@@ -1,5 +1,6 @@
 CFE_LIB, /cf/apps/CFS_LIB.so,   CFS_LibInit,     CFS_LIB,    0,     0, 0x0, 0;
 CFE_LIB, /cf/apps/PBLIB.so,     PBLIB_LibInit,   PBLIB,      0,     0, 0x0, 0;
+CFE_LIB, /cf/apps/PRMLIB.so,    PRMLIB_LibInit,  PRMLIB,      0,     0, 0x0, 0;
 CFE_LIB, /cf/apps/PX4LIB.so,    PX4LIB_LibInit,  PX4LIB,    0,     0, 0x0, 0;
 CFE_LIB, /cf/apps/SIMLIB.so,    SIM_LibInit,     SIMLIB,    0,     0, 0x0, 0;
 CFE_APP, /cf/apps/SIM.so,       SIM_AppMain,     SIM,       40,  4096, 0x0, 0;
