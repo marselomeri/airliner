@@ -640,18 +640,6 @@
 #define MAVLINK_PARAM_DATA_MID                      0x1c86
 #define MAVLINK_REQUEST_PARAMS_MID                  0x1c87
 
-/* PARAMS                   					        */
-#define PARAMS_CMD_MID                             0x1ca6
-#define PARAMS_SEND_HK_MID                         0x1ca7
-#define PARAMS_HK_TLM_MID                          0x0ca8
-#define PARAMS_WAKEUP_MID                          0x1ca9
-#define PARAMS_OUT_DATA_MID                        0x1cb0
-#define PARAMS_PARAM_MID                           0x1cb1
-
-
-
-
-
 /* Individual GPS messages                              */
 #define GPS_NAV_DOP_MID                             0x0c87
 #define GPS_NAV_NAVPVT_MID                          0x0c88
