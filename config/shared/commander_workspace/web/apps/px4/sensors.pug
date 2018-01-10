@@ -1,4 +1,4 @@
-extends ../../common/layout
+{% extends "../../common/layout.pug" %}
 
 block header
         i.fa-fw.fa.fa-signal
@@ -17,9 +17,9 @@ block main
             .jarviswidget-editbox
               input.form-control(type='text')
             .widget-body.no-padding
-              #Magnetometer(style='width:100%; height:300px;')
+              #Magnetometer(style="width:100%; height:300px;")
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -33,48 +33,48 @@ block main
                   tbody
                     tr
                       th Error Count:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_ErrorCount"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_ErrorCount'}}") ---
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_X"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Y"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Z"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_Z'}}") ---
                     tr
                       th Range:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Range"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_Range'}}") ---
                     tr
                       th Scaling:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Scaling"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_Scaling'}}") ---
                     tr
                       th Temp:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Temp"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_Temp'}}") ---
                     tr
                       th Device ID:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_DeviceID"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_DeviceID'}}") ---
                     tr
                       th X Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_XRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_XRaw'}}") ---
                     tr
                       th Y Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_YRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_YRaw'}}") ---
                     tr
                       th Z Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SM_ZRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SM_ZRaw'}}") ---
 
     .row.row-fluid
 
@@ -88,9 +88,9 @@ block main
             .jarviswidget-editbox
               input.form-control(type='text')
             .widget-body.no-padding
-              #Accelerometer(style='width:100%; height:300px;')
+              #Accelerometer(style="width:100%; height:300px;")
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -105,68 +105,68 @@ block main
                   tbody
                     tr
                       th Integral:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Integral"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_Integral'}}") ---
                     tr
                       th ErrorCount:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ErrorCount"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_ErrorCount'}}") ---
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_X"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Y"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Z"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_Z'}}") ---
                     tr
                       th XInt:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_XInt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_XInt'}}") ---
                     tr
                       th YInt:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_YInt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_YInt'}}") ---
                     tr
                       th ZInt:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ZInt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_ZInt'}}") ---
                     tr
                       th Temp:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Temp"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_Temp'}}") ---
                     tr
                       th Range:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Range"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_Range'}}") ---
                     tr
                       th Scaling:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_Scaling"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_Scaling'}}") ---
                     tr
                       th DeviceID:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_DeviceID"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_DeviceID'}}") ---
                     tr
                       th XRaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_XRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_XRaw'}}") ---
                     tr
                       th YRaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_YRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_YRaw'}}") ---
                     tr
                       th ZRaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_ZRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_ZRaw'}}") ---
                     tr
                       th TempRaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SA_TempRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SA_TempRaw'}}") ---
 
     .row.row-fluid
 
@@ -180,9 +180,9 @@ block main
             .jarviswidget-editbox
               input.form-control(type='text')
             .widget-body.no-padding
-              #Baro(style='width:100%; height:300px;')
+              #Baro(style="width:100%; height:300px;")
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SB.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -197,20 +197,20 @@ block main
                   tbody
                     tr
                       th Error Count:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SB_ErrorCount"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SB_ErrorCount'}}") ---
                     tr
                       th Pressure:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SB_Press"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SB_Press'}}") ---
                     tr
                       th Altitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SB_Alt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SB_Alt'}}") ---
                     tr
                       th Temperature:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SB_Temp"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SB_Temp'}}") ---
 
     .row.row-fluid
 
@@ -224,9 +224,9 @@ block main
             .jarviswidget-editbox
               input.form-control(type='text')
             .widget-body.no-padding
-              #Gyro(style='width:100%; height:300px;')
+              #Gyro(style="width:100%; height:300px;")
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SG.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -241,72 +241,72 @@ block main
                   tbody
                     tr
                       th Integral:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Integral"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Integral'}}") ---
                     tr
                       th Error Count:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ErrorCount"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_ErrorCount'}}") ---
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_X"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Y"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Z"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Z'}}") ---
                     tr
                       th X Int:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XInt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_XInt'}}") ---
                     tr
                       th Y Int:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YInt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_YInt'}}") ---
                     tr
                       th Z Int:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZInt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_ZInt'}}") ---
                     tr
                       th Temp:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Temp"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Temp'}}") ---
                     tr
                       th Range:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Range"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Range'}}") ---
                     tr
                       th Scaling:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Scaling"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_Scaling'}}") ---
                     tr
                       th Device ID:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_DeviceID"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_DeviceID'}}") ---
                     tr
                       th X Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_XRaw'}}") ---
                     tr
                       th Y Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_YRaw'}}") ---
                     tr
                       th Z Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_ZRaw'}}") ---
                     tr
                       th Temp Raw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_TempRaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/SG_TempRaw'}}") ---
 
     .row.row-fluid
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-Misc.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -318,17 +318,17 @@ block main
             .widget-body
               footer
                 .btn-group.btn-space
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/NoOp'}}) No-Op
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/Reset'}}) Reset
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleArm'}}) Arm
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleDisarm'}}) Disarm
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleLaunch'}}) Launch
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleLand'}}) Land
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleChangeMode'}}) Set Mode
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/NoOp'}}") No-Op
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/Reset'}}") Reset
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleArm'}}") Arm
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleDisarm'}}") Disarm
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleLaunch'}}") Launch
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleLand'}}") Land
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleChangeMode'}}") Set Mode
 
       script.
         var MaxCount = 2500;
-              
+
         loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
             var AccData = [];
             var GyroData = [];
@@ -384,77 +384,77 @@ block main
               var MagCount = 0;
               var AltCount = 0;
 
-              session.subscribe({name: '/CFS/PX4/SA_X'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SA_X'}, function(param) {
                 AccX.value = param.engValue.floatValue;
                 AccX.time = param.acquisitionTime;
                 AccX.utcTime = param.acquisitionTimeUTC;
                 AccCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SA_Y'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SA_Y'}, function(param) {
                 AccY.value = param.engValue.floatValue;
                 AccY.time = param.acquisitionTime;
                 AccY.utcTime = param.acquisitionTimeUTC;
                 AccCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SA_Z'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SA_Z'}, function(param) {
                 AccZ.value = param.engValue.floatValue;
                 AccZ.time = param.acquisitionTime;
                 AccZ.utcTime = param.acquisitionTimeUTC;
                 AccCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SG_X'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SG_X'}, function(param) {
                 GyroX.value = param.engValue.floatValue;
                 GyroX.time = param.acquisitionTime;
                 GyroX.utcTime = param.acquisitionTimeUTC;
                 GyroCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SG_Y'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SG_Y'}, function(param) {
                 GyroY.value = param.engValue.floatValue;
                 GyroY.time = param.acquisitionTime;
                 GyroY.utcTime = param.acquisitionTimeUTC;
                 GyroCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SG_Z'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SG_Z'}, function(param) {
                 GyroZ.value = param.engValue.floatValue;
                 GyroZ.time = param.acquisitionTime;
                 GyroZ.utcTime = param.acquisitionTimeUTC;
                 GyroCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SM_X'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SM_X'}, function(param) {
                 MagX.value = param.engValue.floatValue;
                 MagX.time = param.acquisitionTime;
                 MagX.utcTime = param.acquisitionTimeUTC;
                 MagCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SM_Y'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SM_Y'}, function(param) {
                 MagY.value = param.engValue.floatValue;
                 MagY.time = param.acquisitionTime;
                 MagY.utcTime = param.acquisitionTimeUTC;
                 MagCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SM_Z'}, function(param) {
+              session.subscribe({'name': '/CFS/PX4/SM_Z'}, function(param) {
                 MagZ.value = param.engValue.floatValue;
                 MagZ.time = param.acquisitionTime;
                 MagZ.utcTime = param.acquisitionTimeUTC;
                 MagCorrelateData();
               });
 
-              session.subscribe({name: '/CFS/PX4/SB_Alt'}, function(param) { 
+              session.subscribe({'name': '/CFS/PX4/SB_Alt'}, function(param) {
                     if(AltStarted == false){
                         /* Skip the first one. */
                         AltStarted = true;
-                    } else {          
+                    } else {
                         if (AltData.length >= MaxCount) {
                           AltData = AltData.slice(1);
-                        }  
+                        }
                         AltData.push([AltCount, param.engValue.floatValue]);
                         AltCount++;
                     }
@@ -465,10 +465,10 @@ block main
                       if(AccStarted == false){
                           /* Skip the first one. */
                           AccStarted = true;
-                      } else {        
+                      } else {
                         if (AccData.length >= MaxCount) {
                           AccData = AccData.slice(1);
-                        }            
+                        }
                         AccData.push([AccCount, AccX.value, AccY.value, AccZ.value]);
                         AccCount++;
                       }
@@ -480,10 +480,10 @@ block main
                       if(GyroStarted == false){
                         /* Skip the first one. */
                         GyroStarted = true;
-                      } else {        
+                      } else {
                         if (GyroData.length >= MaxCount) {
                           GyroData = GyroData.slice(1);
-                        }                   
+                        }
                         GyroData.push([GyroCount, GyroX.value, GyroY.value, GyroZ.value]);
                         GyroCount++;
                       }
@@ -495,10 +495,10 @@ block main
                       if(MagStarted == false){
                           /* Skip the first one. */
                           MagStarted = true;
-                      } else {         
+                      } else {
                           if (MagData.length >= MaxCount) {
                               MagData = MagData.slice(1);
-                          }                
+                          }
                           MagData.push([MagCount, MagX.value, MagY.value, MagZ.value]);
                           MagCount++;
                       }
@@ -513,6 +513,3 @@ block main
              }, 100);
           });
         });
-
-
-

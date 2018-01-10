@@ -49,6 +49,14 @@
 #include <time.h>
 
 /*
+ * Config table for testing
+ */
+MS5611_ConfigTbl_t ConfigTbl = {
+        /* TODO:  Define table */
+		0
+};
+
+/*
  * Function Definitions
  */
 
@@ -64,6 +72,8 @@ void MS5611_Test_Setup(void)
     Ut_CFE_ES_Reset();
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
+
+    Ut_CFE_TBL_AddTable(MS5611_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
 }
 
 void MS5611_Test_TearDown(void) {

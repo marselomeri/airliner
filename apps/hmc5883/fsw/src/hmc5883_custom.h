@@ -150,19 +150,6 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z);
 
 
 /************************************************************************/
-/** \brief Gets the current monotonic time.
-**
-**  \par Description
-**       This function gets the current monotonic time and returns a 
-**       populated CFE_TIME_SysTime_t struct. 
-**
-**  \returns    CFE_TIME_SysTime_t
-**
-*************************************************************************/
-CFE_TIME_SysTime_t HMC5883_Custom_Get_Time(void);
-
-
-/************************************************************************/
 /** \brief Apply any required rotation of the sensor x, y, and z axis.
 **
 **  \par Description
@@ -178,7 +165,7 @@ CFE_TIME_SysTime_t HMC5883_Custom_Get_Time(void);
 **  \returns    TRUE for success, FALSE for failure.
 **
 *************************************************************************/
-boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z);
+boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z);
 
 
 /************************************************************************/
@@ -315,7 +302,7 @@ boolean HMC5883_Custom_Get_Config(uint8 *Config);
 *************************************************************************/
 boolean HMC5883_Custom_Measure_Temp(int16 *Temp);
 
-
+void HMC5883_Get_Rotation(uint8 *Rotation);
 
 
 #ifdef __cplusplus

@@ -4,9 +4,9 @@ block header
   i.fa-fw.fa.fa-signal
   | Pilot Display (Test)
 
-block main
+block main 
   .row
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-6
+    article.col-xs-12.col-sm-10.col-md-10.col-lg-10
       #wid-Flight-HUD.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false',data-widget-colorbutton='false',data-widget-deletebutton='false')
         header
           span.widget-icon
@@ -57,31 +57,68 @@ block main
     var hrzWidth;
     var cameraImage;
     var imageBuffer;
-
-
-    tlm_o.subscribeTelemetry("{'homogeneity': {'tolerance': 0.5}, 'tlm': [{'name': '/MAV/CMN/A_pitch'},{'name': '/MAV/CMN/A_roll'}]}",
-      function (params) {
-        for (var i = 0; i < params.length; ++i) {
-          switch (params[i].id.name) {
-            case '/MAV/CMN/A_pitch':
-              Attitude.Pitch = params[i].engValue.floatValue;
-              break;
-
-            case '/MAV/CMN/A_roll':
-              Attitude.Roll = params[i].engValue.floatValue;
-              break;
+    
+        var Q = [];
+        var tlm_o = new Telemetry();
+        
+        tlm_o.subscribeTelemetry({'tlm': [
+           {'name': '/CFS/PX4/VGPP_Alt'}
+           ]},
+           function (param) {
+              Position.Alt = (param.engValue.sint32Value - 488269) / 1000.0;
+           }
+        );
+        
+        tlm_o.subscribeTelemetry({'homogeneity': {tolerance: 0.5}, 'tlm': [
+           {'name': '/CFS/PX4/VA_Q_0'},
+           {'name': '/CFS/PX4/VA_Q_1'},
+           {'name': '/CFS/PX4/VA_Q_2'},
+           {'name': '/CFS/PX4/VA_Q_3'}
+           ]},
+           function (param) {
+              switch(param.id.name){
+                  case '/CFS/PX4/VA_Q_0':
+                      Q[0] = param;
+                      break; 
+                  case '/CFS/PX4/VA_Q_1':
+                      Q[1] = param;
+                      break; 
+                  case '/CFS/PX4/VA_Q_2':
+                      Q[2] = param;
+                      break; 
+                  case '/CFS/PX4/VA_Q_3':
+                      Q[3] = param;
+                      break; 
+              }
+              
+              try{
+                  if((Q[0].generationTimeUTC == Q[1].generationTimeUTC) &&
+                     (Q[1].generationTimeUTC == Q[2].generationTimeUTC) &&
+                     (Q[2].generationTimeUTC == Q[3].generationTimeUTC))
+                  {
+                      var q0 = Q[0].engValue.floatValue;
+                      var q1 = Q[1].engValue.floatValue;
+                      var q2 = Q[2].engValue.floatValue;
+                      var q3 = Q[3].engValue.floatValue;
+                      
+                      var phi = Math.atan2((q2*q3)+(q0*q1), 0.5 - (q1*q1)-(q2*q2));
+                      var theta = Math.asin(-2*((q1*q3)-(q0*q2)));
+                      var psi = Math.atan2((q1*q2)-(q0*q3),0.5-((q2*q2)+(q3*q3)));
+                      
+                      Attitude.Pitch = theta;
+                      Attitude.Roll = -phi;
+                      Attitude.Yaw = -57.2958*psi;
+                      if(Attitude.Yaw < 0){
+                          Attitude.Yaw += 360.0;
+                      }
+                      
+                      HUDStarted = true;
+                  }
+              } catch (e) {
+              }
           }
-        }
-
-        if (HUDStarted == false) {
-          /* Skip the first one. */
-          HUDStarted = true;
-        } else {
-          HUDCount++;
-        }
-      }
-    );
-
+        );
+      
     setInterval(function () {
       if (HUDStarted == true) {
         updateHUDAltitude(Position.Alt);
@@ -89,7 +126,7 @@ block main
         updateHUDPitch(Attitude.Pitch * 57.2958);
         updateHUDRoll(Attitude.Roll * 57.2958);
       }
-    }, 1000);
+    }, 33);
 
     drawHUD();
 
@@ -126,10 +163,12 @@ block main
       //updateHUDPitch(30);
       //updateHUDRoll(40);
     });
-
+    
+    var vid = new Video();
+    
     var toggle = 0;
     vid.getVideoStream(function(image) {
-      imageBuffer = image;
+      imageBuffer = image.data;
       cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
     });
 

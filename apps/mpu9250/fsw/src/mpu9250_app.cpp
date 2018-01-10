@@ -10,6 +10,9 @@
 #include "mpu9250_msg.h"
 #include "mpu9250_version.h"
 #include "Vector3F.hpp"
+#include "lib/px4lib.h"
+
+//#include <unistd.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -32,8 +35,10 @@ MPU9250::MPU9250() :
     _gyro_filter_x(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
     _gyro_filter_y(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
     _gyro_filter_z(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
-    _accel_int(MPU9250_NEVER_AUTOPUBLISH_US, FALSE),
-    _gyro_int(MPU9250_NEVER_AUTOPUBLISH_US, TRUE)
+    //_accel_int(MPU9250_NEVER_AUTOPUBLISH_US, FALSE),
+    //_gyro_int(MPU9250_NEVER_AUTOPUBLISH_US, TRUE)
+    _accel_int(MPU9250_ACCEL_INT_PUB_RATE, TRUE),
+    _gyro_int(MPU9250_GYRO_INT_PUB_RATE, TRUE)
 {
 
 }
@@ -182,24 +187,33 @@ void MPU9250::InitData()
     /* Init diagnostic message */
     CFE_SB_InitMsg(&Diag,
             MPU9250_DIAG_TLM_MID, sizeof(MPU9250_DiagPacket_t), TRUE);
+
     /* Init output message accelerometer */
     CFE_SB_InitMsg(&SensorAccel,
             PX4_SENSOR_ACCEL_MID, sizeof(PX4_SensorAccelMsg_t), TRUE);
-    /* Init output message magnetometer */
-    CFE_SB_InitMsg(&SensorMag,
-            PX4_SENSOR_MAG_MID, sizeof(PX4_SensorMagMsg_t), TRUE);
+
+    ///* Init output message magnetometer */
+    //CFE_SB_InitMsg(&SensorMag,
+            //PX4_SENSOR_MAG_MID, sizeof(PX4_SensorMagMsg_t), TRUE);
+
     /* Init output message gyroscope */
     CFE_SB_InitMsg(&SensorGyro,
             PX4_SENSOR_GYRO_MID, sizeof(PX4_SensorGyroMsg_t), TRUE);
 
-    Diag.Calibration.AccDivider      = 1.0;
-    Diag.Calibration.GyroDivider     = 1.0;
-    Diag.Calibration.AccUnit         = MPU9250_ONE_G;
-    Diag.Calibration.GyroUnit        = MPU9250_RADIANS_PER_DEGREE;
-    Diag.Calibration.AccRange        = (MPU9250_ACC_SCALE * MPU9250_ONE_G);
-    Diag.Calibration.GyroRange       = MPU9250_2000_DEG_S;
-    Diag.Calibration.AccScale        = MPU9250_ACC_SCALE;
-    Diag.Calibration.GyroScale       = MPU9250_GYRO_SCALE;
+    /* Set a sane initial value, should be overwritten in SetAccScale */
+    Diag.Conversion.AccDivider      = 1.0;
+    /* Set a sane initial value, should be overwritten in SetGyroScale */
+    Diag.Conversion.GyroDivider     = 1.0;
+    Diag.Conversion.AccUnit         = MPU9250_ONE_G;
+    Diag.Conversion.GyroUnit        = MPU9250_RADIANS_PER_DEGREE;
+    /* These initial scale values determine the calculated range and 
+     * divider. See SetAccScale */
+    Diag.Conversion.AccScale        = MPU9250_ACC_SCALE;
+    Diag.Conversion.GyroScale       = MPU9250_GYRO_SCALE;
+    /* Temperature */
+    Diag.Conversion.RoomTempOffset  = 0.0;
+    Diag.Conversion.TempSensitivity = MPU9250_TEMP_SENS;
+    /* Start initialization of user calibration values */
     Diag.Calibration.AccXScale       = 1.0;
     Diag.Calibration.AccYScale       = 1.0;
     Diag.Calibration.AccZScale       = 1.0;
@@ -212,14 +226,12 @@ void MPU9250::InitData()
     Diag.Calibration.GyroXOffset     = 0.0;
     Diag.Calibration.GyroYOffset     = 0.0;
     Diag.Calibration.GyroZOffset     = 0.0;
-    Diag.Calibration.MagXScale       = 1.0;
-    Diag.Calibration.MagYScale       = 1.0;
-    Diag.Calibration.MagZScale       = 1.0;
-    Diag.Calibration.MagXOffset      = 0.0;
-    Diag.Calibration.MagYOffset      = 0.0;
-    Diag.Calibration.MagZOffset      = 0.0;
-    Diag.Calibration.RoomTempOffset  = 0.0;
-    Diag.Calibration.TempSensitivity = 333.87;
+    //Diag.Calibration.MagXScale       = 1.0;
+    //Diag.Calibration.MagYScale       = 1.0;
+    //Diag.Calibration.MagZScale       = 1.0;
+    //Diag.Calibration.MagXOffset      = 0.0;
+    //Diag.Calibration.MagYOffset      = 0.0;
+    //Diag.Calibration.MagZOffset      = 0.0;
 }
 
 
@@ -251,6 +263,12 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
+    iStatus = InitConfigTbl();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto MPU9250_InitApp_Exit_Tag;
+    }
+
     InitData();
 
     returnBool = MPU9250_Custom_Init();
@@ -271,7 +289,7 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    returnBool = MPU9250_SetAccScale(MPU9250_ACC_SCALE, &Diag.Calibration.AccDivider);
+    returnBool = MPU9250_SetAccScale(Diag.Conversion.AccScale, &Diag.Conversion.AccDivider);
     if(FALSE == returnBool)
     {
         iStatus = -1;
@@ -280,7 +298,7 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
 
-    returnBool = MPU9250_SetGyroScale(MPU9250_GYRO_SCALE, &Diag.Calibration.GyroDivider);
+    returnBool = MPU9250_SetGyroScale(Diag.Conversion.GyroScale, &Diag.Conversion.GyroDivider);
     if(FALSE == returnBool)
     {
         iStatus = -1;
@@ -289,8 +307,8 @@ int32 MPU9250::InitApp()
         goto MPU9250_InitApp_Exit_Tag;
     }
     ///*  Get the factory magnetometer sensitivity adjustment values */
-    //returnBool = MPU9250_Read_MagAdj(&Diag.Calibration.MagXAdj, 
-            //&Diag.Calibration.MagYAdj, &Diag.Calibration.MagZAdj);
+    //returnBool = MPU9250_Read_MagAdj(&Diag.Conversion.MagXAdj, 
+            //&Diag.Conversion.MagYAdj, &Diag.Conversion.MagZAdj);
     //if(FALSE == returnBool)
     //{
         //iStatus = -1;
@@ -310,6 +328,9 @@ int32 MPU9250::InitApp()
                                  (unsigned int)iStatus);
         goto MPU9250_InitApp_Exit_Tag;
     }
+
+    /* Get the rotation from custom for diag */
+    MPU9250_Get_Rotation(&Diag.Calibration.Rotation);
 
 MPU9250_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -360,11 +381,23 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case MPU9250_MEASURE_MID:
+            {
+            	//static uint32 i = 0;
+
                 ReadDevice();
-                SendSensorAccel();
                 SendSensorGyro();
-                //SendSensorMag();
+                SendSensorAccel();
+                //if(i >= 4)
+                //{
+                	//SendSensorMag();
+                	//i = 0;
+                //}
+                //else
+                //{
+                	//++i;
+                //}
                 break;
+            }
 
             case MPU9250_SEND_HK_MID:
                 ProcessCmdPipe();
@@ -479,6 +512,10 @@ void MPU9250::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                 HkTlm.usCmdErrCnt = 0;
                 break;
 
+            case MPU9250_SEND_DIAG_CC:
+                SendDiag();
+                break;
+
             default:
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(MPU9250_CC_ERR_EID, CFE_EVS_ERROR,
@@ -512,16 +549,29 @@ void MPU9250::SendSensorAccel()
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorAccel);
 }
 
-void MPU9250::SendSensorMag()
-{
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
-}
+//void MPU9250::SendSensorMag()
+//{
+	//static uint32 i = 0;
+	//if(i >= 4)
+	//{
+		//CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
+		//CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
+		//i = 0;
+	//}
+	//++i;
+//}
 
 void MPU9250::SendSensorGyro()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorGyro);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorGyro);
+}
+
+
+void MPU9250::SendDiag()
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&Diag);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&Diag);
 }
 
 
@@ -610,6 +660,12 @@ void MPU9250::AppMain()
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
     {
         RcvSchPipeMsg(MPU9250_SCH_PIPE_PEND_TIME);
+        iStatus = AcquireConfigPointers();
+        if(iStatus != CFE_SUCCESS)
+        {
+            /* We apparently tried to load a new table but failed.  Terminate the application. */
+            uiRunStatus = CFE_ES_APP_ERROR;
+        }
     }
 
     /* Stop Performance Log entry */
@@ -628,9 +684,9 @@ void MPU9250::ReadDevice(void)
     float calX_f = 0;
     float calY_f = 0;
     float calZ_f = 0;
-    float magXAdj_f = Diag.Calibration.MagXAdj;
-    float magYAdj_f = Diag.Calibration.MagYAdj;
-    float magZAdj_f = Diag.Calibration.MagZAdj;
+    //float magXAdj_f = Diag.Calibration.MagXAdj;
+    //float magYAdj_f = Diag.Calibration.MagYAdj;
+    //float magZAdj_f = Diag.Calibration.MagZAdj;
     uint64 timeStamp = 0;
     CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
     uint16 rawTemp = 0;
@@ -640,18 +696,13 @@ void MPU9250::ReadDevice(void)
     math::Vector3F gval_integrated;
     math::Vector3F aval;
     math::Vector3F aval_integrated;
+    static uint64 prevTimeStamp = 0;
 
-    cfeTimeStamp = MPU9250_Custom_Get_Time();
+    timeStamp = PX4LIB_GetPX4TimeUs();
     
     /* Timestamps */
-    SensorGyro.Timestamp.Seconds = SensorMag.Timestamp.Seconds = 
-            SensorAccel.Timestamp.Seconds = cfeTimeStamp.Seconds;
-    SensorGyro.Timestamp.Subseconds = SensorMag.Timestamp.Subseconds =
-            SensorAccel.Timestamp.Subseconds = cfeTimeStamp.Subseconds;
-    
-    /* Timestamp for low pass filter and integrator */
-    timeStamp = cfeTimeStamp.Seconds * 1000000;
-    timeStamp += cfeTimeStamp.Subseconds / 1000;
+    //SensorMag.Timestamp
+    SensorGyro.Timestamp = SensorAccel.Timestamp = timeStamp;
 
     /* Gyro */
     returnBool = MPU9250_Read_Gyro(&SensorGyro.XRaw, &SensorGyro.YRaw, &SensorGyro.ZRaw);
@@ -660,22 +711,25 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
 
-    rawX_f = (float) SensorGyro.XRaw;
-    rawY_f = (float) SensorGyro.YRaw;
-    rawZ_f = (float) SensorGyro.ZRaw;
+    rawX_f = SensorGyro.XRaw;
+    rawY_f = SensorGyro.YRaw;
+    rawZ_f = SensorGyro.ZRaw;
 
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    
+    /* Gyro unit conversion */
+    calX_f = rawX_f * (Diag.Conversion.GyroUnit / Diag.Conversion.GyroDivider);
+    calY_f = rawY_f * (Diag.Conversion.GyroUnit / Diag.Conversion.GyroDivider);
+    calZ_f = rawZ_f * (Diag.Conversion.GyroUnit / Diag.Conversion.GyroDivider); 
+    
     /* Gyro Calibrate */
-    calX_f = (rawX_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
-            Diag.Calibration.GyroXOffset) * Diag.Calibration.GyroXScale;
-    calY_f = (rawY_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
-            Diag.Calibration.GyroYOffset) * Diag.Calibration.GyroYScale;
-    calZ_f = (rawZ_f * (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider) - 
-            Diag.Calibration.GyroZOffset) * Diag.Calibration.GyroZScale;
+    calX_f = (calX_f - Diag.Calibration.GyroXOffset) * Diag.Calibration.GyroXScale;
+    calY_f = (calY_f - Diag.Calibration.GyroYOffset) * Diag.Calibration.GyroYScale;
+    calZ_f = (calZ_f - Diag.Calibration.GyroZOffset) * Diag.Calibration.GyroZScale;
 
     /* Gyro Filter */
     SensorGyro.X = _gyro_filter_x.apply(calX_f);
@@ -686,6 +740,15 @@ void MPU9250::ReadDevice(void)
     gval[0] = SensorGyro.X;
     gval[1] = SensorGyro.Y;
     gval[2] = SensorGyro.Z;
+    gval_integrated[0] = 0.0f;
+    gval_integrated[1] = 0.0f;
+    gval_integrated[2] = 0.0f;
+
+    /* TODO:  Replace this with real code, not a temporary estimate. */
+    //if(prevTimeStamp != 0)
+    //{
+    	//SensorGyro.IntegralDt = timeStamp - prevTimeStamp;
+    //}
 
     _gyro_int.put(timeStamp, gval, gval_integrated, SensorGyro.IntegralDt);
     
@@ -694,10 +757,11 @@ void MPU9250::ReadDevice(void)
     SensorGyro.ZIntegral = gval_integrated[2];
     
     /* Gyro Scale, Range, DeviceID */
-    SensorGyro.Scaling = (Diag.Calibration.GyroUnit / Diag.Calibration.GyroDivider);
-    SensorGyro.Range = Diag.Calibration.GyroRange;
+    SensorGyro.Scaling = (Diag.Conversion.GyroUnit / Diag.Conversion.GyroDivider);
+    SensorGyro.Range   = (Diag.Conversion.AccScale * Diag.Conversion.GyroUnit);
+
     /* TODO deviceID */
-    //SensorGyro.DeviceID = ;
+    SensorGyro.DeviceID = MPU9250_GYRO_PX4_DEVICE_ID;
 
     /* Accel */
     returnBool = MPU9250_Read_Accel(&SensorAccel.XRaw, &SensorAccel.YRaw, &SensorAccel.ZRaw);
@@ -706,33 +770,43 @@ void MPU9250::ReadDevice(void)
         goto end_of_function;
     }
 
-    rawX_f = (float) SensorAccel.XRaw;
-    rawY_f = (float) SensorAccel.YRaw;
-    rawZ_f = (float) SensorAccel.ZRaw;
+    rawX_f = SensorAccel.XRaw;
+    rawY_f = SensorAccel.YRaw;
+    rawZ_f = SensorAccel.ZRaw;
 
     returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    /* Accel unit conversion */
+    calX_f = rawX_f * (Diag.Conversion.AccUnit / Diag.Conversion.AccDivider);
+    calY_f = rawY_f * (Diag.Conversion.AccUnit / Diag.Conversion.AccDivider);
+    calZ_f = rawZ_f * (Diag.Conversion.AccUnit / Diag.Conversion.AccDivider);
     
     /* Accel Calibrate */
-    calX_f = (rawX_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
-            Diag.Calibration.AccXOffset) * Diag.Calibration.AccXScale;
-    calY_f = (rawY_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
-            Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
-    calZ_f = (rawZ_f * (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider) - 
-            Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
+    calX_f = (calX_f - Diag.Calibration.AccXOffset) * Diag.Calibration.AccXScale;
+    calY_f = (calY_f - Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
+    calZ_f = (calZ_f - Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
 
     /* Accel Filter */
     SensorAccel.X = _accel_filter_x.apply(calX_f);
     SensorAccel.Y = _accel_filter_y.apply(calY_f);
     SensorAccel.Z = _accel_filter_z.apply(calZ_f);
-
     /* Accel Integrate */
     aval[0] = SensorAccel.X;
     aval[1] = SensorAccel.Y;
     aval[2] = SensorAccel.Z;
+    aval_integrated[0] = 0.0f;
+    aval_integrated[1] = 0.0f;
+    aval_integrated[2] = 0.0f;
+
+    /* TODO:  Replace this with real code, not a temporary estimate. */
+    //if(prevTimeStamp != 0)
+    //{
+    	//SensorAccel.IntegralDt = timeStamp - prevTimeStamp;
+    //}
+	//prevTimeStamp = timeStamp;
 
     _accel_int.put(timeStamp, aval, aval_integrated, SensorAccel.IntegralDt);
     
@@ -741,13 +815,12 @@ void MPU9250::ReadDevice(void)
     SensorAccel.ZIntegral = aval_integrated[2];
 
     /* Accel Scale, Range, DeviceID */
-    SensorAccel.Scaling = (Diag.Calibration.AccUnit / Diag.Calibration.AccDivider);
-    SensorAccel.Range_m_s2 = Diag.Calibration.AccRange;
+    SensorAccel.Scaling = (Diag.Conversion.AccUnit / Diag.Conversion.AccDivider);
+    SensorAccel.Range_m_s2 = (Diag.Conversion.AccScale * Diag.Conversion.AccUnit);
 
     /* TODO deviceID */
-    //SensorAccel.DeviceID = ;
-
-    /* Mag */
+    SensorAccel.DeviceID = MPU9250_ACCEL_PX4_DEVICE_ID;
+    ///* Mag */
     //returnBool = MPU9250_Read_Mag(&SensorMag.XRaw, &SensorMag.YRaw, &SensorMag.ZRaw);
     //if(FALSE == returnBool)
     //{
@@ -761,42 +834,31 @@ void MPU9250::ReadDevice(void)
     //returnBool = MPU9250_Apply_Platform_Rotation(&rawX_f, &rawY_f, &rawZ_f);
     //if(FALSE == returnBool)
     //{
-    //    goto end_of_function;
+        //goto end_of_function;
     //}
 
-    /* Mag Calibrate */
-    SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXScale) + Diag.Calibration.MagXOffset) / 1000.0f;
-    SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagYScale) + Diag.Calibration.MagYOffset) / 1000.0f;
-    SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZScale) + Diag.Calibration.MagZOffset) / 1000.0f;
+    ///* Mag Calibrate */
+    //SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXScale) + Diag.Calibration.MagXOffset) / 1000.0f;
+    //SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagYScale) + Diag.Calibration.MagYOffset) / 1000.0f;
+    //SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZScale) + Diag.Calibration.MagZOffset) / 1000.0f;
 
-    ///* Mag Scale, Range, DeviceID */
+    /////* Mag Scale, Range, DeviceID */
     //SensorMag.Scaling = -1.0f;
     //SensorMag.Range = -1.0f;
-    /* TODO deviceID */
-    //SensorMag.DeviceID = ;
+    ///* TODO deviceID */
+    //SensorMag.DeviceID = MPU9250_PX4_DEVICE_ID;
 
-    /* Temp */
+    /* Temperature */
     returnBool = MPU9250_Read_Temp(&rawTemp);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+
     SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
-
-    //returnBool = MPU9250_Read_ImuStatus(&rawMsg.WOM, &rawMsg.FifoOvflw, &rawMsg.Fsync, &rawMsg.ImuDataReady);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
-    //returnBool = MPU9250_Read_MagStatus(&rawMsg.Overrun, &rawMsg.MagDataReady, &rawMsg.Overflow, &rawMsg.Output16Bit);
-    //if(FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
-    calTemp = ((SensorAccel.TemperatureRaw - Diag.Calibration.RoomTempOffset) / Diag.Calibration.TempSensitivity) + 21.0;
-    SensorGyro.Temperature = SensorAccel.Temperature = SensorMag.Temperature = calTemp;
+    calTemp = (SensorAccel.TemperatureRaw / Diag.Conversion.TempSensitivity) + 35.0 - Diag.Conversion.RoomTempOffset;
+    //SensorMag.Temperature
+    SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
 
 end_of_function:
 

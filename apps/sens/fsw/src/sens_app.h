@@ -34,10 +34,6 @@
 #ifndef SENS_APP_H
 #define SENS_APP_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /************************************************************************
  ** Pragmas
  *************************************************************************/
@@ -45,6 +41,13 @@ extern "C" {
 /************************************************************************
  ** Includes
  *************************************************************************/
+
+#include <lib/mathlib/math/filter/LowPassFilter2p.hpp>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cfe.h"
 
 #include "sens_platform_cfg.h"
@@ -65,14 +68,22 @@ extern "C" {
  *************************************************************************/
 typedef struct
 {
-    PX4_ActuatorControlsMsg_t     ActuatorControls0Msg;
-    PX4_InputRcMsg_t              InputRcMsg;
-    PX4_DifferentialPressureMsg_t DifferentialPressureMsg;
-    PX4_SensorBaroMsg_t           SensorBaroMsg;
     PX4_SensorAccelMsg_t          SensorAccelMsg;
-    PX4_SensorMagMsg_t            SensorMagMsg;
+    uint64                        LastAccelTime;
+    PX4_SensorBaroMsg_t           SensorBaroMsg;
+    uint64                        LastBaroTime;
     PX4_SensorGyroMsg_t           SensorGyroMsg;
+    uint64                        LastGyroTime;
+    PX4_SensorMagMsg_t            SensorMagMsg;
+    uint64                        LastMagTime;
+    PX4_ActuatorControlsMsg_t     ActuatorControls0Msg;
+    uint64                        LastActuatorControls0Time;
+    PX4_InputRcMsg_t              InputRcMsg;
+    uint64                        LastInputRcTime;
+    PX4_DifferentialPressureMsg_t DifferentialPressureMsg;
+    uint64                        LastDifferentialPressureTime;
     PX4_VehicleControlModeMsg_t   VehicleControlModeMsg;
+    uint64                        LastVehicleControlModeTime;
 } SENS_CurrentValueTable_t;
 
 
@@ -120,6 +131,11 @@ public:
 
     /** \brief Current Value Table */
     SENS_CurrentValueTable_t CVT;
+
+    math::LowPassFilter2p FilterRoll;
+    math::LowPassFilter2p FilterPitch;
+    math::LowPassFilter2p FilterYaw;
+    math::LowPassFilter2p FilterThrottle;
 
     /************************************************************************/
     /** \brief Sensors (SENS) application entry point
@@ -194,7 +210,7 @@ public:
     void InitData(void);
 
     /************************************************************************/
-    /** \brief Initialize message pipes
+    /** \brief Initialize message pipesCyclicProcessing
      **
      **  \par Description
      **       This function performs the steps required to setup
@@ -381,6 +397,10 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
+    void UpdateRcFunctions(void);
+
+    float GetRcValue(uint8 func, float min_value, float max_value);
+
 private:
     /************************************************************************/
     /** \brief Initialize the SENS configuration tables.
@@ -419,7 +439,11 @@ private:
     *************************************************************************/
     int32  AcquireConfigPointers(void);
 
+    void ProcessRCInput(void);
+    void CombineSensorInput(void);
     void CyclicProcessing(void);
+    PX4_SwitchPos_t GetRcSw3PosPosition(uint8 func, float on_th, bool on_inv, float mid_th, bool mid_inv);
+    PX4_SwitchPos_t GetRcSw2PosPosition(uint8 func, float on_th, bool on_inv);
 
 public:
     /************************************************************************/

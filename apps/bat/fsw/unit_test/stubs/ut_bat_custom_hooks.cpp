@@ -32,6 +32,7 @@
 *****************************************************************************/
 
 #include "cfe.h"
+#include "pwm_limit/pwm_limit.h"
 
 
 int32 UT_InitDevice(void)
@@ -51,4 +52,9 @@ int32 UT_ReadDevice(float &Voltage, float &Current)
 	Current = 0.0f;
 
 	return 0;
+}
+
+uint64 UT_PX4LIB_GetPX4TimeUs(void)
+{
+    return 0;
 }

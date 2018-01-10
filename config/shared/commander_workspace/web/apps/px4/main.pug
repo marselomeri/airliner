@@ -1,4 +1,4 @@
-extends ../../common/layout
+{% extends "../../common/layout.pug" %}
 
 block header
         i.fa-fw.fa.fa-signal
@@ -7,7 +7,7 @@ block header
 block main
     .row.row-fluid
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-Misc.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -19,15 +19,15 @@ block main
             .widget-body
               footer
                 .btn-group.btn-group-sm.btn-space
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/NoOp'}}) No-Op
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/Reset'}}) Reset
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleArm'}}) Arm
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleDisarm'}}) Disarm
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleLaunch'}}) Launch
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleLand'}}) Land
-                  button.btn.btn-primary(data-sage={cmd: {name: '/CFS/PX4/VehicleChangeMode'}}) Set Mode
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/NoOp'}}") No-Op
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/Reset'}}") Reset
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleArm'}}") Arm
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleDisarm'}}") Disarm
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleLaunch'}}") Launch
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleLand'}}") Land
+                  button.btn.btn-primary(data-sage="{'cmd': {'name': '/CFS/PX4/VehicleChangeMode'}}") Set Mode
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-AA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -42,30 +42,30 @@ block main
                   tbody
                     tr
                       th Armed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/AA_Armed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/AA_Armed'}}") ---
                     tr
                       th Prearmed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/AA_Prearmed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/AA_Prearmed'}}") ---
                     tr
                       th ReadyToArm:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/AA_ReadyToArm"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/AA_ReadyToArm'}}") ---
                     tr
                       th Lockdown:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/AA_Lockdown"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/AA_Lockdown'}}") ---
                     tr
                       th ForceFailsafe:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/AA_ForceFailsafe"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/AA_ForceFailsafe'}}") ---
                     tr
                       th In ESC Cal Mode:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/AA_InEscCalibrationMode"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/AA_InEscCalibrationMode'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-CDR.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -80,10 +80,10 @@ block main
                   tbody
                     tr
                       th Main State:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CDR_MainState"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CDR_MainState'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-CS.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -98,106 +98,106 @@ block main
                   tbody
                     tr
                       th AccX:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_AccX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_AccX'}}") ---
                     tr
                       th AccY:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_AccY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_AccY'}}") ---
                     tr
                       th AccZ:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_AccZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_AccZ'}}") ---
                     tr
                       th VelX:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_VelX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_VelX'}}") ---
                     tr
                       th VelY:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_VelY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_VelY'}}") ---
                     tr
                       th VelZ:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_VelZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_VelZ'}}") ---
                     tr
                       th PosX:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PosX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PosX'}}") ---
                     tr
                       th PosY:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PosY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PosY'}}") ---
                     tr
                       th PosZ:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PosZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PosZ'}}") ---
                     tr
                       th Airspeed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_Airspeed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_Airspeed'}}") ---
                     tr
                       th VelX Var:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_VelVar_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_VelVar_0'}}") ---
                     tr
                       th VelY Var:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_VelVar_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_VelVar_1'}}") ---
                     tr
                       th VelZ Var:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_VelVar_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_VelVar_2'}}") ---
                     tr
                       th PosX Var:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PosVar_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PosVar_0'}}") ---
                     tr
                       th PosY Var:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PosVar_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PosVar_1'}}") ---
                     tr
                       th PosZ Var:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PosVar_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PosVar_2'}}") ---
                     tr
                       th Q 0:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_Q_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_Q_0'}}") ---
                     tr
                       th Q 1:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_Q_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_Q_1'}}") ---
                     tr
                       th Q 2:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_Q_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_Q_2'}}") ---
                     tr
                       th Q 3:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_Q_3"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_Q_3'}}") ---
                     tr
                       th Roll Rate:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_RollRate"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_RollRate'}}") ---
                     tr
                       th Pitch Rate:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_PitchRate"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_PitchRate'}}") ---
                     tr
                       th Yaw Rate:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_YawRate"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_YawRate'}}") ---
                     tr
                       th Horz Acc Mag:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_HorzAccMag"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_HorzAccMag'}}") ---
                     tr
                       th Airspeed Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/CS_AirspeedValid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/CS_AirspeedValid'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-ES.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -212,286 +212,286 @@ block main
                   tbody
                     tr
                       th States 0:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_0'}}") ---
                     tr
                       th States 1:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_1'}}") ---
                     tr
                       th States 2:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_2'}}") ---
                     tr
                       th States 3:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_3"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_3'}}") ---
                     tr
                       th States 4:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_4"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_4'}}") ---
                     tr
                       th States 5:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_5"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_5'}}") ---
                     tr
                       th States 6:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_6"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_6'}}") ---
                     tr
                       th States 7:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_7"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_7'}}") ---
                     tr
                       th States 8:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_8"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_8'}}") ---
                     tr
                       th States 9:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_9"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_9'}}") ---
                     tr
                       th States 10:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_10"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_10'}}") ---
                     tr
                       th States 11:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_11"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_11'}}") ---
                     tr
                       th States 12:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_12"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_12'}}") ---
                     tr
                       th States 13:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_13"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_13'}}") ---
                     tr
                       th States 14:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_14"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_14'}}") ---
                     tr
                       th States 15:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_15"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_15'}}") ---
                     tr
                       th States 16:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_16"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_16'}}") ---
                     tr
                       th States 17:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_17"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_17'}}") ---
                     tr
                       th States 18:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_18"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_18'}}") ---
                     tr
                       th States 19:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_19"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_19'}}") ---
                     tr
                       th States 20:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_20"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_20'}}") ---
                     tr
                       th States 21:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_21"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_21'}}") ---
                     tr
                       th States 22:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_22"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_22'}}") ---
                     tr
                       th States 23:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_23"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_23'}}") ---
                     tr
                       th States 24:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_24"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_24'}}") ---
                     tr
                       th States 25:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_25"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_25'}}") ---
                     tr
                       th States 26:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_26"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_26'}}") ---
                     tr
                       th States 27:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_27"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_27'}}") ---
                     tr
                       th States 28:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_28"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_28'}}") ---
                     tr
                       th States 29:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_29"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_29'}}") ---
                     tr
                       th States 30:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_30"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_30'}}") ---
                     tr
                       th States 31:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_States_31"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_States_31'}}") ---
                     tr
                       th Num States:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_NumStates"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_NumStates'}}") ---
                     tr
                       th Vibe 0:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Vibe_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Vibe_0'}}") ---
                     tr
                       th Vibe 1:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Vibe_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Vibe_1'}}") ---
                     tr
                       th Vibe 2:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Vibe_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Vibe_2'}}") ---
                     tr
                       th Cov 0:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_0'}}") ---
                     tr
                       th Cov 1:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_1'}}") ---
                     tr
                       th Cov 2:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_2'}}") ---
                     tr
                       th Cov 3:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_3"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_3'}}") ---
                     tr
                       th Cov 4:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_4"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_4'}}") ---
                     tr
                       th Cov 5:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_5"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_5'}}") ---
                     tr
                       th Cov 6:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_6"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_6'}}") ---
                     tr
                       th Cov 7:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_7"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_7'}}") ---
                     tr
                       th Cov 8:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_8"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_8'}}") ---
                     tr
                       th Cov 9:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_9"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_9'}}") ---
                     tr
                       th Cov 10:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_10"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_10'}}") ---
                     tr
                       th Cov 11:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_11"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_11'}}") ---
                     tr
                       th Cov 12:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_12"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_12'}}") ---
                     tr
                       th Cov 13:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_13"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_13'}}") ---
                     tr
                       th Cov 14:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_14"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_14'}}") ---
                     tr
                       th Cov 15:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_15"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_15'}}") ---
                     tr
                       th Cov 16:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_16"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_16'}}") ---
                     tr
                       th Cov 17:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_17"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_17'}}") ---
                     tr
                       th Cov 18:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_18"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_18'}}") ---
                     tr
                       th Cov 19:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_19"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_19'}}") ---
                     tr
                       th Cov 20:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_20"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_20'}}") ---
                     tr
                       th Cov 21:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_21"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_21'}}") ---
                     tr
                       th Cov 22:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_22"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_22'}}") ---
                     tr
                       th Cov 23:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_23"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_23'}}") ---
                     tr
                       th Cov 24:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_24"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_24'}}") ---
                     tr
                       th Cov 25:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_25"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_25'}}") ---
                     tr
                       th Cov 26:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_26"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_26'}}") ---
                     tr
                       th Cov 27:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_Cov_27"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_Cov_27'}}") ---
                     tr
                       th GPS Check Fail Flags:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_GpsCheckFailFlags"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_GpsCheckFailFlags'}}") ---
                     tr
                       th Control Mode Flags:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_ControlModeFlags"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_ControlModeFlags'}}") ---
                     tr
                       th Filter Fault Flags:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_FilterFaultFlags"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_FilterFaultFlags'}}") ---
                     tr
                       th NaN Flags:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_NanFlags"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_NanFlags'}}") ---
                     tr
                       th Health Flags:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_HealthFlags"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_HealthFlags'}}") ---
                     tr
                       th Timeout Flags:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ES_TimeoutFlags"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ES_TimeoutFlags'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-HomePosition.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -506,46 +506,46 @@ block main
                   tbody
                     tr
                       th Latitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_Lat"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_Lat'}}") ---
                     tr
                       th Longitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_Lon"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_Lon'}}") ---
                     tr
                       th Altitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_Alt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_Alt'}}") ---
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_X"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_Y"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_Z"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_Z'}}") ---
                     tr
                       th Yaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_Yaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_Yaw'}}") ---
                     tr
                       th Direction X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_DirectionX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_DirectionX'}}") ---
                     tr
                       th Direction Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_DirectionY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_DirectionY'}}") ---
                     tr
                       th Direction Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/HP_DirectionZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/HP_DirectionZ'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-MavlinkLog.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -560,14 +560,14 @@ block main
                   tbody
                     tr
                       th Text:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ML_Text"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ML_Text'}}") ---
                     tr
                       th Severity:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/ML_Severity"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/ML_Severity'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-macs.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -582,20 +582,20 @@ block main
                   tbody
                     tr
                       th Roll Rate Int:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/MACS_RollRateInteg"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/MACS_RollRateInteg'}}") ---
                     tr
                       th Pitch Rate Int:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/MACS_PitchRateInteg"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/MACS_PitchRateInteg'}}") ---
                     tr
                       th Yaw Rate Int:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/MACS_YawRateInteg"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/MACS_YawRateInteg'}}") ---
 
 
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VCM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -610,71 +610,71 @@ block main
                   tbody
                     tr
                       th Armed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_Armed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_Armed'}}") ---
                     tr
                       th External Manual Override OK:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_ExtManOvrrdOk"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_ExtManOvrrdOk'}}") ---
                     tr
                       th System HIL Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_SysHilEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_SysHilEna'}}") ---
                     tr
                       th Control Manual Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlManEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlManEna'}}") ---
                     tr
                       th Control Auto Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlAutoEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlAutoEna'}}") ---
                     tr
                       th Control Offboard Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlOffbrdEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlOffbrdEna'}}") ---
                     tr
                       th Control Rates Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlRatesEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlRatesEna'}}") ---
                     tr
                       th Control Attitude Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlAttEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlAttEna'}}") ---
                     tr
                       th Control Rattitude Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlRattEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlRattEna'}}") ---
                     tr
                       th Control Force Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlForceEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlForceEna'}}") ---
                     tr
                       th Control Acceleration Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlAccEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlAccEna'}}") ---
                     tr
                       th Control Velocity Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlVelEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlVelEna'}}") ---
                     tr
                       th Control Position Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlPosEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlPosEna'}}") ---
                     tr
                       th Control Altitude Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlAltEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlAltEna'}}") ---
                     tr
                       th Control Climb Rate Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlClimbRateEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlClimbRateEna'}}") ---
                     tr
                       th Control Term Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VCM_CtrlTermEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VCM_CtrlTermEna'}}") ---
 
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VGP.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -689,59 +689,59 @@ block main
                   tbody
                     tr
                       th Latitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_Lat"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_Lat'}}") ---
                     tr
                       th Longitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_Lon"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_Lon'}}") ---
                     tr
                       th Altitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_Alt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_Alt'}}") ---
                     tr
                       th Vel N:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_VelN"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_VelN'}}") ---
                     tr
                       th Vel E:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_VelE"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_VelE'}}") ---
                     tr
                       th Vel D:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_VelD"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_VelD'}}") ---
                     tr
                       th Yaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_Yaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_Yaw'}}") ---
                     tr
                       th EpH:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_EpH"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_EpH'}}") ---
                     tr
                       th EpV:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_EpV"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_EpV'}}") ---
                     tr
                       th Terrain Alt:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_TerrainAlt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_TerrainAlt'}}") ---
                     tr
                       th Press Alt:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_PressAlt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_PressAlt'}}") ---
                     tr
                       th Terr Alt Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_TerrAltValid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_TerrAltValid'}}") ---
                     tr
                       th Dead Reckoning:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGP_DeadReckoning"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGP_DeadReckoning'}}") ---
 
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VGPP.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -756,94 +756,94 @@ block main
                   tbody
                     tr
                       th Time UTC (us):
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_TimeUtcUsec"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_TimeUtcUsec'}}") ---
                     tr
                       th Latitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Lat"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Lat'}}") ---
                     tr
                       th Longitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Lon"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Lon'}}") ---
                     tr
                       th Altitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Alt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Alt'}}") ---
                     tr
                       th Altitude Ellipsoid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_AltEllipsoid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_AltEllipsoid'}}") ---
                     tr
                       th SVar:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_SVar"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_SVar'}}") ---
                     tr
                       th CVar:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_CVar"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_CVar'}}") ---
                     tr
                       th EpH:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_EpH"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_EpH'}}") ---
                     tr
                       th EpV:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_EpV"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_EpV'}}") ---
                     tr
                       th HDOP:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_HDOP"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_HDOP'}}") ---
                     tr
                       th VDOP:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_VDOP"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_VDOP'}}") ---
                     tr
                       th NoisePerMs:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_NoisePerMs"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_NoisePerMs'}}") ---
                     tr
                       th Jamming Indicator:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_JamInd"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_JamInd'}}") ---
                     tr
                       th Vel m/s:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Vel_m_s"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Vel_m_s'}}") ---
                     tr
                       th Vel N m/s:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Vel_n_m_s"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Vel_n_m_s'}}") ---
                     tr
                       th Vel E m/s:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Vel_e_m_s"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Vel_e_m_s'}}") ---
                     tr
                       th Vel D m/s:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_Vel_d_m_s"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_Vel_d_m_s'}}") ---
                     tr
                       th COG:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_COG"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_COG'}}") ---
                     tr
                       th Time Relative:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_TimestampTimeRelative"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_TimestampTimeRelative'}}") ---
                     tr
                       th Fix Type:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_FixType"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_FixType'}}") ---
                     tr
                       th Vel NED Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_VelNedValid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_VelNedValid'}}") ---
                     tr
                       th Satellites Used:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGPP_SatellitesUsed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGPP_SatellitesUsed'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VLP.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -858,106 +858,106 @@ block main
                   tbody
                     tr
                       th Ref Time Sec:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_RefTimeSec"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_RefTimeSec'}}") ---
                     tr
                       th Ref Time Subsec:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_RefTimeSubSec"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_RefTimeSubSec'}}") ---
                     tr
                       th Ref Latitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_RefLat"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_RefLat'}}") ---
                     tr
                       th Ref Longitude:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_RefLon"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_RefLon'}}") ---
                     tr
                       th Surf Bottom Time Sec:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_SurfBottomTimeSec"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_SurfBottomTimeSec'}}") ---
                     tr
                       th Surf Bottom Time SubSec:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_SurfBottomTimeSubSec"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_SurfBottomTimeSubSec'}}") ---
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_X"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_Y"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_Z"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_Z'}}") ---
                     tr
                       th VX:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_VX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_VX'}}") ---
                     tr
                       th VY:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_VY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_VY'}}") ---
                     tr
                       th VZ:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_VZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_VZ'}}") ---
                     tr
                       th Yaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_Yaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_Yaw'}}") ---
                     tr
                       th Ref Alt:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_RefAlt"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_RefAlt'}}") ---
                     tr
                       th Dist Bottom:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_DistBottom"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_DistBottom'}}") ---
                     tr
                       th Dist Bottom Rate:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_DistBottomRate"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_DistBottomRate'}}") ---
                     tr
                       th EpH:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_EpH"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_EpH'}}") ---
                     tr
                       th EpV:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_EpV"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_EpV'}}") ---
                     tr
                       th XY Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_XY_Valid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_XY_Valid'}}") ---
                     tr
                       th Z Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_Z_Valid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_Z_Valid'}}") ---
                     tr
                       th Vel XY Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_V_XY_Valid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_V_XY_Valid'}}") ---
                     tr
                       th Vel Z Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_V_Z_Valid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_V_Z_Valid'}}") ---
                     tr
                       th XY Global:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_XY_Global"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_XY_Global'}}") ---
                     tr
                       th Z Global:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_Z_Global"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_Z_Global'}}") ---
                     tr
                       th Dist Bottom Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLP_DistBottomValid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLP_DistBottomValid'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VGVS.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -972,18 +972,18 @@ block main
                   tbody
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGVS_VX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGVS_VX'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGVS_VY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGVS_VY'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VGVS_VZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VGVS_VZ'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VLD.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -998,14 +998,14 @@ block main
                   tbody
                     tr
                       th Landed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLD_Landed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLD_Landed'}}") ---
                     tr
                       th Freefall:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLD_Freefall"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLD_Freefall'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-VLPS.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -1020,46 +1020,46 @@ block main
                   tbody
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_X"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_Y"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_Z"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_Z'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_Yaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_Yaw'}}") ---
                     tr
                       th VX:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_VX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_VX'}}") ---
                     tr
                       th VY:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_VY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_VY'}}") ---
                     tr
                       th VZ:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_VZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_VZ'}}") ---
                     tr
                       th Acc X:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_AccX"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_AccX'}}") ---
                     tr
                       th Acc Y:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_AccY"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_AccY'}}") ---
                     tr
                       th Acc Z:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VLPS_AccZ"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VLPS_AccZ'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-WE.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -1074,22 +1074,22 @@ block main
                   tbody
                     tr
                       th North:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/WE_North"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/WE_North'}}") ---
                     tr
                       th East:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/WE_East"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/WE_East'}}") ---
                     tr
                       th North Cov:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/WE_CovNorth"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/WE_CovNorth'}}") ---
                     tr
                       th East Cov:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/WE_CovEast"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/WE_CovEast'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-WE.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -1104,90 +1104,90 @@ block main
                   tbody
                     tr
                       th System ID:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_SystemID"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_SystemID'}}") ---
                     tr
                       th Component ID:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_ComponentID"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_ComponentID'}}") ---
                     tr
                       th Onboard Control Sensors Present:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_OnbrdCtrlSnsrsPresent"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_OnbrdCtrlSnsrsPresent'}}") ---
                     tr
                       th Onboard Control Sensors Enabled:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_OnbrdCtrlSnsrsEna"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_OnbrdCtrlSnsrsEna'}}") ---
                     tr
                       th Onboard Control Sensors Health:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_OnbrdCtrlSnsrsHealth"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_OnbrdCtrlSnsrsHealth'}}") ---
                     tr
                       th Nav State:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_NavState"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_NavState'}}") ---
                     tr
                       th Arming State:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_ArmingState"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_ArmingState'}}") ---
                     tr
                       th HIL State:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_HilState"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_HilState'}}") ---
                     tr
                       th Failsafe:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_Failsafe"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_Failsafe'}}") ---
                     tr
                       th System Type:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_SystemType"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_SystemType'}}") ---
                     tr
                       th Is Rotary Wing:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_IsRotaryWing"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_IsRotaryWing'}}") ---
                     tr
                       th Is VTOL:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_IsVtol"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_IsVtol'}}") ---
                     tr
                       th VTOL Fw Perm Stab:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_VtolFwPermStab"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_VtolFwPermStab'}}") ---
                     tr
                       th In Trans Mode:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_InTransMode"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_InTransMode'}}") ---
                     tr
                       th RC Signal Lost:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_RcSignalLost"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_RcSignalLost'}}") ---
                     tr
                       th RC Input Mode:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_RcInputMode"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_RcInputMode'}}") ---
                     tr
                       th Data Link Lost:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_DataLinkLost"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_DataLinkLost'}}") ---
                     tr
                       th Data Link Lost Counter:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_DataLinkLostCounter"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_DataLinkLostCounter'}}") ---
                     tr
                       th Engine Failure:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_EngineFailure"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_EngineFailure'}}") ---
                     tr
                       th Engine Failure Cmd:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_EngineFailureCmd"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_EngineFailureCmd'}}") ---
                     tr
                       th Mission Failure:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VS_MissionFailure"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VS_MissionFailure'}}") ---
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-WE.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -1202,133 +1202,133 @@ block main
                   tbody
                     tr
                       th Roll:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Roll"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Roll'}}") ---
                     tr
                       th Pitch:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Pitch"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Pitch'}}") ---
                     tr
                       th Yaw:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Yaw"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Yaw'}}") ---
                     tr
                       th Roll Speed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_RollSpeed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_RollSpeed'}}") ---
                     tr
                       th Pitch Speed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_PitchSpeed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_PitchSpeed'}}") ---
                     tr
                       th Yaw Speed:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_YawSpeed"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_YawSpeed'}}") ---
                     tr
                       th Roll Acc:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_RollAcc"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_RollAcc'}}") ---
                     tr
                       th Pitch Acc:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_PitchAcc"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_PitchAcc'}}") ---
                     tr
                       th Yaw Acc:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_YawAcc"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_YawAcc'}}") ---
                     tr
                       th Rate Vibration:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_RateVibration"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_RateVibration'}}") ---
                     tr
                       th Accel Vibration:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_AccelVibration"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_AccelVibration'}}") ---
                     tr
                       th Mag Vibration:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_MagVibration"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_MagVibration'}}") ---
                     tr
                       th Rate Offsets[0]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_RateOffsets_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_RateOffsets_0'}}") ---
                     tr
                       th Rate Offsets[1]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_RateOffsets_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_RateOffsets_1'}}") ---
                     tr
                       th Rate Offsets[2]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_RateOffsets_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_RateOffsets_2'}}") ---
                     tr
                       th R[0]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_0'}}") ---
                     tr
                       th R[1]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_1'}}") ---
                     tr
                       th R[2]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_2'}}") ---
                     tr
                       th R[3]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_3"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_3'}}") ---
                     tr
                       th R[4]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_4"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_4'}}") ---
                     tr
                       th R[5]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_5"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_5'}}") ---
                     tr
                       th R[6]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_6"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_6'}}") ---
                     tr
                       th R[7]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_7"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_7'}}") ---
                     tr
                       th R[8]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_8"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_8'}}") ---
                     tr
                       th Q[0]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Q_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Q_0'}}") ---
                     tr
                       th Q[1]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Q_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Q_1'}}") ---
                     tr
                       th Q[2]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Q_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Q_2'}}") ---
                     tr
                       th Q[3]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_Q_3"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_Q_3'}}") ---
                     tr
                       th GComp[0]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_G_Comp_0"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_G_Comp_0'}}") ---
                     tr
                       th GComp[1]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_G_Comp_1"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_G_Comp_1'}}") ---
                     tr
                       th GComp[2]:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_G_Comp_2"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_G_Comp_2'}}") ---
                     tr
                       th R Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_Valid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_Valid'}}") ---
                     tr
                       th Q Valid:
-                      td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/VA_R_Valid"}}) ---
+                      td
+                        span(data-sage="{'tlm': {'name': '/CFS/PX4/VA_R_Valid'}}") ---

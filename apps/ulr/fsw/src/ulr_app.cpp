@@ -8,6 +8,7 @@
 #include "ulr_app.h"
 #include "ulr_msg.h"
 #include "ulr_version.h"
+#include "lib/px4lib.h"
 
 
 
@@ -430,9 +431,9 @@ void ULR::ReportHousekeeping()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void ULR::ReportDistance()
 {
-    OS_MutSemTake(Mutex);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&DistanceSensor);
-    OS_MutSemGive(Mutex);
+    //OS_MutSemTake(Mutex);
+    //CFE_SB_SendMsg((CFE_SB_Msg_t*)&DistanceSensor);
+    //OS_MutSemGive(Mutex);
 }
 
 
@@ -552,7 +553,15 @@ bool   ULR::IsChecksumOk(void)
 	checksum = (UartMessage.VersionID + UartMessage.AltitudeH +
 			UartMessage.AltitudeL + UartMessage.SNR) & 0xFF;
 
-	return UartMessage.Checksum = checksum;
+    if (UartMessage.Checksum == checksum)
+    {
+        return true;
+    }
+    else
+    {
+        OS_printf("UartMessage.Checksum  %hhu != checksum %hhu\n", UartMessage.Checksum, checksum);
+        return false;
+    }
 }
 
 
@@ -647,15 +656,26 @@ void  ULR::ListenerTaskMain(void)
 						if(IsChecksumOk())
 						{
 						    OS_MutSemTake(Mutex);
-							DistanceSensor.MinDistance = ULR_MIN_DISTANCE;
-							DistanceSensor.MaxDistance = ULR_MAX_DISTANCE;
+						    DistanceSensor.Timestamp = PX4LIB_GetPX4TimeUs();
+							DistanceSensor.MinDistance = ULR_MIN_DISTANCE / 10.0f;
+							DistanceSensor.MaxDistance = ULR_MAX_DISTANCE / 10.0f;
 							DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f;
 							DistanceSensor.Covariance = ULR_SENS_VARIANCE;
 							DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
 							DistanceSensor.ID = 0;
-							DistanceSensor.Orientation = PX4_SENSOR_ORIENTATION_ROLL_180;
+							DistanceSensor.Orientation = (PX4_SensorOrientation_t)0; //PX4_SENSOR_ORIENTATION_ROLL_180;
+
+//							OS_printf("***************************\n");
+//							OS_printf("  Minimum = %f\n", (double)DistanceSensor.MinDistance);
+//							OS_printf("  Maximum = %f\n", (double)DistanceSensor.MaxDistance);
+//							OS_printf("  Current = %f\n", (double)DistanceSensor.CurrentDistance);
+//							OS_printf("  SensorType = %u\n", DistanceSensor.Type);
+//							OS_printf("  SensorID = %u\n", DistanceSensor.ID);
+//							OS_printf("  SensorOrientation = %u\n", DistanceSensor.Orientation);
+//							OS_printf("  Covariance = %f\n", (double)DistanceSensor.Covariance);
 
 						    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&DistanceSensor);
+						    CFE_SB_SendMsg((CFE_SB_Msg_t*)&DistanceSensor);
 						    OS_MutSemGive(Mutex);
 						}
 						else

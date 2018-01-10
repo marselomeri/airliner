@@ -9,6 +9,7 @@
 #include "bat_msg.h"
 #include "bat_version.h"
 #include <math.h>
+#include "lib/px4lib.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -155,7 +156,7 @@ void BAT::InitData()
     /* Init output messages */
     CFE_SB_InitMsg(&BatteryStatusMsg,
       		PX4_BATTERY_STATUS_MID, sizeof(PX4_BatteryStatusMsg_t), TRUE);
-
+    BatteryStatusMsg.Timestamp = PX4LIB_GetPX4TimeUs();
     BatteryStatusMsg.CurrentFiltered = -1.0f;
     BatteryStatusMsg.VoltageFiltered = -1.0f;
 

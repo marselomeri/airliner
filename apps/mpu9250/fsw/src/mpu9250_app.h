@@ -54,6 +54,7 @@ extern "C" {
 #include "mpu9250_msgids.h"
 #include "mpu9250_msg.h"
 #include "mpu9250_events.h"
+#include "mpu9250_tbldefs.h"
 #include "px4_msgs.h"
 #include "LowPassFilter2p.h"
 #include "integrator.h"
@@ -61,29 +62,6 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-#define MPU9250_ACC_SCALE                   (2)
-#define MPU9250_GYRO_SCALE                  (250)
-/** \brief Magnetometer device ID. */
-#define MPU9250_AK8963_ID                   (0x48)
-/** \brief IMU device ID. */
-#define MPU9250_DEVICE_ID                   (0x71)
-/** \brief IMU accelerometer sample rate. */
-#define MPU9250_ACCEL_SAMPLE_RATE           (200)
-/** \brief IMU accelerometer filter cutoff frequency. */
-#define MPU9250_ACCEL_FILTER_CUTOFF_FREQ    (30)
-/** \brief IMU gyroscope sample rate. */
-#define MPU9250_GYRO_SAMPLE_RATE            (200)
-/** \brief IMU gyroscope filter cutoff frequency. */
-#define MPU9250_GYRO_FILTER_CUTOFF_FREQ     (30)
-/** \brief Set to never publish (0) in PX4 mpu9250 wrapper. */
-#define MPU9250_NEVER_AUTOPUBLISH_US        (0)
-/** \brief One gravity. */
-#define MPU9250_ONE_G                       (9.80665f)
-/** \brief Radians per degree. */
-#define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
-
-/** \brief 2000 deg/s = (2000/180)*PI = 34.906585 rad/s. */
-#define MPU9250_2000_DEG_S                  ((2000.0f / 180.0f) * M_PI)
 
 /************************************************************************
  ** Local Structure Definitions
@@ -119,9 +97,17 @@ public:
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
+   /* Config table-related */
+
+    /** \brief Config Table Handle */
+    CFE_TBL_Handle_t ConfigTblHdl;
+
+    /** \brief Config Table Pointer */
+    MPU9250_ConfigTbl_t* ConfigTblPtr;
+
     /** \brief Output Data published at the end of cycle */
     PX4_SensorAccelMsg_t SensorAccel;
-    PX4_SensorMagMsg_t SensorMag;
+    //PX4_SensorMagMsg_t SensorMag;
     PX4_SensorGyroMsg_t SensorGyro;
 
     /** \brief Housekeeping Telemetry for downlink */
@@ -286,6 +272,7 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
     /************************************************************************/
     /** \brief Sends the SensorAccel message.
      **
@@ -298,6 +285,7 @@ public:
      **
      *************************************************************************/
     void SendSensorAccel(void);
+
     /************************************************************************/
     /** \brief Sends the SensorMag message.
      **
@@ -310,6 +298,7 @@ public:
      **
      *************************************************************************/
     void SendSensorMag(void);
+
     /************************************************************************/
     /** \brief Sends the SensorGyro message.
      **
@@ -322,6 +311,19 @@ public:
      **
      *************************************************************************/
     void SendSensorGyro(void);
+    
+    /************************************************************************/
+    /** \brief Sends a diagnostic message.
+     **
+     **  \par Description
+     **       This function publishes the diagnostic message.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void SendDiag(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -371,6 +373,43 @@ public:
     boolean ValidateDevice(void);
 
 private:
+    /************************************************************************/
+    /** \brief Initialize the GPS configuration tables.
+    **
+    **  \par Description
+    **       This function initializes GPS's configuration tables.  This
+    **       includes <TODO>.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
+    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
+    **  \retstmt Return codes from #GPS_AcquireConfigPointers \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    int32  InitConfigTbl(void);
+
+    /************************************************************************/
+    /** \brief Obtain GPS configuration tables data pointers.
+    **
+    **  \par Description
+    **       This function manages the configuration tables
+    **       and obtains a pointer to their data.
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    int32  AcquireConfigPointers(void);
+
     math::LowPassFilter2p   _accel_filter_x;
     math::LowPassFilter2p   _accel_filter_y;
     math::LowPassFilter2p   _accel_filter_z;
@@ -379,6 +418,25 @@ private:
     math::LowPassFilter2p   _gyro_filter_z;
     Integrator              _accel_int;
     Integrator              _gyro_int;
+
+public:
+    /************************************************************************/
+    /** \brief Validate configuration table
+    **
+    **  \par Description
+    **       This function validates GPS's configuration table
+    **
+    **  \par Assumptions, External Events, and Notes:
+    **       None
+    **
+    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
+    **
+    **  \returns
+    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+    **  \endreturns
+    **
+    *************************************************************************/
+    static int32  ValidateConfigTbl(void*);
 };
 
 

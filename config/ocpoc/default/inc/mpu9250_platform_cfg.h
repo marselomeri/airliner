@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include "math.h"
+
 /*
 ** MPU9250 Platform Configuration Parameter Definitions
 */
@@ -94,6 +96,13 @@ extern "C" {
 */
 #define MPU9250_DATA_PIPE_NAME             ("MPU9250_DATA_PIPE")
 
+/** \brief The config table default filename
+**
+**  \par Limits:
+**       The length of each string, including the NULL terminator cannot exceed
+**       the #OS_MAX_PATH_LEN value.
+*/
+#define MPU9250_CONFIG_TABLE_FILENAME      ("/cf/apps/mpu9250_config.tbl")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
@@ -102,6 +111,38 @@ extern "C" {
 */
 #define MPU9250_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief Fake accel device ID */
+#define MPU9250_ACCEL_PX4_DEVICE_ID         (6789478)
+/** \brief Fake gyro device ID */
+#define MPU9250_GYRO_PX4_DEVICE_ID          (3467548)
+/** \brief Integration publish rate */
+#define MPU9250_ACCEL_INT_PUB_RATE          (1000000 / 400)
+/** \brief Integration publish rate */
+#define MPU9250_GYRO_INT_PUB_RATE           (1000000 / 400)
+/** \brief Accel scale */
+#define MPU9250_ACC_SCALE                   (16)
+/** \brief Gyro scale */
+#define MPU9250_GYRO_SCALE                  (2000)
+/** \brief Magnetometer device ID. */
+#define MPU9250_AK8963_ID                   (0x48)
+/** \brief IMU device ID. */
+#define MPU9250_DEVICE_ID                   (0x71)
+/** \brief IMU accelerometer sample rate. */
+#define MPU9250_ACCEL_SAMPLE_RATE           (200)
+/** \brief IMU accelerometer filter cutoff frequency. */
+#define MPU9250_ACCEL_FILTER_CUTOFF_FREQ    (30)
+/** \brief IMU gyroscope sample rate. */
+#define MPU9250_GYRO_SAMPLE_RATE            (200)
+/** \brief IMU gyroscope filter cutoff frequency. */
+#define MPU9250_GYRO_FILTER_CUTOFF_FREQ     (30)
+/** \brief Set to never publish (0) in PX4 mpu9250 wrapper. */
+#define MPU9250_NEVER_AUTOPUBLISH_US        (0)
+/** \brief One gravity. */
+#define MPU9250_ONE_G                       (9.80665f)
+/** \brief Radians per degree. */
+#define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
+/** \brief Temperature sensitivity */
+#define MPU9250_TEMP_SENS                   (361.0f)
 
 #ifdef __cplusplus
 }

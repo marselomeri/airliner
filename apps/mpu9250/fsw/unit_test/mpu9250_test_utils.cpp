@@ -48,6 +48,13 @@
 
 #include <time.h>
 
+/*
+ * Config table for testing
+ */
+MPU9250_ConfigTbl_t ConfigTbl = {
+        /* TODO:  Define table */
+		0
+};
 
 /*
  * Function Definitions
@@ -66,6 +73,7 @@ void MPU9250_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
+    Ut_CFE_TBL_AddTable(MPU9250_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
 }
 
 void MPU9250_Test_TearDown(void) {

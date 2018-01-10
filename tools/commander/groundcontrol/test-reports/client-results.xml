@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="1.133" tests="12" failures="0">
+  <testsuite name="Root Suite" timestamp="2017-12-28T17:21:32" tests="0" failures="0" time="0">
+  </testsuite>
+  <testsuite name="Replace function" timestamp="2017-12-28T17:21:32" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.001">
+    <testcase name="Replace function Replace all given x&apos;s in a string with all given y&apos;s" time="0.001" classname="Replace all given x&apos;s in a string with all given y&apos;s">
+    </testcase>
+  </testsuite>
+  <testsuite name="Print date" timestamp="2017-12-28T17:21:32" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.001">
+    <testcase name="Print date Should print correct datetime" time="0.001" classname="Should print correct datetime">
+    </testcase>
+  </testsuite>
+  <testsuite name="Introspect specific objects - specially tlm &amp; cmd" timestamp="2017-12-28T17:21:32" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.001">
+    <testcase name="Introspect specific objects - specially tlm &amp; cmd Should error out on malicious inputs." time="0.001" classname="Should error out on malicious inputs.">
+    </testcase>
+  </testsuite>
+  <testsuite name="Array iterator" timestamp="2017-12-28T17:21:32" tests="4" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.001">
+    <testcase name="Array iterator should increment index pointer" time="0" classname="should increment index pointer">
+    </testcase>
+    <testcase name="Array iterator should hit end of array" time="0" classname="should hit end of array">
+    </testcase>
+    <testcase name="Array iterator set pointer to a particular index" time="0" classname="set pointer to a particular index">
+    </testcase>
+    <testcase name="Array iterator should throw a error" time="0.001" classname="should throw a error">
+    </testcase>
+  </testsuite>
+  <testsuite name="Instance-client" timestamp="2017-12-28T17:21:32" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.215">
+    <testcase name="Instance-client should connect with this mock server for INSTANCE specific data" time="0.215" classname="should connect with this mock server for INSTANCE specific data">
+    </testcase>
+  </testsuite>
+  <testsuite name="Directory-client" timestamp="2017-12-28T17:21:32" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.201">
+    <testcase name="Directory-client should request data based on getdirectiorylisting function call" time="0.201" classname="should request data based on getdirectiorylisting function call">
+    </testcase>
+  </testsuite>
+  <testsuite name="Telemetry-client" timestamp="2017-12-28T17:21:32" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.305">
+    <testcase name="Telemetry-client should request data from this mockserver upon function call" time="0.305" classname="should request data from this mockserver upon function call">
+    </testcase>
+  </testsuite>
+  <testsuite name="Command-client" timestamp="2017-12-28T17:21:33" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.202">
+    <testcase name="Command-client should request data from this mockserver upon function call" time="0.202" classname="should request data from this mockserver upon function call">
+    </testcase>
+  </testsuite>
+  <testsuite name="Event-client" timestamp="2017-12-28T17:21:33" tests="1" file="/home/vagrant/git/airliner/tools/commander/groundcontrol/test/test_client_mocha.js" failures="0" time="0.206">
+    <testcase name="Event-client should request data based on getEventListing function call" time="0.206" classname="should request data based on getEventListing function call">
+    </testcase>
+  </testsuite>
+</testsuites>

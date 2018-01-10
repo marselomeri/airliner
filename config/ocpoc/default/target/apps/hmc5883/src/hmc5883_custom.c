@@ -500,26 +500,7 @@ end_of_function:
 }
 
 
-CFE_TIME_SysTime_t HMC5883_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    int returnCode = 0;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
-    if (-1 == returnCode)
-    {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 clock_gettime errno: %i", errno);
-        goto end_of_function;
-    }
-
-end_of_function:
-    return Timestamp;
-}
-
-
-boolean HMC5883_Apply_Platform_Rotation(int16 *X, int16 *Y, int16 *Z)
+boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
     int16 temp = 0;
@@ -546,28 +527,18 @@ end_of_function:
 }
 
 
-boolean HMC5883_Apply_Platform_Rotation_Float(float *X, float *Y, float *Z)
+void HMC5883_Get_Rotation(uint8 *Rotation)
 {
-    boolean returnBool = TRUE;
-    float temp_f = 0;
-
+    
     /* Null pointer check */
-    if(0 == X || 0 == Y || 0 == Z)
+    if(0 == Rotation)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "HMC5883 Apply_Platform_Rotation Null Pointer");
-        returnBool = FALSE;
         goto end_of_function;
     }
     
-    /* The standard external mag by 3DR has x pointing to the
-     * right, y pointing backwards, and z down, therefore switch x
-     * and y and invert y. */
-    temp_f = *X;
-    *X = -*Y;
-    *Y = temp_f;
+    /* TODO move to a table */
+    *Rotation = ROTATION_NONE;
 
 end_of_function:
-
-    return returnBool;
+;
 }

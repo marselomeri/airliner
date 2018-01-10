@@ -107,6 +107,7 @@ public:
 
     /** \brief Config Table Pointer */
     GPS_ConfigTbl_t* ConfigTblPtr;
+
     /** \brief Output Data published at the end of cycle */
     PX4_GpsDumpMsg_t GpsDump;
     PX4_VehicleGpsPositionMsg_t VehicleGps;
@@ -272,6 +273,7 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
     /************************************************************************/
     /** \brief Sends the GpsDump message.
      **
@@ -284,6 +286,7 @@ public:
      **
      *************************************************************************/
     void SendGpsDump(void);
+
     /************************************************************************/
     /** \brief Sends the VehicleGps message.
      **
@@ -296,6 +299,7 @@ public:
      **
      *************************************************************************/
     void SendVehicleGps(void);
+
     /************************************************************************/
     /** \brief Sends the SatelliteInfo message.
      **
@@ -308,6 +312,7 @@ public:
      **
      *************************************************************************/
     void SendSatelliteInfo(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -384,6 +389,8 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
+    
+    void EventDrivenPublish(void);
 };
 
 /************************************************************************/

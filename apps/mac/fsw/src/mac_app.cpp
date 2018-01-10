@@ -51,6 +51,7 @@
 #include "cfs_utils.h"
 
 #include "Quaternion.hpp"
+#include "lib/px4lib.h"
 
 
 #define TPA_RATE_LOWER_LIMIT  0.05f
@@ -527,7 +528,7 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_CONTROL_STATE_MID:
                 memcpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
-                RunController();
+                //RunController();
                 break;
 
             case PX4_MANUAL_CONTROL_SETPOINT_MID:
@@ -824,7 +825,8 @@ void MAC::AppMain()
 void MAC::RunController(void)
 {
 	static uint64 last_run = 0;
-	float dt = (CFE_TIME_GetTimeInMicros() - last_run) / 1000000.0f;
+	float dt = (PX4LIB_GetPX4TimeUs() - last_run) / 1000000.0f;
+	last_run = PX4LIB_GetPX4TimeUs();
 
 	UpdateParams();
 
@@ -876,10 +878,12 @@ void MAC::RunController(void)
 //		}
 
 //		/* publish attitude rates setpoint */
+		CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 		CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
 		CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
 		CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
 		CVT.VRatesSp.Thrust = m_ThrustSp;
+		CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 
 	    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
 	    CFE_SB_SendMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
@@ -895,6 +899,7 @@ void MAC::RunController(void)
 			m_ThrustSp = fmin(CVT.ManualControlSp.Z, MANUAL_THROTTLE_MAX_MULTICOPTER);
 
 			/* publish attitude rates setpoint */
+			CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 			CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
 			CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
 			CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
@@ -918,12 +923,15 @@ void MAC::RunController(void)
 		ControlAttitudeRates(dt);
 
 //		/* publish actuator controls */
-
+        m_ActuatorControls.Timestamp = PX4LIB_GetPX4TimeUs();
+        m_ActuatorControls.SampleTime = CVT.ControlState.Timestamp;
 		m_ActuatorControls.Control[0] = (isfinite(m_AttControl[0])) ? m_AttControl[0] : 0.0f;
 		m_ActuatorControls.Control[1] = (isfinite(m_AttControl[1])) ? m_AttControl[1] : 0.0f;
 		m_ActuatorControls.Control[2] = (isfinite(m_AttControl[2])) ? m_AttControl[2] : 0.0f;
 		m_ActuatorControls.Control[3] = (isfinite(m_ThrustSp)) ? m_ThrustSp : 0.0f;
 		m_ActuatorControls.Control[7] = CVT.VAttSp.LandingGear;
+		m_ActuatorControls.Timestamp = PX4LIB_GetPX4TimeUs();
+		m_ActuatorControls.SampleTime = CVT.ControlState.Timestamp;
 
 		/* scale effort by battery status */
 		if (m_Params.bat_scale_en && CVT.BatteryStatus.Scale > 0.0f)
@@ -946,6 +954,7 @@ void MAC::RunController(void)
 		controllerStatus.RollRateInteg = m_AngularRatesIntegralError[0];
 		controllerStatus.PitchRateInteg = m_AngularRatesIntegralError[1];
 		controllerStatus.YawRateInteg = m_AngularRatesIntegralError[2];
+		controllerStatus.Timestamp = PX4LIB_GetPX4TimeUs();
 	}
 
 	if (CVT.VControlMode.ControlTerminationEnabled)
@@ -1010,7 +1019,6 @@ void MAC::RunController(void)
 
 void MAC::ControlAttitude(float dt)
 {
-
 //	vehicle_attitude_setpoint_poll();
 //
 	m_ThrustSp = CVT.VAttSp.Thrust;

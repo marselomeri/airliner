@@ -1,4 +1,4 @@
-extends ../../common/layout
+{% extends "../../common/layout.pug" %}
 
 block header
         i.fa-fw.fa.fa-signal
@@ -16,9 +16,9 @@ block main
             .jarviswidget-editbox
               input.form-control(type='text')
             .widget-body
-              #Magnetometer(style='width:100%; height:300px;')
+              #Magnetometer(style="width:100%; height:300px;")
 
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
@@ -32,184 +32,111 @@ block main
                   tbody
                     tr
                       th Error Count:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_ErrorCount"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_ErrorCount'}}") ---
                     tr
                       th X:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_X"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_X'}}") ---
                     tr
                       th Y:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Y"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_Y'}}") ---
                     tr
                       th Z:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Z"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_Z'}}") ---
                     tr
                       th Range:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Range"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_Range'}}") ---
                     tr
                       th Scaling:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Scaling"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_Scaling'}}") ---
                     tr
                       th Temp:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Temp"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_Temp'}}") ---
                     tr
                       th Device ID:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_DeviceID"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_DeviceID'}}") ---
                     tr
                       th X Raw:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_XRaw"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_XRaw'}}") ---
                     tr
                       th Y Raw:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_YRaw"}]}) ---
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_YRaw'}}") ---
                     tr
                       th Z Raw:
-                      td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_ZRaw"}]}) ---
-                        
-                        
-                        
+                      td
+                        span(data-sage="{tlm: {name: '/CFS/PX4/SM_ZRaw'}}") ---
+
       script.
         var MaxCount = 2500;
-        var XData = [];
-        var YData = [];
-        var ZData = [];
-        
-        $(function () {
-          function legendFormatter(label, series) {
-            return '<div ' + 
-               'style="color:white;font-size:8pt;text-align:left;padding:4px;padding-left:10px">' +
-               label + '</div>';
-          };
-    
-          var UtilGraph = $.plot($("#Magnetometer"), [],{
-              xaxis : {
-                mode : 'time',
-                font : {
-                  color: "#ffffff"
-                }
-              },
-              yaxis : {
-                font : {
-                  color: "#ffffff"
-                }
-              },
-              series : {
-                lines : {
-                  show : true
-                },
-                points: {
-                  show: false
-                }
-              },
-              legend: {
-                show: true,
-                labelFormatter: legendFormatter,
-                labelBoxBorderColor: 'rgba(255, 255, 255, 0.0)',
-                noColumns: 1,
-                position: 'ne',
-                margin: [10,10],
-                backgroundColor: null,
-                backgroundOpacity: 0,
-                container: null,
-                sorted: false
-              },
-              grid: {
-                show: true,
-                //aboveData: boolean
-                //color: '#ffffff',
-                //backgroundColor: color/gradient or null
-                //margin: number or margin object
-                //labelMargin: number
-                //axisMargin: number
-                //markings: [{ color: "#ffffff" }],
-                //markings: array of markings or (fn: axes -> array of markings)
-                //borderWidth: number or object with "top", "right", "bottom" and "left" properties with different widths
-                //borderColor: color or null or object with "top", "right", "bottom" and "left" properties with different colors
-                //minBorderMargin: number or null
-                //clickable: boolean
-                //hoverable: boolean
-                //autoHighlight: boolean
-                //mouseActiveRadius: number
-              }
-            }
-          );
-        
 
-              var MaxCount = 120;
-              var ignoreCount = 3;
-              var updateInterval = 100;
-              var count = 0;
-              var prevX = -1;
-              var prevY = -1;
-              var prevZ = -1;
-      
-              session.subscribe({
-                homogeneity: {tolerance: 0},
-                tlm: [
-                  {name: '/CFS/PX4/SM_X'},
-                  {name: '/CFS/PX4/SM_Y'},
-                  {name: '/CFS/PX4/SM_Z'}
-                ]},function(params) {                
-                  count = count + 1;
-                  if(ignoreCount > 0){
-                    ignoreCount = ignoreCount - 1;
-                  } else { 
-                    if (XData.length >= MaxCount) {
-                      XData = XData.slice(1);
-                    }
-                    if (YData.length >= MaxCount) {
-                      YData = YData.slice(1);
-                    }
-                    if (ZData.length >= MaxCount) {
-                      ZData = ZData.slice(1);
-                    }
-        
-                    var timeStamp = new Date(params[0].acquisitionTime);
-                    var X = params[0].engValue.floatValue;
-                    var Y = params[1].engValue.floatValue;
-                    var Z = params[2].engValue.floatValue;
-                     
-                    XData.push([timeStamp, X]);
-                    YData.push([timeStamp, Y]);
-                    ZData.push([timeStamp, Z]);
+        loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
+            var MagData = [];
+            var MagX = {value: 0, time: 1, utcTime: ''};
+            var MagY = {value: 0, time: 2, utcTime: ''};
+            var MagZ = {value: 0, time: 3, utcTime: ''};
+            var MagStarted = false;
+
+            MagGraph = new Dygraph(document.getElementById("Magnetometer"), MagData, {
+                                drawPoints: false,
+                                showRoller: true,
+                                labels: ['Time', 'X', 'Y', 'Z']
+                         });
+
+            session.on('connectFailed', function(err) {
+                console.log('Failed to start Sage session.  err = ' + err);
+            });
+
+            session.on('connect', function() {
+              var MagCount = 0;
+
+              session.subscribe({name: '/CFS/PX4/SM_X'}, function(param) {
+                MagX.value = param.engValue.floatValue;
+                MagX.time = param.acquisitionTime;
+                MagX.utcTime = param.acquisitionTimeUTC;
+                MagCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SM_Y'}, function(param) {
+                MagY.value = param.engValue.floatValue;
+                MagY.time = param.acquisitionTime;
+                MagY.utcTime = param.acquisitionTimeUTC;
+                MagCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SM_Z'}, function(param) {
+                MagZ.value = param.engValue.floatValue;
+                MagZ.time = param.acquisitionTime;
+                MagZ.utcTime = param.acquisitionTimeUTC;
+                MagCorrelateData();
+              });
+
+              var MagCorrelateData = function () {
+                  if((MagX.time == MagY.time ) && ( MagY.time == MagZ.time)){
+                      if(MagStarted == false){
+                          /* Skip the first one. */
+                          MagStarted = true;
+                      } else {
+                          if (MagData.length >= MaxCount) {
+                              MagData = MagData.slice(1);
+                          }
+                          MagData.push([MagCount, MagX.value, MagY.value, MagZ.value]);
+                          MagCount++;
+                      }
                   }
               });
 
-              function update() {
-                UtilGraph.setData(
-                  [{
-                    data: XData,
-                    label: "X",
-                    color: '#ff00ff'
-                  }, {
-                    data : YData,
-                    label : 'Y',
-                    color: '#00ffff'
-                  }, {
-                    data : ZData,
-                    label : 'Z',
-                    color: '#ffff00'
-                  }]);
-        
-        
-                // since the axes don't change, we don't need to call plot.setupGrid()
-                UtilGraph.setupGrid();
-                UtilGraph.draw();
-                setTimeout(update, updateInterval);
-              }
-                  
-              update();
-            });
+             setInterval(function() {
+                 MagGraph.updateOptions( { 'file': MagData } );
+             }, 100);
+          });
+        });
 
-
-
-                        

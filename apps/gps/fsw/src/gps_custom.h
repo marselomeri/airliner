@@ -40,6 +40,8 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
+#include "px4_msgs.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -88,6 +90,54 @@ boolean GPS_Custom_Init(void);
 
 
 /************************************************************************/
+/** \brief Custom function to retrieve the current value message.
+**
+**  \par Description
+**       This function populates a PX4_GpsDumpMsg_t message.
+**
+**  \param [out] Measure, the GPS message to populate. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
+//boolean GPS_Custom_Measure_DumpMsg(PX4_GpsDumpMsg_t *Measure);
+
+
+/************************************************************************/
+/** \brief Custom function to retrieve the current value message.
+**
+**  \par Description
+**       This function populates a PX4_VehicleGpsPositionMsg_t message.
+**
+**  \param [out] Measure, the GPS message to populate. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
+boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure);
+
+
+/************************************************************************/
+/** \brief Custom function to retrieve the current value message.
+**
+**  \par Description
+**       This function populates a PX4_VehicleGpsPositionMsg_t message.
+**
+**  \param [out] Measure, the GPS message to populate. 
+**
+**  \returns
+**  TRUE for success, FALSE for failure.
+**  \endreturns
+**
+*************************************************************************/
+boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure);
+
+
+/************************************************************************/
 /** \brief Custom function to uninitialize custom device(s).
 **
 **  \par Description
@@ -121,6 +171,22 @@ boolean GPS_Custom_Uninit(void);
 **
 *************************************************************************/
 int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl);
+
+
+/************************************************************************/
+/** \brief Get time in from GPS_Custom_Get_Time in uint64 format.
+**
+**  \par Description
+**       This function is a wrapper for GPS_Custom_Get_Time.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \returns       uint64, monotonic time for success, 0 for failure.
+**
+*************************************************************************/
+uint64 GPS_Custom_Get_Time_Uint64(void);
+
 
 #ifdef __cplusplus
 }

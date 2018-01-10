@@ -40,6 +40,7 @@
 #include "rcin_sbus.h"
 #include "rcin_events.h"
 #include "perf_ids.h"
+#include "lib/px4lib.h"
 
 /************************************************************************
 ** Local Defines
@@ -455,11 +456,8 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
             //& 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
 
     /* Timestamp */
-    RCIN_AppCustomData.Measure.Timestamp = RCIN_Custom_Get_Time();
-    RCIN_AppCustomData.Measure.TimestampLastSignal = 
-            RCIN_AppCustomData.Measure.Timestamp.Seconds * 1000000;
-    RCIN_AppCustomData.Measure.TimestampLastSignal += 
-            RCIN_AppCustomData.Measure.Timestamp.Subseconds / 1000;
+    RCIN_AppCustomData.Measure.Timestamp = PX4LIB_GetPX4TimeUs();
+
     /* Channel count */
     RCIN_AppCustomData.Measure.ChannelCount = RCIN_SBUS_CHANNEL_COUNT;
     RCIN_AppCustomData.Measure.RSSI = 100;
@@ -730,6 +728,10 @@ void RCIN_Custom_Read(void)
 boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 {
     boolean returnBool = TRUE;
+    void *userDataPtr = 0;
+    void *copyDataPtr = 0;
+    uint16 userDataLength = 0;
+    uint16 i = 0;
 
     /* Null pointer check */
     if (0 == Measure)
@@ -745,30 +747,31 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     {
         returnBool = FALSE;
     }
-    memcpy(Measure, &RCIN_AppCustomData.Measure, sizeof(PX4_InputRcMsg_t));
+    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
+    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
+    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
+    
+    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+    Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
+    Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
+    Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;
+    Measure->ChannelCount = RCIN_AppCustomData.Measure.ChannelCount;
+    Measure->RSSI = RCIN_AppCustomData.Measure.RSSI;
+    Measure->RcLostFrameCount = RCIN_AppCustomData.Measure.RcLostFrameCount;
+    Measure->RcTotalFrameCount = RCIN_AppCustomData.Measure.RcTotalFrameCount;
+    Measure->RcPpmFrameLength = RCIN_AppCustomData.Measure.RcPpmFrameLength;
+    for(i = 0; i<18; i++)
+    {
+        Measure->Values[i] = RCIN_AppCustomData.Measure.Values[i];
+    }
+    Measure->RcFailsafe = RCIN_AppCustomData.Measure.RcFailsafe;
+    Measure->RcLost = RCIN_AppCustomData.Measure.RcLost;
+    Measure->InputSource = RCIN_AppCustomData.Measure.InputSource;
+
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:
     return returnBool;
-}
-
-
-CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    int returnCode = 0;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
-    if (-1 == returnCode)
-    {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "RCIN clock_gettime errno: %i", errno);
-        goto end_of_function;
-    }
-
-end_of_function:
-    return Timestamp;
 }
 
 

@@ -121,6 +121,39 @@ extern "C" {
 */
 #define MPU9250_RESET_CC                (1)
 
+/** \mpu9250cmd Send Diagnostic Message
+**  
+**  \par Description
+**       Sends a diagnostic message.
+**
+**  \mpu9250cmdmnemonic \MPU9250_DIAG
+**
+**  \par Command Structure
+**       #MPU9250_NoArgCmd_t
+**
+**  \par Command Verification
+**       Successful execution of this command may be verified with
+**       the following telemetry:
+**       - \b \c \MPU9250_CMDACTPCNT       - command counter will be cleared
+**       - \b \c \MPU9250_CMDRJCTCNT       - command error counter will be cleared
+**       - The #MPU9250_CMD_INF_EID debug event message will be 
+**         generated when the command is executed
+** 
+**  \par Error Conditions
+**       This command may fail for the following reason(s):
+**       - Command packet length not as expected
+** 
+**  \par Evidence of failure may be found in the following telemetry: 
+**       - \b \c \MPU9250_CMDRJCTCNT - command error counter will increment
+**       - Error specific event message #MPU9250_MSGID_ERR_EID
+**
+**  \par Criticality
+**       None
+**
+**  \sa #MPU9250_SEND_DIAG_CC
+*/
+#define MPU9250_SEND_DIAG_CC            (2)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -134,6 +167,7 @@ typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } MPU9250_NoArgCmd_t;
+
 
 /** 
 **  \brief MPU9250 application housekeeping data
@@ -155,10 +189,11 @@ typedef struct
 } MPU9250_HkTlm_t;
 
 
+/** 
+**  \brief MPU9250 application struct for calibration
+*/
 typedef struct
 {
-    float AccDivider;
-    float GyroDivider;
     float AccXScale;
     float AccYScale;
     float AccZScale;
@@ -171,74 +206,34 @@ typedef struct
     float GyroXOffset;
     float GyroYOffset;
     float GyroZOffset;
-    float MagXScale;
-    float MagYScale;
-    float MagZScale;
-    float MagXOffset;
-    float MagYOffset;
-    float MagZOffset;
-    uint8 MagXAdj;
-    uint8 MagYAdj;
-    uint8 MagZAdj;
+    uint8 Rotation;
+    //float MagXScale;
+    //float MagYScale;
+    //float MagZScale;
+    //float MagXOffset;
+    //float MagYOffset;
+    //float MagZOffset;
+    //uint8 MagRotation;
+} MPU9250_CalibrationMsg_t;
+
+
+/** 
+**  \brief MPU9250 application struct for unit conversion 
+*/
+typedef struct
+{
+    float AccUnit;
+    float GyroUnit;
+    float AccDivider;
+    float GyroDivider;
     float RoomTempOffset;
     float TempSensitivity;
     uint16 AccScale;
     uint16 GyroScale;
-    float AccRange;
-    float GyroRange;
-    float AccUnit;
-    float GyroUnit;
-} MPU9250_CalibrationMsg_t;
-
-typedef struct
-{
-    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-
-    int16 AccelX;
-    int16 AccelY;
-    int16 AccelZ;
-
-    int16 GyroX;
-    int16 GyroY;
-    int16 GyroZ;
-
-    int16 MagX;
-    int16 MagY;
-    int16 MagZ;
-
-    uint8 Spare;
-
-    uint16 Temp;
-
-    boolean WOM;
-    boolean FifoOvflw;
-    boolean Fsync;
-    boolean ImuDataReady;
-    boolean Overrun;
-    boolean MagDataReady;
-    boolean Overflow;
-    boolean Output16Bit;
-} MPU9250_RawMeasMsg_t;
-
-
-typedef struct
-{
-    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-
-    float AccelX;
-    float AccelY;
-    float AccelZ;
-
-    float GyroX;
-    float GyroY;
-    float GyroZ;
-    
-    float MagX;
-    float MagY;
-    float MagZ;
-
-    float Temp;
-} MPU9250_CalMeasMsg_t;
+    //uint8 MagXAdj;
+    //uint8 MagYAdj;
+    //uint8 MagZAdj;
+} MPU9250_ConversionMsg_t;
 
 
 /** 
@@ -248,8 +243,7 @@ typedef struct
 {
     uint8           TlmHeader[CFE_SB_TLM_HDR_SIZE];
     MPU9250_CalibrationMsg_t          Calibration;
-    MPU9250_RawMeasMsg_t              RawMeasure;
-    MPU9250_CalMeasMsg_t              CalMeasure;
+    MPU9250_ConversionMsg_t           Conversion;
 } MPU9250_DiagPacket_t;
 
 

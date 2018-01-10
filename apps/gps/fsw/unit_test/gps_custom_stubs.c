@@ -32,6 +32,7 @@
 *****************************************************************************/
 
 #include "gps_custom_stubs.h"
+#include "px4_msgs.h"
 
 void GPS_Custom_InitData(void)
 {
@@ -56,3 +57,13 @@ int32 GPS_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     return 0;
 }
 
+
+boolean GPS_Custom_Measure_PositionMsg(PX4_VehicleGpsPositionMsg_t *Measure)
+{
+    return TRUE;
+}
+
+boolean GPS_Custom_Measure_SatInfoMsg(PX4_SatelliteInfoMsg_t *Measure)
+{
+    return TRUE;
+}

@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,14 +40,7 @@ INSTALLED_APPS = [
     'channels',
     'groundcontrol',
 ]
-"""
-CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND':'asgiref.inmemory.ChannelLayer',
-        'ROUTING':'commander.routing.channel_routing',
-    }
-}
-"""
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
@@ -73,9 +66,7 @@ ROOT_URLCONF = 'commander.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        #'BACKEND':'pypugjs.ext.django.templatetags',
         'DIRS': [os.path.join(os.environ['YAMCS_WORKSPACE'],'web'),os.path.join(BASE_DIR,  'groundcontrol/templates'),],
-        #'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -96,21 +87,11 @@ TEMPLATES = [
     },
 ]
 
-#USELESS################
 
-TEMPLATE_DIRS = (
-
-    #os.path.join(os.environ['YAMCS_WORKSPACE'],'web/flight'),
-    #os.path.join(BASE_DIR,  'groundcontrol/templates'),
-)
-
-#USELESS################
 
 WSGI_APPLICATION = 'commander.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -153,9 +134,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR),'static/'
-                    ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR),'static/']

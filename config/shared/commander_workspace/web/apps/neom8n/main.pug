@@ -1,4 +1,4 @@
-extends ../../common/layout
+{% extends "../../common/layout.pug" %}
 
 block header
         i.fa-fw.fa.fa-signal
@@ -22,51 +22,51 @@ block main
                   tr
                     th Cmd Count
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/CmdCounter'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/CmdCounter'}}") ---
                   tr
                     th Error Count
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/ErrCounter'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ErrCounter'}}") ---
                   tr
                     th AppID
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/AppID'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/AppID'}}") ---
                   tr
                     th Msg Received
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/MsgReceived'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/MsgReceived'}}") ---
                   tr
                     th Parse Error
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/ParseError'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ParseError'}}") ---
                   tr
                     th Parse State
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/ParseState'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ParseState'}}") ---
                   tr
                     th Payload Cursor
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/PayloadCursor'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/PayloadCursor'}}") ---
                   tr
                     th Class ID
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/ClassID'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ClassID'}}") ---
                   tr
                     th Msg ID
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/MsgID'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/MsgID'}}") ---
                   tr
                     th Msg Length
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/MsgLength'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/MsgLength'}}") ---
                   tr
                     th Checksum A
                     td
-                      span(data-sage={tlm:{name:'/CFS/NEOM8N/ChecksumA'}}) ---
+                      span(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ChecksumA'}}") ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/NEOM8N/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/NEOM8N/Reset'}}) Reset Counters
-              
+              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/NEOM8N/NoOp'}}") No-Op
+              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/NEOM8N/Reset'}}") Reset Counters
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-POSLLH.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -83,32 +83,32 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/POSLLH_iTOW'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/POSLLH_iTOW'}}") ---
                   tr
                     th Longitude
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/Long'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/Long'}}") ---
                   tr
                     th Latitude
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/Lat'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/Lat'}}") ---
                   tr
                     th Height
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/Height'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/Height'}}") ---
                   tr
                     th hMSL
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/hMSL'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/hMSL'}}") ---
                   tr
                     th hAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/hAcc'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/hAcc'}}") ---
                   tr
                     th vAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/vAcc'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/vAcc'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-POSECEF.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -125,24 +125,24 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/POSECEF_iTOW'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/POSECEF_iTOW'}}") ---
                   tr
                     th ecefX
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/ecefX'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ecefX'}}") ---
                   tr
                     th ecefY
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/ecefY'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ecefY'}}") ---
                   tr
                     th ecefZ
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/ecefZ'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/ecefZ'}}") ---
                   tr
                     th pAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/pAcc'}}) ---
-                      
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/pAcc'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-STATUS.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -156,55 +156,55 @@ block main
             .table-responsive
               table.table.table-condensed
                 tbody
-                  tr 
-                    th iTOW 
+                  tr
+                    th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th GPS Fix
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th TOW Set
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th WKN Set
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th Diff Soln
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th GPS Fix OK
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th Map Matching
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th DGPS In Status
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th Spoof Def State
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th PSM State
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ttff
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th msss
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-SVINFO.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -221,16 +221,16 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th numCh
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th globalFlags
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-TIMEBDS.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -247,32 +247,32 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th SOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th fSOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th week
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th leapS
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th Valid
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th tAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-TIMEGAL.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -289,32 +289,32 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th galTow
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th fGalTow
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th galWno
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th leapS
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th Valid
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th tAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-DOP.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -331,36 +331,36 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th gDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th pDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th tDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th vDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th hDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th nDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th eDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-ATT.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -377,36 +377,36 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th Version
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th roll
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th pitch
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th heading
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th accRoll
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th accPitch
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th accHeading
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-SOL.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -423,64 +423,64 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th fTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th week
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th gpsFix
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th flags
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ecefX
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ecefY
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ecefZ
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th pAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ecefVX
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ecefVY
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th ecefVZ
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th sAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th hDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th numSV
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-PVT.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -497,120 +497,120 @@ block main
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th year
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th month
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th day
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th hour
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th min
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th sec
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th valid
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th tAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th nano
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th fixType
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th flags
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th flags2
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th numSV
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th lon
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th lat
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th height
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th hMSL
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th hAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th vAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th velN
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th velE
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th velD
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th gSpeed
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th headMot
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th sAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th headAcc
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th hDOP
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th headVeh
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
-              
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-NEOM8N-ODO.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -627,20 +627,20 @@ block main
                   tr
                     th version
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th iTOW
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th distance
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th totalDistance
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
                   tr
                     th distanceStd
                     td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/NEOM8N/'}}) ---
+                      span.sage-tlm(data-sage="{'tlm':{'name':'/CFS/NEOM8N/'}}") ---
