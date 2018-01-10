@@ -868,6 +868,14 @@ void PARAMS_AppMain()
             /* We apparently tried to load a new table but failed.  Terminate the application. */
             PARAMS_AppData.uiRunStatus = CFE_ES_APP_ERROR;
         }
+
+        CFE_SB_MsgPtr_t 	CmdMsgPtr;
+		PARAMS_NoArgCmd_t  msg1;
+		CFE_SB_InitMsg(&msg1, CI_CMD_MID, sizeof(PARAMS_NoArgCmd_t), FALSE);
+		CmdMsgPtr = (CFE_SB_MsgPtr_t)&msg1;
+		CFE_SB_SetCmdCode(CmdMsgPtr, PARAMS_NOOP_CC);
+		iStatus = CFE_SB_SendMsg(CmdMsgPtr);
+		OS_printf("param noop ci %i\n", iStatus);
     }
 
     /* Stop Performance Log entry */
