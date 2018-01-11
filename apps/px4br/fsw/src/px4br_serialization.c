@@ -4016,6 +4016,7 @@ uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject,
 	pbMsg.flag_control_altitude_enabled = inObject->ControlAltitudeEnabled;
 	pbMsg.flag_control_climb_rate_enabled = inObject->ControlClimbRateEnabled;
 	pbMsg.flag_control_termination_enabled = inObject->ControlTerminationEnabled;
+	pbMsg.flag_control_fixed_hdg_enabled = inObject->ControlFixedHdgEnabled;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -4065,6 +4066,7 @@ uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 	inOutObject->ControlAltitudeEnabled = pbMsg.flag_control_altitude_enabled;
 	inOutObject->ControlClimbRateEnabled = pbMsg.flag_control_climb_rate_enabled;
 	inOutObject->ControlTerminationEnabled = pbMsg.flag_control_termination_enabled;
+	inOutObject->ControlFixedHdgEnabled = pbMsg.flag_control_fixed_hdg_enabled;
 
 	return sizeof(PX4_VehicleControlModeMsg_t);
 }
