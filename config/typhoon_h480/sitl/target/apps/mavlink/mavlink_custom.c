@@ -78,7 +78,7 @@ int32 MAVLINK_InitCustom(void)
 
     bzero((char *) &address, sizeof(address));
     address.sin_family      = AF_INET;
-    address.sin_addr.s_addr = htonl (INADDR_ANY);
+    address.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
     address.sin_port        = htons(MAVLINK_PassThruSocket.Port);
 
 	if ( (bind(MAVLINK_PassThruSocket.Socket, (struct sockaddr *) &address, sizeof(address)) < 0) )
@@ -119,7 +119,7 @@ int32 MAVLINK_SendPassThru(const char* buffer, uint32 size)
     /* Send message via UDP socket */
     bzero((char *) &s_addr, sizeof(s_addr));
     s_addr.sin_family      = AF_INET;
-    s_addr.sin_addr.s_addr = inet_addr(MAVLINK_PASSTHRU_IP);
+    s_addr.sin_addr.s_addr = inet_addr(MAVLINK_PASSTHRU_IP_SRC);
     s_addr.sin_port        = htons(px4_port);
 
     status = sendto(MAVLINK_PassThruSocket.Socket, (char *)buffer, size, 0,
