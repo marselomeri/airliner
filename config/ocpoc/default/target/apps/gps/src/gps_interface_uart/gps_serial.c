@@ -70,7 +70,6 @@
 /************************************************************************
 ** Global Variables
 *************************************************************************/
-GPS_AppCustomData_t GPS_AppCustomData;
 
 /************************************************************************
 ** Local Variables
@@ -145,7 +144,8 @@ boolean GPS_Custom_Init()
         returnBool = FALSE;
         goto end_of_function;
     }
-    OS_printf("ABOUT TO CONFIGURE MESSAGE RATES\n");
+    //OS_printf("ABOUT TO CONFIGURE MESSAGE RATES\n");
+    
     /* Configure all the message rates */
     returnBool = GPS_Custom_Configure();
     if (FALSE == returnBool)
@@ -248,24 +248,24 @@ boolean GPS_Custom_Negotiate_Baud(const uint32 Baud)
         portConfig[1].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
         portConfig[1].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
         
-        printf("portConfig[0].portID %hhu \n", portConfig[0].portID);
-        printf("portConfig[0].reserved1 %hhu \n", portConfig[0].reserved1);
-        printf("portConfig[0].txReady %hu \n", portConfig[0].txReady);
-        printf("portConfig[0].mode %u \n", portConfig[0].mode);
-        printf("portConfig[0].baudRate %u \n", portConfig[0].baudRate);
-        printf("portConfig[0].inProtoMask %hu \n", portConfig[0].inProtoMask);
-        printf("portConfig[0].outProtoMask %hu \n", portConfig[0].outProtoMask);
-        printf("portConfig[0].flags %hu \n", portConfig[0].flags);
-        printf("portConfig[0].reserved2 %hu \n", portConfig[0].reserved2);
-        printf("portConfig[1].portID %hhu \n", portConfig[1].portID);
-        printf("portConfig[1].reserved1 %hhu \n", portConfig[1].reserved1);
-        printf("portConfig[1].txReady %hu \n", portConfig[1].txReady);
-        printf("portConfig[1].mode %u \n", portConfig[1].mode);
-        printf("portConfig[1].baudRate %u \n", portConfig[1].baudRate);
-        printf("portConfig[1].inProtoMask %hu \n", portConfig[1].inProtoMask);
-        printf("portConfig[1].outProtoMask %hu \n", portConfig[1].outProtoMask);
-        printf("portConfig[1].flags %hu \n", portConfig[1].flags);
-        printf("portConfig[1].reserved2 %hu \n", portConfig[1].reserved2);
+        //printf("portConfig[0].portID %hhu \n", portConfig[0].portID);
+        //printf("portConfig[0].reserved1 %hhu \n", portConfig[0].reserved1);
+        //printf("portConfig[0].txReady %hu \n", portConfig[0].txReady);
+        //printf("portConfig[0].mode %u \n", portConfig[0].mode);
+        //printf("portConfig[0].baudRate %u \n", portConfig[0].baudRate);
+        //printf("portConfig[0].inProtoMask %hu \n", portConfig[0].inProtoMask);
+        //printf("portConfig[0].outProtoMask %hu \n", portConfig[0].outProtoMask);
+        //printf("portConfig[0].flags %hu \n", portConfig[0].flags);
+        //printf("portConfig[0].reserved2 %hu \n", portConfig[0].reserved2);
+        //printf("portConfig[1].portID %hhu \n", portConfig[1].portID);
+        //printf("portConfig[1].reserved1 %hhu \n", portConfig[1].reserved1);
+        //printf("portConfig[1].txReady %hu \n", portConfig[1].txReady);
+        //printf("portConfig[1].mode %u \n", portConfig[1].mode);
+        //printf("portConfig[1].baudRate %u \n", portConfig[1].baudRate);
+        //printf("portConfig[1].inProtoMask %hu \n", portConfig[1].inProtoMask);
+        //printf("portConfig[1].outProtoMask %hu \n", portConfig[1].outProtoMask);
+        //printf("portConfig[1].flags %hu \n", portConfig[1].flags);
+        //printf("portConfig[1].reserved2 %hu \n", portConfig[1].reserved2);
         
         /* send config message */
         returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_PRT, 
@@ -299,24 +299,24 @@ boolean GPS_Custom_Negotiate_Baud(const uint32 Baud)
         portConfig[1].inProtoMask   = GPS_TX_CFG_PRT_INPROTOMASK_GPS;
         portConfig[1].outProtoMask  = GPS_TX_CFG_PRT_OUTPROTOMASK_GPS;
 
-        printf("portConfig[0].portID %hhu \n", portConfig[0].portID);
-        printf("portConfig[0].reserved1 %hhu \n", portConfig[0].reserved1);
-        printf("portConfig[0].txReady %hu \n", portConfig[0].txReady);
-        printf("portConfig[0].mode %u \n", portConfig[0].mode);
-        printf("portConfig[0].baudRate %u \n", portConfig[0].baudRate);
-        printf("portConfig[0].inProtoMask %hu \n", portConfig[0].inProtoMask);
-        printf("portConfig[0].outProtoMask %hu \n", portConfig[0].outProtoMask);
-        printf("portConfig[0].flags %hu \n", portConfig[0].flags);
-        printf("portConfig[0].reserved2 %hu \n", portConfig[0].reserved2);
-        printf("portConfig[1].portID %hhu \n", portConfig[1].portID);
-        printf("portConfig[1].reserved1 %hhu \n", portConfig[1].reserved1);
-        printf("portConfig[1].txReady %hu \n", portConfig[1].txReady);
-        printf("portConfig[1].mode %u \n", portConfig[1].mode);
-        printf("portConfig[1].baudRate %u \n", portConfig[1].baudRate);
-        printf("portConfig[1].inProtoMask %hu \n", portConfig[1].inProtoMask);
-        printf("portConfig[1].outProtoMask %hu \n", portConfig[1].outProtoMask);
-        printf("portConfig[1].flags %hu \n", portConfig[1].flags);
-        printf("portConfig[1].reserved2 %hu \n", portConfig[1].reserved2);
+        //printf("portConfig[0].portID %hhu \n", portConfig[0].portID);
+        //printf("portConfig[0].reserved1 %hhu \n", portConfig[0].reserved1);
+        //printf("portConfig[0].txReady %hu \n", portConfig[0].txReady);
+        //printf("portConfig[0].mode %u \n", portConfig[0].mode);
+        //printf("portConfig[0].baudRate %u \n", portConfig[0].baudRate);
+        //printf("portConfig[0].inProtoMask %hu \n", portConfig[0].inProtoMask);
+        //printf("portConfig[0].outProtoMask %hu \n", portConfig[0].outProtoMask);
+        //printf("portConfig[0].flags %hu \n", portConfig[0].flags);
+        //printf("portConfig[0].reserved2 %hu \n", portConfig[0].reserved2);
+        //printf("portConfig[1].portID %hhu \n", portConfig[1].portID);
+        //printf("portConfig[1].reserved1 %hhu \n", portConfig[1].reserved1);
+        //printf("portConfig[1].txReady %hu \n", portConfig[1].txReady);
+        //printf("portConfig[1].mode %u \n", portConfig[1].mode);
+        //printf("portConfig[1].baudRate %u \n", portConfig[1].baudRate);
+        //printf("portConfig[1].inProtoMask %hu \n", portConfig[1].inProtoMask);
+        //printf("portConfig[1].outProtoMask %hu \n", portConfig[1].outProtoMask);
+        //printf("portConfig[1].flags %hu \n", portConfig[1].flags);
+        //printf("portConfig[1].reserved2 %hu \n", portConfig[1].reserved2);
 
         /* send config message */
         returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_PRT, 
@@ -789,7 +789,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                 {
                     case GPS_NAV_DOP_MID:
                     {
-                        OS_printf("IN GPS_NAV_DOP_MID\n");
+                        //OS_printf("IN GPS_NAV_DOP_MID\n");
                         GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* from cm to m */
@@ -801,7 +801,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_NAVPVT_MID:
                     {
-                        OS_printf("IN GPS_NAV_NAVPVT_MID\n");
+                        //OS_printf("IN GPS_NAV_NAVPVT_MID\n");
                         GPS_NAV_PVT_t *msgIn = (GPS_NAV_PVT_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* Check if position fix flag is good */
@@ -923,7 +923,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_NAV_SVINFO_MID:
                     {
-                        OS_printf("IN GPS_NAV_SVINFO_MID\n");
+                        //OS_printf("IN GPS_NAV_SVINFO_MID\n");
                         GPS_NAV_SVINFO_Combined_t *msgIn = (GPS_NAV_SVINFO_Combined_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
                         
                         OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
@@ -989,7 +989,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     }
                     case GPS_MON_HW_MID:
                     {
-                        OS_printf("IN GPS_MON_HW_MID\n");
+                        //OS_printf("IN GPS_MON_HW_MID\n");
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         GPS_MON_HW_t *msgIn = (GPS_MON_HW_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
 
@@ -1066,7 +1066,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
                GPS_AppCustomData.AckWaitingRcvd == TRUE)
             {
                 /* TODO remove after debug*/
-                OS_printf("Got an ACK\n");
+                //OS_printf("Got an ACK\n");
                 /* */
                 returnBool = TRUE;
                 goto end_of_function;
@@ -1075,7 +1075,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
                GPS_AppCustomData.AckWaitingRcvd == TRUE)
             {
                 /* TODO remove after debug*/
-                OS_printf("Got an NAK\n");
+                //OS_printf("Got an NAK\n");
                 /* */
                 returnBool = FALSE;
                 goto end_of_function;
