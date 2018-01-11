@@ -753,8 +753,8 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     
     //memcpy(copyDataPtr, userDataPtr, userDataLength);
     Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
-    Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
-    Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;
+    //Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
+    //Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;
     Measure->ChannelCount = RCIN_AppCustomData.Measure.ChannelCount;
     Measure->RSSI = RCIN_AppCustomData.Measure.RSSI;
     Measure->RcLostFrameCount = RCIN_AppCustomData.Measure.RcLostFrameCount;
