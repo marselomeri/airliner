@@ -614,7 +614,12 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	/**
 	 * VT_OPT_RECOV_EN
 	 */
-	0
+	0,
+
+	/**
+	 * MIS_LTRMIN_ALT
+	 */
+	0.0f
 };
 
 /*

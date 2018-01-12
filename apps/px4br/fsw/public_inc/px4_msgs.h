@@ -217,6 +217,12 @@ typedef enum
 
 typedef enum
 {
+	PX4_VELOCITY_FRAME_LOCAL_NED = 1,
+	PX4_VELOCITY_FRAME_BODY_NED = 8
+} PX4_VelocityFrameType_t;
+
+typedef enum
+{
 	PX4_RC_CHANNELS_FUNCTION_THROTTLE	= 0,
 	PX4_RC_CHANNELS_FUNCTION_ROLL	= 1,
 	PX4_RC_CHANNELS_FUNCTION_PITCH	= 2,
@@ -1264,6 +1270,8 @@ typedef struct
 	PX4_SetpointType_t Type;
 	boolean PositionValid;
 	boolean VelocityValid;
+	uint8 VelocityFrame;
+	boolean AltValid;
 	boolean YawValid;
 	boolean DisableMcYawControl;
 	boolean YawspeedValid;

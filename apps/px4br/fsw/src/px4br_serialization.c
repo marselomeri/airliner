@@ -2443,6 +2443,8 @@ uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t 
 	pbMsg.previous.type = inObject->Previous.Type;
 	pbMsg.previous.position_valid = inObject->Previous.PositionValid;
 	pbMsg.previous.velocity_valid = inObject->Previous.VelocityValid;
+	pbMsg.previous.velocity_frame = inObject->Previous.VelocityFrame;
+	pbMsg.previous.alt_valid = inObject->Previous.AltValid;
 	pbMsg.previous.yaw_valid = inObject->Previous.YawValid;
 	pbMsg.previous.disable_mc_yaw_control = inObject->Previous.DisableMcYawControl;
 	pbMsg.previous.yawspeed_valid = inObject->Previous.YawspeedValid;
@@ -2474,6 +2476,8 @@ uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t 
 	pbMsg.current.type = inObject->Current.Type;
 	pbMsg.current.position_valid = inObject->Current.PositionValid;
 	pbMsg.current.velocity_valid = inObject->Current.VelocityValid;
+	pbMsg.current.velocity_frame = inObject->Current.VelocityFrame;
+	pbMsg.current.alt_valid = inObject->Current.AltValid;
 	pbMsg.current.yaw_valid = inObject->Current.YawValid;
 	pbMsg.current.disable_mc_yaw_control = inObject->Current.DisableMcYawControl;
 	pbMsg.current.yawspeed_valid = inObject->Current.YawspeedValid;
@@ -2505,6 +2509,8 @@ uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t 
 	pbMsg.next.type = inObject->Next.Type;
 	pbMsg.next.position_valid = inObject->Next.PositionValid;
 	pbMsg.next.velocity_valid = inObject->Next.VelocityValid;
+	pbMsg.next.velocity_frame = inObject->Next.VelocityFrame;
+	pbMsg.next.alt_valid = inObject->Next.AltValid;
 	pbMsg.next.yaw_valid = inObject->Next.YawValid;
 	pbMsg.next.disable_mc_yaw_control = inObject->Next.DisableMcYawControl;
 	pbMsg.next.yawspeed_valid = inObject->Next.YawspeedValid;
@@ -2569,6 +2575,8 @@ uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX
 	inOutObject->Previous.Type = pbMsg.previous.type;
 	inOutObject->Previous.PositionValid = pbMsg.previous.position_valid;
 	inOutObject->Previous.VelocityValid = pbMsg.previous.velocity_valid;
+	inOutObject->Previous.VelocityFrame = pbMsg.previous.velocity_frame;
+	inOutObject->Previous.AltValid = pbMsg.previous.alt_valid;
 	inOutObject->Previous.YawValid = pbMsg.previous.yaw_valid;
 	inOutObject->Previous.DisableMcYawControl = pbMsg.previous.disable_mc_yaw_control;
 	inOutObject->Previous.YawspeedValid = pbMsg.previous.yawspeed_valid;
@@ -2600,6 +2608,8 @@ uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX
 	inOutObject->Current.Type = pbMsg.current.type;
 	inOutObject->Current.PositionValid = pbMsg.current.position_valid;
 	inOutObject->Current.VelocityValid = pbMsg.current.velocity_valid;
+	inOutObject->Current.VelocityFrame = pbMsg.current.velocity_frame;
+	inOutObject->Current.AltValid = pbMsg.current.alt_valid;
 	inOutObject->Current.YawValid = pbMsg.current.yaw_valid;
 	inOutObject->Current.DisableMcYawControl = pbMsg.current.disable_mc_yaw_control;
 	inOutObject->Current.YawspeedValid = pbMsg.current.yawspeed_valid;
@@ -2631,6 +2641,8 @@ uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX
 	inOutObject->Next.Type = pbMsg.next.type;
 	inOutObject->Next.PositionValid = pbMsg.next.position_valid;
 	inOutObject->Next.VelocityValid = pbMsg.next.velocity_valid;
+	inOutObject->Next.VelocityFrame = pbMsg.next.velocity_frame;
+	inOutObject->Next.AltValid = pbMsg.next.alt_valid;
 	inOutObject->Next.YawValid = pbMsg.next.yaw_valid;
 	inOutObject->Next.DisableMcYawControl = pbMsg.next.disable_mc_yaw_control;
 	inOutObject->Next.YawspeedValid = pbMsg.next.yawspeed_valid;
