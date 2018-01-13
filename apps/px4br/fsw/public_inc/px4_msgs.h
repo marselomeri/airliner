@@ -1260,9 +1260,9 @@ typedef struct
 	float Yawspeed;
 	float LoiterRadius;
 	float PitchMin;
-	float A_X;
-	float A_Y;
-	float A_Z;
+	float AX;
+	float AY;
+	float AZ;
 	float AcceptanceRadius;
 	float CruisingSpeed;
 	float CruisingThrottle;
