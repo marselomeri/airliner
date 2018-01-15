@@ -20,6 +20,7 @@ message px4_vehicle_control_mode_pb
 	required bool flag_control_altitude_enabled = 15;
 	required bool flag_control_climb_rate_enabled = 16;
 	required bool flag_control_termination_enabled = 17;
+	required bool flag_control_fixed_hdg_enabled = 18;
 }
 
 // ORB_DECLARE(vehicle_control_mode);

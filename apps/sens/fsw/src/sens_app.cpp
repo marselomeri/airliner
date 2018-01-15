@@ -8,7 +8,7 @@
 #include "sens_app.h"
 #include "sens_msg.h"
 #include "sens_version.h"
-#include <lib/mathlib/math/Limits.hpp>
+#include "lib/mathlib/math/Limits.hpp"
 #include <math.h>
 #include "lib/px4lib.h"
 

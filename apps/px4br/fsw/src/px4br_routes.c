@@ -114,6 +114,7 @@
 #include "vehicle_global_velocity_setpoint.pb.h"
 #include "vehicle_gps_position.pb.h"
 #include "vehicle_land_detected.pb.h"
+#include "vehicle_local_position.pb.h"
 #include "vehicle_local_position_setpoint.pb.h"
 #include "vehicle_rates_setpoint.pb.h"
 #include "vehicle_status.pb.h"
@@ -158,7 +159,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 		{"gps_dump", (PX4_ENCODE_FUNC) PX4BR_GpsDump_Enc, (PX4_DECODE_FUNC) 0, PX4_GPS_DUMP_MID, px4_gps_dump_pb_size, 1, 0, 0},
 		{"gps_inject_data", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_GpsInjectData_Dec, PX4_GPS_INJECT_DATA_MID, px4_gps_inject_data_pb_size, 1, 0, 0},
 //		{"hil_sensor", (PX4_ENCODE_FUNC) PX4BR_HilSensor_Enc, (PX4_DECODE_FUNC) PX4BR_HilSensor_Dec, PX4_HIL_SENSOR_MID, px4_hil_sensor_pb_size, 1, 0, 0},
-//		{"home_position", (PX4_ENCODE_FUNC) PX4BR_HomePosition_Enc, (PX4_DECODE_FUNC) PX4BR_HomePosition_Dec, PX4_HOME_POSITION_MID, px4_home_position_pb_size, 1, 0, 0},
+		{"home_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_HomePosition_Dec, PX4_HOME_POSITION_MID, px4_home_position_pb_size, 1, 0, 0},
 		{"input_rc", (PX4_ENCODE_FUNC) PX4BR_InputRc_Enc, (PX4_DECODE_FUNC) 0, PX4_INPUT_RC_MID, px4_input_rc_pb_size, 1, 0, 0},
 //		{"log_message", (PX4_ENCODE_FUNC) PX4BR_LogMessage_Enc, (PX4_DECODE_FUNC) PX4BR_LogMessage_Dec, PX4_LOG_MESSAGE_MID, px4_log_message_pb_size, 1, 0, 0},
 		{"manual_control_setpoint", (PX4_ENCODE_FUNC) PX4BR_ManualControlSetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_MANUAL_CONTROL_SETPOINT_MID, px4_manual_control_setpoint_pb_size, 1, 0, 0},
@@ -174,7 +175,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 		///{"output_pwm", (PX4_ENCODE_FUNC) PX4BR_OutputPwm_Enc, (PX4_DECODE_FUNC) 0, PX4_OUTPUT_PWM_MID, px4_output_pwm_pb_size, 1, 0, 0},
 //		{"parameter_update", (PX4_ENCODE_FUNC) PX4BR_ParameterUpdate_Enc, (PX4_DECODE_FUNC) PX4BR_ParameterUpdate_Dec, PX4_PARAMETER_UPDATE_MID, px4_parameter_update_pb_size, 1, 0, 0},
 //		{"position_setpoint", (PX4_ENCODE_FUNC) PX4BR_PositionSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_PositionSetpoint_Dec, PX4_POSITION_SETPOINT_MID, px4_position_setpoint_pb_size, 1, 0, 0},
-//		{"position_setpoint_triplet", (PX4_ENCODE_FUNC) PX4BR_PositionSetpointTriplet_Enc, (PX4_DECODE_FUNC) PX4BR_PositionSetpointTriplet_Dec, PX4_POSITION_SETPOINT_TRIPLET_MID, px4_position_setpoint_triplet_pb_size, 1, 0, 0},
+		{"position_setpoint_triplet", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_PositionSetpointTriplet_Dec, PX4_POSITION_SETPOINT_TRIPLET_MID, px4_position_setpoint_triplet_pb_size, 1, 0, 0},
 		///{"pwm_input", (PX4_ENCODE_FUNC) PX4BR_PwmInput_Enc, (PX4_DECODE_FUNC) 0, PX4_PWM_INPUT_MID, px4_pwm_input_pb_size, 1, 0, 0},
 //		{"qshell_req", (PX4_ENCODE_FUNC) PX4BR_QShellReq_Enc, (PX4_DECODE_FUNC) PX4BR_QShellReq_Dec, PX4_QSHELL_REQ_MID, px4_qshell_req_pb_size, 1, 0, 0},
 		{"rc_channels", (PX4_ENCODE_FUNC) PX4BR_RcChannels_Enc, (PX4_DECODE_FUNC) 0, PX4_RC_CHANNELS_MID, px4_rc_channels_pb_size, 1, 0, 0},
@@ -198,16 +199,16 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"uavcan_parameter_request", (PX4_ENCODE_FUNC) PX4BR_UavCanParameterRequest_Enc, (PX4_DECODE_FUNC) PX4BR_UavCanParameterRequest_Dec, PX4_UAVCAN_PARAMETER_REQUEST_MID, px4_uavcan_parameter_request_pb_size, 1, 0, 0},
 //		{"uavcan_parameter_value", (PX4_ENCODE_FUNC) PX4BR_UavCanParameterValue_Enc, (PX4_DECODE_FUNC) PX4BR_UavCanParameterValue_Dec, PX4_UAVCAN_PARAMETER_VALUE_MID, px4_uavcan_parameter_value_pb_size, 1, 0, 0},
 		{"vehicle_attitude", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitude_Dec, PX4_VEHICLE_ATTITUDE_MID, px4_vehicle_attitude_pb_size, 1, 0, 0},
-		{"vehicle_attitude_setpoint", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitudeSetpoint_Dec, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, px4_vehicle_attitude_setpoint_pb_size,  1, 0, 0},
+		{"vehicle_attitude_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleAttitudeSetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, px4_vehicle_attitude_setpoint_pb_size,  1, 0, 0},
 //		{"vehicle_command_ack", (PX4_ENCODE_FUNC) PX4BR_VehicleCommandAck_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommandAck_Dec, PX4_VEHICLE_COMMAND_ACK_MID, px4_vehicle_command_ack_pb_size, 1, 0, 0},
 //		{"vehicle_command", (PX4_ENCODE_FUNC) PX4BR_VehicleCommand_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommand_Dec, PX4_VEHICLE_COMMAND_MID, px4_vehicle_command_pb_size, 1, 0, 0},
 		{"vehicle_control_mode", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleControlMode_Dec, PX4_VEHICLE_CONTROL_MODE_MID, px4_vehicle_control_mode_pb_size, 1, 0, 0},
 //		{"vehicle_force_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleForceSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleForceSetpoint_Dec, PX4_VEHICLE_FORCE_SETPOINT_MID, px4_vehicle_force_setpoint_pb_size, 1, 0, 0},
 //		{"vehicle_global_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalPosition_Dec, PX4_VEHICLE_GLOBAL_POSITION_MID, px4_vehicle_global_position_pb_size, 1, 0, 0},
-//		{"vehicle_global_velocity_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Dec, PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID, px4_vehicle_global_velocity_setpoint_pb_size, 1, 0, 0},
+		{"vehicle_global_velocity_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID, px4_vehicle_global_velocity_setpoint_pb_size, 1, 0, 0},
 		{"vehicle_gps_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGpsPosition_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GPS_POSITION_MID, px4_vehicle_gps_position_pb_size, 1, 0, 0},
-//		{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLandDetected_Dec, PX4_VEHICLE_LAND_DETECTED_MID, px4_vehicle_land_detected_pb_size, 1, 0, 0},
-//		{"vehicle_local_position", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4_vehicle_local_position_pb_size, 1, 0, 0},
+		{"vehicle_land_detected", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLandDetected_Dec, PX4_VEHICLE_LAND_DETECTED_MID, px4_vehicle_land_detected_pb_size, 1, 0, 0},
+		{"vehicle_local_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4_vehicle_local_position_pb_size, 1, 0, 0},
 //		{"vehicle_local_position_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Dec, PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, px4_vehicle_local_position_setpoint_pb_size, 1, 0, 0},
 //		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
 		{"vehicle_rates_setpoint", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleRatesSetpoint_Dec, PX4_VEHICLE_RATES_SETPOINT_MID, px4_vehicle_rates_setpoint_pb_size, 1, 0, 0},

@@ -31,44 +31,30 @@
 *
 *****************************************************************************/
 
-#include "cfe.h"
-#include "mpc_test_utils.h"
-#include "ut_cfe_evs_hooks.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_cfe_psp_memutils_stubs.h"
-#include "ut_cfe_tbl_stubs.h"
-#include "ut_cfe_tbl_hooks.h"
-#include "ut_cfe_fs_stubs.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_osapi_stubs.h"
-#include "ut_osfileapi_stubs.h"
-#include "ut_cfe_sb_stubs.h"
-#include "ut_cfe_es_stubs.h"
-#include "ut_cfe_evs_stubs.h"
-#include "mpc_test_tables.h"
+#ifndef UT_MPC_CUSTOM_STUBS_H
+#define UT_MPC_CUSTOM_STUBS_H
 
-#include <time.h>
-
-/*
- * Function Definitions
- */
-
-void MPC_Test_Setup(void)
+typedef enum
 {
-    /* initialize test environment to default state for every test */
+	UT_MPC_PX4LIB_GETPX4TIMEUS_INDEX,
+    UT_MPC_CUSTOM_MAX_INDEX
+} Ut_MPC_Custom_INDEX_t;
 
-    Ut_CFE_EVS_Reset();
-    Ut_CFE_FS_Reset();
-    Ut_CFE_TIME_Reset();
-    Ut_CFE_TBL_Reset();
-    Ut_CFE_SB_Reset();
-    Ut_CFE_ES_Reset();
-    Ut_OSAPI_Reset();
-    Ut_OSFILEAPI_Reset();
+typedef struct
+{
+    uint64 (*PX4LIB_GetPX4TimeUs)(void);
+} Ut_MPC_Custom_HookTable_t;
 
-    Ut_CFE_TBL_AddTable(MPC_CONFIG_TABLE_FILENAME, (void *) &MPC_NominalConfigTbl);
-}
+typedef struct
+{
+    int32   Value;
+    uint32  Count;
+    boolean ContinueReturnCodeAfterCountZero;
+} Ut_MPC_Custom_ReturnCodeTable_t;
 
-void MPC_Test_TearDown(void) {
+void Ut_MPC_Custom_Reset(void);
+void Ut_MPC_Custom_SetFunctionHook(uint32 Index, void *FunPtr);
+void Ut_MPC_Custom_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);
+void Ut_MPC_Custom_ContinueReturnCodeAfterCountZero(uint32 Index);
 
-}
+#endif

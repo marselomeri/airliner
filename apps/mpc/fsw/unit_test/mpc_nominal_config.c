@@ -6,30 +6,11 @@
 ** Include Files
 */
 #include "cfe_tbl_filedef.h"
-#include "mpc_tbldefs.h"
+#include "mpc_test_tables.h"
 
 /*
 ** Local Defines
 */
-
-/*
-** Local Structure Declarations
-*/
-static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
-{
-    /* Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
-    **    ObjName - variable name of config table, e.g., CI_ConfigDefTbl[]
-    **    TblName - app's table name, e.g., CI.CONFIG_TBL, where CI is the same app name
-    **              used in cfe_es_startup.scr, and CI_defConfigTbl is the same table
-    **              name passed in to CFE_TBL_Register()
-    **    Desc - description of table in string format
-    **    TgtFileName[20] - table file name, compiled as .tbl file extension
-    **    ObjSize - size of the entire table
-    */
-
-    "MPC_ConfigTbl", "MPC.CONFIG_TBL", "MPC default config table",
-    "mpc_config.tbl", (sizeof(MPC_ConfigTbl_t))
-};
 
 /*
 ** External Global Variables
@@ -40,7 +21,7 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 */
 
 /* Default MPC config table data */
-MPC_ConfigTbl_t MPC_ConfigTbl =
+MPC_ConfigTbl_t MPC_NominalConfigTbl =
 {
 	/**
 	 * MPC_THR_MIN

@@ -31,44 +31,11 @@
 *
 *****************************************************************************/
 
+#ifndef UT_MPC_CUSTOM_HOOKS_H
+#define UT_MPC_CUSTOM_HOOKS_H
+
 #include "cfe.h"
-#include "mpc_test_utils.h"
-#include "ut_cfe_evs_hooks.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_cfe_psp_memutils_stubs.h"
-#include "ut_cfe_tbl_stubs.h"
-#include "ut_cfe_tbl_hooks.h"
-#include "ut_cfe_fs_stubs.h"
-#include "ut_cfe_time_stubs.h"
-#include "ut_osapi_stubs.h"
-#include "ut_osfileapi_stubs.h"
-#include "ut_cfe_sb_stubs.h"
-#include "ut_cfe_es_stubs.h"
-#include "ut_cfe_evs_stubs.h"
-#include "mpc_test_tables.h"
 
-#include <time.h>
+uint64 UT_PX4LIB_GetPX4TimeUs(void);
 
-/*
- * Function Definitions
- */
-
-void MPC_Test_Setup(void)
-{
-    /* initialize test environment to default state for every test */
-
-    Ut_CFE_EVS_Reset();
-    Ut_CFE_FS_Reset();
-    Ut_CFE_TIME_Reset();
-    Ut_CFE_TBL_Reset();
-    Ut_CFE_SB_Reset();
-    Ut_CFE_ES_Reset();
-    Ut_OSAPI_Reset();
-    Ut_OSFILEAPI_Reset();
-
-    Ut_CFE_TBL_AddTable(MPC_CONFIG_TABLE_FILENAME, (void *) &MPC_NominalConfigTbl);
-}
-
-void MPC_Test_TearDown(void) {
-
-}
+#endif
