@@ -34,6 +34,7 @@ from arte_launcher import ArteSubprocess
 import time
 import sys
 import logging
+import os
 
 class ArteTestFixture(object):
     """A test fixture to handle test setup and teardown. 
@@ -99,7 +100,7 @@ class ArteTestFixture(object):
         """
         # Loop through the client list
         for i in self.config['clients']:
-            self.clients.append(ArteSubprocess(i['command'], i['output'], i['cwd']))
+            self.clients.append(ArteSubprocess(i['command'], i['output'], i['cwd'], i['env']))
 
     def test_teardown(self, sender):
         """Terminates or kills all the clients in the client list.

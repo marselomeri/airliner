@@ -166,6 +166,40 @@ def get_majorframe(config):
     return config['majorframe']
 
 
+def get_realtime(config):
+    """Get the realtime configuration value from the configuration file.
+
+    Note:
+        ARTE server is not started in realtime mode.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        Boolean: false for faster than realtime, true for realtime.
+     """
+    return config['realtime']
+
+
+def get_resetterm(config):
+    """Get the reset terminal value from the configuration file.
+
+    Note:
+        Some applications launched with ARTE may leave the terminal in 
+        an abnormal state. Optionally reset the terminal on exit. 
+        Terminal output printed to stdout is lost.
+
+    Args:
+        config (:obj:`deserialized JSON`): The deserialized JSON 
+            configuration file.
+
+    Returns:
+        Boolean: true to reset, false for no reset.
+     """
+    return config['resetterm']
+
+
 def main():
     """The entry point for ARTE.
     
@@ -209,11 +243,20 @@ def main():
     # Get the minor frame in major frame count
     majorframe = get_majorframe(config)
     
+    # Get the configuration mode (i.e. realtime or not).
+    realtime = get_realtime(config)
+    
+    # Get the reset terminal bool value (i.e. reset on exit or not).
+    resetterm = get_resetterm(config)
+    
     # Create an event handler for event callbacks
     my_event_handler = ArteEventHandler()
     
     # Create a server
-    my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts, majorframe)
+    if not realtime:
+        my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts, majorframe)
+    else:
+        logging.info('Running in realtime mode')
 
     # Create a test fixture
     my_test_fixture = ArteTestFixture("test1", config, my_event_handler)
@@ -233,6 +276,11 @@ def main():
 
     # Terminate clients.
     my_event_handler.shutdown()
+    # If configured, reset terminal before exit.
+    if resetterm:
+        # Reset the terminal 
+        os.system("reset")
+    # Exit with status 1
     sys.exit(1)
 
 if __name__ == '__main__':
