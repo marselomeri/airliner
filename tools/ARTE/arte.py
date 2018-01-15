@@ -256,6 +256,8 @@ def main():
     if not realtime:
         my_server = ArteServer("localhost", 9999, client_count, my_event_handler, timeouts, majorframe)
     else:
+        # TODO add realtime server
+        # my_server = ArteServer("localhost", 9999, 0, my_event_handler, timeouts, majorframe)
         logging.info('Running in realtime mode')
 
     # Create a test fixture
@@ -276,10 +278,12 @@ def main():
 
     # Terminate clients.
     my_event_handler.shutdown()
+
     # If configured, reset terminal before exit.
     if resetterm:
         # Reset the terminal 
         os.system("reset")
+
     # Exit with status 1
     sys.exit(1)
 

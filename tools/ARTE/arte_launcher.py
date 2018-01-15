@@ -66,14 +66,17 @@ class ArteSubprocess(object):
         # Eliminate space and equals sign
         self.envTokenized = env.split("=")
 
+        # Create env for subprocess
         current_env = os.environ.copy()
         for count, i in enumerate(self.envTokenized):
             # If even i.e. we have a key not a value
             if count % 2 == 0 and count > 0:
                 current_env[self.envTokenized[count]] = self.envTokenized[count+1]
 
+        # Output log timestamp
         f = open(self.fileName, "a")
         f.write("- ARTE " + str(command) + " " + datetime.now().strftime('%Y%m%d_%H:%M:%S - ') + "\n")
+        # Launch subprocess
         self.proc = subprocess.Popen(self.args,stdout=f, stderr=f, shell=False, cwd=self.cwd, env=current_env)
         logging.info('ARTE process created %s', self.args[0])
 
