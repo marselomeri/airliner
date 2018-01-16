@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
     # Customize the amount of memory on the VM:
     vb.memory = "4096"
     vb.cpus = "2"
-	vb.customize ["modifyvm", :id, "--monitorcount", "2"]
+	#vb.customize ["modifyvm", :id, "--monitorcount", "2"]
 	#vb.customize ["modifyvm", :id, "--usb", "on", "--usbehci", "on"]
 	config.vm.network "forwarded_port", guest: 5011, host: 5011, protocol: "udp"
 	
