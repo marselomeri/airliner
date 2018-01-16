@@ -780,7 +780,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
             {
 
                 /* TODO remove after debug*/
-                OS_printf("ParseChar completed a message\n");
+                //OS_printf("ParseChar completed a message\n");
                 /* end todo */
 
                 /* Copy message to the CVT */
