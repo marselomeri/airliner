@@ -959,7 +959,7 @@ void GPS_Nav_ParseChar_PVT(uint8 byte, GPS_DeviceMessage_t* message)
                 uint16 sbHdrSize = CFE_SB_MsgHdrSize(sbMsgID);
                 uint16 sbTotalMsgSize = sbHdrSize + GPS_AppCustomData.ParserStatus.MsgLength;
                 CFE_SB_InitMsg(message, sbMsgID, sbTotalMsgSize, TRUE);
-
+                
                 payload->iTOW = byte;
                 break;
             }

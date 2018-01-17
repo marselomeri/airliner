@@ -322,6 +322,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
             if(TRUE == done)
             {
                 CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t*)&message);
+		OS_printf("GPS msgID = %u\n", msgID);
                 switch(msgID)
                 {
                     case GPS_NAV_DOP_MID:
