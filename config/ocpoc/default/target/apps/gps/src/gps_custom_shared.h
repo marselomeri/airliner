@@ -163,37 +163,39 @@ typedef enum
 typedef struct
 {
     /*! Device file descriptor */
-    int                          DeviceFd;
+    int                           DeviceFd;
     /*! The current device status */
-    GPS_Custom_Status_t          Status;
+    GPS_Custom_Status_t           Status;
     /*! The current baud */
-    uint32                       Baud;
+    uint32                        Baud;
     /*! The current parser status */
-    GPS_ParserStatus_t           ParserStatus;
+    GPS_ParserStatus_t            ParserStatus;
+    /*! The current parser message */
+    GPS_DeviceMessage_t           Message;
     /*! Streaming task priority */
-    uint8                           Priority;
+    uint8                         Priority;
     /*! Streaming child task identifier */
-    uint32                          ChildTaskID;
+    uint32                        ChildTaskID;
     /*! Streaming task function pointer */
-    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    CFE_ES_ChildTaskMainFuncPtr_t StreamingTask;
     //PX4_GpsDumpMsg_t             GpsDumpMsg;
-    PX4_VehicleGpsPositionMsg_t  GpsPositionMsg;
-    PX4_SatelliteInfoMsg_t       GpsSatInfoMsg;
-    GPS_Ack_State_t              AckState;
-    uint16                       AckWaitingMsg;
-    uint8                        AckRcvdMsgCls;
-    boolean                      AckWaitingRcvd;
+    PX4_VehicleGpsPositionMsg_t   GpsPositionMsg;
+    PX4_SatelliteInfoMsg_t        GpsSatInfoMsg;
+    GPS_Ack_State_t               AckState;
+    uint16                        AckWaitingMsg;
+    uint8                         AckRcvdMsgCls;
+    boolean                       AckWaitingRcvd;
     /*! The shared data mutex */
     //uint32                       MutexDump;
-    uint32                       MutexPosition;
-    uint32                       MutexSatInfo;
+    uint32                        MutexPosition;
+    uint32                        MutexSatInfo;
     /*! */
-    uint32                       RateCountVel;
-    uint32                       RateCountLatLon;
-    boolean                      GotPosllh;
-    boolean                      GotVelned;
+    uint32                        RateCountVel;
+    uint32                        RateCountLatLon;
+    boolean                       GotPosllh;
+    boolean                       GotVelned;
     /*! Flag to start and stop streaming */
-    boolean                      ContinueFlag;
+    boolean                       ContinueFlag;
 } GPS_AppCustomData_t;
 
 

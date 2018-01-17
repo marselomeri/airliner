@@ -162,7 +162,7 @@ boolean GPS_Custom_Init()
             GPS_STREAMING_TASK_NAME,
             GPS_AppCustomData.StreamingTask,
             0,
-            CFE_ES_DEFAULT_STACK_SIZE,
+            (2 * CFE_ES_DEFAULT_STACK_SIZE),
             GPS_AppCustomData.Priority,
             0);
     if(CFE_SUCCESS != returnCode)
@@ -553,8 +553,9 @@ int32 GPS_Custom_Select(const uint32 TimeoutSec, const uint32 TimeoutUSec)
         /* select timed out */
         if (0 == returnCode)
         {
-            CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "GPS select() timed out");
+            // TODO add state to not raise this event during initialization.
+            //CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    //"GPS select() timed out");
             break;
         } 
         /* select() returned and data is ready to be read */
@@ -759,9 +760,8 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
     int32 bytesRead = 0;
     uint8 from_gps_data[GPS_READ_BUFFER_SIZE];
     boolean done = FALSE;
-    
-    bytesRead = GPS_Custom_Receive(&from_gps_data[0], 
-            sizeof(from_gps_data), timeout);
+
+    bytesRead = GPS_Custom_Receive(&from_gps_data[0], sizeof(from_gps_data), timeout);
 
     if (bytesRead < 0)
     {
@@ -770,27 +770,23 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
     }
     for(i = 0;  i < bytesRead; ++i)
     {
-        GPS_DeviceMessage_t message;
-        GPS_ParserStatus_t status;
-
-        if(GPS_ParseChar(from_gps_data[i], &message, &status, &done))
+        if(GPS_ParseChar(from_gps_data[i], &GPS_AppCustomData.Message, &done))
         {
             /* If parsechar completed a message... */
             if(TRUE == done)
             {
-
                 /* TODO remove after debug*/
                 //OS_printf("ParseChar completed a message\n");
                 /* end todo */
 
                 /* Copy message to the CVT */
-                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t*)&message);
+                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_Msg_t*)&GPS_AppCustomData.Message);
                 switch(msgID)
                 {
                     case GPS_NAV_DOP_MID:
                     {
                         //OS_printf("IN GPS_NAV_DOP_MID\n");
-                        GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
+                        GPS_NAV_DOP_t *msgIn = (GPS_NAV_DOP_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&GPS_AppCustomData.Message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* from cm to m */
                         GPS_AppCustomData.GpsPositionMsg.HDOP = msgIn->hDOP * 0.01f;
@@ -802,7 +798,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     case GPS_NAV_NAVPVT_MID:
                     {
                         //OS_printf("IN GPS_NAV_NAVPVT_MID\n");
-                        GPS_NAV_PVT_t *msgIn = (GPS_NAV_PVT_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
+                        GPS_NAV_PVT_t *msgIn = (GPS_NAV_PVT_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&GPS_AppCustomData.Message);
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
                         /* Check if position fix flag is good */
                         if ((msgIn->flags & GPS_NAV_PVT_FLAGS_GNSSFIXOK) == 1)
@@ -924,7 +920,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     case GPS_NAV_SVINFO_MID:
                     {
                         //OS_printf("IN GPS_NAV_SVINFO_MID\n");
-                        GPS_NAV_SVINFO_Combined_t *msgIn = (GPS_NAV_SVINFO_Combined_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
+                        GPS_NAV_SVINFO_Combined_t *msgIn = (GPS_NAV_SVINFO_Combined_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&GPS_AppCustomData.Message);
                         
                         OS_MutSemTake(GPS_AppCustomData.MutexSatInfo);
                         
@@ -991,7 +987,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     {
                         //OS_printf("IN GPS_MON_HW_MID\n");
                         OS_MutSemTake(GPS_AppCustomData.MutexPosition);
-                        GPS_MON_HW_t *msgIn = (GPS_MON_HW_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&message);
+                        GPS_MON_HW_t *msgIn = (GPS_MON_HW_t*) CFE_SB_GetUserData((CFE_SB_Msg_t*)&GPS_AppCustomData.Message);
 
                         GPS_AppCustomData.GpsPositionMsg.NoisePerMs = msgIn->noisePerMS;
                         GPS_AppCustomData.GpsPositionMsg.JammingIndicator = msgIn->jamInd;
@@ -1002,7 +998,7 @@ boolean GPS_Custom_Read_and_Parse(const uint32 timeout)
                     default:
                     {
                         CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                                "GPS parser received unexpected message");
+                                "GPS parser received unexpected message %x", msgID);
                     }
                 }
             }
@@ -1053,7 +1049,7 @@ boolean GPS_Custom_WaitForAck(const uint16 msg, const uint32 timeout)
         if(timeStamp >= startTime + timeout * 1000)
         {
             /* TODO remove after debug*/
-            OS_printf("WaitForAck timed out\n");
+            //OS_printf("WaitForAck timed out\n");
             /* */
             timedOut = TRUE;
         }
