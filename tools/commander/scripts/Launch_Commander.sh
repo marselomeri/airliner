@@ -46,7 +46,6 @@ PORT=`jq '.daphne_port' launch_config.json`
 
 tput setaf 2;
 if [[ $1 =~ $r0 ]] ; then
-    WORKERS=1
     echo "MODE : TRAIN"
     jq '.mode = 0'  launch_config.json > tmp.$$.json && mv tmp.$$.json launch_config.json
 elif [[ $1 =~ $r1 ]] ; then

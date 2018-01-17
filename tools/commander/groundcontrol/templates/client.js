@@ -3,9 +3,9 @@
 
 
 //Tools
-var DEBUG = true;
-var ERROR = false;
-var INFO = true;
+var DEBUG = false;
+var ERROR = true;
+var INFO = false;
 
 function replaceAll(str, find, replace) {
             if (typeof str !='string'||typeof find !='string'||typeof replace !='string'){
@@ -133,12 +133,12 @@ var Instance = function(){
     this.ws_scheme="ws"
     }
     try{
-    this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst/');
-    this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/defaultInst/');
+    this.websocket1 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/inst');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tid');
     }
     catch(e){
-    this.websocket1 = new WebSocket(this.ws_scheme+'://localhost:8000/inst/');
-    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/defaultInst/');
+    this.websocket1 = new WebSocket(this.ws_scheme+'://localhost:8000/inst');
+    this.websocket2 = new WebSocket(this.ws_scheme+'://localhost:8000/tid');
     }
     var self = this;
 
@@ -161,7 +161,6 @@ var Instance = function(){
     /*transmitCurrentInstance*/
     this.websocket2.onopen = function(){
         log('DEBUG','Connection open.','transmitCurrentInstance');
-        //console.log('3333333',this.websocket2)
         log('INFO','NON Invoke Sent.','transmitCurrentInstance');
     };
     this.websocket2.onclose = function(){
@@ -238,10 +237,10 @@ Instance.prototype = {
 var Directory = function(){
     try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    this.websocket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/dir/');
+    this.websocket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/dir');
     }
     catch(e){
-    this.websocket = new WebSocket('ws://localhost:8000/dir/');
+    this.websocket = new WebSocket('ws://localhost:8000/dir');
     }
     var self = this;
 
@@ -294,11 +293,11 @@ var Telemetry =function(){
     this.ws_scheme="ws"
     }
     try{
-    this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm_s/');
+    this.subsc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/tlm');
 
     }
     catch(e){
-    this.subsc = new WebSocket(this.ws_scheme+'://localhost:8000/tlm_s/');
+    this.subsc = new WebSocket(this.ws_scheme+'://localhost:8000/tlm');
 
     }
 
@@ -306,6 +305,8 @@ var Telemetry =function(){
     this.subscribers = [];
     this.queuedSubscribers = [];
     this.allSubscibers = [];
+    this.activeSubscribers = [];
+    this.toUnsubscribe= [];
 
     var self = this;
     /*subscribeTelemetry*/
@@ -393,17 +394,19 @@ Telemetry.prototype = {
             fixedDataString = fixedDataString.replace(new RegExp('True', 'g'),'true');
             fixedDataString = fixedDataString.replace(new RegExp('False', 'g'),'false');
             var data = JSON.parse(fixedDataString);
-            //console.log(data);
-            data.parameter.forEach(function(param){
-                var tlmName = param.id.name;
 
-                if(tlmName in self.subscribers){
-                    var subscriptions = self.subscribers[tlmName];
-                    subscriptions.forEach(function(subscription){
-                        subscription.callback(param);
-                    });
-                }
-            });
+            if(data.hasOwnProperty('parameter')) {
+                data.parameter.forEach(function(param){
+                    var tlmName = param.id.name;
+
+                    if(tlmName in self.subscribers){
+                        var subscriptions = self.subscribers[tlmName];
+                        subscriptions.forEach(function(subscription){
+                            subscription.callback(param);
+                        });
+                    }
+                });
+            }
             //this.subscribers[event.data.parameter.data.keys(obj).forEach(function(key,index) {
             //console.log(event);
             //cb(event);
@@ -413,7 +416,9 @@ Telemetry.prototype = {
     unSubscribeTelemetry: function(msgObj){
         var socket = this.subsc;
         var message = "";
-
+        //console.log('/**********/');
+        //console.log(msgObj);
+        //console.log('/**********/');
         /* If this msgObj is an object, stringify it. */
         if(typeof msgObj === 'object')
         {
@@ -430,11 +435,15 @@ Telemetry.prototype = {
         }
 
         var msg = 'kill_tlm'+message
-        socket.send(msg);
+
+        for(var i=0;i<2;i++){
+        socket.send(msg);}
 
 
 
     },
+
+
 
     killAll: function(){
         var self = this;
@@ -467,12 +476,12 @@ Telemetry.prototype = {
 var Command =function(){
     try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    this.info = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd_i/');
-    this.cmd = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd_s/');
+    this.info = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd1');
+    this.cmd = new WebSocket(this.ws_scheme+'://' + window.location.host + '/cmd2');
     }
     catch(e){
-    this.info = new WebSocket('ws://localhost:8000/cmd_i/');
-    this.cmd = new WebSocket('ws://localhost:8000/cmd_s/');
+    this.info = new WebSocket('ws://localhost:8000/cmd1');
+    this.cmd = new WebSocket('ws://localhost:8000/cmd2');
     }
     this.CommandQueue = [];
     this.SendingQueue = [];
@@ -540,7 +549,7 @@ Command.prototype = {
     },
 
     ProcessCmds: function(cb){
-        /*
+
         var socket = this.info;
         var self = this;
         var cq = makeIterator(this.CommandQueue)
@@ -561,7 +570,7 @@ Command.prototype = {
         } while(this.RequestCmdDef(Que_obj, cb) == true);
 
         socket.onmessage = function (event){
-            /* Retrieve the object and call the callback. *//*
+            /* Retrieve the object and call the callback. */
             var cmdName = Object.keys(Que_obj)[0];
             var btn = Que_obj[cmdName][0];
             var jsn = Que_obj[cmdName][1];
@@ -577,7 +586,7 @@ Command.prototype = {
 
                 Que_obj = cq.next().value;
             } while(self.RequestCmdDef(Que_obj, cb) == true);
-        }*/
+        }
 
     },
 
@@ -618,11 +627,11 @@ Command.prototype = {
 var Event = function(){
     try{
     this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    this.event = new WebSocket(this.ws_scheme+'://' + window.location.host + '/event/');
+    this.event = new WebSocket(this.ws_scheme+'://' + window.location.host + '/event');
     }
     catch(e){
 
-    this.event=new WebSocket('ws://localhost:8000/event/');
+    this.event=new WebSocket('ws://localhost:8000/event');
     }
     var self = this;
 
@@ -664,7 +673,49 @@ Event.prototype = {
 }
 
 //---------------------------------------------------------------------------------------------------------------
+/* ADSB:
+   A web socket function to establish adsb specific communication between server and client.
+   Initializes web socket to receive video frames.*/
 //---------------------------------------------------------------------------------------------------------------
+var ADSB = function() {
+        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/adsb');
+        this.video_subscribers = {};
+        var self = this;
+
+        this.vid_subc.onopen = function (){
+            log('DEBUG','Connection open.','getAdsbStream');
+            //self.vid_subc.send('INVOKE');//TODO
+            //log('INFO','Message Sent.','getAdsbStream');
+        }
+
+        this.vid_subc.onclose = function(){
+            log('DEBUG','Connection closed.','getAdsbStream');
+        }
+        this.vid_subc.onerror = function(){
+            log('ERR','Connection closed.','getAdsbStream');
+        }
+
+}
+ADSB.prototype = {
+
+    getAdsbStream(cb){
+        var socket = this.vid_subc;
+
+        socket.onmessage = function (event){
+            log('INFO','Message received.','getAdsbStream');
+            cosole.log(event)
+            //cb(event);
+        }
+        //if (socket.readyState == WebSocket.OPEN) {
+        //  socket.send('INVOKE');
+        //  log('INFO','Message Sent.','getVideoStream');
+        //};
+
+
+    },
+
+}
 
 
 
@@ -675,38 +726,38 @@ Event.prototype = {
    Initializes web socket to receive video frames.*/
 //---------------------------------------------------------------------------------------------------------------
 var Video = function() {
-        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        this.vid_subc = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video/');
         this.video_subscribers = {};
         var self = this;
-
-        this.vid_subc.onopen = function (){
-            log('DEBUG','Connection open.','getVideoStream');
-            //self.vid_subc.send('INVOKE');//TODO
-            log('INFO','Message Sent.','getVideoStream');
-        }
-
-        this.vid_subc.onclose = function(){
-            log('DEBUG','Connection closed.','getVideoStream');
-        }
-        this.vid_subc.onerror = function(){
-            log('ERR','Connection closed.','getVideoStream');
-        }
-
 }
 Video.prototype = {
 
     getVideoStream(cb){
-        var socket = this.vid_subc;
+        this.ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        var socket = new WebSocket(this.ws_scheme+'://' + window.location.host + '/video');
 
         socket.onmessage = function (event){
             log('INFO','Message received.','getVideoStream');
             cb(event);
         }
+        
         //if (socket.readyState == WebSocket.OPEN) {
         //  socket.send('INVOKE');
         //  log('INFO','Message Sent.','getVideoStream');
         //};
+
+        socket.onopen = function (){
+            log('DEBUG','Connection open.','getVideoStream');
+            socket.send('INVOKE');//TODO
+            log('INFO','Message Sent.','getVideoStream');
+        }
+
+        socket.onclose = function(){
+            log('DEBUG','Connection closed.','getVideoStream');
+        }
+        
+        socket.onerror = function(){
+            log('ERR','Connection closed.','getVideoStream');
+        }
 
 
     },
@@ -772,25 +823,21 @@ Session.prototype ={
 
 
     }
-
-
-
-
 }
 
 
-
-
-module.exports.getDate = getDate;
-module.exports.replaceAll = replaceAll;
-module.exports.introspectTlm = introspectTlm;
-module.exports.log = log;
-module.exports.makeIterator = makeIterator;
-module.exports.getSockets = getSockets;
-module.exports.Instance = Instance;
-module.exports.Directory = Directory;
-module.exports.Telemetry = Telemetry;
-module.exports.Command = Command;
-module.exports.Event = Event;
-module.exports.Video = Video;
-module.exports.Session = Session;
+if(typeof module != 'undefined') {
+    module.exports.getDate = getDate;
+    module.exports.replaceAll = replaceAll;
+    module.exports.introspectTlm = introspectTlm;
+    module.exports.log = log;
+    module.exports.makeIterator = makeIterator;
+    module.exports.getSockets = getSockets;
+    module.exports.Instance = Instance;
+    module.exports.Directory = Directory;
+    module.exports.Telemetry = Telemetry;
+    module.exports.Command = Command;
+    module.exports.Event = Event;
+    module.exports.Video = Video;
+    module.exports.Session = Session;
+}

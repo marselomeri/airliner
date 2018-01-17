@@ -1,0 +1,166 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4
+
+block main
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - Gyro
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #Gyro(style='width:100%; height:300px;')
+
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-SG.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - Gyro
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Integral:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Integral"}}) ---
+                    tr
+                      th Error Count:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ErrorCount"}}) ---
+                    tr
+                      th X:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_X"}}) ---
+                    tr
+                      th Y:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Y"}}) ---
+                    tr
+                      th Z:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Z"}}) ---
+                    tr
+                      th X Int:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XInt"}}) ---
+                    tr
+                      th Y Int:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YInt"}}) ---
+                    tr
+                      th Z Int:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZInt"}}) ---
+                    tr
+                      th Temp:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Temp"}}) ---
+                    tr
+                      th Range:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Range"}}) ---
+                    tr
+                      th Scaling:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Scaling"}}) ---
+                    tr
+                      th Device ID:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_DeviceID"}}) ---
+                    tr
+                      th X Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XRaw"}}) ---
+                    tr
+                      th Y Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YRaw"}}) ---
+                    tr
+                      th Z Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZRaw"}}) ---
+                    tr
+                      th Temp Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SG_TempRaw"}}) ---
+
+      script.
+        var MaxCount = 1000;
+              
+        loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
+            var GyroData = [];
+            var GyroX = {value: 0, time: 1, utcTime: ''};
+            var GyroY = {value: 0, time: 2, utcTime: ''};
+            var GyroZ = {value: 0, time: 3, utcTime: ''};
+            var GyroStarted = false;
+
+            GyroGraph = new Dygraph(document.getElementById("Gyro"), GyroData, {
+                                drawPoints: false,
+                                showRoller: true,
+                                labels: ['Time', 'X', 'Y', 'Z']
+                         });
+
+            session.on('connectFailed', function(err) {
+                console.log('Failed to start Sage session.  err = ' + err);
+            });
+
+            session.on('connect', function() {
+              var GyroCount = 0;
+
+              session.subscribe({name: '/CFS/PX4/SG_X'}, function(param) {
+                console.log(JSON.stringify(param));
+                GyroX.value = param.engValue.floatValue;
+                GyroX.time = param.acquisitionTime;
+                GyroX.utcTime = param.acquisitionTimeUTC;
+                GyroCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SG_Y'}, function(param) {
+                GyroY.value = param.engValue.floatValue;
+                GyroY.time = param.acquisitionTime;
+                GyroY.utcTime = param.acquisitionTimeUTC;
+                GyroCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SG_Z'}, function(param) {
+                GyroZ.value = param.engValue.floatValue;
+                GyroZ.time = param.acquisitionTime;
+                GyroZ.utcTime = param.acquisitionTimeUTC;
+                GyroCorrelateData();
+              });
+
+              var GyroCorrelateData = function () {
+                  if((GyroX.time == GyroY.time ) && ( GyroY.time == GyroZ.time)){
+                      if(GyroStarted == false){
+                        /* Skip the first one. */
+                        GyroStarted = true;
+                      } else {        
+                        if (GyroData.length >= MaxCount) {
+                          GyroData = GyroData.slice(1);
+                        }                   
+                        GyroData.push([GyroCount, GyroX.value, GyroY.value, GyroZ.value]);
+                        GyroCount++;
+                      }
+                  }
+              };
+
+             setInterval(function() {
+                 GyroGraph.updateOptions( { 'file': GyroData } );
+             }, 100);
+          });
+        });
+
+
+

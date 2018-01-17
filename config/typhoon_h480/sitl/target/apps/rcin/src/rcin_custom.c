@@ -202,6 +202,7 @@ int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, int32 inValue, uint32 *outValue
 
 		case 4:
 			*outValueIndex = 1;
+                        inValue = inValue * -1;
 			break;
 	}
 

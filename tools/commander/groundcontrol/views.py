@@ -10,9 +10,17 @@ Todo:
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render
+from django.template import loader
+from django import template
 from django.http import HttpResponse
-from toolkit import log
+from toolkit import log,readJsonFromCloseCirlce
 
+
+register = template.Library()
+
+@register.filter()
+def range(min=5):
+    return range(min)
 
 
 def index(r,a=None):
@@ -47,13 +55,27 @@ def router(r,a,b,c=None,d=None):
     """
     if c==None and d==None:
         log(str(a+'/'+b+'.pug'), '[REQUEST] Document requested.', 'INFO')
-        return render(r, str(a+'/'+b+'.pug'))
+        try:
+            json = readJsonFromCloseCirlce(str(a))
+        except:
+            json = 'NULL'
+        return render(r, str(a+'/'+b+'.pug'),{'obj':json})
+
     elif d==None:
         log(str(a+'/'+b+'/'+c+'.pug'), '[REQUEST] Document requested.', 'INFO')
-        return render(r, str(a+'/'+b+'/'+c+'.pug'))
+        try:
+            json = readJsonFromCloseCirlce(str(a+'/'+b+'/'))
+        except:
+            json = 'NULL'
+        return render(r, str(a+'/'+b+'/'+c+'.pug'),{'obj':json})
+
     else:
         log(str(a +'/'+b+'/'+c+'/'+d+ '.pug'), '[REQUEST] Document requested.', 'INFO')
-        return render(r, str(a +'/'+b+'/'+c+'/'+d+ '.pug'))
+        try:
+            json = readJsonFromCloseCirlce(str(a+'/'+b+'/'+c+'/'))
+        except:
+            json = 'NULL'
+        return render(r, str(a +'/'+b+'/'+c+'/'+d+ '.pug'),{'obj':json})
 
 def pug_router(r,a,b,c=None,d=None):
     """

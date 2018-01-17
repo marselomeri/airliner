@@ -1,6 +1,6 @@
 {
   "pyliner": {
-    "address": "localhost",
+    "address": "127.0.0.1",
     "port": 8090,
     "video_port": 3001,
     "adsb_port": 9000,

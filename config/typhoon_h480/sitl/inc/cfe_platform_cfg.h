@@ -48,7 +48,7 @@
 **       This parameter must also be less than or equal to OS_MAX_QUEUES
 **
 */
-#define CFE_SB_MAX_PIPES                64
+#define CFE_SB_MAX_PIPES                255
 
 
 /**

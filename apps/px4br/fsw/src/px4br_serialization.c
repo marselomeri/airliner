@@ -3563,6 +3563,7 @@ uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char 
 	pbMsg.rollspeed = inObject->RollSpeed;
 	pbMsg.pitchspeed = inObject->PitchSpeed;
 	pbMsg.yawspeed = inObject->YawSpeed;
+	pbMsg.q_count = 4;
     pbMsg.q[0] = inObject->Q[0];
     pbMsg.q[1] = inObject->Q[1];
     pbMsg.q[2] = inObject->Q[2];

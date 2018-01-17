@@ -1,0 +1,145 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4
+
+block main
+    .row.row-fluid
+
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - Magnetometer
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #Magnetometer(style='width:100%; height:300px;')
+
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - Magnetometer
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+                table.table.table-hover.table-condensed.table-compressed
+                  tbody
+                    tr
+                      th Error Count:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_ErrorCount"}}) ---
+                    tr
+                      th X:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_X"}}) ---
+                    tr
+                      th Y:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Y"}}) ---
+                    tr
+                      th Z:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Z"}}) ---
+                    tr
+                      th Range:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Range"}}) ---
+                    tr
+                      th Scaling:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Scaling"}}) ---
+                    tr
+                      th Temp:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_Temp"}}) ---
+                    tr
+                      th Device ID:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_DeviceID"}}) ---
+                    tr
+                      th X Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_XRaw"}}) ---
+                    tr
+                      th Y Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_YRaw"}}) ---
+                    tr
+                      th Z Raw:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/SM_ZRaw"}}) ---
+
+      script.
+        var MaxCount = 2500;
+              
+        loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
+            var MagData = [];
+            var MagX = {value: 0, time: 1, utcTime: ''};
+            var MagY = {value: 0, time: 2, utcTime: ''};
+            var MagZ = {value: 0, time: 3, utcTime: ''};
+            var MagStarted = false;
+            
+            MagGraph = new Dygraph(document.getElementById("Magnetometer"), MagData, {
+                                drawPoints: false,
+                                showRoller: true,
+                                labels: ['Time', 'X', 'Y', 'Z']
+                         });
+
+            session.on('connectFailed', function(err) {
+                console.log('Failed to start Sage session.  err = ' + err);
+            });
+
+            session.on('connect', function() {
+              var MagCount = 0;
+
+              session.subscribe({name: '/CFS/PX4/SM_X'}, function(param) {
+                MagX.value = param.engValue.floatValue;
+                MagX.time = param.acquisitionTime;
+                MagX.utcTime = param.acquisitionTimeUTC;
+                MagCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SM_Y'}, function(param) {
+                MagY.value = param.engValue.floatValue;
+                MagY.time = param.acquisitionTime;
+                MagY.utcTime = param.acquisitionTimeUTC;
+                MagCorrelateData();
+              });
+
+              session.subscribe({name: '/CFS/PX4/SM_Z'}, function(param) {
+                MagZ.value = param.engValue.floatValue;
+                MagZ.time = param.acquisitionTime;
+                MagZ.utcTime = param.acquisitionTimeUTC;
+                MagCorrelateData();
+              });
+
+              var MagCorrelateData = function () {
+                  if((MagX.time == MagY.time ) && ( MagY.time == MagZ.time)){
+                      if(MagStarted == false){
+                          /* Skip the first one. */
+                          MagStarted = true;
+                      } else {         
+                          if (MagData.length >= MaxCount) {
+                              MagData = MagData.slice(1);
+                          }                
+                          MagData.push([MagCount, MagX.value, MagY.value, MagZ.value]);
+                          MagCount++;
+                      }
+                  }
+              };
+
+             setInterval(function() {
+                 MagGraph.updateOptions( { 'file': MagData } );
+             }, 100);
+          });
+        });
+
+
+
