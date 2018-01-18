@@ -23,11 +23,11 @@ uint32 {{airliner_msg}}_Enc(const {{airliner_msg}} *inObject, char *inOutBuffer,
 			{%- do parent_pb.append(req_pb_msg) -%}
 			{{ loop(req_pb_data.required_pb_msgs.items()) }}
 		{%- endif -%}
-	{% for pb_var, var_data in req_pb_data.fields.iteritems() %}{% for parent, temp in req_pb_data.parent_field.iteritems() recursive %}{% if var_data.pb_type[-3:] == "_pb" %}{%- continue -%}{%- endif -%}{% if var_data.pb_field_rule == "repeated" %}
+	{% for parent, temp in req_pb_data.parent_field.iteritems() %}{% for pb_var, var_data in req_pb_data.fields.iteritems() %}{% if var_data.pb_type[-3:] == "_pb" %}{%- continue -%}{%- endif -%}{% if var_data.pb_field_rule == "repeated" %}
 	{{ req_pb_msg[:-3] }}_{{parent}}_msg.{{pb_var}}_count = {{var_data.array_length}};{% for i in range(0, var_data.array_length | int) %}	{% if var_data.airliner_type == "char" %}strcpy({{ req_pb_msg[:-3] }}_{{parent}}_msg.{{pb_var}}[{{loop.index0}}], {{parent}}_sub_message.{{var_data.airliner_name}}[{{loop.index0}}]);{% else %}
 	{{ req_pb_msg[:-3] }}_{{parent}}_msg.{{pb_var}}[{{loop.index0}}] = {{parent}}_sub_message.{{var_data.airliner_name}}[{{loop.index0}}];{%- endif -%}{%- endfor -%}{% else %}{% if var_data.airliner_type == "char" %}
 	strcpy({{ req_pb_msg[:-3] }}_{{parent}}_msg.{{pb_var}}, {{parent}}_sub_message.{{var_data.airliner_name}});{% else %}
-	{{ req_pb_msg[:-3] }}_{{parent}}_msg.{{pb_var}} = {{parent}}_sub_message.{{var_data.airliner_name}};{%- endif -%}{%- endif -%}
+	{{ req_pb_msg[:-3] }}_{{parent}}_msg.{{pb_var}} = {{parent}}_sub_message.{{var_data.airliner_name}};{%- endif -%}{%- endif -%}{% endfor %}
 
 	/* Create a stream that will write to our buffer. */
 	stream = pb_ostream_from_buffer((pb_byte_t *)&{{parent}}_sub_message, inSize);
@@ -42,7 +42,7 @@ uint32 {{airliner_msg}}_Enc(const {{airliner_msg}} *inObject, char *inOutBuffer,
 	}
 
 	{{ parent_pb[idx[0]][:-3] }}_msg.{{ parent }} = {{ req_pb_msg[:-3] }}_{{parent}}_msg;
-	{% endfor %}{%- do idx.append(idx.pop() - 1) -%}{% endfor %}
+	{%- do idx.append(idx.pop() - 1) -%}{% endfor %}
 	{% for pb_var, var_data in proto_data.fields.iteritems() %}{% if var_data.pb_type[-3:] == "_pb" %}{%- continue -%}{%- endif -%}{% if var_data.pb_field_rule == "repeated" %}
 	{{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}}_count = {{var_data.array_length}};{% for i in range(0, var_data.array_length | int) %}
 	{% if var_data.airliner_type == "char" %}strcpy({{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}}[{{loop.index0}}], inObject->{{var_data.airliner_name}}[{{loop.index0}}]);{% else %}{{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}}[{{loop.index0}}] = inObject->{{var_data.airliner_name}}[{{loop.index0}}];{%- endif -%}{%- endfor -%}{%- else %}{% if var_data.airliner_type == "char" %}strcpy({{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}}, inObject->{{var_data.airliner_name}});{% else %}{{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}} = inObject->{{var_data.airliner_name}};{%- endif -%}{%- endif -%}{% endfor %}{% endfor %}
@@ -92,9 +92,9 @@ uint32 {{airliner_msg}}_Dec(const char *inBuffer, uint32 inSize, {{airliner_msg}
 	{
 		return 0;
 	}
+
 	{# Set top level attrs after intial decode #}{% for pb_var, var_data in proto_data.fields.iteritems() %}{% if var_data.pb_type[-3:] == "_pb" %}{%- continue -%}{%- endif -%}{% if var_data.pb_field_rule == "repeated" %}{% for i in range(0, var_data.array_length | int) %}{% if var_data.airliner_type == "char" %}strcpy(inOutObject->{{var_data.airliner_name}}[{{loop.index0}}], {{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}}[{{loop.index0}}]);{% else %}inOutObject->{{var_data.airliner_name}}[{{loop.index0}}] = {{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}}[{{loop.index0}}];{%- endif -%}{%- endfor -%}{%- else %}{% if var_data.airliner_type == "char" %}strcpy(inOutObject->{{var_data.airliner_name}}, {{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}});{% else %}inOutObject->{{var_data.airliner_name}} = {{ proto_data.proto_msg[:-3] }}_msg.{{pb_var}};{%- endif -%}{%- endif -%}{% endfor %}{# Set child data types #}{% for pb_var, var_data in proto_data.required_pb_msgs.iteritems() %}{% for parent, temp in var_data.parent_field.iteritems() %}
-	{{var_data.airliner_msg}}_sub_message = &inOutObject->{{proto_data.fields[parent]["airliner_name"]}};
-{% endfor %}{% endfor %}{%- set parent_msg = [airliner_msg] -%}{%- set parent_pb = [proto_data.proto_msg] -%}{# Encode in proper order #}{% for req_pb_msg, req_pb_data in proto_data.required_pb_msgs.iteritems() recursive %}{% for parent, temp in req_pb_data.parent_field.iteritems()  recursive %}
+	{{parent}}_sub_message = &inOutObject->{{proto_data.fields[parent]["airliner_name"]}};{% endfor %}{% endfor %}{%- set parent_msg = [airliner_msg] -%}{%- set parent_pb = [proto_data.proto_msg] -%}{# Encode in proper order #}{% for req_pb_msg, req_pb_data in proto_data.required_pb_msgs.iteritems() recursive %}{% for parent, temp in req_pb_data.parent_field.iteritems()  recursive %}
 
 	/* Create a stream that reads from the buffer. */
 	stream = pb_istream_from_buffer((const pb_byte_t *){{parent}}_sub_message, inSize);
