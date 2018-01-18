@@ -39,13 +39,6 @@
 					"airliner_msg": "PX4_PositionSetpoint_t",
 					"parent_field": {"Previous":0, "Current":0, "Next":0},
 					"fields": {
-						"Timestamp": {
-							"airliner_name": "Timestamp", 
-							"pb_type": "uint64",
-							"pb_field_rule": "required",
-							"airliner_type": "uint64",
-							"array_length": 0
-						},
 						"Lat": {
 							"airliner_name": "Lat", 
 							"pb_type": "double",
@@ -53,8 +46,8 @@
 							"airliner_type": "double",
 							"array_length": 0
 						},
-						"Long": {
-							"airliner_name": "Lonh", 
+						"Lon": {
+							"airliner_name": "Lon", 
 							"pb_type": "double",
 							"pb_field_rule": "required",
 							"airliner_type": "double",
@@ -137,22 +130,22 @@
 							"airliner_type": "float",
 							"array_length": 0
 						},
-						"AX": {
-							"airliner_name": "AX", 
+						"A_X": {
+							"airliner_name": "A_X", 
 							"pb_type": "float",
 							"pb_field_rule": "required",
 							"airliner_type": "float",
 							"array_length": 0
 						},
-						"AY": {
-							"airliner_name": "AY", 
+						"A_Y": {
+							"airliner_name": "A_Y", 
 							"pb_type": "float",
 							"pb_field_rule": "required",
 							"airliner_type": "float",
 							"array_length": 0
 						},
-						"AZ": {
-							"airliner_name": "AZ", 
+						"A_Z": {
+							"airliner_name": "A_Z", 
 							"pb_type": "float",
 							"pb_field_rule": "required",
 							"airliner_type": "float",
@@ -202,20 +195,6 @@
 						},
 						"VelocityValid": {
 							"airliner_name": "VelocityValid", 
-							"pb_type": "bool",
-							"pb_field_rule": "required",
-							"airliner_type": "boolean",
-							"array_length": 0
-						},
-						"VelocityFrame": {
-							"airliner_name": "VelocityFrame", 
-							"pb_type": "uint32",
-							"pb_field_rule": "required",
-							"airliner_type": "uint8",
-							"array_length": 0
-						},
-						"AltValid": {
-							"airliner_name": "AltValid", 
 							"pb_type": "bool",
 							"pb_field_rule": "required",
 							"airliner_type": "boolean",
