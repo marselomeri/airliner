@@ -27,7 +27,7 @@ for i in range(15):
 
     # Send NoOp command
 
-        airliner.send_command({'name':'/Airliner/CNTL/SetpointTriplet', 'args':[
+    airliner.send_command({'name':'/Airliner/CNTL/SetpointTriplet', 'args':[
                              {'name':'Cur_Lat', 'value':1.0},
                              {'name':'Cur_Lon', 'value':1.0},
                              {'name':'Cur_X', 'value':1.0},

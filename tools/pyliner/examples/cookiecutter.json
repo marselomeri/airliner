@@ -1349,7 +1349,7 @@
 	            }
             },
             "CNTL": {
-            "app_name": "FC",
+                "app_name": "FC",
 	            "app_ops_name": "CNTL",
 	            "proto_msgs": {
 			            "PX4_PositionSetpointTripletMsg_t": {
