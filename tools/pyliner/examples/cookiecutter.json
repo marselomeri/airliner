@@ -1355,6 +1355,9 @@
 			            "PX4_PositionSetpointTripletMsg_t": {
 			            "proto_msg": "px4_position_setpoint_triplet_pb",
                         "operational_names": {
+                            "Timestamp": {
+			                    "field_path": "Timestamp"
+			                },
 			                "Prev_Lat": {
 			                    "field_path": "Previous.Lat"
 			                },
@@ -1615,7 +1618,7 @@
 			                },
 			                "Next_AccelerationIsForce": {
 			                    "field_path": "Next.AccelerationIsForce"
-			                },
+			                }
 			            },
 			            "fields": {
 				            "Timestamp": {

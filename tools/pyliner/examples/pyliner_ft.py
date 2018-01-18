@@ -4,7 +4,7 @@ from pyliner import Pyliner
 import time
 
 # Initialize pyliner object
-airliner = Pyliner(**{"airliner_map": "cookiecutter_fc.json", 
+airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
                       "ci_port": 5009,
                       "to_port": 5012,
                       "script_name": "demo_test",
@@ -28,6 +28,35 @@ for i in range(15):
     # Send NoOp command
 
     airliner.send_command({'name':'/Airliner/CNTL/SetpointTriplet', 'args':[
+                             {'name':'Prev_Lat', 'value':1.0},
+                             {'name':'Prev_Lon', 'value':1.0},
+                             {'name':'Prev_X', 'value':1.0},
+                             {'name':'Prev_Y', 'value':1.0},
+                             {'name':'Prev_Z', 'value':1.0},
+                             {'name':'Prev_VX', 'value':1.0},
+                             {'name':'Prev_VY', 'value':1.0},
+                             {'name':'Prev_VZ', 'value':1.0},
+                             {'name':'Prev_Alt', 'value':1.0},
+                             {'name':'Prev_Yaw', 'value':1.0},
+                             {'name':'Prev_Yawspeed', 'value':1.0},
+                             {'name':'Prev_LoiterRadius', 'value':1.0},
+                             {'name':'Prev_PitchMin', 'value':1.0},
+                             {'name':'Prev_AX', 'value':1.0},
+                             {'name':'Prev_AY', 'value':1.0},
+                             {'name':'Prev_AZ', 'value':1.0},
+                             {'name':'Prev_AcceptanceRadius', 'value':1.0},
+                             {'name':'Prev_CruisingSpeed', 'value':1.0},
+                             {'name':'Prev_CruisingThrottle', 'value':1.0},
+                             {'name':'Prev_Valid', 'value':True},
+                             {'name':'Prev_Type', 'value':1},
+                             {'name':'Prev_PositionValid', 'value':True},
+                             {'name':'Prev_VelocityValid', 'value':True},
+                             {'name':'Prev_YawValid', 'value':True},
+                             {'name':'Prev_DisableMcYawControl', 'value':True},
+                             {'name':'Prev_YawspeedValid', 'value':True},
+                             {'name':'Prev_LoiterDirection', 'value':1},
+                             {'name':'Prev_AccelerationValid', 'value':True},
+                             {'name':'Prev_AccelerationIsForce', 'value':True},
                              {'name':'Cur_Lat', 'value':1.0},
                              {'name':'Cur_Lon', 'value':1.0},
                              {'name':'Cur_X', 'value':1.0},
@@ -56,7 +85,42 @@ for i in range(15):
                              {'name':'Cur_YawspeedValid', 'value':True},
                              {'name':'Cur_LoiterDirection', 'value':1},
                              {'name':'Cur_AccelerationValid', 'value':True},
-                             {'name':'Cur_AccelerationIsForce', 'value':True}]})
+                             {'name':'Cur_AccelerationIsForce', 'value':True},
+                             {'name':'Next_Lat', 'value':1.0},
+                             {'name':'Next_Lon', 'value':1.0},
+                             {'name':'Next_X', 'value':1.0},
+                             {'name':'Next_Y', 'value':1.0},
+                             {'name':'Next_Z', 'value':1.0},
+                             {'name':'Next_VX', 'value':1.0},
+                             {'name':'Next_VY', 'value':1.0},
+                             {'name':'Next_VZ', 'value':1.0},
+                             {'name':'Next_Alt', 'value':1.0},
+                             {'name':'Next_Yaw', 'value':1.0},
+                             {'name':'Next_Yawspeed', 'value':1.0},
+                             {'name':'Next_LoiterRadius', 'value':1.0},
+                             {'name':'Next_PitchMin', 'value':1.0},
+                             {'name':'Next_AX', 'value':1.0},
+                             {'name':'Next_AY', 'value':1.0},
+                             {'name':'Next_AZ', 'value':1.0},
+                             {'name':'Next_AcceptanceRadius', 'value':1.0},
+                             {'name':'Next_CruisingSpeed', 'value':1.0},
+                             {'name':'Next_CruisingThrottle', 'value':1.0},
+                             {'name':'Next_Valid', 'value':True},
+                             {'name':'Next_Type', 'value':1},
+                             {'name':'Next_PositionValid', 'value':True},
+                             {'name':'Next_VelocityValid', 'value':True},
+                             {'name':'Next_YawValid', 'value':True},
+                             {'name':'Next_DisableMcYawControl', 'value':True},
+                             {'name':'Next_YawspeedValid', 'value':True},
+                             {'name':'Next_LoiterDirection', 'value':1},
+                             {'name':'Next_AccelerationValid', 'value':True},
+                             {'name':'Next_AccelerationIsForce', 'value':True},
+                             {'name':'Timestamp', 'value':0}
+
+
+
+
+]})
                              
     # Sleep for duration of a major frame
     time.sleep(1)
