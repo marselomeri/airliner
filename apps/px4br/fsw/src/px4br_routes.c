@@ -81,7 +81,6 @@
 #include "optical_flow.pb.h"
 #include "output_pwm.pb.h"
 #include "parameter_update.pb.h"
-#include "position_setpoint.pb.h"
 #include "position_setpoint_triplet.pb.h"
 #include "pwm_input.pb.h"
 #include "qshell_req.pb.h"

@@ -898,7 +898,7 @@ void PX4BR_RouteMessageToSB(const char *inMsgName, const char *inMsgContent, uin
 	iStatus = PX4BR_GetRouteByMsgName(inMsgName, &route);
 	if(iStatus != PX4BR_OK)
 	{
-		//OS_printf("PX4BR:  Received an unknown message.  '%s'\n", inMsgName);
+		OS_printf("PX4BR:  Received an unknown message.  '%s'\n", inMsgName);
 	}
 	else
 	{

@@ -81,7 +81,6 @@
 #include "optical_flow.pb.h"
 #include "output_pwm.pb.h"
 #include "parameter_update.pb.h"
-#include "position_setpoint.pb.h"
 #include "position_setpoint_triplet.pb.h"
 #include "pwm_input.pb.h"
 #include "qshell_req.pb.h"
@@ -2416,6 +2415,9 @@ uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t 
 {
 	bool status = false;
 	px4_position_setpoint_triplet_pb pbMsg;
+	px4_position_setpoint_pb previous;
+	px4_position_setpoint_pb current;
+	px4_position_setpoint_pb next;
 
 	pbMsg.timestamp = inObject->Timestamp;
 
@@ -2452,7 +2454,7 @@ uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t 
 	pbMsg.previous.acceleration_valid = inObject->Previous.AccelerationValid;
 	pbMsg.previous.acceleration_is_force = inObject->Previous.AccelerationIsForce;
 
-	pbMsg.current.timestamp = inObject->Current.Timestamp;
+	next.timestamp = inObject->Current.Timestamp;
 	pbMsg.current.lat = inObject->Current.Lat;
 	pbMsg.current.lon = inObject->Current.Lon;
 	pbMsg.current.x = inObject->Current.X;
@@ -2536,6 +2538,14 @@ uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX
 {
 	bool status = false;
 	px4_position_setpoint_triplet_pb pbMsg;
+	px4_position_setpoint_pb pbPrevious;
+	px4_position_setpoint_pb pbCurrent;
+	px4_position_setpoint_pb pbNext;
+	PX4_PositionSetpointMsg_t *previous = &inOutObject->Previous;
+	PX4_PositionSetpointMsg_t *current = &inOutObject->Current;
+	PX4_PositionSetpointMsg_t *next = &inOutObject->Next;
+
+	printf("POSITION_SETPOINT_TRIPLET 1 (size = %u)\n", inSize);
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
@@ -2548,107 +2558,149 @@ uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX
 	{
 		return 0;
 	}
+	printf("POSITION_SETPOINT_TRIPLET 2\n");
 
 	inOutObject->Timestamp = pbMsg.timestamp;
 
-	inOutObject->Previous.Timestamp = pbMsg.previous.timestamp;
-	inOutObject->Previous.Lat = pbMsg.previous.lat;
-	inOutObject->Previous.Lon = pbMsg.previous.lon;
-	inOutObject->Previous.X = pbMsg.previous.x;
-	inOutObject->Previous.Y = pbMsg.previous.y;
-	inOutObject->Previous.Z = pbMsg.previous.z;
-	inOutObject->Previous.VX = pbMsg.previous.vx;
-	inOutObject->Previous.VY = pbMsg.previous.vy;
-	inOutObject->Previous.VZ = pbMsg.previous.vz;
-	inOutObject->Previous.Alt = pbMsg.previous.alt;
-	inOutObject->Previous.Yaw = pbMsg.previous.yaw;
-	inOutObject->Previous.Yawspeed = pbMsg.previous.yawspeed;
-	inOutObject->Previous.LoiterRadius = pbMsg.previous.loiter_radius;
-	inOutObject->Previous.PitchMin = pbMsg.previous.pitch_min;
-	inOutObject->Previous.AX = pbMsg.previous.a_x;
-	inOutObject->Previous.AY = pbMsg.previous.a_y;
-	inOutObject->Previous.AZ = pbMsg.previous.a_z;
-	inOutObject->Previous.AcceptanceRadius = pbMsg.previous.acceptance_radius;
-	inOutObject->Previous.CruisingSpeed = pbMsg.previous.cruising_speed;
-	inOutObject->Previous.CruisingThrottle = pbMsg.previous.cruising_throttle;
-	inOutObject->Previous.Valid = pbMsg.previous.valid;
-	inOutObject->Previous.Type = pbMsg.previous.type;
-	inOutObject->Previous.PositionValid = pbMsg.previous.position_valid;
-	inOutObject->Previous.VelocityValid = pbMsg.previous.velocity_valid;
-	inOutObject->Previous.VelocityFrame = pbMsg.previous.velocity_frame;
-	inOutObject->Previous.AltValid = pbMsg.previous.alt_valid;
-	inOutObject->Previous.YawValid = pbMsg.previous.yaw_valid;
-	inOutObject->Previous.DisableMcYawControl = pbMsg.previous.disable_mc_yaw_control;
-	inOutObject->Previous.YawspeedValid = pbMsg.previous.yawspeed_valid;
-	inOutObject->Previous.LoiterDirection = pbMsg.previous.loiter_direction;
-	inOutObject->Previous.AccelerationValid = pbMsg.previous.acceleration_valid;
-	inOutObject->Previous.AccelerationIsForce = pbMsg.previous.acceleration_is_force;
+	/* Create a stream that reads from the buffer. */
+	stream = pb_istream_from_buffer((const pb_byte_t *)previous, inSize);
 
-	inOutObject->Current.Timestamp = pbMsg.current.timestamp;
-	inOutObject->Current.Lat = pbMsg.current.lat;
-	inOutObject->Current.Lon = pbMsg.current.lon;
-	inOutObject->Current.X = pbMsg.current.x;
-	inOutObject->Current.Y = pbMsg.current.y;
-	inOutObject->Current.Z = pbMsg.current.z;
-	inOutObject->Current.VX = pbMsg.current.vx;
-	inOutObject->Current.VY = pbMsg.current.vy;
-	inOutObject->Current.VZ = pbMsg.current.vz;
-	inOutObject->Current.Alt = pbMsg.current.alt;
-	inOutObject->Current.Yaw = pbMsg.current.yaw;
-	inOutObject->Current.Yawspeed = pbMsg.current.yawspeed;
-	inOutObject->Current.LoiterRadius = pbMsg.current.loiter_radius;
-	inOutObject->Current.PitchMin = pbMsg.current.pitch_min;
-	inOutObject->Current.AX = pbMsg.current.a_x;
-	inOutObject->Current.AY = pbMsg.current.a_y;
-	inOutObject->Current.AZ = pbMsg.current.a_z;
-	inOutObject->Current.AcceptanceRadius = pbMsg.current.acceptance_radius;
-	inOutObject->Current.CruisingSpeed = pbMsg.current.cruising_speed;
-	inOutObject->Current.CruisingThrottle = pbMsg.current.cruising_throttle;
-	inOutObject->Current.Valid = pbMsg.current.valid;
-	inOutObject->Current.Type = pbMsg.current.type;
-	inOutObject->Current.PositionValid = pbMsg.current.position_valid;
-	inOutObject->Current.VelocityValid = pbMsg.current.velocity_valid;
-	inOutObject->Current.VelocityFrame = pbMsg.current.velocity_frame;
-	inOutObject->Current.AltValid = pbMsg.current.alt_valid;
-	inOutObject->Current.YawValid = pbMsg.current.yaw_valid;
-	inOutObject->Current.DisableMcYawControl = pbMsg.current.disable_mc_yaw_control;
-	inOutObject->Current.YawspeedValid = pbMsg.current.yawspeed_valid;
-	inOutObject->Current.LoiterDirection = pbMsg.current.loiter_direction;
-	inOutObject->Current.AccelerationValid = pbMsg.current.acceleration_valid;
-	inOutObject->Current.AccelerationIsForce = pbMsg.current.acceleration_is_force;
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4_position_setpoint_pb_fields, &pbPrevious);
 
-	inOutObject->Next.Timestamp = pbMsg.next.timestamp;
-	inOutObject->Next.Lat = pbMsg.next.lat;
-	inOutObject->Next.Lon = pbMsg.next.lon;
-	inOutObject->Next.X = pbMsg.next.x;
-	inOutObject->Next.Y = pbMsg.next.y;
-	inOutObject->Next.Z = pbMsg.next.z;
-	inOutObject->Next.VX = pbMsg.next.vx;
-	inOutObject->Next.VY = pbMsg.next.vy;
-	inOutObject->Next.VZ = pbMsg.next.vz;
-	inOutObject->Next.Alt = pbMsg.next.alt;
-	inOutObject->Next.Yaw = pbMsg.next.yaw;
-	inOutObject->Next.Yawspeed = pbMsg.next.yawspeed;
-	inOutObject->Next.LoiterRadius = pbMsg.next.loiter_radius;
-	inOutObject->Next.PitchMin = pbMsg.next.pitch_min;
-	inOutObject->Next.AX = pbMsg.next.a_x;
-	inOutObject->Next.AY = pbMsg.next.a_y;
-	inOutObject->Next.AZ = pbMsg.next.a_z;
-	inOutObject->Next.AcceptanceRadius = pbMsg.next.acceptance_radius;
-	inOutObject->Next.CruisingSpeed = pbMsg.next.cruising_speed;
-	inOutObject->Next.CruisingThrottle = pbMsg.next.cruising_throttle;
-	inOutObject->Next.Valid = pbMsg.next.valid;
-	inOutObject->Next.Type = pbMsg.next.type;
-	inOutObject->Next.PositionValid = pbMsg.next.position_valid;
-	inOutObject->Next.VelocityValid = pbMsg.next.velocity_valid;
-	inOutObject->Next.VelocityFrame = pbMsg.next.velocity_frame;
-	inOutObject->Next.AltValid = pbMsg.next.alt_valid;
-	inOutObject->Next.YawValid = pbMsg.next.yaw_valid;
-	inOutObject->Next.DisableMcYawControl = pbMsg.next.disable_mc_yaw_control;
-	inOutObject->Next.YawspeedValid = pbMsg.next.yawspeed_valid;
-	inOutObject->Next.LoiterDirection = pbMsg.next.loiter_direction;
-	inOutObject->Next.AccelerationValid = pbMsg.next.acceleration_valid;
-	inOutObject->Next.AccelerationIsForce = pbMsg.next.acceleration_is_force;
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+	printf("POSITION_SETPOINT_TRIPLET 3\n");
+
+	inOutObject->Previous.Timestamp = pbPrevious.timestamp;
+	inOutObject->Previous.Lat = pbPrevious.lat;
+	inOutObject->Previous.Lon = pbPrevious.lon;
+	inOutObject->Previous.X = pbPrevious.x;
+	inOutObject->Previous.Y = pbPrevious.y;
+	inOutObject->Previous.Z = pbPrevious.z;
+	inOutObject->Previous.VX = pbPrevious.vx;
+	inOutObject->Previous.VY = pbPrevious.vy;
+	inOutObject->Previous.VZ = pbPrevious.vz;
+	inOutObject->Previous.Alt = pbPrevious.alt;
+	inOutObject->Previous.Yaw = pbPrevious.yaw;
+	inOutObject->Previous.Yawspeed = pbPrevious.yawspeed;
+	inOutObject->Previous.LoiterRadius = pbPrevious.loiter_radius;
+	inOutObject->Previous.PitchMin = pbPrevious.pitch_min;
+	inOutObject->Previous.AX = pbPrevious.a_x;
+	inOutObject->Previous.AY = pbPrevious.a_y;
+	inOutObject->Previous.AZ = pbPrevious.a_z;
+	inOutObject->Previous.AcceptanceRadius = pbPrevious.acceptance_radius;
+	inOutObject->Previous.CruisingSpeed = pbPrevious.cruising_speed;
+	inOutObject->Previous.CruisingThrottle = pbPrevious.cruising_throttle;
+	inOutObject->Previous.Valid = pbPrevious.valid;
+	inOutObject->Previous.Type = pbPrevious.type;
+	inOutObject->Previous.PositionValid = pbPrevious.position_valid;
+	inOutObject->Previous.VelocityValid = pbPrevious.velocity_valid;
+	inOutObject->Previous.VelocityFrame = pbPrevious.velocity_frame;
+	inOutObject->Previous.AltValid = pbPrevious.alt_valid;
+	inOutObject->Previous.YawValid = pbPrevious.yaw_valid;
+	inOutObject->Previous.DisableMcYawControl = pbPrevious.disable_mc_yaw_control;
+	inOutObject->Previous.YawspeedValid = pbPrevious.yawspeed_valid;
+	inOutObject->Previous.LoiterDirection = pbPrevious.loiter_direction;
+	inOutObject->Previous.AccelerationValid = pbPrevious.acceleration_valid;
+	inOutObject->Previous.AccelerationIsForce = pbPrevious.acceleration_is_force;
+
+	/* Create a stream that reads from the buffer. */
+	stream = pb_istream_from_buffer((const pb_byte_t *)current, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&current, px4_position_setpoint_pb_fields, &pbCurrent);
+
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+	printf("POSITION_SETPOINT_TRIPLET 4\n");
+
+	inOutObject->Current.Timestamp = pbCurrent.timestamp;
+	inOutObject->Current.Lat = pbCurrent.lat;
+	inOutObject->Current.Lon = pbCurrent.lon;
+	inOutObject->Current.X = pbCurrent.x;
+	inOutObject->Current.Y = pbCurrent.y;
+	inOutObject->Current.Z = pbCurrent.z;
+	inOutObject->Current.VX = pbCurrent.vx;
+	inOutObject->Current.VY = pbCurrent.vy;
+	inOutObject->Current.VZ = pbCurrent.vz;
+	inOutObject->Current.Alt = pbCurrent.alt;
+	inOutObject->Current.Yaw = pbCurrent.yaw;
+	inOutObject->Current.Yawspeed = pbCurrent.yawspeed;
+	inOutObject->Current.LoiterRadius = pbCurrent.loiter_radius;
+	inOutObject->Current.PitchMin = pbCurrent.pitch_min;
+	inOutObject->Current.AX = pbCurrent.a_x;
+	inOutObject->Current.AY = pbCurrent.a_y;
+	inOutObject->Current.AZ = pbCurrent.a_z;
+	inOutObject->Current.AcceptanceRadius = pbCurrent.acceptance_radius;
+	inOutObject->Current.CruisingSpeed = pbCurrent.cruising_speed;
+	inOutObject->Current.CruisingThrottle = pbCurrent.cruising_throttle;
+	inOutObject->Current.Valid = pbCurrent.valid;
+	inOutObject->Current.Type = pbCurrent.type;
+	inOutObject->Current.PositionValid = pbCurrent.position_valid;
+	inOutObject->Current.VelocityValid = pbCurrent.velocity_valid;
+	inOutObject->Current.VelocityFrame = pbCurrent.velocity_frame;
+	inOutObject->Current.AltValid = pbCurrent.alt_valid;
+	inOutObject->Current.YawValid = pbCurrent.yaw_valid;
+	inOutObject->Current.DisableMcYawControl = pbCurrent.disable_mc_yaw_control;
+	inOutObject->Current.YawspeedValid = pbCurrent.yawspeed_valid;
+	inOutObject->Current.LoiterDirection = pbCurrent.loiter_direction;
+	inOutObject->Current.AccelerationValid = pbCurrent.acceleration_valid;
+	inOutObject->Current.AccelerationIsForce = pbCurrent.acceleration_is_force;
+
+	/* Create a stream that reads from the buffer. */
+	stream = pb_istream_from_buffer((const pb_byte_t *)next, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&next, px4_position_setpoint_pb_fields, &pbNext);
+
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+	printf("POSITION_SETPOINT_TRIPLET 5\n");
+
+	inOutObject->Next.Timestamp = pbNext.timestamp;
+	inOutObject->Next.Lat = pbNext.lat;
+	inOutObject->Next.Lon = pbNext.lon;
+	inOutObject->Next.X = pbNext.x;
+	inOutObject->Next.Y = pbNext.y;
+	inOutObject->Next.Z = pbNext.z;
+	inOutObject->Next.VX = pbNext.vx;
+	inOutObject->Next.VY = pbNext.vy;
+	inOutObject->Next.VZ = pbNext.vz;
+	inOutObject->Next.Alt = pbNext.alt;
+	inOutObject->Next.Yaw = pbNext.yaw;
+	inOutObject->Next.Yawspeed = pbNext.yawspeed;
+	inOutObject->Next.LoiterRadius = pbNext.loiter_radius;
+	inOutObject->Next.PitchMin = pbNext.pitch_min;
+	inOutObject->Next.AX = pbNext.a_x;
+	inOutObject->Next.AY = pbNext.a_y;
+	inOutObject->Next.AZ = pbNext.a_z;
+	inOutObject->Next.AcceptanceRadius = pbNext.acceptance_radius;
+	inOutObject->Next.CruisingSpeed = pbNext.cruising_speed;
+	inOutObject->Next.CruisingThrottle = pbNext.cruising_throttle;
+	inOutObject->Next.Valid = pbNext.valid;
+	inOutObject->Next.Type = pbNext.type;
+	inOutObject->Next.PositionValid = pbNext.position_valid;
+	inOutObject->Next.VelocityValid = pbNext.velocity_valid;
+	inOutObject->Next.VelocityFrame = pbNext.velocity_frame;
+	inOutObject->Next.AltValid = pbNext.alt_valid;
+	inOutObject->Next.YawValid = pbNext.yaw_valid;
+	inOutObject->Next.DisableMcYawControl = pbNext.disable_mc_yaw_control;
+	inOutObject->Next.YawspeedValid = pbNext.yawspeed_valid;
+	inOutObject->Next.LoiterDirection = pbNext.loiter_direction;
+	inOutObject->Next.AccelerationValid = pbNext.acceleration_valid;
+	inOutObject->Next.AccelerationIsForce = pbNext.acceleration_is_force;
+
+	printf("POSITION_SETPOINT_TRIPLET 6\n");
 
 	return sizeof(PX4_PositionSetpointTripletMsg_t);
 }
