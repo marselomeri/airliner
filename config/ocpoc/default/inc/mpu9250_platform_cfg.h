@@ -109,7 +109,8 @@ extern "C" {
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define MPU9250_STARTUP_TIMEOUT_MSEC    (1000)
+#define MPU9250_STARTUP_TIMEOUT_MSEC        (1000)
+
 
 /** \brief Fake accel device ID */
 #define MPU9250_ACCEL_PX4_DEVICE_ID         (6789478)
@@ -143,6 +144,7 @@ extern "C" {
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
 /** \brief Temperature sensitivity */
 #define MPU9250_TEMP_SENS                   (361.0f)
+
 
 #ifdef __cplusplus
 }

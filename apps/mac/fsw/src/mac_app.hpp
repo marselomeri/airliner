@@ -160,7 +160,7 @@ public:
     MAC_ParamTbl_t* ParamTblPtr;
 
     /** \brief Output Data published at the end of cycle */
-    PX4_ActuatorControlsMsg_t m_ActuatorControls;
+    PX4_ActuatorControlsMsg_t m_ActuatorControls0;
 
     /** \brief Housekeeping Telemetry for downlink */
     MAC_HkTlm_t HkTlm;
@@ -183,7 +183,6 @@ public:
 	int32 m_SelectedGyro;
 
 	//PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
-	PX4_ActuatorControlsMsg_t       m_ActuatorControls0;
 
 	boolean m_Actuators0CircuitBreakerEnabled;
 
@@ -425,6 +424,10 @@ public:
     **
     *************************************************************************/
     int32  AcquireConfigPointers(void);
+
+    void DisplayInputs(void);
+
+    void DisplayOutputs(void);
 
 public:
     /************************************************************************/

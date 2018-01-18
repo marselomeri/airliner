@@ -21,7 +21,7 @@
 */
 
 #define OS_MAX_TASKS                100
-#define OS_MAX_QUEUES               100
+#define OS_MAX_QUEUES               255
 #define OS_MAX_COUNT_SEMAPHORES     100
 #define OS_MAX_BIN_SEMAPHORES       100
 #define OS_MAX_MUTEXES              100
