@@ -1,6 +1,6 @@
 {
-	"app_name": "CFE_ES",
-	"app_ops_name": "Steve",
+	"app_name": "FC",
+	"app_ops_name": "CNTL",
 	"proto_msgs": {
 			"PX4_PositionSetpointTripletMsg_t": {
 			"proto_msg": "px4_position_setpoint_triplet_pb",
@@ -27,7 +27,7 @@
 					"array_length": 0
 				},
 				"Next": {
-					"airliner_name": "Previous", 
+					"airliner_name": "Next", 
 					"pb_type": "px4_position_setpoint_pb",
 					"pb_field_rule": "required",
 					"airliner_type": "PX4_PositionSetpoint_t",
@@ -35,9 +35,9 @@
 				}
 			},
             "required_pb_msgs": {
-				"px4_position_setpoint_pb": {
+                "px4_position_setpoint_pb": {
 					"airliner_msg": "PX4_PositionSetpoint_t",
-					"parent_field": "Previous",
+					"parent_field": {"Previous":0, "Current":0, "Next":0},
 					"fields": {
 						"Timestamp": {
 							"airliner_name": "Timestamp", 
@@ -270,30 +270,10 @@
 		}
 	},
 	"operations": {
-		"ShellPacket": {			
-			"airliner_msg": "CFE_ES_ShellPacket_t",
+		"SetpointTriplet": {			
+			"airliner_msg": "PX4_PositionSetpointTripletMsg_t",
 			"airliner_cc": -1,
-			"airliner_mid": "0x080F"
-		},
-		"HK": {			
-			"airliner_msg": "CFE_ES_HkPacket_t",
-			"airliner_cc": -1,
-			"airliner_mid": "0x0800"
-		},
-		"OneAppTlm": {			
-			"airliner_msg": "CFE_ES_OneAppTlm_t",
-			"airliner_cc": -1,
-			"airliner_mid": "0x080B"
-		},
-		"Noop": {			
-			"airliner_msg": "",
-			"airliner_cc": 0,
-			"airliner_mid": "0x1806"
-		},
-		"Reset": {			
-			"airliner_msg": "",
-			"airliner_cc": 1,
-			"airliner_mid": "0x1806"
+			"airliner_mid": "0x0a34"
 		}
 	},
 	"autogen_version": "",
