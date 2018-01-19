@@ -143,7 +143,7 @@ extern "C" {
 /** \brief Radians per degree. */
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
 /** \brief Temperature sensitivity */
-#define MPU9250_TEMP_SENS                   (361.0f)
+#define MPU9250_TEMP_SENS                   (333.87f)
 
 
 #ifdef __cplusplus
