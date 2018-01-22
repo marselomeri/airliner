@@ -21,7 +21,7 @@
 						"Application": {
 							"airliner_name": "Application", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -49,14 +49,14 @@
 						"Application": {
 							"airliner_name": "Application", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						},
 						"AppFileName": {
 							"airliner_name": "AppFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -84,7 +84,7 @@
 						"CdsName": {
 							"airliner_name": "CdsName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 82
 						}
@@ -112,7 +112,7 @@
 						"DumpFilename": {
 							"airliner_name": "DumpFilename", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -140,203 +140,203 @@
 						"CmdCounter": {
 							"airliner_name": "CmdCounter", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"ErrCounter": {
 							"airliner_name": "ErrCounter", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"CFECoreChecksum": {
 							"airliner_name": "CFECoreChecksum", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint16",
 							"array_length": 0
 						},
 						"CFEMajorVersion": {
 							"airliner_name": "CFEMajorVersion", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"CFEMinorVersion": {
 							"airliner_name": "CFEMinorVersion", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"CFERevision": {
 							"airliner_name": "CFERevision", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"CFEMissionRevision": {
 							"airliner_name": "CFEMissionRevision", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"OSALMajorVersion": {
 							"airliner_name": "OSALMajorVersion", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"OSALMinorVersion": {
 							"airliner_name": "OSALMinorVersion", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"OSALRevision": {
 							"airliner_name": "OSALRevision", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"OSALMissionRevision": {
 							"airliner_name": "OSALMissionRevision", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint8",
 							"array_length": 0
 						},
 						"SysLogBytesUsed": {
 							"airliner_name": "SysLogBytesUsed", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"SysLogSize": {
 							"airliner_name": "SysLogSize", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"SysLogEntries": {
 							"airliner_name": "SysLogEntries", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"SysLogMode": {
 							"airliner_name": "SysLogMode", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"ERLogIndex": {
 							"airliner_name": "ERLogIndex", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"ERLogEntries": {
 							"airliner_name": "ERLogEntries", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"RegisteredCoreApps": {
 							"airliner_name": "RegisteredCoreApps", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"RegisteredExternalApps": {
 							"airliner_name": "RegisteredExternalApps", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"RegisteredTasks": {
 							"airliner_name": "RegisteredTasks", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"RegisteredLibs": {
 							"airliner_name": "RegisteredLibs", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"ResetType": {
 							"airliner_name": "ResetType", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"ResetSubtype": {
 							"airliner_name": "ResetSubtype", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"ProcessorResets": {
 							"airliner_name": "ProcessorResets", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"MaxProcessorResets": {
 							"airliner_name": "MaxProcessorResets", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"BootSource": {
 							"airliner_name": "BootSource", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"PerfState": {
 							"airliner_name": "PerfState", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"PerfMode": {
 							"airliner_name": "PerfMode", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"PerfTriggerCount": {
 							"airliner_name": "PerfTriggerCount", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
@@ -357,49 +357,49 @@
 						"PerfDataStart": {
 							"airliner_name": "PerfDataStart", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"PerfDataEnd": {
 							"airliner_name": "PerfDataEnd", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"PerfDataCount": {
 							"airliner_name": "PerfDataCount", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"PerfDataToWrite": {
 							"airliner_name": "PerfDataToWrite", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"HeapBytesFree": {
 							"airliner_name": "HeapBytesFree", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"HeapBlocksFree": {
 							"airliner_name": "HeapBlocksFree", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"HeapMaxBlockSize": {
 							"airliner_name": "HeapMaxBlockSize", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						}
@@ -427,7 +427,7 @@
 						"AppInfo": {
 							"airliner_name": "AppInfo", 
 							"pb_type": "es_app_info_pb",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "CFE_ES_AppInfo_t",
 							"array_length": 0
 						}
@@ -440,147 +440,147 @@
 								"AppId": {
 									"airliner_name": "AppId", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"Type": {
 									"airliner_name": "Type", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"Name": {
 									"airliner_name": "Name", 
 									"pb_type": "string",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "char",
 									"array_length": 64
 								},
 								"EntryPoint": {
 									"airliner_name": "EntryPoint", 
 									"pb_type": "string",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "char",
 									"array_length": 64
 								},
 								"FileName": {
 									"airliner_name": "FileName", 
 									"pb_type": "string",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "char",
 									"array_length": 64
 								},
 								"StackSize": {
 									"airliner_name": "StackSize", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"ModuleId": {
 									"airliner_name": "ModuleId", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"AddressesAreValid": {
 									"airliner_name": "AddressesAreValid", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"CodeAddress": {
 									"airliner_name": "CodeAddress", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"CodeSize": {
 									"airliner_name": "CodeSize", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"DataAddress": {
 									"airliner_name": "DataAddress", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"DataSize": {
 									"airliner_name": "DataSize", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"BSSAddress": {
 									"airliner_name": "BSSAddress", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"BSSSize": {
 									"airliner_name": "BSSSize", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"StartAddress": {
 									"airliner_name": "StartAddress", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"ExceptionAction": {
 									"airliner_name": "ExceptionAction", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint16",
 									"array_length": 0
 								},
 								"Priority": {
 									"airliner_name": "Priority", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint16",
 									"array_length": 0
 								},
 								"MainTaskId": {
 									"airliner_name": "MainTaskId", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"ExecutionCounter": {
 									"airliner_name": "ExecutionCounter", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								},
 								"MainTaskName": {
 									"airliner_name": "MainTaskName", 
 									"pb_type": "string",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "char",
 									"array_length": 64
 								},
 								"NumOfChildTasks": {
 									"airliner_name": "NumOfChildTasks", 
 									"pb_type": "uint32",
-									"pb_field_rule": "required",
+									"pb_field_rule": "optional",
 									"airliner_type": "uint32",
 									"array_length": 0
 								}
@@ -610,7 +610,7 @@
 						"Mode": {
 							"airliner_name": "Mode", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						}
@@ -638,14 +638,14 @@
 						"FilterMaskNum": {
 							"airliner_name": "FilterMaskNum", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"FilterMask": {
 							"airliner_name": "FilterMask", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						}
@@ -673,14 +673,14 @@
 						"TriggerMaskNum": {
 							"airliner_name": "TriggerMaskNum", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"TriggerMask": {
 							"airliner_name": "TriggerMask", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						}
@@ -708,7 +708,7 @@
 						"TriggerMode": {
 							"airliner_name": "TriggerMode", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						}
@@ -736,7 +736,7 @@
 						"DataFileName": {
 							"airliner_name": "DataFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -764,14 +764,14 @@
 						"Application": {
 							"airliner_name": "Application", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						},
 						"PoolHandle": {
 							"airliner_name": "PoolHandle", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						}
@@ -799,7 +799,7 @@
 						"QueryAllFileName": {
 							"airliner_name": "QueryAllFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -827,7 +827,7 @@
 						"QueryAllFileName": {
 							"airliner_name": "QueryAllFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -855,7 +855,7 @@
 						"RestartType": {
 							"airliner_name": "RestartType", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint16",
 							"array_length": 0
 						}
@@ -883,7 +883,7 @@
 						"MaxPRCount": {
 							"airliner_name": "MaxPRCount", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint16",
 							"array_length": 0
 						}
@@ -911,14 +911,14 @@
 						"CmdString": {
 							"airliner_name": "CmdString", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						},
 						"OutputFilename": {
 							"airliner_name": "OutputFilename", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -946,7 +946,7 @@
 						"ShellOutput": {
 							"airliner_name": "ShellOutput", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -974,42 +974,42 @@
 						"Application": {
 							"airliner_name": "Application", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						},
 						"AppEntryPoint": {
 							"airliner_name": "AppEntryPoint", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						},
 						"AppFileName": {
 							"airliner_name": "AppFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						},
 						"StackSize": {
 							"airliner_name": "StackSize", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint32",
 							"array_length": 0
 						},
 						"ExceptionAction": {
 							"airliner_name": "ExceptionAction", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint16",
 							"array_length": 0
 						},
 						"Priority": {
 							"airliner_name": "Priority", 
 							"pb_type": "uint32",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "uint16",
 							"array_length": 0
 						}
@@ -1037,7 +1037,7 @@
 						"ERLogFileName": {
 							"airliner_name": "ERLogFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
@@ -1065,7 +1065,7 @@
 						"SysLogFileName": {
 							"airliner_name": "SysLogFileName", 
 							"pb_type": "string",
-							"pb_field_rule": "required",
+							"pb_field_rule": "optional",
 							"airliner_type": "char",
 							"array_length": 64
 						}
