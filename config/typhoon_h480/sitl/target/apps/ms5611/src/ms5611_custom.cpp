@@ -267,20 +267,18 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
                 {
                     Temperature = 32;
                 }
-                Temperature = 32;
 
                 /* Alternate form 
                  * p = p1*pow((a*((T1/a)+Altitude))/T1,(-g/(a*R)));
                  */
 		        p = p1*pow(((a*(Altitude)+T1)/T1),(-g/(a*R)));
-                /* Check */
-		        dT = (0x800000*((Temperature*100)-2000)) / MS5611_CUSTOM_C6;
 
-                /* Check */
-		        //MS5611_AppCustomData.D2 = dT + (MS5611_CUSTOM_C5 >> 8);
-                MS5611_AppCustomData.D2 = 8566784;
+		        dT = (0x800000*((Temperature*1000)-2000)) / MS5611_CUSTOM_C6;
 
-                /* */
+		        MS5611_AppCustomData.D2 = dT + (MS5611_CUSTOM_C5 >> 8);
+                /* TODO remove after debug */
+                //MS5611_AppCustomData.D2 = 8566784;
+
 		        OFF = ((int64)MS5611_CUSTOM_C2 << 16)  + (((int64)MS5611_CUSTOM_C4 * dT) >> 7);
 
 		        SENS = ((int64)MS5611_CUSTOM_C1 << 15) + (((int64)dT * MS5611_CUSTOM_C3) >> 8);
