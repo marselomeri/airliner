@@ -556,6 +556,7 @@ typedef struct
 	boolean Prearmed;
 	boolean ReadyToArm;
 	boolean Lockdown;
+	boolean ManualLockdown;
 	boolean ForceFailsafe;
 	boolean InEscCalibrationMode;
 } PX4_ActuatorArmedMsg_t;
