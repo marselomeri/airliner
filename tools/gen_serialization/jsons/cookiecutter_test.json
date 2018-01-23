@@ -12,11 +12,32 @@
 					"airliner_type": "uint64",
 					"array_length": 0
 				},
-                "Test": {
-					"airliner_name": "Test", 
+                "TestStr": {
+					"airliner_name": "TestStr", 
 					"pb_type": "string",
 					"pb_field_rule": "required",
 					"airliner_type": "char",
+					"array_length": 4
+				},
+                "TestStrArray": {
+					"airliner_name": "TestStrArray", 
+					"pb_type": "string",
+					"pb_field_rule": "repeated",
+					"airliner_type": "char",
+					"array_length": 4
+				},
+                "TestFloat": {
+					"airliner_name": "TestFloat", 
+					"pb_type": "float",
+					"pb_field_rule": "required",
+					"airliner_type": "float",
+					"array_length": 0
+				},
+                "TestFloatArray": {
+					"airliner_name": "TestFloatArray", 
+					"pb_type": "float",
+					"pb_field_rule": "repeated",
+					"airliner_type": "float",
 					"array_length": 4
 				},
 				"Previous": {
@@ -248,9 +269,80 @@
 							"pb_field_rule": "optional",
 							"airliner_type": "boolean",
 							"array_length": 0
+						},
+                        "TestNested1": {
+							"airliner_name": "TestNested1", 
+							"pb_type": "test_nest_pb",
+							"pb_field_rule": "optional",
+							"airliner_type": "TestNest",
+							"array_length": 0
+						},
+                        "TestNested2": {
+							"airliner_name": "TestNested2", 
+							"pb_type": "test_nest2_pb",
+							"pb_field_rule": "optional",
+							"airliner_type": "TestNest",
+							"array_length": 0
 						}
 					},
-					"required_pb_msgs": {}
+					"required_pb_msgs": {
+                        "test_nest_pb": {
+                            "airliner_msg": "PX4_PositionSetpoint_t",
+					        "parent_field": {"TestNested1":0},
+					        "fields": {
+						        "n1": {
+                                    "airliner_name": "n1", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest",
+						            "array_length": 0
+					            },
+						        "n2": {
+                                    "airliner_name": "n2", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest",
+						            "array_length": 0
+					            },
+						        "n3": {
+                                    "airliner_name": "n3", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest",
+						            "array_length": 0
+					            }
+                            },
+                            "required_pb_msgs": {}
+                        },
+                        "test_nest2_pb": {
+                            "airliner_msg": "PX4_PositionSetpoint_t",
+					        "parent_field": {"TestNested2":0},
+					        "fields": {
+						        "n21": {
+                                    "airliner_name": "n21", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "repeated",
+						            "airliner_type": "TestNest2",
+						            "array_length": 4
+					            },
+						        "n22": {
+                                    "airliner_name": "n22", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest2",
+						            "array_length": 0
+					            },
+						        "n23": {
+                                    "airliner_name": "n23", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest2",
+						            "array_length": 0
+					            }
+                            },
+                            "required_pb_msgs": {}
+                        }
+                    }
 				}
 			}
 		}
