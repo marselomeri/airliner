@@ -326,7 +326,8 @@ class Pyliner(object):
         # TODO: Check if needed
         hdr = tlm[0].split()[0][:12]
         if len(hdr) < 12:
-            print "Rcvd tlm with header length: " + str(len(hdr))
+            logging.debug("Rcvd tlm with header length: " + str(len(hdr)))
+            #print "Rcvd tlm with header length: " + str(len(hdr))
         
         # Get python CCSDS object #TODO: Check what causes this to fail on some tlm pkts
         try: 
@@ -335,7 +336,8 @@ class Pyliner(object):
             tlm_pkt.set_decoded(header)
             tlm_time = tlm_pkt.get_time()
         except Exception as e:
-            print e
+            logging.debug("Exception when decoding tlm in ccsds: " + str(e))
+            #print e
 
         # Iterate over subscribed telemetry to check if we care
         for subscribed_tlm in self.subscribers:

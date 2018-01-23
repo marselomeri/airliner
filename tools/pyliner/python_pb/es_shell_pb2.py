@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_shell.proto',
   package='',
-  serialized_pb=_b('\n\x12_py_es_shell.proto\"@\n\x13\x65s_shell_payload_pb\x12\x11\n\tCmdString\x18\x01 \x02(\t\x12\x16\n\x0eOutputFilename\x18\x02 \x02(\t\"4\n\x0b\x65s_shell_pb\x12%\n\x07Payload\x18\x01 \x02(\x0b\x32\x14.es_shell_payload_pb')
+  serialized_pb=_b('\n\x12_py_es_shell.proto\"@\n\x13\x65s_shell_payload_pb\x12\x11\n\tCmdString\x18\x01 \x01(\t\x12\x16\n\x0eOutputFilename\x18\x02 \x01(\t\"4\n\x0b\x65s_shell_pb\x12%\n\x07Payload\x18\x01 \x02(\x0b\x32\x14.es_shell_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,14 +34,14 @@ _ES_SHELL_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='CmdString', full_name='es_shell_payload_pb.CmdString', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='OutputFilename', full_name='es_shell_payload_pb.OutputFilename', index=1,
-      number=2, type=9, cpp_type=9, label=2,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

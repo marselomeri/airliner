@@ -12,13 +12,6 @@
 					"airliner_type": "uint64",
 					"array_length": 0
 				},
-                "Test": {
-					"airliner_name": "Test", 
-					"pb_type": "string",
-					"pb_field_rule": "required",
-					"airliner_type": "char",
-					"array_length": 4
-				},
 				"Previous": {
 					"airliner_name": "Previous", 
 					"pb_type": "px4_position_setpoint_pb",

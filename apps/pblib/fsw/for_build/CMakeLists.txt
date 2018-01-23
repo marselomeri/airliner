@@ -50,8 +50,6 @@ add_airliner_app_def(pblib
         ${PROTOBUF_MSGS_DIR}/es_restart.pb.c
         ${PROTOBUF_MSGS_DIR}/es_perf_set_filter_mask.pb.h
         ${PROTOBUF_MSGS_DIR}/es_perf_set_filter_mask.pb.c
-        ${PROTOBUF_MSGS_DIR}/es_tlm_pool_stats.pb.h
-        ${PROTOBUF_MSGS_DIR}/es_tlm_pool_stats.pb.c
         ${PROTOBUF_MSGS_DIR}/es_shell.pb.h
         ${PROTOBUF_MSGS_DIR}/es_shell.pb.c
         ${PROTOBUF_MSGS_DIR}/es_perf_stop.pb.h
@@ -108,7 +106,6 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_start.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_restart.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_set_filter_mask.proto
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_tlm_pool_stats.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_shell.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_stop.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_shell_packet.proto

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_perf_set_filter_mask.proto',
   package='',
-  serialized_pb=_b('\n!_py_es_perf_set_filter_mask.proto\"O\n\"es_perf_set_filter_mask_payload_pb\x12\x15\n\rFilterMaskNum\x18\x01 \x02(\r\x12\x12\n\nFilterMask\x18\x02 \x02(\r\"R\n\x1a\x65s_perf_set_filter_mask_pb\x12\x34\n\x07Payload\x18\x01 \x02(\x0b\x32#.es_perf_set_filter_mask_payload_pb')
+  serialized_pb=_b('\n!_py_es_perf_set_filter_mask.proto\"O\n\"es_perf_set_filter_mask_payload_pb\x12\x15\n\rFilterMaskNum\x18\x01 \x01(\r\x12\x12\n\nFilterMask\x18\x02 \x01(\r\"R\n\x1a\x65s_perf_set_filter_mask_pb\x12\x34\n\x07Payload\x18\x01 \x02(\x0b\x32#.es_perf_set_filter_mask_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,14 +34,14 @@ _ES_PERF_SET_FILTER_MASK_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='FilterMaskNum', full_name='es_perf_set_filter_mask_payload_pb.FilterMaskNum', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='FilterMask', full_name='es_perf_set_filter_mask_payload_pb.FilterMask', index=1,
-      number=2, type=13, cpp_type=3, label=2,
+      number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

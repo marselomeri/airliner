@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_perf_start.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_es_perf_start.proto\"/\n\x18\x65s_perf_start_payload_pb\x12\x13\n\x0bTriggerMode\x18\x01 \x02(\r\">\n\x10\x65s_perf_start_pb\x12*\n\x07Payload\x18\x01 \x02(\x0b\x32\x19.es_perf_start_payload_pb')
+  serialized_pb=_b('\n\x17_py_es_perf_start.proto\"/\n\x18\x65s_perf_start_payload_pb\x12\x13\n\x0bTriggerMode\x18\x01 \x01(\r\">\n\x10\x65s_perf_start_pb\x12*\n\x07Payload\x18\x01 \x02(\x0b\x32\x19.es_perf_start_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_PERF_START_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='TriggerMode', full_name='es_perf_start_payload_pb.TriggerMode', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

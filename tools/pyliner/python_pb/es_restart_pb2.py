@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_restart.proto',
   package='',
-  serialized_pb=_b('\n\x14_py_es_restart.proto\",\n\x15\x65s_restart_payload_pb\x12\x13\n\x0bRestartType\x18\x01 \x02(\r\"8\n\res_restart_pb\x12\'\n\x07Payload\x18\x01 \x02(\x0b\x32\x16.es_restart_payload_pb')
+  serialized_pb=_b('\n\x14_py_es_restart.proto\",\n\x15\x65s_restart_payload_pb\x12\x13\n\x0bRestartType\x18\x01 \x01(\r\"8\n\res_restart_pb\x12\'\n\x07Payload\x18\x01 \x02(\x0b\x32\x16.es_restart_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_RESTART_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='RestartType', full_name='es_restart_payload_pb.RestartType', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

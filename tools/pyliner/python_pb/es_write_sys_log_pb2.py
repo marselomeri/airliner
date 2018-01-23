@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_write_sys_log.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_es_write_sys_log.proto\"5\n\x1b\x65s_write_sys_log_payload_pb\x12\x16\n\x0eSysLogFileName\x18\x01 \x02(\t\"D\n\x13\x65s_write_sys_log_pb\x12-\n\x07Payload\x18\x01 \x02(\x0b\x32\x1c.es_write_sys_log_payload_pb')
+  serialized_pb=_b('\n\x1a_py_es_write_sys_log.proto\"5\n\x1b\x65s_write_sys_log_payload_pb\x12\x16\n\x0eSysLogFileName\x18\x01 \x01(\t\"D\n\x13\x65s_write_sys_log_pb\x12-\n\x07Payload\x18\x01 \x02(\x0b\x32\x1c.es_write_sys_log_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_WRITE_SYS_LOG_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='SysLogFileName', full_name='es_write_sys_log_payload_pb.SysLogFileName', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

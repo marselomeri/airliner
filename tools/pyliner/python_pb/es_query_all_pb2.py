@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_query_all.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_es_query_all.proto\"3\n\x17\x65s_query_all_payload_pb\x12\x18\n\x10QueryAllFileName\x18\x01 \x02(\t\"<\n\x0f\x65s_query_all_pb\x12)\n\x07Payload\x18\x01 \x02(\x0b\x32\x18.es_query_all_payload_pb')
+  serialized_pb=_b('\n\x16_py_es_query_all.proto\"3\n\x17\x65s_query_all_payload_pb\x12\x18\n\x10QueryAllFileName\x18\x01 \x01(\t\"<\n\x0f\x65s_query_all_pb\x12)\n\x07Payload\x18\x01 \x02(\x0b\x32\x18.es_query_all_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_QUERY_ALL_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='QueryAllFileName', full_name='es_query_all_payload_pb.QueryAllFileName', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

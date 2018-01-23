@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_set_max_pr_count.proto',
   package='',
-  serialized_pb=_b('\n\x1d_py_es_set_max_pr_count.proto\"4\n\x1e\x65s_set_max_pr_count_payload_pb\x12\x12\n\nMaxPRCount\x18\x01 \x02(\r\"J\n\x16\x65s_set_max_pr_count_pb\x12\x30\n\x07Payload\x18\x01 \x02(\x0b\x32\x1f.es_set_max_pr_count_payload_pb')
+  serialized_pb=_b('\n\x1d_py_es_set_max_pr_count.proto\"4\n\x1e\x65s_set_max_pr_count_payload_pb\x12\x12\n\nMaxPRCount\x18\x01 \x01(\r\"J\n\x16\x65s_set_max_pr_count_pb\x12\x30\n\x07Payload\x18\x01 \x02(\x0b\x32\x1f.es_set_max_pr_count_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_SET_MAX_PR_COUNT_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='MaxPRCount', full_name='es_set_max_pr_count_payload_pb.MaxPRCount', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
