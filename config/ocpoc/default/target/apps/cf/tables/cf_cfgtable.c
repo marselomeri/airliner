@@ -8,7 +8,7 @@
 #include "cf_msgids.h"
 #include "cf_defs.h"
 
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     "CF_ConfigTable", "CF.ConfigTable", "CF Config Tbl",
     "cf_cfgtable.tbl", sizeof (cf_config_table_t)

@@ -6,7 +6,7 @@
 ** Include Files
 */
 #include "cfe_tbl_filedef.h"
-#include "ci_tbldefs.h"
+#include "mavlink_tbldefs.h"
 
 /*
 ** Local Defines
@@ -18,17 +18,17 @@
 static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     /* Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
-    **    ObjName - variable name of config table, e.g., CI_ConfigDefTbl[]
-    **    TblName - app's table name, e.g., CI.CONFIG_TBL, where CI is the same app name
-    **              used in cfe_es_startup.scr, and CI_defConfigTbl is the same table
+    **    ObjName - variable name of config table, e.g., MAVLINK_ConfigDefTbl[]
+    **    TblName - app's table name, e.g., MAVLINK.PARAM_TBL, where MAVLINK is the same app name
+    **              used in cfe_es_startup.scr, and MAVLINK_defParamTbl is the same table
     **              name passed in to CFE_TBL_Register()
     **    Desc - description of table in string format
     **    TgtFileName[20] - table file name, compiled as .tbl file extension
     **    ObjSize - size of the entire table
     */
 
-    "CI_ConfigTbl", "CI.CONFIG_TBL", "CI default config table",
-    "ci_config.tbl", (sizeof(CI_ConfigTblEntry_t) * CI_CONFIG_TABLE_MAX_ENTRIES)
+    "MAVLINK_ParamTbl", "MAVLINK.PARAM_TBL", "MAVLINK default param table",
+    "mavlink_param.tbl", (sizeof(MAVLINK_ParamTblEntry_t) * MAVLINK_PARAM_TABLE_MAX_ENTRIES)
 };
 
 /*
@@ -39,16 +39,17 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 ** Global Variables
 */
 
-/* Default CI config table data */
-CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
+/* Default MAVLINK config table data */
+MAVLINK_ParamTblEntry_t MAVLINK_ParamTbl[MAVLINK_PARAM_TABLE_MAX_ENTRIES] =
 {
 	/* Table ID */
 	1,
 	{
-		/* Registered Commands */
-		{0x1806, 2, STEP_2, UNAUTHORIZED, 0, LOG}, // CFE ES Proc/Power Reset
-		{0x1c29, 0, STEP_1, UNAUTHORIZED, 0, LOG}, // EA Noop
-		{0x1c29, 1, STEP_2, UNAUTHORIZED, 0, LOG}  // EA Reset
+		/* Default Parameters */
+        {1, 1, 1, "DEFAULT_PARAM", 0.0, 9}
+/*		{0x1806, 2, STEP_2, UNAUTHORIZED, 0, LOG}, // CFE ES Proc/Power Reset*/
+/*		{0x1c29, 0, STEP_1, UNAUTHORIZED, 0, LOG}, // EA Noop*/
+/*		{0x1c29, 1, STEP_2, UNAUTHORIZED, 0, LOG}  // EA Reset*/
 	}
 };
 
@@ -65,6 +66,6 @@ CI_ConfigTblEntry_t CI_ConfigTbl[CI_CONFIG_TABLE_MAX_ENTRIES] =
 */
 
 /*=======================================================================================
-** End of file ci_config.c
+** End of file mavlink_config.c
 **=====================================================================================*/
     

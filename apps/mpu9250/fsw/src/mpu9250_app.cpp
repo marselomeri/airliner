@@ -856,7 +856,7 @@ void MPU9250::ReadDevice(void)
     }
 
     SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
-    calTemp = (SensorAccel.TemperatureRaw / Diag.Conversion.TempSensitivity) + 35.0 - Diag.Conversion.RoomTempOffset;
+    calTemp = (SensorAccel.TemperatureRaw / Diag.Conversion.TempSensitivity) + 21.0 - Diag.Conversion.RoomTempOffset;
     //SensorMag.Temperature
     SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
 

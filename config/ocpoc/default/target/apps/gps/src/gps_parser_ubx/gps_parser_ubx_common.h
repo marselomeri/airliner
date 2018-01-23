@@ -301,7 +301,7 @@ typedef enum
 } GPS_ParserInfIDValue_t;
 
 
-uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_t* status, boolean *done);
+uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done);
 void GPS_Parser_Reset(void);
 CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID);
 void GPS_Parser_StateChange(GPS_ParserState_t newState);
