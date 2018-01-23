@@ -189,7 +189,7 @@ boolean MPU9250_Read_Temp(uint16 *rawTemp)
     }
     else
     {
-        *rawTemp = ((calTemp + oMPU9250.Diag.Conversion.RoomTempOffset) - 35.0f) * oMPU9250.Diag.Conversion.TempSensitivity;
+        *rawTemp = ((calTemp + oMPU9250.Diag.Conversion.RoomTempOffset) - 21.0f) * oMPU9250.Diag.Conversion.TempSensitivity;
     }
 
 	return TRUE;

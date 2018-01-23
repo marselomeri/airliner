@@ -265,7 +265,7 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 
                 if(0 == Temperature)
                 {
-                    Temperature = 32;
+                    Temperature = 20.0;
                 }
 
                 /* Alternate form 
