@@ -321,9 +321,9 @@
 						        "n21": {
                                     "airliner_name": "n21", 
 						            "pb_type": "bool",
-						            "pb_field_rule": "optional",
+						            "pb_field_rule": "repeated",
 						            "airliner_type": "TestNest2",
-						            "array_length": 0
+						            "array_length": 4
 					            },
 						        "n22": {
                                     "airliner_name": "n22", 
