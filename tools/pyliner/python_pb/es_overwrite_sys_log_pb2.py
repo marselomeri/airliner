@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_overwrite_sys_log.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_es_overwrite_sys_log.proto\"/\n\x1f\x65s_overwrite_sys_log_payload_pb\x12\x0c\n\x04Mode\x18\x01 \x01(\r\"L\n\x17\x65s_overwrite_sys_log_pb\x12\x31\n\x07Payload\x18\x01 \x02(\x0b\x32 .es_overwrite_sys_log_payload_pb')
+  serialized_pb=_b('\n\x1e_py_es_overwrite_sys_log.proto\"/\n\x1f\x65s_overwrite_sys_log_payload_pb\x12\x0c\n\x04Mode\x18\x01 \x02(\r\"L\n\x17\x65s_overwrite_sys_log_pb\x12\x31\n\x07Payload\x18\x01 \x02(\x0b\x32 .es_overwrite_sys_log_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_OVERWRITE_SYS_LOG_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='Mode', full_name='es_overwrite_sys_log_payload_pb.Mode', index=0,
-      number=1, type=13, cpp_type=3, label=1,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_es_shell_packet.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_es_shell_packet.proto\"1\n\x1a\x65s_shell_packet_payload_pb\x12\x13\n\x0bShellOutput\x18\x01 \x01(\t\"B\n\x12\x65s_shell_packet_pb\x12,\n\x07Payload\x18\x01 \x02(\x0b\x32\x1b.es_shell_packet_payload_pb')
+  serialized_pb=_b('\n\x19_py_es_shell_packet.proto\"1\n\x1a\x65s_shell_packet_payload_pb\x12\x13\n\x0bShellOutput\x18\x01 \x02(\t\"B\n\x12\x65s_shell_packet_pb\x12,\n\x07Payload\x18\x01 \x02(\x0b\x32\x1b.es_shell_packet_payload_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,7 +34,7 @@ _ES_SHELL_PACKET_PAYLOAD_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='ShellOutput', full_name='es_shell_packet_payload_pb.ShellOutput', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

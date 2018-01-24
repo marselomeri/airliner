@@ -2,6 +2,7 @@
 
 from arte_ccsds import *
 from datetime import datetime, timedelta
+from google.protobuf import text_format
 import json
 import logging
 from os import mkdir
