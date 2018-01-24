@@ -31,7 +31,7 @@ class Pyliner(object):
         self.to_socket = self.__init_socket()
         self.subscribers = []
         self.telemetry = {}
-        self.tlm_listener = SocketServer.UDPServer((self.address, DEFAULT_TO_PORT), self.__server_factory(self.__on_recv_telemetry))
+        self.tlm_listener = SocketServer.UDPServer((self.address, self.to_port), self.__server_factory(self.__on_recv_telemetry))
         self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
         self.passes = 0
         self.fails = 0

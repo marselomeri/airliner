@@ -23,10 +23,10 @@ airliner = pyliner.Pyliner(**{"airliner_map": "cookiecutter.json",
 airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter']}, cb_1)       
 
 # Subscribe to remaining items for callback 2             
-#airliner.subscribe({'tlm': ['/Airliner/ES/HK/MaxProcessorResets', 
-#                            '/Airliner/ES/HK/SysLogMode', 
-#                            '/Airliner/ES/HK/SysLogBytesUsed', 
-#                            '/Airliner/ES/HK/SysLogEntries']}, cb_2)
+airliner.subscribe({'tlm': ['/Airliner/ES/HK/MaxProcessorResets', 
+                            '/Airliner/ES/HK/SysLogMode', 
+                            '/Airliner/ES/HK/SysLogBytesUsed', 
+                            '/Airliner/ES/HK/SysLogEntries']}, cb_2)
 
 # Perform 15 batches of sending commands and receiving telemetry
 for i in range(15):
