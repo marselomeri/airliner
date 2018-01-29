@@ -72,13 +72,13 @@ float AMC_Map(float inValue, uint16 in_min, uint16 in_max, float out_min, float 
 
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
-	float controls[16];
-	uint32 controlCount = 11;
-	uint32 i = 0;
+    float controls[16];
+    uint32 controlCount = 11;
+    uint32 i = 0;
 
     for (i = 0; i < 6; ++i)
     {
-    	//controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
+    	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
     }
 
     controls[6] = 0.0f;
@@ -92,5 +92,5 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
     controls[14] = 0.0f;
     controls[15] = 0.0f;
 
-	SIMLIB_SetActuatorControls(controls, controlCount, 0);
+    SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }

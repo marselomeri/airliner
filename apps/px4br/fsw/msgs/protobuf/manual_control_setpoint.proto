@@ -44,6 +44,7 @@ message px4_manual_control_setpoint_pb
 	required uint32 kill_switch = 19;
 	required uint32 transition_switch = 20;
 	required int32 mode_slot = 21;
+	required uint32 data_source = 22;
 }
 
 // ORB_DECLARE(manual_control_setpoint);

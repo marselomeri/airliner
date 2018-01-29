@@ -146,7 +146,7 @@ void GPS_Parser_StateChange(GPS_ParserState_t newState)
 }
 
 
-uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_t* status, boolean *done)
+uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
 {
     uint16 msg_received = 0;
 
@@ -165,12 +165,12 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
         {
             if(byte == GPS_PARSER_SYNC1_VALUE)
             {
-                OS_printf("IN SYNC 1\n");
+                //OS_printf("IN SYNC 1\n");
                 GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_SYNC1);
             }
             else if(byte == 0xff)
             {
-                OS_printf("got 0xff byte\n");
+                //OS_printf("got 0xff byte\n");
                 *done = TRUE;
             }
             else
@@ -1082,7 +1082,7 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_PAYLOAD:
         {
-            OS_printf("IN GPS_PARSE_STATE_GOT_PAYLOAD\n");
+            //OS_printf("IN GPS_PARSE_STATE_GOT_PAYLOAD\n");
             GPS_AppCustomData.ParserStatus.ChecksumA = byte;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_CHECKSUMA);
             break;
@@ -1090,7 +1090,7 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_CHECKSUMA:
         {
-            OS_printf("IN GPS_PARSE_STATE_GOT_CHECKSUMA\n");
+            //OS_printf("IN GPS_PARSE_STATE_GOT_CHECKSUMA\n");
             //GPS_AppCustomData.ParserStatus.ChecksumB = byte;
             CFE_SB_TimeStampMsg((CFE_SB_MsgPtr_t)message);
             msg_received = 1;

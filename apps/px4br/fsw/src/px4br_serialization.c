@@ -126,6 +126,9 @@
 #define PX4BR_MICROSECONDS_PER_SECOND (1000000)
 
 
+uint64_t vehicle_rates_timestamp = 0;
+
+
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
 {
 	uint32_t i = 0;
@@ -164,6 +167,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 	pbMsg.prearmed = inObject->Prearmed;
 	pbMsg.ready_to_arm = inObject->ReadyToArm;
 	pbMsg.lockdown = inObject->Lockdown;
+	pbMsg.manual_lockdown = inObject->ManualLockdown;
 	pbMsg.force_failsafe = inObject->ForceFailsafe;
 	pbMsg.in_esc_calibration_mode = inObject->InEscCalibrationMode;
 
@@ -204,6 +208,7 @@ uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_Actuator
 	inOutObject->Prearmed = pbMsg.prearmed;
 	inOutObject->ReadyToArm = pbMsg.ready_to_arm;
 	inOutObject->Lockdown = pbMsg.lockdown;
+	inOutObject->ManualLockdown = pbMsg.manual_lockdown;
 	inOutObject->ForceFailsafe = pbMsg.force_failsafe;
 	inOutObject->InEscCalibrationMode = pbMsg.in_esc_calibration_mode;
 
@@ -1820,6 +1825,7 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 	pbMsg.kill_switch = inObject->KillSwitch;
 	pbMsg.transition_switch = inObject->TransitionSwitch;
 	pbMsg.mode_slot = inObject->ModeSlot;
+	pbMsg.data_source = inObject->DataSource;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -1873,6 +1879,7 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->KillSwitch = pbMsg.kill_switch;
 	inOutObject->TransitionSwitch = pbMsg.transition_switch;
 	inOutObject->ModeSlot = pbMsg.mode_slot;
+	inOutObject->DataSource = pbMsg.data_source;
 
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }
@@ -4318,24 +4325,33 @@ uint32 PX4BR_VehicleRatesSetpoint_Enc(const PX4_VehicleRatesSetpointMsg_t *inObj
 	bool status = false;
 	px4_vehicle_rates_setpoint_pb pbMsg;
 
-	pbMsg.timestamp = inObject->Timestamp;
-	pbMsg.roll = inObject->Roll;
-	pbMsg.pitch = inObject->Pitch;
-	pbMsg.yaw = inObject->Yaw;
-	pbMsg.thrust = inObject->Thrust;
+	if(inObject->Timestamp > vehicle_rates_timestamp)
+	{
+		vehicle_rates_timestamp = inObject->Timestamp;
 
-	/* Create a stream that will write to our buffer. */
-	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+		pbMsg.timestamp = inObject->Timestamp;
+		pbMsg.roll = inObject->Roll;
+		pbMsg.pitch = inObject->Pitch;
+		pbMsg.yaw = inObject->Yaw;
+		pbMsg.thrust = inObject->Thrust;
 
-	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_rates_setpoint_pb_fields, &pbMsg);
-	/* Check for errors... */
-	if (!status)
+		/* Create a stream that will write to our buffer. */
+		pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+		/* Now we are ready to encode the message. */
+		status = pb_encode(&stream, px4_vehicle_rates_setpoint_pb_fields, &pbMsg);
+		/* Check for errors... */
+		if (!status)
+		{
+			return 0;
+		}
+
+		return stream.bytes_written;
+	}
+	else
 	{
 		return 0;
 	}
-
-	return stream.bytes_written;
 }
 
 uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleRatesSetpointMsg_t *inOutObject)
@@ -4355,13 +4371,23 @@ uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 		return 0;
 	}
 
-	inOutObject->Timestamp = pbMsg.timestamp;
-	inOutObject->Roll = pbMsg.roll;
-	inOutObject->Pitch = pbMsg.pitch;
-	inOutObject->Yaw = pbMsg.yaw;
-	inOutObject->Thrust = pbMsg.thrust;
+	if(pbMsg.timestamp > vehicle_rates_timestamp)
+	{
+		vehicle_rates_timestamp = pbMsg.timestamp;
 
-	return sizeof(PX4_VehicleRatesSetpointMsg_t);
+		inOutObject->Timestamp = pbMsg.timestamp;
+		inOutObject->Roll = pbMsg.roll;
+		inOutObject->Pitch = pbMsg.pitch;
+		inOutObject->Yaw = pbMsg.yaw;
+		inOutObject->Thrust = pbMsg.thrust;
+
+		return sizeof(PX4_VehicleRatesSetpointMsg_t);
+	}
+	else
+	{
+		return 0;
+	}
+
 }
 
 

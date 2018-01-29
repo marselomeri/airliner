@@ -134,7 +134,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"adc_report", (PX4_ENCODE_FUNC) PX4BR_AdcReport_Enc, (PX4_DECODE_FUNC) PX4BR_AdcReport_Dec, PX4_ADC_REPORT_MID, px4_adc_report_pb_size, 1, 0, 0},
 //		{"airspeed", (PX4_ENCODE_FUNC) PX4BR_Airspeed_Enc, (PX4_DECODE_FUNC) PX4BR_Airspeed_Dec, PX4_AIRSPEED_MID, px4_airspeed_pb_size, 1, 0, 0},
 //		{"att_pos_mocap", (PX4_ENCODE_FUNC) PX4BR_AttPosMoCap_Enc, (PX4_DECODE_FUNC) PX4BR_AttPosMoCap_Dec, PX4_ATT_POS_MOCAP_MID, px4_att_pos_mocap_pb_size, 1, 0, 0},
-		{"battery_status", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_BatteryStatus_Dec, PX4_BATTERY_STATUS_MID, px4_battery_status_pb_size, 1, 0, 0},
+		{"battery_status", (PX4_ENCODE_FUNC) PX4BR_BatteryStatus_Enc, (PX4_DECODE_FUNC) 0, PX4_BATTERY_STATUS_MID, px4_battery_status_pb_size, 1, 0, 0},
 //		{"camera_trigger", (PX4_ENCODE_FUNC) PX4BR_CameraTrigger_Enc, (PX4_DECODE_FUNC) PX4BR_CameraTrigger_Dec, PX4_CAMERA_TRIGGER_MID, px4_camera_trigger_pb_size, 1, 0, 0},
 //		{"commander_state", (PX4_ENCODE_FUNC) PX4BR_CommanderState_Enc, (PX4_DECODE_FUNC) PX4BR_CommanderState_Dec, PX4_COMMANDER_STATE_MID, px4_commander_state_pb_size, 1, 0, 0},
 		{"control_state", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_ControlState_Dec, PX4_CONTROL_STATE_MID, px4_control_state_pb_size, 1, 0, 0},
@@ -210,7 +210,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"vehicle_local_position", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4_vehicle_local_position_pb_size, 1, 0, 0},
 //		{"vehicle_local_position_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Dec, PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, px4_vehicle_local_position_setpoint_pb_size, 1, 0, 0},
 //		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
-		{"vehicle_rates_setpoint", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleRatesSetpoint_Dec, PX4_VEHICLE_RATES_SETPOINT_MID, px4_vehicle_rates_setpoint_pb_size, 1, 0, 0},
+		{"vehicle_rates_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleRatesSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleRatesSetpoint_Dec, PX4_VEHICLE_RATES_SETPOINT_MID, px4_vehicle_rates_setpoint_pb_size, 1, 0, 0},
 //		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
 		{"vehicle_status", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleStatus_Dec, PX4_VEHICLE_STATUS_MID, px4_vehicle_status_pb_size, 1, 0, 0},
 //		{"vision_position_estimate", (PX4_ENCODE_FUNC) PX4BR_VisionPositionEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_VisionPositionEstimate_Dec, PX4_VISION_POSITION_ESTIMATE_MID, px4_vision_position_estimate_pb_size, 1, 0, 0},

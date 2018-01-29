@@ -339,7 +339,7 @@ boolean MS5611_D1Conversion(void)
     }
     else
     {
-        usleep(20000);
+        usleep(10000);
     }
     return returnBool;
 }
@@ -371,7 +371,7 @@ boolean MS5611_D2Conversion(void)
     }
     else
     {
-        usleep(20000);
+        usleep(10000);
     }
     return returnBool;
 }
