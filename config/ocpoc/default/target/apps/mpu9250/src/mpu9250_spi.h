@@ -168,6 +168,8 @@
 #define MPU9250_REG_EXT_SENS_DATA_01        (0x4A)
 /** \brief External sensor data 2 */
 #define MPU9250_REG_EXT_SENS_DATA_02        (0x4B)
+/** \brief I2C Data out, Data to be written to I2C Slave 0. */
+#define MPU9250_REG_I2C_SLV0_DO             (0x63)
 /** \brief I2C Data out, Data to be written to I2C Slave 1. */
 #define MPU9250_REG_I2C_SLV1_DO             (0x64)
 /** \brief I2C Data out, Data to be written to I2C Slave 2. */
