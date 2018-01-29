@@ -1,4 +1,4 @@
-{% extends "../../common/layout.pug" %}
+extends ../../common/layout
 
 block header
         i.fa-fw.fa.fa-signal
@@ -22,14 +22,14 @@ block main
                   tr
                     th Cmd Count
                     td
-                      span.sage-tlm(data-sage="{'tlm':[{'name':'/CFS/MM/CmdCounter'}]}") ---
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/MM/CmdCounter'}]}) ---
                   tr
                     th Cmd Error Count
                     td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/ErrCounter'}]}") ---
+                      span(data-sage={tlm:[{name:'/CFS/MM/ErrCounter'}]}) ---
             footer
-              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/MM/NoOp'}}") No-Op
-              button.btn.btn-primary(data-sage="{'cmd':{'name':'/CFS/MM/Reset'}}") Reset
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MM/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MM/Reset'}}) Reset 
 
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-CF-App.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -46,28 +46,28 @@ block main
                 tbody
                   tr
                     th Last Action
-                    td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/LastAction'}]}") ---
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/MM/LastAction'}]}) --- 
                   tr
                     th Mem Type
-                    td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/MemType'}]}") ---
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/MM/MemType'}]}) --- 
                   tr
                     th Address
-                    td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/Address', 'format':'0x%08x'}]}") ---
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/MM/Address', format:'0x%08x'}]}) --- 
                   tr
                     th Fill Pattern
-                    td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/FillPattern', 'format':'0x%08x'}]}") ---
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/MM/FillPattern', format:'0x%08x'}]}) --- 
                   tr
                     th Bytes Processed
-                    td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/BytesProcessed'}]}") ---
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/MM/BytesProcessed'}]}) --- 
                   tr
                     th File Name
-                    td
-                      span(data-sage="{'tlm':[{'name':'/CFS/MM/FileName'}]}") ---
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/MM/FileName'}]}) --- 
             footer
               .btn-group.dropdown
                 button.btn.btn-primary.dropdown-toggle.btn-xs(type='button', data-toggle='dropdown')
@@ -75,24 +75,25 @@ block main
                   span.caret
                 ul#Commands.dropdown-menu(role='menu')
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/Peek'}}") Peek
+                    a(data-sage={cmd:{name:'/CFS/MM/Peek'}}) Peek
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/Poke'}}") Poke
+                    a(data-sage={cmd:{name:'/CFS/MM/Poke'}}) Poke
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/LoadMemWID'}}") Load Mem WID
+                    a(data-sage={cmd:{name:'/CFS/MM/LoadMemWID'}}) Load Mem WID
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/LoadMemFromFile'}}") Load Mem From File
+                    a(data-sage={cmd:{name:'/CFS/MM/LoadMemFromFile'}}) Load Mem From File
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/DumpMemToFile'}}") Dump Mem To File
+                    a(data-sage={cmd:{name:'/CFS/MM/DumpMemToFile'}}) Dump Mem To File
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/DumpInEvent'}}") Dump In Event
+                    a(data-sage={cmd:{name:'/CFS/MM/DumpInEvent'}}) Dump In Event
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/FillMem'}}") Fill Mem
+                    a(data-sage={cmd:{name:'/CFS/MM/FillMem'}}) Fill Mem
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/LookupSym'}}") Lookup Symbol
+                    a(data-sage={cmd:{name:'/CFS/MM/LookupSym'}}) Lookup Symbol
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/SymTblToFile'}}") Sym Tbl To File
+                    a(data-sage={cmd:{name:'/CFS/MM/SymTblToFile'}}) Sym Tbl To File
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/EnableEEPROMWrite'}}") Enable EEPROM Write
+                    a(data-sage={cmd:{name:'/CFS/MM/EnableEEPROMWrite'}}) Enable EEPROM Write
                   li
-                    a(data-sage="{'cmd':{'name':'/CFS/MM/DisableEEPROMWrite'}}") Disable EEPROM Write
+                    a(data-sage={cmd:{name:'/CFS/MM/DisableEEPROMWrite'}}) Disable EEPROM Write
+                      
