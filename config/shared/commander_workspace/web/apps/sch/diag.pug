@@ -1,15 +1,14 @@
-{% extends "../../common/layout.pug" %}
+extends ../../common/layout
 
 block header
         i.fa-fw.fa.fa-signal
         | Scheduler - Diagnostic
 
 block main
-  script.
-    var SLOT_COUNT = 200
-    var ENTRIES_PER_SLOT = 5
+  -var SLOT_COUNT = 200
+  -var ENTRIES_PER_SLOT = 5
   .row
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4(style="width: 300px")
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4(style='width: 300px')
       #wid-SCH-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
@@ -23,42 +22,41 @@ block main
               table.table.table-condensed
                 tbody
                   tr
-                    th(style="width: 150px") Cmd Count
+                    th(style='width: 150px') Cmd Count
                     td
-                      span(data-sage="{'tlm': [{'name':'/CFS/SCH/CmdCounter'}]}") ---
+                      span(data-sage={tlm: [{name:'/CFS/SCH/CmdCounter'}]}) ---
                   tr
                     th Error Count
                     td
-                      span(data-sage="{'tlm': [{'name':'/CFS/SCH/ErrCounter'}]}") ---
+                      span(data-sage={tlm: [{name:'/CFS/SCH/ErrCounter'}]}) ---
             footer
               .btn-group.dropup
-                button.btn.btn-primary(data-sage="{'cmd': {'name':'/CFS/SCH/NoOp'}}") No-Op
-                button.btn.btn-primary(data-sage="{'cmd': {'name':'/CFS/SCH/Reset'}}") Reset
-
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/SCH/NoOp'}}) No-Op
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/SCH/Reset'}}) Reset
+                    
   .row
     article.col-xs-12.col-sm-12.col-md-12.col-lg-10
-      #wid-SCH-Diag-Entries.jarviswidget.jarviswidget-color-blueDark(style="width: 660px" data-widget-editbutton='false')
+      #wid-SCH-Diag-Entries.jarviswidget.jarviswidget-color-blueDark(style='width: 660px' data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Entries
-            button.btn.btn-xs.btn-primary.btn-labeled(data-sage="{'cmd':{'name':'/CFS/SCH/SendDiagTlm'}}") Send
+          h2 Entries 
+            button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/SCH/SendDiagTlm'}}) Send
         div
           .jarviswidget-editbox
             input.form-control(type='text')
           .widget-body
             #accordion.panel-group.smart-accordion-default
-              script.
-                var i = 0;
-                for (var slot = 0; slot < SLOT_COUNT; ++slot) {
-                 var tabID = '#slot' + slot;
-                 var slotID = 'slot-' + slot;
+              - var i = 0;
+              - for (var slot = 0; slot < SLOT_COUNT; ++slot) {
+                - var tabID = '#slot' + slot;
+                - var slotID = 'slot-' + slot;
                 panel.panel-default
                   .panel-heading
                     h4.panel-title
-                      a.collapsed(data-toggle='collapse' data-parent='#accordion' href="#slot"+slot)
+                      a.collapsed(data-toggle='collapse' data-parent='#accordion' href="#slot"+slot) 
                         i.fa.fa-lg.fa-angle-down.pull-right
-                        i.fa.fa-lg.fa-angle-up.pull-right
+                        i.fa.fa-lg.fa-angle-up.pull-right 
                         | Slot #{slot}
                   .panel-collapse.collapse(id= "slot"+slot)
                     .panel-body.no-padding
@@ -70,23 +68,23 @@ block main
                             th MsgID
                             th(style="width: 150px") Action
                         tbody
-                            for (var activity = 0; activity < ENTRIES_PER_SLOT; ++activity) {
-                              var EntryState = '/CFS/SCH/EntryState_' + i
-                              var MsgID = '/CFS/SCH/MsgID_' + i
-                              var strSlot = '' + slot;
-                              var strActivity = '' + activity;
-                              var EnableEntryCmd = {'cmd':{'name':'/CFS/SCH/EnableEntry', 'argument':[{'name':'Slot', 'value':strSlot},{'name':'Entry', 'value':strActivity}]}};
-                              var DisableEntryCmd = {'cmd':{'name':'/CFS/SCH/DisableEntry', 'argument':[{'name':'Slot', 'value':strSlot},{'name':'Entry', 'value':strActivity}]}};
+                          - for (var activity = 0; activity < ENTRIES_PER_SLOT; ++activity) {
+                            - var EntryState = '/CFS/SCH/EntryState_' + i
+                            - var MsgID = '/CFS/SCH/MsgID_' + i 
+                            - var strSlot = '' + slot;
+                            - var strActivity = '' + activity;
+                            - var EnableEntryCmd = {cmd:{name:'/CFS/SCH/EnableEntry', argument:[{name:'Slot', value:strSlot},{name:'Entry', value:strActivity}]}};
+                            - var DisableEntryCmd = {cmd:{name:'/CFS/SCH/DisableEntry', argument:[{name:'Slot', value:strSlot},{name:'Entry', value:strActivity}]}};
                             tr
                               td= activity
+                              td 
+                                span(data-sage={tlm:[{name:EntryState}]}) ---
                               td
-                                span(data-sage="{'tlm':[{'name':EntryState}]}") ---
-                              td
-                                span(data-sage="{'tlm':[{'name':MsgID}]}") ---
+                                span(data-sage={tlm:[{name:MsgID}]}) ---
                               td
                                 .btn-group.dropup
                                   button.btn.btn-xs.btn-primary.btn-labeled(data-sage= EnableEntryCmd) Ena
                                   button.btn.btn-xs.btn-primary.btn-labeled(data-sage= DisableEntryCmd) Dis
-                            i++;
-                          }
-                }
+                            - i++;
+                          - }
+                - }
