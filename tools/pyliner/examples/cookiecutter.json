@@ -2130,6 +2130,154 @@
 				            }
 			            },
                         "required_pb_msgs": {}
+                    },
+                    "PX4_VehicleCommandMsg_t": {
+	                    "proto_msg": "px4_vehicle_command_msg_pb",
+                        "operational_names": {
+                            "Timestamp": {
+			                    "field_path": "Timestamp"
+			                },
+                            "Param1": {
+			                    "field_path": "Param1"
+			                },
+                            "Param2": {
+			                    "field_path": "Param2"
+			                },
+                            "Param3": {
+			                    "field_path": "Param3"
+			                },
+                            "Param4": {
+			                    "field_path": "Param4"
+			                },
+                            "Param5": {
+			                    "field_path": "Param5"
+			                },
+                            "Param6": {
+			                    "field_path": "Param6"
+			                },
+                            "Param7": {
+			                    "field_path": "Param7"
+			                },
+                            "Command": {
+			                    "field_path": "Command"
+			                },
+                            "TargetSystem": {
+			                    "field_path": "TargetSystem"
+			                },
+                            "TargetComponent": {
+			                    "field_path": "TargetComponent"
+			                },
+                            "SourceSystem": {
+			                    "field_path": "SourceSystem"
+			                },
+                            "SourceComponent": {
+			                    "field_path": "SourceComponent"
+			                },
+                            "Confirmation": {
+			                    "field_path": "Confirmation"
+			                }
+                        },
+	                    "fields": {
+		                    "Timestamp": {
+			                    "airliner_name": "Timestamp", 
+			                    "pb_type": "uint64",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint64",
+			                    "array_length": 0
+		                    },
+		                    "Param5": {
+			                    "airliner_name": "Param5", 
+			                    "pb_type": "double",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "double",
+			                    "array_length": 0
+		                    },
+                			"Param6": {
+			                    "airliner_name": "Param6", 
+			                    "pb_type": "double",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "double",
+			                    "array_length": 0
+		                    },
+		                    "Param1": {
+			                    "airliner_name": "Param1", 
+			                    "pb_type": "float",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "float",
+			                    "array_length": 0
+		                    },
+		                    "Param2": {
+			                    "airliner_name": "Param2", 
+			                    "pb_type": "float",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "float",
+			                    "array_length": 0
+		                    },
+		                    "Param3": {
+			                    "airliner_name": "Param3", 
+			                    "pb_type": "float",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "float",
+			                    "array_length": 0
+		                    },
+		                    "Param4": {
+			                    "airliner_name": "Param4", 
+			                    "pb_type": "float",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "float",
+			                    "array_length": 0
+		                    },
+		                    "Param7": {
+			                    "airliner_name": "Param7", 
+			                    "pb_type": "float",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "float",
+			                    "array_length": 0
+		                    },
+		                    "Command": {
+			                    "airliner_name": "Command", 
+			                    "pb_type": "uint32",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint32",
+			                    "array_length": 0
+		                    },
+		                    "TargetSystem": {
+			                    "airliner_name": "TargetSystem", 
+			                    "pb_type": "uint32",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint32",
+			                    "array_length": 0
+		                    },
+		                    "TargetComponent": {
+			                    "airliner_name": "TargetComponent", 
+			                    "pb_type": "uint32",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint32",
+			                    "array_length": 0
+		                    },
+		                    "SourceSystem": {
+			                    "airliner_name": "SourceSystem", 
+			                    "pb_type": "uint32",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint32",
+			                    "array_length": 0
+		                    },
+		                    "SourceComponent": {
+			                    "airliner_name": "SourceComponent", 
+			                    "pb_type": "uint32",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint32",
+			                    "array_length": 0
+		                    },
+		                    "Confirmation": {
+			                    "airliner_name": "Confirmation", 
+			                    "pb_type": "uint32",
+			                    "pb_field_rule": "required",
+			                    "airliner_type": "uint8",
+			                    "array_length": 0
+		                    }
+                        },
+                        "required_pb_msgs": {}
                     }
 	            },
 	            "operations": {
@@ -2142,7 +2290,12 @@
 			            "airliner_msg": "PX4_ManualControlSetpointMsg_t",
 			            "airliner_cc": -1,
 			            "airliner_mid": "0x0a27"
-		            }
+		            },
+                    "VehicleCommand": {			
+                        "airliner_msg": "PX4_VehicleCommandMsg_t",
+                        "airliner_cc": -1,
+                        "airliner_mid": "0x0a4d"
+                    }
 	            }
             }
         }

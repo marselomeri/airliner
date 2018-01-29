@@ -6,6 +6,83 @@
 extern "C" {
 #endif
 
+uint32 PX4_VehicleCommandMsg_t_Enc(const PX4_VehicleCommandMsg_t *inObject, char *inOutBuffer, uint32 inSize)
+{
+	bool status = false;
+	pb_ostream_t stream;
+
+	px4_vehicle_command_msg_pb pbMsg;
+
+    pbMsg.Confirmation = inObject->Confirmation;
+    pbMsg.Timestamp = inObject->Timestamp;
+    pbMsg.TargetComponent = inObject->TargetComponent;
+    pbMsg.Param7 = inObject->Param7;
+    pbMsg.Param6 = inObject->Param6;
+    pbMsg.Param5 = inObject->Param5;
+    pbMsg.Param4 = inObject->Param4;
+    pbMsg.Param3 = inObject->Param3;
+    pbMsg.Param2 = inObject->Param2;
+    pbMsg.Param1 = inObject->Param1;
+    pbMsg.TargetSystem = inObject->TargetSystem;
+    pbMsg.SourceSystem = inObject->SourceSystem;
+    pbMsg.Command = inObject->Command;
+    pbMsg.SourceComponent = inObject->SourceComponent;
+
+	/* Create a stream that will write to our buffer. */
+	stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+	
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4_vehicle_command_msg_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("Error encoding msg: %s", PB_GET_ERROR(&stream));
+		return 0;
+	}
+
+	return stream.bytes_written;
+}
+
+uint32 PX4_VehicleCommandMsg_t_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleCommandMsg_t *inOutObject)
+{
+	bool status = false;
+	pb_istream_t stream;
+
+	px4_vehicle_command_msg_pb pbMsg;
+
+    /* Create a stream that reads from the buffer. */
+	stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4_vehicle_command_msg_pb_fields, &pbMsg); 
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("Error decoding msg: %s", PB_GET_ERROR(&stream));
+		return 0;
+	}
+
+    inOutObject->Confirmation = pbMsg.Confirmation;
+    inOutObject->Timestamp = pbMsg.Timestamp;
+    inOutObject->TargetComponent = pbMsg.TargetComponent;
+    inOutObject->Param7 = pbMsg.Param7;
+    inOutObject->Param6 = pbMsg.Param6;
+    inOutObject->Param5 = pbMsg.Param5;
+    inOutObject->Param4 = pbMsg.Param4;
+    inOutObject->Param3 = pbMsg.Param3;
+    inOutObject->Param2 = pbMsg.Param2;
+    inOutObject->Param1 = pbMsg.Param1;
+    inOutObject->TargetSystem = pbMsg.TargetSystem;
+    inOutObject->SourceSystem = pbMsg.SourceSystem;
+    inOutObject->Command = pbMsg.Command;
+    inOutObject->SourceComponent = pbMsg.SourceComponent;
+
+	return sizeof(PX4_VehicleCommandMsg_t);
+}
+
+
 uint32 PX4_PositionSetpointTripletMsg_t_Enc(const PX4_PositionSetpointTripletMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;

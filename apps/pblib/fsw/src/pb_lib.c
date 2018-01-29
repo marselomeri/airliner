@@ -195,7 +195,13 @@ uint32 CFE_ES_RegisterSerializationFuncs()
 	{
 		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
 	}
-	
+
+    Status = PBLIB_RegisterTlmMessage(0x0a4d, "PX4_VehicleCommandMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}	
+
 CFE_ES_RegisterSerializationFuncs_Exit_Tag:
     return Status;
 }
