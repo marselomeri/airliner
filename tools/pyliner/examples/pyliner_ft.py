@@ -14,7 +14,7 @@ airliner = Pyliner(**{"airliner_map": "cookiecutter.json",
 #airliner.subscribe({'tlm': []})
 
 # Perform 15 batches of sending commands and receiving telemetry
-for i in range(15):
+#for i in range(15):
     # Print all data for CmdCounter
     #print "Telemetry: %s   Value: %s   Timestamp: %s" % (cmd_count_data['name'], cmd_count_data['value'], cmd_count_data['time'])
     
@@ -117,65 +117,106 @@ for i in range(15):
 #                             {'name':'Next_AccelerationIsForce', 'value':True},
 #                             {'name':'Timestamp', 'value':0}]})
 
-    airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-                            {'name':'Timestamp', 'value':0},
-                            {'name':'Command', 'value':400},
-                            {'name':'Param1', 'value':1.0},
-                            {'name':'Param2', 'value':0.0},
-                            {'name':'Param3', 'value':0.0},
-                            {'name':'Param4', 'value':0.0},
-                            {'name':'Param5', 'value':0.0},
-                            {'name':'Param6', 'value':0.0},
-                            {'name':'Param7', 'value':0.0},
-                            {'name':'TargetSystem', 'value':1},
-                            {'name':'TargetComponent', 'value':1},
-                            {'name':'SourceSystem', 'value':0},
-                            {'name':'SourceComponent', 'value':0},
-                            {'name':'Confirmation', 'value':0}]})
-    time.sleep(1)
-    airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-                            {'name':'Timestamp', 'value':0},
-                            {'name':'Command', 'value':22},
-                            {'name':'Param1', 'value':0.0},
-                            {'name':'Param2', 'value':0.0},
-                            {'name':'Param3', 'value':0.0},
-                            {'name':'Param4', 'value':0.0},
-                            {'name':'Param5', 'value':0.0},
-                            {'name':'Param6', 'value':0.0},
-                            {'name':'Param7', 'value':0.0},
-                            {'name':'TargetSystem', 'value':1},
-                            {'name':'TargetComponent', 'value':1},
-                            {'name':'SourceSystem', 'value':1},
-                            {'name':'SourceComponent', 'value':1},
-                            {'name':'Confirmation', 'value':0}]})
+# Arm
+airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
+                        {'name':'Timestamp', 'value':0},
+                        {'name':'Command', 'value':400},
+                        {'name':'Param1', 'value':1.0},
+                        {'name':'Param2', 'value':0.0},
+                        {'name':'Param3', 'value':0.0},
+                        {'name':'Param4', 'value':0.0},
+                        {'name':'Param5', 'value':0.0},
+                        {'name':'Param6', 'value':0.0},
+                        {'name':'Param7', 'value':0.0},
+                        {'name':'TargetSystem', 'value':1},
+                        {'name':'TargetComponent', 'value':1},
+                        {'name':'SourceSystem', 'value':0},
+                        {'name':'SourceComponent', 'value':0},
+                        {'name':'Confirmation', 'value':0}]})
+time.sleep(1)
 
-    airliner.send_telemetry({'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-                            {'name':'Timestamp', 'value':0},
-                            {'name':'X', 'value':0.0},
-                            {'name':'Y', 'value':0.0},
-                            {'name':'Z', 'value':0.5},
-                            {'name':'R', 'value':0.0},
-                            {'name':'Flaps', 'value':0.0},
-                            {'name':'Aux1', 'value':0.0},
-                            {'name':'Aux2', 'value':0.0},
-                            {'name':'Aux3', 'value':0.0},
-                            {'name':'Aux4', 'value':0.0},
-                            {'name':'Aux5', 'value':0.0},
-                            {'name':'ModeSwitch', 'value':0},
-                            {'name':'ReturnSwitch', 'value':0},
-                            {'name':'RattitudeSwitch', 'value':0},
-                            {'name':'PosctlSwitch', 'value':1},
-                            {'name':'LoiterSwitch', 'value':0},
-                            {'name':'AcroSwitch', 'value':0},
-                            {'name':'OffboardSwitch', 'value':0},
-                            {'name':'KillSwitch', 'value':0},
-                            {'name':'TransitionSwitch', 'value':0},
-                            {'name':'GearSwitch', 'value':0},
-                            {'name':'ArmSwitch', 'value':0},
-                            {'name':'StabSwitch', 'value':1},
-                            {'name':'ManSwitch', 'value':1},
-                            {'name':'ModeSlot', 'value':0},
-                            {'name':'DataSource', 'value':0}]})
-                             
-    # Sleep for duration of a major frame
-    time.sleep(1)
+# Takeoff
+airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
+                        {'name':'Timestamp', 'value':0},
+                        {'name':'Command', 'value':22},
+                        {'name':'Param1', 'value':0.0},
+                        {'name':'Param2', 'value':0.0},
+                        {'name':'Param3', 'value':0.0},
+                        {'name':'Param4', 'value':0.0},
+                        {'name':'Param5', 'value':0.0},
+                        {'name':'Param6', 'value':0.0},
+                        {'name':'Param7', 'value':0.0},
+                        {'name':'TargetSystem', 'value':1},
+                        {'name':'TargetComponent', 'value':1},
+                        {'name':'SourceSystem', 'value':1},
+                        {'name':'SourceComponent', 'value':1},
+                        {'name':'Confirmation', 'value':0}]})
+
+# 50% throttle
+airliner.send_telemetry({'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+                        {'name':'Timestamp', 'value':0},
+                        {'name':'X', 'value':0.0},
+                        {'name':'Y', 'value':0.0},
+                        {'name':'Z', 'value':0.5},
+                        {'name':'R', 'value':0.0},
+                        {'name':'Flaps', 'value':0.0},
+                        {'name':'Aux1', 'value':0.0},
+                        {'name':'Aux2', 'value':0.0},
+                        {'name':'Aux3', 'value':0.0},
+                        {'name':'Aux4', 'value':0.0},
+                        {'name':'Aux5', 'value':0.0},
+                        {'name':'ModeSwitch', 'value':0},
+                        {'name':'ReturnSwitch', 'value':0},
+                        {'name':'RattitudeSwitch', 'value':0},
+                        {'name':'PosctlSwitch', 'value':1},
+                        {'name':'LoiterSwitch', 'value':0},
+                        {'name':'AcroSwitch', 'value':0},
+                        {'name':'OffboardSwitch', 'value':0},
+                        {'name':'KillSwitch', 'value':0},
+                        {'name':'TransitionSwitch', 'value':0},
+                        {'name':'GearSwitch', 'value':0},
+                        {'name':'ArmSwitch', 'value':0},
+                        {'name':'StabSwitch', 'value':1},
+                        {'name':'ManSwitch', 'value':1},
+                        {'name':'ModeSlot', 'value':0},
+                        {'name':'DataSource', 'value':0}]})
+
+time.sleep(10)
+
+# Land
+airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
+                        {'name':'Timestamp', 'value':0},
+                        {'name':'Command', 'value':21},
+                        {'name':'Param1', 'value':0.0},
+                        {'name':'Param2', 'value':0.0},
+                        {'name':'Param3', 'value':0.0},
+                        {'name':'Param4', 'value':0.0},
+                        {'name':'Param5', 'value':0.0},
+                        {'name':'Param6', 'value':0.0},
+                        {'name':'Param7', 'value':0.0},
+                        {'name':'TargetSystem', 'value':1},
+                        {'name':'TargetComponent', 'value':1},
+                        {'name':'SourceSystem', 'value':1},
+                        {'name':'SourceComponent', 'value':1},
+                        {'name':'Confirmation', 'value':0}]})
+
+## Disarm
+#airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
+#                        {'name':'Timestamp', 'value':0},
+#                        {'name':'Command', 'value':400},
+#                        {'name':'Param1', 'value':0.0},
+#                        {'name':'Param2', 'value':0.0},
+#                        {'name':'Param3', 'value':0.0},
+#                        {'name':'Param4', 'value':0.0},
+#                        {'name':'Param5', 'value':0.0},
+#                        {'name':'Param6', 'value':0.0},
+#                        {'name':'Param7', 'value':0.0},
+#                        {'name':'TargetSystem', 'value':1},
+#                        {'name':'TargetComponent', 'value':1},
+#                        {'name':'SourceSystem', 'value':0},
+#                        {'name':'SourceComponent', 'value':0},
+#                        {'name':'Confirmation', 'value':0}]})
+
+#                         
+## Sleep for duration of a major frame
+#time.sleep(1)
