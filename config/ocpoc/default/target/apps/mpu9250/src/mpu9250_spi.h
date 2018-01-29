@@ -90,24 +90,43 @@
 #define MPU9250_REG_WOM_THRESH              (0x1F)
 /** \brief FIFO Enable. */
 #define MPU9250_REG_FIFO_EN                 (0x23)
+/** \brief I2C Master Control. */
 #define MPU9250_REG_I2C_MST_CTRL            (0x24)
+/** \brief I2C Slave 0 Address. */
 #define MPU9250_REG_I2C_SLV0_ADDR           (0x25)
+/** \brief I2C Slave 0 Register. */
 #define MPU9250_REG_I2C_SLV0_REG            (0x26)
+/** \brief I2C Slave 0 Control. */
 #define MPU9250_REG_I2C_SLV0_CTRL           (0x27)
+/** \brief I2C Slave 1 Address. */
 #define MPU9250_REG_I2C_SLV1_ADDR           (0x28)
+/** \brief I2C Slave 1 Registers. */
 #define MPU9250_REG_I2C_SLV1_REG            (0x29)
+/** \brief I2C Slave 1 Control. */
 #define MPU9250_REG_I2C_SLV1_CTRL           (0x2A)
+/** \brief I2C Slave 2 Address. */
 #define MPU9250_REG_I2C_SLV2_ADDR           (0x2B)
+/** \brief I2C Slave 2 Registers. */
 #define MPU9250_REG_I2C_SLV2_REG            (0x2C)
+/** \brief I2C Slave 2 Control. */
 #define MPU9250_REG_I2C_SLV2_CTRL           (0x2D)
+/** \brief I2C Slave 3 Address. */
 #define MPU9250_REG_I2C_SLV3_ADDR           (0x2E)
+/** \brief I2C Slave 3 Registers. */
 #define MPU9250_REG_I2C_SLV3_REG            (0x2F)
+/** \brief I2C Slave 3 Control. */
 #define MPU9250_REG_I2C_SLV3_CTRL           (0x30)
+/** \brief I2C Slave 4 Address. */
 #define MPU9250_REG_I2C_SLV4_ADDR           (0x31)
+/** \brief I2C Slave 4 Registers. */
 #define MPU9250_REG_I2C_SLV4_REG            (0x32)
+/** \brief I2C Data out, Data to be written to I2C Slave 4. */
 #define MPU9250_REG_I2C_SLV4_DO             (0x33)
+/** \brief I2C Slave 4 Control. */
 #define MPU9250_REG_I2C_SLV4_CTRL           (0x34)
+/** \brief I2C Data in, Data to be read from I2C Slave 4. */
 #define MPU9250_REG_I2C_SLV4_DI             (0x35)
+/** \brief I2C Master Status. */
 #define MPU9250_REG_I2C_MST_STATUS          (0x36)
 /** \brief Interrupt Pin / Bypass Enable Configuration. */
 #define MPU9250_REG_INT_PIN_CFG             (0x37)
@@ -149,11 +168,13 @@
 #define MPU9250_REG_EXT_SENS_DATA_01        (0x4A)
 /** \brief External sensor data 2 */
 #define MPU9250_REG_EXT_SENS_DATA_02        (0x4B)
-
-#define MPU9250_REG_I2C_SLV0_DO             (0x63)
+/** \brief I2C Data out, Data to be written to I2C Slave 1. */
 #define MPU9250_REG_I2C_SLV1_DO             (0x64)
+/** \brief I2C Data out, Data to be written to I2C Slave 2. */
 #define MPU9250_REG_I2C_SLV2_DO             (0x65)
+/** \brief I2C Data out, Data to be written to I2C Slave 3. */
 #define MPU9250_REG_I2C_SLV3_DO             (0x66)
+/** \brief I2C Master Delay Control. */
 #define MPU9250_REG_I2C_MST_DELAY_CTRL      (0x67)
 /** \brief Digital signal path reset. */
 #define MPU9250_REG_SIGNAL_PATH_RESET       (0x68)
@@ -175,38 +196,63 @@
 #define MPU9250_REG_WHOAMI                  (0x75)
 
 /* Configuration bits mpu9250 */
+/** \brief Power Management 1 sleep bit. */
 #define MPU9250_BIT_SLEEP                   (0x40)
+/** \brief Power Management 1 hardware reset bit. */
 #define MPU9250_BIT_H_RESET                 (0x80)
+/** \brief Power Management 1 clock select bit. */
 #define MPU9250_BITS_CLKSEL                 (0x07)
+
 #define MPU9250_MPU_CLK_SEL_PLLGYROX        (0x01)
 #define MPU9250_MPU_CLK_SEL_PLLGYROZ        (0x03)
 #define MPU9250_MPU_EXT_SYNC_GYROX          (0x02)
+/** \brief Gyro Full Scale Select bit 250 DPS. */
 #define MPU9250_BITS_FS_250DPS              (0x00)
+/** \brief Gyro Full Scale Select bit 500 DPS. */
 #define MPU9250_BITS_FS_500DPS              (0x08)
+/** \brief Gyro Full Scale Select bit 1000 DPS. */
 #define MPU9250_BITS_FS_1000DPS             (0x10)
+/** \brief Gyro Full Scale Select bit 2000 DPS. */
 #define MPU9250_BITS_FS_2000DPS             (0x18)
+/** \brief Accel Full Scale Select bit 2G. */
 #define MPU9250_BITS_FS_2G                  (0x00)
+/** \brief Accel Full Scale Select bit 4G. */
 #define MPU9250_BITS_FS_4G                  (0x08)
+/** \brief Accel Full Scale Select bit 8G. */
 #define MPU9250_BITS_FS_8G                  (0x10)
+/** \brief Accel Full Scale Select bit 16G. */
 #define MPU9250_BITS_FS_16G                 (0x18)
-#define MPU9250_BITS_FS_MASK                (0x18)
+//#define MPU9250_BITS_FS_MASK                (0x18)
+/** \brief Digital Low Pass Filter Configuration bit 250Hz. */
 #define MPU9250_BITS_DLPF_CFG_250HZ         (0x00)
+/** \brief Digital Low Pass Filter Configuration bit 184Hz. */
 #define MPU9250_BITS_DLPF_CFG_184HZ         (0x01)
+/** \brief Digital Low Pass Filter Configuration bit 92Hz. */
 #define MPU9250_BITS_DLPF_CFG_92HZ          (0x02)
+/** \brief Digital Low Pass Filter Configuration bit 41Hz. */
 #define MPU9250_BITS_DLPF_CFG_41HZ          (0x03)
+/** \brief Digital Low Pass Filter Configuration bit 20Hz. */
 #define MPU9250_BITS_DLPF_CFG_20HZ          (0x04)
+/** \brief Digital Low Pass Filter Configuration bit 10Hz. */
 #define MPU9250_BITS_DLPF_CFG_10HZ          (0x05)
+/** \brief Digital Low Pass Filter Configuration bit 5Hz. */
 #define MPU9250_BITS_DLPF_CFG_5HZ           (0x06)
+/** \brief Digital Low Pass Filter Configuration bit 3600Hz. */
 #define MPU9250_BITS_DLPF_CFG_3600HZ        (0x07)
-#define MPU9250_BITS_DLPF_CFG_MASK          (0x07)
+//#define MPU9250_BITS_DLPF_CFG_MASK          (0x07)
+/** \brief Interrupt status cleared configuration bit. */
 #define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
+/** \brief Enable raw sensor data ready interrupt to pin bit. */
 #define MPU9250_BIT_RAW_RDY_EN              (0x01)
+/** \brief Reset I2C slave and set interface to SPI mode only. */
 #define MPU9250_BIT_I2C_IF_DIS              (0x10)
+
 #define MPU9250_READ_FLAG                   (0x80)
-#define MPU9250_BIT_RAW_RDY_EN              (0x01)
-#define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
+/** \brief The default value of the MPU9250 device ID. */
 #define MPU9250_WHOAMI_9250                 (0x71)
+/** \brief The I2C address of the Magnetometer. */
 #define MPU9250_AK8963_I2C_ADDR             (0x0C)
+/** \brief The default value of the AK8963 device ID. */
 #define MPU9250_AK8963_Device_ID            (0x48)
 
 /* AK8963 Register map for the Magnetometer */
@@ -265,7 +311,6 @@
 #define MPU9250_AK8963_MEA1_MODE            (0x02)
 /** \brief AK8963 output bit setting. */
 #define MPU9250_AK8963_16BIT_ADC            (0x10)
-
 
 /* Masks IMU */
 /** \brief Data ready. */
