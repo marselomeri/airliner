@@ -231,6 +231,107 @@ uint32 PX4_PositionSetpointTripletMsg_t_Dec(const char *inBuffer, uint32 inSize,
 }
 
 
+uint32 PX4_ManualControlSetpointMsg_t_Enc(const PX4_ManualControlSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
+{
+	bool status = false;
+	pb_ostream_t stream;
+
+	px4_manual_control_setpoint_pb pbMsg;
+
+    pbMsg.ModeSlot = inObject->ModeSlot;
+    pbMsg.Timestamp = inObject->Timestamp;
+    pbMsg.KillSwitch = inObject->KillSwitch;
+    pbMsg.ArmSwitch = inObject->ArmSwitch;
+    pbMsg.ManSwitch = inObject->ManSwitch;
+    pbMsg.ModeSwitch = inObject->ModeSwitch;
+    pbMsg.LoiterSwitch = inObject->LoiterSwitch;
+    pbMsg.ReturnSwitch = inObject->ReturnSwitch;
+    pbMsg.RattitudeSwitch = inObject->RattitudeSwitch;
+    pbMsg.PosctlSwitch = inObject->PosctlSwitch;
+    pbMsg.TransitionSwitch = inObject->TransitionSwitch;
+    pbMsg.R = inObject->R;
+    pbMsg.Flaps = inObject->Flaps;
+    pbMsg.Y = inObject->Y;
+    pbMsg.X = inObject->X;
+    pbMsg.Z = inObject->Z;
+    pbMsg.OffboardSwitch = inObject->OffboardSwitch;
+    pbMsg.GearSwitch = inObject->GearSwitch;
+    pbMsg.StabSwitch = inObject->StabSwitch;
+    pbMsg.AcroSwitch = inObject->AcroSwitch;
+    pbMsg.DataSource = inObject->DataSource;
+    pbMsg.Aux2 = inObject->Aux2;
+    pbMsg.Aux3 = inObject->Aux3;
+    pbMsg.Aux1 = inObject->Aux1;
+    pbMsg.Aux4 = inObject->Aux4;
+    pbMsg.Aux5 = inObject->Aux5;
+
+	/* Create a stream that will write to our buffer. */
+	stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+	
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4_manual_control_setpoint_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("Error encoding msg: %s", PB_GET_ERROR(&stream));
+		return 0;
+	}
+
+	return stream.bytes_written;
+}
+
+uint32 PX4_ManualControlSetpointMsg_t_Dec(const char *inBuffer, uint32 inSize, PX4_ManualControlSetpointMsg_t *inOutObject)
+{
+	bool status = false;
+	pb_istream_t stream;
+
+	px4_manual_control_setpoint_pb pbMsg;
+
+    /* Create a stream that reads from the buffer. */
+	stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4_manual_control_setpoint_pb_fields, &pbMsg); 
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("Error decoding msg: %s", PB_GET_ERROR(&stream));
+		return 0;
+	}
+
+    inOutObject->ModeSlot = pbMsg.ModeSlot;
+    inOutObject->Timestamp = pbMsg.Timestamp;
+    inOutObject->KillSwitch = pbMsg.KillSwitch;
+    inOutObject->ArmSwitch = pbMsg.ArmSwitch;
+    inOutObject->ManSwitch = pbMsg.ManSwitch;
+    inOutObject->ModeSwitch = pbMsg.ModeSwitch;
+    inOutObject->LoiterSwitch = pbMsg.LoiterSwitch;
+    inOutObject->ReturnSwitch = pbMsg.ReturnSwitch;
+    inOutObject->RattitudeSwitch = pbMsg.RattitudeSwitch;
+    inOutObject->PosctlSwitch = pbMsg.PosctlSwitch;
+    inOutObject->TransitionSwitch = pbMsg.TransitionSwitch;
+    inOutObject->R = pbMsg.R;
+    inOutObject->Flaps = pbMsg.Flaps;
+    inOutObject->Y = pbMsg.Y;
+    inOutObject->X = pbMsg.X;
+    inOutObject->Z = pbMsg.Z;
+    inOutObject->OffboardSwitch = pbMsg.OffboardSwitch;
+    inOutObject->GearSwitch = pbMsg.GearSwitch;
+    inOutObject->StabSwitch = pbMsg.StabSwitch;
+    inOutObject->AcroSwitch = pbMsg.AcroSwitch;
+    inOutObject->DataSource = pbMsg.DataSource;
+    inOutObject->Aux2 = pbMsg.Aux2;
+    inOutObject->Aux3 = pbMsg.Aux3;
+    inOutObject->Aux1 = pbMsg.Aux1;
+    inOutObject->Aux4 = pbMsg.Aux4;
+    inOutObject->Aux5 = pbMsg.Aux5;
+
+	return sizeof(PX4_ManualControlSetpointMsg_t);
+}
+
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

@@ -88,6 +88,8 @@ add_airliner_app_def(pblib
         ${PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.c
         ${PROTOBUF_MSGS_DIR}/px4_position_setpoint_triplet.pb.h
         ${PROTOBUF_MSGS_DIR}/px4_position_setpoint_triplet.pb.c
+        ${PROTOBUF_MSGS_DIR}/px4_manual_control_setpoint.pb.h
+        ${PROTOBUF_MSGS_DIR}/px4_manual_control_setpoint.pb.c
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
@@ -125,6 +127,7 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_tlm_pool_stats_cmd.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_dump_cds_reg.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_position_setpoint_triplet.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_manual_control_setpoint.proto
         
     PROTOBUF_MSGS_DIR        
         ${PROTOBUF_MSGS_DIR}

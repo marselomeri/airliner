@@ -22,6 +22,7 @@ import es_restart_pb2
 import es_overwrite_sys_log_pb2
 import es_perf_set_filter_mask_pb2
 import px4_position_setpoint_triplet_pb2
+import px4_manual_control_setpoint_pb2
 
 proto_msg_map = { 
     "CFE_ES_AppNameCmd_t": es_app_name_pb2.es_app_name_pb,
@@ -46,5 +47,6 @@ proto_msg_map = {
     "CFE_ES_OverWriteSysLogCmd_t": es_overwrite_sys_log_pb2.es_overwrite_sys_log_pb,
     "CFE_ES_PerfSetFilterMaskCmd_t": es_perf_set_filter_mask_pb2.es_perf_set_filter_mask_pb,
     "PX4_PositionSetpointTripletMsg_t": px4_position_setpoint_triplet_pb2.px4_position_setpoint_triplet_pb,
+    "PX4_ManualControlSetpointMsg_t": px4_manual_control_setpoint_pb2.px4_manual_control_setpoint_pb,
 }
 
