@@ -92,6 +92,7 @@ class Pyliner(object):
         # If the command code is -1 this is telemetry
         if op["airliner_cc"] == -1:
             ret_msg = CCSDS_TlmPkt_t()
+            ret_msg.clear_packet()
             ret_msg.init_packet()
             ret_msg.PriHdr.StreamId.bits.app_id = int(op["airliner_mid"], 0)
         else:
@@ -101,6 +102,7 @@ class Pyliner(object):
             ret_msg.PriHdr.StreamId.bits.app_id = int(op["airliner_mid"], 0)
             ret_msg.SecHdr.Command.bits.code = int(op["airliner_cc"])
         
+        print int(op["airliner_mid"],0)
         return ret_msg
 
     def serialize(self, header, payload):
