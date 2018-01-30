@@ -1867,261 +1867,261 @@
 			            "proto_msg": "px4_manual_control_setpoint_pb",
                         "operational_names": {
                             "Timestamp": {
-			                    "field_path": "Timestamp"
+			                    "field_path": "timestamp"
 			                },
 			                "X": {
-			                    "field_path": "X"
+			                    "field_path": "x"
 			                },
 			                "Y": {
-			                    "field_path": "Y"
+			                    "field_path": "y"
 			                },
 			                "Z": {
-			                    "field_path": "Z"
+			                    "field_path": "z"
 			                },
 			                "R": {
-			                    "field_path": "R"
+			                    "field_path": "r"
 			                },
 			                "Flaps": {
-			                    "field_path": "Flaps"
+			                    "field_path": "flaps"
 			                },
 			                "Aux1": {
-			                    "field_path": "Aux1"
+			                    "field_path": "aux1"
 			                },
 			                "Aux2": {
-			                    "field_path": "Aux2"
+			                    "field_path": "aux2"
 			                },
 			                "Aux3": {
-			                    "field_path": "Aux3"
+			                    "field_path": "aux3"
 			                },
 			                "Aux4": {
-			                    "field_path": "Aux4"
+			                    "field_path": "aux4"
 			                },
 			                "Aux5": {
-			                    "field_path": "Aux5"
+			                    "field_path": "aux5"
 			                },
 			                "ModeSwitch": {
-			                    "field_path": "ModeSwitch"
+			                    "field_path": "mode_switch"
 			                },
 			                "ReturnSwitch": {
-			                    "field_path": "ReturnSwitch"
+			                    "field_path": "return_switch"
 			                },
 			                "RattitudeSwitch": {
-			                    "field_path": "RattitudeSwitch"
+			                    "field_path": "rattitude_switch"
 			                },
 			                "PosctlSwitch": {
-			                    "field_path": "PosctlSwitch"
+			                    "field_path": "posctl_switch"
 			                },
 			                "LoiterSwitch": {
-			                    "field_path": "LoiterSwitch"
+			                    "field_path": "loiter_switch"
 			                },
 			                "AcroSwitch": {
-			                    "field_path": "AcroSwitch"
+			                    "field_path": "acro_switch"
 			                },
 			                "OffboardSwitch": {
-			                    "field_path": "OffboardSwitch"
+			                    "field_path": "offboard_switch"
 			                },
 			                "KillSwitch": {
-			                    "field_path": "KillSwitch"
+			                    "field_path": "kill_switch"
 			                },
 			                "TransitionSwitch": {
-			                    "field_path": "TransitionSwitch"
+			                    "field_path": "transition_switch"
 			                },
 			                "GearSwitch": {
-			                    "field_path": "GearSwitch"
+			                    "field_path": "gear_switch"
 			                },
 			                "ArmSwitch": {
-			                    "field_path": "ArmSwitch"
+			                    "field_path": "arm_switch"
 			                },
 			                "StabSwitch": {
-			                    "field_path": "StabSwitch"
+			                    "field_path": "stab_switch"
 			                },
 			                "ManSwitch": {
-			                    "field_path": "ManSwitch"
+			                    "field_path": "man_switch"
 			                },
 			                "ModeSlot": {
-			                    "field_path": "ModeSlot"
+			                    "field_path": "mode_slot"
 			                },
 			                "DataSource": {
-			                    "field_path": "DataSource"
+			                    "field_path": "data_source"
 			                }
                         },
 			            "fields": {
-				            "Timestamp": {
+				            "timestamp": {
 					            "airliner_name": "Timestamp", 
 					            "pb_type": "uint64",
 					            "pb_field_rule": "required",
 					            "airliner_type": "uint64",
 					            "array_length": 0
 				            },
-				            "X": {
+				            "x": {
 					            "airliner_name": "X", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Y": {
+				            "y": {
 					            "airliner_name": "Y", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Z": {
+				            "z": {
 					            "airliner_name": "Z", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "R": {
+				            "r": {
 					            "airliner_name": "R", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Flaps": {
+				            "flaps": {
 					            "airliner_name": "Flaps", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Aux1": {
+				            "aux1": {
 					            "airliner_name": "Aux1", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Aux2": {
+				            "aux2": {
 					            "airliner_name": "Aux2", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Aux3": {
+				            "aux3": {
 					            "airliner_name": "Aux3", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Aux4": {
+				            "aux4": {
 					            "airliner_name": "Aux4", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "Aux5": {
+				            "aux5": {
 					            "airliner_name": "Aux5", 
 					            "pb_type": "float",
 					            "pb_field_rule": "required",
 					            "airliner_type": "float",
 					            "array_length": 0
 				            },
-				            "ModeSwitch": {
+				            "mode_switch": {
 					            "airliner_name": "ModeSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "ReturnSwitch": {
+				            "return_switch": {
 					            "airliner_name": "ReturnSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "RattitudeSwitch": {
+				            "rattitude_switch": {
 					            "airliner_name": "RattitudeSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "PosctlSwitch": {
+				            "posctl_switch": {
 					            "airliner_name": "PosctlSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "LoiterSwitch": {
+				            "loiter_switch": {
 					            "airliner_name": "LoiterSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "AcroSwitch": {
+				            "acro_switch": {
 					            "airliner_name": "AcroSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "OffboardSwitch": {
+				            "offboard_switch": {
 					            "airliner_name": "OffboardSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "KillSwitch": {
+				            "kill_switch": {
 					            "airliner_name": "KillSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "TransitionSwitch": {
+				            "transition_switch": {
 					            "airliner_name": "TransitionSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "GearSwitch": {
+				            "gear_switch": {
 					            "airliner_name": "GearSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "ArmSwitch": {
+				            "arm_switch": {
 					            "airliner_name": "ArmSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "StabSwitch": {
+				            "stab_switch": {
 					            "airliner_name": "StabSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "ManSwitch": {
+				            "man_switch": {
 					            "airliner_name": "ManSwitch", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_SwitchPos_t",
 					            "array_length": 0
 				            },
-				            "ModeSlot": {
+				            "mode_slot": {
 					            "airliner_name": "ModeSlot", 
 					            "pb_type": "uint32",
 					            "pb_field_rule": "required",
 					            "airliner_type": "PX4_ModeSlot_t",
 					            "array_length": 0
 				            },
-				            "DataSource": {
+				            "data_source": {
 					            "airliner_name": "DataSource", 
 					            "pb_type": "int32",
 					            "pb_field_rule": "required",

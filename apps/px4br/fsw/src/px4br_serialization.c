@@ -1823,9 +1823,13 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 	pbMsg.acro_switch = inObject->AcroSwitch;
 	pbMsg.offboard_switch = inObject->OffboardSwitch;
 	pbMsg.kill_switch = inObject->KillSwitch;
+    pbMsg.arm_switch = inObject->ArmSwitch;
 	pbMsg.transition_switch = inObject->TransitionSwitch;
+    pbMsg.gear_switch = inObject->GearSwitch;
 	pbMsg.mode_slot = inObject->ModeSlot;
 	pbMsg.data_source = inObject->DataSource;
+    pbMsg.stab_switch = inObject->StabSwitch;
+    pbMsg.man_switch = inObject->ManSwitch;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -1877,9 +1881,13 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->AcroSwitch = pbMsg.acro_switch;
 	inOutObject->OffboardSwitch = pbMsg.offboard_switch;
 	inOutObject->KillSwitch = pbMsg.kill_switch;
+    inOutObject->ArmSwitch = pbMsg.arm_switch;
 	inOutObject->TransitionSwitch = pbMsg.transition_switch;
+    inOutObject->GearSwitch = pbMsg.gear_switch;
 	inOutObject->ModeSlot = pbMsg.mode_slot;
 	inOutObject->DataSource = pbMsg.data_source;
+    inOutObject->StabSwitch = pbMsg.stab_switch;
+    inOutObject->ManSwitch = pbMsg.man_switch;
 
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }

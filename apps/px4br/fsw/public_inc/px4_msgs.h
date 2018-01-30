@@ -187,7 +187,11 @@ typedef enum
 
 typedef enum
 {
-	PX4_MANUAL_CONTROL_SOURCE_RC = 1
+	PX4_MANUAL_CONTROL_SOURCE_RC          = 1,
+    PX4_MANUAL_CONTROL_SOURCE_MAVLINK_0   = 2,
+    PX4_MANUAL_CONTROL_SOURCE_MAVLINK_1   = 3,
+    PX4_MANUAL_CONTROL_SOURCE_MAVLINK_2   = 4,
+    PX4_MANUAL_CONTROL_SOURCE_MAVLINK_3   = 5
 } PX4_ManualControlDataSource_t;
 
 
@@ -202,6 +206,7 @@ typedef enum
 	PX4_MODE_SLOT_6		= 5,
 	PX4_MODE_SLOT_MAX	= 6
 } PX4_ModeSlot_t;
+
 
 typedef enum
 {
