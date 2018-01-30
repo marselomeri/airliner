@@ -39,14 +39,12 @@ message px4_position_setpoint_pb
 	required uint32 type = 22;
 	required bool position_valid = 23;
 	required bool velocity_valid = 24;
-	required uint32 velocity_frame = 25;
-	required bool alt_valid = 26;
-	required bool yaw_valid = 27;
-	required bool disable_mc_yaw_control = 28;
-	required bool yawspeed_valid = 29;
-	required int32 loiter_direction = 30;
-	required bool acceleration_valid = 31;
-	required bool acceleration_is_force = 32;
+	required bool yaw_valid = 25;
+	required bool disable_mc_yaw_control = 26;
+	required bool yawspeed_valid = 27;
+	required int32 loiter_direction = 28;
+	required bool acceleration_valid = 29;
+	required bool acceleration_is_force = 30;
 }
 
 // ORB_DECLARE(position_setpoint);
