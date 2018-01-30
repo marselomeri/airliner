@@ -312,16 +312,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    mpc
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpc/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpc
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpc_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpc_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpc_perfids.h
-)
-
-add_airliner_app(
     ae
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/ae/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ae
