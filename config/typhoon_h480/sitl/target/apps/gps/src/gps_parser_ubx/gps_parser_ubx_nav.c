@@ -1664,6 +1664,7 @@ void GPS_Nav_ParseChar_SVINFOH(uint8 byte, GPS_DeviceMessage_t* message)
     /* If we're in part 2 of the SVINFO message */
     else if(GPS_AppCustomData.ParserStatus.PayloadCursor >= 8)
     {
+        /* Save a max limim of part 2 SVINFO messages */
         if (i < (GPS_AppCustomData.ParserStatus.MsgLength - 8) / 12 &&
             i < PX4_SAT_INFO_MAX_SATELLITES)
         {

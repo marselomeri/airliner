@@ -12,7 +12,7 @@
 /*
 ** FM file system free space table header
 */
-static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
+static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 {
     "FM_FreeSpaceTable", FM_APP_NAME "." FM_TABLE_CFE_NAME,
     FM_TABLE_DEF_DESC, FM_TABLE_FILENAME, sizeof(FM_FreeSpaceTable_t)

@@ -218,8 +218,6 @@ void TO_OutputChannel_CustomCleanupAll()
     {
         if(TO_OutputChannel_Status(i) == TO_CHANNEL_ENABLED)
         {
-            uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
-
             TO_OutputChannel_Disable(i);
         }
     }
@@ -585,7 +583,9 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             {
                 CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
                                 "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
-                TO_Channel_State(ChannelIdx) == TO_CHANNEL_CLOSED;
+                OS_MutSemTake(TO_AppData.MutexID);
+                TO_AppData.ChannelData[ChannelIdx].State = TO_CHANNEL_CLOSED;
+                OS_MutSemGive(TO_AppData.MutexID);
             }
         }
     }

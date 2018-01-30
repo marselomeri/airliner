@@ -311,7 +311,7 @@ int32 MS5611::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case MS5611_SEND_HK_MID:
-            	ProcessCmdPipe();
+                ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
 
@@ -573,7 +573,8 @@ void MS5611::AppMain()
 boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
 {
     uint32 D1 = 0;  //ADC value of the pressure conversion
-    uint32 D2 = 0;  //ADC value of the temperature conversion
+    /* TODO static */
+    static uint32 D2 = 0;  //ADC value of the temperature conversion
     int32 dT = 0;   //difference between actual and measured temp.
     int64 OFF = 0;  //offset at actual temperature
     int64 SENS = 0; //sensitivity at actual temperature
@@ -603,35 +604,46 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
         goto end_of_function;
     }
 
-    returnBool = MS5611_D2Conversion();
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 get measurement D2 conversion failed");
-        returnBool = FALSE;
-        goto end_of_function;
+    /* Measurement ratio pressure per temperature measurements */
+    /* TODO move this to platform config */
+    if(0 == Diag.MeasureCount % 3)
+    { 
+        if(0xFF == Diag.MeasureCount)
+        {
+            /* Roll over*/
+            Diag.MeasureCount = 0;
+        }
+        
+        returnBool = MS5611_D2Conversion();
+        if (FALSE == returnBool)
+        {
+            CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                    "MS5611 get measurement D2 conversion failed");
+            returnBool = FALSE;
+            goto end_of_function;
+        }
+        
+        returnBool = MS5611_ReadADCResult(&D2);
+        if (FALSE == returnBool)
+        {
+            CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
+                    "MS5611 read ADC result D2 failed");
+            returnBool = FALSE;
+            goto end_of_function;
+        }
     }
-    
-    returnBool = MS5611_ReadADCResult(&D2);
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MS5611_READ_ERR_EID, CFE_EVS_ERROR,
-                "MS5611 read ADC result D2 failed");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
+    Diag.MeasureCount++;
     /* D2 - C5 * 2^8 */
-    dT    = D2 - MS5611_Coefficients[5] * (0x100l);
+    dT    = (int32)D2 - ((int32)MS5611_Coefficients[5] << 8);
     /* The following two equations must be solved with 64-bit integers (long long int)
      * or overflow could occur. Note integer-suffix ll. */
 
     /* C2 * 2^16 + (C4 * dT )/ 2^7 */
-    OFF   = MS5611_Coefficients[2] * (0x10000ll) + (dT * MS5611_Coefficients[4]) / (0x80ll);
+    OFF   = ((int64)MS5611_Coefficients[2] << 16) + (((int64)MS5611_Coefficients[4] * dT) >> 7);
     /* C1 * 2^15 + (C3 * dT )/ 2^8 */
-    SENS  = MS5611_Coefficients[1] * (0x8000ll) + (dT * MS5611_Coefficients[3]) / (0x100ll);
+    SENS  = ((int64)MS5611_Coefficients[1] << 15) + (((int64)MS5611_Coefficients[3] * dT) >> 8);
     /* 2000 + dT * C6 / 2^23 */
-    TempValidate = 2000 + dT * MS5611_Coefficients[6] / (0x800000l);
+    TempValidate = 2000 + (int32)(((int64)dT * MS5611_Coefficients[6]) >> 23);
 
     if(TempValidate > MS5611_TEMP_MIN && TempValidate < MS5611_TEMP_MAX)
     {
@@ -647,16 +659,16 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
     /* Second order temperature compensation */
     if(*Temperature < 2000)
     {
-        T2    = (dT *dT) >> 31;
-        TEMP  = *Temperature - 2000;
+        T2    = (dT * dT) >> 31;
+        TEMP  = (int64)*Temperature - 2000;
         OFF2  = (5 *  TEMP * TEMP) >> 1;
-        SENS2 = OFF2 >> 1;
+        SENS2 = (5 *  TEMP * TEMP) >> 2;
 
         if(*Temperature < -1500)
         {
             TEMP  = *Temperature + 1500;
-            OFF2  = OFF2 + 7 * TEMP * TEMP;
-            SENS2 = (SENS2 + (11 * TEMP * TEMP) ) >> 1;
+            OFF2  += 7 * TEMP * TEMP;
+            SENS2 += (11 * TEMP * TEMP) >> 1;
         }
 
         *Temperature -= T2;
@@ -664,7 +676,7 @@ boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
         SENS  -= SENS2;
     }
     /*  (D1 * SENS / 2^21 - OFF) / 2^15*/
-    PressValidate = (int32)((D1 * SENS / (0x200000l) - OFF) / (0x8000l) );
+    PressValidate = ((((D1 * SENS) >> 21) - OFF ) >> 15);
 
     if(PressValidate > MS5611_PRESS_MIN && PressValidate < MS5611_PRESS_MAX)
     {
@@ -718,7 +730,7 @@ void MS5611::ReadDevice(void)
         /* current pressure at MSL in kPa */
         double p1 = 101325 / 1000.0;
         /* measured pressure in kPa */
-        double p = pressure / 1000.0;
+        double p = static_cast<double>(pressure) / 1000.0;
     
         /*
          * Solve:
