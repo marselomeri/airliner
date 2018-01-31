@@ -127,8 +127,8 @@ extern "C" {
 
 #define MAVLINK_MSG_PARAM_NAME_LEN      (64)
 
-#define MAVLINK_PARAM_SYSTEM_ID         (1)
-#define MAVLINK_PARAM_COMPONENT_ID      (1)
+#define MAVLINK_SYSTEM_ID         (1)
+#define MAVLINK_COMPONENT_ID      (1)
 #define MAVLINK_GCS_IP                  ("10.10.0.13")
 #define MAVLINK_GCS_PORT                (14550)
 #define MAVLINK_PASSTHRU_IP_SRC         ("127.0.0.1")
