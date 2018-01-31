@@ -200,7 +200,7 @@ def vehicle_posctl_mode():
         {'name':'SourceSystem', 'value':0},
         {'name':'SourceComponent', 'value':0},
         {'name':'Confirmation', 'value':0}]})
-    time.sleep(1)
+    time.sleep(0.1)
     # Transition to posctl mode.
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
@@ -219,7 +219,7 @@ def vehicle_posctl_mode():
         {'name':'SourceSystem', 'value':0},
         {'name':'SourceComponent', 'value':0},
         {'name':'Confirmation', 'value':0}]})
-    time.sleep(1)
+    time.sleep(0.1)
 
 
 def vehicle_stable_hover():
@@ -258,7 +258,7 @@ def vehicle_full_forward():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':0},
-        {'name':'X', 'value':-1.0},
+        {'name':'X', 'value':1.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
         {'name':'R', 'value':0.0},
@@ -320,7 +320,7 @@ def vehicle_full_reverse():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':0},
-        {'name':'X', 'value':1.0},
+        {'name':'X', 'value':-1.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
         {'name':'R', 'value':0.0},
@@ -381,7 +381,7 @@ def vehicle_land():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
         {'name':'Timestamp', 'value':0},
-        {'name':'Command', 'value':int(MavCustomSubModeAuto.land)},
+        {'name':'Command', 'value':int(MsgVehicleCmd.nav_land)},
         {'name':'Param1', 'value':0.0},
         {'name':'Param2', 'value':0.0},
         {'name':'Param3', 'value':0.0},
@@ -394,16 +394,44 @@ def vehicle_land():
         {'name':'SourceSystem', 'value':0},
         {'name':'SourceComponent', 'value':0},
         {'name':'Confirmation', 'value':0}]})
+    time.sleep(10)
 
 
-def vehicle_fly_square():
+def vehicle_fly_square_ccw():
     vehicle_full_forward()
+    time.sleep(1)
+    vehicle_stable_hover()
     time.sleep(1)
     vehicle_full_left()
     time.sleep(1)
+    vehicle_stable_hover()
+    time.sleep(1)
     vehicle_full_reverse()
     time.sleep(1)
+    vehicle_stable_hover()
+    time.sleep(1)
     vehicle_full_right()
+    time.sleep(1)
+    vehicle_stable_hover()
+    time.sleep(1)
+
+
+def vehicle_fly_square_cw():
+    vehicle_full_forward()
+    time.sleep(1)
+    vehicle_stable_hover()
+    time.sleep(1)
+    vehicle_full_right()
+    time.sleep(1)
+    vehicle_stable_hover()
+    time.sleep(1)
+    vehicle_full_reverse()
+    time.sleep(1)
+    vehicle_stable_hover()
+    time.sleep(1)
+    vehicle_full_left()
+    time.sleep(1)
+    vehicle_stable_hover()
     time.sleep(1)
 
 
@@ -411,7 +439,8 @@ vehicle_arm()
 vehicle_takeoff()
 vehicle_posctl_mode()
 vehicle_stable_hover()
-vehicle_fly_square()
+vehicle_fly_square_ccw()
+vehicle_fly_square_cw()
 vehicle_land()
 vehicle_disarm()
 
