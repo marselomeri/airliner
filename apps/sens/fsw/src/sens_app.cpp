@@ -1048,7 +1048,9 @@ void SENS::CombineSensorInput(void)
 
 		/* Accelerometer. */
 		/* See if we have a new accelerometer measurement. */
-		if(CVT.SensorAccelMsg.Timestamp > CVT.LastAccelTime)
+		if(CVT.SensorAccelMsg.Timestamp > CVT.LastAccelTime || 
+		   CVT.LastAccelTime == PX4_RELATIVE_TIMESTAMP_INVALID && 
+		   CVT.SensorAccelMsg.Timestamp != CVT.LastAccelTime)
 		{
 			/* We do have a new measurement.  Update the fields accordingly.
 			 * First populate the new values.
@@ -1105,7 +1107,9 @@ void SENS::CombineSensorInput(void)
 
 		/* Mag. */
 		/* See if we have a new magnetometer measurement. */
-		if(CVT.SensorMagMsg.Timestamp > CVT.LastMagTime)
+		if(CVT.SensorMagMsg.Timestamp > CVT.LastMagTime ||
+		   CVT.LastMagTime == PX4_RELATIVE_TIMESTAMP_INVALID && 
+		   CVT.SensorMagMsg.Timestamp != CVT.LastMagTime)
 		{
 			/* We do have a new measurement.  Update the fields accordingly.
 			 * First populate the new values.
@@ -1131,7 +1135,9 @@ void SENS::CombineSensorInput(void)
 
 		/* Baro. */
 		/* See if we have a new baro measurement. */
-		if(CVT.SensorBaroMsg.Timestamp > CVT.LastBaroTime)
+		if(CVT.SensorBaroMsg.Timestamp > CVT.LastBaroTime || 
+		   CVT.LastBaroTime == PX4_RELATIVE_TIMESTAMP_INVALID && 
+		   CVT.SensorBaroMsg.Timestamp != CVT.LastBaroTime)
 		{
 			/* We do have a new measurement.  Update the fields accordingly.
 			 * First populate the new values.
