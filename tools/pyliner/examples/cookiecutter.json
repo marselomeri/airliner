@@ -2297,6 +2297,481 @@
                         "airliner_mid": "0x0a4d"
                     }
 	            }
+            },
+            "SENS": {
+                "app_name": "SENS",
+                "app_ops_name": "SENS",
+                "proto_msgs": {
+                    "SENS_HkTlm_t": {
+                        "operational_names": {
+                            "CommandCount": {
+			                    "field_path": "usCmdCnt"
+			                },
+                            "ErrorCount": {
+			                    "field_path": "usCmdCnt"
+			                },
+                            "Timestamp": {
+			                    "field_path": "SensorCombinedMsg.Timestamp"
+			                },
+                            "GyroRad": {
+			                    "field_path": "SensorCombinedMsg.GyroRad"
+			                },
+                            "GyroIntegralDt": {
+			                    "field_path": "SensorCombinedMsg.GyroIntegralDt"
+			                },
+                            "AccTimestampRelative": {
+			                    "field_path": "SensorCombinedMsg.AccTimestampRelative"
+			                },
+                            "AccRelTimeInvalid": {
+			                    "field_path": "SensorCombinedMsg.AccRelTimeInvalid"
+			                },
+                            "Acc": {
+			                    "field_path": "SensorCombinedMsg.Acc"
+			                },
+                            "AccIntegralDt": {
+			                    "field_path": "SensorCombinedMsg.AccIntegralDt"
+			                },
+                            "MagTimestampRelative": {
+			                    "field_path": "SensorCombinedMsg.MagTimestampRelative"
+			                },
+                            "MagRelTimeInvalid": {
+			                    "field_path": "SensorCombinedMsg.MagRelTimeInvalid"
+			                },
+                            "Mag": {
+			                    "field_path": "SensorCombinedMsg.Mag"
+			                },
+                            "BaroTimestampRelative": {
+			                    "field_path": "SensorCombinedMsg.BaroTimestampRelative"
+			                },
+                            "BaroRelTimeInvalid": {
+			                    "field_path": "SensorCombinedMsg.BaroRelTimeInvalid"
+			                },
+                            "BaroAlt": {
+			                    "field_path": "SensorCombinedMsg.BaroAlt"
+			                },
+                            "BaroTemp": {
+			                    "field_path": "SensorCombinedMsg.BaroTemp"
+			                }
+                        },
+                        "proto_msg": "sens_hk_pb",
+                        "fields": {
+                            "usCmdCnt": {
+                                "airliner_name": "usCmdCnt", 
+                                "pb_type": "uint32",
+                                "pb_field_rule": "required",
+                                "airliner_type": "uint8",
+                                "array_length": 0
+                            },
+                            "usCmdErrCnt": {
+                                "airliner_name": "usCmdErrCnt", 
+                                "pb_type": "uint32",
+                                "pb_field_rule": "required",
+                                "airliner_type": "uint8",
+                                "array_length": 0
+                            },
+                            "SensorCombinedMsg": {
+                                "airliner_name": "SensorCombinedMsg", 
+                                "pb_type": "sensor_combined_msg_pb",
+                                "pb_field_rule": "required",
+                                "airliner_type": "PX4_SensorCombinedMsg_t",
+                                "array_length": 0
+                            }
+                        },
+                        "required_pb_msgs": {
+                            "sensor_combined_msg_pb": {
+                                "airliner_msg": "PX4_SensorCombinedMsg_t",
+                                "parent_field": {"SensorCombinedMsg":0},
+                                "fields": {
+                                    "Timestamp": {
+                                        "airliner_name": "Timestamp", 
+                                        "pb_type": "uint64",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint64",
+                                        "array_length": 0
+                                    },
+                                    "GyroRad": {
+                                        "airliner_name": "GyroRad", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "repeated",
+                                        "airliner_type": "float",
+                                        "array_length": 3
+                                    },
+                                    "GyroIntegralDt": {
+                                        "airliner_name": "GyroIntegralDt", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "AccTimestampRelative": {
+                                        "airliner_name": "AccTimestampRelative", 
+                                        "pb_type": "uint32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint32",
+                                        "array_length": 0
+                                    },
+                                    "Acc": {
+                                        "airliner_name": "Acc", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "repeated",
+                                        "airliner_type": "float",
+                                        "array_length": 3
+                                    },
+                                    "AccIntegralDt": {
+                                        "airliner_name": "AccIntegralDt", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "MagTimestampRelative": {
+                                        "airliner_name": "MagTimestampRelative", 
+                                        "pb_type": "uint32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint32",
+                                        "array_length": 0
+                                    },
+                                    "MagRelTimeInvalid": {
+                                        "airliner_name": "MagRelTimeInvalid", 
+                                        "pb_type": "bool",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "boolean",
+                                        "array_length": 0
+                                    },
+                                    "Mag": {
+                                        "airliner_name": "Mag", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "repeated",
+                                        "airliner_type": "float",
+                                        "array_length": 3
+                                    },
+                                    "BaroTimestampRelative": {
+                                        "airliner_name": "BaroTimestampRelative", 
+                                        "pb_type": "uint32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint32",
+                                        "array_length": 0
+                                    },
+                                    "BaroRelTimeInvalid": {
+                                        "airliner_name": "BaroRelTimeInvalid", 
+                                        "pb_type": "bool",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "boolean",
+                                        "array_length": 0
+                                    },
+                                    "BaroAlt": {
+                                        "airliner_name": "BaroAlt", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "BaroTemp": {
+                                        "airliner_name": "BaroTemp", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    }
+                                },
+                            "required_pb_msgs": {}
+                            }
+                        }
+                    }
+                },
+                "operations": {
+                    "HK": {			
+                        "airliner_msg": "SENS_HkTlm_t",
+                        "airliner_cc": -1,
+                        "airliner_mid": "0x0c55"
+                    }
+                }
+            },
+            "GPS": {
+                "app_name": "GPS",
+                "app_ops_name": "GPS",
+                "proto_msgs": {
+                    "GPS_HkTlm_t": {
+                        "operational_names": {
+                            "CommandCount": {
+			                    "field_path": "usCmdCnt"
+			                },
+                            "ErrorCount": {
+			                    "field_path": "usCmdCnt"
+			                },
+                            "Timestamp": {
+			                    "field_path": "VehicleGpsMsg.Timestamp"
+			                },
+                            "TimeUtcUsec": {
+			                    "field_path": "VehicleGpsMsg.TimeUtcUsec"
+			                },
+                            "Lat": {
+			                    "field_path": "VehicleGpsMsg.Lat"
+			                },
+                            "Lon": {
+			                    "field_path": "VehicleGpsMsg.Lon"
+			                },
+                            "Alt": {
+			                    "field_path": "VehicleGpsMsg.Alt"
+			                },
+                            "AltEllipsoid": {
+			                    "field_path": "VehicleGpsMsg.AltEllipsoid"
+			                },
+                            "SVariance": {
+			                    "field_path": "VehicleGpsMsg.SVariance"
+			                },
+                            "CVariance": {
+			                    "field_path": "VehicleGpsMsg.CVariance"
+			                },
+                            "EpH": {
+			                    "field_path": "VehicleGpsMsg.EpH"
+			                },
+                            "EpV": {
+			                    "field_path": "VehicleGpsMsg.EpV"
+			                },
+                            "HDOP": {
+			                    "field_path": "VehicleGpsMsg.HDOP"
+			                },
+                            "VDOP": {
+			                    "field_path": "VehicleGpsMsg.VDOP"
+			                },
+                            "NoisePerMs": {
+			                    "field_path": "VehicleGpsMsg.NoisePerMs"
+			                },
+                            "JammingIndicator": {
+			                    "field_path": "VehicleGpsMsg.JammingIndicator"
+			                },
+                            "Vel_m_s": {
+			                    "field_path": "VehicleGpsMsg.Vel_m_s"
+			                },
+                            "Vel_n_m_s": {
+			                    "field_path": "VehicleGpsMsg.Vel_n_m_s"
+			                },
+                            "Vel_e_m_s": {
+			                    "field_path": "VehicleGpsMsg.Vel_e_m_s"
+			                },
+                            "Vel_d_m_s": {
+			                    "field_path": "VehicleGpsMsg.Vel_d_m_s"
+			                },
+                            "COG": {
+			                    "field_path": "VehicleGpsMsg.COG"
+			                },
+                            "TimestampTimeRelative": {
+			                    "field_path": "VehicleGpsMsg.TimestampTimeRelative"
+			                },
+                            "FixType": {
+			                    "field_path": "VehicleGpsMsg.FixType"
+			                },
+                            "VelNedValid": {
+			                    "field_path": "VehicleGpsMsg.VelNedValid"
+			                },
+                            "SatellitesUsed": {
+			                    "field_path": "VehicleGpsMsg.SatellitesUsed"
+			                }
+                        },
+                        "proto_msg": "gps_hk_pb",
+                        "fields": {
+                            "usCmdCnt": {
+                                "airliner_name": "usCmdCnt", 
+                                "pb_type": "uint32",
+                                "pb_field_rule": "required",
+                                "airliner_type": "uint8",
+                                "array_length": 0
+                            },
+                            "usCmdErrCnt": {
+                                "airliner_name": "usCmdErrCnt", 
+                                "pb_type": "uint32",
+                                "pb_field_rule": "required",
+                                "airliner_type": "uint8",
+                                "array_length": 0
+                            },
+                            "VehicleGpsMsg": {
+                                "airliner_name": "VehicleGpsMsg", 
+                                "pb_type": "vehicle_gps_msg_pb",
+                                "pb_field_rule": "required",
+                                "airliner_type": "PX4_VehicleGpsPositionMsg_t",
+                                "array_length": 0
+                            }
+                        },
+                        "required_pb_msgs": {
+                            "vehicle_gps_msg_pb": {
+                                "airliner_msg": "PX4_VehicleGpsPositionMsg_t",
+                                "parent_field": {"VehicleGpsMsg":0},
+                                "fields": {
+                                    "Timestamp": {
+                                        "airliner_name": "Timestamp", 
+                                        "pb_type": "uint64",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint64",
+                                        "array_length": 0
+                                    },
+                                    "TimeUtcUsec": {
+                                        "airliner_name": "TimeUtcUsec", 
+                                        "pb_type": "uint64",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint64",
+                                        "array_length": 0
+                                    },
+                                    "Lat": {
+                                        "airliner_name": "Lat", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "Lon": {
+                                        "airliner_name": "Lon", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "Alt": {
+                                        "airliner_name": "Alt", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "AltEllipsoid": {
+                                        "airliner_name": "AltEllipsoid", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "SVariance": {
+                                        "airliner_name": "SVariance", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "CVariance": {
+                                        "airliner_name": "CVariance", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "EpH": {
+                                        "airliner_name": "EpH", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "EpV": {
+                                        "airliner_name": "EpV", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "HDOP": {
+                                        "airliner_name": "HDOP", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "VDOP": {
+                                        "airliner_name": "VDOP", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "NoisePerMs": {
+                                        "airliner_name": "NoisePerMs", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "JammingIndicator": {
+                                        "airliner_name": "JammingIndicator", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "Vel_m_s": {
+                                        "airliner_name": "Vel_m_s", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "Vel_n_m_s": {
+                                        "airliner_name": "Vel_n_m_s", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "Vel_e_m_s": {
+                                        "airliner_name": "Vel_e_m_s", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "Vel_d_m_s": {
+                                        "airliner_name": "Vel_d_m_s", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "COG": {
+                                        "airliner_name": "COG", 
+                                        "pb_type": "float",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "float",
+                                        "array_length": 0
+                                    },
+                                    "TimestampTimeRelative": {
+                                        "airliner_name": "TimestampTimeRelative", 
+                                        "pb_type": "int32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "int32",
+                                        "array_length": 0
+                                    },
+                                    "FixType": {
+                                        "airliner_name": "FixType", 
+                                        "pb_type": "uint32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint8",
+                                        "array_length": 0
+                                    },
+                                    "VelNedValid": {
+                                        "airliner_name": "VelNedValid", 
+                                        "pb_type": "bool",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "boolean",
+                                        "array_length": 0
+                                    },
+                                    "SatellitesUsed": {
+                                        "airliner_name": "SatellitesUsed", 
+                                        "pb_type": "uint32",
+                                        "pb_field_rule": "required",
+                                        "airliner_type": "uint8",
+                                        "array_length": 0
+                                    }
+                                },
+                            "required_pb_msgs": {}
+                            }
+                        }
+                    }
+                },
+                "operations": {
+                    "HK": {			
+                        "airliner_msg": "GPS_HkTlm_t",
+                        "airliner_cc": -1,
+                        "airliner_mid": "0x0c54"
+                    }
+                }
             }
         }
     },

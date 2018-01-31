@@ -102,7 +102,6 @@ class Pyliner(object):
             ret_msg.PriHdr.StreamId.bits.app_id = int(op["airliner_mid"], 0)
             ret_msg.SecHdr.Command.bits.code = int(op["airliner_cc"])
         
-        print int(op["airliner_mid"],0)
         return ret_msg
 
     def serialize(self, header, payload):
@@ -266,7 +265,7 @@ class Pyliner(object):
         serial_cmd = self.serialize(header, payload)      
         self.send_to_airliner(serial_cmd)
         logging.info('Sending telemetry to airliner: %s' % (tlm))
-        header.print_base10()
+        #header.print_base10()
 
     def __get_pb_value(self, pb_msg, op_path):
         """ Get value from protobuf object
@@ -327,7 +326,7 @@ class Pyliner(object):
         logging.debug("Recvd tlm: " + str(tlm))
         
         # TODO: Check if needed
-        hdr = tlm[0].split()[0][:12]
+        hdr = tlm[0][:12]
         if len(hdr) < 12:
             logging.debug("Rcvd tlm with header length: " + str(len(hdr)))
             #print "Rcvd tlm with header length: " + str(len(hdr))
@@ -344,7 +343,7 @@ class Pyliner(object):
 
         # Iterate over subscribed telemetry to check if we care
         for subscribed_tlm in self.subscribers:
-            if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):       
+            if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):  
                 # Get pb msg for this msg
                 pb_msg = self.__get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
 

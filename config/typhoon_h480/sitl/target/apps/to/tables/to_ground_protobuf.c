@@ -42,7 +42,9 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	{
 		/* Message Flows */
 		/* Ground Queues */
-		{CFE_ES_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX}
+		{CFE_ES_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
+		{SENS_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
+		{GPS_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX}
 	},{
 		/* Priority Queues */
 		/* TO_PQUEUE_SINGLE_PASS_IDX */

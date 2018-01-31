@@ -44,6 +44,10 @@ add_airliner_app_def(pblib
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/cfe_es_serialization.c
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/fc_serialization.h
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/fc_serialization.c
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_serialization.h
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_serialization.c
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/gps_serialization.h
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/gps_serialization.c
       	${PROTOBUF_MSGS_DIR}/es_perf_start.pb.h
         ${PROTOBUF_MSGS_DIR}/es_perf_start.pb.c
         ${PROTOBUF_MSGS_DIR}/es_restart.pb.h
@@ -92,6 +96,10 @@ add_airliner_app_def(pblib
         ${PROTOBUF_MSGS_DIR}/px4_manual_control_setpoint.pb.c
         ${PROTOBUF_MSGS_DIR}/px4_vehicle_command_msg.pb.h
         ${PROTOBUF_MSGS_DIR}/px4_vehicle_command_msg.pb.c
+        ${PROTOBUF_MSGS_DIR}/sens_hk.pb.h
+        ${PROTOBUF_MSGS_DIR}/sens_hk.pb.c
+        ${PROTOBUF_MSGS_DIR}/gps_hk.pb.h
+        ${PROTOBUF_MSGS_DIR}/gps_hk.pb.c
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
@@ -131,6 +139,8 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_position_setpoint_triplet.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_manual_control_setpoint.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_vehicle_command_msg.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_hk.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/gps_hk.proto
         
     PROTOBUF_MSGS_DIR        
         ${PROTOBUF_MSGS_DIR}

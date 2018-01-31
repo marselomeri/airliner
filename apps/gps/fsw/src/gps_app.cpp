@@ -342,6 +342,8 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case GPS_SEND_HK_MID:
+                // Need a mutex for this in the current event driven publish.
+                //memcpy(&HkTlm.VehicleGpsMsg, &VehicleGps, sizeof(VehicleGps));
                 ReportHousekeeping();
                 break;
             case PX4_GPS_INJECT_DATA_MID:

@@ -10,8 +10,20 @@ from arte_client import ArteClient
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
                       "ci_port": 5009,
                       "to_port": 5012,
-                      "script_name": "demo_test",
+                      "script_name": "flight_test",
                       "log_dir": "./logs/"})
+
+# Subscribe to es HK commander counter
+airliner.subscribe({'tlm': ['/Airliner/ES/HK/CmdCounter']})
+
+# Subscribe to sensor combined message acceleration and baro alt
+airliner.subscribe({'tlm': ['/Airliner/SENS/HK/Acc',
+                            '/Airliner/SENS/HK/BaroAlt']})
+# Subscribe to gps lat and long ( 
+# NOTE currently not being populated in GPS flight software
+airliner.subscribe({'tlm': ['/Airliner/GPS/HK/Lat',
+                            '/Airliner/GPS/HK/Lon']})
+
 
 # Subscribe to desired telemetry
 #airliner.subscribe({'tlm': []})
@@ -443,6 +455,7 @@ client.send_ready()
 # wait for one step next command
 client.receive_response()
 time.sleep(1)
+
 # vehicle control
 vehicle_arm()
 vehicle_takeoff()
@@ -453,7 +466,55 @@ vehicle_fly_square_cw()
 vehicle_land()
 vehicle_disarm()
 
+# Send one NoOp command
+airliner.send_command({'name':'/Airliner/ES/Noop'})
+time.sleep(2)
+
+# print received telemetry
+es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
+print "es_hk_cmdcnt: " + str(es_hk_cmdcnt)
+accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+print "accel_sensor_combined_z: " + str(accel_sensor_combined[2])
+baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+print "baro_sensor_combined: " + str(baro_sensor_combined)
+# GPS not yet implemented on flight side
+gps_lat = airliner.get_tlm_value('/Airliner/GPS/HK/Lat')
+print "/Airliner/ES/GPS/Lat: " + str(gps_lat)
+gps_lon = airliner.get_tlm_value('/Airliner/GPS/HK/Lon')
+print "/Airliner/ES/GPS/Lon: " + str(gps_lon)
+
+all_test_passed = True
+
+# check gravity vector
+if accel_sensor_combined[2] < -9.0 and accel_sensor_combined[2] > -11.0:
+    airliner.assert_true(True)
+    print "passed check gravity vector"
+else:
+    airliner.assert_true(False)
+    print "failed check gravity vector"
+    all_test_passed = False
+
+# check baro height
+if baro_sensor_combined > 0.0 and baro_sensor_combined  < 1.0:
+    airliner.assert_true(True)
+    print "passed check baro height"
+else:
+    airliner.assert_true(False)
+    print "failed check baro height"
+    all_test_passed = False
+    
+# check es command count
+if es_hk_cmdcnt == 1:
+    airliner.assert_true(True)
+    print "passed check command count"
+else:
+    airliner.assert_true(False)
+    print "failed check command count"
+    all_test_passed = False
+
+# print test results
+airliner.finish_test()
 # shutdown everything
-client.send_shutdown(True)
+client.send_shutdown(all_test_passed)
 # close the connection
 client.close_conn()
