@@ -339,7 +339,7 @@ extern "C" {
 // TODO: this number seems wrong
 #define GPS_EPOCH_SECS                ((time_t)1234567890ULL)
 
-#define M_DEG_TO_RAD_F                (0.0174532925f)
+#define M_DEG_TO_RAD_F                (0.01745329251994329576f)
 
 /************************************************************************
 ** Structure Declarations

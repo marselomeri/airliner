@@ -104,7 +104,7 @@ extern "C" {
 #define GPS_MESSAGE_UBX_HEADER_LENGTH             (6)
 #define GPS_MESSAGE_UBX_CHKSUM_LENGTH             (2)
 
-#define M_DEG_TO_RAD_F                            (0.0174532925f)
+#define M_DEG_TO_RAD_F                            (0.01745329251994329576f)
 
 /** \brief GPS packet timeout (ms).
 **
