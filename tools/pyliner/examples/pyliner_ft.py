@@ -159,6 +159,25 @@ airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
                         {'name':'Timestamp', 'value':0},
                         {'name':'Command', 'value':176},
                         {'name':'Param1', 'value':209},
+                        #{'name':'Param1', 'value':213},
+                        {'name':'Param2', 'value':2},
+                        #{'name':'Param2', 'value':3},
+                        {'name':'Param3', 'value':1},
+                        {'name':'Param4', 'value':0.0},
+                        {'name':'Param5', 'value':0.0},
+                        {'name':'Param6', 'value':0.0},
+                        {'name':'Param7', 'value':0.0},
+                        {'name':'TargetSystem', 'value':1},
+                        {'name':'TargetComponent', 'value':1},
+                        {'name':'SourceSystem', 'value':0},
+                        {'name':'SourceComponent', 'value':0},
+                        {'name':'Confirmation', 'value':0}]})
+time.sleep(1)
+
+airliner.send_telemetry({'name':'/Airliner/CNTL/VehicleCommand', 'args':[
+                        {'name':'Timestamp', 'value':0},
+                        {'name':'Command', 'value':176},
+                        {'name':'Param1', 'value':209},
                         {'name':'Param2', 'value':3},
                         {'name':'Param3', 'value':1},
                         {'name':'Param4', 'value':0.0},
