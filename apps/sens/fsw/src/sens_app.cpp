@@ -332,6 +332,7 @@ int32 SENS::RcvSchPipeMsg(int32 iBlocking)
 
             case SENS_SEND_HK_MID:
             	ProcessCmdPipe();
+                memcpy(&HkTlm.SensorCombinedMsg, &SensorCombinedMsg, sizeof(SensorCombinedMsg));
                 ReportHousekeeping();
                 break;
 

@@ -2,7 +2,7 @@
   "name": "ARTE simulation test config file",
   "version": 0.1,
   "date": "2017-09-22T00:00:00.000Z",
-  "timeout": 60,
+  "timeout": 120,
   "timeouts": 5,
   "watchdog": 5,
   "majorframe": 200,
@@ -32,16 +32,16 @@
     },
     {
       "name": "PX4",
-      "command": "./px4 typhoon_h480_ft3",
+      "command": "./px4 ../../../../posix-configs/SITL/init/lpe/typhoon_h480_ft_script",
       "output": "log_px4.txt",
       "cwd": "/home/vagrant/Desktop/our_PX4/px4/build_posix_sitl_airliner/src/firmware/posix/",
       "env": ""
     },
     {
       "name": "Test Script",
-      "command": "python2 realtime.py",
+      "command": "python2 pyliner_ft.py",
       "output": "log_test_script.txt",
-      "cwd": ".",
+      "cwd": "/home/vagrant/Desktop/airliner/tools/pyliner/examples/",
       "env": ""
     }
   ]

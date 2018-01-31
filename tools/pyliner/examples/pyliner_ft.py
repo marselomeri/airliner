@@ -4,6 +4,7 @@ from pyliner import Pyliner
 import time
 import math
 from px4_msg_enums import *
+from arte_client import ArteClient
 
 # Initialize pyliner object
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
@@ -434,7 +435,15 @@ def vehicle_fly_square_cw():
     vehicle_stable_hover()
     time.sleep(1)
 
-
+IP, PORT = "localhost", 9999
+client = ArteClient(IP, PORT)
+time.sleep(10)
+# send ready to ARTE
+client.send_ready()
+# wait for one step next command
+client.receive_response()
+time.sleep(1)
+# vehicle control
 vehicle_arm()
 vehicle_takeoff()
 vehicle_posctl_mode()
@@ -444,3 +453,7 @@ vehicle_fly_square_cw()
 vehicle_land()
 vehicle_disarm()
 
+# shutdown everything
+client.send_shutdown(True)
+# close the connection
+client.close_conn()
