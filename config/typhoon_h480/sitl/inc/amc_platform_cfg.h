@@ -85,14 +85,14 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define AMC_DATA_PIPE_DEPTH            (4)
+#define AMC_PARAM_PIPE_DEPTH            (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define AMC_DATA_PIPE_NAME             ("AMC_DATA_PIPE")
+#define AMC_PARAM_PIPE_NAME             ("AMC_PARAM_PIPE")
 
 /** \brief The config table default filename
 **
