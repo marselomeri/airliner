@@ -4124,9 +4124,19 @@ uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObjec
 	px4_vehicle_land_detected_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.alt_max = inObject->AltitudeMax;
 	pbMsg.landed = inObject->Landed;
 	pbMsg.freefall = inObject->Freefall;
+	pbMsg.ground_contact = inObject->GroundContact;
 
+//	OS_printf("LANDED :\t");
+//	OS_printf("%d",pbMsg.landed);
+//	OS_printf("\n");
+//	OS_printf("FREEFALL :\t");
+//	OS_printf("%d",pbMsg.freefall);
+//	OS_printf("\n");
+//	OS_printf("GRNDCONTACT :\t");
+//	OS_printf("%d",pbMsg.ground_contact);
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
@@ -4157,7 +4167,8 @@ uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_Ve
 	{
 		return 0;
 	}
-
+	inOutObject->GroundContact = pbMsg.ground_contact;
+	inOutObject->AltitudeMax = pbMsg.alt_max;
 	inOutObject->Timestamp = pbMsg.timestamp;
 	inOutObject->Landed = pbMsg.landed;
 	inOutObject->Freefall = pbMsg.freefall;

@@ -114,6 +114,7 @@
 #include "vehicle_global_velocity_setpoint.pb.h"
 #include "vehicle_gps_position.pb.h"
 #include "vehicle_land_detected.pb.h"
+#include "vehicle_local_position.pb.h"
 #include "vehicle_local_position_setpoint.pb.h"
 #include "vehicle_rates_setpoint.pb.h"
 #include "vehicle_status.pb.h"
@@ -206,8 +207,8 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"vehicle_global_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalPosition_Dec, PX4_VEHICLE_GLOBAL_POSITION_MID, px4_vehicle_global_position_pb_size, 1, 0, 0},
 //		{"vehicle_global_velocity_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Dec, PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID, px4_vehicle_global_velocity_setpoint_pb_size, 1, 0, 0},
 		{"vehicle_gps_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGpsPosition_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GPS_POSITION_MID, px4_vehicle_gps_position_pb_size, 1, 0, 0},
-//		{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLandDetected_Dec, PX4_VEHICLE_LAND_DETECTED_MID, px4_vehicle_land_detected_pb_size, 1, 0, 0},
-//		{"vehicle_local_position", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4_vehicle_local_position_pb_size, 1, 0, 0},
+/*k	*/	{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_LAND_DETECTED_MID, px4_vehicle_land_detected_pb_size, 1, 0, 0},
+/*k*/		{"vehicle_local_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4_vehicle_local_position_pb_size, 1, 0, 0},
 //		{"vehicle_local_position_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Dec, PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, px4_vehicle_local_position_setpoint_pb_size, 1, 0, 0},
 //		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
 		{"vehicle_rates_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleRatesSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleRatesSetpoint_Dec, PX4_VEHICLE_RATES_SETPOINT_MID, px4_vehicle_rates_setpoint_pb_size, 1, 0, 0},

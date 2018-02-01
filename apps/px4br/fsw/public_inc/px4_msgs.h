@@ -1724,8 +1724,10 @@ typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	uint64 Timestamp;
+	float AltitudeMax;
 	boolean Landed;
 	boolean Freefall;
+	boolean GroundContact;
 } PX4_VehicleLandDetectedMsg_t;
 
 typedef struct
