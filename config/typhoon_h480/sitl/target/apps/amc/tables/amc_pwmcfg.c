@@ -44,7 +44,14 @@ AMC_PwmConfigTbl_t AMC_PwmCfgTbl =
 {
     900,  /* PwmDisarmed */
     1000, /* PwmMin      */
-    2000  /* PwmMax      */
+    2000,  /* PwmMax      */
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7.0
 };
 
 /*
