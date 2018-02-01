@@ -426,15 +426,15 @@ class Pyliner(object):
             self.fails += 1
             logging.warn('Invalid assertion made: %s == %s' % (a, b))
             
-    def assert_not_equals(self, a, b, description):
+    def assert_not_equals(self, a, b, description, result):
         """ Assert for Pyliner that tracks passes and failures """
         if a != b:
             self.passes += 1
-            self.test_description.update({description:0})
+            self.test_description.update(description)
             logging.info('Valid assertion made: %s != %s' % (a, b))
         else:
             self.fails += 1
-            self.test_description.update({description:1})
+            self.test_description.update(description)
             logging.warn('Invalid assertion made: %s != %s' % (a, b))
             
     def assert_true(self, expr, description):
