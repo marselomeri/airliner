@@ -11,10 +11,10 @@
   "clients": [
     {
       "name": "Gazebo Server",
-      "command": "gzserver --verbose /home/vagrant/Desktop/airliner/tools/sitl_gazebo/worlds/typhoon_h480.world",
+      "command": "gzserver --verbose typhoon_h480.world",
       "output": "log_gazebo_server.txt",
-      "cwd": "/home/vagrant/Desktop/airliner/tools/sitl_gazebo/worlds/",
-      "env": "GAZEBO_PLUGIN_PATH=/home/vagrant/Desktop/airliner/build/typhoon_h480/sitl/host/gazebo:${GAZEBO_PLUGIN_PATH} GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:/home/vagrant/Desktop/airliner/tools/sitl_gazebo/models LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/vagrant/Desktop/airliner/build/typhoon_h480/sitl/host/gazebo/msgs/:/home/vagrant/Desktop/airliner/build/typhoon_h480/sitl/host/gazebo"
+      "cwd": "../../tools/sitl_gazebo/worlds/",
+      "env": "GAZEBO_PLUGIN_PATH=../../../build/typhoon_h480/sitl/host/gazebo:${GAZEBO_PLUGIN_PATH} GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:../models LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../../build/typhoon_h480/sitl/host/gazebo/msgs/:../../../build/typhoon_h480/sitl/host/gazebo"
     },
     {
       "name": "Airliner",
@@ -27,7 +27,7 @@
       "name": "PX4",
       "command": "./px4 ../../../../posix-configs/SITL/init/lpe/typhoon_h480_ft_script",
       "output": "log_px4.txt",
-      "cwd": "/home/vagrant/Desktop/our_PX4/px4/build_posix_sitl_airliner/src/firmware/posix/",
+      "cwd": "../../../px4/build_posix_sitl_airliner/src/firmware/posix/",
       "env": ""
     },
     {
