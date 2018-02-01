@@ -74,7 +74,7 @@ class ArteSubprocess(object):
                 current_env[self.envTokenized[count]] = self.envTokenized[count+1]
 
         # Output log timestamp
-        f = open(self.fileName, "a")
+        f = open(self.fileName, "w")
         f.write("- ARTE " + str(command) + " " + datetime.now().strftime('%Y%m%d_%H:%M:%S - ') + "\n")
         # Launch subprocess
         self.proc = subprocess.Popen(self.args,stdout=f, stderr=f, shell=False, cwd=self.cwd, env=current_env)
