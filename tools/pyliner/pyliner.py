@@ -11,6 +11,7 @@ import python_pb.pyliner_msgs as pyliner_msgs
 import socket
 import SocketServer
 import threading
+from junit_xml import TestSuite, TestCase
 
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
@@ -35,6 +36,8 @@ class Pyliner(object):
         self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
         self.passes = 0
         self.fails = 0
+        self.duration = 0
+        self.test_description = []
         self.start_time = datetime.now()
         self.log_dir = kwargs.get("log_dir", "./logs/")
         self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + "_pyliner_" + self.script_name + ".log"
@@ -414,7 +417,7 @@ class Pyliner(object):
         """ Reset  """
         pass #Need this?
         
-    def assert_equals(self, a, b):
+    def assert_equals(self, a, b, description):
         """ Assert for Pyliner that tracks passes and failures """
         if a == b:
             self.passes += 1
@@ -423,31 +426,37 @@ class Pyliner(object):
             self.fails += 1
             logging.warn('Invalid assertion made: %s == %s' % (a, b))
             
-    def assert_not_equals(self, a, b):
+    def assert_not_equals(self, a, b, description):
         """ Assert for Pyliner that tracks passes and failures """
         if a != b:
             self.passes += 1
+            self.test_description.update({description:0})
             logging.info('Valid assertion made: %s != %s' % (a, b))
         else:
             self.fails += 1
+            self.test_description.update({description:1})
             logging.warn('Invalid assertion made: %s != %s' % (a, b))
             
-    def assert_true(self, expr):
+    def assert_true(self, expr, description):
         """ Assert for Pyliner that tracks passes and failures """
         if expr:
             self.passes += 1
+            self.test_description.append(description)
             logging.info("Valid true assertion made")
         else:
             self.fails += 1
+            self.test_description.append(description)
             logging.warn("Invalid true assertion made")
             
-    def assert_false(self, expr):
+    def assert_false(self, expr, description):
         """ Assert for Pyliner that tracks passes and failures """
         if not expr:
             self.passes += 1
+            self.test_description.append(description)
             logging.info("Valid false assertion made")
         else:
             self.fails += 1
+            self.test_description.append(description)
             logging.warn("Invalid false assertion made")
 
     def dump_tlm(self):
@@ -461,6 +470,7 @@ class Pyliner(object):
         time_diff = datetime.now() - self.start_time
         diff = divmod(time_diff.total_seconds(), 60)
         duration = "%i minutes %i seconds"%(diff[0],diff[1]) if diff[0] > 0 else "%i seconds"%(diff[1])
+        self.duration = time_diff.seconds
         result = "PASS" if self.fails == 0 else "FAIL"
 
         results = "=================================================\n"
@@ -477,7 +487,24 @@ class Pyliner(object):
         """ Do all the clean up post test execution """
         self.ingest_active = False
         self.dump_tlm()
-        print self.get_test_results()        
+        print self.get_test_results()
+        self.generate_junit()
+        
+    def generate_junit(self):
+        # Get the test count
+        test_count = self.passes + self.fails
+        # Add the first test case
+        test_cases = [TestCase(self.script_name + str(0), '', self.duration/test_count, '', '')]
+        # Add the remaining test cases
+        for x in range(1, test_count):
+            test_cases.append(TestCase(self.script_name + str(x), '', self.duration/test_count, '', ''))
+        # Add any failure info
+        for x in range(0,self.fails):
+            test_cases[0].add_failure_info(self.test_description[x])
+        ts = TestSuite("test suite", test_cases)
+        with open('results.xml', 'w') as f:
+            TestSuite.to_file(f, [ts], prettyprint=False)
+
 
 class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
 

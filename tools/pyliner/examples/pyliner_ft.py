@@ -487,32 +487,38 @@ all_test_passed = True
 
 # check gravity vector
 if accel_sensor_combined[2] < -9.0 and accel_sensor_combined[2] > -11.0:
-    airliner.assert_true(True)
-    print "passed check gravity vector"
+    description = "passed check gravity vector " + str(accel_sensor_combined[2])
+    airliner.assert_true(True, description)
+    print description
 else:
-    airliner.assert_true(False)
-    print "failed check gravity vector"
+    description = "failed check gravity vector " + str(accel_sensor_combined[2])
+    airliner.assert_true(False,description)
+    print description
     all_test_passed = False
 
 # check baro height
 if baro_sensor_combined > 0.0 and baro_sensor_combined  < 1.0:
-    airliner.assert_true(True)
-    print "passed check baro height"
+    description = "passed check baro height " + str(baro_sensor_combined)
+    airliner.assert_true(True, description)
+    print description
 else:
-    airliner.assert_true(False)
-    print "failed check baro height"
+    description = "failed check baro height " + str(baro_sensor_combined)
+    airliner.assert_true(False, description)
+    print description
     all_test_passed = False
     
 # check es command count
 if es_hk_cmdcnt == 1:
-    airliner.assert_true(True)
-    print "passed check command count"
+    description = "passed check command count"
+    airliner.assert_true(True, description)
+    print description
 else:
-    airliner.assert_true(False)
-    print "failed check command count"
+    description = "failed check command count"
+    airliner.assert_true(False, description)
+    print description
     all_test_passed = False
 
-# print test results
+# print test results to log and generate junit for jenkins
 airliner.finish_test()
 # shutdown everything
 client.send_shutdown(all_test_passed)
