@@ -34,7 +34,7 @@
       "name": "Test Script",
       "command": "python2 pyliner_ft.py",
       "output": "log_test_script.txt",
-      "cwd": "/home/vagrant/Desktop/airliner/tools/pyliner/examples/",
+      "cwd": "../../tools/pyliner/examples/",
       "env": ""
     }
   ]
