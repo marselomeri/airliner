@@ -27,7 +27,7 @@
       "name": "PX4",
       "command": "./px4 ../../../../posix-configs/SITL/init/lpe/typhoon_h480_ft_script",
       "output": "log_px4.txt",
-      "cwd": "/home/vagrant/Desktop/our_PX4/px4/build_posix_sitl_airliner/src/firmware/posix/",
+      "cwd": "../../../px4/build_posix_sitl_airliner/src/firmware/posix/",
       "env": ""
     },
     {
