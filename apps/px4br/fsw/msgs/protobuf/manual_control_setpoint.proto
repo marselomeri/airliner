@@ -23,6 +23,15 @@ message px4_manual_control_setpoint_pb
 	    	MODE_SLOT_MAX		= 6;
 	}
 
+	enum DATA_SOURCE
+	{
+	    	DATA_SOURCE_RC		    = 1;
+            DATA_SOURCE_MAVLINK_0	= 2;
+            DATA_SOURCE_MAVLINK_1	= 3;
+            DATA_SOURCE_MAVLINK_2	= 4;
+            DATA_SOURCE_MAVLINK_3	= 5;
+	}
+
 	required uint64 timestamp = 1;
 	required float x = 2;
 	required float y = 3;
@@ -42,9 +51,13 @@ message px4_manual_control_setpoint_pb
 	required uint32 acro_switch = 17;
 	required uint32 offboard_switch = 18;
 	required uint32 kill_switch = 19;
-	required uint32 transition_switch = 20;
-	required int32 mode_slot = 21;
-	required uint32 data_source = 22;
+    required uint32 arm_switch = 20;
+	required uint32 transition_switch = 21;
+    required uint32 gear_switch = 22;
+	required int32 mode_slot = 23;
+	required uint32 data_source = 24;
+    required uint32 stab_switch = 25;
+    required uint32 man_switch = 26;
 }
 
 // ORB_DECLARE(manual_control_setpoint);

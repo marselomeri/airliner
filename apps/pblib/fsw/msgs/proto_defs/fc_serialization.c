@@ -6,6 +6,83 @@
 extern "C" {
 #endif
 
+uint32 PX4_VehicleCommandMsg_t_Enc(const PX4_VehicleCommandMsg_t *inObject, char *inOutBuffer, uint32 inSize)
+{
+	bool status = false;
+	pb_ostream_t stream;
+
+	px4_vehicle_command_msg_pb pbMsg;
+
+    pbMsg.Confirmation = inObject->Confirmation;
+    pbMsg.Timestamp = inObject->Timestamp;
+    pbMsg.TargetComponent = inObject->TargetComponent;
+    pbMsg.Param7 = inObject->Param7;
+    pbMsg.Param6 = inObject->Param6;
+    pbMsg.Param5 = inObject->Param5;
+    pbMsg.Param4 = inObject->Param4;
+    pbMsg.Param3 = inObject->Param3;
+    pbMsg.Param2 = inObject->Param2;
+    pbMsg.Param1 = inObject->Param1;
+    pbMsg.TargetSystem = inObject->TargetSystem;
+    pbMsg.SourceSystem = inObject->SourceSystem;
+    pbMsg.Command = inObject->Command;
+    pbMsg.SourceComponent = inObject->SourceComponent;
+
+	/* Create a stream that will write to our buffer. */
+	stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+	
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4_vehicle_command_msg_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("Error encoding msg: %s", PB_GET_ERROR(&stream));
+		return 0;
+	}
+
+	return stream.bytes_written;
+}
+
+uint32 PX4_VehicleCommandMsg_t_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleCommandMsg_t *inOutObject)
+{
+	bool status = false;
+	pb_istream_t stream;
+
+	px4_vehicle_command_msg_pb pbMsg;
+
+    /* Create a stream that reads from the buffer. */
+	stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4_vehicle_command_msg_pb_fields, &pbMsg); 
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("Error decoding msg: %s", PB_GET_ERROR(&stream));
+		return 0;
+	}
+
+    inOutObject->Confirmation = pbMsg.Confirmation;
+    inOutObject->Timestamp = pbMsg.Timestamp;
+    inOutObject->TargetComponent = pbMsg.TargetComponent;
+    inOutObject->Param7 = pbMsg.Param7;
+    inOutObject->Param6 = pbMsg.Param6;
+    inOutObject->Param5 = pbMsg.Param5;
+    inOutObject->Param4 = pbMsg.Param4;
+    inOutObject->Param3 = pbMsg.Param3;
+    inOutObject->Param2 = pbMsg.Param2;
+    inOutObject->Param1 = pbMsg.Param1;
+    inOutObject->TargetSystem = pbMsg.TargetSystem;
+    inOutObject->SourceSystem = pbMsg.SourceSystem;
+    inOutObject->Command = pbMsg.Command;
+    inOutObject->SourceComponent = pbMsg.SourceComponent;
+
+	return sizeof(PX4_VehicleCommandMsg_t);
+}
+
+
 uint32 PX4_PositionSetpointTripletMsg_t_Enc(const PX4_PositionSetpointTripletMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
@@ -238,32 +315,32 @@ uint32 PX4_ManualControlSetpointMsg_t_Enc(const PX4_ManualControlSetpointMsg_t *
 
 	px4_manual_control_setpoint_pb pbMsg;
 
-    pbMsg.ModeSlot = inObject->ModeSlot;
-    pbMsg.Timestamp = inObject->Timestamp;
-    pbMsg.KillSwitch = inObject->KillSwitch;
-    pbMsg.ArmSwitch = inObject->ArmSwitch;
-    pbMsg.ManSwitch = inObject->ManSwitch;
-    pbMsg.ModeSwitch = inObject->ModeSwitch;
-    pbMsg.LoiterSwitch = inObject->LoiterSwitch;
-    pbMsg.ReturnSwitch = inObject->ReturnSwitch;
-    pbMsg.RattitudeSwitch = inObject->RattitudeSwitch;
-    pbMsg.PosctlSwitch = inObject->PosctlSwitch;
-    pbMsg.TransitionSwitch = inObject->TransitionSwitch;
-    pbMsg.R = inObject->R;
-    pbMsg.Flaps = inObject->Flaps;
-    pbMsg.Y = inObject->Y;
-    pbMsg.X = inObject->X;
-    pbMsg.Z = inObject->Z;
-    pbMsg.OffboardSwitch = inObject->OffboardSwitch;
-    pbMsg.GearSwitch = inObject->GearSwitch;
-    pbMsg.StabSwitch = inObject->StabSwitch;
-    pbMsg.AcroSwitch = inObject->AcroSwitch;
-    pbMsg.DataSource = inObject->DataSource;
-    pbMsg.Aux2 = inObject->Aux2;
-    pbMsg.Aux3 = inObject->Aux3;
-    pbMsg.Aux1 = inObject->Aux1;
-    pbMsg.Aux4 = inObject->Aux4;
-    pbMsg.Aux5 = inObject->Aux5;
+    pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.x = inObject->X;
+	pbMsg.y = inObject->Y;
+	pbMsg.z = inObject->Z;
+	pbMsg.r = inObject->R;
+	pbMsg.flaps = inObject->Flaps;
+	pbMsg.aux1 = inObject->Aux1;
+	pbMsg.aux2 = inObject->Aux2;
+	pbMsg.aux3 = inObject->Aux3;
+	pbMsg.aux4 = inObject->Aux4;
+	pbMsg.aux5 = inObject->Aux5;
+	pbMsg.mode_switch = inObject->ModeSwitch;
+	pbMsg.return_switch = inObject->ReturnSwitch;
+	pbMsg.rattitude_switch = inObject->RattitudeSwitch;
+	pbMsg.posctl_switch = inObject->PosctlSwitch;
+	pbMsg.loiter_switch = inObject->LoiterSwitch;
+	pbMsg.acro_switch = inObject->AcroSwitch;
+	pbMsg.offboard_switch = inObject->OffboardSwitch;
+	pbMsg.kill_switch = inObject->KillSwitch;
+    pbMsg.arm_switch = inObject->ArmSwitch;
+	pbMsg.transition_switch = inObject->TransitionSwitch;
+    pbMsg.gear_switch = inObject->GearSwitch;
+	pbMsg.mode_slot = inObject->ModeSlot;
+	pbMsg.data_source = inObject->DataSource;
+    pbMsg.stab_switch = inObject->StabSwitch;
+    pbMsg.man_switch = inObject->ManSwitch;
 
 	/* Create a stream that will write to our buffer. */
 	stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -301,32 +378,32 @@ uint32 PX4_ManualControlSetpointMsg_t_Dec(const char *inBuffer, uint32 inSize, P
 		return 0;
 	}
 
-    inOutObject->ModeSlot = pbMsg.ModeSlot;
-    inOutObject->Timestamp = pbMsg.Timestamp;
-    inOutObject->KillSwitch = pbMsg.KillSwitch;
-    inOutObject->ArmSwitch = pbMsg.ArmSwitch;
-    inOutObject->ManSwitch = pbMsg.ManSwitch;
-    inOutObject->ModeSwitch = pbMsg.ModeSwitch;
-    inOutObject->LoiterSwitch = pbMsg.LoiterSwitch;
-    inOutObject->ReturnSwitch = pbMsg.ReturnSwitch;
-    inOutObject->RattitudeSwitch = pbMsg.RattitudeSwitch;
-    inOutObject->PosctlSwitch = pbMsg.PosctlSwitch;
-    inOutObject->TransitionSwitch = pbMsg.TransitionSwitch;
-    inOutObject->R = pbMsg.R;
-    inOutObject->Flaps = pbMsg.Flaps;
-    inOutObject->Y = pbMsg.Y;
-    inOutObject->X = pbMsg.X;
-    inOutObject->Z = pbMsg.Z;
-    inOutObject->OffboardSwitch = pbMsg.OffboardSwitch;
-    inOutObject->GearSwitch = pbMsg.GearSwitch;
-    inOutObject->StabSwitch = pbMsg.StabSwitch;
-    inOutObject->AcroSwitch = pbMsg.AcroSwitch;
-    inOutObject->DataSource = pbMsg.DataSource;
-    inOutObject->Aux2 = pbMsg.Aux2;
-    inOutObject->Aux3 = pbMsg.Aux3;
-    inOutObject->Aux1 = pbMsg.Aux1;
-    inOutObject->Aux4 = pbMsg.Aux4;
-    inOutObject->Aux5 = pbMsg.Aux5;
+	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->X = pbMsg.x;
+	inOutObject->Y = pbMsg.y;
+	inOutObject->Z = pbMsg.z;
+	inOutObject->R = pbMsg.r;
+	inOutObject->Flaps = pbMsg.flaps;
+	inOutObject->Aux1 = pbMsg.aux1;
+	inOutObject->Aux2 = pbMsg.aux2;
+	inOutObject->Aux3 = pbMsg.aux3;
+	inOutObject->Aux4 = pbMsg.aux4;
+	inOutObject->Aux5 = pbMsg.aux5;
+	inOutObject->ModeSwitch = pbMsg.mode_switch;
+	inOutObject->ReturnSwitch = pbMsg.return_switch;
+	inOutObject->RattitudeSwitch = pbMsg.rattitude_switch;
+	inOutObject->PosctlSwitch = pbMsg.posctl_switch;
+	inOutObject->LoiterSwitch = pbMsg.loiter_switch;
+	inOutObject->AcroSwitch = pbMsg.acro_switch;
+	inOutObject->OffboardSwitch = pbMsg.offboard_switch;
+	inOutObject->KillSwitch = pbMsg.kill_switch;
+    inOutObject->ArmSwitch = pbMsg.arm_switch;
+	inOutObject->TransitionSwitch = pbMsg.transition_switch;
+    inOutObject->GearSwitch = pbMsg.gear_switch;
+	inOutObject->ModeSlot = pbMsg.mode_slot;
+    inOutObject->DataSource = pbMsg.data_source;
+    inOutObject->StabSwitch = pbMsg.stab_switch;
+    inOutObject->ManSwitch = pbMsg.man_switch;
 
 	return sizeof(PX4_ManualControlSetpointMsg_t);
 }

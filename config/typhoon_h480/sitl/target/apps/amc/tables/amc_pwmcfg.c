@@ -7,7 +7,6 @@
 */
 #include "cfe_tbl_filedef.h"
 #include "amc_tbldefs.h"
-#include "mavlink.h"
 
 /*
 ** Local Defines
@@ -43,12 +42,9 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default CI config table data */
 AMC_PwmConfigTbl_t AMC_PwmCfgTbl =
 {
-    /* id | value | type | vehicle_id | component_id */
-    {
-        {"PWN_DISARMED", 900.0, MAV_PARAM_TYPE_INT32, 1, 1},
-        {"PWN_MIN", 1000.0, MAV_PARAM_TYPE_INT32, 1, 1},
-        {"PWN_MAX", 2000.0, MAV_PARAM_TYPE_INT32, 1, 1}
-    }
+    900,  /* PwmDisarmed */
+    1000, /* PwmMin      */
+    2000  /* PwmMax      */
 };
 
 /*

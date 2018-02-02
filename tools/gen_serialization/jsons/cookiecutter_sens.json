@@ -1,0 +1,141 @@
+{
+	"app_name": "SENS",
+	"app_ops_name": "SENS",
+	"proto_msgs": {
+        "SENS_HkTlm_t": {
+			"proto_msg": "sens_hk_pb",
+			"fields": {
+				"usCmdCnt": {
+					"airliner_name": "usCmdCnt", 
+					"pb_type": "uint32",
+					"pb_field_rule": "required",
+					"airliner_type": "uint8",
+					"array_length": 0
+				},
+				"usCmdErrCnt": {
+					"airliner_name": "usCmdErrCnt", 
+					"pb_type": "uint32",
+					"pb_field_rule": "required",
+					"airliner_type": "uint8",
+					"array_length": 0
+				},
+				"SensorCombinedMsg": {
+					"airliner_name": "SensorCombinedMsg", 
+					"pb_type": "sensor_combined_msg_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "PX4_SensorCombinedMsg_t",
+					"array_length": 0
+				}
+			},
+            "required_pb_msgs": {
+                "sensor_combined_msg_pb": {
+                    "airliner_msg": "PX4_SensorCombinedMsg_t",
+                    "parent_field": {"SensorCombinedMsg":0},
+                    "fields": {
+                        "Timestamp": {
+                            "airliner_name": "Timestamp", 
+                            "pb_type": "uint64",
+                            "pb_field_rule": "required",
+                            "airliner_type": "uint64",
+                            "array_length": 0
+                        },
+                        "GyroRad": {
+                            "airliner_name": "GyroRad", 
+                            "pb_type": "float",
+                            "pb_field_rule": "repeated",
+                            "airliner_type": "float",
+                            "array_length": 3
+                        },
+                        "GyroIntegralDt": {
+                            "airliner_name": "GyroIntegralDt", 
+                            "pb_type": "float",
+                            "pb_field_rule": "required",
+                            "airliner_type": "float",
+                            "array_length": 0
+                        },
+                        "AccTimestampRelative": {
+                            "airliner_name": "AccTimestampRelative", 
+                            "pb_type": "uint32",
+                            "pb_field_rule": "required",
+                            "airliner_type": "uint32",
+                            "array_length": 0
+                        },
+                        "Acc": {
+                            "airliner_name": "Acc", 
+                            "pb_type": "float",
+                            "pb_field_rule": "repeated",
+                            "airliner_type": "float",
+                            "array_length": 3
+                        },
+                        "AccIntegralDt": {
+                            "airliner_name": "AccIntegralDt", 
+                            "pb_type": "float",
+                            "pb_field_rule": "required",
+                            "airliner_type": "float",
+                            "array_length": 0
+                        },
+                        "MagTimestampRelative": {
+                            "airliner_name": "MagTimestampRelative", 
+                            "pb_type": "uint32",
+                            "pb_field_rule": "required",
+                            "airliner_type": "uint32",
+                            "array_length": 0
+                        },
+                        "MagRelTimeInvalid": {
+                            "airliner_name": "MagRelTimeInvalid", 
+                            "pb_type": "bool",
+                            "pb_field_rule": "required",
+                            "airliner_type": "boolean",
+                            "array_length": 0
+                        },
+                        "Mag": {
+                            "airliner_name": "Mag", 
+                            "pb_type": "float",
+                            "pb_field_rule": "repeated",
+                            "airliner_type": "float",
+                            "array_length": 3
+                        },
+                        "BaroTimestampRelative": {
+                            "airliner_name": "BaroTimestampRelative", 
+                            "pb_type": "uint32",
+                            "pb_field_rule": "required",
+                            "airliner_type": "uint32",
+                            "array_length": 0
+                        },
+                        "BaroRelTimeInvalid": {
+                            "airliner_name": "BaroRelTimeInvalid", 
+                            "pb_type": "bool",
+                            "pb_field_rule": "required",
+                            "airliner_type": "boolean",
+                            "array_length": 0
+                        },
+                        "BaroAlt": {
+                            "airliner_name": "BaroAlt", 
+                            "pb_type": "float",
+                            "pb_field_rule": "required",
+                            "airliner_type": "float",
+                            "array_length": 0
+                        },
+                        "BaroTemp": {
+                            "airliner_name": "BaroTemp", 
+                            "pb_type": "float",
+                            "pb_field_rule": "required",
+                            "airliner_type": "float",
+                            "array_length": 0
+                        }
+                    },
+                "required_pb_msgs": {}
+                }
+            }
+        }
+	},
+	"operations": {
+        "SensorCombined": {			
+            "airliner_msg": "SENS_HkTlm_t",
+            "airliner_cc": -1,
+            "airliner_mid": "0x0c55"
+        }
+	},
+	"autogen_version": "",
+	"_extensions": ["jinja2.ext.do", "jinja2.ext.loopcontrols"]
+}

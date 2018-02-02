@@ -78,7 +78,7 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 
     for (i = 0; i < 6; ++i)
     {
-    	//controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
+    	controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin, PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN, PWM_CUSTOM_OUT_MAX);
     }
 
     controls[6] = 0.0f;

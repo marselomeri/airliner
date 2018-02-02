@@ -46,7 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
-
+#include "px4_msgs.h"
 
 /************************************************************************
 ** Local Defines
@@ -152,6 +152,9 @@ typedef struct
     uint8              usCmdErrCnt; 
     /** \brief App State */
     uint8              State;
+
+    /** \brief The vehicle gps position message */
+    PX4_VehicleGpsPositionMsg_t VehicleGpsMsg;
 } GPS_HkTlm_t;
 
 

@@ -46,7 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
-
+#include "px4_msgs.h"
 
 /************************************************************************
 ** Local Defines
@@ -151,6 +151,8 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
+    /** \brief The sensor combined message */
+    PX4_SensorCombinedMsg_t SensorCombinedMsg;
 } SENS_HkTlm_t;
 
 
