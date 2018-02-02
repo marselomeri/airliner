@@ -631,13 +631,14 @@
 #define SIM_WAKEUP_MID                              0x1c7f
 #define SIM_CMD_MID                                 0x1c80
 
-/* MAVLINK 					        */
+/* MAVLINK                   					        */
 #define MAVLINK_CMD_MID                             0x1c81
 #define MAVLINK_SEND_HK_MID                         0x1c82
 #define MAVLINK_HK_TLM_MID                          0x0c83
 #define MAVLINK_WAKEUP_MID                          0x1c84
 #define MAVLINK_OUT_DATA_MID                        0x1c85
-#define MAVLINK_PARAM_VALUE_MID                     0x1c86
+#define MAVLINK_PARAM_DATA_MID                      0x1c86
+#define MAVLINK_REQUEST_PARAMS_MID                  0x1c87
 
 /* Individual GPS messages                              */
 #define GPS_NAV_DOP_MID                             0x0c87

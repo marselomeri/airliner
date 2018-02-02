@@ -78,7 +78,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define MAVLINK_CMD_PIPE_DEPTH             (4)
+#define MAVLINK_CMD_PIPE_DEPTH             (CFE_SB_MAX_PIPE_DEPTH)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
@@ -107,7 +107,7 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define MAVLINK_PARAM_TABLE_FILENAME      ("/cf/apps/mavlink_param.tbl")
+#define MAVLINK_ACTION_MAP_TABLE_FILENAME      ("/cf/apps/mavlink_action.tbl")
 
 /** \brief The timeout table default filename
 **
@@ -131,7 +131,11 @@ extern "C" {
 #define MAVLINK_PARAM_COMPONENT_ID      (1)
 #define MAVLINK_GCS_IP                  ("10.10.0.13")
 #define MAVLINK_GCS_PORT                (14550)
-#define MAVLINK_INGEST_PORT             (5014)
+#define MAVLINK_PASSTHRU_IP_SRC         ("127.0.0.1")
+#define MAVLINK_PASSTHRU_INGEST_PORT    (14550)
+
+#define MAVLINK_ACTION_MAP_ENTRIES         (10)
+#define MAVLINK_HEARTBEAT_WAIT_CYCLES      (5)
 
 
 #ifdef __cplusplus

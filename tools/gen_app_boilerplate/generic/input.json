@@ -1,5 +1,5 @@
 {
 	"app_name": "MAVLINK",
-	"output_dir": "/home/vagrant/airliner/apps/",
+	"output_dir": "/home/vagrant/",
 	"app_full_name": "Mavlink"
 }

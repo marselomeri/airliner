@@ -2,6 +2,7 @@
 
 from arte_ccsds import *
 from datetime import datetime, timedelta
+from google.protobuf import text_format
 import json
 import logging
 from os import mkdir
@@ -30,7 +31,7 @@ class Pyliner(object):
         self.to_socket = self.__init_socket()
         self.subscribers = []
         self.telemetry = {}
-        self.tlm_listener = SocketServer.UDPServer((self.address, DEFAULT_TO_PORT), self.__server_factory(self.__on_recv_telemetry))
+        self.tlm_listener = SocketServer.UDPServer((self.address, self.to_port), self.__server_factory(self.__on_recv_telemetry))
         self.listener_thread = threading.Thread(target=self.tlm_listener.serve_forever)
         self.passes = 0
         self.fails = 0
@@ -89,8 +90,9 @@ class Pyliner(object):
     def __get_ccsds_msg(self, op):
         """ Receive a ops dict and returns a ccsds msg """
         # If the command code is -1 this is telemetry
-        if op["airliner_cc"] == "-1":
+        if op["airliner_cc"] == -1:
             ret_msg = CCSDS_TlmPkt_t()
+            ret_msg.clear_packet()
             ret_msg.init_packet()
             ret_msg.PriHdr.StreamId.bits.app_id = int(op["airliner_mid"], 0)
         else:
@@ -100,6 +102,7 @@ class Pyliner(object):
             ret_msg.PriHdr.StreamId.bits.app_id = int(op["airliner_mid"], 0)
             ret_msg.SecHdr.Command.bits.code = int(op["airliner_cc"])
         
+        print int(op["airliner_mid"],0)
         return ret_msg
 
     def serialize(self, header, payload):
@@ -226,6 +229,45 @@ class Pyliner(object):
         self.send_to_airliner(serial_cmd)
         logging.info('Sending command to airliner: %s' % (cmd))
 
+    def send_telemetry(self, tlm):
+        """ User accessible function to send a command to the software bus. 
+        
+        Args:
+            cmd (dict): A command specifiying the operation to execute and any args for it.
+                       E.g.    {'name':'/Airliner/ES/Noop'} 
+                                    or
+                               {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
+                                   {'name':'X', 'value':'0'},
+                                   {'name':'Y', 'value':'0'},
+                                   {'name':'Z', 'value':'500'}]}
+        """
+        args_present = False
+        
+        if "name" not in tlm:
+            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
+        
+        # Check if no args tlm
+        if "args" in tlm:
+            args_present = True
+
+        # Get command operation        
+        op = self.__get_airliner_op(tlm["name"])
+        if not op:
+            raise InvalidCommandException("Invalid telemetry received. Operation (%s) not defined." % cmd["name"])
+
+        # Generate airliner cmd
+        header = self.__get_ccsds_msg(op)
+        payload = self.__get_pb_encode_obj(tlm, op) if args_present else None
+        
+        # Set header correctly
+        payload_size = payload.ByteSize() if args_present else 0
+        header.set_user_data_length(payload_size)
+        
+        serial_cmd = self.serialize(header, payload)      
+        self.send_to_airliner(serial_cmd)
+        logging.info('Sending telemetry to airliner: %s' % (tlm))
+        header.print_base10()
+
     def __get_pb_value(self, pb_msg, op_path):
         """ Get value from protobuf object
         
@@ -287,8 +329,8 @@ class Pyliner(object):
         # TODO: Check if needed
         hdr = tlm[0].split()[0][:12]
         if len(hdr) < 12:
-            print "header length: " + str(len(hdr))
-            print self.request[0].split()
+            logging.debug("Rcvd tlm with header length: " + str(len(hdr)))
+            #print "Rcvd tlm with header length: " + str(len(hdr))
         
         # Get python CCSDS object #TODO: Check what causes this to fail on some tlm pkts
         try: 
@@ -297,7 +339,8 @@ class Pyliner(object):
             tlm_pkt.set_decoded(header)
             tlm_time = tlm_pkt.get_time()
         except Exception as e:
-            print e
+            logging.debug("Exception when decoding tlm in ccsds: " + str(e))
+            #print e
 
         # Iterate over subscribed telemetry to check if we care
         for subscribed_tlm in self.subscribers:

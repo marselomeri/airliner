@@ -31,7 +31,7 @@
  #
  #############################################################################
  
-set(ES_PROTOBUF_MSGS_DIR ${CMAKE_CURRENT_BINARY_DIR}/msgs/protobuf)
+set(PROTOBUF_MSGS_DIR ${CMAKE_CURRENT_BINARY_DIR}/msgs/protobuf)
 
 add_airliner_app_def(pblib
     FILE PBLIB
@@ -42,51 +42,54 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/pb_lib.h
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/cfe_es_serialization.h
       	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/cfe_es_serialization.c
-      	${ES_PROTOBUF_MSGS_DIR}/es_perf_start.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_start.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_restart.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_restart.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_set_filter_mask.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_set_filter_mask.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_tlm_pool_stats.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_tlm_pool_stats.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_shell.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_shell.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_stop.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_stop.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_shell_packet.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_shell_packet.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_overwrite_sys_log.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_overwrite_sys_log.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_query_all.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_query_all.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_set_trig_mask.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_perf_set_trig_mask.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_app_reload.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_app_reload.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_write_er_log.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_write_er_log.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_app_name.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_app_name.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_hk.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_hk.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_one_app.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_one_app.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_set_max_pr_count.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_set_max_pr_count.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_start_app.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_start_app.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_delete_cds.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_delete_cds.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_query_all_tasks.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_query_all_tasks.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_write_sys_log.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_write_sys_log.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_tlm_pool_stats_cmd.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_tlm_pool_stats_cmd.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.h
-        ${ES_PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.c
-        ${ES_PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.c
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/fc_serialization.h
+      	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/fc_serialization.c
+      	${PROTOBUF_MSGS_DIR}/es_perf_start.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_perf_start.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_restart.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_restart.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_perf_set_filter_mask.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_perf_set_filter_mask.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_shell.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_shell.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_perf_stop.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_perf_stop.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_shell_packet.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_shell_packet.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_overwrite_sys_log.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_overwrite_sys_log.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_query_all.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_query_all.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_perf_set_trig_mask.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_perf_set_trig_mask.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_app_reload.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_app_reload.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_write_er_log.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_write_er_log.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_app_name.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_app_name.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_hk.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_hk.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_one_app.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_one_app.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_set_max_pr_count.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_set_max_pr_count.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_start_app.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_start_app.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_delete_cds.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_delete_cds.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_query_all_tasks.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_query_all_tasks.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_write_sys_log.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_write_sys_log.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_tlm_pool_stats_cmd.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_tlm_pool_stats_cmd.pb.c
+        ${PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.h
+        ${PROTOBUF_MSGS_DIR}/es_dump_cds_reg.pb.c
+        ${PROTOBUF_MSGS_DIR}/px4_position_setpoint_triplet.pb.h
+        ${PROTOBUF_MSGS_DIR}/px4_position_setpoint_triplet.pb.c
+        ${PROTOBUF_MSGS_DIR}/px4_manual_control_setpoint.pb.h
+        ${PROTOBUF_MSGS_DIR}/px4_manual_control_setpoint.pb.c
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.c
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_common.h
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_decode.c
@@ -96,7 +99,7 @@ add_airliner_app_def(pblib
         ${PROJECT_SOURCE_DIR}/tools/nanopb/pb.h
 
     INCLUDES
-        ${ES_PROTOBUF_MSGS_DIR}
+        ${PROTOBUF_MSGS_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 		${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/
@@ -105,7 +108,6 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_start.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_restart.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_set_filter_mask.proto
-        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_tlm_pool_stats.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_shell.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_stop.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_shell_packet.proto
@@ -124,9 +126,11 @@ add_airliner_app_def(pblib
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_write_sys_log.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_tlm_pool_stats_cmd.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_dump_cds_reg.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_position_setpoint_triplet.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/px4_manual_control_setpoint.proto
         
     PROTOBUF_MSGS_DIR        
-        ${ES_PROTOBUF_MSGS_DIR}
+        ${PROTOBUF_MSGS_DIR}
 
     # This application has a public include header.  Add it so all the other applications can access it.
     PUBLIC_INCLUDES
@@ -158,4 +162,4 @@ add_airliner_app_unit_test(pblib-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
 )
 
-set(ES_PROTOBUF_MSGS_DIR ${ES_PROTOBUF_MSGS_DIR} PARENT_SCOPE)
+set(PROTOBUF_MSGS_DIR ${PROTOBUF_MSGS_DIR} PARENT_SCOPE)

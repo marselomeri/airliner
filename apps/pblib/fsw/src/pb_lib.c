@@ -183,6 +183,18 @@ uint32 CFE_ES_RegisterSerializationFuncs()
 	{
 		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
 	}
+
+	Status = PBLIB_RegisterTlmMessage(0x0a34, "PX4_PositionSetpointTripletMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
+
+    Status = PBLIB_RegisterTlmMessage(0x0a27, "PX4_ManualControlSetpointMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
 	
 CFE_ES_RegisterSerializationFuncs_Exit_Tag:
     return Status;
