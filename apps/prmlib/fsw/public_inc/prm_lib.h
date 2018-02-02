@@ -49,18 +49,46 @@
 #define PRMLIB_PARAM_TBL_MAX_ENTRY  (1000)
 #define PRMLIB_PARAM_TBL_MUTEX_NAME ("PRMLIB_PARAM_TBL_MUTEX")
 #define PRMLIB_MSG_PARAM_NAME_LEN  (64)
+#define PRMLIB_PARAM_VALUE_MAX_LEN (8)
 
 /************************************************************************
 ** Local Structure Definitions
 *************************************************************************/
 
+/**
+**  \brief
+*/
+typedef enum
+{
+   TYPE_UINT8=1,
+   TYPE_INT8=2,
+   TYPE_UINT16=3,
+   TYPE_INT16=4,
+   TYPE_UINT32=5,
+   TYPE_INT32=6,
+   TYPE_UINT64=7,
+   TYPE_INT64=8,
+   TYPE_REAL32=9,
+   TYPE_REAL64=10
+} PRMLIB_ParamType_t;
+
+/**
+**  \brief
+*/
+typedef struct
+{
+    uint8  TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    char   name[PRMLIB_MSG_PARAM_NAME_LEN];
+} PRMLIB_UpdatedParamMsg_t;
+
+/**
+**  \brief
+*/
 typedef struct
 {
 	char name[PRMLIB_MSG_PARAM_NAME_LEN];
-    float value;
+    uint8 value[8];
     uint8 type;
-	uint8 vehicle_id;
-	uint8 component_id;
 } PRMLIB_ParamData_t;
 
 /** \brief Definition for a single config table entry */
@@ -158,7 +186,7 @@ boolean PRMLIB_ParamsEqual(PRMLIB_ParamData_t param1, PRMLIB_ParamData_t param2)
 **  \endreturns
 **
 *************************************************************************/
-boolean PRMLIB_ParamExists(PRMLIB_ParamData_t param_data);
+boolean PRMLIB_ParamExists(char param_name[]);
 
 
 /************************************************************************/
@@ -283,6 +311,14 @@ void PRMLIB_GetParams(PRMLIB_ParamData_t* params, uint16* ParamCount);
 void PRMLIB_CopyParamData(PRMLIB_ParamData_t dest, PRMLIB_ParamData_t src);
 
 void PRMLIB_PrintParam(PRMLIB_ParamData_t param_data);
+int32 PRMLIB_GetParamById(char name[], PRMLIB_ParamData_t* InOutParam);
+int32 PRMLIB_GetParamValueById(char name[], void* InOutValue);
+int32 PRMLIB_ParamRegister(char name[], void* inOutValue, PRMLIB_ParamType_t type);
+
+void PRMLIB_GetParamValue(PRMLIB_ParamData_t param, void* val);
+void PRMLIB_SetParamValue(PRMLIB_ParamData_t* param, void* val);
+void PRMLIB_SetValue(void* destVal, void* srcVal, PRMLIB_ParamType_t type);
+
 /************************/
 /*  End of File Comment */
 /************************/

@@ -222,12 +222,6 @@ typedef enum
 
 typedef enum
 {
-	PX4_VELOCITY_FRAME_LOCAL_NED = 1,
-	PX4_VELOCITY_FRAME_BODY_NED = 8
-} PX4_VelocityFrameType_t;
-
-typedef enum
-{
 	PX4_RC_CHANNELS_FUNCTION_THROTTLE	= 0,
 	PX4_RC_CHANNELS_FUNCTION_ROLL	= 1,
 	PX4_RC_CHANNELS_FUNCTION_PITCH	= 2,
@@ -1252,7 +1246,6 @@ typedef struct
 
 typedef struct
 {
-	uint64 Timestamp;
 	double Lat;
 	double Lon;
 	float X;
@@ -1266,9 +1259,9 @@ typedef struct
 	float Yawspeed;
 	float LoiterRadius;
 	float PitchMin;
-	float AX;
-	float AY;
-	float AZ;
+	float A_X;
+	float A_Y;
+	float A_Z;
 	float AcceptanceRadius;
 	float CruisingSpeed;
 	float CruisingThrottle;
@@ -1276,8 +1269,6 @@ typedef struct
 	PX4_SetpointType_t Type;
 	boolean PositionValid;
 	boolean VelocityValid;
-	uint8 VelocityFrame;
-	boolean AltValid;
 	boolean YawValid;
 	boolean DisableMcYawControl;
 	boolean YawspeedValid;
@@ -1297,6 +1288,7 @@ typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	uint64 Timestamp;
+	uint8 NavState;
 	PX4_PositionSetpoint_t Previous;
 	PX4_PositionSetpoint_t Current;
 	PX4_PositionSetpoint_t Next;
@@ -1664,7 +1656,6 @@ typedef struct
 	boolean ControlAltitudeEnabled;
 	boolean ControlClimbRateEnabled;
 	boolean ControlTerminationEnabled;
-	boolean ControlFixedHdgEnabled;
 } PX4_VehicleControlModeMsg_t;
 
 typedef struct
@@ -1741,7 +1732,6 @@ typedef struct
 	float   AltMax;
 	boolean Landed;
 	boolean Freefall;
-	boolean GroundContact;
 } PX4_VehicleLandDetectedMsg_t;
 
 typedef struct
@@ -1755,33 +1745,19 @@ typedef struct
 	float X;
 	float Y;
 	float Z;
-	float Delta_XY[2];
-	float Delta_Z;
 	float VX;
 	float VY;
 	float VZ;
-	float Delta_VXY[2];
-	float Delta_VZ;
-	float AX;
-	float AY;
-	float AZ;
 	float Yaw;
 	float RefAlt;
 	float DistBottom;
 	float DistBottomRate;
 	float EpH;
 	float EpV;
-	float EvH;
-	float EvV;
-	uint8 EstimatorType;
 	boolean XY_Valid;
 	boolean Z_Valid;
 	boolean V_XY_Valid;
 	boolean V_Z_Valid;
-	uint8 XY_ResetCounter;
-	uint8 Z_ResetCounter;
-	uint8 VXY_ResetCounter;
-	uint8 VZ_ResetCounter;
 	boolean XY_Global;
 	boolean Z_Global;
 	boolean DistBottomValid;

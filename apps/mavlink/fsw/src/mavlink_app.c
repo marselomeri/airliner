@@ -464,35 +464,36 @@ void MAVLINK_PassThruListenerTaskMain(void)
 				{
 					if (mavlink_parse_char(MAVLINK_COMM_0, MAVLINK_AppData.PassThruIngestBuffer[index], &msg, &msg_status))
 					{
-						if(msg.msgid != MAVLINK_MSG_ID_HEARTBEAT)
-						{
-							// TODO: Remove
-							if(msg.msgid == MAVLINK_MSG_ID_AUTOPILOT_VERSION)
-							{
-								mavlink_autopilot_version_t decodedMsg;
-								mavlink_msg_autopilot_version_decode(&msg, &decodedMsg);
-								OS_printf("capability: %u", decodedMsg.capabilities);
-							}
-
-							if(msg.msgid == MAVLINK_MSG_ID_COMMAND_LONG)
-							{
-								mavlink_command_long_t 		decodedMsg;
-								mavlink_msg_command_long_decode(&msg, &decodedMsg);
-
-								MAVLINK_HandleCommandLong(decodedMsg);
-							}
-
-							/* Send msg to GCS. Any other message from PX4 is not intended for us */
-							MAVLINK_SendMessage((char *) &MAVLINK_AppData.PassThruIngestBuffer, msg_size); //TODO: does send need thread safety
-						}
-						else
-						{
-							mavlink_heartbeat_t decodedMsg;
-							mavlink_msg_heartbeat_decode(&msg, &decodedMsg);
-							MAVLINK_AppData.HkTlm.SystemStatus = decodedMsg.system_status;
-							MAVLINK_AppData.HkTlm.BaseMode = decodedMsg.base_mode;
-							MAVLINK_AppData.HkTlm.CustomMode = decodedMsg.custom_mode;
-						}
+						MAVLINK_SendMessage((char *) &MAVLINK_AppData.PassThruIngestBuffer, msg_size); //TODO: does send need thread safety
+//						if(msg.msgid != MAVLINK_MSG_ID_HEARTBEAT)
+//						{
+//							// TODO: Remove
+//							if(msg.msgid == MAVLINK_MSG_ID_AUTOPILOT_VERSION)
+//							{
+//								mavlink_autopilot_version_t decodedMsg;
+//								mavlink_msg_autopilot_version_decode(&msg, &decodedMsg);
+//								OS_printf("capability: %u", decodedMsg.capabilities);
+//							}
+//
+//							if(msg.msgid == MAVLINK_MSG_ID_COMMAND_LONG)
+//							{
+//								mavlink_command_long_t 		decodedMsg;
+//								mavlink_msg_command_long_decode(&msg, &decodedMsg);
+//
+//								MAVLINK_HandleCommandLong(decodedMsg);
+//							}
+//
+//							/* Send msg to GCS. Any other message from PX4 is not intended for us */
+//							MAVLINK_SendMessage((char *) &MAVLINK_AppData.PassThruIngestBuffer, msg_size); //TODO: does send need thread safety
+//						}
+//						else
+//						{
+//							mavlink_heartbeat_t decodedMsg;
+//							mavlink_msg_heartbeat_decode(&msg, &decodedMsg);
+//							memcpy(&MAVLINK_AppData.HkTlm.SystemStatus, &decodedMsg.system_status, sizeof(uint8));
+//							memcpy(&MAVLINK_AppData.HkTlm.BaseMode, &decodedMsg.base_mode, sizeof(uint8));
+//							memcpy(&MAVLINK_AppData.HkTlm.CustomMode, &decodedMsg.custom_mode, sizeof(uint32));
+//						}
 					}
 				}
 			}while(MAVLINK_AppData.IngestActive == TRUE);
@@ -613,8 +614,8 @@ void MAVLINK_MessageRouter(mavlink_message_t msg)
 		{
 			CFE_EVS_SendEvent(MAVLINK_HANDLE_INF_EID, CFE_EVS_INFORMATION,
 							  "QGC requesting param list");
-
-			Status = MAVLINK_HandleRequestParams();
+			MAVLINK_MessagePassThru(msg);
+			//Status = MAVLINK_HandleRequestParams();
 			break;
 		}
 		case MAVLINK_MSG_ID_PARAM_SET:
@@ -622,9 +623,8 @@ void MAVLINK_MessageRouter(mavlink_message_t msg)
 			mavlink_param_set_t decodedMsg;
 			mavlink_msg_param_set_decode(&msg, &decodedMsg);
 			CFE_EVS_SendEvent(MAVLINK_HANDLE_INF_EID, CFE_EVS_INFORMATION,
-										  "QGC setting param: %s = %f",
-										  decodedMsg.param_id,
-										  decodedMsg.param_value);
+										  "QGC setting param: %s",
+										  decodedMsg.param_id);
 
 			Status = MAVLINK_HandleSetParam(decodedMsg);
 			break;
@@ -635,8 +635,9 @@ void MAVLINK_MessageRouter(mavlink_message_t msg)
 			mavlink_msg_param_request_read_decode(&msg, &decodedMsg);
 			CFE_EVS_SendEvent(MAVLINK_HANDLE_INF_EID, CFE_EVS_INFORMATION,
 							  "QGC requseting specified param at index: %i", decodedMsg.param_index);
+			MAVLINK_MessagePassThru(msg);
 
-			Status = MAVLINK_HandleRequestParamRead(decodedMsg);
+			//Status = MAVLINK_HandleRequestParamRead(decodedMsg);
 			break;
 		}
 		case MAVLINK_MSG_ID_COMMAND_LONG:
@@ -675,6 +676,19 @@ void MAVLINK_MessageRouter(mavlink_message_t msg)
 	}
 }
 
+boolean MAVLINK_VerifyParamForAirliner(MAVLINK_ParamData_t param)
+{
+	boolean ReturnValue = FALSE;
+
+	/* Verify that system and component IDs are correct */
+	if(param.vehicle_id == MAVLINK_SYSTEM_ID && param.component_id == MAVLINK_COMPONENT_ID)
+	{
+		ReturnValue = TRUE;
+	}
+
+	return ReturnValue;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Handle Request Parameter List                                   */
@@ -685,6 +699,7 @@ int32 MAVLINK_HandleRequestParams()
 	int32 				Status = CFE_SUCCESS;
 	CFE_SB_MsgPtr_t 	CmdMsgPtr;
 	uint16 				ParamCount = 0;
+	MAVLINK_ParamData_t param_data = {0};
 	PRMLIB_ParamData_t  params[PRMLIB_PARAM_TBL_MAX_ENTRY];
 
 	/* Get params from lib */
@@ -693,8 +708,13 @@ int32 MAVLINK_HandleRequestParams()
 	/* Iterate over params and send to GCS */
 	for(int i = 0; i < ParamCount; ++i)
 	{
-		PRMLIB_PrintParam(params[i]);
-		MAVLINK_SendParamToGCS(params[i], i, ParamCount);
+		/* Copy into mavlink format */
+		param_data.vehicle_id = MAVLINK_SYSTEM_ID;
+		param_data.component_id = MAVLINK_COMPONENT_ID;
+		param_data.type = params[i].type;
+		strcpy(param_data.name, params[i].name);
+		memcpy(&param_data.value, &params[i].value, sizeof(param_data.value));
+		MAVLINK_SendParamToGCS(param_data, i, ParamCount);
 	}
 
 	return Status;
@@ -708,36 +728,77 @@ int32 MAVLINK_HandleRequestParams()
 int32 MAVLINK_HandleSetParam(mavlink_param_set_t param)
 {
 	int32 				Status = CFE_SUCCESS;
-	PRMLIB_ParamData_t param_data;
+	MAVLINK_ParamData_t param_data;
+	PRMLIB_ParamData_t  param_lib_data;
 	uint16 				ParamCount = 0;
 	uint16 				ParamIndex = 0;
+	PRMLIB_UpdatedParamMsg_t UpdatedMsg = {0};
+	CFE_SB_MsgPtr_t MsgPtr = (CFE_SB_MsgPtr_t) &UpdatedMsg;
 
-	/* Copy data from msg */
+	/* Copy data from msg to mav format */
 	param_data.vehicle_id = param.target_system;
 	param_data.component_id = param.target_component;
-	param_data.value = param.param_value;
 	param_data.type = param.param_type;
+	memcpy(&param_data.value, &param.param_value, sizeof(param_data.value));
 	strcpy(param_data.name, param.param_id);
-	PRMLIB_PrintParam(param_data);
+
+	if(MAVLINK_VerifyParamForAirliner(param_data) != TRUE)
+	{
+		Status = -1;
+		goto MAVLINK_HandleSetParam_Exit_Tag;
+	}
+
+	/* Copy data from msg to lib format */
+	param_lib_data.type = param.param_type;
+	strcpy(param_lib_data.name, param.param_id);
+	PRMLIB_SetParamValue(&param_lib_data, &param_data.value);
 
 	/* Check if param exists */
-	if(PRMLIB_ParamExists(param_data) == TRUE)
+	if(PRMLIB_ParamExists(param_lib_data.name) == TRUE)
 	{
-		OS_printf("updating param\n");
-		Status = PRMLIB_UpdateParam(param_data);
+		Status = PRMLIB_UpdateParam(param_lib_data);
 	}
 	else
 	{
 		//TODO: verify expected
-		OS_printf("adding param\n");
 		//Status = PRMLIB_AddParam(param_data);
 	}
 
-	if(Status == CFE_SUCCESS)
+	if(Status != CFE_SUCCESS)
 	{
-		/* Update param with values stored in prmlib and send back to GCS */
-		PRMLIB_GetParamData(&param_data, &ParamIndex, &ParamCount);
-		MAVLINK_SendParamToGCS(param_data, ParamIndex, ParamCount);
+		CFE_EVS_SendEvent(MAVLINK_HANDLE_ERR_EID, CFE_EVS_ERROR,
+						 "Error setting param in param lib");
+		goto MAVLINK_HandleSetParam_Exit_Tag;
+	}
+
+	/* Notify apps a param has changed */
+	strcpy(UpdatedMsg.name, param.param_id);
+	CFE_SB_InitMsg(MsgPtr, PRMLIB_PARAM_UPDATED_MID, sizeof(PRMLIB_UpdatedParamMsg_t), FALSE);
+	Status = CFE_SB_SendMsg(MsgPtr);
+
+	if(Status != CFE_SUCCESS)
+	{
+		CFE_EVS_SendEvent(MAVLINK_HANDLE_ERR_EID, CFE_EVS_ERROR,
+						 "Error sending set param to SB");
+		goto MAVLINK_HandleSetParam_Exit_Tag;
+	}
+
+	/* Update param with values stored in prmlib and send back to GCS */
+	PRMLIB_GetParamData(&param_lib_data, &ParamIndex, &ParamCount);
+
+	/* Copy data from lib back to mav format */
+	param_data.type = param_lib_data.type;
+	strcpy(param_data.name, param_lib_data.name);
+	memcpy(&param_data.value, &param_lib_data.value, sizeof(param_data.value));
+
+	MAVLINK_SendParamToGCS(param_data, ParamIndex, ParamCount);
+
+MAVLINK_HandleSetParam_Exit_Tag:
+
+	if (Status != CFE_SUCCESS)
+	{
+		CFE_EVS_SendEvent(MAVLINK_HANDLE_ERR_EID, CFE_EVS_ERROR,
+						 "Error encountered setting param: (%s)", param.param_id);
 	}
 
 	return Status;
@@ -751,7 +812,8 @@ int32 MAVLINK_HandleSetParam(mavlink_param_set_t param)
 int32 MAVLINK_HandleRequestParamRead(mavlink_param_request_read_t param)
 {
 	int32 				Status = CFE_SUCCESS;
-	PRMLIB_ParamData_t  param_data;
+	MAVLINK_ParamData_t param_data = {0};
+	PRMLIB_ParamData_t  param_lib_data = {0};
 	uint16 				ParamCount = 0;
 	uint16 				ParamIndex = 0;
 
@@ -761,17 +823,24 @@ int32 MAVLINK_HandleRequestParamRead(mavlink_param_request_read_t param)
 	strcpy(param_data.name, param.param_id);
 	ParamIndex = param.param_index;
 
+	/* Copy data from msg to lib format */
+	strcpy(param_lib_data.name, param.param_id);
+
 	/* Check if index is specified */
 	if(param.param_index == -1)
 	{
-		Status = PRMLIB_GetParamData(&param_data, &ParamIndex, &ParamCount);
+		Status = PRMLIB_GetParamData(&param_lib_data, &ParamIndex, &ParamCount);
 	}
 	else
 	{
-		Status = PRMLIB_GetParamDataAtIndex(&param_data, ParamIndex);
+		Status = PRMLIB_GetParamDataAtIndex(&param_lib_data, ParamIndex);
 		ParamCount = PRMLIB_GetParamCount();
 	}
 
+	/* Copy data back into mav format */
+	PRMLIB_GetParamValue(param_lib_data, &param_data.value);
+	param_data.type = param_lib_data.type;
+	strcpy(param_data.name, param_lib_data.name);
 
 	MAVLINK_SendParamToGCS(param_data, ParamIndex, ParamCount);
 
@@ -793,11 +862,11 @@ int32 MAVLINK_HandleRequestMission()
 
 	/* Reply with mission count zero for now */
 	missionMsg.count = 0;
-	missionMsg.target_system = MAVLINK_PARAM_SYSTEM_ID;
-	missionMsg.target_component = MAVLINK_PARAM_COMPONENT_ID;
+	missionMsg.target_system = MAVLINK_SYSTEM_ID;
+	missionMsg.target_component = MAVLINK_COMPONENT_ID;
 
 	/* Encode mavlink message and send to ground station */
-	mavlink_msg_mission_count_encode(MAVLINK_PARAM_SYSTEM_ID, MAVLINK_PARAM_COMPONENT_ID, &msg, &missionMsg);
+	mavlink_msg_mission_count_encode(MAVLINK_SYSTEM_ID, MAVLINK_COMPONENT_ID, &msg, &missionMsg);
 	msg_size = mavlink_msg_to_send_buffer(msgBuf, &msg);
 	MAVLINK_SendMessage((char *) &msgBuf, msg_size);
 	return Status;
@@ -865,7 +934,7 @@ void MAVLINK_CheckParamsInit()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MAVLINK_SendHeartbeat(void)
 {
-	uint8 system_id 		= MAVLINK_PARAM_SYSTEM_ID;
+	uint8 system_id 		= MAVLINK_SYSTEM_ID;
 	uint8 component_id 		= MAV_COMP_ID_AUTOPILOT1;
 	mavlink_message_t msg 	= {0};
 	uint8 type				= MAV_TYPE_OCTOROTOR;
@@ -884,7 +953,7 @@ void MAVLINK_SendHeartbeat(void)
 											 autopilot, base_mode, custom_mode, system_status);
 		msg_size = mavlink_msg_to_send_buffer(msgBuf, &msg);
 
-		MAVLINK_SendMessage((char *) &msgBuf, msg_size);
+		//MAVLINK_SendMessage((char *) &msgBuf, msg_size);
 	}
 }
 
@@ -893,7 +962,7 @@ void MAVLINK_SendHeartbeat(void)
 /* Send Parameter to GCS		                                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void MAVLINK_SendParamToGCS(PRMLIB_ParamData_t param_data, uint16 param_index, uint16 param_count)
+void MAVLINK_SendParamToGCS(MAVLINK_ParamData_t param_data, uint16 param_index, uint16 param_count)
 {
 	mavlink_message_t msg 	= {0};
 	mavlink_param_value_t param = {0};
@@ -903,14 +972,41 @@ void MAVLINK_SendParamToGCS(PRMLIB_ParamData_t param_data, uint16 param_index, u
 	/* Copy values from params msg mavlink msg */
 	param.param_index = param_index;
 	param.param_count = param_count;
-	param.param_value = param_data.value;
-	memcpy(&param.param_id, param_data.name, sizeof(param_data.name));
+	strcpy(param.param_id, param_data.name);
+	param.param_id[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN] = '\0';
 	param.param_type = param_data.type;
+	memcpy(&param.param_value, &param_data.value, sizeof(param_data.value));
 
 	/* Encode mavlink message and send to ground station */
-	mavlink_msg_param_value_encode(MAVLINK_PARAM_SYSTEM_ID, MAVLINK_PARAM_COMPONENT_ID, &msg, &param);
+	mavlink_msg_param_value_encode(MAVLINK_SYSTEM_ID, MAVLINK_COMPONENT_ID, &msg, &param);
 	msg_size = mavlink_msg_to_send_buffer(msgBuf, &msg);
     MAVLINK_SendMessage((char *) &msgBuf, msg_size);
+}
+
+void MAVLINK_PrintParam(MAVLINK_ParamData_t param) // TODO Remove
+{
+	uint8 val_uint8 	= 0;
+	int8 val_int8 		= 0;
+	uint16 val_uint16 	= 0;
+	int16 val_int16		= 0;
+	uint32 val_uint32	= 0;
+	int32 val_int32 	= 0;
+
+	OS_printf("name: %s \n", param.name);
+	OS_printf("type: %u \n", param.type);
+	switch(param.type)
+	{
+		case TYPE_UINT32:
+			memcpy(&val_uint32, &param.value, sizeof(uint32));
+			OS_printf("uint value: %u \n", val_uint32);
+			break;
+		case TYPE_REAL32:
+			OS_printf("value: %f \n", param.value);
+			break;
+		default:
+			//unsupported type
+			break;
+	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

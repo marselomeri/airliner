@@ -3,11 +3,11 @@ import "nanopb.proto";
 
 message px4br_vehicle_land_detected_pb 
 {
-	required uint64 timestamp    = 1;
-	required float alt_max       = 2;
-	required bool landed         = 3;
-	required bool freefall       = 4;
-	required bool ground_contact = 5;
+    required uint64 timestamp    = 1;
+    required float alt_max       = 2;
+    required bool landed         = 3;
+    required bool freefall       = 4;
+    required bool ground_contact = 5;
 }
 
 // ORB_DECLARE(vehicle_land_detected);

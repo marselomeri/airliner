@@ -107,7 +107,7 @@ int32 MAVLINK_ReadPassThru(char* buffer, uint32* size)
 					   (struct sockaddr*)&address,
 					   &len);
 
-	px4_port = address.sin_port;
+	//px4_port = address.sin_port;
 }
 
 int32 MAVLINK_SendPassThru(const char* buffer, uint32 size)

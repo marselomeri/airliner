@@ -660,6 +660,9 @@
 #define HMC5883_CMD_MID                             0x1ca4
 #define HMC5883_DIAG_TLM_MID                        0x0ca5
 
+/* PRMLIB                                               */
+#define PRMLIB_PARAM_UPDATED_MID                    0x0ca6
+
 #define SCH_ACTIVITY_DONE_MID			    0x0f00
 
 #endif

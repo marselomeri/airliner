@@ -3972,7 +3972,6 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
-	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
@@ -4144,7 +4143,6 @@ uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject,
 	pbMsg.flag_control_altitude_enabled = inObject->ControlAltitudeEnabled;
 	pbMsg.flag_control_climb_rate_enabled = inObject->ControlClimbRateEnabled;
 	pbMsg.flag_control_termination_enabled = inObject->ControlTerminationEnabled;
-	pbMsg.flag_control_fixed_hdg_enabled = inObject->ControlFixedHdgEnabled;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -4194,7 +4192,6 @@ uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 	inOutObject->ControlAltitudeEnabled = pbMsg.flag_control_altitude_enabled;
 	inOutObject->ControlClimbRateEnabled = pbMsg.flag_control_climb_rate_enabled;
 	inOutObject->ControlTerminationEnabled = pbMsg.flag_control_termination_enabled;
-	inOutObject->ControlFixedHdgEnabled = pbMsg.flag_control_fixed_hdg_enabled;
 
 	return sizeof(PX4_VehicleControlModeMsg_t);
 }
@@ -4469,10 +4466,10 @@ uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObjec
 	px4br_vehicle_land_detected_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
-	pbMsg.alt_max = inObject->AltMax;
+	pbMsg.ground_contact = inOutObject->GroundContact;
+	pbMsg.alt_max = inOutObject->AltMax;
 	pbMsg.landed = inObject->Landed;
 	pbMsg.freefall = inObject->Freefall;
-	pbMsg.ground_contact = inObject->GroundContact;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
@@ -4507,10 +4504,8 @@ uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_Ve
 	inOutObject->GroundContact = pbMsg.ground_contact;
 	inOutObject->AltMax = pbMsg.alt_max;
 	inOutObject->Timestamp = pbMsg.timestamp;
-	inOutObject->AltMax = pbMsg.alt_max;
 	inOutObject->Landed = pbMsg.landed;
 	inOutObject->Freefall = pbMsg.freefall;
-	inOutObject->GroundContact = pbMsg.ground_contact;
 
 	return sizeof(PX4_VehicleLandDetectedMsg_t);
 }
@@ -4529,37 +4524,19 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
-	pbMsg.delta_xy_count = 2;
-	pbMsg.delta_xy[0] = inObject->Delta_XY[0];
-	pbMsg.delta_xy[1] = inObject->Delta_XY[1];
-	pbMsg.delta_z = inObject->Delta_Z;
 	pbMsg.vx = inObject->VX;
 	pbMsg.vy = inObject->VY;
 	pbMsg.vz = inObject->VZ;
-	pbMsg.delta_vxy_count = 2;
-	pbMsg.delta_vxy[0] = inObject->Delta_VXY[0];
-	pbMsg.delta_vxy[1] = inObject->Delta_VXY[1];
-	pbMsg.delta_vz = inObject->Delta_VZ;
-	pbMsg.ax = inObject->AX;
-	pbMsg.ay = inObject->AY;
-	pbMsg.az = inObject->AZ;
 	pbMsg.yaw = inObject->Yaw;
 	pbMsg.ref_alt = inObject->RefAlt;
 	pbMsg.dist_bottom = inObject->DistBottom;
 	pbMsg.dist_bottom_rate = inObject->DistBottomRate;
 	pbMsg.eph = inObject->EpH;
 	pbMsg.epv = inObject->EpV;
-	pbMsg.evh = inObject->EvH;
-	pbMsg.evv = inObject->EvV;
-	pbMsg.estimator_type = inObject->EstimatorType;
 	pbMsg.xy_valid = inObject->XY_Valid;
 	pbMsg.z_valid = inObject->Z_Valid;
 	pbMsg.v_xy_valid = inObject->V_XY_Valid;
 	pbMsg.v_z_valid = inObject->V_Z_Valid;
-	pbMsg.xy_reset_counter = inObject->XY_ResetCounter;
-	pbMsg.z_reset_counter = inObject->Z_ResetCounter;
-	pbMsg.vxy_reset_counter = inObject->VXY_ResetCounter;
-	pbMsg.vz_reset_counter = inObject->VZ_ResetCounter;
 	pbMsg.xy_global = inObject->XY_Global;
 	pbMsg.z_global = inObject->Z_Global;
 	pbMsg.dist_bottom_valid = inObject->DistBottomValid;
@@ -4603,34 +4580,20 @@ uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
 	inOutObject->Z = pbMsg.z;
-	inOutObject->Delta_XY[0] = pbMsg.delta_xy[0];
-	inOutObject->Delta_XY[1] = pbMsg.delta_xy[1];
 	inOutObject->VX = pbMsg.vx;
 	inOutObject->VY = pbMsg.vy;
 	inOutObject->VZ = pbMsg.vz;
-	inOutObject->Delta_VXY[0] = pbMsg.delta_vxy[0];
-	inOutObject->Delta_VXY[1] = pbMsg.delta_vxy[1];
-	inOutObject->AX = pbMsg.ax;
-	inOutObject->AY = pbMsg.ay;
-	inOutObject->AZ = pbMsg.az;
 	inOutObject->Yaw = pbMsg.yaw;
 	inOutObject->RefAlt = pbMsg.ref_alt;
 	inOutObject->DistBottom = pbMsg.dist_bottom;
 	inOutObject->DistBottomRate = pbMsg.dist_bottom_rate;
 	inOutObject->EpH = pbMsg.eph;
 	inOutObject->EpV = pbMsg.epv;
-	inOutObject->EvH = pbMsg.evh;
-	inOutObject->EvV = pbMsg.evv;
-	inOutObject->EstimatorType = pbMsg.estimator_type;
 	inOutObject->XY_Valid = pbMsg.xy_valid;
 	inOutObject->Z_Valid = pbMsg.z_valid;
 	inOutObject->V_XY_Valid = pbMsg.v_xy_valid;
 	inOutObject->V_Z_Valid = pbMsg.v_z_valid;
 	inOutObject->XY_Global = pbMsg.xy_global;
-	inOutObject->XY_ResetCounter = pbMsg.xy_reset_counter;
-	inOutObject->Z_ResetCounter = pbMsg.z_reset_counter;
-	inOutObject->VXY_ResetCounter = pbMsg.vxy_reset_counter;
-	inOutObject->VZ_ResetCounter = pbMsg.vz_reset_counter;
 	inOutObject->Z_Global = pbMsg.z_global;
 	inOutObject->DistBottomValid = pbMsg.dist_bottom_valid;
 
