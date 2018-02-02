@@ -281,6 +281,7 @@ uint32 PX4BR_ActuatorDirect_Enc(const PX4_ActuatorDirectMsg_t *inObject, char *i
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.nvalues = inObject->NValues;
+	pbMsg.values_count = PX4_ACTUATOR_DIRECT_MAX;
 	for(i=0; i < PX4_ACTUATOR_DIRECT_MAX; ++i)
 	{
 		pbMsg.values[i] = inObject->Values[i];
@@ -598,16 +599,20 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 	pbMsg.y_pos = inObject->PosY;
 	pbMsg.z_pos = inObject->PosZ;
 	pbMsg.airspeed = inObject->Airspeed;
+	pbMsg.vel_variance_count = 3;
 	pbMsg.vel_variance[0] = inObject->VelVariance[0];
 	pbMsg.vel_variance[1] = inObject->VelVariance[1];
 	pbMsg.vel_variance[2] = inObject->VelVariance[2];
+	pbMsg.pos_variance_count = 3;
 	pbMsg.pos_variance[0] = inObject->PosVariance[0];
 	pbMsg.pos_variance[1] = inObject->PosVariance[1];
 	pbMsg.pos_variance[2] = inObject->PosVariance[2];
+	pbMsg.q_count = 4;
 	pbMsg.q[0] = inObject->Q[0];
 	pbMsg.q[1] = inObject->Q[1];
 	pbMsg.q[2] = inObject->Q[2];
 	pbMsg.q[3] = inObject->Q[3];
+	pbMsg.delta_q_reset_count = 4;
 	pbMsg.delta_q_reset[0] = inObject->DeltaQReset[0];
 	pbMsg.delta_q_reset[1] = inObject->DeltaQReset[1];
 	pbMsg.delta_q_reset[2] = inObject->DeltaQReset[2];
@@ -828,31 +833,37 @@ uint32 PX4BR_Ekf2Innovations_Enc(const PX4_Ekf2InnovationsMsg_t *inObject, char 
 	px4br_ekf2_innovations_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.vel_pos_innov_count = 6;
 	pbMsg.vel_pos_innov[0] = inObject->VelPosInnov[0];
 	pbMsg.vel_pos_innov[1] = inObject->VelPosInnov[1];
 	pbMsg.vel_pos_innov[2] = inObject->VelPosInnov[2];
 	pbMsg.vel_pos_innov[3] = inObject->VelPosInnov[3];
 	pbMsg.vel_pos_innov[4] = inObject->VelPosInnov[4];
 	pbMsg.vel_pos_innov[5] = inObject->VelPosInnov[5];
+	pbMsg.mag_innov_count = 3;
 	pbMsg.mag_innov[0] = inObject->MagInnov[0];
 	pbMsg.mag_innov[1] = inObject->MagInnov[1];
 	pbMsg.mag_innov[2] = inObject->MagInnov[2];
 	pbMsg.heading_innov = inObject->HeadingInnov;
 	pbMsg.airspeed_innov = inObject->AirspeedInnov;
+	pbMsg.flow_innov_count = 2;
 	pbMsg.flow_innov[0] = inObject->FlowInnov[0];
 	pbMsg.flow_innov[1] = inObject->FlowInnov[1];
 	pbMsg.hagl_innov = inObject->HaglInnov;
+	pbMsg.vel_pos_innov_var_count = 6;
 	pbMsg.vel_pos_innov_var[0] = inObject->VelPosInnovVar[0];
 	pbMsg.vel_pos_innov_var[1] = inObject->VelPosInnovVar[1];
 	pbMsg.vel_pos_innov_var[2] = inObject->VelPosInnovVar[2];
 	pbMsg.vel_pos_innov_var[3] = inObject->VelPosInnovVar[3];
 	pbMsg.vel_pos_innov_var[4] = inObject->VelPosInnovVar[4];
 	pbMsg.vel_pos_innov_var[5] = inObject->VelPosInnovVar[5];
+	pbMsg.mag_innov_var_count = 3;
 	pbMsg.mag_innov_var[0] = inObject->MagInnovVar[0];
 	pbMsg.mag_innov_var[1] = inObject->MagInnovVar[1];
 	pbMsg.mag_innov_var[2] = inObject->MagInnovVar[2];
 	pbMsg.heading_innov_var = inObject->HeadingInnovVar;
 	pbMsg.airspeed_innov_var = inObject->AirspeedInnovVar;
+	pbMsg.flow_innov_var_count = 2;
 	pbMsg.flow_innov_var[0] = inObject->FlowInnovVar[0];
 	pbMsg.flow_innov_var[1] = inObject->FlowInnovVar[1];
 	pbMsg.hagl_innov_var = inObject->HaglInnovVar;
@@ -1006,6 +1017,7 @@ uint32 PX4BR_EscStatus_Enc(const PX4_EscStatusMsg_t *inObject, char *inOutBuffer
 	pbMsg.counter = inObject->Counter;
 	pbMsg.esc_count = inObject->EscCount;
 	pbMsg.connectiontype = inObject->ConnectionType;
+	pbMsg.esc_count = PX4_ESC_CONNECTED_ESC_MAX;
 	for(i=0; i < PX4_ESC_CONNECTED_ESC_MAX; ++i)
 	{
 		pbMsg.esc[i].timestamp = inObject->Esc[i].Timestamp;
@@ -1060,7 +1072,7 @@ uint32 PX4BR_EscStatus_Dec(const char *inBuffer, uint32 inSize, PX4_EscStatusMsg
 	inOutObject->ConnectionType = pbMsg.connectiontype;
 	for(i=0; i < PX4_ESC_CONNECTED_ESC_MAX; ++i)
 	{
-		//inOutObject->esc[i].timestamp = pbMsg.esc[i].timestamp;
+		//inOutObject->Esc[i].Timestamp = pbMsg.esc[i].timestamp;
 		inOutObject->Esc[i].ErrorCount = pbMsg.esc[i].esc_errorcount;
 		inOutObject->Esc[i].Rpm = pbMsg.esc[i].esc_rpm;
 		inOutObject->Esc[i].Voltage = pbMsg.esc[i].esc_voltage;
@@ -1329,6 +1341,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
+	pbMsg.R_body_count = 9;
 	pbMsg.R_body[0] = inObject->RBody[0];
 	pbMsg.R_body[1] = inObject->RBody[1];
 	pbMsg.R_body[2] = inObject->RBody[2];
@@ -1338,10 +1351,12 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 	pbMsg.R_body[6] = inObject->RBody[6];
 	pbMsg.R_body[7] = inObject->RBody[7];
 	pbMsg.R_body[8] = inObject->RBody[8];
+	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
 	pbMsg.q_d[3] = inObject->Q_D[3];
+	pbMsg.q_e_count = 4;
 	pbMsg.q_e[0] = inObject->Q_E[0];
 	pbMsg.q_e[1] = inObject->Q_E[1];
 	pbMsg.q_e[2] = inObject->Q_E[2];
@@ -1547,6 +1562,7 @@ uint32 PX4BR_GpsInjectData_Enc(const PX4_GpsInjectDataMsg_t *inObject, char *inO
 	pbMsg.len = inObject->Len;
 	pbMsg.flags = inObject->Flags;
 	strncpy(pbMsg.data, inObject->Data, PX4_GPS_INJECT_DATA_MAX);
+	//pbMsg.data_count = PX4_GPS_INJECT_DATA_MAX;
 	for(i=0; i < PX4_GPS_INJECT_DATA_MAX; ++i)
 	{
 		pbMsg.data[i] = inObject->Data[i];
@@ -1750,6 +1766,7 @@ uint32 PX4BR_LogMessage_Enc(const PX4_LogMessageMsg_t *inObject, char *inOutBuff
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.severity = inObject->Severity;
+	//pbMsg.text_count = 127;
 	for(i = 0; i < 127; ++i)
 	{
 		pbMsg.text[i] = inObject->Text[i];
@@ -1898,6 +1915,7 @@ uint32 PX4BR_MavlinkLog_Enc(const PX4_MavlinkLogMsg_t *inObject, char *inOutBuff
 	px4br_mavlink_log_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
+	//pbMsg.text_count = 50;
 	for(i = 0; i < 50; ++i)
 	{
 		pbMsg.text[i] = inObject->Text[i];
@@ -2006,6 +2024,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
+	pbMsg.R_body_count = 9;
 	pbMsg.R_body[0] = inObject->R_Body[0];
 	pbMsg.R_body[1] = inObject->R_Body[1];
 	pbMsg.R_body[2] = inObject->R_Body[2];
@@ -2015,10 +2034,12 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 	pbMsg.R_body[6] = inObject->R_Body[6];
 	pbMsg.R_body[7] = inObject->R_Body[7];
 	pbMsg.R_body[8] = inObject->R_Body[8];
+	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
 	pbMsg.q_d[3] = inObject->Q_D[3];
+	pbMsg.q_e_count = 4;
 	pbMsg.q_e[0] = inObject->Q_E[0];
 	pbMsg.q_e[1] = inObject->Q_E[1];
 	pbMsg.q_e[2] = inObject->Q_E[2];
@@ -2840,6 +2861,7 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.timestamp_last_valid = inObject->TimestampLastValid;
+	pbMsg.channels_count = PX4_RC_INPUT_MAX_CHANNELS;
 	for(iChannel = 0; iChannel < PX4_RC_INPUT_MAX_CHANNELS; ++iChannel)
 	{
 		pbMsg.channels[iChannel] = inObject->Channels[iChannel];
@@ -2974,6 +2996,11 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.count = inObject->Count;
+	pbMsg.svid_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.used_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.elevation_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.azimuth_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.snr_count = PX4_SAT_INFO_MAX_SATELLITES;
 	pbMsg.svid_count = PX4_SAT_INFO_MAX_SATELLITES;
 	pbMsg.used_count = PX4_SAT_INFO_MAX_SATELLITES;
 	pbMsg.elevation_count = PX4_SAT_INFO_MAX_SATELLITES;
@@ -3972,6 +3999,7 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
+	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];

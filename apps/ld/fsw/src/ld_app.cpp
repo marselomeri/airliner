@@ -349,7 +349,7 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
 				if((VehicleLandDetectedMsg.Freefall!=ffd)||
 						(VehicleLandDetectedMsg.Landed!=ld)||
 						(VehicleLandDetectedMsg.GroundContact!=gcd)||
-						(fabsf(VehicleLandDetectedMsg.AltitudeMax - prev_altitude_max)>FLT_EPSILON)){
+						(fabsf(VehicleLandDetectedMsg.AltMax - prev_altitude_max)>FLT_EPSILON)){
 //					if((!gcd && !ld) && ffd){
 //						ffd=false;
 //					}
@@ -367,7 +367,7 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
 
 					}
 					VehicleLandDetectedMsg.Timestamp = PX4LIB_GetPX4TimeUs();
-					VehicleLandDetectedMsg.AltitudeMax = altitude_max;
+					VehicleLandDetectedMsg.AltMax = altitude_max;
 					VehicleLandDetectedMsg.Freefall=(state == LandDetectionState::FREEFALL);
 					VehicleLandDetectedMsg.Landed=(state == LandDetectionState::LANDED);
 					VehicleLandDetectedMsg.GroundContact=(state == LandDetectionState::GROUND_CONTACT);
