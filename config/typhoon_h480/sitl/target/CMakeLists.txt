@@ -429,3 +429,13 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
 )
 
+add_airliner_app(
+    qae
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/qae/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/qae
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/qae_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_perfids.h
+)
+
