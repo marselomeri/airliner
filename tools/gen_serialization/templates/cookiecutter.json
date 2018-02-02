@@ -318,22 +318,22 @@
 							"airliner_type": "float",
 							"array_length": 0
 						},
-						"A_X": {
-							"airliner_name": "A_X", 
+						"AX": {
+							"airliner_name": "AX", 
 							"pb_type": "float",
 							"pb_field_rule": "optional",
 							"airliner_type": "float",
 							"array_length": 0
 						},
-						"A_Y": {
-							"airliner_name": "A_Y", 
+						"AY": {
+							"airliner_name": "AY", 
 							"pb_type": "float",
 							"pb_field_rule": "optional",
 							"airliner_type": "float",
 							"array_length": 0
 						},
-						"A_Z": {
-							"airliner_name": "A_Z", 
+						"AZ": {
+							"airliner_name": "AZ", 
 							"pb_type": "float",
 							"pb_field_rule": "optional",
 							"airliner_type": "float",
@@ -441,11 +441,6 @@
 			"airliner_msg": "PX4_PositionSetpointTripletMsg_t",
 			"airliner_cc": -1,
 			"airliner_mid": "0x0a34"
-		},
-        "ManualSetpoint": {			
-			"airliner_msg": "PX4_ManualControlSetpointMsg_t",
-			"airliner_cc": -1,
-			"airliner_mid": "0x0a27"
 		}
 	},
 	"autogen_version": "",
