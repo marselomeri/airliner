@@ -366,7 +366,7 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
 
 
 					}
-
+					VehicleLandDetectedMsg.Timestamp = PX4LIB_GetPX4TimeUs();
 					VehicleLandDetectedMsg.AltitudeMax = altitude_max;
 					VehicleLandDetectedMsg.Freefall=(state == LandDetectionState::FREEFALL);
 					VehicleLandDetectedMsg.Landed=(state == LandDetectionState::LANDED);
