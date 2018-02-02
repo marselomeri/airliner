@@ -164,7 +164,7 @@ public:
     //karth
     LD_Params_t ld_params;
 
-    LandDetectionState state = {};
+    LandDetectionState state;
     //BatteryWarningState batt_warn = {};
 
 	StateHistory freefall_history;
@@ -173,6 +173,12 @@ public:
 
     uint64 arming_time = 0;
     uint64 min_thrust_start = 0;
+    int publish_counter = 0;
+    float altitude_max;
+    //ld_params _p_total_flight_time_high;
+    //ld_params _p_total_flight_time_low;
+	uint64 total_flight_time; ///< in microseconds
+	uint64 takeoff_time;
 	/** Run main land detector loop at this rate in Hz. */
 	static constexpr uint32 LAND_DETECTOR_UPDATE_RATE_HZ = 50;
 
@@ -566,6 +572,23 @@ private:
             **
             *************************************************************************/
     boolean MinimalThrust(void);
+    /************************************************************************/
+            /** \brief Detect if vehicle is in free fall state.
+            **
+            **  \par Description
+            **       Computes net acceleration acting on the vehicle. if the value
+            **       is close to the free fall threshold then true is returned
+            **
+            **  \par Assumptions, External Events, and Notes:
+            **       None
+            **
+            **  \returns
+            **  True id net acceleration acting on the vehicle's body is less than
+            **  free fall threshold value.
+            **  \endreturns
+            **
+            *************************************************************************/
+    void UpdateState(void);
 
 
 
