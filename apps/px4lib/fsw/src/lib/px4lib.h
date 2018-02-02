@@ -1,7 +1,11 @@
+#ifndef PX4_LIB_H
+#define PX4_LIB_H
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include "cfe.h"
 
 /**
  * Enum for board and external compass rotations.
@@ -52,3 +56,6 @@ uint64 PX4LIB_GetPX4TimeMs(void);
 #ifdef __cplusplus
 }
 #endif
+
+
+#endif /* PX4_LIB_H */

@@ -4,6 +4,8 @@ add_airliner_app_def(ld
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_app.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_state_history.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_state_history.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_msg.h
@@ -29,8 +31,12 @@ add_airliner_app_unit_test(ld-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_testrunner.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_test_utils.h
+	    ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_custom_stubs.h
+		${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/ld_custom_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_app.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_state_history.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_state_history.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ld_msg.h
