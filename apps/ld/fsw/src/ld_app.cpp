@@ -376,7 +376,7 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
 //					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
 //					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
 //					OS_printf("STATE : %d \n",state);
-
+					HkTlm.state = state;
 					SendVehicleLandDetectedMsg();
 
             	}
