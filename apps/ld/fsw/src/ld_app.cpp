@@ -327,9 +327,9 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
 					VehicleLandDetectedMsg.Freefall=false;
 					VehicleLandDetectedMsg.Landed=false;
 					VehicleLandDetectedMsg.GroundContact=false;
-					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
-					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
-					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
+//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
+//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
+//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
 					publish_counter += 1;
             	}
 
@@ -372,10 +372,10 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
 					VehicleLandDetectedMsg.Landed=(state == LandDetectionState::LANDED);
 					VehicleLandDetectedMsg.GroundContact=(state == LandDetectionState::GROUND_CONTACT);
 
-					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
-					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
-					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
-					OS_printf("STATE : %d \n",state);
+//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
+//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
+//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
+//					OS_printf("STATE : %d \n",state);
 
 					SendVehicleLandDetectedMsg();
 
@@ -691,16 +691,16 @@ boolean LD::DetectFreeFall()
 			+ CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ;
 	net_acc = sqrtf(net_acc);
 	if(net_acc < ld_params.lndmc_ffall_thr){
-	OS_printf("____________________________________________")	;
-	OS_printf("CSMsgX :  %f \n",CVT.ControlStateMsg.AccX);
-	OS_printf("CSMsgY :  %f \n",CVT.ControlStateMsg.AccY);
-	OS_printf("CSMsgZ :  %f \n",CVT.ControlStateMsg.AccZ);
-	OS_printf("CSMsg Netforce :  %f \n",(CVT.ControlStateMsg.AccX * CVT.ControlStateMsg.AccX
-			+CVT.ControlStateMsg.AccY * CVT.ControlStateMsg.AccY
-			+ CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ));
-	OS_printf("sqrt of ntfrce :  %f \n",net_acc);
-	OS_printf("g:  %f < %f = %d \n",net_acc,ld_params.lndmc_ffall_thr,(net_acc < ld_params.lndmc_ffall_thr));
-	OS_printf("____________________________________________\n\n\n")	;
+//	OS_printf("____________________________________________")	;
+//	OS_printf("CSMsgX :  %f \n",CVT.ControlStateMsg.AccX);
+//	OS_printf("CSMsgY :  %f \n",CVT.ControlStateMsg.AccY);
+//	OS_printf("CSMsgZ :  %f \n",CVT.ControlStateMsg.AccZ);
+//	OS_printf("CSMsg Netforce :  %f \n",(CVT.ControlStateMsg.AccX * CVT.ControlStateMsg.AccX
+//			+CVT.ControlStateMsg.AccY * CVT.ControlStateMsg.AccY
+//			+ CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ));
+//	OS_printf("sqrt of ntfrce :  %f \n",net_acc);
+//	OS_printf("g:  %f < %f = %d \n",net_acc,ld_params.lndmc_ffall_thr,(net_acc < ld_params.lndmc_ffall_thr));
+//	OS_printf("____________________________________________\n\n\n")	;
 
 	}
 //	OS_printf("vz: %f \n",(double)CVT.VehicleLocalPositionMsg.VZ);
