@@ -151,6 +151,8 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
+    uint8			   state;
+
 } LD_HkTlm_t;
 
 
