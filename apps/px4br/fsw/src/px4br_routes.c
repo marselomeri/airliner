@@ -114,6 +114,7 @@
 #include "vehicle_gps_position.pb.h"
 #include "vehicle_land_detected.pb.h"
 #include "vehicle_local_position_setpoint.pb.h"
+#include "vehicle_local_position.pb.h"
 #include "vehicle_rates_setpoint.pb.h"
 #include "vehicle_status.pb.h"
 #include "vtol_vehicle_status.pb.h"
@@ -199,13 +200,21 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 		{"vehicle_attitude", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleAttitude_Dec, PX4_VEHICLE_ATTITUDE_MID, px4br_vehicle_attitude_pb_size, 1, 0, 0},
 		{"vehicle_attitude_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleAttitudeSetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_ATTITUDE_SETPOINT_MID, px4br_vehicle_attitude_setpoint_pb_size,  1, 0, 0},
 //		{"vehicle_command_ack", (PX4_ENCODE_FUNC) PX4BR_VehicleCommandAck_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommandAck_Dec, PX4_VEHICLE_COMMAND_ACK_MID, px4br_vehicle_command_ack_pb_size, 1, 0, 0},
-		{"vehicle_command", (PX4_ENCODE_FUNC) PX4BR_VehicleCommand_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_COMMAND_MID, px4br_vehicle_command_pb_size, 1, 0, 0},
+//		{"vehicle_command", (PX4_ENCODE_FUNC) PX4BR_VehicleCommand_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommand_Dec, PX4_VEHICLE_COMMAND_MID, px4br_vehicle_command_pb_size, 1, 0, 0},
 		{"vehicle_control_mode", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleControlMode_Dec, PX4_VEHICLE_CONTROL_MODE_MID, px4br_vehicle_control_mode_pb_size, 1, 0, 0},
 //		{"vehicle_force_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleForceSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleForceSetpoint_Dec, PX4_VEHICLE_FORCE_SETPOINT_MID, px4br_vehicle_force_setpoint_pb_size, 1, 0, 0},
 //		{"vehicle_global_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalPosition_Dec, PX4_VEHICLE_GLOBAL_POSITION_MID, px4br_vehicle_global_position_pb_size, 1, 0, 0},
 		{"vehicle_global_velocity_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID, px4br_vehicle_global_velocity_setpoint_pb_size, 1, 0, 0},
 		{"vehicle_gps_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGpsPosition_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GPS_POSITION_MID, px4br_vehicle_gps_position_pb_size, 1, 0, 0},
-         	{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_LAND_DETECTED_MID, px4br_vehicle_land_detected_pb_size, 1, 0, 0},
- 		{"vehicle_local_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4br_vehicle_local_position_pb_size, 1, 0, 0},
+		{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_LAND_DETECTED_MID, px4br_vehicle_land_detected_pb_size, 1, 0, 0},
+		{"vehicle_local_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4br_vehicle_local_position_pb_size, 1, 0, 0},
 //		{"vehicle_local_position_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Dec, PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, px4br_vehicle_local_position_setpoint_pb_size, 1, 0, 0},
+//		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
+		{"vehicle_rates_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleRatesSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleRatesSetpoint_Dec, PX4_VEHICLE_RATES_SETPOINT_MID, px4br_vehicle_rates_setpoint_pb_size, 1, 0, 0},
+//		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
+		{"vehicle_status", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleStatus_Dec, PX4_VEHICLE_STATUS_MID, px4br_vehicle_status_pb_size, 1, 0, 0},
+//		{"vision_position_estimate", (PX4_ENCODE_FUNC) PX4BR_VisionPositionEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_VisionPositionEstimate_Dec, PX4_VISION_POSITION_ESTIMATE_MID, px4br_vision_position_estimate_pb_size, 1, 0, 0},
+//		{"vtol_vehicle_status", (PX4_ENCODE_FUNC) PX4BR_VtolVehicleStatus_Enc, (PX4_DECODE_FUNC) PX4BR_VtolVehicleStatus_Dec, PX4_VTOL_VEHICLE_STATUS_MID, px4br_vtol_vehicle_status_pb_size, 1, 0, 0},
+//		{"wind_estimate", (PX4_ENCODE_FUNC) PX4BR_WindEstimate_Enc, (PX4_DECODE_FUNC) PX4BR_WindEstimate_Dec, PX4_WIND_ESTIMATE_MID, px4br_wind_estimate_pb_size, 1, 0, 0}
+		{"led_control", (PX4_ENCODE_FUNC)0, (PX4_DECODE_FUNC) PX4BR_LedControl_Dec, PX4_LED_CONTROL_MID, px4br_led_control_pb_size, 1, 0, 0}
 };

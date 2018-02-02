@@ -4466,8 +4466,8 @@ uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObjec
 	px4br_vehicle_land_detected_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
-	pbMsg.ground_contact = inOutObject->GroundContact;
-	pbMsg.alt_max = inOutObject->AltMax;
+	pbMsg.ground_contact = inObject->GroundContact;
+	pbMsg.alt_max = inObject->AltMax;
 	pbMsg.landed = inObject->Landed;
 	pbMsg.freefall = inObject->Freefall;
 
