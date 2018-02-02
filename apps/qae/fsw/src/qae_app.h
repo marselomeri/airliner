@@ -58,6 +58,11 @@ extern "C" {
 #include "px4_msgs.h"
 #include "px4_msgs.h"
 #include "px4_msgs.h"
+
+#include "Quaternion.hpp"
+
+//using math::Quaternion;
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
