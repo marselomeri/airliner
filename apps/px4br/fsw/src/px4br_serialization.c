@@ -166,6 +166,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 	pbMsg.prearmed = inObject->Prearmed;
 	pbMsg.ready_to_arm = inObject->ReadyToArm;
 	pbMsg.lockdown = inObject->Lockdown;
+	pbMsg.manual_lockdown = inObject->ManualLockdown;
 	pbMsg.force_failsafe = inObject->ForceFailsafe;
 	pbMsg.in_esc_calibration_mode = inObject->InEscCalibrationMode;
 
@@ -206,6 +207,7 @@ uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_Actuator
 	inOutObject->Prearmed = pbMsg.prearmed;
 	inOutObject->ReadyToArm = pbMsg.ready_to_arm;
 	inOutObject->Lockdown = pbMsg.lockdown;
+	inOutObject->ManualLockdown = pbMsg.manual_lockdown;
 	inOutObject->ForceFailsafe = pbMsg.force_failsafe;
 	inOutObject->InEscCalibrationMode = pbMsg.in_esc_calibration_mode;
 

@@ -187,22 +187,21 @@ int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, int32 inValue, uint32 *outValue
 	*outValueIndex = inAxis;
 	switch(inAxis)
 	{
-		case 0:
-			*outValueIndex = 3;
-			break;
+		//case 0:
+		//	*outValueIndex = 3;
+		//	break;
 
-		case 1:
-			*outValueIndex = 2;
-			inValue = inValue * -1;
-			break;
+		//case 1:
+		//	inValue = inValue * -1;
+		//	break;
 
 		case 3:
-			*outValueIndex = 0;
+			*outValueIndex = 4;
 			break;
 
 		case 4:
-			*outValueIndex = 1;
-                        inValue = inValue * -1;
+			*outValueIndex = 3;
+                        //inValue = inValue * -1;
 			break;
 	}
 

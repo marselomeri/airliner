@@ -321,7 +321,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	8.0f,
+	5.0f,
 
 	/**
 	 * MPC_XY_FF
@@ -469,7 +469,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	5.0f,
+	10.0f,
 
 	/**
 	 * MPC_DEC_HOR_MAX
@@ -619,7 +619,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	/**
 	 * MIS_LTRMIN_ALT
 	 */
-	0.0f
+	1.20000005f
 };
 
 /*
