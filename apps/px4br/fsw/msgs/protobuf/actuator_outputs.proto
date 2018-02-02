@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_actuator_outputs_pb 
+message px4br_actuator_outputs_pb 
 {
 	enum ACTUATOR_OUTPUTS
 	{

@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_esc_report_pb
+message px4br_esc_report_pb
 {
 	required uint64 timestamp = 1;
 	required uint32 esc_errorcount = 2;

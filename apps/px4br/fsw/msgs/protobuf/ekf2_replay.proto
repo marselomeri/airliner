@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_ekf2_replay_pb
+message px4br_ekf2_replay_pb
 {
 	required uint64 timestamp = 1;
 	required uint64 time_ref = 2;

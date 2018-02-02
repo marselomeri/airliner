@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_telemetry_status_pb
+message px4br_telemetry_status_pb
 {
 	enum TELEMETRY_STATUS
 	{

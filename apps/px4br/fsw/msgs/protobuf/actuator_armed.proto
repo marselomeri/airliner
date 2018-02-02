@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_actuator_armed_pb 
+message px4br_actuator_armed_pb 
 {
 	required uint64 timestamp 		= 1;
 	required bool   armed 			= 2;

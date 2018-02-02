@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_hil_sensor_pb
+message px4br_hil_sensor_pb
 {
 	enum MAGNETOMETER_MODE 
 	{

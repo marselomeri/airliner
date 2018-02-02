@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_parameter_update_pb 
+message px4br_parameter_update_pb 
 {
 	required uint64 timestamp = 1;
 	required bool saved = 2;

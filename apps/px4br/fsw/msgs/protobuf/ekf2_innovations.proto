@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_ekf2_innovations_pb 
+message px4br_ekf2_innovations_pb 
 {
 	required uint64 timestamp = 1;
 	repeated float vel_pos_innov = 2 [packed=true, (nanopb).max_count = 6];

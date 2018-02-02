@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_optical_flow_pb
+message px4br_optical_flow_pb
 {
 	required uint64 timestamp = 1;
 	required float pixel_flow_x_integral = 2;

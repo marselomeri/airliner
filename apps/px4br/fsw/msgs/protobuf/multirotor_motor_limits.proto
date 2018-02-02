@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_multirotor_motor_limits_pb 
+message px4br_multirotor_motor_limits_pb 
 {
 	required uint64 timestamp = 1;
 	required uint32 saturation_status = 2;

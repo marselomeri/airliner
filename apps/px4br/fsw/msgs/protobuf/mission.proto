@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_mission_pb
+message px4br_mission_pb
 {
 	required uint64 timestamp = 1;
 	required int32 dataman_id = 2;

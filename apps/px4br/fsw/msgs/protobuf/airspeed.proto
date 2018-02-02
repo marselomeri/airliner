@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_airspeed_pb 
+message px4br_airspeed_pb 
 {
 	required uint64 timestamp = 1;
 	required float indicated_airspeed_m_s = 2;

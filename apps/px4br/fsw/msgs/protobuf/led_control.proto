@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_led_control_pb 
+message px4br_led_control_pb 
 {
     required uint64 timestamp = 1;
     required uint32 led_mask = 2;

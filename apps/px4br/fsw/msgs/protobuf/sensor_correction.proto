@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_sensor_correction_pb 
+message px4br_sensor_correction_pb 
 {
     repeated float gyro_offset_0 = 1 [packed=true, (nanopb).max_count = 3];
     repeated float gyro_scale_0 = 2 [packed=true, (nanopb).max_count = 3];

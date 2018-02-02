@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_position_setpoint_pb
+message px4br_position_setpoint_pb
 {
 	enum SETPOINT_TYPE 
 	{
@@ -49,12 +49,12 @@ message px4_position_setpoint_pb
 	optional bool acceleration_is_force = 32;
 }
 
-message px4_position_setpoint_triplet_pb 
+message px4br_position_setpoint_triplet_pb 
 {
 	required uint64 timestamp = 1;
-	required px4_position_setpoint_pb previous = 2;
-	required px4_position_setpoint_pb current = 3;
-	required px4_position_setpoint_pb next = 4;
+	required px4br_position_setpoint_pb previous = 2;
+	required px4br_position_setpoint_pb current = 3;
+	required px4br_position_setpoint_pb next = 4;
 }
 
 // ORB_DECLARE(position_setpoint_triplet);

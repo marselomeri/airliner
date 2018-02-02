@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_vehicle_rates_setpoint_pb 
+message px4br_vehicle_rates_setpoint_pb 
 {
 	required uint64 timestamp = 1;
 	required float roll = 2;

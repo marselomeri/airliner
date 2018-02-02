@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_sensor_combined_pb 
+message px4br_sensor_combined_pb 
 {
 	enum RELATIVE_TIMESTAMP
 	{

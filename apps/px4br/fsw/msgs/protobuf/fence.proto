@@ -2,7 +2,7 @@ syntax = "proto2";
 import "nanopb.proto";
 import "fence_vertex.proto";
 
-message px4_fence_pb 
+message px4br_fence_pb 
 {
 	enum FENCE
 	{
@@ -11,7 +11,7 @@ message px4_fence_pb
 
 	required uint64 timestamp = 1;
 	required uint32 count = 2;
-	repeated px4_fence_vertex_pb vertices = 3 [(nanopb).max_count = 16];
+	repeated px4br_fence_vertex_pb vertices = 3 [(nanopb).max_count = 16];
 }
 
 // ORB_DECLARE(fence);

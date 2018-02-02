@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_tecs_status_pb 
+message px4br_tecs_status_pb 
 {
 	enum TECS_MODE
 	{

@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_input_rc_pb
+message px4br_input_rc_pb
 {
 	enum RC_INPUT_SOURCE 
 	{
