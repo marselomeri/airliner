@@ -121,7 +121,6 @@ int32 MAVLINK_SendPassThru(const char* buffer, uint32 size)
     s_addr.sin_family      = AF_INET;
     s_addr.sin_addr.s_addr = inet_addr(MAVLINK_PASSTHRU_IP_SRC);
     s_addr.sin_port        = htons(px4_port);
-    OS_printf("px4_port : %u\n", px4_port);
 
     status = sendto(MAVLINK_PassThruSocket.Socket, (char *)buffer, size, 0,
                             (struct sockaddr *) &s_addr,
