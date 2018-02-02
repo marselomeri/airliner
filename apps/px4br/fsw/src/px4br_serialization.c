@@ -2561,7 +2561,12 @@ uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX
 	/* Check for errors... */
 	if (!status)
 	{
-		return 0;
+	    OS_printf("Failed to decode position_setpoint_triplet");
+	    return 0;
+	}
+	else
+	{
+		OS_printf("position_setpoint_triplet\n");
 	}
 
 	inOutObject->Timestamp = pbMsg.timestamp;
