@@ -14,6 +14,7 @@ class Quaternion : public Vector4F
 public:
 	Quaternion(float a, float b, float c, float d);
 	Quaternion(const Matrix3F3 &mat);
+    Quaternion();
 	~Quaternion();
 	Matrix3F3 RotationMatrix(void) const;
     Vector3F Imaginary(void);
@@ -27,7 +28,7 @@ public:
     const Quaternion Derivative(const Vector3F &w);
 
 protected:
-    Quaternion();
+
 };
 
 }

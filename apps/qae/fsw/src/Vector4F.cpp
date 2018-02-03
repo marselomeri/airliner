@@ -138,6 +138,18 @@ const Vector4F Vector4F::operator-() const
 }
 
 
+const Vector4F& Vector4F::operator =(const Vector4F &v)
+{
+
+    data[0] = v[0];
+    data[1] = v[1];
+    data[2] = v[2];
+    data[3] = v[3];
+
+    return *this;
+}
+
+
 const Vector4F Vector4F::EMult(const Vector4F &vecIn) const
 {
 	Vector4F res;

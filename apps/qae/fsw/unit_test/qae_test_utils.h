@@ -39,7 +39,7 @@
  * Includes
  */
 
-#include "qae_app.h"
+#include "qae_app.hpp"
 
 #ifdef __cplusplus
 extern "C" {

@@ -70,11 +70,39 @@ extern "C" {
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
+ 
+/**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    QAE_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    QAE_INITIALIZED   = 1
+} QAE_Status_t;
+
+
+/**
+ * \brief message current value table
+ */
 typedef struct
 {
     PX4_SensorCombinedMsg_t SensorCombinedMsg;
     PX4_VehicleGlobalPositionMsg_t VehicleGlobalPositionMsg;
 } QAE_CurrentValueTable_t;
+
+
+/**
+ * \brief application parameters
+ */
+typedef struct
+{
+    /** \brief magnetometer declination */
+    float mag_declination;
+    /** \brief set magnetic declination automatically */
+    boolean mag_declination_auto;
+} QAE_Params_t;
 
 
 /**
@@ -112,6 +140,10 @@ public:
     QAE_HkTlm_t HkTlm;
     /** \brief Current Value Table */
     QAE_CurrentValueTable_t CVT;
+    /** \brief QAE parameters Table */
+    QAE_Params_t m_Params;
+    /** \brief The current quaternion */
+    math::Quaternion m_Quaternion;
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point
      **
@@ -311,6 +343,8 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+    
+    void UpdateMagDeclination(const float new_declination);
 
 private:
     /************************************************************************/

@@ -35,7 +35,7 @@
 extern "C" {
 #endif
 
-#include "qae_app.h"
+#include "qae_app.hpp"
 #include <math.h>
 
 /************************************************************************

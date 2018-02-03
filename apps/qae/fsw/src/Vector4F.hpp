@@ -30,6 +30,7 @@ public:
     const Vector4F operator/(const float scalar) const;
     float operator*(const Vector4F &vecIn) const;
     const Vector4F operator-() const;
+    const Vector4F & operator=(const Vector4F &v);
     const Vector4F EMult(const Vector4F &vecIn) const;
     void Normalize(void);
     Vector4F Normalized(void) const;

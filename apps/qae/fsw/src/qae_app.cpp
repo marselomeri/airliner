@@ -2,12 +2,14 @@
 ** Includes
 *************************************************************************/
 #include <string.h>
+#include <math.h>
 
 #include "cfe.h"
 
-#include "qae_app.h"
+#include "qae_app.hpp"
 #include "qae_msg.h"
 #include "qae_version.h"
+#include "Quaternion.hpp"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -200,6 +202,9 @@ int32 QAE::InitApp()
     {
         goto QAE_InitApp_Exit_Tag;
     }
+    
+    /* Set application state to initialized */
+    HkTlm.State = QAE_INITIALIZED;
 
 QAE_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -511,6 +516,24 @@ void QAE::AppMain()
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
+}
+
+
+void QAE::UpdateMagDeclination(const float new_declination)
+{
+    /* Apply initial declination or trivial rotations without changing estimation */
+    if (HkTlm.State == QAE_UNINITIALIZED || fabsf(new_declination - m_Params.mag_declination) < 0.0001f) 
+    {
+        m_Params.mag_declination = new_declination;
+    }
+    else 
+    {
+        /* Immediately rotate current estimation to avoid gyro bias growth */
+        math::Quaternion decl_rotation (0.0f, 0.0f, 0.0f, 0.0f);
+        decl_rotation.FromYaw(new_declination - m_Params.mag_declination);
+        m_Quaternion = decl_rotation * m_Quaternion;
+        m_Params.mag_declination = new_declination;
+    }
 }
 
 

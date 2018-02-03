@@ -32,7 +32,7 @@
 *****************************************************************************/
 
 #include "cfe.h"
-#include "qae_app.h"
+#include "qae_app.hpp"
 #include "qae_test_utils.h"
 #include "qae_app_test.h"
 #include "uttest.h"

@@ -150,6 +150,8 @@ typedef struct
     /** \qaetlmmnemonic \QAE_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
+    /** \brief App State */
+    uint8              State;
 
 } QAE_HkTlm_t;
 

@@ -3,7 +3,7 @@ add_airliner_app_def(qae
     FILE QAE
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_msg.h
@@ -40,7 +40,7 @@ add_airliner_app_unit_test(qae-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_test_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_msg.h
