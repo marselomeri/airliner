@@ -46,6 +46,48 @@ Quaternion Quaternion::operator/(const Quaternion &q) const
 }
 
 
+/* Derivative */
+const Quaternion Quaternion::Derivative(const Vector3F &w)
+{
+    Vector4F row1(data[0], -data[1], -data[2], -data[3]);
+    Vector4F row2(data[1],  data[0], -data[3],  data[2]);
+    Vector4F row3(data[2],  data[3],  data[0], -data[1]);
+    Vector4F row4(data[3], -data[2],  data[1],  data[0]);
+    /* TODO double check that these are rows and not columns */
+    Matrix4F4 Q(row1, row2, row3, row4);
+    Vector4F v(0.0f, w[0], w[1], w[2]);
+
+    Vector4F result_v(Q * v * 0.5f);
+    Quaternion result_q(result_v[0], result_v[1], result_v[2], result_v[3]);
+
+    return result_q;
+}
+
+
+/* Conjugate */
+Vector3F Quaternion::Conjugate(const Vector3F &v) const
+{
+    float q0q0 = data[0] * data[0];
+    float q1q1 = data[1] * data[1];
+    float q2q2 = data[2] * data[2];
+    float q3q3 = data[3] * data[3];
+    
+    Vector3F result(v[0] * (q0q0 + q1q1 - q2q2 - q3q3) +
+                 v[1] * 2.0f * (data[1] * data[2] - data[0] * data[3]) +
+                 v[2] * 2.0f * (data[0] * data[2] + data[1] * data[3]),
+
+                 v[0] * 2.0f * (data[1] * data[2] + data[0] * data[3]) +
+                 v[1] * (q0q0 - q1q1 + q2q2 - q3q3) +
+                 v[2] * 2.0f * (data[2] * data[3] - data[0] * data[1]),
+
+                 v[0] * 2.0f * (data[1] * data[3] - data[0] * data[2]) +
+                 v[1] * 2.0f * (data[0] * data[1] + data[2] * data[3]) +
+                 v[2] * (q0q0 - q1q1 - q2q2 + q3q3));
+
+    return result;
+}
+
+
 Quaternion::Quaternion(const Matrix3F3 &mat)
 {
 	float tr = mat[0][0] + mat[1][1] + mat[2][2];

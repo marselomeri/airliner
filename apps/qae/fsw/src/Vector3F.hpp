@@ -9,6 +9,8 @@ namespace math
 class Vector3F
 {
 private:
+
+protected:
 	static const int SIZE = 3;
 	float data[SIZE];
 	float nan;
@@ -20,18 +22,17 @@ public:
 	float& operator [] (uint32 i);
 	float operator [] (uint32 i) const;
 	float Length(void) const;
+    float LengthSquared(void) const;
 	void Zero(void);
-	Vector3F operator+(const Vector3F &vecIn);
-	Vector3F operator-(const Vector3F &vecIn);
-	Vector3F operator%(const Vector3F &vecIn);
-	Vector3F operator*(const float scalar);
-	Vector3F operator/(const float scalar);
-	float operator*(const Vector3F &vecIn);
-	Vector3F operator-() const;
-	Vector3F EMult(const Vector3F &vecIn);
+	const Vector3F operator+(const Vector3F &vecIn) const;
+	const Vector3F operator-(const Vector3F &vecIn) const;
+	const Vector3F operator%(const Vector3F &vecIn) const;
+	const Vector3F operator*(const float scalar) const;
+	const Vector3F operator/(const float scalar) const;
+	float operator*(const Vector3F &vecIn) const;
+	const Vector3F operator-() const;
+	const Vector3F EMult(const Vector3F &vecIn) const;
 	void Constrain(uint32 i, float min, float max);
-
-protected:
 
 };
 

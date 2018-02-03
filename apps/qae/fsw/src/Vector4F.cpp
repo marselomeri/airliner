@@ -64,7 +64,7 @@ void Vector4F::Zero()
 
 
 // overload + operator to provide a vector addition
-Vector4F Vector4F::operator+(const Vector4F &vecIn)
+const Vector4F Vector4F::operator+(const Vector4F &vecIn) const
 {
     Vector4F vecOut;
     vecOut[0] = data[0] + vecIn[0];
@@ -76,7 +76,7 @@ Vector4F Vector4F::operator+(const Vector4F &vecIn)
 
 
 // overload - operator to provide a vector subtraction
-Vector4F Vector4F::operator-(const Vector4F &vecIn)
+const Vector4F Vector4F::operator-(const Vector4F &vecIn) const
 {
     Vector4F vecOut;
     vecOut[0] = data[0] - vecIn[0];
@@ -88,7 +88,7 @@ Vector4F Vector4F::operator-(const Vector4F &vecIn)
 
 
 // overload * operator to provide a vector scalar product
-Vector4F Vector4F::operator*(const float scalar)
+const Vector4F Vector4F::operator*(const float scalar) const
 {
     Vector4F vecOut;
     vecOut[0] = data[0] * scalar;
@@ -100,7 +100,7 @@ Vector4F Vector4F::operator*(const float scalar)
 
 
 // overload / operator to provide a vector scalar division
-Vector4F Vector4F::operator/(const float scalar)
+const Vector4F Vector4F::operator/(const float scalar) const
 {
     Vector4F vecOut;
     vecOut[0] = data[0] / scalar;
@@ -112,7 +112,7 @@ Vector4F Vector4F::operator/(const float scalar)
 
 
 // overload dot product operator to provide a vector scalar product
-float Vector4F::operator*(const Vector4F &vecIn)
+float Vector4F::operator*(const Vector4F &vecIn) const
 {
     float res = 0.0f;
 
@@ -125,7 +125,7 @@ float Vector4F::operator*(const Vector4F &vecIn)
 
 
 
-Vector4F Vector4F::operator-() const
+const Vector4F Vector4F::operator-() const
 {
 	Vector4F res;
 
@@ -136,3 +136,42 @@ Vector4F Vector4F::operator-() const
 
     return res;
 }
+
+
+const Vector4F Vector4F::EMult(const Vector4F &vecIn) const
+{
+	Vector4F res;
+
+	res[0] = data[0] * vecIn[0];
+	res[1] = data[1] * vecIn[1];
+	res[2] = data[2] * vecIn[2];
+	res[3] = data[3] * vecIn[3];
+
+	return res;
+}
+
+
+void Vector4F::Normalize(void)
+{
+    float mag = Length();
+
+    data[0] = data[0] / mag;
+    data[1] = data[1] / mag;
+    data[2] = data[2] / mag;
+    data[3] = data[3] / mag;
+}
+
+
+Vector4F Vector4F::Normalized(void) const
+{
+    Vector4F res;
+    float mag = Length();
+
+    res[0] = data[0] / mag;
+    res[1] = data[1] / mag;
+    res[2] = data[2] / mag;
+    res[3] = data[3] / mag;
+
+    return res;
+}
+

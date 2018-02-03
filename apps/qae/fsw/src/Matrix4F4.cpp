@@ -53,6 +53,15 @@ Vector4F Matrix4F4::operator [] (uint32 i) const
 };
 
 
+/* multiplication by a vector */
+Vector4F Matrix4F4::operator*(const Vector4F &v) const
+{
+    Vector4F res(data[0][0] * v[0] + data[0][1] * v[1] + data[0][2] * v[2] + data[0][3] * v[3],
+                 data[1][0] * v[0] + data[1][1] * v[1] + data[1][2] * v[2] + data[1][3] * v[3],
+                 data[2][0] * v[0] + data[2][1] * v[1] + data[2][2] * v[2] + data[2][3] * v[3],
+                 data[3][0] * v[0] + data[3][1] * v[1] + data[3][2] * v[2] + data[3][3] * v[3]);
+    return res;
+}
 
 
 

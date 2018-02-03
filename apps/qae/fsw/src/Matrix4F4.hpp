@@ -11,6 +11,8 @@ namespace math
 class Matrix4F4
 {
 private:
+
+protected:
 	static const int SIZE = 4;
 	Vector4F data[SIZE];
 	Vector4F nan;
@@ -20,9 +22,8 @@ public:
 	~Matrix4F4();
 	Vector4F& operator [] (uint32 i);
 	Vector4F operator [] (uint32 i) const;
+    Vector4F operator*(const Vector4F &v) const;
 	Matrix4F4();
-
-protected:
 
 };
 

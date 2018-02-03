@@ -48,6 +48,12 @@ float Vector3F::Length() const
 }
 
 
+float Vector3F::LengthSquared() const
+{
+    return (data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
+}
+
+
 void Vector3F::Zero()
 {
     data[0] = 0.0f;
@@ -57,7 +63,7 @@ void Vector3F::Zero()
 
 
 // overload + operator to provide a vector addition
-Vector3F Vector3F::operator+(const Vector3F &vecIn)
+const Vector3F Vector3F::operator+(const Vector3F &vecIn) const
 {
     Vector3F vecOut;
     vecOut[0] = data[0] + vecIn[0];
@@ -68,7 +74,7 @@ Vector3F Vector3F::operator+(const Vector3F &vecIn)
 
 
 // overload - operator to provide a vector subtraction
-Vector3F Vector3F::operator-(const Vector3F &vecIn)
+const Vector3F Vector3F::operator-(const Vector3F &vecIn) const
 {
     Vector3F vecOut;
     vecOut[0] = data[0] - vecIn[0];
@@ -79,7 +85,7 @@ Vector3F Vector3F::operator-(const Vector3F &vecIn)
 
 
 // overload % operator to provide a vector cross product
-Vector3F Vector3F::operator%(const Vector3F &vecIn)
+const Vector3F Vector3F::operator%(const Vector3F &vecIn) const
 {
     Vector3F vecOut;
     vecOut[0] = data[1]*vecIn[2] - data[2]*vecIn[1];
@@ -90,7 +96,7 @@ Vector3F Vector3F::operator%(const Vector3F &vecIn)
 
 
 // overload * operator to provide a vector scalar product
-Vector3F Vector3F::operator*(const float scalar)
+const Vector3F Vector3F::operator*(const float scalar) const
 {
     Vector3F vecOut;
     vecOut[0] = data[0] * scalar;
@@ -101,7 +107,7 @@ Vector3F Vector3F::operator*(const float scalar)
 
 
 // overload / operator to provide a vector scalar division
-Vector3F Vector3F::operator/(const float scalar)
+const Vector3F Vector3F::operator/(const float scalar) const
 {
     Vector3F vecOut;
     vecOut[0] = data[0] / scalar;
@@ -112,7 +118,7 @@ Vector3F Vector3F::operator/(const float scalar)
 
 
 // overload dot product operator to provide a vector scalar product
-float Vector3F::operator*(const Vector3F &vecIn)
+float Vector3F::operator*(const Vector3F &vecIn) const
 {
 	float res = 0.0f;
 
@@ -124,7 +130,7 @@ float Vector3F::operator*(const Vector3F &vecIn)
 }
 
 
-Vector3F Vector3F::operator-() const
+const Vector3F Vector3F::operator-() const
 {
 	Vector3F res;
 
@@ -136,7 +142,7 @@ Vector3F Vector3F::operator-() const
 }
 
 
-Vector3F Vector3F::EMult(const Vector3F &vecIn)
+const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
 {
 	Vector3F res;
 
