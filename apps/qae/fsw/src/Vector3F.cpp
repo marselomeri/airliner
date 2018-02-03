@@ -154,6 +154,17 @@ const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
 }
 
 
+const Vector3F Vector3F::EDivide(const Vector3F &vecIn) const
+{
+	Vector3F res;
+
+	res[0] = data[0] / vecIn[0];
+	res[1] = data[1] / vecIn[1];
+	res[2] = data[2] / vecIn[2];
+
+	return res;
+}
+
 
 void Vector3F::Constrain(uint32 i, float min, float max)
 {
@@ -165,4 +176,28 @@ void Vector3F::Constrain(uint32 i, float min, float max)
 	{
 		data[i] = max;
 	}
+}
+
+
+Vector3F Vector3F::Normalized(void)
+{
+	Vector3F res;
+	float mag = Length();
+
+	res[0] = data[0] / mag;
+	res[1] = data[1] / mag;
+	res[2] = data[2] / mag;
+
+	return res;
+}
+
+
+
+void Vector3F::Normalize(void)
+{
+	float mag = Length();
+
+	data[0] = data[0] / mag;
+	data[1] = data[1] / mag;
+	data[2] = data[2] / mag;
 }

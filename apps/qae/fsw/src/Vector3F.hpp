@@ -32,8 +32,10 @@ public:
 	float operator*(const Vector3F &vecIn) const;
 	const Vector3F operator-() const;
 	const Vector3F EMult(const Vector3F &vecIn) const;
+    const Vector3F EDivide(const Vector3F &v) const;
 	void Constrain(uint32 i, float min, float max);
-
+    Vector3F Normalized(void);
+	void Normalize(void);
 };
 
 }

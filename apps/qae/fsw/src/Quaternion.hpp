@@ -12,8 +12,6 @@ namespace math
 class Quaternion : public Vector4F
 {
 public:
-
-public:
 	Quaternion(float a, float b, float c, float d);
 	Quaternion(const Matrix3F3 &mat);
 	~Quaternion();
@@ -22,10 +20,14 @@ public:
     const Quaternion operator*(const Quaternion &q) const;
     Quaternion operator/(const Quaternion &q) const;
     Vector3F Conjugate(const Vector3F &v) const;
+    Vector3F ConjugateInversed(const Vector3F &v) const;
+    Vector3F ToEuler(void) const;
+    void FromDCM(const Matrix3F3 &dcm);
+    void FromYaw(float yaw);
     const Quaternion Derivative(const Vector3F &w);
 
 protected:
-	Quaternion();
+    Quaternion();
 };
 
 }
