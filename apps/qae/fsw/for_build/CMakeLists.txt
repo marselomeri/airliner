@@ -19,7 +19,11 @@ add_airliner_app_def(qae
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
-   
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.hpp
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
@@ -39,6 +43,8 @@ add_airliner_app_unit_test(qae-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_testrunner.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_stubs.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/qae_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_app.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_config_utils.cpp
@@ -56,6 +62,10 @@ add_airliner_app_unit_test(qae-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.hpp
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

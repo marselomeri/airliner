@@ -55,11 +55,9 @@ extern "C" {
 #include "qae_events.h"
 #include "qae_tbldefs.h"
 #include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
 
 #include "Quaternion.hpp"
+#include "Vector3F.hpp"
 
 //using math::Quaternion;
 
@@ -77,9 +75,11 @@ extern "C" {
 typedef enum
 {
     /*! App status uninitialized */
-    QAE_UNINITIALIZED = 0,
+    QAE_UNINITIALIZED      = 0,
     /*! App status uninitialized */
-    QAE_INITIALIZED   = 1
+    QAE_INITIALIZED        = 1,
+    /*! App status sensor data received */
+    QAE_SENSOR_DATA_RCVD   = 2
 } QAE_Status_t;
 
 
@@ -88,8 +88,10 @@ typedef enum
  */
 typedef struct
 {
-    PX4_SensorCombinedMsg_t SensorCombinedMsg;
+    PX4_SensorCombinedMsg_t        SensorCombinedMsg;
+    uint64                         LastSensorCombinedTime;
     PX4_VehicleGlobalPositionMsg_t VehicleGlobalPositionMsg;
+    uint64                         LastGlobalPositionTime;
 } QAE_CurrentValueTable_t;
 
 
@@ -144,6 +146,13 @@ public:
     QAE_Params_t m_Params;
     /** \brief The current quaternion */
     math::Quaternion m_Quaternion;
+    /** \brief The current gyro values */
+    math::Vector3F m_gyro;
+    /** \brief The current accel values */
+    math::Vector3F m_accel;
+    /** \brief The current mag values */
+    math::Vector3F m_mag;
+    
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point
      **
@@ -344,6 +353,7 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
+    void EstimateAttitude(void);
     void UpdateMagDeclination(const float new_declination);
 
 private:

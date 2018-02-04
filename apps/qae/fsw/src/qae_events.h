@@ -250,6 +250,34 @@ typedef enum {
 */
 	QAE_CFGTBL_LOAD_ERR_EID,
 
+/** \brief <tt> 'Degenerate input data accel vector length %f' </tt>
+**  \event <tt> 'Degenerate input data accel vector length %f' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when and accel vector length
+**  check (length < 0.01f) fails.
+**
+**
+*/
+	QAE_DEGENERATE_ACC_ERR_EID,
+
+/** \brief <tt> 'Degenerate input data mag vector length %f' </tt>
+**  \event <tt> 'Degenerate input data mag vector length %f' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when and mag vector length
+**  check (length < 0.01f) fails.
+**
+**
+*/
+	QAE_DEGENERATE_MAG_ERR_EID,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	QAE_EVT_CNT
 } QAE_EventIds_t;

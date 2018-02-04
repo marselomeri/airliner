@@ -9,7 +9,10 @@
 #include "qae_app.hpp"
 #include "qae_msg.h"
 #include "qae_version.h"
-#include "Quaternion.hpp"
+#include "lib/px4lib.h"
+
+#include "geo_mag_declination.h"
+#include "Limits.hpp"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -165,6 +168,8 @@ void QAE::InitData()
       /* Init output messages */
       CFE_SB_InitMsg(&ControlStateMsg,
       		PX4_CONTROL_STATE_MID, sizeof(PX4_ControlStateMsg_t), TRUE);
+      /* Init current value table to zero */
+      memset(&CVT, 0, sizeof(CVT));
 }
 
 
@@ -410,6 +415,8 @@ void QAE::SendVehicleAttitudeMsg()
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleAttitudeMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleAttitudeMsg);
 }
+
+
 void QAE::SendControlStateMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ControlStateMsg);
@@ -536,6 +543,73 @@ void QAE::UpdateMagDeclination(const float new_declination)
     }
 }
 
+void QAE::EstimateAttitude(void)
+{
+    float length_check = 0.0f;
+    uint64 delta_time_gps = 0;
+    /* If there is a new sensor combined message */
+    if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
+    {
+        /* TODO is this state possible? */
+        if(CVT.SensorCombinedMsg.Timestamp > 0)
+        {
+            /* No lowpass filter here, filtering is in the driver */
+            m_gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
+            m_gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
+            m_gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
+        }
+        
+        if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
+        {
+            /* No lowpass filter here, filtering is in the driver */
+            m_accel[0] = CVT.SensorCombinedMsg.Acc[0];
+            m_accel[1] = CVT.SensorCombinedMsg.Acc[1];
+            m_accel[2] = CVT.SensorCombinedMsg.Acc[2];
+            
+            length_check = m_accel.Length();
+            if(length_check < 0.01f)
+            {
+                (void) CFE_EVS_SendEvent(QAE_DEGENERATE_ACC_ERR_EID, CFE_EVS_ERROR,
+                              "Degenerate input data accel vector length %f",
+                               length_check);
+            }
+        }
+        
+        if(CVT.SensorCombinedMsg.MagRelTimeInvalid != FALSE)
+        {
+            /* No lowpass filter here, filtering is in the driver */
+            m_mag[0] = CVT.SensorCombinedMsg.Mag[0];
+            m_mag[1] = CVT.SensorCombinedMsg.Mag[1];
+            m_mag[2] = CVT.SensorCombinedMsg.Mag[2];
+
+            length_check = m_mag.Length();
+            if(length_check < 0.01f)
+            {
+                (void) CFE_EVS_SendEvent(QAE_DEGENERATE_MAG_ERR_EID, CFE_EVS_ERROR,
+                              "Degenerate input data mag vector length %f",
+                               length_check);
+            }
+        }
+        /* Update the application state */
+        HkTlm.State = QAE_SENSOR_DATA_RCVD;
+    }
+    else
+    {
+        /* Update the application state */
+        HkTlm.State = QAE_INITIALIZED;
+    }
+    
+    if(CVT.VehicleGlobalPositionMsg.Timestamp > CVT.LastGlobalPositionTime)
+    {
+        delta_time_gps = PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp;
+        if(m_Params.mag_declination_auto == TRUE && 
+           CVT.VehicleGlobalPositionMsg.EpH < 20.0f &&
+           delta_time_gps < 1000000)
+        {
+            UpdateMagDeclination(math::radians(get_mag_declination(CVT.VehicleGlobalPositionMsg.Lat, CVT.VehicleGlobalPositionMsg.Lon)));
+        }
+    }
+}
 
 /************************/
 /*  End of File Comment */
