@@ -113,8 +113,8 @@
 #include "vehicle_global_velocity_setpoint.pb.h"
 #include "vehicle_gps_position.pb.h"
 #include "vehicle_land_detected.pb.h"
-#include "vehicle_local_position_setpoint.pb.h"
 #include "vehicle_local_position.pb.h"
+#include "vehicle_local_position_setpoint.pb.h"
 #include "vehicle_rates_setpoint.pb.h"
 #include "vehicle_status.pb.h"
 #include "vtol_vehicle_status.pb.h"
@@ -132,7 +132,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"actuator_direct", (PX4_ENCODE_FUNC) PX4BR_ActuatorDirect_Enc, (PX4_DECODE_FUNC) PX4BR_ActuatorDirect_Dec, PX4_ACTUATOR_DIRECT_MID, px4br_actuator_direct_pb_size, 1, 0, 0},
 	{"actuator_outputs", (PX4_ENCODE_FUNC) PX4BR_ActuatorOutputs_Enc, (PX4_DECODE_FUNC) 0, PX4_ACTUATOR_OUTPUTS_MID, px4br_actuator_outputs_pb_size, 1, 0, 0},
 //		{"adc_report", (PX4_ENCODE_FUNC) PX4BR_AdcReport_Enc, (PX4_DECODE_FUNC) PX4BR_AdcReport_Dec, PX4_ADC_REPORT_MID, px4br_adc_report_pb_size, 1, 0, 0},
-//		{"airspeed", (PX4_ENCODE_FUNC) PX4BR_Airspeed_Enc, (PX4_DECODE_FUNC) PX4BR_Airspeed_Dec, PX4_AIRSPEED_MID, px4br_airspeed_pb_size, 1, 0, 0},
+		{"airspeed", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_Airspeed_Dec, PX4_AIRSPEED_MID, px4br_airspeed_pb_size, 1, 0, 0},
 //		{"att_pos_mocap", (PX4_ENCODE_FUNC) PX4BR_AttPosMoCap_Enc, (PX4_DECODE_FUNC) PX4BR_AttPosMoCap_Dec, PX4_ATT_POS_MOCAP_MID, px4br_att_pos_mocap_pb_size, 1, 0, 0},
 		{"battery_status", (PX4_ENCODE_FUNC) PX4BR_BatteryStatus_Enc, (PX4_DECODE_FUNC) 0, PX4_BATTERY_STATUS_MID, px4br_battery_status_pb_size, 1, 0, 0},
 //		{"camera_trigger", (PX4_ENCODE_FUNC) PX4BR_CameraTrigger_Enc, (PX4_DECODE_FUNC) PX4BR_CameraTrigger_Dec, PX4_CAMERA_TRIGGER_MID, px4br_camera_trigger_pb_size, 1, 0, 0},
@@ -206,7 +206,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"vehicle_global_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalPosition_Dec, PX4_VEHICLE_GLOBAL_POSITION_MID, px4br_vehicle_global_position_pb_size, 1, 0, 0},
 		{"vehicle_global_velocity_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID, px4br_vehicle_global_velocity_setpoint_pb_size, 1, 0, 0},
 		{"vehicle_gps_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGpsPosition_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GPS_POSITION_MID, px4br_vehicle_gps_position_pb_size, 1, 0, 0},
-		{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_LAND_DETECTED_MID, px4br_vehicle_land_detected_pb_size, 1, 0, 0},
+		{"vehicle_land_detected", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLandDetected_Dec, PX4_VEHICLE_LAND_DETECTED_MID, px4br_vehicle_land_detected_pb_size, 1, 0, 0},
 		{"vehicle_local_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPosition_Dec, PX4_VEHICLE_LOCAL_POSITION_MID, px4br_vehicle_local_position_pb_size, 1, 0, 0},
 //		{"vehicle_local_position_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleLocalPositionSetpoint_Dec, PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID, px4br_vehicle_local_position_setpoint_pb_size, 1, 0, 0},
 //		// RealtimeArchiveFiller ocpoc SEVERE Error when adding data to realtime segments: java.lang.NullPointerException
