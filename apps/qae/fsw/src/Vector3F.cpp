@@ -142,6 +142,17 @@ const Vector3F Vector3F::operator-() const
 }
 
 
+const Vector3F& Vector3F::operator =(const Vector3F &v)
+{
+
+    data[0] = v[0];
+    data[1] = v[1];
+    data[2] = v[2];
+
+    return *this;
+}
+
+
 const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
 {
 	Vector3F res;

@@ -14,6 +14,8 @@
 #include "geo_mag_declination.h"
 #include "Limits.hpp"
 
+#include "lib/mathlib/math/Limits.hpp"
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -170,6 +172,19 @@ void QAE::InitData()
       		PX4_CONTROL_STATE_MID, sizeof(PX4_ControlStateMsg_t), TRUE);
       /* Init current value table to zero */
       memset(&CVT, 0, sizeof(CVT));
+      /* Init params table to zero */
+      memset(&m_Params, 0, sizeof(m_Params));
+      /* Set params default values */
+      m_Params.mag_declination_auto = TRUE;
+      m_Params.acc_compensation = TRUE;
+      /* Init members */
+      m_Quaternion.Zero();
+      m_gyro.Zero();
+      m_accel.Zero();
+      m_mag.Zero();
+      m_LastVelocity.Zero();
+      m_LastVelocityTime = 0;
+      m_PositionAcc.Zero();
 }
 
 
@@ -546,7 +561,11 @@ void QAE::UpdateMagDeclination(const float new_declination)
 void QAE::EstimateAttitude(void)
 {
     float length_check = 0.0f;
+    float delta_time_velocity = 0.0f;
     uint64 delta_time_gps = 0;
+    uint64 time_now = 0;
+    float delta_time = 0;
+    uint64 time_last = 0;
     /* If there is a new sensor combined message */
     if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
     {
@@ -598,7 +617,7 @@ void QAE::EstimateAttitude(void)
         /* Update the application state */
         HkTlm.State = QAE_INITIALIZED;
     }
-    
+    /* If there is a new GPS message */
     if(CVT.VehicleGlobalPositionMsg.Timestamp > CVT.LastGlobalPositionTime)
     {
         delta_time_gps = PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp;
@@ -606,9 +625,117 @@ void QAE::EstimateAttitude(void)
            CVT.VehicleGlobalPositionMsg.EpH < 20.0f &&
            delta_time_gps < 1000000)
         {
+            /* set magnetic declination automatically */
             UpdateMagDeclination(math::radians(get_mag_declination(CVT.VehicleGlobalPositionMsg.Lat, CVT.VehicleGlobalPositionMsg.Lon)));
         }
+        
+        if(m_Params.acc_compensation == TRUE &&
+           CVT.VehicleGlobalPositionMsg.Timestamp != 0 &&
+           PX4LIB_GetPX4TimeUs() < CVT.VehicleGlobalPositionMsg.Timestamp + 20000 &&
+           CVT.VehicleGlobalPositionMsg.EpH < 5.0f &&
+           HkTlm.State == QAE_INITIALIZED)
+        {
+            /* position data is actual */
+            math::Vector3F vel(CVT.VehicleGlobalPositionMsg.VelN,
+                               CVT.VehicleGlobalPositionMsg.VelE,
+                               CVT.VehicleGlobalPositionMsg.VelD);
+                               
+            /* velocity updated */
+            if(m_LastVelocityTime != 0 &&
+               CVT.VehicleGlobalPositionMsg.Timestamp != m_LastVelocityTime)
+            {
+                delta_time_velocity = (CVT.VehicleGlobalPositionMsg.Timestamp - m_LastVelocityTime) / 1000000.0f;
+                /* calculate acceleration in body frame */
+                m_PositionAcc = m_Quaternion.ConjugateInversed((vel - m_LastVelocity) / delta_time_velocity);
+            }
+            m_LastVelocityTime = CVT.VehicleGlobalPositionMsg.Timestamp;
+            m_LastVelocity = vel;
+        }
+        else
+        {
+            /* position data is outdate, reset acceleration */
+            m_PositionAcc.Zero();
+            m_LastVelocity.Zero();
+            m_LastVelocityTime = 0;
+        }
     }
+
+    time_now = PX4LIB_GetPX4TimeUs();
+    delta_time = (time_last > 0) ? ((time_now - time_last) / 1000000.0f) : 0.00001f;
+    time_last = time_now;
+    
+    if(delta_time > QAE_DELTA_TIME_MAX)
+    {
+        delta_time = QAE_DELTA_TIME_MAX;
+    }
+
+}
+
+
+boolean QAE::InitEstimateAttitude(void)
+{
+    math::Vector3F k(0.0f, 0.0f, 0.0f);
+    math::Vector3F i(0.0f, 0.0f, 0.0f);
+    math::Vector3F j(0.0f, 0.0f, 0.0f);
+    boolean return_bool = FALSE;
+
+    /* rotation matrix can be easily constructed from acceleration
+     * and mag field vectors. 'k' is Earth Z axis (Down) unit vector
+     * in body frame 
+     */
+    k = -m_accel;
+    k.Normalize();
+    
+    /* 'i' is Earth X axis (North) unit vector in body frame, 
+     * orthogonal with 'k' 
+     */
+    i = (m_mag - k * (m_mag * k));
+    i.Normalize();
+    
+    /* 'j' is Earth Y axis (East) unit vector in body frame, orthogonal
+     * with 'k' and 'i' */
+    j = k % i;
+    
+    /* Fill rotation matrix */
+    math::Matrix3F3 R(i, j, k);
+    
+    /* Convert to quaternion */
+    m_Quaternion.FromDCM(R);
+    
+    /* Compensate for magnetic declination */
+    math::Quaternion decl_rotation(0.0f, 0.0f, 0.0f, 0.0f);
+    decl_rotation.FromYaw(m_Params.mag_declination);
+    m_Quaternion = decl_rotation * m_Quaternion;
+    m_Quaternion.Normalize();
+    
+    if(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
+       isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) &&
+       m_Quaternion.Length() > 0.95f && m_Quaternion.Length() < 1.05f)
+    {
+        HkTlm.State = QAE_INITIALIZED;
+        return_bool = TRUE;
+    }
+    else
+    {
+        HkTlm.State = QAE_UNINITIALIZED;
+    }
+
+    return return_bool;
+}
+
+
+boolean QAE::UpdateEstimateAttitude(float dt)
+{
+    if (HkTlm.State != QAE_INITIALIZED)
+    {
+        if(HkTlm.State != QAE_SENSOR_DATA_RCVD)
+        {
+            return FALSE;
+        }
+        return InitEstimateAttitude();
+    }
+    
+    return TRUE;
 }
 
 /************************/

@@ -58,12 +58,14 @@ extern "C" {
 
 #include "Quaternion.hpp"
 #include "Vector3F.hpp"
+#include "Matrix3F3.hpp"
 
 //using math::Quaternion;
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define QAE_DELTA_TIME_MAX 0.02f
 
 /************************************************************************
  ** Local Structure Definitions
@@ -102,8 +104,11 @@ typedef struct
 {
     /** \brief magnetometer declination */
     float mag_declination;
-    /** \brief set magnetic declination automatically */
+    /** \brief magnetometer automatic GPS declination compensation */
     boolean mag_declination_auto;
+    /** \brief acceleration compensation based on GPS velocity */
+    boolean acc_compensation;
+    
 } QAE_Params_t;
 
 
@@ -152,7 +157,12 @@ public:
     math::Vector3F m_accel;
     /** \brief The current mag values */
     math::Vector3F m_mag;
-    
+    /** \brief The last velocity value */
+    math::Vector3F m_LastVelocity;
+    /** The last velocity timestamp */
+    uint64         m_LastVelocityTime;
+    /** \brief The current pos acc value */
+    math::Vector3F m_PositionAcc;
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point
      **
@@ -354,7 +364,10 @@ public:
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
     void EstimateAttitude(void);
+    boolean InitEstimateAttitude(void);
+    boolean UpdateEstimateAttitude(float dt);
     void UpdateMagDeclination(const float new_declination);
+
 
 private:
     /************************************************************************/
