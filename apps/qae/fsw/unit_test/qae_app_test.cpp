@@ -422,7 +422,7 @@ void Test_QAE_AppMain_Nominal_SendHK(void)
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, QAE_SEND_HK_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, AE_SEND_HK_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 
@@ -448,7 +448,7 @@ void Test_QAE_AppMain_Nominal_Wakeup(void)
 
     /* The following will emulate behavior of receiving a SCH message to WAKEUP */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
-    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, QAE_WAKEUP_MID, 1);
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, AE_WAKEUP_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
 

@@ -661,11 +661,11 @@
 #define HMC5883_DIAG_TLM_MID                        0x0ca5
 
 /* QAE                                                  */
-#define QAE_HK_TLM_MID                              0x0ca8
-#define QAE_SEND_HK_MID                             0x1ca9
-#define QAE_WAKEUP_MID                              0x1cb0
-#define QAE_CMD_MID                                 0x1cb1
-#define QAE_DIAG_TLM_MID                            0x0cb2
+//#define QAE_HK_TLM_MID                              0x0ca8
+//#define QAE_SEND_HK_MID                             0x1ca9
+//#define QAE_WAKEUP_MID                              0x1cb0
+//#define QAE_CMD_MID                                 0x1cb1
+//#define QAE_DIAG_TLM_MID                            0x0cb2
 
 
 #define SCH_ACTIVITY_DONE_MID                       0x0f00

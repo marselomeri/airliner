@@ -52,4 +52,3 @@ float degrees(float radians);
 double degrees(double radians);
 
 }
-

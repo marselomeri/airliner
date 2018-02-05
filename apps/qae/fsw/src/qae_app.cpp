@@ -84,7 +84,7 @@ int32 QAE::InitPipe()
 			QAE_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
-        iStatus = CFE_SB_SubscribeEx(QAE_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, QAE_WAKEUP_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(AE_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, QAE_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -93,7 +93,7 @@ int32 QAE::InitPipe()
             goto QAE_InitPipe_Exit_Tag;
         }
 
-        iStatus = CFE_SB_SubscribeEx(QAE_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, QAE_SEND_HK_MID_MAX_MSG_COUNT);
+        iStatus = CFE_SB_SubscribeEx(AE_SEND_HK_MID, SchPipeId, CFE_SB_Default_Qos, QAE_SEND_HK_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
@@ -133,7 +133,7 @@ int32 QAE::InitPipe()
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
-        iStatus = CFE_SB_Subscribe(QAE_CMD_MID, CmdPipeId);
+        iStatus = CFE_SB_Subscribe(AE_CMD_MID, CmdPipeId);
 
         if (iStatus != CFE_SUCCESS)
         {
@@ -165,7 +165,7 @@ void QAE::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
-    		QAE_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    		AE_HK_TLM_MID, sizeof(HkTlm), TRUE);
       /* Init output messages */
       CFE_SB_InitMsg(&VehicleAttitudeMsg,
       		PX4_VEHICLE_ATTITUDE_MID, sizeof(PX4_VehicleAttitudeMsg_t), TRUE);
@@ -283,11 +283,12 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-            case QAE_WAKEUP_MID:
+            case AE_WAKEUP_MID:
                 /* TODO:  Do something here. */
+                EstimateAttitude();
                 break;
 
-            case QAE_SEND_HK_MID:
+            case AE_SEND_HK_MID:
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
@@ -349,7 +350,7 @@ void QAE::ProcessCmdPipe()
             CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
             switch (CmdMsgId)
             {
-                case QAE_CMD_MID:
+                case AE_CMD_MID:
                     ProcessAppCmds(CmdMsgPtr);
                     break;
 
@@ -568,8 +569,10 @@ void QAE::UpdateMagDeclination(const float new_declination)
     }
 }
 
+
 void QAE::EstimateAttitude(void)
 {
+    math::Vector3F euler(0.0f, 0.0f, 0.0f);
     float length_check = 0.0f;
     float delta_time_velocity = 0.0f;
     uint64 delta_time_gps = 0;
@@ -601,6 +604,7 @@ void QAE::EstimateAttitude(void)
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_ACC_ERR_EID, CFE_EVS_ERROR,
                               "Degenerate input data accel vector length %f",
                                length_check);
+                goto end_of_function;
             }
         }
         
@@ -617,10 +621,13 @@ void QAE::EstimateAttitude(void)
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_MAG_ERR_EID, CFE_EVS_ERROR,
                               "Degenerate input data mag vector length %f",
                                length_check);
+                goto end_of_function;
             }
         }
         /* Update the application state */
         HkTlm.State = QAE_SENSOR_DATA_RCVD;
+        /* Update last timestamp */
+        CVT.LastSensorCombinedTime = CVT.SensorCombinedMsg.Timestamp;
     }
     else
     {
@@ -668,6 +675,8 @@ void QAE::EstimateAttitude(void)
             m_LastVelocity.Zero();
             m_LastVelocityTime = 0;
         }
+        /* Update last timestamp */
+        CVT.LastGlobalPositionTime = CVT.VehicleGlobalPositionMsg.Timestamp;
     }
 
     time_now = PX4LIB_GetPX4TimeUs();
@@ -682,9 +691,11 @@ void QAE::EstimateAttitude(void)
     if(!UpdateEstimateAttitude(delta_time))
     {
         /* TODO raise event here */
+        goto end_of_function;
     }
     
-    math::Vector3F euler = m_Quaternion.ToEuler();
+    //math::Vector3F euler = m_Quaternion.ToEuler();
+    euler = m_Quaternion.ToEuler();
     /* Populate vehicle attitude message */
     VehicleAttitudeMsg.Timestamp    = CVT.SensorCombinedMsg.Timestamp;
     VehicleAttitudeMsg.RollSpeed    = m_Rates[0];
@@ -738,6 +749,9 @@ void QAE::EstimateAttitude(void)
         // will handle this assuming always trim airspeed
     //}
     SendControlStateMsg();
+    
+end_of_function:
+;
 }
 
 
@@ -885,8 +899,6 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     
     return TRUE;
 }
-
-
 
 
 /************************/
