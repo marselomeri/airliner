@@ -111,8 +111,8 @@ add_airliner_app_def(pblib
     INCLUDES
         ${PROTOBUF_MSGS_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-		${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
-		${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/
+	${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
+	${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/
 
     PROTOBUF_DEFS
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/es_perf_start.proto
@@ -148,7 +148,6 @@ add_airliner_app_def(pblib
     # This application has a public include header.  Add it so all the other applications can access it.
     PUBLIC_INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
-        ${PROJECT_SOURCE_DIR}/tools/nanopb/
 )
 
 add_airliner_app_unit_test(pblib-ut

@@ -1,7 +1,7 @@
 syntax = "proto2";
 import 'nanopb.proto';
 
-message px4_att_pos_mocap_pb 
+message px4br_att_pos_mocap_pb 
 {
 	required uint64 timestamp = 1;
 	required uint64 timestamp_received = 2;

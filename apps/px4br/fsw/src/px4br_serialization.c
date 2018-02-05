@@ -81,7 +81,6 @@
 #include "optical_flow.pb.h"
 #include "output_pwm.pb.h"
 #include "parameter_update.pb.h"
-#include "position_setpoint.pb.h"
 #include "position_setpoint_triplet.pb.h"
 #include "pwm_input.pb.h"
 #include "qshell_req.pb.h"
@@ -160,7 +159,7 @@ uint32 PX4BR_GetContentSize(const char *msgName)
 uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_actuator_armed_pb pbMsg;
+	px4br_actuator_armed_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.armed = inObject->Armed;
@@ -175,7 +174,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_actuator_armed_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_actuator_armed_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -189,13 +188,13 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_ActuatorArmedMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_actuator_armed_pb pbMsg;
+	px4br_actuator_armed_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_actuator_armed_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_actuator_armed_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -220,7 +219,7 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_actuator_controls_pb pbMsg;
+	px4br_actuator_controls_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.timestamp_sample = inObject->SampleTime;
@@ -234,7 +233,7 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_actuator_controls_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_actuator_controls_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -248,13 +247,13 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_actuator_controls_pb pbMsg;
+	px4br_actuator_controls_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_actuator_controls_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_actuator_controls_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -278,10 +277,11 @@ uint32 PX4BR_ActuatorDirect_Enc(const PX4_ActuatorDirectMsg_t *inObject, char *i
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_actuator_direct_pb pbMsg;
+	px4br_actuator_direct_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.nvalues = inObject->NValues;
+	pbMsg.values_count = PX4_ACTUATOR_DIRECT_MAX;
 	for(i=0; i < PX4_ACTUATOR_DIRECT_MAX; ++i)
 	{
 		pbMsg.values[i] = inObject->Values[i];
@@ -291,7 +291,7 @@ uint32 PX4BR_ActuatorDirect_Enc(const PX4_ActuatorDirectMsg_t *inObject, char *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_actuator_direct_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_actuator_direct_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -305,13 +305,13 @@ uint32 PX4BR_ActuatorDirect_Dec(const char *inBuffer, uint32 inSize, PX4_Actuato
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_actuator_direct_pb pbMsg;
+	px4br_actuator_direct_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_actuator_direct_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_actuator_direct_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -334,7 +334,7 @@ uint32 PX4BR_ActuatorOutputs_Enc(const PX4_ActuatorOutputsMsg_t *inObject, char 
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_actuator_outputs_pb pbMsg;
+	px4br_actuator_outputs_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.noutputs = inObject->Count;
@@ -348,7 +348,7 @@ uint32 PX4BR_ActuatorOutputs_Enc(const PX4_ActuatorOutputsMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_actuator_outputs_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_actuator_outputs_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -362,13 +362,13 @@ uint32 PX4BR_ActuatorOutputs_Dec(const char *inBuffer, uint32 inSize, PX4_Actuat
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_actuator_outputs_pb pbMsg;
+	px4br_actuator_outputs_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_actuator_outputs_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_actuator_outputs_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -401,7 +401,7 @@ uint32 PX4BR_AdcReport_Dec(const char *inBuffer, uint32 inSize, PX4_AdcReportMsg
 uint32 PX4BR_Airspeed_Enc(const PX4_AirspeedMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_airspeed_pb pbMsg;
+	px4br_airspeed_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.indicated_airspeed_m_s = inObject->IndicatedAirspeed;
@@ -414,7 +414,7 @@ uint32 PX4BR_Airspeed_Enc(const PX4_AirspeedMsg_t *inObject, char *inOutBuffer, 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_airspeed_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_airspeed_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -427,13 +427,13 @@ uint32 PX4BR_Airspeed_Enc(const PX4_AirspeedMsg_t *inObject, char *inOutBuffer, 
 uint32 PX4BR_Airspeed_Dec(const char *inBuffer, uint32 inSize, PX4_AirspeedMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_airspeed_pb pbMsg;
+	px4br_airspeed_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_airspeed_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_airspeed_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -466,7 +466,7 @@ uint32 PX4BR_AttPosMoCap_Dec(const char *inBuffer, uint32 inSize, PX4_AttPosMoCa
 uint32 PX4BR_BatteryStatus_Enc(const PX4_BatteryStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_battery_status_pb pbMsg;
+	px4br_battery_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.voltage_v = inObject->Voltage;
@@ -484,7 +484,7 @@ uint32 PX4BR_BatteryStatus_Enc(const PX4_BatteryStatusMsg_t *inObject, char *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_battery_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_battery_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -497,13 +497,13 @@ uint32 PX4BR_BatteryStatus_Enc(const PX4_BatteryStatusMsg_t *inObject, char *inO
 uint32 PX4BR_BatteryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_BatteryStatusMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_battery_status_pb pbMsg;
+	px4br_battery_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_battery_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_battery_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -541,7 +541,7 @@ uint32 PX4BR_CameraTrigger_Dec(const char *inBuffer, uint32 inSize, PX4_CameraTr
 uint32 PX4BR_CommanderState_Enc(const PX4_CommanderStateMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_commander_state_pb pbMsg;
+	px4br_commander_state_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.main_state = inObject->MainState;
@@ -550,7 +550,7 @@ uint32 PX4BR_CommanderState_Enc(const PX4_CommanderStateMsg_t *inObject, char *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_commander_state_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_commander_state_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -563,13 +563,13 @@ uint32 PX4BR_CommanderState_Enc(const PX4_CommanderStateMsg_t *inObject, char *i
 uint32 PX4BR_CommanderState_Dec(const char *inBuffer, uint32 inSize, PX4_CommanderStateMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_commander_state_pb pbMsg;
+	px4br_commander_state_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_commander_state_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_commander_state_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -586,7 +586,7 @@ uint32 PX4BR_CommanderState_Dec(const char *inBuffer, uint32 inSize, PX4_Command
 uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_control_state_pb pbMsg;
+	px4br_control_state_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x_acc = inObject->AccX;
@@ -599,16 +599,20 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 	pbMsg.y_pos = inObject->PosY;
 	pbMsg.z_pos = inObject->PosZ;
 	pbMsg.airspeed = inObject->Airspeed;
+	pbMsg.vel_variance_count = 3;
 	pbMsg.vel_variance[0] = inObject->VelVariance[0];
 	pbMsg.vel_variance[1] = inObject->VelVariance[1];
 	pbMsg.vel_variance[2] = inObject->VelVariance[2];
+	pbMsg.pos_variance_count = 3;
 	pbMsg.pos_variance[0] = inObject->PosVariance[0];
 	pbMsg.pos_variance[1] = inObject->PosVariance[1];
 	pbMsg.pos_variance[2] = inObject->PosVariance[2];
+	pbMsg.q_count = 4;
 	pbMsg.q[0] = inObject->Q[0];
 	pbMsg.q[1] = inObject->Q[1];
 	pbMsg.q[2] = inObject->Q[2];
 	pbMsg.q[3] = inObject->Q[3];
+	pbMsg.delta_q_reset_count = 4;
 	pbMsg.delta_q_reset[0] = inObject->DeltaQReset[0];
 	pbMsg.delta_q_reset[1] = inObject->DeltaQReset[1];
 	pbMsg.delta_q_reset[2] = inObject->DeltaQReset[2];
@@ -627,7 +631,7 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_control_state_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_control_state_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -640,13 +644,13 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 uint32 PX4BR_ControlState_Dec(const char *inBuffer, uint32 inSize, PX4_ControlStateMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_control_state_pb pbMsg;
+	px4br_control_state_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_control_state_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_control_state_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -717,7 +721,7 @@ uint32 PX4BR_DebugKeyValue_Dec(const char *inBuffer, uint32 inSize, PX4_DebugKey
 uint32 PX4BR_DifferentialPressure_Enc(const PX4_DifferentialPressureMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_differential_pressure_pb pbMsg;
+	px4br_differential_pressure_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
@@ -729,7 +733,7 @@ uint32 PX4BR_DifferentialPressure_Enc(const PX4_DifferentialPressureMsg_t *inObj
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_differential_pressure_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_differential_pressure_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -742,13 +746,13 @@ uint32 PX4BR_DifferentialPressure_Enc(const PX4_DifferentialPressureMsg_t *inObj
 uint32 PX4BR_DifferentialPressure_Dec(const char *inBuffer, uint32 inSize, PX4_DifferentialPressureMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_differential_pressure_pb pbMsg;
+	px4br_differential_pressure_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_differential_pressure_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_differential_pressure_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -769,7 +773,7 @@ uint32 PX4BR_DifferentialPressure_Dec(const char *inBuffer, uint32 inSize, PX4_D
 uint32 PX4BR_DistanceSensor_Enc(const PX4_DistanceSensorMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_distance_sensor_pb pbMsg;
+	px4br_distance_sensor_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.min_distance = inObject->MinDistance;
@@ -784,7 +788,7 @@ uint32 PX4BR_DistanceSensor_Enc(const PX4_DistanceSensorMsg_t *inObject, char *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_distance_sensor_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_distance_sensor_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -797,13 +801,13 @@ uint32 PX4BR_DistanceSensor_Enc(const PX4_DistanceSensorMsg_t *inObject, char *i
 uint32 PX4BR_DistanceSensor_Dec(const char *inBuffer, uint32 inSize, PX4_DistanceSensorMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_distance_sensor_pb pbMsg;
+	px4br_distance_sensor_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_distance_sensor_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_distance_sensor_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -826,34 +830,40 @@ uint32 PX4BR_DistanceSensor_Dec(const char *inBuffer, uint32 inSize, PX4_Distanc
 uint32 PX4BR_Ekf2Innovations_Enc(const PX4_Ekf2InnovationsMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_ekf2_innovations_pb pbMsg;
+	px4br_ekf2_innovations_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.vel_pos_innov_count = 6;
 	pbMsg.vel_pos_innov[0] = inObject->VelPosInnov[0];
 	pbMsg.vel_pos_innov[1] = inObject->VelPosInnov[1];
 	pbMsg.vel_pos_innov[2] = inObject->VelPosInnov[2];
 	pbMsg.vel_pos_innov[3] = inObject->VelPosInnov[3];
 	pbMsg.vel_pos_innov[4] = inObject->VelPosInnov[4];
 	pbMsg.vel_pos_innov[5] = inObject->VelPosInnov[5];
+	pbMsg.mag_innov_count = 3;
 	pbMsg.mag_innov[0] = inObject->MagInnov[0];
 	pbMsg.mag_innov[1] = inObject->MagInnov[1];
 	pbMsg.mag_innov[2] = inObject->MagInnov[2];
 	pbMsg.heading_innov = inObject->HeadingInnov;
 	pbMsg.airspeed_innov = inObject->AirspeedInnov;
+	pbMsg.flow_innov_count = 2;
 	pbMsg.flow_innov[0] = inObject->FlowInnov[0];
 	pbMsg.flow_innov[1] = inObject->FlowInnov[1];
 	pbMsg.hagl_innov = inObject->HaglInnov;
+	pbMsg.vel_pos_innov_var_count = 6;
 	pbMsg.vel_pos_innov_var[0] = inObject->VelPosInnovVar[0];
 	pbMsg.vel_pos_innov_var[1] = inObject->VelPosInnovVar[1];
 	pbMsg.vel_pos_innov_var[2] = inObject->VelPosInnovVar[2];
 	pbMsg.vel_pos_innov_var[3] = inObject->VelPosInnovVar[3];
 	pbMsg.vel_pos_innov_var[4] = inObject->VelPosInnovVar[4];
 	pbMsg.vel_pos_innov_var[5] = inObject->VelPosInnovVar[5];
+	pbMsg.mag_innov_var_count = 3;
 	pbMsg.mag_innov_var[0] = inObject->MagInnovVar[0];
 	pbMsg.mag_innov_var[1] = inObject->MagInnovVar[1];
 	pbMsg.mag_innov_var[2] = inObject->MagInnovVar[2];
 	pbMsg.heading_innov_var = inObject->HeadingInnovVar;
 	pbMsg.airspeed_innov_var = inObject->AirspeedInnovVar;
+	pbMsg.flow_innov_var_count = 2;
 	pbMsg.flow_innov_var[0] = inObject->FlowInnovVar[0];
 	pbMsg.flow_innov_var[1] = inObject->FlowInnovVar[1];
 	pbMsg.hagl_innov_var = inObject->HaglInnovVar;
@@ -862,7 +872,7 @@ uint32 PX4BR_Ekf2Innovations_Enc(const PX4_Ekf2InnovationsMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_ekf2_innovations_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_ekf2_innovations_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -875,13 +885,13 @@ uint32 PX4BR_Ekf2Innovations_Enc(const PX4_Ekf2InnovationsMsg_t *inObject, char 
 uint32 PX4BR_Ekf2Innovations_Dec(const char *inBuffer, uint32 inSize, PX4_Ekf2InnovationsMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_ekf2_innovations_pb pbMsg;
+	px4br_ekf2_innovations_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_ekf2_innovations_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_ekf2_innovations_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -935,7 +945,7 @@ uint32 PX4BR_Ekf2Replay_Dec(const char *inBuffer, uint32 inSize, PX4_Ekf2ReplayM
 uint32 PX4BR_EscReport_Enc(const PX4_EscReportMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_esc_report_pb pbMsg;
+	px4br_esc_report_pb pbMsg;
 
 	//pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.esc_errorcount = inObject->Esc.ErrorCount;
@@ -954,7 +964,7 @@ uint32 PX4BR_EscReport_Enc(const PX4_EscReportMsg_t *inObject, char *inOutBuffer
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_esc_report_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_esc_report_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -967,13 +977,13 @@ uint32 PX4BR_EscReport_Enc(const PX4_EscReportMsg_t *inObject, char *inOutBuffer
 uint32 PX4BR_EscReport_Dec(const char *inBuffer, uint32 inSize, PX4_EscReportMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_esc_report_pb pbMsg;
+	px4br_esc_report_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_esc_report_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_esc_report_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1001,12 +1011,13 @@ uint32 PX4BR_EscStatus_Enc(const PX4_EscStatusMsg_t *inObject, char *inOutBuffer
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_esc_status_pb pbMsg;
+	px4br_esc_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.counter = inObject->Counter;
 	pbMsg.esc_count = inObject->EscCount;
 	pbMsg.connectiontype = inObject->ConnectionType;
+	pbMsg.esc_count = PX4_ESC_CONNECTED_ESC_MAX;
 	for(i=0; i < PX4_ESC_CONNECTED_ESC_MAX; ++i)
 	{
 		pbMsg.esc[i].timestamp = inObject->Esc[i].Timestamp;
@@ -1027,7 +1038,7 @@ uint32 PX4BR_EscStatus_Enc(const PX4_EscStatusMsg_t *inObject, char *inOutBuffer
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_esc_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_esc_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1041,13 +1052,13 @@ uint32 PX4BR_EscStatus_Dec(const char *inBuffer, uint32 inSize, PX4_EscStatusMsg
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_esc_status_pb pbMsg;
+	px4br_esc_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_esc_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_esc_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1084,7 +1095,7 @@ uint32 PX4BR_EstimatorStatus_Enc(const PX4_EstimatorStatusMsg_t *inObject, char 
 	uint32_t iVibe = 0;
 	uint32_t iCV = 0;
 	bool status = false;
-	px4_estimator_status_pb pbMsg;
+	px4br_estimator_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.states_count = PX4_ESTIMATOR_STATES_MAX;
@@ -1114,7 +1125,7 @@ uint32 PX4BR_EstimatorStatus_Enc(const PX4_EstimatorStatusMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_estimator_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_estimator_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1130,13 +1141,13 @@ uint32 PX4BR_EstimatorStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Estima
 	uint32_t iVibe = 0;
 	uint32_t iCV = 0;
 	bool status = false;
-	px4_estimator_status_pb pbMsg;
+	px4br_estimator_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_estimator_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_estimator_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1194,7 +1205,7 @@ uint32 PX4BR_FenceVertex_Dec(const char *inBuffer, uint32 inSize, PX4_FenceVerte
 uint32 PX4BR_FilteredBottomFlow_Enc(const PX4_FilteredBottomFlowMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_filtered_bottom_flow_pb pbMsg;
+	px4br_filtered_bottom_flow_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.sumx = inObject->SumX;
@@ -1206,7 +1217,7 @@ uint32 PX4BR_FilteredBottomFlow_Enc(const PX4_FilteredBottomFlowMsg_t *inObject,
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_filtered_bottom_flow_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_filtered_bottom_flow_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1219,13 +1230,13 @@ uint32 PX4BR_FilteredBottomFlow_Enc(const PX4_FilteredBottomFlowMsg_t *inObject,
 uint32 PX4BR_FilteredBottomFlow_Dec(const char *inBuffer, uint32 inSize, PX4_FilteredBottomFlowMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_filtered_bottom_flow_pb pbMsg;
+	px4br_filtered_bottom_flow_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_filtered_bottom_flow_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_filtered_bottom_flow_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1257,7 +1268,7 @@ uint32 PX4BR_FollowTarget_Dec(const char *inBuffer, uint32 inSize, PX4_FollowTar
 uint32 PX4BR_FwPosCtrlStatus_Enc(const PX4_FwPosCtrlStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_fw_pos_ctrl_status_pb pbMsg;
+	px4br_fw_pos_ctrl_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.nav_roll = inObject->NavRoll;
@@ -1276,7 +1287,7 @@ uint32 PX4BR_FwPosCtrlStatus_Enc(const PX4_FwPosCtrlStatusMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_fw_pos_ctrl_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_fw_pos_ctrl_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1289,13 +1300,13 @@ uint32 PX4BR_FwPosCtrlStatus_Enc(const PX4_FwPosCtrlStatusMsg_t *inObject, char 
 uint32 PX4BR_FwPosCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_FwPosCtrlStatusMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_fw_pos_ctrl_status_pb pbMsg;
+	px4br_fw_pos_ctrl_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_fw_pos_ctrl_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_fw_pos_ctrl_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1323,13 +1334,14 @@ uint32 PX4BR_FwPosCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_FwPosC
 uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_fw_virtual_attitude_setpoint_pb pbMsg;
+	px4br_fw_virtual_attitude_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_body = inObject->RollBody;
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
+	pbMsg.R_body_count = 9;
 	pbMsg.R_body[0] = inObject->RBody[0];
 	pbMsg.R_body[1] = inObject->RBody[1];
 	pbMsg.R_body[2] = inObject->RBody[2];
@@ -1339,10 +1351,12 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 	pbMsg.R_body[6] = inObject->RBody[6];
 	pbMsg.R_body[7] = inObject->RBody[7];
 	pbMsg.R_body[8] = inObject->RBody[8];
+	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
 	pbMsg.q_d[3] = inObject->Q_D[3];
+	pbMsg.q_e_count = 4;
 	pbMsg.q_e[0] = inObject->Q_E[0];
 	pbMsg.q_e[1] = inObject->Q_E[1];
 	pbMsg.q_e[2] = inObject->Q_E[2];
@@ -1362,7 +1376,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_fw_virtual_attitude_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_fw_virtual_attitude_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1375,13 +1389,13 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 uint32 PX4BR_FwVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_FwVirtualAttitudeSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_fw_virtual_attitude_setpoint_pb pbMsg;
+	px4br_fw_virtual_attitude_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_fw_virtual_attitude_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_fw_virtual_attitude_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1429,7 +1443,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, 
 uint32 PX4BR_FwVirtualRatesSetpoint_Enc(const PX4_FwVirtualRatesSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_fw_virtual_rates_setpoint_pb pbMsg;
+	px4br_fw_virtual_rates_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll = inObject->Roll;
@@ -1441,7 +1455,7 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Enc(const PX4_FwVirtualRatesSetpointMsg_t *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_fw_virtual_rates_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_fw_virtual_rates_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1454,13 +1468,13 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Enc(const PX4_FwVirtualRatesSetpointMsg_t *i
 uint32 PX4BR_FwVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_FwVirtualRatesSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_fw_virtual_rates_setpoint_pb pbMsg;
+	px4br_fw_virtual_rates_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_fw_virtual_rates_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_fw_virtual_rates_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1492,7 +1506,7 @@ uint32 PX4BR_GpsDump_Enc(const PX4_GpsDumpMsg_t *inObject, char *inOutBuffer, ui
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_gps_dump_pb pbMsg;
+	px4br_gps_dump_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.len = inObject->Len;
@@ -1502,7 +1516,7 @@ uint32 PX4BR_GpsDump_Enc(const PX4_GpsDumpMsg_t *inObject, char *inOutBuffer, ui
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_gps_dump_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_gps_dump_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1516,13 +1530,13 @@ uint32 PX4BR_GpsDump_Dec(const char *inBuffer, uint32 inSize, PX4_GpsDumpMsg_t *
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_gps_dump_pb pbMsg;
+	px4br_gps_dump_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_gps_dump_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_gps_dump_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1542,12 +1556,13 @@ uint32 PX4BR_GpsInjectData_Enc(const PX4_GpsInjectDataMsg_t *inObject, char *inO
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_gps_inject_data_pb pbMsg;
+	px4br_gps_inject_data_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.len = inObject->Len;
 	pbMsg.flags = inObject->Flags;
 	strncpy(pbMsg.data, inObject->Data, PX4_GPS_INJECT_DATA_MAX);
+	//pbMsg.data_count = PX4_GPS_INJECT_DATA_MAX;
 	for(i=0; i < PX4_GPS_INJECT_DATA_MAX; ++i)
 	{
 		pbMsg.data[i] = inObject->Data[i];
@@ -1557,7 +1572,7 @@ uint32 PX4BR_GpsInjectData_Enc(const PX4_GpsInjectDataMsg_t *inObject, char *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_gps_inject_data_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_gps_inject_data_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1571,13 +1586,13 @@ uint32 PX4BR_GpsInjectData_Dec(const char *inBuffer, uint32 inSize, PX4_GpsInjec
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_gps_inject_data_pb pbMsg;
+	px4br_gps_inject_data_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_gps_inject_data_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_gps_inject_data_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1608,7 +1623,7 @@ uint32 PX4BR_HilSensor_Dec(const char *inBuffer, uint32 inSize, PX4_HilSensorMsg
 uint32 PX4BR_HomePosition_Enc(const PX4_HomePositionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_home_position_pb pbMsg;
+	px4br_home_position_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.lat = inObject->Lat;
@@ -1626,7 +1641,7 @@ uint32 PX4BR_HomePosition_Enc(const PX4_HomePositionMsg_t *inObject, char *inOut
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_home_position_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_home_position_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1639,13 +1654,13 @@ uint32 PX4BR_HomePosition_Enc(const PX4_HomePositionMsg_t *inObject, char *inOut
 uint32 PX4BR_HomePosition_Dec(const char *inBuffer, uint32 inSize, PX4_HomePositionMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_home_position_pb pbMsg;
+	px4br_home_position_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_home_position_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_home_position_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1673,7 +1688,7 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_input_rc_pb pbMsg;
+	px4br_input_rc_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.timestamp_last_signal = inObject->LastSignal;
@@ -1695,7 +1710,7 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_input_rc_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_input_rc_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1709,13 +1724,13 @@ uint32 PX4BR_InputRc_Dec(const char *inBuffer, uint32 inSize, PX4_InputRcMsg_t *
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_input_rc_pb pbMsg;
+	px4br_input_rc_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_input_rc_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_input_rc_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1747,7 +1762,7 @@ uint32 PX4BR_LogMessage_Enc(const PX4_LogMessageMsg_t *inObject, char *inOutBuff
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_log_message_pb pbMsg;
+	px4br_log_message_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.severity = inObject->Severity;
@@ -1760,7 +1775,7 @@ uint32 PX4BR_LogMessage_Enc(const PX4_LogMessageMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_log_message_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_log_message_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1774,13 +1789,13 @@ uint32 PX4BR_LogMessage_Dec(const char *inBuffer, uint32 inSize, PX4_LogMessageM
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_log_message_pb pbMsg;
+	px4br_log_message_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_log_message_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_log_message_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1802,7 +1817,7 @@ uint32 PX4BR_LogMessage_Dec(const char *inBuffer, uint32 inSize, PX4_LogMessageM
 uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_manual_control_setpoint_pb pbMsg;
+	px4br_manual_control_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x = inObject->X;
@@ -1835,7 +1850,7 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_manual_control_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_manual_control_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1848,13 +1863,13 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_ManualControlSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_manual_control_setpoint_pb pbMsg;
+	px4br_manual_control_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_manual_control_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_manual_control_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1896,7 +1911,7 @@ uint32 PX4BR_MavlinkLog_Enc(const PX4_MavlinkLogMsg_t *inObject, char *inOutBuff
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_mavlink_log_pb pbMsg;
+	px4br_mavlink_log_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	for(i = 0; i < 50; ++i)
@@ -1909,7 +1924,7 @@ uint32 PX4BR_MavlinkLog_Enc(const PX4_MavlinkLogMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_mavlink_log_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_mavlink_log_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1923,13 +1938,13 @@ uint32 PX4BR_MavlinkLog_Dec(const char *inBuffer, uint32 inSize, PX4_MavlinkLogM
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_mavlink_log_pb pbMsg;
+	px4br_mavlink_log_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_mavlink_log_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_mavlink_log_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -1951,7 +1966,7 @@ uint32 PX4BR_MavlinkLog_Dec(const char *inBuffer, uint32 inSize, PX4_MavlinkLogM
 uint32 PX4BR_McAttCtrlStatus_Enc(const PX4_McAttCtrlStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_mc_att_ctrl_status_pb pbMsg;
+	px4br_mc_att_ctrl_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_rate_integ = inObject->RollRateInteg;
@@ -1962,7 +1977,7 @@ uint32 PX4BR_McAttCtrlStatus_Enc(const PX4_McAttCtrlStatusMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_mc_att_ctrl_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_mc_att_ctrl_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -1975,13 +1990,13 @@ uint32 PX4BR_McAttCtrlStatus_Enc(const PX4_McAttCtrlStatusMsg_t *inObject, char 
 uint32 PX4BR_McAttCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_McAttCtrlStatusMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_mc_att_ctrl_status_pb pbMsg;
+	px4br_mc_att_ctrl_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_mc_att_ctrl_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_mc_att_ctrl_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2000,13 +2015,14 @@ uint32 PX4BR_McAttCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_McAttC
 uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_mc_virtual_attitude_setpoint_pb pbMsg;
+	px4br_mc_virtual_attitude_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_body = inObject->RollBody;
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
+	pbMsg.R_body_count = 9;
 	pbMsg.R_body[0] = inObject->R_Body[0];
 	pbMsg.R_body[1] = inObject->R_Body[1];
 	pbMsg.R_body[2] = inObject->R_Body[2];
@@ -2016,10 +2032,12 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 	pbMsg.R_body[6] = inObject->R_Body[6];
 	pbMsg.R_body[7] = inObject->R_Body[7];
 	pbMsg.R_body[8] = inObject->R_Body[8];
+	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
 	pbMsg.q_d[3] = inObject->Q_D[3];
+	pbMsg.q_e_count = 4;
 	pbMsg.q_e[0] = inObject->Q_E[0];
 	pbMsg.q_e[1] = inObject->Q_E[1];
 	pbMsg.q_e[2] = inObject->Q_E[2];
@@ -2039,7 +2057,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_mc_virtual_attitude_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_mc_virtual_attitude_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2052,13 +2070,13 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 uint32 PX4BR_McVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_McVirtualAttitudeSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_mc_virtual_attitude_setpoint_pb pbMsg;
+	px4br_mc_virtual_attitude_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_mc_virtual_attitude_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_mc_virtual_attitude_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2106,7 +2124,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, 
 uint32 PX4BR_McVirtualRatesSetpoint_Enc(const PX4_McVirtualRatesSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_mc_virtual_rates_setpoint_pb pbMsg;
+	px4br_mc_virtual_rates_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll = inObject->Roll;
@@ -2118,7 +2136,7 @@ uint32 PX4BR_McVirtualRatesSetpoint_Enc(const PX4_McVirtualRatesSetpointMsg_t *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_mc_virtual_rates_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_mc_virtual_rates_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2131,13 +2149,13 @@ uint32 PX4BR_McVirtualRatesSetpoint_Enc(const PX4_McVirtualRatesSetpointMsg_t *i
 uint32 PX4BR_McVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_McVirtualRatesSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_mc_virtual_rates_setpoint_pb pbMsg;
+	px4br_mc_virtual_rates_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_mc_virtual_rates_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_mc_virtual_rates_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2180,7 +2198,7 @@ uint32 PX4BR_MissionResult_Dec(const char *inBuffer, uint32 inSize, PX4_MissionR
 uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_multirotor_motor_limits_pb pbMsg;
+	px4br_multirotor_motor_limits_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.saturation_status = inObject->SaturationStatus.Value;
@@ -2189,7 +2207,7 @@ uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_multirotor_motor_limits_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_multirotor_motor_limits_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2202,13 +2220,13 @@ uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inO
 uint32 PX4BR_MultirotorMotorLimits_Dec(const char *inBuffer, uint32 inSize, PX4_MultirotorMotorLimitsMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_multirotor_motor_limits_pb pbMsg;
+	px4br_multirotor_motor_limits_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_multirotor_motor_limits_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_multirotor_motor_limits_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2226,7 +2244,7 @@ uint32 PX4BR_MultirotorMotorLimits_Dec(const char *inBuffer, uint32 inSize, PX4_
 uint32 PX4BR_OffboardControlMode_Enc(const PX4_OffboardControlModeMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_offboard_control_mode_pb pbMsg;
+	px4br_offboard_control_mode_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.ignore_thrust = inObject->IgnoreThrust;
@@ -2240,7 +2258,7 @@ uint32 PX4BR_OffboardControlMode_Enc(const PX4_OffboardControlModeMsg_t *inObjec
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_offboard_control_mode_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_offboard_control_mode_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2253,13 +2271,13 @@ uint32 PX4BR_OffboardControlMode_Enc(const PX4_OffboardControlModeMsg_t *inObjec
 uint32 PX4BR_OffboardControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_OffboardControlModeMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_offboard_control_mode_pb pbMsg;
+	px4br_offboard_control_mode_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_offboard_control_mode_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_offboard_control_mode_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2282,7 +2300,7 @@ uint32 PX4BR_OffboardControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Of
 uint32 PX4BR_OpticalFlow_Enc(const PX4_OpticalFlowMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_optical_flow_pb pbMsg;
+	px4br_optical_flow_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.pixel_flow_x_integral = inObject->PixelFlowXIntegral;
@@ -2302,7 +2320,7 @@ uint32 PX4BR_OpticalFlow_Enc(const PX4_OpticalFlowMsg_t *inObject, char *inOutBu
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_optical_flow_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_optical_flow_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2315,13 +2333,13 @@ uint32 PX4BR_OpticalFlow_Enc(const PX4_OpticalFlowMsg_t *inObject, char *inOutBu
 uint32 PX4BR_OpticalFlow_Dec(const char *inBuffer, uint32 inSize, PX4_OpticalFlowMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_optical_flow_pb pbMsg;
+	px4br_optical_flow_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_optical_flow_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_optical_flow_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2351,7 +2369,7 @@ uint32 PX4BR_OutputPwm_Enc(const PX4_OutputPwmMsg_t *inObject, char *inOutBuffer
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_output_pwm_pb pbMsg;
+	px4br_output_pwm_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.channel_count = inObject->ChannelCount;
@@ -2365,7 +2383,7 @@ uint32 PX4BR_OutputPwm_Enc(const PX4_OutputPwmMsg_t *inObject, char *inOutBuffer
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_output_pwm_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_output_pwm_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2379,13 +2397,13 @@ uint32 PX4BR_OutputPwm_Dec(const char *inBuffer, uint32 inSize, PX4_OutputPwmMsg
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_output_pwm_pb pbMsg;
+	px4br_output_pwm_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_output_pwm_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_output_pwm_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2427,19 +2445,354 @@ uint32 PX4BR_PositionSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_Posit
 
 uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
-	return 0;
+	bool status = false;
+	px4br_position_setpoint_triplet_pb pbMsg;
+	px4br_position_setpoint_pb previous;
+	px4br_position_setpoint_pb current;
+	px4br_position_setpoint_pb next;
+
+	pbMsg.timestamp = inObject->Timestamp;
+
+	pbMsg.previous.timestamp = inObject->Previous.Timestamp;
+	pbMsg.previous.lat = inObject->Previous.Lat;
+	pbMsg.previous.lon = inObject->Previous.Lon;
+	pbMsg.previous.x = inObject->Previous.X;
+	pbMsg.previous.y = inObject->Previous.Y;
+	pbMsg.previous.z = inObject->Previous.Z;
+	pbMsg.previous.vx = inObject->Previous.VX;
+	pbMsg.previous.vy = inObject->Previous.VY;
+	pbMsg.previous.vz = inObject->Previous.VZ;
+	pbMsg.previous.alt = inObject->Previous.Alt;
+	pbMsg.previous.yaw = inObject->Previous.Yaw;
+	pbMsg.previous.yawspeed = inObject->Previous.Yawspeed;
+	pbMsg.previous.loiter_radius = inObject->Previous.LoiterRadius;
+	pbMsg.previous.pitch_min = inObject->Previous.PitchMin;
+	pbMsg.previous.a_x = inObject->Previous.AX;
+	pbMsg.previous.a_y = inObject->Previous.AY;
+	pbMsg.previous.a_z = inObject->Previous.AZ;
+	pbMsg.previous.acceptance_radius = inObject->Previous.AcceptanceRadius;
+	pbMsg.previous.cruising_speed = inObject->Previous.CruisingSpeed;
+	pbMsg.previous.cruising_throttle = inObject->Previous.CruisingThrottle;
+	pbMsg.previous.valid = inObject->Previous.Valid;
+	pbMsg.previous.type = inObject->Previous.Type;
+	pbMsg.previous.position_valid = inObject->Previous.PositionValid;
+	pbMsg.previous.velocity_valid = inObject->Previous.VelocityValid;
+	pbMsg.previous.velocity_frame = inObject->Previous.VelocityFrame;
+	pbMsg.previous.alt_valid = inObject->Previous.AltValid;
+	pbMsg.previous.yaw_valid = inObject->Previous.YawValid;
+	pbMsg.previous.disable_mc_yaw_control = inObject->Previous.DisableMcYawControl;
+	pbMsg.previous.yawspeed_valid = inObject->Previous.YawspeedValid;
+	pbMsg.previous.loiter_direction = inObject->Previous.LoiterDirection;
+	pbMsg.previous.acceleration_valid = inObject->Previous.AccelerationValid;
+	pbMsg.previous.acceleration_is_force = inObject->Previous.AccelerationIsForce;
+
+	next.timestamp = inObject->Current.Timestamp;
+	pbMsg.current.lat = inObject->Current.Lat;
+	pbMsg.current.lon = inObject->Current.Lon;
+	pbMsg.current.x = inObject->Current.X;
+	pbMsg.current.y = inObject->Current.Y;
+	pbMsg.current.z = inObject->Current.Z;
+	pbMsg.current.vx = inObject->Current.VX;
+	pbMsg.current.vy = inObject->Current.VY;
+	pbMsg.current.vz = inObject->Current.VZ;
+	pbMsg.current.alt = inObject->Current.Alt;
+	pbMsg.current.yaw = inObject->Current.Yaw;
+	pbMsg.current.yawspeed = inObject->Current.Yawspeed;
+	pbMsg.current.loiter_radius = inObject->Current.LoiterRadius;
+	pbMsg.current.pitch_min = inObject->Current.PitchMin;
+	pbMsg.current.a_x = inObject->Current.AX;
+	pbMsg.current.a_y = inObject->Current.AY;
+	pbMsg.current.a_z = inObject->Current.AZ;
+	pbMsg.current.acceptance_radius = inObject->Current.AcceptanceRadius;
+	pbMsg.current.cruising_speed = inObject->Current.CruisingSpeed;
+	pbMsg.current.cruising_throttle = inObject->Current.CruisingThrottle;
+	pbMsg.current.valid = inObject->Current.Valid;
+	pbMsg.current.type = inObject->Current.Type;
+	pbMsg.current.position_valid = inObject->Current.PositionValid;
+	pbMsg.current.velocity_valid = inObject->Current.VelocityValid;
+	pbMsg.current.velocity_frame = inObject->Current.VelocityFrame;
+	pbMsg.current.alt_valid = inObject->Current.AltValid;
+	pbMsg.current.yaw_valid = inObject->Current.YawValid;
+	pbMsg.current.disable_mc_yaw_control = inObject->Current.DisableMcYawControl;
+	pbMsg.current.yawspeed_valid = inObject->Current.YawspeedValid;
+	pbMsg.current.loiter_direction = inObject->Current.LoiterDirection;
+	pbMsg.current.acceleration_valid = inObject->Current.AccelerationValid;
+	pbMsg.current.acceleration_is_force = inObject->Current.AccelerationIsForce;
+
+	pbMsg.next.timestamp = inObject->Next.Timestamp;
+	pbMsg.next.lat = inObject->Next.Lat;
+	pbMsg.next.lon = inObject->Next.Lon;
+	pbMsg.next.x = inObject->Next.X;
+	pbMsg.next.y = inObject->Next.Y;
+	pbMsg.next.z = inObject->Next.Z;
+	pbMsg.next.vx = inObject->Next.VX;
+	pbMsg.next.vy = inObject->Next.VY;
+	pbMsg.next.vz = inObject->Next.VZ;
+	pbMsg.next.alt = inObject->Next.Alt;
+	pbMsg.next.yaw = inObject->Next.Yaw;
+	pbMsg.next.yawspeed = inObject->Next.Yawspeed;
+	pbMsg.next.loiter_radius = inObject->Next.LoiterRadius;
+	pbMsg.next.pitch_min = inObject->Next.PitchMin;
+	pbMsg.next.a_x = inObject->Next.AX;
+	pbMsg.next.a_y = inObject->Next.AY;
+	pbMsg.next.a_z = inObject->Next.AZ;
+	pbMsg.next.acceptance_radius = inObject->Next.AcceptanceRadius;
+	pbMsg.next.cruising_speed = inObject->Next.CruisingSpeed;
+	pbMsg.next.cruising_throttle = inObject->Next.CruisingThrottle;
+	pbMsg.next.valid = inObject->Next.Valid;
+	pbMsg.next.type = inObject->Next.Type;
+	pbMsg.next.position_valid = inObject->Next.PositionValid;
+	pbMsg.next.velocity_valid = inObject->Next.VelocityValid;
+	pbMsg.next.velocity_frame = inObject->Next.VelocityFrame;
+	pbMsg.next.alt_valid = inObject->Next.AltValid;
+	pbMsg.next.yaw_valid = inObject->Next.YawValid;
+	pbMsg.next.disable_mc_yaw_control = inObject->Next.DisableMcYawControl;
+	pbMsg.next.yawspeed_valid = inObject->Next.YawspeedValid;
+	pbMsg.next.loiter_direction = inObject->Next.LoiterDirection;
+	pbMsg.next.acceleration_valid = inObject->Next.AccelerationValid;
+	pbMsg.next.acceleration_is_force = inObject->Next.AccelerationIsForce;
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4br_position_setpoint_triplet_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+		return 0;
+	}
+
+	return stream.bytes_written;
 }
 
 uint32 PX4BR_PositionSetpointTriplet_Dec(const char *inBuffer, uint32 inSize, PX4_PositionSetpointTripletMsg_t *inOutObject)
 {
-	return 0;
+	bool status = false;
+	px4br_position_setpoint_triplet_pb pbMsg;
+
+	/* Create a stream that reads from the buffer. */
+	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4br_position_setpoint_triplet_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+	    OS_printf("Failed to decode position_setpoint_triplet");
+	    return 0;
+	}
+	else
+	{
+		OS_printf("position_setpoint_triplet\n");
+	}
+
+	inOutObject->Timestamp = pbMsg.timestamp;
+
+	inOutObject->Previous.Timestamp = pbMsg.previous.timestamp;
+	inOutObject->Previous.Lat = pbMsg.previous.lat;
+	inOutObject->Previous.Lon = pbMsg.previous.lon;
+	inOutObject->Previous.X = pbMsg.previous.x;
+	inOutObject->Previous.Y = pbMsg.previous.y;
+	inOutObject->Previous.Z = pbMsg.previous.z;
+	inOutObject->Previous.VX = pbMsg.previous.vx;
+	inOutObject->Previous.VY = pbMsg.previous.vy;
+	inOutObject->Previous.VZ = pbMsg.previous.vz;
+	inOutObject->Previous.Alt = pbMsg.previous.alt;
+	inOutObject->Previous.Yaw = pbMsg.previous.yaw;
+	inOutObject->Previous.Yawspeed = pbMsg.previous.yawspeed;
+	inOutObject->Previous.LoiterRadius = pbMsg.previous.loiter_radius;
+	inOutObject->Previous.PitchMin = pbMsg.previous.pitch_min;
+	inOutObject->Previous.AX = pbMsg.previous.a_x;
+	inOutObject->Previous.AY = pbMsg.previous.a_y;
+	inOutObject->Previous.AZ = pbMsg.previous.a_z;
+	inOutObject->Previous.AcceptanceRadius = pbMsg.previous.acceptance_radius;
+	inOutObject->Previous.CruisingSpeed = pbMsg.previous.cruising_speed;
+	inOutObject->Previous.CruisingThrottle = pbMsg.previous.cruising_throttle;
+	inOutObject->Previous.Valid = pbMsg.previous.valid;
+	inOutObject->Previous.Type = pbMsg.previous.type;
+	inOutObject->Previous.PositionValid = pbMsg.previous.position_valid;
+	inOutObject->Previous.VelocityValid = pbMsg.previous.velocity_valid;
+	inOutObject->Previous.VelocityFrame = pbMsg.previous.velocity_frame;
+	inOutObject->Previous.AltValid = pbMsg.previous.alt_valid;
+	inOutObject->Previous.YawValid = pbMsg.previous.yaw_valid;
+	inOutObject->Previous.DisableMcYawControl = pbMsg.previous.disable_mc_yaw_control;
+	inOutObject->Previous.YawspeedValid = pbMsg.previous.yawspeed_valid;
+	inOutObject->Previous.LoiterDirection = pbMsg.previous.loiter_direction;
+	inOutObject->Previous.AccelerationValid = pbMsg.previous.acceleration_valid;
+	inOutObject->Previous.AccelerationIsForce = pbMsg.previous.acceleration_is_force;
+
+	inOutObject->Current.Timestamp = pbMsg.current.timestamp;
+	inOutObject->Current.Lat = pbMsg.current.lat;
+	inOutObject->Current.Lon = pbMsg.current.lon;
+	inOutObject->Current.X = pbMsg.current.x;
+	inOutObject->Current.Y = pbMsg.current.y;
+	inOutObject->Current.Z = pbMsg.current.z;
+	inOutObject->Current.VX = pbMsg.current.vx;
+	inOutObject->Current.VY = pbMsg.current.vy;
+	inOutObject->Current.VZ = pbMsg.current.vz;
+	inOutObject->Current.Alt = pbMsg.current.alt;
+	inOutObject->Current.Yaw = pbMsg.current.yaw;
+	inOutObject->Current.Yawspeed = pbMsg.current.yawspeed;
+	inOutObject->Current.LoiterRadius = pbMsg.current.loiter_radius;
+	inOutObject->Current.PitchMin = pbMsg.current.pitch_min;
+	inOutObject->Current.AX = pbMsg.current.a_x;
+	inOutObject->Current.AY = pbMsg.current.a_y;
+	inOutObject->Current.AZ = pbMsg.current.a_z;
+	inOutObject->Current.AcceptanceRadius = pbMsg.current.acceptance_radius;
+	inOutObject->Current.CruisingSpeed = pbMsg.current.cruising_speed;
+	inOutObject->Current.CruisingThrottle = pbMsg.current.cruising_throttle;
+	inOutObject->Current.Valid = pbMsg.current.valid;
+	inOutObject->Current.Type = pbMsg.current.type;
+	inOutObject->Current.PositionValid = pbMsg.current.position_valid;
+	inOutObject->Current.VelocityValid = pbMsg.current.velocity_valid;
+	inOutObject->Current.VelocityFrame = pbMsg.current.velocity_frame;
+	inOutObject->Current.AltValid = pbMsg.current.alt_valid;
+	inOutObject->Current.YawValid = pbMsg.current.yaw_valid;
+	inOutObject->Current.DisableMcYawControl = pbMsg.current.disable_mc_yaw_control;
+	inOutObject->Current.YawspeedValid = pbMsg.current.yawspeed_valid;
+	inOutObject->Current.LoiterDirection = pbMsg.current.loiter_direction;
+	inOutObject->Current.AccelerationValid = pbMsg.current.acceleration_valid;
+	inOutObject->Current.AccelerationIsForce = pbMsg.current.acceleration_is_force;
+
+	inOutObject->Next.Timestamp = pbMsg.next.timestamp;
+	inOutObject->Next.Lat = pbMsg.next.lat;
+	inOutObject->Next.Lon = pbMsg.next.lon;
+	inOutObject->Next.X = pbMsg.next.x;
+	inOutObject->Next.Y = pbMsg.next.y;
+	inOutObject->Next.Z = pbMsg.next.z;
+	inOutObject->Next.VX = pbMsg.next.vx;
+	inOutObject->Next.VY = pbMsg.next.vy;
+	inOutObject->Next.VZ = pbMsg.next.vz;
+	inOutObject->Next.Alt = pbMsg.next.alt;
+	inOutObject->Next.Yaw = pbMsg.next.yaw;
+	inOutObject->Next.Yawspeed = pbMsg.next.yawspeed;
+	inOutObject->Next.LoiterRadius = pbMsg.next.loiter_radius;
+	inOutObject->Next.PitchMin = pbMsg.next.pitch_min;
+	inOutObject->Next.AX = pbMsg.next.a_x;
+	inOutObject->Next.AY = pbMsg.next.a_y;
+	inOutObject->Next.AZ = pbMsg.next.a_z;
+	inOutObject->Next.AcceptanceRadius = pbMsg.next.acceptance_radius;
+	inOutObject->Next.CruisingSpeed = pbMsg.next.cruising_speed;
+	inOutObject->Next.CruisingThrottle = pbMsg.next.cruising_throttle;
+	inOutObject->Next.Valid = pbMsg.next.valid;
+	inOutObject->Next.Type = pbMsg.next.type;
+	inOutObject->Next.PositionValid = pbMsg.next.position_valid;
+	inOutObject->Next.VelocityValid = pbMsg.next.velocity_valid;
+	inOutObject->Next.VelocityFrame = pbMsg.next.velocity_frame;
+	inOutObject->Next.AltValid = pbMsg.next.alt_valid;
+	inOutObject->Next.YawValid = pbMsg.next.yaw_valid;
+	inOutObject->Next.DisableMcYawControl = pbMsg.next.disable_mc_yaw_control;
+	inOutObject->Next.YawspeedValid = pbMsg.next.yawspeed_valid;
+	inOutObject->Next.LoiterDirection = pbMsg.next.loiter_direction;
+	inOutObject->Next.AccelerationValid = pbMsg.next.acceleration_valid;
+	inOutObject->Next.AccelerationIsForce = pbMsg.next.acceleration_is_force;
+
+  	printf("pbMsg.timestamp = %llu\n", pbMsg.timestamp);
+  	printf("pbMsg.previous.timestamp = %llu\n", pbMsg.previous.timestamp);
+  	printf("pbMsg.previous.lat = %f\n", pbMsg.previous.lat);
+  	printf("pbMsg.previous.lon = %f\n", pbMsg.previous.lon);
+  	printf("pbMsg.previous.x = %f\n", (double)pbMsg.previous.x);
+  	printf("pbMsg.previous.y = %f\n", (double)pbMsg.previous.y);
+  	printf("pbMsg.previous.z = %f\n", (double)pbMsg.previous.z);
+  	printf("pbMsg.previous.vx = %f\n", (double)pbMsg.previous.vx);
+  	printf("pbMsg.previous.vy = %f\n", (double)pbMsg.previous.vy);
+  	printf("pbMsg.previous.vz = %f\n", (double)pbMsg.previous.vz);
+  	printf("pbMsg.previous.alt = %f\n", (double)pbMsg.previous.alt);
+  	printf("pbMsg.previous.yaw = %f\n", (double)pbMsg.previous.yaw);
+  	printf("pbMsg.previous.yawspeed = %f\n", (double)pbMsg.previous.yawspeed);
+  	printf("pbMsg.previous.loiter_radius = %f\n", (double)pbMsg.previous.loiter_radius);
+  	printf("pbMsg.previous.pitch_min = %f\n", (double)pbMsg.previous.pitch_min);
+  	printf("pbMsg.previous.a_x = %f\n", (double)pbMsg.previous.a_x);
+  	printf("pbMsg.previous.a_y = %f\n", (double)pbMsg.previous.a_y);
+  	printf("pbMsg.previous.a_z = %f\n", (double)pbMsg.previous.a_z);
+  	printf("pbMsg.previous.acceptance_radius = %f\n", (double)pbMsg.previous.acceptance_radius);
+  	printf("pbMsg.previous.cruising_speed = %f\n", (double)pbMsg.previous.cruising_speed);
+  	printf("pbMsg.previous.cruising_throttle = %f\n", (double)pbMsg.previous.cruising_throttle);
+  	printf("pbMsg.previous.valid = %u\n", pbMsg.previous.valid);
+  	printf("pbMsg.previous.type = %u\n", pbMsg.previous.type);
+  	printf("pbMsg.previous.position_valid = %u\n", pbMsg.previous.position_valid);
+  	printf("pbMsg.previous.velocity_valid = %u\n", pbMsg.previous.velocity_valid);
+  	printf("pbMsg.previous.yaw_valid = %u\n", pbMsg.previous.yaw_valid);
+  	printf("pbMsg.previous.disable_mc_yaw_control = %u\n", pbMsg.previous.disable_mc_yaw_control);
+  	printf("pbMsg.previous.yawspeed_valid = %u\n", pbMsg.previous.yawspeed_valid);
+  	printf("pbMsg.previous.loiter_direction = %i\n", pbMsg.previous.loiter_direction);
+  	printf("pbMsg.previous.acceleration_valid = %u\n", pbMsg.previous.acceleration_valid);
+  	printf("pbMsg.previous.acceleration_is_force = %u\n", pbMsg.previous.acceleration_is_force);
+
+  	printf("pbMsg.current.timestamp = %llu\n", pbMsg.current.timestamp);
+  	printf("pbMsg.current.lat = %f\n", pbMsg.current.lat);
+  	printf("pbMsg.current.lon = %f\n", pbMsg.current.lon);
+  	printf("pbMsg.current.x = %f\n", (double)pbMsg.current.x);
+  	printf("pbMsg.current.y = %f\n", (double)pbMsg.current.y);
+  	printf("pbMsg.current.z = %f\n", (double)pbMsg.current.z);
+  	printf("pbMsg.current.vx = %f\n", (double)pbMsg.current.vx);
+  	printf("pbMsg.current.vy = %f\n", (double)pbMsg.current.vy);
+  	printf("pbMsg.current.vz = %f\n", (double)pbMsg.current.vz);
+  	printf("pbMsg.current.alt = %f\n", (double)pbMsg.current.alt);
+  	printf("pbMsg.current.yaw = %f\n", (double)pbMsg.current.yaw);
+  	printf("pbMsg.current.yawspeed = %f\n", (double)pbMsg.current.yawspeed);
+  	printf("pbMsg.current.loiter_radius = %f\n", (double)pbMsg.current.loiter_radius);
+  	printf("pbMsg.current.pitch_min = %f\n", (double)pbMsg.current.pitch_min);
+  	printf("pbMsg.current.a_x = %f\n", (double)pbMsg.current.a_x);
+  	printf("pbMsg.current.a_y = %f\n", (double)pbMsg.current.a_y);
+  	printf("pbMsg.current.a_z = %f\n", (double)pbMsg.current.a_z);
+  	printf("pbMsg.current.acceptance_radius = %f\n", (double)pbMsg.current.acceptance_radius);
+  	printf("pbMsg.current.cruising_speed = %f\n", (double)pbMsg.current.cruising_speed);
+  	printf("pbMsg.current.cruising_throttle = %f\n", (double)pbMsg.current.cruising_throttle);
+  	printf("pbMsg.current.valid = %u\n", pbMsg.current.valid);
+  	printf("pbMsg.current.type = %u\n", pbMsg.current.type);
+  	printf("pbMsg.current.position_valid = %u\n", pbMsg.current.position_valid);
+  	printf("pbMsg.current.velocity_valid = %u\n", pbMsg.current.velocity_valid);
+  	printf("pbMsg.current.yaw_valid = %u\n", pbMsg.current.yaw_valid);
+  	printf("pbMsg.current.disable_mc_yaw_control = %u\n", pbMsg.current.disable_mc_yaw_control);
+  	printf("pbMsg.current.yawspeed_valid = %u\n", pbMsg.current.yawspeed_valid);
+  	printf("pbMsg.current.loiter_direction = %i\n", pbMsg.current.loiter_direction);
+  	printf("pbMsg.current.acceleration_valid = %u\n", pbMsg.current.acceleration_valid);
+  	printf("pbMsg.current.acceleration_is_force = %u\n", pbMsg.current.acceleration_is_force);
+
+  	printf("pbMsg.next.timestamp = %llu\n", pbMsg.next.timestamp);
+  	printf("pbMsg.next.lat = %f\n", pbMsg.next.lat);
+  	printf("pbMsg.next.lon = %f\n", pbMsg.next.lon);
+  	printf("pbMsg.next.x = %f\n", (double)pbMsg.next.x);
+  	printf("pbMsg.next.y = %f\n", (double)pbMsg.next.y);
+  	printf("pbMsg.next.z = %f\n", (double)pbMsg.next.z);
+  	printf("pbMsg.next.vx = %f\n", (double)pbMsg.next.vx);
+  	printf("pbMsg.next.vy = %f\n", (double)pbMsg.next.vy);
+  	printf("pbMsg.next.vz = %f\n", (double)pbMsg.next.vz);
+  	printf("pbMsg.next.alt = %f\n", (double)pbMsg.next.alt);
+  	printf("pbMsg.next.yaw = %f\n", (double)pbMsg.next.yaw);
+  	printf("pbMsg.next.yawspeed = %f\n", (double)pbMsg.next.yawspeed);
+  	printf("pbMsg.next.loiter_radius = %f\n", (double)pbMsg.next.loiter_radius);
+  	printf("pbMsg.next.pitch_min = %f\n", (double)pbMsg.next.pitch_min);
+  	printf("pbMsg.next.a_x = %f\n", (double)pbMsg.next.a_x);
+  	printf("pbMsg.next.a_y = %f\n", (double)pbMsg.next.a_y);
+  	printf("pbMsg.next.a_z = %f\n", (double)pbMsg.next.a_z);
+  	printf("pbMsg.next.acceptance_radius = %f\n", (double)pbMsg.next.acceptance_radius);
+  	printf("pbMsg.next.cruising_speed = %f\n", (double)pbMsg.next.cruising_speed);
+  	printf("pbMsg.next.cruising_throttle = %f\n", (double)pbMsg.next.cruising_throttle);
+  	printf("pbMsg.next.valid = %u\n", pbMsg.next.valid);
+  	printf("pbMsg.next.type = %u\n", pbMsg.next.type);
+  	printf("pbMsg.next.position_valid = %u\n", pbMsg.next.position_valid);
+  	printf("pbMsg.next.velocity_valid = %u\n", pbMsg.next.velocity_valid);
+    printf("pbMsg.next.velocity_frame = %u\n", pbMsg.next.velocity_frame);
+  	printf("pbMsg.next.alt_valid = %u\n", pbMsg.next.alt_valid);
+  	printf("pbMsg.next.yaw_valid = %u\n", pbMsg.next.yaw_valid);
+  	printf("pbMsg.next.disable_mc_yaw_control = %u\n", pbMsg.next.disable_mc_yaw_control);
+  	printf("pbMsg.next.yawspeed_valid = %u\n", pbMsg.next.yawspeed_valid);
+  	printf("pbMsg.next.loiter_direction = %i\n", pbMsg.next.loiter_direction);
+  	printf("pbMsg.next.acceleration_valid = %u\n", pbMsg.next.acceleration_valid);
+  	printf("pbMsg.next.acceleration_is_force = %u\n", pbMsg.next.acceleration_is_force);
+
+    return sizeof(PX4_PositionSetpointTripletMsg_t);
 }
 
 
 uint32 PX4BR_PwmInput_Enc(const PX4_PwmInputMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_pwm_input_pb pbMsg;
+	px4br_pwm_input_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
@@ -2450,7 +2803,7 @@ uint32 PX4BR_PwmInput_Enc(const PX4_PwmInputMsg_t *inObject, char *inOutBuffer, 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_pwm_input_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_pwm_input_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2463,13 +2816,13 @@ uint32 PX4BR_PwmInput_Enc(const PX4_PwmInputMsg_t *inObject, char *inOutBuffer, 
 uint32 PX4BR_PwmInput_Dec(const char *inBuffer, uint32 inSize, PX4_PwmInputMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_pwm_input_pb pbMsg;
+	px4br_pwm_input_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_pwm_input_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_pwm_input_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2502,10 +2855,11 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	uint32_t iChannel = 0;
 	uint32_t iFunction = 0;
 	bool status = false;
-	px4_rc_channels_pb pbMsg;
+	px4br_rc_channels_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.timestamp_last_valid = inObject->TimestampLastValid;
+	pbMsg.channels_count = PX4_RC_INPUT_MAX_CHANNELS;
 	for(iChannel = 0; iChannel < PX4_RC_INPUT_MAX_CHANNELS; ++iChannel)
 	{
 		pbMsg.channels[iChannel] = inObject->Channels[iChannel];
@@ -2525,7 +2879,7 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_rc_channels_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_rc_channels_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2540,13 +2894,13 @@ uint32 PX4BR_RcChannels_Dec(const char *inBuffer, uint32 inSize, PX4_RcChannelsM
 	uint32_t iChannel = 0;
 	uint32_t iFunction = 0;
 	bool status = false;
-	px4_rc_channels_pb pbMsg;
+	px4br_rc_channels_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_rc_channels_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_rc_channels_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2587,7 +2941,7 @@ uint32 PX4BR_RcParameterMap_Dec(const char *inBuffer, uint32 inSize, PX4_RcParam
 uint32 PX4BR_Safety_Enc(const PX4_SafetyMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_safety_pb pbMsg;
+	px4br_safety_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.safety_switch_available = inObject->SafetySwitchAvailable;
@@ -2597,7 +2951,7 @@ uint32 PX4BR_Safety_Enc(const PX4_SafetyMsg_t *inObject, char *inOutBuffer, uint
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_safety_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_safety_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2610,13 +2964,13 @@ uint32 PX4BR_Safety_Enc(const PX4_SafetyMsg_t *inObject, char *inOutBuffer, uint
 uint32 PX4BR_Safety_Dec(const char *inBuffer, uint32 inSize, PX4_SafetyMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_safety_pb pbMsg;
+	px4br_safety_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_safety_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_safety_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2636,10 +2990,15 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_satellite_info_pb pbMsg;
+	px4br_satellite_info_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.count = inObject->Count;
+	pbMsg.svid_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.used_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.elevation_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.azimuth_count = PX4_SAT_INFO_MAX_SATELLITES;
+	pbMsg.snr_count = PX4_SAT_INFO_MAX_SATELLITES;
 	pbMsg.svid_count = PX4_SAT_INFO_MAX_SATELLITES;
 	pbMsg.used_count = PX4_SAT_INFO_MAX_SATELLITES;
 	pbMsg.elevation_count = PX4_SAT_INFO_MAX_SATELLITES;
@@ -2658,7 +3017,7 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_satellite_info_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_satellite_info_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2672,13 +3031,13 @@ uint32 PX4BR_SatelliteInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Satellit
 {
 	uint32_t i = 0;
 	bool status = false;
-	px4_satellite_info_pb pbMsg;
+	px4br_satellite_info_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_satellite_info_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_satellite_info_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2720,7 +3079,7 @@ uint32 PX4BR_SatelliteInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Satellit
 uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_sensor_accel_pb pbMsg;
+	px4br_sensor_accel_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.integral_dt = inObject->IntegralDt;
@@ -2744,7 +3103,7 @@ uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBu
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_sensor_accel_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_sensor_accel_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2757,13 +3116,13 @@ uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBu
 uint32 PX4BR_SensorAccel_Dec(const char *inBuffer, uint32 inSize, PX4_SensorAccelMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_sensor_accel_pb pbMsg;
+	px4br_sensor_accel_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_sensor_accel_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_sensor_accel_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2796,7 +3155,7 @@ uint32 PX4BR_SensorAccel_Dec(const char *inBuffer, uint32 inSize, PX4_SensorAcce
 uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_sensor_baro_pb pbMsg;
+	px4br_sensor_baro_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
@@ -2808,7 +3167,7 @@ uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_sensor_baro_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_sensor_baro_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2821,13 +3180,13 @@ uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuff
 uint32 PX4BR_SensorBaro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorBaroMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_sensor_baro_pb pbMsg;
+	px4br_sensor_baro_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_sensor_baro_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_sensor_baro_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2848,7 +3207,7 @@ uint32 PX4BR_SensorBaro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorBaroM
 uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_sensor_combined_pb pbMsg;
+	px4br_sensor_combined_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.gyro_rad_count = 3;
@@ -2875,7 +3234,7 @@ uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_sensor_combined_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_sensor_combined_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -2888,13 +3247,13 @@ uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *i
 uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCombinedMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_sensor_combined_pb pbMsg;
+	px4br_sensor_combined_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_sensor_combined_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_sensor_combined_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -2927,7 +3286,7 @@ uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorC
 uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_sensor_correction_pb pbMsg;
+	px4br_sensor_correction_pb pbMsg;
 	CFE_TIME_SysTime_t timestamp;
 
 	timestamp = CFE_SB_GetMsgTime((CFE_SB_MsgPtr_t)inObject);
@@ -3026,7 +3385,7 @@ uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, cha
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_sensor_combined_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_sensor_combined_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3039,13 +3398,13 @@ uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, cha
 uint32 PX4BR_SensorCorrection_Dec(const char *inBuffer, uint32 inSize, PX4_SensorCorrectionMsg_t *inOutObject)
 {
 //	bool status = false;
-//	px4_sensor_combined_pb pbMsg;
+//	px4br_sensor_combined_pb pbMsg;
 //
 //	/* Create a stream that reads from the buffer. */
 //	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 //
 //	/* Now we are ready to decode the message. */
-//	status = pb_decode(&stream, px4_sensor_combined_pb_fields, &pbMsg);
+//	status = pb_decode(&stream, px4br_sensor_combined_pb_fields, &pbMsg);
 //
 //	/* Check for errors... */
 //	if (!status)
@@ -3078,7 +3437,7 @@ uint32 PX4BR_SensorCorrection_Dec(const char *inBuffer, uint32 inSize, PX4_Senso
 uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_sensor_gyro_pb pbMsg;
+	px4br_sensor_gyro_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.integral_dt = inObject->IntegralDt;
@@ -3102,7 +3461,7 @@ uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_sensor_gyro_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_sensor_gyro_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3115,13 +3474,13 @@ uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuff
 uint32 PX4BR_SensorGyro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorGyroMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_sensor_gyro_pb pbMsg;
+	px4br_sensor_gyro_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_sensor_gyro_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_sensor_gyro_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3153,7 +3512,7 @@ uint32 PX4BR_SensorGyro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorGyroM
 uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_sensor_mag_pb pbMsg;
+	px4br_sensor_mag_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.error_count = inObject->ErrorCount;
@@ -3172,7 +3531,7 @@ uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_sensor_mag_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_sensor_mag_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3185,13 +3544,13 @@ uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer
 uint32 PX4BR_SensorMag_Dec(const char *inBuffer, uint32 inSize, PX4_SensorMagMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_sensor_mag_pb pbMsg;
+	px4br_sensor_mag_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_sensor_mag_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_sensor_mag_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3230,7 +3589,7 @@ uint32 PX4BR_ServorailStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Servor
 uint32 PX4BR_SubsystemInfo_Enc(const PX4_SubsystemInfoMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_subsystem_info_pb pbMsg;
+	px4br_subsystem_info_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.subsystem_type = inObject->SubsystemType;
@@ -3242,7 +3601,7 @@ uint32 PX4BR_SubsystemInfo_Enc(const PX4_SubsystemInfoMsg_t *inObject, char *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_subsystem_info_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_subsystem_info_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3255,13 +3614,13 @@ uint32 PX4BR_SubsystemInfo_Enc(const PX4_SubsystemInfoMsg_t *inObject, char *inO
 uint32 PX4BR_SubsystemInfo_Dec(const char *inBuffer, uint32 inSize, PX4_SubsystemInfoMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_subsystem_info_pb pbMsg;
+	px4br_subsystem_info_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_subsystem_info_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_subsystem_info_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3282,7 +3641,7 @@ uint32 PX4BR_SubsystemInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Subsyste
 uint32 PX4BR_SystemPower_Enc(const PX4_SystemPowerMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_system_power_pb pbMsg;
+	px4br_system_power_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.voltage5V_v = inObject->Voltage5V;
@@ -3296,7 +3655,7 @@ uint32 PX4BR_SystemPower_Enc(const PX4_SystemPowerMsg_t *inObject, char *inOutBu
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_system_power_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_system_power_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3309,13 +3668,13 @@ uint32 PX4BR_SystemPower_Enc(const PX4_SystemPowerMsg_t *inObject, char *inOutBu
 uint32 PX4BR_SystemPower_Dec(const char *inBuffer, uint32 inSize, PX4_SystemPowerMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_system_power_pb pbMsg;
+	px4br_system_power_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_system_power_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_system_power_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3338,7 +3697,7 @@ uint32 PX4BR_SystemPower_Dec(const char *inBuffer, uint32 inSize, PX4_SystemPowe
 uint32 PX4BR_TecsStatus_Enc(const PX4_TecsStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_tecs_status_pb pbMsg;
+	px4br_tecs_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.altitudeSp = inObject->AltitudeSp;
@@ -3362,7 +3721,7 @@ uint32 PX4BR_TecsStatus_Enc(const PX4_TecsStatusMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_tecs_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_tecs_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3375,13 +3734,13 @@ uint32 PX4BR_TecsStatus_Enc(const PX4_TecsStatusMsg_t *inObject, char *inOutBuff
 uint32 PX4BR_TecsStatus_Dec(const char *inBuffer, uint32 inSize, PX4_TecsStatusMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_tecs_status_pb pbMsg;
+	px4br_tecs_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_tecs_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_tecs_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3414,7 +3773,7 @@ uint32 PX4BR_TecsStatus_Dec(const char *inBuffer, uint32 inSize, PX4_TecsStatusM
 uint32 PX4BR_TelemetryStatus_Enc(const PX4_TelemetryStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_telemetry_status_pb pbMsg;
+	px4br_telemetry_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.heartbeat_time = inObject->HeartbeatTime;
@@ -3434,7 +3793,7 @@ uint32 PX4BR_TelemetryStatus_Enc(const PX4_TelemetryStatusMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_telemetry_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_telemetry_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3447,13 +3806,13 @@ uint32 PX4BR_TelemetryStatus_Enc(const PX4_TelemetryStatusMsg_t *inObject, char 
 uint32 PX4BR_TelemetryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_TelemetryStatusMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_telemetry_status_pb pbMsg;
+	px4br_telemetry_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_telemetry_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_telemetry_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3493,7 +3852,7 @@ uint32 PX4BR_TestMotor_Dec(const char *inBuffer, uint32 inSize, PX4_TestMotorMsg
 uint32 PX4BR_TimeOffset_Enc(const PX4_TimeOffsetMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_time_offset_pb pbMsg;
+	px4br_time_offset_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.offset_ns = inObject->OffsetNs;
@@ -3502,7 +3861,7 @@ uint32 PX4BR_TimeOffset_Enc(const PX4_TimeOffsetMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_time_offset_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_time_offset_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3515,13 +3874,13 @@ uint32 PX4BR_TimeOffset_Enc(const PX4_TimeOffsetMsg_t *inObject, char *inOutBuff
 uint32 PX4BR_TimeOffset_Dec(const char *inBuffer, uint32 inSize, PX4_TimeOffsetMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_time_offset_pb pbMsg;
+	px4br_time_offset_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_time_offset_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_time_offset_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3572,7 +3931,7 @@ uint32 PX4BR_UavCanParameterValue_Dec(const char *inBuffer, uint32 inSize, PX4_U
 uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_attitude_pb pbMsg;
+	px4br_vehicle_attitude_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.rollspeed = inObject->RollSpeed;
@@ -3588,7 +3947,7 @@ uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_attitude_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_attitude_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3601,13 +3960,13 @@ uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char 
 uint32 PX4BR_VehicleAttitude_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleAttitudeMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_attitude_pb pbMsg;
+	px4br_vehicle_attitude_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_attitude_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_attitude_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3631,13 +3990,14 @@ uint32 PX4BR_VehicleAttitude_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicl
 uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_attitude_setpoint_pb pbMsg;
+	px4br_vehicle_attitude_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.roll_body = inObject->RollBody;
 	pbMsg.pitch_body = inObject->PitchBody;
 	pbMsg.yaw_body = inObject->YawBody;
 	pbMsg.yaw_sp_move_rate = inObject->YawSpMoveRate;
+	pbMsg.q_d_count = 4;
 	pbMsg.q_d[0] = inObject->Q_D[0];
 	pbMsg.q_d[1] = inObject->Q_D[1];
 	pbMsg.q_d[2] = inObject->Q_D[2];
@@ -3656,7 +4016,7 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_attitude_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_attitude_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3669,13 +4029,13 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 uint32 PX4BR_VehicleAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleAttitudeSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_attitude_setpoint_pb pbMsg;
+	px4br_vehicle_attitude_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_attitude_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_attitude_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3720,7 +4080,7 @@ uint32 PX4BR_VehicleCommandAck_Dec(const char *inBuffer, uint32 inSize, PX4_Vehi
 uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_command_pb pbMsg;
+	px4br_vehicle_command_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.param5 = inObject->Param5;
@@ -3741,7 +4101,7 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_command_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3754,13 +4114,13 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleCommandMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_command_pb pbMsg;
+	px4br_vehicle_command_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_command_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3790,7 +4150,7 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_control_mode_pb pbMsg;
+	px4br_vehicle_control_mode_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.flag_armed = inObject->Armed;
@@ -3809,12 +4169,13 @@ uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject,
 	pbMsg.flag_control_altitude_enabled = inObject->ControlAltitudeEnabled;
 	pbMsg.flag_control_climb_rate_enabled = inObject->ControlClimbRateEnabled;
 	pbMsg.flag_control_termination_enabled = inObject->ControlTerminationEnabled;
+	pbMsg.flag_control_fixed_hdg_enabled = inObject->ControlFixedHdgEnabled;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_control_mode_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_control_mode_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3827,13 +4188,13 @@ uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject,
 uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleControlModeMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_control_mode_pb pbMsg;
+	px4br_vehicle_control_mode_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_control_mode_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_control_mode_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3858,6 +4219,7 @@ uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 	inOutObject->ControlAltitudeEnabled = pbMsg.flag_control_altitude_enabled;
 	inOutObject->ControlClimbRateEnabled = pbMsg.flag_control_climb_rate_enabled;
 	inOutObject->ControlTerminationEnabled = pbMsg.flag_control_termination_enabled;
+	inOutObject->ControlFixedHdgEnabled = pbMsg.flag_control_fixed_hdg_enabled;
 
 	return sizeof(PX4_VehicleControlModeMsg_t);
 }
@@ -3866,7 +4228,7 @@ uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 uint32 PX4BR_VehicleForceSetpoint_Enc(const PX4_VehicleForceSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_force_setpoint_pb pbMsg;
+	px4br_vehicle_force_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x = inObject->X;
@@ -3878,7 +4240,7 @@ uint32 PX4BR_VehicleForceSetpoint_Enc(const PX4_VehicleForceSetpointMsg_t *inObj
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_force_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_force_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3891,13 +4253,13 @@ uint32 PX4BR_VehicleForceSetpoint_Enc(const PX4_VehicleForceSetpointMsg_t *inObj
 uint32 PX4BR_VehicleForceSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleForceSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_force_setpoint_pb pbMsg;
+	px4br_vehicle_force_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_force_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_force_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3918,7 +4280,7 @@ uint32 PX4BR_VehicleForceSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_global_position_pb pbMsg;
+	px4br_vehicle_global_position_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.time_utc_usec = inObject->TimeUtcUsec;
@@ -3940,7 +4302,7 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_global_position_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_global_position_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -3953,13 +4315,13 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleGlobalPositionMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_global_position_pb pbMsg;
+	px4br_vehicle_global_position_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_global_position_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_global_position_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -3990,7 +4352,7 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_global_velocity_setpoint_pb pbMsg;
+	px4br_vehicle_global_velocity_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.vx = inObject->VX;
@@ -4001,7 +4363,7 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySe
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_global_velocity_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_global_velocity_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4014,13 +4376,13 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySe
 uint32 PX4BR_VehicleGlobalVelocitySetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleGlobalVelocitySetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_global_velocity_setpoint_pb pbMsg;
+	px4br_vehicle_global_velocity_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_global_velocity_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_global_velocity_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4040,7 +4402,7 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Dec(const char *inBuffer, uint32 inSi
 uint32 PX4BR_VehicleGpsPosition_Enc(const PX4_VehicleGpsPositionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_gps_position_pb pbMsg;
+	px4br_vehicle_gps_position_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.time_utc_usec = inObject->TimeUtcUsec;
@@ -4070,7 +4432,7 @@ uint32 PX4BR_VehicleGpsPosition_Enc(const PX4_VehicleGpsPositionMsg_t *inObject,
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_gps_position_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_gps_position_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4084,13 +4446,13 @@ uint32 PX4BR_VehicleGpsPosition_Enc(const PX4_VehicleGpsPositionMsg_t *inObject,
 uint32 PX4BR_VehicleGpsPosition_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleGpsPositionMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_gps_position_pb pbMsg;
+	px4br_vehicle_gps_position_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_gps_position_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_gps_position_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4129,17 +4491,19 @@ uint32 PX4BR_VehicleGpsPosition_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_land_detected_pb pbMsg;
+	px4br_vehicle_land_detected_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.alt_max = inObject->AltMax;
 	pbMsg.landed = inObject->Landed;
 	pbMsg.freefall = inObject->Freefall;
+	pbMsg.ground_contact = inObject->GroundContact;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_land_detected_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_land_detected_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4152,13 +4516,13 @@ uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObjec
 uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleLandDetectedMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_land_detected_pb pbMsg;
+	px4br_vehicle_land_detected_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_land_detected_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_land_detected_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4167,8 +4531,10 @@ uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_Ve
 	}
 
 	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->AltMax = pbMsg.alt_max;
 	inOutObject->Landed = pbMsg.landed;
 	inOutObject->Freefall = pbMsg.freefall;
+	inOutObject->GroundContact = pbMsg.ground_contact;
 
 	return sizeof(PX4_VehicleLandDetectedMsg_t);
 }
@@ -4177,7 +4543,7 @@ uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_Ve
 uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_local_position_pb pbMsg;
+	px4br_vehicle_local_position_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.ref_timestamp = inObject->RefTimestamp;
@@ -4187,19 +4553,37 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	pbMsg.x = inObject->X;
 	pbMsg.y = inObject->Y;
 	pbMsg.z = inObject->Z;
+	pbMsg.delta_xy_count = 2;
+	pbMsg.delta_xy[0] = inObject->Delta_XY[0];
+	pbMsg.delta_xy[1] = inObject->Delta_XY[1];
+	pbMsg.delta_z = inObject->Delta_Z;
 	pbMsg.vx = inObject->VX;
 	pbMsg.vy = inObject->VY;
 	pbMsg.vz = inObject->VZ;
+	pbMsg.delta_vxy_count = 2;
+	pbMsg.delta_vxy[0] = inObject->Delta_VXY[0];
+	pbMsg.delta_vxy[1] = inObject->Delta_VXY[1];
+	pbMsg.delta_vz = inObject->Delta_VZ;
+	pbMsg.ax = inObject->AX;
+	pbMsg.ay = inObject->AY;
+	pbMsg.az = inObject->AZ;
 	pbMsg.yaw = inObject->Yaw;
 	pbMsg.ref_alt = inObject->RefAlt;
 	pbMsg.dist_bottom = inObject->DistBottom;
 	pbMsg.dist_bottom_rate = inObject->DistBottomRate;
 	pbMsg.eph = inObject->EpH;
 	pbMsg.epv = inObject->EpV;
+	pbMsg.evh = inObject->EvH;
+	pbMsg.evv = inObject->EvV;
+	pbMsg.estimator_type = inObject->EstimatorType;
 	pbMsg.xy_valid = inObject->XY_Valid;
 	pbMsg.z_valid = inObject->Z_Valid;
 	pbMsg.v_xy_valid = inObject->V_XY_Valid;
 	pbMsg.v_z_valid = inObject->V_Z_Valid;
+	pbMsg.xy_reset_counter = inObject->XY_ResetCounter;
+	pbMsg.z_reset_counter = inObject->Z_ResetCounter;
+	pbMsg.vxy_reset_counter = inObject->VXY_ResetCounter;
+	pbMsg.vz_reset_counter = inObject->VZ_ResetCounter;
 	pbMsg.xy_global = inObject->XY_Global;
 	pbMsg.z_global = inObject->Z_Global;
 	pbMsg.dist_bottom_valid = inObject->DistBottomValid;
@@ -4208,7 +4592,7 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_local_position_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_local_position_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4221,13 +4605,13 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleLocalPositionMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_local_position_pb pbMsg;
+	px4br_vehicle_local_position_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_local_position_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_local_position_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4243,20 +4627,34 @@ uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	inOutObject->X = pbMsg.x;
 	inOutObject->Y = pbMsg.y;
 	inOutObject->Z = pbMsg.z;
+	inOutObject->Delta_XY[0] = pbMsg.delta_xy[0];
+	inOutObject->Delta_XY[1] = pbMsg.delta_xy[1];
 	inOutObject->VX = pbMsg.vx;
 	inOutObject->VY = pbMsg.vy;
 	inOutObject->VZ = pbMsg.vz;
+	inOutObject->Delta_VXY[0] = pbMsg.delta_vxy[0];
+	inOutObject->Delta_VXY[1] = pbMsg.delta_vxy[1];
+	inOutObject->AX = pbMsg.ax;
+	inOutObject->AY = pbMsg.ay;
+	inOutObject->AZ = pbMsg.az;
 	inOutObject->Yaw = pbMsg.yaw;
 	inOutObject->RefAlt = pbMsg.ref_alt;
 	inOutObject->DistBottom = pbMsg.dist_bottom;
 	inOutObject->DistBottomRate = pbMsg.dist_bottom_rate;
 	inOutObject->EpH = pbMsg.eph;
 	inOutObject->EpV = pbMsg.epv;
+	inOutObject->EvH = pbMsg.evh;
+	inOutObject->EvV = pbMsg.evv;
+	inOutObject->EstimatorType = pbMsg.estimator_type;
 	inOutObject->XY_Valid = pbMsg.xy_valid;
 	inOutObject->Z_Valid = pbMsg.z_valid;
 	inOutObject->V_XY_Valid = pbMsg.v_xy_valid;
 	inOutObject->V_Z_Valid = pbMsg.v_z_valid;
 	inOutObject->XY_Global = pbMsg.xy_global;
+	inOutObject->XY_ResetCounter = pbMsg.xy_reset_counter;
+	inOutObject->Z_ResetCounter = pbMsg.z_reset_counter;
+	inOutObject->VXY_ResetCounter = pbMsg.vxy_reset_counter;
+	inOutObject->VZ_ResetCounter = pbMsg.vz_reset_counter;
 	inOutObject->Z_Global = pbMsg.z_global;
 	inOutObject->DistBottomValid = pbMsg.dist_bottom_valid;
 
@@ -4267,7 +4665,7 @@ uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_V
 uint32 PX4BR_VehicleLocalPositionSetpoint_Enc(const PX4_VehicleLocalPositionSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_local_position_setpoint_pb pbMsg;
+	px4br_vehicle_local_position_setpoint_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.x = inObject->X;
@@ -4285,7 +4683,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Enc(const PX4_VehicleLocalPositionSetp
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_local_position_setpoint_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_local_position_setpoint_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4298,13 +4696,13 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Enc(const PX4_VehicleLocalPositionSetp
 uint32 PX4BR_VehicleLocalPositionSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleLocalPositionSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_local_position_setpoint_pb pbMsg;
+	px4br_vehicle_local_position_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_local_position_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_local_position_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4331,7 +4729,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Dec(const char *inBuffer, uint32 inSiz
 uint32 PX4BR_VehicleRatesSetpoint_Enc(const PX4_VehicleRatesSetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_rates_setpoint_pb pbMsg;
+	px4br_vehicle_rates_setpoint_pb pbMsg;
 
 	if(inObject->Timestamp > vehicle_rates_timestamp)
 	{
@@ -4347,7 +4745,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Enc(const PX4_VehicleRatesSetpointMsg_t *inObj
 		pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 		/* Now we are ready to encode the message. */
-		status = pb_encode(&stream, px4_vehicle_rates_setpoint_pb_fields, &pbMsg);
+		status = pb_encode(&stream, px4br_vehicle_rates_setpoint_pb_fields, &pbMsg);
 		/* Check for errors... */
 		if (!status)
 		{
@@ -4365,13 +4763,13 @@ uint32 PX4BR_VehicleRatesSetpoint_Enc(const PX4_VehicleRatesSetpointMsg_t *inObj
 uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleRatesSetpointMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_rates_setpoint_pb pbMsg;
+	px4br_vehicle_rates_setpoint_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_rates_setpoint_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_rates_setpoint_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4402,7 +4800,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_vehicle_status_pb pbMsg;
+	px4br_vehicle_status_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.system_id = inObject->SystemID;
@@ -4431,7 +4829,7 @@ uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inO
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_vehicle_status_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_vehicle_status_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4444,13 +4842,13 @@ uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inO
 uint32 PX4BR_VehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleStatusMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_vehicle_status_pb pbMsg;
+	px4br_vehicle_status_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_vehicle_status_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_vehicle_status_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4509,7 +4907,7 @@ uint32 PX4BR_VtolVehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Vtol
 uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_wind_estimate_pb pbMsg;
+	px4br_wind_estimate_pb pbMsg;
 
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.windspeed_north = inObject->WindspeedNorth;
@@ -4521,7 +4919,7 @@ uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOut
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_wind_estimate_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_wind_estimate_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4534,13 +4932,13 @@ uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOut
 uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstimateMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_wind_estimate_pb pbMsg;
+	px4br_wind_estimate_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_wind_estimate_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_wind_estimate_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)
@@ -4561,7 +4959,7 @@ uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstim
 uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
-	px4_led_control_pb pbMsg;
+	px4br_led_control_pb pbMsg;
 
     pbMsg.led_mask = inObject->LedMask;
     pbMsg.color = inObject->Color;
@@ -4573,7 +4971,7 @@ uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuff
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
 
 	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4_led_control_pb_fields, &pbMsg);
+	status = pb_encode(&stream, px4br_led_control_pb_fields, &pbMsg);
 	/* Check for errors... */
 	if (!status)
 	{
@@ -4586,13 +4984,13 @@ uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuff
 uint32 PX4BR_LedControl_Dec(const char *inBuffer, uint32 inSize, PX4_LedControlMsg_t *inOutObject)
 {
 	bool status = false;
-	px4_led_control_pb pbMsg;
+	px4br_led_control_pb pbMsg;
 
 	/* Create a stream that reads from the buffer. */
 	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
 	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4_led_control_pb_fields, &pbMsg);
+	status = pb_decode(&stream, px4br_led_control_pb_fields, &pbMsg);
 
 	/* Check for errors... */
 	if (!status)

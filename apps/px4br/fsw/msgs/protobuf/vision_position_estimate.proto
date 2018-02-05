@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_vision_position_estimate_pb 
+message px4br_vision_position_estimate_pb 
 {
 
 	required uint64 timestamp = 1;

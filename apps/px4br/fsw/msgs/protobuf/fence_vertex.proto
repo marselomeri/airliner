@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_fence_vertex_pb 
+message px4br_fence_vertex_pb 
 {
 	required uint64 timestamp = 1;
 	required float lat = 2;

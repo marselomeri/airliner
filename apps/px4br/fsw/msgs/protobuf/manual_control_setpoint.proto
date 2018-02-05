@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_manual_control_setpoint_pb 
+message px4br_manual_control_setpoint_pb 
 {
 	enum SWITCH_POS 
 	{

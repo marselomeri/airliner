@@ -1398,13 +1398,13 @@
 			                    "field_path": "Previous.PitchMin"
 			                },
 			                "Prev_AX": {
-			                    "field_path": "Previous.A_X"
+			                    "field_path": "Previous.AX"
 			                },
 			                "Prev_AY": {
-			                    "field_path": "Previous.A_Y"
+			                    "field_path": "Previous.AY"
 			                },
 			                "Prev_AZ": {
-			                    "field_path": "Previous.A_Z"
+			                    "field_path": "Previous.AZ"
 			                },
 			                "Prev_AcceptanceRadius": {
 			                    "field_path": "Previous.AcceptanceRadius"
@@ -1485,13 +1485,13 @@
 			                    "field_path": "Current.PitchMin"
 			                },
 			                "Cur_AX": {
-			                    "field_path": "Current.A_X"
+			                    "field_path": "Current.AX"
 			                },
 			                "Cur_AY": {
-			                    "field_path": "Current.A_Y"
+			                    "field_path": "Current.AY"
 			                },
 			                "Cur_AZ": {
-			                    "field_path": "Current.A_Z"
+			                    "field_path": "Current.AZ"
 			                },
 			                "Cur_AcceptanceRadius": {
 			                    "field_path": "Current.AcceptanceRadius"
@@ -1572,13 +1572,13 @@
 			                    "field_path": "Next.PitchMin"
 			                },
 			                "Next_AX": {
-			                    "field_path": "Next.A_X"
+			                    "field_path": "Next.AX"
 			                },
 			                "Next_AY": {
-			                    "field_path": "Next.A_Y"
+			                    "field_path": "Next.AY"
 			                },
 			                "Next_AZ": {
-			                    "field_path": "Next.A_Z"
+			                    "field_path": "Next.AZ"
 			                },
 			                "Next_AcceptanceRadius": {
 			                    "field_path": "Next.AcceptanceRadius"
@@ -1746,22 +1746,22 @@
 							            "airliner_type": "float",
 							            "array_length": 0
 						            },
-						            "A_X": {
-							            "airliner_name": "A_X", 
+						            "AX": {
+							            "airliner_name": "AX", 
 							            "pb_type": "float",
 							            "pb_field_rule": "required",
 							            "airliner_type": "float",
 							            "array_length": 0
 						            },
-						            "A_Y": {
-							            "airliner_name": "A_Y", 
+						            "AY": {
+							            "airliner_name": "AY", 
 							            "pb_type": "float",
 							            "pb_field_rule": "required",
 							            "airliner_type": "float",
 							            "array_length": 0
 						            },
-						            "A_Z": {
-							            "airliner_name": "A_Z", 
+						            "AZ": {
+							            "airliner_name": "AZ", 
 							            "pb_type": "float",
 							            "pb_field_rule": "required",
 							            "airliner_type": "float",

@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_debug_key_value_pb 
+message px4br_debug_key_value_pb 
 {
 	required uint64 timestamp = 1;
 	required uint32 timestamp_ms = 2;

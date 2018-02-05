@@ -144,8 +144,6 @@ add_airliner_app_def(px4br
         ${PX4BR_PROTOBUF_MSGS_DIR}/output_pwm.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/parameter_update.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/parameter_update.pb.h
-        ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint.pb.c
-        ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint_triplet.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint_triplet.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/pwm_input.pb.c

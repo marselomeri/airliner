@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_vehicle_command_pb
+message px4br_vehicle_command_pb
 {
 	enum VEHICLE_CMD
 	{

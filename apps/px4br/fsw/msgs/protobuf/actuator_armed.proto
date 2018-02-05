@@ -1,15 +1,15 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_actuator_armed_pb 
+message px4br_actuator_armed_pb 
 {
 	required uint64 timestamp 		= 1;
 	required bool   armed 			= 2;
 	required bool   prearmed 		= 3;
-	required bool   ready_to_arm 	= 4;
+	required bool   ready_to_arm 	        = 4;
 	required bool   lockdown 		= 5;
-	required bool   manual_lockdown	= 6;
-	required bool   force_failsafe 	= 7;
+	required bool   manual_lockdown 	= 6;
+	required bool   force_failsafe 		= 7;
 	required bool   in_esc_calibration_mode	= 8;
 }
 

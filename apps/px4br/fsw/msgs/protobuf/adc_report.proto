@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_adc_report_pb 
+message px4br_adc_report_pb 
 {
 	required uint64 timestamp = 1;
 	repeated float channel_value = 2 [packed=true, (nanopb).max_count = 8];

@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_follow_target_pb 
+message px4br_follow_target_pb 
 {
 	required uint64 timestamp = 1;
 	required double lat = 2;

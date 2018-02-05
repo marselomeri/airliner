@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_actuator_controls_pb 
+message px4br_actuator_controls_pb 
 {
 	enum ACTUATOR_CONTROL_INDEX 
 	{

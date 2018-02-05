@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_cpuload_pb 
+message px4br_cpuload_pb 
 {
 	required uint64 timestamp = 1;
 	required float load = 2;

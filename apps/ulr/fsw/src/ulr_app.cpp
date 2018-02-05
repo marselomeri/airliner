@@ -659,7 +659,7 @@ void  ULR::ListenerTaskMain(void)
 						    DistanceSensor.Timestamp = PX4LIB_GetPX4TimeUs();
 							DistanceSensor.MinDistance = ULR_MIN_DISTANCE / 10.0f;
 							DistanceSensor.MaxDistance = ULR_MAX_DISTANCE / 10.0f;
-							DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) / 100.0f;
+							DistanceSensor.CurrentDistance = ((UartMessage.AltitudeH << 8) + UartMessage.AltitudeL) * 0.045f;
 							DistanceSensor.Covariance = ULR_SENS_VARIANCE;
 							DistanceSensor.Type = PX4_DISTANCE_SENSOR_RADAR;
 							DistanceSensor.ID = 0;

@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_qshell_req_pb 
+message px4br_qshell_req_pb 
 {
 	enum QSHELL_REQ
 	{

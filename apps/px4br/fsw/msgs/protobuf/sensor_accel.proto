@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_sensor_accel_pb
+message px4br_sensor_accel_pb
 {
 	required uint64 timestamp = 1;
 	required uint64 integral_dt = 2;

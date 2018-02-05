@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_mavlink_log_pb
+message px4br_mavlink_log_pb
 {
 	required uint64 timestamp = 1;
 	required string text = 2 [(nanopb).max_size = 50];

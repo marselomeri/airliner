@@ -144,7 +144,7 @@ function(NANOPB_GENERATE_CPP SRCS HDRS OUTPUT_DIR DEPENDENT_TARGET)
   # as the binary build directory is discarded across builds.
   #
   add_custom_command(
-      OUTPUT ${NANOPB_GENERATOR_EXECUTABLE} ${GENERATOR_CORE_SRC}
+      OUTPUT ${GENERATOR_PATH}/${NANOPB_GENERATOR_EXECUTABLE} 
       COMMAND ${CMAKE_COMMAND} -E copy_directory
       ARGS ${NANOPB_GENERATOR_SOURCE_DIR} ${GENERATOR_PATH}
       VERBATIM)
