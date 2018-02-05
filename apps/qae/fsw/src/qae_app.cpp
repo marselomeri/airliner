@@ -698,8 +698,46 @@ void QAE::EstimateAttitude(void)
     SendVehicleAttitudeMsg();
     
     /* Populate control state message */
-    ControlStateMsg.Timestamp = CVT.SensorCombinedMsg.Timestamp;
+    ControlStateMsg.Timestamp       = CVT.SensorCombinedMsg.Timestamp;
+    /* attitude quaternions for control state */
+    ControlStateMsg.Q[0]            = m_Quaternion[0];
+    ControlStateMsg.Q[1]            = m_Quaternion[1];
+    ControlStateMsg.Q[2]            = m_Quaternion[2];
+    ControlStateMsg.Q[3]            = m_Quaternion[3];
+
+    ControlStateMsg.AccX            = m_Accel[0];
+    ControlStateMsg.AccY            = m_Accel[1];
+    ControlStateMsg.AccZ            = m_Accel[2];
+    /* attitude rates for control state */
+    ControlStateMsg.RollRate        = m_Rates[0];
+    ControlStateMsg.PitchRate       = m_Rates[1];
+    ControlStateMsg.YawRate         = m_Rates[2];
+    /* TODO get bias estimates from estimator */
+    ControlStateMsg.RollRateBias    = 0.0f;
+    ControlStateMsg.PitchRateBias   = 0.0f;
+    ControlStateMsg.YawRateBias     = 0.0f;
     
+    ControlStateMsg.AirspeedValid = FALSE;
+    /* TODO params reference for this is incorrect */
+    if(m_Params.airspeed_mode == PX4_AIRSPEED_MODE_EST)
+    {
+        if (PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp < 1e6) 
+        {
+            /* use estimated body velocity as airspeed estimate */
+            ControlStateMsg.Airspeed = sqrtf(
+                    CVT.VehicleGlobalPositionMsg.VelN * CVT.VehicleGlobalPositionMsg.VelN + 
+                    CVT.VehicleGlobalPositionMsg.VelE * CVT.VehicleGlobalPositionMsg.VelE + 
+                    CVT.VehicleGlobalPositionMsg.VelD * CVT.VehicleGlobalPositionMsg.VelD
+            );
+            ControlStateMsg.AirspeedValid = TRUE;
+        }
+    }
+    //else if (m_Params.airspeed_mode == PX4_AIRSPEED_MODE_DISABLED)
+    //{
+        // do nothing, airspeed has been declared as non-valid above, controllers
+        // will handle this assuming always trim airspeed
+    //}
+    SendControlStateMsg();
 }
 
 

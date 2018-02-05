@@ -130,6 +130,8 @@ typedef struct
     float acc_weight;
     /** \brief gyro bias limit */
     float gyro_bias_max;
+    /** \brief airspeed mode */
+    int32 airspeed_mode;
 } QAE_Params_t;
 
 
