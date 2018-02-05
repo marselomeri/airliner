@@ -86,6 +86,18 @@ typedef enum
 
 
 /**
+ * \brief estimator status
+ */
+typedef enum
+{
+    /*! Estimator status uninitialized */
+    QAE_EST_UNINITIALIZED      = 0,
+    /*! Estimator status uninitialized */
+    QAE_EST_INITIALIZED        = 1
+} QAE_Estimator_Status_t;
+
+
+/**
  * \brief message current value table
  */
 typedef struct
@@ -108,7 +120,16 @@ typedef struct
     boolean mag_declination_auto;
     /** \brief acceleration compensation based on GPS velocity */
     boolean acc_compensation;
-    
+    /** \brief external heading mode (not implemented) */
+    int external_heading_mode;
+    /** \brief complimentary filter magnetometer weight */
+    float mag_weight;
+    /** \brief complimentary filter gyroscope bias weight */
+    float gyro_weight;
+    /** \brief complimentary filter accelerometer weight */
+    float acc_weight;
+    /** \brief gyro bias limit */
+    float gyro_bias_max;
 } QAE_Params_t;
 
 
@@ -152,17 +173,21 @@ public:
     /** \brief The current quaternion */
     math::Quaternion m_Quaternion;
     /** \brief The current gyro values */
-    math::Vector3F m_gyro;
+    math::Vector3F m_Gyro;
     /** \brief The current accel values */
-    math::Vector3F m_accel;
+    math::Vector3F m_Accel;
     /** \brief The current mag values */
-    math::Vector3F m_mag;
+    math::Vector3F m_Mag;
     /** \brief The last velocity value */
     math::Vector3F m_LastVelocity;
     /** The last velocity timestamp */
     uint64         m_LastVelocityTime;
     /** \brief The current pos acc value */
     math::Vector3F m_PositionAcc;
+    /** \brief The current gyro bias */
+    math::Vector3F m_GyroBias;
+    /** \brief The current rates */
+    math::Vector3F m_Rates;
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point
      **

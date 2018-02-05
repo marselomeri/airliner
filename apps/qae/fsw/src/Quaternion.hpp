@@ -11,11 +11,17 @@ namespace math
 
 class Quaternion : public Vector4F
 {
+
 public:
+
 	Quaternion(float a, float b, float c, float d);
 	Quaternion(const Matrix3F3 &mat);
     Quaternion();
 	~Quaternion();
+    
+    using Vector4F::operator *;
+    using Vector4F::operator =;
+
 	Matrix3F3 RotationMatrix(void) const;
     Vector3F Imaginary(void);
     const Quaternion operator*(const Quaternion &q) const;

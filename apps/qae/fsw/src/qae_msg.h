@@ -152,6 +152,8 @@ typedef struct
     uint8              usCmdErrCnt; 
     /** \brief App State */
     uint8              State;
+    /** \brief Estimator State */
+    uint8              EstimatorState;
 
 } QAE_HkTlm_t;
 

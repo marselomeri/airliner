@@ -16,6 +16,8 @@
 
 #include "lib/mathlib/math/Limits.hpp"
 
+#include "Geo.hpp"
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -177,14 +179,21 @@ void QAE::InitData()
       /* Set params default values */
       m_Params.mag_declination_auto = TRUE;
       m_Params.acc_compensation = TRUE;
+      m_Params.mag_weight = 0.1f;
+      m_Params.gyro_weight = 0.1f;
+      m_Params.acc_weight = 0.2f;
+      /* TODO check if default value isn't actually 0 */
+      m_Params.gyro_bias_max = 0.05f;
       /* Init members */
       m_Quaternion.Zero();
-      m_gyro.Zero();
-      m_accel.Zero();
-      m_mag.Zero();
+      m_Gyro.Zero();
+      m_Accel.Zero();
+      m_Mag.Zero();
       m_LastVelocity.Zero();
       m_LastVelocityTime = 0;
       m_PositionAcc.Zero();
+      m_GyroBias.Zero();
+      m_Rates.Zero();
 }
 
 
@@ -544,7 +553,8 @@ void QAE::AppMain()
 void QAE::UpdateMagDeclination(const float new_declination)
 {
     /* Apply initial declination or trivial rotations without changing estimation */
-    if (HkTlm.State == QAE_UNINITIALIZED || fabsf(new_declination - m_Params.mag_declination) < 0.0001f) 
+    if (HkTlm.EstimatorState == QAE_EST_UNINITIALIZED || 
+        fabsf(new_declination - m_Params.mag_declination) < 0.0001f) 
     {
         m_Params.mag_declination = new_declination;
     }
@@ -573,19 +583,19 @@ void QAE::EstimateAttitude(void)
         if(CVT.SensorCombinedMsg.Timestamp > 0)
         {
             /* No lowpass filter here, filtering is in the driver */
-            m_gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
-            m_gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
-            m_gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
+            m_Gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
+            m_Gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
+            m_Gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
         }
         
         if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
         {
             /* No lowpass filter here, filtering is in the driver */
-            m_accel[0] = CVT.SensorCombinedMsg.Acc[0];
-            m_accel[1] = CVT.SensorCombinedMsg.Acc[1];
-            m_accel[2] = CVT.SensorCombinedMsg.Acc[2];
+            m_Accel[0] = CVT.SensorCombinedMsg.Acc[0];
+            m_Accel[1] = CVT.SensorCombinedMsg.Acc[1];
+            m_Accel[2] = CVT.SensorCombinedMsg.Acc[2];
             
-            length_check = m_accel.Length();
+            length_check = m_Accel.Length();
             if(length_check < 0.01f)
             {
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_ACC_ERR_EID, CFE_EVS_ERROR,
@@ -597,11 +607,11 @@ void QAE::EstimateAttitude(void)
         if(CVT.SensorCombinedMsg.MagRelTimeInvalid != FALSE)
         {
             /* No lowpass filter here, filtering is in the driver */
-            m_mag[0] = CVT.SensorCombinedMsg.Mag[0];
-            m_mag[1] = CVT.SensorCombinedMsg.Mag[1];
-            m_mag[2] = CVT.SensorCombinedMsg.Mag[2];
+            m_Mag[0] = CVT.SensorCombinedMsg.Mag[0];
+            m_Mag[1] = CVT.SensorCombinedMsg.Mag[1];
+            m_Mag[2] = CVT.SensorCombinedMsg.Mag[2];
 
-            length_check = m_mag.Length();
+            length_check = m_Mag.Length();
             if(length_check < 0.01f)
             {
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_MAG_ERR_EID, CFE_EVS_ERROR,
@@ -668,7 +678,28 @@ void QAE::EstimateAttitude(void)
     {
         delta_time = QAE_DELTA_TIME_MAX;
     }
-
+    
+    if(!UpdateEstimateAttitude(delta_time))
+    {
+        /* TODO raise event here */
+    }
+    
+    math::Vector3F euler = m_Quaternion.ToEuler();
+    /* Populate vehicle attitude message */
+    VehicleAttitudeMsg.Timestamp    = CVT.SensorCombinedMsg.Timestamp;
+    VehicleAttitudeMsg.RollSpeed    = m_Rates[0];
+    VehicleAttitudeMsg.PitchSpeed   = m_Rates[1];
+    VehicleAttitudeMsg.YawSpeed     = m_Rates[2];
+    VehicleAttitudeMsg.Q[0]         = m_Quaternion[0];
+    VehicleAttitudeMsg.Q[1]         = m_Quaternion[1];
+    VehicleAttitudeMsg.Q[2]         = m_Quaternion[2];
+    VehicleAttitudeMsg.Q[3]         = m_Quaternion[3];
+    /* Send vehicle attitude message */
+    SendVehicleAttitudeMsg();
+    
+    /* Populate control state message */
+    ControlStateMsg.Timestamp = CVT.SensorCombinedMsg.Timestamp;
+    
 }
 
 
@@ -683,13 +714,13 @@ boolean QAE::InitEstimateAttitude(void)
      * and mag field vectors. 'k' is Earth Z axis (Down) unit vector
      * in body frame 
      */
-    k = -m_accel;
+    k = -m_Accel;
     k.Normalize();
     
     /* 'i' is Earth X axis (North) unit vector in body frame, 
      * orthogonal with 'k' 
      */
-    i = (m_mag - k * (m_mag * k));
+    i = (m_Mag - k * (m_Mag * k));
     i.Normalize();
     
     /* 'j' is Earth Y axis (East) unit vector in body frame, orthogonal
@@ -712,12 +743,12 @@ boolean QAE::InitEstimateAttitude(void)
        isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) &&
        m_Quaternion.Length() > 0.95f && m_Quaternion.Length() < 1.05f)
     {
-        HkTlm.State = QAE_INITIALIZED;
+        HkTlm.EstimatorState = QAE_EST_INITIALIZED;
         return_bool = TRUE;
     }
     else
     {
-        HkTlm.State = QAE_UNINITIALIZED;
+        HkTlm.EstimatorState = QAE_EST_UNINITIALIZED;
     }
 
     return return_bool;
@@ -726,7 +757,19 @@ boolean QAE::InitEstimateAttitude(void)
 
 boolean QAE::UpdateEstimateAttitude(float dt)
 {
-    if (HkTlm.State != QAE_INITIALIZED)
+    math::Quaternion q_last(0.0f, 0.0f, 0.0f, 0.0f);
+    /* Angular rate of correction */
+    math::Vector3F corr(0.0f, 0.0f, 0.0f);
+    math::Vector3F mag_earth(0.0f, 0.0f, 0.0f);
+
+    float spinRate = 0.0f;
+    float magErr   = 0.0f;
+    float gainMult = 1.0f;
+    const float fiftyDPS = 0.873f;
+    uint8 i = 0;
+
+
+    if (HkTlm.EstimatorState != QAE_EST_INITIALIZED)
     {
         if(HkTlm.State != QAE_SENSOR_DATA_RCVD)
         {
@@ -735,8 +778,78 @@ boolean QAE::UpdateEstimateAttitude(float dt)
         return InitEstimateAttitude();
     }
     
+    q_last = m_Quaternion;
+    spinRate = m_Gyro.Length();
+    
+    /* Magnetometer correction project mag field vector to global frame 
+     * and extract XY component */
+    mag_earth = m_Quaternion.Conjugate(m_Mag);
+    magErr = wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_Params.mag_declination);
+    
+    if(spinRate > fiftyDPS)
+    {
+        gainMult = math::min(spinRate / fiftyDPS, 10.0f);
+    }
+    /* Project magnetometer correction to body frame */
+    math::Vector3F magErrV3F(0.0f, 0.0f, -magErr);
+    corr = corr + m_Quaternion.ConjugateInversed(magErrV3F) * m_Params.mag_weight * gainMult;
+    
+    m_Quaternion.Normalize();
+    
+    /* Accelerometer correction
+     * Project 'k' unit vector of earth frame to body frame
+     * Vector<3> k = _q.conjugate_inversed(Vector<3>(0.0f, 0.0f, 1.0f));
+     * Optimized version with dropped zeros
+     */
+    math::Vector3F k(
+            2.0f * (m_Quaternion[1] * m_Quaternion[3] - m_Quaternion[0] * m_Quaternion[2]),
+            2.0f * (m_Quaternion[2] * m_Quaternion[3] + m_Quaternion[0] * m_Quaternion[1]),
+            (m_Quaternion[0] * m_Quaternion[0] - m_Quaternion[1] * 
+             m_Quaternion[1] - m_Quaternion[2] * m_Quaternion[2] + 
+             m_Quaternion[3] * m_Quaternion[3])
+    );
+    
+    math::Vector3F diff(0.0f, 0.0f, 0.0f);
+    diff = m_Accel - m_PositionAcc;
+    diff.Normalized();
+    corr = corr + (k % diff) * m_Params.acc_weight;
+    
+    /* Gyro bias estimation */
+    if(spinRate < 0.175f)
+    {
+        m_GyroBias = m_GyroBias + corr * (m_Params.gyro_weight * dt);
+        for(i = 0; i < 3; i++)
+        {
+            m_GyroBias[i] = math::constrain(m_GyroBias[i], -m_Params.gyro_bias_max, m_Params.gyro_bias_max);
+        }
+    }
+    
+    m_Rates = m_Gyro + m_GyroBias;
+    
+    /* Feed forward gyro */
+    corr = corr + m_Rates;
+    
+    /* Apply correction to state */
+    m_Quaternion = m_Quaternion + (m_Quaternion.Derivative(corr) * dt);
+    
+    /* Normalize quaternion */
+    m_Quaternion.Normalize();
+    
+    if (!(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
+        isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3])))
+    {
+        /* Reset quaternion to last good state */
+        m_Quaternion = q_last;
+        m_Rates.Zero();
+        m_GyroBias.Zero();
+        return FALSE;
+    }
+    
     return TRUE;
 }
+
+
+
 
 /************************/
 /*  End of File Comment */

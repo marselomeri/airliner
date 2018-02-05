@@ -23,6 +23,8 @@ add_airliner_app_def(qae
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.hpp
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -66,6 +68,8 @@ add_airliner_app_unit_test(qae-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.hpp
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
