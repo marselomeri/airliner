@@ -320,116 +320,74 @@ int32 LD::RcvSchPipeMsg(int32 iBlocking)
         {
             case LD_WAKEUP_MID:
             {
-                /* TODO:  on wake up! */
-            	//uint64 now = PX4LIB_GetPX4TimeUs();
-            	if (publish_counter==0){
-					//VehicleLandDetectedMsg.AltitudeMax = ld_params.lndmc_alt_max;
-					VehicleLandDetectedMsg.Freefall=false;
-					VehicleLandDetectedMsg.Landed=false;
-					VehicleLandDetectedMsg.GroundContact=false;
-//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
-//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
-//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
-					publish_counter += 1;
-            	}
-
-            	//SendVehicleLandDetectedMsg();
-
-            	uint64 now = PX4LIB_GetPX4TimeUs();
-
-            	UpdateState();
-
-            	float prev_altitude_max = altitude_max;
-            	altitude_max = MaxAltitude();
-
-				boolean ffd = (state == LandDetectionState::FREEFALL);
-				boolean ld = (state == LandDetectionState::LANDED);
-				boolean gcd = (state == LandDetectionState::GROUND_CONTACT);
-
-				if((VehicleLandDetectedMsg.Freefall!=ffd)||
-						(VehicleLandDetectedMsg.Landed!=ld)||
-						(VehicleLandDetectedMsg.GroundContact!=gcd)||
-						(fabsf(VehicleLandDetectedMsg.AltMax - prev_altitude_max)>FLT_EPSILON)){
-//					if((!gcd && !ld) && ffd){
-//						ffd=false;
-//					}
-					if(!ld && VehicleLandDetectedMsg.Landed){
-						takeoff_time = now;
-					}else if(takeoff_time != 0 && ld && !VehicleLandDetectedMsg.Landed){
-						total_flight_time += now - takeoff_time;
-						takeoff_time = 0;
-
-						uint32 flight_time = (total_flight_time >> 32) & 0xffffffff;
-						ld_params.lnd_flight_t_hi = flight_time;
-						flight_time = total_flight_time & 0xffffffff;
-						ld_params.lnd_flight_t_lo = flight_time;
-
-
-					}
-					VehicleLandDetectedMsg.Timestamp = PX4LIB_GetPX4TimeUs();
-					VehicleLandDetectedMsg.AltMax = altitude_max;
-					VehicleLandDetectedMsg.Freefall=(state == LandDetectionState::FREEFALL);
-					VehicleLandDetectedMsg.Landed=(state == LandDetectionState::LANDED);
-					VehicleLandDetectedMsg.GroundContact=(state == LandDetectionState::GROUND_CONTACT);
-
-//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
-//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
-//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
-//					OS_printf("STATE : %d \n",state);
-					HkTlm.state = state;
-					SendVehicleLandDetectedMsg();
-
-            	}
-
-
-
-            }
+                Execute();
                 break;
+            }
 
-            case LD_SEND_HK_MID:{
+            case LD_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
-                ReportHousekeeping();}
+                ReportHousekeeping();
                 break;
-            case PX4_ACTUATOR_ARMED_MID:{
+            }
+            case PX4_ACTUATOR_ARMED_MID:
+            {
                 memcpy(&CVT.ActuatorArmedMsg, MsgPtr, sizeof(CVT.ActuatorArmedMsg));
-            }
                 break;
-            case PX4_AIRSPEED_MID:{
+            }
+
+            case PX4_AIRSPEED_MID:
+            {
                 memcpy(&CVT.AirspeedMsg, MsgPtr, sizeof(CVT.AirspeedMsg));
-        }
                 break;
-            case PX4_ACTUATOR_CONTROLS_0_MID:{
+            }
+            case PX4_ACTUATOR_CONTROLS_0_MID:
+            {
                 memcpy(&CVT.ActuatorControls0Msg, MsgPtr, sizeof(CVT.ActuatorControls0Msg));
+                break;
             }
-            	break;
-            case PX4_CONTROL_STATE_MID:{
+
+            case PX4_CONTROL_STATE_MID:
+            {
                 memcpy(&CVT.ControlStateMsg, MsgPtr, sizeof(CVT.ControlStateMsg));
+                break;
             }
-            	break;
-            case PX4_BATTERY_STATUS_MID:{
+
+            case PX4_BATTERY_STATUS_MID:
+            {
                 memcpy(&CVT.BatteryStatusMsg, MsgPtr, sizeof(CVT.BatteryStatusMsg));
+                break;
             }
-            	break;
-            case PX4_VEHICLE_ATTITUDE_MID:{
+
+            case PX4_VEHICLE_ATTITUDE_MID:
+            {
                 memcpy(&CVT.VehicleAttitudeMsg, MsgPtr, sizeof(CVT.VehicleAttitudeMsg));
+                break;
             }
-            	break;
-            case PX4_MANUAL_CONTROL_SETPOINT_MID:{
+
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+            {
                 memcpy(&CVT.ManualControlSetpointMsg, MsgPtr, sizeof(CVT.ManualControlSetpointMsg));
+                break;
             }
-            	break;
-            case PX4_VEHICLE_LOCAL_POSITION_MID:{
+
+            case PX4_VEHICLE_LOCAL_POSITION_MID:
+            {
                 memcpy(&CVT.VehicleLocalPositionMsg, MsgPtr, sizeof(CVT.VehicleLocalPositionMsg));
+                break;
             }
-            	break;
-            case PX4_VEHICLE_CONTROL_MODE_MID:{
+
+            case PX4_VEHICLE_CONTROL_MODE_MID:
+            {
                 memcpy(&CVT.VehicleControlModeMsg, MsgPtr, sizeof(CVT.VehicleControlModeMsg));
-            }
             	break;
+            }
 
             default:
+            {
                 (void) CFE_EVS_SendEvent(LD_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -716,6 +674,8 @@ boolean LD::DetectFreeFall()
 boolean LD::DetectGroundContactState(){
 	const uint64 now = PX4LIB_GetPX4TimeUs();
 	float armingThreshFactor = 1.0f;
+	boolean minimal_thrust;
+	boolean altitude_lock;
 
 	if (!CVT.ActuatorArmedMsg.Armed){
 		arming_time = 0;
@@ -735,7 +695,10 @@ boolean LD::DetectGroundContactState(){
 
 	boolean vertical_movement = fabsf(CVT.VehicleLocalPositionMsg.VZ)> (ld_params.lndmc_z_vel_max * armingThreshFactor);
 
-	if(manual_control_idling_or_automatic && MinimalThrust() && (!vertical_movement || !AltitudeLock())){
+	minimal_thrust = MinimalThrust();
+	altitude_lock = AltitudeLock();
+
+	if(manual_control_idling_or_automatic && minimal_thrust && (!vertical_movement || !altitude_lock)){
 		return true;
 	}
 	return false;
@@ -912,6 +875,75 @@ void LD::UpdateState(){
 	} else {
 		state = LandDetectionState::FLYING;
 	}
+}
+
+
+void LD::Execute()
+{
+    /* TODO:  on wake up! */
+	//uint64 now = PX4LIB_GetPX4TimeUs();
+	if (publish_counter==0){
+		//VehicleLandDetectedMsg.AltitudeMax = ld_params.lndmc_alt_max;
+		VehicleLandDetectedMsg.Freefall=false;
+		VehicleLandDetectedMsg.Landed=false;
+		VehicleLandDetectedMsg.GroundContact=false;
+//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
+//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
+//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
+		publish_counter += 1;
+	}
+
+	//SendVehicleLandDetectedMsg();
+
+	uint64 now = PX4LIB_GetPX4TimeUs();
+
+	UpdateState();
+
+	float prev_altitude_max = altitude_max;
+	altitude_max = MaxAltitude();
+
+	boolean ffd = (state == LandDetectionState::FREEFALL);
+	boolean ld = (state == LandDetectionState::LANDED);
+	boolean gcd = (state == LandDetectionState::GROUND_CONTACT);
+
+	if((VehicleLandDetectedMsg.Freefall!=ffd) ||
+			(VehicleLandDetectedMsg.Landed!=ld) ||
+			(VehicleLandDetectedMsg.GroundContact!=gcd) ||
+			(fabsf(VehicleLandDetectedMsg.AltMax - prev_altitude_max)>FLT_EPSILON))
+	{
+//					if((!gcd && !ld) && ffd){
+//						ffd=false;
+//					}
+		if(!ld && VehicleLandDetectedMsg.Landed)
+		{
+			takeoff_time = now;
+		}
+		else if(takeoff_time != 0 && ld && !VehicleLandDetectedMsg.Landed)
+		{
+			total_flight_time += now - takeoff_time;
+			takeoff_time = 0;
+
+			uint32 flight_time = (total_flight_time >> 32) & 0xffffffff;
+			ld_params.lnd_flight_t_hi = flight_time;
+			flight_time = total_flight_time & 0xffffffff;
+			ld_params.lnd_flight_t_lo = flight_time;
+		}
+
+		VehicleLandDetectedMsg.Timestamp = PX4LIB_GetPX4TimeUs();
+		VehicleLandDetectedMsg.AltMax = altitude_max;
+		VehicleLandDetectedMsg.Freefall=(state == LandDetectionState::FREEFALL);
+		VehicleLandDetectedMsg.Landed=(state == LandDetectionState::LANDED);
+		VehicleLandDetectedMsg.GroundContact=(state == LandDetectionState::GROUND_CONTACT);
+
+//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
+//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
+//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
+//					OS_printf("STATE : %d \n",state);
+		HkTlm.state = state;
+
+	}
+
+	SendVehicleLandDetectedMsg();
 }
 
 
