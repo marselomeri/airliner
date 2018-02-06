@@ -53,7 +53,25 @@
 ** Local Defines
 *************************************************************************/
 
+typedef struct {
+	float InMin;
+	float InMax;
+	float OutMin;
+	float OutMax;
+	uint32 OutChannel;
+} RCIN_Custom_JoystickChannelMapping_t;
+
 #define RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH  (80)
+
+RCIN_Custom_JoystickChannelMapping_t RCIN_Custom_JoystickChannelMapping[PX4_RC_INPUT_MAX_CHANNELS] = {
+	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 0},
+	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 1},
+	{-32767.0f, 32767.0f, 1500.0f, 2000.0f, 2},
+	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 4},
+	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 3},
+	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 5},
+};
+
 #define RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE      (-32767.0f)
 #define RCIN_CUSTOM_AXIS_INPUT_MAX_VALUE      (32767.0f)
 #define RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE     (1000.0f)
@@ -184,46 +202,28 @@ int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, int32 inValue, uint32 *outValue
 	}
 
 	/* Just map Axis to Value Index directly, for now. */
-	*outValueIndex = inAxis;
-	switch(inAxis)
-	{
-		//case 0:
-		//	*outValueIndex = 3;
-		//	break;
+	*outValueIndex = RCIN_Custom_JoystickChannelMapping[inAxis].OutChannel;
 
-		//case 1:
-		//	inValue = inValue * -1;
-		//	break;
-
-		case 3:
-			*outValueIndex = 4;
-			break;
-
-		case 4:
-			*outValueIndex = 3;
-                        //inValue = inValue * -1;
-			break;
-	}
 
 	/* Use the mapping equation:  Y = (X-A)/(B-A) * (D-C) + C */
-	fValue = (inValue - RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE) /
-			(RCIN_CUSTOM_AXIS_INPUT_MAX_VALUE - RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE) *
-			(RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE - RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE) +
-			RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE;
+	fValue = (inValue - RCIN_Custom_JoystickChannelMapping[inAxis].InMin) /
+			(RCIN_Custom_JoystickChannelMapping[inAxis].InMax- RCIN_Custom_JoystickChannelMapping[inAxis].InMin) *
+			(RCIN_Custom_JoystickChannelMapping[inAxis].OutMax - RCIN_Custom_JoystickChannelMapping[inAxis].OutMin) +
+			RCIN_Custom_JoystickChannelMapping[inAxis].OutMin;
 
 	*outValue = fValue;
 
 	/* Constrain the value to between the output minimum and maximum
 	 * values.
 	 */
-	if(*outValue < RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE)
+	if(*outValue < RCIN_Custom_JoystickChannelMapping[inAxis].OutMin)
 	{
-		*outValue = RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE;
+		*outValue = RCIN_Custom_JoystickChannelMapping[inAxis].OutMin;
 	}
 
-	if(*outValue > RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE)
+	if(*outValue > RCIN_Custom_JoystickChannelMapping[inAxis].OutMax)
 	{
-		*outValue = RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE;
+		*outValue = RCIN_Custom_JoystickChannelMapping[inAxis].OutMax;
 	}
 
 	rc = 0;

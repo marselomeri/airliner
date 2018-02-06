@@ -84,7 +84,7 @@ typedef struct
 //karth
 typedef struct
 {
-	float lndmc_z_vel_max = 0.05f;					/**< max climb rate (m/s) */
+	float lndmc_z_vel_max = 0.5f;					/**< max climb rate (m/s) */
 	float lndmc_xy_vel_max = 1.50f;					/**<  max horizontal velocity (m/s) */
 	float lndmc_rot_max = 20.0f;					/**<  max rotation (degrees/s) */
 	float lndmc_ffall_thr = 2.0f; 					/**<  mc specific force threshold (m/s^2) */
@@ -93,7 +93,7 @@ typedef struct
 	float lndmc_man_dwnthr = 0.15f;					/**<  flight stick down threshold for landing */
 	float lndmc_pos_upthr = 0.65f; 					/**<  flight stick up threshold for take off */
 	uint32 lnd_flight_t_hi = 0; 					/**<  total flight time in ms, higher 32 bits of the value */
-	uint32 lnd_flight_t_lo = 0; 					/**<  total flight time in ms, lower 32 bits of the value */
+	uint32 lnd_flight_t_lo = 60299599; 				/**<  total flight time in ms, lower 32 bits of the value */
 	float lndmc_alt_max = 10000.0f;					/**<  maximum altitude for multicopters (m) */
 
 	float minThrottle = 0.12f;
@@ -590,6 +590,7 @@ private:
             *************************************************************************/
     void UpdateState(void);
 
+    void Execute(void);
 
 
 public:
