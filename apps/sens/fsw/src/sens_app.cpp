@@ -1100,7 +1100,7 @@ void SENS::CombineSensorInput(void)
 		else
 		{
 			/* No new measurement was received.  Update the fields accordingly.  */
-			CVT.SensorAccelMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			//CVT.SensorAccelMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
 			SensorCombinedMsg.AccRelTimeInvalid = true;
 		}
 
@@ -1126,7 +1126,7 @@ void SENS::CombineSensorInput(void)
 		else
 		{
 			/* No new measurement was received.  Update the fields accordingly.  */
-			CVT.SensorMagMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			//CVT.SensorMagMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
 			SensorCombinedMsg.MagRelTimeInvalid = true;
 		}
 
@@ -1151,7 +1151,7 @@ void SENS::CombineSensorInput(void)
 		else
 		{
 			/* No new measurement was received.  Update the fields accordingly.  */
-			CVT.SensorBaroMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			//CVT.SensorBaroMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
 			SensorCombinedMsg.BaroRelTimeInvalid = true;
 		}
 
