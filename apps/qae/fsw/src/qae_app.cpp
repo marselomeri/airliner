@@ -589,6 +589,8 @@ void QAE::EstimateAttitude(void)
             m_Gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
             m_Gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
             m_Gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
+            
+            OS_printf("m_Gyro %f, %f, %f\n", m_Gyro[0], m_Gyro[1], m_Gyro[2]);
         }
         
         if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
@@ -598,7 +600,10 @@ void QAE::EstimateAttitude(void)
             m_Accel[1] = CVT.SensorCombinedMsg.Acc[1];
             m_Accel[2] = CVT.SensorCombinedMsg.Acc[2];
             
+            OS_printf("m_Accel %f, %f, %f\n", m_Accel[0], m_Accel[1], m_Accel[2]);
+            
             length_check = m_Accel.Length();
+            OS_printf("accel length check\n", length_check);
             if(length_check < 0.01f)
             {
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_ACC_ERR_EID, CFE_EVS_ERROR,
@@ -614,8 +619,11 @@ void QAE::EstimateAttitude(void)
             m_Mag[0] = CVT.SensorCombinedMsg.Mag[0];
             m_Mag[1] = CVT.SensorCombinedMsg.Mag[1];
             m_Mag[2] = CVT.SensorCombinedMsg.Mag[2];
+            
+            OS_printf("m_Mag %f, %f, %f\n", m_Mag[0], m_Mag[1], m_Mag[2]);
 
             length_check = m_Mag.Length();
+            OS_printf("mag length check\n", length_check);
             if(length_check < 0.01f)
             {
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_MAG_ERR_EID, CFE_EVS_ERROR,
@@ -650,7 +658,7 @@ void QAE::EstimateAttitude(void)
            CVT.VehicleGlobalPositionMsg.Timestamp != 0 &&
            PX4LIB_GetPX4TimeUs() < CVT.VehicleGlobalPositionMsg.Timestamp + 20000 &&
            CVT.VehicleGlobalPositionMsg.EpH < 5.0f &&
-           HkTlm.State == QAE_INITIALIZED)
+           HkTlm.EstimatorState == QAE_EST_INITIALIZED)
         {
             /* position data is actual */
             math::Vector3F vel(CVT.VehicleGlobalPositionMsg.VelN,
