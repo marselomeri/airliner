@@ -190,6 +190,7 @@ public:
     math::Vector3F m_GyroBias;
     /** \brief The current rates */
     math::Vector3F m_Rates;
+
     /************************************************************************/
     /** \brief Q Attitude Estimator (QAE) application entry point
      **

@@ -579,6 +579,7 @@ void QAE::EstimateAttitude(void)
     uint64 time_now = 0;
     float delta_time = 0;
     uint64 time_last = 0;
+
     /* If there is a new sensor combined message */
     if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
     {
@@ -589,21 +590,17 @@ void QAE::EstimateAttitude(void)
             m_Gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
             m_Gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
             m_Gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
-            
-            OS_printf("m_Gyro %f, %f, %f\n", m_Gyro[0], m_Gyro[1], m_Gyro[2]);
         }
         
-        if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
+        //if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
+        if(CVT.SensorCombinedMsg.AccTimestampRelative != PX4_RELATIVE_TIMESTAMP_INVALID)
         {
             /* No lowpass filter here, filtering is in the driver */
             m_Accel[0] = CVT.SensorCombinedMsg.Acc[0];
             m_Accel[1] = CVT.SensorCombinedMsg.Acc[1];
             m_Accel[2] = CVT.SensorCombinedMsg.Acc[2];
             
-            OS_printf("m_Accel %f, %f, %f\n", m_Accel[0], m_Accel[1], m_Accel[2]);
-            
             length_check = m_Accel.Length();
-            OS_printf("accel length check\n", length_check);
             if(length_check < 0.01f)
             {
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_ACC_ERR_EID, CFE_EVS_ERROR,
@@ -613,17 +610,15 @@ void QAE::EstimateAttitude(void)
             }
         }
         
-        if(CVT.SensorCombinedMsg.MagRelTimeInvalid != FALSE)
+        //if(CVT.SensorCombinedMsg.MagRelTimeInvalid != FALSE)
+        if(CVT.SensorCombinedMsg.MagTimestampRelative != PX4_RELATIVE_TIMESTAMP_INVALID)
         {
             /* No lowpass filter here, filtering is in the driver */
             m_Mag[0] = CVT.SensorCombinedMsg.Mag[0];
             m_Mag[1] = CVT.SensorCombinedMsg.Mag[1];
             m_Mag[2] = CVT.SensorCombinedMsg.Mag[2];
-            
-            OS_printf("m_Mag %f, %f, %f\n", m_Mag[0], m_Mag[1], m_Mag[2]);
 
             length_check = m_Mag.Length();
-            OS_printf("mag length check\n", length_check);
             if(length_check < 0.01f)
             {
                 (void) CFE_EVS_SendEvent(QAE_DEGENERATE_MAG_ERR_EID, CFE_EVS_ERROR,
@@ -642,9 +637,11 @@ void QAE::EstimateAttitude(void)
         /* Update the application state */
         HkTlm.State = QAE_INITIALIZED;
     }
+
     /* If there is a new GPS message */
     if(CVT.VehicleGlobalPositionMsg.Timestamp > CVT.LastGlobalPositionTime)
     {
+        /* Calculate time difference between now and gpos timestamp */
         delta_time_gps = PX4LIB_GetPX4TimeUs() - CVT.VehicleGlobalPositionMsg.Timestamp;
         if(m_Params.mag_declination_auto == TRUE && 
            CVT.VehicleGlobalPositionMsg.EpH < 20.0f &&
