@@ -59,6 +59,7 @@
 #define HMC5883_RECEIVE_PERF_ID     88
 #define HMC5883_SEND_PERF_ID        89
 #define PARAMS_MAIN_TASK_PERF_ID    90
+#define PE_MAIN_TASK_PERF_ID        91
 
 #endif
 

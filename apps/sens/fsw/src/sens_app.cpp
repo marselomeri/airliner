@@ -1100,7 +1100,7 @@ void SENS::CombineSensorInput(void)
 		else
 		{
 			/* No new measurement was received.  Update the fields accordingly.  */
-			CVT.SensorAccelMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			//CVT.SensorAccelMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
 			SensorCombinedMsg.AccRelTimeInvalid = true;
 		}
 
@@ -1126,12 +1126,13 @@ void SENS::CombineSensorInput(void)
 		else
 		{
 			/* No new measurement was received.  Update the fields accordingly.  */
-			CVT.SensorMagMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			//CVT.SensorMagMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
 			SensorCombinedMsg.MagRelTimeInvalid = true;
 		}
 
 		/* Baro. */
 		/* See if we have a new baro measurement. */
+		//baro_timestamp = sensors.timestamp + sensors.baro_timestamp_relative;
 		if(CVT.SensorBaroMsg.Timestamp > CVT.LastBaroTime)
 		{
 			/* We do have a new measurement.  Update the fields accordingly.
@@ -1141,7 +1142,14 @@ void SENS::CombineSensorInput(void)
 			SensorCombinedMsg.BaroTemp = CVT.SensorBaroMsg.Temperature;
 
 			/* Now calculate and populate the time relative to the main timestamp. */
+			//if(SensorCombinedMsg.Timestamp > CVT.SensorBaroMsg.Timestamp)
+			//{
 			SensorCombinedMsg.BaroTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
+			//}
+			//else
+			//{
+				//SensorCombinedMsg.BaroTimestampRelative = CVT.SensorBaroMsg.Timestamp - SensorCombinedMsg.Timestamp;
+			//}
 
 			SensorCombinedMsg.BaroRelTimeInvalid = false;
 
@@ -1151,7 +1159,7 @@ void SENS::CombineSensorInput(void)
 		else
 		{
 			/* No new measurement was received.  Update the fields accordingly.  */
-			CVT.SensorBaroMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
+			//CVT.SensorBaroMsg.Timestamp  = PX4_RELATIVE_TIMESTAMP_INVALID;
 			SensorCombinedMsg.BaroRelTimeInvalid = true;
 		}
 
