@@ -22,21 +22,21 @@ public:
 	float& operator [] (uint32 i);
 	float operator [] (uint32 i) const;
 	float Length(void) const;
-    float LengthSquared(void) const;
 	void Zero(void);
-	const Vector3F operator+(const Vector3F &vecIn) const;
-	const Vector3F operator-(const Vector3F &vecIn) const;
-	const Vector3F operator%(const Vector3F &vecIn) const;
-	const Vector3F operator*(const float scalar) const;
-	const Vector3F operator/(const float scalar) const;
-	float operator*(const Vector3F &vecIn) const;
-	const Vector3F operator-() const;
-    const Vector3F & operator=(const Vector3F &v);
-	const Vector3F EMult(const Vector3F &vecIn) const;
-    const Vector3F EDivide(const Vector3F &v) const;
+	Vector3F operator+(const Vector3F &vecIn);
+	Vector3F operator+(const Vector3F &vecIn) const;
+	Vector3F operator-(const Vector3F &vecIn);
+	Vector3F operator-(const Vector3F &vecIn) const;
+	Vector3F operator%(const Vector3F &vecIn);
+	Vector3F operator*(const float scalar);
+	Vector3F operator/(const float scalar);
+	float operator*(const Vector3F &vecIn);
+	Vector3F operator-() const;
+	Vector3F EMult(const Vector3F &vecIn);
 	void Constrain(uint32 i, float min, float max);
-    Vector3F Normalized(void);
+	Vector3F Normalized(void);
 	void Normalize(void);
+	const Vector3F EDivide(const Vector3F &v) const;
 };
 
 }

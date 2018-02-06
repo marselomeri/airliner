@@ -48,12 +48,6 @@ float Vector3F::Length() const
 }
 
 
-float Vector3F::LengthSquared() const
-{
-    return (data[0]*data[0] + data[1]*data[1] + data[2]*data[2]);
-}
-
-
 void Vector3F::Zero()
 {
     data[0] = 0.0f;
@@ -63,7 +57,18 @@ void Vector3F::Zero()
 
 
 // overload + operator to provide a vector addition
-const Vector3F Vector3F::operator+(const Vector3F &vecIn) const
+Vector3F Vector3F::operator+(const Vector3F &vecIn)
+{
+    Vector3F vecOut;
+    vecOut[0] = data[0] + vecIn[0];
+    vecOut[1] = data[1] + vecIn[1];
+    vecOut[2] = data[2] + vecIn[2];
+    return vecOut;
+}
+
+
+// overload + operator to provide a vector addition
+Vector3F Vector3F::operator+(const Vector3F &vecIn) const
 {
     Vector3F vecOut;
     vecOut[0] = data[0] + vecIn[0];
@@ -74,7 +79,18 @@ const Vector3F Vector3F::operator+(const Vector3F &vecIn) const
 
 
 // overload - operator to provide a vector subtraction
-const Vector3F Vector3F::operator-(const Vector3F &vecIn) const
+Vector3F Vector3F::operator-(const Vector3F &vecIn)
+{
+    Vector3F vecOut;
+    vecOut[0] = data[0] - vecIn[0];
+    vecOut[1] = data[1] - vecIn[1];
+    vecOut[2] = data[2] - vecIn[2];
+    return vecOut;
+}
+
+
+// overload - operator to provide a vector subtraction
+Vector3F Vector3F::operator-(const Vector3F &vecIn) const
 {
     Vector3F vecOut;
     vecOut[0] = data[0] - vecIn[0];
@@ -85,7 +101,7 @@ const Vector3F Vector3F::operator-(const Vector3F &vecIn) const
 
 
 // overload % operator to provide a vector cross product
-const Vector3F Vector3F::operator%(const Vector3F &vecIn) const
+Vector3F Vector3F::operator%(const Vector3F &vecIn)
 {
     Vector3F vecOut;
     vecOut[0] = data[1]*vecIn[2] - data[2]*vecIn[1];
@@ -96,7 +112,7 @@ const Vector3F Vector3F::operator%(const Vector3F &vecIn) const
 
 
 // overload * operator to provide a vector scalar product
-const Vector3F Vector3F::operator*(const float scalar) const
+Vector3F Vector3F::operator*(const float scalar)
 {
     Vector3F vecOut;
     vecOut[0] = data[0] * scalar;
@@ -107,7 +123,7 @@ const Vector3F Vector3F::operator*(const float scalar) const
 
 
 // overload / operator to provide a vector scalar division
-const Vector3F Vector3F::operator/(const float scalar) const
+Vector3F Vector3F::operator/(const float scalar)
 {
     Vector3F vecOut;
     vecOut[0] = data[0] / scalar;
@@ -118,7 +134,7 @@ const Vector3F Vector3F::operator/(const float scalar) const
 
 
 // overload dot product operator to provide a vector scalar product
-float Vector3F::operator*(const Vector3F &vecIn) const
+float Vector3F::operator*(const Vector3F &vecIn)
 {
 	float res = 0.0f;
 
@@ -130,7 +146,7 @@ float Vector3F::operator*(const Vector3F &vecIn) const
 }
 
 
-const Vector3F Vector3F::operator-() const
+Vector3F Vector3F::operator-() const
 {
 	Vector3F res;
 
@@ -142,18 +158,7 @@ const Vector3F Vector3F::operator-() const
 }
 
 
-const Vector3F& Vector3F::operator =(const Vector3F &v)
-{
-
-    data[0] = v[0];
-    data[1] = v[1];
-    data[2] = v[2];
-
-    return *this;
-}
-
-
-const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
+Vector3F Vector3F::EMult(const Vector3F &vecIn)
 {
 	Vector3F res;
 
@@ -163,6 +168,7 @@ const Vector3F Vector3F::EMult(const Vector3F &vecIn) const
 
 	return res;
 }
+
 
 
 const Vector3F Vector3F::EDivide(const Vector3F &vecIn) const
@@ -177,6 +183,7 @@ const Vector3F Vector3F::EDivide(const Vector3F &vecIn) const
 }
 
 
+
 void Vector3F::Constrain(uint32 i, float min, float max)
 {
 	if(data[i] < min)
@@ -188,6 +195,7 @@ void Vector3F::Constrain(uint32 i, float min, float max)
 		data[i] = max;
 	}
 }
+
 
 
 Vector3F Vector3F::Normalized(void)
