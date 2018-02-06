@@ -10,7 +10,8 @@ Vector3F::Vector3F(float X, float Y, float Z) :
 };
 
 
-Vector3F::Vector3F()
+Vector3F::Vector3F() :
+	data{0.0f, 0.0f, 0.0f}
 {
 };
 

@@ -1138,7 +1138,7 @@ void MAC::ControlAttitudeRates(float dt)
 
 	/* fine tune the rotation */
 	math::Matrix3F3 boardRotationOffset;
-	boardRotationOffset = boardRotationOffset.FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
+	boardRotationOffset = math::Matrix3F3::FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[1],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[2]);
 	boardRotation = boardRotationOffset * boardRotation;

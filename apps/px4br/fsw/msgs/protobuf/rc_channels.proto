@@ -34,7 +34,7 @@ message px4br_rc_channels_pb
 	repeated float channels = 3 [(nanopb).max_count = 18];
 	required uint32 frame_drop_count = 4;
 	required uint32 channel_count = 5;
-	repeated int32 function = 6 [(nanopb).max_count = 22];
+	repeated int32 function = 6 [(nanopb).max_count = 26];
 	required uint32 rssi = 7;
 	required bool signal_lost = 8;
 }

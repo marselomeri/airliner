@@ -2767,11 +2767,11 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	pbMsg.channels_count = PX4_RC_INPUT_MAX_CHANNELS;
 	pbMsg.frame_drop_count = inObject->FrameDropCount;
 	pbMsg.channel_count = inObject->ChannelCount;
-	for(iFunction = 0; iFunction < 22; ++iFunction)
+	for(iFunction = 0; iFunction < PX4_RC_CHANNELS_FUNCTION_COUNT; ++iFunction)
 	{
 		pbMsg.function[iFunction] = inObject->Function[iFunction];
 	}
-	pbMsg.function_count = 22;
+	pbMsg.function_count = PX4_RC_CHANNELS_FUNCTION_COUNT;
 	pbMsg.rssi = inObject->RSSI;
 	pbMsg.signal_lost = inObject->SignalLost;
 
