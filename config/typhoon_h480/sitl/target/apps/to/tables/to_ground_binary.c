@@ -105,6 +105,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
         {PX4_RC_CHANNELS_MID,             1,    TO_PQUEUE_MEDIUM_IDX},
         {PX4_SENSOR_COMBINED_MID,         1,    TO_PQUEUE_MEDIUM_IDX},
         {MAVLINK_HK_TLM_MID,              1,    TO_PQUEUE_MEDIUM_IDX},
+        {PE_HK_TLM_MID,                   1,    TO_PQUEUE_MEDIUM_IDX},
         //{PX4_SENSOR_GYRO_MID, 1, TO_PQUEUE_MEDIUM_IDX},
         //{PX4_SENSOR_MAG_MID, 1, TO_PQUEUE_MEDIUM_IDX},
         //{PX4_SENSOR_BARO_MID, 1, TO_PQUEUE_MEDIUM_IDX},
