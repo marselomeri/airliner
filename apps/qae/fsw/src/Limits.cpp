@@ -41,8 +41,6 @@
 #define LIMITS_H
 
 #include <math.h>
-//#include <stdint.h>
-
 #include "Limits.hpp"
 
 

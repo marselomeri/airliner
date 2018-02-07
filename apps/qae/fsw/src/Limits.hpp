@@ -37,11 +37,23 @@
  * Limiting / constrain helper functions
  */
 
-
-//#include <stdint.h>
-
 namespace math
 {
+
+inline const float &min(const float &a, const float &b)
+{
+    return (a < b) ? a : b;
+}
+
+inline const float &max(const float &a, const float &b)
+{
+    return (a > b) ? a : b;
+}
+
+inline const float &constrain(const float &val, const float &min_val, const float &max_val)
+{
+    return (val < min_val) ? min_val : ((val > max_val) ? max_val : val);
+}
 
 float radians(float degrees);
 
