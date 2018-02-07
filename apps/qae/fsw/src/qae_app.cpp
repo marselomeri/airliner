@@ -584,10 +584,10 @@ void QAE::AppMain()
 
 void QAE::UpdateMagDeclination(const float new_declination)
 {
-    /* Apply initial declination or trivial rotations without changing estimation */
     if (HkTlm.EstimatorState == QAE_EST_UNINITIALIZED || 
         fabsf(new_declination - m_Params.mag_declination) < 0.0001f) 
     {
+        /* Apply initial declination or trivial rotations without changing estimation */
         m_Params.mag_declination = new_declination;
     }
     else 
@@ -912,7 +912,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     
     math::Vector3F diff(0.0f, 0.0f, 0.0f);
     diff = m_Accel - m_PositionAcc;
-    diff.Normalized();
+    diff.Normalize();
     corr = corr + (k % diff) * m_Params.acc_weight;
     
     /* Gyro bias estimation */
@@ -931,7 +931,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     corr = corr + m_Rates;
     
     /* Apply correction to state */
-    m_Quaternion = m_Quaternion + (m_Quaternion.Derivative(corr) * dt);
+    m_Quaternion = m_Quaternion + m_Quaternion.Derivative(corr) * dt;
     
     /* Normalize quaternion */
     m_Quaternion.Normalize();
