@@ -60,8 +60,6 @@ extern "C" {
 #include "Vector3F.hpp"
 #include "Matrix3F3.hpp"
 
-//using math::Quaternion;
-
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -120,8 +118,6 @@ typedef struct
     boolean mag_declination_auto;
     /** \brief acceleration compensation based on GPS velocity */
     boolean acc_compensation;
-    /** \brief external heading mode (not implemented) */
-    int external_heading_mode;
     /** \brief complimentary filter magnetometer weight */
     float mag_weight;
     /** \brief complimentary filter gyroscope bias weight */
@@ -391,9 +387,67 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
     
+    /************************************************************************/
+    /** \brief The main attitude estimator task.
+     **
+     **  \par Description
+     **       The main attitude estimator task to be called on wakeup.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void EstimateAttitude(void);
+
+    /************************************************************************/
+    /** \brief Initialize the attitude estimate.
+     **
+     **  \par Description
+     **       This function initializes the attitude estimate.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       To be called from the main attitude estimator task.
+     **
+     **  \returns
+     **  TRUE for success, FALSE for failure.
+     **  \endreturns
+     **
+     *************************************************************************/
     boolean InitEstimateAttitude(void);
+
+    /************************************************************************/
+    /** \brief Update the attitude estimate.
+     **
+     **  \par Description
+     **       This function update the attitude estimate.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       To be called from the main attitude estimator task.
+     **
+     **  \param [in]   dt                delta time between now and the
+     **                                  previous attitude estimate.
+     **
+     **  \returns
+     **  TRUE for success, FALSE for failure.
+     **  \endreturns
+     **
+     *************************************************************************/
     boolean UpdateEstimateAttitude(float dt);
+
+    /************************************************************************/
+    /** \brief Update magnetic declination.
+     **
+     **  \par Description
+     **       This function updates the current mag declination 
+     **       (in rads) immediately changing yaw rotation.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   new_declination    The new magnetic declination
+     **                                   in radians.
+     **
+     *************************************************************************/
     void UpdateMagDeclination(const float new_declination);
 
 

@@ -128,6 +128,7 @@ float get_mag_declination(float lat, float lon)
 	return lat_scale * (declination_max - declination_min) + declination_min;
 }
 
+
 float get_lookup_table_val(unsigned lat_index, unsigned lon_index)
 {
 	return declination_table[lat_index][lon_index];

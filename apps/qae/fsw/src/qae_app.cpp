@@ -934,7 +934,6 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     if (!(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
         isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3])))
     {
-        //OS_printf("reset quaternion to last good state \n");
         /* Reset quaternion to last good state */
         m_Quaternion = q_last;
         m_Rates.Zero();
