@@ -292,6 +292,19 @@ typedef enum {
 */
 	QAE_UPDATE_EST_ERR_EID,
 
+/** \brief <tt> 'Config params table validation error' </tt>
+**  \event <tt> 'Config params table validation error' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the configuration table validation
+**  fails.
+**
+*/
+	QAE_CFGTBL_VALIDATION_ERR_EID,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	QAE_EVT_CNT
 } QAE_EventIds_t;

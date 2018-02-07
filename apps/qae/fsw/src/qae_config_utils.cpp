@@ -96,12 +96,58 @@ QAE_InitConfigTbl_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 QAE::ValidateConfigTbl(void* ConfigTblPtr)
 {
-    int32  iStatus=0;
-    QAE_ConfigTbl_t* QAE_ConfigTblPtr = (QAE_ConfigTbl_t*)(ConfigTblPtr);
-
     /* TODO:  Add validation code here. */
+    int32  iStatus=0;
+    boolean valid_bool = TRUE;
+    QAE_ConfigTbl_t* QAE_ConfigTblPtr = (QAE_ConfigTbl_t*)(ConfigTblPtr);
+    
+    if(!(QAE_ConfigTblPtr->ATT_W_ACC >= 0.0f && QAE_ConfigTblPtr->ATT_W_ACC <= 1.0f))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->ATT_W_MAG >= 0.0f && QAE_ConfigTblPtr->ATT_W_MAG <= 1.0f))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->ATT_W_GYRO_BIAS >= 0.0f && QAE_ConfigTblPtr->ATT_W_GYRO_BIAS <= 1.0f))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->ATT_MAG_DECL >= 0.0f && QAE_ConfigTblPtr->ATT_MAG_DECL <= 180.0f))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->ATT_MAG_DECL_A == 0 || QAE_ConfigTblPtr->ATT_MAG_DECL_A == 1))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->ATT_ACC_COMP == 0 || QAE_ConfigTblPtr->ATT_ACC_COMP == 1))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->ATT_BIAS_MAX >= 0.0f && QAE_ConfigTblPtr->ATT_BIAS_MAX <= 2.0f))
+    {
+        valid_bool = FALSE;
+    }
+
+    if(!(QAE_ConfigTblPtr->FW_ARSP_MODE >= 0 && QAE_ConfigTblPtr->FW_ARSP_MODE <= 2))
+    {
+        valid_bool = FALSE;
+    }
 
 QAE_ValidateConfigTbl_Exit_Tag:
+    /* For now just raise an error event */
+    if(FALSE == valid_bool)
+    {
+        CFE_EVS_SendEvent(QAE_CFGTBL_VALIDATION_ERR_EID, CFE_EVS_ERROR,
+            "Config params table validation error");
+    }
     return iStatus;
 }
 
