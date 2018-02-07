@@ -865,7 +865,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     float spinRate = 0.0f;
     float magErr   = 0.0f;
     float gainMult = 1.0f;
-    const float fiftyDPS = 0.873f;
+    //const float fiftyDPS = 0.873f;
     uint8 i = 0;
 
     if (HkTlm.EstimatorState != QAE_EST_INITIALIZED)
@@ -887,9 +887,9 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     mag_earth = m_Quaternion.Conjugate(m_Mag);
     magErr = wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_Params.mag_declination);
     
-    if(spinRate > fiftyDPS)
+    if(spinRate > QAE_FIFTY_DPS)
     {
-        gainMult = math::min(spinRate / fiftyDPS, 10.0f);
+        gainMult = math::min(spinRate / QAE_FIFTY_DPS, 10.0f);
     }
     /* Project magnetometer correction to body frame */
     math::Vector3F magErrV3F(0.0f, 0.0f, -magErr);
