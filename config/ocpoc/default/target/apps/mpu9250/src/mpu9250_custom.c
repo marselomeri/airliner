@@ -41,7 +41,7 @@
 #include "mpu9250_spi.h"
 #include "mpu9250_events.h"
 #include "mpu9250_perfids.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 
 #include <unistd.h>

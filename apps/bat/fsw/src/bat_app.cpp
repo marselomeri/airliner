@@ -9,7 +9,7 @@
 #include "bat_msg.h"
 #include "bat_version.h"
 #include <math.h>
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

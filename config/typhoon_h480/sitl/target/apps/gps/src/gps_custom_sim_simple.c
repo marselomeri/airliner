@@ -41,7 +41,7 @@
 #include "px4_msgs.h"
 #include "msg_ids.h"
 #include "simlib.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 #include <time.h>
 #include <errno.h>

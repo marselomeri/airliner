@@ -42,7 +42,7 @@
 #include "hmc5883_i2c.h"
 #include "hmc5883_events.h"
 #include "hmc5883_perfids.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 #include "simlib.h"
 #include <string.h>

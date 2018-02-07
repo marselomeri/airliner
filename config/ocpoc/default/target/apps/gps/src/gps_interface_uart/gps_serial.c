@@ -43,7 +43,7 @@
 #include "../gps_parser_ubx/gps_ubx_msg.h"
 #include "../gps_parser_ubx/gps_parser_ubx_common.h"
 #include "msg_ids.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 #include "gps_event_driven.h"
 

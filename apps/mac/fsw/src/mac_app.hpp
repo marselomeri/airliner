@@ -35,8 +35,7 @@
 #define MAC_APP_H
 
 
-#include <mixer/MultirotorMixer.h>
-#include "Vector3F.hpp"
+#include <math/Vector3F.hpp>
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,7 +60,6 @@ extern "C" {
 #include "mac_events.h"
 #include "mac_tbldefs.h"
 #include "px4_msgs.h"
-#include <pwm_limit/pwm_limit.h>
 
 
 /************************************************************************
@@ -166,9 +164,6 @@ public:
     MAC_HkTlm_t HkTlm;
 
     MAC_CurrentValueTable_t CVT;
-
-    //MIXER_Data_t  MixerData;
-    PwmLimit_Data_t PwmLimit;
 
     math::Vector3F m_AngularRatesPrevious;
     math::Vector3F m_AngularRatesSetpointPrevious;

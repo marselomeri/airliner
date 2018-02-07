@@ -8,7 +8,7 @@
 #include "ulr_app.h"
 #include "ulr_msg.h"
 #include "ulr_version.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 
 

@@ -3,7 +3,7 @@
 #include "mpu9250_app.h"
 #include "simlib.h"
 #include <time.h>
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 
 extern MPU9250 oMPU9250;
