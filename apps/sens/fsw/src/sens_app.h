@@ -42,7 +42,7 @@
  ** Includes
  *************************************************************************/
 
-#include <lib/mathlib/math/filter/LowPassFilter2p.hpp>
+#include <math/filters/LowPassFilter2p.hpp>
 
 #ifdef __cplusplus
 extern "C" {

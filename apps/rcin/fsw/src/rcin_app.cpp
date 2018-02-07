@@ -9,7 +9,7 @@
 #include "rcin_msg.h"
 #include "rcin_version.h"
 #include <unistd.h>
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

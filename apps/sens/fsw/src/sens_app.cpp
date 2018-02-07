@@ -8,9 +8,9 @@
 #include "sens_app.h"
 #include "sens_msg.h"
 #include "sens_version.h"
-#include <lib/mathlib/math/Limits.hpp>
+#include <math/Limits.hpp>
 #include <math.h>
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1132,6 +1132,7 @@ void SENS::CombineSensorInput(void)
 
 		/* Baro. */
 		/* See if we have a new baro measurement. */
+		//baro_timestamp = sensors.timestamp + sensors.baro_timestamp_relative;
 		if(CVT.SensorBaroMsg.Timestamp > CVT.LastBaroTime)
 		{
 			/* We do have a new measurement.  Update the fields accordingly.
@@ -1141,7 +1142,14 @@ void SENS::CombineSensorInput(void)
 			SensorCombinedMsg.BaroTemp = CVT.SensorBaroMsg.Temperature;
 
 			/* Now calculate and populate the time relative to the main timestamp. */
+			//if(SensorCombinedMsg.Timestamp > CVT.SensorBaroMsg.Timestamp)
+			//{
 			SensorCombinedMsg.BaroTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
+			//}
+			//else
+			//{
+				//SensorCombinedMsg.BaroTimestampRelative = CVT.SensorBaroMsg.Timestamp - SensorCombinedMsg.Timestamp;
+			//}
 
 			SensorCombinedMsg.BaroRelTimeInvalid = false;
 
