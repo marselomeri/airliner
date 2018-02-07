@@ -278,6 +278,20 @@ typedef enum {
 */
 	QAE_DEGENERATE_MAG_ERR_EID,
 
+/** \brief <tt> 'Update attitude estimate failed, reset to last state' </tt>
+**  \event <tt> 'Update attitude estimate failed, reset to last state' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when an attempt to update the attitude
+**  estimate failed.
+**
+**
+*/
+	QAE_UPDATE_EST_ERR_EID,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	QAE_EVT_CNT
 } QAE_EventIds_t;

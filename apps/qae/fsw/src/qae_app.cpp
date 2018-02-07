@@ -57,9 +57,28 @@ QAE::~QAE()
 int32 QAE::InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
+    int32  ind = 0;
 
+    CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
+    
+    /* Initialize the event filter table.
+     * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
+    memset(EventTbl, 0x00, sizeof(EventTbl));
+    
+    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
+     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
+     * (the default) has been provided as an example. */
+    EventTbl[  ind].EventID = QAE_RESERVED_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
+    EventTbl[  ind].EventID = QAE_DEGENERATE_ACC_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    EventTbl[  ind].EventID = QAE_DEGENERATE_MAG_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    EventTbl[  ind].EventID = QAE_UPDATE_EST_ERR_EID;
+    EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
+    
     /* Register the table with CFE */
-    iStatus = CFE_EVS_Register(0, 0, CFE_EVS_BINARY_FILTER);
+    iStatus = CFE_EVS_Register(EventTbl, ind, CFE_EVS_BINARY_FILTER);
     if (iStatus != CFE_SUCCESS)
     {
         (void) CFE_ES_WriteToSysLog("QAE - Failed to register with EVS (0x%08lX)\n", iStatus);
@@ -705,7 +724,8 @@ void QAE::EstimateAttitude(void)
     update_success = UpdateEstimateAttitude(delta_time);
     if(TRUE == update_success)
     {
-        OS_printf("UpdateEstimateAttitude failed \n");
+        (void) CFE_EVS_SendEvent(QAE_UPDATE_EST_ERR_EID, CFE_EVS_ERROR,
+                "Update attitude estimate failed, reset to last state");
         /* TODO raise event here */
         goto end_of_function;
     }
