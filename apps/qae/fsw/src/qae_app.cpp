@@ -307,6 +307,10 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 
             case AE_SEND_HK_MID:
                 ProcessCmdPipe();
+                /* Copy the current vehicle attitude message */
+                memcpy(&HkTlm.VehicleAttitudeMsg, &VehicleAttitudeMsg, sizeof(VehicleAttitudeMsg));
+                /* Copy the current control state message */
+                memcpy(&HkTlm.ControlStateMsg, &ControlStateMsg, sizeof(ControlStateMsg));
                 ReportHousekeeping();
                 break;
 

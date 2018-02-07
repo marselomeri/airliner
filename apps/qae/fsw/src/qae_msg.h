@@ -46,6 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
+#include "px4_msgs.h"
 
 
 /************************************************************************
@@ -154,7 +155,10 @@ typedef struct
     uint8              State;
     /** \brief Estimator State */
     uint8              EstimatorState;
-
+    /** \brief A copy of the vehicle attitude message */
+    PX4_VehicleAttitudeMsg_t VehicleAttitudeMsg;
+    /** \brief A copy of the control state message */
+    PX4_ControlStateMsg_t ControlStateMsg;
 } QAE_HkTlm_t;
 
 

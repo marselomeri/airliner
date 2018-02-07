@@ -100,9 +100,13 @@ typedef enum
  */
 typedef struct
 {
+    /** \brief The sensor combined message */
     PX4_SensorCombinedMsg_t        SensorCombinedMsg;
+    /** \brief The last sensor combined message timestamp */
     uint64                         LastSensorCombinedTime;
+    /** \brief The vehicle global position message */
     PX4_VehicleGlobalPositionMsg_t VehicleGlobalPositionMsg;
+    /** \brief The last vehicle global position timestamp */
     uint64                         LastGlobalPositionTime;
 } QAE_CurrentValueTable_t;
 
