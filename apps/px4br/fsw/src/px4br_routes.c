@@ -137,7 +137,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 		{"battery_status", (PX4_ENCODE_FUNC) PX4BR_BatteryStatus_Enc, (PX4_DECODE_FUNC) 0, PX4_BATTERY_STATUS_MID, px4br_battery_status_pb_size, 1, 0, 0},
 //		{"camera_trigger", (PX4_ENCODE_FUNC) PX4BR_CameraTrigger_Enc, (PX4_DECODE_FUNC) PX4BR_CameraTrigger_Dec, PX4_CAMERA_TRIGGER_MID, px4br_camera_trigger_pb_size, 1, 0, 0},
 //		{"commander_state", (PX4_ENCODE_FUNC) PX4BR_CommanderState_Enc, (PX4_DECODE_FUNC) PX4BR_CommanderState_Dec, PX4_COMMANDER_STATE_MID, px4br_commander_state_pb_size, 1, 0, 0},
-		{"control_state", (PX4_ENCODE_FUNC)  PX4BR_ControlState_Enc, (PX4_DECODE_FUNC)0, PX4_CONTROL_STATE_MID, px4br_control_state_pb_size, 1, 0, 0},
+//		{"control_state", (PX4_ENCODE_FUNC)  PX4BR_ControlState_Enc, (PX4_DECODE_FUNC)0, PX4_CONTROL_STATE_MID, px4br_control_state_pb_size, 1, 0, 0},
 //		{"cpuload", (PX4_ENCODE_FUNC) PX4BR_CpuLoad_Enc, (PX4_DECODE_FUNC) PX4BR_CpuLoad_Dec, PX4_CPULOAD_MID, px4br_cpuload_pb_size, 1, 0, 0},
 //		{"debug_key_value", (PX4_ENCODE_FUNC) PX4BR_DebugKeyValue_Enc, (PX4_DECODE_FUNC) PX4BR_DebugKeyValue_Dec, PX4_DEBUG_KEY_VALUE_MID, px4br_debug_key_value_pb_size, 1, 0, 0},
 //		{"differential_pressure", (PX4_ENCODE_FUNC) PX4BR_DifferentialPressure_Enc, (PX4_DECODE_FUNC) PX4BR_DifferentialPressure_Dec, PX4_DIFFERENTIAL_PRESSURE_MID, px4br_differential_pressure_pb_size, 1, 0, 0},

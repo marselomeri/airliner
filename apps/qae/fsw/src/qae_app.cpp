@@ -438,6 +438,14 @@ void QAE::ReportHousekeeping()
 void QAE::SendVehicleAttitudeMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleAttitudeMsg);
+    //OS_printf("VehicleAttitudeMsg.Timestamp %llf\n",VehicleAttitudeMsg.Timestamp);
+    //OS_printf("VehicleAttitudeMsg.RollSpeed %f\n",VehicleAttitudeMsg.RollSpeed);
+    //OS_printf("VehicleAttitudeMsg.PitchSpeed %f\n",VehicleAttitudeMsg.PitchSpeed);
+    //OS_printf("VehicleAttitudeMsg.YawSpeed %f\n",VehicleAttitudeMsg.YawSpeed);
+    //OS_printf("VehicleAttitudeMsg.Q[0] %f\n",VehicleAttitudeMsg.Q[0]);
+    //OS_printf("VehicleAttitudeMsg.Q[1] %f\n",VehicleAttitudeMsg.Q[1]);
+    //OS_printf("VehicleAttitudeMsg.Q[2] %f\n",VehicleAttitudeMsg.Q[2]);
+    //OS_printf("VehicleAttitudeMsg.Q[3] %f\n",VehicleAttitudeMsg.Q[3]);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleAttitudeMsg);
 }
 
@@ -579,6 +587,7 @@ void QAE::EstimateAttitude(void)
     uint64 time_now = 0;
     float delta_time = 0;
     uint64 time_last = 0;
+    boolean update_success = FALSE;
 
     /* If there is a new sensor combined message */
     if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
@@ -661,7 +670,6 @@ void QAE::EstimateAttitude(void)
             math::Vector3F vel(CVT.VehicleGlobalPositionMsg.VelN,
                                CVT.VehicleGlobalPositionMsg.VelE,
                                CVT.VehicleGlobalPositionMsg.VelD);
-                               
             /* velocity updated */
             if(m_LastVelocityTime != 0 &&
                CVT.VehicleGlobalPositionMsg.Timestamp != m_LastVelocityTime)
@@ -676,6 +684,7 @@ void QAE::EstimateAttitude(void)
         else
         {
             /* position data is outdate, reset acceleration */
+            OS_printf("position data is outdate, reset acceleration");
             m_PositionAcc.Zero();
             m_LastVelocity.Zero();
             m_LastVelocityTime = 0;
@@ -692,9 +701,11 @@ void QAE::EstimateAttitude(void)
     {
         delta_time = QAE_DELTA_TIME_MAX;
     }
-    
-    if(!UpdateEstimateAttitude(delta_time))
+
+    update_success = UpdateEstimateAttitude(delta_time);
+    if(TRUE == update_success)
     {
+        OS_printf("UpdateEstimateAttitude failed \n");
         /* TODO raise event here */
         goto end_of_function;
     }
@@ -710,6 +721,7 @@ void QAE::EstimateAttitude(void)
     VehicleAttitudeMsg.Q[1]         = m_Quaternion[1];
     VehicleAttitudeMsg.Q[2]         = m_Quaternion[2];
     VehicleAttitudeMsg.Q[3]         = m_Quaternion[3];
+
     /* Send vehicle attitude message */
     SendVehicleAttitudeMsg();
     
@@ -753,6 +765,7 @@ void QAE::EstimateAttitude(void)
         // do nothing, airspeed has been declared as non-valid above, controllers
         // will handle this assuming always trim airspeed
     //}
+    /* Send the control state message */
     SendControlStateMsg();
     
 end_of_function:
@@ -762,6 +775,7 @@ end_of_function:
 
 boolean QAE::InitEstimateAttitude(void)
 {
+    OS_printf("InitEstimateAttitude\n");
     math::Vector3F k(0.0f, 0.0f, 0.0f);
     math::Vector3F i(0.0f, 0.0f, 0.0f);
     math::Vector3F j(0.0f, 0.0f, 0.0f);
@@ -772,27 +786,33 @@ boolean QAE::InitEstimateAttitude(void)
      * in body frame 
      */
     k = -m_Accel;
+    OS_printf("k[] %f, k[] %f, k[] %f\n", k[0], k[1], k[2]);
     k.Normalize();
-    
+    OS_printf("Normalized k[] %f, k[] %f, k[] %f\n", k[0], k[1], k[2]);
     /* 'i' is Earth X axis (North) unit vector in body frame, 
      * orthogonal with 'k' 
      */
     i = (m_Mag - k * (m_Mag * k));
+    OS_printf("i[] %f, i[] %f, i[] %f\n", i[0], i[1], i[2]);
     i.Normalize();
-    
+    OS_printf("Normalized i[] %f, i[] %f, i[] %f\n", i[0], i[1], i[2]);
     /* 'j' is Earth Y axis (East) unit vector in body frame, orthogonal
      * with 'k' and 'i' */
     j = k % i;
-    
+    OS_printf("j[] %f, j[] %f, j[] %f\n", j[0], j[1], j[2]);
     /* Fill rotation matrix */
     math::Matrix3F3 R(i, j, k);
+    OS_printf("R[][] %f, R[][] %f, R[][] %f, R[][] %f, R[][] %f, R[][] %f, R[][] %f, R[][] %f, R[][] %f,\n", R[0][0], R[0][1], R[0][2], R[1][0], R[1][1], R[1][2], R[2][0], R[2][1], R[2][2]);
     
     /* Convert to quaternion */
     m_Quaternion.FromDCM(R);
+    OS_printf("m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
     
     /* Compensate for magnetic declination */
     math::Quaternion decl_rotation(0.0f, 0.0f, 0.0f, 0.0f);
     decl_rotation.FromYaw(m_Params.mag_declination);
+    OS_printf("decl_rotation.FromYaw [] %f, [] %f, [] %f, [] %f\n", decl_rotation[0], decl_rotation[1], decl_rotation[2], decl_rotation[3]);
+    
     m_Quaternion = decl_rotation * m_Quaternion;
     m_Quaternion.Normalize();
     
@@ -825,11 +845,12 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     const float fiftyDPS = 0.873f;
     uint8 i = 0;
 
-
     if (HkTlm.EstimatorState != QAE_EST_INITIALIZED)
     {
+        OS_printf("HkTlm.EstimatorState != QAE_EST_INITIALIZED\n");
         if(HkTlm.State != QAE_SENSOR_DATA_RCVD)
         {
+            OS_printf("HkTlm.State != QAE_SENSOR_DATA_RCVD\n");
             return FALSE;
         }
         return InitEstimateAttitude();
@@ -895,6 +916,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     if (!(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
         isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3])))
     {
+        //OS_printf("reset quaternion to last good state \n");
         /* Reset quaternion to last good state */
         m_Quaternion = q_last;
         m_Rates.Zero();

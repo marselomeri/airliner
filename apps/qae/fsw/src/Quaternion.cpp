@@ -136,10 +136,15 @@ Vector3F Quaternion::ToEuler(void) const
 void Quaternion::FromDCM(const Matrix3F3 &dcm)
 {
     float tr = dcm[0][0] + dcm[1][1] + dcm[2][2];
+    OS_printf("tr = %f, dcm[] %f %f %f\n", tr, dcm[0][0], dcm[1][1], dcm[2][2]);
 
-    if (tr > 0.0f) {
+    if (tr > 0.0f) 
+    {
         float s = sqrtf(tr + 1.0f);
-        data[0] = s * 0.5f;
+        OS_printf("s = %f\n", s);
+        data[0] = (s * 0.5f);
+        OS_printf("s * 0.5f = %f\n", (s*0.5f));
+        OS_printf("data[0] %f\n", data[0]);
         s = 0.5f / s;
         data[1] = (dcm[2][1] - dcm[1][2]) * s;
         data[2] = (dcm[0][2] - dcm[2][0]) * s;
@@ -150,8 +155,10 @@ void Quaternion::FromDCM(const Matrix3F3 &dcm)
         * store index in dcm_i */
         int dcm_i = 0;
 
-        for (int i = 1; i < 3; i++) {
-            if (dcm[i][i] > dcm[dcm_i][dcm_i]) {
+        for (int i = 1; i < 3; i++) 
+        {
+            if (dcm[i][i] > dcm[dcm_i][dcm_i]) 
+            {
                 dcm_i = i;
             }
         }
