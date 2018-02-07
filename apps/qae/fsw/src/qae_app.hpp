@@ -147,21 +147,22 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
-
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
     /* Config table-related */
-
     /** \brief Config Table Handle */
     CFE_TBL_Handle_t ConfigTblHdl;
-
     /** \brief Config Table Pointer */
     QAE_ConfigTbl_t* ConfigTblPtr;
-    /** \brief Output Data published at the end of cycle */
+
+    /* Output messages */
+    /** \brief VehicleAttitudeMsg published at the end of cycle */
     PX4_VehicleAttitudeMsg_t VehicleAttitudeMsg;
+    /** \brief ControlStateMsg published at the end of cycle */
     PX4_ControlStateMsg_t ControlStateMsg;
 
+    /* Application data */
     /** \brief Housekeeping Telemetry for downlink */
     QAE_HkTlm_t HkTlm;
     /** \brief Current Value Table */
@@ -343,6 +344,7 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
     /************************************************************************/
     /** \brief Sends the VehicleAttitudeMsg message.
      **
@@ -355,6 +357,7 @@ public:
      **
      *************************************************************************/
     void SendVehicleAttitudeMsg(void);
+
     /************************************************************************/
     /** \brief Sends the ControlStateMsg message.
      **
@@ -367,6 +370,7 @@ public:
      **
      *************************************************************************/
     void SendControlStateMsg(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -449,6 +453,16 @@ public:
      **
      *************************************************************************/
     void UpdateMagDeclination(const float new_declination);
+
+    /************************************************************************/
+    /** \brief Update parameters from the configuration table.
+     **
+     **  \par Description
+     **       This function updates the current paramamters from the 
+     **       currently loaded configuration table.
+     **
+     *************************************************************************/
+    void UpdateParamsFromTable(void);
 
 
 private:

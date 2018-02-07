@@ -62,8 +62,54 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
+    /** \brief Complimentary filter accelerometer weight.
+     * 
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 1, default 0.2.
+     */
+    float    ATT_W_ACC;
+    /** \brief Complimentary filter magnetometer weight.
+     * 
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 1, default 0.1.
+     */
+    float    ATT_W_MAG;
+    /** \brief Complimentary filter gyroscope bias weight.
+     * 
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 1, default 0.1.
+     */
+    float    ATT_W_GYRO_BIAS;
+    /** \brief Magnetic declination, in degrees.
+     * 
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 180, default 0.0.
+     */
+    float    ATT_MAG_DECL;
+    /** \brief Automatic GPS based declination compensation.
+     * 
+     *  \par Limits:
+     *       TRUE or FALSE, default 1 (TRUE).
+     */
+    boolean  ATT_MAG_DECL_A;
+    /** \brief Acceleration compensation based on GPS velocity.
+     * 
+     *  \par Limits:
+     *       TRUE or FALSE, default 1 (TRUE).
+     */
+    boolean  ATT_ACC_COMP;
+    /** \brief Gyro bias limit in rad/s.
+     * 
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 2, default 0.05.
+     */
+    float    ATT_BIAS_MAX;
+    /** \brief Airspeed mode.
+     * 
+     *  \par Limits:
+     *       Min > Max (incr.) ?, default 0.
+     */
+    int32    FW_ARSP_MODE;
 } QAE_ConfigTbl_t;
 
 

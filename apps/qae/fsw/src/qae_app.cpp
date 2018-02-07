@@ -309,9 +309,11 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
+
             case PX4_SENSOR_COMBINED_MID:
                 memcpy(&CVT.SensorCombinedMsg, MsgPtr, sizeof(CVT.SensorCombinedMsg));
                 break;
+
             case PX4_VEHICLE_GLOBAL_POSITION_MID:
                 memcpy(&CVT.VehicleGlobalPositionMsg, MsgPtr, sizeof(CVT.VehicleGlobalPositionMsg));
                 break;
@@ -793,7 +795,6 @@ end_of_function:
 
 boolean QAE::InitEstimateAttitude(void)
 {
-    OS_printf("InitEstimateAttitude\n");
     math::Vector3F k(0.0f, 0.0f, 0.0f);
     math::Vector3F i(0.0f, 0.0f, 0.0f);
     math::Vector3F j(0.0f, 0.0f, 0.0f);
@@ -944,6 +945,21 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     return TRUE;
 }
 
+
+void QAE::UpdateParamsFromTable(void)
+{
+    if(0 != ConfigTblPtr)
+    {
+        m_Params.acc_weight           = ConfigTblPtr-> ATT_W_ACC;
+        m_Params.mag_weight           = ConfigTblPtr->ATT_W_MAG;
+        m_Params.gyro_weight          = ConfigTblPtr->ATT_W_GYRO_BIAS;
+        m_Params.mag_declination      = ConfigTblPtr->ATT_MAG_DECL;
+        m_Params.mag_declination_auto = ConfigTblPtr->ATT_MAG_DECL_A;
+        m_Params.acc_compensation     = ConfigTblPtr->ATT_ACC_COMP;
+        m_Params.gyro_bias_max        = ConfigTblPtr->ATT_BIAS_MAX;
+        m_Params.airspeed_mode        = ConfigTblPtr->FW_ARSP_MODE;
+    }
+}
 
 /************************/
 /*  End of File Comment */
