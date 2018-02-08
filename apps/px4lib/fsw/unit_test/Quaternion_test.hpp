@@ -44,6 +44,14 @@ void Test_Quaternion_IndexOutOfBounds(void);
 void Test_Quaternion_ArrayOperator(void);
 void Test_Quaternion_MultiplyOperator(void);
 void Test_Quaternion_DivideOperator(void);
+
+void Test_Quaternion_Conjugate(void);
+void Test_Quaternion_ConjugateInversed(void);
+void Test_Quaternion_FromDCM(void);
+void Test_Quaternion_FromYaw(void);
+void Test_Quaternion_Derivative(void);
+void Test_Quaternion_ToEuler(void);
+
 void Test_Quaternion_Imaginary(void);
 void Test_Quaternion_RotationMatrix(void);
 

@@ -44,6 +44,8 @@ int main(void)
 	         "Test_Matrix4F4_IndexOutOfBounds");
 	UtTest_Add(Test_Matrix4F4_ArrayOperator, Matrix4F4_Test_Setup, Matrix4F4_Test_TearDown,
 			 "Test_Matrix4F4_ArrayOperator");
+	UtTest_Add(Test_Matrix4F4_MultiplicationByVector, Matrix4F4_Test_Setup, Matrix4F4_Test_TearDown,
+			 "Test_Matrix4F4_MultiplicationByVector");
 	UtTest_Add(Test_Matrix4F4_NegateOperator, Matrix4F4_Test_Setup, Matrix4F4_Test_TearDown,
 	         "Test_Matrix4F4_NegateOperator");
 

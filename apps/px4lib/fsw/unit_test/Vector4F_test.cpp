@@ -170,7 +170,7 @@ void Test_Vector4F_DotProductOperator(void)
 	float actualeRzcosB = vectorRzB * vectorRspzB;
 	float actualeRzcosC = vectorRzC * vectorRspzC;
     
-    //printf("actualeRzcosA %.10f, actualeRzcosB %.10f\n\n", actualeRzcosA, actualeRzcosB);
+    printf("actualeRzcosA %.10f, actualeRzcosB %.10f\n\n", actualeRzcosA, actualeRzcosB);
 
 	float expectedAB = 356.0f;
     
@@ -180,9 +180,9 @@ void Test_Vector4F_DotProductOperator(void)
 
 	/* Verify results */
 	UtAssert_True(actualAB == expectedAB, "expected == vectorA dot vectorB");
-	UtAssert_True(actualeRzcosA == expectedeRzcosA, "expected == vectorRzA dot vectorRspzA");
-	UtAssert_True(actualeRzcosB == expectedeRzcosB, "expected == vectorRzB dot vectorRspzB");
-	UtAssert_True(actualeRzcosC == expectedeRzcosC, "expected == vectorRzC dot vectorRspzC");
+	UtAssert_True(fabs(actualeRzcosA - expectedeRzcosA) <= 0.00001, "fabs(actualeRzcosA - expectedeRzcosA) <= FLT_EPSILON");
+	UtAssert_True(fabs(actualeRzcosB - expectedeRzcosB) <= 0.00001, "fabs(actualeRzcosB - expectedeRzcosB) <= FLT_EPSILON");
+	UtAssert_True(fabs(actualeRzcosC - expectedeRzcosC) <= 0.00001, "fabs(actualeRzcosC - expectedeRzcosC) <= FLT_EPSILON");
 }
 
 

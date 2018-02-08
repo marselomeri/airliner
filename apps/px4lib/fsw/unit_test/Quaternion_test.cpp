@@ -33,6 +33,8 @@
 
 #include "Quaternion_test.hpp"
 #include <math/Quaternion.hpp>
+#include <math/Vector3F.hpp>
+#include <math/Matrix3F3.hpp>
 
 #include "utassert.h"
 #include <float.h>
@@ -167,6 +169,97 @@ void Test_Quaternion_DivideOperator(void)
     UtAssert_True(expectedR[2] == quatR[2], "0.0000000000f == quat[2]");
     UtAssert_True(expectedR[3] == quatR[3], "0.0579710156f == quat[3]");
     UtAssert_True(isnan(nanResult), "NAN == quat[4]");
+}
+
+
+void Test_Quaternion_Conjugate(void)
+{
+    math::Quaternion quatA(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Vector3F vectorOut(0.0f, 0.0f, 0.0f);
+    math::Vector3F vectorIn(2.5f, 3.5f, 4.5f);
+    math::Vector3F expected(102.5f, 143.5f, 184.5f);
+    
+    vectorOut = quatA.Conjugate(vectorIn);
+    UtAssert_True(expected[0] == vectorOut[0], "102.5f == vectorOut[0]");
+    UtAssert_True(expected[1] == vectorOut[1], "143.5f == vectorOut[1]");
+    UtAssert_True(expected[2] == vectorOut[2], "184.5f == vectorOut[2]");
+}
+
+
+void Test_Quaternion_ConjugateInversed(void)
+{
+    math::Quaternion quatA(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Vector3F vectorOut(0.0f, 0.0f, 0.0f);
+    math::Vector3F vectorIn(2.5f, 3.5f, 4.5f);
+    math::Vector3F expected(102.5f, 143.5f, 184.5f);
+    
+    vectorOut = quatA.ConjugateInversed(vectorIn);
+    UtAssert_True(expected[0] == vectorOut[0], "102.5f == vectorOut[0]");
+    UtAssert_True(expected[1] == vectorOut[1], "143.5f == vectorOut[1]");
+    UtAssert_True(expected[2] == vectorOut[2], "184.5f == vectorOut[2]");
+}
+
+
+void Test_Quaternion_FromDCM(void)
+{
+    math::Vector3F row1(1.5f, 2.5f, 3.5f);
+    math::Vector3F row2(4.5f, 5.5f, 6.5f);
+    math::Vector3F row3(7.5f, 8.5f, 9.5f);
+    math::Matrix3F3 input(row1, row2, row3);
+    math::Quaternion output(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion expected(2.0916500092f, 0.2390457243f, -0.4780914485f, 0.2390457243f);
+    
+    output.FromDCM(input);
+
+    UtAssert_True(fabs(expected[0] - output[0]) <= 0.00001f, "2.0916500092f == output[0]");
+    UtAssert_True(fabs(expected[1] - output[1]) <= 0.00001f, "0.2390457243f == output[1]");
+    UtAssert_True(fabs(expected[2] - output[2]) <= 0.00001f, "-0.4780914485f == output[2]");
+    UtAssert_True(fabs(expected[3] - output[3]) <= 0.00001f, "0.2390457243f == output[3]");
+}
+
+
+void Test_Quaternion_FromYaw(void)
+{
+    float input = 35.5;
+    math::Quaternion output(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion expected(0.4539918303, 0.0f, 0.0f, -0.8910058141f);
+    
+    output.FromYaw(input);
+
+    UtAssert_True(fabs(expected[0] - output[0]) <= 0.00001f, "0.4539918303f == output[0]");
+    UtAssert_True(fabs(expected[1] - output[1]) <= 0.00001f, "0.0f == output[1]");
+    UtAssert_True(fabs(expected[2] - output[2]) <= 0.00001f, "0.0f == output[2]");
+    UtAssert_True(fabs(expected[3] - output[3]) <= 0.00001f, "-0.8910058141f == output[3]");
+}
+
+
+void Test_Quaternion_ToEuler(void)
+{
+    math::Vector3F output(0.0f, 0.0f, 0.0f);
+    math::Vector3F expected(2.3162157536f, 0.0f, 2.6905229092f);
+    math::Quaternion existing(1.5f, 2.5f, 3.5f, 4.5f);
+    
+    output = existing.ToEuler();
+
+    UtAssert_True(fabs(expected[0] - output[0]) <= 0.00001f, "2.3162157536f == output[0]");
+    UtAssert_True(isnan(output[1]), "nan == output[1]");
+    UtAssert_True(fabs(expected[2] - output[2]) <= 0.00001f, "2.6905229092f == output[2]");
+}
+
+
+void Test_Quaternion_Derivative(void)
+{
+    math::Quaternion existing(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Quaternion output(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Vector3F input(5.5f, 6.5f, 7.5f);
+    math::Quaternion expected(-35.125f, 2.625f, 7.875f, 4.125f);
+    
+    output = existing.Derivative(input);
+
+    UtAssert_True(fabs(expected[0] - output[0]) <= 0.00001f, "-35.125f == output[0]");
+    UtAssert_True(fabs(expected[1] - output[1]) <= 0.00001f, "2.625ff == output[1]");
+    UtAssert_True(fabs(expected[2] - output[2]) <= 0.00001f, "7.875f == output[2]");
+    UtAssert_True(fabs(expected[3] - output[3]) <= 0.00001f, "4.125f == output[3]");
 }
 
 
