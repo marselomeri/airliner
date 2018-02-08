@@ -1,10 +1,10 @@
-#include "Matrix10F3.hpp"
+#include "math/Matrix10F10.hpp"
 #include <math.h>
 
 using namespace math;
 
 
-const Matrix10F3::RotLookup_t Matrix10F3::RotLookup[] = {
+const Matrix10F10::RotLookup_t Matrix10F10::RotLookup[] = {
 	{  0,   0,   0 },
 	{  0,   0,  45 },
 	{  0,   0,  90 },
@@ -40,37 +40,37 @@ const Matrix10F3::RotLookup_t Matrix10F3::RotLookup[] = {
 	{  0,   9, 180 },
 };
 
-Matrix10F3::Matrix10F3(Vector3F m0, Vector3F m1, Vector3F m2, Vector3F m3, Vector3F m4, Vector3F m5, Vector3F m6, Vector3F m7, Vector3F m8, Vector3F m9) :
+Matrix10F10::Matrix10F10(Vector10F m0, Vector10F m1, Vector10F m2, Vector10F m3, Vector10F m4, Vector10F m5, Vector10F m6, Vector10F m7, Vector10F m8, Vector10F m9) :
 	data{m0, m1, m2, m3, m4, m5, m6, m7, m8, m9},
-	nan{NAN,NAN,NAN}
+	nan{NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN}
 {
 };
 
 
-Matrix10F3::Matrix10F3() :
+Matrix10F10::Matrix10F10() :
 	data{
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0}
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
 	},
-    nan{NAN,NAN,NAN}
+    nan{NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN}
 {
 };
 
 
-Matrix10F3::~Matrix10F3()
+Matrix10F10::~Matrix10F10()
 {
 };
 
 
-Vector3F& Matrix10F3::operator [] (uint32 i)
+Vector10F& Matrix10F10::operator [] (uint32 i)
 {
 	if(i >= 10)
 	{
@@ -83,7 +83,7 @@ Vector3F& Matrix10F3::operator [] (uint32 i)
 };
 
 
-Vector3F Matrix10F3::operator [] (uint32 i) const
+Vector10F Matrix10F10::operator [] (uint32 i) const
 {
 	if(i >= 10)
 	{
@@ -96,9 +96,9 @@ Vector3F Matrix10F3::operator [] (uint32 i) const
 };
 
 
-Matrix10F3 Matrix10F3::Transpose(void)
+Matrix10F10 Matrix10F10::Transpose(void)
 {
-	Matrix10F3 res;
+	Matrix10F10 res;
 
 	for(int i = 0; i < SIZE; i++)
 	{
@@ -112,24 +112,24 @@ Matrix10F3 Matrix10F3::Transpose(void)
 }
 
 
-Matrix10F3 Matrix10F3::Identity() {
-    Matrix10F3 matOut(
-    		{1.0f, 0.0f, 0.0f},
-    		{0.0f, 1.0f, 0.0f},
-    		{0.0f, 0.0f, 1.0f},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0});
+Matrix10F10 Matrix10F10::Identity() {
+    Matrix10F10 matOut(
+    		{1.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0, 1.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0, 0.0, 1.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0, 0.0, 0.0, 1.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0, 0.0, 0.0, 0.0, 1.0f, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0, 0.0, 0.0, 0.0, 0.0, 1.0f, 0.0, 0.0, 0.0, 0.0},
+    		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0f, 0.0, 0.0, 0.0},
+    		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0f, 0.0, 0.0},
+    		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0f, 0.0},
+    		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0f});
 
     return matOut;
 }
 
 
-void Matrix10F3::Zero(void)
+void Matrix10F10::Zero(void)
 {
 	for(int i = 0; i < SIZE; i++)
 	{
@@ -142,9 +142,9 @@ void Matrix10F3::Zero(void)
 
 
 // overload * operator to provide a matrix product
-Matrix10F3 Matrix10F3::operator*(const Matrix10F3 &matIn)
+Matrix10F10 Matrix10F10::operator*(const Matrix10F10 &matIn)
 {
-    Matrix10F3 matOut;
+    Matrix10F10 matOut;
     float value = 0.0f;
 
     // TODO: verify correct
@@ -168,9 +168,9 @@ Matrix10F3 Matrix10F3::operator*(const Matrix10F3 &matIn)
 
 
 // overload * operator to provide a matrix vector product
-Vector3F Matrix10F3::operator*(const Vector3F &vecIn)
+Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 {
-    Vector3F vecOut;
+    Vector10F vecOut;
     float value = 0.0f;
 
     // TODO: verify correct
@@ -188,10 +188,30 @@ Vector3F Matrix10F3::operator*(const Vector3F &vecIn)
     return vecOut;
 }
 
-
-Matrix10F3 Matrix10F3::operator*(const float &scalar)
+Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
 {
-    Matrix10F3 matOut;
+    Vector10F vecOut;
+    float value = 0.0f;
+
+    // TODO: verify correct
+    for(int i = 0; i < SIZE; i++)
+    {
+    	for(int j = 0; j < SIZE; j++)
+		{
+    		value += data[i][j]+vecIn[j];
+
+    		vecOut[i] = value;
+    		value = 0.0f;
+		}
+    }
+
+    return vecOut;
+}
+
+
+Matrix10F10 Matrix10F10::operator*(const float &scalar)
+{
+    Matrix10F10 matOut;
 
     // TODO: verify correct
     for(int i = 0; i < SIZE; i++)
@@ -206,9 +226,9 @@ Matrix10F3 Matrix10F3::operator*(const float &scalar)
 }
 
 
-Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
+Matrix10F10 Matrix10F10::operator+(const Matrix10F10 &matIn) const
 {
-    Matrix10F3 matOut;
+    Matrix10F10 matOut;
 
     // TODO: verify correct
 	for(int i = 0; i < SIZE; i++)
@@ -223,22 +243,22 @@ Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
 }
 
 
-//Matrix10F3 Matrix10F3::RotationMatrix(Matrix10F3::Rotation_t boardRotation)
+//Matrix10F10 Matrix10F10::RotationMatrix(Matrix10F10::Rotation_t boardRotation)
 //{
-//	Matrix10F3 matrix;
+//	Matrix10F10 matrix;
 //
-//	float roll  = M_DEG_TO_RAD_F * (float)Matrix10F3::RotLookup[boardRotation].roll;
-//	float pitch = M_DEG_TO_RAD_F * (float)Matrix10F3::RotLookup[boardRotation].pitch;
-//	float yaw   = M_DEG_TO_RAD_F * (float)Matrix10F3::RotLookup[boardRotation].yaw;
+//	float roll  = M_DEG_TO_RAD_F * (float)Matrix10F10::RotLookup[boardRotation].roll;
+//	float pitch = M_DEG_TO_RAD_F * (float)Matrix10F10::RotLookup[boardRotation].pitch;
+//	float yaw   = M_DEG_TO_RAD_F * (float)Matrix10F10::RotLookup[boardRotation].yaw;
 //
-//	return Matrix10F3::FromEuler(roll, pitch, yaw);
+//	return Matrix10F10::FromEuler(roll, pitch, yaw);
 //}
 //
 //
 //
-//Matrix10F3 Matrix10F3::FromEuler(float roll, float pitch, float yaw)
+//Matrix10F10 Matrix10F10::FromEuler(float roll, float pitch, float yaw)
 //{
-//	Matrix10F3 matrix;
+//	Matrix10F10 matrix;
 //
 //	float cp = cosf(pitch);
 //	float sp = sinf(pitch);
@@ -262,9 +282,9 @@ Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
 //
 //
 //
-//Vector3F Matrix10F3::ToEuler(void) const
+//Vector10F Matrix10F10::ToEuler(void) const
 //{
-//	Vector3F euler;
+//	Vector10F euler;
 //	euler[1] = asinf(-data[2][0]);
 //
 //	if (fabsf(euler[1] - M_PI_2) < 1.0e-3f) {
