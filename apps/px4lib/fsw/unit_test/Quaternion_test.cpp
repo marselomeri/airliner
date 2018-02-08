@@ -125,6 +125,51 @@ void Test_Quaternion_ArrayOperator(void)
 }
 
 
+void Test_Quaternion_MultiplyOperator(void)
+{
+    math::Quaternion quatA(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Quaternion quatB(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Quaternion quat(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion expected(-36.5f, 7.5f, 10.5f, 13.5f);
+    float nanResult = quat[4];
+
+    quat = quatA * quatB;
+    
+    UtAssert_True(expected[0] == quat[0], "-36.5f == quat[0]");
+    UtAssert_True(expected[1] == quat[1], "7.5f == quat[1]");
+    UtAssert_True(expected[2] == quat[2], "10.5f == quat[2]");
+    UtAssert_True(expected[3] == quat[3], "13.5f == quat[3]");
+    UtAssert_True(isnan(nanResult), "NAN == quat[4]");
+}
+
+
+void Test_Quaternion_DivideOperator(void)
+{
+    math::Quaternion quatA(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Quaternion quatB(2.5f, 3.5f, 4.5f, 5.5f);
+    math::Quaternion quat(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion quatR(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion expected(1.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion expectedR(0.7681159377f, 0.0289855078f, 0.0000000000f, 0.0579710156f);
+    
+    float nanResult = quat[4];
+
+    quat = quatA / quatA;
+
+    quatR = quatA / quatB;
+
+    UtAssert_True(expected[0] == quat[0], "1.0f == quat[0]");
+    UtAssert_True(expected[1] == quat[1], "0.0f == quat[1]");
+    UtAssert_True(expected[2] == quat[2], "0.0f == quat[2]");
+    UtAssert_True(expected[3] == quat[3], "0.0f == quat[3]");
+    UtAssert_True(expectedR[0] == quatR[0], "0.7681159377f == quat[0]");
+    UtAssert_True(expectedR[1] == quatR[1], "0.0289855078f == quat[1]");
+    UtAssert_True(expectedR[2] == quatR[2], "0.0000000000f == quat[2]");
+    UtAssert_True(expectedR[3] == quatR[3], "0.0579710156f == quat[3]");
+    UtAssert_True(isnan(nanResult), "NAN == quat[4]");
+}
+
+
 void Test_Quaternion_Imaginary(void)
 {
 //	/* quatActual = quatA - quatB */

@@ -42,6 +42,8 @@ void Test_Quaternion_Constructor(void);
 void Test_Quaternion_Matrix3F3Constructor(void);
 void Test_Quaternion_IndexOutOfBounds(void);
 void Test_Quaternion_ArrayOperator(void);
+void Test_Quaternion_MultiplyOperator(void);
+void Test_Quaternion_DivideOperator(void);
 void Test_Quaternion_Imaginary(void);
 void Test_Quaternion_RotationMatrix(void);
 
