@@ -9,22 +9,6 @@ add_airliner_app_def(qae
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_version.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.hpp
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -54,22 +38,7 @@ add_airliner_app_unit_test(qae-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/qae_version.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/geo_mag_declination.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Limits.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Geo.hpp
+        ${PX4LIB_LIB_SOURCES}
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

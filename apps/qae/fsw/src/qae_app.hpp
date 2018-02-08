@@ -56,9 +56,10 @@ extern "C" {
 #include "qae_tbldefs.h"
 #include "px4_msgs.h"
 
-#include "Quaternion.hpp"
-#include "Vector3F.hpp"
-#include "Matrix3F3.hpp"
+#include <math/Quaternion.hpp>
+#include <math/Vector3F.hpp>
+#include <math/Matrix3F3.hpp>
+#include <math/Matrix4F4.hpp>
 
 /************************************************************************
  ** Local Defines

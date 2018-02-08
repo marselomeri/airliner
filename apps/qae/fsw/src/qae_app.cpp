@@ -9,12 +9,12 @@
 #include "qae_app.hpp"
 #include "qae_msg.h"
 #include "qae_version.h"
-#include "lib/px4lib.h"
 
-#include "geo_mag_declination.h"
-#include "Limits.hpp"
+#include <geo_lookup/geo_mag_declination.h>
+#include <geo/geo.h>
+#include <math/Limits.hpp>
+#include <px4lib.h>
 
-#include "Geo.hpp"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -302,7 +302,7 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
         {
             case AE_WAKEUP_MID:
                 /* TODO:  Do something here. */
-                EstimateAttitude();
+                //EstimateAttitude();
                 break;
 
             case AE_SEND_HK_MID:
@@ -316,6 +316,7 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_SENSOR_COMBINED_MID:
                 memcpy(&CVT.SensorCombinedMsg, MsgPtr, sizeof(CVT.SensorCombinedMsg));
+                EstimateAttitude();
                 break;
 
             case PX4_VEHICLE_GLOBAL_POSITION_MID:
@@ -726,7 +727,7 @@ void QAE::EstimateAttitude(void)
     }
 
     update_success = UpdateEstimateAttitude(delta_time);
-    if(TRUE == update_success)
+    if(FALSE == update_success)
     {
         (void) CFE_EVS_SendEvent(QAE_UPDATE_EST_ERR_EID, CFE_EVS_ERROR,
                 "Update attitude estimate failed, reset to last state");
@@ -837,12 +838,15 @@ boolean QAE::InitEstimateAttitude(void)
     OS_printf("decl_rotation.FromYaw [] %f, [] %f, [] %f, [] %f\n", decl_rotation[0], decl_rotation[1], decl_rotation[2], decl_rotation[3]);
     
     m_Quaternion = decl_rotation * m_Quaternion;
+    OS_printf("decl_rotation * m_Quaternion m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
     m_Quaternion.Normalize();
-    
+    OS_printf("m_Quaternion.Normalize() m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
+    OS_printf("m_Quaternion.Length() %f\n", m_Quaternion.Length());
     if(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
        isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) &&
        m_Quaternion.Length() > 0.95f && m_Quaternion.Length() < 1.05f)
     {
+        OS_printf("QAE_EST_INITIALIZED\n");
         HkTlm.EstimatorState = QAE_EST_INITIALIZED;
         return_bool = TRUE;
     }
@@ -885,7 +889,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     /* Magnetometer correction project mag field vector to global frame 
      * and extract XY component */
     mag_earth = m_Quaternion.Conjugate(m_Mag);
-    magErr = wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_Params.mag_declination);
+    magErr = _wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_Params.mag_declination);
     
     if(spinRate > QAE_FIFTY_DPS)
     {
@@ -936,17 +940,22 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     /* Normalize quaternion */
     m_Quaternion.Normalize();
     
-    if (!(isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
-        isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3])))
+    //OS_printf("before last if check %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
+    
+    if (isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
+        isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) )
     {
+        return TRUE;
+    }
+    else
+    {
+        OS_printf("reset to last good state\n");
         /* Reset quaternion to last good state */
         m_Quaternion = q_last;
         m_Rates.Zero();
         m_GyroBias.Zero();
         return FALSE;
     }
-    
-    return TRUE;
 }
 
 
