@@ -50,8 +50,8 @@
 #include <math.h>
 #include "cfs_utils.h"
 
-#include "Quaternion.hpp"
-#include "lib/px4lib.h"
+#include <math/Quaternion.hpp>
+#include <px4lib.h>
 
 
 #define TPA_RATE_LOWER_LIMIT  0.05f
@@ -1138,7 +1138,7 @@ void MAC::ControlAttitudeRates(float dt)
 
 	/* fine tune the rotation */
 	math::Matrix3F3 boardRotationOffset;
-	boardRotationOffset = boardRotationOffset.FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
+	boardRotationOffset = math::Matrix3F3::FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[1],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[2]);
 	boardRotation = boardRotationOffset * boardRotation;

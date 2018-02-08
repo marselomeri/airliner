@@ -8,16 +8,15 @@
 #include "mpc_app.h"
 #include "mpc_msg.h"
 #include "mpc_version.h"
-#include "Quaternion.hpp"
-#include "Matrix3F3.hpp"
-#include "Vector2F.hpp"
-#include "Quaternion.hpp"
+#include "math/Matrix3F3.hpp"
+#include "math/Vector2F.hpp"
+#include "math/Quaternion.hpp"
 #include <float.h>
 #include <math.h>
-#include "lib/px4lib.h"
+#include "px4lib.h"
 #include "geo/geo.h"
-#include "lib/mathlib/math/Expo.hpp"
-#include "lib/mathlib/math/Limits.hpp"
+#include "math/Expo.hpp"
+#include "math/Limits.hpp"
 
 #define nan FP_NAN
 
@@ -758,24 +757,27 @@ void MPC::ProcessVehicleLocalPositionMsg(void)
 	{
 		if (Z_ResetCounter != VehicleLocalPositionMsg.Z_ResetCounter)
 		{
-			PositionSetpoint[2] += VehicleLocalPositionMsg.Delta_Z;
+			PositionSetpoint[2] = PositionSetpoint[2] + VehicleLocalPositionMsg.Delta_Z;
 		}
 
-		if (XY_ResetCounter != VehicleLocalPositionMsg.XY_ResetCounter) {
-			PositionSetpoint[0] += VehicleLocalPositionMsg.Delta_XY[0];
-			PositionSetpoint[1] += VehicleLocalPositionMsg.Delta_XY[1];
+		if (XY_ResetCounter != VehicleLocalPositionMsg.XY_ResetCounter)
+		{
+			PositionSetpoint[0] = PositionSetpoint[0] + VehicleLocalPositionMsg.Delta_XY[0];
+			PositionSetpoint[1] = PositionSetpoint[1] + VehicleLocalPositionMsg.Delta_XY[1];
 		}
 
-		if (VZ_ResetCounter != VehicleLocalPositionMsg.VZ_ResetCounter) {
-			VelocitySetpoint[2] += VehicleLocalPositionMsg.Delta_VZ;
-			VelocitySetpointPrevious[2] +=  VehicleLocalPositionMsg.Delta_VZ;
+		if (VZ_ResetCounter != VehicleLocalPositionMsg.VZ_ResetCounter)
+		{
+			VelocitySetpoint[2] = VelocitySetpoint[2] + VehicleLocalPositionMsg.Delta_VZ;
+			VelocitySetpointPrevious[2] =  VelocitySetpointPrevious[2] + VehicleLocalPositionMsg.Delta_VZ;
 		}
 
-		if (VXY_ResetCounter != VehicleLocalPositionMsg.VXY_ResetCounter) {
-			VelocitySetpoint[0] += VehicleLocalPositionMsg.Delta_VXY[0];
-			VelocitySetpoint[1] += VehicleLocalPositionMsg.Delta_VXY[1];
-			VelocitySetpointPrevious[0] += VehicleLocalPositionMsg.Delta_VXY[0];
-			VelocitySetpointPrevious[1] += VehicleLocalPositionMsg.Delta_VXY[1];
+		if (VXY_ResetCounter != VehicleLocalPositionMsg.VXY_ResetCounter)
+		{
+			VelocitySetpoint[0] = VelocitySetpoint[0] + VehicleLocalPositionMsg.Delta_VXY[0];
+			VelocitySetpoint[1] = VelocitySetpoint[1] + VehicleLocalPositionMsg.Delta_VXY[1];
+			VelocitySetpointPrevious[0] = VelocitySetpointPrevious[0] + VehicleLocalPositionMsg.Delta_VXY[0];
+			VelocitySetpointPrevious[1] = VelocitySetpointPrevious[1] + VehicleLocalPositionMsg.Delta_VXY[1];
 		}
 	}
 
@@ -962,10 +964,9 @@ void MPC::UpdateRef(void)
 			 * adjusts the position setpoint to keep the vehicle in its
 			 * current local position. It would only change its global
 			 * position on the next setpoint update. */
-			map_projection_project(&RefPos, LatitudeSetpoint, LongitudeSetpoint, &PositionSetpoint[0], &PositionSetpoint[1]);
+			//map_projection_project(&RefPos, LatitudeSetpoint, LongitudeSetpoint, &PositionSetpoint[0], &PositionSetpoint[1]);
 			PositionSetpoint[2] = -(AltitudeSetpoint - RefAlt);
 		}
-
 		RefTimestamp = VehicleLocalPositionMsg.RefTimestamp;
 	}
 }
@@ -1131,16 +1132,14 @@ void MPC::GenerateAttitudeSetpoint(float dt)
 			// Compute the vector obtained by rotating a z unit vector by the rotation
 			// given by the roll and pitch commands of the user
 			math::Vector3F zB = {0, 0, 1};
-			math::Matrix3F3 R_sp_roll_pitch;
-			R_sp_roll_pitch.FromEuler(VehicleAttitudeSetpointMsg.RollBody, VehicleAttitudeSetpointMsg.PitchBody, 0);
+			math::Matrix3F3 R_sp_roll_pitch = math::Matrix3F3::FromEuler(VehicleAttitudeSetpointMsg.RollBody, VehicleAttitudeSetpointMsg.PitchBody, 0);
 			math::Vector3F z_roll_pitch_sp = R_sp_roll_pitch * zB;
 
 			/* Transform the vector into a new frame which is rotated around the z axis
 			 * by the current yaw error. this vector defines the desired tilt when we look
 			 * into the direction of the desired heading.
 			 */
-			math::Matrix3F3 R_yaw_correction;
-			R_yaw_correction.FromEuler(0.0f, 0.0f, -yaw_error);
+			math::Matrix3F3 R_yaw_correction = math::Matrix3F3::FromEuler(0.0f, 0.0f, -yaw_error);
 			z_roll_pitch_sp = R_yaw_correction * z_roll_pitch_sp;
 
 			/* Use the formula z_roll_pitch_sp = R_tilt * [0;0;1]
@@ -1183,15 +1182,15 @@ void MPC::GenerateAttitudeSetpoint(float dt)
 void MPC::ControlManual(float dt)
 {
 	/* Velocity setpoint commanded by user stick input. */
-	math::Vector3F man_vel_sp;
+	math::Vector3F man_vel_sp(0.0f, 0.0f, 0.0f);
 
 	/* Entering manual control from non-manual control mode, reset alt/pos setpoints */
-	if (ModeAuto)
+	if(ModeAuto == true)
 	{
 		ModeAuto = false;
 
 		/* Reset alt pos flags if resetting is enabled. */
-		if (DoResetAltPos)
+		if(DoResetAltPos == true)
 		{
 			ResetPositionSetpoint = true;
 			ResetAltitudeSetpoint = true;
@@ -1275,7 +1274,7 @@ void MPC::ControlManual(float dt)
 	else
 	{
 		/* Check if we switch to alt_hold_engaged. */
-		bool smooth_alt_transition = AltitudeHoldEngaged &&
+		bool smooth_alt_transition = alt_hold_desired &&
 					     (ConfigTblPtr->HOLD_MAX_Z < FLT_EPSILON || fabsf(Velocity[2]) < ConfigTblPtr->HOLD_MAX_Z);
 
 		/* During transition predict setpoint forward. */

@@ -9,8 +9,8 @@
 #include "mpu9250_app.h"
 #include "mpu9250_msg.h"
 #include "mpu9250_version.h"
-#include "Vector3F.hpp"
-#include "lib/px4lib.h"
+#include "math/Vector3F.hpp"
+#include "px4lib.h"
 
 //#include <unistd.h>
 

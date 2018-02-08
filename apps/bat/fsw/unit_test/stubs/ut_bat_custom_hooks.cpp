@@ -32,7 +32,6 @@
 *****************************************************************************/
 
 #include "cfe.h"
-#include "pwm_limit/pwm_limit.h"
 
 
 int32 UT_InitDevice(void)
