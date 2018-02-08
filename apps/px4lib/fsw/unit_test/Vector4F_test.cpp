@@ -63,6 +63,170 @@ void Test_Vector4F_IndexOutOfBounds(void)
 }
 
 
+void Test_Vector4F_Length(void)
+{
+	math::Vector4F vector(1.5f, 2.5f, 3.5f, 4.5f);
+	float expectedLength = vector.Length();
+    float expectedResult = sqrtf((1.5f)*(1.5f) + (2.5f)*(2.5f) + (3.5f)*(3.5f) + (4.5f)*(4.5f));
+    float actualLength = 6.4031242f;
+
+    /* Verify results */
+    UtAssert_True(fabs(expectedLength - actualLength) <= FLT_EPSILON, "vector.Length() == expectedLength");
+    UtAssert_True(vector.Length() == expectedResult, "vector.Length() == expectedResult");
+}
+
+
+void Test_Vector4F_LengthSquared(void)
+{
+	math::Vector4F vector(1.5f, 2.5f, 3.5f, 4.5f);
+	float expectedLength = vector.LengthSquared();
+    float expectedResult = (1.5f)*(1.5f) + (2.5f)*(2.5f) + (3.5f)*(3.5f) + (4.5f)*(4.5f);
+    float actualLength = 41.0f;
+
+    /* Verify results */
+    UtAssert_True(fabs(expectedLength - actualLength) <= FLT_EPSILON, "vector.Length() == expectedLength");
+    UtAssert_True(vector.LengthSquared() == expectedResult, "vector.Length() == expectedResult");
+}
+
+
+void Test_Vector4F_AdditionOperator(void)
+{
+	/* vectorActual = vectorA + vectorB */
+	math::Vector4F vectorA(1.5f, 2.5f, 3.5f, 4.5f);
+	math::Vector4F vectorB(10.5f, 20.5f, 30.5f, 40.5f);
+	math::Vector4F vectorActual = vectorA + vectorB;
+
+	/* Verify results */
+	UtAssert_True(vectorActual[0] == 12.0, "vectorActual[0] == vectorA[0] + vectorB[0]");
+	UtAssert_True(vectorActual[1] == 23.0, "vectorActual[1] == vectorA[1] + vectorB[1]");
+	UtAssert_True(vectorActual[2] == 34.0, "vectorActual[2] == vectorA[2] + vectorB[2]");
+	UtAssert_True(vectorActual[3] == 45.0, "vectorActual[3] == vectorA[3] + vectorB[3]");
+}
+
+
+void Test_Vector3F_SubtractionOperator(void)
+{
+	/* vectorActual = vectorA - vectorB */
+	math::Vector4F vectorA(1.5f, 2.5f, 3.5f, 4.5f);
+	math::Vector4F vectorB(10.5f, 20.5f, 30.5f, 40.5f);
+	math::Vector4F vectorActual = vectorA - vectorB;
+
+	/* Verify results */
+	UtAssert_True(vectorActual[0] == -9.0, "vectorActual[0] == vectorA[0] - vectorB[0]");
+	UtAssert_True(vectorActual[1] == -18.0, "vectorActual[1] == vectorA[1] - vectorB[1]");
+	UtAssert_True(vectorActual[2] == -27.0, "vectorActual[2] == vectorA[2] - vectorB[2]");
+	UtAssert_True(vectorActual[3] == -36.0, "vectorActual[3] == vectorA[3] - vectorB[3]");
+}
+
+void Test_Vector4F_ScalarMultiplyOperator(void)
+{
+	/* actual = vectorA * scalar */
+	math::Vector4F vectorA(1.5f, 2.5f, 3.5f, 4.5f);
+	float scalar = 10.5f;
+	math::Vector4F vectorActual = vectorA * scalar;
+	math::Vector4F vectorExpected(15.75f, 26.25f, 36.75, 47.25f);
+
+	/* Verify results */
+	UtAssert_True(vectorExpected[0] == vectorActual[0], "[0] vectorExpected == vectorA * scalar");
+	UtAssert_True(vectorExpected[1] == vectorActual[1], "[1] vectorExpected == vectorA * scalar");
+	UtAssert_True(vectorExpected[2] == vectorActual[2], "[2] vectorExpected == vectorA * scalar");
+	UtAssert_True(vectorExpected[3] == vectorActual[3], "[3] vectorExpected == vectorA * scalar");
+}
+
+
+void Test_Vector4F_ScalarDivOperator(void)
+{
+	/* actual = vectorA / scalar */
+	math::Vector4F vectorA(1.5f, 2.5f, 3.5f, 4.5f);
+	float scalar = 10.5f;
+	math::Vector4F vectorActual = vectorA / scalar;
+	math::Vector4F vectorExpected(0.142857f, 0.238095f, 0.333333f, 0.428571f);
+
+	/* Verify results */
+	UtAssert_True(fabs(vectorActual[0] - vectorExpected[0]) <= 0.00001, "[0] vectorExpected == vectorA / scalar");
+	UtAssert_True(fabs(vectorActual[1] - vectorExpected[1]) <= 0.00001, "[1] vectorExpected == vectorA / scalar");
+	UtAssert_True(fabs(vectorActual[2] - vectorExpected[2]) <= 0.00001, "[2] vectorExpected == vectorA / scalar");
+	UtAssert_True(fabs(vectorActual[3] - vectorExpected[3]) <= 0.00001, "[3] vectorExpected == vectorA / scalar");
+}
+
+
+void Test_Vector4F_DotProductOperator(void)
+{
+	/* actual = vectorA * vectorB */
+	math::Vector4F vectorA(1.5f, 2.5f, 3.5f, 4.5);
+	math::Vector4F vectorB(10.5f, 20.5f, 30.5f, 40.5f);
+    
+	/* This is actual flight data collected from PX4 code */
+	math::Vector4F vectorRzA(-0.019784f, -0.024276f, 0.999510f, 0.0f);
+	math::Vector4F vectorRzB(-0.019808f, -0.024276f, 0.999509f, 0.0f);
+	math::Vector4F vectorRzC(-0.019828f, -0.024274f, 0.999509f, 0.0f);
+	math::Vector4F vectorRspzA(-0.019997f, -0.025087f, 0.999485f, 0.0f);
+	math::Vector4F vectorRspzB(-0.019883f, -0.024780f, 0.999495f, 0.0f);
+	math::Vector4F vectorRspzC(-0.019977f, -0.024787f, 0.999493f, 0.0f);
+
+	float actualAB = vectorA * vectorB;
+    
+	float actualeRzcosA = vectorRzA * vectorRspzA;
+	float actualeRzcosB = vectorRzB * vectorRspzB;
+	float actualeRzcosC = vectorRzC * vectorRspzC;
+    
+    //printf("actualeRzcosA %.10f, actualeRzcosB %.10f\n\n", actualeRzcosA, actualeRzcosB);
+
+	float expectedAB = 356.0f;
+    
+	float expectedeRzcosA = 1.000000;
+	float expectedeRzcosB = 1.000000;
+	float expectedeRzcosC = 1.000000;
+
+	/* Verify results */
+	UtAssert_True(actualAB == expectedAB, "expected == vectorA dot vectorB");
+	UtAssert_True(actualeRzcosA == expectedeRzcosA, "expected == vectorRzA dot vectorRspzA");
+	UtAssert_True(actualeRzcosB == expectedeRzcosB, "expected == vectorRzB dot vectorRspzB");
+	UtAssert_True(actualeRzcosC == expectedeRzcosC, "expected == vectorRzC dot vectorRspzC");
+}
+
+
+void Test_Vector4F_EqualityOperator(void)
+{
+    math::Vector4F vectorA(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Vector4F vectorB(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Vector4F vectorC(1.0f, 2.0f, 3.0f, 4.0f);
+    
+    vectorA = vectorB = vectorC;
+    
+	/* Verify results */
+	UtAssert_True(vectorA[0] == vectorB[0], "vectorA[0] == vectorB[0]");
+	UtAssert_True(vectorA[1] == vectorB[1], "vectorA[1] == vectorB[1]");
+	UtAssert_True(vectorA[2] == vectorB[2], "vectorA[2] == vectorB[2]");
+	UtAssert_True(vectorA[3] == vectorB[3], "vectorA[3] == vectorB[3]");
+	UtAssert_True(vectorA[0] == vectorC[0], "vectorA[0] == vectorC[0]");
+	UtAssert_True(vectorA[1] == vectorC[1], "vectorA[1] == vectorC[1]");
+	UtAssert_True(vectorA[2] == vectorC[2], "vectorA[2] == vectorC[2]");
+	UtAssert_True(vectorA[3] == vectorC[3], "vectorA[3] == vectorC[3]");
+}
+
+
+void Test_Vector4F_Zero(void)
+{
+	math::Vector4F vector(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Vector4F copy(0.0f, 0.0f, 0.0f, 0.0f);
+    
+    copy = vector;
+    vector.Zero();
+
+    /* Verify results */
+    UtAssert_True(1.5f == copy[0],   "1.5f == copy[0]");
+    UtAssert_True(2.5f == copy[1],   "2.5f == copy[1]");
+    UtAssert_True(3.5f == copy[2],   "3.5f == copy[2]");
+    UtAssert_True(4.5f == copy[3],   "4.5f == copy[3]");
+    UtAssert_True(0.0f == vector[0], "0.0f == vector[0]");
+    UtAssert_True(0.0f == vector[1], "0.0f == vector[1]");
+    UtAssert_True(0.0f == vector[2], "0.0f == vector[2]");
+    UtAssert_True(0.0f == vector[3], "0.0f == vector[3]");
+}
+
+
+
 void Test_Vector4F_ArrayOperator(void)
 {
 	math::Vector4F vector(1.5f, 2.5f, 3.5f, 4.5f);

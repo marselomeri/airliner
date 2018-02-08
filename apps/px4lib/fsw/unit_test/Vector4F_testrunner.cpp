@@ -42,6 +42,25 @@ int main(void)
 	         "Test_Vector4F_Constructor");
 	UtTest_Add(Test_Vector4F_IndexOutOfBounds, Vector4F_Test_Setup, Vector4F_Test_TearDown,
 	         "Test_Vector4F_IndexOutOfBounds");
+	UtTest_Add(Test_Vector4F_Length, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_Length");
+	UtTest_Add(Test_Vector4F_LengthSquared, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_LengthSqaured");
+	UtTest_Add(Test_Vector4F_Zero, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_Zero");
+	UtTest_Add(Test_Vector4F_AdditionOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_AdditionOperator");
+	UtTest_Add(Test_Vector3F_SubtractionOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector3F_SubtractionOperator");
+	UtTest_Add(Test_Vector4F_ScalarMultiplyOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_ScalarMultiplyOperator");
+	UtTest_Add(Test_Vector4F_ScalarDivOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_ScalarDivOperator");
+	UtTest_Add(Test_Vector4F_DotProductOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_DotProductOperator");
+	UtTest_Add(Test_Vector4F_EqualityOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_EqualityOperator");
+             
 	UtTest_Add(Test_Vector4F_ArrayOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
 			 "Test_Vector4F_ArrayOperator");
 	UtTest_Add(Test_Vector4F_NegateOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,

@@ -150,19 +150,6 @@ const Vector4F& Vector4F::operator =(const Vector4F &v)
 }
 
 
-const Vector4F Vector4F::EMult(const Vector4F &vecIn) const
-{
-	Vector4F res;
-
-	res[0] = data[0] * vecIn[0];
-	res[1] = data[1] * vecIn[1];
-	res[2] = data[2] * vecIn[2];
-	res[3] = data[3] * vecIn[3];
-
-	return res;
-}
-
-
 void Vector4F::Normalize(void)
 {
     float mag = Length();
