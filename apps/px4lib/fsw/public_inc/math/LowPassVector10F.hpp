@@ -5,8 +5,6 @@
 #include "Vector10F.hpp"
 #include "Matrix10F10.hpp"
 
-#define SIZE    (10)
-
 class LowPassVector10F
 {
 public:

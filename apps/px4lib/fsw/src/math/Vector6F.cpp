@@ -1,26 +1,26 @@
-#include "math/Vector10F.hpp"
+#include "math/Vector6F.hpp"
 #include <math.h>
 
 using namespace math;
 
-Vector10F::Vector10F(float A, float B, float C, float D, float E, float F, float G, float H, float I, float J):
-    data{A,B,C,D,E,F,G,H,I,J},
+Vector6F::Vector6F(float A, float B, float C, float D, float E, float F):
+    data{A,B,C,D,E,F},
 	nan(NAN)
 {
 };
 
 
-Vector10F::Vector10F()
+Vector6F::Vector6F()
 {
 };
 
 
-Vector10F::~Vector10F()
+Vector6F::~Vector6F()
 {
 };
 
 
-float& Vector10F::operator [] (uint32 i)
+float& Vector6F::operator [] (uint32 i)
 {
 	if(i < SIZE)
 	{
@@ -31,7 +31,7 @@ float& Vector10F::operator [] (uint32 i)
 };
 
 
-float Vector10F::operator [] (uint32 i) const
+float Vector6F::operator [] (uint32 i) const
 {
 	if(i < SIZE)
 	{
@@ -42,16 +42,14 @@ float Vector10F::operator [] (uint32 i) const
 };
 
 
-float Vector10F::Length() const
+float Vector6F::Length() const
 {
     return sqrtf(data[0]*data[0] + data[1]*data[1] + data[2]*data[2] + \
-    		data[3]*data[3] + data[4]*data[4] + data[5]*data[5] + \
-			data[6]*data[6] + data[7]*data[7] + data[8]*data[8] + \
-			data[9]*data[9]);
+    		data[3]*data[3] + data[4]*data[4] + data[5]*data[5]);
 }
 
 
-void Vector10F::Zero()
+void Vector6F::Zero()
 {
     data[0] = 0.0f;
     data[1] = 0.0f;
@@ -59,63 +57,47 @@ void Vector10F::Zero()
     data[3] = 0.0f;
     data[4] = 0.0f;
     data[5] = 0.0f;
-    data[6] = 0.0f;
-    data[7] = 0.0f;
-    data[8] = 0.0f;
-    data[9] = 0.0f;
 }
 
 
 // overload + operator to provide a vector addition
-Vector10F Vector10F::operator+(const Vector10F &vecIn)
+Vector6F Vector6F::operator+(const Vector6F &vecIn)
 {
-    Vector10F vecOut;
+    Vector6F vecOut;
     vecOut[0] = data[0] + vecIn[0];
     vecOut[1] = data[1] + vecIn[1];
     vecOut[2] = data[2] + vecIn[2];
     vecOut[3] = data[3] + vecIn[3];
     vecOut[4] = data[4] + vecIn[4];
     vecOut[5] = data[5] + vecIn[5];
-    vecOut[6] = data[6] + vecIn[6];
-    vecOut[7] = data[7] + vecIn[7];
-    vecOut[8] = data[8] + vecIn[8];
-    vecOut[9] = data[9] + vecIn[9];
     return vecOut;
 }
 
 
 // overload + operator to provide a vector addition
-Vector10F Vector10F::operator+(const Vector10F &vecIn) const
+Vector6F Vector6F::operator+=(const Vector6F &vecIn)
 {
-    Vector10F vecOut;
+    Vector6F vecOut;
     vecOut[0] = data[0] + vecIn[0];
     vecOut[1] = data[1] + vecIn[1];
     vecOut[2] = data[2] + vecIn[2];
     vecOut[3] = data[3] + vecIn[3];
     vecOut[4] = data[4] + vecIn[4];
     vecOut[5] = data[5] + vecIn[5];
-    vecOut[6] = data[6] + vecIn[6];
-    vecOut[7] = data[7] + vecIn[7];
-    vecOut[8] = data[8] + vecIn[8];
-    vecOut[9] = data[9] + vecIn[9];
     return vecOut;
 }
 
 
 // overload - operator to provide a vector subtraction
-Vector10F Vector10F::operator-(const Vector10F &vecIn)
+Vector6F Vector6F::operator-(const Vector6F &vecIn)
 {
-    Vector10F vecOut;
+    Vector6F vecOut;
     vecOut[0] = data[0] - vecIn[0];
     vecOut[1] = data[1] - vecIn[1];
     vecOut[2] = data[2] - vecIn[2];
     vecOut[3] = data[3] - vecIn[3];
     vecOut[4] = data[4] - vecIn[4];
     vecOut[5] = data[5] - vecIn[5];
-    vecOut[6] = data[6] - vecIn[6];
-    vecOut[7] = data[7] - vecIn[7];
-    vecOut[8] = data[8] - vecIn[8];
-    vecOut[9] = data[9] - vecIn[9];
     return vecOut;
 }
 
@@ -123,9 +105,9 @@ Vector10F Vector10F::operator-(const Vector10F &vecIn)
 
 // TODO: implement this
 // overload % operator to provide a vector cross product
-//Vector10F Vector10F::operator%(const Vector10F &vecIn)
+//Vector6F Vector6F::operator%(const Vector6F &vecIn)
 //{
-//    Vector10F vecOut;
+//    Vector6F vecOut;
 //
 //    vecOut[0] = data[1]*vecIn[2] - data[2]*vecIn[1];
 //    vecOut[1] = data[2]*vecIn[0] - data[0]*vecIn[2];
@@ -136,43 +118,35 @@ Vector10F Vector10F::operator-(const Vector10F &vecIn)
 
 
 // overload * operator to provide a vector scalar product
-Vector10F Vector10F::operator*(const float scalar)
+Vector6F Vector6F::operator*(const float scalar)
 {
-    Vector10F vecOut;
+    Vector6F vecOut;
     vecOut[0] = data[0] * scalar;
     vecOut[1] = data[1] * scalar;
     vecOut[2] = data[2] * scalar;
     vecOut[3] = data[3] * scalar;
     vecOut[4] = data[4] * scalar;
     vecOut[5] = data[5] * scalar;
-    vecOut[6] = data[6] * scalar;
-    vecOut[7] = data[7] * scalar;
-    vecOut[8] = data[8] * scalar;
-    vecOut[9] = data[9] * scalar;
     return vecOut;
 }
 
 
 // overload / operator to provide a vector scalar division
-Vector10F Vector10F::operator/(const float scalar)
+Vector6F Vector6F::operator/(const float scalar)
 {
-    Vector10F vecOut;
+    Vector6F vecOut;
     vecOut[0] = data[0] / scalar;
     vecOut[1] = data[1] / scalar;
     vecOut[2] = data[2] / scalar;
     vecOut[3] = data[3] / scalar;
     vecOut[4] = data[4] / scalar;
     vecOut[5] = data[5] / scalar;
-    vecOut[6] = data[6] / scalar;
-    vecOut[7] = data[7] / scalar;
-    vecOut[8] = data[8] / scalar;
-    vecOut[9] = data[9] / scalar;
     return vecOut;
 }
 
 
 // overload dot product operator to provide a vector scalar product
-float Vector10F::operator*(const Vector10F &vecIn)
+float Vector6F::operator*(const Vector6F &vecIn)
 {
 	float res = 0.0f;
 
@@ -182,18 +156,14 @@ float Vector10F::operator*(const Vector10F &vecIn)
 	res += data[3] * vecIn[3];
 	res += data[4] * vecIn[4];
 	res += data[5] * vecIn[5];
-	res += data[6] * vecIn[6];
-	res += data[7] * vecIn[7];
-	res += data[8] * vecIn[8];
-	res += data[9] * vecIn[9];
 
 	return res;
 }
 
 
-Vector10F Vector10F::operator-() const
+Vector6F Vector6F::operator-() const
 {
-	Vector10F res;
+	Vector6F res;
 
 	res[0] = -data[0];
 	res[1] = -data[1];
@@ -201,18 +171,28 @@ Vector10F Vector10F::operator-() const
 	res[3] = -data[3];
 	res[4] = -data[4];
 	res[5] = -data[5];
-	res[6] = -data[6];
-	res[7] = -data[7];
-	res[8] = -data[8];
-	res[9] = -data[9];
+
+    return res;
+}
+
+Vector6F Vector6F::pow(const float scalar) const
+{
+	Vector6F res;
+
+	res[0] = ::pow(data[0], scalar);
+	res[1] = ::pow(data[1], scalar);
+	res[2] = ::pow(data[2], scalar);
+	res[3] = ::pow(data[3], scalar);
+	res[4] = ::pow(data[4], scalar);
+	res[5] = ::pow(data[5], scalar);
 
     return res;
 }
 
 
-Vector10F Vector10F::EMult(const Vector10F &vecIn)
+Vector6F Vector6F::EMult(const Vector6F &vecIn)
 {
-	Vector10F res;
+	Vector6F res;
 
 	res[0] = data[0] * vecIn[0];
 	res[1] = data[1] * vecIn[1];
@@ -220,17 +200,13 @@ Vector10F Vector10F::EMult(const Vector10F &vecIn)
 	res[3] = data[3] * vecIn[3];
 	res[4] = data[4] * vecIn[4];
 	res[5] = data[5] * vecIn[5];
-	res[6] = data[6] * vecIn[6];
-	res[7] = data[7] * vecIn[7];
-	res[8] = data[8] * vecIn[8];
-	res[9] = data[9] * vecIn[9];
 
 	return res;
 }
 
-const Vector10F Vector10F::EDivide(const Vector10F &vecIn) const
+const Vector6F Vector6F::EDivide(const Vector6F &vecIn) const
 {
-	Vector10F res;
+	Vector6F res;
 
 	res[0] = data[0] / vecIn[0];
 	res[1] = data[1] / vecIn[1];
@@ -238,15 +214,11 @@ const Vector10F Vector10F::EDivide(const Vector10F &vecIn) const
 	res[3] = data[3] / vecIn[3];
 	res[4] = data[4] / vecIn[4];
 	res[5] = data[5] / vecIn[5];
-	res[6] = data[6] / vecIn[6];
-	res[7] = data[7] / vecIn[7];
-	res[8] = data[8] / vecIn[8];
-	res[9] = data[9] / vecIn[9];
 
 	return res;
 }
 
-void Vector10F::Constrain(uint32 i, float min, float max)
+void Vector6F::Constrain(uint32 i, float min, float max)
 {
 	if(data[i] < min)
 	{
@@ -258,9 +230,9 @@ void Vector10F::Constrain(uint32 i, float min, float max)
 	}
 }
 
-Vector10F Vector10F::Normalized(void)
+Vector6F Vector6F::Normalized(void)
 {
-	Vector10F res;
+	Vector6F res;
 	float mag = Length();
 
 	res[0] = data[0] / mag;
@@ -269,15 +241,11 @@ Vector10F Vector10F::Normalized(void)
 	res[3] = data[3] / mag;
 	res[4] = data[4] / mag;
 	res[5] = data[5] / mag;
-	res[6] = data[6] / mag;
-	res[7] = data[7] / mag;
-	res[8] = data[8] / mag;
-	res[9] = data[9] / mag;
 
 	return res;
 }
 
-void Vector10F::Normalize(void)
+void Vector6F::Normalize(void)
 {
 	float mag = Length();
 
@@ -287,9 +255,5 @@ void Vector10F::Normalize(void)
 	data[3] = data[3] / mag;
 	data[4] = data[4] / mag;
 	data[5] = data[5] / mag;
-	data[6] = data[6] / mag;
-	data[7] = data[7] / mag;
-	data[8] = data[8] / mag;
-	data[9] = data[9] / mag;
 }
 

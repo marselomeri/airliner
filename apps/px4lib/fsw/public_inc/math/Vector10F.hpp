@@ -1,5 +1,5 @@
-#ifndef Vector10F_HPP
-#define Vector10F_HPP
+#ifndef VECTOR10F_HPP
+#define VECTOR10F_HPP
 
 #include "cfe.h"
 
