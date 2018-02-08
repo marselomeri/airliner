@@ -2,7 +2,6 @@
 #define MATRIX3F3_HPP
 
 #include "cfe.h"
-#include "Matrix10F10.hpp"
 #include "Vector10F.hpp"
 
 #define M_DEG_TO_RAD_F		0.0174532925f
