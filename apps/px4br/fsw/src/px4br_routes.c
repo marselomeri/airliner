@@ -203,7 +203,7 @@ PX4BR_Route_t  PX4BR_Route[PX4BR_MAX_ROUTE_COUNT] =
 //		{"vehicle_command", (PX4_ENCODE_FUNC) PX4BR_VehicleCommand_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleCommand_Dec, PX4_VEHICLE_COMMAND_MID, px4br_vehicle_command_pb_size, 1, 0, 0},
 		{"vehicle_control_mode", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleControlMode_Dec, PX4_VEHICLE_CONTROL_MODE_MID, px4br_vehicle_control_mode_pb_size, 1, 0, 0},
 //		{"vehicle_force_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleForceSetpoint_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleForceSetpoint_Dec, PX4_VEHICLE_FORCE_SETPOINT_MID, px4br_vehicle_force_setpoint_pb_size, 1, 0, 0},
-//		{"vehicle_global_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalPosition_Enc, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalPosition_Dec, PX4_VEHICLE_GLOBAL_POSITION_MID, px4br_vehicle_global_position_pb_size, 1, 0, 0},
+		{"vehicle_global_position", (PX4_ENCODE_FUNC) 0, (PX4_DECODE_FUNC) PX4BR_VehicleGlobalPosition_Dec, PX4_VEHICLE_GLOBAL_POSITION_MID, px4br_vehicle_global_position_pb_size, 1, 0, 0},
 		{"vehicle_global_velocity_setpoint", (PX4_ENCODE_FUNC) PX4BR_VehicleGlobalVelocitySetpoint_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID, px4br_vehicle_global_velocity_setpoint_pb_size, 1, 0, 0},
 		{"vehicle_gps_position", (PX4_ENCODE_FUNC) PX4BR_VehicleGpsPosition_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_GPS_POSITION_MID, px4br_vehicle_gps_position_pb_size, 1, 0, 0},
 		{"vehicle_land_detected", (PX4_ENCODE_FUNC) PX4BR_VehicleLandDetected_Enc, (PX4_DECODE_FUNC) 0, PX4_VEHICLE_LAND_DETECTED_MID, px4br_vehicle_land_detected_pb_size, 1, 0, 0},

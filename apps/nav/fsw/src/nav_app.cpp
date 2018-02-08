@@ -619,7 +619,7 @@ void NAV::AppMain()
 }
 void NAV::execute(){
 	OS_printf("===================================\n");
-	OS_printf("HOME TIMESTAMP:   %lld \n",CVT.HomePositionMsg.Timestamp);
+	OS_printf("VGP TIMESTAMP:   %lld \n",CVT.VehicleGlobalPosition.Timestamp);
 	OS_printf("HOME LATITUDE:   %ld \n",CVT.VehicleGpsPositionMsg.Lat);
 	OS_printf("HOME LONGTUDE:   %ld \n",CVT.VehicleGpsPositionMsg.Lon);
 	OS_printf("HOME ALTITUDE:   %ld \n",CVT.VehicleGpsPositionMsg.Alt);
@@ -633,6 +633,9 @@ void NAV::execute(){
 
 
 	OS_printf("===================================\n\n");
+
+	boolean global_position_available_once = false;
+
 
 }
 
