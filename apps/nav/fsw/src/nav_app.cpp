@@ -69,6 +69,7 @@ int32 NAV::InitPipe()
 {
     int32  iStatus=CFE_SUCCESS;
 
+
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
     		NAV_SCH_PIPE_DEPTH,
@@ -202,7 +203,8 @@ NAV_InitPipe_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void NAV::InitData()
 {
-    /* Init housekeeping message. */
+
+	/* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
     		NAV_HK_TLM_MID, sizeof(HkTlm), TRUE);
       /* Init output messages */
@@ -311,9 +313,14 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
         {
             case NAV_WAKEUP_MID:
                 /* TODO:  Do something here. */
+            	//execute();
                 break;
 
             case NAV_SEND_HK_MID:
+            	counter = counter+1;
+            	OS_printf("count value : %d \n ",counter);
+
+            	execute();
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
@@ -610,6 +617,43 @@ void NAV::AppMain()
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
 }
+void NAV::execute(){
+	OS_printf("===================================\n");
+	OS_printf("HOME TIMESTAMP:   %lld \n",CVT.HomePositionMsg.Timestamp);
+	OS_printf("HOME LATITUDE:   %ld \n",CVT.VehicleGpsPositionMsg.Lat);
+	OS_printf("HOME LONGTUDE:   %ld \n",CVT.VehicleGpsPositionMsg.Lon);
+	OS_printf("HOME ALTITUDE:   %ld \n",CVT.VehicleGpsPositionMsg.Alt);
+	OS_printf("HOME X:   %f \n",CVT.HomePositionMsg.X);
+	OS_printf("HOME Y:   %f \n",CVT.HomePositionMsg.Y);
+	OS_printf("HOME Z:   %f \n",CVT.HomePositionMsg.Z);
+	OS_printf("HOME YAW:   %f \n",CVT.HomePositionMsg.Yaw);
+	OS_printf("HOME DirectionX:   %f \n",CVT.HomePositionMsg.DirectionX);
+	OS_printf("HOME DirectionY:   %f \n",CVT.HomePositionMsg.DirectionY);
+	OS_printf("HOME DirectionZ:   %f \n",CVT.HomePositionMsg.DirectionZ);
+
+
+	OS_printf("===================================\n\n");
+
+}
+
+float NAV::getDefaultAcceptedRadius(){
+	return nav_params.nav_acc_rad;
+}
+
+//this function also needs to set this variable in params table
+void NAV::setAcceptedRadius(float mission_radius){
+	nav_params.nav_acc_rad = mission_radius;
+}
+
+float NAV::getAltitudeAcceptedRadius(){
+	return nav_params.nav_mc_alt_rad;
+}
+
+//float NAV::getCruisingSpeed(){
+//
+//}
+
+
 
 
 /************************/

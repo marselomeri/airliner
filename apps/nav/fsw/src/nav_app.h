@@ -55,19 +55,7 @@ extern "C" {
 #include "nav_events.h"
 #include "nav_tbldefs.h"
 #include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
-#include "px4_msgs.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -87,6 +75,11 @@ typedef struct
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
 } NAV_CurrentValueTable_t;
 
+
+typedef struct{
+	float nav_acc_rad = 2.0f; /*default accepted radius*/
+	float nav_mc_alt_rad = 0.8f; /*altitude accepted radius for multi-copters*/
+}NAV_Params_t;
 
 /**
  **  \brief NAV Application Class
@@ -127,6 +120,13 @@ public:
     NAV_HkTlm_t HkTlm;
     /** \brief Current Value Table */
     NAV_CurrentValueTable_t CVT;
+
+    /** \brief Navigator Parameter Table
+     *	\par Description
+     *		 initializing parameter table specific to navigator.
+     */
+    NAV_Params_t nav_params;
+    int32 counter = 0;
     /************************************************************************/
     /** \brief Navigator (NAV) application entry point
      **
@@ -374,6 +374,26 @@ public:
      **
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
+
+
+
+    /************************************************************************/
+    /** KK
+	*************************************************************************/
+     void execute(void);
+     float getDefaultAcceptedRadius(void);
+     void setAcceptedRadius(float);
+     float getAltitudeAcceptedRadius(void);
+	/************************************************************************/
+	/** KK_END
+	*************************************************************************/
+
+
+
+
+
+
+
 
 private:
     /************************************************************************/
