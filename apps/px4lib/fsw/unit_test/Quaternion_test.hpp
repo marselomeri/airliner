@@ -51,9 +51,10 @@ void Test_Quaternion_FromDCM(void);
 void Test_Quaternion_FromYaw(void);
 void Test_Quaternion_Derivative(void);
 void Test_Quaternion_ToEuler(void);
-
+void Test_Quaternion_EqualityOperator(void);
 void Test_Quaternion_Imaginary(void);
 void Test_Quaternion_RotationMatrix(void);
+void Test_Quaternion_ScalerMultiplyOperator(void);
 
 
 #ifdef __cplusplus

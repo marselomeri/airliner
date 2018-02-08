@@ -22,10 +22,10 @@ class Quaternion : public Vector4F
         Vector3F Imaginary(void);
         Vector3F ToEuler(void) const;
 	    void copyTo(float (&dst)[4]);
-
-        using Vector4F::operator *;
-        using Vector4F::operator =;
-
+        const Quaternion operator*(const float scalar) const;
+        const Quaternion & operator=(const Quaternion &q);
+        const Quaternion operator+(const Quaternion &vecIn) const;
+        const Quaternion operator-(const Quaternion &vecIn) const;
         const Quaternion operator*(const Quaternion &q) const;
         Quaternion operator/(const Quaternion &q) const;
         Vector3F Conjugate(const Vector3F &v) const;

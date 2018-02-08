@@ -66,7 +66,10 @@ int main(void)
 			 "Test_Quaternion_Derivative");
 	UtTest_Add(Test_Quaternion_Imaginary, Quaternion_Test_Setup, Quaternion_Test_TearDown,
 	         "Test_Quaternion_Imaginary");
-
+	UtTest_Add(Test_Quaternion_EqualityOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_EqualityOperator");
+	UtTest_Add(Test_Quaternion_ScalerMultiplyOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_ScalerMultiplyOperator");
     return(UtTest_Run());
 
 }

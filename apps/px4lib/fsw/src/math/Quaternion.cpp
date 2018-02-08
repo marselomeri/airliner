@@ -98,6 +98,56 @@ const Quaternion Quaternion::Derivative(const Vector3F &w)
 }
 
 
+
+// overload + operator to provide a vector addition
+const Quaternion Quaternion::operator+(const Quaternion &vecIn) const
+{
+    Quaternion vecOut;
+    vecOut[0] = data[0] + vecIn[0];
+    vecOut[1] = data[1] + vecIn[1];
+    vecOut[2] = data[2] + vecIn[2];
+    vecOut[3] = data[3] + vecIn[3];
+    return vecOut;
+}
+
+
+
+// overload * operator to provide a vector scalar product
+const Quaternion Quaternion::operator*(const float scalar) const
+{
+    Quaternion vecOut;
+    vecOut[0] = data[0] * scalar;
+    vecOut[1] = data[1] * scalar;
+    vecOut[2] = data[2] * scalar;
+    vecOut[3] = data[3] * scalar;
+    return vecOut;
+}
+
+
+// overload - operator to provide a vector subtraction
+const Quaternion Quaternion::operator-(const Quaternion &vecIn) const
+{
+    Quaternion vecOut;
+    vecOut[0] = data[0] - vecIn[0];
+    vecOut[1] = data[1] - vecIn[1];
+    vecOut[2] = data[2] - vecIn[2];
+    vecOut[3] = data[3] - vecIn[3];
+    return vecOut;
+}
+
+
+const Quaternion& Quaternion::operator =(const Quaternion &q)
+{
+
+    data[0] = q[0];
+    data[1] = q[1];
+    data[2] = q[2];
+    data[3] = q[3];
+
+    return *this;
+}
+
+
 /* Conjugate */
 Vector3F Quaternion::Conjugate(const Vector3F &v) const
 {
@@ -187,8 +237,6 @@ Vector3F Quaternion::ToEuler(void) const
 
 	return euler;
 }
-
-
 
 
 /**

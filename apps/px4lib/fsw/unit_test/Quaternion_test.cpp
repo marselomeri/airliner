@@ -324,3 +324,39 @@ void Test_Quaternion_RotationMatrix(void)
 }
 
 
+void Test_Quaternion_EqualityOperator(void)
+{
+    math::Quaternion quatA(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion quatB(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion quatC(1.0f, 2.0f, 3.0f, 4.0f);
+    
+    quatA = quatB = quatC;
+    
+	/* Verify results */
+	UtAssert_True(quatA[0] == quatB[0], "quatA[0] == quatB[0]");
+	UtAssert_True(quatA[1] == quatB[1], "quatA[1] == quatB[1]");
+	UtAssert_True(quatA[2] == quatB[2], "quatA[2] == quatB[2]");
+	UtAssert_True(quatA[3] == quatB[3], "quatA[3] == quatB[3]");
+	UtAssert_True(quatA[0] == quatC[0], "quatA[0] == quatC[0]");
+	UtAssert_True(quatA[1] == quatC[1], "quatA[1] == quatC[1]");
+	UtAssert_True(quatA[2] == quatC[2], "quatA[2] == quatC[2]");
+	UtAssert_True(quatA[3] == quatC[3], "quatA[3] == quatC[3]");
+}
+
+
+void Test_Quaternion_ScalerMultiplyOperator(void)
+{
+	/* actual = vectorA * scalar */
+	math::Quaternion vectorA(1.5f, 2.5f, 3.5f, 4.5f);
+	float scalar = 10.5f;
+	math::Quaternion vectorActual(0.0f, 0.0f, 0.0f, 0.0f);
+	math::Quaternion vectorExpected(15.75f, 26.25f, 36.75, 47.25f);
+    
+    vectorActual = vectorA * scalar;
+
+	/* Verify results */
+	UtAssert_True(vectorExpected[0] == vectorActual[0], "[0] vectorExpected == vectorA * scalar");
+	UtAssert_True(vectorExpected[1] == vectorActual[1], "[1] vectorExpected == vectorA * scalar");
+	UtAssert_True(vectorExpected[2] == vectorActual[2], "[2] vectorExpected == vectorA * scalar");
+	UtAssert_True(vectorExpected[3] == vectorActual[3], "[3] vectorExpected == vectorA * scalar");
+}

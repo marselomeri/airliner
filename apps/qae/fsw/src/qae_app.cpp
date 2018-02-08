@@ -862,6 +862,7 @@ boolean QAE::InitEstimateAttitude(void)
 boolean QAE::UpdateEstimateAttitude(float dt)
 {
     math::Quaternion q_last(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Quaternion q_derivative(0.0f, 0.0f, 0.0f, 0.0f);
     /* Angular rate of correction */
     math::Vector3F corr(0.0f, 0.0f, 0.0f);
     math::Vector3F mag_earth(0.0f, 0.0f, 0.0f);
@@ -933,14 +934,16 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     
     /* Feed forward gyro */
     corr = corr + m_Rates;
-    
+
+    q_derivative = m_Quaternion.Derivative(corr);
+
     /* Apply correction to state */
-    m_Quaternion = m_Quaternion + m_Quaternion.Derivative(corr) * dt;
+    m_Quaternion = m_Quaternion + (q_derivative * dt);
     
     /* Normalize quaternion */
     m_Quaternion.Normalize();
     
-    //OS_printf("before last if check %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
+    OS_printf("before last if check %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
     
     if (isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
         isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) )
