@@ -49,6 +49,11 @@
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
 
+#include <math/Quaternion.hpp>
+#include <math/Vector3F.hpp>
+#include <math/Matrix3F3.hpp>
+#include <math/Matrix4F4.hpp>
+
 int32 hookCalledCount = 0;
 
 /**************************************************************************
@@ -458,6 +463,74 @@ void Test_QAE_AppMain_Nominal_Wakeup(void)
 }
 
 
+/**
+ * Test QAE::InitEstimateAttitude Nominal
+ */
+void Test_QAE_InitEstimateAttitude_Nominal(void)
+{
+    boolean return_bool = FALSE;
+    /* Data taken from PX4 */
+    math::Vector3F accelInput(-0.001376f, 0.017657f, -0.116889f);
+    math::Vector3F magInput(-0.005498f,  -0.169592f, -0.450869f);
+    math::Quaternion expectedQ(0.704510f, -0.048778f, -0.057120, 0.705708);
+
+    QAE oQAE;
+    oQAE.InitApp();
+    oQAE.m_Accel = accelInput;
+    oQAE.m_Mag = magInput;
+    
+    return_bool = oQAE.InitEstimateAttitude();
+
+    //printf("oQAE.m_Quaternion[0] %f\n", oQAE.m_Quaternion[0]);
+    //printf("oQAE.m_Quaternion[1] %f\n", oQAE.m_Quaternion[1]);
+    //printf("oQAE.m_Quaternion[2] %f\n", oQAE.m_Quaternion[2]);
+    //printf("oQAE.m_Quaternion[3] %f\n", oQAE.m_Quaternion[3]);
+
+    UtAssert_True(fabs(oQAE.m_Quaternion[0] - expectedQ[0]) < 0.00001f, "InitEstimateAttitude Nominal m_Quaternion[0] failed");
+    UtAssert_True(fabs(oQAE.m_Quaternion[1] - expectedQ[1]) < 0.00001f, "InitEstimateAttitude Nominal m_Quaternion[1] failed");
+    UtAssert_True(fabs(oQAE.m_Quaternion[2] - expectedQ[2]) < 0.00001f, "InitEstimateAttitude Nominal m_Quaternion[1] failed");
+    UtAssert_True(fabs(oQAE.m_Quaternion[3] - expectedQ[3]) < 0.00001f, "InitEstimateAttitude Nominal m_Quaternion[1] failed");
+    UtAssert_True(return_bool == TRUE, "InitEstimateAttitude return_bool == TRUE");
+}
+
+
+/**
+ * Test QAE::UpdateMagDeclination initial update Nominal
+ */
+void Test_QAE_UpdateMagDeclination_InitialNominal(void)
+{
+    float new_declination = 10.0f;
+    float expected_declination = 10.0f;
+
+    QAE oQAE;
+    
+    /* Set estimator state to unintialized */
+    oQAE.HkTlm.EstimatorState = QAE_EST_UNINITIALIZED;
+    
+    oQAE.UpdateMagDeclination(new_declination);
+    
+    UtAssert_True(oQAE.m_Params.mag_declination == expected_declination, "oQAE.m_Params.mag_declination == expected_declination");
+    
+    /* Set estimator state to intialized */
+    oQAE.HkTlm.EstimatorState = QAE_EST_INITIALIZED;
+    
+    oQAE.UpdateMagDeclination(new_declination);
+    
+    UtAssert_True(oQAE.m_Params.mag_declination == expected_declination, "oQAE.m_Params.mag_declination == expected_declination");
+    
+}
+
+
+/**
+ * Test QAE::UpdateMagDeclination immediate update Nominal
+ */
+void Test_QAE_UpdateMagDeclination_ImmediateNominal(void)
+{
+    
+}
+
+
+
 
 /**************************************************************************
  * Rollup Test Cases
@@ -507,6 +580,10 @@ void QAE_App_Test_AddTestCases(void)
     UtTest_Add(Test_QAE_AppMain_Nominal_Wakeup, QAE_Test_Setup, QAE_Test_TearDown,
                "Test_QAE_AppMain_Nominal_Wakeup");
 
+    UtTest_Add(Test_QAE_InitEstimateAttitude_Nominal, QAE_Test_Setup, QAE_Test_TearDown,
+               "Test_QAE_InitEstimateAttitude_Nominal");
+    UtTest_Add(Test_QAE_UpdateMagDeclination_InitialNominal, QAE_Test_Setup, QAE_Test_TearDown,
+               "Test_QAE_UpdateMagDeclination_InitialNominal");
 }
 
 
