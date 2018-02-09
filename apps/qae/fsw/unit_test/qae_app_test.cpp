@@ -520,7 +520,7 @@ void Test_QAE_UpdateMagDeclination_InitialNominal(void)
     
 }
 
-
+/* TODO */
 /**
  * Test QAE::UpdateMagDeclination immediate update Nominal
  */
@@ -589,6 +589,7 @@ void Test_QAE_UpdateEstimateAttitude_Nominal(void)
 }
 
 
+/* TODO */
 /**
  * Test QAE::EstimateAttitude Nominal
  */
@@ -601,6 +602,7 @@ void Test_QAE_EstimateAttitude_Nominal(void)
     //float dtInput = 0.003960f;
     
 }
+
 
 /**************************************************************************
  * Rollup Test Cases
