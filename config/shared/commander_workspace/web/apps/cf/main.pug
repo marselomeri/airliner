@@ -29,8 +29,8 @@ block main
                       span(data-sage={tlm: [{name: '/CFS/CF/ErrCounter'}]}) ---
             footer
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CF/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CF/Reset'}}) Reset  
-                    
+              button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CF/Reset'}}) Reset
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-CF-AppCtrl-ApplicationControl.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -64,7 +64,7 @@ block main
                     th File Name
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_FileName'}]}) ---
-                  tr 
+                  tr
                     th Stack Size
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_StackSize'}]}) ---
@@ -76,7 +76,7 @@ block main
                     th Addr valid
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_AddressesAreValid'}]}) ---
-                  tr 
+                  tr
                     th Code addr
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_CodeAddress', format:'0x%08x'}]}) ---
@@ -104,9 +104,9 @@ block main
                     th Start Addr
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_StartAddress', format:'0x%08x'}]}) ---
-                  tr 
+                  tr
                     th Exception Action
-                    td              
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_ExceptionAction'}]}) ---
                   tr
                     th Priority
@@ -120,7 +120,7 @@ block main
                     th Execution Counter
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_ExecutionCounter'}]}) ---
-                  tr 
+                  tr
                     th Main Task Name
                     td
                       span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_MainTaskName'}]}) ---
@@ -134,7 +134,7 @@ block main
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/StopApp', argument:[{name:'Name', value:'CF'}]}}) Stop
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/RestartApp', argument:[{name:'Name', value:'CF'}]}}) Restart
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/ReloadApp', argument:[{name:'Name', value:'CF'},{name:'FileName', value:'/cf/apps/cf.so'}]}}) Reload
-                 
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-App.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -150,7 +150,7 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) Wakeup for File Proc
-                    td 
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/App_WakeupForFileProc'}]}) ---
                   tr
                     th Engine Cycle Count
@@ -260,8 +260,8 @@ block main
                     a(data-sage={cmd: {name: '/CFS/CF/GiveTake'}}, href='javascript:void(0);') Give / Take
                   li
                     a(data-sage={cmd: {name: '/CFS/CF/EnaDisAutoSuspend'}}, href='javascript:void(0);') Ena/Dis Auto Suspend
-                      
-          
+
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-Cond.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -277,37 +277,37 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) Pos Ack Num
-                    td 
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_PosAckNum'}]}) ---
                   tr
                     th File Store Rej Num
-                    td 
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_FileStoreRejNum'}]}) ---
                   tr
                     th File Checksum Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_FileChecksumNum'}]}) ---
                   tr
                     th File Size Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_FileSizeNum'}]}) ---
                   tr
                     th NAK Limit Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_NakLimitNum'}]}) ---
                   tr
                     th Inactive Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_InactiveNum'}]}) ---
                   tr
                     th Suspend Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_SuspendNum'}]}) ---
                   tr
                     th Cancel Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Cond_CancelNum'}]}) ---
-                      
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-Up.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -323,26 +323,26 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) Meta Count
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Up_MetaCount'}]}) ---
                   tr
                     th Uplink Active QFile Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Up_UplinkActiveQFileCnt'}]}) ---
                   tr
                     th Success Counter
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Up_SuccessCounter'}]}) ---
                   tr
                     th Failed Counter
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Up_FailedCounter'}]}) ---
                   tr
                     th Last File Uplinked
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Up_FailedCounter'}]}) ---
-                 
-                 
+
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-Engine.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -358,93 +358,93 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) Entity ID
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_FlightEngineEntityId'}]}) ---
                   tr
                     th Seg Control
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_SegControl'}]}) ---
                   tr
                     th File Transfer
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_FileTransfer'}]}) ---
                   tr
                     th Suspended
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_Suspended'}]}) ---
                   tr
                     th Ack Fin Only
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_AckFinOnly'}]}) ---
                   tr
                     th MD Received
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_MDReceived'}]}) ---
                   tr
                     th Frozen
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_Frozen'}]}) ---
                   tr
                     th Finished
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_Finished'}]}) ---
                   tr
                     th Ext File Xfer
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_ExtFileXfer'}]}) ---
                   tr
                     th Cancelled
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_Cancelled'}]}) ---
                   tr
                     th Abandoned
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_Abandoned'}]}) ---
                   tr
                     th Machines Allocated
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_MachinesAllocated'}]}) ---
                   tr
                     th Machines Deallocated
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_MachinesDeallocated'}]}) ---
                   tr
                     th Frozen Partners?
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_AreAnyPartnersFrozen'}]}) ---
                   tr
                     th Sender Count
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_HowManySenders'}]}) ---
                   tr
                     th Receiver Count
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_HowManyReceivers'}]}) ---
                   tr
                     th Frozen Count
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_HowManyFrozen'}]}) ---
                   tr
                     th Suspended Count
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_HowManySuspended'}]}) ---
                   tr
                     th Files Sent
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TotalFilesSent'}]}) ---
                   tr
                     th Files Received
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TotalFilesReceived'}]}) ---
                   tr
                     th Unsuccessful Senders
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TotalFilesReceived'}]}) ---
                   tr
                     th Unsuccessful Receivers
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TotalUnsuccessfulReceivers'}]}) ---
-  
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-Channel0.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -460,65 +460,65 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) PDUs Sent
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_PDUsSent'}]}) ---
                   tr
                     th FilesSent
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_FilesSent'}]}) ---
                   tr
                     th Success Counter
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_SuccessCounter'}]}) ---
                   tr
                     th Failed Counter
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_FailedCounter'}]}) ---
                   tr
                     th Pending Q File Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_PendingQFileCnt'}]}) ---
                   tr
                     th Active Q File Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_ActiveQFileCnt'}]}) ---
                   tr
                     th History Q File Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_HistoryQFileCnt'}]}) ---
                   tr
                     th Dequeue
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_Flags_Dequeue'}]}) ---
                   tr
                     th Blast
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_Flags_Blast'}]}) ---
                   tr
                     th Red Light Cntr
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_RedLightCntr'}]}) ---
                   tr
                     th Green Light Cntr
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_GreenLightCntr'}]}) ---
                   tr
                     th Red Light Cntr
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_RedLightCntr'}]}) ---
                   tr
                     th Poll Dirs Checked
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_PollDirsChecked'}]}) ---
                   tr
                     th Pending Q Checked
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_PendingQChecked'}]}) ---
                   tr
                     th Sem Value
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_0_SemValue'}]}) ---
-      
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-Channel1.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -534,65 +534,65 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) PDUs Sent
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_PDUsSent'}]}) ---
                   tr
                     th FilesSent
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_FilesSent'}]}) ---
                   tr
                     th Success Counter
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_SuccessCounter'}]}) ---
                   tr
                     th Failed Counter
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_FailedCounter'}]}) ---
                   tr
                     th Pending Q File Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_PendingQFileCnt'}]}) ---
                   tr
                     th Active Q File Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_ActiveQFileCnt'}]}) ---
                   tr
                     th History Q File Cnt
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_HistoryQFileCnt'}]}) ---
                   tr
                     th Dequeue
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_Flags_Dequeue'}]}) ---
                   tr
                     th Blast
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_Flags_Blast'}]}) ---
                   tr
                     th Red Light Cntr
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_RedLightCntr'}]}) ---
                   tr
                     th Green Light Cntr
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_GreenLightCntr'}]}) ---
                   tr
                     th Red Light Cntr
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_RedLightCntr'}]}) ---
                   tr
                     th Poll Dirs Checked
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_PollDirsChecked'}]}) ---
                   tr
                     th Pending Q Checked
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_PendingQChecked'}]}) ---
                   tr
                     th Sem Value
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Chan_1_SemValue'}]}) ---
-          
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-Cfg.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -608,95 +608,95 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) Eng Cyc Per Wakeup
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_EngCycPerWakeup'}]}) ---
                   tr
                     th Ack Limit
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_AckLimit'}]}) ---
                   tr
                     th Ack Timeout
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_AckTimeout'}]}) ---
                   tr
                     th Nak Limit
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_NakLimit'}]}) ---
                   tr
                     th Nak Timeout
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_NakTimeout'}]}) ---
                   tr
                     th Inact Timeout
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_InactTimeout'}]}) ---
                   tr
                     th Def Outgoing Chunk Size
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_DefOutgoingChunkSize'}]}) ---
                   tr
                     th Pipe Depth
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_PipeDepth'}]}) ---
                   tr
                     th Max Simultaneous Trans
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_MaxSimultaneousTrans'}]}) ---
                   tr
                     th Incoming PDU Buf Size
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_IncomingPduBufSize'}]}) ---
                   tr
                     th Outgoing PDU Buf Size
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_OutgoingPduBufSize'}]}) ---
                   tr
                     th Num Input Channels
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_NumInputChannels'}]}) ---
                   tr
                     th Max Playback Chans
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_MaxPlaybackChans'}]}) ---
                   tr
                     th Max Polling Dirs Per Chan
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_MaxPollingDirsPerChan'}]}) ---
                   tr
                     th Mem Pool Bytes
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_MemPoolBytes'}]}) ---
                   tr
                     th Debug Compiled In
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_DebugCompiledIn'}]}) ---
                   tr
                     th Save Incomplete Files
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_SaveIncompleteFiles'}]}) ---
                   tr
                     th Pipe Name
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_PipeName'}]}) ---
                   tr
                     th Tmp File Prefix
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_TmpFilePrefix'}]}) ---
                   tr
                     th Cfg Tbl Name
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_CfgTblName'}]}) ---
                   tr
                     th Cfg Tbl File Name
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_CfgTbleFilename'}]}) ---
                   tr
                     th Def Q Info File Name
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Config_DefQInfoFilename'}]}) ---
             footer
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CF/SendCfgParams'}}) Send Config
-                      
+
     article.col-xs-12.col-sm-12.col-md-6.col-lg-3
       #wid-CF-TransDiag.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -712,489 +712,156 @@ block main
                 tbody
                   tr
                     th(style={width:'250px'}) Eng Trans Len
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TransLen'}]}) ---
                   tr
                     th Eng Trans Val
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TransVal'}]}) ---
                   tr
                     th Eng Naks
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Naks'}]}) ---
                   tr
                     th Eng Part Len
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_PartLen'}]}) ---
                   tr
                     th Eng Part Val
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_PartVal'}]}) ---
                   tr
                     th Eng Phase
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Phase'}]}) ---
                   tr
                     th Eng Frozen
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Flags_Frozen'}]}) ---
                   tr
                     th Eng Trans Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TransNum'}]}) ---
                   tr
                     th Eng Attempts
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Attempts'}]}) ---
                   tr
                     th Eng Cond Code
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_CondCode'}]}) ---
                   tr
                     th Eng Deli Code
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_DeliCode'}]}) ---
                   tr
                     th Eng Fd Offset
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_FdOffset'}]}) ---
                   tr
                     th Eng Fd Length
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_FdLength'}]}) ---
                   tr
                     th Eng Checksum
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Checksum'}]}) ---
                   tr
                     th Eng Final Stat
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_FinalStat'}]}) ---
                   tr
                     th Eng File Size
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_FileSize'}]}) ---
                   tr
                     th ENg Rcvd File Size
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_RcvdFileSize'}]}) ---
                   tr
                     th Eng Role
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_Role'}]}) ---
                   tr
                     th Eng State
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_State'}]}) ---
                   tr
                     th Eng Start Time
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_StartTime'}]}) ---
                   tr
                     th Eng Src File
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_SrcFile'}]}) ---
                   tr
                     th Eng Dst File
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_DstFile'}]}) ---
                   tr
                     th Eng Tmp File
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Eng_TmpFile'}]}) ---
                   tr
                     th App Status
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_Status'}]}) ---
                   tr
                     th App Cond Code
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_CondCode'}]}) ---
                   tr
                     th App Priority
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_Priority'}]}) ---
                   tr
                     th App Class
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_Class'}]}) ---
                   tr
                     th App Chan Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_ChanNum'}]}) ---
                   tr
                     th App Source
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_Source'}]}) ---
                   tr
                     th App Node Type
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_NodeType'}]}) ---
                   tr
                     th App Trans Num
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_TransNum'}]}) ---
                   tr
                     th App Src Entity ID
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_SrcEntityId'}]}) ---
                   tr
                     th App Src File
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_SrcFile'}]}) ---
                   tr
                     th App Dst File
-                    td  
+                    td
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_DstFile'}]}) ---
             footer
               button.btn.btn-primary(data-placement='top' data-sage={cmd: {name: '/CFS/CF/SendTransDiagData'}}) Send Trans Diag
 
   .row
-    - 
-      var schDef = {
-        slotCount:200,
-        entriesPerSlot:5,
-        appName:'CF',
-        slots:[
-          {id:2, activities:[1]},
-          {id:22, activities:[1]},
-          {id:42, activities:[1]},
-          {id:62, activities:[1]},
-          {id:82, activities:[1]},
-          {id:102, activities:[1]},
-          {id:122, activities:[1]},
-          {id:142, activities:[1]},
-          {id:162, activities:[1]},
-          {id:164, activities:[1]},
-          {id:182, activities:[1]}],
-        groups:[]};
-  
-    article.col-xs-12.col-sm-12.col-md-12.col-lg-5
-      #wid-CFE-EVS-SCH.jarviswidget.jarviswidget-color-blueDark(style='width: 860px' data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Scheduler 
-            button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/SCH/SendDiagTlm'}}) Send Schedule
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th(style='width: 150px') Cmd Count
-                    td
-                      span(data-sage={tlm: [{name:'/CFS/SCH/CmdCounter'}]}) ---
-                  tr
-                    th Error Count
-                    td
-                      span(data-sage={tlm: [{name:'/CFS/SCH/ErrCounter'}]}) ---
-            .table-responsive
-              table.table.table-bordered.table-condensed
-                thead
-                  tr
-                    th(style="width: 100px") Slot #
-                    th(style="width: 100px") Activity #
-                    th(style="width: 150px") State
-                    th MsgID
-                    th(style="width: 150px") Action
-                tbody
-                  - for (var slotIdx = 0; slotIdx < schDef.slots.length; ++slotIdx) {
-                    - var slotID = schDef.slots[slotIdx].id;
-                    - var strSlotID = '' + slotID;
-                    - for (var actIdx = 0; actIdx < schDef.slots[slotIdx].activities.length; ++actIdx){
-                      - var actID = schDef.slots[slotIdx].activities[actIdx];
-                      - var strActID =  '' + actID;
-                      - var entryID = (schDef.entriesPerSlot * slotID) + actID;
-                      - var strEntryID = '' + entryID;
-                      - var tlmEntryState = {tlm:[{name:'/CFS/SCH/EntryState_'+entryID}]};
-                      - var tlmMsgID = {tlm:[{name:'/CFS/SCH/MsgID_'+entryID}]};
-                      - var cmdEnableEntry = {cmd: {name:'/CFS/SCH/EnableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
-                      - var cmdDisableEntry = {cmd: {name:'/CFS/SCH/DisableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
-                      tr
-                        td #{slotID}
-                        td #{strActID}
-                        td 
-                          span(data-sage= tlmEntryState) ---
-                        td
-                          span(data-sage= tlmMsgID) ---
-                        td
-                          .btn-group.dropup
-                            button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdEnableEntry) Ena
-                            button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdDisableEntry) Dis
-                    - };
-                  - };
-            .table-responsive
-              table.table.table-bordered.table-condensed
-                thead
-                  tr
-                    th(style="width: 100px") Group Name
-                    th(style="width: 100px") Group ID
-                    th(style="width: 150px") Action
-                tbody
-                  - for (var grpIdx = 0; grpIdx < schDef.groups.length; ++grpIdx) {
-                    - var grpName = schDef.groups[grpIdx].name;
-                    - var grpID = schDef.groups[grpIdx].id;
-                    - var strGrpID = '0x' + grpID.toString(16);
-                    - var cmdEnableGroup = {cmd: {name:'/CFS/SCH/EnableGroup', argument:[{name:'Group', value:strGrpID}]}};
-                    - var cmdDisableGroup = {cmd: {name:'/CFS/SCH/DisableGroup', argument:[{name:'Group', value:strGrpID}]}};
-                    tr
-                      td #{grpName}
-                      td(style='font-family: monospace') #{strGrpID}
-                      td
-                        .btn-group.dropup
-                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdEnableGroup) Ena
-                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdDisableGroup) Dis
-                  - };
-  .row
-    article.col-xs-12.col-sm-12.col-md-10.col-lg-6(style={width:'500px'})               
-      #wid-CF-Events.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Event Filter
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th(style={width:'250px'}) CFE EVS Cmd Count
-                    td(style={width:'150px'})
-                      span(data-sage={tlm: [{name: '/CFS/CFE_EVS/CmdCounter'}]}) ---
-                  tr
-                    th CFE EVS Cmd Err Count
-                    td
-                      span(data-sage={tlm: [{name: '/CFS/CFE_EVS/ErrCounter'}]}) ---
-                  tr
-                    th App Events
-                    td 
-                      .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEvents', argument:[{name:'AppName', value:'CF'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEvents', argument:[{name:'AppName', value:'CF'}]}}) Disable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/ResetAllFilters', argument:[{name:'AppName', value:'CF'}]}}) Reset
-                  tr
-                    th Event Types
-                    td
-                  tr
-                    td(style='padding-left: 20px !important') Critical
-                    td
-                      .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Disable
-                  tr
-                    td(style='padding-left: 20px !important')  Error
-                    td
-                      .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Set'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Set'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Disable
-                  tr
-                    td(style='padding-left: 20px !important')  Info
-                    td
-                      .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Error', value:'Ignored'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}}) Disable
-                  tr
-                    td(style='padding-left: 20px !important')  Debug
-                    td
-                      .btn-group
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/EnableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Set'},{name:'Spare', value:'0'}]}}) Enable
-                        button.btn.btn-xs.btn-primary(data-sage={cmd: {name:'/CFS/CFE_EVS/DisableAppEventType', argument:[{name:'AppName', value:'CF'},{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Set'},{name:'Spare', value:'0'}]}}) Disable
-                  tr
-                    th Event IDs
-                    td
-                  - 
-                    var eventDef = {
-                      appName:'CF',
-                      events:[
-                        {name:'CF_INIT_EID', eventID:1},
-                        {name:'CF_CC_ERR_EID', eventID:2},
-                        {name:'CF_MID_ERR_EID', eventID:3},
-                        {name:'CF_CMD_LEN_ERR_EID', eventID:4},
-                        {name:'CF_NOOP_CMD_EID', eventID:5},
-                        {name:'CF_RESET_CMD_EID', eventID:6},
-                        {name:'CF_FILE_IO_ERR1_EID', eventID:7},
-                        {name:'CF_CR_PIPE_ERR_EID', eventID:8},
-                        {name:'CF_SUB_REQ_ERR_EID', eventID:9},
-                        {name:'CF_SUB_CMD_ERR_EID', eventID:10},
-                        {name:'CF_RCV_MSG_ERR_EID', eventID:11},
-                        {name:'CF_FILE_IO_ERR2_EID', eventID:12},
-                        {name:'CF_REMOVE_ERR1_EID', eventID: 13},
-                        {name:'CF_LOGIC_NAME_ERR_EID', eventID:14},
-                        {name:'CF_CFDP_ENGINE_DEB_EID', eventID:15},
-                        {name:'CF_CFDP_ENGINE_INFO_EID', eventID:16},
-                        {name:'CF_CFDP_ENGINE_WARN_EID', eventID:17},
-                        {name:'CF_CFDP_ENGINE_ERR_EID', eventID:18},
-                        {name:'CF_FILE_IO_ERR3_EID', eventID:19},
-                        {name:'CF_IN_TRANS_OK_EID', eventID:20},
-                        {name:'CF_OUT_TRANS_OK_EID', eventID:21},
-                        {name:'CF_IN_TRANS_FAILED_EID', eventID:22},
-                        {name:'CF_OUT_TRANS_FAILED_EID', eventID:23},
-                        {name:'CF_MV_UP_NODE_EID', eventID:24},
-                        {name:'CF_ENDIS_AUTO_SUS_CMD_EID', eventID:25},
-                        {name:'CF_IND_XACT_SUS_EID', eventID:26},
-                        {name:'CF_IND_XACT_RES_EID', eventID:27},
-                        {name:'CF_IND_XACT_FAU_EID', eventID:28},
-                        {name:'CF_IND_XACT_ABA_EID', eventID:29},
-                        {name:'CF_KICKSTART_CMD_EID', eventID:30},
-                        {name:'CF_REMOVE_ERR2_EID', eventID:31},
-                        {name:'CF_IND_ACK_TIM_EXP_EID', eventID:32},
-                        {name:'CF_IND_INA_TIM_EXP_EID', eventID:33},
-                        {name:'CF_IND_NACK_TIM_EXP_EID', eventID:34},
-                        {name:'CF_IND_UNEXP_TYPE_EID', eventID:35},
-                        {name:'CF_FILE_CLOSE_ERR_EID', eventID:36},
-                        {name:'CF_MACH_ALLOC_ERR_EID', eventID:37},
-                        {name:'CF_PLAYBACK_FILE_EID', eventID:38},
-                        {name:'CF_PUT_REQ_ERR1_EID', eventID:39},
-                        {name:'CF_PUT_REQ_ERR2_EID', eventID:40},
-                        {name:'CF_CFGTBL_REG_ERR_EID', eventID:41},
-                        {name:'CF_CFGTBL_LD_ERR_EID', eventID:42},
-                        {name:'CF_CFGTBL_MNG_ERR_EID', eventID:43},
-                        {name:'CF_CFGTBL_GADR_ERR_EID', eventID:44},
-                        {name:'CF_TRANS_SUSPEND_OVRFLW_EID', eventID:45},
-                        {name:'CF_FREEZE_CMD_EID', eventID:46},
-                        {name:'CF_THAW_CMD_EID', eventID:47},
-                        {name:'CF_CARS_CMD_EID', eventID:48},
-                        {name:'CF_CARS_ERR1_EID', eventID:49},
-                        {name:'CF_SET_MIB_CMD_EID', eventID:50},
-                        {name:'CF_GET_MIB_CMD_EID', eventID:51},
-                        {name:'CF_SUB_PDUS_ERR_EID', eventID:52},
-                        {name:'CF_SND_Q_INFO_EID', eventID:53},
-                        {name:'CF_FILEWRITE_ERR_EID', eventID:54},
-                        {name:'CF_SUB_WAKE_ERR_EID', eventID:55},
-                        {name:'CF_KICKSTART_ERR1_EID', eventID:56},
-                        {name:'CF_WR_CMD_ERR1_EID', eventID: 57},
-                        {name:'CF_WR_CMD_ERR2_EID', eventID: 58},
-                        {name:'CF_WR_CMD_ERR3_EID', eventID: 59},
-                        {name:'CF_SND_QUE_ERR1_EID', eventID:60},
-                        {name:'CF_SND_TRANS_ERR_EID', eventID:61},
-                        {name:'CF_DEQ_NODE_ERR1_EID', eventID:62},
-                        {name:'CF_DEQ_NODE_ERR2_EID', eventID:63},
-                        {name:'CF_DEQ_NODE_ERR3_EID', eventID:64},
-                        {name:'CF_DEQ_NODE_ERR4_EID', eventID:65},
-                        {name:'CF_WR_CMD_ERR4_EID', eventID:66},
-                        {name:'CF_DEQ_NODE1_EID', eventID:68},
-                        {name:'CF_DEQ_NODE2_EID', eventID:69},
-                        {name:'CF_PDU_RCV_ERR1_EID', eventID:70},
-                        {name:'CF_PDU_RCV_ERR2_EID', eventID:71},
-                        {name:'CF_PDU_RCV_ERR3_EID', eventID:72},
-                        {name:'CF_HANDSHAKE_ERR1_EID', eventID:73},
-                        {name:'CF_SND_TRANS_CMD_EID', eventID:74},
-                        {name:'CF_IND_FAU_UNEX_EID', eventID:75},
-                        {name:'CF_PB_FILE_ERR1_EID', eventID:76},
-                        {name:'CF_PB_FILE_ERR2_EID', eventID:77},
-                        {name:'CF_PB_FILE_ERR3_EID', eventID:78},
-                        {name:'CF_PB_FILE_ERR4_EID', eventID:79},
-                        {name:'CF_PB_FILE_ERR5_EID', eventID:80},
-                        {name:'CF_PB_FILE_ERR6_EID', eventID:81},
-                        {name:'CF_QDIR_INV_NAME1_EID', eventID:82},
-                        {name:'CF_QDIR_INV_NAME2_EID', eventID:83},
-                        {name:'CF_MEM_ALLOC_ERR_EID', eventID:84},
-                        {name:'CF_MEM_DEALLOC_ERR_EID', eventID:85},
-                        {name:'CF_ENA_DQ_CMD_EID', eventID:86},
-                        {name:'CF_DQ_CMD_ERR1_EID', eventID:87},
-                        {name:'CF_DIS_DQ_CMD_EID', eventID:88},
-                        {name:'CF_DQ_CMD_ERR2_EID', eventID:89},
-                        {name:'CF_ENA_POLL_CMD1_EID', eventID:90},
-                        {name:'CF_ENA_POLL_CMD2_EID', eventID:91},
-                        {name:'CF_ENA_POLL_ERR1_EID', eventID:92},
-                        {name:'CF_ENA_POLL_ERR2_EID', eventID:93},
-                        {name:'CF_DIS_POLL_CMD1_EID', eventID:94},
-                        {name:'CF_DIS_POLL_CMD2_EID', eventID:95},
-                        {name:'CF_DIS_POLL_ERR1_EID', eventID:96},
-                        {name:'CF_DIS_POLL_ERR2_EID', eventID:97},
-                        {name:'CF_OPEN_DIR_ERR_EID', eventID:98},
-                        {name:'CF_QDIR_NOMEM1_EID', eventID:99},
-                        {name:'CF_QDIR_NOMEM2_EID', eventID:100},
-                        {name:'CF_QDIR_PQFUL_EID', eventID:101},
-                        {name:'CF_IN_TRANS_START_EID', eventID:102},
-                        {name:'CF_OUT_TRANS_START_EID', eventID:103},
-                        {name:'CF_SET_MIB_CMD_ERR1_EID', eventID:104},
-                        {name:'CF_SET_MIB_CMD_ERR2_EID', eventID:105},
-                        {name:'CF_TBL_VAL_ERR1_EID', eventID:106},
-                        {name:'CF_TBL_VAL_ERR2_EID', eventID:107},
-                        {name:'CF_TBL_VAL_ERR3_EID', eventID:108},
-                        {name:'CF_TBL_VAL_ERR4_EID', eventID:109},
-                        {name:'CF_TBL_VAL_ERR5_EID', eventID:110},
-                        {name:'CF_TBL_VAL_ERR6_EID', eventID:111},
-                        {name:'CF_TBL_VAL_ERR7_EID', eventID:112},
-                        {name:'CF_TBL_VAL_ERR8_EID', eventID:113},
-                        {name:'CF_TBL_VAL_ERR9_EID', eventID:114},
-                        {name:'CF_TBL_VAL_ERR10_EID', eventID:115},
-                        {name:'CF_TBL_VAL_ERR11_EID', eventID:116},
-                        {name:'CF_TBL_VAL_ERR12_EID', eventID:117},
-                        {name:'CF_TBL_VAL_ERR13_EID', eventID:118},
-                        {name:'CF_TBL_VAL_ERR14_EID', eventID:119},
-                        {name:'CF_NO_TERM_ERR_EID', eventID: 120},
-                        {name:'CF_SET_POLL_PARAM_ERR1', eventID:121},
-                        {name:'CF_SET_POLL_PARAM_ERR2', eventID:122},
-                        {name:'CF_SET_POLL_PARAM_ERR3', eventID:123},
-                        {name:'CF_SET_POLL_PARAM_ERR4', eventID:124},
-                        {name:'CF_SET_POLL_PARAM_ERR5', eventID:125},
-                        {name:'CF_SET_POLL_PARAM_ERR6', eventID:126},
-                        {name:'CF_SET_POLL_PARAM_ERR7', eventID:127},
-                        {name:'CF_SET_POLL_PARAM1_EID', eventID:128},
-                        {name:'CF_SND_CFG_CMD_EID', eventID:129},
-                        {name:'CF_GIVETAKE_ERR1_EID', eventID:130},
-                        {name:'CF_GIVETAKE_ERR2_EID', eventID:131},
-                        {name:'CF_GIVETAKE_ERR3_EID', eventID:132},
-                        {name:'CF_GIVETAKE_ERR4_EID', eventID:133},
-                        {name:'CF_PLAYBACK_DIR_EID', eventID:134},
-                        {name:'CF_PB_DIR_ERR1_EID', eventID:135},
-                        {name:'CF_PB_DIR_ERR2_EID', eventID:136},
-                        {name:'CF_PB_DIR_ERR3_EID', eventID:137},
-                        {name:'CF_PB_DIR_ERR4_EID', eventID:138},
-                        {name:'CF_PB_DIR_ERR5_EID', eventID:139},
-                        {name:'CF_PURGEQ_ERR1_EID', eventID:140},
-                        {name:'CF_PURGEQ_ERR2_EID', eventID:141},
-                        {name:'CF_PURGEQ_ERR3_EID', eventID:142},
-                        {name:'CF_PURGEQ_ERR4_EID', eventID:143},
-                        {name:'CF_PURGEQ_ERR5_EID', eventID:144},
-                        {name:'CF_PURGEQ_ERR6_EID', eventID:145},
-                        {name:'CF_PURGEQ1_EID', eventID:146},
-                        {name:'CF_PURGEQ2_EID', eventID:147},
-                        {name:'CF_WRACT_ERR1_EID', eventID:148},
-                        {name:'CF_WRACT_ERR2_EID', eventID:149},
-                        {name:'CF_WRACT_TRANS_EID', eventID:150},
-                        {name:'CF_TBL_LD_ATTEMPT_EID', eventID:151},
-                        {name:'CF_OUT_SND_ERR1_EID', eventID:152},
-                        {name:'CF_OUT_SND_ERR2_EID', eventID:153},
-                        {name:'CF_OUT_SND_ERR3_EID', eventID:154},
-                        {name:'CF_QDIR_ACTIVEFILE_EID', eventID:155},
-                        {name:'CF_QDIR_OPENFILE_EID', eventID:156},
-                        {name:'CF_INV_FILENAME_EID', eventID:157},
-                        {name:'CF_GIVETAKE_CMD_EID', eventID:158},
-                        {name:'CF_QUICK_ERR1_EID', eventID:159},
-                        {name:'CF_QUICK_CMD_EID', eventID:160}]
-                      }; 
 
-                  - for (var idx = 0; idx < eventDef.events.length; ++idx) {
-                      - var strEventID = '' + eventDef.events[idx].eventID;
-                      - var cmdSetFilter = {cmd: {name:'/CFS/CFE_EVS/SetFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      - var cmdResetFilter = {cmd: {name:'/CFS/CFE_EVS/ResetFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      - var cmdAddEventFilter = {cmd: {name:'/CFS/CFE_EVS/AddEventFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      - var cmdDeleteEventFilter = {cmd: {name:'/CFS/CFE_EVS/DeleteEventFilter', argument:[{name:'AppName', value:eventDef.appName},{name:'EventID', value:strEventID}]}};
-                      tr
-                        td(style='padding-left: 20px !important')  #{eventDef.events[idx].name}
-                        td
-                          .btn-group
-                            button.btn.btn-xs.btn-primary(data-sage= cmdSetFilter) Set
-                            button.btn.btn-xs.btn-primary(data-sage= cmdResetFilter) Reset
-                            button.btn.btn-xs.btn-primary(data-sage= cmdAddEventFilter) Add
-                            button.btn.btn-xs.btn-primary(data-sage= cmdDeleteEventFilter) Delete
-                  - };
-       
+    include /panels/apps/sch/scheduler.pug
+    
+  .row
+    include /panels/cfe/event_filters.pug
+
     article.col-xs-11.col-sm-6.col-md-5.col-lg-4(style='width:350px')
       #wid-CFE-SB-Memory.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
           h2 Memory
-            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(onclick='SendMemoryPoolStats()') Send
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -1222,183 +889,15 @@ block main
                     th Memory Allocated
                     td
                       span(data-sage={tlm: [{name: '/CFS/CF/App_MemAllocated'}]}) ---
-                  tr  
-                    th Pool Handle
-                    td 
-                      span#CF_App_BufferPoolHandle(data-sage={tlm:[{name:'/CFS/CF/App_BufferPoolHandle', format:'0x%08x'}]} onchange='UpdatePoolHandleColors();') ---                    
-                  tr
-                    th Pool handle
-                    td 
-                      span#CFE_ES_PoolStats_Handle(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Handle', format:'0x%08x'}]} onchange='UpdatePoolHandleColors();') ---
-                  tr
-                    th Pool size
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Size'}]}) ---
-                  tr
-                    th Num blocks requested
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_NumBlocksRequested'}]}) ---
-                  tr
-                    th Check error count
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_CheckErrCtr'}]}) ---
-                  tr
-                    th Num free bytes
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_NumFreeBytes'}]}) ---           
-            .table-responsive
-              table.table.table-striped.table-condensed.table-memory
-                thead
-                  th(style='width:50px') #
-                  th(style='width:100px') Block Size
-                  th(style='width:75px') Created
-                  th(style='width:75px') Free
-                tbody
-                  tr
-                    th 0
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumFree'}]}) ---
-                  tr
-                    th 1
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumFree'}]}) ---
-                  tr
-                    th 2
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumFree'}]}) ---
-                  tr
-                    th 3
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumFree'}]}) ---
-                  tr
-                    th 4
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumFree'}]}) ---
-                  tr
-                    th 5
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumFree'}]}) ---
-                  tr
-                    th 6
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumFree'}]}) ---
-                  tr
-                    th 7
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumFree'}]}) ---
-                  tr
-                    th 8
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumFree'}]}) ---
-                  tr
-                    th 9
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumFree'}]}) ---
-                  tr
-                    th 10
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumFree'}]}) ---
-                  tr
-                    th 11
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumFree'}]}) ---
-                  tr
-                    th 12
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumFree'}]}) ---
-                  tr
-                    th 13
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumFree'}]}) ---
-                  tr
-                    th 14
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumFree'}]}) ---
-                  tr
-                    th 15
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumFree'}]}) ---
-                  tr
-                    th 16
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_Size'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumCreated'}]}) ---
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumFree'}]}) ---
+                      
+    include /panels/cfe/mempools.pug
 
-
-    
     article.col-xs-12.col-sm-12.col-md-12.col-lg-12
       #wid-id-0.jarviswidget(data-widget-editbutton='false')
         header
           ul#widget-tab-navtab.nav.nav-tabs
             li.active
-              a(data-toggle='tab' href='#tabGSFileNav') 
+              a(data-toggle='tab' href='#tabGSFileNav')
                 i.fa.fa-lg.fa-arrow-circle-o-down
                 span.hidden-mobile.hidden-tablet Ground Station File Browser
         div
@@ -1406,13 +905,4 @@ block main
           .widget-body.no-padding
             #widget-tab-content.tab-content.padding-10
               #tabGSFileNav.tab-pane.fade.in.active
-                #GSFileBrowserContainer      
-
-  script.
-      
-    var SendMemoryPoolStats = function() {        
-      session.sendCommand('/CFS/CFE_ES/TlmPoolStats', [
-        {name:'Application', value:'CF'},
-        {name:'PoolHandle', value:parseInt($('#CF_App_BufferPoolHandle').text()).toString()}
-      ]);
-    }
+                #GSFileBrowserContainer

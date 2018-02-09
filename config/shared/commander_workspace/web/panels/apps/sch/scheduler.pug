@@ -1,0 +1,87 @@
+//- includes/scheduler.pug
+- 
+  if(data !== undefined) {
+    if(data.schDef !== undefined) {
+
+article.col-xs-12.col-sm-12.col-md-12.col-lg-8
+  #wid-SCH-Diag-Entries.jarviswidget.jarviswidget-color-blueDark(style='width: 860px' data-widget-editbutton='false')
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 Scheduler 
+        button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/SCH/SendDiagTlm'}}) Send Schedule
+    div
+      .jarviswidget-editbox
+        input.form-control(type='text')
+      .widget-body
+        .table-responsive
+          table.table.table-condensed
+            tbody
+              tr
+                th(style='width: 150px') Cmd Count
+                td
+                  span(data-sage={tlm: [{name:'/CFS/SCH/CmdCounter'}]}) ---
+              tr
+                th Error Count
+                td
+                  span(data-sage={tlm: [{name:'/CFS/SCH/ErrCounter'}]}) ---
+        .table-responsive
+          table.table.table-bordered.table-condensed
+            thead
+              tr
+                th(style="width: 100px") Slot #
+                th(style="width: 100px") Activity #
+                th(style="width: 150px") State
+                th MsgID
+                th(style="width: 150px") Action
+            tbody
+              - for (var slotIdx = 0; slotIdx < data.schDef.slots.length; ++slotIdx) {
+                - var slotID = data.schDef.slots[slotIdx].id;
+                - var strSlotID = '' + slotID;
+                - for (var actIdx = 0; actIdx < data.schDef.slots[slotIdx].activities.length; ++actIdx){
+                  - var actID = data.schDef.slots[slotIdx].activities[actIdx];
+                  - var strActID =  '' + actID;
+                  - var entryID = (data.schDef.entriesPerSlot * slotID) + actID;
+                  - var strEntryID = '' + entryID;
+                  - var tlmEntryState = {tlm:[{name:'/CFS/SCH/EntryState_'+entryID}]};
+                  - var tlmMsgID = {tlm:[{name:'/CFS/SCH/MsgID_'+entryID}]};
+                  - var cmdEnableEntry = {cmd: {name:'/CFS/SCH/EnableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
+                  - var cmdDisableEntry = {cmd: {name:'/CFS/SCH/DisableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
+                  tr
+                    td #{slotID}
+                    td #{strActID}
+                    td 
+                      span(data-sage= tlmEntryState) ---
+                    td
+                      span(data-sage= tlmMsgID) ---
+                    td
+                      .btn-group.dropup
+                        button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdEnableEntry) Ena
+                        button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdDisableEntry) Dis
+                - };
+              - };
+        .table-responsive
+          table.table.table-bordered.table-condensed
+            thead
+              tr
+                th(style="width: 100px") Group Name
+                th(style="width: 100px") Group ID
+                th(style="width: 150px") Action
+            tbody
+              - for (var grpIdx = 0; grpIdx < data.schDef.groups.length; ++grpIdx) {
+                - var grpName = data.schDef.groups[grpIdx].name;
+                - var grpID = data.schDef.groups[grpIdx].id;
+                - var strGrpID = '0x' + grpID.toString(16);
+                - var cmdEnableGroup = {cmd: {name:'/CFS/SCH/EnableGroup', argument:[{name:'Group', value:strGrpID}]}};
+                - var cmdDisableGroup = {cmd: {name:'/CFS/SCH/DisableGroup', argument:[{name:'Group', value:strGrpID}]}};
+                tr
+                  td #{grpName}
+                  td(style='font-family: monospace') #{strGrpID}
+                  td
+                    .btn-group.dropup
+                      button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdEnableGroup) Ena
+                      button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdDisableGroup) Dis
+              - };
+-
+    }
+  }
