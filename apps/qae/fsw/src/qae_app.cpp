@@ -211,6 +211,7 @@ void QAE::InitData()
       m_PositionAcc.Zero();
       m_GyroBias.Zero();
       m_Rates.Zero();
+      m_TimeLast = 0;
 }
 
 
@@ -605,12 +606,13 @@ void QAE::UpdateMagDeclination(const float new_declination)
 void QAE::EstimateAttitude(void)
 {
     math::Vector3F euler(0.0f, 0.0f, 0.0f);
+    math::Vector3F vel(0.0f, 0.0f, 0.0f);
     float length_check = 0.0f;
     float delta_time_velocity = 0.0f;
     uint64 delta_time_gps = 0;
     uint64 time_now = 0;
     float delta_time = 0;
-    uint64 time_last = 0;
+    
     boolean update_success = FALSE;
 
     /* If there is a new sensor combined message */
@@ -623,6 +625,10 @@ void QAE::EstimateAttitude(void)
             m_Gyro[0] = CVT.SensorCombinedMsg.GyroRad[0];
             m_Gyro[1] = CVT.SensorCombinedMsg.GyroRad[1];
             m_Gyro[2] = CVT.SensorCombinedMsg.GyroRad[2];
+
+            //OS_printf("m_Gyro[0] %f\n", m_Gyro[0]);
+            //OS_printf("m_Gyro[1] %f\n", m_Gyro[1]);
+            //OS_printf("m_Gyro[2] %f\n", m_Gyro[2]);
         }
         
         //if(CVT.SensorCombinedMsg.AccRelTimeInvalid != FALSE)
@@ -632,6 +638,10 @@ void QAE::EstimateAttitude(void)
             m_Accel[0] = CVT.SensorCombinedMsg.Acc[0];
             m_Accel[1] = CVT.SensorCombinedMsg.Acc[1];
             m_Accel[2] = CVT.SensorCombinedMsg.Acc[2];
+            
+            //OS_printf("m_Accel[0] %f\n", m_Accel[0]);
+            //OS_printf("m_Accel[1] %f\n", m_Accel[1]);
+            //OS_printf("m_Accel[2] %f\n", m_Accel[2]);
             
             length_check = m_Accel.Length();
             if(length_check < 0.01f)
@@ -651,6 +661,10 @@ void QAE::EstimateAttitude(void)
             m_Mag[1] = CVT.SensorCombinedMsg.Mag[1];
             m_Mag[2] = CVT.SensorCombinedMsg.Mag[2];
 
+            //OS_printf("m_Mag[0] %f\n", m_Mag[0]);
+            //OS_printf("m_Mag[1] %f\n", m_Mag[1]);
+            //OS_printf("m_Mag[2] %f\n", m_Mag[2]);
+            
             length_check = m_Mag.Length();
             if(length_check < 0.01f)
             {
@@ -691,9 +705,10 @@ void QAE::EstimateAttitude(void)
            HkTlm.EstimatorState == QAE_EST_INITIALIZED)
         {
             /* position data is actual */
-            math::Vector3F vel(CVT.VehicleGlobalPositionMsg.VelN,
-                               CVT.VehicleGlobalPositionMsg.VelE,
-                               CVT.VehicleGlobalPositionMsg.VelD);
+            vel[0] = CVT.VehicleGlobalPositionMsg.VelN;
+            vel[1] = CVT.VehicleGlobalPositionMsg.VelE;
+            vel[2] = CVT.VehicleGlobalPositionMsg.VelD;
+
             /* velocity updated */
             if(m_LastVelocityTime != 0 &&
                CVT.VehicleGlobalPositionMsg.Timestamp != m_LastVelocityTime)
@@ -718,8 +733,8 @@ void QAE::EstimateAttitude(void)
     }
 
     time_now = PX4LIB_GetPX4TimeUs();
-    delta_time = (time_last > 0) ? ((time_now - time_last) / 1000000.0f) : 0.00001f;
-    time_last = time_now;
+    delta_time = (m_TimeLast > 0) ? ((time_now - m_TimeLast) / 1000000.0f) : 0.00001f;
+    m_TimeLast  = time_now;
     
     if(delta_time > QAE_DELTA_TIME_MAX)
     {
@@ -885,23 +900,26 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     }
     
     q_last = m_Quaternion;
+    //printf("q_last %f, %f, %f, %f\n", q_last[0], q_last[1], q_last[2], q_last[3]);
     spinRate = m_Gyro.Length();
-    
+    //printf("spinRate %f\n", m_Gyro.Length());
     /* Magnetometer correction project mag field vector to global frame 
      * and extract XY component */
     mag_earth = m_Quaternion.Conjugate(m_Mag);
+    //printf("mag_earth %f, %f, %f\n", mag_earth[0], mag_earth[1], mag_earth[2]);
     magErr = _wrap_pi(atan2f(mag_earth[1], mag_earth[0]) - m_Params.mag_declination);
-    
+    //printf("magErr %f\n", magErr);
     if(spinRate > QAE_FIFTY_DPS)
     {
         gainMult = math::min(spinRate / QAE_FIFTY_DPS, 10.0f);
     }
     /* Project magnetometer correction to body frame */
     math::Vector3F magErrV3F(0.0f, 0.0f, -magErr);
+    //printf("magErrV3F %f, %f, %f\n", magErrV3F[0], magErrV3F[1], magErrV3F[2]);
     corr = corr + m_Quaternion.ConjugateInversed(magErrV3F) * m_Params.mag_weight * gainMult;
-    
+    //printf("corr %f, %f, %f\n", corr[0], corr[1], corr[2]);
     m_Quaternion.Normalize();
-    
+    //printf("m_Quaternion.Normalize(); %f, %f, %f, %f\n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
     /* Accelerometer correction
      * Project 'k' unit vector of earth frame to body frame
      * Vector<3> k = _q.conjugate_inversed(Vector<3>(0.0f, 0.0f, 1.0f));
@@ -914,12 +932,14 @@ boolean QAE::UpdateEstimateAttitude(float dt)
              m_Quaternion[1] - m_Quaternion[2] * m_Quaternion[2] + 
              m_Quaternion[3] * m_Quaternion[3])
     );
-    
+    //printf("k %f, %f, %f\n", k[0], k[1], k[2]);
     math::Vector3F diff(0.0f, 0.0f, 0.0f);
     diff = m_Accel - m_PositionAcc;
+    //printf("diff %f, %f, %f\n", diff[0], diff[1], diff[2]);
     diff.Normalize();
+    //printf("diff.Normalize() %f, %f, %f\n", diff[0], diff[1], diff[2]);
     corr = corr + (k % diff) * m_Params.acc_weight;
-    
+    //printf("corr %f, %f, %f\n", corr[0], corr[1], corr[2]);
     /* Gyro bias estimation */
     if(spinRate < 0.175f)
     {
@@ -931,19 +951,20 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     }
     
     m_Rates = m_Gyro + m_GyroBias;
-    
+    //printf("m_Rates %f, %f, %f\n", m_Rates[0], m_Rates[1], m_Rates[2]);
     /* Feed forward gyro */
     corr = corr + m_Rates;
-
+    //printf("corr + m_Rates %f, %f, %f\n", corr[0], corr[1], corr[2]);
+    
     q_derivative = m_Quaternion.Derivative(corr);
-
+    //printf("q_derivative %f, %f, %f, %f\n", q_derivative[0], q_derivative[1], q_derivative[2], q_derivative[3]);
     /* Apply correction to state */
     m_Quaternion = m_Quaternion + (q_derivative * dt);
-    
+    //printf("m_Quaternion = m_Quaternion + (q_derivative * dt) %f, %f, %f, %f\n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
     /* Normalize quaternion */
     m_Quaternion.Normalize();
     
-    OS_printf("before last if check %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
+    //OS_printf("before last if check %f, m_Quaternion[] %f, m_Quaternion[] %f, m_Quaternion[] %f, \n", m_Quaternion[0], m_Quaternion[1], m_Quaternion[2], m_Quaternion[3]);
     
     if (isfinite(m_Quaternion[0]) && isfinite(m_Quaternion[1]) &&
         isfinite(m_Quaternion[2]) && isfinite(m_Quaternion[3]) )

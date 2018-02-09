@@ -503,7 +503,7 @@ void Test_QAE_UpdateMagDeclination_InitialNominal(void)
     float expected_declination = 10.0f;
 
     QAE oQAE;
-    
+    oQAE.InitApp();
     /* Set estimator state to unintialized */
     oQAE.HkTlm.EstimatorState = QAE_EST_UNINITIALIZED;
     
@@ -530,7 +530,77 @@ void Test_QAE_UpdateMagDeclination_ImmediateNominal(void)
 }
 
 
+/**
+ * Test QAE::UpdateEstimateAttitude Nominal
+ */
+void Test_QAE_UpdateEstimateAttitude_Nominal(void)
+{
+    math::Quaternion existingQ(0.5584248900f, -0.0916596875f, -0.1673399657f, 0.8073150516f);
+    math::Vector3F gyroInput(-0.0014175611f, -0.0097235963f, -0.0023968932f);
+    math::Vector3F gyroBiasInput(0.0004477855f, 0.0004819505f, 0.0005668105f);
+    math::Vector3F ratesInput(0.0012337452f, -0.0073956200f, -0.0015565471f);
+    math::Vector3F accelInput(-0.1689540148f, 3.6650042534f , -9.3518390656f);
+    math::Vector3F magInput(-0.0778940916f, -0.0357517637f,  -0.4682809114f);
+    math::Vector3F posAccInput(-0.0186713543f, 0.0805401132f,  -0.0707371980f);
 
+    float dtInput = 0.0038930001f;
+    math::Quaternion expectedQ(0.5584318042f, -0.0916518793f, -0.1673415601f, 0.8073107004f);
+    math::Vector3F expectedR(-0.0009688014f, -0.0092391772f, -0.0018312578f);
+    math::Vector3F expectedGB(0.0004487596f, 0.0004844195f, 0.0005656354f);
+    boolean returnBool = FALSE;
+
+    QAE oQAE;
+    oQAE.InitApp();
+    oQAE.m_Accel = accelInput;
+    oQAE.m_Mag = magInput;
+    oQAE.m_Gyro = gyroInput;
+    oQAE.m_GyroBias = gyroBiasInput;
+    oQAE.m_Rates = ratesInput;
+    oQAE.m_PositionAcc = posAccInput;
+    oQAE.m_Quaternion = existingQ;
+    oQAE.HkTlm.EstimatorState = QAE_EST_INITIALIZED;
+    oQAE.HkTlm.State = QAE_SENSOR_DATA_RCVD;
+    
+    returnBool = oQAE.UpdateEstimateAttitude(dtInput);
+    
+    //printf("oQAE.m_Quaternion[0] %0.10f\n", oQAE.m_Quaternion[0]);
+    //printf("oQAE.m_Quaternion[1] %0.10f\n", oQAE.m_Quaternion[1]);
+    //printf("oQAE.m_Quaternion[2] %0.10f\n", oQAE.m_Quaternion[2]);
+    //printf("oQAE.m_Quaternion[3] %0.10f\n", oQAE.m_Quaternion[3]);
+    //printf("oQAE.m_Rates[0] %0.10f\n", oQAE.m_Rates[0]);
+    //printf("oQAE.m_Rates[1] %0.10f\n", oQAE.m_Rates[1]);
+    //printf("oQAE.m_Rates[2] %0.10f\n", oQAE.m_Rates[2]);
+    //printf("oQAE.m_GyroBias[0] %0.10f\n", oQAE.m_GyroBias[0]);
+    //printf("oQAE.m_GyroBias[1] %0.10f\n", oQAE.m_GyroBias[1]);
+    //printf("oQAE.m_GyroBias[2] %0.10f\n", oQAE.m_GyroBias[2]);
+    
+    UtAssert_True(fabs(oQAE.m_Quaternion[0] - expectedQ[0]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Quaternion[0] failed");
+    UtAssert_True(fabs(oQAE.m_Quaternion[1] - expectedQ[1]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Quaternion[1] failed");
+    UtAssert_True(fabs(oQAE.m_Quaternion[2] - expectedQ[2]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Quaternion[1] failed");
+    UtAssert_True(fabs(oQAE.m_Quaternion[3] - expectedQ[3]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Quaternion[1] failed");
+    UtAssert_True(fabs(oQAE.m_Rates[0] - expectedR[0]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Rates[0] failed");
+    UtAssert_True(fabs(oQAE.m_Rates[1] - expectedR[1]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Rates[1] failed");
+    UtAssert_True(fabs(oQAE.m_Rates[2] - expectedR[2]) < 0.00001f, "UpdateEstimateAttitude Nominal m_Rates[1] failed");
+    UtAssert_True(fabs(oQAE.m_GyroBias[0] - expectedGB[0]) < 0.00001f, "UpdateEstimateAttitude Nominal m_GyroBias[0] failed");
+    UtAssert_True(fabs(oQAE.m_GyroBias[1] - expectedGB[1]) < 0.00001f, "UpdateEstimateAttitude Nominal m_GyroBias[1] failed");
+    UtAssert_True(fabs(oQAE.m_GyroBias[2] - expectedGB[2]) < 0.00001f, "UpdateEstimateAttitude Nominal m_GyroBias[1] failed");
+    
+    UtAssert_True(returnBool == TRUE, "UpdateEstimateAttitude return_bool == TRUE");
+}
+
+
+/**
+ * Test QAE::EstimateAttitude Nominal
+ */
+void Test_QAE_EstimateAttitude_Nominal(void)
+{
+    //math::Vector3F gyroInput(0.000244f, 0.001586f, 0.007006f);
+    //math::Vector3F accelInput(0.702764f, 3.002803f , -9.637285f);
+    //math::Vector3F magInput(0.054984f, -0.103588f, -0.463699f);
+    //math::Quaternion existingQ(0.753631f, -0.127809f, -0.071840f, 0.640737f);
+    //float dtInput = 0.003960f;
+    
+}
 
 /**************************************************************************
  * Rollup Test Cases
@@ -584,6 +654,12 @@ void QAE_App_Test_AddTestCases(void)
                "Test_QAE_InitEstimateAttitude_Nominal");
     UtTest_Add(Test_QAE_UpdateMagDeclination_InitialNominal, QAE_Test_Setup, QAE_Test_TearDown,
                "Test_QAE_UpdateMagDeclination_InitialNominal");
+    UtTest_Add(Test_QAE_UpdateMagDeclination_ImmediateNominal, QAE_Test_Setup, QAE_Test_TearDown,
+               "Test_QAE_UpdateMagDeclination_ImmediateNominal");
+    UtTest_Add(Test_QAE_UpdateEstimateAttitude_Nominal, QAE_Test_Setup, QAE_Test_TearDown,
+               "Test_QAE_UpdateEstimateAttitude_Nominal");
+    UtTest_Add(Test_QAE_EstimateAttitude_Nominal, QAE_Test_Setup, QAE_Test_TearDown,
+               "Test_QAE_EstimateAttitude_Nominal");
 }
 
 
