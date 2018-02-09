@@ -43,6 +43,52 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 PE_ConfigTbl_t PE_ConfigTbl =
 {
 	/* TODO:  Define table. */
+    //FUSION
+    145,
+	//VXY_PUB_THRESH
+    .3f,
+	//Z_PUB_THRESH
+    1.0f,
+	//ACCEL_XY_STDDEV
+    .012f,
+	//ACCEL_Z_STDDEV
+    .02f,
+	//BARO_STDDEV
+    3.0f,
+	//GPS_DELAY
+    .29f,
+	//GPS_XY_STDDEV
+    1.0f,
+	//GPS_Z_STDDEV
+    3.0f,
+	//GPS_VXY_STDDEV
+    .25f,
+	//GPS_VZ_STDDEV
+    .25f,
+	//GPS_EPH_MAX
+    3.0f,
+	//GPS_EPV_MAX
+    5.0f,
+	//LAND_Z_STDDEV
+    .03f,
+	//LAND_VXY_STDDEV
+    .03f,
+	//PN_P_NOISE_DENSITY
+    .1f,
+	//PN_V_NOISE_DENSITY
+    .1f,
+	//PN_B_NOISE_DENSITY
+    .001f,
+	//PN_T_NOISE_DENSITY
+    .001f,
+	//T_MAX_GRADE
+    1.0f,
+	//FAKE_ORIGIN
+    0,
+	//INIT_ORIGIN_LAT
+    29.562144f,
+	//INIT_ORIGIN_LON
+    -95.144554
 };
 
 /*
