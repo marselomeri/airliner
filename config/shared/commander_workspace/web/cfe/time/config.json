@@ -1,0 +1,54 @@
+{
+    "schDef":{
+        "slotCount": 200,
+        "entriesPerSlot": 5,
+        "appName": "CFE_TIME",
+        "slots":[
+            {"id":10, "activities":[1]}
+        ],
+        "groups":[
+            {"name": "SCH_GROUP_CFE_TIME_SEND_HK", "id": 262144}
+        ]
+    },
+    "eventDef":{
+	    "appName": "CFE_TIME",
+	    "events":[
+            {"name": "CFE_TIME_INIT_EID", "eventID": 1},
+            {"name": "CFE_TIME_NOOP_EID", "eventID": 4},
+            {"name": "CFE_TIME_RESET_EID", "eventID": 5},
+            {"name": "CFE_TIME_DIAG_EID", "eventID": 6},
+            {"name": "CFE_TIME_STATE_EID", "eventID": 7},
+            {"name": "CFE_TIME_SOURCE_EID", "eventID": 8},
+            {"name": "CFE_TIME_SIGNAL_EID", "eventID": 9},
+            {"name": "CFE_TIME_DELAY_EID", "eventID": 11},
+            {"name": "CFE_TIME_TIME_EID", "eventID": 12},
+            {"name": "CFE_TIME_MET_EID", "eventID": 13},
+            {"name": "CFE_TIME_STCF_EID", "eventID": 14},
+            {"name": "CFE_TIME_DELTA_EID", "eventID": 15},
+            {"name": "CFE_TIME_1HZ_EID", "eventID": 16},
+            {"name": "CFE_TIME_LEAPS_EID", "eventID": 17},
+            {"name": "CFE_TIME_FLY_ON_EID", "eventID": 20},
+            {"name": "CFE_TIME_FLY_OFF_EID", "eventID": 21},
+            {"name": "CFE_TIME_EXIT_ERR_EID", "eventID": 25},
+            {"name": "CFE_TIME_ID_ERR_EID", "eventID": 26},
+            {"name": "CFE_TIME_CC_ERR_EID", "eventID": 27},
+            {"name": "CFE_TIME_STATE_ERR_EID", "eventID": 30},
+            {"name": "CFE_TIME_SOURCE_ERR_EID", "eventID": 31},
+            {"name": "CFE_TIME_SIGNAL_ERR_EID", "eventID": 32},
+            {"name": "CFE_TIME_DELAY_ERR_EID", "eventID": 33},
+            {"name": "CFE_TIME_TIME_ERR_EID", "eventID": 34},
+            {"name": "CFE_TIME_MET_ERR_EID", "eventID": 35},
+            {"name": "CFE_TIME_STCF_ERR_EID", "eventID": 36},
+            {"name": "CFE_TIME_DELTA_ERR_EID", "eventID": 37},
+            {"name": "CFE_TIME_SOURCE_CFG_EID", "eventID": 40},
+            {"name": "CFE_TIME_SIGNAL_CFG_EID", "eventID": 41},
+            {"name": "CFE_TIME_DELAY_CFG_EID", "eventID": 42},
+            {"name": "CFE_TIME_TIME_CFG_EID", "eventID": 43},
+            {"name": "CFE_TIME_MET_CFG_EID", "eventID": 44},
+            {"name": "CFE_TIME_STCF_CFG_EID", "eventID": 45},
+            {"name": "CFE_TIME_LEAPS_CFG_EID", "eventID": 46},
+            {"name": "CFE_TIME_DELTA_CFG_EID", "eventID": 47},
+            {"name": "CFE_TIME_1HZ_CFG_EID", "eventID": 48}
+		]
+	}
+}
