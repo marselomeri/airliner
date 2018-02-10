@@ -165,23 +165,6 @@
 #define MD_DWELL_PKT_MID_BASE			0x09c7
 
 
-/* NAV										*/
-/* Range: 0x9d0 - 0x9df						*/
-#define NAV_CMD_MID						0x19d0
-#define NAV_SEND_HK_MID					0x19d1
-#define NAV_FUNC2_MID					0x19d2
-#define NAV_FUNC3_MID					0x19d3
-#define NAV_FUNC4_MID					0x19d4
-#define NAV_FUNC5_MID					0x19d5
-#define NAV_FUNC6_MID					0x19d6
-#define NAV_FUNC7_MID					0x19d7
-#define NAV_FUNC8_MID					0x19d8
-#define NAV_FUNC9_MID					0x19d9
-#define NAV_FUNC10_MID					0x19da
-#define NAV_HK_TLM_MID					0x09db
-#define NAV_HIGH_RATE_NAV_MID			0x09dc
-
-
 /* SC										*/
 /* Range: 0x9e0 - 0x9e3						*/
 #define SC_CMD_MID                      0x19e0
@@ -245,6 +228,7 @@
 #define PX4_HIL_SENSOR_MID							0x0a23
 #define PX4_HOME_POSITION_MID						0x0a24
 #define PX4_INPUT_RC_MID							0x0a25
+#define PX4_LED_CONTROL_MID                         0x0a5c
 #define PX4_LOG_MESSAGE_MID							0x0a26
 #define PX4_MANUAL_CONTROL_SETPOINT_MID				0x0a27
 #define PX4_MAVLINK_LOG_MID							0x0a28
@@ -313,16 +297,17 @@
 #define MPU9250_DIAG_TLM_MID						0x0b52
 #define MPU9250_CMD_MID								0x1b53
 #define MPU9250_MEASURE_MID							0x1b54
-#define MPU9250_RAW_MEAS_MID						0x0b55
-#define MPU9250_CAL_MEAS_MID						0x0b56
+//#define MPU9250_RAW_MEAS_MID						0x0b55
+//#define MPU9250_CAL_MEAS_MID						0x0b56
 
 #define MS5611_SEND_HK_MID							0x1b60
 #define MS5611_HK_TLM_MID							0x0b61
 #define MS5611_DIAG_TLM_MID							0x0b62
 #define MS5611_CMD_MID								0x1b63
 #define MS5611_MEASURE_MID							0x1b64
-#define MS5611_RAW_MEAS_MID							0x0b65
-#define MS5611_CAL_MEAS_MID							0x0b66
+//#define MS5611_RAW_MEAS_MID						  0x0b65
+//#define MS5611_CAL_MEAS_MID						  0x0b66
+//#define MS5611_WAKEUP_MID                           0x0b67
 
 #define NEOM8N_SEND_HK_MID							0x1b70
 #define NEOM8N_HK_TLM_MID							0x0b71
@@ -567,6 +552,117 @@
 #define MAC_OUT_DATA_MID                            0x0c45
 #define MAC_HK_TLM_MID                              0x0c46
 
-#define SCH_ACTIVITY_DONE_MID						0x0f00
+/* ULR                                                  */
+#define ULR_CMD_MID                                 0x1c47
+#define ULR_SEND_HK_MID                             0x1c48
+#define ULR_MEASURE_MID                             0x1c49
+#define ULR_OUT_DATA_MID                            0x0c4a
+#define ULR_HK_TLM_MID                              0x0c4b
+
+/* RGBLED                                               */
+#define RGBLED_CMD_MID                              0x1c4c
+#define RGBLED_SEND_HK_MID                          0x1c4d
+#define RGBLED_WAKEUP_MID                           0x1c4e
+#define RGBLED_HK_TLM_MID                           0x0c4f
+
+/* GPS                                                  */
+#define GPS_CMD_MID                                 0x1c51
+#define GPS_SEND_HK_MID                             0x1c52
+#define GPS_READ_SENSOR_MID                         0x1c53
+#define GPS_HK_TLM_MID                              0x0c54
+
+/* SENS                                                 */
+#define SENS_HK_TLM_MID                             0x0c55
+#define SENS_SEND_HK_MID                            0x1c56
+#define SENS_WAKEUP_MID                             0x1c57
+#define SENS_CMD_MID                                0x1c58
+
+/* AE                                                   */
+#define AE_HK_TLM_MID                               0x0c59
+#define AE_SEND_HK_MID                              0x1c5a
+#define AE_WAKEUP_MID                               0x1c5b
+#define AE_CMD_MID                                  0x1c5c
+
+/* LD                                                   */
+#define LD_HK_TLM_MID                               0x0c5d
+#define LD_SEND_HK_MID                              0x1c5e
+#define LD_WAKEUP_MID                               0x1c5f
+#define LD_CMD_MID                                  0x1c60
+
+/* MPC                                                  */
+#define MPC_HK_TLM_MID                              0x0c61
+#define MPC_SEND_HK_MID                             0x1c62
+#define MPC_WAKEUP_MID                              0x1c63
+#define MPC_CMD_MID                                 0x1c64
+
+/* NAV                                                  */
+#define NAV_HK_TLM_MID                              0x0c65
+#define NAV_SEND_HK_MID                             0x1c66
+#define NAV_WAKEUP_MID                              0x1c67
+#define NAV_CMD_MID                                 0x1c68
+
+/* RCIN                                                 */
+#define RCIN_HK_TLM_MID                             0x0c69
+#define RCIN_SEND_HK_MID                            0x1c6a
+#define RCIN_WAKEUP_MID                             0x1c6b
+#define RCIN_CMD_MID                                0x1c6c
+
+/* VM                                                   */
+#define VM_HK_TLM_MID                               0x0c6d
+#define VM_SEND_HK_MID                              0x1c6e
+#define VM_WAKEUP_MID                               0x1c6f
+#define VM_CMD_MID                                  0x1c70
+
+/* BAT                                                  */
+#define BAT_HK_TLM_MID                              0x0c71
+#define BAT_SEND_HK_MID                             0x1c72
+#define BAT_WAKEUP_MID                              0x1c73
+#define BAT_CMD_MID                                 0x1c74
+
+/* PE                                                    */
+#define PE_HK_TLM_MID                               0x0c79
+#define PE_SEND_HK_MID                              0x1c7a
+#define PE_WAKEUP_MID                               0x1c7b
+#define PE_CMD_MID                                  0x1c7c
+
+/* SIM                                                  */
+#define SIM_HK_TLM_MID                              0x0c7d
+#define SIM_SEND_HK_MID                             0x1c7e
+#define SIM_WAKEUP_MID                              0x1c7f
+#define SIM_CMD_MID                                 0x1c80
+
+/* MAVLINK                   					        */
+#define MAVLINK_CMD_MID                             0x1c81
+#define MAVLINK_SEND_HK_MID                         0x1c82
+#define MAVLINK_HK_TLM_MID                          0x0c83
+#define MAVLINK_WAKEUP_MID                          0x1c84
+#define MAVLINK_OUT_DATA_MID                        0x1c85
+#define MAVLINK_PARAM_DATA_MID                      0x1c86
+#define MAVLINK_REQUEST_PARAMS_MID                  0x1c87
+
+/* Individual GPS messages                              */
+#define GPS_NAV_DOP_MID                             0x0c87
+#define GPS_NAV_NAVPVT_MID                          0x0c88
+#define GPS_NAV_SVINFO_MID                          0x0c89
+#define GPS_ACK_NAK_MID                             0x0c90
+#define GPS_ACK_ACK_MID                             0x0c91
+#define GPS_CFG_PRT_MID                             0x0c92
+#define GPS_CFG_MSG_MID                             0x0c93
+#define GPS_CFG_RATE_MID                            0x0c94
+#define GPS_CFG_SBAS_MID                            0x0c95
+#define GPS_CFG_NAV5_MID                            0x0c96
+#define GPS_MON_HW_MID                              0x0c97
+
+/* HMC5883                                              */
+#define HMC5883_HK_TLM_MID                          0x0ca1
+#define HMC5883_SEND_HK_MID                         0x1ca2
+#define HMC5883_WAKEUP_MID                          0x1ca3
+#define HMC5883_CMD_MID                             0x1ca4
+#define HMC5883_DIAG_TLM_MID                        0x0ca5
+
+/* PRMLIB                                               */
+#define PRMLIB_PARAM_UPDATED_MID                    0x0ca6
+
+#define SCH_ACTIVITY_DONE_MID			    0x0f00
 
 #endif

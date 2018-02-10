@@ -55,7 +55,11 @@ softsim:
            - type: "sheet"
              spec: "/mdb/VC.xls"
            - type: "sheet"
+             spec: "/mdb/RGBLED.xls"
+           - type: "sheet"
              spec: "/mdb/EA.xls"
+           - type: "sheet"
+             spec: "/mdb/ULR.xls"
 
 mavlink:
     # Configuration of the active loaders

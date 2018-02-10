@@ -1,0 +1,389 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4 - RC Input
+
+block main
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - RC Input
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #Dataplot(style='width:100%; height:600px;')
+
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Sensor - RC Input
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Last Signal Time:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_LastSignalTime"}]}) ---
+                    tr
+                      th Channel Count:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_ChannelCount"}]}) ---
+                    tr
+                      th RSSI:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_ChannelCount"}]}) ---
+                    tr
+                      th Total Frame Count:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_RcTotalFrameCount"}]}) ---
+                    tr
+                      th Lost Frame Count:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_RcLostFrameCount"}]}) ---
+                    tr
+                      th PPM Frame Length:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_RcPpmFrameLength"}]}) ---
+                    tr
+                      th Channel 0:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_0"}]}) ---
+                    tr
+                      th Channel 1:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_1"}]}) ---
+                    tr
+                      th Channel 2:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_2"}]}) ---
+                    tr
+                      th Channel 3:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_3"}]}) ---
+                    tr
+                      th Channel 4:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_4"}]}) ---
+                    tr
+                      th Channel 5:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_5"}]}) ---
+                    tr
+                      th Channel 6:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_6"}]}) ---
+                    tr
+                      th Channel 7:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_7"}]}) ---
+                    tr
+                      th Channel 8:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_8"}]}) ---
+                    tr
+                      th Channel 9:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_9"}]}) ---
+                    tr
+                      th Channel 10:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_10"}]}) ---
+                    tr
+                      th Channel 11:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_11"}]}) ---
+                    tr
+                      th Channel 12:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_12"}]}) ---
+                    tr
+                      th Channel 13:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_13"}]}) ---
+                    tr
+                      th Channel 14:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_14"}]}) ---
+                    tr
+                      th Channel 15:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_15"}]}) ---
+                    tr
+                      th Channel 16:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_16"}]}) ---
+                    tr
+                      th Channel 17:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_Values_17"}]}) ---
+                    tr
+                      th Fail Safe:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_RcFailsafe"}]}) ---
+                    tr
+                      th RC Lost:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_RcLost"}]}) ---
+                    tr
+                      th Input Source:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/IRC_InputSource"}]}) ---
+
+
+      script.
+        var MaxCount = 2500;
+        var Data0 = [];
+        var Data1 = [];
+        var Data2 = [];
+        var Data3 = [];
+        var Data4 = [];
+        var Data5 = [];
+        var Data6 = [];
+        var Data7 = [];
+        var Data8 = [];
+        var Data9 = [];
+        var Data10 = [];
+        var Data11 = [];
+        var Data12 = [];
+        var Data13 = [];
+        var Data14 = [];
+        var Data15 = [];
+        var Data16 = [];
+        var Data17 = [];
+        
+        $(function () {
+          function legendFormatter(label, series) {
+            return '<div ' + 
+               'style="color:white;font-size:8pt;text-align:left;padding:4px;padding-left:10px">' +
+               label + '</div>';
+          };
+    
+          var UtilGraph = $.plot($("#Dataplot"), [],{
+              xaxis : {
+                mode : 'time',
+                font : {
+                  color: "#ffffff"
+                }
+              },
+              yaxis : {
+                font : {
+                  color: "#ffffff"
+                }
+              },
+              series : {
+                lines : {
+                  show : true
+                },
+                points: {
+                  show: false
+                }
+              },
+              legend: {
+                show: true,
+                labelFormatter: legendFormatter,
+                labelBoxBorderColor: 'rgba(255, 255, 255, 0.0)',
+                noColumns: 1,
+                position: 'ne',
+                margin: [10,10],
+                backgroundColor: null,
+                backgroundOpacity: 0,
+                container: null,
+                sorted: false
+              },
+              grid: {
+                show: true,
+                //aboveData: boolean
+                //color: '#ffffff',
+                //backgroundColor: color/gradient or null
+                //margin: number or margin object
+                //labelMargin: number
+                //axisMargin: number
+                //markings: [{ color: "#ffffff" }],
+                //markings: array of markings or (fn: axes -> array of markings)
+                //borderWidth: number or object with "top", "right", "bottom" and "left" properties with different widths
+                //borderColor: color or null or object with "top", "right", "bottom" and "left" properties with different colors
+                //minBorderMargin: number or null
+                //clickable: boolean
+                //hoverable: boolean
+                //autoHighlight: boolean
+                //mouseActiveRadius: number
+              }
+            }
+          );
+        
+
+              var MaxCount = 120;
+              var ignoreCount = 3;
+              var updateInterval = 100;
+              var count = 0;
+              var prev = -1;
+      
+              session.subscribe({
+                homogeneity: {tolerance: 0},
+                tlm: [
+                  {name: '/CFS/PX4/IRC_Values_0'},
+                  {name: '/CFS/PX4/IRC_Values_1'},
+                  {name: '/CFS/PX4/IRC_Values_2'},
+                  {name: '/CFS/PX4/IRC_Values_3'},
+                  {name: '/CFS/PX4/IRC_Values_4'},
+                  {name: '/CFS/PX4/IRC_Values_5'},
+                  {name: '/CFS/PX4/IRC_Values_6'},
+                  {name: '/CFS/PX4/IRC_Values_7'},
+                  {name: '/CFS/PX4/IRC_Values_8'},
+                  {name: '/CFS/PX4/IRC_Values_9'},
+                  {name: '/CFS/PX4/IRC_Values_10'},
+                  {name: '/CFS/PX4/IRC_Values_11'},
+                  {name: '/CFS/PX4/IRC_Values_12'},
+                  {name: '/CFS/PX4/IRC_Values_13'},
+                  {name: '/CFS/PX4/IRC_Values_14'},
+                  {name: '/CFS/PX4/IRC_Values_15'},
+                  {name: '/CFS/PX4/IRC_Values_16'},
+                  {name: '/CFS/PX4/IRC_Values_17'},
+                ]},function(params) {                
+                  count = count + 1;
+                  if(ignoreCount > 0){
+                    ignoreCount = ignoreCount - 1;
+                  } else { 
+                    if (Data0.length >= MaxCount) {
+                      Data0 = Data0.slice(1);
+                      Data1 = Data1.slice(1);
+                      Data2 = Data2.slice(1);
+                      Data3 = Data3.slice(1);
+                      Data4 = Data4.slice(1);
+                      Data5 = Data5.slice(1);
+                      Data6 = Data6.slice(1);
+                      Data7 = Data7.slice(1);
+                      Data8 = Data8.slice(1);
+                      Data9 = Data9.slice(1);
+                      Data10 = Data10.slice(1);
+                      Data11 = Data11.slice(1);
+                      Data12 = Data12.slice(1);
+                      Data13 = Data13.slice(1);
+                      Data14 = Data14.slice(1);
+                      Data15 = Data15.slice(1);
+                      Data16 = Data16.slice(1);
+                      Data17 = Data17.slice(1);
+                    }
+        
+                    var timeStamp = new Date(params[0].acquisitionTime);
+                    var D0 = params[0].engValue.uint32Value;
+                    var D1 = params[1].engValue.uint32Value;
+                    var D2 = params[2].engValue.uint32Value;
+                    var D3 = params[3].engValue.uint32Value;
+                    var D4 = params[4].engValue.uint32Value;
+                    var D5 = params[5].engValue.uint32Value;
+                    var D6 = params[6].engValue.uint32Value;
+                    var D7 = params[7].engValue.uint32Value;
+                    var D8 = params[8].engValue.uint32Value;
+                    var D9 = params[9].engValue.uint32Value;
+                    var D10 = params[10].engValue.uint32Value;
+                    var D11 = params[11].engValue.uint32Value;
+                    var D12 = params[12].engValue.uint32Value;
+                    var D13 = params[13].engValue.uint32Value;
+                    var D14 = params[14].engValue.uint32Value;
+                    var D15 = params[15].engValue.uint32Value;
+                    var D16 = params[16].engValue.uint32Value;
+                    var D17 = params[17].engValue.uint32Value;
+                     
+                    Data0.push([timeStamp, D0]);
+                    Data1.push([timeStamp, D1]);
+                    Data2.push([timeStamp, D2]);
+                    Data3.push([timeStamp, D3]);
+                    Data4.push([timeStamp, D4]);
+                    Data5.push([timeStamp, D5]);
+                    Data6.push([timeStamp, D6]);
+                    Data7.push([timeStamp, D7]);
+                    Data8.push([timeStamp, D8]);
+                    Data9.push([timeStamp, D9]);
+                    Data10.push([timeStamp, D10]);
+                    Data11.push([timeStamp, D11]);
+                    Data12.push([timeStamp, D12]);
+                    Data13.push([timeStamp, D13]);
+                    Data14.push([timeStamp, D14]);
+                    Data15.push([timeStamp, D15]);
+                    Data16.push([timeStamp, D16]);
+                    Data17.push([timeStamp, D17]);
+                  }
+              });
+
+              function update() {
+                UtilGraph.setData(
+                  [{
+                    data: Data0,
+                    label: "0"
+                  }, {
+                    data: Data1,
+                    label: "1"
+                  }, {
+                    data: Data2,
+                    label: "2"
+                  }, {
+                    data: Data3,
+                    label: "3"
+                  }, {
+                    data: Data4,
+                    label: "4"
+                  }, {
+                    data: Data5,
+                    label: "5"
+                  }, {
+                    data: Data6,
+                    label: "6"
+                  }, {
+                    data: Data7,
+                    label: "7"
+                  }, {
+                    data: Data8,
+                    label: "8"
+                  }, {
+                    data: Data9,
+                    label: "9"
+                  }, {
+                    data: Data10,
+                    label: "10"
+                  }, {
+                    data: Data11,
+                    label: "11"
+                  }, {
+                    data: Data12,
+                    label: "12"
+                  }, {
+                    data: Data13,
+                    label: "13"
+                  }, {
+                    data: Data14,
+                    label: "14"
+                  }, {
+                    data: Data15,
+                    label: "15"
+                  }, {
+                    data: Data16,
+                    label: "16"
+                  }, {
+                    data: Data17,
+                    label: "17"
+                  }]);
+        
+        
+                // since the axes don't change, we don't need to call plot.setupGrid()
+                UtilGraph.setupGrid();
+                UtilGraph.draw();
+                setTimeout(update, updateInterval);
+              }
+                  
+              update();
+            });
+
+
+

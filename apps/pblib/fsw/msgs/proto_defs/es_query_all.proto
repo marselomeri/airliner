@@ -9,6 +9,6 @@ message es_query_all_payload_pb
 }
 
 message es_query_all_pb
-{
+{ 
 	required es_query_all_payload_pb Payload = 1;
 }

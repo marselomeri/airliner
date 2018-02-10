@@ -47,9 +47,11 @@
 
 #define VC_SEND_HK_MIDX				45
 #define VC_WAKEUP_MIDX				46
+#define RGBLED_WAKEUP_MIDX			47
+#define RGBLED_SEND_HK_MIDX			48
 
 #define CI_READ_CMD_MIDX			50
-#define CI_1HZ_PROCESS_TIMEOUT_MIDX 51
+#define CI_1HZ_PROC_TIMEOUTS_MIDX   51
 #define CI_SEND_HK_MIDX             52
 
 
@@ -66,19 +68,45 @@
 
 #define MPU9250_SEND_HK_MIDX		72
 #define MPU9250_MEASURE_MIDX		73
-
+#define PE_SEND_HK_MIDX				74
+#define PE_WAKEUP_MIDX				75
 #define MS5611_SEND_HK_MIDX			76
 #define MS5611_MEASURE_MIDX			77
 
+#define ULR_MEASURE_MIDX		    80
+#define ULR_SEND_HK_MIDX		    81
+
+#define HMC5883_SEND_HK_MIDX		83
+#define HMC5883_WAKEUP_MIDX		    84
 #define NEOM8N_SEND_HK_MIDX			85
 #define NEOM8N_MEASURE_MIDX			86
 #define NEOM8N_PROC_CMDS_MIDX		87
 
+#define SENS_SEND_HK_MIDX			90
+#define SENS_WAKEUP_MIDX			91
+
 #define PX4BR_PROC_CMD_MIDX			100
 #define PX4BR_SEND_HK_MIDX			101
-
+#define AE_SEND_HK_MIDX			    102
+#define AE_WAKEUP_MIDX			    103
+#define LD_SEND_HK_MIDX			    104
+#define LD_WAKEUP_MIDX			    105
+#define MPC_SEND_HK_MIDX			106
+#define MPC_WAKEUP_MIDX			    107
+#define NAV_SEND_HK_MIDX	        108
+#define NAV_WAKEUP_MIDX			    109
 #define CFE_TIME_TONE_CMD_MIDX		110
 #define CFE_TIME_1HZ_CMD_MIDX		111
+#define RCIN_SEND_HK_MIDX			112
+#define RCIN_WAKEUP_MIDX			113
+#define VM_SEND_HK_MIDX			    114
+#define VM_WAKEUP_MIDX			    115
+
+#define BAT_SEND_HK_MIDX		    117
+#define BAT_WAKEUP_MIDX			    118
+
+#define GPS_READ_SENSOR_MIDX 	    122
+#define GPS_SEND_HK_MIDX        	123
 
 #define EA_WAKEUP_MIDX 				125
 #define EA_PERFMON_MIDX 			126

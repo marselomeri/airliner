@@ -14,15 +14,14 @@ message {{req_proto_msg}}
 {# Recur into next required message if present #}
 {%- if req_proto_data.required_pb_msgs|length > 0 -%}
 	{{ loop(req_proto_data.required_pb_msgs.items()) }}
-{%- endif -%}{% endfor -%}
-{% for field_name, field_data in proto_data.fields.iteritems() %}{% if proto_data.proto_msg[:-3] == self._TemplateReference__context.name[:-6] %}
+{%- endif -%}{% endfor %}
 message {{proto_data.proto_msg}}
-{
+{ {% for field_name, field_data in proto_data.fields.iteritems() %}{% if proto_data.proto_msg[:-3] == self._TemplateReference__context.name[:-6] %}
 	{{field_data.pb_field_rule}} {{field_data.pb_type}} {{field_name}} = {{loop.index}}
 	{%- if field_data.pb_field_rule == "repeated"-%}[(nanopb).max_count = {{field_data.array_length}}];{%- elif field_data.pb_type == "string"-%} [(nanopb).max_count = {{field_data.array_length}}]; {%- else -%};{% endif %}
-}
 	{%- endif -%}
-{%- endfor -%}
+{%- endfor %}
+}
 {%- endif -%}
 {%- endfor -%}
 

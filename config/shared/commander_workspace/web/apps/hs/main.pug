@@ -434,7 +434,7 @@ block main
                      span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_NumOfChildTasks'}]}) ---
             .btn-group.dropup(style='margin-top: 10px;')
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/QueryOne', argument:[{name:'Name', value:'HS'}]}}) Query
-              button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/StartApp', argument:[{name:'Name', value:'HS'},{name:'EntryPoint', value:'HS_AppMain'},{name:'FileName', value:'/cf/apps/HS.so'},{name:'StackSize', value:'32768'},{name:'ExceptionAction', value:'APP RESTART'},{name:'Priority', value:'123'}]}}) Start
+              button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/StartApp', argument:[{name:'Name', value:'HS'},{name:'EntryPoint', value:'HS_AppMain'},{name:'FileName', value:'/cf/apps/hs.so'},{name:'StackSize', value:'32768'},{name:'ExceptionAction', value:'0'},{name:'Priority', value:'123'}]}}) Start
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/StopApp', argument:[{name:'Name', value:'HS'}]}}) Stop
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/RestartApp', argument:[{name:'Name', value:'HS'}]}}) Restart
               button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/ReloadApp', argument:[{name:'Name', value:'HS'},{name:'FileName', value:'/cf/apps/hs.so'}]}}) Reload

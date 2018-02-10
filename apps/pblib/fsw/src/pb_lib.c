@@ -183,7 +183,37 @@ uint32 CFE_ES_RegisterSerializationFuncs()
 	{
 		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
 	}
-	
+
+	Status = PBLIB_RegisterTlmMessage(0x0a34, "PX4_PositionSetpointTripletMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
+
+    Status = PBLIB_RegisterTlmMessage(0x0a27, "PX4_ManualControlSetpointMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
+
+    Status = PBLIB_RegisterTlmMessage(0x0a4d, "PX4_VehicleCommandMsg_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}	
+
+	Status = PBLIB_RegisterTlmMessage(0x0c55, "SENS_HkTlm_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
+
+	Status = PBLIB_RegisterTlmMessage(0x0c54, "GPS_HkTlm_t");
+	if (Status != CFE_SUCCESS)
+	{
+		goto CFE_ES_RegisterSerializationFuncs_Exit_Tag;
+	}
+
 CFE_ES_RegisterSerializationFuncs_Exit_Tag:
     return Status;
 }
@@ -233,6 +263,7 @@ PBLIB_LibInit_Exit_Tag:
 int32 PBLIB_RegisterCmdMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgName)
 {
     int32 		status = -2;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -244,7 +275,7 @@ int32 PBLIB_RegisterCmdMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode, char *msgNa
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
 	/* Find an empty registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == 0)
     	{
@@ -272,6 +303,7 @@ PBLIB_RegisterCmdMessage_Exit_Tag:
 int32 PBLIB_RegisterTlmMessage(CFE_SB_MsgId_t msgId, char *msgName)
 {
     int32 		status = -2;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -283,7 +315,7 @@ int32 PBLIB_RegisterTlmMessage(CFE_SB_MsgId_t msgId, char *msgName)
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
 	/* Find an empty registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == 0)
     	{
@@ -310,6 +342,7 @@ PBLIB_RegisterTlmMessage_Exit_Tag:
 int32 PBLIB_DeregisterCmdMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 {
     int32 		status = -2;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -321,7 +354,7 @@ int32 PBLIB_DeregisterCmdMessage(CFE_SB_MsgId_t msgId, uint16 cmdCode)
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
 	/* Find the registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == msgId && PBLIB_AppData.RegisteredFuncs[i].cmdCode == cmdCode)
     	{
@@ -348,6 +381,7 @@ PBLIB_DeregisterCmdMessage_Exit_Tag:
 int32 PBLIB_DeregisterTlmMessage(CFE_SB_MsgId_t msgId)
 {
     int32 		status = -2;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -359,7 +393,7 @@ int32 PBLIB_DeregisterTlmMessage(CFE_SB_MsgId_t msgId)
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
 	/* Find the registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == msgId && PBLIB_AppData.RegisteredFuncs[i].cmdCode == 0)
     	{
@@ -388,6 +422,7 @@ PBLib_EncodeFuncPtr_t PBLIB_GetCmdSerializationFunc(CFE_SB_MsgId_t msgId, uint16
 	PBLib_EncodeFuncPtr_t funcAddr = 0;
 	char encFuncName[64];
 	int32 status = 0;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -398,7 +433,7 @@ PBLib_EncodeFuncPtr_t PBLIB_GetCmdSerializationFunc(CFE_SB_MsgId_t msgId, uint16
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
 	/* Find the registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == msgId && PBLIB_AppData.RegisteredFuncs[i].cmdCode == cmdCode)
     	{
@@ -427,6 +462,7 @@ PBLib_EncodeFuncPtr_t PBLIB_GetTlmSerializationFunc(CFE_SB_MsgId_t msgId)
 	PBLib_EncodeFuncPtr_t funcAddr = 0;
 	char encFuncName[64];
 	int32 status = 0;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -437,7 +473,7 @@ PBLib_EncodeFuncPtr_t PBLIB_GetTlmSerializationFunc(CFE_SB_MsgId_t msgId)
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
 	/* Find the registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == msgId && PBLIB_AppData.RegisteredFuncs[i].cmdCode == 0)
     	{
@@ -466,6 +502,7 @@ PBLib_DecodeFuncPtr_t PBLIB_GetCmdDeserializationFunc(CFE_SB_MsgId_t msgId, uint
 	PBLib_DecodeFuncPtr_t funcAddr = 0;
 	char decFuncName[64];
 	int32 status = 0;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -476,7 +513,7 @@ PBLib_DecodeFuncPtr_t PBLIB_GetCmdDeserializationFunc(CFE_SB_MsgId_t msgId, uint
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
     /* Find the registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == msgId && PBLIB_AppData.RegisteredFuncs[i].cmdCode == cmdCode)
     	{
@@ -504,6 +541,7 @@ PBLib_DecodeFuncPtr_t PBLIB_GetTlmDeserializationFunc(CFE_SB_MsgId_t msgId)
 	PBLib_DecodeFuncPtr_t funcAddr = 0;
 	char decFuncName[64];
 	int32 status = 0;
+    int32 i = 0;
 
     if(msgId == 0)
     {
@@ -514,7 +552,7 @@ PBLib_DecodeFuncPtr_t PBLIB_GetTlmDeserializationFunc(CFE_SB_MsgId_t msgId)
 	OS_MutSemTake(PBLIB_AppData.RegTblMutex);
 
     /* Find the registration entry */
-    for(int i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
+    for(i = 0; i < PBLIB_REG_MAX_ENTRY; ++i)
     {
     	if(PBLIB_AppData.RegisteredFuncs[i].msgId == msgId && PBLIB_AppData.RegisteredFuncs[i].cmdCode == 0)
     	{

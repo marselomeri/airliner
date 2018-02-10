@@ -52,6 +52,12 @@ extern "C" {
 #include "amc_msg.h"
 #include "amc_version.h"
 #include <math.h>
+#include "px4lib.h"
+#include "prm_lib.h"
+#include "prm_ids.h"
+
+/* TODO:  Delete this when the PWM is no longer simulated on the PX4 side. */
+#define PWM_SIM_DISARMED_MAGIC (900)
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -190,6 +196,31 @@ int32 AMC::InitPipe()
         goto AMC_InitPipe_Exit_Tag;
     }
 
+    /* Init param pipe and subscribe to messages on the data pipe */
+	iStatus = CFE_SB_CreatePipe(&ParamPipeId,
+								AMC_PARAM_PIPE_DEPTH,
+								AMC_PARAM_PIPE_NAME);
+	if (iStatus == CFE_SUCCESS)
+	{
+		/* Subscribe to data messages */
+		iStatus = CFE_SB_Subscribe(PRMLIB_PARAM_UPDATED_MID, ParamPipeId);
+
+		if (iStatus != CFE_SUCCESS)
+		{
+			(void) CFE_EVS_SendEvent(AMC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+									 "DATA Pipe failed to subscribe to PRMLIB_PARAM_UPDATED_MID. (0x%08X)",
+									 (unsigned int)iStatus);
+			goto AMC_InitPipe_Exit_Tag;
+		}
+	}
+	else
+	{
+		(void) CFE_EVS_SendEvent(AMC_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+								 "Failed to create Data pipe (0x%08X)",
+								 (unsigned int)iStatus);
+		goto AMC_InitPipe_Exit_Tag;
+	}
+
 AMC_InitPipe_Exit_Tag:
     return (iStatus);
 }
@@ -209,6 +240,9 @@ void AMC::InitData()
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
                    AMC_HK_TLM_MID, sizeof(HkTlm), TRUE);
+
+    memset(&CVT.ActuatorArmed, 0, sizeof(CVT.ActuatorArmed));
+    memset(&CVT.ActuatorControls0, 0, sizeof(CVT.ActuatorControls0));
 }
 
 
@@ -267,6 +301,15 @@ int32 AMC::InitApp()
         goto AMC_InitApp_Exit_Tag;
     }
 
+    iStatus = InitParams();
+	if (iStatus != CFE_SUCCESS)
+	{
+		(void) CFE_EVS_SendEvent(AMC_DEVICE_INIT_ERR_EID, CFE_EVS_ERROR,
+								 "Failed to init params (0x%08x)",
+								 (unsigned int)iStatus);
+		goto AMC_InitApp_Exit_Tag;
+	}
+
 AMC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -316,19 +359,25 @@ int32 AMC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
 	{
             case AMC_UPDATE_MOTORS_MID:
-                UpdateMotors();
                 break;
 
             case AMC_SEND_HK_MID:
                 ReportHousekeeping();
+                // TODO: Move these somewhere more appropriate later
+                ProcessParamPipe();
+                ProcessCmdPipe();
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
                 memcpy(&CVT.ActuatorArmed, MsgPtr, sizeof(CVT.ActuatorArmed));
+            	//DisplayInputs();
+                UpdateMotors();
                 break;
 
             case PX4_ACTUATOR_CONTROLS_0_MID:
                 memcpy(&CVT.ActuatorControls0, MsgPtr, sizeof(CVT.ActuatorControls0));
+            	//DisplayInputs();
+                UpdateMotors();
                 break;
 
             default:
@@ -385,6 +434,54 @@ void AMC::ProcessCmdPipe()
             {
                 case AMC_CMD_MID:
                     ProcessAppCmds(CmdMsgPtr);
+                    break;
+
+                default:
+                    /* Bump the command error counter for an unknown command.
+                     * (This should only occur if it was subscribed to with this
+                     *  pipe, but not handled in this switch-case.) */
+                    HkTlm.usCmdErrCnt++;
+                    (void) CFE_EVS_SendEvent(AMC_MSGID_ERR_EID, CFE_EVS_ERROR,
+                                      "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
+                    break;
+            }
+        }
+        else if (iStatus == CFE_SB_NO_MESSAGE)
+        {
+            break;
+        }
+        else
+        {
+            (void) CFE_EVS_SendEvent(AMC_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+                  "CMD pipe read error (0x%08X)", (unsigned int)iStatus);
+            break;
+        }
+    }
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Process Incoming Data	                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void AMC::ProcessParamPipe()
+{
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    CFE_SB_MsgId_t  CmdMsgId;
+
+    /* Process command messages until the pipe is empty */
+    while (1)
+    {
+        iStatus = CFE_SB_RcvMsg(&CmdMsgPtr, ParamPipeId, CFE_SB_POLL);
+        if(iStatus == CFE_SUCCESS)
+        {
+            CmdMsgId = CFE_SB_GetMsgId(CmdMsgPtr);
+            switch (CmdMsgId)
+            {
+                case PRMLIB_PARAM_UPDATED_MID:
+                	ProcessUpdatedParam((PRMLIB_UpdatedParamMsg_t *) CmdMsgPtr);
                     break;
 
                 default:
@@ -609,46 +706,107 @@ void AMC::UpdateMotors(void)
     uint16 pwm[AMC_MAX_MOTOR_OUTPUTS];
     PX4_ActuatorOutputsMsg_t outputs;
 
-    ActuatorOutputs.timestamp = CVT.ActuatorControls0.timestamp;
-
-    /* Do mixing */
-    ActuatorOutputs.Count = MixerObject.mix(ActuatorOutputs.Output, 0, 0);
-
-    /* Disable unused ports by setting their output to NaN */
-    for (size_t i = ActuatorOutputs.Count;
-         i < sizeof(ActuatorOutputs.Output) / sizeof(ActuatorOutputs.Output[0]);
-         i++) {
-        ActuatorOutputs.Output[i] = NAN;
-    }
-
     for (uint32 i = 0; i < AMC_MAX_MOTOR_OUTPUTS; i++) {
         disarmed_pwm[i] = PwmConfigTblPtr->PwmDisarmed;
         min_pwm[i] = PwmConfigTblPtr->PwmMin;
         max_pwm[i] = PwmConfigTblPtr->PwmMax;
     }
 
-    PwmLimit_Calc(CVT.ActuatorArmed.Armed,
-            FALSE/*_armed.prearmed*/,
-            ActuatorOutputs.Count,
-            reverse_mask,
-            disarmed_pwm,
-            min_pwm,
-            max_pwm,
-            ActuatorOutputs.Output,
-            pwm,
-            &PwmLimit);
-
-    if (CVT.ActuatorArmed.Lockdown)
+    /* Never actuate any motors unless the system is armed.  Check to see if
+     * its armed, or in lock down before continuing
+     */
+    if (CVT.ActuatorArmed.Lockdown || CVT.ActuatorArmed.ManualLockdown)
     {
         SetMotorOutputs(disarmed_pwm);
     }
-    else if(!CVT.ActuatorArmed.InEscCalibrationMode)
+    else if(CVT.ActuatorArmed.Armed)
     {
-        SetMotorOutputs(pwm);
-    }
+		ActuatorOutputs.Timestamp = PX4LIB_GetPX4TimeUs();
 
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+		/* Do mixing */
+		ActuatorOutputs.Count = MixerObject.mix(ActuatorOutputs.Output, 0, 0);
+
+		/* Disable unused ports by setting their output to NaN */
+		for (size_t i = ActuatorOutputs.Count;
+			 i < sizeof(ActuatorOutputs.Output) / sizeof(ActuatorOutputs.Output[0]);
+			 i++)
+		{
+			ActuatorOutputs.Output[i] = NAN;
+		}
+
+		PwmLimit_Calc(
+				CVT.ActuatorArmed.Armed,
+				FALSE/*_armed.prearmed*/,
+				ActuatorOutputs.Count,
+				reverse_mask,
+				disarmed_pwm,
+				min_pwm,
+				max_pwm,
+				ActuatorOutputs.Output,
+				pwm,
+				&PwmLimit);
+
+		if(!CVT.ActuatorArmed.InEscCalibrationMode)
+		{
+			SetMotorOutputs(pwm);
+		}
+
+		/* TODO:  Delete this after PX4 bridge is no longer necessary.  This is
+		 * only here to satisfy the PWM Sim interface on the PX4 side.  The
+		 * message documentation states the actuator_outputs message is supposed
+		 * to be -1.0 to 1.0, which it is until the following step.  The problem
+		 * is the sim expects 1000.0 - 2000.0. */
+		{
+			for (unsigned i = 0; i < PX4_ACTUATOR_OUTPUTS_MAX; i++) {
+				/* last resort: catch NaN, INF and out-of-band errors */
+				if (i < ActuatorOutputs.Count &&
+					isfinite(ActuatorOutputs.Output[i]) &&
+					ActuatorOutputs.Output[i] >= -1.0f &&
+					ActuatorOutputs.Output[i] <= 1.0f) {
+					/* scale for PWM output 1000 - 2000us */
+					ActuatorOutputs.Output[i] = 1500 + (500 * ActuatorOutputs.Output[i]);
+
+				} else {
+					/*
+					 * Value is NaN, INF or out of band - set to the minimum value.
+					 * This will be clearly visible on the servo status and will limit the risk of accidentally
+					 * spinning motors. It would be deadly in flight.
+					 */
+					ActuatorOutputs.Output[i] = PWM_SIM_DISARMED_MAGIC;
+				}
+			}
+			ActuatorOutputs.Output[6] = 1500.0f;
+			ActuatorOutputs.Output[7] = 1500.0f;
+			ActuatorOutputs.Output[8] = 1500.0f;
+			ActuatorOutputs.Output[9] = 1000.0f;
+			ActuatorOutputs.Output[10] = 1000.0f;
+		}
+
+//		OS_printf("ActuatorOutputs.Count = %u (11)\n" , ActuatorOutputs.Count);
+//		OS_printf("ActuatorOutputs.Output[0] = %f (1396.680176)\n" , ActuatorOutputs.Output[0]);
+//		OS_printf("ActuatorOutputs.Output[1] = %f (1391.089600)\n" , ActuatorOutputs.Output[1]);
+//		OS_printf("ActuatorOutputs.Output[2] = %f (1385.925171)\n" , ActuatorOutputs.Output[2]);
+//		OS_printf("ActuatorOutputs.Output[3] = %f (1401.844604)\n" , ActuatorOutputs.Output[3]);
+//		OS_printf("ActuatorOutputs.Output[4] = %f (1407.727173)\n" , ActuatorOutputs.Output[4]);
+//		OS_printf("ActuatorOutputs.Output[5] = %f (1380.042480)\n" , ActuatorOutputs.Output[5]);
+//		OS_printf("ActuatorOutputs.Output[6] = %f (1500.000000)\n" , ActuatorOutputs.Output[6]);
+//		OS_printf("ActuatorOutputs.Output[7] = %f (1500.000000)\n" , ActuatorOutputs.Output[7]);
+//		OS_printf("ActuatorOutputs.Output[8] = %f (1500.000000)\n" , ActuatorOutputs.Output[8]);
+//		OS_printf("ActuatorOutputs.Output[9] = %f (1000.000000)\n" , ActuatorOutputs.Output[9]);
+//		OS_printf("ActuatorOutputs.Output[10] = %f (1000.000000)\n" , ActuatorOutputs.Output[10]);
+//		OS_printf("ActuatorOutputs.Output[11] = %f (nan)\n" , ActuatorOutputs.Output[11]);
+//		OS_printf("ActuatorOutputs.Output[12] = %f (nan)\n" , ActuatorOutputs.Output[12]);
+//		OS_printf("ActuatorOutputs.Output[13] = %f (nan)\n" , ActuatorOutputs.Output[13]);
+//		OS_printf("ActuatorOutputs.Output[14] = %f (nan)\n" , ActuatorOutputs.Output[14]);
+//		OS_printf("ActuatorOutputs.Output[15] = %f (nan)\n" , ActuatorOutputs.Output[15]);
+
+		CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+		CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorOutputs);
+    }
+    else
+    {
+        SetMotorOutputs(disarmed_pwm);
+    }
 }
 
 
@@ -676,6 +834,77 @@ int32 AMC::ControlCallback(
         Control = controls[ControlGroup].Control[ControlIndex];
         iStatus = CFE_SUCCESS;
     }
+
+    return iStatus;
+}
+
+int32 AMC::InitParams()
+{
+    int32 iStatus = -1;
+    PRMLIB_ParamData_t param = {0};
+
+	/* Lock the mutex */
+	OS_MutSemTake(PwmConfigMutex);
+
+	iStatus = PRMLIB_ParamRegister(PARAM_ID_PWM_DISARMED, &PwmConfigTblPtr->PwmDisarmed, TYPE_UINT32);
+	if(iStatus != CFE_SUCCESS)
+	{
+		goto InitParams_Exit_Tag;
+	}
+
+	iStatus = PRMLIB_ParamRegister(PARAM_ID_PWM_MIN, &PwmConfigTblPtr->PwmMin, TYPE_UINT32);
+	if(iStatus != CFE_SUCCESS)
+	{
+		goto InitParams_Exit_Tag;
+	}
+
+	iStatus = PRMLIB_ParamRegister(PARAM_ID_PWM_MAX, &PwmConfigTblPtr->PwmMax, TYPE_UINT32);
+	if(iStatus != CFE_SUCCESS)
+	{
+		goto InitParams_Exit_Tag;
+	}
+
+InitParams_Exit_Tag:
+    /* Unlock the mutex */
+	OS_MutSemGive(PwmConfigMutex);
+
+    return iStatus;
+}
+
+int32 AMC::ProcessUpdatedParam(PRMLIB_UpdatedParamMsg_t* MsgPtr)
+{
+    int32 iStatus = CFE_SUCCESS;
+
+	/* Lock the mutex */
+	OS_MutSemTake(PwmConfigMutex);
+
+	if(strcmp(PARAM_ID_PWM_DISARMED, MsgPtr->name) == 0)
+	{
+		iStatus = PRMLIB_GetParamValueById(PARAM_ID_PWM_DISARMED, &PwmConfigTblPtr->PwmDisarmed);
+		goto ProcessUpdatedParam_Exit_Tag;
+	}
+
+	if(strcmp(PARAM_ID_PWM_MIN, MsgPtr->name) == 0)
+	{
+		iStatus = PRMLIB_GetParamValueById(PARAM_ID_PWM_MIN, &PwmConfigTblPtr->PwmMin);
+		goto ProcessUpdatedParam_Exit_Tag;
+	}
+
+	if(strcmp(PARAM_ID_PWM_MAX, MsgPtr->name) == 0)
+	{
+		iStatus = PRMLIB_GetParamValueById(PARAM_ID_PWM_MAX, &PwmConfigTblPtr->PwmMax);
+		goto ProcessUpdatedParam_Exit_Tag;
+	}
+
+ProcessUpdatedParam_Exit_Tag:
+	/* Unlock the mutex */
+	OS_MutSemGive(PwmConfigMutex);
+
+	if(iStatus != CFE_SUCCESS)
+	{
+		(void) CFE_EVS_SendEvent(AMC_PARAM_UPDATE_ERR_EID, CFE_EVS_ERROR,
+								 "Failed to update parameter: %s", MsgPtr->name);
+	}
 
     return iStatus;
 }

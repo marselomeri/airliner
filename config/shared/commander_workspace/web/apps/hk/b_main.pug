@@ -1,0 +1,247 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | Housekeeping
+
+block main
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-HK-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Housekeeping
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th(style={width: '150px'}) Cmd Count:
+                    td(style={width: '150px'})
+                      span(data-sage={tlm: [{name: '/CFS/HK/CmdCounter'}]}) ---
+                    td(style={width: '150px'})
+                      .btn-group
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/HK/NoOp'}}) No-Op
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/HK/Reset'}}) Reset
+                  tr
+                    th Cmd Error Count:
+                    td
+                      span(data-sage={tlm: [{name: '/CFS/HK/ErrCounter'}]}) ---
+                    td
+                  tr
+                    th Combined Packets Sent
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/HK/CombinedPacketsSent'}]}) ---
+                    td
+                  tr
+                    th Missing Data Ctr
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/HK/MissingDataCtr'}]}) ---
+                    td
+                  tr
+                    th Memory Pool Handle
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/HK/MemPoolHandle', format:'0x%08x'}]}) ---
+                    td
+                
+                       
+    article.col-xs-11.col-sm-6.col-md-5.col-lg-4(style='width:350px')
+      #wid-CFE-HK-Memory.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Memory
+            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(onclick='SendMemoryPoolStats()') Send
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr  
+                    th Pool Handle
+                    td 
+                      span#HK_MemPoolHandle(data-sage={tlm:[{name:'/CFS/HK/MemPoolHandle', format:'0x%08x'}]} onchange='UpdatePoolHandleColors();') ---                    
+                  tr
+                    th Pool handle
+                    td 
+                      span#CFE_ES_PoolStats_Handle(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Handle', format:'0x%08x'}]} onchange='UpdatePoolHandleColors();') ---
+                  tr
+                    th Pool size
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Size'}]}) ---
+                  tr
+                    th Num blocks requested
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_NumBlocksRequested'}]}) ---
+                  tr
+                    th Check error count
+                    td 
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_CheckErrCtr'}]}) ---
+                  tr
+                    th Num free bytes
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_NumFreeBytes'}]}) ---           
+            .table-responsive
+              table.table.table-striped.table-condensed.table-memory
+                thead
+                  th(style='width:50px') #
+                  th(style='width:100px') Block Size
+                  th(style='width:75px') Created
+                  th(style='width:75px') Free
+                tbody
+                  tr
+                    th 0
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumFree'}]}) ---
+                  tr
+                    th 1
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumFree'}]}) ---
+                  tr
+                    th 2
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumFree'}]}) ---
+                  tr
+                    th 3
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumFree'}]}) ---
+                  tr
+                    th 4
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumFree'}]}) ---
+                  tr
+                    th 5
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumFree'}]}) ---
+                  tr
+                    th 6
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumFree'}]}) ---
+                  tr
+                    th 7
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumFree'}]}) ---
+                  tr
+                    th 8
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumFree'}]}) ---
+                  tr
+                    th 9
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumFree'}]}) ---
+                  tr
+                    th 10
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumFree'}]}) ---
+                  tr
+                    th 11
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumFree'}]}) ---
+                  tr
+                    th 12
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumFree'}]}) ---
+                  tr
+                    th 13
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumFree'}]}) ---
+                  tr
+                    th 14
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumFree'}]}) ---
+                  tr
+                    th 15
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumFree'}]}) ---
+                  tr
+                    th 16
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_Size'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumCreated'}]}) ---
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumFree'}]}) ---
+
+
+  
+block scripts
+   script.
+     
+      function SendMemoryPoolStats()
+      {        
+        session.sendCommand('/CFS/CFE_ES/TlmPoolStats', [
+          {name:'Application', value:'CFE_SB'},
+          {name:'PoolHandle', value:parseInt($('#HK_MemPoolHandle').text()).toString()}
+        ]);
+      }
+      

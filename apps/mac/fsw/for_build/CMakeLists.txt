@@ -44,16 +44,6 @@ add_airliner_app_def(mac
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_private_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -81,14 +71,7 @@ add_airliner_app_unit_test(MAC-UT
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_version.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/mac_config_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
+        ${PX4LIB_LIB_SOURCES}
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -96,114 +79,4 @@ add_airliner_app_unit_test(MAC-UT
         
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-ut.supp
-)
-
-
-add_airliner_app_unit_test(MAC-V3F-UT
-    UTASSERT
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_testrunner.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-        
-    INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
-    VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-v3f-ut.supp
-)
-
-
-add_airliner_app_unit_test(MAC-V4F-UT
-    UTASSERT
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_testrunner.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test_utils.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        
-    INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
-    VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-v4f-ut.supp
-)
-
-
-add_airliner_app_unit_test(MAC-QUATERNION-UT
-    UTASSERT
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_testrunner.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test_utils.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Quaternion.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
-        
-    INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
-    VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-quaternion-ut.supp
-)
-
-
-#add_airliner_app_unit_test(MAC-MATRIX3F3-UT
-#    UTASSERT
-#    SOURCES
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.cpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.hpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_testrunner.cpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.cpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.hpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.cpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix3F3.hpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.cpp
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector3F.hpp
-#        
-#    INCLUDES
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-#        
-#    VALGRIND_SUPPRESSION_FILE
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-matrix3f3-ut.supp
-#)
-
-
-add_airliner_app_unit_test(MAC-MATRIX4F4-UT
-    UTASSERT
-    SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_testrunner.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test_utils.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test_utils.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Matrix4F4.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/Vector4F.hpp
-        
-    INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
-        
-    VALGRIND_SUPPRESSION_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/mac-matrix4f4-ut.supp
 )

@@ -1,0 +1,76 @@
+extends ../../common/layout
+
+block header
+        i.fa-fw.fa.fa-signal
+        | Data Storage
+
+block main
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4(style="width:350px")
+      #wid-DS-General.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Housekeeping
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed.table-striped
+                tbody
+                  {% for each in obj.table1.body %}
+                  tr
+                    th(style="width:160px") {{each.name}}
+                    td
+                      span(data-sage="{{each.slug}}") ---
+                    td(style="width:100px")
+                      {% if each.buttons%}
+                      .btn-group
+                        {% for button in each.buttons%}
+                        button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage="{{button.slug}}") {{button.name}}
+                        {% endfor%}
+                      {% endif %}
+                  {% endfor %}
+            footer
+              .btn-group.dropup
+                button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+                  | Commands
+                  span.caret
+                ul#CSCommands.dropdown-menu(role='menu')
+                  {% for each  in obj.table1.footer.cmd%}
+                  li
+                    a(data-sage="{{each.slug}}") {{each.name}}
+                  {% endfor %}
+  .row
+    article.col-xs-12.col-sm-12.col-md-9.col-lg-8(style="width:900px")
+      #wid-DS-Diag.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 File Info
+            {% for b in obj.table2.header.cmd %}
+            button.btn.btn-xs.btn-primary.btn-labeled(data-sage="{{b.slug}}") {{b.name}}
+            {% endfor %}
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed.table-striped
+               thead
+                 th(style="width:100px") Age
+                 th(style="width:100px")  Size
+                 th(style="width:100px")  Rate
+                 th(style="width:100px")  Sequence
+                 th(style="width:100px")  Enabled State
+                 th(style="width:100px")  Open State
+                 th(style="width:280px")  File Name
+               tbody
+                {% for i in obj.table2.body %}
+                tr
+                  {% for e in i %}
+                  td
+                    span(data-sage="{{e}}") ---
+                  {% endfor %}
+                {% endfor %}

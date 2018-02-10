@@ -30,7 +30,10 @@
  POSSIBILITY OF SUCH DAMAGE.
 
 """
-import shlex, subprocess
+import shlex
+import subprocess
+import os
+import logging
 from datetime import datetime
 
 class ArteSubprocess(object):
@@ -41,6 +44,7 @@ class ArteSubprocess(object):
         fileName (str): Filename to save stdout to.
         cwd (path): The path that the command should use as the current
             working directory.
+        env: Additional environment variables.
         terminalBool (boolean): Optionally pipe output to a
             terminal. Not implemented.
 
@@ -51,17 +55,31 @@ class ArteSubprocess(object):
         lastStatus: Return code.
         cwd: The path that the command should use as the current
             working directory.
+        envTokenized: Additional environment variables.
         proc: The subprocess object.
     """
-    def __init__(self, command, fileName, cwd, terminalBool = False):
+    def __init__(self, command, fileName, cwd, env, terminalBool = False):
         self.command = command
         self.args = shlex.split(command)
         self.fileName = fileName
         self.cwd = cwd
+        # Eliminate space and equals sign
+        self.envTokenized = env.split("=")
 
-        f = open(self.fileName, "a")
+        # Create env for subprocess
+        current_env = os.environ.copy()
+        for count, i in enumerate(self.envTokenized):
+            # If even i.e. we have a key not a value
+            if count % 2 == 0 and count > 0:
+                current_env[self.envTokenized[count]] = self.envTokenized[count+1]
+
+        # Output log timestamp
+        f = open(self.fileName, "w")
         f.write("- ARTE " + str(command) + " " + datetime.now().strftime('%Y%m%d_%H:%M:%S - ') + "\n")
-        self.proc = subprocess.Popen(self.args,stdout=f, stderr=f, shell=False, cwd=self.cwd)
+        # Launch subprocess
+        self.proc = subprocess.Popen(self.args,stdout=f, stderr=f, shell=False, cwd=self.cwd, env=current_env)
+        logging.info('ARTE process created %s', self.args[0])
+
         if terminalBool:
             # TODO add terminal pipe option
             pass

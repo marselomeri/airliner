@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_output_pwm_pb 
+message px4br_output_pwm_pb 
 {
 	enum OUTPUT_PWM
 	{

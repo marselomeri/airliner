@@ -50,7 +50,8 @@
 #include <math.h>
 #include "cfs_utils.h"
 
-#include "Quaternion.hpp"
+#include <math/Quaternion.hpp>
+#include <px4lib.h>
 
 
 #define TPA_RATE_LOWER_LIMIT  0.05f
@@ -361,8 +362,8 @@ int32 MAC::InitData()
     CFE_SB_InitMsg(&CVT.VehicleStatus, PX4_VEHICLE_STATUS_MID, sizeof(CVT.VehicleStatus), TRUE);
 
     /* Init actuator outputs message */
-    CFE_SB_InitMsg(&m_ActuatorControls,
-    		PX4_ACTUATOR_CONTROLS_0_MID, sizeof(m_ActuatorControls), TRUE);
+    CFE_SB_InitMsg(&m_ActuatorControls0,
+    		PX4_ACTUATOR_CONTROLS_0_MID, sizeof(m_ActuatorControls0), TRUE);
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
                    MAC_HK_TLM_MID, sizeof(HkTlm), TRUE);
@@ -404,7 +405,6 @@ int32 MAC::InitData()
 	m_Params.board_offset[2] = 0.0f;
 
 	m_ThrustSp = 0.0f;
-	OS_printf("7) m_ThrustSp = %f\n", m_ThrustSp);
 
     return (iStatus);
 }
@@ -515,7 +515,7 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case MAC_RUN_CONTROLLER_MID:
-                //RunController();
+                RunController();
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
@@ -528,7 +528,6 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_CONTROL_STATE_MID:
                 memcpy(&CVT.ControlState, MsgPtr, sizeof(CVT.ControlState));
-                RunController();
                 break;
 
             case PX4_MANUAL_CONTROL_SETPOINT_MID:
@@ -716,8 +715,8 @@ void MAC::ReportHousekeeping()
 
 void MAC::SendActuatorControls()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&m_ActuatorControls);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&m_ActuatorControls);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&m_ActuatorControls0);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&m_ActuatorControls0);
 }
 
 
@@ -825,7 +824,8 @@ void MAC::AppMain()
 void MAC::RunController(void)
 {
 	static uint64 last_run = 0;
-	float dt = (CFE_TIME_GetTimeInMicros() - last_run) / 1000000.0f;
+	float dt = (PX4LIB_GetPX4TimeUs() - last_run) / 1000000.0f;
+	last_run = PX4LIB_GetPX4TimeUs();
 
 	UpdateParams();
 
@@ -877,10 +877,12 @@ void MAC::RunController(void)
 //		}
 
 //		/* publish attitude rates setpoint */
+		CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 		CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
 		CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
 		CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
 		CVT.VRatesSp.Thrust = m_ThrustSp;
+		CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 
 	    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
 	    CFE_SB_SendMsg((CFE_SB_Msg_t*)&CVT.VRatesSp);
@@ -896,6 +898,7 @@ void MAC::RunController(void)
 			m_ThrustSp = fmin(CVT.ManualControlSp.Z, MANUAL_THROTTLE_MAX_MULTICOPTER);
 
 			/* publish attitude rates setpoint */
+			CVT.VRatesSp.Timestamp = PX4LIB_GetPX4TimeUs();
 			CVT.VRatesSp.Roll = m_AngularRatesSetpoint[0];
 			CVT.VRatesSp.Pitch = m_AngularRatesSetpoint[1];
 			CVT.VRatesSp.Yaw = m_AngularRatesSetpoint[2];
@@ -919,19 +922,23 @@ void MAC::RunController(void)
 		ControlAttitudeRates(dt);
 
 //		/* publish actuator controls */
-
-		m_ActuatorControls.Control[0] = (isfinite(m_AttControl[0])) ? m_AttControl[0] : 0.0f;
-		m_ActuatorControls.Control[1] = (isfinite(m_AttControl[1])) ? m_AttControl[1] : 0.0f;
-		m_ActuatorControls.Control[2] = (isfinite(m_AttControl[2])) ? m_AttControl[2] : 0.0f;
-		m_ActuatorControls.Control[3] = (isfinite(m_ThrustSp)) ? m_ThrustSp : 0.0f;
-		m_ActuatorControls.Control[7] = CVT.VAttSp.LandingGear;
+        m_ActuatorControls0.Timestamp = PX4LIB_GetPX4TimeUs();
+        m_ActuatorControls0.SampleTime = CVT.ControlState.Timestamp;
+		m_ActuatorControls0.Control[0] = (isfinite(m_AttControl[0])) ? m_AttControl[0] : 0.0f;
+		m_ActuatorControls0.Control[1] = (isfinite(m_AttControl[1])) ? m_AttControl[1] : 0.0f;
+		m_ActuatorControls0.Control[2] = (isfinite(m_AttControl[2])) ? m_AttControl[2] : 0.0f;
+		m_ActuatorControls0.Control[3] = (isfinite(m_ThrustSp)) ? m_ThrustSp : 0.0f;
+		m_ActuatorControls0.Control[7] = CVT.VAttSp.LandingGear;
+		m_ActuatorControls0.Timestamp = PX4LIB_GetPX4TimeUs();
+		m_ActuatorControls0.SampleTime = CVT.ControlState.Timestamp;
 
 		/* scale effort by battery status */
 		if (m_Params.bat_scale_en && CVT.BatteryStatus.Scale > 0.0f)
 		{
-			for (int i = 0; i < 4; i++)
+			int32 i = 0;
+			for (i = 0; i < 4; i++)
 			{
-				m_ActuatorControls.Control[i] *= CVT.BatteryStatus.Scale;
+				m_ActuatorControls0.Control[i] *= CVT.BatteryStatus.Scale;
 			}
 		}
 
@@ -946,6 +953,7 @@ void MAC::RunController(void)
 		controllerStatus.RollRateInteg = m_AngularRatesIntegralError[0];
 		controllerStatus.PitchRateInteg = m_AngularRatesIntegralError[1];
 		controllerStatus.YawRateInteg = m_AngularRatesIntegralError[2];
+		controllerStatus.Timestamp = PX4LIB_GetPX4TimeUs();
 	}
 
 	if (CVT.VControlMode.ControlTerminationEnabled)
@@ -1010,7 +1018,6 @@ void MAC::RunController(void)
 
 void MAC::ControlAttitude(float dt)
 {
-
 //	vehicle_attitude_setpoint_poll();
 //
 	m_ThrustSp = CVT.VAttSp.Thrust;
@@ -1126,35 +1133,15 @@ void MAC::ControlAttitudeRates(float dt)
 		m_AngularRatesIntegralError.Zero();
 	}
 
-//	OS_printf("CVT.Armed.Armed = %u\n", CVT.Armed.Armed);
-//	OS_printf("CVT.VehicleStatus.IsRotaryWing = %u\n", CVT.VehicleStatus.IsRotaryWing);
-
 	/* get transformation matrix from sensor/board to body frame */
 	boardRotation = boardRotation.RotationMatrix((math::Matrix3F3::Rotation_t)ParamTblPtr->board_rotation);
 
-//	OS_printf("ParamTblPtr->board_rotation = %i\n", ParamTblPtr->board_rotation);
-//
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		for(uint32 y = 0; y < 3; ++y)
-//		{
-//			OS_printf("#1 boardRotation[%u][%u] = %f\n", x, y, boardRotation[x][y]);
-//		}
-//	}
-
 	/* fine tune the rotation */
 	math::Matrix3F3 boardRotationOffset;
-	boardRotationOffset = boardRotationOffset.FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
+	boardRotationOffset = math::Matrix3F3::FromEuler(M_DEG_TO_RAD_F * ParamTblPtr->board_offset[0],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[1],
 					 M_DEG_TO_RAD_F * ParamTblPtr->board_offset[2]);
 	boardRotation = boardRotationOffset * boardRotation;
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		for(uint32 y = 0; y < 3; ++y)
-//		{
-//			OS_printf("#2 boardRotation[%u][%u] = %f\n", x, y, boardRotation[x][y]);
-//		}
-//	}
 
 	// get the raw gyro data and correct for thermal errors
 	math::Vector3F rates;
@@ -1185,102 +1172,25 @@ void MAC::ControlAttitudeRates(float dt)
 		rates[2] = CVT.SensorGyro.Z;
 	}
 
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("#1 rates[%u] = %f\n", x, rates[x]);
-//	}
-
 	// rotate corrected measurements from sensor to body frame
 	rates = boardRotation * rates;
-
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("#2 rates[%u] = %f\n", x, rates[x]);
-//	}
 
 	// correct for in-run bias errors
 	rates[0] -= CVT.ControlState.RollRateBias;
 	rates[1] -= CVT.ControlState.PitchRateBias;
 	rates[2] -= CVT.ControlState.YawRateBias;
 
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("#3 rates[%u] = %f\n", x, rates[x]);
-//	}
-
 	math::Vector3F rates_p_scaled = m_Params.rate_p.EMult(PidAttenuations(m_Params.tpa_breakpoint_p, m_Params.tpa_rate_p));
 	math::Vector3F rates_i_scaled = m_Params.rate_i.EMult(PidAttenuations(m_Params.tpa_breakpoint_i, m_Params.tpa_rate_i));
 	math::Vector3F rates_d_scaled = m_Params.rate_d.EMult(PidAttenuations(m_Params.tpa_breakpoint_d, m_Params.tpa_rate_d));
 
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_p_scaled[%u] = %f\n", x, rates_p_scaled[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_i_scaled[%u] = %f\n", x, rates_i_scaled[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_d_scaled[%u] = %f\n", x, rates_d_scaled[x]);
-//	}
-
 	/* angular rates error */
 	math::Vector3F rates_err = m_AngularRatesSetpoint - rates;
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);
-//	}
 
 	m_AttControl = rates_p_scaled.EMult(rates_err) +
 			m_AngularRatesIntegralError +
 		    rates_d_scaled.EMult(m_AngularRatesPrevious - rates) / dt +
 		    m_Params.rate_ff.EMult(m_AngularRatesSetpoint);
-
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_err[%u] = %f\n", x, rates_err[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates_p_scaled.EMult(rates_err)[%u] = %f\n", x, rates_p_scaled.EMult(rates_err)[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_AngularRatesIntegralError[%u] = %f\n", x, m_AngularRatesIntegralError[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_AngularRatesPrevious[%u] = %f\n", x, m_AngularRatesPrevious[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("rates[%u] = %f\n", x, rates[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("(m_AngularRatesPrevious - rates)[%u] = %f\n", x, (m_AngularRatesPrevious - rates)[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("(rates_d_scaled.EMult(m_AngularRatesPrevious - rates))[%u] = %f\n", x, (rates_d_scaled.EMult(m_AngularRatesPrevious - rates))[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("(rates_d_scaled.EMult((m_AngularRatesPrevious - rates))/dt)[%u] = %f\n", x, ((rates_d_scaled.EMult(m_AngularRatesPrevious - rates))/dt)[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_AngularRatesSetpoint[%u] = %f\n", x, m_AngularRatesSetpoint[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_Params.rate_ff[%u] = %f\n", x, m_Params.rate_ff[x]);
-//	}
-//	for(uint32 x = 0; x < 3; ++x)
-//	{
-//		OS_printf("m_Params.rate_ff.EMult(m_AngularRatesSetpoint)[%u] = %f\n", x, m_Params.rate_ff.EMult(m_AngularRatesSetpoint)[x]);
-//	}
 
 	m_AngularRatesSetpointPrevious = m_AngularRatesSetpoint;
 	m_AngularRatesPrevious = rates;
@@ -1417,6 +1327,184 @@ void MAC::UpdateParams(void)
 	m_Params.board_offset[0] = ParamTblPtr->board_offset[0];
 	m_Params.board_offset[1] = ParamTblPtr->board_offset[1];
 	m_Params.board_offset[2] = ParamTblPtr->board_offset[2];
+}
+
+
+void MAC::DisplayInputs(void)
+{
+    OS_printf("MAC::DisplayInputs  *************\n");
+    OS_printf("  Armed.Timestamp:            %llu\n", CVT.Armed.Timestamp);
+    OS_printf("  Armed.Armed:                %u\n", CVT.Armed.Armed);
+    OS_printf("  Armed.Prearmed:             %u\n", CVT.Armed.Prearmed);
+    OS_printf("  Armed.ReadyToArm:           %u\n", CVT.Armed.ReadyToArm);
+    OS_printf("  Armed.Lockdown:             %u\n", CVT.Armed.Lockdown);
+    OS_printf("  Armed.ForceFailsafe:        %u\n", CVT.Armed.ForceFailsafe);
+    OS_printf("  Armed.InEscCalibrationMode: %u\n", CVT.Armed.InEscCalibrationMode);
+    OS_printf("  BatteryStatus.Timestamp:       %llu\n", CVT.BatteryStatus.Timestamp);
+    OS_printf("  BatteryStatus.Voltage:         %f\n", CVT.BatteryStatus.Voltage);
+    OS_printf("  BatteryStatus.VoltageFiltered: %f\n", CVT.BatteryStatus.VoltageFiltered);
+    OS_printf("  BatteryStatus.Current:         %f\n", CVT.BatteryStatus.Current);
+    OS_printf("  BatteryStatus.CurrentFiltered: %f\n", CVT.BatteryStatus.CurrentFiltered);
+    OS_printf("  BatteryStatus.Discharged:      %f\n", CVT.BatteryStatus.Discharged);
+    OS_printf("  BatteryStatus.Remaining:       %f\n", CVT.BatteryStatus.Remaining);
+    OS_printf("  BatteryStatus.Scale:           %f\n", CVT.BatteryStatus.Scale);
+    OS_printf("  BatteryStatus.CellCount:       %i\n", CVT.BatteryStatus.CellCount);
+    OS_printf("  BatteryStatus.Connected:       %u\n", CVT.BatteryStatus.Connected);
+    OS_printf("  BatteryStatus.Warning:         %u\n", CVT.BatteryStatus.Warning);
+    OS_printf("  ControlState.Timestamp:        %llu\n", CVT.ControlState.Timestamp);
+    OS_printf("  ControlState.AccX:             %f\n", CVT.ControlState.AccX);
+    OS_printf("  ControlState.AccY:             %f\n", CVT.ControlState.AccY);
+    OS_printf("  ControlState.AccZ:             %f\n", CVT.ControlState.AccZ);
+    OS_printf("  ControlState.VelX:             %f\n", CVT.ControlState.VelX);
+    OS_printf("  ControlState.VelY:             %f\n", CVT.ControlState.VelY);
+    OS_printf("  ControlState.VelZ:             %f\n", CVT.ControlState.VelZ);
+    OS_printf("  ControlState.PosX:             %f\n", CVT.ControlState.PosX);
+    OS_printf("  ControlState.PosY:             %f\n", CVT.ControlState.PosY);
+    OS_printf("  ControlState.PosZ:             %f\n", CVT.ControlState.PosZ);
+    OS_printf("  ControlState.Airspeed:         %f\n", CVT.ControlState.Airspeed);
+    OS_printf("  ControlState.VelVariance[0]:   %f\n", CVT.ControlState.VelVariance[0]);
+    OS_printf("  ControlState.VelVariance[1]:   %f\n", CVT.ControlState.VelVariance[1]);
+    OS_printf("  ControlState.VelVariance[2]:   %f\n", CVT.ControlState.VelVariance[2]);
+    OS_printf("  ControlState.PosVariance[0]:   %f\n", CVT.ControlState.PosVariance[0]);
+    OS_printf("  ControlState.PosVariance[1]:   %f\n", CVT.ControlState.PosVariance[1]);
+    OS_printf("  ControlState.PosVariance[2]:   %f\n", CVT.ControlState.PosVariance[2]);
+    OS_printf("  ControlState.Q[0]:             %f\n", CVT.ControlState.Q[0]);
+    OS_printf("  ControlState.Q[1]:             %f\n", CVT.ControlState.Q[1]);
+    OS_printf("  ControlState.Q[2]:             %f\n", CVT.ControlState.Q[2]);
+    OS_printf("  ControlState.Q[3]:             %f\n", CVT.ControlState.Q[3]);
+    OS_printf("  ControlState.DeltaQReset[0]:   %f\n", CVT.ControlState.DeltaQReset[0]);
+    OS_printf("  ControlState.DeltaQReset[1]:   %f\n", CVT.ControlState.DeltaQReset[1]);
+    OS_printf("  ControlState.DeltaQReset[2]:   %f\n", CVT.ControlState.DeltaQReset[2]);
+    OS_printf("  ControlState.DeltaQReset[3]:   %f\n", CVT.ControlState.DeltaQReset[3]);
+    OS_printf("  ControlState.RollRate:         %f\n", CVT.ControlState.RollRate);
+    OS_printf("  ControlState.PitchRate:        %f\n", CVT.ControlState.PitchRate);
+    OS_printf("  ControlState.YawRate:          %f\n", CVT.ControlState.YawRate);
+    OS_printf("  ControlState.HorzAccMag:       %f\n", CVT.ControlState.HorzAccMag);
+    OS_printf("  ControlState.RollRateBias:     %f\n", CVT.ControlState.RollRateBias);
+    OS_printf("  ControlState.PitchRateBias:    %f\n", CVT.ControlState.PitchRateBias);
+    OS_printf("  ControlState.YawRateBias:      %f\n", CVT.ControlState.YawRateBias);
+    OS_printf("  ControlState.AirspeedValid:    %u\n", CVT.ControlState.AirspeedValid);
+    OS_printf("  ControlState.QuatResetCounter: %u\n", CVT.ControlState.QuatResetCounter);
+    OS_printf("  ManualControlSp.Timestamp:        %llu\n", CVT.ManualControlSp.Timestamp);
+    OS_printf("  ManualControlSp.X:                %f\n", (float)CVT.ManualControlSp.X);
+    OS_printf("  ManualControlSp.Y:                %f\n", (float)CVT.ManualControlSp.Y);
+    OS_printf("  ManualControlSp.Z:                %f\n", (float)CVT.ManualControlSp.Z);
+    OS_printf("  ManualControlSp.R:                %f\n", (float)CVT.ManualControlSp.R);
+    OS_printf("  ManualControlSp.Flaps:            %f\n", (float)CVT.ManualControlSp.Flaps);
+    OS_printf("  ManualControlSp.Aux1:             %f\n", (float)CVT.ManualControlSp.Aux1);
+    OS_printf("  ManualControlSp.Aux2:             %f\n", (float)CVT.ManualControlSp.Aux2);
+    OS_printf("  ManualControlSp.Aux3:             %f\n", (float)CVT.ManualControlSp.Aux3);
+    OS_printf("  ManualControlSp.Aux4:             %f\n", (float)CVT.ManualControlSp.Aux4);
+    OS_printf("  ManualControlSp.Aux5:             %f\n", (float)CVT.ManualControlSp.Aux5);
+    OS_printf("  ManualControlSp.ModeSwitch:       %u\n", CVT.ManualControlSp.ModeSwitch);
+    OS_printf("  ManualControlSp.ReturnSwitch:     %u\n", CVT.ManualControlSp.ReturnSwitch);
+    OS_printf("  ManualControlSp.RattitudeSwitch:  %u\n", CVT.ManualControlSp.RattitudeSwitch);
+    OS_printf("  ManualControlSp.PosctlSwitch:     %u\n", CVT.ManualControlSp.PosctlSwitch);
+    OS_printf("  ManualControlSp.LoiterSwitch:     %u\n", CVT.ManualControlSp.LoiterSwitch);
+    OS_printf("  ManualControlSp.AcroSwitch:       %u\n", CVT.ManualControlSp.AcroSwitch);
+    OS_printf("  ManualControlSp.OffboardSwitch:   %u\n", CVT.ManualControlSp.OffboardSwitch);
+    OS_printf("  ManualControlSp.KillSwitch:       %u\n", CVT.ManualControlSp.KillSwitch);
+    OS_printf("  ManualControlSp.TransitionSwitch: %u\n", CVT.ManualControlSp.TransitionSwitch);
+    OS_printf("  ManualControlSp.GearSwitch:       %u\n", CVT.ManualControlSp.GearSwitch);
+    OS_printf("  ManualControlSp.ArmSwitch:        %u\n", CVT.ManualControlSp.ArmSwitch);
+    OS_printf("  ManualControlSp.StabSwitch:       %u\n", CVT.ManualControlSp.StabSwitch);
+    OS_printf("  ManualControlSp.ManSwitch:        %u\n", CVT.ManualControlSp.ManSwitch);
+    OS_printf("  ManualControlSp.ModeSlot:         %u\n", CVT.ManualControlSp.ModeSlot);
+    OS_printf("  ManualControlSp.DataSource:       %u\n", CVT.ManualControlSp.DataSource);
+    OS_printf("  SensorGyro.Timestamp:             %llu\n", CVT.SensorGyro.Timestamp);
+    OS_printf("  SensorGyro.IntegralDt:            %llu\n", CVT.SensorGyro.IntegralDt);
+    OS_printf("  SensorGyro.ErrorCount:            %llu\n", CVT.SensorGyro.ErrorCount);
+    OS_printf("  SensorGyro.X:                     %f\n", CVT.SensorGyro.X);
+    OS_printf("  SensorGyro.Y:                     %f\n", CVT.SensorGyro.Y);
+    OS_printf("  SensorGyro.Z:                     %f\n", CVT.SensorGyro.Z);
+    OS_printf("  SensorGyro.XIntegral:             %f\n", CVT.SensorGyro.XIntegral);
+    OS_printf("  SensorGyro.YIntegral:             %f\n", CVT.SensorGyro.YIntegral);
+    OS_printf("  SensorGyro.ZIntegral:             %f\n", CVT.SensorGyro.ZIntegral);
+    OS_printf("  SensorGyro.Temperature:           %f\n", CVT.SensorGyro.Temperature);
+    OS_printf("  SensorGyro.Range:                 %f\n", CVT.SensorGyro.Range);
+    OS_printf("  SensorGyro.Scaling:               %f\n", CVT.SensorGyro.Scaling);
+    OS_printf("  SensorGyro.DeviceID:              %u\n", CVT.SensorGyro.DeviceID);
+    OS_printf("  SensorGyro.XRaw:                  %i\n", CVT.SensorGyro.XRaw);
+    OS_printf("  SensorGyro.YRaw:                  %i\n", CVT.SensorGyro.YRaw);
+    OS_printf("  SensorGyro.ZRaw:                  %i\n", CVT.SensorGyro.ZRaw);
+    OS_printf("  SensorGyro.TemperatureRaw:        %i\n", CVT.SensorGyro.TemperatureRaw);
+    OS_printf("  VAttSp.Timestamp:                 %llu\n", CVT.VAttSp.Timestamp);
+    OS_printf("  VAttSp.RollBody:                  %f\n", CVT.VAttSp.RollBody);
+    OS_printf("  VAttSp.PitchBody:                 %f\n", CVT.VAttSp.PitchBody);
+    OS_printf("  VAttSp.YawBody:                   %f\n", CVT.VAttSp.YawBody);
+    OS_printf("  VAttSp.YawSpMoveRate:             %f\n", CVT.VAttSp.YawSpMoveRate);
+    OS_printf("  VAttSp.Q_D[0]:                    %f\n", CVT.VAttSp.Q_D[0]);
+    OS_printf("  VAttSp.Q_D[1]:                    %f\n", CVT.VAttSp.Q_D[1]);
+    OS_printf("  VAttSp.Q_D[2]:                    %f\n", CVT.VAttSp.Q_D[2]);
+    OS_printf("  VAttSp.Q_D[3]:                    %f\n", CVT.VAttSp.Q_D[3]);
+    OS_printf("  VAttSp.Q_D_Valid:                 %u\n", CVT.VAttSp.Q_D_Valid);
+    OS_printf("  VAttSp.Thrust:                    %f\n", CVT.VAttSp.Thrust);
+    OS_printf("  VAttSp.RollResetIntegral:         %u\n", CVT.VAttSp.RollResetIntegral);
+    OS_printf("  VAttSp.PitchResetIntegral:        %u\n", CVT.VAttSp.PitchResetIntegral);
+    OS_printf("  VAttSp.YawResetIntegral:          %u\n", CVT.VAttSp.YawResetIntegral);
+    OS_printf("  VAttSp.FwControlYaw:              %u\n", CVT.VAttSp.FwControlYaw);
+    OS_printf("  VAttSp.DisableMcYawControl:       %u\n", CVT.VAttSp.DisableMcYawControl);
+    OS_printf("  VAttSp.ApplyFlaps:                %u\n", CVT.VAttSp.ApplyFlaps);
+    OS_printf("  VAttSp.LandingGear:               %f\n", CVT.VAttSp.LandingGear);
+    OS_printf("  VAttSp.PitchResetIntegral:        %u\n", CVT.VAttSp.PitchResetIntegral);
+    OS_printf("  VAttSp.PitchResetIntegral:        %u\n", CVT.VAttSp.PitchResetIntegral);
+    OS_printf("  VControlMode.Timestamp:           %llu\n", CVT.VControlMode.Timestamp);
+    OS_printf("  VControlMode.Armed      :         %u\n", CVT.VControlMode.Armed);
+    OS_printf("  VControlMode.ExternalManualOverrideOk: %u\n", CVT.VControlMode.ExternalManualOverrideOk);
+    OS_printf("  VControlMode.SystemHilEnabled:         %u\n", CVT.VControlMode.SystemHilEnabled);
+    OS_printf("  VControlMode.ControlManualEnabled:     %u\n", CVT.VControlMode.ControlManualEnabled);
+    OS_printf("  VControlMode.ControlAutoEnabled:       %u\n", CVT.VControlMode.ControlAutoEnabled);
+    OS_printf("  VControlMode.ControlOffboardEnabled:   %u\n", CVT.VControlMode.ControlOffboardEnabled);
+    OS_printf("  VControlMode.ControlRatesEnabled:      %u\n", CVT.VControlMode.ControlRatesEnabled);
+    OS_printf("  VControlMode.ControlAttitudeEnabled:   %u\n", CVT.VControlMode.ControlAttitudeEnabled);
+    OS_printf("  VControlMode.ControlRattitudeEnabled:  %u\n", CVT.VControlMode.ControlRattitudeEnabled);
+    OS_printf("  VControlMode.ControlForceEnabled:      %u\n", CVT.VControlMode.ControlForceEnabled);
+    OS_printf("  VControlMode.ControlAccelerationEnabled: %u\n", CVT.VControlMode.ControlAccelerationEnabled);
+    OS_printf("  VControlMode.ControlVelocityEnabled:   %u\n", CVT.VControlMode.ControlVelocityEnabled);
+    OS_printf("  VControlMode.ControlPositionEnabled:   %u\n", CVT.VControlMode.ControlPositionEnabled);
+    OS_printf("  VControlMode.ControlAltitudeEnabled:   %u\n", CVT.VControlMode.ControlAltitudeEnabled);
+    OS_printf("  VControlMode.ControlClimbRateEnabled:  %u\n", CVT.VControlMode.ControlClimbRateEnabled);
+    OS_printf("  VControlMode.ControlTerminationEnabled: %u\n", CVT.VControlMode.ControlTerminationEnabled);
+    OS_printf("  VRatesSp.Timestamp:           %llu\n", CVT.VRatesSp.Timestamp);
+    OS_printf("  VRatesSp.Roll:                %f\n", CVT.VRatesSp.Roll);
+    OS_printf("  VRatesSp.Pitch:               %f\n", CVT.VRatesSp.Pitch);
+    OS_printf("  VRatesSp.Yaw:                 %f\n", CVT.VRatesSp.Yaw);
+    OS_printf("  VRatesSp.Thrust:              %f\n", CVT.VRatesSp.Thrust);
+    OS_printf("  VehicleStatus.Timestamp:               %llu\n", CVT.VehicleStatus.Timestamp);
+    OS_printf("  VehicleStatus.SystemID:                %u\n", CVT.VehicleStatus.SystemID);
+    OS_printf("  VehicleStatus.ComponentID:             %u\n", CVT.VehicleStatus.ComponentID);
+    OS_printf("  VehicleStatus.OnboardControlSensorsPresent: %u\n", CVT.VehicleStatus.OnboardControlSensorsPresent);
+    OS_printf("  VehicleStatus.OnboardControlSensorsEnabled: %u\n", CVT.VehicleStatus.OnboardControlSensorsEnabled);
+    OS_printf("  VehicleStatus.OnboardControlSensorsHealth:  %u\n", CVT.VehicleStatus.OnboardControlSensorsHealth);
+    OS_printf("  VehicleStatus.NavState:                     %u\n", CVT.VehicleStatus.NavState);
+    OS_printf("  VehicleStatus.ArmingState:                  %u\n", CVT.VehicleStatus.ArmingState);
+    OS_printf("  VehicleStatus.HilState:                     %u\n", CVT.VehicleStatus.HilState);
+    OS_printf("  VehicleStatus.Failsafe:                     %u\n", CVT.VehicleStatus.Failsafe);
+    OS_printf("  VehicleStatus.SystemType:                   %u\n", CVT.VehicleStatus.SystemType);
+    OS_printf("  VehicleStatus.IsRotaryWing:                 %u\n", CVT.VehicleStatus.IsRotaryWing);
+    OS_printf("  VehicleStatus.IsVtol:                       %u\n", CVT.VehicleStatus.IsVtol);
+    OS_printf("  VehicleStatus.VtolFwPermanentStab:          %u\n", CVT.VehicleStatus.VtolFwPermanentStab);
+    OS_printf("  VehicleStatus.InTransitionMode:             %u\n", CVT.VehicleStatus.InTransitionMode);
+    OS_printf("  VehicleStatus.RcSignalLost:                 %u\n", CVT.VehicleStatus.RcSignalLost);
+    OS_printf("  VehicleStatus.RcInputMode:                  %u\n", CVT.VehicleStatus.RcInputMode);
+    OS_printf("  VehicleStatus.DataLinkLost:                 %u\n", CVT.VehicleStatus.DataLinkLost);
+    OS_printf("  VehicleStatus.DataLinkLostCounter:          %u\n", CVT.VehicleStatus.DataLinkLostCounter);
+    OS_printf("  VehicleStatus.EngineFailure:                %u\n", CVT.VehicleStatus.EngineFailure);
+    OS_printf("  VehicleStatus.EngineFailureCmd:             %u\n", CVT.VehicleStatus.EngineFailureCmd);
+    OS_printf("  VehicleStatus.MissionFailure:               %u\n", CVT.VehicleStatus.MissionFailure);
+}
+
+
+
+void MAC::DisplayOutputs(void)
+{
+	OS_printf("MAC::DisplayOutputs ***************\n");
+	OS_printf("  m_ActuatorControls0.Timestamp:        %llu\n", m_ActuatorControls0.Timestamp);
+	OS_printf("  m_ActuatorControls0.SampleTime:       %llu\n", m_ActuatorControls0.SampleTime);
+	for(uint32 i = 0; i < 8; ++i)
+	{
+		OS_printf("  m_ActuatorControls0.Control[%u]:  %f\n", i, (double)m_ActuatorControls0.Control[i]);
+	}
 }
 
 /************************/

@@ -51,11 +51,8 @@
 #include "px4br_cmds.h"
 #include "px4br_msg.h"
 #include "px4br_events.h"
-
+#include "px4br_platform_cfg.h"
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
 
 /*
  ** Local Defines
@@ -72,13 +69,13 @@
 #define PX4BR_MAX_ALLSUBS_PKTS_ON_PIPE  64
 
 #define PX4BR_MAX_MSG_SIZE              1500
-#define PX4BR_MAX_SUBS_PER_PEER         256
+#define PX4BR_MAX_SUBS_PER_PEER         255
 #define PX4BR_MAX_PEERNAME_LENGTH       8
 
 #define PX4BR_SIZE_FIELD_LENGTH         2
 #define PX4BR_NAME_FIELD_LENGTH         50
 
-#define PX4BR_SCH_PIPE_DEPTH      		2
+#define PX4BR_SCH_PIPE_DEPTH      		200
 #define PX4BR_CMD_PIPE_DEPTH      		2
 #define PX4BR_ROUTER_PIPE_DEPTH    		PX4BR_MAX_SUBS_PER_PEER
 #define PX4BR_SCH_PIPE_NAME       		"PX4BR_SCH_PIPE"
@@ -102,12 +99,13 @@ typedef enum {
 
 typedef struct {
     char            	Name[PX4BR_MAX_PEERNAME_LENGTH];
-    int 				Socket;
-    struct sockaddr_in	ServAddr;
+    int 				InFD;
+    int 				OutFD;
+    char				FifoPathIn[PX4BR_MAX_FIFO_PATH_LENGTH];
+    char				FifoPathOut[PX4BR_MAX_FIFO_PATH_LENGTH];
     PX4BR_PeerState_t   State;
     uint32				ListenerTaskID;
     uint32				DataOutTaskID;
-    boolean				IsConnected;
 } PX4BR_Peer_t;
 
 typedef struct

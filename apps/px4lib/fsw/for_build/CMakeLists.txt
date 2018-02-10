@@ -31,6 +31,8 @@
  #
  #############################################################################
 
+set(PX4LIB_PUBLIC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc)
+
 add_subdirectory(../src/ src)
 
 add_airliner_app_def(px4lib
@@ -40,8 +42,127 @@ add_airliner_app_def(px4lib
 
     INCLUDES
         ${PX4LIB_INCLUDES}
-        ${PX4LIB_PUBLIC_INCLUDES}
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
    
     PUBLIC_INCLUDES
-        ${PX4LIB_PUBLIC_INCLUDES}
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/
 )
+
+
+add_airliner_app_unit_test(px4lib-vector3f-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector3F_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector3F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-vector3f-ut.supp
+)
+
+
+add_airliner_app_unit_test(px4lib-vector4f-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector4F_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector4F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector4F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-vector4f-ut.supp
+)
+
+
+add_airliner_app_unit_test(px4lib-quaternion-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Quaternion_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Quaternion.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Quaternion.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector4F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector4F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector3F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix3F3.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix3F3.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix4F4.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix4F4.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-quaternion-ut.supp
+)
+
+
+add_airliner_app_unit_test(px4lib-matrix3f3-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix3F3_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix3F3.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix3F3.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector3F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix3f3-ut.supp
+)
+
+
+add_airliner_app_unit_test(px4lib-matrix4f4-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix4F4_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix4F4.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix4F4.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector4F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector4F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix4f4-ut.supp
+)
+
+set(PX4LIB_LIB_SOURCES ${PX4LIB_LIB_SOURCES} CACHE STRING "PX4LIB library source files")

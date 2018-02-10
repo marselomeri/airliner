@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_mc_att_ctrl_status_pb
+message px4br_mc_att_ctrl_status_pb
 {
 	required uint64 timestamp = 1;
 	required float roll_rate_integ = 2;

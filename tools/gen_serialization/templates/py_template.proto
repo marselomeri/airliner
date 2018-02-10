@@ -14,12 +14,12 @@ message {{req_proto_msg}}
 {%- if req_proto_data.required_pb_msgs|length > 0 -%}
 	{{ loop(req_proto_data.required_pb_msgs.items()) }}
 {%- endif -%}{%- endfor -%}
-{% for field_name, field_data in proto_data.fields.iteritems() %}{% if proto_data.proto_msg[:-3] == self._TemplateReference__context.name[4:-6] %}
 message {{proto_data.proto_msg}}
 {
+{% for field_name, field_data in proto_data.fields.iteritems() %}{% if proto_data.proto_msg[:-3] == self._TemplateReference__context.name[4:-6] %}
 	{{field_data.pb_field_rule}} {{field_data.pb_type}} {{field_name}} = {{loop.index}};
-}
 {%- endif -%}
-{%- endfor -%}
+{%- endfor %}
+}
 {%- endif -%}
 {%- endfor -%}

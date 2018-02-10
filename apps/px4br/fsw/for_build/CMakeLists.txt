@@ -144,8 +144,6 @@ add_airliner_app_def(px4br
         ${PX4BR_PROTOBUF_MSGS_DIR}/output_pwm.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/parameter_update.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/parameter_update.pb.h
-        ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint.pb.c
-        ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint_triplet.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/position_setpoint_triplet.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/pwm_input.pb.c
@@ -224,6 +222,8 @@ add_airliner_app_def(px4br
         ${PX4BR_PROTOBUF_MSGS_DIR}/vtol_vehicle_status.pb.h
         ${PX4BR_PROTOBUF_MSGS_DIR}/wind_estimate.pb.c
         ${PX4BR_PROTOBUF_MSGS_DIR}/wind_estimate.pb.h
+        ${PX4BR_PROTOBUF_MSGS_DIR}/led_control.pb.c
+        ${PX4BR_PROTOBUF_MSGS_DIR}/led_control.pb.h
    
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -318,6 +318,7 @@ add_airliner_app_def(px4br
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/vehicle_position_estimate.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/vtol_vehicle_status.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/wind_estimate.proto
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/protobuf/led_control.proto
 
     PROTOBUF_MSGS_DIR        
         ${PX4BR_PROTOBUF_MSGS_DIR}

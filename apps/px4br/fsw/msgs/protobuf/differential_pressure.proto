@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_differential_pressure_pb
+message px4br_differential_pressure_pb
 {
 	required uint64 timestamp = 1;
 	required uint64 error_count = 2;

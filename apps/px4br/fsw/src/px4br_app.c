@@ -31,11 +31,6 @@
  *
  ****************************************************************************/
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 /*
  ** Include Files
  */
@@ -78,8 +73,7 @@ int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum);
 int32 PX4BR_InitPeers(void);
 PX4BR_Peer_t* PX4BR_GetInitializingPeer(void);
 int32 PX4BR_SetInitializingPeer(PX4BR_Peer_t *inPeer);
-boolean PX4BR_IsPeerConnected(PX4BR_Peer_t* peer);
-int32 PX4BR_InitPeerSocket(PX4BR_Peer_t *inPeer);
+int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer);
 int32 PX4BR_InitSubscriptions(void);
 void PX4BR_RouteMessageToSB(const char *inMsgName, const char *inMsgContent, uint32 inMsgContentSize);
 void PX4BR_SendHk(void);
@@ -386,104 +380,61 @@ void PX4BR_PeerListenerTaskMain(void)
              */
     		while(PX4BR_AppData.RunStatus == CFE_ES_APP_RUN)
     		{
-            	/* Wait until we're connected. */
-    			if(PX4BR_IsPeerConnected(peer) == FALSE)
-    			{
-    				/* We aren't connected yet.  Just sleep for a second and
-    				 * wait for it to connect.
-    				 */
-    				OS_TaskDelay(1000);
-    			}
-    			else
-    			{
-    				/* We must be connected.  Go do that voodoo that you do. */
+				int n = 0;
+				unsigned char sizeField[2];
+				uint16 msgSize = 0;
 
-    				int n = 0;
-    				unsigned char sizeField[2];
-    				uint16 msgSize = 0;
+				/* First read the 2 byte size */
+				n = read(peer->InFD, sizeField, PX4BR_SIZE_FIELD_LENGTH);
+				if(n <= 0)
+				{
+					/* TODO - Add event */
+					OS_printf("PX4BR:  FIFO read failed.  errno=%d '%s'\n", errno, strerror(errno));
+					peer->InFD = open(peer->FifoPathIn, O_RDONLY);
+				}
+				else
+				{
+					char msgName[PX4BR_NAME_FIELD_LENGTH];
 
-    				/* First read the 2 byte size */
-    				n = read(peer->Socket, sizeField, PX4BR_SIZE_FIELD_LENGTH);
-    				if(n == 0)
-    				{
-    					/* TODO - Add event */
-    					OS_printf("PX4BR:  Socket disconnected.\n");
-    					peer->IsConnected = FALSE;
-    					close(peer->Socket);
-    					PX4BR_InitPeerSocket(peer);
-    				}
-    				else if(n < 0)
-    				{
-    					/* TODO - Add event */
-    					OS_printf("PX4BR:  Socket read failed.  errno=%d '%s'\n", errno, strerror(errno));
-    					peer->IsConnected = FALSE;
-    					close(peer->Socket);
-    					PX4BR_InitPeerSocket(peer);
-    				}
-    				else
-    				{
-    					char msgName[PX4BR_NAME_FIELD_LENGTH];
+					/* Correct the size field ABI */
+					msgSize = (sizeField[0] << 8);
+					msgSize |= (sizeField[1]);
 
-    					/* Correct the size field ABI */
-    					msgSize = (sizeField[0] << 8);
-    					msgSize |= (sizeField[1]);
+					/* Now read the 50 byte message name */
+					n = read(peer->InFD, msgName, PX4BR_NAME_FIELD_LENGTH);
+					if(n <= 0)
+					{
+						/* TODO - Add event */
+						OS_printf("PX4BR:  FIFO read failed.  errno=%d '%s'\n", errno, strerror(errno));
+						peer->InFD = open(peer->FifoPathIn, O_RDONLY);
+					}
+					else
+					{
+						char msgContent[PX4BR_MAX_MSG_SIZE];
+						uint32 rcvdBytes = 0;
 
-    					/* Now read the 50 byte message name */
-    					n = read(peer->Socket, msgName, PX4BR_NAME_FIELD_LENGTH);
-        				if(n == 0)
-        				{
-        					/* TODO - Add event */
-        					OS_printf("PX4BR:  Socket disconnected.\n");
-        					peer->IsConnected = FALSE;
-        					close(peer->Socket);
-        					PX4BR_InitPeerSocket(peer);
-        				}
-        				else if(n < 0)
-        				{
-        					/* TODO - Add event */
-        					OS_printf("PX4BR:  Socket read failed.  errno=%d '%s'\n", errno, strerror(errno));
-        					peer->IsConnected = FALSE;
-        					close(peer->Socket);
-        					PX4BR_InitPeerSocket(peer);
-        				}
-        				else
-        				{
-    						char msgContent[PX4BR_MAX_MSG_SIZE];
-    						uint32 rcvdBytes = 0;
+						/* Now read the n byte message content */
+						do
+						{
+							n = read(peer->InFD, &msgContent[rcvdBytes], msgSize-rcvdBytes);
+							rcvdBytes += n;
+							if(n <= 0)
+								break;
+						} while((n > 0) && (rcvdBytes < msgSize));
 
-    						/* Now read the n byte message content */
-    						do
-    						{
-    							n = read(peer->Socket, &msgContent[rcvdBytes], msgSize-rcvdBytes);
-    							rcvdBytes += n;
-    							if(n <= 0)
-    								break;
-    						} while((n > 0) && (rcvdBytes < msgSize));
-
-            				if(n == 0)
-            				{
-            					/* TODO - Add event */
-            					OS_printf("PX4BR:  Socket disconnected.\n");
-            					peer->IsConnected = FALSE;
-            					close(peer->Socket);
-            					PX4BR_InitPeerSocket(peer);
-            				}
-            				else if(n < 0)
-            				{
-            					/* TODO - Add event */
-            					OS_printf("PX4BR:  Socket read failed.  errno=%d '%s'\n", errno, strerror(errno));
-            					peer->IsConnected = FALSE;
-            					close(peer->Socket);
-            					PX4BR_InitPeerSocket(peer);
-            				}
-            				else
-            				{
-            					PX4BR_RouteMessageToSB(msgName, msgContent, msgSize);
-            				}
-    					}
-    				}
-    			}
-        	}
+						if(n <= 0)
+						{
+							/* TODO - Add event */
+							OS_printf("PX4BR:  FIFO read failed.  errno=%d '%s'\n", errno, strerror(errno));
+							peer->InFD = open(peer->FifoPathIn, O_RDONLY);
+						}
+						else
+						{
+							PX4BR_RouteMessageToSB(msgName, msgContent, msgSize);
+						}
+					}
+				}
+			}
     	}
     }
 }
@@ -530,99 +481,61 @@ void PX4BR_PeerDataOutTaskMain(void)
     {
     	int rc = 0;
 
-		/* We're going to let this be the main thread controlling the state of
-		 * the socket.  So, lets go ahead and connect that socket.  Wait until
-		 * the socket is connected to proceed.  None of the other threads will
-		 * do anything meaningful until the socket is connected.
-		 */
-		while((PX4BR_IsPeerConnected(peer) == FALSE) && (PX4BR_AppData.RunStatus == CFE_ES_APP_RUN))
+		int32 Status = CFE_SUCCESS;
+		CFE_SB_MsgPtr_t 	msgPtr = 0;
+
+		/* Wait for a message to route. */
+		status = CFE_SB_RcvMsg(&msgPtr, PX4BR_AppData.RouterPipe,
+				PX4BR_ROUTER_PIPE_TIMEOUT);
+		/* Message received now process message */
+		if (status == CFE_SUCCESS)
 		{
-			errno = 0;
-			rc = connect(peer->Socket,(struct sockaddr*)&peer->ServAddr, sizeof(peer->ServAddr));
-			if(errno == ECONNREFUSED)
+			CFE_SB_SenderId_t *sender;
+			status = CFE_SB_GetLastSenderId(&sender, PX4BR_AppData.RouterPipe);
+			if(status == CFE_SUCCESS)
 			{
-				/* The other side isn't up yet.  Wait. */
-				OS_printf("PX4BR:  Waiting to connect.\n");
-			}
-			else if(rc < 0)
-			{
-				/* TODO - Add event. */
-				OS_printf("PX4BR:  Failed to connect socket. errno=%u '%s'\n", errno, strerror(errno));
-				OS_printf("%u\n", errno);
-			}
-			else
-			{
-				OS_printf("PX4BR:  Socket connected.\n");
-				peer->IsConnected = TRUE;
-			}
-			OS_TaskDelay(1000);
-		}
+				if(strncmp(sender->AppName, PX4BR_AppData.AppName, strlen(PX4BR_AppData.AppName)) != 0)
+				{
+					CFE_SB_MsgId_t msgID;
+					PX4BR_Route_t *route = 0;
 
-		if(PX4BR_IsPeerConnected(peer))
+					/* Read the message ID from the message. */
+					msgID = CFE_SB_GetMsgId(msgPtr);
+					PX4BR_GetRouteByMsgID(msgID, &route);
+					if(route == 0)
+					{
+						OS_printf("PX4BR:  Received SB message with no route (2).  '0x%04x'\n", msgID);
+					}
+					else
+					{
+						PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)msgPtr);
+					}
+				}
+			}
+		}
+		else if(status == CFE_SB_TIME_OUT)
 		{
-		    int32 Status = CFE_SUCCESS;
-		    CFE_SB_MsgPtr_t 	msgPtr = 0;
-
-		    /* Wait for a message to route. */
-		    status = CFE_SB_RcvMsg(&msgPtr, PX4BR_AppData.RouterPipe,
-		            PX4BR_ROUTER_PIPE_TIMEOUT);
-		    /* Message received now process message */
-		    if (status == CFE_SUCCESS)
-		    {
-		    	CFE_SB_SenderId_t *sender;
-		    	status = CFE_SB_GetLastSenderId(&sender, PX4BR_AppData.RouterPipe);
-		    	if(status == CFE_SUCCESS)
-		    	{
-		    	    if(strncmp(sender->AppName, PX4BR_AppData.AppName, strlen(PX4BR_AppData.AppName)) != 0)
-		    	    {
-						CFE_SB_MsgId_t msgID;
-						PX4BR_Route_t *route = 0;
-
-						/* Read the message ID from the message. */
-						msgID = CFE_SB_GetMsgId(msgPtr);
-						PX4BR_GetRouteByMsgID(msgID, &route);
-						if(route == 0)
-						{
-							OS_printf("PX4BR:  Received SB message with no route (2).  '0x%04x'\n", msgID);
-						}
-						else
-						{
-							PX4BR_RouteMessageToPX4((CFE_SB_MsgPtr_t)msgPtr);
-						}
-		    	    }
-		    	}
-		    }
-		    else if(status == CFE_SB_TIME_OUT)
-		    {
-		    	/* TODO:  Add keepalive */
-		    }
-		    else
-		    {
-		        CFE_EVS_SendEvent(PX4BR_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-		                "CFE_SB_RcvMsg failed.  %li", Status);
-		    }
-			//int n = 0;
-			//char buffer[PX4BR_MAX_MSG_SIZE] = "Hello PX4, from CFS.";
-
-			//n = write(peer->Socket, buffer, strnlen(buffer,PX4BR_MAX_MSG_SIZE));
-			//if(n < 0)
-			//{
-			//	/* TODO - Add event */
-			//	OS_printf("PX4BR:  Socket write failed.  errno=%d '%s'", errno, strerror(errno));
-			//    peer->IsConnected = FALSE;
-			//    close(peer->Socket);
-			//	PX4BR_InitPeerSocket(peer);
-			//}
-			//OS_TaskDelay(1000);
+			/* TODO:  Add keepalive */
 		}
+		else
+		{
+			CFE_EVS_SendEvent(PX4BR_RCVMSG_ERR_EID, CFE_EVS_ERROR,
+					"CFE_SB_RcvMsg failed.  %li", Status);
+		}
+		//int n = 0;
+		//char buffer[PX4BR_MAX_MSG_SIZE] = "Hello PX4, from CFS.";
+
+		//n = write(peer->Socket, buffer, strnlen(buffer,PX4BR_MAX_MSG_SIZE));
+		//if(n < 0)
+		//{
+		//	/* TODO - Add event */
+		//	OS_printf("PX4BR:  Socket write failed.  errno=%d '%s'", errno, strerror(errno));
+		//    peer->IsConnected = FALSE;
+		//    close(peer->Socket);
+		//	PX4BR_InitPeerSocket(peer);
+		//}
+		//OS_TaskDelay(1000);
 	}
-}
-
-
-
-boolean PX4BR_IsPeerConnected(PX4BR_Peer_t* peer)
-{
-	return peer->IsConnected;
 }
 
 
@@ -759,7 +672,8 @@ int32 PX4BR_GetPX4FileData(void)
 int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum)
 {
   char    Name[PX4BR_MAX_PEERNAME_LENGTH];
-  char    Addr[16];
+  char    FifoPathIn[PX4BR_MAX_FIFO_PATH_LENGTH];
+  char    FifoPathOut[PX4BR_MAX_FIFO_PATH_LENGTH];
   int     Port;
   int     ScanfStatus;
 
@@ -769,7 +683,7 @@ int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum)
    */
    OS_printf("%s\n", FileEntry);
 
-   ScanfStatus = sscanf(FileEntry,"%s %s %d",Name, Addr, &Port);
+   ScanfStatus = sscanf(FileEntry,"%s %s %s", Name, FifoPathIn, FifoPathOut);
 
    /* Fixme - 1) sscanf needs to be made safe. Use discrete sub functions to safely parse the file
               2) Different protocol id's will have different line parameters
@@ -788,24 +702,14 @@ int32 PX4BR_ParseFileEntry(char *FileEntry, uint32 LineNum)
 
    if(LineNum < PX4BR_MAX_NETWORK_PEERS)
    {
-	   struct hostent *server = gethostbyname(Addr);
-	   if(server == 0)
-	   {
-		   /* TODO - Add event. */
-		   printf("PX4BR:  Failed to resolve host. errno=%u", errno);
-		   return PX4BR_ERROR;
-	   }
-	   bcopy(  (char*)server->h_addr,
-			   (char*)&PX4BR_AppData.Peer[LineNum].ServAddr.sin_addr.s_addr,
-			   server->h_length);
-	   bzero((char *) &PX4BR_AppData.Peer[LineNum].ServAddr, sizeof(PX4BR_AppData.Peer[LineNum].ServAddr));
-	   PX4BR_AppData.Peer[LineNum].ServAddr.sin_port = htons(Port);
        PX4BR_AppData.Peer[LineNum].State = PX4BR_PEER_STATE_UNINITIALIZED;
+       strncpy(PX4BR_AppData.Peer[LineNum].FifoPathIn, FifoPathIn, PX4BR_MAX_FIFO_PATH_LENGTH);
+       strncpy(PX4BR_AppData.Peer[LineNum].FifoPathOut, FifoPathOut, PX4BR_MAX_FIFO_PATH_LENGTH);
 
        /* Add "!" in case this is the last line read from file */
        /* Declaration of SBN.FileData[SBN_MAX_NETWORK_PEERS + 1] ensures */
        /* writing to array element [LineNum + 1] is safe */
-       strncpy((char *)&PX4BR_AppData.Peer[LineNum + 1].Name,"!", PX4BR_MAX_PEERNAME_LENGTH);
+       PX4BR_AppData.Peer[LineNum + 1].Name[0] = "!";
    }
 
    return PX4BR_OK;
@@ -840,10 +744,19 @@ int32 PX4BR_InitPeers(void)
 		if(PX4BR_AppData.Peer[i].State == PX4BR_PEER_STATE_UNINITIALIZED)
 		{
 			PX4BR_Peer_t *peer = &PX4BR_AppData.Peer[i];
-			peer->IsConnected = FALSE;
 
 			/* This is a valid peer that needs to be initialized. */
-			PX4BR_InitPeerSocket(peer);
+			Status = PX4BR_InitPeerFifo(peer);
+			if(Status != PX4BR_OK)
+			{
+				/* Failed to create the task.  Raise an event. */
+				CFE_EVS_SendEvent(PX4BR_HK_CREATE_CHDTASK_ERR_EID,
+						CFE_EVS_ERROR,
+						"listener child task failed. PX4BR_InitPeerFifo returned: 0x%08lX",
+						Status);
+				exit(1);
+				goto end_of_function;
+			}
 
 			/* Now create the 3 worker threads.*/
 			char *peerName = PX4BR_AppData.Peer[i].Name;
@@ -922,43 +835,54 @@ end_of_function:
 }
 
 
-int32 PX4BR_InitPeerSocket(PX4BR_Peer_t *inPeer)
+int32 PX4BR_InitPeerFifo(PX4BR_Peer_t *inPeer)
 {
 	int32 Status = CFE_SUCCESS;
 	int optval = 0;
 	int optlen = sizeof(optval);
 
-	inPeer->Socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if(inPeer->Socket < 0)
+	/* Create FIFO node. */
+	Status = mkfifo(inPeer->FifoPathIn, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+	if((Status != 0) && (errno != EEXIST))
 	{
-		/* TODO - Add event. */
-		OS_printf("PX4BR:  Socket creation failed.\n");
-		Status = PX4BR_ERROR;
-		goto end_of_function;
-	}
-	inPeer->ServAddr.sin_family = AF_INET;
-
-	/* Enable TCP keep alive so we know if/when its disconnected. */
-	optval = 1;
-	optlen = sizeof(optval);
-	if(setsockopt(inPeer->Socket, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0)
-	{
-		/* TODO - Add event. */
-		OS_printf("PX4BR:  Failed to enable TCP keepalive.\n");
-		Status = PX4BR_ERROR;
+		/* TODO:  Send event. */
+		OS_printf("Status = %i   errno = %i\n", Status, errno);
+		exit(0);
 		goto end_of_function;
 	}
 
-	/* Set the keep alive interval. */
-	optval = PX4BR_TCP_KEEPALIVE_INTERVAL;
-	optlen = sizeof(optval);
-	if(setsockopt(inPeer->Socket, SOL_SOCKET, TCP_KEEPINTVL, &optval, optlen) < 0)
+	Status = mkfifo(inPeer->FifoPathOut, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+	if((Status != 0) && (errno != EEXIST))
 	{
-		/* TODO - Add event. */
-		OS_printf("PX4BR:  Failed to enable TCP keepalive.\n");
-		Status = PX4BR_ERROR;
+		/* TODO:  Send event. */
+		OS_printf("Status = %i   errno = %i\n", Status, errno);
+		exit(0);
 		goto end_of_function;
 	}
+
+	Status = PX4BR_OK;
+
+	inPeer->OutFD = open(inPeer->FifoPathOut, O_WRONLY);
+	if(inPeer->OutFD <= 0)
+	{
+		/* TODO:  Send event. */
+		OS_printf("inPeer->OutFD = %i   errno = %i\n", inPeer->OutFD, errno);
+		exit(0);
+		Status = -1;
+		goto end_of_function;
+    }
+
+	inPeer->InFD = open(inPeer->FifoPathIn, O_RDONLY);
+	if(inPeer->InFD <= 0)
+	{
+		/* TODO:  Send event. */
+		OS_printf("inPeer->InFD = %i   errno = %i\n", inPeer->InFD, errno);
+		exit(0);
+		Status = -1;
+		goto end_of_function;
+    }
+
+	inPeer->State = PX4BR_PEER_STATE_IDLE;
 
 end_of_function:
 	return Status;
@@ -974,7 +898,7 @@ void PX4BR_RouteMessageToSB(const char *inMsgName, const char *inMsgContent, uin
 	iStatus = PX4BR_GetRouteByMsgName(inMsgName, &route);
 	if(iStatus != PX4BR_OK)
 	{
-		//OS_printf("PX4BR:  Received an unknown message.  '%s'\n", inMsgName);
+		OS_printf("PX4BR:  Received an unknown message.  '%s'\n", inMsgName);
 	}
 	else
 	{
@@ -1053,31 +977,28 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
 
             for(i = 0; i < PX4BR_MAX_NETWORK_PEERS; ++i)
             {
-                if(PX4BR_AppData.Peer[i].IsConnected == TRUE)
-                {
-                    n = write(PX4BR_AppData.Peer[i].Socket, buffer, totalSize);
-                    if(n < 0)
-                    {
-                        /* TODO - Add event */
-                        OS_printf("PX4BR:  Socket write failed.  errno=%d '%s'", errno, strerror(errno));
-                        PX4BR_AppData.Peer[i].IsConnected = FALSE;
-                        close(PX4BR_AppData.Peer[i].Socket);
-                        PX4BR_InitPeerSocket(&PX4BR_AppData.Peer[i]);
-                    }
-                    else
-                    {
-                        route->OutCount++;
-                        if(route->OutCount == 1)
-                        {
-                            OS_printf("PX4BR:  Sent '%s'\n", route->OrbName);
-                        }
-                        if(route->OutCount == 0)
-                        {
-                            /* Skip the 0 to avoid roll over issues. */
-                            route->OutCount++;
-                        }
-                    }
-                }
+            	if(PX4BR_AppData.Peer[i].OutFD != 0)
+            	{
+					n = write(PX4BR_AppData.Peer[i].OutFD, buffer, totalSize);
+					if(n < 0)
+					{
+						/* TODO - Add event */
+						PX4BR_AppData.Peer[i].OutFD = open(PX4BR_AppData.Peer[i].FifoPathOut, O_WRONLY);
+					}
+					else
+					{
+						route->OutCount++;
+						if(route->OutCount == 1)
+						{
+							OS_printf("PX4BR:  Sent '%s'\n", route->OrbName);
+						}
+						if(route->OutCount == 0)
+						{
+							/* Skip the 0 to avoid roll over issues. */
+							route->OutCount++;
+						}
+					}
+            	}
             }
 		}
     }
@@ -1165,7 +1086,3 @@ end_of_function:
 	return iStatus;
 }
 
-
-#ifdef __cplusplus
-}
-#endif

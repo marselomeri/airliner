@@ -35,8 +35,7 @@
 #define MAC_APP_H
 
 
-#include <mixer/MultirotorMixer.h>
-#include "Vector3F.hpp"
+#include <math/Vector3F.hpp>
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,7 +60,6 @@ extern "C" {
 #include "mac_events.h"
 #include "mac_tbldefs.h"
 #include "px4_msgs.h"
-#include <pwm_limit/pwm_limit.h>
 
 
 /************************************************************************
@@ -160,15 +158,12 @@ public:
     MAC_ParamTbl_t* ParamTblPtr;
 
     /** \brief Output Data published at the end of cycle */
-    PX4_ActuatorControlsMsg_t m_ActuatorControls;
+    PX4_ActuatorControlsMsg_t m_ActuatorControls0;
 
     /** \brief Housekeeping Telemetry for downlink */
     MAC_HkTlm_t HkTlm;
 
     MAC_CurrentValueTable_t CVT;
-
-    //MIXER_Data_t  MixerData;
-    PwmLimit_Data_t PwmLimit;
 
     math::Vector3F m_AngularRatesPrevious;
     math::Vector3F m_AngularRatesSetpointPrevious;
@@ -183,7 +178,6 @@ public:
 	int32 m_SelectedGyro;
 
 	//PX4_McVirtualRatesSetpointMsg_t m_RatesSetpoint;
-	PX4_ActuatorControlsMsg_t       m_ActuatorControls0;
 
 	boolean m_Actuators0CircuitBreakerEnabled;
 
@@ -425,6 +419,10 @@ public:
     **
     *************************************************************************/
     int32  AcquireConfigPointers(void);
+
+    void DisplayInputs(void);
+
+    void DisplayOutputs(void);
 
 public:
     /************************************************************************/

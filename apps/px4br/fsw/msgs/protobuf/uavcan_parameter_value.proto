@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_uavcan_parameter_value_pb 
+message px4br_uavcan_parameter_value_pb 
 {
 	required uint64 timestamp = 1;
 	required int64 int_value = 2;

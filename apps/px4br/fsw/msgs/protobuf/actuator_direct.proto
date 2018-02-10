@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_actuator_direct_pb {
+message px4br_actuator_direct_pb {
 	enum ACTUATOR_DIRECT
 	{
 		ACTUATOR_DIRECT_NUM_ACTUATORS_DIRECT = 16;

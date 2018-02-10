@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_log_message_pb 
+message px4br_log_message_pb 
 {
 	required uint64 timestamp = 1;
 	required uint32 severity = 2;

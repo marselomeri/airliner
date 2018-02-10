@@ -12,8 +12,8 @@
 *    notice, this list of conditions and the following disclaimer in
 *    the documentation and/or other materials provided with the
 *    distribution.
-* 3. Neither the name Windhover Labs nor the names of its 
-*    contributors may be used to endorse or promote products derived 
+* 3. Neither the name Windhover Labs nor the names of its
+*    contributors may be used to endorse or promote products derived
 *    from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -105,7 +105,7 @@ int32 TO_Custom_Init(void)
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
     TO_AppCustomData.Channel[1].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[1].IP, "127.0.0.1", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[1].IP, "10.10.0.10", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[1].DstPort = 5012;
     TO_AppCustomData.Channel[1].Priority = 50;
     TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_ProtobufChannelTask;
@@ -153,8 +153,10 @@ end_of_function:
 int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
     struct sockaddr_in s_addr;
-    int                       status = 0;
-    int32                     returnCode = 0;
+    int    status = 0;
+    int32  returnCode = 0;
+    const char *outBuffer;
+    uint32 outSize;
 
     bzero((char *) &s_addr, sizeof(s_addr));
     s_addr.sin_family      = AF_INET;
@@ -165,11 +167,24 @@ int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
 
         if(channel->Mode == TO_CHANNEL_ENABLED)
         {
+        	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
+            if(TO_GetChannelType(ChannelID) == TO_OUTPUT_TYPE_PROTOBUF)
+            {
+            	int encSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)Buffer, encBuffer, sizeof(encBuffer));
+                outBuffer = encBuffer;
+                outSize = encSize;
+            }
+            else
+            {
+                outBuffer = Buffer;
+                outSize = Size;
+            }
+
             CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->IP);
             s_addr.sin_port        = htons(channel->DstPort);
-            status = sendto(channel->Socket, (char *)Buffer, Size, 0,
+            status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
                                     (struct sockaddr *) &s_addr,
                                      sizeof(s_addr));
             if (status < 0)
@@ -203,8 +218,6 @@ void TO_OutputChannel_CustomCleanupAll()
     {
         if(TO_OutputChannel_Status(i) == TO_CHANNEL_ENABLED)
         {
-            uint32 taskID = TO_AppCustomData.Channel[i].ChildTaskID;
-
             TO_OutputChannel_Disable(i);
         }
     }
@@ -484,6 +497,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
     int32 iStatus = CFE_SUCCESS;
     int32 msgSize = 0;
     char *buffer;
+    const char *outBuffer;
+    uint32 outSize;
 
     TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelIdx];
     while(TO_OutputChannel_Status(ChannelIdx) == TO_CHANNEL_ENABLED)
@@ -506,21 +521,37 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                 bzero((char *) &s_addr, sizeof(s_addr));
                 s_addr.sin_family      = AF_INET;
 
-                CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-                /* Send message via UDP socket */
-                s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-                s_addr.sin_port        = htons(channel->DstPort);
-                status = sendto(channel->Socket, (char *)buffer, actualMessageSize, 0,
-                                        (struct sockaddr *) &s_addr,
-                                         sizeof(s_addr));
-                if (status < 0)
+            	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
+                if(TO_GetChannelType(ChannelIdx) == TO_OUTPUT_TYPE_PROTOBUF)
                 {
-                    if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
-                    {
-                        CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-                                "L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, actualMessageSize, channel->IP, channel->DstPort);
-                        TO_OutputChannel_Disable(ChannelIdx);
-                    }
+                	outSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)buffer, encBuffer, sizeof(encBuffer));
+                    outBuffer = encBuffer;
+                }
+                else
+                {
+                    outSize = actualMessageSize;
+                    outBuffer = buffer;
+                }
+
+                if(outSize > 0)
+                {
+                	CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
+
+					/* Send message via UDP socket */
+					s_addr.sin_addr.s_addr = inet_addr(channel->IP);
+					s_addr.sin_port        = htons(channel->DstPort);
+					status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
+											(struct sockaddr *) &s_addr,
+											 sizeof(s_addr));
+					if (status < 0)
+					{
+						if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
+						{
+							CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+									"L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, (unsigned int)outSize, channel->IP, channel->DstPort);
+							TO_OutputChannel_Disable(ChannelIdx);
+						}
+					}
                 }
                 CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
 
@@ -552,7 +583,9 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
             {
                 CFE_EVS_SendEvent(TO_TLM_LISTEN_ERR_EID, CFE_EVS_ERROR,
                                 "Listener failed to pop message from queue. (%i).", (unsigned int)iStatus);
-                TO_Channel_State(ChannelIdx) == TO_CHANNEL_CLOSED;
+                OS_MutSemTake(TO_AppData.MutexID);
+                TO_AppData.ChannelData[ChannelIdx].State = TO_CHANNEL_CLOSED;
+                OS_MutSemGive(TO_AppData.MutexID);
             }
         }
     }

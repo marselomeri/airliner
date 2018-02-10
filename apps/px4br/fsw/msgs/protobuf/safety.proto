@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_safety_pb 
+message px4br_safety_pb 
 {
 	required uint64 timestamp = 1;
 	required bool safety_switch_available = 2;

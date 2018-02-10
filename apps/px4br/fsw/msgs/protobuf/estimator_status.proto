@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_estimator_status_pb
+message px4br_estimator_status_pb
 {
 	required uint64 timestamp = 1;
 	repeated float states = 2 [packed=true, (nanopb).max_count = 32];

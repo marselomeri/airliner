@@ -29,6 +29,7 @@
 #define MM_EEPROM_FILL_PERF_ID      58
 #define SC_APPMAIN_PERF_ID          59
 #define TO_MAIN_TASK_PERF_ID        60
+#define SCH_APPMAIN_PERF_ID	    61
 #define TO_SOCKET_SEND_PERF_ID      62
 #define VC_MAIN_TASK_PERF_ID        63
 #define VC_SOCKET_SEND_PERF_ID      64
@@ -37,6 +38,29 @@
 #define AMC_MAIN_TASK_PERF_ID       67
 #define MAC_MAIN_TASK_PERF_ID       68
 #define EA_MAIN_TASK_PERF_ID        69
+#define ULR_MAIN_TASK_PERF_ID       70
+#define RGBLED_MAIN_TASK_PERF_ID    71
+#define RGBLED_SEND_PERF_ID         72
+#define RGBLED_RECEIVE_PERF_ID      73
+#define MS5611_MAIN_TASK_PERF_ID    74
+#define SENS_MAIN_TASK_PERF_ID      75
+#define QAE_MAIN_TASK_PERF_ID       76
+#define LD_MAIN_TASK_PERF_ID        77
+#define MPC_MAIN_TASK_PERF_ID       78
+#define NAV_MAIN_TASK_PERF_ID       79
+#define RCIN_MAIN_TASK_PERF_ID      80
+#define VM_MAIN_TASK_PERF_ID        81
+#define BAT_MAIN_TASK_PERF_ID       82
+#define MPU9250_MAIN_TASK_PERF_ID   83
+#define RCIN_DEVICE_GET_PERF_ID     84
+#define SIM_MAIN_TASK_PERF_ID       85
+#define MAVLINK_MAIN_TASK_PERF_ID   86
+#define HMC5883_MAIN_TASK_PERF_ID   87
+#define HMC5883_RECEIVE_PERF_ID     88
+#define HMC5883_SEND_PERF_ID        89
+#define PARAMS_MAIN_TASK_PERF_ID    90
+/* TODO remove me after AE is deleted, see QAE above */
+#define AE_MAIN_TASK_PERF_ID        91
 
 #endif
 

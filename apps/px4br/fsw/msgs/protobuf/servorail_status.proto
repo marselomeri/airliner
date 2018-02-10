@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_servorail_status_pb 
+message px4br_servorail_status_pb 
 {
 	required uint64 timestamp = 1;
 	required float voltage_v = 2;

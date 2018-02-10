@@ -1,7 +1,7 @@
 syntax = "proto2";
 import "nanopb.proto";
 
-message px4_vtol_vehicle_status_pb 
+message px4br_vtol_vehicle_status_pb 
 {
 	enum VEHICLE_VTOLSTATE 
 	{

@@ -127,6 +127,7 @@ uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inO
 uint32 PX4BR_VisionPositionEstimate_Enc(const PX4_VisionPositionEstimateMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_VtolVehicleStatus_Enc(const PX4_VtolVehicleStatusMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOutBuffer, uint32 inSize);
+uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuffer, uint32 inSize);
 
 /* Deserialization Functions */
 uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_ActuatorArmedMsg_t *inOutObject);
@@ -216,6 +217,6 @@ uint32 PX4BR_VehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleS
 uint32 PX4BR_VisionPositionEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_VisionPositionEstimateMsg_t *inOutObject);
 uint32 PX4BR_VtolVehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VtolVehicleStatusMsg_t *inOutObject);
 uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstimateMsg_t *inOutObject);
-
+uint32 PX4BR_LedControl_Dec(const char *inBuffer, uint32 inSize, PX4_LedControlMsg_t *inOutObject);
 
 #endif /* SRC_PX4BR_SERIALIZATION_H_ */
