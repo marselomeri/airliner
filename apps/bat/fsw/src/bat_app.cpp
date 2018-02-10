@@ -407,6 +407,9 @@ void BAT::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void BAT::ReportHousekeeping()
 {
+    memcpy(&HkTlm.ActuatorArmed, &CVT.ActuatorArmed, sizeof(CVT.ActuatorArmed));
+    memcpy(&HkTlm.ActuatorControls0, &CVT.ActuatorControls0, sizeof(CVT.ActuatorControls0));
+    memcpy(&HkTlm.BatteryStatusMsg, &BatteryStatusMsg, sizeof(BatteryStatusMsg));
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }

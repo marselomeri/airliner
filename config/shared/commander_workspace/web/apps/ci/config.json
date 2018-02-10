@@ -50,5 +50,9 @@
             {"name": "CI_CMD_UPDT_REG_INVLD_STATE_EID", "eventID": 34},
             {"name": "CI_CMD_UPDATE_REG_EID", "eventID": 35}
 		]
-	}
+	},
+    "tableDef":[
+        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false},
+        {"id": "TIMEOUT_TBL", "title": "Timeouts", "isDumpTable": true}
+    ]
 }
