@@ -1,0 +1,39 @@
+{
+    "appShortName": "GPS",
+    "schDef":{
+        "slotCount": 250,
+        "entriesPerSlot": 15,
+        "appName": "GPS",
+        "slots":[
+          {"id":5, "activities":[12]},
+          {"id":55, "activities":[11]},
+          {"id":105, "activities":[11]},
+          {"id":110, "activities":[11]},
+          {"id":155, "activities":[12]},
+          {"id":205, "activities":[11]}
+        ],
+        "groups": [
+          {"name":"SCH_GROUP_GPS", "id": 1}
+        ]
+    },
+    "eventDef":{
+	    "appName": "GPS",
+	    "events":[
+            {"name": "GPS_INIT_INF_EID", "eventID": 1},
+            {"name": "GPS_CMD_NOOP_EID", "eventID": 2},
+            {"name": "GPS_SUBSCRIBE_ERR_EID", "eventID": 3},
+            {"name": "GPS_PIPE_INIT_ERR_EID", "eventID": 4},
+            {"name": "GPS_CFGTBL_MANAGE_ERR_EID", "eventID": 5},
+            {"name": "GPS_CFGTBL_GETADDR_ERR_EID", "eventID": 6},
+            {"name": "GPS_RCVMSG_ERR_EID", "eventID": 7},
+            {"name": "GPS_MSGID_ERR_EID", "eventID": 8},
+            {"name": "GPS_CC_ERR_EID", "eventID": 9},
+            {"name": "GPS_MSGLEN_ERR_EID", "eventID": 10},
+            {"name": "GPS_CFGTBL_REG_ERR_EID", "eventID": 11},
+            {"name": "GPS_CFGTBL_LOAD_ERR_EID", "eventID": 12},
+            {"name": "GPS_UNINIT_ERR_EID", "eventID": 13},
+            {"name": "GPS_INIT_ERR_EID", "eventID": 14},
+            {"name": "GPS_READ_ERR_EID", "eventID": 15}
+		]
+	}
+}

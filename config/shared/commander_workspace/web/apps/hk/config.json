@@ -1,0 +1,46 @@
+{
+    "appShortName": "HK",
+    "schDef":{
+        "slotCount": 250,
+        "entriesPerSlot": 15,
+        "appName": "HK",
+        "slots":[
+          {"id":115, "activities":[12]}
+        ],
+        "groups": [
+          {"name":"SCH_GROUP_HK", "id": 1}
+        ]
+    },
+    "eventDef":{
+	    "appName": "HK",
+	    "events":[
+            {"name": "HK_INIT_EID", "eventID": 1},
+            {"name": "HK_CC_ERR_EID", "eventID": 2},
+            {"name": "HK_CMD_LEN_ERR_EID", "eventID": 3},
+            {"name": "HK_NOOP_CMD_EID", "eventID": 4},
+            {"name": "HK_RESET_CNTRS_CMD_EID", "eventID": 5},
+            {"name": "HK_ACCESSING_PAST_PACKET_END_EID", "eventID": 6},
+            {"name": "HK_MEM_POOL_MALLOC_FAILED_EID", "eventID": 7},
+            {"name": "HK_CANT_SUBSCRIBE_TO_SB_PKT_EID", "eventID": 8},
+            {"name": "HK_MEM_POOL_FREE_FAILED_EID", "eventID": 9},
+            {"name": "HK_UNEXPECTED_GETSTAT_RET_EID", "eventID": 10},
+            {"name": "HK_UNKNOWN_COMBINED_PACKET_EID", "eventID": 11},
+            {"name": "HK_OUTPKT_MISSING_DATA_EID", "eventID": 12},
+            {"name": "HK_CR_PIPE_ERR_EID", "eventID": 14},
+            {"name": "HK_SUB_CMB_ERR_EID", "eventID": 15},
+            {"name": "HK_SUB_REQ_ERR_EID", "eventID": 16},
+            {"name": "HK_SUB_CMD_ERR_EID", "eventID": 17},
+            {"name": "HK_CR_POOL_ERR_EID", "eventID": 18},
+            {"name": "HK_CPTBL_REG_ERR_EID", "eventID": 19},
+            {"name": "HK_RTTBL_REG_ERR_EID", "eventID": 20},
+            {"name": "HK_CPTBL_LD_ERR_EID", "eventID": 21},
+            {"name": "HK_CPTBL_MNG_ERR_EID", "eventID": 22},
+            {"name": "HK_RTTBL_MNG_ERR_EID", "eventID": 23},
+            {"name": "HK_CPTBL_GADR_ERR_EID", "eventID": 24},
+            {"name": "HK_RTTBL_GADR_ERR_EID", "eventID": 25},
+            {"name": "HK_RCV_MSG_ERR_EID", "eventID": 26},
+            {"name": "HK_UNEXPECTED_GETSTAT2_RET_EID", "eventID": 27},
+            {"name": "HK_MSG_LEN_ERR_EID", "eventID": 28}
+		]
+	}
+}
