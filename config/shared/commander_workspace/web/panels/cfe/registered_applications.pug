@@ -1,0 +1,30 @@
+article.col-xs-10.col-sm-6.col-md-5.col-lg-4(style='width:350px')
+      #wid-CFE-ES-AppCtrl-RegisteredApplications.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Registered Applications
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+               tbody
+                tr  
+                 th Core applications
+                 td 
+                   span(data-sage={tlm: [{name: '/CFS/CFE_ES/RegisteredCoreApps'}]}) ---
+                tr
+                 th External applications
+                 td 
+                   span(data-sage={tlm: [{name: '/CFS/CFE_ES/RegisteredExternalApps'}]}) ---
+                tr
+                 th Tasks
+                 td 
+                   span(data-sage={tlm: [{name: '/CFS/CFE_ES/RegisteredTasks'}]}) ---
+                tr
+                 th Libraries
+                 td 
+                   span(data-sage={tlm: [{name: '/CFS/CFE_ES/RegisteredLibs'}]}) --- 
+   
