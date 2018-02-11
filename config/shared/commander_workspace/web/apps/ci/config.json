@@ -2,7 +2,7 @@
     "appShortName": "CI",
     "schDef":{
         "slotCount": 200,
-        "entriesPerSlot": 5,
+        "entriesPerSlot": 15,
         "appName": "CI",
         "slots":[
           {"id":7, "activities":[1]},

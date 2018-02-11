@@ -1,7 +1,7 @@
 {
     "schDef":{
         "slotCount": 200,
-        "entriesPerSlot": 5,
+        "entriesPerSlot": 15,
         "appName": "CF",
         "slots":[
           {"id":2, "activities":[1]},

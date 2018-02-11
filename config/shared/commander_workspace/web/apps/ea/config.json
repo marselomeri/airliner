@@ -1,0 +1,41 @@
+{
+    "appShortName": "EA",
+    "schDef":{
+        "slotCount": 250,
+        "entriesPerSlot": 15,
+        "appName": "EA",
+        "slots":[
+          {"id":85, "activities":[11]},
+          {"id":90, "activities":[12]},
+          {"id":100, "activities":[11]}
+        ],
+        "groups": [
+          {"name":"SCH_GROUP_EA", "id": 1}
+        ]
+    },
+    "eventDef":{
+	    "appName": "EA",
+	    "events":[
+            {"name": "EA_INIT_INF_EID", "eventID": 1},
+            {"name": "EA_CONFIG_TABLE_INF_EID", "eventID": 2},
+            {"name": "EA_CDS_INF_EID", "eventID": 3},
+            {"name": "EA_CMD_INF_EID", "eventID": 4},
+            {"name": "EA_INF_APP_START_EID", "eventID": 5},
+            {"name": "EA_INF_APP_TERM_EID", "eventID": 6},
+            {"name": "EA_APP_ARG_ERR_EID", "eventID": 7},
+            {"name": "EA_WARN_APP_UTIL_EID", "eventID": 8},
+            {"name": "EA_ERR_EID", "eventID": 9},
+            {"name": "EA_INIT_ERR_EID", "eventID": 10},
+            {"name": "EA_CONFIG_TABLE_ERR_EID", "eventID": 11},
+            {"name": "EA_CDS_ERR_EID", "eventID": 12},
+            {"name": "EA_CMD_ERR_EID", "eventID": 13},
+            {"name": "EA_PIPE_ERR_EID", "eventID": 14},
+            {"name": "EA_MSGID_ERR_EID", "eventID": 15},
+            {"name": "EA_MSGLEN_ERR_EID", "eventID": 16},
+            {"name": "EA_CHILD_TASK_START_EID", "eventID": 17},
+            {"name": "EA_CHILD_TASK_START_ERR_EID", "eventID": 18},
+            {"name": "EA_CMD_NOOP_EID", "eventID": 19},
+            {"name": "EA_CMD_RESET_EID", "eventID": 20}
+		]
+	}
+}
