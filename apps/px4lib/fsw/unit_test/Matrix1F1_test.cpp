@@ -31,19 +31,17 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#include "Matrix1F1_test.hpp"
+#include <math/Matrix1F1.hpp>
 
-#include "Matrix1F10_test.hpp"
-#include "Matrix1F10_test_utils.hpp"
+#include "utassert.h"
+#include <float.h>
 
-int main(void)
-{   
-	UtTest_Add(Test_Matrix1F10_Constructor, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
-	         "Test_Matrix1F10_Constructor");
-    	UtTest_Add(Test_Matrix1F10_Mult_10F10, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
-	         "Test_Matrix1F10_Mult_10F10");
 
-    return(UtTest_Run());
+void Test_Matrix1F1_Constructor(void)
+{
+    math::Matrix1F1 matrix(1.0f);
 
+    /* Verify results */
+    UtAssert_True(matrix[0][0] == 1.0f, "matrix[0][0] == 1.0f");
 }
-

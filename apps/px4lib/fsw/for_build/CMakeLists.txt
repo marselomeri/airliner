@@ -174,6 +174,8 @@ add_airliner_app_unit_test(px4lib-matrix1f10-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F10_test_utils.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix1F10.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F10.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix10F10.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix10F10.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector10F.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector10F.hpp
         
@@ -209,6 +211,28 @@ add_airliner_app_unit_test(px4lib-matrix10f1-ut
         
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix10f1-ut.supp
+)
+
+add_airliner_app_unit_test(px4lib-matrix1f1-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F1_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix1F1.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F1.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector1F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector1F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix1f1-ut.supp
 )
 
 set(PX4LIB_LIB_SOURCES ${PX4LIB_LIB_SOURCES} CACHE STRING "PX4LIB library source files")

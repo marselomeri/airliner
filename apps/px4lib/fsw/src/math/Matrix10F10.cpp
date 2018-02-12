@@ -167,6 +167,8 @@ Matrix10F10 Matrix10F10::operator*(const Matrix10F10 &matIn)
 }
 
 
+
+
 // overload * operator to provide a matrix vector product
 Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 {

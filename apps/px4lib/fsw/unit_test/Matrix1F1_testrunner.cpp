@@ -33,15 +33,13 @@
 
 #include "uttest.h"
 
-#include "Matrix1F10_test.hpp"
-#include "Matrix1F10_test_utils.hpp"
+#include "Matrix1F1_test.hpp"
+#include "Matrix1F1_test_utils.hpp"
 
 int main(void)
 {   
-	UtTest_Add(Test_Matrix1F10_Constructor, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
-	         "Test_Matrix1F10_Constructor");
-    	UtTest_Add(Test_Matrix1F10_Mult_10F10, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
-	         "Test_Matrix1F10_Mult_10F10");
+	UtTest_Add(Test_Matrix1F1_Constructor, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
+	         "Test_Matrix1F1_Constructor");
 
     return(UtTest_Run());
 

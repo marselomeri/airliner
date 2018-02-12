@@ -33,6 +33,7 @@
 
 #include "Matrix1F10_test.hpp"
 #include <math/Matrix1F10.hpp>
+#include <math/Matrix10F10.hpp>
 
 #include "utassert.h"
 #include <float.h>
@@ -56,3 +57,40 @@ void Test_Matrix1F10_Constructor(void)
     UtAssert_True(matrix[0][8] == 9.0f, "matrix[0][8] == 9.0f");
     UtAssert_True(matrix[0][9] == 10.0f, "matrix[0][8] == 9.0f");
 }
+
+void Test_Matrix1F10_Mult_10F10(void)
+{
+    math::Matrix1F10 matrixA(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    math::Matrix10F10 matrixB(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    
+    math::Matrix1F10 result;
+    result.Zero();
+    result = matrixA * matrixB;
+
+    /* Verify results */
+    UtAssert_True(result[0][0] == 55.0f, "result[0][0] == 55.0f");
+    UtAssert_True(result[0][1] == 110.0f, "result[0][1] == 110.0f");
+    UtAssert_True(result[0][2] == 165.0f, "result[0][2] == 165.0f");
+    UtAssert_True(result[0][3] == 220.0f, "result[0][3] == 220.0f");
+    UtAssert_True(result[0][4] == 275.0f, "result[0][4] == 275.0f");
+    UtAssert_True(result[0][5] == 330.0f, "result[0][5] == 330.0f");
+    UtAssert_True(result[0][6] == 385.0f, "result[0][6] == 385.0f");
+    UtAssert_True(result[0][7] == 440.0f, "result[0][7] == 440.0f");
+    UtAssert_True(result[0][8] == 495.0f, "result[0][8] == 495.0f");
+    UtAssert_True(result[0][9] == 550.0f, "result[0][8] == 550.0f");
+}
+
+
