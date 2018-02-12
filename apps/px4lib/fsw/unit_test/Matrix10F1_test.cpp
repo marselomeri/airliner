@@ -33,6 +33,7 @@
 
 #include "Matrix10F1_test.hpp"
 #include <math/Matrix10F1.hpp>
+#include <math/Matrix1F10.hpp>
 
 #include "utassert.h"
 #include <float.h>

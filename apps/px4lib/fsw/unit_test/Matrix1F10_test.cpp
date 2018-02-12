@@ -33,6 +33,7 @@
 
 #include "Matrix1F10_test.hpp"
 #include <math/Matrix1F10.hpp>
+#include <math/Matrix10F1.hpp>
 #include <math/Matrix10F10.hpp>
 
 #include "utassert.h"

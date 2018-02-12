@@ -60,6 +60,25 @@ void Matrix1F10::Zero(void)
     }
 };
 
+
+Matrix10F1 Matrix1F10::Transpose(void)
+{
+    Matrix10F1 matOut;
+    matOut[0][0] = data[0][0];
+    matOut[1][0] = data[0][1];
+    matOut[2][0] = data[0][2];
+    matOut[3][0] = data[0][3];
+    matOut[4][0] = data[0][4];
+    matOut[5][0] = data[0][5];
+    matOut[6][0] = data[0][6];
+    matOut[7][0] = data[0][7];
+    matOut[8][0] = data[0][8];
+    matOut[9][0] = data[0][9];
+    
+    return matOut;
+};
+
+
 // overload * operator to provide a matrix product
 Matrix1F10 Matrix1F10::operator*(const Matrix10F10 &matIn)
 {
