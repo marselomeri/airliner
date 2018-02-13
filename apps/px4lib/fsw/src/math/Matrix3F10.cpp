@@ -1,42 +1,34 @@
-#include "math/Matrix10F3.hpp"
+#include "math/Matrix3F10.hpp"
 #include <math.h>
 
 using namespace math;
 
-
-Matrix10F3::Matrix10F3(Vector3F m0, Vector3F m1, Vector3F m2, Vector3F m3, Vector3F m4, Vector3F m5, Vector3F m6, Vector3F m7, Vector3F m8, Vector3F m9) :
-	data{m0, m1, m2, m3, m4, m5, m6, m7, m8, m9},
-	nan{NAN,NAN,NAN}
+Matrix3F10::Matrix3F10(Vector10F m0, Vector10F m1, Vector10F m2) :
+	data{m0, m1, m2},
+	nan{NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN}
 {
 };
 
 
-Matrix10F3::Matrix10F3() :
+Matrix3F10::Matrix3F10() :
 	data{
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0},
-		{0.0, 0.0, 0.0}
+		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+		{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 	},
-    nan{NAN,NAN,NAN}
+    nan{NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN}
 {
 };
 
 
-Matrix10F3::~Matrix10F3()
+Matrix3F10::~Matrix3F10()
 {
 };
 
 
-Vector3F& Matrix10F3::operator [] (uint32 i)
+Vector10F& Matrix3F10::operator [] (uint32 i)
 {
-	if(i >= 10)
+	if(i >= ROWS)
 	{
 		return nan;
 	}
@@ -47,9 +39,9 @@ Vector3F& Matrix10F3::operator [] (uint32 i)
 };
 
 
-Vector3F Matrix10F3::operator [] (uint32 i) const
+Vector10F Matrix3F10::operator [] (uint32 i) const
 {
-	if(i >= 10)
+	if(i >= ROWS)
 	{
 		return nan;
 	}
@@ -60,7 +52,7 @@ Vector3F Matrix10F3::operator [] (uint32 i) const
 };
 
 
-Matrix3F10 Matrix10F3::Transpose(void)
+Matrix3F10 Matrix3F10::Transpose(void)
 {
 	Matrix3F10 res;
 
@@ -68,7 +60,7 @@ Matrix3F10 Matrix10F3::Transpose(void)
 	{
 		for(int j = 0; j < COLS; j++)
 		{
-			res[j][i] = data[i][j];
+			res[i][j] = data[j][i];
 		}
 	}
 
@@ -76,24 +68,17 @@ Matrix3F10 Matrix10F3::Transpose(void)
 }
 
 
-Matrix10F3 Matrix10F3::Identity() {
-    Matrix10F3 matOut(
-    		{1.0f, 0.0f, 0.0f},
-    		{0.0f, 1.0f, 0.0f},
-    		{0.0f, 0.0f, 1.0f},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0});
+Matrix3F10 Matrix3F10::Identity() {
+    Matrix3F10 matOut(
+    		{1.0f, 0.0f, 0.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0f, 1.0f, 0.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+    		{0.0f, 0.0f, 1.0f, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
     return matOut;
 }
 
 
-void Matrix10F3::Zero(void)
+void Matrix3F10::Zero(void)
 {
 	for(int i = 0; i < ROWS; i++)
 	{
@@ -106,9 +91,9 @@ void Matrix10F3::Zero(void)
 
 
 // overload * operator to provide a matrix product
-Matrix10F3 Matrix10F3::operator*(const Matrix10F3 &matIn)
+Matrix3F10 Matrix3F10::operator*(const Matrix3F10 &matIn)
 {
-    Matrix10F3 matOut;
+    Matrix3F10 matOut;
     float value = 0.0f;
 
     // TODO: verify correct
@@ -131,9 +116,9 @@ Matrix10F3 Matrix10F3::operator*(const Matrix10F3 &matIn)
 }
 
 // overload * operator to provide a matrix product
-Matrix10F3 Matrix10F3::operator*(const Matrix3F3 &matIn)
+Matrix3F10 Matrix3F10::operator*(const Matrix3F3 &matIn)
 {
-    Matrix10F3 matOut;
+    Matrix3F10 matOut;
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
@@ -152,11 +137,10 @@ Matrix10F3 Matrix10F3::operator*(const Matrix3F3 &matIn)
 }
 
 // overload * operator to provide a matrix product
-Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
+Matrix10F10 Matrix3F10::operator*(const Matrix10F3 &matIn)
 {
     Matrix10F10 matOut;
     matOut.Zero();
-    //matOut.Print();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
@@ -171,16 +155,15 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
 		}
     }
 
-    //matOut.Print();
-
+    OS_printf("bad");
     return matOut;
 }
 
 
 // overload * operator to provide a matrix vector product
-Vector3F Matrix10F3::operator*(const Vector3F &vecIn)
+Vector10F Matrix3F10::operator*(const Vector10F &vecIn)
 {
-    Vector3F vecOut;
+    Vector10F vecOut;
     float value = 0.0f;
 
     // TODO: verify correct
@@ -199,9 +182,9 @@ Vector3F Matrix10F3::operator*(const Vector3F &vecIn)
 }
 
 
-Matrix10F3 Matrix10F3::operator*(const float &scalar)
+Matrix3F10 Matrix3F10::operator*(const float &scalar)
 {
-    Matrix10F3 matOut;
+    Matrix3F10 matOut;
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
@@ -216,9 +199,9 @@ Matrix10F3 Matrix10F3::operator*(const float &scalar)
 }
 
 
-Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
+Matrix3F10 Matrix3F10::operator+(const Matrix3F10 &matIn) const
 {
-    Matrix10F3 matOut;
+    Matrix3F10 matOut;
 
     // TODO: verify correct
 	for(int i = 0; i < ROWS; i++)
@@ -233,22 +216,22 @@ Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
 }
 
 
-//Matrix10F3 Matrix10F3::RotationMatrix(Matrix10F3::Rotation_t boardRotation)
+//Matrix3F10 Matrix3F10::RotationMatrix(Matrix3F10::Rotation_t boardRotation)
 //{
-//	Matrix10F3 matrix;
+//	Matrix3F10 matrix;
 //
-//	float roll  = M_DEG_TO_RAD_F * (float)Matrix10F3::RotLookup[boardRotation].roll;
-//	float pitch = M_DEG_TO_RAD_F * (float)Matrix10F3::RotLookup[boardRotation].pitch;
-//	float yaw   = M_DEG_TO_RAD_F * (float)Matrix10F3::RotLookup[boardRotation].yaw;
+//	float roll  = M_DEG_TO_RAD_F * (float)Matrix3F10::RotLookup[boardRotation].roll;
+//	float pitch = M_DEG_TO_RAD_F * (float)Matrix3F10::RotLookup[boardRotation].pitch;
+//	float yaw   = M_DEG_TO_RAD_F * (float)Matrix3F10::RotLookup[boardRotation].yaw;
 //
-//	return Matrix10F3::FromEuler(roll, pitch, yaw);
+//	return Matrix3F10::FromEuler(roll, pitch, yaw);
 //}
 //
 //
 //
-//Matrix10F3 Matrix10F3::FromEuler(float roll, float pitch, float yaw)
+//Matrix3F10 Matrix3F10::FromEuler(float roll, float pitch, float yaw)
 //{
-//	Matrix10F3 matrix;
+//	Matrix3F10 matrix;
 //
 //	float cp = cosf(pitch);
 //	float sp = sinf(pitch);
@@ -272,9 +255,9 @@ Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
 //
 //
 //
-//Vector3F Matrix10F3::ToEuler(void) const
+//Vector10F Matrix3F10::ToEuler(void) const
 //{
-//	Vector3F euler;
+//	Vector10F euler;
 //	euler[1] = asinf(-data[2][0]);
 //
 //	if (fabsf(euler[1] - M_PI_2) < 1.0e-3f) {
