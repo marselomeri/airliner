@@ -57,13 +57,13 @@ public:
 
 private:
 	static const int SIZE = 3;
-	Vector3F data[SIZE];
 	Vector3F nan;
 
 	static const RotLookup_t RotLookup[];
 
 public:
 	Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2);
+
 	~Matrix3F3();
 	Vector3F& operator [] (uint32 i);
 	Vector3F operator [] (uint32 i) const;
@@ -80,6 +80,7 @@ public:
 	Vector3F ToEuler(void) const;
 
 protected:
+	Vector3F data[SIZE];
 
 };
 

@@ -77,6 +77,7 @@ public:
 	Vector10F operator*(const Vector10F &vecIn);
     Matrix10F1 operator*(const Matrix10F1 &matIn);
 	Vector10F operator+(const Vector10F &vecIn);
+	void operator+=(const Matrix10F10 &mat);
 	Matrix10F10 operator*(const Matrix10F10 &matIn);
 	Matrix10F10 operator*(const float &scalar);
 	void Zero(void);
@@ -85,6 +86,7 @@ public:
 	static Matrix10F10 RotationMatrix(Matrix10F10::Rotation_t boardRotation);
 	static Matrix10F10 FromEuler(float roll, float pitch, float yaw);
 	Vector10F ToEuler(void) const;
+    void Print();
 
 protected:
 

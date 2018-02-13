@@ -84,7 +84,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//T_MAX_GRADE
     1.0f,
 	//FAKE_ORIGIN
-    0,
+    1,
 	//INIT_ORIGIN_LAT
     29.562144f,
 	//INIT_ORIGIN_LON
