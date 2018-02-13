@@ -81,6 +81,7 @@ public:
 	Matrix10F10 operator*(const float &scalar);
 	void Zero(void);
     Matrix10F10 operator+(const Matrix10F10 &matIn) const;
+    Matrix10F10 operator-(const Matrix10F10 &matIn) const;
 	static Matrix10F10 RotationMatrix(Matrix10F10::Rotation_t boardRotation);
 	static Matrix10F10 FromEuler(float roll, float pitch, float yaw);
 	Vector10F ToEuler(void) const;

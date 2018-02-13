@@ -272,6 +272,23 @@ Matrix10F10 Matrix10F10::operator+(const Matrix10F10 &matIn) const
 }
 
 
+Matrix10F10 Matrix10F10::operator-(const Matrix10F10 &matIn) const
+{
+    Matrix10F10 matOut;
+
+    // TODO: verify correct
+	for(int i = 0; i < SIZE; i++)
+	{
+		for(int j = 0; j < SIZE; j++)
+		{
+			matOut[j][i] = data[j][i] - matIn[j][i];
+		}
+	}
+
+    return matOut;
+}
+
+
 //Matrix10F10 Matrix10F10::RotationMatrix(Matrix10F10::Rotation_t boardRotation)
 //{
 //	Matrix10F10 matrix;

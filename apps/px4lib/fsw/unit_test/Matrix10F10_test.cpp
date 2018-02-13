@@ -208,4 +208,291 @@ void Test_Matrix10F10_Mult_10F1(void)
 }
 
 
+void Test_Matrix10F10_Addition(void)
+{
+    math::Matrix10F10 matrixA(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    math::Matrix10F10 matrixB(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    
+    math::Matrix10F10 result;
+    result.Zero();
+    
+    result = matrixA + matrixB;
+    
 
+    UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
+    UtAssert_True(result[0][1] == 4.0f, "result[0][1] == 4.0f");
+    UtAssert_True(result[0][2] == 6.0f, "result[0][2] == 6.0f");
+    UtAssert_True(result[0][3] == 8.0f, "result[0][3] == 8.0f");
+    UtAssert_True(result[0][4] == 10.0f, "result[0][4] == 10.0f");
+    UtAssert_True(result[0][5] == 12.0f, "result[0][5] == 12.0f");
+    UtAssert_True(result[0][6] == 14.0f, "result[0][6] == 14.0f");
+    UtAssert_True(result[0][7] == 16.0f, "result[0][7] == 16.0f");
+    UtAssert_True(result[0][8] == 18.0f, "result[0][8] == 18.0f");
+    UtAssert_True(result[0][9] == 20.0f, "result[0][9] == 20.0f");
+
+    UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
+    UtAssert_True(result[1][1] == 4.0f, "result[1][1] == 4.0f");
+    UtAssert_True(result[1][2] == 6.0f, "result[1][2] == 6.0f");
+    UtAssert_True(result[1][3] == 8.0f, "result[1][3] == 8.0f");
+    UtAssert_True(result[1][4] == 10.0f, "result[1][4] == 10.0f");
+    UtAssert_True(result[1][5] == 12.0f, "result[1][5] == 12.0f");
+    UtAssert_True(result[1][6] == 14.0f, "result[1][6] == 14.0f");
+    UtAssert_True(result[1][7] == 16.0f, "result[1][7] == 16.0f");
+    UtAssert_True(result[1][8] == 18.0f, "result[1][8] == 18.0f");
+    UtAssert_True(result[1][9] == 20.0f, "result[1][9] == 20.0f");
+
+    UtAssert_True(result[2][0] == 2.0f, "result[2][0] == 2.0f");
+    UtAssert_True(result[2][1] == 4.0f, "result[2][1] == 4.0f");
+    UtAssert_True(result[2][2] == 6.0f, "result[2][2] == 6.0f");
+    UtAssert_True(result[2][3] == 8.0f, "result[2][3] == 8.0f");
+    UtAssert_True(result[2][4] == 10.0f, "result[2][4] == 10.0f");
+    UtAssert_True(result[2][5] == 12.0f, "result[2][5] == 12.0f");
+    UtAssert_True(result[2][6] == 14.0f, "result[2][6] == 14.0f");
+    UtAssert_True(result[2][7] == 16.0f, "result[2][7] == 16.0f");
+    UtAssert_True(result[2][8] == 18.0f, "result[2][8] == 18.0f");
+    UtAssert_True(result[2][9] == 20.0f, "result[2][9] == 20.0f");
+
+    UtAssert_True(result[3][0] == 2.0f, "result[3][0] == 2.0f");
+    UtAssert_True(result[3][1] == 4.0f, "result[3][1] == 4.0f");
+    UtAssert_True(result[3][2] == 6.0f, "result[3][2] == 6.0f");
+    UtAssert_True(result[3][3] == 8.0f, "result[3][3] == 8.0f");
+    UtAssert_True(result[3][4] == 10.0f, "result[3][4] == 10.0f");
+    UtAssert_True(result[3][5] == 12.0f, "result[3][5] == 12.0f");
+    UtAssert_True(result[3][6] == 14.0f, "result[3][6] == 14.0f");
+    UtAssert_True(result[3][7] == 16.0f, "result[3][7] == 16.0f");
+    UtAssert_True(result[3][8] == 18.0f, "result[3][8] == 18.0f");
+    UtAssert_True(result[3][9] == 20.0f, "result[3][9] == 20.0f");
+
+    UtAssert_True(result[4][0] == 2.0f, "result[4][0] == 2.0f");
+    UtAssert_True(result[4][1] == 4.0f, "result[4][1] == 4.0f");
+    UtAssert_True(result[4][2] == 6.0f, "result[4][2] == 6.0f");
+    UtAssert_True(result[4][3] == 8.0f, "result[4][3] == 8.0f");
+    UtAssert_True(result[4][4] == 10.0f, "result[4][4] == 10.0f");
+    UtAssert_True(result[4][5] == 12.0f, "result[4][5] == 12.0f");
+    UtAssert_True(result[4][6] == 14.0f, "result[4][6] == 14.0f");
+    UtAssert_True(result[4][7] == 16.0f, "result[4][7] == 16.0f");
+    UtAssert_True(result[4][8] == 18.0f, "result[4][8] == 18.0f");
+    UtAssert_True(result[4][9] == 20.0f, "result[4][9] == 20.0f");
+
+    UtAssert_True(result[5][0] == 2.0f, "result[5][0] == 2.0f");
+    UtAssert_True(result[5][1] == 4.0f, "result[5][1] == 4.0f");
+    UtAssert_True(result[5][2] == 6.0f, "result[5][2] == 5.0f");
+    UtAssert_True(result[5][3] == 8.0f, "result[5][3] == 6.0f");
+    UtAssert_True(result[5][4] == 10.0f, "result[5][4] == 10.0f");
+    UtAssert_True(result[5][5] == 12.0f, "result[5][5] == 12.0f");
+    UtAssert_True(result[5][6] == 14.0f, "result[5][6] == 14.0f");
+    UtAssert_True(result[5][7] == 16.0f, "result[5][7] == 16.0f");
+    UtAssert_True(result[5][8] == 18.0f, "result[5][8] == 18.0f");
+    UtAssert_True(result[5][9] == 20.0f, "result[5][9] == 20.0f");
+    
+    UtAssert_True(result[6][0] == 2.0f, "result[6][0] == 2.0f");
+    UtAssert_True(result[6][1] == 4.0f, "result[6][1] == 4.0f");
+    UtAssert_True(result[6][2] == 6.0f, "result[6][2] == 6.0f");
+    UtAssert_True(result[6][3] == 8.0f, "result[6][3] == 8.0f");
+    UtAssert_True(result[6][4] == 10.0f, "result[6][4] == 10.0f");
+    UtAssert_True(result[6][5] == 12.0f, "result[6][5] == 12.0f");
+    UtAssert_True(result[6][6] == 14.0f, "result[6][6] == 14.0f");
+    UtAssert_True(result[6][7] == 16.0f, "result[6][7] == 16.0f");
+    UtAssert_True(result[6][8] == 18.0f, "result[6][8] == 18.0f");
+    UtAssert_True(result[6][9] == 20.0f, "result[6][9] == 20.0f");
+
+    UtAssert_True(result[7][0] == 2.0f, "result[7][0] == 2.0f");
+    UtAssert_True(result[7][1] == 4.0f, "result[7][1] == 4.0f");
+    UtAssert_True(result[7][2] == 6.0f, "result[7][2] == 6.0f");
+    UtAssert_True(result[7][3] == 8.0f, "result[7][3] == 8.0f");
+    UtAssert_True(result[7][4] == 10.0f, "result[7][4] == 10.0f");
+    UtAssert_True(result[7][5] == 12.0f, "result[7][5] == 12.0f");
+    UtAssert_True(result[7][6] == 14.0f, "result[7][6] == 14.0f");
+    UtAssert_True(result[7][7] == 16.0f, "result[7][7] == 16.0f");
+    UtAssert_True(result[7][8] == 18.0f, "result[7][8] == 18.0f");
+    UtAssert_True(result[7][9] == 20.0f, "result[7][9] == 20.0f");
+    
+    UtAssert_True(result[8][0] == 2.0f, "result[8][0] == 2.0f");
+    UtAssert_True(result[8][1] == 4.0f, "result[8][1] == 4.0f");
+    UtAssert_True(result[8][2] == 6.0f, "result[8][2] == 6.0f");
+    UtAssert_True(result[8][3] == 8.0f, "result[8][3] == 8.0f");
+    UtAssert_True(result[8][4] == 10.0f, "result[8][4] == 10.0f");
+    UtAssert_True(result[8][5] == 12.0f, "result[8][5] == 12.0f");
+    UtAssert_True(result[8][6] == 14.0f, "result[8][6] == 14.0f");
+    UtAssert_True(result[8][7] == 16.0f, "result[8][7] == 16.0f");
+    UtAssert_True(result[8][8] == 18.0f, "result[8][8] == 18.0f");
+    UtAssert_True(result[8][9] == 20.0f, "result[8][9] == 20.0f");
+
+    UtAssert_True(result[9][0] == 2.0f, "result[9][0] == 2.0f");
+    UtAssert_True(result[9][1] == 4.0f, "result[9][1] == 4.0f");
+    UtAssert_True(result[9][2] == 6.0f, "result[9][2] == 6.0f");
+    UtAssert_True(result[9][3] == 8.0f, "result[9][3] == 8.0f");
+    UtAssert_True(result[9][4] == 10.0f, "result[9][4] == 10.0f");
+    UtAssert_True(result[9][5] == 12.0f, "result[9][5] == 12.0f");
+    UtAssert_True(result[9][6] == 14.0f, "result[9][6] == 14.0f");
+    UtAssert_True(result[9][7] == 16.0f, "result[9][7] == 16.0f");
+    UtAssert_True(result[9][8] == 18.0f, "result[9][8] == 18.0f");
+    UtAssert_True(result[9][9] == 20.0f, "result[9][9] == 20.0f");
+}
+
+
+void Test_Matrix10F10_Subtraction(void)
+{
+    math::Matrix10F10 matrixA(
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f},
+            {3.0f, 6.0f, 9.0f, 12.0f, 15.0f, 18.0f, 21.0f, 24.0f, 27.0f, 30.0f}
+    );
+    math::Matrix10F10 matrixB(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    
+    math::Matrix10F10 result;
+    result.Zero();
+    
+    result = matrixA - matrixB;
+    
+
+    UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
+    UtAssert_True(result[0][1] == 4.0f, "result[0][1] == 4.0f");
+    UtAssert_True(result[0][2] == 6.0f, "result[0][2] == 6.0f");
+    UtAssert_True(result[0][3] == 8.0f, "result[0][3] == 8.0f");
+    UtAssert_True(result[0][4] == 10.0f, "result[0][4] == 10.0f");
+    UtAssert_True(result[0][5] == 12.0f, "result[0][5] == 12.0f");
+    UtAssert_True(result[0][6] == 14.0f, "result[0][6] == 14.0f");
+    UtAssert_True(result[0][7] == 16.0f, "result[0][7] == 16.0f");
+    UtAssert_True(result[0][8] == 18.0f, "result[0][8] == 18.0f");
+    UtAssert_True(result[0][9] == 20.0f, "result[0][9] == 20.0f");
+
+    UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
+    UtAssert_True(result[1][1] == 4.0f, "result[1][1] == 4.0f");
+    UtAssert_True(result[1][2] == 6.0f, "result[1][2] == 6.0f");
+    UtAssert_True(result[1][3] == 8.0f, "result[1][3] == 8.0f");
+    UtAssert_True(result[1][4] == 10.0f, "result[1][4] == 10.0f");
+    UtAssert_True(result[1][5] == 12.0f, "result[1][5] == 12.0f");
+    UtAssert_True(result[1][6] == 14.0f, "result[1][6] == 14.0f");
+    UtAssert_True(result[1][7] == 16.0f, "result[1][7] == 16.0f");
+    UtAssert_True(result[1][8] == 18.0f, "result[1][8] == 18.0f");
+    UtAssert_True(result[1][9] == 20.0f, "result[1][9] == 20.0f");
+
+    UtAssert_True(result[2][0] == 2.0f, "result[2][0] == 2.0f");
+    UtAssert_True(result[2][1] == 4.0f, "result[2][1] == 4.0f");
+    UtAssert_True(result[2][2] == 6.0f, "result[2][2] == 6.0f");
+    UtAssert_True(result[2][3] == 8.0f, "result[2][3] == 8.0f");
+    UtAssert_True(result[2][4] == 10.0f, "result[2][4] == 10.0f");
+    UtAssert_True(result[2][5] == 12.0f, "result[2][5] == 12.0f");
+    UtAssert_True(result[2][6] == 14.0f, "result[2][6] == 14.0f");
+    UtAssert_True(result[2][7] == 16.0f, "result[2][7] == 16.0f");
+    UtAssert_True(result[2][8] == 18.0f, "result[2][8] == 18.0f");
+    UtAssert_True(result[2][9] == 20.0f, "result[2][9] == 20.0f");
+
+    UtAssert_True(result[3][0] == 2.0f, "result[3][0] == 2.0f");
+    UtAssert_True(result[3][1] == 4.0f, "result[3][1] == 4.0f");
+    UtAssert_True(result[3][2] == 6.0f, "result[3][2] == 6.0f");
+    UtAssert_True(result[3][3] == 8.0f, "result[3][3] == 8.0f");
+    UtAssert_True(result[3][4] == 10.0f, "result[3][4] == 10.0f");
+    UtAssert_True(result[3][5] == 12.0f, "result[3][5] == 12.0f");
+    UtAssert_True(result[3][6] == 14.0f, "result[3][6] == 14.0f");
+    UtAssert_True(result[3][7] == 16.0f, "result[3][7] == 16.0f");
+    UtAssert_True(result[3][8] == 18.0f, "result[3][8] == 18.0f");
+    UtAssert_True(result[3][9] == 20.0f, "result[3][9] == 20.0f");
+
+    UtAssert_True(result[4][0] == 2.0f, "result[4][0] == 2.0f");
+    UtAssert_True(result[4][1] == 4.0f, "result[4][1] == 4.0f");
+    UtAssert_True(result[4][2] == 6.0f, "result[4][2] == 6.0f");
+    UtAssert_True(result[4][3] == 8.0f, "result[4][3] == 8.0f");
+    UtAssert_True(result[4][4] == 10.0f, "result[4][4] == 10.0f");
+    UtAssert_True(result[4][5] == 12.0f, "result[4][5] == 12.0f");
+    UtAssert_True(result[4][6] == 14.0f, "result[4][6] == 14.0f");
+    UtAssert_True(result[4][7] == 16.0f, "result[4][7] == 16.0f");
+    UtAssert_True(result[4][8] == 18.0f, "result[4][8] == 18.0f");
+    UtAssert_True(result[4][9] == 20.0f, "result[4][9] == 20.0f");
+
+    UtAssert_True(result[5][0] == 2.0f, "result[5][0] == 2.0f");
+    UtAssert_True(result[5][1] == 4.0f, "result[5][1] == 4.0f");
+    UtAssert_True(result[5][2] == 6.0f, "result[5][2] == 5.0f");
+    UtAssert_True(result[5][3] == 8.0f, "result[5][3] == 6.0f");
+    UtAssert_True(result[5][4] == 10.0f, "result[5][4] == 10.0f");
+    UtAssert_True(result[5][5] == 12.0f, "result[5][5] == 12.0f");
+    UtAssert_True(result[5][6] == 14.0f, "result[5][6] == 14.0f");
+    UtAssert_True(result[5][7] == 16.0f, "result[5][7] == 16.0f");
+    UtAssert_True(result[5][8] == 18.0f, "result[5][8] == 18.0f");
+    UtAssert_True(result[5][9] == 20.0f, "result[5][9] == 20.0f");
+    
+    UtAssert_True(result[6][0] == 2.0f, "result[6][0] == 2.0f");
+    UtAssert_True(result[6][1] == 4.0f, "result[6][1] == 4.0f");
+    UtAssert_True(result[6][2] == 6.0f, "result[6][2] == 6.0f");
+    UtAssert_True(result[6][3] == 8.0f, "result[6][3] == 8.0f");
+    UtAssert_True(result[6][4] == 10.0f, "result[6][4] == 10.0f");
+    UtAssert_True(result[6][5] == 12.0f, "result[6][5] == 12.0f");
+    UtAssert_True(result[6][6] == 14.0f, "result[6][6] == 14.0f");
+    UtAssert_True(result[6][7] == 16.0f, "result[6][7] == 16.0f");
+    UtAssert_True(result[6][8] == 18.0f, "result[6][8] == 18.0f");
+    UtAssert_True(result[6][9] == 20.0f, "result[6][9] == 20.0f");
+
+    UtAssert_True(result[7][0] == 2.0f, "result[7][0] == 2.0f");
+    UtAssert_True(result[7][1] == 4.0f, "result[7][1] == 4.0f");
+    UtAssert_True(result[7][2] == 6.0f, "result[7][2] == 6.0f");
+    UtAssert_True(result[7][3] == 8.0f, "result[7][3] == 8.0f");
+    UtAssert_True(result[7][4] == 10.0f, "result[7][4] == 10.0f");
+    UtAssert_True(result[7][5] == 12.0f, "result[7][5] == 12.0f");
+    UtAssert_True(result[7][6] == 14.0f, "result[7][6] == 14.0f");
+    UtAssert_True(result[7][7] == 16.0f, "result[7][7] == 16.0f");
+    UtAssert_True(result[7][8] == 18.0f, "result[7][8] == 18.0f");
+    UtAssert_True(result[7][9] == 20.0f, "result[7][9] == 20.0f");
+    
+    UtAssert_True(result[8][0] == 2.0f, "result[8][0] == 2.0f");
+    UtAssert_True(result[8][1] == 4.0f, "result[8][1] == 4.0f");
+    UtAssert_True(result[8][2] == 6.0f, "result[8][2] == 6.0f");
+    UtAssert_True(result[8][3] == 8.0f, "result[8][3] == 8.0f");
+    UtAssert_True(result[8][4] == 10.0f, "result[8][4] == 10.0f");
+    UtAssert_True(result[8][5] == 12.0f, "result[8][5] == 12.0f");
+    UtAssert_True(result[8][6] == 14.0f, "result[8][6] == 14.0f");
+    UtAssert_True(result[8][7] == 16.0f, "result[8][7] == 16.0f");
+    UtAssert_True(result[8][8] == 18.0f, "result[8][8] == 18.0f");
+    UtAssert_True(result[8][9] == 20.0f, "result[8][9] == 20.0f");
+
+    UtAssert_True(result[9][0] == 2.0f, "result[9][0] == 2.0f");
+    UtAssert_True(result[9][1] == 4.0f, "result[9][1] == 4.0f");
+    UtAssert_True(result[9][2] == 6.0f, "result[9][2] == 6.0f");
+    UtAssert_True(result[9][3] == 8.0f, "result[9][3] == 8.0f");
+    UtAssert_True(result[9][4] == 10.0f, "result[9][4] == 10.0f");
+    UtAssert_True(result[9][5] == 12.0f, "result[9][5] == 12.0f");
+    UtAssert_True(result[9][6] == 14.0f, "result[9][6] == 14.0f");
+    UtAssert_True(result[9][7] == 16.0f, "result[9][7] == 16.0f");
+    UtAssert_True(result[9][8] == 18.0f, "result[9][8] == 18.0f");
+    UtAssert_True(result[9][9] == 20.0f, "result[9][9] == 20.0f");
+}

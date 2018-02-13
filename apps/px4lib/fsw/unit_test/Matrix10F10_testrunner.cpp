@@ -42,6 +42,10 @@ int main(void)
 	         "Test_Matrix10F10_Constructor");
 	UtTest_Add(Test_Matrix10F10_Mult_10F1, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F1");
+	UtTest_Add(Test_Matrix10F10_Addition, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Addition");
+	UtTest_Add(Test_Matrix10F10_Subtraction, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Subtraction");
     return(UtTest_Run());
 
 }
