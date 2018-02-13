@@ -126,6 +126,8 @@
 
 
 uint64_t vehicle_rates_timestamp = 0;
+uint64_t vehicle_command_timestamp = 0;
+uint64_t vehicle_command_ack_timestamp = 0;
 
 
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
@@ -3982,33 +3984,45 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 	bool status = false;
 	px4br_vehicle_command_pb pbMsg;
 
-	pbMsg.timestamp = inObject->Timestamp;
-	pbMsg.param5 = inObject->Param5;
-	pbMsg.param6 = inObject->Param6;
-	pbMsg.param1 = inObject->Param1;
-	pbMsg.param2 = inObject->Param2;
-	pbMsg.param3 = inObject->Param3;
-	pbMsg.param4 = inObject->Param4;
-	pbMsg.param7 = inObject->Param7;
-	pbMsg.command = inObject->Command;
-	pbMsg.target_system = inObject->TargetSystem;
-	pbMsg.target_component = inObject->TargetComponent;
-	pbMsg.source_system = inObject->SourceSystem;
-	pbMsg.source_component = inObject->SourceComponent;
-	pbMsg.confirmation = inObject->Confirmation;
-
-	/* Create a stream that will write to our buffer. */
-	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
-
-	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
-	/* Check for errors... */
-	if (!status)
+	if(inObject->Timestamp > vehicle_command_timestamp)
 	{
+		vehicle_command_timestamp = inObject->Timestamp;
+
+		pbMsg.timestamp = inObject->Timestamp;
+		pbMsg.param5 = inObject->Param5;
+		pbMsg.param6 = inObject->Param6;
+		pbMsg.param1 = inObject->Param1;
+		pbMsg.param2 = inObject->Param2;
+		pbMsg.param3 = inObject->Param3;
+		pbMsg.param4 = inObject->Param4;
+		pbMsg.param7 = inObject->Param7;
+		pbMsg.command = inObject->Command;
+		pbMsg.target_system = inObject->TargetSystem;
+		pbMsg.target_component = inObject->TargetComponent;
+		pbMsg.source_system = inObject->SourceSystem;
+		pbMsg.source_component = inObject->SourceComponent;
+		pbMsg.confirmation = inObject->Confirmation;
+
+		/* Create a stream that will write to our buffer. */
+		pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+		/* Now we are ready to encode the message. */
+		status = pb_encode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
+		/* Check for errors... */
+		if (!status)
+		{
+			return 0;
+		}
+		OS_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SENDING %d\n",inObject->Command );
+
+		return stream.bytes_written;
+	}
+	else
+	{
+		OS_printf("CLUGE FAILED IN THIS USECASE %d\n",inObject->Command );
+
 		return 0;
 	}
-
-	return stream.bytes_written;
 }
 
 uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleCommandMsg_t *inOutObject)
@@ -4016,34 +4030,43 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 	bool status = false;
 	px4br_vehicle_command_pb pbMsg;
 
-	/* Create a stream that reads from the buffer. */
-	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+	if(inOutObject->Timestamp > vehicle_command_timestamp)
+	{
+		vehicle_command_timestamp = inOutObject->Timestamp;
 
-	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
+		/* Create a stream that reads from the buffer. */
+		pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
-	/* Check for errors... */
-	if (!status)
+		/* Now we are ready to decode the message. */
+		status = pb_decode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
+
+		/* Check for errors... */
+		if (!status)
+		{
+			return 0;
+		}
+
+		inOutObject->Timestamp = pbMsg.timestamp;
+		inOutObject->Param5 = pbMsg.param5;
+		inOutObject->Param6 = pbMsg.param6;
+		inOutObject->Param1 = pbMsg.param1;
+		inOutObject->Param2 = pbMsg.param2;
+		inOutObject->Param3 = pbMsg.param3;
+		inOutObject->Param4 = pbMsg.param4;
+		inOutObject->Param7 = pbMsg.param7;
+		inOutObject->Command = pbMsg.command;
+		inOutObject->TargetSystem = pbMsg.target_system;
+		inOutObject->TargetComponent = pbMsg.target_component;
+		inOutObject->SourceSystem = pbMsg.source_system;
+		inOutObject->SourceComponent = pbMsg.source_component;
+		inOutObject->Confirmation = pbMsg.confirmation;
+		OS_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$received %d\n",inOutObject->Command );
+		return sizeof(PX4_VehicleCommandMsg_t);
+	}
+	else
 	{
 		return 0;
 	}
-
-	inOutObject->Timestamp = pbMsg.timestamp;
-	inOutObject->Param5 = pbMsg.param5;
-	inOutObject->Param6 = pbMsg.param6;
-	inOutObject->Param1 = pbMsg.param1;
-	inOutObject->Param2 = pbMsg.param2;
-	inOutObject->Param3 = pbMsg.param3;
-	inOutObject->Param4 = pbMsg.param4;
-	inOutObject->Param7 = pbMsg.param7;
-	inOutObject->Command = pbMsg.command;
-	inOutObject->TargetSystem = pbMsg.target_system;
-	inOutObject->TargetComponent = pbMsg.target_component;
-	inOutObject->SourceSystem = pbMsg.source_system;
-	inOutObject->SourceComponent = pbMsg.source_component;
-	inOutObject->Confirmation = pbMsg.confirmation;
-
-	return sizeof(PX4_VehicleCommandMsg_t);
 }
 
 

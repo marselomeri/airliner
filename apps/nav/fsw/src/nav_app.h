@@ -45,8 +45,10 @@ extern "C" {
 /************************************************************************
  ** Includes
  *************************************************************************/
-#include "cfe.h"
+#include <math.h>
+#include <float.h>
 
+#include "cfe.h"
 #include "nav_platform_cfg.h"
 #include "nav_mission_cfg.h"
 #include "nav_perfids.h"
@@ -55,10 +57,13 @@ extern "C" {
 #include "nav_events.h"
 #include "nav_tbldefs.h"
 #include "px4_msgs.h"
+#include "lib/px4lib.h"
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+#define PX4_ISFINITE(x) isfinite(x)
+#define NAV_EPSILON_POSITION	0.001f
 
 /************************************************************************
  ** Local Structure Definitions
@@ -73,13 +78,57 @@ typedef struct
     PX4_VehicleStatusMsg_t VehicleStatusMsg;
     PX4_VehicleLandDetectedMsg_t VehicleLandDetectedMsg;
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
+    PX4_VehicleCommandMsg_t VehicleCommandMsg;
 } NAV_CurrentValueTable_t;
 
 
 typedef struct{
 	float nav_acc_rad = 2.0f; /*default accepted radius*/
 	float nav_mc_alt_rad = 0.8f; /*altitude accepted radius for multi-copters*/
+	float nav_loiter_rad = 50.0f;
+
+	//takeoff
+	float nav_mis_takeoff_alt = 2.5f;
+
+
+
 }NAV_Params_t;
+
+typedef struct{
+	double Lat;					/**< latitude in degrees				*/
+	double Lon;					/**< longitude in degrees				*/
+	float TimeInside;			/**< time that the MAV should stay inside the radius before advancing in seconds */
+	float PitchMin;				/**< minimal pitch angle for fixed wing takeoff waypoints */
+	float AcceptanceRadius;		/**< default radius in which the mission is accepted as reached in meters */
+	float LoiterRadius;			/**< loiter radius in meters, 0 for a VTOL to hover, negative for counter-clockwise */
+	float Yaw;					/**< in radians NED -PI..+PI, NAN means don't change yaw		*/
+	float LatFloatPadding;		/**< padding */
+	float LonFloatPadding;		/**< padding */
+	float Altitude;				/**< altitude in meters	(AMSL)			*/
+	float Params[7];			/**< array to store mission command values for MAV_FRAME_MISSION ***/
+	uint16 NavCmd;				/**< navigation command					*/
+	int16 DoJumpMissionIndex;	/**< index where the do jump will go to                 */
+	uint16 DoJumpRepeatCount;	/**< how many times do jump needs to be done            */
+	uint16 DoJumpCurrentCount;	/**< count how many times the jump has been done	*/
+	struct{
+		uint16 Frame : 4;
+		uint16 Origin : 3;
+		uint16 LoiterExitXTrack : 1;
+		uint16 ForceHeading : 1;
+		uint16 AltitudeIsRelative : 1;
+		uint16 AutoContinue : 1;
+		uint16 DisableMcYaw : 1;
+	};
+}NAV_MissionItem_t;
+
+typedef enum {
+	ORIGIN_MAVLINK = 0,
+	ORIGIN_ONBOARD =1
+} NAV_Origin_t;
+
+
+
+
 
 /**
  **  \brief NAV Application Class
@@ -108,25 +157,47 @@ public:
 
     /** \brief Config Table Pointer */
     NAV_ConfigTbl_t* ConfigTblPtr;
+
     /** \brief Output Data published at the end of cycle */
-    PX4_VehicleLandDetectedMsg_t VehicleLandDetectedMsg;
-    PX4_FenceMsg_t FenceMsg;
-    PX4_ActuatorControlsMsg_t ActuatorControls3Msg;
-    PX4_MissionResultMsg_t MissionResultMsg;
-    PX4_GeofenceResultMsg_t GeofenceResultMsg;
-    PX4_PositionSetpointTripletMsg_t PositionSetpointTripletMsg;
+    PX4_VehicleLandDetectedMsg_t VehicleLandDetectedMsg = {};
+    PX4_FenceMsg_t FenceMsg = {};
+    PX4_ActuatorControlsMsg_t ActuatorControls3Msg = {};
+    PX4_MissionResultMsg_t MissionResultMsg = {};
+    PX4_GeofenceResultMsg_t GeofenceResultMsg = {};
+    PX4_PositionSetpointTripletMsg_t PositionSetpointTripletMsg = {};
+    PX4_VehicleCommandMsg_t VehicleCommandMsgOut = {};
 
     /** \brief Housekeeping Telemetry for downlink */
     NAV_HkTlm_t HkTlm;
     /** \brief Current Value Table */
-    NAV_CurrentValueTable_t CVT;
+    NAV_CurrentValueTable_t CVT = {};
+
 
     /** \brief Navigator Parameter Table
      *	\par Description
      *		 initializing parameter table specific to navigator.
      */
     NAV_Params_t nav_params;
+    NAV_MissionItem_t mission_item;
     int32 counter = 0;
+    int one_level_deep_memory = -1;
+
+    //loiter
+    boolean CanLoiterAtSetpoint{false};
+    boolean PositionSetpointTripletUpdated{false};
+
+    //mission
+    boolean MissionResultUpdated{false};
+    boolean WaypointPositionReached{false};
+    boolean WaypointYawReached{false};
+    uint64 TimeFirstInsideOrbit{0};
+    uint64 ActionStart{0};
+    uint64 TimeWpReached{0};
+	float MissionCruisingSpeed{-1.0f};
+	float MissionThrottle{-1.0f};
+
+
+
     /************************************************************************/
     /** \brief Navigator (NAV) application entry point
      **
@@ -380,16 +451,53 @@ public:
     /************************************************************************/
     /** KK
 	*************************************************************************/
-     void execute(void);
-     float getDefaultAcceptedRadius(void);
-     void setAcceptedRadius(float);
-     float getAltitudeAcceptedRadius(void);
+
+     float GetDefaultAcceptedRadius(void);
+     void SetAcceptedRadius(float);
+     float GetAltitudeAcceptedRadius(void);
+     void SendVehicleCommandMsg(void);
+
+     boolean HomePositionValid(void);
+     float GetCruisingSpeed(void);
+     float GetCruisingThrottle(void);
+     int Execute(void);
+     void Takeoff(void);
+     void ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *, NAV_MissionItem_t *);
+     void DisplayInputs(int);
+     void DisplayOutputs(int);
+
 	/************************************************************************/
-	/** KK_END
+	/** KK_END MORE BELOW
 	*************************************************************************/
 
+//      PX4_VehicleLandDetectedMsg_t* GetLandDetectedMsg(){ return &VehicleLandDetectedMsg;}
+//      PX4_FenceMsg_t* GetFenceMsg(){ return &FenceMsg;}
+//      PX4_ActuatorControlsMsg_t* GetActuatorControlMsg(){ return &ActuatorControls3Msg;}
+//      PX4_MissionResultMsg_t* GetMissionResultMsg(){ return &MissionResultMsg;}
+//      PX4_GeofenceResultMsg_t* GetGeoFenceResultMsg(){ return &GeofenceResultMsg;}
+//      PX4_PositionSetpointTripletMsg_t* GetPositionSetpointTripletMsg(){ return &PositionSetpointTripletMsg;}
+//      PX4_VehicleCommandMsg_t* GetVehicleCommandMsg(){ return &VehicleCommandMsgOut;}
+//
+     	PX4_HomePositionMsg_t* GetHomePosition(){return &CVT.HomePositionMsg;}
+     	PX4_SensorCombinedMsg_t* GetSensorCombined(){return &CVT.SensorCombinedMsg;}
+     	PX4_MissionMsg_t* GetMissionMsg(){return &CVT.MissionMsg;}
+     	PX4_VehicleGpsPositionMsg_t* GetVehicleGpsPositionMsg(){return &CVT.VehicleGpsPositionMsg;}
+     	PX4_VehicleGlobalPositionMsg_t* GetVehicleGlobalPositionMsg(){return &CVT.VehicleGlobalPosition;}
+     	PX4_VehicleStatusMsg_t* GetVehicleStatusMsg(){return &CVT.VehicleStatusMsg;}
+     	PX4_VehicleLandDetectedMsg_t* GetVehicleLandDetectedMsg(){return &CVT.VehicleLandDetectedMsg;}
+     	PX4_VehicleLocalPositionMsg_t* GetVehicleLocalPositionMsg(){return &CVT.VehicleLocalPositionMsg;}
+     	PX4_VehicleCommandMsg_t* GetVehicleCommandMsg(){return &CVT.VehicleCommandMsg;}
+
+     	boolean IsPlannedMission(){return false;}
+    	void SetCanLoiterAtSetpoint(boolean can_loiter) { CanLoiterAtSetpoint = can_loiter; }
+    	void SetPositionSetpointTripletUpdated() { PositionSetpointTripletUpdated = true; }
 
 
+
+
+ 	/************************************************************************/
+ 	/** KK_END
+ 	*************************************************************************/
 
 
 
