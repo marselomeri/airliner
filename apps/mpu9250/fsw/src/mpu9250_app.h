@@ -56,8 +56,8 @@ extern "C" {
 #include "mpu9250_events.h"
 #include "mpu9250_tbldefs.h"
 #include "px4_msgs.h"
-#include "LowPassFilter2p.h"
-#include "integrator.h"
+#include "math/filters/LowPassFilter2p.hpp"
+#include "math/Integrator.hpp"
 
 /************************************************************************
  ** Local Defines

@@ -36,7 +36,6 @@
 *************************************************************************/
 #include "cfe.h"
 #include "px4lib_version.h"
-#include "MultirotorMixer.h"
 #include "px4lib.h"
 #include <time.h>
 #include <errno.h>
@@ -77,14 +76,14 @@ int32 PX4LIB_LibInit(void)
 }/* End PX4LIB_LibInit */
 
 
-int32 PX4LIB_MixerCallback(cpuaddr Handle,
-                        uint8 ControlGroup,
-                        uint8 ControlIndex,
-                        float &Control)
-{
-    Control = 0.0;
-    return 0;
-}
+//int32 PX4LIB_MixerCallback(cpuaddr Handle,
+//                        uint8 ControlGroup,
+//                        uint8 ControlIndex,
+//                        float &Control)
+//{
+//    Control = 0.0;
+//    return 0;
+//}
 
 
 

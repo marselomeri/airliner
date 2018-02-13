@@ -50,8 +50,8 @@
 #include <math.h>
 #include "cfs_utils.h"
 
-#include "Quaternion.hpp"
-#include "lib/px4lib.h"
+#include <math/Quaternion.hpp>
+#include <px4lib.h>
 
 
 #define TPA_RATE_LOWER_LIMIT  0.05f

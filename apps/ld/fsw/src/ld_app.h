@@ -56,7 +56,7 @@ extern "C" {
 #include "ld_events.h"
 #include "ld_tbldefs.h"
 #include "px4_msgs.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 #include "ld_state_history.h"
 

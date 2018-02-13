@@ -40,7 +40,7 @@
 #include "rcin_sbus.h"
 #include "rcin_events.h"
 #include "perf_ids.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 
 /************************************************************************
 ** Local Defines
