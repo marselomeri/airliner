@@ -42,6 +42,7 @@ add_airliner_app_unit_test(nav-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_version.h
+        ${PX4LIB_LIB_SOURCES}
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

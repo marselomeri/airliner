@@ -58,12 +58,15 @@ extern "C" {
 #include "nav_tbldefs.h"
 #include "px4_msgs.h"
 #include "lib/px4lib.h"
+#include "geo/geo.h"
+#include "math/Limits.hpp"
 
 /************************************************************************
  ** Local Defines
  *************************************************************************/
 #define PX4_ISFINITE(x) isfinite(x)
 #define NAV_EPSILON_POSITION	0.001f
+#define M_PI_2_F	1.57079632f
 
 /************************************************************************
  ** Local Structure Definitions
@@ -87,9 +90,11 @@ typedef struct{
 	float nav_mc_alt_rad = 0.8f; /*altitude accepted radius for multi-copters*/
 	float nav_loiter_rad = 50.0f;
 
+
 	//takeoff
 	float nav_mis_takeoff_alt = 2.5f;
-
+	float nav_mis_yaw_err = 12.0f;
+	float nav_mis_yaw_tmt = -1.0f;
 
 
 }NAV_Params_t;
@@ -127,7 +132,10 @@ typedef enum {
 } NAV_Origin_t;
 
 
-
+typedef struct{
+	boolean loiter;
+	boolean takeoff;
+} NAV_Active, NAV_First_Time;
 
 
 /**
@@ -179,8 +187,11 @@ public:
      */
     NAV_Params_t nav_params;
     NAV_MissionItem_t mission_item;
+    NAV_First_Time first_time {true,true};
+    NAV_Active active {false,false};
     int32 counter = 0;
     int one_level_deep_memory = -1;
+    PX4_VehicleStatusMsg_t* previous_state;
 
     //loiter
     boolean CanLoiterAtSetpoint{false};
@@ -461,23 +472,30 @@ public:
      float GetCruisingSpeed(void);
      float GetCruisingThrottle(void);
      int Execute(void);
-     void Takeoff(void);
+     void Takeoff(boolean);
+     void Loiter(void);
+     boolean IsMissionItemReached(void);
+     void SetLoiterItem(NAV_MissionItem_t *);
+     void SetMissionFaliure(const char* );
+     float GetTimeInside(NAV_MissionItem_t * );
+     boolean StateChangeDetect(void);
      void ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *, NAV_MissionItem_t *);
      void DisplayInputs(int);
      void DisplayOutputs(int);
+
 
 	/************************************************************************/
 	/** KK_END MORE BELOW
 	*************************************************************************/
 
-//      PX4_VehicleLandDetectedMsg_t* GetLandDetectedMsg(){ return &VehicleLandDetectedMsg;}
-//      PX4_FenceMsg_t* GetFenceMsg(){ return &FenceMsg;}
-//      PX4_ActuatorControlsMsg_t* GetActuatorControlMsg(){ return &ActuatorControls3Msg;}
-//      PX4_MissionResultMsg_t* GetMissionResultMsg(){ return &MissionResultMsg;}
-//      PX4_GeofenceResultMsg_t* GetGeoFenceResultMsg(){ return &GeofenceResultMsg;}
-//      PX4_PositionSetpointTripletMsg_t* GetPositionSetpointTripletMsg(){ return &PositionSetpointTripletMsg;}
-//      PX4_VehicleCommandMsg_t* GetVehicleCommandMsg(){ return &VehicleCommandMsgOut;}
-//
+      PX4_VehicleLandDetectedMsg_t* GetLandDetectedMsg(){ return &VehicleLandDetectedMsg;}
+      PX4_FenceMsg_t* GetFenceMsg(){ return &FenceMsg;}
+      PX4_ActuatorControlsMsg_t* GetActuatorControlMsg(){ return &ActuatorControls3Msg;}
+      PX4_MissionResultMsg_t* GetMissionResultMsg(){ return &MissionResultMsg;}
+      PX4_GeofenceResultMsg_t* GetGeoFenceResultMsg(){ return &GeofenceResultMsg;}
+      PX4_PositionSetpointTripletMsg_t* GetPositionSetpointTripletMsg(){ return &PositionSetpointTripletMsg;}
+      PX4_VehicleCommandMsg_t* GetVehicleCommandMsgOut(){ return &VehicleCommandMsgOut;}
+
      	PX4_HomePositionMsg_t* GetHomePosition(){return &CVT.HomePositionMsg;}
      	PX4_SensorCombinedMsg_t* GetSensorCombined(){return &CVT.SensorCombinedMsg;}
      	PX4_MissionMsg_t* GetMissionMsg(){return &CVT.MissionMsg;}
