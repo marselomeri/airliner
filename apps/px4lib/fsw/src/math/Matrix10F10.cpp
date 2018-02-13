@@ -1,4 +1,5 @@
 #include "math/Matrix10F10.hpp"
+
 #include <math.h>
 
 using namespace math;
@@ -228,30 +229,30 @@ Matrix10F10 Matrix10F10::operator*(const float &scalar)
 }
 
 
-//Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
-//{
-    //Matrix10F1 matOut;
-    //int i, j, k = 0;
-    ///* Rows in matrix 1 */
-    //int rows1 = 10;
-    ///* Columns in matrix 1 */
-    //int cols1 = 10;
-    ///* Columns in matrix 2 */
-    //int cols2 = 1;
+Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
+{
+    Matrix10F1 matOut;
+    int i, j, k = 0;
+    /* Rows in matrix 1 */
+    int rows1 = 10;
+    /* Columns in matrix 1 */
+    int cols1 = 10;
+    /* Columns in matrix 2 */
+    int cols2 = 1;
 
-    //for(i = 0; i < rows1; i++)
-    //{
-        //for(j = 0; j < cols2; j++)
-        //{
-            //for(k = 0; k < cols1; k++)
-            //{
-                //matOut[i][j] += data[i][k] * matIn[k][j];
-            //}
-        //}
-    //}
+    for(i = 0; i < rows1; i++)
+    {
+        for(j = 0; j < cols2; j++)
+        {
+            for(k = 0; k < cols1; k++)
+            {
+                matOut[i][j] += data[i][k] * matIn[k][j];
+            }
+        }
+    }
 
-    //return matOut;
-//}
+    return matOut;
+}
 
 
 Matrix10F10 Matrix10F10::operator+(const Matrix10F10 &matIn) const

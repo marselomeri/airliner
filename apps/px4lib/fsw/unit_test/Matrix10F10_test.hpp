@@ -39,7 +39,7 @@ extern "C" {
 #endif
 
 void Test_Matrix10F10_Constructor(void);
-
+void Test_Matrix10F10_Mult_10F1(void);
 
 #ifdef __cplusplus
 }

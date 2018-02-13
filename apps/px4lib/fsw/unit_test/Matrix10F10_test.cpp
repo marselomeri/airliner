@@ -170,4 +170,42 @@ void Test_Matrix10F10_Constructor(void)
     UtAssert_True(matrix[9][9] == 10.0f, "matrix[9][1] == 10.0f");
 }
 
+void Test_Matrix10F10_Mult_10F1(void)
+{
+    math::Matrix10F10 matrixA(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    
+    math::Matrix10F1 matrixB(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    
+    math::Matrix10F1 result;
+    
+    result.Zero();
+    
+    result = matrixA * matrixB;
+
+    UtAssert_True(result[0][0] == 385.0f, "result[0][0] == 385.0f");
+    UtAssert_True(result[1][0] == 385.0f, "result[1][0] == 385.0f");
+    UtAssert_True(result[2][0] == 385.0f, "result[2][0] == 385.0f");
+    UtAssert_True(result[3][0] == 385.0f, "result[3][0] == 385.0f");
+    UtAssert_True(result[4][0] == 385.0f, "result[4][0] == 385.0f");
+    UtAssert_True(result[5][0] == 385.0f, "result[5][0] == 385.0f");
+    UtAssert_True(result[6][0] == 385.0f, "result[6][0] == 385.0f");
+    UtAssert_True(result[7][0] == 385.0f, "result[7][0] == 385.0f");
+    UtAssert_True(result[8][0] == 385.0f, "result[8][0] == 385.0f");
+    UtAssert_True(result[9][0] == 385.0f, "result[9][0] == 385.0f");
+}
+
+
 

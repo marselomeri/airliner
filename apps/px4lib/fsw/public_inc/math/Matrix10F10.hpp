@@ -75,7 +75,7 @@ public:
 	Matrix10F10 Transpose(void);
 	static Matrix10F10 Identity(void);
 	Vector10F operator*(const Vector10F &vecIn);
-    //Matrix10F1 operator*(const Matrix10F1 &matIn);
+    Matrix10F1 operator*(const Matrix10F1 &matIn);
 	Vector10F operator+(const Vector10F &vecIn);
 	Matrix10F10 operator*(const Matrix10F10 &matIn);
 	Matrix10F10 operator*(const float &scalar);

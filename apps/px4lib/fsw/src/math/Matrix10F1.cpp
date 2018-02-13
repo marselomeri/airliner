@@ -65,3 +65,87 @@ Vector1F Matrix10F1::operator [] (uint32 i) const
         return data[i];
     }
 };
+
+
+Matrix10F1 Matrix10F1::operator*(const Matrix1F1 & matIn)
+{
+    Matrix10F1 matOut;
+    int i = 0;
+    /* Rows in matrix 1 */
+    int rows1 = 10;
+
+    for(i = 0; i < rows1; i++)
+    {
+        matOut[i][0] = data[i][0] * matIn[0][0];
+    }
+
+    return matOut;
+}
+
+
+Matrix10F1 Matrix10F1::operator*(const Vector1F & vecIn)
+{
+    Matrix10F1 matOut;
+    int i = 0;
+    /* Rows in matrix 1 */
+    int rows1 = 10;
+
+    for(i = 0; i < rows1; i++)
+    {
+        matOut[i][0] = data[i][0] * vecIn[0];
+    }
+
+    return matOut;
+}
+
+
+Matrix10F10 Matrix10F1::operator*(const Matrix1F10 & matIn)
+{
+    Matrix10F10 matOut;
+    int i, j, k = 0;
+    /* Rows in matrix 1 */
+    int rows1 = 10;
+    /* Columns in matrix 1 */
+    int cols1 = 1;
+    /* Columns in matrix 2 */
+    int cols2 = 10;
+
+    for(i = 0; i < rows1; i++)
+    {
+        for(j = 0; j < cols2; j++)
+        {
+            for(k = 0; k < cols1; k++)
+            {
+                matOut[i][j] += data[i][k] * matIn[k][j];
+            }
+        }
+    }
+
+    return matOut;
+}
+
+
+Vector10F Matrix10F1::ToVector(void)
+{
+    math:Vector10F vecOut(
+            data[0][0], data[1][0], data[2][0], data[3][0], data[4][0],
+            data[5][0], data[6][0], data[7][0], data[8][0], data[9][0]
+    );
+
+    return vecOut;
+}
+
+
+void Matrix10F1::Zero(void)
+{
+    data[0][0] = 0.0f;
+    data[1][0] = 0.0f;
+    data[2][0] = 0.0f;
+    data[3][0] = 0.0f;
+    data[4][0] = 0.0f;
+    data[5][0] = 0.0f;
+    data[6][0] = 0.0f;
+    data[7][0] = 0.0f;
+    data[8][0] = 0.0f;
+    data[9][0] = 0.0f;
+}

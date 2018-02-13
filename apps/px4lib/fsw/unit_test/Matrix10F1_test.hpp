@@ -40,7 +40,9 @@ extern "C" {
 
 void Test_Matrix10F1_Constructor(void);
 void Test_Matrix10F1_Transpose(void);
-
+void Test_Matrix10F1_Mult_1F1(void);
+void Test_Matrix10F1_Mult_1F(void);
+void Test_Matrix10F1_Mult_1F10(void);
 
 #ifdef __cplusplus
 }
