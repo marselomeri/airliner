@@ -161,17 +161,15 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
     {
-    	for(int j = 0; j < 10; j++)
+    	for(int k = 0; k < 10; k++)
 		{
 
-    		for(int k = 0; k < 10; k++)
+    		for(int j = 0; j < 3; j++)
 			{
-    			matOut[i][j] += data[i][j] * matIn[j][k];
+    			matOut[i][k] += data[i][j] * matIn[j][k];
 			}
 		}
     }
-
-    //matOut.Print();
 
     return matOut;
 }

@@ -224,7 +224,7 @@ void Matrix10F10::Print()
 	{
 		for(int j = 0; j < SIZE; j++)
 		{
-			OS_printf("%f, ", data[j][i]);
+			OS_printf("%f, ", data[i][j]);
 		}
 		OS_printf("\n");
 	}
