@@ -208,6 +208,19 @@ Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
     return vecOut;
 }
 
+void Matrix10F10::operator+=(const Matrix10F10 &mat)
+{
+    float value = 0.0f;
+
+    // TODO: verify correct
+    for(int i = 0; i < SIZE; i++)
+    {
+    	for(int j = 0; j < SIZE; j++)
+		{
+    		 data[i][j] += mat[i][j];
+		}
+    }
+}
 
 Matrix10F10 Matrix10F10::operator*(const float &scalar)
 {

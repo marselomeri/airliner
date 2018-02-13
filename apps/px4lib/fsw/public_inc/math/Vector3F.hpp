@@ -9,8 +9,7 @@ namespace math
 class Vector3F
 {
 private:
-	static const int SIZE = 3;
-	float data[SIZE];
+    static const int SIZE = 3;
 	float nan;
 
 public:
@@ -37,6 +36,7 @@ public:
 	const Vector3F EDivide(const Vector3F &v) const;
 
 protected:
+	float data[SIZE];
 
 };
 

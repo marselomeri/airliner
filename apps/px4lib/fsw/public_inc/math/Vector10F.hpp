@@ -2,6 +2,7 @@
 #define VECTOR10F_HPP
 
 #include "cfe.h"
+#include "math/Vector3F.hpp"
 
 namespace math
 {
@@ -23,6 +24,8 @@ public:
 	void Zero(void);
 	Vector10F operator+(const Vector10F &vecIn);
 	Vector10F operator+(const Vector10F &vecIn) const;
+	Vector10F operator+(const Vector3F &vecIn);
+	void operator+=(const Vector10F &vecIn);
 	Vector10F operator-(const Vector10F &vecIn);
 	Vector10F operator-(const Vector10F &vecIn) const;
 	//Vector10F operator%(const Vector10F &vecIn);
