@@ -48,6 +48,14 @@ Vector1F Matrix1F1::operator [] (uint32 i) const
 };
 
 
+Matrix1F1 Matrix1F1::operator+(const Matrix1F1 &matIn) const
+{
+    Matrix1F1 matOut;
+    matOut[0][0] = data[0][0] + matIn[0][0];
+    return matOut;
+}
+
+
 void Matrix1F1::Zero()
 {
     data[0] = 0.0f;

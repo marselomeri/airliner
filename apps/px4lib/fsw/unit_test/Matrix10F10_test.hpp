@@ -31,20 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX1F10_TEST_H
-#define MATRIX1F10_TEST_H
+#ifndef MATRIX10F10_TEST_H
+#define MATRIX10F10_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void Test_Matrix1F10_Constructor(void);
-void Test_Matrix1F10_Mult_10F10(void);
-void Test_Matrix1F10_Mult_10F1(void);
-void Test_Matrix1F10_Transpose(void);
+void Test_Matrix10F10_Constructor(void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* MATRIX1F10_TEST_H */
+#endif /* MATRIX10F10_TEST_H */

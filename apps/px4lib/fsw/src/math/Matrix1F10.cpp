@@ -104,3 +104,46 @@ Matrix1F10 Matrix1F10::operator*(const Matrix10F10 &matIn)
 
     return matOut;
 };
+
+
+// overload * operator to provide a matrix product
+Matrix1F1 Matrix1F10::operator*(const Matrix10F1 &matIn)
+{
+    Matrix1F1 matOut;
+    int i, j, k = 0;
+    /* Rows in matrix 1 */
+    int rows1 = 1;
+    /* Columns in matrix 1 */
+    int cols1 = 10;
+    /* Columns in matrix 2 */
+    int cols2 = 1;
+
+    for(i = 0; i < rows1; i++)
+    {
+        for(j = 0; j < cols2; j++)
+        {
+            for(k = 0; k < cols1; k++)
+            {
+                matOut[i][j] += data[i][k] * matIn[k][j];
+            }
+        }
+    }
+
+    return matOut;
+}
+
+
+// overload * operator to provide a matrix vector product
+Vector1F Matrix1F10::operator*(const Vector10F &vecIn)
+{
+    Vector1F vecOut;
+    int k = 0;
+
+    for(k = 0; k < 10; k++)
+    {
+                vecOut[0] += data[0][k] * vecIn[k];
+    }
+
+    return vecOut;
+}
+

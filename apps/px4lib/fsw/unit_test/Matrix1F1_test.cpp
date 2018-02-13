@@ -45,3 +45,17 @@ void Test_Matrix1F1_Constructor(void)
     /* Verify results */
     UtAssert_True(matrix[0][0] == 1.0f, "matrix[0][0] == 1.0f");
 }
+
+
+void Test_Matrix1F1_Addition(void)
+{
+    math::Matrix1F1 matrixA(1.0f);
+    math::Matrix1F1 matrixB(1.0f);
+    math::Matrix1F1 result;
+    
+    result = matrixA + matrixB;
+
+    /* Verify results */
+    UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
+}
+

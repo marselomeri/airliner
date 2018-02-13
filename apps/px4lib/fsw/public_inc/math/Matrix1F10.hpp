@@ -6,12 +6,16 @@
 #include "Vector10F.hpp"
 #include "Matrix10F10.hpp"
 #include "Matrix10F1.hpp"
+#include "Matrix1F1.hpp"
+#include "Vector1F.hpp"
 
 namespace math
 {
 
 /* Forward declare 10F1 */
 class Matrix10F1;
+/* Forward declare 10F10 */
+class Matrix10F10;
 
 class Matrix1F10
 {
@@ -27,6 +31,8 @@ public:
     Vector10F& operator [] (uint32 i);
     Vector10F operator [] (uint32 i) const;
     Matrix1F10 operator*(const Matrix10F10 &matIn);
+    Matrix1F1 operator*(const Matrix10F1 & matIn);
+    Vector1F operator*(const Vector10F &vecIn);
     Matrix10F1 Transpose(void);
     void Zero(void);
 

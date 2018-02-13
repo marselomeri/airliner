@@ -31,20 +31,17 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX1F10_TEST_H
-#define MATRIX1F10_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Matrix10F10_test.hpp"
+#include "Matrix10F10_test_utils.hpp"
 
-void Test_Matrix1F10_Constructor(void);
-void Test_Matrix1F10_Mult_10F10(void);
-void Test_Matrix1F10_Mult_10F1(void);
-void Test_Matrix1F10_Transpose(void);
+int main(void)
+{   
+	UtTest_Add(Test_Matrix10F10_Constructor, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Constructor");
 
-#ifdef __cplusplus
+    return(UtTest_Run());
+
 }
-#endif
 
-#endif /* MATRIX1F10_TEST_H */

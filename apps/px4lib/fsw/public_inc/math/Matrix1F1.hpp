@@ -21,6 +21,8 @@ public:
     ~Matrix1F1();
     Vector1F& operator [] (uint32 i);
     Vector1F operator [] (uint32 i) const;
+    Matrix1F1 operator+(const Matrix1F1 &matIn) const;
+    
     //Matrix1F1 Transpose(void);
     void Zero(void);
 
