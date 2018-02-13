@@ -3,11 +3,15 @@
 
 #include "cfe.h"
 #include "Vector10F.hpp"
+#include "Matrix10F1.hpp"
 
 #define M_DEG_TO_RAD_F		(0.01745329251994329576f)
 
 namespace math
 {
+    
+/* Forward declare 10F1 */
+class Matrix10F1;
 
 class Matrix10F10
 {
@@ -27,6 +31,7 @@ public:
 	Matrix10F10 Transpose(void);
 	static Matrix10F10 Identity(void);
 	Vector10F operator*(const Vector10F &vecIn);
+    Matrix10F1 operator*(const Matrix10F1 &matIn);
 	Vector10F operator+(const Vector10F &vecIn);
 	void operator+=(const Matrix10F10 &mat);
 	Matrix10F10 operator*(const Matrix10F10 &matIn);
@@ -34,6 +39,7 @@ public:
 	void Zero(void);
     Matrix10F10 operator+(const Matrix10F10 &matIn) const;
     void Print();
+    Matrix10F10 operator-(const Matrix10F10 &matIn) const;
 
 protected:
 

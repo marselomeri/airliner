@@ -2,6 +2,8 @@ add_subdirectory(filters filters)
 
 set(PX4LIB_LIB_SOURCES
     ${PX4LIB_LIB_SOURCES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/Matrix1F1.cpp
+    ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F1.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix3F3.cpp
     ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix3F3.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix4F4.cpp
@@ -10,6 +12,10 @@ set(PX4LIB_LIB_SOURCES
     ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix10F3.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix3F10.cpp
     ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix3F10.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Matrix10F1.cpp
+    ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix10F1.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Matrix1F10.cpp
+    ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F10.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix10F10.cpp
     ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix10F10.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Vector1F.cpp
