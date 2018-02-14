@@ -59,7 +59,6 @@ extern "C" {
 #include "px4_msgs.h"
 #include "lib/px4lib.h"
 #include "geo/geo.h"
-#include "math/Limits.hpp"
 
 /************************************************************************
  ** Local Defines
@@ -191,11 +190,12 @@ public:
     NAV_Active active {false,false};
     int32 counter = 0;
     int one_level_deep_memory = -1;
-    PX4_VehicleStatusMsg_t* previous_state;
+    PX4_VehicleStatusMsg_t previous_state;
 
     //loiter
     boolean CanLoiterAtSetpoint{false};
     boolean PositionSetpointTripletUpdated{false};
+
 
     //mission
     boolean MissionResultUpdated{false};
@@ -473,12 +473,18 @@ public:
      float GetCruisingThrottle(void);
      int Execute(void);
      void Takeoff(boolean);
+     void TakeoffActive();
      void Loiter(void);
+     void Land(boolean);
+     void LandActive();
+
+     float GetTimeInside(NAV_MissionItem_t * );
+
      boolean IsMissionItemReached(void);
      void SetLoiterItem(NAV_MissionItem_t *);
      void SetMissionFaliure(const char* );
-     float GetTimeInside(NAV_MissionItem_t * );
      boolean StateChangeDetect(void);
+     PX4_NavigationState_t DetectNavStateEvent(boolean);
      void ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *, NAV_MissionItem_t *);
      void DisplayInputs(int);
      void DisplayOutputs(int);

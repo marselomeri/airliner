@@ -4013,7 +4013,6 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 		{
 			return 0;
 		}
-		OS_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SENDING %d\n",inObject->Command );
 
 		return stream.bytes_written;
 	}
@@ -4060,7 +4059,6 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 		inOutObject->SourceSystem = pbMsg.source_system;
 		inOutObject->SourceComponent = pbMsg.source_component;
 		inOutObject->Confirmation = pbMsg.confirmation;
-		OS_printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$received %d\n",inOutObject->Command );
 		return sizeof(PX4_VehicleCommandMsg_t);
 	}
 	else
