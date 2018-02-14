@@ -9,7 +9,7 @@ namespace math
 class Vector6F
 {
 private:
-	static const int SIZE = 10;
+	static const int SIZE = 6;
 	float data[SIZE];
 	float nan;
 

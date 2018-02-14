@@ -288,4 +288,32 @@ add_airliner_app_unit_test(px4lib-matrix10f10-ut
 )
 
 
+
+add_airliner_app_unit_test(px4lib-matrix6f10-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F10_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector6F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector6F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector10F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector10F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F10.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F10.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector3F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
+
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix6f10-ut.supp
+)
+
+
 set(PX4LIB_LIB_SOURCES ${PX4LIB_LIB_SOURCES} CACHE STRING "PX4LIB library source files")
