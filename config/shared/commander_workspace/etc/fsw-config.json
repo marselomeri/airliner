@@ -1,0 +1,1040 @@
+{
+    "apps": [
+        {
+	        "id": "AMC",
+		    "events": [
+	            {"name": "AMC_INIT_INF_EID", "id": 1},
+	            {"name": "AMC_PWM_CFGTBL_MIN_LT_DISARMED_ERR_EID", "id": 2},
+	            {"name": "AMC_PWM_CFGTBL_MAX_LT_MIN_ERR_EID", "id": 3},
+	            {"name": "AMC_CMD_NOOP_EID", "id": 4},
+	            {"name": "AMC_SUBSCRIBE_ERR_EID", "id": 5},
+	            {"name": "AMC_PIPE_INIT_ERR_EID", "id": 6},
+	            {"name": "AMC_MIXER_INIT_ERR_EID", "id": 7},
+	            {"name": "AMC_PWM_CFGTBL_MANAGE_ERR_EID", "id": 8},
+	            {"name": "AMC_MIXER_CFGTBL_MANAGE_ERR_EID", "id": 9},
+	            {"name": "AMC_PWM_CFGTBL_GETADDR_ERR_EID", "id": 10},
+	            {"name": "AMC_MIXER_CFGTBL_GETADDR_ERR_EID", "id": 11},
+	            {"name": "AMC_RCVMSG_ERR_EID", "id": 12},
+	            {"name": "AMC_MSGID_ERR_EID", "id": 13},
+	            {"name": "AMC_CC_ERR_EID", "id": 14},
+	            {"name": "AMC_MSGLEN_ERR_EID", "id": 15},
+	            {"name": "AMC_DEVICE_INIT_ERR_EID", "id": 16},
+	            {"name": "AMC_PWM_CFGTBL_REG_ERR_EID", "id": 17},
+	            {"name": "AMC_MIXER_CFGTBL_REG_ERR_EID", "id": 18},
+	            {"name": "AMC_PWM_CFGTBL_LOAD_ERR_EID", "id": 19},
+	            {"name": "AMC_MIXER_CFGTBL_LOAD_ERR_EID", "id": 20},
+	            {"name": "AMC_MIXER_INVALID_MIXER_ERR_EID", "id": 21},
+	            {"name": "AMC_MIXER_INVLD_ROTOR_CONFIG_ERR_EID", "id": 22},
+	            {"name": "AMC_MIXER_TBLVAL_NONZER_DATA_ERR_EID", "id": 23},
+	            {"name": "AMC_PARAM_UPDATE_ERR_EID", "id": 24}
+			],
+		    "tables": [
+		        {"id": "PWMCFG_TBL", "title": "PWM Config", "isDumpTable": false},
+		        {"id": "MIXERCFG_TBL", "title": "Mixer Config", "isDumpTable": false}
+		    ],
+		    "msgs": [
+		        {"name": "AMC_CMD_MID", "id": 7229},
+		        {"name": "AMC_SEND_HK_MID", "id": 7230},
+		        {"name": "AMC_UPDATE_MOTORS_MID", "id": 7231},
+		        {"name": "AMC_OUT_DATA_MID", "id": 3136},
+		        {"name": "AMC_HK_TLM_MID", "id": 3137}
+		    ]
+		},
+        {
+	        "id": "BAT",
+		    "events": [
+	            {"name":"BAT_INIT_INF_EID", "eventID": 1},
+	            {"name":"BAT_CMD_NOOP_EID", "eventID": 2},
+	            {"name":"BAT_SUBSCRIBE_ERR_EID", "eventID": 3},
+	            {"name":"BAT_PIPE_INIT_ERR_EID", "eventID": 4},
+	            {"name":"BAT_CFGTBL_MANAGE_ERR_EID", "eventID": 5},
+	            {"name":"BAT_CFGTBL_GETADDR_ERR_EID", "eventID": 6},
+	            {"name":"BAT_RCVMSG_ERR_EID", "eventID": 7},
+	            {"name":"BAT_MSGID_ERR_EID", "eventID": 8},
+	            {"name":"BAT_CC_ERR_EID", "eventID": 9},
+	            {"name":"BAT_MSGLEN_ERR_EID", "eventID": 10},
+	            {"name":"BAT_CFGTBL_REG_ERR_EID", "eventID": 11},
+	            {"name":"BAT_CFGTBL_LOAD_ERR_EID", "eventID": 12},
+	            {"name":"BAT_CUSTOM_INIT_ERR_EID", "eventID": 13},
+	            {"name":"BAT_LISTENER_CREATE_CHDTASK_ERR_EID", "eventID": 14}
+			],
+		    "tables": [
+        		{"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
+		    ],
+		    "msgs": [
+		        {"name": "BAT_HK_TLM_MID", "id": 3185},
+		        {"name": "BAT_SEND_HK_MID", "id": 7282},
+		        {"name": "BAT_WAKEUP_MID", "id": 7283},
+		        {"name": "BAT_CMD_MID", "id": 7284}
+		    ]
+		},
+        {
+	        "id": "CF",
+		    "events": [
+	            {"name": "CF_INIT_EID", "eventID": 1},
+	            {"name": "CF_CC_ERR_EID", "eventID": 2},
+	            {"name": "CF_MID_ERR_EID", "eventID": 3},
+	            {"name": "CF_CMD_LEN_ERR_EID", "eventID": 4},
+	            {"name": "CF_NOOP_CMD_EID", "eventID": 5},
+	            {"name": "CF_RESET_CMD_EID", "eventID": 6},
+	            {"name": "CF_FILE_IO_ERR1_EID", "eventID": 7},
+	            {"name": "CF_CR_PIPE_ERR_EID", "eventID": 8},
+	            {"name": "CF_SUB_REQ_ERR_EID", "eventID": 9},
+	            {"name": "CF_SUB_CMD_ERR_EID", "eventID": 10},
+	            {"name": "CF_RCV_MSG_ERR_EID", "eventID": 11},
+	            {"name": "CF_FILE_IO_ERR2_EID", "eventID": 12},
+	            {"name": "CF_REMOVE_ERR1_EID", "eventID":  13},
+	            {"name": "CF_LOGIC_NAME_ERR_EID", "eventID": 14},
+	            {"name": "CF_CFDP_ENGINE_DEB_EID", "eventID": 15},
+	            {"name": "CF_CFDP_ENGINE_INFO_EID", "eventID": 16},
+	            {"name": "CF_CFDP_ENGINE_WARN_EID", "eventID": 17},
+	            {"name": "CF_CFDP_ENGINE_ERR_EID", "eventID": 18},
+	            {"name": "CF_FILE_IO_ERR3_EID", "eventID": 19},
+	            {"name": "CF_IN_TRANS_OK_EID", "eventID": 20},
+	            {"name": "CF_OUT_TRANS_OK_EID", "eventID": 21},
+	            {"name": "CF_IN_TRANS_FAILED_EID", "eventID": 22},
+	            {"name": "CF_OUT_TRANS_FAILED_EID", "eventID": 23},
+	            {"name": "CF_MV_UP_NODE_EID", "eventID": 24},
+	            {"name": "CF_ENDIS_AUTO_SUS_CMD_EID", "eventID": 25},
+	            {"name": "CF_IND_XACT_SUS_EID", "eventID": 26},
+	            {"name": "CF_IND_XACT_RES_EID", "eventID": 27},
+	            {"name": "CF_IND_XACT_FAU_EID", "eventID": 28},
+	            {"name": "CF_IND_XACT_ABA_EID", "eventID": 29},
+	            {"name": "CF_KICKSTART_CMD_EID", "eventID": 30},
+	            {"name": "CF_REMOVE_ERR2_EID", "eventID": 31},
+	            {"name": "CF_IND_ACK_TIM_EXP_EID", "eventID": 32},
+	            {"name": "CF_IND_INA_TIM_EXP_EID", "eventID": 33},
+	            {"name": "CF_IND_NACK_TIM_EXP_EID", "eventID": 34},
+	            {"name": "CF_IND_UNEXP_TYPE_EID", "eventID": 35},
+	            {"name": "CF_FILE_CLOSE_ERR_EID", "eventID": 36},
+	            {"name": "CF_MACH_ALLOC_ERR_EID", "eventID": 37},
+	            {"name": "CF_PLAYBACK_FILE_EID", "eventID": 38},
+	            {"name": "CF_PUT_REQ_ERR1_EID", "eventID": 39},
+	            {"name": "CF_PUT_REQ_ERR2_EID", "eventID": 40},
+	            {"name": "CF_CFGTBL_REG_ERR_EID", "eventID": 41},
+	            {"name": "CF_CFGTBL_LD_ERR_EID", "eventID": 42},
+	            {"name": "CF_CFGTBL_MNG_ERR_EID", "eventID": 43},
+	            {"name": "CF_CFGTBL_GADR_ERR_EID", "eventID": 44},
+	            {"name": "CF_TRANS_SUSPEND_OVRFLW_EID", "eventID": 45},
+	            {"name": "CF_FREEZE_CMD_EID", "eventID": 46},
+	            {"name": "CF_THAW_CMD_EID", "eventID": 47},
+	            {"name": "CF_CARS_CMD_EID", "eventID": 48},
+	            {"name": "CF_CARS_ERR1_EID", "eventID": 49},
+	            {"name": "CF_SET_MIB_CMD_EID", "eventID": 50},
+	            {"name": "CF_GET_MIB_CMD_EID", "eventID": 51},
+	            {"name": "CF_SUB_PDUS_ERR_EID", "eventID": 52},
+	            {"name": "CF_SND_Q_INFO_EID", "eventID": 53},
+	            {"name": "CF_FILEWRITE_ERR_EID", "eventID": 54},
+	            {"name": "CF_SUB_WAKE_ERR_EID", "eventID": 55},
+	            {"name": "CF_KICKSTART_ERR1_EID", "eventID": 56},
+	            {"name": "CF_WR_CMD_ERR1_EID", "eventID":  57},
+	            {"name": "CF_WR_CMD_ERR2_EID", "eventID":  58},
+	            {"name": "CF_WR_CMD_ERR3_EID", "eventID":  59},
+	            {"name": "CF_SND_QUE_ERR1_EID", "eventID": 60},
+	            {"name": "CF_SND_TRANS_ERR_EID", "eventID": 61},
+	            {"name": "CF_DEQ_NODE_ERR1_EID", "eventID": 62},
+	            {"name": "CF_DEQ_NODE_ERR2_EID", "eventID": 63},
+	            {"name": "CF_DEQ_NODE_ERR3_EID", "eventID": 64},
+	            {"name": "CF_DEQ_NODE_ERR4_EID", "eventID": 65},
+	            {"name": "CF_WR_CMD_ERR4_EID", "eventID": 66},
+	            {"name": "CF_DEQ_NODE1_EID", "eventID": 68},
+	            {"name": "CF_DEQ_NODE2_EID", "eventID": 69},
+	            {"name": "CF_PDU_RCV_ERR1_EID", "eventID": 70},
+	            {"name": "CF_PDU_RCV_ERR2_EID", "eventID": 71},
+	            {"name": "CF_PDU_RCV_ERR3_EID", "eventID": 72},
+	            {"name": "CF_HANDSHAKE_ERR1_EID", "eventID": 73},
+	            {"name": "CF_SND_TRANS_CMD_EID", "eventID": 74},
+	            {"name": "CF_IND_FAU_UNEX_EID", "eventID": 75},
+	            {"name": "CF_PB_FILE_ERR1_EID", "eventID": 76},
+	            {"name": "CF_PB_FILE_ERR2_EID", "eventID": 77},
+	            {"name": "CF_PB_FILE_ERR3_EID", "eventID": 78},
+	            {"name": "CF_PB_FILE_ERR4_EID", "eventID": 79},
+	            {"name": "CF_PB_FILE_ERR5_EID", "eventID": 80},
+	            {"name": "CF_PB_FILE_ERR6_EID", "eventID": 81},
+	            {"name": "CF_QDIR_INV_NAME1_EID", "eventID": 82},
+	            {"name": "CF_QDIR_INV_NAME2_EID", "eventID": 83},
+	            {"name": "CF_MEM_ALLOC_ERR_EID", "eventID": 84},
+	            {"name": "CF_MEM_DEALLOC_ERR_EID", "eventID": 85},
+	            {"name": "CF_ENA_DQ_CMD_EID", "eventID": 86},
+	            {"name": "CF_DQ_CMD_ERR1_EID", "eventID": 87},
+	            {"name": "CF_DIS_DQ_CMD_EID", "eventID": 88},
+	            {"name": "CF_DQ_CMD_ERR2_EID", "eventID": 89},
+	            {"name": "CF_ENA_POLL_CMD1_EID", "eventID": 90},
+	            {"name": "CF_ENA_POLL_CMD2_EID", "eventID": 91},
+	            {"name": "CF_ENA_POLL_ERR1_EID", "eventID": 92},
+	            {"name": "CF_ENA_POLL_ERR2_EID", "eventID": 93},
+	            {"name": "CF_DIS_POLL_CMD1_EID", "eventID": 94},
+	            {"name": "CF_DIS_POLL_CMD2_EID", "eventID": 95},
+	            {"name": "CF_DIS_POLL_ERR1_EID", "eventID": 96},
+	            {"name": "CF_DIS_POLL_ERR2_EID", "eventID": 97},
+	            {"name": "CF_OPEN_DIR_ERR_EID", "eventID": 98},
+	            {"name": "CF_QDIR_NOMEM1_EID", "eventID": 99},
+	            {"name": "CF_QDIR_NOMEM2_EID", "eventID": 100},
+	            {"name": "CF_QDIR_PQFUL_EID", "eventID": 101},
+	            {"name": "CF_IN_TRANS_START_EID", "eventID": 102},
+	            {"name": "CF_OUT_TRANS_START_EID", "eventID": 103},
+	            {"name": "CF_SET_MIB_CMD_ERR1_EID", "eventID": 104},
+	            {"name": "CF_SET_MIB_CMD_ERR2_EID", "eventID": 105},
+	            {"name": "CF_TBL_VAL_ERR1_EID", "eventID": 106},
+	            {"name": "CF_TBL_VAL_ERR2_EID", "eventID": 107},
+	            {"name": "CF_TBL_VAL_ERR3_EID", "eventID": 108},
+	            {"name": "CF_TBL_VAL_ERR4_EID", "eventID": 109},
+	            {"name": "CF_TBL_VAL_ERR5_EID", "eventID": 110},
+	            {"name": "CF_TBL_VAL_ERR6_EID", "eventID": 111},
+	            {"name": "CF_TBL_VAL_ERR7_EID", "eventID": 112},
+	            {"name": "CF_TBL_VAL_ERR8_EID", "eventID": 113},
+	            {"name": "CF_TBL_VAL_ERR9_EID", "eventID": 114},
+	            {"name": "CF_TBL_VAL_ERR10_EID", "eventID": 115},
+	            {"name": "CF_TBL_VAL_ERR11_EID", "eventID": 116},
+	            {"name": "CF_TBL_VAL_ERR12_EID", "eventID": 117},
+	            {"name": "CF_TBL_VAL_ERR13_EID", "eventID": 118},
+	            {"name": "CF_TBL_VAL_ERR14_EID", "eventID": 119},
+	            {"name": "CF_NO_TERM_ERR_EID", "eventID":  120},
+	            {"name": "CF_SET_POLL_PARAM_ERR1", "eventID": 121},
+	            {"name": "CF_SET_POLL_PARAM_ERR2", "eventID": 122},
+	            {"name": "CF_SET_POLL_PARAM_ERR3", "eventID": 123},
+	            {"name": "CF_SET_POLL_PARAM_ERR4", "eventID": 124},
+	            {"name": "CF_SET_POLL_PARAM_ERR5", "eventID": 125},
+	            {"name": "CF_SET_POLL_PARAM_ERR6", "eventID": 126},
+	            {"name": "CF_SET_POLL_PARAM_ERR7", "eventID": 127},
+	            {"name": "CF_SET_POLL_PARAM1_EID", "eventID": 128},
+	            {"name": "CF_SND_CFG_CMD_EID", "eventID": 129},
+	            {"name": "CF_GIVETAKE_ERR1_EID", "eventID": 130},
+	            {"name": "CF_GIVETAKE_ERR2_EID", "eventID": 131},
+	            {"name": "CF_GIVETAKE_ERR3_EID", "eventID": 132},
+	            {"name": "CF_GIVETAKE_ERR4_EID", "eventID": 133},
+	            {"name": "CF_PLAYBACK_DIR_EID", "eventID": 134},
+	            {"name": "CF_PB_DIR_ERR1_EID", "eventID": 135},
+	            {"name": "CF_PB_DIR_ERR2_EID", "eventID": 136},
+	            {"name": "CF_PB_DIR_ERR3_EID", "eventID": 137},
+	            {"name": "CF_PB_DIR_ERR4_EID", "eventID": 138},
+	            {"name": "CF_PB_DIR_ERR5_EID", "eventID": 139},
+	            {"name": "CF_PURGEQ_ERR1_EID", "eventID": 140},
+	            {"name": "CF_PURGEQ_ERR2_EID", "eventID": 141},
+	            {"name": "CF_PURGEQ_ERR3_EID", "eventID": 142},
+	            {"name": "CF_PURGEQ_ERR4_EID", "eventID": 143},
+	            {"name": "CF_PURGEQ_ERR5_EID", "eventID": 144},
+	            {"name": "CF_PURGEQ_ERR6_EID", "eventID": 145},
+	            {"name": "CF_PURGEQ1_EID", "eventID": 146},
+	            {"name": "CF_PURGEQ2_EID", "eventID": 147},
+	            {"name": "CF_WRACT_ERR1_EID", "eventID": 148},
+	            {"name": "CF_WRACT_ERR2_EID", "eventID": 149},
+	            {"name": "CF_WRACT_TRANS_EID", "eventID": 150},
+	            {"name": "CF_TBL_LD_ATTEMPT_EID", "eventID": 151},
+	            {"name": "CF_OUT_SND_ERR1_EID", "eventID": 152},
+	            {"name": "CF_OUT_SND_ERR2_EID", "eventID": 153},
+	            {"name": "CF_OUT_SND_ERR3_EID", "eventID": 154},
+	            {"name": "CF_QDIR_ACTIVEFILE_EID", "eventID": 155},
+	            {"name": "CF_QDIR_OPENFILE_EID", "eventID": 156},
+	            {"name": "CF_INV_FILENAME_EID", "eventID": 157},
+	            {"name": "CF_GIVETAKE_CMD_EID", "eventID": 158},
+	            {"name": "CF_QUICK_ERR1_EID", "eventID": 159},
+	            {"name": "CF_QUICK_CMD_EID", "eventID": 160}
+			],
+		    "tables": [
+		        {"id": "ConfigTable", "title": "Config", "isDumpTable": false}
+		    ],
+		    "msgs": [
+		        {"name": "CF_CMD_MID", "id": 6416},
+		        {"name": "CF_INCOMING_PDU_MID", "id": 4093},
+		        {"name": "CF_SEND_HK_MID", "id": 6418},
+		        {"name": "CF_SPARE1_CMD_MID", "id": 6419},
+		        {"name": "CF_SPARE2_CMD_MID", "id": 6420},
+		        {"name": "CF_SPARE3_CMD_MID", "id": 6421},
+		        {"name": "CF_SPARE4_CMD_MID", "id": 6422},
+		        {"name": "CF_SPARE5_CMD_MID", "id": 6423},
+		        {"name": "CF_WAKE_UP_REQ_CMD_MID", "id": 6424},
+		        {"name": "CF_CONFIG_TLM_MID", "id": 2329},
+		        {"name": "CF_HK_TLM_MID", "id": 2330},
+		        {"name": "CF_SPARE0_TLM_MID", "id": 2331},
+		        {"name": "CF_SPARE1_TLM_MID", "id": 2332},
+		        {"name": "CF_SPARE2_TLM_MID", "id": 2333},
+		        {"name": "CF_SPARE3_TLM_MID", "id": 2334},
+		        {"name": "CF_SPARE4_TLM_MID", "id": 2335},
+		        {"name": "CF_TRANS_TLM_MID", "id": 2336}
+		    ],
+	        "poolHandleTlmID": "/CFS/CF/App_BufferPoolHandle"
+		},
+        {
+	        "id": "CI",
+		    "events": [
+				{"name": "CI_INIT_INF_EID", "eventID": 1},
+	            {"name": "CI_CONFIG_TABLE_INF_EID", "eventID": 2},
+	            {"name": "CI_CDS_INF_EID", "eventID": 3},
+	            {"name": "CI_CMD_INF_EID", "eventID": 4},
+	            {"name": "CI_ERR_EID", "eventID": 5},
+	            {"name": "CI_INIT_ERR_EID", "eventID": 6},
+	            {"name": "CI_CONFIG_TABLE_ERR_EID", "eventID": 7},
+	            {"name": "CI_CDS_ERR_EID", "eventID": 8},
+	            {"name": "CI_CMD_ERR_EID", "eventID": 9},
+	            {"name": "CI_PIPE_ERR_EID", "eventID": 10},
+	            {"name": "CI_MSGID_ERR_EID", "eventID": 11},
+	            {"name": "CI_MSGLEN_ERR_EID", "eventID": 12},
+	            {"name": "CI_LISTENER_CREATE_CHDTASK_ERR_EID", "eventID": 13},
+	            {"name": "CI_CMD_INGEST_ERR_EID", "eventID": 14},
+	            {"name": "CI_SOCKET_ERR_EID", "eventID": 15},
+	            {"name": "CI_ENA_INF_EID", "eventID": 16},
+	            {"name": "CI_CMD_INVALID_EID", "eventID": 17},
+	            {"name": "CI_CMD_UNAUTHORIZED_EID", "eventID": 18},
+	            {"name": "CI_CMD_AUTH_TIMEOUT_EID", "eventID": 19},
+	            {"name": "CI_CMD_AUTH_NOT_REG_EID", "eventID": 20},
+	            {"name": "CI_CMD_AUTH_INV_MODE_EID", "eventID": 21},
+	            {"name": "CI_CMD_AUTH_INV_STATE_EID", "eventID": 22},
+	            {"name": "CI_CMD_AUTHORIZED_EID", "eventID": 23},
+	            {"name": "CI_CMD_DEAUTH_NOT_REG_EID", "eventID": 24},
+	            {"name": "CI_CMD_DEAUTH_INV_MODE_EID", "eventID": 25},
+	            {"name": "CI_CMD_DEAUTH_INV_STATE_EID", "eventID": 26},
+	            {"name": "CI_CMD_DEAUTHORIZED_EID", "eventID": 27},
+	            {"name": "CI_CMD_REGISTERED_EID", "eventID": 28},
+	            {"name": "CI_CMD_ALREADY_REGISTERED_EID", "eventID": 30},
+	            {"name": "CI_CMD_DEREGISTERED_EID", "eventID": 31},
+	            {"name": "CI_CMD_NOT_REGISTERED_EID", "eventID": 32},
+	            {"name": "CI_CMD_REG_ERR_EID", "eventID": 33},
+	            {"name": "CI_CMD_UPDT_REG_INVLD_STATE_EID", "eventID": 34},
+	            {"name": "CI_CMD_UPDATE_REG_EID", "eventID": 35}
+			],
+		    "tables": [
+		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
+		    ],
+		    "msgs": [
+	            {"name": "CI_CMD_MID", "id": 6405},
+	            {"name": "CI_SEND_HK_MID", "id": 6406},
+	            {"name": "CI_HK_TLM_MID", "id": 2311},
+	            {"name": "CI_WAKEUP_MID", "id": 6408},
+	            {"name": "CI_OUT_DATA_MID", "id": 6409},
+	            {"name": "CI_PROCESS_TIMEOUTS_MID", "id": 6410}	            
+		    ]
+		},
+        {
+	        "id": "CS",
+		    "events": [
+		        {"name": "CS_INIT_INF_EID", "eventID": 1},
+			    {"name": "CS_NOOP_INF_EID", "eventID": 2},
+			    {"name": "CS_RESET_DBG_EID", "eventID": 3},
+			    {"name": "CS_DISABLE_ALL_INF_EID", "eventID": 4},
+			    {"name": "CS_ENABLE_ALL_INF_EID", "eventID": 5},
+			    {"name": "CS_DISABLE_CFECORE_INF_EID", "eventID": 6},
+			    {"name": "CS_ENABLE_CFECORE_INF_EID", "eventID": 7},
+			    {"name": "CS_DISABLE_OS_INF_EID", "eventID": 8},
+			    {"name": "CS_ENABLE_OS_INF_EID", "eventID": 9},
+			    {"name": "CS_BASELINE_CFECORE_INF_EID", "eventID": 10},
+			    {"name": "CS_NO_BASELINE_CFECORE_INF_EID", "eventID": 11},
+			    {"name": "CS_BASELINE_OS_INF_EID", "eventID": 12},
+			    {"name": "CS_NO_BASELINE_OS_INF_EID", "eventID": 13},
+			    {"name": "CS_RECOMPUTE_CFECORE_STARTED_DBG_EID", "eventID": 14},
+			    {"name": "CS_RECOMPUTE_CFECORE_CREATE_CHDTASK_ERR_EID", "eventID": 15},
+			    {"name": "CS_RECOMPUTE_CFECORE_CHDTASK_ERR_EID", "eventID": 16},
+			    {"name": "CS_RECOMPUTE_OS_STARTED_DBG_EID", "eventID": 17},
+			    {"name": "CS_RECOMPUTE_OS_CREATE_CHDTASK_ERR_EID", "eventID": 18},
+			    {"name": "CS_RECOMPUTE_OS_CHDTASK_ERR_EID", "eventID": 19},
+			    {"name": "CS_ONESHOT_STARTED_DBG_EID", "eventID": 20},
+			    {"name": "CS_ONESHOT_CREATE_CHDTASK_ERR_EID", "eventID": 21},
+			    {"name": "CS_ONESHOT_CHDTASK_ERR_EID", "eventID": 22},
+			    {"name": "CS_ONESHOT_MEMVALIDATE_ERR_EID", "eventID": 23},
+			    {"name": "CS_ONESHOT_CANCELLED_INF_EID", "eventID": 24},
+			    {"name": "CS_ONESHOT_CANCEL_DELETE_CHDTASK_ERR_EID", "eventID": 25},
+			    {"name": "CS_ONESHOT_CANCEL_NO_CHDTASK_ERR_EID", "eventID": 26},
+			    {"name": "CS_EEPROM_MISCOMPARE_ERR_EID", "eventID": 27},
+			    {"name": "CS_MEMORY_MISCOMPARE_ERR_EID", "eventID": 28},
+			    {"name": "CS_TABLES_MISCOMPARE_ERR_EID", "eventID": 29},
+			    {"name": "CS_APP_MISCOMPARE_ERR_EID", "eventID": 30},
+			    {"name": "CS_CFECORE_MISCOMPARE_ERR_EID", "eventID": 31},
+			    {"name": "CS_OS_MISCOMPARE_ERR_EID", "eventID": 32},
+			    {"name": "CS_MID_ERR_EID", "eventID": 33},
+			    {"name": "CS_CC1_ERR_EID", "eventID": 34},
+			    {"name": "CS_EXIT_ERR_EID", "eventID": 35},
+			    {"name": "CS_LEN_ERR_EID", "eventID": 36},
+			    {"name": "CS_DISABLE_EEPROM_INF_EID", "eventID": 37},
+			    {"name": "CS_ENABLE_EEPROM_INF_EID", "eventID": 38},
+			    {"name": "CS_BASELINE_EEPROM_INF_EID", "eventID": 39},
+			    {"name": "CS_NO_BASELINE_EEPROM_INF_EID", "eventID": 40},
+			    {"name": "CS_BASELINE_INVALID_ENTRY_EEPROM_ERR_EID", "eventID": 41},
+			    {"name": "CS_RECOMPUTE_EEPROM_STARTED_DBG_EID", "eventID": 42},
+			    {"name": "CS_RECOMPUTE_EEPROM_CREATE_CHDTASK_ERR_EID", "eventID": 43},
+			    {"name": "CS_RECOMPUTE_INVALID_ENTRY_EEPROM_ERR_EID", "eventID": 44},
+			    {"name": "CS_RECOMPUTE_EEPROM_CHDTASK_ERR_EID", "eventID": 45},
+			    {"name": "CS_ENABLE_EEPROM_ENTRY_INF_EID", "eventID": 46},
+			    {"name": "CS_ENABLE_EEPROM_INVALID_ENTRY_ERR_EID", "eventID": 47},
+			    {"name": "CS_DISABLE_EEPROM_ENTRY_INF_EID", "eventID": 48},
+			    {"name": "CS_DISABLE_EEPROM_INVALID_ENTRY_ERR_EID", "eventID": 49},
+			    {"name": "CS_GET_ENTRY_ID_EEPROM_INF_EID", "eventID": 50},
+			    {"name": "CS_GET_ENTRY_ID_EEPROM_NOT_FOUND_INF_EID", "eventID": 51},
+			    {"name": "CS_DISABLE_MEMORY_INF_EID", "eventID": 52},
+			    {"name": "CS_ENABLE_MEMORY_INF_EID", "eventID": 53},
+			    {"name": "CS_BASELINE_MEMORY_INF_EID", "eventID": 54},
+			    {"name": "CS_NO_BASELINE_MEMORY_INF_EID", "eventID": 55},
+			    {"name": "CS_BASELINE_INVALID_ENTRY_MEMORY_ERR_EID", "eventID": 56},
+			    {"name": "CS_RECOMPUTE_MEMORY_STARTED_DBG_EID", "eventID": 57},
+			    {"name": "CS_RECOMPUTE_MEMORY_CREATE_CHDTASK_ERR_EID", "eventID": 58},
+			    {"name": "CS_RECOMPUTE_INVALID_ENTRY_MEMORY_ERR_EID", "eventID": 59},
+			    {"name": "CS_RECOMPUTE_MEMORY_CHDTASK_ERR_EID", "eventID": 60},
+			    {"name": "CS_ENABLE_MEMORY_ENTRY_INF_EID", "eventID": 61},
+			    {"name": "CS_ENABLE_MEMORY_INVALID_ENTRY_ERR_EID", "eventID": 62},
+			    {"name": "CS_DISABLE_MEMORY_ENTRY_INF_EID", "eventID": 63},
+			    {"name": "CS_DISABLE_MEMORY_INVALID_ENTRY_ERR_EID", "eventID": 64},
+			    {"name": "CS_GET_ENTRY_ID_MEMORY_INF_EID", "eventID": 65},
+			    {"name": "CS_GET_ENTRY_ID_MEMORY_NOT_FOUND_INF_EID", "eventID": 66},
+			    {"name": "CS_DISABLE_TABLES_INF_EID", "eventID": 67},
+			    {"name": "CS_ENABLE_TABLES_INF_EID", "eventID": 68},
+			    {"name": "CS_BASELINE_TABLES_INF_EID", "eventID": 69},
+			    {"name": "CS_NO_BASELINE_TABLES_INF_EID", "eventID": 70},
+			    {"name": "CS_BASELINE_INVALID_NAME_TABLES_ERR_EID", "eventID": 71},
+			    {"name": "CS_RECOMPUTE_TABLES_STARTED_DBG_EID", "eventID": 72},
+			    {"name": "CS_RECOMPUTE_TABLES_CREATE_CHDTASK_ERR_EID", "eventID": 73},
+			    {"name": "CS_RECOMPUTE_UNKNOWN_NAME_TABLES_ERR_EID", "eventID": 74},
+			    {"name": "CS_RECOMPUTE_TABLES_CHDTASK_ERR_EID", "eventID": 75},
+			    {"name": "CS_ENABLE_TABLES_NAME_INF_EID", "eventID": 76},
+			    {"name": "CS_ENABLE_TABLES_UNKNOWN_NAME_ERR_EID", "eventID": 77},
+			    {"name": "CS_DISABLE_TABLES_NAME_INF_EID", "eventID": 78},
+			    {"name": "CS_DISABLE_TABLES_UNKNOWN_NAME_ERR_EID", "eventID": 79},
+			    {"name": "CS_DISABLE_APP_INF_EID", "eventID": 80},
+			    {"name": "CS_ENABLE_APP_INF_EID", "eventID": 81},
+			    {"name": "CS_BASELINE_APP_INF_EID", "eventID": 82},
+			    {"name": "CS_NO_BASELINE_APP_INF_EID", "eventID": 83},
+			    {"name": "CS_BASELINE_INVALID_NAME_APP_ERR_EID", "eventID": 84},
+			    {"name": "CS_RECOMPUTE_APP_STARTED_DBG_EID", "eventID": 85},
+			    {"name": "CS_RECOMPUTE_APP_CREATE_CHDTASK_ERR_EID", "eventID": 86},
+			    {"name": "CS_RECOMPUTE_UNKNOWN_NAME_APP_ERR_EID", "eventID": 87},
+			    {"name": "CS_RECOMPUTE_APP_CHDTASK_ERR_EID", "eventID": 88},
+			    {"name": "CS_ENABLE_APP_NAME_INF_EID", "eventID": 89},
+			    {"name": "CS_ENABLE_APP_UNKNOWN_NAME_ERR_EID", "eventID": 90},
+			    {"name": "CS_DISABLE_APP_NAME_INF_EID", "eventID": 91},
+			    {"name": "CS_DISABLE_APP_UNKNOWN_NAME_ERR_EID", "eventID": 92},
+			    {"name": "CS_COMPUTE_APP_NOT_FOUND_ERR_EID", "eventID": 93},
+			    {"name": "CS_COMPUTE_TABLES_NOT_FOUND_ERR_EID", "eventID": 94},
+			    {"name": "CS_RECOMPUTE_FINISH_EEPROM_MEMORY_INF_EID", "eventID": 95},
+			    {"name": "CS_RECOMPUTE_ERROR_TABLES_ERR_EID", "eventID": 96},
+			    {"name": "CS_RECOMPUTE_ERROR_APP_ERR_EID", "eventID": 97},
+			    {"name": "CS_RECOMPUTE_FINISH_TABLES_INF_EID", "eventID": 98},
+			    {"name": "CS_RECOMPUTE_FINISH_APP_INF_EID", "eventID": 99},
+			    {"name": "CS_ONESHOT_FINISHED_INF_EID", "eventID": 100},
+			    {"name": "CS_VAL_EEPROM_STATE_ERR_EID", "eventID": 101},
+			    {"name": "CS_VAL_EEPROM_RANGE_ERR_EID", "eventID": 102},
+			    {"name": "CS_VAL_MEMORY_STATE_ERR_EID", "eventID": 103},
+			    {"name": "CS_VAL_MEMORY_RANGE_ERR_EID", "eventID": 104},
+			    {"name": "CS_VAL_TABLES_STATE_ERR_EID", "eventID": 105},
+			    {"name": "CS_VAL_APP_STATE_ERR_EID", "eventID": 106},
+			    {"name": "CS_PROCESS_EEPROM_MEMORY_NO_ENTRIES_INF_EID", "eventID": 107},
+			    {"name": "CS_PROCESS_APP_NO_ENTRIES_INF_EID", "eventID": 108},
+			    {"name": "CS_PROCESS_TABLES_NO_ENTRIES_INF_EID", "eventID": 109},
+			    {"name": "CS_TBL_INIT_ERR_EID", "eventID": 110},
+			    {"name": "CS_TBL_UPDATE_ERR_EID", "eventID": 111},
+			    {"name": "CS_INIT_SB_CREATE_ERR_EID", "eventID": 112},
+			    {"name": "CS_INIT_SB_SUBSCRIBE_HK_ERR_EID", "eventID": 113},
+			    {"name": "CS_INIT_SB_SUBSCRIBE_BACK_ERR_EID", "eventID": 114},
+			    {"name": "CS_INIT_SB_SUBSCRIBE_CMD_ERR_EID", "eventID": 115},
+			    {"name": "CS_INIT_EEPROM_ERR_EID", "eventID": 116},
+			    {"name": "CS_INIT_MEMORY_ERR_EID", "eventID": 117},
+			    {"name": "CS_INIT_TABLES_ERR_EID", "eventID": 118},
+			    {"name": "CS_INIT_APP_ERR_EID", "eventID": 119},
+			    {"name": "CS_COMPUTE_TABLES_RELEASE_ERR_EID", "eventID": 120},
+			    {"name": "CS_COMPUTE_TABLES_ERR_EID", "eventID": 121},
+			    {"name": "CS_COMPUTE_APP_ERR_EID", "eventID": 122},
+			    {"name": "CS_UPDATE_EEPROM_ERR_EID", "eventID": 123},
+			    {"name": "CS_UPDATE_MEMORY_ERR_EID", "eventID": 124},
+			    {"name": "CS_UPDATE_TABLES_ERR_EID", "eventID": 125},
+			    {"name": "CS_UPDATE_APP_ERR_EID", "eventID": 126},
+			    {"name": "CS_OS_TEXT_SEG_INF_EID", "eventID": 127},
+			    {"name": "CS_COMPUTE_APP_PLATFORM_DBG_EID", "eventID": 128},
+			    {"name": "CS_ENABLE_TABLE_DEF_NOT_FOUND_DBG_EID", "eventID": 129},
+			    {"name": "CS_DISABLE_TABLE_DEF_NOT_FOUND_DBG_EID", "eventID": 130},
+			    {"name": "CS_ENABLE_APP_DEF_NOT_FOUND_DBG_EID", "eventID": 131},
+			    {"name": "CS_DISABLE_APP_DEF_NOT_FOUND_DBG_EID", "eventID": 132},
+			    {"name": "CS_DISABLE_MEMORY_DEF_EMPTY_DBG_EID", "eventID": 133},
+			    {"name": "CS_ENABLE_MEMORY_DEF_EMPTY_DBG_EID", "eventID": 134},
+			    {"name": "CS_DISABLE_EEPROM_DEF_EMPTY_DBG_EID", "eventID": 135},
+			    {"name": "CS_ENABLE_EEPROM_DEF_EMPTY_DBG_EID", "eventID": 136},
+			    {"name": "CS_VAL_TABLES_DEF_TBL_DUPL_ERR_EID", "eventID": 137},
+			    {"name": "CS_VAL_TABLES_DEF_TBL_ZERO_NAME_ERR_EID", "eventID": 138},
+			    {"name": "CS_VAL_TABLES_INF_EID", "eventID": 139},
+			    {"name": "CS_VAL_APP_DEF_TBL_DUPL_ERR_EID", "eventID": 140},
+			    {"name": "CS_VAL_APP_DEF_TBL_ZERO_NAME_ERR_EID", "eventID": 141},
+			    {"name": "CS_VAL_APP_INF_EID", "eventID": 142},
+			    {"name": "CS_VAL_MEMORY_INF_EID", "eventID": 143},
+			    {"name": "CS_VAL_EEPROM_INF_EID", "eventID": 144},
+			    {"name": "CS_INIT_CDS_ERR_EID", "eventID": 145}
+			],
+		    "tables": [
+		        {"id": "DefAppTbl",    "title": "Applications", "isDumpTable": false},
+		        {"id": "DefEepromTbl", "title": "EEPROM", "isDumpTable": false},
+		        {"id": "DefMemoryTbl", "title": "Memory", "isDumpTable": false},
+		        {"id": "DefTablesTbl", "title": "Tables", "isDumpTable": false}
+		    ],
+		    "msgs": [
+		        {"name": "CS_CMD_MID", "id": 6448},
+		        {"name": "CS_BACKGROUND_CYCLE_MID", "id": 6449},
+		        {"name": "CS_SEND_HK_MID", "id": 6450},
+		        {"name": "CS_HK_TLM_MID", "id": 2355}
+		    ]
+		},
+        {
+	        "id": "DS",
+		    "events": [
+		        {"name":"DS_INIT_EID", "eventID": 1},
+		        {"name":"DS_INIT_ERR_EID", "eventID": 2},
+		        {"name":"DS_EXIT_ERR_EID", "eventID": 3},
+		        {"name":"DS_INIT_CDS_ERR_EID", "eventID": 6},
+		        {"name":"DS_INIT_TBL_CDS_EID", "eventID": 7},
+		        {"name":"DS_INIT_TBL_ERR_EID", "eventID": 8},
+		        {"name":"DS_FIL_TBL_EID", "eventID": 10},
+		        {"name":"DS_FIL_TBL_ERR_EID", "eventID": 11},
+		        {"name":"DS_FLT_TBL_EID", "eventID": 12},
+		        {"name":"DS_FLT_TBL_ERR_EID", "eventID": 13},
+		        {"name":"DS_FILE_NAME_ERR_EID", "eventID": 14},
+		        {"name":"DS_CREATE_FILE_ERR_EID", "eventID": 15},
+		        {"name":"DS_WRITE_FILE_ERR_EID", "eventID": 16},
+		        {"name":"DS_CMD_CODE_ERR_EID", "eventID": 21},
+		        {"name":"DS_HK_REQUEST_ERR_EID", "eventID": 22},
+		        {"name":"DS_NOOP_CMD_EID", "eventID": 31},
+		        {"name":"DS_NOOP_CMD_ERR_EID", "eventID": 32},
+		        {"name":"DS_RESET_CMD_EID", "eventID": 33},
+		        {"name":"DS_RESET_CMD_ERR_EID", "eventID": 34},
+		        {"name":"DS_ENADIS_CMD_EID", "eventID": 35},
+		        {"name":"DS_ENADIS_CMD_ERR_EID", "eventID": 36},
+		        {"name":"DS_FILE_CMD_EID", "eventID": 37},
+		        {"name":"DS_FILE_CMD_ERR_EID", "eventID": 38},
+		        {"name":"DS_FTYPE_CMD_EID", "eventID": 39},
+		        {"name":"DS_FTYPE_CMD_ERR_EID", "eventID": 40},
+		        {"name":"DS_PARMS_CMD_EID", "eventID": 41},
+		        {"name":"DS_PARMS_CMD_ERR_EID", "eventID": 42},
+		        {"name":"DS_NTYPE_CMD_EID", "eventID": 43},
+		        {"name":"DS_NTYPE_CMD_ERR_EID", "eventID": 44},
+		        {"name":"DS_STATE_CMD_EID", "eventID": 45},
+		        {"name":"DS_STATE_CMD_ERR_EID", "eventID": 46},
+		        {"name":"DS_PATH_CMD_EID", "eventID": 47},
+		        {"name":"DS_PATH_CMD_ERR_EID", "eventID": 48},
+		        {"name":"DS_BASE_CMD_EID", "eventID": 49},
+		        {"name":"DS_BASE_CMD_ERR_EID", "eventID": 50},
+		        {"name":"DS_EXT_CMD_EID", "eventID": 51},
+		        {"name":"DS_EXT_CMD_ERR_EID", "eventID": 52},
+		        {"name":"DS_SIZE_CMD_EID", "eventID": 53},
+		        {"name":"DS_SIZE_CMD_ERR_EID", "eventID": 54},
+		        {"name":"DS_AGE_CMD_EID", "eventID": 55},
+		        {"name":"DS_AGE_CMD_ERR_EID", "eventID": 56},
+		        {"name":"DS_SEQ_CMD_EID", "eventID": 57},
+		        {"name":"DS_SEQ_CMD_ERR_EID", "eventID": 58},
+		        {"name":"DS_CLOSE_CMD_EID", "eventID": 59},
+		        {"name":"DS_CLOSE_CMD_ERR_EID", "eventID": 60},
+		        {"name":"DS_MOVE_FILE_ERR_EID", "eventID": 61},
+		        {"name":"DS_GET_FILE_INFO_CMD_EID", "eventID": 62},
+		        {"name":"DS_GET_FILE_INFO_CMD_ERR_EID", "eventID": 63},
+		        {"name":"DS_ADD_MID_CMD_EID", "eventID": 64},
+		        {"name":"DS_ADD_MID_CMD_ERR_EID", "eventID": 65},
+		        {"name":"DS_CLOSE_ALL_CMD_EID", "eventID": 66},
+		        {"name":"DS_CLOSE_ALL_CMD_ERR_EID", "eventID": 67}
+			],
+		    "tables": [
+		        {"id": "FILE_TBL",    "title": "File Table", "isDumpTable": false},
+		        {"id": "FILTER_TBL", "title": "Filter Table", "isDumpTable": false}
+		    ],
+		    "msgs": [
+		        {"name": "DS_CMD_MID", "id": 6464},
+		        {"name": "DS_SEND_HK_MID", "id": 6465},
+		        {"name": "DS_HK_TLM_MID", "id": 2370},
+		        {"name": "DS_DIAG_TLM_MID", "id": 2370},
+		    ]
+		},
+        {
+	        "id": "EA",
+		    "events": [
+	            {"name": "EA_INIT_INF_EID", "eventID": 1},
+	            {"name": "EA_CONFIG_TABLE_INF_EID", "eventID": 2},
+	            {"name": "EA_CDS_INF_EID", "eventID": 3},
+	            {"name": "EA_CMD_INF_EID", "eventID": 4},
+	            {"name": "EA_INF_APP_START_EID", "eventID": 5},
+	            {"name": "EA_INF_APP_TERM_EID", "eventID": 6},
+	            {"name": "EA_APP_ARG_ERR_EID", "eventID": 7},
+	            {"name": "EA_WARN_APP_UTIL_EID", "eventID": 8},
+	            {"name": "EA_ERR_EID", "eventID": 9},
+	            {"name": "EA_INIT_ERR_EID", "eventID": 10},
+	            {"name": "EA_CONFIG_TABLE_ERR_EID", "eventID": 11},
+	            {"name": "EA_CDS_ERR_EID", "eventID": 12},
+	            {"name": "EA_CMD_ERR_EID", "eventID": 13},
+	            {"name": "EA_PIPE_ERR_EID", "eventID": 14},
+	            {"name": "EA_MSGID_ERR_EID", "eventID": 15},
+	            {"name": "EA_MSGLEN_ERR_EID", "eventID": 16},
+	            {"name": "EA_CHILD_TASK_START_EID", "eventID": 17},
+	            {"name": "EA_CHILD_TASK_START_ERR_EID", "eventID": 18},
+	            {"name": "EA_CMD_NOOP_EID", "eventID": 19},
+	            {"name": "EA_CMD_RESET_EID", "eventID": 20}
+			],
+		    "msgs": [
+		        {"name": "EA_CMD_MID", "id": 7209},
+		        {"name": "EA_SEND_HK_MID", "id": 7210},
+		        {"name": "EA_HK_TLM_MID", "id": 3115},
+		        {"name": "EA_WAKEUP_MID", "id": 7212},
+		        {"name": "EA_OUT_DATA_MID", "id": 3117},
+		        {"name": "EA_PERFMON_MID", "id": 7214}
+		    ]
+		},
+        {
+	        "id": "FM",
+		    "events": [
+			    {"name": "FM_STARTUP_EID", "eventID": 1},
+			    {"name": "FM_STARTUP_EVENTS_ERR_EID", "eventID": 2},
+			    {"name": "FM_STARTUP_CREAT_PIPE_ERR_EID", "eventID": 3},
+			    {"name": "FM_STARTUP_SUBSCRIB_HK_ERR_EID", "eventID": 4},
+			    {"name": "FM_STARTUP_SUBSCRIB_GCMD_ERR_EID", "eventID": 5},
+			    {"name": "FM_STARTUP_TABLE_INIT_ERR_EID", "eventID": 6},
+			    {"name": "FM_SB_RECEIVE_ERR_EID", "eventID": 7},
+			    {"name": "FM_EXIT_ERR_EID", "eventID": 8},
+			    {"name": "FM_MID_ERR_EID", "eventID": 9},
+			    {"name": "FM_CC_ERR_EID", "eventID": 10},
+			    {"name": "FM_HK_REQ_ERR_EID", "eventID": 11},
+			    {"name": "FM_NOOP_CMD_EID", "eventID": 12},
+			    {"name": "FM_NOOP_PKT_ERR_EID", "eventID": 13},
+			    {"name": "FM_RESET_CMD_EID", "eventID": 14},
+			    {"name": "FM_RESET_PKT_ERR_EID", "eventID": 15},
+			    {"name": "FM_COPY_CMD_EID", "eventID": 16},
+			    {"name": "FM_COPY_PKT_ERR_EID", "eventID": 17},
+			    {"name": "FM_COPY_OVR_ERR_EID", "eventID": 18},
+			    {"name": "FM_COPY_SRC_ERR_EID", "eventID": 19},
+			    {"name": "FM_COPY_TGT_ERR_EID", "eventID": 20},
+			    {"name": "FM_COPY_CHILD_ERR_EID", "eventID": 21},
+			    {"name": "FM_COPY_OS_ERR_EID", "eventID": 22},
+			    {"name": "FM_MOVE_CMD_EID", "eventID": 23},
+			    {"name": "FM_MOVE_PKT_ERR_EID", "eventID": 24},
+			    {"name": "FM_MOVE_OVR_ERR_EID", "eventID": 25},
+			    {"name": "FM_MOVE_SRC_ERR_EID", "eventID": 26},
+			    {"name": "FM_MOVE_TGT_ERR_EID", "eventID": 27},
+			    {"name": "FM_MOVE_CHILD_ERR_EID", "eventID": 28},
+			    {"name": "FM_MOVE_OS_ERR_EID", "eventID": 29},
+			    {"name": "FM_RENAME_CMD_EID", "eventID": 30},
+			    {"name": "FM_RENAME_PKT_ERR_EID", "eventID": 31},
+			    {"name": "FM_RENAME_SRC_ERR_EID", "eventID": 32},
+			    {"name": "FM_RENAME_TGT_ERR_EID", "eventID": 33},
+			    {"name": "FM_RENAME_CHILD_ERR_EID", "eventID": 34},
+			    {"name": "FM_RENAME_OS_ERR_EID", "eventID": 35},
+			    {"name": "FM_DELETE_CMD_EID", "eventID": 36},
+			    {"name": "FM_DELETE_PKT_ERR_EID", "eventID": 37},
+			    {"name": "FM_DELETE_SRC_ERR_EID", "eventID": 38},
+			    {"name": "FM_DELETE_CHILD_ERR_EID", "eventID": 39},
+			    {"name": "FM_DELETE_OS_ERR_EID", "eventID": 40},
+			    {"name": "FM_DELETE_ALL_CMD_EID", "eventID": 41},
+			    {"name": "FM_DELETE_ALL_WARNING_EID", "eventID": 42},
+			    {"name": "FM_DELETE_ALL_PKT_ERR_EID", "eventID": 43},
+			    {"name": "FM_DELETE_ALL_SRC_ERR_EID", "eventID": 44},
+			    {"name": "FM_DELETE_ALL_CHILD_ERR_EID", "eventID": 45},
+			    {"name": "FM_DELETE_ALL_OS_ERR_EID", "eventID": 46},
+			    {"name": "FM_DECOM_CMD_EID", "eventID": 47},
+			    {"name": "FM_DECOM_PKT_ERR_EID", "eventID": 48},
+			    {"name": "FM_DECOM_SRC_ERR_EID", "eventID": 49},
+			    {"name": "FM_DECOM_TGT_ERR_EID", "eventID": 50},
+			    {"name": "FM_DECOM_CHILD_ERR_EID", "eventID": 51},
+			    {"name": "FM_DECOM_CFE_ERR_EID", "eventID": 52},
+			    {"name": "FM_CONCAT_CMD_EID", "eventID": 53},
+			    {"name": "FM_CONCAT_PKT_ERR_EID", "eventID": 54},
+			    {"name": "FM_CONCAT_SRC1_ERR_EID", "eventID": 55},
+			    {"name": "FM_CONCAT_SRC2_ERR_EID", "eventID": 56},
+			    {"name": "FM_CONCAT_TGT_ERR_EID", "eventID": 57},
+			    {"name": "FM_CONCAT_CHILD_ERR_EID", "eventID": 58},
+			    {"name": "FM_CONCAT_OS_ERR_EID", "eventID": 59},
+			    {"name": "FM_GET_FILE_INFO_CMD_EID", "eventID": 60},
+			    {"name": "FM_GET_FILE_INFO_PKT_ERR_EID", "eventID": 61},
+			    {"name": "FM_GET_FILE_INFO_SRC_ERR_EID", "eventID": 62},
+			    {"name": "FM_GET_FILE_INFO_CHILD_ERR_EID", "eventID": 63},
+			    {"name": "FM_GET_FILE_INFO_WARNING_EID", "eventID": 64},
+			    {"name": "FM_GET_OPEN_FILES_CMD_EID", "eventID": 65},
+			    {"name": "FM_GET_OPEN_FILES_PKT_ERR_EID", "eventID": 66},
+			    {"name": "FM_CREATE_DIR_CMD_EID", "eventID": 67},
+			    {"name": "FM_CREATE_DIR_PKT_ERR_EID", "eventID": 68},
+			    {"name": "FM_CREATE_DIR_SRC_ERR_EID", "eventID": 69},
+			    {"name": "FM_CREATE_DIR_CHILD_ERR_EID", "eventID": 70},
+			    {"name": "FM_CREATE_DIR_OS_ERR_EID", "eventID": 71},
+			    {"name": "FM_DELETE_DIR_CMD_EID", "eventID": 72},
+			    {"name": "FM_DELETE_DIR_PKT_ERR_EID", "eventID": 73},
+			    {"name": "FM_DELETE_DIR_SRC_ERR_EID", "eventID": 74},
+			    {"name": "FM_DELETE_DIR_CHILD_ERR_EID", "eventID": 75},
+			    {"name": "FM_DELETE_DIR_EMPTY_ERR_EID", "eventID": 76},
+			    {"name": "FM_DELETE_DIR_OS_ERR_EID", "eventID": 77},
+			    {"name": "FM_GET_DIR_FILE_CMD_EID", "eventID": 78},
+			    {"name": "FM_GET_DIR_FILE_PKT_ERR_EID", "eventID": 79},
+			    {"name": "FM_GET_DIR_FILE_SRC_ERR_EID", "eventID": 80},
+			    {"name": "FM_GET_DIR_FILE_TGT_ERR_EID", "eventID": 81},
+			    {"name": "FM_GET_DIR_FILE_WARNING_EID", "eventID": 82},
+			    {"name": "FM_GET_DIR_FILE_CHILD_ERR_EID", "eventID": 83},
+			    {"name": "FM_GET_DIR_FILE_OS_ERR_EID", "eventID": 84},
+			    {"name": "FM_GET_DIR_PKT_CMD_EID", "eventID": 85},
+			    {"name": "FM_GET_DIR_PKT_WARNING_EID", "eventID": 86},
+			    {"name": "FM_GET_DIR_PKT_PKT_ERR_EID", "eventID": 87},
+			    {"name": "FM_GET_DIR_PKT_SRC_ERR_EID", "eventID": 88},
+			    {"name": "FM_GET_DIR_PKT_CHILD_ERR_EID", "eventID": 89},
+			    {"name": "FM_GET_DIR_PKT_OS_ERR_EID", "eventID": 90},
+			    {"name": "FM_GET_FREE_SPACE_CMD_EID", "eventID": 91},
+			    {"name": "FM_GET_FREE_SPACE_PKT_ERR_EID", "eventID": 92},
+			    {"name": "FM_GET_FREE_SPACE_TBL_ERR_EID", "eventID": 93},
+			    {"name": "FM_SET_TABLE_STATE_CMD_EID", "eventID": 94},
+			    {"name": "FM_SET_TABLE_STATE_PKT_ERR_EID", "eventID": 95},
+			    {"name": "FM_SET_TABLE_STATE_TBL_ERR_EID", "eventID": 96},
+			    {"name": "FM_SET_TABLE_STATE_ARG_ERR_EID", "eventID": 97},
+			    {"name": "FM_SET_TABLE_STATE_UNUSED_ERR_EID", "eventID": 98},
+			    {"name": "FM_TABLE_VERIFY_ERR_EID", "eventID": 99},
+			    {"name": "FM_CHILD_INIT_EID", "eventID": 100},
+			    {"name": "FM_CHILD_INIT_ERR_EID", "eventID": 101},
+			    {"name": "FM_CHILD_TERM_ERR_EID", "eventID": 102},
+			    {"name": "FM_CHILD_EXE_ERR_EID", "eventID": 103},
+			    {"name": "FM_TABLE_VERIFY_EID", "eventID": 104},
+			    {"name": "FM_SET_PERM_ERR_EID", "eventID": 110},
+			    {"name": "FM_SET_PERM_CMD_EID", "eventID": 111},
+			    {"name": "FM_SET_PERM_OS_ERR_EID", "eventID": 112}
+			],
+		    "tables": [
+		        {"id": "FreeSpace", "title": "Free Space Table", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": "FM_CMD_MID", "id": 7528},
+		        {"name": "FM_SEND_HK_MID", "id": 7529},
+		        {"name": "FM_HK_TLM_MID", "id": 2434},
+		        {"name": "FM_OPEN_FILES_TLM_MID", "id": 2435},
+		        {"name": "FM_FREE_SPACE_TLM_MID", "id": 2436},
+		        {"name": "FM_FILE_INFO_TLM_MID", "id": 2437},
+		        {"name": "FM_DIR_LIST_TLM_MID", "id": 2438},
+		    ]
+		},
+        {
+	        "id": "GPS",
+		    "events": [
+	            {"name": "GPS_INIT_INF_EID", "eventID": 1},
+	            {"name": "GPS_CMD_NOOP_EID", "eventID": 2},
+	            {"name": "GPS_SUBSCRIBE_ERR_EID", "eventID": 3},
+	            {"name": "GPS_PIPE_INIT_ERR_EID", "eventID": 4},
+	            {"name": "GPS_CFGTBL_MANAGE_ERR_EID", "eventID": 5},
+	            {"name": "GPS_CFGTBL_GETADDR_ERR_EID", "eventID": 6},
+	            {"name": "GPS_RCVMSG_ERR_EID", "eventID": 7},
+	            {"name": "GPS_MSGID_ERR_EID", "eventID": 8},
+	            {"name": "GPS_CC_ERR_EID", "eventID": 9},
+	            {"name": "GPS_MSGLEN_ERR_EID", "eventID": 10},
+	            {"name": "GPS_CFGTBL_REG_ERR_EID", "eventID": 11},
+	            {"name": "GPS_CFGTBL_LOAD_ERR_EID", "eventID": 12},
+	            {"name": "GPS_UNINIT_ERR_EID", "eventID": 13},
+	            {"name": "GPS_INIT_ERR_EID", "eventID": 14},
+	            {"name": "GPS_READ_ERR_EID", "eventID": 15}
+			],
+		    "tables": [
+		        {"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
+		    ],
+		    "msgs": [		        
+		        {"name": "GPS_CMD_MID", "id": 7249},
+		        {"name": "GPS_SEND_HK_MID", "id": 7250},
+		        {"name": "GPS_READ_SENSOR_MID", "id": 7251},
+		        {"name": "GPS_HK_TLM_MID", "id": 3156}
+		    ]
+		},
+        {
+	        "id": "HK",
+		    "events": [
+		        {"name": "HK_INIT_EID", "eventID": 1},
+		        {"name": "HK_CC_ERR_EID", "eventID": 2},
+		        {"name": "HK_CMD_LEN_ERR_EID", "eventID": 3},
+		        {"name": "HK_NOOP_CMD_EID", "eventID": 4},
+		        {"name": "HK_RESET_CNTRS_CMD_EID", "eventID": 5},
+		        {"name": "HK_ACCESSING_PAST_PACKET_END_EID", "eventID": 6},
+		        {"name": "HK_MEM_POOL_MALLOC_FAILED_EID", "eventID": 7},
+		        {"name": "HK_CANT_SUBSCRIBE_TO_SB_PKT_EID", "eventID": 8},
+		        {"name": "HK_MEM_POOL_FREE_FAILED_EID", "eventID": 9},
+		        {"name": "HK_UNEXPECTED_GETSTAT_RET_EID", "eventID": 10},
+		        {"name": "HK_UNKNOWN_COMBINED_PACKET_EID", "eventID": 11},
+		        {"name": "HK_OUTPKT_MISSING_DATA_EID", "eventID": 12},
+		        {"name": "HK_CR_PIPE_ERR_EID", "eventID": 14},
+		        {"name": "HK_SUB_CMB_ERR_EID", "eventID": 15},
+		        {"name": "HK_SUB_REQ_ERR_EID", "eventID": 16},
+		        {"name": "HK_SUB_CMD_ERR_EID", "eventID": 17},
+		        {"name": "HK_CR_POOL_ERR_EID", "eventID": 18},
+		        {"name": "HK_CPTBL_REG_ERR_EID", "eventID": 19},
+		        {"name": "HK_RTTBL_REG_ERR_EID", "eventID": 20},
+		        {"name": "HK_CPTBL_LD_ERR_EID", "eventID": 21},
+		        {"name": "HK_CPTBL_MNG_ERR_EID", "eventID": 22},
+		        {"name": "HK_RTTBL_MNG_ERR_EID", "eventID": 23},
+		        {"name": "HK_CPTBL_GADR_ERR_EID", "eventID": 24},
+		        {"name": "HK_RTTBL_GADR_ERR_EID", "eventID": 25},
+		        {"name": "HK_RCV_MSG_ERR_EID", "eventID": 26},
+		        {"name": "HK_UNEXPECTED_GETSTAT2_RET_EID", "eventID": 27},
+		        {"name": "HK_MSG_LEN_ERR_EID", "eventID": 28}
+			],
+		    "tables": [
+		        {"id": "CopyTable", "title": "Copy Table", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		        {"name": "HK_CMD_MID"},
+		        {"name": "HK_SEND_HK_MID"},
+		        {"name": "HK_SEND_COMBINED_PKT_MID"},
+		        {"name": "HK_HK_TLM_MID"},
+		        {"name": "HK_COMBINED_PKT1_MID"},
+		        {"name": "HK_COMBINED_PKT2_MID"},
+		        {"name": "HK_COMBINED_PKT3_MID"},
+		        {"name": "HK_COMBINED_PKT4_MID"},
+		        {"name": "HK_COMBINED_PKT5_MID"},
+		        {"name": "HK_COMBINED_PKT6_MID"},
+		        {"name": "HK_COMBINED_PKT7_MID"},
+		        {"name": "HK_COMBINED_PKT8_MID"},
+		        {"name": "HK_COMBINED_PKT9_MID"},
+		        {"name": "HK_COMBINED_PKT10_MID"}
+		    ]
+		},
+        {
+	        "id": "HMC5883",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "HS",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "LC",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "LD",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MAC",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MAVLINK",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MD",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MM",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MPC",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MPU9250",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "MS5611",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "NAV",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "QAE",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "RCIN",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "RGBLED",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "SC",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "SCH",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "SENS",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "TO",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "ULR",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "VC",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		},
+        {
+	        "id": "VM",
+		    "events": [
+	            {"name": "", "id": }
+			],
+		    "tables": [
+		        {"id": "", "title": "", "isDumpTable": }
+		    ],
+		    "msgs": [
+		        {"name": ""},
+		    ]
+		}
+	]
+}
