@@ -167,6 +167,39 @@ Matrix10F10 Matrix10F10::operator*(const Matrix10F10 &matIn)
 }
 
 
+// overload * operator to provide a matrix product
+Matrix10F6 Matrix10F10::operator*(const Matrix10F6 &matIn)
+{
+    Matrix10F6 matOut;
+    float value = 0.0f;
+
+    /* Rows in matrix 1 */
+    int rows1 = 10;
+    /* Columns in matrix 1 */
+    int cols1 = 10;
+    /* Columns in matrix 2 */
+    int cols2 = 6
+;
+    // TODO: verify correct
+    for(int i = 0; i < rows1; i++)
+    {
+    	for(int j = 0; j < cols2; j++)
+		{
+
+    		for(int k = 0; k < cols1; k++)
+			{
+    			value += data[i][j] * matIn[j][k];
+			}
+
+    		matOut[i][j] = value;
+    		value = 0.0f;
+		}
+    }
+
+    return matOut;
+}
+
+
 // overload * operator to provide a matrix vector product
 Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 {
@@ -225,6 +258,8 @@ void Matrix10F10::operator+=(const Matrix10F10 &mat)
 Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
 {
     Matrix10F1 matOut;
+    matOut.Zero();
+
     int i, j, k = 0;
     /* Rows in matrix 1 */
     int rows1 = 10;
@@ -281,6 +316,7 @@ Matrix10F10 Matrix10F10::operator+(const Matrix10F10 &matIn) const
     return matOut;
 }
 
+
 Matrix10F10 Matrix10F10::operator-(const Matrix10F10 &matIn) const
 {
     Matrix10F10 matOut;
@@ -296,6 +332,7 @@ Matrix10F10 Matrix10F10::operator-(const Matrix10F10 &matIn) const
 
     return matOut;
 }
+
 
 void Matrix10F10::Print()
 {

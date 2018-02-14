@@ -33,6 +33,8 @@
 
 #include "Matrix6F10_test.hpp"
 #include <math/Matrix6F10.hpp>
+#include <math/Vector10F.hpp>
+#include <math/Vector6F.hpp>
 
 #include "utassert.h"
 #include <float.h>
@@ -40,7 +42,6 @@
 
 void Test_Matrix6F10_Constructor(void)
 {
-    /* Note row column reversed in constructor */
 	math::Matrix6F10 matrix(
 			{1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
 			{2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f},
@@ -136,10 +137,38 @@ void Test_Matrix6F10_IndexOutOfBounds(void)
             {6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f}
 	);
 
-
-    printf("matrix[6][0] %f\n", matrix[6][0]);
 	/* Verify results */
 	UtAssert_True(isnan(matrix[6][0]), "matrix[6][0] == NAN");
 	UtAssert_True(isnan(matrix[0][10]), "matrix[0][10] == NAN");
 }
+
+
+void Test_Matrix6F10_Mult_10F(void)
+{
+	math::Matrix6F10 matrixA(
+			{1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+			{2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f},
+			{3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f},
+			{4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f},
+			{5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f},
+            {6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f}
+	);
+    
+    math::Vector10F vectorB(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+    );
+    
+    math::Vector6F result;
+    result.Zero();
+    
+    result = matrixA * vectorB;
+
+    UtAssert_True(result[0] == 55.0f, "result[0] == 55.0f");
+	UtAssert_True(result[1] == 110.0f, "result[1] == 110.0f");
+	UtAssert_True(result[2] == 165.0f, "result[2] == 165.0f");
+	UtAssert_True(result[3] == 220.0f, "result[3] == 220.0f");
+	UtAssert_True(result[4] == 275.0f, "result[4] == 275.0f");
+	UtAssert_True(result[5] == 330.0f, "result[5] == 330.0f");
+}
+
 

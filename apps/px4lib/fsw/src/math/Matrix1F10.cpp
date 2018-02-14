@@ -83,6 +83,8 @@ Matrix10F1 Matrix1F10::Transpose(void)
 Matrix1F10 Matrix1F10::operator*(const Matrix10F10 &matIn)
 {
     Matrix1F10 matOut;
+    matOut.Zero();
+
     int i, j, k = 0;
     /* Rows in matrix 1 */
     int rows1 = 1;
@@ -110,6 +112,7 @@ Matrix1F10 Matrix1F10::operator*(const Matrix10F10 &matIn)
 Matrix1F1 Matrix1F10::operator*(const Matrix10F1 &matIn)
 {
     Matrix1F1 matOut;
+    matOut.Zero();
     int i, j, k = 0;
     /* Rows in matrix 1 */
     int rows1 = 1;
@@ -137,6 +140,8 @@ Matrix1F1 Matrix1F10::operator*(const Matrix10F1 &matIn)
 Vector1F Matrix1F10::operator*(const Vector10F &vecIn)
 {
     Vector1F vecOut;
+    vecOut[0] = 0.0;
+
     int k = 0;
 
     for(k = 0; k < 10; k++)

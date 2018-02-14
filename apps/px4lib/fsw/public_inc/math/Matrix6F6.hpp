@@ -20,6 +20,8 @@ public:
 	~Matrix6F6();
 	Vector6F& operator [] (uint32 i);
 	Vector6F operator [] (uint32 i) const;
+    Matrix6F6 operator+(const Matrix6F6 &matIn) const;
+    //Matrix6F6 Inverse(void);
     void Zero(void);
 	Matrix6F6();
 

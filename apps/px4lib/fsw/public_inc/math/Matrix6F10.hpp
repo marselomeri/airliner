@@ -4,6 +4,9 @@
 #include "cfe.h"
 #include "Vector6F.hpp"
 #include "Vector10F.hpp"
+#include "Matrix10F6.hpp"
+#include "Matrix6F6.hpp"
+#include "Matrix10F10.hpp"
 
 namespace math
 {
@@ -25,6 +28,9 @@ public:
 	Vector10F& operator [] (uint32 i);
 	Vector10F operator [] (uint32 i) const;
     Vector6F operator*(const Vector10F &vecIn);
+    Matrix6F6 operator*(const Matrix10F6 &matIn);
+    Matrix6F10 operator*(const Matrix10F10 &matIn);
+    Matrix10F6 Transpose(void);
     void Zero(void);
 
 
