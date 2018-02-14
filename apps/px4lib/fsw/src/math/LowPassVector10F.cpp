@@ -14,7 +14,7 @@ LowPassVector10F::~LowPassVector10F()
 
 }
 
-math::Vector10F LowPassVector10F::Update(math::Matrix10F10 input, float dt, float cutoff)
+math::Vector10F LowPassVector10F::Update(math::Vector10F input, float dt, float cutoff)
 {
 	float b = 0.0f;
 	float a = 0.0f;
@@ -39,3 +39,13 @@ math::Vector10F LowPassVector10F::Update(math::Matrix10F10 input, float dt, floa
 
 	return output;
 }
+
+float LowPassVector10F::operator [] (uint32 i) const
+{
+	if(i < 10)
+	{
+		return m_State[i];
+	}
+
+	return NAN;
+};
