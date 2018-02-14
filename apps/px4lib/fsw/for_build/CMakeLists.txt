@@ -186,7 +186,7 @@ add_airliner_app_unit_test(px4lib-matrix1f10-ut
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector1F.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector3F.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
-        
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

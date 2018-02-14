@@ -1,5 +1,4 @@
 #include "math/Matrix10F10.hpp"
-
 #include <math.h>
 
 using namespace math;
@@ -131,8 +130,6 @@ Matrix10F10 Matrix10F10::operator*(const Matrix10F10 &matIn)
 }
 
 
-
-
 // overload * operator to provide a matrix vector product
 Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 {
@@ -188,23 +185,6 @@ void Matrix10F10::operator+=(const Matrix10F10 &mat)
     }
 }
 
-Matrix10F10 Matrix10F10::operator*(const float &scalar)
-{
-    Matrix10F10 matOut;
-
-    // TODO: verify correct
-    for(int i = 0; i < SIZE; i++)
-    {
-    	for(int j = 0; j < SIZE; j++)
-		{
-    		matOut[j][i] = scalar*data[j][i];
-		}
-    }
-
-    return matOut;
-}
-
-
 Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
 {
     Matrix10F1 matOut;
@@ -231,6 +211,23 @@ Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
 }
 
 
+Matrix10F10 Matrix10F10::operator*(const float &scalar)
+{
+    Matrix10F10 matOut;
+
+    // TODO: verify correct
+    for(int i = 0; i < SIZE; i++)
+    {
+    	for(int j = 0; j < SIZE; j++)
+		{
+    		matOut[j][i] = scalar*data[j][i];
+		}
+    }
+
+    return matOut;
+}
+
+
 Matrix10F10 Matrix10F10::operator+(const Matrix10F10 &matIn) const
 {
     Matrix10F10 matOut;
@@ -245,18 +242,6 @@ Matrix10F10 Matrix10F10::operator+(const Matrix10F10 &matIn) const
 	}
 
     return matOut;
-}
-
-void Matrix10F10::Print()
-{
-    for(int i = 0; i < SIZE; i++)
-	{
-		for(int j = 0; j < SIZE; j++)
-		{
-			OS_printf("%f, ", data[i][j]);
-		}
-		OS_printf("\n");
-	}
 }
 
 Matrix10F10 Matrix10F10::operator-(const Matrix10F10 &matIn) const
@@ -275,4 +260,14 @@ Matrix10F10 Matrix10F10::operator-(const Matrix10F10 &matIn) const
     return matOut;
 }
 
-
+void Matrix10F10::Print()
+{
+    for(int i = 0; i < SIZE; i++)
+	{
+		for(int j = 0; j < SIZE; j++)
+		{
+			OS_printf("%f, ", data[i][j]);
+		}
+		OS_printf("\n");
+	}
+}
