@@ -150,7 +150,7 @@ Matrix6F6 Matrix6F6::Identity(void)
 void Matrix6F6::getCofactor(const Matrix6F6 &mat, Matrix6F6 &temp, int p, int q, int n)
 {
     int i = 0, j = 0;
- 
+
     // Looping for each element of the matrix
     for (int row = 0; row < n; row++)
     {
@@ -161,7 +161,6 @@ void Matrix6F6::getCofactor(const Matrix6F6 &mat, Matrix6F6 &temp, int p, int q,
             if (row != p && col != q)
             {
                 temp[i][j++] = mat[row][col];
- 
                 // Row is filled, so increase row index and
                 // reset col index
                 if (j == n - 1)
@@ -187,9 +186,12 @@ float Matrix6F6::DeterminantRecursive(const Matrix6F6 &mat, int n)
  
     //  Base case : if matrix contains single element
     if (n == 1)
+    {
         return mat[0][0];
- 
+    }
+
     Matrix6F6 temp; // To store cofactors
+    temp.Zero();
  
     int sign = 1;  // To store sign multiplier
  
@@ -217,8 +219,9 @@ float Matrix6F6::Determinant(void)
 Matrix6F6 Matrix6F6::Inversed(void)
 {
     Matrix6F6 matOut;
-    Matrix6F6 temp;
     matOut.Zero();
+    Matrix6F6 temp;
+    temp.Zero();
     int i,j = 0;
     float determinant = 0;
     int sign = 1;
@@ -229,12 +232,18 @@ Matrix6F6 Matrix6F6::Inversed(void)
     {
         return Matrix6F6(nan[0], nan[1], nan[2], nan[3], nan[4], nan[5]);
     }
-    
-    for(i = 0; i < SIZE; i++)
+
+    for(j = 0; j < SIZE; j++)
     {
-        for(j = 0; j < SIZE; j++)
+        for(i = 0; i < SIZE; i++)
         {
-            /* TODO */
+            getCofactor(*this, temp, j, i, SIZE);
+            matOut[i][j] = DeterminantRecursive(temp, SIZE - 1) / determinant;
+            if (1 == (i+j)%2)
+            {
+                matOut[i][j] = -matOut[i][j];
+            }
+
         }
     }
     

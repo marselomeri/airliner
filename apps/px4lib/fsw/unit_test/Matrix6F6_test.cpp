@@ -147,6 +147,8 @@ void Test_Matrix6F6_Determinant(void)
 	float result = 0;
 
     result = matrix.Determinant();
+    
+    //printf("result %f\n", result);
 
     UtAssert_True(result == 7, "result == 7");
 }
@@ -164,53 +166,56 @@ void Test_Matrix6F6_Inverse(void)
 	);
 
     math::Matrix6F6 matrix = matrixA.Inversed();
-    
-    
-    printf("matrix[0][0] %f\n", matrix[0][0]);
-    printf("matrix[0][1] %f\n", matrix[0][1]);
 
 	/* Verify results */
-	UtAssert_True(matrix[0][0] == 6 / 7, "matrix[0][0] == 6 / 7");
-	UtAssert_True(matrix[0][1] == - 1 / 7, "matrix[0][1] == - 1 / 7");
-	UtAssert_True(matrix[0][2] == - 1 / 7, "matrix[0][2] == - 1 / 7");
-	UtAssert_True(matrix[0][3] == - 1 / 7, "matrix[0][3] == - 1 / 7");
-	UtAssert_True(matrix[0][4] == - 1 / 7, "matrix[1][4] == - 1 / 7");
-	UtAssert_True(matrix[0][5] == - 1 / 7, "matrix[1][5] == - 1 / 7");
+	UtAssert_True(fabs(matrix[0][0] - (6.0f / 7.0f)) < 0.00001f, "matrix[0][0] == 6 / 7");
+	UtAssert_True(fabs(matrix[0][1] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[0][1] == - 1 / 7");
+	UtAssert_True(fabs(matrix[0][2] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[0][2] == - 1 / 7");
+	UtAssert_True(fabs(matrix[0][3] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[0][3] == - 1 / 7");
+	UtAssert_True(fabs(matrix[0][4] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][4] == - 1 / 7");
+	UtAssert_True(fabs(matrix[0][5] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][5] == - 1 / 7");
     
-	UtAssert_True(matrix[1][0] == - 1 / 7, "matrix[1][0] == - 1 / 7");
-	UtAssert_True(matrix[1][1] == 6 / 7, "matrix[1][1] == 6 / 7");
-	UtAssert_True(matrix[1][2] == - 1 / 7, "matrix[1][2] == - 1 / 7");
-	UtAssert_True(matrix[1][3] == - 1 / 7, "matrix[1][3] == - 1 / 7");
-	UtAssert_True(matrix[1][4] == - 1 / 7, "matrix[1][4] == - 1 / 7");
-	UtAssert_True(matrix[1][5] == - 1 / 7, "matrix[1][5] == - 1 / 7");
+	UtAssert_True(fabs(matrix[1][0] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][0] == - 1 / 7");
+	UtAssert_True(fabs(matrix[1][1] - (6.0f / 7.0f)) < 0.00001f, "matrix[1][1] == 6 / 7");
+	UtAssert_True(fabs(matrix[1][2] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][2] == - 1 / 7");
+	UtAssert_True(fabs(matrix[1][3] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][3] == - 1 / 7");
+	UtAssert_True(fabs(matrix[1][4] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][4] == - 1 / 7");
+	UtAssert_True(fabs(matrix[1][5] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[1][5] == - 1 / 7");
 
-	UtAssert_True(matrix[2][0] == - 1 / 7, "matrix[2][0] == - 1 / 7");
-	UtAssert_True(matrix[2][1] == - 1 / 7, "matrix[2][1] == - 1 / 7f");
-	UtAssert_True(matrix[2][2] == 6 / 7, "matrix[2][2] == 6 / 7");
-	UtAssert_True(matrix[2][3] == - 1 / 7, "matrix[2][3] == - 1 / 7");
-	UtAssert_True(matrix[2][4] == - 1 / 7, "matrix[2][4] == - 1 / 7");
-	UtAssert_True(matrix[2][5] == - 1 / 7, "matrix[2][5] == - 1 / 7");
+	UtAssert_True(fabs(matrix[2][0] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[2][0] == - 1 / 7");
+	UtAssert_True(fabs(matrix[2][1] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[2][1] == - 1 / 7f");
+	UtAssert_True(fabs(matrix[2][2] - (6.0f / 7.0f)) < 0.00001f, "matrix[2][2] == 6 / 7");
+	UtAssert_True(fabs(matrix[2][3] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[2][3] == - 1 / 7");
+	UtAssert_True(fabs(matrix[2][4] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[2][4] == - 1 / 7");
+	UtAssert_True(fabs(matrix[2][5] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[2][5] == - 1 / 7");
 
-	UtAssert_True(matrix[3][0] == - 1 / 7, "matrix[3][0] == - 1 / 7");
-	UtAssert_True(matrix[3][1] == - 1 / 7, "matrix[3][1] == - 1 / 7");
-	UtAssert_True(matrix[3][2] == - 1 / 7, "matrix[3][2] == - 1 / 7");
-	UtAssert_True(matrix[3][3] == 6 / 7, "matrix[3][3] == 6 / 7");
-	UtAssert_True(matrix[3][4] == - 1 / 7, "matrix[3][4] == - 1 / 7");
-	UtAssert_True(matrix[3][5] == - 1 / 7, "matrix[3][5] == - 1 / 7");
+	UtAssert_True(fabs(matrix[3][0] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[3][0] == - 1 / 7");
+	UtAssert_True(fabs(matrix[3][1] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[3][1] == - 1 / 7");
+	UtAssert_True(fabs(matrix[3][2] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[3][2] == - 1 / 7");
+	UtAssert_True(fabs(matrix[3][3] - (6.0f / 7.0f)) < 0.00001f, "matrix[3][3] == 6 / 7");
+	UtAssert_True(fabs(matrix[3][4] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[3][4] == - 1 / 7");
+	UtAssert_True(fabs(matrix[3][5] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[3][5] == - 1 / 7");
 
-	UtAssert_True(matrix[4][0] == - 1 / 7, "matrix[4][0] == - 1 / 7");
-	UtAssert_True(matrix[4][1] == - 1 / 7, "matrix[4][1] == - 1 / 7");
-	UtAssert_True(matrix[4][2] == - 1 / 7, "matrix[4][2] == - 1 / 7");
-	UtAssert_True(matrix[4][3] == - 1 / 7, "matrix[4][3] == - 1 / 7");
-	UtAssert_True(matrix[4][4] == 6 / 7, "matrix[4][4] == 6 / 7");
-	UtAssert_True(matrix[4][5] == - 1 / 7, "matrix[4][5] == - 1 / 7");
+	UtAssert_True(fabs(matrix[4][0] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[4][0] == - 1 / 7");
+	UtAssert_True(fabs(matrix[4][1] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[4][1] == - 1 / 7");
+	UtAssert_True(fabs(matrix[4][2] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[4][2] == - 1 / 7");
+	UtAssert_True(fabs(matrix[4][3] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[4][3] == - 1 / 7");
+	UtAssert_True(fabs(matrix[4][4] - (6.0f / 7.0f)) < 0.00001f, "matrix[4][4] == 6 / 7");
+	UtAssert_True(fabs(matrix[4][5] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[4][5] == - 1 / 7");
 
-	UtAssert_True(matrix[5][0] == - 1 / 7, "matrix[5][0] == - 1 / 7");
-	UtAssert_True(matrix[5][1] == - 1 / 7, "matrix[5][1] == - 1 / 7");
-	UtAssert_True(matrix[5][2] == - 1 / 7, "matrix[5][2] == - 1 / 7");
-	UtAssert_True(matrix[5][3] == - 1 / 7, "matrix[5][3] == - 1 / 7");
-	UtAssert_True(matrix[5][4] == - 1 / 7, "matrix[5][4] == - 1 / 7");
-	UtAssert_True(matrix[5][5] == 6 / 7, "matrix[5][5] == 6 / 7");
+	UtAssert_True(fabs(matrix[5][0] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][0] == - 1 / 7");
+	UtAssert_True(fabs(matrix[5][1] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][1] == - 1 / 7");
+	UtAssert_True(fabs(matrix[5][2] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][2] == - 1 / 7");
+	UtAssert_True(fabs(matrix[5][3] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][3] == - 1 / 7");
+	UtAssert_True(fabs(matrix[5][4] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][4] == - 1 / 7");
+	UtAssert_True(fabs(matrix[5][5] - (6.0f / 7.0f)) < 0.00001f, "matrix[5][5] == 6 / 7");
 }
 
-
+	//math::Matrix6F6 matrixA(
+			//{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			//{7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f},
+			//{13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f},
+			//{19.0f, 20.0f, 21.0f, 22.0f, 23.0f, 24.0f},
+			//{25.0f, 26.0f, 27.0f, 28.0f, 29.0f, 30.0f},
+			//{31.0f, 32.0f, 33.0f, 34.0f, 35.0f, 36.0f}
+	//);
