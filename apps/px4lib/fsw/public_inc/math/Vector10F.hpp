@@ -7,6 +7,8 @@
 namespace math
 {
 
+class Vector3F;
+
 class Vector10F
 {
 private:

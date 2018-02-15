@@ -2,9 +2,14 @@
 #define VECTOR3F_HPP
 
 #include "cfe.h"
+#include "Vector10F.hpp"
+#include "Matrix1F3.hpp"
 
 namespace math
 {
+
+class Vector10F;
+class Matrix1F3;
 
 class Vector3F
 {
@@ -20,9 +25,11 @@ public:
 	float operator [] (uint32 i) const;
 	float Length(void) const;
 	void Zero(void);
+    Matrix1F3 Transpose(void);
 	Vector3F operator+(const Vector3F &vecIn);
 	Vector3F operator+(const Vector3F &vecIn) const;
 	Vector3F operator-(const Vector3F &vecIn);
+	Vector3F operator-(const Vector10F &vecIn);
 	Vector3F operator-(const Vector3F &vecIn) const;
 	Vector3F operator%(const Vector3F &vecIn);
 	Vector3F operator*(const float scalar);

@@ -3,6 +3,7 @@
 
 #include "cfe.h"
 #include "Vector3F.hpp"
+#include "Vector10F.hpp"
 #include "Matrix3F3.hpp"
 #include "Matrix3F10.hpp"
 #include "Matrix10F10.hpp"
@@ -15,6 +16,7 @@ namespace math
 /* Forward declares */
 class Matrix3F10;
 class Matrix10F10;
+class Vector10F;
 
 class Matrix10F3
 {
@@ -34,7 +36,7 @@ public:
 	Matrix10F3();
 	Matrix3F10 Transpose(void);
 	static Matrix10F3 Identity(void);
-	Vector3F operator*(const Vector3F &vecIn);
+	Vector10F operator*(const Vector3F &vecIn);
 	Matrix10F3 operator*(const Matrix10F3 &matIn);
 	Matrix10F3 operator*(const Matrix3F3 &matIn);
     Matrix10F10 operator*(const Matrix3F10 &matIn);

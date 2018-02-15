@@ -56,6 +56,18 @@ void Vector3F::Zero()
     data[2] = 0.0f;
 }
 
+Matrix1F3 Vector3F::Transpose(void)
+{
+    Matrix1F3 matOut;
+    matOut.Zero();
+
+    matOut[0][0] = data[0];
+    matOut[0][1] = data[1];
+    matOut[0][2] = data[2];
+
+    return matOut; 
+}
+
 
 // overload + operator to provide a vector addition
 Vector3F Vector3F::operator+(const Vector3F &vecIn)
@@ -81,6 +93,17 @@ Vector3F Vector3F::operator+(const Vector3F &vecIn) const
 
 // overload - operator to provide a vector subtraction
 Vector3F Vector3F::operator-(const Vector3F &vecIn)
+{
+    Vector3F vecOut;
+    vecOut[0] = data[0] - vecIn[0];
+    vecOut[1] = data[1] - vecIn[1];
+    vecOut[2] = data[2] - vecIn[2];
+    return vecOut;
+}
+
+// TODO TODO TODO XXX: This needs serious peer review
+// overload - operator to provide a vector subtraction
+Vector3F Vector3F::operator-(const Vector10F &vecIn)
 {
     Vector3F vecOut;
     vecOut[0] = data[0] - vecIn[0];
