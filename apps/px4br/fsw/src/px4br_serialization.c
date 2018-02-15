@@ -4206,6 +4206,7 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("global PB enc error: %s", PB_GET_ERROR(&stream));
 		return 0;
 	}
 
@@ -4496,6 +4497,7 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("local PB enc error: %s", PB_GET_ERROR(&stream));
 		return 0;
 	}
 
