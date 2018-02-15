@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -201,19 +204,16 @@ block main
                 button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/DisableNameTable'}}) Disable Name Table
                 button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/EnableNameApp'}}) Enable Name App
                 button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/DisableNameApp'}}) Disable Name App
-         
-
-  .row               
-    include /panels/cfe/table_control.pug
-       
-  .row      
-    include /panels/cfe/application_control.pug     
-
+                            
+  .row          
+    +app_specific_mempools("CS")
+    
   .row
-    include /panels/apps/sch/scheduler.pug
-
+    +app_specific_application_control("CS") 
+    +registered_applications() 
+  
   .row
-    include /panels/cfe/event_filters.pug
+    +app_specific_table_control("CS")
 
 
 

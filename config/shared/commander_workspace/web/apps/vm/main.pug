@@ -5,16 +5,16 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | RGBLED Control
+        | Video Control
 
 block main
   .row.row-fluid
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-      #wid-RGBLED-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+      #wid-VC-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 RGBLED Control
+          h2 Video Control
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -25,26 +25,28 @@ block main
                   tr
                     th Cmd Count
                     td
-                      span(data-sage={tlm: [{name:'/CFS/RGBLED/CmdCounter'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/VC/CmdCounter'}]}) ---
                   tr
                     th Error Count
                     td
-                      span(data-sage={tlm: [{name:'/CFS/RGBLED/ErrCounter'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/VC/ErrCounter'}]}) ---
                   tr
                     th State
                     td
-                      span(data-sage={tlm: [{name:'/CFS/RGBLED/State'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/VC/State'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/RGBLED/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/RGBLED/Reset'}}) Reset
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/RGBLED/SelfTest'}}) Self-Test
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/Reset'}}) Reset
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StartStreaming'}}) Start Streaming
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StopStreaming'}}) Stop Streaming
                                               
   .row          
-    +app_specific_mempools("RGBLED")
+    +app_specific_mempools("VM")
     
   .row
-    +app_specific_application_control("RGBLED") 
+    +app_specific_application_control("VM") 
     +registered_applications() 
   
   .row
-    +app_specific_table_control("RGBLED")
+    +app_specific_table_control("VM")
+                  

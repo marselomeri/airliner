@@ -1,7 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
 
 block includes
-
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -170,6 +170,4 @@ block main
             button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset
 
   .row
-    include /panels/cfe/event_filters.pug
-    include /panels/apps/sch/scheduler.pug
-
+    +app_specific_event_filters("CFE_ES")

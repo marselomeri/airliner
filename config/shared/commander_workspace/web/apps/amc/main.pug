@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -217,16 +220,14 @@ block main
                       th Output 15
                       td
                         span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_15'}]}) ---
-                        
-  .row               
-    include /panels/cfe/table_control.pug
-       
-  .row      
-    include /panels/cfe/application_control.pug     
-
+                                              
+  .row          
+    +app_specific_mempools("AMC")
+    
   .row
-    include /panels/apps/sch/scheduler.pug
-
+    +app_specific_application_control("AMC") 
+    +registered_applications() 
+  
   .row
-    include /panels/cfe/event_filters.pug
+    +app_specific_table_control("AMC")
 

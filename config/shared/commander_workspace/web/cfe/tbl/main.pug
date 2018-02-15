@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -214,6 +217,13 @@ block main
                     td
                       span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Critical'}]}) ---
                     td
-
-    include /panels/cfe/event_filters.pug
-    include /panels/apps/sch/scheduler.pug
+            
+  .row          
+    +app_specific_mempools("CFE_TBL")
+    
+  .row
+    +app_specific_application_control("CFE_TBL") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("CFE_TBL")

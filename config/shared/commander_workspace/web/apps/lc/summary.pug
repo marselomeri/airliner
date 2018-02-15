@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -43,4 +46,14 @@ block main
               footer
                 button.btn.btn-primary(data-sage={cmd:{name:'/CFS/LC/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd:{name:'/CFS/LC/Reset'}}) Reset
+                                              
+  .row          
+    +app_specific_mempools("LC")
+    
+  .row
+    +app_specific_application_control("LC") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("LC")
                                        

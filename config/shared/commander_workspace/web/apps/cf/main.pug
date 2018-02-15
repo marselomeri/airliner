@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -848,13 +851,9 @@ block main
                       span(data-sage={tlm: [{name: '/CFS/CF/Trans_App_DstFile'}]}) ---
             footer
               button.btn.btn-primary(data-placement='top' data-sage={cmd: {name: '/CFS/CF/SendTransDiagData'}}) Send Trans Diag
-
-  .row
-
-    include /panels/apps/sch/scheduler.pug
     
   .row
-    include /panels/cfe/event_filters.pug
+    +app_specific_event_filters("CF")
 
     article.col-xs-11.col-sm-6.col-md-5.col-lg-4(style='width:350px')
       #wid-CFE-SB-Memory.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -872,37 +871,31 @@ block main
                   tr
                     th Memory in Use
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CF/App_MemInUse'}]}) ---
+                      span(data-sage={tlm: [{'name': '/CFS/CF/App_MemInUse'}]}) ---
                   tr
                     th Peak Memory in Use
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CF/App_PeakMemInUse'}]}) ---
+                      span(data-sage={tlm: [{'name': '/CFS/CF/App_PeakMemInUse'}]}) ---
                   tr
                     th Low Memory Mark
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CF/App_LowMemoryMark'}]}) ---
+                      span(data-sage={tlm: [{'name': '/CFS/CF/App_LowMemoryMark'}]}) ---
                   tr
                     th Max Memory Needed
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CF/App_MaxMemNeeded'}]}) ---
+                      span(data-sage={tlm: [{'name': '/CFS/CF/App_MaxMemNeeded'}]}) ---
                   tr
                     th Memory Allocated
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CF/App_MemAllocated'}]}) ---
-                      
-    include /panels/cfe/mempools.pug
-
-    article.col-xs-12.col-sm-12.col-md-12.col-lg-12
-      #wid-id-0.jarviswidget(data-widget-editbutton='false')
-        header
-          ul#widget-tab-navtab.nav.nav-tabs
-            li.active
-              a(data-toggle='tab' href='#tabGSFileNav')
-                i.fa.fa-lg.fa-arrow-circle-o-down
-                span.hidden-mobile.hidden-tablet Ground Station File Browser
-        div
-          .jarviswidget-editbox
-          .widget-body.no-padding
-            #widget-tab-content.tab-content.padding-10
-              #tabGSFileNav.tab-pane.fade.in.active
-                #GSFileBrowserContainer
+                      span(data-sage={tlm: [{'name': '/CFS/CF/App_MemAllocated'}]}) ---
+            
+  .row          
+    +app_specific_mempools("CF")
+    
+  .row
+    +app_specific_application_control("CF") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("CF")
+  

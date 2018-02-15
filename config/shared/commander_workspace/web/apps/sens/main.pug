@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -153,6 +156,16 @@ block main
                       a(data-sage={cmd:{name:'/CFS/SCH/EnableGroup'}}) Enable Group
                     li
                       a(data-sage={cmd:{name:'/CFS/SCH/DisableGroup'}}) Disable Group
+                                              
+  .row          
+    +app_specific_mempools("SENS")
+    
+  .row
+    +app_specific_application_control("SENS") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("SENS")
                     
 
 

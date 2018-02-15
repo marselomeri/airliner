@@ -1,4 +1,7 @@
-extends ../common/layout
+extends ../../web_includes/common/layout
+
+block includes
+  include ../../web_includes/common/common_includes.pug
 
 block header
   i.fa-fw.fa.fa-signal
@@ -57,24 +60,44 @@ block main
     var hrzWidth;
     var cameraImage;
     var imageBuffer;
+    var Q = [];
 
     session.subscribe({
-        homogeneity: {tolerance: 0.5}, tlm: [
-          {name: '/MAV/CMN/A_pitch'},
-          {name: '/MAV/CMN/A_roll'}]
+        homogeneity: {tolerance: 0}, tlm: [
+            {'name': '/CFS/PX4/VA_Q_0'},
+            {'name': '/CFS/PX4/VA_Q_1'},
+            {'name': '/CFS/PX4/VA_Q_2'},
+            {'name': '/CFS/PX4/VA_Q_3'}
+        ]
       },
       function (params) {
         for (var i = 0; i < params.length; ++i) {
           switch (params[i].id.name) {
-            case '/MAV/CMN/A_pitch':
-              Attitude.Pitch = params[i].engValue.floatValue;
+            case '/CFS/PX4/VA_Q_0':
+              Q[0] = params[i].engValue.floatValue;
               break;
-
-            case '/MAV/CMN/A_roll':
-              Attitude.Roll = params[i].engValue.floatValue;
+              
+            case '/CFS/PX4/VA_Q_1':
+              Q[1] = params[i].engValue.floatValue;
+              break;
+              
+            case '/CFS/PX4/VA_Q_2':
+              Q[2] = params[i].engValue.floatValue;
+              break;
+              
+            case '/CFS/PX4/VA_Q_3':
+              Q[3] = params[i].engValue.floatValue;
               break;
           }
         }
+        
+        var phi = Math.atan2((Q[2]*Q[3])+(Q[0]*Q[1]), 0.5 - (Q[1]*Q[1])-(Q[2]*Q[2]));
+        var theta = Math.asin(-2*((Q[1]*Q[3])-(Q[0]*Q[2])));
+        var psi = Math.atan2((Q[1]*Q[2])-(Q[0]*Q[3]),0.5-((Q[2]*Q[2])+(Q[3]*Q[3])));
+      
+        Attitude.Pitch = theta;
+        Attitude.Roll = phi;
+        Attitude.Yaw = psi;
 
         if (HUDStarted == false) {
           /* Skip the first one. */
@@ -82,17 +105,26 @@ block main
         } else {
           HUDCount++;
         }
+        
+        if (HUDStarted == true) {
+          updateHUDHeading(Attitude.Yaw);
+          updateHUDPitch(Attitude.Pitch * 57.2958);
+          updateHUDRoll(Attitude.Roll * 57.2958);
+        }
       }
     );
-      
-    setInterval(function () {
-      if (HUDStarted == true) {
+    
+    session.subscribe({tlm: [{'name': '/CFS/PX4/VGP_Alt'}]}, function (params) {
+        Position.Alt = params[0].engValue.floatValue - 488;
         updateHUDAltitude(Position.Alt);
-        updateHUDHeading(Attitude.Yaw);
-        updateHUDPitch(Attitude.Pitch * 57.2958);
-        updateHUDRoll(Attitude.Roll * 57.2958);
-      }
-    }, 1000);
+        console.log("" + params);
+    });
+      
+    //setInterval(function () {
+    //  if (HUDStarted == true) {
+    //    updateHUDAltitude(Position.Alt);
+    //  }
+    //}, 50);
 
     drawHUD();
 

@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -43,15 +46,14 @@ block main
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/RegCmd'}}) Register Cmd
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/DeregCmd'}}) Deregister cmd
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/UpdateCmdReg'}}) Update cmd
-  .row               
-    include /panels/cfe/table_control.pug
-       
-  .row      
-    include /panels/cfe/application_control.pug     
-
+                            
+  .row          
+    +app_specific_mempools("CI")
+    
   .row
-    include /panels/apps/sch/scheduler.pug
-
+    +app_specific_application_control("CI") 
+    +registered_applications() 
+  
   .row
-    include /panels/cfe/event_filters.pug
+    +app_specific_table_control("CI")
 
