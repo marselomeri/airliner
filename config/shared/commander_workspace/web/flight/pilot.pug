@@ -114,10 +114,10 @@ block main
       }
     );
     
-    session.subscribe({tlm: [{'name': '/CFS/PX4/VGP_Alt'}]}, function (params) {
-        Position.Alt = params[0].engValue.floatValue - 488;
+    session.subscribe({tlm: [{'name': '/CFS/PX4/VGP_Alt'}]}, function (param) {
+        Position.Alt = param.engValue.floatValue - 488;
         updateHUDAltitude(Position.Alt);
-        console.log("" + params);
+        console.log("" + param);
     });
       
     //setInterval(function () {
