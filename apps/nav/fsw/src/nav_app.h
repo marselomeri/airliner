@@ -57,7 +57,7 @@ extern "C" {
 #include "nav_events.h"
 #include "nav_tbldefs.h"
 #include "px4_msgs.h"
-#include "lib/px4lib.h"
+#include "px4lib.h"
 #include "geo/geo.h"
 
 /************************************************************************

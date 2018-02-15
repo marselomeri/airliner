@@ -4208,12 +4208,20 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 	pbMsg.lat = inObject->Lat;
 	pbMsg.lon = inObject->Lon;
 	pbMsg.alt = inObject->Alt;
+    pbMsg.delta_lat_lon_count = 2;
+    pbMsg.delta_lat_lon[0] = inObject->DeltaLatLon[0];
+    pbMsg.delta_lat_lon[1] = inObject->DeltaLatLon[1];
+    pbMsg.delta_alt = inObject->DeltaAlt;
+    pbMsg.lat_lon_reset_counter = inObject->LatLonResetCounter;
+    pbMsg.alt_reset_counter = inObject->AltResetCounter;
 	pbMsg.vel_n = inObject->VelN;
 	pbMsg.vel_e = inObject->VelE;
 	pbMsg.vel_d = inObject->VelD;
 	pbMsg.yaw = inObject->Yaw;
 	pbMsg.eph = inObject->EpH;
 	pbMsg.epv = inObject->EpV;
+    pbMsg.evh = inObject->EvH;
+    pbMsg.evv = inObject->EvV;
 	pbMsg.terrain_alt = inObject->TerrainAlt;
 	pbMsg.pressure_alt = inObject->PressureAlt;
 	pbMsg.terrain_alt_valid = inObject->TerrainAltValid;
@@ -4227,6 +4235,7 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGlobalPosition_Enc failed\n");
 		return 0;
 	}
 
@@ -4247,6 +4256,7 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGlobalPosition_Dec failed\n");
 		return 0;
 	}
 
@@ -4255,12 +4265,19 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->Lat = pbMsg.lat;
 	inOutObject->Lon = pbMsg.lon;
 	inOutObject->Alt = pbMsg.alt;
+    inOutObject->DeltaLatLon[0] = pbMsg.delta_lat_lon[0];
+    inOutObject->DeltaLatLon[1] = pbMsg.delta_lat_lon[1];
+    inOutObject->DeltaAlt = pbMsg.delta_alt;
+    inOutObject->LatLonResetCounter = pbMsg.lat_lon_reset_counter;
+    inOutObject->AltResetCounter = pbMsg.alt_reset_counter;
 	inOutObject->VelN = pbMsg.vel_n;
 	inOutObject->VelE = pbMsg.vel_e;
 	inOutObject->VelD = pbMsg.vel_d;
 	inOutObject->Yaw = pbMsg.yaw;
 	inOutObject->EpH = pbMsg.eph;
 	inOutObject->EpV = pbMsg.epv;
+    inOutObject->EvH = pbMsg.evh;
+    inOutObject->EvV = pbMsg.evv;
 	inOutObject->TerrainAlt = pbMsg.terrain_alt;
 	inOutObject->PressureAlt = pbMsg.pressure_alt;
 	inOutObject->TerrainAltValid = pbMsg.terrain_alt_valid;
@@ -4268,6 +4285,7 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 
 	return sizeof(PX4_VehicleGlobalPositionMsg_t);
 }
+
 
 
 uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)

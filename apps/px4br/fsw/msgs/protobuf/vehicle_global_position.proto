@@ -3,21 +3,27 @@ import "nanopb.proto";
 
 message px4br_vehicle_global_position_pb 
 {
-	required uint64 timestamp = 1;
-	required uint64 time_utc_usec = 2;
-	required double lat = 3;
-	required double lon = 4;
-	required float alt = 5;
-	required float vel_n = 6;
-	required float vel_e = 7;
-	required float vel_d = 8;
-	required float yaw = 9;
-	required float eph = 10;
-	required float epv = 11;
-	required float terrain_alt = 12;
-	required float pressure_alt = 13;
-	required bool terrain_alt_valid = 14;
-	required bool dead_reckoning = 15;
+    required uint64 timestamp = 1;
+    required uint64 time_utc_usec = 2;
+    required double lat = 3;
+    required double lon = 4;
+    required float alt = 5;
+    repeated double delta_lat_lon = 6 [packed=true, (nanopb).max_count = 2];
+    required float delta_alt = 7;
+    required uint32 lat_lon_reset_counter = 8;
+    required uint32 alt_reset_counter = 9;
+    required float vel_n = 10;
+    required float vel_e = 11;
+    required float vel_d = 12;
+    required float yaw = 13;
+    required float eph = 14;
+    required float epv = 15;
+    required float evh = 16;
+    required float evv = 17;
+    required float terrain_alt = 18;
+    required float pressure_alt = 19;
+    required bool terrain_alt_valid = 20;
+    required bool dead_reckoning = 21;
 }
 
 // ORB_DECLARE(vehicle_global_position);

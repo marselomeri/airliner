@@ -1685,12 +1685,18 @@ typedef struct
 	double Lat;
 	double Lon;
 	float Alt;
+    double DeltaLatLon[2];
+    float DeltaAlt;
+    uint8 LatLonResetCounter;
+    uint8 AltResetCounter;
 	float VelN;
 	float VelE;
 	float VelD;
 	float Yaw;
 	float EpH;
 	float EpV;
+    float EvH;
+    float EvV;
 	float TerrainAlt;
 	float PressureAlt;
 	boolean TerrainAltValid;
