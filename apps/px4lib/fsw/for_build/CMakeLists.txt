@@ -164,6 +164,30 @@ add_airliner_app_unit_test(px4lib-matrix4f4-ut
 )
 
 
+add_airliner_app_unit_test(px4lib-matrix6f6-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F6.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F6.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector6F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector6F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix6f6-ut.supp
+)
+
+
+
 add_airliner_app_unit_test(px4lib-matrix1f10-ut
     UTASSERT
     SOURCES

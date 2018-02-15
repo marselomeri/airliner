@@ -6,7 +6,14 @@ using namespace math;
 Matrix6F6::Matrix6F6(Vector6F m0, Vector6F m1, Vector6F m2, Vector6F m3,
                        Vector6F m4, Vector6F m5) :
 	data{m0, m1, m2, m3, m4, m5},
-	nan{NAN,NAN,NAN,NAN,NAN,NAN}
+	nan{
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN}
+    }
 {
 };
 
@@ -20,7 +27,14 @@ Matrix6F6::Matrix6F6() :
         {0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
         {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
 	},
-	nan{NAN,NAN,NAN,NAN,NAN,NAN}
+	nan{
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN},
+        {NAN,NAN,NAN,NAN,NAN,NAN}
+    }
 {
 };
 
@@ -46,7 +60,7 @@ Vector6F& Matrix6F6::operator [] (uint32 i)
 {
 	if(i >= SIZE)
 	{
-		return nan;
+		return nan[0];
 	}
 	else
 	{
@@ -59,7 +73,7 @@ Vector6F Matrix6F6::operator [] (uint32 i) const
 {
 	if(i >= SIZE)
 	{
-		return nan;
+		return nan[0];
 	}
 	else
 	{
@@ -118,12 +132,113 @@ Matrix6F6 Matrix6F6::operator+(const Matrix6F6 &matIn) const
 }
 
 
-//Matrix6F6 Matrix6F6::Inverse(void)
-//{
-    //Matrix6F6 matOut;
+Matrix6F6 Matrix6F6::Identity(void)
+{
+    Matrix6F6 identity(
+            {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}
+    );
     
+    return identity;
+}
+
+
+void Matrix6F6::getCofactor(const Matrix6F6 &mat, Matrix6F6 &temp, int p, int q, int n)
+{
+    int i = 0, j = 0;
+ 
+    // Looping for each element of the matrix
+    for (int row = 0; row < n; row++)
+    {
+        for (int col = 0; col < n; col++)
+        {
+            //  Copying into temporary matrix only those element
+            //  which are not in given row and column
+            if (row != p && col != q)
+            {
+                temp[i][j++] = mat[row][col];
+ 
+                // Row is filled, so increase row index and
+                // reset col index
+                if (j == n - 1)
+                {
+                    j = 0;
+                    i++;
+                }
+            }
+        }
+    }
+}
+
+
+
+float Matrix6F6::DeterminantRecursive(const Matrix6F6 &mat, int n)
+{
+    if (n < 1)
+    {
+        return NAN;
+    }
+
+    int D = 0; // Initialize result
+ 
+    //  Base case : if matrix contains single element
+    if (n == 1)
+        return mat[0][0];
+ 
+    Matrix6F6 temp; // To store cofactors
+ 
+    int sign = 1;  // To store sign multiplier
+ 
+     // Iterate for each element of first row
+    for (int f = 0; f < n; f++)
+    {
+        // Getting Cofactor of mat[0][f]
+        getCofactor(mat, temp, 0, f, n);
+        D += sign * mat[0][f] * DeterminantRecursive(temp, n - 1);
+ 
+        // terms are to be added with alternate sign
+        sign = -sign;
+    }
+ 
+    return D;
+}
+
+
+float Matrix6F6::Determinant(void)
+{
+    return DeterminantRecursive(*this, SIZE);
+}
+
+
+Matrix6F6 Matrix6F6::Inversed(void)
+{
+    Matrix6F6 matOut;
+    Matrix6F6 temp;
+    matOut.Zero();
+    int i,j = 0;
+    float determinant = 0;
+    int sign = 1;
     
+    determinant = Determinant();
+
+    if (0 == determinant || !isfinite(determinant))
+    {
+        return Matrix6F6(nan[0], nan[1], nan[2], nan[3], nan[4], nan[5]);
+    }
     
-//}
+    for(i = 0; i < SIZE; i++)
+    {
+        for(j = 0; j < SIZE; j++)
+        {
+            /* TODO */
+        }
+    }
+    
+    return matOut;
+}
 
 
