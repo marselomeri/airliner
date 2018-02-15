@@ -168,6 +168,16 @@ block main
           .widget-body
             button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
             button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset
+                                    
+  .row          
+    +app_specific_mempools("CFE_ES")
+    
+  .row
+    +registered_applications() 
+    +app_specific_application_control("CFE_ES")
 
   .row
     +app_specific_event_filters("CFE_ES")
+    
+  .row
+    +app_specific_scheduler_control("CFE_ES")

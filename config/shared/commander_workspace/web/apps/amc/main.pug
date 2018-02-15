@@ -220,14 +220,17 @@ block main
                       th Output 15
                       td
                         span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_15'}]}) ---
-                                              
+                                    
   .row          
     +app_specific_mempools("AMC")
     
   .row
-    +app_specific_application_control("AMC") 
     +registered_applications() 
-  
+    +app_specific_application_control("AMC")
+
   .row
-    +app_specific_table_control("AMC")
+    +app_specific_event_filters("AMC")
+    
+  .row
+    +app_specific_scheduler_control("AMC")
 

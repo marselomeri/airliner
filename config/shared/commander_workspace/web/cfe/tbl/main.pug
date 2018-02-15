@@ -217,13 +217,16 @@ block main
                     td
                       span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Critical'}]}) ---
                     td
-            
+                                    
   .row          
     +app_specific_mempools("CFE_TBL")
     
   .row
-    +app_specific_application_control("CFE_TBL") 
     +registered_applications() 
-  
+    +app_specific_application_control("CFE_TBL")
+
   .row
-    +app_specific_table_control("CFE_TBL")
+    +app_specific_event_filters("CFE_TBL")
+    
+  .row
+    +app_specific_scheduler_control("CFE_TBL")
