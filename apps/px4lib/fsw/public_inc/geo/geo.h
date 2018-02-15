@@ -46,6 +46,11 @@
 #ifndef GEO_H
 #define GEO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #include "cfe.h"
 #include <stdbool.h>
 #include "geo_lookup/geo_mag_declination.h"
@@ -310,5 +315,9 @@ float _wrap_180(float bearing);
 float _wrap_360(float bearing);
 float _wrap_pi(float bearing);
 float _wrap_2pi(float bearing);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

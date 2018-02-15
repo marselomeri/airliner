@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -1970,4 +1973,17 @@ block main
                             a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Disable
                           li
                             a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Enable
+                                              
+  .row          
+    +app_specific_mempools("SC")
+    
+  .row
+    +app_specific_application_control("SC") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("SC")
+    
+  .row
+    +app_specific_scheduler_control("SC")
                   

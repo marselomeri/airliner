@@ -20,6 +20,7 @@ public:
 	~Matrix4F4();
 	Vector4F& operator [] (uint32 i);
 	Vector4F operator [] (uint32 i) const;
+    Vector4F operator*(const Vector4F &v) const;
 	Matrix4F4();
 
 protected:

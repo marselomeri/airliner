@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -103,3 +106,16 @@ block main
                     th Pressure
                     td
                       span(data-sage={tlm:{name:'/CFS/MS5611/Pressure'}}) ---
+                                              
+  .row          
+    +app_specific_mempools("MS5611")
+    
+  .row
+    +app_specific_application_control("MS5611") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("MS5611")
+    
+  .row
+    +app_specific_scheduler_control("MS5611")
