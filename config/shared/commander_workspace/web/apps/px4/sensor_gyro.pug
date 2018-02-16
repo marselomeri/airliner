@@ -1,4 +1,8 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+    include ../../../web_includes/common/common_includes.pug
+
 
 block header
         i.fa-fw.fa.fa-signal
@@ -95,72 +99,34 @@ block main
                       th Temp Raw:
                       td 
                         span(data-sage={tlm: {name: "/CFS/PX4/SG_TempRaw"}}) ---
-
-      script.
-        var MaxCount = 1000;
-              
-        loadScript("js/plugin/dygraphs/dygraph-combined.min.js", function () {
-            var GyroData = [];
-            var GyroX = {value: 0, time: 1, utcTime: ''};
-            var GyroY = {value: 0, time: 2, utcTime: ''};
-            var GyroZ = {value: 0, time: 3, utcTime: ''};
-            var GyroStarted = false;
-
-            GyroGraph = new Dygraph(document.getElementById("Gyro"), GyroData, {
-                                drawPoints: false,
-                                showRoller: true,
-                                labels: ['Time', 'X', 'Y', 'Z']
-                         });
-
-            session.on('connectFailed', function(err) {
-                console.log('Failed to start Sage session.  err = ' + err);
-            });
-
-            session.on('connect', function() {
-              var GyroCount = 0;
-
-              session.subscribe({name: '/CFS/PX4/SG_X'}, function(param) {
-                console.log(JSON.stringify(param));
-                GyroX.value = param.engValue.floatValue;
-                GyroX.time = param.acquisitionTime;
-                GyroX.utcTime = param.acquisitionTimeUTC;
-                GyroCorrelateData();
-              });
-
-              session.subscribe({name: '/CFS/PX4/SG_Y'}, function(param) {
-                GyroY.value = param.engValue.floatValue;
-                GyroY.time = param.acquisitionTime;
-                GyroY.utcTime = param.acquisitionTimeUTC;
-                GyroCorrelateData();
-              });
-
-              session.subscribe({name: '/CFS/PX4/SG_Z'}, function(param) {
-                GyroZ.value = param.engValue.floatValue;
-                GyroZ.time = param.acquisitionTime;
-                GyroZ.utcTime = param.acquisitionTimeUTC;
-                GyroCorrelateData();
-              });
-
-              var GyroCorrelateData = function () {
-                  if((GyroX.time == GyroY.time ) && ( GyroY.time == GyroZ.time)){
-                      if(GyroStarted == false){
-                        /* Skip the first one. */
-                        GyroStarted = true;
-                      } else {        
-                        if (GyroData.length >= MaxCount) {
-                          GyroData = GyroData.slice(1);
-                        }                   
-                        GyroData.push([GyroCount, GyroX.value, GyroY.value, GyroZ.value]);
-                        GyroCount++;
-                      }
-                  }
-              };
-
-             setInterval(function() {
-                 GyroGraph.updateOptions( { 'file': GyroData } );
-             }, 100);
-          });
+                        
+    script.
+        $(function () {
+            var dataplotDef = {
+                data: [
+                    { 
+                      tlm: {name: '/CFS/PX4/SG_X'},
+                      label: 'X',
+                      color: '#ff00ff'
+                    },
+                    { 
+                      tlm: {'name': '/CFS/PX4/SG_Y'},
+                      label: 'Y',
+                      color: '#00ffff'
+                    },
+                    { 
+                      tlm: {'name': '/CFS/PX4/SG_Z'},
+                      labe: 'Z',
+                      color: '#ffff00'
+                    }
+                ],
+                options: {
+                    yaxis: {
+                        max: 1.0,
+                        min: -1.0
+                    }
+                }
+            };
+    
+            var dataplot = new SageTimeSeriesDataplot($('#Gyro'), dataplotDef);
         });
-
-
-

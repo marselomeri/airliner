@@ -1,4 +1,8 @@
-{% extends "../../common/layout.pug" %}
+extends ../../../web_includes/common/layout
+
+block includes
+    include ../../../web_includes/common/common_includes.pug
+
 
 block header
         i.fa-fw.fa.fa-signal
@@ -32,41 +36,37 @@ block main
                 table.table.table-condensed
                   tbody
                     tr
-                      th Seconds
+                      th Timestamp
                       td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_TimeSec'}]}") ---
-                    tr
-                      th Subseconds
-                      td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_TimeSubSec'}]}") ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_Timestamp'}]}) ---
                     tr
                       th Roll Speed
                       td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_RollSpeed'}]}") ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_RollSpeed'}]}) ---
                     tr
                       th Pitch Speed
                       td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_PitchSpeed'}]}") ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_PitchSpeed'}]}) ---
                     tr
                       th Yaw Speed
                       td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_YawSpeed'}]}") ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_YawSpeed'}]}) ---
                     tr
                       th Q[0]
                       td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_Q_0'}]}") ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_Q_0'}]}) ---
                     tr
                       th Q[1]
                       td
-                        span(data-sage2="{'tlm': [{'name': '/CFS/PX4/VA_Q_1'}]}") ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_Q_1'}]}) ---
                     tr
                       th Q[2]
                       td
-                        span(data-sage2={'tlm': [{'name': '/CFS/PX4/VA_Q_2'}]}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_Q_2'}]}) ---
                     tr
                       th Q[3]
                       td
-                        span(data-sage2={'tlm': [{'name': '/CFS/PX4/VA_Q_3'}]}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VA_Q_3'}]}) ---
                     tr
                       th Yaw
                       td
@@ -83,8 +83,7 @@ block main
 
       script.
         var Q = [];
-        var tlm_o = new Telemetry();
-        tlm_o.subscribeTelemetry({'tlm': [
+        session.subscribe({'tlm': [
            {'name': '/CFS/PX4/VA_Q_0'},
            {'name': '/CFS/PX4/VA_Q_1'},
            {'name': '/CFS/PX4/VA_Q_2'},

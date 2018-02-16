@@ -6,117 +6,10 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Motor Control
+        | PX4 - RC Channels
 
 block main
     .row.row-fluid
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
-        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-          header(style="overflow:hidden;")
-            span.widget-icon
-              i.fa.fa-table
-            h2 Actuator Armed
-          div
-            .jarviswidget-editbox
-              input.form-control(type='text')
-            .widget-body
-              .table-responsive
-                table.table.table-condensed
-                  tbody
-                    tr
-                      th Time (Seconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_TimeSec'}]}") ---
-                    tr
-                      th Time (Subseconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_TimeSubSec'}]}") ---
-                    tr
-                      th Armed
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_Armed'}]}") ---
-                    tr
-                      th Prearmed
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_Prearmed'}]}") ---
-                    tr
-                      th Ready to Arm
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_ReadyToArm'}]}") ---
-                    tr
-                      th Lockdown
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_Lockdown'}]}") ---
-                    tr
-                      th Force Failsafe
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_ForceFailsafe'}]}") ---
-                    tr
-                      th In ESC Calibration Mode
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AA_InEscCalibrationMode'}]}") ---
-
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
-        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-          header(style="overflow:hidden;")
-            span.widget-icon
-              i.fa.fa-table
-            h2 Actuator Controls
-          div
-            .jarviswidget-editbox
-              input.form-control(type='text')
-            .widget-body
-              .table-responsive
-                table.table.table-condensed
-                  tbody
-                    tr
-                      th Time (Seconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_TimeSec'}]}") ---
-                    tr
-                      th Time (Subseconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_TimeSubSec'}]}") ---
-                    tr
-                      th Sample Time (Seconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_SampleTimeSeconds'}]}") ---
-                    tr
-                      th Sample Time (Sub Seconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_SampleTimeSubSeconds'}]}") ---
-                    tr
-                      th Control 0
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_0'}]}") ---
-                    tr
-                      th Control 1
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_1'}]}") ---
-                    tr
-                      th Control 2
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_2'}]}") ---
-                    tr
-                      th Control 3
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_3'}]}") ---
-                    tr
-                      th Control 4
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_4'}]}") ---
-                    tr
-                      th Control 5
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_5'}]}") ---
-                    tr
-                      th Control 6
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_6'}]}") ---
-                    tr
-                      th Control 7
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/AC_Control_7'}]}") ---
 
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -132,13 +25,9 @@ block main
                 table.table.table-condensed
                   tbody
                     tr
-                      th Time (Seconds)
+                      th Time 
                       td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/RCC_TimeSec'}]}") ---
-                    tr
-                      th Time (Sub Seconds)
-                      td
-                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/RCC_TimeSubSec'}]}") ---
+                        span(data-sage="{'tlm': [{'name': '/CFS/PX4/RCC_Timestamp'}]}") ---
                     tr
                       th Last Valid Time
                       td
