@@ -79,11 +79,12 @@ mixin app_specific_scheduler_control(appID)
                   th(style="width: 150px") Action
               tbody
                 - for (var idx = 0; idx < appSchEntryObj.length; ++idx) {
-                    - var entryID = (appSchEntryObj[idx].slot * schTableObj.SCH_TOTAL_SLOTS) + appSchEntryObj[idx].activity;
+                    - var entryID = (appSchEntryObj[idx].slot * schObj.SCH_ENTRIES_PER_SLOT) + appSchEntryObj[idx].activity;
                     - var strSlotID = '' + appSchEntryObj[idx].slot;
                     - var strActID =  '' + appSchEntryObj[idx].activity;
-                    - var strEntryID = '' + entryIdx;
-                    - var tlmEntryState = {tlm:[{name:'/CFS/SCH/EntryState_'+entryID}]};
+                    - var strEntryID = '' + entryID;
+                    - console.log('' + entryID);
+                    - var tlmEntryState = {tlm:[{name:'/CFS/SCH/EntryState_'+strEntryID}]};
                     - var tlmMsgID = {tlm:[{name:'/CFS/SCH/MsgID_'+entryID}]};
                     - var cmdEnableEntry = {cmd: {name:'/CFS/SCH/EnableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
                     - var cmdDisableEntry = {cmd: {name:'/CFS/SCH/DisableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
