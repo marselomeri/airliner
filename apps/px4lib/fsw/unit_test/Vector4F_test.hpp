@@ -40,6 +40,15 @@ extern "C" {
 
 void Test_Vector4F_Constructor(void);
 void Test_Vector4F_IndexOutOfBounds(void);
+void Test_Vector4F_Length(void);
+void Test_Vector4F_LengthSquared(void);
+void Test_Vector4F_Zero(void);
+void Test_Vector4F_AdditionOperator(void);
+void Test_Vector3F_SubtractionOperator(void);
+void Test_Vector4F_ScalarMultiplyOperator(void);
+void Test_Vector4F_ScalarDivOperator(void);
+void Test_Vector4F_DotProductOperator(void);
+void Test_Vector4F_EqualityOperator(void);
 void Test_Vector4F_ArrayOperator(void);
 void Test_Vector4F_NegateOperator(void);
 

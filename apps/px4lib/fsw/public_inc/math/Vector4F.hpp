@@ -17,7 +17,18 @@ public:
 	~Vector4F();
 	float& operator [] (uint32 i);
 	float operator [] (uint32 i) const;
-	Vector4F operator-() const;
+    float Length(void) const;
+    float LengthSquared(void) const;
+    void Zero(void);
+    const Vector4F operator+(const Vector4F &vecIn) const;
+    const Vector4F operator-(const Vector4F &vecIn) const;
+    const Vector4F operator*(const float scalar) const;
+    const Vector4F operator/(const float scalar) const;
+    float operator*(const Vector4F &vecIn) const;
+    const Vector4F operator-() const;
+    const Vector4F & operator=(const Vector4F &v);
+    void Normalize(void);
+    Vector4F Normalized(void) const;
 
 protected:
 	Vector4F();

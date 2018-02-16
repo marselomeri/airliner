@@ -48,9 +48,28 @@ int main(void)
 	         "Test_Quaternion_IndexOutOfBounds");
 	UtTest_Add(Test_Quaternion_ArrayOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
 			 "Test_Quaternion_ArrayOperator");
+	UtTest_Add(Test_Quaternion_MultiplyOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_MultiplyOperator");
+	UtTest_Add(Test_Quaternion_DivideOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_DivideOperator");
+	UtTest_Add(Test_Quaternion_Conjugate, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_Conjugate");
+	UtTest_Add(Test_Quaternion_ConjugateInversed, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_ConjugateInversed");
+	UtTest_Add(Test_Quaternion_FromDCM, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_FromDCM");
+	UtTest_Add(Test_Quaternion_FromYaw, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_FromYaw");
+	UtTest_Add(Test_Quaternion_ToEuler, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_ToEuler");
+	UtTest_Add(Test_Quaternion_Derivative, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+			 "Test_Quaternion_Derivative");
 	UtTest_Add(Test_Quaternion_Imaginary, Quaternion_Test_Setup, Quaternion_Test_TearDown,
 	         "Test_Quaternion_Imaginary");
-
+	UtTest_Add(Test_Quaternion_EqualityOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_EqualityOperator");
+	UtTest_Add(Test_Quaternion_ScalerMultiplyOperator, Quaternion_Test_Setup, Quaternion_Test_TearDown,
+	         "Test_Quaternion_ScalerMultiplyOperator");
     return(UtTest_Run());
 
 }

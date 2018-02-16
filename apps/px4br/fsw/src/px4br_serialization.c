@@ -179,6 +179,7 @@ uint32 PX4BR_ActuatorArmed_Enc(const PX4_ActuatorArmedMsg_t *inObject, char *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorArmed_Enc failed\n");
 		return 0;
 	}
 
@@ -199,6 +200,7 @@ uint32 PX4BR_ActuatorArmed_Dec(const char *inBuffer, uint32 inSize, PX4_Actuator
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorArmed_Dec failed\n");
 		return 0;
 	}
 
@@ -237,6 +239,7 @@ uint32 PX4BR_ActuatorControls_Enc(const PX4_ActuatorControlsMsg_t *inObject, cha
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorControls_Enc failed\n");
 		return 0;
 	}
 
@@ -258,6 +261,7 @@ uint32 PX4BR_ActuatorControls_Dec(const char *inBuffer, uint32 inSize, PX4_Actua
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorControls_Dec failed\n");
 		return 0;
 	}
 
@@ -295,6 +299,7 @@ uint32 PX4BR_ActuatorDirect_Enc(const PX4_ActuatorDirectMsg_t *inObject, char *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorDirect_Enc failed\n");
 		return 0;
 	}
 
@@ -316,6 +321,7 @@ uint32 PX4BR_ActuatorDirect_Dec(const char *inBuffer, uint32 inSize, PX4_Actuato
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorDirect_Dec failed\n");
 		return 0;
 	}
 
@@ -352,6 +358,7 @@ uint32 PX4BR_ActuatorOutputs_Enc(const PX4_ActuatorOutputsMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorOutputs_Enc failed\n");
 		return 0;
 	}
 
@@ -373,6 +380,7 @@ uint32 PX4BR_ActuatorOutputs_Dec(const char *inBuffer, uint32 inSize, PX4_Actuat
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ActuatorOutputs_Dec failed\n");
 		return 0;
 	}
 
@@ -418,6 +426,7 @@ uint32 PX4BR_Airspeed_Enc(const PX4_AirspeedMsg_t *inObject, char *inOutBuffer, 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_Airspeed_Enc failed\n");
 		return 0;
 	}
 
@@ -438,6 +447,7 @@ uint32 PX4BR_Airspeed_Dec(const char *inBuffer, uint32 inSize, PX4_AirspeedMsg_t
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_Airspeed_Dec failed\n");
 		return 0;
 	}
 
@@ -488,6 +498,7 @@ uint32 PX4BR_BatteryStatus_Enc(const PX4_BatteryStatusMsg_t *inObject, char *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_BatteryStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -508,6 +519,7 @@ uint32 PX4BR_BatteryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_BatteryS
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_BatteryStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -554,6 +566,7 @@ uint32 PX4BR_CommanderState_Enc(const PX4_CommanderStateMsg_t *inObject, char *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_CommanderState_Enc failed\n");
 		return 0;
 	}
 
@@ -574,6 +587,7 @@ uint32 PX4BR_CommanderState_Dec(const char *inBuffer, uint32 inSize, PX4_Command
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_CommanderState_Dec failed\n");
 		return 0;
 	}
 
@@ -635,6 +649,7 @@ uint32 PX4BR_ControlState_Enc(const PX4_ControlStateMsg_t *inObject, char *inOut
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ControlState_Enc failed\n");
 		return 0;
 	}
 
@@ -655,6 +670,7 @@ uint32 PX4BR_ControlState_Dec(const char *inBuffer, uint32 inSize, PX4_ControlSt
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ControlState_Dec failed\n");
 		return 0;
 	}
 
@@ -737,6 +753,7 @@ uint32 PX4BR_DifferentialPressure_Enc(const PX4_DifferentialPressureMsg_t *inObj
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_DifferentialPressure_Enc failed\n");
 		return 0;
 	}
 
@@ -757,6 +774,7 @@ uint32 PX4BR_DifferentialPressure_Dec(const char *inBuffer, uint32 inSize, PX4_D
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_DifferentialPressure_Dec failed\n");
 		return 0;
 	}
 
@@ -792,6 +810,7 @@ uint32 PX4BR_DistanceSensor_Enc(const PX4_DistanceSensorMsg_t *inObject, char *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_DistanceSensor_Enc failed\n");
 		return 0;
 	}
 
@@ -812,6 +831,7 @@ uint32 PX4BR_DistanceSensor_Dec(const char *inBuffer, uint32 inSize, PX4_Distanc
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_DistanceSensor_Dec failed\n");
 		return 0;
 	}
 
@@ -876,6 +896,7 @@ uint32 PX4BR_Ekf2Innovations_Enc(const PX4_Ekf2InnovationsMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_Ekf2Innovations_Enc failed\n");
 		return 0;
 	}
 
@@ -896,6 +917,7 @@ uint32 PX4BR_Ekf2Innovations_Dec(const char *inBuffer, uint32 inSize, PX4_Ekf2In
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_Ekf2Innovations_Dec failed\n");
 		return 0;
 	}
 
@@ -968,6 +990,7 @@ uint32 PX4BR_EscReport_Enc(const PX4_EscReportMsg_t *inObject, char *inOutBuffer
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_EscReport_Enc failed\n");
 		return 0;
 	}
 
@@ -988,6 +1011,7 @@ uint32 PX4BR_EscReport_Dec(const char *inBuffer, uint32 inSize, PX4_EscReportMsg
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_EscReport_Dec failed\n");
 		return 0;
 	}
 
@@ -1042,6 +1066,7 @@ uint32 PX4BR_EscStatus_Enc(const PX4_EscStatusMsg_t *inObject, char *inOutBuffer
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_EscStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -1063,6 +1088,7 @@ uint32 PX4BR_EscStatus_Dec(const char *inBuffer, uint32 inSize, PX4_EscStatusMsg
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_EscStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -1129,6 +1155,7 @@ uint32 PX4BR_EstimatorStatus_Enc(const PX4_EstimatorStatusMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_EstimatorStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -1152,6 +1179,7 @@ uint32 PX4BR_EstimatorStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Estima
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_EstimatorStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -1221,6 +1249,7 @@ uint32 PX4BR_FilteredBottomFlow_Enc(const PX4_FilteredBottomFlowMsg_t *inObject,
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FilteredBottomFlow_Enc failed\n");
 		return 0;
 	}
 
@@ -1241,6 +1270,7 @@ uint32 PX4BR_FilteredBottomFlow_Dec(const char *inBuffer, uint32 inSize, PX4_Fil
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FilteredBottomFlow_Dec failed\n");
 		return 0;
 	}
 
@@ -1291,6 +1321,7 @@ uint32 PX4BR_FwPosCtrlStatus_Enc(const PX4_FwPosCtrlStatusMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FwPosCtrlStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -1311,6 +1342,7 @@ uint32 PX4BR_FwPosCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_FwPosC
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FwPosCtrlStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -1380,6 +1412,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Enc(const PX4_FwVirtualAttitudeSetpointMs
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FwVirtualAttitudeSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -1400,6 +1433,7 @@ uint32 PX4BR_FwVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FwVirtualAttitudeSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -1459,6 +1493,7 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Enc(const PX4_FwVirtualRatesSetpointMsg_t *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FwVirtualRatesSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -1479,6 +1514,7 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_FwVirtualRatesSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -1520,6 +1556,7 @@ uint32 PX4BR_GpsDump_Enc(const PX4_GpsDumpMsg_t *inObject, char *inOutBuffer, ui
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_GpsDump_Enc failed\n");
 		return 0;
 	}
 
@@ -1541,6 +1578,7 @@ uint32 PX4BR_GpsDump_Dec(const char *inBuffer, uint32 inSize, PX4_GpsDumpMsg_t *
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_GpsDump_Dec failed\n");
 		return 0;
 	}
 
@@ -1576,6 +1614,7 @@ uint32 PX4BR_GpsInjectData_Enc(const PX4_GpsInjectDataMsg_t *inObject, char *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_GpsInjectData_Enc failed\n");
 		return 0;
 	}
 
@@ -1597,6 +1636,7 @@ uint32 PX4BR_GpsInjectData_Dec(const char *inBuffer, uint32 inSize, PX4_GpsInjec
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_GpsInjectData_Dec failed\n");
 		return 0;
 	}
 
@@ -1645,6 +1685,7 @@ uint32 PX4BR_HomePosition_Enc(const PX4_HomePositionMsg_t *inObject, char *inOut
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_HomePosition_Enc failed\n");
 		return 0;
 	}
 
@@ -1665,6 +1706,7 @@ uint32 PX4BR_HomePosition_Dec(const char *inBuffer, uint32 inSize, PX4_HomePosit
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_HomePosition_Dec failed\n");
 		return 0;
 	}
 
@@ -1714,6 +1756,7 @@ uint32 PX4BR_InputRc_Enc(const PX4_InputRcMsg_t *inObject, char *inOutBuffer, ui
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_InputRc_Enc failed\n");
 		return 0;
 	}
 
@@ -1735,6 +1778,7 @@ uint32 PX4BR_InputRc_Dec(const char *inBuffer, uint32 inSize, PX4_InputRcMsg_t *
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_InputRc_Dec failed\n");
 		return 0;
 	}
 
@@ -1779,6 +1823,7 @@ uint32 PX4BR_LogMessage_Enc(const PX4_LogMessageMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_LogMessage_Enc failed\n");
 		return 0;
 	}
 
@@ -1800,6 +1845,7 @@ uint32 PX4BR_LogMessage_Dec(const char *inBuffer, uint32 inSize, PX4_LogMessageM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_LogMessage_Dec failed\n");
 		return 0;
 	}
 
@@ -1854,6 +1900,7 @@ uint32 PX4BR_ManualControlSetpoint_Enc(const PX4_ManualControlSetpointMsg_t *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ManualControlSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -1874,6 +1921,7 @@ uint32 PX4BR_ManualControlSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_ManualControlSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -1928,6 +1976,7 @@ uint32 PX4BR_MavlinkLog_Enc(const PX4_MavlinkLogMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_MavlinkLog_Enc failed\n");
 		return 0;
 	}
 
@@ -1949,6 +1998,7 @@ uint32 PX4BR_MavlinkLog_Dec(const char *inBuffer, uint32 inSize, PX4_MavlinkLogM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_MavlinkLog_Dec failed\n");
 		return 0;
 	}
 
@@ -1981,6 +2031,7 @@ uint32 PX4BR_McAttCtrlStatus_Enc(const PX4_McAttCtrlStatusMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_McAttCtrlStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -2001,6 +2052,7 @@ uint32 PX4BR_McAttCtrlStatus_Dec(const char *inBuffer, uint32 inSize, PX4_McAttC
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_McAttCtrlStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -2061,6 +2113,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Enc(const PX4_McVirtualAttitudeSetpointMs
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_McVirtualAttitudeSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -2081,6 +2134,7 @@ uint32 PX4BR_McVirtualAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_McVirtualAttitudeSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -2140,6 +2194,7 @@ uint32 PX4BR_McVirtualRatesSetpoint_Enc(const PX4_McVirtualRatesSetpointMsg_t *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_McVirtualRatesSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -2160,6 +2215,7 @@ uint32 PX4BR_McVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_McVirtualRatesSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -2211,6 +2267,7 @@ uint32 PX4BR_MultirotorMotorLimits_Enc(const PX4_MultirotorMotorLimitsMsg_t *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_MultirotorMotorLimits_Enc failed\n");
 		return 0;
 	}
 
@@ -2231,6 +2288,7 @@ uint32 PX4BR_MultirotorMotorLimits_Dec(const char *inBuffer, uint32 inSize, PX4_
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_MultirotorMotorLimits_Dec failed\n");
 		return 0;
 	}
 
@@ -2262,6 +2320,7 @@ uint32 PX4BR_OffboardControlMode_Enc(const PX4_OffboardControlModeMsg_t *inObjec
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_OffboardControlMode_Enc failed\n");
 		return 0;
 	}
 
@@ -2282,6 +2341,7 @@ uint32 PX4BR_OffboardControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Of
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_OffboardControlMode_Dec failed\n");
 		return 0;
 	}
 
@@ -2324,6 +2384,7 @@ uint32 PX4BR_OpticalFlow_Enc(const PX4_OpticalFlowMsg_t *inObject, char *inOutBu
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_OpticalFlow_Enc failed\n");
 		return 0;
 	}
 
@@ -2344,6 +2405,7 @@ uint32 PX4BR_OpticalFlow_Dec(const char *inBuffer, uint32 inSize, PX4_OpticalFlo
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_OpticalFlow_Dec failed\n");
 		return 0;
 	}
 
@@ -2387,6 +2449,7 @@ uint32 PX4BR_OutputPwm_Enc(const PX4_OutputPwmMsg_t *inObject, char *inOutBuffer
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_OutputPwm_Enc failed\n");
 		return 0;
 	}
 
@@ -2408,6 +2471,7 @@ uint32 PX4BR_OutputPwm_Dec(const char *inBuffer, uint32 inSize, PX4_OutputPwmMsg
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_OutputPwm_Dec failed\n");
 		return 0;
 	}
 
@@ -2560,6 +2624,7 @@ uint32 PX4BR_PositionSetpointTriplet_Enc(const PX4_PositionSetpointTripletMsg_t 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_PositionSetpointTriplet_Enc failed\n");
 		return 0;
 	}
 
@@ -2707,6 +2772,7 @@ uint32 PX4BR_PwmInput_Enc(const PX4_PwmInputMsg_t *inObject, char *inOutBuffer, 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_PwmInput_Enc failed\n");
 		return 0;
 	}
 
@@ -2727,6 +2793,7 @@ uint32 PX4BR_PwmInput_Dec(const char *inBuffer, uint32 inSize, PX4_PwmInputMsg_t
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_PwmInput_Dec failed\n");
 		return 0;
 	}
 
@@ -2783,6 +2850,7 @@ uint32 PX4BR_RcChannels_Enc(const PX4_RcChannelsMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_RcChannels_Enc failed\n");
 		return 0;
 	}
 
@@ -2805,6 +2873,7 @@ uint32 PX4BR_RcChannels_Dec(const char *inBuffer, uint32 inSize, PX4_RcChannelsM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_RcChannels_Dec failed\n");
 		return 0;
 	}
 
@@ -2855,6 +2924,7 @@ uint32 PX4BR_Safety_Enc(const PX4_SafetyMsg_t *inObject, char *inOutBuffer, uint
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_Safety_Enc failed\n");
 		return 0;
 	}
 
@@ -2875,6 +2945,7 @@ uint32 PX4BR_Safety_Dec(const char *inBuffer, uint32 inSize, PX4_SafetyMsg_t *in
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_Safety_Dec failed\n");
 		return 0;
 	}
 
@@ -2921,6 +2992,7 @@ uint32 PX4BR_SatelliteInfo_Enc(const PX4_SatelliteInfoMsg_t *inObject, char *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SatelliteInfo_Enc failed\n");
 		return 0;
 	}
 
@@ -2942,6 +3014,7 @@ uint32 PX4BR_SatelliteInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Satellit
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SatelliteInfo_Dec failed\n");
 		return 0;
 	}
 
@@ -3007,6 +3080,7 @@ uint32 PX4BR_SensorAccel_Enc(const PX4_SensorAccelMsg_t *inObject, char *inOutBu
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorAccel_Enc failed\n");
 		return 0;
 	}
 
@@ -3027,6 +3101,7 @@ uint32 PX4BR_SensorAccel_Dec(const char *inBuffer, uint32 inSize, PX4_SensorAcce
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorAccel_Dec failed\n");
 		return 0;
 	}
 
@@ -3071,6 +3146,7 @@ uint32 PX4BR_SensorBaro_Enc(const PX4_SensorBaroMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorBaro_Enc failed\n");
 		return 0;
 	}
 
@@ -3091,6 +3167,7 @@ uint32 PX4BR_SensorBaro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorBaroM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorBaro_Dec failed\n");
 		return 0;
 	}
 
@@ -3138,6 +3215,7 @@ uint32 PX4BR_SensorCombined_Enc(const PX4_SensorCombinedMsg_t *inObject, char *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorCombined_Enc failed\n");
 		return 0;
 	}
 
@@ -3158,6 +3236,7 @@ uint32 PX4BR_SensorCombined_Dec(const char *inBuffer, uint32 inSize, PX4_SensorC
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorCombined_Dec failed\n");
 		return 0;
 	}
 
@@ -3289,6 +3368,7 @@ uint32 PX4BR_SensorCorrection_Enc(const PX4_SensorCorrectionMsg_t *inObject, cha
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorCorrection_Enc failed\n");
 		return 0;
 	}
 
@@ -3365,6 +3445,7 @@ uint32 PX4BR_SensorGyro_Enc(const PX4_SensorGyroMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorGyro_Enc failed\n");
 		return 0;
 	}
 
@@ -3385,6 +3466,7 @@ uint32 PX4BR_SensorGyro_Dec(const char *inBuffer, uint32 inSize, PX4_SensorGyroM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorGyro_Dec failed\n");
 		return 0;
 	}
 
@@ -3435,6 +3517,7 @@ uint32 PX4BR_SensorMag_Enc(const PX4_SensorMagMsg_t *inObject, char *inOutBuffer
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorMag_Enc failed\n");
 		return 0;
 	}
 
@@ -3455,6 +3538,7 @@ uint32 PX4BR_SensorMag_Dec(const char *inBuffer, uint32 inSize, PX4_SensorMagMsg
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SensorMag_Dec failed\n");
 		return 0;
 	}
 
@@ -3505,6 +3589,7 @@ uint32 PX4BR_SubsystemInfo_Enc(const PX4_SubsystemInfoMsg_t *inObject, char *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SubsystemInfo_Enc failed\n");
 		return 0;
 	}
 
@@ -3525,6 +3610,7 @@ uint32 PX4BR_SubsystemInfo_Dec(const char *inBuffer, uint32 inSize, PX4_Subsyste
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SubsystemInfo_Dec failed\n");
 		return 0;
 	}
 
@@ -3559,6 +3645,7 @@ uint32 PX4BR_SystemPower_Enc(const PX4_SystemPowerMsg_t *inObject, char *inOutBu
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SystemPower_Enc failed\n");
 		return 0;
 	}
 
@@ -3579,6 +3666,7 @@ uint32 PX4BR_SystemPower_Dec(const char *inBuffer, uint32 inSize, PX4_SystemPowe
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_SystemPower_Dec failed\n");
 		return 0;
 	}
 
@@ -3625,6 +3713,7 @@ uint32 PX4BR_TecsStatus_Enc(const PX4_TecsStatusMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_TecsStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -3645,6 +3734,7 @@ uint32 PX4BR_TecsStatus_Dec(const char *inBuffer, uint32 inSize, PX4_TecsStatusM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_TecsStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -3697,6 +3787,7 @@ uint32 PX4BR_TelemetryStatus_Enc(const PX4_TelemetryStatusMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_TelemetryStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -3717,6 +3808,7 @@ uint32 PX4BR_TelemetryStatus_Dec(const char *inBuffer, uint32 inSize, PX4_Teleme
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_TelemetryStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -3765,6 +3857,7 @@ uint32 PX4BR_TimeOffset_Enc(const PX4_TimeOffsetMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_TimeOffset_Enc failed\n");
 		return 0;
 	}
 
@@ -3785,6 +3878,7 @@ uint32 PX4BR_TimeOffset_Dec(const char *inBuffer, uint32 inSize, PX4_TimeOffsetM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_TimeOffset_Dec failed\n");
 		return 0;
 	}
 
@@ -3851,6 +3945,7 @@ uint32 PX4BR_VehicleAttitude_Enc(const PX4_VehicleAttitudeMsg_t *inObject, char 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleAttitude_Enc failed\n");
 		return 0;
 	}
 
@@ -3871,6 +3966,7 @@ uint32 PX4BR_VehicleAttitude_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicl
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleAttitude_Dec failed\n");
 		return 0;
 	}
 
@@ -3920,6 +4016,7 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Enc(const PX4_VehicleAttitudeSetpointMsg_t 
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleAttitudeSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -3940,6 +4037,7 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleAttitudeSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -4005,6 +4103,7 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleCommand_Enc failed\n");
 		return 0;
 	}
 
@@ -4025,6 +4124,7 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleCommand_Dec failed\n");
 		return 0;
 	}
 
@@ -4079,6 +4179,7 @@ uint32 PX4BR_VehicleControlMode_Enc(const PX4_VehicleControlModeMsg_t *inObject,
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleControlMode_Enc failed\n");
 		return 0;
 	}
 
@@ -4099,6 +4200,7 @@ uint32 PX4BR_VehicleControlMode_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleControlMode_Dec failed\n");
 		return 0;
 	}
 
@@ -4144,6 +4246,7 @@ uint32 PX4BR_VehicleForceSetpoint_Enc(const PX4_VehicleForceSetpointMsg_t *inObj
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleForceSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -4164,6 +4267,7 @@ uint32 PX4BR_VehicleForceSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleForceSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -4187,12 +4291,20 @@ uint32 PX4BR_VehicleGlobalPosition_Enc(const PX4_VehicleGlobalPositionMsg_t *inO
 	pbMsg.lat = inObject->Lat;
 	pbMsg.lon = inObject->Lon;
 	pbMsg.alt = inObject->Alt;
+    pbMsg.delta_lat_lon_count = 2;
+    pbMsg.delta_lat_lon[0] = inObject->DeltaLatLon[0];
+    pbMsg.delta_lat_lon[1] = inObject->DeltaLatLon[1];
+    pbMsg.delta_alt = inObject->DeltaAlt;
+    pbMsg.lat_lon_reset_counter = inObject->LatLonResetCounter;
+    pbMsg.alt_reset_counter = inObject->AltResetCounter;
 	pbMsg.vel_n = inObject->VelN;
 	pbMsg.vel_e = inObject->VelE;
 	pbMsg.vel_d = inObject->VelD;
 	pbMsg.yaw = inObject->Yaw;
 	pbMsg.eph = inObject->EpH;
 	pbMsg.epv = inObject->EpV;
+    pbMsg.evh = inObject->EvH;
+    pbMsg.evv = inObject->EvV;
 	pbMsg.terrain_alt = inObject->TerrainAlt;
 	pbMsg.pressure_alt = inObject->PressureAlt;
 	pbMsg.terrain_alt_valid = inObject->TerrainAltValid;
@@ -4227,6 +4339,7 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGlobalPosition_Dec failed\n");
 		return 0;
 	}
 
@@ -4235,12 +4348,19 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 	inOutObject->Lat = pbMsg.lat;
 	inOutObject->Lon = pbMsg.lon;
 	inOutObject->Alt = pbMsg.alt;
+    inOutObject->DeltaLatLon[0] = pbMsg.delta_lat_lon[0];
+    inOutObject->DeltaLatLon[1] = pbMsg.delta_lat_lon[1];
+    inOutObject->DeltaAlt = pbMsg.delta_alt;
+    inOutObject->LatLonResetCounter = pbMsg.lat_lon_reset_counter;
+    inOutObject->AltResetCounter = pbMsg.alt_reset_counter;
 	inOutObject->VelN = pbMsg.vel_n;
 	inOutObject->VelE = pbMsg.vel_e;
 	inOutObject->VelD = pbMsg.vel_d;
 	inOutObject->Yaw = pbMsg.yaw;
 	inOutObject->EpH = pbMsg.eph;
 	inOutObject->EpV = pbMsg.epv;
+    inOutObject->EvH = pbMsg.evh;
+    inOutObject->EvV = pbMsg.evv;
 	inOutObject->TerrainAlt = pbMsg.terrain_alt;
 	inOutObject->PressureAlt = pbMsg.pressure_alt;
 	inOutObject->TerrainAltValid = pbMsg.terrain_alt_valid;
@@ -4268,6 +4388,7 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySe
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGlobalVelocitySetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -4288,6 +4409,7 @@ uint32 PX4BR_VehicleGlobalVelocitySetpoint_Dec(const char *inBuffer, uint32 inSi
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGlobalVelocitySetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -4338,6 +4460,7 @@ uint32 PX4BR_VehicleGpsPosition_Enc(const PX4_VehicleGpsPositionMsg_t *inObject,
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGpsPosition_Enc failed\n");
 		return 0;
 	}
 
@@ -4358,6 +4481,7 @@ uint32 PX4BR_VehicleGpsPosition_Dec(const char *inBuffer, uint32 inSize, PX4_Veh
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleGpsPosition_Dec failed\n");
 		return 0;
 	}
 
@@ -4408,6 +4532,7 @@ uint32 PX4BR_VehicleLandDetected_Enc(const PX4_VehicleLandDetectedMsg_t *inObjec
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleLandDetected_Enc failed\n");
 		return 0;
 	}
 
@@ -4428,6 +4553,7 @@ uint32 PX4BR_VehicleLandDetected_Dec(const char *inBuffer, uint32 inSize, PX4_Ve
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleLandDetected_Dec failed\n");
 		return 0;
 	}
 
@@ -4518,6 +4644,7 @@ uint32 PX4BR_VehicleLocalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleLocalPosition_Dec failed\n");
 		return 0;
 	}
 
@@ -4589,6 +4716,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Enc(const PX4_VehicleLocalPositionSetp
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleLocalPositionSetpoint_Enc failed\n");
 		return 0;
 	}
 
@@ -4609,6 +4737,7 @@ uint32 PX4BR_VehicleLocalPositionSetpoint_Dec(const char *inBuffer, uint32 inSiz
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleLocalPositionSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -4651,6 +4780,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Enc(const PX4_VehicleRatesSetpointMsg_t *inObj
 		/* Check for errors... */
 		if (!status)
 		{
+            OS_printf("PX4BR_VehicleRatesSetpoint_Enc failed\n");
 			return 0;
 		}
 
@@ -4676,6 +4806,7 @@ uint32 PX4BR_VehicleRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4_V
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleRatesSetpoint_Dec failed\n");
 		return 0;
 	}
 
@@ -4735,6 +4866,7 @@ uint32 PX4BR_VehicleStatus_Enc(const PX4_VehicleStatusMsg_t *inObject, char *inO
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleStatus_Enc failed\n");
 		return 0;
 	}
 
@@ -4755,6 +4887,7 @@ uint32 PX4BR_VehicleStatus_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleS
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_VehicleStatus_Dec failed\n");
 		return 0;
 	}
 
@@ -4825,6 +4958,7 @@ uint32 PX4BR_WindEstimate_Enc(const PX4_WindEstimateMsg_t *inObject, char *inOut
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_WindEstimate_Enc failed\n");
 		return 0;
 	}
 
@@ -4845,6 +4979,7 @@ uint32 PX4BR_WindEstimate_Dec(const char *inBuffer, uint32 inSize, PX4_WindEstim
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_WindEstimate_Dec failed\n");
 		return 0;
 	}
 
@@ -4877,6 +5012,7 @@ uint32 PX4BR_LedControl_Enc(const PX4_LedControlMsg_t *inObject, char *inOutBuff
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_LedControl_Enc failed\n");
 		return 0;
 	}
 
@@ -4897,6 +5033,7 @@ uint32 PX4BR_LedControl_Dec(const char *inBuffer, uint32 inSize, PX4_LedControlM
 	/* Check for errors... */
 	if (!status)
 	{
+        OS_printf("PX4BR_LedControl_Dec failed\n");
 		return 0;
 	}
     

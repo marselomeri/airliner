@@ -41,6 +41,15 @@
 #ifndef GEO_MAG_DECLINATION_H
 #define GEO_MAG_DECLINATION_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 float get_mag_declination(float lat, float lon);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

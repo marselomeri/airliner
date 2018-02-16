@@ -92,7 +92,6 @@ add_airliner_app_def(px4lib
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-vector4f-ut.supp
 #)
 
-
 #add_airliner_app_unit_test(px4lib-quaternion-ut
 #    UTASSERT
 #    SOURCES
@@ -120,7 +119,6 @@ add_airliner_app_def(px4lib
 #    VALGRIND_SUPPRESSION_FILE
 #        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-quaternion-ut.supp
 #)
-
 
 #add_airliner_app_unit_test(px4lib-matrix3f3-ut
 #    UTASSERT
