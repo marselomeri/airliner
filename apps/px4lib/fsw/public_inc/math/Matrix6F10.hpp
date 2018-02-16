@@ -3,6 +3,10 @@
 
 #include "cfe.h"
 #include "Vector6F.hpp"
+#include "Vector10F.hpp"
+#include "Matrix10F6.hpp"
+#include "Matrix6F6.hpp"
+#include "Matrix10F10.hpp"
 
 namespace math
 {
@@ -10,19 +14,24 @@ namespace math
 class Matrix6F10
 {
 private:
-	static const int SIZE = 10;
-	Vector6F data[SIZE];
-	Vector6F nan;
+	static const int ROWS = 6;
+	static const int COLS = 10;
+	Vector10F data[ROWS];
+	Vector10F nan;
 
 public:
-	Matrix6F10(Vector6F m0, Vector6F m1, Vector6F m2, Vector6F m3,
-               Vector6F m4, Vector6F m5, Vector6F m6, Vector6F m7,
-               Vector6F m8, Vector6F m9);
-	~Matrix6F10();
-	Vector6F& operator [] (uint32 i);
-	Vector6F operator [] (uint32 i) const;
-    void Zero(void);
 	Matrix6F10();
+	Matrix6F10(Vector10F m0, Vector10F m1, Vector10F m2, Vector10F m3,
+               Vector10F m4, Vector10F m5);
+	~Matrix6F10();
+	Vector10F& operator [] (uint32 i);
+	Vector10F operator [] (uint32 i) const;
+    Vector6F operator*(const Vector10F &vecIn);
+    Matrix6F6 operator*(const Matrix10F6 &matIn);
+    Matrix6F10 operator*(const Matrix10F10 &matIn);
+    Matrix10F6 Transpose(void);
+    void Zero(void);
+
 
 protected:
 

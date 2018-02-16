@@ -134,6 +134,7 @@ Matrix10F3 Matrix10F3::operator*(const Matrix10F3 &matIn)
 Matrix10F3 Matrix10F3::operator*(const Matrix3F3 &matIn)
 {
     Matrix10F3 matOut;
+    matOut.Zero();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)

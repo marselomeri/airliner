@@ -2,6 +2,7 @@
 #define VECTOR6F_HPP
 
 #include "cfe.h"
+//#include "Matrix1F6.hpp"
 
 namespace math
 {
@@ -9,7 +10,7 @@ namespace math
 class Vector6F
 {
 private:
-	static const int SIZE = 10;
+	static const int SIZE = 6;
 	float data[SIZE];
 	float nan;
 
