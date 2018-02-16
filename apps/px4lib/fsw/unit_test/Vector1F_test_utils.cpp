@@ -31,23 +31,18 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#include "Vector1F_test_utils.hpp"
 
-#include "Matrix1F1_test.hpp"
-#include "Matrix1F1_test_utils.hpp"
+/*
+ * Function Definitions
+ */
 
-int main(void)
-{   
-	UtTest_Add(Test_Matrix1F1_Constructor, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Constructor");
-	UtTest_Add(Test_Matrix1F1_IndexOutOfBounds, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_IndexOutOfBounds");
-	UtTest_Add(Test_Matrix1F1_Addition, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Addition");
-	UtTest_Add(Test_Matrix1F1_Zero, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Zero");
-
-    return(UtTest_Run());
+void Vector1F_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
 }
 
+void Vector1F_Test_TearDown(void)
+{
+}

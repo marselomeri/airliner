@@ -31,23 +31,35 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#ifndef VECTOR1F_TEST_H
+#define VECTOR1F_TEST_H
 
-#include "Matrix1F1_test.hpp"
-#include "Matrix1F1_test_utils.hpp"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int main(void)
-{   
-	UtTest_Add(Test_Matrix1F1_Constructor, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Constructor");
-	UtTest_Add(Test_Matrix1F1_IndexOutOfBounds, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_IndexOutOfBounds");
-	UtTest_Add(Test_Matrix1F1_Addition, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Addition");
-	UtTest_Add(Test_Matrix1F1_Zero, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Zero");
+void Test_Vector1F_Constructor(void);
+void Test_Vector1F_IndexOutOfBounds(void);
+void Test_Vector1F_Length(void);
+void Test_Vector1F_Zero(void);
+void Test_Vector1F_ArrayOperator(void);
+void Test_Vector1F_AdditionOperator(void);
+void Test_Vector1F_SubtractionOperator(void);
+void Test_Vector1F_ScalarMultiplyOperator(void);
+void Test_Vector1F_ScalarDivOperator(void);
+void Test_Vector1F_DotProductOperator(void);
+void Test_Vector1F_Negate(void);
+void Test_Vector1F_Pow(void);
+void Test_Vector1F_EMult(void);
+void Test_Vector1F_EDivide(void);
+void Test_Vector1F_Constrain(void);
+void Test_Vector1F_Normalized(void);
+void Test_Vector1F_Normalize(void);
 
-    return(UtTest_Run());
 
+
+#ifdef __cplusplus
 }
+#endif
 
+#endif /* VECTOR1F_TEST_H */

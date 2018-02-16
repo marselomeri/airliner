@@ -9,7 +9,7 @@ namespace math
 class Vector1F
 {
 private:
-	static const int SIZE = 10;
+	static const int SIZE = 1;
 	float data[SIZE];
 	float nan;
 
@@ -25,7 +25,6 @@ public:
     Vector1F operator+=(const Vector1F &vecIn);
 	Vector1F operator-(const Vector1F &vecIn);
 	Vector1F operator-(const Vector1F &vecIn) const;
-	//Vector1F operator%(const Vector1F &vecIn);
 	Vector1F operator*(const float scalar);
 	Vector1F operator/(const float scalar);
 	Vector1F pow(const float scalar) const;

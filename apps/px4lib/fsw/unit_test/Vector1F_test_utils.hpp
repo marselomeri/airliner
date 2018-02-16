@@ -31,23 +31,28 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#ifndef VECTOR1F_TEST_UTILS_H
+#define VECTOR1F_TEST_UTILS_H
 
-#include "Matrix1F1_test.hpp"
-#include "Matrix1F1_test_utils.hpp"
+/*
+ * Includes
+ */
 
-int main(void)
-{   
-	UtTest_Add(Test_Matrix1F1_Constructor, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Constructor");
-	UtTest_Add(Test_Matrix1F1_IndexOutOfBounds, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_IndexOutOfBounds");
-	UtTest_Add(Test_Matrix1F1_Addition, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Addition");
-	UtTest_Add(Test_Matrix1F1_Zero, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
-	         "Test_Matrix1F1_Zero");
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    return(UtTest_Run());
+/*
+ * Function Definitions
+ */
 
+void Vector1F_Test_Setup(void);
+void Vector1F_Test_TearDown(void);
+
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* VECTOR1F_TEST_UTILS_H */
 
