@@ -44,6 +44,8 @@ int main(void)
 	         "Test_Vector3F_IndexOutOfBounds");
 	UtTest_Add(Test_Vector3F_Length, Vector3F_Test_Setup, Vector3F_Test_TearDown,
 			 "Test_Vector3F_Length");
+	UtTest_Add(Test_Vector3F_Zero, Vector3F_Test_Setup, Vector3F_Test_TearDown,
+			 "Test_Vector3F_Zero");
 	UtTest_Add(Test_Vector3F_ArrayOperator, Vector3F_Test_Setup, Vector3F_Test_TearDown,
 			 "Test_Vector3F_ArrayOperator");
 	UtTest_Add(Test_Vector3F_AdditionOperator, Vector3F_Test_Setup, Vector3F_Test_TearDown,
@@ -56,6 +58,8 @@ int main(void)
 	         "Test_Vector3F_ScalarMultiplyOperator");
 	UtTest_Add(Test_Vector3F_ScalarDivOperator, Vector3F_Test_Setup, Vector3F_Test_TearDown,
 	         "Test_Vector3F_ScalarDivOperator");
+	UtTest_Add(Test_Vector3F_DotProductOperator, Vector3F_Test_Setup, Vector3F_Test_TearDown,
+	         "Test_Vector3F_DotProductOperator");
 	UtTest_Add(Test_Vector3F_EMult, Vector3F_Test_Setup, Vector3F_Test_TearDown,
 	         "Test_Vector3F_EMult");
 	UtTest_Add(Test_Vector3F_Constrain, Vector3F_Test_Setup, Vector3F_Test_TearDown,
