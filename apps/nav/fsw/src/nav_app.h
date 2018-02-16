@@ -85,35 +85,35 @@ typedef struct
 
 
 typedef struct{
-	float nav_acc_rad = 2.0f; /*default accepted radius*/
-	float nav_mc_alt_rad = 0.8f; /*altitude accepted radius for multi-copters*/
-	float nav_loiter_rad = 50.0f;
-
-
-	//takeoff
+	float nav_acc_rad = 2.0f; 							/*default accepted radius*/
+	float nav_mc_alt_rad = 0.8f; 						/*altitude accepted radius for multi-copters*/
+	float nav_loiter_rad = 50.0f;						/*default loier radius*/
 	float nav_mis_takeoff_alt = 2.5f;
 	float nav_mis_yaw_err = 12.0f;
 	float nav_mis_yaw_tmt = -1.0f;
-
-
+	float nav_rtl_return_alt = 30.0f;
+	float nav_mis_ltrmin_alt = 1.20f;
+	float nav_rtl_descent_alt = 10.0f;
+	float nav_rtl_land_delay = 0.0f;
+	float nav_rtl_min_dist = 5.0f;
 }NAV_Params_t;
 
 typedef struct{
-	double Lat;					/**< latitude in degrees				*/
-	double Lon;					/**< longitude in degrees				*/
+	double Lat;					/**< latitude in degrees*/
+	double Lon;					/**< longitude in degrees*/
 	float TimeInside;			/**< time that the MAV should stay inside the radius before advancing in seconds */
 	float PitchMin;				/**< minimal pitch angle for fixed wing takeoff waypoints */
 	float AcceptanceRadius;		/**< default radius in which the mission is accepted as reached in meters */
 	float LoiterRadius;			/**< loiter radius in meters, 0 for a VTOL to hover, negative for counter-clockwise */
-	float Yaw;					/**< in radians NED -PI..+PI, NAN means don't change yaw		*/
+	float Yaw;					/**< in radians NED -PI..+PI, NAN means don't change yaw*/
 	float LatFloatPadding;		/**< padding */
 	float LonFloatPadding;		/**< padding */
-	float Altitude;				/**< altitude in meters	(AMSL)			*/
+	float Altitude;				/**< altitude in meters	(AMSL)*/
 	float Params[7];			/**< array to store mission command values for MAV_FRAME_MISSION ***/
-	uint16 NavCmd;				/**< navigation command					*/
-	int16 DoJumpMissionIndex;	/**< index where the do jump will go to                 */
-	uint16 DoJumpRepeatCount;	/**< how many times do jump needs to be done            */
-	uint16 DoJumpCurrentCount;	/**< count how many times the jump has been done	*/
+	uint16 NavCmd;				/**< navigation command*/
+	int16 DoJumpMissionIndex;	/**< index where the do jump will go to*/
+	uint16 DoJumpRepeatCount;	/**< how many times do jump needs to be done*/
+	uint16 DoJumpCurrentCount;	/**< count how many times the jump has been done*/
 	struct{
 		uint16 Frame : 4;
 		uint16 Origin : 3;
@@ -125,16 +125,22 @@ typedef struct{
 	};
 }NAV_MissionItem_t;
 
+
 typedef enum {
 	ORIGIN_MAVLINK = 0,
 	ORIGIN_ONBOARD =1
 } NAV_Origin_t;
 
-
-typedef struct{
-	boolean loiter;
-	boolean takeoff;
-} NAV_Active, NAV_First_Time;
+typedef enum {
+	RTL_STATE_NONE = 0,
+	RTL_STATE_CLIMB,
+	RTL_STATE_RETURN,
+	RTL_STATE_TRANSITION_TO_MC,
+	RTL_STATE_DESCEND,
+	RTL_STATE_LOITER,
+	RTL_STATE_LAND,
+	RTL_STATE_LANDED,
+} RTLState;
 
 
 /**
@@ -176,6 +182,7 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     NAV_HkTlm_t HkTlm;
+
     /** \brief Current Value Table */
     NAV_CurrentValueTable_t CVT = {};
 
@@ -186,17 +193,13 @@ public:
      */
     NAV_Params_t nav_params;
     NAV_MissionItem_t mission_item;
-    NAV_First_Time first_time {true,true};
-    NAV_Active active {false,false};
-    int32 counter = 0;
-    int one_level_deep_memory = -1;
+    RTLState rtl_state;
     PX4_VehicleStatusMsg_t previous_state;
 
+    static constexpr float DELAY_SIGMA = 0.01f;
     //loiter
     boolean CanLoiterAtSetpoint{false};
     boolean PositionSetpointTripletUpdated{false};
-
-
     //mission
     boolean MissionResultUpdated{false};
     boolean WaypointPositionReached{false};
@@ -206,6 +209,8 @@ public:
     uint64 TimeWpReached{0};
 	float MissionCruisingSpeed{-1.0f};
 	float MissionThrottle{-1.0f};
+
+	boolean vehicle_status_update_once{false};
 
 
 
@@ -473,6 +478,8 @@ public:
      float GetCruisingThrottle(void);
      int Execute(void);
      void Takeoff(boolean);
+     void RTL(boolean);
+     void SetRTLItem(void);
      void TakeoffActive();
      void Loiter(void);
      void Land(boolean);
