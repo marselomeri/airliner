@@ -1,7 +1,7 @@
-extends ../../../web_includes/common/layout
+extends ../../web_includes/common/layout
 
 block includes
-    include ../../../web_includes/common/common_includes.pug
+    include ../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -15,6 +15,8 @@ block main
             span.widget-icon
               i.fa.fa-table
             h2 Sensor - Accelerometer
+              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/TO/AddMessage', argument:[{name:'ChannelIdx', value: 'GROUND'}, {name:'MsgID', value:0x0a3b}, {name:'MsgLimit', value:1}]}}) Tlm Start
+              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/TO/RemoveMessage', argument:[{name:'ChannelIdx'}, {name:'MsgID', value:0x0a3b}]}}) Tlm Stop
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -118,8 +120,8 @@ block main
                 ],
                 'options': {
                     'yaxis' : {
-                        'min' : -20.0,
-                        'max' : 20.0
+                        'max' : 20.0,
+                        'min' : -20.0
                     }
                 }
             };
