@@ -2,6 +2,7 @@
 #define VECTOR6F_HPP
 
 #include "cfe.h"
+//#include "Matrix1F6.hpp"
 
 namespace math
 {

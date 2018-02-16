@@ -132,6 +132,19 @@ Matrix6F6 Matrix6F6::operator+(const Matrix6F6 &matIn) const
 }
 
 
+Matrix6F1 Matrix6F6::operator*(const Vector6F &vecIn)
+{
+    math::Matrix6F1 matOut;
+    matOut[0][0] = data[0][0]*vecIn[0] + data[0][1]*vecIn[1] + data[0][2]*vecIn[2] + data[0][3]*vecIn[3] + data[0][4]*vecIn[4] + data[0][5]*vecIn[5];
+    matOut[1][0] = data[1][0]*vecIn[0] + data[1][1]*vecIn[1] + data[1][2]*vecIn[2] + data[1][3]*vecIn[3] + data[1][4]*vecIn[4] + data[1][5]*vecIn[5];
+    matOut[2][0] = data[2][0]*vecIn[0] + data[2][1]*vecIn[1] + data[2][2]*vecIn[2] + data[2][3]*vecIn[3] + data[2][4]*vecIn[4] + data[2][5]*vecIn[5];
+    matOut[3][0] = data[3][0]*vecIn[0] + data[3][1]*vecIn[1] + data[3][2]*vecIn[2] + data[3][3]*vecIn[3] + data[4][4]*vecIn[4] + data[3][5]*vecIn[5];
+    matOut[4][0] = data[4][0]*vecIn[0] + data[4][1]*vecIn[1] + data[4][2]*vecIn[2] + data[4][3]*vecIn[3] + data[5][4]*vecIn[4] + data[4][5]*vecIn[5];
+    matOut[5][0] = data[5][0]*vecIn[0] + data[5][1]*vecIn[1] + data[5][2]*vecIn[2] + data[5][3]*vecIn[3] + data[6][4]*vecIn[4] + data[5][5]*vecIn[5];
+    return matOut;
+}
+    
+    
 Matrix6F6 Matrix6F6::Identity(void)
 {
     Matrix6F6 identity(
@@ -224,8 +237,7 @@ Matrix6F6 Matrix6F6::Inversed(void)
     temp.Zero();
     int i,j = 0;
     float determinant = 0;
-    int sign = 1;
-    
+
     determinant = Determinant();
 
     if (0 == determinant || !isfinite(determinant))

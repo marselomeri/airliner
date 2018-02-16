@@ -54,7 +54,7 @@ void Matrix1F10::Zero(void)
 {
     int i = 0;
 
-    for(i = 0; i < SIZE; i++)
+    for(i = 0; i < 10; i++)
     {
         data[0][i] = 0.0f;
     }

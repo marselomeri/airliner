@@ -3,6 +3,7 @@
 
 #include "cfe.h"
 #include "Vector6F.hpp"
+#include "Matrix6F1.hpp"
 
 namespace math
 {
@@ -24,6 +25,7 @@ public:
 	Vector6F& operator [] (uint32 i);
 	Vector6F operator [] (uint32 i) const;
     Matrix6F6 operator+(const Matrix6F6 &matIn) const;
+    Matrix6F1 operator*(const Vector6F &vecIn);
     Matrix6F6 Inversed(void);
     Matrix6F6 Identity(void);
     float Determinant(void);

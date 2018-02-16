@@ -174,6 +174,10 @@ add_airliner_app_unit_test(px4lib-matrix6f6-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F6_test_utils.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F6.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F6.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F1.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F1.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector1F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector1F.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector6F.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector6F.hpp
         
@@ -342,6 +346,8 @@ add_airliner_app_unit_test(px4lib-matrix6f10-ut
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F10.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F10.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F10.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F1.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F1.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix10F6.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix10F6.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F6.cpp
