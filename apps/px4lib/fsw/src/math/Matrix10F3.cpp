@@ -177,9 +177,9 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
 
 
 // overload * operator to provide a matrix vector product
-Vector3F Matrix10F3::operator*(const Vector3F &vecIn)
+Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
 {
-    Vector3F vecOut;
+    Vector10F vecOut;
     float value = 0.0f;
 
     // TODO: verify correct

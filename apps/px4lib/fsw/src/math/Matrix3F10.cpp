@@ -52,9 +52,9 @@ Vector10F Matrix3F10::operator [] (uint32 i) const
 };
 
 
-Matrix3F10 Matrix3F10::Transpose(void)
+Matrix10F3 Matrix3F10::Transpose(void)
 {
-	Matrix3F10 res;
+	Matrix10F3 res;
 
 	for(int i = 0; i < ROWS; i++)
 	{
@@ -156,7 +156,6 @@ Matrix10F10 Matrix3F10::operator*(const Matrix10F3 &matIn)
 		}
     }
 
-    OS_printf("bad");
     return matOut;
 }
 

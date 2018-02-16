@@ -11,12 +11,12 @@ message px4br_vehicle_local_position_pb
 	required float x = 6;
 	required float y = 7;
 	required float z = 8;
-	repeated float delta_xy = 9 [packed=true, (nanopb).max_count = 2];
+	repeated float delta_xy = 9 [(nanopb).max_count = 2];
 	required float delta_z = 10;
 	required float vx = 11;
 	required float vy = 12;
 	required float vz = 13;
-	repeated float delta_vxy = 14 [packed=true, (nanopb).max_count = 2];
+	repeated float delta_vxy = 14 [(nanopb).max_count = 2];
 	required float delta_vz = 15;
 	required float ax = 16;
 	required float ay = 17;
