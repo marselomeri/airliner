@@ -23,7 +23,6 @@ public:
 	void Zero(void);
 	Vector2F operator+(const Vector2F &vecIn);
 	Vector2F operator-(const Vector2F &vecIn);
-	Vector2F operator%(const Vector2F &vecIn);
 	Vector2F operator*(const float scalar);
 	Vector2F operator/(const float scalar);
 	float operator*(const Vector2F &vecIn);

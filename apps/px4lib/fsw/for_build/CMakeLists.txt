@@ -70,6 +70,27 @@ add_airliner_app_unit_test(px4lib-vector1f-ut
 )
 
 
+add_airliner_app_unit_test(px4lib-vector2f-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector2F_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector2F.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector2F.cpp
+
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-vector2f-ut.supp
+)
+
+
 add_airliner_app_unit_test(px4lib-vector3f-ut
     UTASSERT
     SOURCES
