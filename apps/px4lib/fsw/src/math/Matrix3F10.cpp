@@ -138,18 +138,18 @@ Matrix3F10 Matrix3F10::operator*(const Matrix3F3 &matIn)
 }
 
 // overload * operator to provide a matrix product
-Matrix10F10 Matrix3F10::operator*(const Matrix10F3 &matIn)
+Matrix3F3 Matrix3F10::operator*(const Matrix10F3 &matIn)
 {
-    Matrix10F10 matOut;
+    Matrix3F3 matOut;
     matOut.Zero();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
     {
-    	for(int j = 0; j < 10; j++)
+    	for(int j = 0; j < 3; j++)
 		{
 
-    		for(int k = 0; k < 10; k++)
+    		for(int k = 0; k < COLS; k++)
 			{
     			matOut[i][j] += data[i][j] * matIn[j][k];
 			}

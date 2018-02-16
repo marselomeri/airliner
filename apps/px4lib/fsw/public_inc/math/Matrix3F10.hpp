@@ -7,6 +7,7 @@
 #include "Matrix3F3.hpp"
 #include "Matrix10F3.hpp"
 #include "Matrix10F10.hpp"
+#include "Matrix3F3.hpp"
 
 #define M_DEG_TO_RAD_F		(0.01745329251994329576f)
 
@@ -40,7 +41,7 @@ public:
 	Matrix3F10 operator*(const Matrix3F10 &matIn);
 	Matrix3F10 operator*(const Matrix3F3 &matIn);
 	Matrix3F10 operator*(const Matrix10F10 &matIn);
-    Matrix10F10 operator*(const Matrix10F3 &matIn);
+    Matrix3F3 operator*(const Matrix10F3 &matIn);
 	Matrix3F10 operator*(const float &scalar);
 	void Zero(void);
     Matrix3F10 operator+(const Matrix3F10 &matIn) const;

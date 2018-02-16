@@ -79,6 +79,11 @@ public:
 	static Matrix3F3 FromEuler(float roll, float pitch, float yaw);
 	Vector3F ToEuler(void) const;
 
+    Matrix3F3 Inversed(void);
+    float Determinant(void);
+    void getCofactor(const Matrix3F3 &mat, Matrix3F3 &temp, int p, int q, int n);
+    float DeterminantRecursive(const Matrix3F3 &mat, int n);
+
 protected:
 	Vector3F data[SIZE];
 
