@@ -9,8 +9,6 @@
 namespace math
 {
 
-class Vector3F;
-
 class Matrix1F3
 {
 public:

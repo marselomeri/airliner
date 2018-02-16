@@ -1,4 +1,5 @@
 #include <math/Vector3F.hpp>
+#include <math/Matrix1F3.hpp>
 #include <math.h>
 
 using namespace math;

@@ -3,7 +3,6 @@
 
 #include "cfe.h"
 #include "Vector10F.hpp"
-#include "Matrix1F3.hpp"
 
 namespace math
 {
