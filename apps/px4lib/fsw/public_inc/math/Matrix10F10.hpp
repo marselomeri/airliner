@@ -14,6 +14,8 @@ namespace math
 /* Forward declare 10F1 */
 class Matrix10F1;
 
+class Matrix10F6;
+
 class Matrix10F10
 {
 public:

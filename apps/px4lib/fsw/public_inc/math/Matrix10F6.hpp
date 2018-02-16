@@ -3,10 +3,16 @@
 
 #include "cfe.h"
 #include "Vector6F.hpp"
+#include "Matrix6F6.hpp"
+#include "Matrix6F10.hpp"
+#include "Matrix10F10.hpp"
+#include "Vector10F.hpp"
 
 
 namespace math
 {
+    
+class Matrix6F10;
 
 class Matrix10F6
 {
@@ -24,6 +30,9 @@ public:
 	~Matrix10F6();
 	Vector6F& operator [] (uint32 i);
 	Vector6F operator [] (uint32 i) const;
+    Matrix10F6 operator*(const Matrix6F6 &matIn);
+    Vector10F operator*(const Vector6F &vecIn);
+    Matrix10F10 operator*(const Matrix6F10 &matIn);
 	void Zero(void);
 
 protected:

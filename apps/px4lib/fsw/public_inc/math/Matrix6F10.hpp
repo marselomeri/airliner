@@ -11,6 +11,9 @@
 namespace math
 {
 
+class Matrix10F6;
+class Matrix10F10;
+
 class Matrix6F10
 {
 private:
