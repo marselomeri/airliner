@@ -138,6 +138,52 @@ add_airliner_app_unit_test(px4lib-vector4f-ut
 )
 
 
+add_airliner_app_unit_test(px4lib-vector6f-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector6F_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector6F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector6F.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-vector6f-ut.supp
+)
+
+
+add_airliner_app_unit_test(px4lib-vector10f-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Vector10F_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector10F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector10F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector3F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix1F3.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F3.hpp
+        
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-vector10f-ut.supp
+)
+
+
 add_airliner_app_unit_test(px4lib-quaternion-ut
     UTASSERT
     SOURCES
