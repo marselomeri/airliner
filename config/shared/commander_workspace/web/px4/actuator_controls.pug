@@ -1,0 +1,65 @@
+extends ../../web_includes/common/layout
+
+block includes
+    include ../../web_includes/common/common_includes.pug
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4 - Actuator Controls
+
+block main
+    .row.row-fluid
+
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
+        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Actuator Controls
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Timestamp'}]}) ---
+                    tr
+                      th Sample Timestamp
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_SampleTimestamp'}]}) ---
+                    tr
+                      th Control 0
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_0'}]}) ---
+                    tr
+                      th Control 1
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_1'}]}) ---
+                    tr
+                      th Control 2
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_2'}]}) ---
+                    tr
+                      th Control 3
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_3'}]}) ---
+                    tr
+                      th Control 4
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_4'}]}) ---
+                    tr
+                      th Control 5
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_5'}]}) ---
+                    tr
+                      th Control 6
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_6'}]}) ---
+                    tr
+                      th Control 7
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC_Control_7'}]}) ---

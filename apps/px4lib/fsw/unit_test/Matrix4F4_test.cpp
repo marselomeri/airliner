@@ -101,6 +101,26 @@ void Test_Matrix4F4_ArrayOperator(void)
 }
 
 
+void Test_Matrix4F4_MultiplicationByVector(void)
+{
+    math::Vector4F vector1(1.5f, 2.5f, 3.5f, 4.5f);
+    math::Vector4F vector2(4.5f, 5.5f, 6.5f, 7.5f);
+    math::Vector4F vector3(8.5f, 9.5f, 10.5f, 11.5f);
+    math::Vector4F vector4(12.5f, 13.5f, 14.5f, 15.5f);
+    math::Vector4F vectorx(16.5f, 17.5f, 18.5f, 19.5f);
+    math::Vector4F result(0.0f, 0.0f, 0.0f, 0.0f);
+    math::Vector4F expected(221.0f, 437.0f, 1013.0f, 0.0f);
+    math::Matrix4F4 existing(vector1, vector2, vector3, vector4);
+    
+    result = existing * vectorx;
+    
+    UtAssert_True(result[0] == expected[0], "result[0] == 221.0f");
+	UtAssert_True(result[0] == expected[0], "result[1] == 437.0f");
+	UtAssert_True(result[0] == expected[0], "result[2] == 1013.0f");
+	UtAssert_True(result[0] == expected[0], "result[3] == 0.0f");
+}
+
+
 void Test_Matrix4F4_NegateOperator(void)
 {
 //	/* vectorActual = vectorA - vectorB */

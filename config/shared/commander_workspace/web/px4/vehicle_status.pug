@@ -1,0 +1,76 @@
+extends ../../web_includes/common/layout
+
+block includes
+    include ../../web_includes/common/common_includes.pug
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4 - Vehicle Status
+
+block main
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
+        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Vehicle Status
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_Timestamp'}]}) ---
+                    tr
+                      th System ID:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_SystemID'}]}) ---
+                    tr
+                      th Is Rotary Wing:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_IsRotaryWing'}]}) ---
+                    tr
+                      th Is VTOL:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_IsVtol'}]}) ---
+                    tr
+                      th VTOL FW Perm Stab:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_VtolFwPermStab'}]}) ---
+                    tr
+                      th In Trans Mode:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_InTransMode'}]}) ---
+                    tr
+                      th RC Signal Lost:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_RcSignalLost'}]}) ---
+                    tr
+                      th RC Input Mode:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_RcInputMode'}]}) ---
+                    tr
+                      th Datalink Lost:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_DataLinkLost'}]}) ---
+                    tr
+                      th Datalink Lost Counter:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_DataLinkLostCounter'}]}) ---
+                    tr
+                      th Engine Failure:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_EngineFailure'}]}) ---
+                    tr
+                      th Engine Failure Cmd:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_EngineFailureCmd'}]}) ---
+                    tr
+                      th Mission Failure:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_MissionFailure'}]}) ---

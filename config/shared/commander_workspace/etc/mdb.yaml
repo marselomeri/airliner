@@ -25,8 +25,6 @@ softsim:
            - type: "sheet"
              spec: "/mdb/DS.xls"
            - type: "sheet"
-             spec: "/mdb/EIM.xls"
-           - type: "sheet"
              spec: "/mdb/FM.xls"
            - type: "sheet"
              spec: "/mdb/HK.xls"
@@ -49,10 +47,6 @@ softsim:
            - type: "sheet"
              spec: "/mdb/MS5611.xls"
            - type: "sheet"
-             spec: "/mdb/NEOM8N.xls"
-           - type: "sheet"
-             spec: "/mdb/ETA.xls"
-           - type: "sheet"
              spec: "/mdb/VC.xls"
            - type: "sheet"
              spec: "/mdb/RGBLED.xls"
@@ -60,6 +54,10 @@ softsim:
              spec: "/mdb/EA.xls"
            - type: "sheet"
              spec: "/mdb/ULR.xls"
+           - type: "sheet"
+             spec: "/mdb/AMC.xls"
+           - type: "sheet"
+             spec: "/mdb/BAT.xls"
 
 mavlink:
     # Configuration of the active loaders

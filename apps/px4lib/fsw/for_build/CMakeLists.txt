@@ -107,6 +107,8 @@ add_airliner_app_unit_test(px4lib-quaternion-ut
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector3F.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix3F3.cpp
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix3F3.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix4F4.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix4F4.hpp
         
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/

@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -96,4 +99,16 @@ block main
                     a(data-sage={cmd:{name:'/CFS/MM/EnableEEPROMWrite'}}) Enable EEPROM Write
                   li
                     a(data-sage={cmd:{name:'/CFS/MM/DisableEEPROMWrite'}}) Disable EEPROM Write
-                      
+                                                  
+  .row          
+    +app_specific_mempools("MM")
+    
+  .row
+    +app_specific_application_control("MM") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("MM")
+    
+  .row
+    +app_specific_scheduler_control("MM")

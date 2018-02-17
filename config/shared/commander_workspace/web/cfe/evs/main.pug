@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -795,3 +798,16 @@ block main
           return '???';
       }
     }
+                                    
+  .row          
+    +app_specific_mempools("CFE_EVS")
+    
+  .row
+    +registered_applications() 
+    +app_specific_application_control("CFE_EVS")
+
+  .row
+    +app_specific_event_filters("CFE_EVS")
+    
+  .row
+    +app_specific_scheduler_control("CFE_EVS")
