@@ -46,6 +46,9 @@ block main
               footer
                 button.btn.btn-primary(data-sage={cmd:{name:'/CFS/LC/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd:{name:'/CFS/LC/Reset'}}) Reset
+                                        
+  .row
+    +app_specific_telemetry_control("LC")
                                               
   .row          
     +app_specific_mempools("LC")

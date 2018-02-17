@@ -204,6 +204,9 @@ block main
                 button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/DisableNameTable'}}) Disable Name Table
                 button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/EnableNameApp'}}) Enable Name App
                 button.btn.btn-xs.btn-primary(data-sage={cmd:{name:'/CFS/CS/DisableNameApp'}}) Disable Name App
+                                        
+  .row
+    +app_specific_telemetry_control("CS")
                             
   .row          
     +app_specific_mempools("CS")

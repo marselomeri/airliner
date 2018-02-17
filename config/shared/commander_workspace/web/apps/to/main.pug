@@ -47,6 +47,9 @@ block main
                   button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/QueryMessageFlow'}}) Query Message Flow
                   button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/QueryPriorityQueue'}}) Query Priority Queue
                   button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/QueryOutputChannel'}}) Query Output Channel
+                                        
+  .row
+    +app_specific_telemetry_control("TO")
                                               
   .row          
     +app_specific_mempools("TO")

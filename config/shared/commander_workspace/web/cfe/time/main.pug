@@ -460,6 +460,9 @@ block main
                       span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_DataStoreStatus'}]}) ---
             footer
               button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CFE_TIME/DiagTlm'}}) Telemeter Diag
+                                        
+  .row
+    +app_specific_telemetry_control("CFE_TIME")
                                     
   .row          
     +app_specific_mempools("CFE_TIME")

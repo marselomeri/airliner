@@ -1973,6 +1973,9 @@ block main
                             a(data-sage={cmd:{name:'/CFS/SC/DisableRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Disable
                           li
                             a(data-sage={cmd:{name:'/CFS/SC/EnableRts', Parameters:[{Name:'RtsId', Value:'64'}]}}, href='javascript:void(0);') Enable
+                                        
+  .row
+    +app_specific_telemetry_control("SC")
                                               
   .row          
     +app_specific_mempools("SC")

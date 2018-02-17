@@ -217,6 +217,9 @@ block main
                     td
                       span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Critical'}]}) ---
                     td
+                                        
+  .row
+    +app_specific_telemetry_control("CFE_TBL")
                                     
   .row          
     +app_specific_mempools("CFE_TBL")

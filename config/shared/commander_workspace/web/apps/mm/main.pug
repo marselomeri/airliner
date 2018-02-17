@@ -99,6 +99,9 @@ block main
                     a(data-sage={cmd:{name:'/CFS/MM/EnableEEPROMWrite'}}) Enable EEPROM Write
                   li
                     a(data-sage={cmd:{name:'/CFS/MM/DisableEEPROMWrite'}}) Disable EEPROM Write
+                                        
+  .row
+    +app_specific_telemetry_control("MM")
                                                   
   .row          
     +app_specific_mempools("MM")

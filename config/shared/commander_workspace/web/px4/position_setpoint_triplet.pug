@@ -9,6 +9,9 @@ block header
 
 block main
     .row.row-fluid
+      +msg_macro_specific_telemetry_control([{macro: 'PX4_POSITION_SETPOINT_TRIPLET_MID'}])
+      
+    .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")

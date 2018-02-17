@@ -46,6 +46,9 @@ block main
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/RegCmd'}}) Register Cmd
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/DeregCmd'}}) Deregister cmd
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/CI/UpdateCmdReg'}}) Update cmd
+                                        
+  .row
+    +app_specific_telemetry_control("CI")
                             
   .row          
     +app_specific_mempools("CI")

@@ -274,6 +274,9 @@ block main
                     th Temp
                     td
                       span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/Temp'}}) ---
+                                        
+  .row
+    +app_specific_telemetry_control("RCIN")
                                                           
   .row          
     +app_specific_mempools("RCIN")

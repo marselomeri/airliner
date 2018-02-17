@@ -156,6 +156,9 @@ block main
                       a(data-sage={cmd:{name:'/CFS/SCH/EnableGroup'}}) Enable Group
                     li
                       a(data-sage={cmd:{name:'/CFS/SCH/DisableGroup'}}) Disable Group
+                                        
+  .row
+    +app_specific_telemetry_control("SENS")
                                               
   .row          
     +app_specific_mempools("SENS")

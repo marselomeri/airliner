@@ -62,6 +62,9 @@ block main
             footer
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/ULR/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/ULR/Reset'}}) Reset
+                                        
+  .row
+    +app_specific_telemetry_control("ULR")
                                               
   .row          
     +app_specific_mempools("ULR")
