@@ -178,6 +178,8 @@ public:
     PX4_MissionResultMsg_t MissionResultMsg = {};
     PX4_GeofenceResultMsg_t GeofenceResultMsg = {};
     PX4_PositionSetpointTripletMsg_t PositionSetpointTripletMsg = {};
+    PX4_PositionSetpointTripletMsg_t TakeoffTripletMsg = {};
+    PX4_PositionSetpointTripletMsg_t RepositionTripletMsg = {};
     PX4_VehicleCommandMsg_t VehicleCommandMsgOut = {};
 
     /** \brief Housekeeping Telemetry for downlink */
@@ -195,10 +197,15 @@ public:
     NAV_MissionItem_t mission_item;
     RTLState rtl_state;
     PX4_VehicleStatusMsg_t previous_state;
+    PX4_VehicleCommandMsg_t  previous_command;
+    boolean new_command_arrived = false;
+    boolean subsequent_takeoffs = false;
+
 
     static constexpr float DELAY_SIGMA = 0.01f;
     //loiter
     boolean CanLoiterAtSetpoint{false};
+    boolean LoiterPositionSet{false};
     boolean PositionSetpointTripletUpdated{false};
     //mission
     boolean MissionResultUpdated{false};
@@ -477,13 +484,24 @@ public:
      float GetCruisingSpeed(void);
      float GetCruisingThrottle(void);
      int Execute(void);
-     void Takeoff(boolean);
-     void RTL(boolean);
-     void SetRTLItem(void);
-     void TakeoffActive();
+
+     void Takeoff(void);
+     void TakeoffActive(void);
+
+     void Land(void);
+     void LandActive(void);
+
      void Loiter(void);
-     void Land(boolean);
-     void LandActive();
+     void LoiterActive(void);
+     void LoiterReposition(void);
+     void LoiterSetPosition(void);
+
+     void Rtl();
+     void SetRtlItem(void);
+     void AdvanceRtl(void);
+     void RtlActive(void);
+
+
 
      float GetTimeInside(NAV_MissionItem_t * );
 
@@ -491,6 +509,7 @@ public:
      void SetLoiterItem(NAV_MissionItem_t *);
      void SetMissionFaliure(const char* );
      boolean StateChangeDetect(void);
+     void CommandEventHist(void);
      PX4_NavigationState_t DetectNavStateEvent(boolean);
      void ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *, NAV_MissionItem_t *);
      void DisplayInputs(int);
@@ -501,27 +520,29 @@ public:
 	/** KK_END MORE BELOW
 	*************************************************************************/
 
-      PX4_VehicleLandDetectedMsg_t* GetLandDetectedMsg(){ return &VehicleLandDetectedMsg;}
-      PX4_FenceMsg_t* GetFenceMsg(){ return &FenceMsg;}
-      PX4_ActuatorControlsMsg_t* GetActuatorControlMsg(){ return &ActuatorControls3Msg;}
-      PX4_MissionResultMsg_t* GetMissionResultMsg(){ return &MissionResultMsg;}
-      PX4_GeofenceResultMsg_t* GetGeoFenceResultMsg(){ return &GeofenceResultMsg;}
-      PX4_PositionSetpointTripletMsg_t* GetPositionSetpointTripletMsg(){ return &PositionSetpointTripletMsg;}
-      PX4_VehicleCommandMsg_t* GetVehicleCommandMsgOut(){ return &VehicleCommandMsgOut;}
+	PX4_VehicleLandDetectedMsg_t* GetLandDetectedMsg(){ return &VehicleLandDetectedMsg;}
+	PX4_FenceMsg_t* GetFenceMsg(){ return &FenceMsg;}
+	PX4_ActuatorControlsMsg_t* GetActuatorControlMsg(){ return &ActuatorControls3Msg;}
+	PX4_MissionResultMsg_t* GetMissionResultMsg(){ return &MissionResultMsg;}
+	PX4_GeofenceResultMsg_t* GetGeoFenceResultMsg(){ return &GeofenceResultMsg;}
+	PX4_PositionSetpointTripletMsg_t* GetPositionSetpointTripletMsg(){ return &PositionSetpointTripletMsg;}
+	PX4_PositionSetpointTripletMsg_t* GetTakeoffTripletMsg(){ return &TakeoffTripletMsg;}
+	PX4_PositionSetpointTripletMsg_t* GetRepositionTripletMsg(){ return &RepositionTripletMsg;}
+	PX4_VehicleCommandMsg_t* GetVehicleCommandMsgOut(){ return &VehicleCommandMsgOut;}
 
-     	PX4_HomePositionMsg_t* GetHomePosition(){return &CVT.HomePositionMsg;}
-     	PX4_SensorCombinedMsg_t* GetSensorCombined(){return &CVT.SensorCombinedMsg;}
-     	PX4_MissionMsg_t* GetMissionMsg(){return &CVT.MissionMsg;}
-     	PX4_VehicleGpsPositionMsg_t* GetVehicleGpsPositionMsg(){return &CVT.VehicleGpsPositionMsg;}
-     	PX4_VehicleGlobalPositionMsg_t* GetVehicleGlobalPositionMsg(){return &CVT.VehicleGlobalPosition;}
-     	PX4_VehicleStatusMsg_t* GetVehicleStatusMsg(){return &CVT.VehicleStatusMsg;}
-     	PX4_VehicleLandDetectedMsg_t* GetVehicleLandDetectedMsg(){return &CVT.VehicleLandDetectedMsg;}
-     	PX4_VehicleLocalPositionMsg_t* GetVehicleLocalPositionMsg(){return &CVT.VehicleLocalPositionMsg;}
-     	PX4_VehicleCommandMsg_t* GetVehicleCommandMsg(){return &CVT.VehicleCommandMsg;}
+	PX4_HomePositionMsg_t* GetHomePosition(){return &CVT.HomePositionMsg;}
+	PX4_SensorCombinedMsg_t* GetSensorCombined(){return &CVT.SensorCombinedMsg;}
+	PX4_MissionMsg_t* GetMissionMsg(){return &CVT.MissionMsg;}
+	PX4_VehicleGpsPositionMsg_t* GetVehicleGpsPositionMsg(){return &CVT.VehicleGpsPositionMsg;}
+	PX4_VehicleGlobalPositionMsg_t* GetVehicleGlobalPositionMsg(){return &CVT.VehicleGlobalPosition;}
+	PX4_VehicleStatusMsg_t* GetVehicleStatusMsg(){return &CVT.VehicleStatusMsg;}
+	PX4_VehicleLandDetectedMsg_t* GetVehicleLandDetectedMsg(){return &CVT.VehicleLandDetectedMsg;}
+	PX4_VehicleLocalPositionMsg_t* GetVehicleLocalPositionMsg(){return &CVT.VehicleLocalPositionMsg;}
+	PX4_VehicleCommandMsg_t* GetVehicleCommandMsg(){return &CVT.VehicleCommandMsg;}
 
-     	boolean IsPlannedMission(){return false;}
-    	void SetCanLoiterAtSetpoint(boolean can_loiter) { CanLoiterAtSetpoint = can_loiter; }
-    	void SetPositionSetpointTripletUpdated() { PositionSetpointTripletUpdated = true; }
+	boolean IsPlannedMission(){return false;}
+	void SetCanLoiterAtSetpoint(boolean can_loiter) { CanLoiterAtSetpoint = can_loiter; }
+	void SetPositionSetpointTripletUpdated() { PositionSetpointTripletUpdated = true; }
 
 
 
