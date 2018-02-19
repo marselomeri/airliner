@@ -60,8 +60,13 @@ int main(void)
 	         "Test_Vector10F_DotProductOperator");
 	UtTest_Add(Test_Vector10F_EMult, Vector10F_Test_Setup, Vector10F_Test_TearDown,
 	         "Test_Vector10F_EMult");
+	UtTest_Add(Test_Vector10F_EDivide, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_EDivide");
 	UtTest_Add(Test_Vector10F_Constrain, Vector10F_Test_Setup, Vector10F_Test_TearDown,
 	         "Test_Vector10F_Constrain");
+	UtTest_Add(Test_Vector10F_PlusEquals, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_PlusEquals");
+
 
     return(UtTest_Run());
 

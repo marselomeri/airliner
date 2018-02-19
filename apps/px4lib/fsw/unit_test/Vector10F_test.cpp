@@ -308,6 +308,39 @@ void Test_Vector10F_EMult(void)
 }
 
 
+void Test_Vector10F_EDivide(void)
+{
+	/* actual = vectorA / scalar */
+	math::Vector10F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f);
+	math::Vector10F vectorB(10.5f, 20.5f, 30.5f, 40.5f, 50.5f, 60.5f, 70.5f, 80.5f, 90.5f, 100.5f);
+	math::Vector10F vectorActual = vectorA.EDivide(vectorB);
+	math::Vector10F vectorExpected;
+
+	/* Verify results */
+	vectorExpected[0] = 0.142857f;
+	vectorExpected[1] = 0.121951f;
+	vectorExpected[2] = 0.114754f;
+	vectorExpected[3] = 0.111111f;
+	vectorExpected[4] = 0.108910f;
+	vectorExpected[5] = 0.107438f;
+	vectorExpected[6] = 0.106382f;
+	vectorExpected[7] = 0.105590f;
+	vectorExpected[8] = 0.104972f;
+	vectorExpected[9] = 0.104477f;
+
+	UtAssert_True(fabs(vectorActual[0] - vectorExpected[0]) <= 0.00001, "[0] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[1] - vectorExpected[1]) <= 0.00001, "[1] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[2] - vectorExpected[2]) <= 0.00001, "[2] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[3] - vectorExpected[3]) <= 0.00001, "[3] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[4] - vectorExpected[4]) <= 0.00001, "[4] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[5] - vectorExpected[5]) <= 0.00001, "[5] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[6] - vectorExpected[6]) <= 0.00001, "[6] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[7] - vectorExpected[7]) <= 0.00001, "[7] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[8] - vectorExpected[8]) <= 0.00001, "[8] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[9] - vectorExpected[9]) <= 0.00001, "[9] vectorExpected == vectorA.EMult(vectorB)");
+}
+
+
 void Test_Vector10F_Constrain(void)
 {
 	/* actual = vectorA / scalar */
@@ -327,7 +360,6 @@ void Test_Vector10F_Constrain(void)
 	vectorA.Constrain(7, 7.5, 8.5);
 	vectorA.Constrain(8, 9.5, 10.5);
 	vectorA.Constrain(9, 10.0, 11.0);
-
 
 	vectorB.Constrain(0, -1.0, -0.5);
 	vectorB.Constrain(1, -2.7, -1.5);
@@ -388,3 +420,38 @@ void Test_Vector10F_Constrain(void)
 }
 
 
+void Test_Vector10F_PlusEquals(void)
+{
+    
+	math::Vector10F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f);
+	math::Vector10F vectorB(10.5f, 20.5f, 30.5f, 40.5f, 50.5f, 60.5f, 70.5f, 80.5f, 90.5f, 100.5f);
+	math::Vector10F vectorActual;
+	math::Vector10F vectorExpected;
+    
+    vectorActual = vectorA;
+    vectorActual += vectorB;
+    
+    vectorExpected[0] = 12.0f;
+    vectorExpected[1] = 23.0f;
+    vectorExpected[2] = 34.0f;
+    vectorExpected[3] = 45.0f;
+    vectorExpected[4] = 56.0f;
+    vectorExpected[5] = 67.0f;
+    vectorExpected[6] = 78.0f;
+    vectorExpected[7] = 89.0f;
+    vectorExpected[8] = 100.0f;
+    vectorExpected[9] = 111.0f;
+
+	UtAssert_True(vectorExpected[0] == vectorActual[0], "[0] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[1] == vectorActual[1], "[1] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[2] == vectorActual[2], "[2] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[3] == vectorActual[3], "[3] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[4] == vectorActual[4], "[4] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[5] == vectorActual[5], "[5] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[6] == vectorActual[6], "[6] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[7] == vectorActual[7], "[7] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[8] == vectorActual[8], "[8] vectorExpected == vectorActual");
+	UtAssert_True(vectorExpected[9] == vectorActual[9], "[9] vectorExpected == vectorActual");
+
+
+}

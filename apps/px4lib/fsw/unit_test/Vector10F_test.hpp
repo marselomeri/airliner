@@ -49,7 +49,9 @@ void Test_Vector10F_ScalarMultiplyOperator(void);
 void Test_Vector10F_ScalarDivOperator(void);
 void Test_Vector10F_DotProductOperator(void);
 void Test_Vector10F_EMult(void);
+void Test_Vector10F_EDivide(void);
 void Test_Vector10F_Constrain(void);
+void Test_Vector10F_PlusEquals(void);
 
 
 #ifdef __cplusplus
