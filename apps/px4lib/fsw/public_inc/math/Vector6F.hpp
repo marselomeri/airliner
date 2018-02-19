@@ -2,7 +2,6 @@
 #define VECTOR6F_HPP
 
 #include "cfe.h"
-//#include "Matrix1F6.hpp"
 
 namespace math
 {
@@ -23,7 +22,7 @@ public:
 	float Length(void) const;
 	void Zero(void);
 	Vector6F operator+(const Vector6F &vecIn);
-    Vector6F operator+=(const Vector6F &vecIn);
+    //Vector6F operator+=(const Vector6F &vecIn);
 	Vector6F operator-(const Vector6F &vecIn);
 	Vector6F operator-(const Vector6F &vecIn) const;
 	//Vector6F operator%(const Vector6F &vecIn);

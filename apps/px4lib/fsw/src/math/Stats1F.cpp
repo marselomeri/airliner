@@ -14,8 +14,8 @@ Stats1F::~Stats1F()
 
 void Stats1F::update(math::Vector1F u)
 {
-    m_Sum += u;
-	m_SumSq += u.EMult(u);
-	m_Count += 1;
+    m_Sum = m_Sum + u;
+	m_SumSq = m_SumSq + u.EMult(u);
+	m_Count = m_Count + 1;
 }
 

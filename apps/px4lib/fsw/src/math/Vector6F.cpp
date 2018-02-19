@@ -75,17 +75,17 @@ Vector6F Vector6F::operator+(const Vector6F &vecIn)
 
 
 // overload + operator to provide a vector addition
-Vector6F Vector6F::operator+=(const Vector6F &vecIn)
-{
-    Vector6F vecOut;
-    vecOut[0] = data[0] + vecIn[0];
-    vecOut[1] = data[1] + vecIn[1];
-    vecOut[2] = data[2] + vecIn[2];
-    vecOut[3] = data[3] + vecIn[3];
-    vecOut[4] = data[4] + vecIn[4];
-    vecOut[5] = data[5] + vecIn[5];
-    return vecOut;
-}
+//Vector6F Vector6F::operator+=(const Vector6F &vecIn)
+//{
+    //Vector6F vecOut;
+    //vecOut[0] = data[0] + vecIn[0];
+    //vecOut[1] = data[1] + vecIn[1];
+    //vecOut[2] = data[2] + vecIn[2];
+    //vecOut[3] = data[3] + vecIn[3];
+    //vecOut[4] = data[4] + vecIn[4];
+    //vecOut[5] = data[5] + vecIn[5];
+    //return vecOut;
+//}
 
 
 // overload - operator to provide a vector subtraction
@@ -175,6 +175,7 @@ Vector6F Vector6F::operator-() const
     return res;
 }
 
+
 Vector6F Vector6F::pow(const float scalar) const
 {
 	Vector6F res;
@@ -204,6 +205,7 @@ Vector6F Vector6F::EMult(const Vector6F &vecIn)
 	return res;
 }
 
+
 const Vector6F Vector6F::EDivide(const Vector6F &vecIn) const
 {
 	Vector6F res;
@@ -218,6 +220,7 @@ const Vector6F Vector6F::EDivide(const Vector6F &vecIn) const
 	return res;
 }
 
+
 void Vector6F::Constrain(uint32 i, float min, float max)
 {
 	if(data[i] < min)
@@ -229,6 +232,7 @@ void Vector6F::Constrain(uint32 i, float min, float max)
 		data[i] = max;
 	}
 }
+
 
 Vector6F Vector6F::Normalized(void)
 {
@@ -244,6 +248,7 @@ Vector6F Vector6F::Normalized(void)
 
 	return res;
 }
+
 
 void Vector6F::Normalize(void)
 {

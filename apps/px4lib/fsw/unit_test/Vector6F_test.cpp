@@ -247,6 +247,32 @@ void Test_Vector6F_EMult(void)
 }
 
 
+void Test_Vector6F_EDivide(void)
+{
+	/* actual = vectorA / scalar */
+	math::Vector6F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f);
+	math::Vector6F vectorB(10.5f, 20.5f, 30.5f, 40.5f, 50.5f, 60.5f);
+	math::Vector6F vectorActual = vectorA.EDivide(vectorB);
+	math::Vector6F vectorExpected;
+
+	/* Verify results */
+	vectorExpected[0] = 0.142857f;
+	vectorExpected[1] = 0.121951f;
+	vectorExpected[2] = 0.114754f;
+	vectorExpected[3] = 0.111111f;
+	vectorExpected[4] = 0.108910f;
+	vectorExpected[5] = 0.107438f;
+
+	UtAssert_True(fabs(vectorActual[0] - vectorExpected[0]) <= 0.00001, "[0] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[1] - vectorExpected[1]) <= 0.00001, "[1] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[2] - vectorExpected[2]) <= 0.00001, "[2] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[3] - vectorExpected[3]) <= 0.00001, "[3] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[4] - vectorExpected[4]) <= 0.00001, "[4] vectorExpected == vectorA.EMult(vectorB)");
+	UtAssert_True(fabs(vectorActual[5] - vectorExpected[5]) <= 0.00001, "[5] vectorExpected == vectorA.EMult(vectorB)");
+
+}
+
+
 void Test_Vector6F_Constrain(void)
 {
 	/* actual = vectorA / scalar */
@@ -300,3 +326,89 @@ void Test_Vector6F_Constrain(void)
 }
 
 
+void Test_Vector6F_Pow(void)
+{
+	/* vectorActual = vectorA + vectorB */
+	math::Vector6F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f);
+	math::Vector6F vectorB;
+    
+	vectorB = vectorA.pow(2.0f);
+
+	/* Verify results */
+	UtAssert_True(vectorB[0] == 2.25f, "vectorB[0] == vectorA[0].pow(2.0f)");
+	UtAssert_True(vectorB[1] == 6.25f, "vectorB[1] == vectorA[1].pow(2.0f)");
+	UtAssert_True(vectorB[2] == 12.25f, "vectorB[2] == vectorA[2].pow(2.0f)");
+	UtAssert_True(vectorB[3] == 20.25f, "vectorB[3] == vectorA[3].pow(2.0f)");
+	UtAssert_True(vectorB[4] == 30.25f, "vectorB[4] == vectorA[4].pow(2.0f)");
+	UtAssert_True(vectorB[5] == 42.25f, "vectorB[5] == vectorA[5].pow(2.0f)");
+}
+
+
+void Test_Vector6F_Normalized(void)
+{
+	/* vectorActual = vectorA + vectorB */
+	math::Vector6F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f);
+	math::Vector6F vectorActual;
+    math::Vector6F vectorExpected(0.140797f, 0.234662f, 0.328526f, 0.422391f,
+                                  0.516256f, 0.610120f);
+    
+	vectorActual = vectorA.Normalized();
+
+	/* Verify results */
+	UtAssert_True(fabs(vectorActual[0] - vectorExpected[0]) <= 0.00001, "[0] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[1] - vectorExpected[1]) <= 0.00001, "[1] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[2] - vectorExpected[2]) <= 0.00001, "[2] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[3] - vectorExpected[3]) <= 0.00001, "[3] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[4] - vectorExpected[4]) <= 0.00001, "[4] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[5] - vectorExpected[5]) <= 0.00001, "[5] vectorExpected == vectorActual");
+}
+
+
+void Test_Vector6F_Normalize(void)
+{
+	/* vectorActual = vectorA + vectorB */
+	math::Vector6F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f);
+	math::Vector6F vectorActual;
+    math::Vector6F vectorExpected(0.140797f, 0.234662f, 0.328526f, 0.422391f,
+                                  0.516256f, 0.610120f);
+    
+    vectorA.Normalize();
+	vectorActual = vectorA;
+
+	/* Verify results */
+	UtAssert_True(fabs(vectorActual[0] - vectorExpected[0]) <= 0.00001, "[0] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[1] - vectorExpected[1]) <= 0.00001, "[1] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[2] - vectorExpected[2]) <= 0.00001, "[2] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[3] - vectorExpected[3]) <= 0.00001, "[3] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[4] - vectorExpected[4]) <= 0.00001, "[4] vectorExpected == vectorActual");
+	UtAssert_True(fabs(vectorActual[5] - vectorExpected[5]) <= 0.00001, "[5] vectorExpected == vectorActual");
+
+}
+
+void Test_Vector6F_Negate(void)
+{
+	/* vectorActual = vectorA + vectorB */
+	math::Vector6F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f);
+	math::Vector6F vectorActual;
+	math::Vector6F vectorExpected(-1.5f, -2.5f, -3.5f, -4.5f, -5.5f, -6.5f);
+
+	vectorActual = -vectorA;
+    vectorA = -vectorA;
+
+	/* Verify results */
+	UtAssert_True(vectorActual[0] == vectorExpected[0], "[0] vectorExpected == vectorActual");
+	UtAssert_True(vectorActual[1] == vectorExpected[1], "[1] vectorExpected == vectorActual");
+	UtAssert_True(vectorActual[2] == vectorExpected[2], "[2] vectorExpected == vectorActual");
+	UtAssert_True(vectorActual[3] == vectorExpected[3], "[3] vectorExpected == vectorActual");
+	UtAssert_True(vectorActual[4] == vectorExpected[4], "[4] vectorExpected == vectorActual");
+	UtAssert_True(vectorActual[5] == vectorExpected[5], "[5] vectorExpected == vectorActual");
+
+	UtAssert_True(vectorA[0] == vectorExpected[0], "[0] vectorExpected == vectorA");
+	UtAssert_True(vectorA[1] == vectorExpected[1], "[1] vectorExpected == vectorA");
+	UtAssert_True(vectorA[2] == vectorExpected[2], "[2] vectorExpected == vectorA");
+	UtAssert_True(vectorA[3] == vectorExpected[3], "[3] vectorExpected == vectorA");
+	UtAssert_True(vectorA[4] == vectorExpected[4], "[4] vectorExpected == vectorA");
+	UtAssert_True(vectorA[5] == vectorExpected[5], "[5] vectorExpected == vectorA");
+
+
+}

@@ -60,8 +60,18 @@ int main(void)
 	         "Test_Vector6F_DotProductOperator");
 	UtTest_Add(Test_Vector6F_EMult, Vector6F_Test_Setup, Vector6F_Test_TearDown,
 	         "Test_Vector6F_EMult");
+	UtTest_Add(Test_Vector6F_EDivide, Vector6F_Test_Setup, Vector6F_Test_TearDown,
+	         "Test_Vector6F_EDivide");
 	UtTest_Add(Test_Vector6F_Constrain, Vector6F_Test_Setup, Vector6F_Test_TearDown,
 	         "Test_Vector6F_Constrain");
+	UtTest_Add(Test_Vector6F_Pow, Vector6F_Test_Setup, Vector6F_Test_TearDown,
+	         "Test_Vector6F_Pow");
+	UtTest_Add(Test_Vector6F_Normalized, Vector6F_Test_Setup, Vector6F_Test_TearDown,
+	         "Test_Vector6F_Normalized");
+	UtTest_Add(Test_Vector6F_Normalize, Vector6F_Test_Setup, Vector6F_Test_TearDown,
+	         "Test_Vector6F_Normalize");
+	UtTest_Add(Test_Vector6F_Negate, Vector6F_Test_Setup, Vector6F_Test_TearDown,
+	         "Test_Vector6F_Negate");
 
     return(UtTest_Run());
 

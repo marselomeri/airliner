@@ -22,7 +22,7 @@ public:
 	float Length(void) const;
 	void Zero(void);
 	Vector1F operator+(const Vector1F &vecIn);
-    Vector1F operator+=(const Vector1F &vecIn);
+    //Vector1F operator+=(const Vector1F &vecIn);
 	Vector1F operator-(const Vector1F &vecIn);
 	Vector1F operator-(const Vector1F &vecIn) const;
 	Vector1F operator*(const float scalar);

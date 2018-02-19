@@ -64,12 +64,12 @@ Vector1F Vector1F::operator+(const Vector1F &vecIn)
 
 
 // overload + operator to provide a vector addition
-Vector1F Vector1F::operator+=(const Vector1F &vecIn)
-{
-    Vector1F vecOut;
-    vecOut[0] = data[0] + vecIn[0];
-    return vecOut;
-}
+//Vector1F Vector1F::operator+=(const Vector1F &vecIn)
+//{
+    //Vector1F vecOut;
+    //vecOut[0] = data[0] + vecIn[0];
+    //return vecOut;
+//}
 
 
 // overload - operator to provide a vector subtraction
