@@ -31,22 +31,62 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX1F10_TEST_H
-#define MATRIX1F10_TEST_H
+#include "Matrix1F3_test.hpp"
+#include <math/Matrix1F3.hpp>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "utassert.h"
+#include <float.h>
 
-void Test_Matrix1F10_Constructor(void);
-void Test_Matrix1F10_IndexOutOfBounds(void);
-void Test_Matrix1F10_Mult_10F10(void);
-void Test_Matrix1F10_Mult_10F1(void);
-void Test_Matrix1F10_Mult_10F(void);
-void Test_Matrix1F10_Transpose(void);
 
-#ifdef __cplusplus
+void Test_Matrix1F3_Constructor(void)
+{
+    math::Matrix1F3 matrix({1.0f, 2.0f, 3.0f});
+
+    /* Verify results */
+    UtAssert_True(matrix[0][0] == 1.0f, "matrix[0][0] == 1.0f");
+    UtAssert_True(matrix[0][1] == 2.0f, "matrix[0][1] == 2.0f");
+    UtAssert_True(matrix[0][2] == 3.0f, "matrix[0][2] == 3.0f");
 }
-#endif
 
-#endif /* MATRIX1F10_TEST_H */
+
+void Test_Matrix1F3_IndexOutOfBounds(void)
+{
+    math::Matrix1F3 matrix({1.0f, 2.0f, 3.0f});
+
+    /* Verify results */
+    UtAssert_True(isnan(matrix[0][3]), "matrix[0][3] == NAN");
+    UtAssert_True(isnan(matrix[1][0]), "matrix[1][0] == NAN");
+}
+
+
+void Test_Matrix1F3_Zero(void)
+{
+    math::Matrix1F3 matrixA({1.0f, 2.0f, 3.0f});
+    math::Matrix1F3 matrixB;
+    
+    matrixB[0][0] = 2.0f;
+
+    matrixA.Zero();
+    matrixB.Zero();
+
+    /* Verify results */
+    UtAssert_True(matrixA[0][0] == 0.0f, "matrixA[0][0] == 0.0f");
+    UtAssert_True(matrixA[0][1] == 0.0f, "matrixA[0][1] == 0.0f");
+    UtAssert_True(matrixA[0][2] == 0.0f, "matrixA[0][2] == 0.0f");
+    UtAssert_True(matrixB[0][0] == 0.0f, "matrixB[0][0] == 0.0f");
+    UtAssert_True(matrixB[0][1] == 0.0f, "matrixB[0][1] == 0.0f");
+    UtAssert_True(matrixB[0][2] == 0.0f, "matrixB[0][2] == 0.0f");
+}
+
+
+void Test_Matrix1F3_DotProduct(void)
+{
+    math::Matrix1F3 matrixA({1.0f, 2.0f, 3.0f});
+    math::Vector3F vectorB({1.0f, 2.0f, 3.0f});
+    float result;
+    
+    result = matrixA * vectorB;
+
+    /* Verify results */
+    UtAssert_True(result == 14.0f, "result == 14.0f");
+}

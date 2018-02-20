@@ -14,7 +14,8 @@ class Matrix1F3
 public:
 
 private:
-	static const int SIZE = 1;
+    static const int ROWS = 1;
+    static const int COLS = 3;
 	Vector3F nan;
 
 public:
@@ -28,7 +29,7 @@ public:
 	void Zero(void);
 
 protected:
-	Vector3F data[SIZE];
+	Vector3F data[ROWS];
 
 };
 

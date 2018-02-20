@@ -452,6 +452,4 @@ void Test_Vector10F_PlusEquals(void)
 	UtAssert_True(vectorExpected[7] == vectorActual[7], "[7] vectorExpected == vectorActual");
 	UtAssert_True(vectorExpected[8] == vectorActual[8], "[8] vectorExpected == vectorActual");
 	UtAssert_True(vectorExpected[9] == vectorActual[9], "[9] vectorExpected == vectorActual");
-
-
 }

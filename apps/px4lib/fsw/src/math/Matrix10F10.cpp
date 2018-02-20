@@ -3,7 +3,10 @@
 
 using namespace math;
 
-Matrix10F10::Matrix10F10(Vector10F m0, Vector10F m1, Vector10F m2, Vector10F m3, Vector10F m4, Vector10F m5, Vector10F m6, Vector10F m7, Vector10F m8, Vector10F m9) :
+Matrix10F10::Matrix10F10(Vector10F m0, Vector10F m1, Vector10F m2, 
+                         Vector10F m3, Vector10F m4, Vector10F m5, 
+                         Vector10F m6, Vector10F m7, Vector10F m8, 
+                         Vector10F m9) :
 	data{m0, m1, m2, m3, m4, m5, m6, m7, m8, m9},
 	nan{NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN,NAN}
 {
@@ -35,7 +38,7 @@ Matrix10F10::~Matrix10F10()
 
 Vector10F& Matrix10F10::operator [] (uint32 i)
 {
-	if(i >= 10)
+	if(i >= SIZE)
 	{
 		return nan;
 	}
@@ -48,7 +51,7 @@ Vector10F& Matrix10F10::operator [] (uint32 i)
 
 Vector10F Matrix10F10::operator [] (uint32 i) const
 {
-	if(i >= 10)
+	if(i >= SIZE)
 	{
 		return nan;
 	}
@@ -141,22 +144,21 @@ Matrix10F6 Matrix10F10::operator*(const Matrix10F6 &matIn)
     /* Columns in matrix 1 */
     int cols1 = 10;
     /* Columns in matrix 2 */
-    int cols2 = 6
-;
+    int cols2 = 6;
+
     // TODO: verify correct
     for(int i = 0; i < rows1; i++)
     {
-    	for(int j = 0; j < cols2; j++)
-		{
+        for(int j = 0; j < cols2; j++)
+        {
+            for(int k = 0; k < cols1; k++)
+            {
+                value += data[i][k] * matIn[k][j];
+            }
 
-    		for(int k = 0; k < cols1; k++)
-			{
-    			value += data[i][j] * matIn[j][k];
-			}
-
-    		matOut[i][j] = value;
-    		value = 0.0f;
-		}
+            matOut[i][j] = value;
+            value = 0.0f;
+        }
     }
 
     return matOut;
@@ -167,22 +169,23 @@ Matrix10F6 Matrix10F10::operator*(const Matrix10F6 &matIn)
 Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 {
     Vector10F vecOut;
+    int i, j = 0;
     float value = 0.0f;
 
     // TODO: verify correct
-    for(int i = 0; i < SIZE; i++)
+    for(i = 0; i < SIZE; i++)
     {
-    	for(int j = 0; j < SIZE; j++)
+    	for(j = 0; j < SIZE; j++)
 		{
     		value += data[i][j]*vecIn[j];
-
+		}
     		vecOut[i] = value;
     		value = 0.0f;
-		}
     }
 
     return vecOut;
 }
+
 
 Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
 {
@@ -204,6 +207,7 @@ Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
     return vecOut;
 }
 
+
 void Matrix10F10::operator+=(const Matrix10F10 &mat)
 {
     float value = 0.0f;
@@ -217,6 +221,20 @@ void Matrix10F10::operator+=(const Matrix10F10 &mat)
 		}
     }
 }
+
+
+void Matrix10F10::operator-=(const Matrix10F10 &matIn)
+{
+    // TODO: verify correct
+	for(int i = 0; i < SIZE; i++)
+	{
+		for(int j = 0; j < SIZE; j++)
+		{
+			data[j][i] -= matIn[j][i];
+		}
+	}
+}
+
 
 Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
 {
@@ -245,6 +263,7 @@ Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)
     return matOut;
 }
 
+
 Matrix10F3 Matrix10F10::operator*(const Matrix10F3 &matIn)
 {
     Matrix10F3 matOut;
@@ -266,6 +285,7 @@ Matrix10F3 Matrix10F10::operator*(const Matrix10F3 &matIn)
 
     return matOut;
 }
+
 
 Matrix10F10 Matrix10F10::operator*(const float &scalar)
 {
@@ -317,17 +337,6 @@ Matrix10F10 Matrix10F10::operator-(const Matrix10F10 &matIn) const
     return matOut;
 }
 
-void Matrix10F10::operator-=(const Matrix10F10 &matIn)
-{
-    // TODO: verify correct
-	for(int i = 0; i < SIZE; i++)
-	{
-		for(int j = 0; j < SIZE; j++)
-		{
-			data[j][i] -= matIn[j][i];
-		}
-	}
-}
 
 void Matrix10F10::Print()
 {

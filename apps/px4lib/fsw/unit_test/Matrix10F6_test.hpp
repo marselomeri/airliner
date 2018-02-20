@@ -39,6 +39,7 @@ extern "C" {
 #endif
 
 void Test_Matrix10F6_Constructor(void);
+void Test_Matrix10F6_OutOfBounds(void);
 
 
 #ifdef __cplusplus

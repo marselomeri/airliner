@@ -40,12 +40,31 @@ int main(void)
 {   
 	UtTest_Add(Test_Matrix10F10_Constructor, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Constructor");
+	UtTest_Add(Test_Matrix10F10_Mult_10F, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F");
 	UtTest_Add(Test_Matrix10F10_Mult_10F1, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F1");
+	UtTest_Add(Test_Matrix10F10_Mult_10F3, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F3");
+	UtTest_Add(Test_Matrix10F10_Mult_10F6, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F6");
+	UtTest_Add(Test_Matrix10F10_Mult_10F10, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F10");
 	UtTest_Add(Test_Matrix10F10_Addition, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Addition");
 	UtTest_Add(Test_Matrix10F10_Subtraction, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Subtraction");
+	UtTest_Add(Test_Matrix10F10_Zero, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Zero");
+	UtTest_Add(Test_Matrix10F10_Identity, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Identity");
+	UtTest_Add(Test_Matrix10F10_Transpose, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Transpose");
+	UtTest_Add(Test_Matrix10F10_PlusEquals, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_PlusEquals");
+	UtTest_Add(Test_Matrix10F10_MinusEquals, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_MinusEquals");
+
     return(UtTest_Run());
 
 }

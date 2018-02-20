@@ -20,8 +20,9 @@ class Matrix10F10;
 class Matrix1F10
 {
 private:
-    static const int SIZE = 1;
-    Vector10F data[SIZE];
+    static const int ROWS = 1;
+    static const int COLS = 10;
+    Vector10F data[ROWS];
     Vector10F nan;
 
 public:

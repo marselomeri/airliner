@@ -40,6 +40,8 @@ int main(void)
 {   
 	UtTest_Add(Test_Matrix10F6_Constructor, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
 	         "Test_Matrix10F6_Constructor");
+	UtTest_Add(Test_Matrix10F6_OutOfBounds, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
+	         "Test_Matrix10F6_OutOfBounds");
 
     return(UtTest_Run());
 

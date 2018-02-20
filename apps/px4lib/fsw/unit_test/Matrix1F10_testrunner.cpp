@@ -40,12 +40,16 @@ int main(void)
 {   
 	UtTest_Add(Test_Matrix1F10_Constructor, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
 	         "Test_Matrix1F10_Constructor");
+	UtTest_Add(Test_Matrix1F10_IndexOutOfBounds, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
+	         "Test_Matrix1F10_IndexOutOfBounds");
     	UtTest_Add(Test_Matrix1F10_Mult_10F10, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
 	         "Test_Matrix1F10_Mult_10F10");
     	UtTest_Add(Test_Matrix1F10_Transpose, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
 	         "Test_Matrix1F10_Transpose");
     	UtTest_Add(Test_Matrix1F10_Mult_10F1, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
 	         "Test_Matrix1F10_Mult_10F1");
+    	UtTest_Add(Test_Matrix1F10_Mult_10F, Matrix1F10_Test_Setup, Matrix1F10_Test_TearDown,
+	         "Test_Matrix1F10_Mult_10F");
 
     return(UtTest_Run());
 
