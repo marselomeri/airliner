@@ -55,12 +55,13 @@ Vector10F Matrix3F10::operator [] (uint32 i) const
 Matrix10F3 Matrix3F10::Transpose(void)
 {
 	Matrix10F3 res;
+    res.Zero();
 
 	for(int i = 0; i < ROWS; i++)
 	{
 		for(int j = 0; j < COLS; j++)
 		{
-			res[i][j] = data[j][i];
+			res[j][i] = data[i][j];
 		}
 	}
 
@@ -89,12 +90,12 @@ Matrix3F3 Matrix3F10::operator*(const Matrix10F3 &matIn)
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
     {
-    	for(int j = 0; j < 3; j++)
+    	for(int k = 0; k < 3; k++)
 		{
 
-    		for(int k = 0; k < COLS; k++)
+    		for(int j = 0; j < COLS; j++)
 			{
-    			matOut[i][j] += data[i][j] * matIn[j][k];
+    			matOut[i][k] += data[i][j] * matIn[j][k];
 			}
 		}
     }
