@@ -31,24 +31,23 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX6F10_TEST_H
-#define MATRIX6F10_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Matrix1F6_test.hpp"
+#include "Matrix1F6_test_utils.hpp"
 
-void Test_Matrix6F10_Constructor(void);
-void Test_Matrix6F10_IndexOutOfBounds(void);
-void Test_Matrix6F10_Mult_10F(void);
-void Test_Matrix6F10_Mult_10F6(void);
-void Test_Matrix6F10_Mult_10F10(void);
-void Test_Matrix6F10_Transpose(void);
-void Test_Matrix6F10_Zero(void);
+int main(void)
+{   
+	UtTest_Add(Test_Matrix1F6_Constructor, Matrix1F6_Test_Setup, Matrix1F6_Test_TearDown,
+	         "Test_Matrix1F6_Constructor");
+	UtTest_Add(Test_Matrix1F6_IndexOutOfBounds, Matrix1F6_Test_Setup, Matrix1F6_Test_TearDown,
+	         "Test_Matrix1F6_IndexOutOfBounds");
+	UtTest_Add(Test_Matrix1F6_Zero, Matrix1F6_Test_Setup, Matrix1F6_Test_TearDown,
+	         "Test_Matrix1F6_Zero");
+	UtTest_Add(Test_Matrix1F6_Mult_6F1, Matrix1F6_Test_Setup, Matrix1F6_Test_TearDown,
+	         "Test_Matrix1F6_Mult_6F1");
 
+    return(UtTest_Run());
 
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* MATRIX6F10_TEST_H */

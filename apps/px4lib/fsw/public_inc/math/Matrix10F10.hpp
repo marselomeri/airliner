@@ -36,16 +36,14 @@ public:
 	Matrix10F10 Transpose(void);
 	static Matrix10F10 Identity(void);
 	Vector10F operator*(const Vector10F &vecIn);
-    
     Matrix10F1 operator*(const Matrix10F1 &matIn);
     Matrix10F3 operator*(const Matrix10F3 &matIn);
     Matrix10F6 operator*(const Matrix10F6 &matIn);
 	Matrix10F10 operator*(const Matrix10F10 &matIn);
 	Matrix10F10 operator*(const float &scalar);
-	Vector10F operator+(const Vector10F &vecIn);
+	//Vector10F operator+(const Vector10F &vecIn);
 	void operator+=(const Matrix10F10 &mat);
     void operator-=(const Matrix10F10 &matIn);
-
 	void Zero(void);
     Matrix10F10 operator+(const Matrix10F10 &matIn) const;
     Matrix10F10 operator-(const Matrix10F10 &matIn) const;

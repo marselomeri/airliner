@@ -62,22 +62,21 @@ private:
 	static const RotLookup_t RotLookup[];
 
 public:
-	Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2);
-
-	~Matrix3F3();
-	Vector3F& operator [] (uint32 i);
-	Vector3F operator [] (uint32 i) const;
-	Matrix3F3();
-	Matrix3F3 Transpose(void);
-	static Matrix3F3 Identity(void);
-	Vector3F operator*(const Vector3F &vecIn);
-	Matrix3F3 operator*(const Matrix3F3 &matIn);
-	Matrix3F3 operator*(const float &scalar);
-	void Zero(void);
+    Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2);
+    ~Matrix3F3();
+    Vector3F& operator [] (uint32 i);
+    Vector3F operator [] (uint32 i) const;
+    Matrix3F3();
+    Matrix3F3 Transpose(void);
+    static Matrix3F3 Identity(void);
+    Vector3F operator*(const Vector3F &vecIn);
+    Matrix3F3 operator*(const Matrix3F3 &matIn);
+    Matrix3F3 operator*(const float &scalar);
     Matrix3F3 operator+(const Matrix3F3 &matIn) const;
-	static Matrix3F3 RotationMatrix(Matrix3F3::Rotation_t boardRotation);
-	static Matrix3F3 FromEuler(float roll, float pitch, float yaw);
-	Vector3F ToEuler(void) const;
+    static Matrix3F3 RotationMatrix(Matrix3F3::Rotation_t boardRotation);
+    static Matrix3F3 FromEuler(float roll, float pitch, float yaw);
+    Vector3F ToEuler(void) const;
+    void Zero(void);
 
 protected:
 	Vector3F data[SIZE];

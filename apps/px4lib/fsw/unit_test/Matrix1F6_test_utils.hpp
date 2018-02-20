@@ -31,24 +31,28 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX6F10_TEST_H
-#define MATRIX6F10_TEST_H
+#ifndef MATRIX1F6_TEST_UTILS_H
+#define MATRIX1F6_TEST_UTILS_H
+
+/*
+ * Includes
+ */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void Test_Matrix6F10_Constructor(void);
-void Test_Matrix6F10_IndexOutOfBounds(void);
-void Test_Matrix6F10_Mult_10F(void);
-void Test_Matrix6F10_Mult_10F6(void);
-void Test_Matrix6F10_Mult_10F10(void);
-void Test_Matrix6F10_Transpose(void);
-void Test_Matrix6F10_Zero(void);
+/*
+ * Function Definitions
+ */
+
+void Matrix1F6_Test_Setup(void);
+void Matrix1F6_Test_TearDown(void);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* MATRIX6F10_TEST_H */
+#endif /* MATRIX1F6_TEST_UTILS_H */
+

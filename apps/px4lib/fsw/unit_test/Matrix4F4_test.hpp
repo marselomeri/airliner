@@ -41,7 +41,7 @@ extern "C" {
 void Test_Matrix4F4_Constructor(void);
 void Test_Matrix4F4_IndexOutOfBounds(void);
 void Test_Matrix4F4_ArrayOperator(void);
-void Test_Matrix4F4_NegateOperator(void);
+
 
 
 #ifdef __cplusplus

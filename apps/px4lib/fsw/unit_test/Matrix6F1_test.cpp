@@ -31,24 +31,73 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX6F10_TEST_H
-#define MATRIX6F10_TEST_H
+#include "Matrix6F1_test.hpp"
+#include <math/Matrix6F1.hpp>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void Test_Matrix6F10_Constructor(void);
-void Test_Matrix6F10_IndexOutOfBounds(void);
-void Test_Matrix6F10_Mult_10F(void);
-void Test_Matrix6F10_Mult_10F6(void);
-void Test_Matrix6F10_Mult_10F10(void);
-void Test_Matrix6F10_Transpose(void);
-void Test_Matrix6F10_Zero(void);
+#include "utassert.h"
+#include <float.h>
 
 
-#ifdef __cplusplus
+void Test_Matrix6F1_Constructor(void)
+{
+	math::Matrix6F1 matrix(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+
+	/* Verify results */
+	UtAssert_True(matrix[0][0] == 1.0f, "matrix[0][0] == 1.0f");
+	UtAssert_True(matrix[1][0] == 2.0f, "matrix[1][0] == 2.0f");
+	UtAssert_True(matrix[2][0] == 3.0f, "matrix[2][0] == 3.0f");
+	UtAssert_True(matrix[3][0] == 4.0f, "matrix[3][0] == 4.0f");
+	UtAssert_True(matrix[4][0] == 5.0f, "matrix[4][0] == 5.0f");
+	UtAssert_True(matrix[5][0] == 6.0f, "matrix[5][0] == 6.0f");
 }
-#endif
 
-#endif /* MATRIX6F10_TEST_H */
+
+void Test_Matrix6F1_IndexOutOfBounds(void)
+{
+	math::Matrix6F1 matrix(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+
+	/* Verify results */
+	UtAssert_True(isnan(matrix[6][0]), "matrix[6][0] == NAN");
+	UtAssert_True(isnan(matrix[0][1]), "matrix[0][1] == NAN");
+}
+
+
+void Test_Matrix6F1_ArrayOperator(void)
+{
+	math::Matrix6F1 matrix(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+
+	float nanResultA = matrix[6][0];
+	float nanResultB = matrix[0][1];
+
+    UtAssert_True(isnan(matrix[6][0]), "matrix[6][0] == NAN");
+    UtAssert_True(isnan(matrix[0][1]), "matrix[0][1] == NAN");
+
+    UtAssert_True(isnan(nanResultA), "NAN == matrix[6][0]");
+    UtAssert_True(isnan(nanResultB), "NAN == matrix[0][1]");
+}
+
+
+void Test_Matrix6F1_Zero(void)
+{
+    int i = 0;
+	math::Matrix6F1 matrixA(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+
+    matrixA.Zero();
+
+	/* Verify results */
+    for(i=0; i<6; i++)
+    {
+        UtAssert_True(matrixA[i][0] == 0.0f, "matrix[i][0] == 0.0f");
+    }
+
+
+}
+

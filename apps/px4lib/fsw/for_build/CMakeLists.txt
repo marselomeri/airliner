@@ -240,6 +240,35 @@ add_airliner_app_unit_test(px4lib-matrix1f3-ut
 )
 
 
+add_airliner_app_unit_test(px4lib-matrix1f6-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix1F6_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix1F1.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F1.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix1F6.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix1F6.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F1.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F1.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector6F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector6F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector1F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector1F.hpp
+
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix1f6-ut.supp
+)
+
+
 add_airliner_app_unit_test(px4lib-matrix3f3-ut
     UTASSERT
     SOURCES
@@ -287,6 +316,31 @@ add_airliner_app_unit_test(px4lib-matrix4f4-ut
         
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix4f4-ut.supp
+)
+
+
+add_airliner_app_unit_test(px4lib-matrix6f1-ut
+    UTASSERT
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_test.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_testrunner.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_test_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/Matrix6F1_test_utils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Matrix6F1.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Matrix6F1.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector1F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector1F.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/math/Vector6F.cpp
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}/math/Vector6F.hpp
+
+    INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${PX4LIB_PUBLIC_INCLUDE_DIR}
+        
+    VALGRIND_SUPPRESSION_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/px4lib-matrix6f1-ut.supp
 )
 
 

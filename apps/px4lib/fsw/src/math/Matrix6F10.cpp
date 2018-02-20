@@ -112,7 +112,7 @@ Matrix6F6 Matrix6F10::operator*(const Matrix10F6 &matIn)
 		{
     		for(int k = 0; k < cols1; k++)
 			{
-    			value += data[i][j] * matIn[j][k];
+    			value += data[i][k] * matIn[k][j];
 			}
 
     		matOut[i][j] = value;
@@ -134,8 +134,8 @@ Matrix6F10 Matrix6F10::operator*(const Matrix10F10 &matIn)
     /* Columns in matrix 1 */
     int cols1 = 10;
     /* Columns in matrix 2 */
-    int cols2 = 10
-;
+    int cols2 = 10;
+
     // TODO: verify correct
     for(int i = 0; i < rows1; i++)
     {
@@ -143,7 +143,7 @@ Matrix6F10 Matrix6F10::operator*(const Matrix10F10 &matIn)
 		{
     		for(int k = 0; k < cols1; k++)
 			{
-    			value += data[i][j] * matIn[j][k];
+    			value += data[i][j] * matIn[k][j];
 			}
 
     		matOut[i][j] = value;

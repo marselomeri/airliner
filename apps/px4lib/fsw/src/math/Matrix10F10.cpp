@@ -187,25 +187,25 @@ Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 }
 
 
-Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
-{
-    Vector10F vecOut;
-    float value = 0.0f;
+//Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
+//{
+    //Vector10F vecOut;
+    //float value = 0.0f;
 
-    // TODO: verify correct
-    for(int i = 0; i < SIZE; i++)
-    {
-    	for(int j = 0; j < SIZE; j++)
-		{
-    		value += data[i][j]+vecIn[j];
+    //// TODO: verify correct
+    //for(int i = 0; i < SIZE; i++)
+    //{
+    	//for(int j = 0; j < SIZE; j++)
+		//{
+    		//value += data[i][j]+vecIn[j];
 
-    		vecOut[i] = value;
-    		value = 0.0f;
-		}
-    }
+    		//vecOut[i] = value;
+    		//value = 0.0f;
+		//}
+    //}
 
-    return vecOut;
-}
+    //return vecOut;
+//}
 
 
 void Matrix10F10::operator+=(const Matrix10F10 &mat)
