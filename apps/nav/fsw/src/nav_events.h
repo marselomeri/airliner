@@ -250,6 +250,180 @@ typedef enum {
 */
 	NAV_CFGTBL_LOAD_ERR_EID,
 
+/** \brief <tt> 'Mission failed (\%s)' </tt>
+**  \event <tt> 'Mission failed (\%s)' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task fails to
+**  complete defined mission.
+**
+**  The first \c %s field contains the reason for mission failure.
+**
+*/
+	NAV_MSN_FAILED_ERR_EID,
+
+/** \brief <tt> 'Set altitude lower than minimum clearance : \%f meters.' </tt>
+**  \event <tt> 'Set altitude lower than minimum clearance : \%f meters.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  altitude lower than minimum clearance.
+**
+**  The first \c %f field contains the altitude.
+**
+*/
+	NAV_LOW_CLEARANCE_ALT_EID,
+
+/** \brief <tt> 'Set altitude already higher than take off altitude.' </tt>
+**  \event <tt> 'Set altitude already higher than take off altitude.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports if
+**  altitude is higher than current altitude.
+**
+*/
+	NAV_HIGH_ALT_EID,
+
+/** \brief <tt> 'Commencing \%s.' </tt>
+**  \event <tt> 'Commencing \%s.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  navigator action start.
+**
+**	The first \c %s field contains the action.
+**
+*/
+	NAV_ACTION_ST_EID,
+
+/** \brief <tt> 'RTL: Commencing climb to \%d m (\%d m above home).' </tt>
+**  \event <tt> 'RTL: Commencing climb to \%d m (\%d m above home).' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL climb action start.
+**
+**  The first \c %d field contains the climb altitude.
+**  The second \c %d field contains the altitude from home position.
+**
+*/
+	NAV_RTL_CLIMB_ST_EID,
+
+/** \brief <tt> 'RTL: Commencing return at \%d m (\%d m above home).' </tt>
+**  \event <tt> 'RTL: Commencing return at \%d m (\%d m above home).' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL return action start.
+**
+**  The first \c %d field contains the altitude.
+**  The second \c %d field contains the altitude from home position.
+**
+*/
+	NAV_RTL_RETURN_ST_EID,
+
+/** \brief <tt> 'RTL: Commencing descend to \%d m (\%d m above home).' </tt>
+**  \event <tt> 'RTL: Commencing descend to \%d m (\%d m above home).' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL descend action start.
+**
+**  The first \c %d field contains the altitude.
+**  The second \c %d field contains the altitude from home position.
+**
+*/
+	NAV_RTL_DESCEND_ST_EID,
+
+/** \brief <tt> 'RTL: Commencing loiter for \%.1fs.' </tt>
+**  \event <tt> 'RTL: Commencing loiter for \%.1fs.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL loiter action start.
+**
+**  The first \c %f field contains the loiter time.
+**
+*/
+	NAV_RTL_LOITER_ST_EID,
+
+/** \brief <tt> 'RTL: Loiter completed.' </tt>
+**  \event <tt> 'RTL: Loiter completed.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL loiter action end.
+**
+*/
+	NAV_RTL_LOITER_EN_EID,
+
+/** \brief <tt> 'RTL: Commencing land at home.' </tt>
+**  \event <tt> 'RTL: Commencing land at home.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL land action start.
+**
+*/
+	NAV_RTL_LAND_ST_EID,
+
+/** \brief <tt> 'RTL: Land completed.' </tt>
+**  \event <tt> 'RTL: Land completed.' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL land action end.
+**
+*/
+	NAV_RTL_LAND_EN_EID,
+
+/** \brief <tt> 'Already landed, not executing RTL' </tt>
+**  \event <tt> 'Already landed, not executing RTL' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  RTL execution when in landed state.
+**
+*/
+	NAV_RTL_LND_SFGA_EID,
+
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	NAV_EVT_CNT
 } NAV_EventIds_t;

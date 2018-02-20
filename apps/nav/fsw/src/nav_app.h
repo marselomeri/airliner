@@ -133,13 +133,13 @@ typedef enum {
 
 typedef enum {
 	RTL_STATE_NONE = 0,
-	RTL_STATE_CLIMB,
-	RTL_STATE_RETURN,
-	RTL_STATE_TRANSITION_TO_MC,
-	RTL_STATE_DESCEND,
-	RTL_STATE_LOITER,
-	RTL_STATE_LAND,
-	RTL_STATE_LANDED,
+	RTL_STATE_CLIMB = 1,
+	RTL_STATE_RETURN = 2,
+	RTL_STATE_TRANSITION_TO_MC = 3,
+	RTL_STATE_DESCEND = 4,
+	RTL_STATE_LOITER = 5,
+	RTL_STATE_LAND = 6,
+	RTL_STATE_LANDED = 7,
 } RTLState;
 
 
@@ -195,7 +195,7 @@ public:
      */
     NAV_Params_t nav_params;
     NAV_MissionItem_t mission_item;
-    RTLState rtl_state;
+    RTLState rtl_state = RTLState::RTL_STATE_NONE;
     PX4_VehicleStatusMsg_t previous_state;
     PX4_VehicleCommandMsg_t  previous_command;
     boolean new_command_arrived = false;
