@@ -805,19 +805,19 @@ int NAV::Execute(){
 	/* first run in a navigation mode */
 	if(first_run){
 		if(CurrentState == PX4_NavigationState_t::PX4_NAVIGATION_STATE_AUTO_TAKEOFF){
-			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s.","Takeoff");
+			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s","Takeoff");
 			Takeoff();
 		}
 		else if(CurrentState == PX4_NavigationState_t::PX4_NAVIGATION_STATE_AUTO_LOITER){
-			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s.","Loiter");
+			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s","Loiter");
 			Loiter();
 		}
 		else if(CurrentState == PX4_NavigationState_t::PX4_NAVIGATION_STATE_AUTO_LAND){
-			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s.","Land");
+			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s","Land");
 			Land();
 		}
 		else if(CurrentState == PX4_NavigationState_t::PX4_NAVIGATION_STATE_AUTO_RTL){
-			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s.","Return to Launch");
+			(void) CFE_EVS_SendEvent(NAV_ACTION_ST_EID, CFE_EVS_INFORMATION, "Commencing %s","Return to Launch");
 			Rtl();
 
 		}
