@@ -47,6 +47,16 @@ void Test_Matrix1F1_Constructor(void)
 }
 
 
+void Test_Matrix1F1_IndexOutOfBounds(void)
+{
+    math::Matrix1F1 matrix(1.0f);
+
+    /* Verify results */
+    UtAssert_True(isnan(matrix[0][1]), "matrix[0][1] == NAN");
+    UtAssert_True(isnan(matrix[1][0]), "matrix[1][0] == NAN");
+}
+
+
 void Test_Matrix1F1_Addition(void)
 {
     math::Matrix1F1 matrixA(1.0f);
@@ -59,3 +69,18 @@ void Test_Matrix1F1_Addition(void)
     UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
 }
 
+
+void Test_Matrix1F1_Zero(void)
+{
+    math::Matrix1F1 matrixA(1.0f);
+    math::Matrix1F1 matrixB;
+    
+    matrixB[0][0] = 2.0f;
+
+    matrixA.Zero();
+    matrixB.Zero();
+
+    /* Verify results */
+    UtAssert_True(matrixA[0][0] == 0.0f, "matrixA[0][0] == 0.0f");
+    UtAssert_True(matrixB[0][0] == 0.0f, "matrixB[0][0] == 0.0f");
+}

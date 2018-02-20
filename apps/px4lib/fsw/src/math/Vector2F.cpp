@@ -75,16 +75,6 @@ Vector2F Vector2F::operator-(const Vector2F &vecIn)
 }
 
 
-// overload % operator to provide a vector cross product
-Vector2F Vector2F::operator%(const Vector2F &vecIn)
-{
-    Vector2F vecOut;
-    vecOut[0] = data[1]*vecIn[2] - data[2]*vecIn[1];
-    vecOut[1] = data[2]*vecIn[0] - data[0]*vecIn[2];
-    return vecOut;
-}
-
-
 // overload * operator to provide a vector scalar product
 Vector2F Vector2F::operator*(const float scalar)
 {

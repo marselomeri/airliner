@@ -103,21 +103,21 @@ Vector10F Vector10F::operator+(const Vector10F &vecIn) const
 
 // TODO TODO TODO XXX: This needs serious peer review
 // overload + operator to provide a vector addition
-Vector10F Vector10F::operator+(const Vector3F &vecIn)
-{
-    Vector10F vecOut;
-    vecOut[0] = data[0] + vecIn[0];
-    vecOut[1] = data[1] + vecIn[1];
-    vecOut[2] = data[2] + vecIn[2];
-    vecOut[3] = data[3];
-    vecOut[4] = data[4];
-    vecOut[5] = data[5];
-    vecOut[6] = data[6];
-    vecOut[7] = data[7];
-    vecOut[8] = data[8];
-    vecOut[9] = data[9];
-    return vecOut;
-}
+//Vector10F Vector10F::operator+(const Vector3F &vecIn)
+//{
+    //Vector10F vecOut;
+    //vecOut[0] = data[0] + vecIn[0];
+    //vecOut[1] = data[1] + vecIn[1];
+    //vecOut[2] = data[2] + vecIn[2];
+    //vecOut[3] = data[3];
+    //vecOut[4] = data[4];
+    //vecOut[5] = data[5];
+    //vecOut[6] = data[6];
+    //vecOut[7] = data[7];
+    //vecOut[8] = data[8];
+    //vecOut[9] = data[9];
+    //return vecOut;
+//}
 
 // overload + operator to provide a vector addition
 void Vector10F::operator+=(const Vector10F &vecIn)

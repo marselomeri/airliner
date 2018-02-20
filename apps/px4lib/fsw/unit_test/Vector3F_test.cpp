@@ -72,6 +72,19 @@ void Test_Vector3F_Length(void)
 }
 
 
+void Test_Vector3F_Zero(void)
+{
+	math::Vector3F vector(1.5f, 2.5f, 3.5f);
+	vector.Zero();
+
+	/* Verify results */
+    UtAssert_True(vector[0] == 0.0f, "vector[0] == 0.0f");
+    UtAssert_True(vector[1] == 0.0f, "vector[1] == 0.0f");
+    UtAssert_True(vector[2] == 0.0f, "vector[2] == 0.0f");
+}
+
+
+
 void Test_Vector3F_ArrayOperator(void)
 {
 	math::Vector3F vector(1.5f, 2.5f, 3.5f);
@@ -256,12 +269,11 @@ void Test_Vector3F_DotProductOperator(void)
 	float expectedeRzcosA = 1.000000;
 	float expectedeRzcosB = 1.000000;
 	float expectedeRzcosC = 1.000000;
-
+    
 	/* Verify results */
-	UtAssert_True(actualAB == expectedAB, "expected == vectorA dot vectorB");
-	UtAssert_True(fabs(actualeRzcosA - expectedeRzcosA) <= 0.00001, "fabs(actualeRzcosA - expectedeRzcosA) <= FLT_EPSILON");
-	UtAssert_True(fabs(actualeRzcosB - expectedeRzcosB) <= 0.00001, "fabs(actualeRzcosB - expectedeRzcosB) <= FLT_EPSILON");
-	UtAssert_True(fabs(actualeRzcosC - expectedeRzcosC) <= 0.00001, "fabs(actualeRzcosC - expectedeRzcosC) <= FLT_EPSILON");
+	UtAssert_True(fabs(actualeRzcosA - expectedeRzcosA) <= 0.00001f, "expected == vectorRzA dot vectorRspzA");
+	UtAssert_True(fabs(actualeRzcosB - expectedeRzcosB) <= 0.00001f, "expected == vectorRzB dot vectorRspzB");
+	UtAssert_True(fabs(actualeRzcosC - expectedeRzcosC) <= 0.00001f, "expected == vectorRzC dot vectorRspzC");
 }
 
 

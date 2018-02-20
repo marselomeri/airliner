@@ -31,22 +31,28 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX1F10_TEST_H
-#define MATRIX1F10_TEST_H
+#ifndef VECTOR10F_TEST_UTILS_H
+#define VECTOR10F_TEST_UTILS_H
+
+/*
+ * Includes
+ */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void Test_Matrix1F10_Constructor(void);
-void Test_Matrix1F10_IndexOutOfBounds(void);
-void Test_Matrix1F10_Mult_10F10(void);
-void Test_Matrix1F10_Mult_10F1(void);
-void Test_Matrix1F10_Mult_10F(void);
-void Test_Matrix1F10_Transpose(void);
+/*
+ * Function Definitions
+ */
+
+void Vector10F_Test_Setup(void);
+void Vector10F_Test_TearDown(void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* MATRIX1F10_TEST_H */
+#endif /* VECTOR10F_TEST_UTILS_H */
+

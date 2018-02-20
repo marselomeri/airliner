@@ -59,6 +59,18 @@ void Test_Matrix1F10_Constructor(void)
     UtAssert_True(matrix[0][9] == 10.0f, "matrix[0][8] == 9.0f");
 }
 
+
+void Test_Matrix1F10_IndexOutOfBounds(void)
+{
+    math::Matrix1F10 matrix({1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 
+                             8.0f, 9.0f, 10.0f});
+
+    /* Verify results */
+    UtAssert_True(isnan(matrix[0][10]), "matrix[0][10] == NAN");
+    UtAssert_True(isnan(matrix[1][0]), "matrix[1][0] == NAN");
+}
+
+
 void Test_Matrix1F10_Mult_10F10(void)
 {
     math::Matrix1F10 matrixA(
@@ -131,17 +143,16 @@ void Test_Matrix1F10_Mult_10F(void)
 }
 
 
-
 void Test_Matrix1F10_Transpose(void)
 {
     math::Matrix1F10 matrixA(
             {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
     );
-    
+
     math::Matrix10F1 result;
-    
+
     result = matrixA.Transpose();
-    
+
     /* Verify results */
     UtAssert_True(result[0][0] == 1.0f, "result[0][0] == 1.0f");
     UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
@@ -164,5 +175,4 @@ void Test_Matrix1F10_Transpose(void)
     UtAssert_True(matrixA[0][8] == 9.0f, "matrixA[0][8] == 9.0f");
     UtAssert_True(matrixA[0][9] == 10.0f, "result[0][9] == 10.0f");
 }
-
 

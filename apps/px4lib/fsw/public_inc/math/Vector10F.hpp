@@ -26,7 +26,7 @@ public:
 	void Zero(void);
 	Vector10F operator+(const Vector10F &vecIn);
 	Vector10F operator+(const Vector10F &vecIn) const;
-	Vector10F operator+(const Vector3F &vecIn);
+	//Vector10F operator+(const Vector3F &vecIn);
 	void operator+=(const Vector10F &vecIn);
 	Vector10F operator-(const Vector10F &vecIn);
 	Vector10F operator-(const Vector10F &vecIn) const;

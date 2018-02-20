@@ -31,22 +31,23 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX1F10_TEST_H
-#define MATRIX1F10_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Matrix1F3_test.hpp"
+#include "Matrix1F3_test_utils.hpp"
 
-void Test_Matrix1F10_Constructor(void);
-void Test_Matrix1F10_IndexOutOfBounds(void);
-void Test_Matrix1F10_Mult_10F10(void);
-void Test_Matrix1F10_Mult_10F1(void);
-void Test_Matrix1F10_Mult_10F(void);
-void Test_Matrix1F10_Transpose(void);
+int main(void)
+{   
+	UtTest_Add(Test_Matrix1F3_Constructor, Matrix1F3_Test_Setup, Matrix1F3_Test_TearDown,
+	         "Test_Matrix1F3_Constructor");
+	UtTest_Add(Test_Matrix1F3_IndexOutOfBounds, Matrix1F3_Test_Setup, Matrix1F3_Test_TearDown,
+	         "Test_Matrix1F3_IndexOutOfBounds");
+	UtTest_Add(Test_Matrix1F3_Zero, Matrix1F3_Test_Setup, Matrix1F3_Test_TearDown,
+	         "Test_Matrix1F3_Zero");
+	UtTest_Add(Test_Matrix1F3_DotProduct, Matrix1F3_Test_Setup, Matrix1F3_Test_TearDown,
+	         "Test_Matrix1F3_DotProduct");
 
-#ifdef __cplusplus
+    return(UtTest_Run());
+
 }
-#endif
 
-#endif /* MATRIX1F10_TEST_H */

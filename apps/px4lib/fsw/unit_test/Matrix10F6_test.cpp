@@ -42,79 +42,104 @@
 void Test_Matrix10F6_Constructor(void)
 {
     math::Matrix10F6 matrix(
-            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
-            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
-            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
-            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
-            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f},
-            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f}
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
     );
 
     /* Verify results */
     UtAssert_True(matrix[0][0] == 1.0f, "matrix[0][0] == 1.0f");
-    UtAssert_True(matrix[1][0] == 2.0f, "matrix[1][0] == 2.0f");
-    UtAssert_True(matrix[2][0] == 3.0f, "matrix[2][0] == 3.0f");
-    UtAssert_True(matrix[3][0] == 4.0f, "matrix[3][0] == 4.0f");
-    UtAssert_True(matrix[4][0] == 5.0f, "matrix[4][0] == 5.0f");
-    UtAssert_True(matrix[5][0] == 6.0f, "matrix[5][0] == 6.0f");
-    UtAssert_True(matrix[6][0] == 7.0f, "matrix[6][0] == 7.0f");
-    UtAssert_True(matrix[7][0] == 8.0f, "matrix[7][0] == 8.0f");
-    UtAssert_True(matrix[8][0] == 9.0f, "matrix[8][0] == 9.0f");
-    UtAssert_True(matrix[9][0] == 10.0f, "matrix[9][0] == 9.0f");
+    UtAssert_True(matrix[1][0] == 1.0f, "matrix[1][0] == 1.0f");
+    UtAssert_True(matrix[2][0] == 1.0f, "matrix[2][0] == 1.0f");
+    UtAssert_True(matrix[3][0] == 1.0f, "matrix[3][0] == 1.0f");
+    UtAssert_True(matrix[4][0] == 1.0f, "matrix[4][0] == 1.0f");
+    UtAssert_True(matrix[5][0] == 1.0f, "matrix[5][0] == 1.0f");
+    UtAssert_True(matrix[6][0] == 1.0f, "matrix[6][0] == 1.0f");
+    UtAssert_True(matrix[7][0] == 1.0f, "matrix[7][0] == 1.0f");
+    UtAssert_True(matrix[8][0] == 1.0f, "matrix[8][0] == 1.0f");
+    UtAssert_True(matrix[9][0] == 1.0f, "matrix[9][0] == 1.0f");
 
-    UtAssert_True(matrix[0][1] == 1.0f, "matrix[0][1] == 1.0f");
+    UtAssert_True(matrix[0][1] == 2.0f, "matrix[0][1] == 2.0f");
     UtAssert_True(matrix[1][1] == 2.0f, "matrix[1][1] == 2.0f");
-    UtAssert_True(matrix[2][1] == 3.0f, "matrix[2][1] == 3.0f");
-    UtAssert_True(matrix[3][1] == 4.0f, "matrix[3][1] == 4.0f");
-    UtAssert_True(matrix[4][1] == 5.0f, "matrix[4][1] == 5.0f");
-    UtAssert_True(matrix[5][1] == 6.0f, "matrix[5][1] == 6.0f");
-    UtAssert_True(matrix[6][1] == 7.0f, "matrix[6][1] == 7.0f");
-    UtAssert_True(matrix[7][1] == 8.0f, "matrix[7][1] == 8.0f");
-    UtAssert_True(matrix[8][1] == 9.0f, "matrix[8][1] == 9.0f");
-    UtAssert_True(matrix[9][1] == 10.0f, "matrix[9][1] == 9.0f");
+    UtAssert_True(matrix[2][1] == 2.0f, "matrix[2][1] == 2.0f");
+    UtAssert_True(matrix[3][1] == 2.0f, "matrix[3][1] == 2.0f");
+    UtAssert_True(matrix[4][1] == 2.0f, "matrix[4][1] == 2.0f");
+    UtAssert_True(matrix[5][1] == 2.0f, "matrix[5][1] == 2.0f");
+    UtAssert_True(matrix[6][1] == 2.0f, "matrix[6][1] == 2.0f");
+    UtAssert_True(matrix[7][1] == 2.0f, "matrix[7][1] == 2.0f");
+    UtAssert_True(matrix[8][1] == 2.0f, "matrix[8][1] == 2.0f");
+    UtAssert_True(matrix[9][1] == 2.0f, "matrix[9][1] == 2.0f");
 
-    UtAssert_True(matrix[0][2] == 1.0f, "matrix[0][2] == 1.0f");
-    UtAssert_True(matrix[1][2] == 2.0f, "matrix[1][2] == 2.0f");
+    UtAssert_True(matrix[0][2] == 3.0f, "matrix[0][2] == 3.0f");
+    UtAssert_True(matrix[1][2] == 3.0f, "matrix[1][2] == 3.0f");
     UtAssert_True(matrix[2][2] == 3.0f, "matrix[2][2] == 3.0f");
-    UtAssert_True(matrix[3][2] == 4.0f, "matrix[3][2] == 4.0f");
-    UtAssert_True(matrix[4][2] == 5.0f, "matrix[4][2] == 5.0f");
-    UtAssert_True(matrix[5][2] == 6.0f, "matrix[5][2] == 6.0f");
-    UtAssert_True(matrix[6][2] == 7.0f, "matrix[6][2] == 7.0f");
-    UtAssert_True(matrix[7][2] == 8.0f, "matrix[7][2] == 8.0f");
-    UtAssert_True(matrix[8][2] == 9.0f, "matrix[8][2] == 9.0f");
-    UtAssert_True(matrix[9][2] == 10.0f, "matrix[9][2] == 9.0f");
+    UtAssert_True(matrix[3][2] == 3.0f, "matrix[3][2] == 3.0f");
+    UtAssert_True(matrix[4][2] == 3.0f, "matrix[4][2] == 3.0f");
+    UtAssert_True(matrix[5][2] == 3.0f, "matrix[5][2] == 3.0f");
+    UtAssert_True(matrix[6][2] == 3.0f, "matrix[6][2] == 3.0f");
+    UtAssert_True(matrix[7][2] == 3.0f, "matrix[7][2] == 3.0f");
+    UtAssert_True(matrix[8][2] == 3.0f, "matrix[8][2] == 3.0f");
+    UtAssert_True(matrix[9][2] == 3.0f, "matrix[9][2] == 3.0f");
 
-    UtAssert_True(matrix[0][3] == 1.0f, "matrix[0][3] == 1.0f");
-    UtAssert_True(matrix[1][3] == 2.0f, "matrix[1][3] == 2.0f");
-    UtAssert_True(matrix[2][3] == 3.0f, "matrix[2][3] == 3.0f");
+    UtAssert_True(matrix[0][3] == 4.0f, "matrix[0][3] == 4.0f");
+    UtAssert_True(matrix[1][3] == 4.0f, "matrix[1][3] == 4.0f");
+    UtAssert_True(matrix[2][3] == 4.0f, "matrix[2][3] == 4.0f");
     UtAssert_True(matrix[3][3] == 4.0f, "matrix[3][3] == 4.0f");
-    UtAssert_True(matrix[4][3] == 5.0f, "matrix[4][3] == 5.0f");
-    UtAssert_True(matrix[5][3] == 6.0f, "matrix[5][3] == 6.0f");
-    UtAssert_True(matrix[6][3] == 7.0f, "matrix[6][3] == 7.0f");
-    UtAssert_True(matrix[7][3] == 8.0f, "matrix[7][3] == 8.0f");
-    UtAssert_True(matrix[8][3] == 9.0f, "matrix[8][3] == 9.0f");
-    UtAssert_True(matrix[9][3] == 10.0f, "matrix[9][3] == 9.0f");
+    UtAssert_True(matrix[4][3] == 4.0f, "matrix[4][3] == 4.0f");
+    UtAssert_True(matrix[5][3] == 4.0f, "matrix[5][3] == 4.0f");
+    UtAssert_True(matrix[6][3] == 4.0f, "matrix[6][3] == 4.0f");
+    UtAssert_True(matrix[7][3] == 4.0f, "matrix[7][3] == 4.0f");
+    UtAssert_True(matrix[8][3] == 4.0f, "matrix[8][3] == 4.0f");
+    UtAssert_True(matrix[9][3] == 4.0f, "matrix[9][3] == 4.0f");
 
-    UtAssert_True(matrix[0][4] == 1.0f, "matrix[0][4] == 1.0f");
-    UtAssert_True(matrix[1][4] == 2.0f, "matrix[1][4] == 2.0f");
-    UtAssert_True(matrix[2][4] == 3.0f, "matrix[2][4] == 3.0f");
-    UtAssert_True(matrix[3][4] == 4.0f, "matrix[3][4] == 4.0f");
+    UtAssert_True(matrix[0][4] == 5.0f, "matrix[0][4] == 5.0f");
+    UtAssert_True(matrix[1][4] == 5.0f, "matrix[1][4] == 5.0f");
+    UtAssert_True(matrix[2][4] == 5.0f, "matrix[2][4] == 5.0f");
+    UtAssert_True(matrix[3][4] == 5.0f, "matrix[3][4] == 5.0f");
     UtAssert_True(matrix[4][4] == 5.0f, "matrix[4][4] == 5.0f");
-    UtAssert_True(matrix[5][4] == 6.0f, "matrix[5][4] == 6.0f");
-    UtAssert_True(matrix[6][4] == 7.0f, "matrix[6][4] == 7.0f");
-    UtAssert_True(matrix[7][4] == 8.0f, "matrix[7][4] == 8.0f");
-    UtAssert_True(matrix[8][4] == 9.0f, "matrix[8][4] == 9.0f");
-    UtAssert_True(matrix[9][4] == 10.0f, "matrix[9][4] == 9.0f");
+    UtAssert_True(matrix[5][4] == 5.0f, "matrix[5][4] == 5.0f");
+    UtAssert_True(matrix[6][4] == 5.0f, "matrix[6][4] == 5.0f");
+    UtAssert_True(matrix[7][4] == 5.0f, "matrix[7][4] == 5.0f");
+    UtAssert_True(matrix[8][4] == 5.0f, "matrix[8][4] == 5.0f");
+    UtAssert_True(matrix[9][4] == 5.0f, "matrix[9][4] == 5.0f");
 
-    UtAssert_True(matrix[0][5] == 1.0f, "matrix[0][5] == 1.0f");
-    UtAssert_True(matrix[1][5] == 2.0f, "matrix[1][5] == 2.0f");
-    UtAssert_True(matrix[2][5] == 3.0f, "matrix[2][5] == 3.0f");
-    UtAssert_True(matrix[3][5] == 4.0f, "matrix[3][5] == 4.0f");
-    UtAssert_True(matrix[4][5] == 5.0f, "matrix[4][5] == 5.0f");
+    UtAssert_True(matrix[0][5] == 6.0f, "matrix[0][5] == 6.0f");
+    UtAssert_True(matrix[1][5] == 6.0f, "matrix[1][5] == 6.0f");
+    UtAssert_True(matrix[2][5] == 6.0f, "matrix[2][5] == 6.0f");
+    UtAssert_True(matrix[3][5] == 6.0f, "matrix[3][5] == 6.0f");
+    UtAssert_True(matrix[4][5] == 6.0f, "matrix[4][5] == 6.0f");
     UtAssert_True(matrix[5][5] == 6.0f, "matrix[5][5] == 6.0f");
-    UtAssert_True(matrix[6][5] == 7.0f, "matrix[6][5] == 7.0f");
-    UtAssert_True(matrix[7][5] == 8.0f, "matrix[7][5] == 8.0f");
-    UtAssert_True(matrix[8][5] == 9.0f, "matrix[8][5] == 9.0f");
-    UtAssert_True(matrix[9][5] == 10.0f, "matrix[9][5] == 9.0f");
+    UtAssert_True(matrix[6][5] == 6.0f, "matrix[6][5] == 6.0f");
+    UtAssert_True(matrix[7][5] == 6.0f, "matrix[7][5] == 6.0f");
+    UtAssert_True(matrix[8][5] == 6.0f, "matrix[8][5] == 6.0f");
+    UtAssert_True(matrix[9][5] == 6.0f, "matrix[9][5] == 6.0f");
+}
+
+
+void Test_Matrix10F6_OutOfBounds(void)
+{
+    math::Matrix10F6 matrix(
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+    );
+
+    /* Verify results */
+    UtAssert_True(!isfinite(matrix[0][6]), "matrix[0][6] == NAN");
+    UtAssert_True(!isfinite(matrix[10][0]), "matrix[10][0] == NAN");
 }
 

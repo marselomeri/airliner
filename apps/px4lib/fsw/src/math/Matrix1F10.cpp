@@ -26,7 +26,7 @@ Matrix1F10::~Matrix1F10()
 
 Vector10F& Matrix1F10::operator [] (uint32 i)
 {
-    if(i >= 10)
+    if(i >= COLS)
     {
         return nan;
     }
@@ -39,7 +39,7 @@ Vector10F& Matrix1F10::operator [] (uint32 i)
 
 Vector10F Matrix1F10::operator [] (uint32 i) const
 {
-    if(i >= 10)
+    if(i >= COLS)
     {
         return nan;
     }
@@ -54,7 +54,7 @@ void Matrix1F10::Zero(void)
 {
     int i = 0;
 
-    for(i = 0; i < 10; i++)
+    for(i = 0; i < COLS; i++)
     {
         data[0][i] = 0.0f;
     }
@@ -64,6 +64,7 @@ void Matrix1F10::Zero(void)
 Matrix10F1 Matrix1F10::Transpose(void)
 {
     Matrix10F1 matOut;
+
     matOut[0][0] = data[0][0];
     matOut[1][0] = data[0][1];
     matOut[2][0] = data[0][2];
@@ -113,6 +114,7 @@ Matrix1F1 Matrix1F10::operator*(const Matrix10F1 &matIn)
 {
     Matrix1F1 matOut;
     matOut.Zero();
+
     int i, j, k = 0;
     /* Rows in matrix 1 */
     int rows1 = 1;
@@ -144,7 +146,7 @@ Vector1F Matrix1F10::operator*(const Vector10F &vecIn)
 
     int k = 0;
 
-    for(k = 0; k < 10; k++)
+    for(k = 0; k < COLS; k++)
     {
                 vecOut[0] += data[0][k] * vecIn[k];
     }

@@ -4,15 +4,15 @@
 using namespace math;
 
 Matrix1F1::Matrix1F1(Vector1F m0) :
-	data{m0[0]},
-	nan{NAN}
+    data{m0},
+    nan(NAN)
 {
 };
 
 
 Matrix1F1::Matrix1F1() :
     data{0.0},
-    nan{NAN}
+    nan(NAN)
 {
 };
 
@@ -24,9 +24,9 @@ Matrix1F1::~Matrix1F1()
 
 Vector1F& Matrix1F1::operator [] (uint32 i)
 {
-    if(i >= 1)
+    if(i >= SIZE)
     {
-        return nan[0];
+        return nan;
     }
     else
     {
@@ -37,9 +37,9 @@ Vector1F& Matrix1F1::operator [] (uint32 i)
 
 Vector1F Matrix1F1::operator [] (uint32 i) const
 {
-    if(i >= 1)
+    if(i >= SIZE)
     {
-        return nan[0];
+        return nan;
     }
     else
     {

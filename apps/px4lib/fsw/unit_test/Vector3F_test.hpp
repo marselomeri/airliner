@@ -41,6 +41,7 @@ extern "C" {
 void Test_Vector3F_Constructor(void);
 void Test_Vector3F_IndexOutOfBounds(void);
 void Test_Vector3F_Length(void);
+void Test_Vector3F_Zero(void);
 void Test_Vector3F_ArrayOperator(void);
 void Test_Vector3F_AdditionOperator(void);
 void Test_Vector3F_SubtractionOperator(void);

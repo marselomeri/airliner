@@ -64,12 +64,12 @@ Vector1F Vector1F::operator+(const Vector1F &vecIn)
 
 
 // overload + operator to provide a vector addition
-Vector1F Vector1F::operator+=(const Vector1F &vecIn)
-{
-    Vector1F vecOut;
-    vecOut[0] = data[0] + vecIn[0];
-    return vecOut;
-}
+//Vector1F Vector1F::operator+=(const Vector1F &vecIn)
+//{
+    //Vector1F vecOut;
+    //vecOut[0] = data[0] + vecIn[0];
+    //return vecOut;
+//}
 
 
 // overload - operator to provide a vector subtraction
@@ -79,21 +79,6 @@ Vector1F Vector1F::operator-(const Vector1F &vecIn)
     vecOut[0] = data[0] - vecIn[0];
     return vecOut;
 }
-
-
-
-// TODO: implement this
-// overload % operator to provide a vector cross product
-//Vector1F Vector1F::operator%(const Vector1F &vecIn)
-//{
-//    Vector1F vecOut;
-//
-//    vecOut[0] = data[1]*vecIn[2] - data[2]*vecIn[1];
-//    vecOut[1] = data[2]*vecIn[0] - data[0]*vecIn[2];
-//    vecOut[2] = data[0]*vecIn[1] - data[1]*vecIn[0];
-//
-//    return vecOut;
-//}
 
 
 // overload * operator to provide a vector scalar product
@@ -134,6 +119,7 @@ Vector1F Vector1F::operator-() const
     return res;
 }
 
+
 Vector1F Vector1F::pow(const float scalar) const
 {
 	Vector1F res;
@@ -142,6 +128,7 @@ Vector1F Vector1F::pow(const float scalar) const
 
     return res;
 }
+
 
 Vector1F Vector1F::EMult(const Vector1F &vecIn)
 {
@@ -152,6 +139,7 @@ Vector1F Vector1F::EMult(const Vector1F &vecIn)
 	return res;
 }
 
+
 const Vector1F Vector1F::EDivide(const Vector1F &vecIn) const
 {
 	Vector1F res;
@@ -160,6 +148,7 @@ const Vector1F Vector1F::EDivide(const Vector1F &vecIn) const
 
 	return res;
 }
+
 
 void Vector1F::Constrain(uint32 i, float min, float max)
 {
@@ -173,6 +162,7 @@ void Vector1F::Constrain(uint32 i, float min, float max)
 	}
 }
 
+
 Vector1F Vector1F::Normalized(void)
 {
 	Vector1F res;
@@ -182,6 +172,7 @@ Vector1F Vector1F::Normalized(void)
 
 	return res;
 }
+
 
 void Vector1F::Normalize(void)
 {

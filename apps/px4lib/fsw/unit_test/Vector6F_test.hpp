@@ -31,22 +31,34 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX1F10_TEST_H
-#define MATRIX1F10_TEST_H
+#ifndef VECTOR6F_TEST_H
+#define VECTOR6F_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void Test_Matrix1F10_Constructor(void);
-void Test_Matrix1F10_IndexOutOfBounds(void);
-void Test_Matrix1F10_Mult_10F10(void);
-void Test_Matrix1F10_Mult_10F1(void);
-void Test_Matrix1F10_Mult_10F(void);
-void Test_Matrix1F10_Transpose(void);
+void Test_Vector6F_Constructor(void);
+void Test_Vector6F_IndexOutOfBounds(void);
+void Test_Vector6F_Length(void);
+void Test_Vector6F_Zero(void);
+void Test_Vector6F_ArrayOperator(void);
+void Test_Vector6F_AdditionOperator(void);
+void Test_Vector6F_SubtractionOperator(void);
+void Test_Vector6F_ScalarMultiplyOperator(void);
+void Test_Vector6F_ScalarDivOperator(void);
+void Test_Vector6F_DotProductOperator(void);
+void Test_Vector6F_EMult(void);
+void Test_Vector6F_EDivide(void);
+void Test_Vector6F_Constrain(void);
+void Test_Vector6F_Pow(void);
+void Test_Vector6F_Normalized(void);
+void Test_Vector6F_Normalize(void);
+void Test_Vector6F_Negate(void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* MATRIX1F10_TEST_H */
+#endif /* VECTOR6F_TEST_H */

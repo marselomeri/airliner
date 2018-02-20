@@ -39,9 +39,19 @@ extern "C" {
 #endif
 
 void Test_Matrix10F10_Constructor(void);
+void Test_Matrix10F10_Mult_10F(void);
 void Test_Matrix10F10_Mult_10F1(void);
+void Test_Matrix10F10_Mult_10F3(void);
+void Test_Matrix10F10_Mult_10F6(void);
+void Test_Matrix10F10_Mult_10F10(void);
 void Test_Matrix10F10_Addition(void);
 void Test_Matrix10F10_Subtraction(void);
+void Test_Matrix10F10_Zero(void);
+void Test_Matrix10F10_Identity(void);
+void Test_Matrix10F10_Transpose(void);
+void Test_Matrix10F10_PlusEquals(void);
+void Test_Matrix10F10_MinusEquals(void);
+
 
 #ifdef __cplusplus
 }

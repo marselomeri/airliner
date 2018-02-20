@@ -40,8 +40,12 @@ int main(void)
 {   
 	UtTest_Add(Test_Matrix1F1_Constructor, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
 	         "Test_Matrix1F1_Constructor");
+	UtTest_Add(Test_Matrix1F1_IndexOutOfBounds, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
+	         "Test_Matrix1F1_IndexOutOfBounds");
 	UtTest_Add(Test_Matrix1F1_Addition, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
 	         "Test_Matrix1F1_Addition");
+	UtTest_Add(Test_Matrix1F1_Zero, Matrix1F1_Test_Setup, Matrix1F1_Test_TearDown,
+	         "Test_Matrix1F1_Zero");
 
     return(UtTest_Run());
 
