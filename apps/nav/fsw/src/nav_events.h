@@ -265,8 +265,8 @@ typedef enum {
 */
 	NAV_MSN_FAILED_ERR_EID,
 
-/** \brief <tt> 'Set altitude lower than minimum clearance : \%f meters.' </tt>
-**  \event <tt> 'Set altitude lower than minimum clearance : \%f meters.' </tt>
+/** \brief <tt> 'Set altitude lower than minimum clearance : \%f meters' </tt>
+**  \event <tt> 'Set altitude lower than minimum clearance : \%f meters' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -280,8 +280,8 @@ typedef enum {
 */
 	NAV_LOW_CLEARANCE_ALT_EID,
 
-/** \brief <tt> 'Set altitude already higher than take off altitude.' </tt>
-**  \event <tt> 'Set altitude already higher than take off altitude.' </tt>
+/** \brief <tt> 'Set altitude already higher than take off altitude' </tt>
+**  \event <tt> 'Set altitude already higher than take off altitude' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -293,8 +293,8 @@ typedef enum {
 */
 	NAV_HIGH_ALT_EID,
 
-/** \brief <tt> 'Commencing \%s.' </tt>
-**  \event <tt> 'Commencing \%s.' </tt>
+/** \brief <tt> 'Commencing \%s' </tt>
+**  \event <tt> 'Commencing \%s' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -308,8 +308,8 @@ typedef enum {
 */
 	NAV_ACTION_ST_EID,
 
-/** \brief <tt> 'RTL: Commencing climb to \%d m (\%d m above home).' </tt>
-**  \event <tt> 'RTL: Commencing climb to \%d m (\%d m above home).' </tt>
+/** \brief <tt> 'RTL: Commencing climb to \%d m (\%d m above home)' </tt>
+**  \event <tt> 'RTL: Commencing climb to \%d m (\%d m above home)' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -324,8 +324,8 @@ typedef enum {
 */
 	NAV_RTL_CLIMB_ST_EID,
 
-/** \brief <tt> 'RTL: Commencing return at \%d m (\%d m above home).' </tt>
-**  \event <tt> 'RTL: Commencing return at \%d m (\%d m above home).' </tt>
+/** \brief <tt> 'RTL: Commencing return at \%d m (\%d m above home)' </tt>
+**  \event <tt> 'RTL: Commencing return at \%d m (\%d m above home)' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -340,8 +340,8 @@ typedef enum {
 */
 	NAV_RTL_RETURN_ST_EID,
 
-/** \brief <tt> 'RTL: Commencing descend to \%d m (\%d m above home).' </tt>
-**  \event <tt> 'RTL: Commencing descend to \%d m (\%d m above home).' </tt>
+/** \brief <tt> 'RTL: Commencing descend to \%d m (\%d m above home)' </tt>
+**  \event <tt> 'RTL: Commencing descend to \%d m (\%d m above home)' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -356,8 +356,8 @@ typedef enum {
 */
 	NAV_RTL_DESCEND_ST_EID,
 
-/** \brief <tt> 'RTL: Commencing loiter for \%.1fs.' </tt>
-**  \event <tt> 'RTL: Commencing loiter for \%.1fs.' </tt>
+/** \brief <tt> 'RTL: Commencing loiter for \%.1fs' </tt>
+**  \event <tt> 'RTL: Commencing loiter for \%.1fs' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -371,8 +371,8 @@ typedef enum {
 */
 	NAV_RTL_LOITER_ST_EID,
 
-/** \brief <tt> 'RTL: Loiter completed.' </tt>
-**  \event <tt> 'RTL: Loiter completed.' </tt>
+/** \brief <tt> 'RTL: Loiter completed' </tt>
+**  \event <tt> 'RTL: Loiter completed' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -384,8 +384,8 @@ typedef enum {
 */
 	NAV_RTL_LOITER_EN_EID,
 
-/** \brief <tt> 'RTL: Commencing land at home.' </tt>
-**  \event <tt> 'RTL: Commencing land at home.' </tt>
+/** \brief <tt> 'RTL: Commencing land at home' </tt>
+**  \event <tt> 'RTL: Commencing land at home' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -397,8 +397,8 @@ typedef enum {
 */
 	NAV_RTL_LAND_ST_EID,
 
-/** \brief <tt> 'RTL: Land completed.' </tt>
-**  \event <tt> 'RTL: Land completed.' </tt>
+/** \brief <tt> 'RTL: Land completed' </tt>
+**  \event <tt> 'RTL: Land completed' </tt>
 **
 **  \par Type: INFORMATION
 **
@@ -423,6 +423,18 @@ typedef enum {
 */
 	NAV_RTL_LND_SFGA_EID,
 
+/** \brief <tt> 'Subsequent takeoff is not allowed' </tt>
+**  \event <tt> 'Subsequent takeoff is not allowed' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS NAV Task reports
+**  subsequent takeoff is requested.
+**
+*/
+	NAV_SUBSEQ_TAKEOFF_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	NAV_EVT_CNT
