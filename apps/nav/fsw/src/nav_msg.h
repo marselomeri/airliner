@@ -46,6 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
+#include "px4_msgs.h"
 
 
 /************************************************************************
@@ -150,6 +151,10 @@ typedef struct
     /** \navtlmmnemonic \NAV_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
+    /** \brief position setpoint triplet*/
+    PX4_PositionSetpointTripletMsg_t	PositionSetpointTripletMsg;
+    /** \brief mission result*/
+    PX4_MissionResultMsg_t MissionResultMsg;
 
 } NAV_HkTlm_t;
 

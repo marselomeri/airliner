@@ -227,32 +227,32 @@ void NAV::InitData()
     		NAV_HK_TLM_MID, sizeof(HkTlm), TRUE);
 
 	/* Init output messages */
-	CFE_SB_InitMsg(&VehicleLandDetectedMsg,
-		PX4_VEHICLE_LAND_DETECTED_MID, sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);
+	/*CFE_SB_InitMsg(&VehicleLandDetectedMsg,
+		PX4_VEHICLE_LAND_DETECTED_MID, sizeof(PX4_VehicleLandDetectedMsg_t), TRUE);*/
 
 	/* Init output messages */
-	CFE_SB_InitMsg(&FenceMsg,
-		PX4_FENCE_MID, sizeof(PX4_FenceMsg_t), TRUE);
+	/*CFE_SB_InitMsg(&FenceMsg,
+		PX4_FENCE_MID, sizeof(PX4_FenceMsg_t), TRUE);*/
 
 	/* Init output messages */
-	CFE_SB_InitMsg(&ActuatorControls3Msg,
-		PX4_ACTUATOR_CONTROLS_3_MID, sizeof(PX4_ActuatorControlsMsg_t), TRUE);
+	/*CFE_SB_InitMsg(&ActuatorControls3Msg,
+		PX4_ACTUATOR_CONTROLS_3_MID, sizeof(PX4_ActuatorControlsMsg_t), TRUE);*/
 
 	/* Init output messages */
 	CFE_SB_InitMsg(&MissionResultMsg,
 		PX4_MISSION_RESULT_MID, sizeof(PX4_MissionResultMsg_t), TRUE);
 
 	/* Init output messages */
-	CFE_SB_InitMsg(&GeofenceResultMsg,
-		PX4_GEOFENCE_RESULT_MID, sizeof(PX4_GeofenceResultMsg_t), TRUE);
+	/*CFE_SB_InitMsg(&GeofenceResultMsg,
+		PX4_GEOFENCE_RESULT_MID, sizeof(PX4_GeofenceResultMsg_t), TRUE);*/
 
 	/* Init output messages */
 	CFE_SB_InitMsg(&PositionSetpointTripletMsg,
 		PX4_POSITION_SETPOINT_TRIPLET_MID, sizeof(PX4_PositionSetpointTripletMsg_t), TRUE);
 
 	/* Init output messages */
-	CFE_SB_InitMsg(&VehicleCommandMsgOut,
-		PX4_POSITION_SETPOINT_TRIPLET_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);
+	/*CFE_SB_InitMsg(&VehicleCommandMsgOut,
+		PX4_POSITION_SETPOINT_TRIPLET_MID, sizeof(PX4_VehicleCommandMsg_t), TRUE);*/
 }
 
 
@@ -290,6 +290,10 @@ int32 NAV::InitApp()
     {
         goto NAV_InitApp_Exit_Tag;
     }
+
+    /* Updating application params from platform-nav-config-table */
+	UpdateParamsFromTable();
+
 
 NAV_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -340,12 +344,10 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case NAV_WAKEUP_MID:
-                /* TODO:  Do something here. */
             	Execute();
                 break;
 
             case NAV_SEND_HK_MID:
-            	//Execute();
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
@@ -526,20 +528,20 @@ void NAV::ReportHousekeeping()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void NAV::SendVehicleLandDetectedMsg()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);
+    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleLandDetectedMsg);*/
 }
 
 void NAV::SendFenceMsg()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&FenceMsg);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&FenceMsg);
+    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&FenceMsg);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&FenceMsg);*/
 }
 
 void NAV::SendActuatorControls3Msg()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorControls3Msg);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorControls3Msg);
+    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ActuatorControls3Msg);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&ActuatorControls3Msg);*/
 }
 
 void NAV::SendMissionResultMsg()
@@ -550,20 +552,14 @@ void NAV::SendMissionResultMsg()
 
 void NAV::SendGeofenceResultMsg()
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&GeofenceResultMsg);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&GeofenceResultMsg);
+    /*CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&GeofenceResultMsg);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&GeofenceResultMsg);*/
 }
 
 void NAV::SendPositionSetpointTripletMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&PositionSetpointTripletMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&PositionSetpointTripletMsg);
-}
-
-void NAV::SendVehicleCommandMsg()
-{
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleCommandMsgOut);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleCommandMsgOut);
 }
 
 
@@ -733,7 +729,6 @@ int NAV::Execute(){
 		}
 		else if(CVT.VehicleCommandMsg.Command == PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_TAKEOFF ){
 			//EVENT: TAKEOFF
-
 			// store of command hist
 			CommandEventHist();
 
@@ -781,8 +776,6 @@ int NAV::Execute(){
 			TakeoffTriplet_ptr->Next.Valid = false;
 		}
 	}
-
-
 
 	/* Detect events for navigation actions */
 	/* find if a state is seen for first time or has been active since a while*/
@@ -855,8 +848,9 @@ int NAV::Execute(){
 		PositionSetpointTriplet_ptr->Next.Valid = false;
 	}
 
-	/* if nothing is running, set position setpoint triplet invalid once */
-//	if (_navigation_mode == nullptr && !_pos_sp_triplet_published_invalid_once) {
+//	/* if nothing is running, set position setpoint triplet invalid once */
+//	if (_navigation_mode == nullptr && !_pos_sp_triplet_published_invalid_once)
+//	{
 //		_pos_sp_triplet_published_invalid_once = true;
 //		_pos_sp_triplet.previous.valid = false;
 //		_pos_sp_triplet.current.valid = false;
@@ -864,17 +858,16 @@ int NAV::Execute(){
 //		_pos_sp_triplet_updated = true;
 //	}
 
-
 	/* Time stamp out going messages */
 	const uint64 now = PX4LIB_GetPX4TimeUs();
-
-	VehicleCommandMsgOut.Timestamp = now;
 	PositionSetpointTripletMsg.Timestamp = now;
-	VehicleLandDetectedMsg.Timestamp = now;
-	ActuatorControls3Msg.Timestamp = now;
 	MissionResultMsg.Timestamp = now;
-	//GeofenceResultMsg.Timestamp = now;
-	//FenceMsg.Timestamp = now;
+
+//	VehicleLandDetectedMsg.Timestamp = now;
+//	VehicleCommandMsgOut.Timestamp = now;
+//	ActuatorControls3Msg.Timestamp = now;
+//	GeofenceResultMsg.Timestamp = now;
+//	FenceMsg.Timestamp = now;
 
 	if (PositionSetpointTripletUpdated) {
 		PositionSetpointTriplet_ptr->Timestamp = PX4LIB_GetPX4TimeUs();
@@ -886,6 +879,11 @@ int NAV::Execute(){
 		SendMissionResultMsg();
 		MissionResultUpdated = false;
 	}
+
+
+	/*copy vitals to  hk*/
+	memcpy(&HkTlm.PositionSetpointTripletMsg, &PositionSetpointTripletMsg, sizeof(&HkTlm.PositionSetpointTripletMsg));
+	memcpy(&HkTlm.MissionResultMsg, &MissionResultMsg, sizeof(&HkTlm.MissionResultMsg));
 
 	return 0;
 }
@@ -899,7 +897,6 @@ void NAV::Takeoff(){
 	float MinPitch = 0.0f;
 	float MinAbsoluteAltitude;
 
-
 	//use home position if valid
 	boolean hpv = HomePositionValid();
 	if(hpv){
@@ -911,7 +908,6 @@ void NAV::Takeoff(){
 
 	//use altitude if it is already set.
 	//if home position is invalid use MinAbsoluteAltitude
-
 	boolean hpv2 = HomePositionValid();
 	if (TakeoffTriplet_ptr->Current.Valid && PX4_ISFINITE(TakeoffTriplet_ptr->Current.Alt) && hpv2){
 		AbsoluteAltitude = TakeoffTriplet_ptr->Current.Alt;
@@ -921,7 +917,6 @@ void NAV::Takeoff(){
 			AbsoluteAltitude = MinAbsoluteAltitude;
 			(void) CFE_EVS_SendEvent(NAV_LOW_CLEARANCE_ALT_EID, CFE_EVS_INFORMATION,
 					"Set altitude lower than minimum clearance : %.2f meters",AbsoluteAltitude);
-
 		}
 	}
 	else{
@@ -1014,6 +1009,7 @@ void NAV::TakeoffActive(){
 }
 
 void NAV::Land(){
+
 	PX4_VehicleGlobalPositionMsg_t *VehicleGlobalPosition_ptr = GetVehicleGlobalPositionMsg();
 	PX4_HomePositionMsg_t* HomePosition_ptr = GetHomePosition();
 	PX4_MissionResultMsg_t* MissionResult_ptr = GetMissionResultMsg();
@@ -1098,6 +1094,7 @@ void NAV::LandActive(){
 }
 
 void NAV::Loiter(){
+
 	PX4_PositionSetpointTripletMsg_t *RepositionTriplet_ptr = GetRepositionTripletMsg();
 
 	if(RepositionTriplet_ptr->Current.Valid){
@@ -1124,6 +1121,7 @@ void NAV::LoiterActive(){
 }
 
 void NAV::LoiterReposition(){
+
 	PX4_PositionSetpointTripletMsg_t *RepositionTriplet_ptr = GetRepositionTripletMsg();
 	PX4_PositionSetpointTripletMsg_t *PositionSetpointTriplet_ptr = GetPositionSetpointTripletMsg();
 	PX4_VehicleStatusMsg_t *VehicleStatus_ptr = GetVehicleStatusMsg();
@@ -1232,6 +1230,7 @@ void NAV::LoiterSetPosition(){
 }
 
 void NAV::Rtl(){
+
 	PX4_PositionSetpointTripletMsg_t *PositionSetpointTriplet_ptr = GetPositionSetpointTripletMsg();
 	PX4_VehicleGlobalPositionMsg_t *VehicleGlobalPosition_ptr = GetVehicleGlobalPositionMsg();
 	PX4_VehicleLandDetectedMsg_t* VehicleLandDetected_ptr = GetVehicleLandDetectedMsg();
@@ -1297,7 +1296,7 @@ void NAV::SetRtlItem(){
 		float climb_alt = HomePosition_ptr->Alt + rtl_altitude;
 		// we are close to home, limit climb to min
 		if (home_distance < nav_params.nav_rtl_min_dist) {
-			climb_alt = HomePosition_ptr->Alt + nav_params.nav_rtl_descent_alt;
+			climb_alt = HomePosition_ptr->Alt + nav_params.nav_rtl_descend_alt;
 		}
 		item->NavCmd = PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_WAYPOINT;
 		item->Lat = VehicleGlobalPosition_ptr->Lat;
@@ -1339,7 +1338,7 @@ void NAV::SetRtlItem(){
 		item->Lat = HomePosition_ptr->Lat;
 		item->Lon = HomePosition_ptr->Lon;
 		item->AltitudeIsRelative = false;
-		item->Altitude = HomePosition_ptr->Alt + nav_params.nav_rtl_descent_alt;
+		item->Altitude = HomePosition_ptr->Alt + nav_params.nav_rtl_descend_alt;
 		// check if we are already lower - then we will just stay there
 		if (item->Altitude > VehicleGlobalPosition_ptr->Alt) {
 			item->Altitude = VehicleGlobalPosition_ptr->Alt;
@@ -1502,12 +1501,6 @@ void NAV::CommandEventHist(){
 	previous_command = current_command;
 }
 
-PX4_NavigationState_t NAV::DetectNavStateEvent(boolean state_change_event){
-	if (state_change_event){
-		return CVT.VehicleStatusMsg.NavState;
-	}
-}
-
 boolean NAV::IsMissionItemReached(){
 	//huge file form mission_block line 73
 	//temporary fix for now
@@ -1561,8 +1554,6 @@ boolean NAV::IsMissionItemReached(){
 	    	if(vgp->Alt > altitude_amsl - altitude_acceptance_radius){
 	    		WaypointPositionReached=true;
 	    	}
-
-
 	    }
 	    else if(mission_item.NavCmd == PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_TAKEOFF){
 	    	/* for takeoff mission items use the parameter for the takeoff acceptance radius */
@@ -1579,18 +1570,14 @@ boolean NAV::IsMissionItemReached(){
 			if (mission_acceptance_radius < NAV_EPSILON_POSITION) {
 				mission_acceptance_radius = nav_params.nav_acc_rad;
 			}
-			if (dist >= 0.0f && dist <= mission_acceptance_radius && dist_z <= nav_params.nav_mc_alt_rad) {
+			if (dist >= 0.0f && dist <= mission_acceptance_radius && dist_z <= nav_params.nav_alt_rad) {
 				WaypointPositionReached = true;
 			}
-
-
 	    }
 	    if (WaypointPositionReached){
 	    	TimeWpReached = now;
 	    }
 	}
-
-
 
 	if(WaypointPositionReached && !WaypointYawReached){
 		/*added PX4_VEHICLE_CMD_NAV_LOITER_TO_ALT to PX4_VehicleCmd_t*/
@@ -1620,7 +1607,6 @@ boolean NAV::IsMissionItemReached(){
 		}
 
 		/*check if the MAV was long enough inside the waypoint orbit*/
-
 		float time_inside = GetTimeInside(&mission_item);
 		if((time_inside < FLT_EPSILON)|| now - TimeFirstInsideOrbit >= (uint64) time_inside * 1e6f){
 			// exit xtrack location
@@ -1641,7 +1627,6 @@ boolean NAV::IsMissionItemReached(){
 					bearing += inner_angle;
 				}
 
-
 				// Replace current setpoint Lat/Lon with tangent coordinate
 				waypoint_from_heading_and_distance(curr_sp->Lat, curr_sp->Lon,
 								   bearing, curr_sp->LoiterRadius,
@@ -1650,7 +1635,6 @@ boolean NAV::IsMissionItemReached(){
 			return true;
 		}
 	}
-
 
 	// all acceptance criteria must be met in the same iteration
 	WaypointPositionReached = false;
@@ -1666,7 +1650,6 @@ void NAV::SetMissionFaliure(const char* reason){
 		(void) CFE_EVS_SendEvent(NAV_MSN_FAILED_ERR_EID, CFE_EVS_CRITICAL,
 		            		"Mission failed (%s)",
 							reason);
-
 	}
 }
 
@@ -1679,6 +1662,7 @@ void NAV::ConvertMissionItemToCurrentSetpoint(PX4_PositionSetpoint_t *ps, NAV_Mi
 			!mi->NavCmd == PX4_VehicleCmd_t::PX4_VEHICLE_CMD_NAV_TAKEOFF) {
 		return;
 	}
+
 	PX4_HomePositionMsg_t *HomePositionMsg_ptr = GetHomePosition();
 
 	ps->Lat = mi->Lat;
@@ -1789,7 +1773,7 @@ void NAV::SetAcceptedRadius(float mission_radius){
 }
 
 float NAV::GetAltitudeAcceptedRadius(){
-	return nav_params.nav_mc_alt_rad;
+	return nav_params.nav_alt_rad;
 }
 
 float NAV::GetCruisingThrottle(){
@@ -1812,368 +1796,22 @@ float NAV::GetCruisingSpeed(){
 
 }
 
-//void NAV::DisplayInputs(int n){
-//	OS_printf("NAV::DisplayInputs  *************\n");
-//
-//	if(n==1 || n==10){
-//		OS_printf("  HomePositionMsg.Timestamp:           %llu\n", CVT.HomePositionMsg.Timestamp);
-//		OS_printf("  HomePositionMsg.Lat:            	  %lld\n", CVT.HomePositionMsg.Lat);
-//		OS_printf("  HomePositionMsg.Lon:                 %lld\n", CVT.HomePositionMsg.Lon);
-//		OS_printf("  HomePositionMsg.Alt:                 %f\n", CVT.HomePositionMsg.Alt);
-//		OS_printf("  HomePositionMsg.X:                   %f\n", CVT.HomePositionMsg.X);
-//		OS_printf("  HomePositionMsg.Y:                   %f\n", CVT.HomePositionMsg.Y);
-//		OS_printf("  HomePositionMsg.Z:                   %f\n", CVT.HomePositionMsg.Z);
-//		OS_printf("  HomePositionMsg.Yaw:                 %f\n", CVT.HomePositionMsg.Yaw);
-//		OS_printf("  HomePositionMsg.DirectionX:          %f\n", CVT.HomePositionMsg.DirectionX);
-//		OS_printf("  HomePositionMsg.DirectionY:          %f\n", CVT.HomePositionMsg.DirectionY);
-//		OS_printf("  HomePositionMsg.DirectionZ:          %f\n", CVT.HomePositionMsg.DirectionZ);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==2 || n==10){
-//		OS_printf("  SensorCombinedMsg.Timestamp:                %llu\n", CVT.SensorCombinedMsg.Timestamp);
-//		OS_printf("  SensorCombinedMsg.GyroRad[3]:               [%f,%f,%f]\n", CVT.SensorCombinedMsg.GyroRad[0],CVT.SensorCombinedMsg.GyroRad[1],CVT.SensorCombinedMsg.GyroRad[2]);
-//		OS_printf("  SensorCombinedMsg.GyroIntegralDt:           %f\n", CVT.SensorCombinedMsg.GyroIntegralDt);
-//		OS_printf("  SensorCombinedMsg.AccTimestampRelative:     %llu\n", CVT.SensorCombinedMsg.AccTimestampRelative);
-//		OS_printf("  SensorCombinedMsg.AccRelTimeInvalid:        %d\n", CVT.SensorCombinedMsg.AccRelTimeInvalid);
-//		OS_printf("  SensorCombinedMsg.Acc[3]:                   [%f,%f,%f]\n", CVT.SensorCombinedMsg.Acc[0],CVT.SensorCombinedMsg.Acc[1],CVT.SensorCombinedMsg.Acc[2]);
-//		OS_printf("  SensorCombinedMsg.AccIntegralDt:            %f\n", CVT.SensorCombinedMsg.AccIntegralDt);
-//		OS_printf("  SensorCombinedMsg.MagTimestampRelative:     %llu\n", CVT.SensorCombinedMsg.MagTimestampRelative);
-//		OS_printf("  SensorCombinedMsg.MagRelTimeInvalid:        %d\n", CVT.SensorCombinedMsg.MagRelTimeInvalid);
-//		OS_printf("  SensorCombinedMsg.Mag[3]:                   [%f,%f,%f]\n", CVT.SensorCombinedMsg.Mag[0],CVT.SensorCombinedMsg.Mag[1],CVT.SensorCombinedMsg.Mag[2]);
-//		OS_printf("  SensorCombinedMsg.BaroTimestampRelative:    %llu\n", CVT.SensorCombinedMsg.BaroTimestampRelative);
-//		OS_printf("  SensorCombinedMsg.BaroRelTimeInvalid:       %d\n", CVT.SensorCombinedMsg.BaroRelTimeInvalid);
-//		OS_printf("  SensorCombinedMsg.BaroAlt:                  %f\n", CVT.SensorCombinedMsg.BaroAlt);
-//		OS_printf("  SensorCombinedMsg.BaroTemp:                 %f\n", CVT.SensorCombinedMsg.BaroTemp);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==3 || n==10){
-//		OS_printf("  MissionMsg.Timestamp:            %llu\n", CVT.MissionMsg.Timestamp);
-//		OS_printf("  MissionMsg.DatamanID:            %llu\n", CVT.MissionMsg.DatamanID);
-//		OS_printf("  MissionMsg.Count:            	  %llu\n", CVT.MissionMsg.Count);
-//		OS_printf("  MissionMsg.CurrentSeq:           %llu\n", CVT.MissionMsg.CurrentSeq);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==4 || n==10){
-//		OS_printf("  VehicleGpsPositionMsg.Timestamp:            %llu\n", CVT.VehicleGpsPositionMsg.Timestamp);
-//		OS_printf("  VehicleGpsPositionMsg.TimeUtcUsec:          %llu\n", CVT.VehicleGpsPositionMsg.TimeUtcUsec);
-//		OS_printf("  VehicleGpsPositionMsg.Lat:            		 %ld\n", CVT.VehicleGpsPositionMsg.Lat);
-//		OS_printf("  VehicleGpsPositionMsg.Lon:                  %ld\n", CVT.VehicleGpsPositionMsg.Lon);
-//		OS_printf("  VehicleGpsPositionMsg.Alt:                  %ld\n", CVT.VehicleGpsPositionMsg.Alt);
-//		OS_printf("  VehicleGpsPositionMsg.AltEllipsoid:         %ld\n", CVT.VehicleGpsPositionMsg.AltEllipsoid);
-//		OS_printf("  VehicleGpsPositionMsg.SVariance:            %f\n", CVT.VehicleGpsPositionMsg.SVariance);
-//		OS_printf("  VehicleGpsPositionMsg.CVariance:            %f\n", CVT.VehicleGpsPositionMsg.CVariance);
-//		OS_printf("  VehicleGpsPositionMsg.EpH:                  %f\n", CVT.VehicleGpsPositionMsg.EpH);
-//		OS_printf("  VehicleGpsPositionMsg.EpV:                  %f\n", CVT.VehicleGpsPositionMsg.EpV);
-//		OS_printf("  VehicleGpsPositionMsg.HDOP:                 %f\n", CVT.VehicleGpsPositionMsg.HDOP);
-//		OS_printf("  VehicleGpsPositionMsg.VDOP:                 %f\n", CVT.VehicleGpsPositionMsg.VDOP);
-//		OS_printf("  VehicleGpsPositionMsg.NoisePerMs:           %ld\n", CVT.VehicleGpsPositionMsg.NoisePerMs);
-//		OS_printf("  VehicleGpsPositionMsg.JammingIndicator:     %ld\n", CVT.VehicleGpsPositionMsg.JammingIndicator);
-//		OS_printf("  VehicleGpsPositionMsg.Vel_m_s:              %f\n", CVT.VehicleGpsPositionMsg.Vel_m_s);
-//		OS_printf("  VehicleGpsPositionMsg.Vel_n_m_s:            %f\n", CVT.VehicleGpsPositionMsg.Vel_n_m_s);
-//		OS_printf("  VehicleGpsPositionMsg.Vel_e_m_s:            %f\n", CVT.VehicleGpsPositionMsg.Vel_e_m_s);
-//		OS_printf("  VehicleGpsPositionMsg.Vel_d_m_s:            %f\n", CVT.VehicleGpsPositionMsg.Vel_d_m_s);
-//		OS_printf("  VehicleGpsPositionMsg.COG:                  %f\n", CVT.VehicleGpsPositionMsg.COG);
-//		OS_printf("  VehicleGpsPositionMsg.TimestampTimeRelative:%ld\n", CVT.VehicleGpsPositionMsg.TimestampTimeRelative);
-//		OS_printf("  VehicleGpsPositionMsg.FixType:              %u\n", CVT.VehicleGpsPositionMsg.FixType);
-//		OS_printf("  VehicleGpsPositionMsg.VelNedValid:          %d\n", CVT.VehicleGpsPositionMsg.VelNedValid);
-//		OS_printf("  VehicleGpsPositionMsg.SatellitesUsed:       %u\n", CVT.VehicleGpsPositionMsg.SatellitesUsed);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==5 || n==10){
-//		OS_printf("  VehicleGlobalPosition.Timestamp:            %llu\n", CVT.VehicleGlobalPosition.Timestamp);
-//		OS_printf("  VehicleGlobalPosition.TimeUtcUsec:          %llu\n", CVT.VehicleGlobalPosition.TimeUtcUsec);
-//		OS_printf("  VehicleGlobalPosition.Lat:                  %lld\n", CVT.VehicleGlobalPosition.Lat);
-//		OS_printf("  VehicleGlobalPosition.Lon:                  %lld\n", CVT.VehicleGlobalPosition.Lon);
-//		OS_printf("  VehicleGlobalPosition.Alt:                  %f\n", CVT.VehicleGlobalPosition.Alt);
-//		OS_printf("  VehicleGlobalPosition.VelN:                 %f\n", CVT.VehicleGlobalPosition.VelN);
-//		OS_printf("  VehicleGlobalPosition.VelE:                 %f\n", CVT.VehicleGlobalPosition.VelE);
-//		OS_printf("  VehicleGlobalPosition.VelD:                 %f\n", CVT.VehicleGlobalPosition.VelD);
-//		OS_printf("  VehicleGlobalPosition.Yaw:                  %f\n", CVT.VehicleGlobalPosition.Yaw);
-//		OS_printf("  VehicleGlobalPosition.EpH:                  %f\n", CVT.VehicleGlobalPosition.EpH);
-//		OS_printf("  VehicleGlobalPosition.EpV:                  %f\n", CVT.VehicleGlobalPosition.EpV);
-//		OS_printf("  VehicleGlobalPosition.TerrainAlt:           %f\n", CVT.VehicleGlobalPosition.TerrainAlt);
-//		OS_printf("  VehicleGlobalPosition.PressureAlt:          %f\n", CVT.VehicleGlobalPosition.PressureAlt);
-//		OS_printf("  VehicleGlobalPosition.TerrainAltValid:      %d\n", CVT.VehicleGlobalPosition.TerrainAltValid);
-//		OS_printf("  VehicleGlobalPosition.DeadReckoning:        %d\n", CVT.VehicleGlobalPosition.DeadReckoning);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==6 || n==10){
-//		OS_printf("  VehicleStatusMsg.Timestamp:                    %llu\n", CVT.VehicleStatusMsg.Timestamp);
-//		OS_printf("  VehicleStatusMsg.SystemID:                     %u\n", CVT.VehicleStatusMsg.SystemID);
-//		OS_printf("  VehicleStatusMsg.ComponentID:                  %u\n", CVT.VehicleStatusMsg.ComponentID);
-//		OS_printf("  VehicleStatusMsg.OnboardControlSensorsPresent: %u\n", CVT.VehicleStatusMsg.OnboardControlSensorsPresent);
-//		OS_printf("  VehicleStatusMsg.OnboardControlSensorsEnabled: %u\n", CVT.VehicleStatusMsg.OnboardControlSensorsEnabled);
-//		OS_printf("  VehicleStatusMsg.OnboardControlSensorsHealth:  %u\n", CVT.VehicleStatusMsg.OnboardControlSensorsHealth);
-//		OS_printf("  VehicleStatusMsg.NavState:                     %u\n", CVT.VehicleStatusMsg.NavState);
-//		OS_printf("  VehicleStatusMsg.ArmingState:                  %u\n", CVT.VehicleStatusMsg.ArmingState);
-//		OS_printf("  VehicleStatusMsg.HilState:                     %u\n", CVT.VehicleStatusMsg.HilState);
-//		OS_printf("  VehicleStatusMsg.Failsafe:                     %u\n", CVT.VehicleStatusMsg.Failsafe);
-//		OS_printf("  VehicleStatusMsg.SystemType:                   %u\n", CVT.VehicleStatusMsg.SystemType);
-//		OS_printf("  VehicleStatusMsg.IsRotaryWing:                 %u\n", CVT.VehicleStatusMsg.IsRotaryWing);
-//		OS_printf("  VehicleStatusMsg.IsVtol:                       %u\n", CVT.VehicleStatusMsg.IsVtol);
-//		OS_printf("  VehicleStatusMsg.VtolFwPermanentStab:          %u\n", CVT.VehicleStatusMsg.VtolFwPermanentStab);
-//		OS_printf("  VehicleStatusMsg.InTransitionMode:             %u\n", CVT.VehicleStatusMsg.InTransitionMode);
-//		OS_printf("  VehicleStatusMsg.RcSignalLost:                 %u\n", CVT.VehicleStatusMsg.RcSignalLost);
-//		OS_printf("  VehicleStatusMsg.RcInputMode:                  %u\n", CVT.VehicleStatusMsg.RcInputMode);
-//		OS_printf("  VehicleStatusMsg.DataLinkLost:                 %u\n", CVT.VehicleStatusMsg.DataLinkLost);
-//		OS_printf("  VehicleStatusMsg.DataLinkLostCounter:          %u\n", CVT.VehicleStatusMsg.DataLinkLostCounter);
-//		OS_printf("  VehicleStatusMsg.EngineFailure:                %u\n", CVT.VehicleStatusMsg.EngineFailure);
-//		OS_printf("  VehicleStatusMsg.EngineFailureCmd:             %u\n", CVT.VehicleStatusMsg.EngineFailureCmd);
-//		OS_printf("  VehicleStatusMsg.MissionFailure:               %u\n", CVT.VehicleStatusMsg.MissionFailure);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==7 || n==10){
-//		OS_printf("  VehicleLandDetectedMsg.Timestamp:            %llu\n", CVT.VehicleLandDetectedMsg.Timestamp);
-//		OS_printf("  VehicleLandDetectedMsg.AltMax:               %f\n", CVT.VehicleLandDetectedMsg.AltMax);
-//		OS_printf("  VehicleLandDetectedMsg.Landed:               %d\n", CVT.VehicleLandDetectedMsg.Landed);
-//		OS_printf("  VehicleLandDetectedMsg.Freefall:             %d\n", CVT.VehicleLandDetectedMsg.Freefall);
-//		OS_printf("  VehicleLandDetectedMsg.GroundContact:        %d\n", CVT.VehicleLandDetectedMsg.GroundContact);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==8 || n==10){
-//		OS_printf("  VehicleLocalPositionMsg.Timestamp:               %llu\n", CVT.VehicleLocalPositionMsg.Timestamp);
-//		OS_printf("  VehicleLocalPositionMsg.RefTimestamp:            %llu\n", CVT.VehicleLocalPositionMsg.RefTimestamp);
-//		OS_printf("  VehicleLocalPositionMsg.RefLat:                  %lld\n", CVT.VehicleLocalPositionMsg.RefLat);
-//		OS_printf("  VehicleLocalPositionMsg.RefLon:                  %lld\n", CVT.VehicleLocalPositionMsg.RefLon);
-//		OS_printf("  VehicleLocalPositionMsg.SurfaceBottomTimestamp:  %llu\n", CVT.VehicleLocalPositionMsg.SurfaceBottomTimestamp);
-//		OS_printf("  VehicleLocalPositionMsg.X:                       %f\n", CVT.VehicleLocalPositionMsg.X);
-//		OS_printf("  VehicleLocalPositionMsg.Y:                       %f\n", CVT.VehicleLocalPositionMsg.Y);
-//		OS_printf("  VehicleLocalPositionMsg.Z:                       %f\n", CVT.VehicleLocalPositionMsg.Z);
-//		OS_printf("  VehicleLocalPositionMsg.Delta_XY[2]:             [%f,%f]\n", CVT.VehicleLocalPositionMsg.Delta_XY[0],CVT.VehicleLocalPositionMsg.Delta_XY[1]);
-//		OS_printf("  VehicleLocalPositionMsg.Delta_Z:            	  %f\n", CVT.VehicleLocalPositionMsg.Delta_Z);
-//		OS_printf("  VehicleLocalPositionMsg.VX:                      %f\n", CVT.VehicleLocalPositionMsg.VX);
-//		OS_printf("  VehicleLocalPositionMsg.VY:                      %f\n", CVT.VehicleLocalPositionMsg.VY);
-//		OS_printf("  VehicleLocalPositionMsg.VZ:                      %f\n", CVT.VehicleLocalPositionMsg.VZ);
-//		OS_printf("  VehicleLocalPositionMsg.Delta_VXY[2]:            [%f,%f]\n", CVT.VehicleLocalPositionMsg.Delta_VXY[0],CVT.VehicleLocalPositionMsg.Delta_VXY[1]);
-//		OS_printf("  VehicleLocalPositionMsg.Delta_VZ:                %f\n", CVT.VehicleLocalPositionMsg.Delta_VZ);
-//		OS_printf("  VehicleLocalPositionMsg.AX:                      %f\n", CVT.VehicleLocalPositionMsg.AX);
-//		OS_printf("  VehicleLocalPositionMsg.AY:                      %f\n", CVT.VehicleLocalPositionMsg.AY);
-//		OS_printf("  VehicleLocalPositionMsg.AZ:                      %f\n", CVT.VehicleLocalPositionMsg.AZ);
-//		OS_printf("  VehicleLocalPositionMsg.Yaw:                     %f\n", CVT.VehicleLocalPositionMsg.Yaw);
-//		OS_printf("  VehicleLocalPositionMsg.RefAlt:                  %f\n", CVT.VehicleLocalPositionMsg.RefAlt);
-//		OS_printf("  VehicleLocalPositionMsg.DistBottom:              %f\n", CVT.VehicleLocalPositionMsg.DistBottom);
-//		OS_printf("  VehicleLocalPositionMsg.DistBottomRate:          %f\n", CVT.VehicleLocalPositionMsg.DistBottomRate);
-//		OS_printf("  VehicleLocalPositionMsg.EpH:                     %f\n", CVT.VehicleLocalPositionMsg.EpH);
-//		OS_printf("  VehicleLocalPositionMsg.EpV:                     %f\n", CVT.VehicleLocalPositionMsg.EpV);
-//		OS_printf("  VehicleLocalPositionMsg.EvH:                     %f\n", CVT.VehicleLocalPositionMsg.EvH);
-//		OS_printf("  VehicleLocalPositionMsg.EvV:                     %f\n", CVT.VehicleLocalPositionMsg.EvV);
-//		OS_printf("  VehicleLocalPositionMsg.EstimatorType:           %u\n", CVT.VehicleLocalPositionMsg.EstimatorType);
-//		OS_printf("  VehicleLocalPositionMsg.XY_Valid:                %d\n", CVT.VehicleLocalPositionMsg.XY_Valid);
-//		OS_printf("  VehicleLocalPositionMsg.Z_Valid:                 %d\n", CVT.VehicleLocalPositionMsg.Z_Valid);
-//		OS_printf("  VehicleLocalPositionMsg.V_XY_Valid:              %d\n", CVT.VehicleLocalPositionMsg.V_XY_Valid);
-//		OS_printf("  VehicleLocalPositionMsg.V_Z_Valid:               %d\n", CVT.VehicleLocalPositionMsg.V_Z_Valid);
-//		OS_printf("  VehicleLocalPositionMsg.XY_ResetCounter:         %u\n", CVT.VehicleLocalPositionMsg.XY_ResetCounter);
-//		OS_printf("  VehicleLocalPositionMsg.Z_ResetCounter:          %u\n", CVT.VehicleLocalPositionMsg.Z_ResetCounter);
-//		OS_printf("  VehicleLocalPositionMsg.VXY_ResetCounter:        %u\n", CVT.VehicleLocalPositionMsg.VXY_ResetCounter);
-//		OS_printf("  VehicleLocalPositionMsg.VZ_ResetCounter:         %u\n", CVT.VehicleLocalPositionMsg.VZ_ResetCounter);
-//		OS_printf("  VehicleLocalPositionMsg.XY_Global:               %d\n", CVT.VehicleLocalPositionMsg.XY_Global);
-//		OS_printf("  VehicleLocalPositionMsg.Z_Global:                %d\n", CVT.VehicleLocalPositionMsg.Z_Global);
-//		OS_printf("  VehicleLocalPositionMsg.DistBottomValid:         %d\n", CVT.VehicleLocalPositionMsg.DistBottomValid);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==9 || n==10){
-//		OS_printf("  VehicleCommandMsg.Timestamp:         %llu\n", CVT.VehicleCommandMsg.Timestamp);
-//		OS_printf("  VehicleCommandMsg.Param5:            %lld\n", CVT.VehicleCommandMsg.Param5);
-//		OS_printf("  VehicleCommandMsg.Param6:            %lld\n", CVT.VehicleCommandMsg.Param6);
-//		OS_printf("  VehicleCommandMsg.Param1:            %f\n", CVT.VehicleCommandMsg.Param1);
-//		OS_printf("  VehicleCommandMsg.Param2:            %f\n", CVT.VehicleCommandMsg.Param2);
-//		OS_printf("  VehicleCommandMsg.Param3:            %f\n", CVT.VehicleCommandMsg.Param3);
-//		OS_printf("  VehicleCommandMsg.Param4:            %f\n", CVT.VehicleCommandMsg.Param4);
-//		OS_printf("  VehicleCommandMsg.Param7:            %f\n", CVT.VehicleCommandMsg.Param7);
-//		OS_printf("  VehicleCommandMsg.Command:           %d\n", CVT.VehicleCommandMsg.Command);
-//		OS_printf("  VehicleCommandMsg.TargetSystem:      %lu\n", CVT.VehicleCommandMsg.TargetSystem);
-//		OS_printf("  VehicleCommandMsg.TargetComponent:   %lu\n", CVT.VehicleCommandMsg.TargetComponent);
-//		OS_printf("  VehicleCommandMsg.SourceSystem:      %lu\n", CVT.VehicleCommandMsg.SourceSystem);
-//		OS_printf("  VehicleCommandMsg.SourceComponent:   %lu\n", CVT.VehicleCommandMsg.SourceComponent);
-//		OS_printf("  VehicleCommandMsg.Confirmation:      %u\n", CVT.VehicleCommandMsg.Confirmation);
-//		OS_printf("\n\n");
-//	}
-//}
-//
-//void NAV::DisplayOutputs(int n){
-//	OS_printf("NAV::DisplayOutputs  *************\n");
-//
-//	if(n==1 || n==10){
-//		OS_printf("  PositionSetpointTripletMsg.Timestamp:           %llu\n", PositionSetpointTripletMsg.Timestamp);
-//		OS_printf("   Previous - PositionSetpoint.Timestamp:          %llu\n", PositionSetpointTripletMsg.Previous.Timestamp);
-//		OS_printf("   Previous - PositionSetpoint.Lat:                %lld\n", PositionSetpointTripletMsg.Previous.Lat);
-//		OS_printf("   Previous - PositionSetpoint.Lon:                %lld\n", PositionSetpointTripletMsg.Previous.Lon);
-//		OS_printf("   Previous - PositionSetpoint.X:                  %f\n", PositionSetpointTripletMsg.Previous.X);
-//		OS_printf("   Previous - PositionSetpoint.Y:                  %f\n", PositionSetpointTripletMsg.Previous.Y);
-//		OS_printf("   Previous - PositionSetpoint.Z:                  %f\n", PositionSetpointTripletMsg.Previous.Z);
-//		OS_printf("   Previous - PositionSetpoint.VX:                 %f\n", PositionSetpointTripletMsg.Previous.VX);
-//		OS_printf("   Previous - PositionSetpoint.VY:                 %f\n", PositionSetpointTripletMsg.Previous.VY);
-//		OS_printf("   Previous - PositionSetpoint.VZ:                 %f\n", PositionSetpointTripletMsg.Previous.VZ);
-//		OS_printf("   Previous - PositionSetpoint.Alt:            	  %f\n", PositionSetpointTripletMsg.Previous.Alt);
-//		OS_printf("   Previous - PositionSetpoint.Yaw:                %f\n", PositionSetpointTripletMsg.Previous.Yaw);
-//		OS_printf("   Previous - PositionSetpoint.Yawspeed:           %f\n", PositionSetpointTripletMsg.Previous.Yawspeed);
-//		OS_printf("   Previous - PositionSetpoint.LoiterRadius:       %f\n", PositionSetpointTripletMsg.Previous.LoiterRadius);
-//		OS_printf("   Previous - PositionSetpoint.PitchMin:           %f\n", PositionSetpointTripletMsg.Previous.PitchMin);
-//		OS_printf("   Previous - PositionSetpoint.AX:                 %f\n", PositionSetpointTripletMsg.Previous.AX);
-//		OS_printf("   Previous - PositionSetpoint.AY:                 %f\n", PositionSetpointTripletMsg.Previous.AY);
-//		OS_printf("   Previous - PositionSetpoint.AZ:                 %f\n", PositionSetpointTripletMsg.Previous.AZ);
-//		OS_printf("   Previous - PositionSetpoint.AcceptanceRadius:   %f\n", PositionSetpointTripletMsg.Previous.AcceptanceRadius);
-//		OS_printf("   Previous - PositionSetpoint.CruisingSpeed:      %f\n", PositionSetpointTripletMsg.Previous.CruisingSpeed);
-//		OS_printf("   Previous - PositionSetpoint.CruisingThrottle:   %f\n", PositionSetpointTripletMsg.Previous.CruisingThrottle);
-//		OS_printf("   Previous - PositionSetpoint.Valid:              %d\n", PositionSetpointTripletMsg.Previous.Valid);
-//		OS_printf("   Previous - PositionSetpoint.Type:               %d\n", PositionSetpointTripletMsg.Previous.Type);
-//		OS_printf("   Previous - PositionSetpoint.PositionValid:      %d\n", PositionSetpointTripletMsg.Previous.PositionValid);
-//		OS_printf("   Previous - PositionSetpoint.VelocityFrame:      %d\n", PositionSetpointTripletMsg.Previous.VelocityFrame);
-//		OS_printf("   Previous - PositionSetpoint.AltValid:           %d\n", PositionSetpointTripletMsg.Previous.AltValid);
-//		OS_printf("   Previous - PositionSetpoint.YawValid:           %d\n", PositionSetpointTripletMsg.Previous.YawValid);
-//		OS_printf("   Previous - PositionSetpoint.DisableMcYawControl:%d\n", PositionSetpointTripletMsg.Previous.DisableMcYawControl);
-//		OS_printf("   Previous - PositionSetpoint.YawspeedValid:      %d\n", PositionSetpointTripletMsg.Previous.YawspeedValid);
-//		OS_printf("   Previous - PositionSetpoint.LoiterDirection:    %d\n", PositionSetpointTripletMsg.Previous.LoiterDirection);
-//		OS_printf("   Previous - PositionSetpoint.AccelerationValid:  %d\n", PositionSetpointTripletMsg.Previous.AccelerationValid);
-//		OS_printf("   Previous - PositionSetpoint.AccelerationIsForce:%d\n", PositionSetpointTripletMsg.Previous.AccelerationIsForce);
-//
-//		OS_printf("   Current - PositionSetpoint.Timestamp:          %llu\n", PositionSetpointTripletMsg.Current.Timestamp);
-//		OS_printf("   Current - PositionSetpoint.Lat:                %lld\n", PositionSetpointTripletMsg.Current.Lat);
-//		OS_printf("   Current - PositionSetpoint.Lon:                %lld\n", PositionSetpointTripletMsg.Current.Lon);
-//		OS_printf("   Current - PositionSetpoint.X:                  %f\n", PositionSetpointTripletMsg.Current.X);
-//		OS_printf("   Current - PositionSetpoint.Y:                  %f\n", PositionSetpointTripletMsg.Current.Y);
-//		OS_printf("   Current - PositionSetpoint.Z:                  %f\n", PositionSetpointTripletMsg.Current.Z);
-//		OS_printf("   Current - PositionSetpoint.VX:                 %f\n", PositionSetpointTripletMsg.Current.VX);
-//		OS_printf("   Current - PositionSetpoint.VY:                 %f\n", PositionSetpointTripletMsg.Current.VY);
-//		OS_printf("   Current - PositionSetpoint.VZ:                 %f\n", PositionSetpointTripletMsg.Current.VZ);
-//		OS_printf("   Current - PositionSetpoint.Alt:            	 %f\n", PositionSetpointTripletMsg.Current.Alt);
-//		OS_printf("   Current - PositionSetpoint.Yaw:                %f\n", PositionSetpointTripletMsg.Current.Yaw);
-//		OS_printf("   Current - PositionSetpoint.Yawspeed:           %f\n", PositionSetpointTripletMsg.Current.Yawspeed);
-//		OS_printf("   Current - PositionSetpoint.LoiterRadius:       %f\n", PositionSetpointTripletMsg.Current.LoiterRadius);
-//		OS_printf("   Current - PositionSetpoint.PitchMin:           %f\n", PositionSetpointTripletMsg.Current.PitchMin);
-//		OS_printf("   Current - PositionSetpoint.AX:                 %f\n", PositionSetpointTripletMsg.Current.AX);
-//		OS_printf("   Current - PositionSetpoint.AY:                 %f\n", PositionSetpointTripletMsg.Current.AY);
-//		OS_printf("   Current - PositionSetpoint.AZ:                 %f\n", PositionSetpointTripletMsg.Current.AZ);
-//		OS_printf("   Current - PositionSetpoint.AcceptanceRadius:   %f\n", PositionSetpointTripletMsg.Current.AcceptanceRadius);
-//		OS_printf("   Current - PositionSetpoint.CruisingSpeed:      %f\n", PositionSetpointTripletMsg.Current.CruisingSpeed);
-//		OS_printf("   Current - PositionSetpoint.CruisingThrottle:   %f\n", PositionSetpointTripletMsg.Current.CruisingThrottle);
-//		OS_printf("   Current - PositionSetpoint.Valid:              %d\n", PositionSetpointTripletMsg.Current.Valid);
-//		OS_printf("   Current - PositionSetpoint.Type:               %d\n", PositionSetpointTripletMsg.Current.Type);
-//		OS_printf("   Current - PositionSetpoint.PositionValid:      %d\n", PositionSetpointTripletMsg.Current.PositionValid);
-//		OS_printf("   Current - PositionSetpoint.VelocityFrame:      %d\n", PositionSetpointTripletMsg.Current.VelocityFrame);
-//		OS_printf("   Current - PositionSetpoint.AltValid:           %d\n", PositionSetpointTripletMsg.Current.AltValid);
-//		OS_printf("   Current - PositionSetpoint.YawValid:           %d\n", PositionSetpointTripletMsg.Current.YawValid);
-//		OS_printf("   Current - PositionSetpoint.DisableMcYawControl:%d\n", PositionSetpointTripletMsg.Current.DisableMcYawControl);
-//		OS_printf("   Current - PositionSetpoint.YawspeedValid:      %d\n", PositionSetpointTripletMsg.Current.YawspeedValid);
-//		OS_printf("   Current - PositionSetpoint.LoiterDirection:    %d\n", PositionSetpointTripletMsg.Current.LoiterDirection);
-//		OS_printf("   Current - PositionSetpoint.AccelerationValid:  %d\n", PositionSetpointTripletMsg.Current.AccelerationValid);
-//		OS_printf("   Current - PositionSetpoint.AccelerationIsForce:%d\n", PositionSetpointTripletMsg.Current.AccelerationIsForce);
-//
-//		OS_printf("   Next - PositionSetpoint.Timestamp:          %llu\n", PositionSetpointTripletMsg.Next.Timestamp);
-//		OS_printf("   Next - PositionSetpoint.Lat:                %lld\n", PositionSetpointTripletMsg.Next.Lat);
-//		OS_printf("   Next - PositionSetpoint.Lon:                %lld\n", PositionSetpointTripletMsg.Next.Lon);
-//		OS_printf("   Next - PositionSetpoint.X:                  %f\n", PositionSetpointTripletMsg.Next.X);
-//		OS_printf("   Next - PositionSetpoint.Y:                  %f\n", PositionSetpointTripletMsg.Next.Y);
-//		OS_printf("   Next - PositionSetpoint.Z:                  %f\n", PositionSetpointTripletMsg.Next.Z);
-//		OS_printf("   Next - PositionSetpoint.VX:                 %f\n", PositionSetpointTripletMsg.Next.VX);
-//		OS_printf("   Next - PositionSetpoint.VY:                 %f\n", PositionSetpointTripletMsg.Next.VY);
-//		OS_printf("   Next - PositionSetpoint.VZ:                 %f\n", PositionSetpointTripletMsg.Next.VZ);
-//		OS_printf("   Next - PositionSetpoint.Alt:            	  %f\n", PositionSetpointTripletMsg.Next.Alt);
-//		OS_printf("   Next - PositionSetpoint.Yaw:                %f\n", PositionSetpointTripletMsg.Next.Yaw);
-//		OS_printf("   Next - PositionSetpoint.Yawspeed:           %f\n", PositionSetpointTripletMsg.Next.Yawspeed);
-//		OS_printf("   Next - PositionSetpoint.LoiterRadius:       %f\n", PositionSetpointTripletMsg.Next.LoiterRadius);
-//		OS_printf("   Next - PositionSetpoint.PitchMin:           %f\n", PositionSetpointTripletMsg.Next.PitchMin);
-//		OS_printf("   Next - PositionSetpoint.AX:                 %f\n", PositionSetpointTripletMsg.Next.AX);
-//		OS_printf("   Next - PositionSetpoint.AY:                 %f\n", PositionSetpointTripletMsg.Next.AY);
-//		OS_printf("   Next - PositionSetpoint.AZ:                 %f\n", PositionSetpointTripletMsg.Next.AZ);
-//		OS_printf("   Next - PositionSetpoint.AcceptanceRadius:   %f\n", PositionSetpointTripletMsg.Next.AcceptanceRadius);
-//		OS_printf("   Next - PositionSetpoint.CruisingSpeed:      %f\n", PositionSetpointTripletMsg.Next.CruisingSpeed);
-//		OS_printf("   Next - PositionSetpoint.CruisingThrottle:   %f\n", PositionSetpointTripletMsg.Next.CruisingThrottle);
-//		OS_printf("   Next - PositionSetpoint.Valid:              %d\n", PositionSetpointTripletMsg.Next.Valid);
-//		OS_printf("   Next - PositionSetpoint.Type:               %d\n", PositionSetpointTripletMsg.Next.Type);
-//		OS_printf("   Next - PositionSetpoint.PositionValid:      %d\n", PositionSetpointTripletMsg.Next.PositionValid);
-//		OS_printf("   Next - PositionSetpoint.VelocityFrame:      %d\n", PositionSetpointTripletMsg.Next.VelocityFrame);
-//		OS_printf("   Next - PositionSetpoint.AltValid:           %d\n", PositionSetpointTripletMsg.Next.AltValid);
-//		OS_printf("   Next - PositionSetpoint.YawValid:           %d\n", PositionSetpointTripletMsg.Next.YawValid);
-//		OS_printf("   Next - PositionSetpoint.DisableMcYawControl:%d\n", PositionSetpointTripletMsg.Next.DisableMcYawControl);
-//		OS_printf("   Next - PositionSetpoint.YawspeedValid:      %d\n", PositionSetpointTripletMsg.Next.YawspeedValid);
-//		OS_printf("   Next - PositionSetpoint.LoiterDirection:    %d\n", PositionSetpointTripletMsg.Next.LoiterDirection);
-//		OS_printf("   Next - PositionSetpoint.AccelerationValid:  %d\n", PositionSetpointTripletMsg.Next.AccelerationValid);
-//		OS_printf("   Next - PositionSetpoint.AccelerationIsForce:%d\n", PositionSetpointTripletMsg.Next.AccelerationIsForce);
-//		OS_printf("\n");
-//	}
-//
-//
-//	if(n==2 || n==10){
-//		OS_printf("  GeofenceResultMsg.Timestamp:            %llu\n", GeofenceResultMsg.Timestamp);
-//		OS_printf("  GeofenceResultMsg.GeofenceViolated:     %d\n", GeofenceResultMsg.GeofenceViolated);
-//		OS_printf("  GeofenceResultMsg.GeofenceAction:       %d\n", GeofenceResultMsg.GeofenceAction);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==3 || n==10){
-//		OS_printf("  ActuatorControls3Msg.Timestamp:            %llu\n", ActuatorControls3Msg.Timestamp);
-//		OS_printf("  ActuatorControls3Msg.SampleTime:           %llu\n", ActuatorControls3Msg.SampleTime);
-//		for(int c=0;c<sizeof(ActuatorControls3Msg.Control);c++){
-//			OS_printf("  ActuatorControls3Msg.Control[%d]:          %f\n", c,ActuatorControls3Msg.Control[c]);
-//		}
-//		OS_printf("\n");
-//	}
-//
-//	if(n==4 || n==10){
-//		OS_printf("  FenceMsg.Timestamp:                    %llu\n", FenceMsg.Timestamp);
-//		OS_printf("  FenceMsg.Count:                        %ld\n", FenceMsg.Count);
-//		for(int v=0;v<sizeof(FenceMsg.Vertices);v++){
-//			OS_printf("  FenceMsg.Vertices[%d].Lat:             %f\n", v,FenceMsg.Vertices[v].Lat);
-//			OS_printf("  FenceMsg.Vertices[%d].Lon:             %f\n", v,FenceMsg.Vertices[v].Lon);
-//		}
-//		OS_printf("\n");
-//	}
-//
-//	if(n==5 || n==10){
-//		OS_printf("  VehicleLandDetectedMsg.Timestamp:            %llu\n", VehicleLandDetectedMsg.Timestamp);
-//		OS_printf("  VehicleLandDetectedMsg.AltMax:               %f\n", VehicleLandDetectedMsg.AltMax);
-//		OS_printf("  VehicleLandDetectedMsg.Landed:               %d\n", VehicleLandDetectedMsg.Landed);
-//		OS_printf("  VehicleLandDetectedMsg.Freefall:             %d\n", VehicleLandDetectedMsg.Freefall);
-//		OS_printf("  VehicleLandDetectedMsg.GroundContact:        %d\n", VehicleLandDetectedMsg.GroundContact);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==6 || n==10){
-//		OS_printf("  MissionResultMsg.Timestamp:               %llu\n", MissionResultMsg.Timestamp);
-//		OS_printf("  MissionResultMsg.InstanceCount:           %ld\n", MissionResultMsg.InstanceCount);
-//		OS_printf("  MissionResultMsg.SeqReached:              %ld\n", MissionResultMsg.SeqReached);
-//		OS_printf("  MissionResultMsg.ItemChangedIndex:        %ld\n", MissionResultMsg.ItemChangedIndex);
-//		OS_printf("  MissionResultMsg.ItemDoJumpRemaining:     %ld\n", MissionResultMsg.ItemDoJumpRemaining);
-//		OS_printf("  MissionResultMsg.Valid:                   %d\n", MissionResultMsg.Valid);
-//		OS_printf("  MissionResultMsg.Warning:                 %d\n", MissionResultMsg.Warning);
-//		OS_printf("  MissionResultMsg.Reached:                 %d\n", MissionResultMsg.Reached);
-//		OS_printf("  MissionResultMsg.Finished:                %d\n", MissionResultMsg.Finished);
-//		OS_printf("  MissionResultMsg.StayInFailsafe:          %d\n", MissionResultMsg.StayInFailsafe);
-//		OS_printf("  MissionResultMsg.FlightTermination:       %d\n", MissionResultMsg.FlightTermination);
-//		OS_printf("  MissionResultMsg.ItemDoJumpChanged:       %d\n", MissionResultMsg.ItemDoJumpChanged);
-//		OS_printf("  MissionResultMsg.MissionFailure:          %d\n", MissionResultMsg.MissionFailure);
-//		OS_printf("\n");
-//	}
-//
-//	if(n==7 || n==10){
-//		OS_printf("  VehicleCommandMsgOut.Timestamp:         %llu\n", VehicleCommandMsgOut.Timestamp);
-//		OS_printf("  VehicleCommandMsgOut.Param5:            %lld\n", VehicleCommandMsgOut.Param5);
-//		OS_printf("  VehicleCommandMsgOut.Param6:            %lld\n", VehicleCommandMsgOut.Param6);
-//		OS_printf("  VehicleCommandMsgOut.Param1:            %f\n", VehicleCommandMsgOut.Param1);
-//		OS_printf("  VehicleCommandMsgOut.Param2:            %f\n", VehicleCommandMsgOut.Param2);
-//		OS_printf("  VehicleCommandMsgOut.Param3:            %f\n", VehicleCommandMsgOut.Param3);
-//		OS_printf("  VehicleCommandMsgOut.Param4:            %f\n", VehicleCommandMsgOut.Param4);
-//		OS_printf("  VehicleCommandMsgOut.Param7:            %f\n", VehicleCommandMsgOut.Param7);
-//		OS_printf("  VehicleCommandMsgOut.Command:           %d\n", VehicleCommandMsgOut.Command);
-//		OS_printf("  VehicleCommandMsgOut.TargetSystem:      %lu\n", VehicleCommandMsgOut.TargetSystem);
-//		OS_printf("  VehicleCommandMsgOut.TargetComponent:   %lu\n", VehicleCommandMsgOut.TargetComponent);
-//		OS_printf("  VehicleCommandMsgOut.SourceSystem:      %lu\n", VehicleCommandMsgOut.SourceSystem);
-//		OS_printf("  VehicleCommandMsgOut.SourceComponent:   %lu\n", VehicleCommandMsgOut.SourceComponent);
-//		OS_printf("  VehicleCommandMsgOut.Confirmation:      %u\n", VehicleCommandMsgOut.Confirmation);
-//		OS_printf("\n\n");
-//	}
-//}
-//
-//
+void NAV::UpdateParamsFromTable(){
+
+		nav_params.nav_acc_rad 					= ConfigTblPtr->NAV_ACC_RAD;
+		nav_params.nav_alt_rad 					= ConfigTblPtr->NAV_ALT_RAD;
+		nav_params.nav_loiter_rad 				= ConfigTblPtr->NAV_LOITER_RAD;
+		nav_params.nav_mis_takeoff_alt 			= ConfigTblPtr->NAV_MIS_TAKEOFF_ALT;
+		nav_params.nav_mis_yaw_err 				= ConfigTblPtr->NAV_MIS_YAW_ERR;
+		nav_params.nav_mis_yaw_tmt 				= ConfigTblPtr->NAV_MIS_YAW_TMT;
+		nav_params.nav_mis_ltrmin_alt 			= ConfigTblPtr->NAV_MIS_LTRMIN_ALT;
+		nav_params.nav_rtl_return_alt 			= ConfigTblPtr->NAV_RTL_RETURN_ALT;
+		nav_params.nav_rtl_descend_alt 			= ConfigTblPtr->NAV_RTL_DESCEND_ALT;
+		nav_params.nav_rtl_land_delay 			= ConfigTblPtr->NAV_RTL_LAND_DELAY;
+		nav_params.nav_rtl_min_dist 			= ConfigTblPtr->NAV_RTL_MIN_DIST;
+
+
+}
 
 /************************/
 /*  End of File Comment */
