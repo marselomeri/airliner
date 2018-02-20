@@ -187,7 +187,7 @@ Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
     {
     	for(int j = 0; j < COLS; j++)
 		{
-    		value += data[i][j]*vecIn[j];
+    		vecOut[i] += data[i][j]*vecIn[j];
 		}
     }
 
