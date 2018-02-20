@@ -39,6 +39,9 @@ block main
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/Reset'}}) Reset
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StartStreaming'}}) Start Streaming
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StopStreaming'}}) Stop Streaming
+                                        
+  .row
+    +app_specific_telemetry_control("VM")
                                               
   .row          
     +app_specific_mempools("VM")

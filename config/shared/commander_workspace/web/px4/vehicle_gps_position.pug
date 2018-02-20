@@ -5,9 +5,12 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Vehicle Global Position
+        | PX4 - Vehicle GPS Position
 
 block main
+    .row.row-fluid
+      +msg_macro_specific_telemetry_control([{macro: 'PX4_VEHICLE_GPS_POSITION_MID'}])
+      
     .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')

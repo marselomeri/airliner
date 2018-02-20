@@ -888,6 +888,9 @@ block main
                     th Memory Allocated
                     td
                       span(data-sage={tlm: [{'name': '/CFS/CF/App_MemAllocated'}]}) ---
+                                        
+  .row
+    +app_specific_telemetry_control("CF")
             
   .row          
     +app_specific_mempools("CF")

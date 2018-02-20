@@ -9,14 +9,15 @@ block header
 
 block main
     .row.row-fluid
+      +msg_macro_specific_telemetry_control([{macro: 'PX4_SENSOR_ACCEL_MID'}])
+      
+    .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6
         #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
               i.fa.fa-table
             h2 Sensor - Accelerometer
-              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/TO/AddMessage', argument:[{name:'ChannelIdx', value: 'GROUND'}, {name:'MsgID', value:0x0a3b}, {name:'MsgLimit', value:1}]}}) Tlm Start
-              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/TO/RemoveMessage', argument:[{name:'ChannelIdx'}, {name:'MsgID', value:0x0a3b}]}}) Tlm Stop
           div
             .jarviswidget-editbox
               input.form-control(type='text')

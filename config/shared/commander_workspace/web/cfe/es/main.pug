@@ -7,7 +7,7 @@ block header
         i.fa-fw.fa.fa-signal
         | Essential Services Summary
 
-block main
+block main    
   .row.row-fluid
     article.col-xs-6.col-sm-5.col-md-4.col-lg-2(style="width:475px")
       #wid-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -168,7 +168,10 @@ block main
           .widget-body
             button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
             button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset
-                                    
+                        
+  .row
+    +app_specific_telemetry_control("CFE_ES")
+                
   .row          
     +app_specific_mempools("CFE_ES")
     

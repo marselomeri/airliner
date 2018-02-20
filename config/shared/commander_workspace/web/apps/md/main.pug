@@ -95,6 +95,9 @@ block main
                     td 
                       span(data-sage={tlm:[{name:'/CFS/MD/Countdown[#{index}]'}]}) ---
                   - }
+                                        
+  .row
+    +app_specific_telemetry_control("MD")
                                               
   .row          
     +app_specific_mempools("MD")

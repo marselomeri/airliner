@@ -93,12 +93,12 @@
 			    {"macro": "CFE_ES_TASKINFO_WR_ERR_EID", "id":90}
 			],
 			"msgs": [
-		        {"macro": "CFE_ES_APP_TLM_MID"},
-		        {"macro": "CFE_ES_CMD_MID"},
-		        {"macro": "CFE_ES_HK_TLM_MID"},
-		        {"macro": "CFE_ES_MEMSTATS_TLM_MID"},
-		        {"macro": "CFE_ES_SEND_HK_MID"},
-		        {"macro": "CFE_ES_SHELL_TLM_MID"}
+		        {"macro": "CFE_ES_APP_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_ES_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_ES_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_ES_MEMSTATS_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_ES_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "CFE_ES_SHELL_TLM_MID", "type": "TLM"}
 			]
         },
         {
@@ -148,10 +148,10 @@
 			    {"macro": "CFE_EVS_LEN_ERR_EID", "id": 43}
 			],
 			"msgs": [
-		        {"macro": "CFE_EVS_CMD_MID"},
-		        {"macro": "CFE_EVS_EVENT_MSG_MID"},
-		        {"macro": "CFE_EVS_HK_TLM_MID"},
-		        {"macro": "CFE_EVS_SEND_HK_MID"}
+		        {"macro": "CFE_EVS_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_EVS_EVENT_MSG_MID", "type": "TLM"},
+		        {"macro": "CFE_EVS_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_EVS_SEND_HK_MID", "type": "CMD"}
 			]
         },
         {
@@ -211,12 +211,12 @@
 			    {"macro": "CFE_SB_DEL_PIPE_ERR2_EID", "id": 52}
 			],
 			"msgs": [
-		        {"macro": "CFE_SB_ALLSUBS_TLM_MID"},
-		        {"macro": "CFE_SB_CMD_MID"},
-		        {"macro": "CFE_SB_HK_TLM_MID"},
-		        {"macro": "CFE_SB_ONESUB_TLM_MID"},
-		        {"macro": "CFE_SB_SEND_HK_MID"},
-		        {"macro": "CFE_SB_STATS_TLM_MID"}
+		        {"macro": "CFE_SB_ALLSUBS_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_SB_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_SB_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_SB_ONESUB_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_SB_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "CFE_SB_STATS_TLM_MID", "type": "TLM"}
 			],
 	        "poolHandleTlmID": "/CFS/CFE_SB/MemPoolHandle"
         },
@@ -291,10 +291,10 @@
 	            {"macro": "CFE_TBL_PROCESSOR_ID_ERR_EID", "id": 98}
 			],
 			"msgs": [
-		        {"macro": "CFE_TBL_CMD_MID"},
-		        {"macro": "CFE_TBL_HK_TLM_MID"},
-		        {"macro": "CFE_TBL_REG_TLM_MID"},
-		        {"macro": "CFE_TBL_SEND_HK_MID"}
+		        {"macro": "CFE_TBL_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_TBL_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_TBL_REG_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_TBL_SEND_HK_MID", "type": "CMD"}
 			]
         },
         {
@@ -338,15 +338,15 @@
 	            {"macro": "CFE_TIME_1HZ_CFG_EID", "id": 48}
 			],
 			"msgs": [
-		        {"macro": "CFE_TIME_1HZ_CMD_MID"},
-		        {"macro": "CFE_TIME_CMD_MID"},
-		        {"macro": "CFE_TIME_DATA_CMD_MID"},
-		        {"macro": "CFE_TIME_DIAG_TLM_MID"},
-		        {"macro": "CFE_TIME_FAKE_CMD_MID"},
-		        {"macro": "CFE_TIME_HK_TLM_MID"},
-		        {"macro": "CFE_TIME_SEND_HK_MID"},
-		        {"macro": "CFE_TIME_SEND_CMD_MID"},
-		        {"macro": "CFE_TIME_TONE_CMD_MID"}
+		        {"macro": "CFE_TIME_1HZ_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_TIME_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_TIME_DATA_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_TIME_DIAG_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_TIME_FAKE_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_TIME_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "CFE_TIME_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "CFE_TIME_SEND_CMD_MID", "type": "CMD"},
+		        {"macro": "CFE_TIME_TONE_CMD_MID", "type": "CMD"}
 			]
         },
         {
@@ -382,11 +382,11 @@
 		        {"id": "MIXERCFG_TBL", "title": "Mixer Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "AMC_CMD_MID", "id": 7229},
-		        {"macro": "AMC_SEND_HK_MID", "id": 7230},
+		        {"macro": "AMC_CMD_MID", "type": "CMD", "id": 7229},
+		        {"macro": "AMC_SEND_HK_MID", "type": "CMD", "id": 7230},
 		        {"macro": "AMC_UPDATE_MOTORS_MID", "id": 7231},
-		        {"macro": "AMC_OUT_DATA_MID", "id": 3136},
-		        {"macro": "AMC_HK_TLM_MID", "id": 3137}
+		        {"macro": "AMC_OUT_DATA_MID", "type": "TLM", "id": 3136},
+		        {"macro": "AMC_HK_TLM_MID", "type": "TLM", "id": 3137}
 		    ]
 		},
         {
@@ -411,10 +411,10 @@
         		{"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "BAT_HK_TLM_MID", "id": 3185},
-		        {"macro": "BAT_SEND_HK_MID", "id": 7282},
-		        {"macro": "BAT_WAKEUP_MID", "id": 7283},
-		        {"macro": "BAT_CMD_MID", "id": 7284}
+		        {"macro": "BAT_HK_TLM_MID", "type": "TLM", "id": 3185},
+		        {"macro": "BAT_SEND_HK_MID", "type": "CMD", "id": 7282},
+		        {"macro": "BAT_WAKEUP_MID", "type": "CMD", "id": 7283},
+		        {"macro": "BAT_CMD_MID", "type": "CMD", "id": 7284}
 		    ]
 		},
         {
@@ -584,23 +584,23 @@
 		        {"id": "ConfigTable", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "CF_CMD_MID", "id": 6416},
-		        {"macro": "CF_INCOMING_PDU_MID", "id": 4093},
-		        {"macro": "CF_SEND_HK_MID", "id": 6418},
-		        {"macro": "CF_SPARE1_CMD_MID", "id": 6419},
-		        {"macro": "CF_SPARE2_CMD_MID", "id": 6420},
-		        {"macro": "CF_SPARE3_CMD_MID", "id": 6421},
-		        {"macro": "CF_SPARE4_CMD_MID", "id": 6422},
-		        {"macro": "CF_SPARE5_CMD_MID", "id": 6423},
-		        {"macro": "CF_WAKE_UP_REQ_CMD_MID", "id": 6424},
-		        {"macro": "CF_CONFIG_TLM_MID", "id": 2329},
-		        {"macro": "CF_HK_TLM_MID", "id": 2330},
-		        {"macro": "CF_SPARE0_TLM_MID", "id": 2331},
-		        {"macro": "CF_SPARE1_TLM_MID", "id": 2332},
-		        {"macro": "CF_SPARE2_TLM_MID", "id": 2333},
-		        {"macro": "CF_SPARE3_TLM_MID", "id": 2334},
-		        {"macro": "CF_SPARE4_TLM_MID", "id": 2335},
-		        {"macro": "CF_TRANS_TLM_MID", "id": 2336}
+		        {"macro": "CF_CMD_MID", "type": "CMD", "id": 6416},
+		        {"macro": "CF_INCOMING_PDU_MID", "type": "CMD", "id": 4093},
+		        {"macro": "CF_SEND_HK_MID", "type": "CMD", "id": 6418},
+		        {"macro": "CF_SPARE1_CMD_MID", "type": "CMD", "id": 6419},
+		        {"macro": "CF_SPARE2_CMD_MID", "type": "CMD", "id": 6420},
+		        {"macro": "CF_SPARE3_CMD_MID", "type": "CMD", "id": 6421},
+		        {"macro": "CF_SPARE4_CMD_MID", "type": "CMD", "id": 6422},
+		        {"macro": "CF_SPARE5_CMD_MID", "type": "CMD", "id": 6423},
+		        {"macro": "CF_WAKE_UP_REQ_CMD_MID", "type": "CMD", "id": 6424},
+		        {"macro": "CF_CONFIG_TLM_MID", "type": "TLM", "id": 2329},
+		        {"macro": "CF_HK_TLM_MID", "type": "TLM", "id": 2330},
+		        {"macro": "CF_SPARE0_TLM_MID", "type": "TLM", "id": 2331},
+		        {"macro": "CF_SPARE1_TLM_MID", "type": "TLM", "id": 2332},
+		        {"macro": "CF_SPARE2_TLM_MID", "type": "TLM", "id": 2333},
+		        {"macro": "CF_SPARE3_TLM_MID", "type": "TLM", "id": 2334},
+		        {"macro": "CF_SPARE4_TLM_MID", "type": "TLM", "id": 2335},
+		        {"macro": "CF_TRANS_TLM_MID", "type": "TLM", "id": 2336}
 		    ],
 	        "poolHandleTlmID": "/CFS/CF/App_BufferPoolHandle"
 		},
@@ -646,12 +646,12 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-	            {"macro": "CI_CMD_MID", "id": 6405},
-	            {"macro": "CI_SEND_HK_MID", "id": 6406},
-	            {"macro": "CI_HK_TLM_MID", "id": 2311},
-	            {"macro": "CI_WAKEUP_MID", "id": 6408},
-	            {"macro": "CI_OUT_DATA_MID", "id": 6409},
-	            {"macro": "CI_PROCESS_TIMEOUTS_MID", "id": 6410}	            
+	            {"macro": "CI_CMD_MID", "type": "CMD", "id": 6405},
+	            {"macro": "CI_SEND_HK_MID", "type": "CMD", "id": 6406},
+	            {"macro": "CI_HK_TLM_MID", "type": "TLM", "id": 2311},
+	            {"macro": "CI_WAKEUP_MID", "type": "CMD", "id": 6408},
+	            {"macro": "CI_OUT_DATA_MID", "type": "TLM", "id": 6409},
+	            {"macro": "CI_PROCESS_TIMEOUTS_MID", "type": "CMD", "id": 6410}	            
 		    ]
 		},
         {
@@ -810,10 +810,10 @@
 		        {"id": "DefTablesTbl", "title": "Tables", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "CS_CMD_MID", "id": 6448},
-		        {"macro": "CS_BACKGROUND_CYCLE_MID", "id": 6449},
-		        {"macro": "CS_SEND_HK_MID", "id": 6450},
-		        {"macro": "CS_HK_TLM_MID", "id": 2355}
+		        {"macro": "CS_CMD_MID", "type": "CMD", "id": 6448},
+		        {"macro": "CS_BACKGROUND_CYCLE_MID", "type": "CMD", "id": 6449},
+		        {"macro": "CS_SEND_HK_MID", "type": "CMD", "id": 6450},
+		        {"macro": "CS_HK_TLM_MID", "type": "TLM", "id": 2355}
 		    ]
 		},
         {
@@ -877,10 +877,10 @@
 		        {"id": "FILTER_TBL", "title": "Filter Table", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "DS_CMD_MID", "id": 6464},
-		        {"macro": "DS_SEND_HK_MID", "id": 6465},
-		        {"macro": "DS_HK_TLM_MID", "id": 2370},
-		        {"macro": "DS_DIAG_TLM_MID", "id": 2370}
+		        {"macro": "DS_CMD_MID", "type": "CMD", "id": 6464},
+		        {"macro": "DS_SEND_HK_MID", "type": "CMD", "id": 6465},
+		        {"macro": "DS_HK_TLM_MID", "type": "TLM", "id": 2370},
+		        {"macro": "DS_DIAG_TLM_MID", "type": "TLM", "id": 2370}
 		    ]
 		},
         {
@@ -908,12 +908,12 @@
 	            {"macro": "EA_CMD_RESET_EID", "id": 20}
 			],
 		    "msgs": [
-		        {"macro": "EA_CMD_MID", "id": 7209},
-		        {"macro": "EA_SEND_HK_MID", "id": 7210},
-		        {"macro": "EA_HK_TLM_MID", "id": 3115},
-		        {"macro": "EA_WAKEUP_MID", "id": 7212},
-		        {"macro": "EA_OUT_DATA_MID", "id": 3117},
-		        {"macro": "EA_PERFMON_MID", "id": 7214}
+		        {"macro": "EA_CMD_MID", "type": "CMD"},
+		        {"macro": "EA_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "EA_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "EA_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "EA_OUT_DATA_MID", "type": "TLM"},
+		        {"macro": "EA_PERFMON_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1031,13 +1031,13 @@
 		        {"id": "FreeSpace", "title": "Free Space Table", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "FM_CMD_MID", "id": 7528},
-		        {"macro": "FM_SEND_HK_MID", "id": 7529},
-		        {"macro": "FM_HK_TLM_MID", "id": 2434},
-		        {"macro": "FM_OPEN_FILES_TLM_MID", "id": 2435},
-		        {"macro": "FM_FREE_SPACE_TLM_MID", "id": 2436},
-		        {"macro": "FM_FILE_INFO_TLM_MID", "id": 2437},
-		        {"macro": "FM_DIR_LIST_TLM_MID", "id": 2438}
+		        {"macro": "FM_CMD_MID", "type": "CMD", "id": 7528},
+		        {"macro": "FM_SEND_HK_MID", "type": "CMD", "id": 7529},
+		        {"macro": "FM_HK_TLM_MID", "type": "TLM", "id": 2434},
+		        {"macro": "FM_OPEN_FILES_TLM_MID", "type": "TLM", "id": 2435},
+		        {"macro": "FM_FREE_SPACE_TLM_MID", "type": "TLM", "id": 2436},
+		        {"macro": "FM_FILE_INFO_TLM_MID", "type": "TLM", "id": 2437},
+		        {"macro": "FM_DIR_LIST_TLM_MID", "type": "TLM", "id": 2438}
 		    ]
 		},
         {
@@ -1063,10 +1063,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
 		    ],
 		    "msgs": [		        
-		        {"macro": "GPS_CMD_MID", "id": 7249},
-		        {"macro": "GPS_SEND_HK_MID", "id": 7250},
+		        {"macro": "GPS_CMD_MID", "type": "CMD", "id": 7249},
+		        {"macro": "GPS_SEND_HK_MID", "type": "CMD", "id": 7250},
 		        {"macro": "GPS_READ_SENSOR_MID", "id": 7251},
-		        {"macro": "GPS_HK_TLM_MID", "id": 3156}
+		        {"macro": "GPS_HK_TLM_MID", "type": "TLM", "id": 3156}
 		    ]
 		},
         {
@@ -1104,11 +1104,10 @@
 		        {"id": "CopyTable", "title": "Copy Table", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": ""},
-		        {"macro": "HK_CMD_MID"},
-		        {"macro": "HK_SEND_HK_MID"},
+		        {"macro": "HK_CMD_MID", "type": "CMD"},
+		        {"macro": "HK_SEND_HK_MID", "type": "CMD"},
 		        {"macro": "HK_SEND_COMBINED_PKT_MID"},
-		        {"macro": "HK_HK_TLM_MID"},
+		        {"macro": "HK_HK_TLM_MID", "type": "TLM"},
 		        {"macro": "HK_COMBINED_PKT1_MID"},
 		        {"macro": "HK_COMBINED_PKT2_MID"},
 		        {"macro": "HK_COMBINED_PKT3_MID"},
@@ -1148,11 +1147,11 @@
 		        {"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "HMC5883_HK_TLM_MID"},
-		        {"macro": "HMC5883_SEND_HK_MID"},
-		        {"macro": "HMC5883_WAKEUP_MID"},
-		        {"macro": "HMC5883_CMD_MID"},
-		        {"macro": "HMC5883_DIAG_TLM_MID"}
+		        {"macro": "HMC5883_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "HMC5883_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "HMC5883_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "HMC5883_CMD_MID", "type": "CMD"},
+		        {"macro": "HMC5883_DIAG_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -1232,11 +1231,11 @@
 		        {"id": "AppMon_Tbl", "title": "Application Monitor", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "HS_CMD_MID"},
-		        {"macro": "HS_SEND_HK_MID"},
-		        {"macro": "HS_WAKEUP_MID"},
-		        {"macro": "HS_HK_TLM_MID "},
-		        {"macro": "HS_CUSTOM_HK_TLM_MID"}
+		        {"macro": "HS_CMD_MID", "type": "CMD"},
+		        {"macro": "HS_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "HS_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "HS_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "HS_CUSTOM_HK_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -1317,9 +1316,9 @@
 		        {"id": "LC_ART", "title": "Action Point Results", "isDumpTable": true}
 		    ],
 		    "msgs": [
-		        {"macro": "LC_HK_TLM_MID"},
-		        {"macro": "LC_SEND_HK_MID"},
-		        {"macro": "LC_CMD_MID"},
+		        {"macro": "LC_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "LC_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "LC_CMD_MID", "type": "CMD"},
 		        {"macro": "LC_SAMPLE_AP_MID"}
 		    ]
 		},
@@ -1343,10 +1342,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "LD_HK_TLM_MID"},
-		        {"macro": "LD_SEND_HK_MID"},
-		        {"macro": "LD_WAKEUP_MID"},
-		        {"macro": "LD_CMD_MID"}
+		        {"macro": "LD_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "LD_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "LD_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "LD_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1368,11 +1367,11 @@
 		        {"id": "PARAM_TBL", "title": "Params", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "MAC_CMD_MID"},
-		        {"macro": "MAC_SEND_HK_MID"},
-		        {"macro": "MAC_RUN_CONTROLLER_MID"},
-		        {"macro": "MAC_OUT_DATA_MID"},
-		        {"macro": "MAC_HK_TLM_MID"}
+		        {"macro": "MAC_CMD_MID", "type": "CMD"},
+		        {"macro": "MAC_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MAC_RUN_CONTROLLER_MID", "type": "CMD"},
+		        {"macro": "MAC_OUT_DATA_MID", "type": "TLM"},
+		        {"macro": "MAC_HK_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -1388,13 +1387,13 @@
 		        {"id": "ACTION_MAP", "title": "Action Map", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "MAVLINK_CMD_MID"},
-		        {"macro": "MAVLINK_SEND_HK_MID"},
-		        {"macro": "MAVLINK_HK_TLM_MID"},
-		        {"macro": "MAVLINK_WAKEUP_MID"},
-		        {"macro": "MAVLINK_OUT_DATA_MID"},
-		        {"macro": "MAVLINK_PARAM_DATA_MID"},
-		        {"macro": "MAVLINK_REQUEST_PARAMS_MID"}
+		        {"macro": "MAVLINK_CMD_MID", "type": "CMD"},
+		        {"macro": "MAVLINK_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MAVLINK_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "MAVLINK_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "MAVLINK_OUT_DATA_MID", "type": "TLM"},
+		        {"macro": "MAVLINK_PARAM_DATA_MID", "type": "TLM"},
+		        {"macro": "MAVLINK_REQUEST_PARAMS_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1448,10 +1447,10 @@
 		        {"id": "DWELL_TABLE4", "title": "Dwell #4", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "MD_CMD_MID"},
-		        {"macro": "MD_WAKEUP_MID"},
-		        {"macro": "MD_SEND_HK_MID"},
-		        {"macro": "MD_HK_TLM_MID"},
+		        {"macro": "MD_CMD_MID", "type": "CMD"},
+		        {"macro": "MD_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "MD_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MD_HK_TLM_MID", "type": "TLM"},
 		        {"macro": "MD_DWELL_PKT_MID_BASE"}
 		    ]
 		},
@@ -1519,9 +1518,9 @@
 	            {"macro": "MM_PSP_SET_ERR_EID_EID", "id": 59}
 			],
 		    "msgs": [
-		        {"macro": "MM_CMD_MID"},
-		        {"macro": "MM_SEND_HK_MID"},
-		        {"macro": "MM_HK_TLM_MID"}
+		        {"macro": "MM_CMD_MID", "type": "CMD"},
+		        {"macro": "MM_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MM_HK_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -1551,10 +1550,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "MPC_HK_TLM_MID"},
-		        {"macro": "MPC_SEND_HK_MID"},
-		        {"macro": "MPC_WAKEUP_MID"},
-		        {"macro": "MPC_CMD_MID "}
+		        {"macro": "MPC_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "MPC_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MPC_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "MPC_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1581,10 +1580,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "MPU9250_SEND_HK_MID"},
-		        {"macro": "MPU9250_HK_TLM_MID"},
-		        {"macro": "MPU9250_DIAG_TLM_MID"},
-		        {"macro": "MPU9250_CMD_MID"},
+		        {"macro": "MPU9250_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MPU9250_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "MPU9250_DIAG_TLM_MID", "type": "TLM"},
+		        {"macro": "MPU9250_CMD_MID", "type": "CMD"},
 		        {"macro": "MPU9250_MEASURE_MID"}
 		    ]
 		},
@@ -1611,10 +1610,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "MS5611_SEND_HK_MID"},
-		        {"macro": "MS5611_HK_TLM_MID"},
-		        {"macro": "MS5611_DIAG_TLM_MID"},
-		        {"macro": "MS5611_CMD_MID"},
+		        {"macro": "MS5611_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "MS5611_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "MS5611_DIAG_TLM_MID", "type": "TLM"},
+		        {"macro": "MS5611_CMD_MID", "type": "CMD"},
 		        {"macro": "MS5611_MEASURE_MID"}
 		    ]
 		},
@@ -1638,10 +1637,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "NAV_HK_TLM_MID"},
-		        {"macro": "NAV_SEND_HK_MID"},
-		        {"macro": "NAV_WAKEUP_MID"},
-		        {"macro": "NAV_CMD_MID"}
+		        {"macro": "NAV_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "NAV_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "NAV_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "NAV_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1668,10 +1667,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "AE_HK_TLM_MID"},
-		        {"macro": "AE_SEND_HK_MID"},
-		        {"macro": "AE_WAKEUP_MID"},
-		        {"macro": "AE_CMD_MID"}
+		        {"macro": "AE_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "AE_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "AE_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "AE_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1694,10 +1693,10 @@
 	            {"macro": "RCIN_READ_ERR_EID", "id": 15}
 			],
 		    "msgs": [
-		        {"macro": "RCIN_HK_TLM_MID"},
-		        {"macro": "RCIN_SEND_HK_MID"},
-		        {"macro": "RCIN_WAKEUP_MID"},
-		        {"macro": "RCIN_CMD_MID"}
+		        {"macro": "RCIN_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "RCIN_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "RCIN_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "RCIN_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1719,10 +1718,10 @@
 	            {"macro": "RGBLED_INIT_ERR_EID", "id": 14}
 			],
 		    "msgs": [
-		        {"macro": "RGBLED_HK_TLM_MID"},
-		        {"macro": "RGBLED_SEND_HK_MID"},
-		        {"macro": "RGBLED_WAKEUP_MID"},
-		        {"macro": "RGBLED_CMD_MID"}
+		        {"macro": "RGBLED_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "RGBLED_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "RGBLED_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "RGBLED_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -1839,10 +1838,10 @@
 		        {"id": "RTS_TBL2", "title": "RTS Table #2", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "SC_CMD_MID"},
-		        {"macro": "SC_SEND_HK_MID"},
-		        {"macro": "SC_1HZ_WAKEUP_MID"},
-		        {"macro": "SC_HK_TLM_MID"}
+		        {"macro": "SC_CMD_MID", "type": "CMD"},
+		        {"macro": "SC_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "SC_1HZ_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "SC_HK_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -5912,10 +5911,10 @@
 		        }
 		    ],
 		    "msgs": [
-		        {"macro": "SCH_CMD_MID"},
-		        {"macro": "SCH_SEND_HK_MID"},
-		        {"macro": "SCH_DIAG_TLM_MID"},
-		        {"macro": "SCH_HK_TLM_MID"}
+		        {"macro": "SCH_CMD_MID", "type": "CMD"},
+		        {"macro": "SCH_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "SCH_DIAG_TLM_MID", "type": "TLM"},
+		        {"macro": "SCH_HK_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -5938,10 +5937,10 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "SENS_HK_TLM_MID"},
-		        {"macro": "SENS_SEND_HK_MID"},
-		        {"macro": "SENS_WAKEUP_MID"},
-		        {"macro": "SENS_CMD_MID"}
+		        {"macro": "SENS_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "SENS_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "SENS_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "SENS_CMD_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -5977,12 +5976,12 @@
 	            {"macro": "TO_NO_ENCODE_FUNC_EID", "id": 28}
 			],
 		    "msgs": [
-		        {"macro": "TO_CMD_MID"},
-		        {"macro": "TO_SEND_HK_MID"},
-		        {"macro": "TO_HK_TLM_MID"},
-		        {"macro": "TO_SEND_TLM_MID"},
+		        {"macro": "TO_CMD_MID", "type": "CMD"},
+		        {"macro": "TO_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "TO_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "TO_SEND_TLM_MID", "type": "TLM"},
 		        {"macro": "TO_DATA_TYPE_MID"},
-		        {"macro": "TO_DIAG_TLM_MID"}
+		        {"macro": "TO_DIAG_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -6011,11 +6010,11 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "ULR_CMD_MID"},
-		        {"macro": "ULR_SEND_HK_MID"},
-		        {"macro": "ULR_MEASURE_MID"},
-		        {"macro": "ULR_OUT_DATA_MID"},
-		        {"macro": "ULR_HK_TLM_MID"}
+		        {"macro": "ULR_CMD_MID", "type": "CMD"},
+		        {"macro": "ULR_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "ULR_MEASURE_MID", "type": "CMD"},
+		        {"macro": "ULR_OUT_DATA_MID", "type": "TLM"},
+		        {"macro": "ULR_HK_TLM_MID", "type": "TLM"}
 		    ]
 		},
         {
@@ -6033,10 +6032,10 @@
 	            {"macro": "VC_MSGLEN_ERR_EID", "id": 10}
 			],
 		    "msgs": [
-		        {"macro": "VC_HK_TLM_MID"},
-		        {"macro": "VC_SEND_HK_MID"},
-		        {"macro": "VC_CMD_MID"},
-		        {"macro": "VC_WAKEUP_MID"}
+		        {"macro": "VC_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "VC_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "VC_CMD_MID", "type": "CMD"},
+		        {"macro": "VC_WAKEUP_MID", "type": "CMD"}
 		    ]
 		},
         {
@@ -6059,11 +6058,312 @@
 		        {"id": "CONFIG_TBL", "title": "Config", "isDumpTable": false}
 		    ],
 		    "msgs": [
-		        {"macro": "VM_HK_TLM_MID"},
-		        {"macro": "VM_SEND_HK_MID"},
-		        {"macro": "VM_WAKEUP_MID"},
-		        {"macro": "VM_CMD_MID"}
+		        {"macro": "VM_HK_TLM_MID", "type": "TLM"},
+		        {"macro": "VM_SEND_HK_MID", "type": "CMD"},
+		        {"macro": "VM_WAKEUP_MID", "type": "CMD"},
+		        {"macro": "VM_CMD_MID", "type": "CMD"}
 		    ]
 		}
+	],
+	"msgDefs": [
+	    {"macro": "CFE_ES_APP_TLM_MID", "apid": 11},
+	    {"macro": "CFE_ES_CMD_MID", "apid": 6},
+	    {"macro": "CFE_ES_HK_TLM_MID", "apid": 0},
+	    {"macro": "CFE_ES_MEMSTATS_TLM_MID", "apid": 16},
+	    {"macro": "CFE_ES_SEND_HK_MID", "apid": 8},
+	    {"macro": "CFE_ES_SHELL_TLM_MID", "apid": 15},
+        {"macro": "CFE_EVS_CMD_MID", "apid": 1},
+        {"macro": "CFE_EVS_EVENT_MSG_MID", "apid": 8},
+        {"macro": "CFE_EVS_HK_TLM_MID", "apid": 1},
+        {"macro": "CFE_EVS_SEND_HK_MID", "apid": 9},
+        {"macro": "CFE_SB_ALLSUBS_TLM_MID", "apid": 13},
+        {"macro": "CFE_SB_CMD_MID", "apid": 3},
+        {"macro": "CFE_SB_HK_TLM_MID", "apid": 3},
+        {"macro": "CFE_SB_ONESUB_TLM_MID", "apid": 14},
+        {"macro": "CFE_SB_SEND_HK_MID", "apid": 15},
+        {"macro": "CFE_SB_STATS_TLM_MID", "apid": 10},
+        {"macro": "CFE_TBL_CMD_MID", "apid": 4},
+        {"macro": "CFE_TBL_HK_TLM_MID", "apid": 4},
+        {"macro": "CFE_TBL_REG_TLM_MID", "apid": 12},
+        {"macro": "CFE_TBL_SEND_HK_MID", "apid": 12},
+        {"macro": "CFE_TIME_1HZ_CMD_MID", "apid": 17},
+        {"macro": "CFE_TIME_CMD_MID", "apid": 5},
+        {"macro": "CFE_TIME_DATA_CMD_MID", "apid": 96},
+        {"macro": "CFE_TIME_DIAG_TLM_MID", "apid": 6},
+        {"macro": "CFE_TIME_FAKE_CMD_MID", "apid": 97},
+        {"macro": "CFE_TIME_HK_TLM_MID", "apid": 5},
+        {"macro": "CFE_TIME_SEND_HK_MID", "apid": 13},
+        {"macro": "CFE_TIME_SEND_CMD_MID", "apid": 98},
+        {"macro": "CFE_TIME_TONE_CMD_MID", "apid": 16},
+	    {"macro": "AE_HK_TLM_MID", "apid": 1113},
+	    {"macro": "AE_SEND_HK_MID", "apid": 1114},
+	    {"macro": "AE_WAKEUP_MID", "apid": 1115},
+	    {"macro": "AE_CMD_MID", "apid": 1116},
+	    {"macro": "AMC_CMD_MID", "apid": 1085},
+	    {"macro": "AMC_SEND_HK_MID", "apid": 1086},
+	    {"macro": "AMC_UPDATE_MOTORS_MID", "apid": 1087},
+	    {"macro": "AMC_OUT_DATA_MID", "apid": 1088},
+	    {"macro": "AMC_HK_TLM_MID", "apid": 1089},
+	    {"macro": "BAT_HK_TLM_MID", "apid": 1137},
+	    {"macro": "BAT_SEND_HK_MID", "apid": 1138},
+	    {"macro": "BAT_WAKEUP_MID", "apid": 1139},
+	    {"macro": "BAT_CMD_MID", "apid": 1140},
+	    {"macro": "CF_CMD_MID", "apid": 272},
+	    {"macro": "CF_INCOMING_PDU_MID", "apid": 2045},
+	    {"macro": "CF_SEND_HK_MID", "apid": 274},
+	    {"macro": "CF_SPARE1_CMD_MID", "apid": 275},
+	    {"macro": "CF_SPARE2_CMD_MID", "apid": 276},
+	    {"macro": "CF_SPARE3_CMD_MID", "apid": 277},
+	    {"macro": "CF_SPARE4_CMD_MID", "apid": 278},
+	    {"macro": "CF_SPARE5_CMD_MID", "apid": 279},
+	    {"macro": "CF_WAKE_UP_REQ_CMD_MID", "apid": 280},
+	    {"macro": "CF_CONFIG_TLM_MID", "apid": 281},
+	    {"macro": "CF_HK_TLM_MID", "apid": 282},
+	    {"macro": "CF_SPARE0_TLM_MID", "apid": 283},
+	    {"macro": "CF_SPARE1_TLM_MID", "apid": 284},
+	    {"macro": "CF_SPARE2_TLM_MID", "apid": 285},
+	    {"macro": "CF_SPARE3_TLM_MID", "apid": 286},
+	    {"macro": "CF_SPARE4_TLM_MID", "apid": 287},
+	    {"macro": "CF_TRANS_TLM_MID", "apid": 288},
+	    {"macro": "CF_SPACE_TO_GND_PDU_MID", "apid": 2046},
+	    {"macro": "CI_CMD_MID", "apid": 261},
+	    {"macro": "CI_SEND_HK_MID", "apid": 262},
+	    {"macro": "CI_HK_TLM_MID", "apid": 263},
+	    {"macro": "CI_WAKEUP_MID", "apid": 264},
+	    {"macro": "CI_OUT_DATA_MID", "apid": 265},
+	    {"macro": "CI_PROCESS_TIMEOUTS_MID", "apid": 266},
+	    {"macro": "CS_CMD_MID", "apid": 304},
+	    {"macro": "CS_BACKGROUND_CYCLE_MID", "apid": 305},
+	    {"macro": "CS_SEND_HK_MID", "apid": 306},
+	    {"macro": "CS_HK_TLM_MID", "apid": 307},
+	    {"macro": "DS_CMD_MID", "apid": 308},
+	    {"macro": "DS_SEND_HK_MID", "apid": 309},
+	    {"macro": "DS_HK_TLM_MID", "apid": 310},
+	    {"macro": "DS_DIAG_TLM_MID", "apid": 311},
+	    {"macro": "EA_CMD_MID", "apid": 1065},
+	    {"macro": "EA_SEND_HK_MID", "apid": 1066},
+	    {"macro": "EA_HK_TLM_MID", "apid": 1067},
+	    {"macro": "EA_WAKEUP_MID", "apid": 1068},
+	    {"macro": "EA_OUT_DATA_MID", "apid": 1069},
+	    {"macro": "EA_PERFMON_MID", "apid": 1070},
+	    {"macro": "FM_CMD_MID", "apid": 384},
+	    {"macro": "FM_SEND_HK_MID", "apid": 385},
+	    {"macro": "FM_HK_TLM_MID", "apid": 386},
+	    {"macro": "FM_OPEN_FILES_TLM_MID", "apid": 387},
+	    {"macro": "FM_FREE_SPACE_TLM_MID", "apid": 388},
+	    {"macro": "FM_FILE_INFO_TLM_MID", "apid": 389},
+	    {"macro": "FM_DIR_LIST_TLM_MID", "apid": 390},
+	    {"macro": "GPS_CMD_MID", "apid": 1105},
+	    {"macro": "GPS_SEND_HK_MID", "apid": 1106},
+	    {"macro": "GPS_READ_SENSOR_MID", "apid": 1107},
+	    {"macro": "GPS_HK_TLM_MID", "apid": 1108},
+	    {"macro": "HK_CMD_MID", "apid": 400},
+	    {"macro": "HK_SEND_HK_MID", "apid": 401},
+	    {"macro": "HK_SEND_COMBINED_PKT_MID", "apid": 402},
+	    {"macro": "HK_HK_TLM_MID", "apid": 403},
+	    {"macro": "HK_COMBINED_PKT1_MID", "apid": 404},
+	    {"macro": "HK_COMBINED_PKT2_MID", "apid": 405},
+	    {"macro": "HK_COMBINED_PKT3_MID", "apid": 406},
+	    {"macro": "HK_COMBINED_PKT4_MID", "apid": 407},
+	    {"macro": "HK_COMBINED_PKT5_MID", "apid": 408},
+	    {"macro": "HK_COMBINED_PKT6_MID", "apid": 409},
+	    {"macro": "HK_COMBINED_PKT7_MID", "apid": 410},
+	    {"macro": "HK_COMBINED_PKT8_MID", "apid": 411},
+	    {"macro": "HK_COMBINED_PKT9_MID", "apid": 412},
+	    {"macro": "HK_COMBINED_PKT10_MID", "apid": 413},
+	    {"macro": "HMC5883_HK_TLM_MID", "apid": 1185},
+	    {"macro": "HMC5883_SEND_HK_MID", "apid": 1186},
+	    {"macro": "HMC5883_WAKEUP_MID", "apid": 1187},
+	    {"macro": "HMC5883_CMD_MID", "apid": 1188},
+	    {"macro": "HMC5883_DIAG_TLM_MID", "apid": 1189},
+	    {"macro": "HS_CMD_MID", "apid": 416},
+	    {"macro": "HS_SEND_HK_MID", "apid": 417},
+	    {"macro": "HS_WAKEUP_MID", "apid": 418},
+	    {"macro": "HS_HK_TLM_MID", "apid": 419},
+	    {"macro": "HS_CUSTOM_HK_TLM_MID", "apid": 420},
+	    {"macro": "LC_HK_TLM_MID", "apid": 432},
+	    {"macro": "LC_SEND_HK_MID", "apid": 433},
+	    {"macro": "LC_CMD_MID", "apid": 434},
+	    {"macro": "LC_SAMPLE_AP_MID", "apid": 435},
+	    {"macro": "LD_HK_TLM_MID", "apid": 1117},
+	    {"macro": "LD_SEND_HK_MID", "apid": 1118},
+	    {"macro": "LD_WAKEUP_MID", "apid": 1119},
+	    {"macro": "LD_CMD_MID", "apid": 1120},
+	    {"macro": "MAC_CMD_MID", "apid": 1090},
+	    {"macro": "MAC_SEND_HK_MID", "apid": 1091},
+	    {"macro": "MAC_RUN_CONTROLLER_MID", "apid": 1092},
+	    {"macro": "MAC_OUT_DATA_MID", "apid": 1093},
+	    {"macro": "MAC_HK_TLM_MID", "apid": 1094},
+	    {"macro": "MAVLINK_CMD_MID", "apid": 1153},
+	    {"macro": "MAVLINK_SEND_HK_MID", "apid": 1154},
+	    {"macro": "MAVLINK_HK_TLM_MID", "apid": 1155},
+	    {"macro": "MAVLINK_WAKEUP_MID", "apid": 1156},
+	    {"macro": "MAVLINK_OUT_DATA_MID", "apid": 1157},
+	    {"macro": "MAVLINK_PARAM_DATA_MID", "apid": 1158},
+	    {"macro": "MAVLINK_REQUEST_PARAMS_MID", "apid": 1159},
+	    {"macro": "MD_CMD_MID", "apid": 451},
+	    {"macro": "MD_WAKEUP_MID", "apid": 452},
+	    {"macro": "MD_SEND_HK_MID", "apid": 453},
+	    {"macro": "MD_HK_TLM_MID", "apid": 454},
+	    {"macro": "MD_DWELL_PKT_MID_BASE", "apid": 455},
+	    {"macro": "MM_CMD_MID", "apid": 448},
+	    {"macro": "MM_SEND_HK_MID", "apid": 449},
+	    {"macro": "MM_HK_TLM_MID", "apid": 450},
+	    {"macro": "MPC_HK_TLM_MID", "apid": 1121},
+	    {"macro": "MPC_SEND_HK_MID", "apid": 1122},
+	    {"macro": "MPC_WAKEUP_MID", "apid": 1123},
+	    {"macro": "MPC_CMD_MID", "apid": 1124},
+	    {"macro": "MPU9250_SEND_HK_MID", "apid": 848},
+	    {"macro": "MPU9250_HK_TLM_MID", "apid": 849},
+	    {"macro": "MPU9250_DIAG_TLM_MID", "apid": 850},
+	    {"macro": "MPU9250_CMD_MID", "apid": 851},
+	    {"macro": "MPU9250_MEASURE_MID", "apid": 852},
+	    {"macro": "MS5611_SEND_HK_MID", "apid": 864},
+	    {"macro": "MS5611_HK_TLM_MID", "apid": 865},
+	    {"macro": "MS5611_DIAG_TLM_MID", "apid": 866},
+	    {"macro": "MS5611_CMD_MID", "apid": 867},
+	    {"macro": "MS5611_MEASURE_MID", "apid": 868},
+	    {"macro": "NAV_HK_TLM_MID", "apid": 1125},
+	    {"macro": "NAV_SEND_HK_MID", "apid": 1126},
+	    {"macro": "NAV_WAKEUP_MID", "apid": 1127},
+	    {"macro": "NAV_CMD_MID", "apid": 1128},
+	    {"macro": "PE_HK_TLM_MID", "apid": 1144},
+	    {"macro": "PE_SEND_HK_MID", "apid": 1145},
+	    {"macro": "PE_WAKEUP_MID", "apid": 1146},
+	    {"macro": "PE_CMD_MID", "apid": 1147},
+	    {"macro": "PX4_ACTUATOR_ARMED_MID", "apid": 517},
+	    {"macro": "PX4_ACTUATOR_CONTROLS_0_MID", "apid": 518},
+	    {"macro": "PX4_ACTUATOR_CONTROLS_1_MID", "apid": 607},
+	    {"macro": "PX4_ACTUATOR_CONTROLS_2_MID", "apid": 605},
+	    {"macro": "PX4_ACTUATOR_CONTROLS_3_MID", "apid": 606},
+	    {"macro": "PX4_ACTUATOR_DIRECT_MID", "apid": 519},
+	    {"macro": "PX4_ACTUATOR_OUTPUTS_MID", "apid": 520},
+	    {"macro": "PX4_ADC_REPORT_MID", "apid": 521},
+	    {"macro": "PX4_AIRSPEED_MID", "apid": 522},
+	    {"macro": "PX4_ATT_POS_MOCAP_MID", "apid": 523},
+	    {"macro": "PX4_BATTERY_STATUS_MID", "apid": 524},
+	    {"macro": "PX4_CAMERA_TRIGGER_MID", "apid": 525},
+	    {"macro": "PX4_COMMANDER_STATE_MID", "apid": 526},
+	    {"macro": "PX4_CONTROL_STATE_MID", "apid": 527},
+	    {"macro": "PX4_CPULOAD_MID", "apid": 528},
+	    {"macro": "PX4_DEBUG_KEY_VALUE_MID", "apid": 529},
+	    {"macro": "PX4_DIFFERENTIAL_PRESSURE_MID", "apid": 530},
+	    {"macro": "PX4_DISTANCE_SENSOR_MID", "apid": 531},
+	    {"macro": "PX4_FW_POS_CTRL_STATUS_MID", "apid": 532},
+	    {"macro": "PX4_FW_VIRTUAL_ATTITUDE_SETPOINT_MID", "apid": 533},
+	    {"macro": "PX4_FW_VIRTUAL_RATES_SETPOINT_MID", "apid": 534},
+	    {"macro": "PX4_EKF2_INNOVATIONS_MID", "apid": 535},
+	    {"macro": "PX4_EKF2_REPLAY_MID", "apid": 536},
+	    {"macro": "PX4_ESC_REPORT_MID", "apid": 537},
+	    {"macro": "PX4_ESC_STATUS_MID", "apid": 538},
+	    {"macro": "PX4_ESTIMATOR_STATUS_MID", "apid": 539},
+	    {"macro": "PX4_FENCE_MID", "apid": 540},
+	    {"macro": "PX4_FENCE_VERTEX_MID", "apid": 541},
+	    {"macro": "PX4_FILTERED_BOTTOM_FLOW_MID", "apid": 542},
+	    {"macro": "PX4_FOLLOW_TARGET_MID", "apid": 543},
+	    {"macro": "PX4_GEOFENCE_RESULT_MID", "apid": 544},
+	    {"macro": "PX4_GPS_DUMP_MID", "apid": 545},
+	    {"macro": "PX4_GPS_INJECT_DATA_MID", "apid": 546},
+	    {"macro": "PX4_HIL_SENSOR_MID", "apid": 547},
+	    {"macro": "PX4_HOME_POSITION_MID", "apid": 548},
+	    {"macro": "PX4_INPUT_RC_MID", "apid": 549},
+	    {"macro": "PX4_LED_CONTROL_MID", "apid": 604},
+	    {"macro": "PX4_LOG_MESSAGE_MID", "apid": 550},
+	    {"macro": "PX4_MANUAL_CONTROL_SETPOINT_MID", "apid": 551},
+	    {"macro": "PX4_MAVLINK_LOG_MID", "apid": 552},
+	    {"macro": "PX4_MC_ATT_CTRL_STATUS_MID", "apid": 553},
+	    {"macro": "PX4_MC_VIRTUAL_ATTITUDE_SETPOINT_MID", "apid": 554},
+	    {"macro": "PX4_MC_VIRTUAL_RATES_SETPOINT_MID", "apid": 555},
+	    {"macro": "PX4_MISSION_MID", "apid": 556},
+	    {"macro": "PX4_MISSION_RESULT_MID", "apid": 557},
+	    {"macro": "PX4_MULTIROTOR_MOTOR_LIMITS_MID", "apid": 558},
+	    {"macro": "PX4_OFFBOARD_CONTROL_MODE_MID", "apid": 559},
+	    {"macro": "PX4_OPTICAL_FLOW_MID", "apid": 560},
+	    {"macro": "PX4_OUTPUT_PWM_MID", "apid": 561},
+	    {"macro": "PX4_PARAMETER_UPDATE_MID", "apid": 562},
+	    {"macro": "PX4_POSITION_SETPOINT_MID", "apid": 563},
+	    {"macro": "PX4_POSITION_SETPOINT_TRIPLET_MID", "apid": 564},
+	    {"macro": "PX4_PWM_INPUT_MID", "apid": 565},
+	    {"macro": "PX4_QSHELL_REQ_MID", "apid": 566},
+	    {"macro": "PX4_RC_CHANNELS_MID", "apid": 567},
+	    {"macro": "PX4_RC_PARAMETER_MAP_MID", "apid": 568},
+	    {"macro": "PX4_SAFETY_MID", "apid": 569},
+	    {"macro": "PX4_SATELLITE_INFO_MID", "apid": 570},
+	    {"macro": "PX4_SENSOR_ACCEL_MID", "apid": 571},
+	    {"macro": "PX4_SENSOR_BARO_MID", "apid": 572},
+	    {"macro": "PX4_SENSOR_COMBINED_MID", "apid": 573},
+	    {"macro": "PX4_SENSOR_GYRO_MID", "apid": 574},
+	    {"macro": "PX4_SENSOR_MAG_MID", "apid": 575},
+	    {"macro": "PX4_SERVORAIL_STATUS_MID", "apid": 576},
+	    {"macro": "PX4_SUBSYSTEM_INFO_MID", "apid": 577},
+	    {"macro": "PX4_SYSTEM_POWER_MID", "apid": 578},
+	    {"macro": "PX4_TECS_STATUS_MID", "apid": 579},
+	    {"macro": "PX4_TELEMETRY_STATUS_MID", "apid": 580},
+	    {"macro": "PX4_TEST_MOTOR_MID", "apid": 581},
+	    {"macro": "PX4_TIME_OFFSET_MID", "apid": 582},
+	    {"macro": "PX4_TRANSPONDER_REPORT_MID", "apid": 583},
+	    {"macro": "PX4_UAVCAN_PARAMETER_REQUEST_MID", "apid": 584},
+	    {"macro": "PX4_UAVCAN_PARAMETER_VALUE_MID", "apid": 585},
+	    {"macro": "PX4_VEHICLE_ATTITUDE_MID", "apid": 586},
+	    {"macro": "PX4_VEHICLE_ATTITUDE_SETPOINT_MID", "apid": 587},
+	    {"macro": "PX4_VEHICLE_COMMAND_ACK_MID", "apid": 588},
+	    {"macro": "PX4_VEHICLE_COMMAND_MID", "apid": 589},
+	    {"macro": "PX4_VEHICLE_CONTROL_MODE_MID", "apid": 590},
+	    {"macro": "PX4_VEHICLE_FORCE_SETPOINT_MID", "apid": 591},
+	    {"macro": "PX4_VEHICLE_GLOBAL_POSITION_MID", "apid": 592},
+	    {"macro": "PX4_VEHICLE_GLOBAL_VELOCITY_SETPOINT_MID", "apid": 593},
+	    {"macro": "PX4_VEHICLE_GPS_POSITION_MID", "apid": 594},
+	    {"macro": "PX4_VEHICLE_LAND_DETECTED_MID", "apid": 595},
+	    {"macro": "PX4_VEHICLE_LOCAL_POSITION_MID", "apid": 596},
+	    {"macro": "PX4_VEHICLE_LOCAL_POSITION_SETPOINT_MID", "apid": 597},
+	    {"macro": "PX4_VEHICLE_RATES_SETPOINT_MID", "apid": 598},
+	    {"macro": "PX4_VEHICLE_STATUS_MID", "apid": 599},
+	    {"macro": "PX4_VISION_POSITION_ESTIMATE_MID", "apid": 600},
+	    {"macro": "PX4_VTOL_VEHICLE_STATUS_MID", "apid": 601},
+	    {"macro": "PX4_WIND_ESTIMATE_MID", "apid": 602},
+	    {"macro": "PX4_SENSOR_CORRECTION_MID", "apid": 603},
+	    {"macro": "RCIN_HK_TLM_MID", "apid": 1129},
+	    {"macro": "RCIN_SEND_HK_MID", "apid": 1130},
+	    {"macro": "RCIN_WAKEUP_MID", "apid": 1131},
+	    {"macro": "RCIN_CMD_MID", "apid": 1132},
+	    {"macro": "RGBLED_HK_TLM_MID", "apid": 1100},
+	    {"macro": "RGBLED_SEND_HK_MID", "apid": 1101},
+	    {"macro": "RGBLED_WAKEUP_MID", "apid": 1102},
+	    {"macro": "RGBLED_CMD_MID", "apid": 1103},
+	    {"macro": "SC_CMD_MID", "apid": 480},
+	    {"macro": "SC_SEND_HK_MID", "apid": 481},
+	    {"macro": "SC_1HZ_WAKEUP_MID", "apid": 482},
+	    {"macro": "SC_HK_TLM_MID", "apid": 483},
+	    {"macro": "SCH_CMD_MID", "apid": 484},
+	    {"macro": "SCH_SEND_HK_MID", "apid": 485},
+	    {"macro": "SCH_DIAG_TLM_MID", "apid": 486},
+	    {"macro": "SCH_HK_TLM_MID", "apid": 487},
+	    {"macro": "SENS_HK_TLM_MID", "apid": 1109},
+	    {"macro": "SENS_SEND_HK_MID", "apid": 1110},
+	    {"macro": "SENS_WAKEUP_MID", "apid": 1111},
+	    {"macro": "SENS_CMD_MID", "apid": 1112},
+	    {"macro": "SIM_HK_TLM_MID", "apid": 1149},
+	    {"macro": "SIM_SEND_HK_MID", "apid": 1150},
+	    {"macro": "SIM_WAKEUP_MID", "apid": 1151},
+	    {"macro": "SIM_CMD_MID", "apid": 1152},
+	    {"macro": "TO_CMD_MID", "apid": 256},
+	    {"macro": "TO_SEND_HK_MID", "apid": 257},
+	    {"macro": "TO_HK_TLM_MID", "apid": 258},
+	    {"macro": "TO_SEND_TLM_MID", "apid": 259},
+	    {"macro": "TO_DATA_TYPE_MID", "apid": 260},
+	    {"macro": "TO_DIAG_TLM_MID", "apid": 261},
+	    {"macro": "ULR_CMD_MID", "apid": 1095},
+	    {"macro": "ULR_SEND_HK_MID", "apid": 1096},
+	    {"macro": "ULR_MEASURE_MID", "apid": 1097},
+	    {"macro": "ULR_OUT_DATA_MID", "apid": 1098},
+	    {"macro": "ULR_HK_TLM_MID", "apid": 1099},
+	    {"macro": "VC_HK_TLM_MID", "apid": 1081},
+	    {"macro": "VC_SEND_HK_MID", "apid": 1082},
+	    {"macro": "VC_CMD_MID", "apid": 1083},
+	    {"macro": "VC_WAKEUP_MID", "apid": 1084},
+	    {"macro": "VM_HK_TLM_MID", "apid": 1133},
+	    {"macro": "VM_SEND_HK_MID", "apid": 1134},
+	    {"macro": "VM_WAKEUP_MID", "apid": 1135},
+	    {"macro": "VM_CMD_MID", "apid": 1136}
 	]
 }

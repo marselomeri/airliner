@@ -336,6 +336,9 @@ block main
             input.form-control(type='text')
           .widget-body
             #CPU_Util.chart(style={height:'425px', width:'100%'}) 
+                                        
+  .row
+    +app_specific_telemetry_control("HS")
                                               
   .row          
     +app_specific_mempools("HS")

@@ -106,6 +106,9 @@ block main
                     th Pressure
                     td
                       span(data-sage={tlm:{name:'/CFS/MS5611/Pressure'}}) ---
+                                        
+  .row
+    +app_specific_telemetry_control("MS5611")
                                               
   .row          
     +app_specific_mempools("MS5611")

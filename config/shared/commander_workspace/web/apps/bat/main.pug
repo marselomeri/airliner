@@ -192,6 +192,9 @@ block main
                       th Warning
                       td
                         span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Warning'}]}) ---
+                                        
+  .row
+    +app_specific_telemetry_control("BAT")
                                               
   .row          
     +app_specific_mempools("BAT")

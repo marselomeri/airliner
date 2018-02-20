@@ -218,7 +218,10 @@ block main
                         span(data-sage={tlm:[{name:Depth}]}) ---
                       td
                         span(data-sage={tlm:[{name:InUse}]}) ---
-                  - }
+                  - }  
+                                        
+  .row
+    +app_specific_telemetry_control("CFE_SB")
                                     
   .row          
     +app_specific_mempools("CFE_SB")
