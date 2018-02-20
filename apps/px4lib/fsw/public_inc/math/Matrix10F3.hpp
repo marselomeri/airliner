@@ -35,14 +35,10 @@ public:
 	Vector3F operator [] (uint32 i) const;
 	Matrix10F3();
 	Matrix3F10 Transpose(void);
-	static Matrix10F3 Identity(void);
 	Vector10F operator*(const Vector3F &vecIn);
-	Matrix10F3 operator*(const Matrix10F3 &matIn);
 	Matrix10F3 operator*(const Matrix3F3 &matIn);
     Matrix10F10 operator*(const Matrix3F10 &matIn);
-	Matrix10F3 operator*(const float &scalar);
 	void Zero(void);
-    Matrix10F3 operator+(const Matrix10F3 &matIn) const;
 
 protected:
 

@@ -187,23 +187,6 @@ Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 }
 
 
-Vector10F Matrix10F10::operator+(const Vector10F &vecIn)
-{
-    Vector10F vecOut;
-
-    // TODO: verify correct
-    for(int i = 0; i < SIZE; i++)
-    {
-    	for(int j = 0; j < SIZE; j++)
-		{
-    		vecOut[i] += data[i][j]+vecIn[j];
-		}
-    }
-
-    return vecOut;
-}
-
-
 void Matrix10F10::operator+=(const Matrix10F10 &mat)
 {
     // TODO: verify correct

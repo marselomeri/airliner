@@ -42,7 +42,6 @@ public:
     Matrix10F6 operator*(const Matrix10F6 &matIn);
 	Matrix10F10 operator*(const Matrix10F10 &matIn);
 	Matrix10F10 operator*(const float &scalar);
-	Vector10F operator+(const Vector10F &vecIn);
 	void operator+=(const Matrix10F10 &mat);
     void operator-=(const Matrix10F10 &matIn);
 
