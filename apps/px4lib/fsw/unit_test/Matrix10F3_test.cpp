@@ -236,16 +236,16 @@ void Test_Matrix10F3_Mult_3F10(void)
     /* Verify results */
     for(int i = 0; i < 10; ++i)
     {
-        UtAssert_True(result[i][0] == 55.0f,  "result[i][0] == 55.0f");
-        UtAssert_True(result[i][1] == 110.0f, "result[i][1] == 110.0f");
-        UtAssert_True(result[i][2] == 165.0f, "result[i][2] == 165.0f");
-        UtAssert_True(result[i][3] == 220.0f, "result[i][3] == 220.0f");
-        UtAssert_True(result[i][4] == 275.0f, "result[i][4] == 275.0f");
-        UtAssert_True(result[i][5] == 330.0f, "result[i][5] == 330.0f");
-        UtAssert_True(result[i][6] == 385.0f, "result[i][6] == 385.0f");
-        UtAssert_True(result[i][7] == 440.0f, "result[i][7] == 440.0f");
-        UtAssert_True(result[i][8] == 495.0f, "result[i][8] == 495.0f");
-        UtAssert_True(result[i][9] == 550.0f, "result[i][9] == 550.0f");
+        UtAssert_True(result[i][0] == 6.0f,  "result[i][0] == 6.0f");
+        UtAssert_True(result[i][1] == 12.0f, "result[i][1] == 12.0f");
+        UtAssert_True(result[i][2] == 18.0f, "result[i][2] == 18.0f");
+        UtAssert_True(result[i][3] == 24.0f, "result[i][3] == 24.0f");
+        UtAssert_True(result[i][4] == 30.0f, "result[i][4] == 30.0f");
+        UtAssert_True(result[i][5] == 36.0f, "result[i][5] == 36.0f");
+        UtAssert_True(result[i][6] == 42.0f, "result[i][6] == 42.0f");
+        UtAssert_True(result[i][7] == 48.0f, "result[i][7] == 48.0f");
+        UtAssert_True(result[i][8] == 54.0f, "result[i][8] == 54.0f");
+        UtAssert_True(result[i][9] == 60.0f, "result[i][9] == 60.0f");
     }
 }
 

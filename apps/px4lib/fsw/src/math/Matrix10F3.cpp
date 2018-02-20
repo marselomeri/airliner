@@ -114,7 +114,6 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
 {
     Matrix10F10 matOut;
     matOut.Zero();
-    //matOut.Print();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
@@ -137,7 +136,7 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
 Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
 {
     Vector10F vecOut;
-    float value = 0.0f;
+    vecOut.Zero();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
