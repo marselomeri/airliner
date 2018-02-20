@@ -66,7 +66,12 @@ int main(void)
 	         "Test_Vector10F_Constrain");
 	UtTest_Add(Test_Vector10F_PlusEquals, Vector10F_Test_Setup, Vector10F_Test_TearDown,
 	         "Test_Vector10F_PlusEquals");
-
+	UtTest_Add(Test_Vector10F_Normalized, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_Normalized");
+	UtTest_Add(Test_Vector10F_Normalize, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_Normalize");
+	UtTest_Add(Test_Vector10F_Negate, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_Negate");
 
     return(UtTest_Run());
 
