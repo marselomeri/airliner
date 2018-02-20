@@ -31,29 +31,18 @@
 *
 *****************************************************************************/
 
-#include "uttest.h"
+#include "Matrix3F10_test_utils.hpp"
 
-#include "Matrix10F3_test.hpp"
-#include "Matrix10F3_test_utils.hpp"
+/*
+ * Function Definitions
+ */
 
-int main(void)
-{   
-	UtTest_Add(Test_Matrix10F3_Constructor, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_Constructor");
-	UtTest_Add(Test_Matrix10F3_OutOfBounds, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_OutOfBounds");
-	UtTest_Add(Test_Matrix10F3_Identity, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_Identity");
-	UtTest_Add(Test_Matrix10F3_Zero, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_Zero");
-	UtTest_Add(Test_Matrix10F3_Mult_3F, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_Mult_3F");
-	UtTest_Add(Test_Matrix10F3_Mult_3F10, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_Mult_3F10");
-	UtTest_Add(Test_Matrix10F3_Mult_3F3, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
-	         "Test_Matrix10F3_Mult_3F3");
-
-    return(UtTest_Run());
+void Matrix3F10_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
 }
 
+void Matrix3F10_Test_TearDown(void)
+{
+}

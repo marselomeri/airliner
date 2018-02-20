@@ -192,6 +192,8 @@ void Test_Matrix10F3_Mult_3F(void)
     math::Vector10F result;
     result.Zero();
 
+    result = matrixA * vectorB;
+
     UtAssert_True(result[0] == 14.0, "result[0] == 14.0");
     UtAssert_True(result[1] == 14.0, "result[1] == 14.0");
     UtAssert_True(result[2] == 14.0, "result[2] == 14.0");

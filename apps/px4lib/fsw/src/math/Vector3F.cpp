@@ -102,17 +102,6 @@ Vector3F Vector3F::operator-(const Vector3F &vecIn)
     return vecOut;
 }
 
-// TODO TODO TODO XXX: This needs serious peer review
-// overload - operator to provide a vector subtraction
-Vector3F Vector3F::operator-(const Vector10F &vecIn)
-{
-    Vector3F vecOut;
-    vecOut[0] = data[0] - vecIn[0];
-    vecOut[1] = data[1] - vecIn[1];
-    vecOut[2] = data[2] - vecIn[2];
-    return vecOut;
-}
-
 
 // overload - operator to provide a vector subtraction
 Vector3F Vector3F::operator-(const Vector3F &vecIn) const

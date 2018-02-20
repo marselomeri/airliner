@@ -28,7 +28,6 @@ public:
 	Vector3F operator+(const Vector3F &vecIn);
 	Vector3F operator+(const Vector3F &vecIn) const;
 	Vector3F operator-(const Vector3F &vecIn);
-	Vector3F operator-(const Vector10F &vecIn);
 	Vector3F operator-(const Vector3F &vecIn) const;
 	Vector3F operator%(const Vector3F &vecIn);
 	Vector3F operator*(const float scalar);
