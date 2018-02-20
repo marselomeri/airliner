@@ -43,6 +43,9 @@ void Test_Matrix6F6_IndexOutOfBounds(void);
 void Test_Matrix6F6_ArrayOperator(void);
 void Test_Matrix6F6_Determinant(void);
 void Test_Matrix6F6_Inverse(void);
+void Test_Matrix6F6_Mult_6F(void);
+void Test_Matrix6F6_Addition(void);
+void Test_Matrix6F6_Zero(void);
 
 
 #ifdef __cplusplus

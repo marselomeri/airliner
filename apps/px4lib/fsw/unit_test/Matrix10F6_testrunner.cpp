@@ -42,6 +42,14 @@ int main(void)
 	         "Test_Matrix10F6_Constructor");
 	UtTest_Add(Test_Matrix10F6_OutOfBounds, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
 	         "Test_Matrix10F6_OutOfBounds");
+	UtTest_Add(Test_Matrix10F6_Mult_6F6, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
+	         "Test_Matrix10F6_Mult_6F6");
+	UtTest_Add(Test_Matrix10F6_Mult_6F, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
+	         "Test_Matrix10F6_Mult_6F");
+	UtTest_Add(Test_Matrix10F6_Mult_6F10, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
+	         "Test_Matrix10F6_Mult_6F10");
+	UtTest_Add(Test_Matrix10F6_Zero, Matrix10F6_Test_Setup, Matrix10F6_Test_TearDown,
+	         "Test_Matrix10F6_Zero");
 
     return(UtTest_Run());
 

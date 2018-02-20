@@ -453,3 +453,89 @@ void Test_Vector10F_PlusEquals(void)
 	UtAssert_True(vectorExpected[8] == vectorActual[8], "[8] vectorExpected == vectorActual");
 	UtAssert_True(vectorExpected[9] == vectorActual[9], "[9] vectorExpected == vectorActual");
 }
+
+
+void Test_Vector10F_Normalize(void)
+{
+    float temp = 0;
+	math::Vector10F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f);
+	math::Vector10F vectorAExpected;
+
+    vectorA.Normalize();
+    
+    temp = sqrtf((1.5 * 1.5) + (2.5 * 2.5) + (3.5 * 3.5) + (4.5 * 4.5) + (5.5 * 5.5) + (6.5 * 6.5) + (7.5 * 7.5) + (8.5 * 8.5) + (9.5 * 9.5) + (10.5 * 10.5));
+    
+    vectorAExpected[0] = 1.5f / temp;
+    vectorAExpected[1] = 2.5f / temp;
+    vectorAExpected[2] = 3.5f / temp;
+    vectorAExpected[3] = 4.5f / temp;
+    vectorAExpected[4] = 5.5f / temp;
+    vectorAExpected[5] = 6.5f / temp;
+    vectorAExpected[6] = 7.5f / temp;
+    vectorAExpected[7] = 8.5f / temp;
+    vectorAExpected[8] = 9.5f / temp;
+    vectorAExpected[9] = 10.5f / temp;
+
+	UtAssert_True(fabs(vectorA[0] - vectorAExpected[0]) <= 0.00001, "[0] vectorAExpected == vectorA.Constrain(0, min, max)");
+	UtAssert_True(fabs(vectorA[1] - vectorAExpected[1]) <= 0.00001, "[1] vectorAExpected == vectorA.Constrain(1, min, max)");
+	UtAssert_True(fabs(vectorA[2] - vectorAExpected[2]) <= 0.00001, "[2] vectorAExpected == vectorA.Constrain(2, min, max)");
+	UtAssert_True(fabs(vectorA[3] - vectorAExpected[3]) <= 0.00001, "[3] vectorAExpected == vectorA.Constrain(0, min, max)");
+	UtAssert_True(fabs(vectorA[4] - vectorAExpected[4]) <= 0.00001, "[4] vectorAExpected == vectorA.Constrain(1, min, max)");
+	UtAssert_True(fabs(vectorA[5] - vectorAExpected[5]) <= 0.00001, "[5] vectorAExpected == vectorA.Constrain(2, min, max)");
+	UtAssert_True(fabs(vectorA[6] - vectorAExpected[6]) <= 0.00001, "[6] vectorAExpected == vectorA.Constrain(2, min, max)");
+	UtAssert_True(fabs(vectorA[7] - vectorAExpected[7]) <= 0.00001, "[7] vectorAExpected == vectorA.Constrain(0, min, max)");
+	UtAssert_True(fabs(vectorA[8] - vectorAExpected[8]) <= 0.00001, "[8] vectorAExpected == vectorA.Constrain(1, min, max)");
+	UtAssert_True(fabs(vectorA[9] - vectorAExpected[9]) <= 0.00001, "[9] vectorAExpected == vectorA.Constrain(2, min, max)");
+}
+
+
+void Test_Vector10F_Normalized(void)
+{
+    float temp = 0;
+	math::Vector10F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f);
+	math::Vector10F vectorAExpected;
+
+    vectorA = vectorA.Normalized();
+    
+    temp = sqrtf((1.5 * 1.5) + (2.5 * 2.5) + (3.5 * 3.5) + (4.5 * 4.5) + (5.5 * 5.5) + (6.5 * 6.5) + (7.5 * 7.5) + (8.5 * 8.5) + (9.5 * 9.5) + (10.5 * 10.5));
+    
+    vectorAExpected[0] = 1.5f / temp;
+    vectorAExpected[1] = 2.5f / temp;
+    vectorAExpected[2] = 3.5f / temp;
+    vectorAExpected[3] = 4.5f / temp;
+    vectorAExpected[4] = 5.5f / temp;
+    vectorAExpected[5] = 6.5f / temp;
+    vectorAExpected[6] = 7.5f / temp;
+    vectorAExpected[7] = 8.5f / temp;
+    vectorAExpected[8] = 9.5f / temp;
+    vectorAExpected[9] = 10.5f / temp;
+
+	UtAssert_True(fabs(vectorA[0] - vectorAExpected[0]) <= 0.00001, "[0] vectorAExpected == vectorA.Constrain(0, min, max)");
+	UtAssert_True(fabs(vectorA[1] - vectorAExpected[1]) <= 0.00001, "[1] vectorAExpected == vectorA.Constrain(1, min, max)");
+	UtAssert_True(fabs(vectorA[2] - vectorAExpected[2]) <= 0.00001, "[2] vectorAExpected == vectorA.Constrain(2, min, max)");
+	UtAssert_True(fabs(vectorA[3] - vectorAExpected[3]) <= 0.00001, "[3] vectorAExpected == vectorA.Constrain(0, min, max)");
+	UtAssert_True(fabs(vectorA[4] - vectorAExpected[4]) <= 0.00001, "[4] vectorAExpected == vectorA.Constrain(1, min, max)");
+	UtAssert_True(fabs(vectorA[5] - vectorAExpected[5]) <= 0.00001, "[5] vectorAExpected == vectorA.Constrain(2, min, max)");
+	UtAssert_True(fabs(vectorA[6] - vectorAExpected[6]) <= 0.00001, "[6] vectorAExpected == vectorA.Constrain(2, min, max)");
+	UtAssert_True(fabs(vectorA[7] - vectorAExpected[7]) <= 0.00001, "[7] vectorAExpected == vectorA.Constrain(0, min, max)");
+	UtAssert_True(fabs(vectorA[8] - vectorAExpected[8]) <= 0.00001, "[8] vectorAExpected == vectorA.Constrain(1, min, max)");
+	UtAssert_True(fabs(vectorA[9] - vectorAExpected[9]) <= 0.00001, "[9] vectorAExpected == vectorA.Constrain(2, min, max)");
+}
+
+
+void Test_Vector10F_Negate(void)
+{
+	math::Vector10F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f);
+	vectorA = -vectorA;
+    
+	UtAssert_True(vectorA[0] == -1.5f, "vectorA[0] == -1.5f");
+	UtAssert_True(vectorA[1] == -2.5f, "vectorA[1] == -2.5f");
+	UtAssert_True(vectorA[2] == -3.5f, "vectorA[2] == -3.5f");
+	UtAssert_True(vectorA[3] == -4.5f, "vectorA[3] == -4.5f");
+	UtAssert_True(vectorA[4] == -5.5f, "vectorA[4] == -5.5f");
+	UtAssert_True(vectorA[5] == -6.5f, "vectorA[5] == -6.5f");
+	UtAssert_True(vectorA[6] == -7.5f, "vectorA[6] == -7.5f");
+	UtAssert_True(vectorA[7] == -8.5f, "vectorA[7] == -8.5f");
+	UtAssert_True(vectorA[8] == -9.5f, "vectorA[8] == -9.5f");
+	UtAssert_True(vectorA[9] == -10.5f, "vectorA[8] == -10.5f");
+}

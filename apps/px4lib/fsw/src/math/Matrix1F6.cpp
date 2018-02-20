@@ -73,7 +73,7 @@ Matrix1F1 Matrix1F6::operator*(const Matrix6F1 &matIn)
 
     for(k = 0; k < cols1; k++)
     {
-        matOut[0][0] = data[0][k] * matIn[k][0];
+        matOut[0][0] += data[0][k] * matIn[k][0];
     }
 
     return matOut;

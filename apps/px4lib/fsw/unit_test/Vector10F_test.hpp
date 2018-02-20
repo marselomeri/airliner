@@ -52,7 +52,9 @@ void Test_Vector10F_EMult(void);
 void Test_Vector10F_EDivide(void);
 void Test_Vector10F_Constrain(void);
 void Test_Vector10F_PlusEquals(void);
-
+void Test_Vector10F_Normalized(void);
+void Test_Vector10F_Normalize(void);
+void Test_Vector10F_Negate(void);
 
 #ifdef __cplusplus
 }

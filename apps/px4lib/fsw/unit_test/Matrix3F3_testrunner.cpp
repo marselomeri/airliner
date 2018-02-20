@@ -56,12 +56,12 @@ int main(void)
 		     "Test_Matrix3F3_ScalarMultiply");
 	UtTest_Add(Test_Matrix3F3_MatrixAddition, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
 		     "Test_Matrix3F3_MatrixAddition");
-	UtTest_Add(Test_Matrix3F3_MatrixSubtraction, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
-		     "Test_Matrix3F3_MatrixSubtraction");
 	UtTest_Add(Test_Matrix3F3_FromEuler, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
 		     "Test_Matrix3F3_FromEuler");
 	UtTest_Add(Test_Matrix3F3_RotationMatrix, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
 		     "Test_Matrix3F3_RotationMatrix");
+	UtTest_Add(Test_Matrix3F3_Zero, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+		     "Test_Matrix3F3_Zero");
 
     return(UtTest_Run());
 

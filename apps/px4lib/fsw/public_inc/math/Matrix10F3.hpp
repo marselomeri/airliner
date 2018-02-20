@@ -39,6 +39,8 @@ public:
 	Matrix10F3 operator*(const Matrix3F3 &matIn);
     Matrix10F10 operator*(const Matrix3F10 &matIn);
 	void Zero(void);
+	Matrix10F3 operator*(const float &scalar);
+    Matrix10F3 operator+(const Matrix10F3 &matIn) const;
 
 protected:
 

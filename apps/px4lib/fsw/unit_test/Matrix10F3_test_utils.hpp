@@ -54,5 +54,4 @@ void Matrix10F3_Test_TearDown(void);
 }
 #endif
 
-#endif /* Matrix10F3_TEST_UTILS_H */
-
+#endif /* MATRIX10F3_TEST_UTILS_H */

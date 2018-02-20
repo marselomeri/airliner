@@ -150,3 +150,37 @@ Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
     return vecOut;
 }
 
+
+Matrix10F3 Matrix10F3::operator*(const float &scalar)
+{
+    Matrix10F3 matOut;
+
+    // TODO: verify correct
+    for(int i = 0; i < ROWS; i++)
+    {
+    	for(int j = 0; j < COLS; j++)
+		{
+    		matOut[i][j] = scalar*data[i][j];
+		}
+    }
+
+    return matOut;
+}
+
+
+Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
+{
+    Matrix10F3 matOut;
+
+    // TODO: verify correct
+	for(int i = 0; i < ROWS; i++)
+	{
+		for(int j = 0; j < COLS; j++)
+		{
+			matOut[i][j] = data[i][j] + matIn[i][j];
+		}
+	}
+
+    return matOut;
+}
+

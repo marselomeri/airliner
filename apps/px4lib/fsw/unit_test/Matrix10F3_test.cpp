@@ -106,7 +106,7 @@ void Test_Matrix10F3_OutOfBounds(void)
     );
 
     /* Verify results */
-    UtAssert_True(!isfinite(matrix[0][4]), "matrix[0][6] == NAN");
+    UtAssert_True(!isfinite(matrix[0][3]), "matrix[0][6] == NAN");
     UtAssert_True(!isfinite(matrix[10][0]), "matrix[10][0] == NAN");
 }
 
@@ -286,3 +286,175 @@ void Test_Matrix10F3_Mult_3F3(void)
 }
 
 
+void Test_Matrix10F3_Mult_Scaler(void)
+{
+    math::Matrix10F3 matrixA(
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f}
+    );
+    
+    math::Matrix10F3 result;
+    result = matrixA * 2.0f;
+
+    /* Verify results */
+    UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
+    UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
+    UtAssert_True(result[2][0] == 2.0f, "result[2][0] == 2.0f");
+    UtAssert_True(result[3][0] == 2.0f, "result[3][0] == 2.0f");
+    UtAssert_True(result[4][0] == 2.0f, "result[4][0] == 2.0f");
+    UtAssert_True(result[5][0] == 2.0f, "result[5][0] == 2.0f");
+    UtAssert_True(result[6][0] == 2.0f, "result[6][0] == 2.0f");
+    UtAssert_True(result[7][0] == 2.0f, "result[7][0] == 2.0f");
+    UtAssert_True(result[8][0] == 2.0f, "result[8][0] == 2.0f");
+    UtAssert_True(result[9][0] == 2.0f, "result[9][0] == 2.0f");
+
+    UtAssert_True(result[0][1] == 4.0f, "result[0][1] == 4.0f");
+    UtAssert_True(result[1][1] == 4.0f, "result[1][1] == 4.0f");
+    UtAssert_True(result[2][1] == 4.0f, "result[2][1] == 4.0f");
+    UtAssert_True(result[3][1] == 4.0f, "result[3][1] == 4.0f");
+    UtAssert_True(result[4][1] == 4.0f, "result[4][1] == 4.0f");
+    UtAssert_True(result[5][1] == 4.0f, "result[5][1] == 4.0f");
+    UtAssert_True(result[6][1] == 4.0f, "result[6][1] == 4.0f");
+    UtAssert_True(result[7][1] == 4.0f, "result[7][1] == 4.0f");
+    UtAssert_True(result[8][1] == 4.0f, "result[8][1] == 4.0f");
+    UtAssert_True(result[9][1] == 4.0f, "result[9][1] == 4.0f");
+
+    UtAssert_True(result[0][2] == 6.0f, "result[0][2] == 6.0f");
+    UtAssert_True(result[1][2] == 6.0f, "result[1][2] == 6.0f");
+    UtAssert_True(result[2][2] == 6.0f, "result[2][2] == 6.0f");
+    UtAssert_True(result[3][2] == 6.0f, "result[3][2] == 6.0f");
+    UtAssert_True(result[4][2] == 6.0f, "result[4][2] == 6.0f");
+    UtAssert_True(result[5][2] == 6.0f, "result[5][2] == 6.0f");
+    UtAssert_True(result[6][2] == 6.0f, "result[6][2] == 6.0f");
+    UtAssert_True(result[7][2] == 6.0f, "result[7][2] == 6.0f");
+    UtAssert_True(result[8][2] == 6.0f, "result[8][2] == 6.0f");
+    UtAssert_True(result[9][2] == 6.0f, "result[9][2] == 6.0f");
+}
+
+
+void Test_Matrix10F3_Transpose(void)
+{
+    math::Matrix10F3 matrix(
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f}
+    );
+
+    math::Matrix3F10 result = matrix.Transpose();
+
+    /* Verify results */
+    UtAssert_True(result[0][0] == 1.0f, "result[0][0] == 1.0f");
+    UtAssert_True(result[0][1] == 1.0f, "result[0][1] == 1.0f");
+    UtAssert_True(result[0][2] == 1.0f, "result[0][2] == 1.0f");
+    UtAssert_True(result[0][3] == 1.0f, "result[0][3] == 1.0f");
+    UtAssert_True(result[0][4] == 1.0f, "result[0][4] == 1.0f");
+    UtAssert_True(result[0][5] == 1.0f, "result[0][5] == 1.0f");
+    UtAssert_True(result[0][6] == 1.0f, "result[0][6] == 1.0f");
+    UtAssert_True(result[0][7] == 1.0f, "result[0][7] == 1.0f");
+    UtAssert_True(result[0][8] == 1.0f, "result[0][8] == 1.0f");
+    UtAssert_True(result[0][9] == 1.0f, "result[0][9] == 1.0f");
+
+    UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
+    UtAssert_True(result[1][1] == 2.0f, "result[1][1] == 2.0f");
+    UtAssert_True(result[1][2] == 2.0f, "result[1][2] == 2.0f");
+    UtAssert_True(result[1][3] == 2.0f, "result[1][3] == 2.0f");
+    UtAssert_True(result[1][4] == 2.0f, "result[1][4] == 2.0f");
+    UtAssert_True(result[1][5] == 2.0f, "result[1][5] == 2.0f");
+    UtAssert_True(result[1][6] == 2.0f, "result[1][6] == 2.0f");
+    UtAssert_True(result[1][7] == 2.0f, "result[1][7] == 2.0f");
+    UtAssert_True(result[1][8] == 2.0f, "result[1][8] == 2.0f");
+    UtAssert_True(result[1][9] == 2.0f, "result[1][9] == 2.0f");
+
+    UtAssert_True(result[2][0] == 3.0f, "result[2][0] == 3.0f");
+    UtAssert_True(result[2][1] == 3.0f, "result[2][1] == 3.0f");
+    UtAssert_True(result[2][2] == 3.0f, "result[2][2] == 3.0f");
+    UtAssert_True(result[2][3] == 3.0f, "result[2][3] == 3.0f");
+    UtAssert_True(result[2][4] == 3.0f, "result[2][4] == 3.0f");
+    UtAssert_True(result[2][5] == 3.0f, "result[2][5] == 3.0f");
+    UtAssert_True(result[2][6] == 3.0f, "result[2][6] == 3.0f");
+    UtAssert_True(result[2][7] == 3.0f, "result[2][7] == 3.0f");
+    UtAssert_True(result[2][8] == 3.0f, "result[2][8] == 3.0f");
+    UtAssert_True(result[2][9] == 3.0f, "result[2][9] == 3.0f");
+
+}
+
+
+void Test_Matrix10F3_Addition(void)
+{
+    math::Matrix10F3 matrixA(
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f}
+    );
+
+    math::Matrix10F3 matrixB(
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f},
+            {1.0f, 2.0f, 3.0f}
+    );
+    math::Matrix10F3 result = matrixA + matrixB;
+
+    /* Verify results */
+    UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
+    UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
+    UtAssert_True(result[2][0] == 2.0f, "result[2][0] == 2.0f");
+    UtAssert_True(result[3][0] == 2.0f, "result[3][0] == 2.0f");
+    UtAssert_True(result[4][0] == 2.0f, "result[4][0] == 2.0f");
+    UtAssert_True(result[5][0] == 2.0f, "result[5][0] == 2.0f");
+    UtAssert_True(result[6][0] == 2.0f, "result[6][0] == 2.0f");
+    UtAssert_True(result[7][0] == 2.0f, "result[7][0] == 2.0f");
+    UtAssert_True(result[8][0] == 2.0f, "result[8][0] == 2.0f");
+    UtAssert_True(result[9][0] == 2.0f, "result[9][0] == 2.0f");
+    
+    UtAssert_True(result[0][1] == 4.0f, "result[0][1] == 4.0f");
+    UtAssert_True(result[1][1] == 4.0f, "result[1][1] == 4.0f");
+    UtAssert_True(result[2][1] == 4.0f, "result[2][1] == 4.0f");
+    UtAssert_True(result[3][1] == 4.0f, "result[3][1] == 4.0f");
+    UtAssert_True(result[4][1] == 4.0f, "result[4][1] == 4.0f");
+    UtAssert_True(result[5][1] == 4.0f, "result[5][1] == 4.0f");
+    UtAssert_True(result[6][1] == 4.0f, "result[6][1] == 4.0f");
+    UtAssert_True(result[7][1] == 4.0f, "result[7][1] == 4.0f");
+    UtAssert_True(result[8][1] == 4.0f, "result[8][1] == 4.0f");
+    UtAssert_True(result[9][1] == 4.0f, "result[9][1] == 4.0f");
+
+    UtAssert_True(result[0][2] == 6.0f, "result[0][2] == 6.0f");
+    UtAssert_True(result[1][2] == 6.0f, "result[1][2] == 6.0f");
+    UtAssert_True(result[2][2] == 6.0f, "result[2][2] == 6.0f");
+    UtAssert_True(result[3][2] == 6.0f, "result[3][2] == 6.0f");
+    UtAssert_True(result[4][2] == 6.0f, "result[4][2] == 6.0f");
+    UtAssert_True(result[5][2] == 6.0f, "result[5][2] == 6.0f");
+    UtAssert_True(result[6][2] == 6.0f, "result[6][2] == 6.0f");
+    UtAssert_True(result[7][2] == 6.0f, "result[7][2] == 6.0f");
+    UtAssert_True(result[8][2] == 6.0f, "result[8][2] == 6.0f");
+    UtAssert_True(result[9][2] == 6.0f, "result[9][2] == 6.0f");
+
+}

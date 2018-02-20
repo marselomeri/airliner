@@ -45,10 +45,12 @@ void Test_Matrix10F3_Zero(void);
 void Test_Matrix10F3_Mult_3F(void);
 void Test_Matrix10F3_Mult_3F10(void);
 void Test_Matrix10F3_Mult_3F3(void);
-
+void Test_Matrix10F3_Mult_Scaler(void);
+void Test_Matrix10F3_Transpose(void);
+void Test_Matrix10F3_Addition(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* Matrix10F3_TEST_H */
+#endif /* MATRIX10F3_TEST_H */
