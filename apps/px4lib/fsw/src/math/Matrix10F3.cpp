@@ -76,23 +76,6 @@ Matrix3F10 Matrix10F3::Transpose(void)
 }
 
 
-Matrix10F3 Matrix10F3::Identity() {
-    Matrix10F3 matOut(
-    		{1.0f, 0.0f, 0.0f},
-    		{0.0f, 1.0f, 0.0f},
-    		{0.0f, 0.0f, 1.0f},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0},
-			{0.0, 0.0, 0.0});
-
-    return matOut;
-}
-
-
 void Matrix10F3::Zero(void)
 {
 	for(int i = 0; i < ROWS; i++)
@@ -104,31 +87,6 @@ void Matrix10F3::Zero(void)
 	}
 }
 
-
-// overload * operator to provide a matrix product
-Matrix10F3 Matrix10F3::operator*(const Matrix10F3 &matIn)
-{
-    Matrix10F3 matOut;
-    float value = 0.0f;
-
-    // TODO: verify correct
-    for(int i = 0; i < ROWS; i++)
-    {
-    	for(int j = 0; j < COLS; j++)
-		{
-
-    		for(int k = 0; k < ROWS; k++)
-			{
-    			value += data[i][j] * matIn[j][k];
-			}
-
-    		matOut[i][j] = value;
-    		value = 0.0f;
-		}
-    }
-
-    return matOut;
-}
 
 // overload * operator to provide a matrix product
 Matrix10F3 Matrix10F3::operator*(const Matrix3F3 &matIn)
@@ -188,10 +146,9 @@ Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
     	for(int j = 0; j < COLS; j++)
 		{
     		value += data[i][j]*vecIn[j];
-
-    		vecOut[i] = value;
-    		value = 0.0f;
 		}
+            vecOut[i] = value;
+    		value = 0.0f;
     }
 
     return vecOut;
@@ -207,7 +164,7 @@ Matrix10F3 Matrix10F3::operator*(const float &scalar)
     {
     	for(int j = 0; j < COLS; j++)
 		{
-    		matOut[j][i] = scalar*data[j][i];
+    		matOut[i][j] = scalar*data[i][j];
 		}
     }
 
@@ -224,7 +181,7 @@ Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
 	{
 		for(int j = 0; j < COLS; j++)
 		{
-			matOut[j][i] = data[j][i] + matIn[j][i];
+			matOut[i][j] = data[i][j] + matIn[i][j];
 		}
 	}
 

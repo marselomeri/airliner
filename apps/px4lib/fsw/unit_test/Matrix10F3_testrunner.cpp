@@ -31,23 +31,34 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX10F6_TEST_H
-#define MATRIX10F6_TEST_H
+#include "uttest.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Matrix10F3_test.hpp"
+#include "Matrix10F3_test_utils.hpp"
 
-void Test_Matrix10F6_Constructor(void);
-void Test_Matrix10F6_OutOfBounds(void);
-void Test_Matrix10F6_Mult_6F6(void);
-void Test_Matrix10F6_Mult_6F(void);
-void Test_Matrix10F6_Mult_6F10(void);
-void Test_Matrix10F6_Zero(void);
+int main(void)
+{   
+	UtTest_Add(Test_Matrix10F3_Constructor, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Constructor");
+	UtTest_Add(Test_Matrix10F3_OutOfBounds, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_OutOfBounds");
+	UtTest_Add(Test_Matrix10F3_Mult_3F, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Mult_3F");
+	UtTest_Add(Test_Matrix10F3_Mult_3F3, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Mult_3F3");
+	UtTest_Add(Test_Matrix10F3_Mult_3F10, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Mult_3F10");
+	UtTest_Add(Test_Matrix10F3_Mult_Scaler, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Mult_Scaler");
+	UtTest_Add(Test_Matrix10F3_Zero, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Zero");
+	UtTest_Add(Test_Matrix10F3_Transpose, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Transpose");
+	UtTest_Add(Test_Matrix10F3_Addition, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Addition");
 
 
-#ifdef __cplusplus
+    return(UtTest_Run());
+
 }
-#endif
 
-#endif /* MATRIX10F6_TEST_H */
