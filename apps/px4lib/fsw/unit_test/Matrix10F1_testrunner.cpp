@@ -49,8 +49,6 @@ int main(void)
 	UtTest_Add(Test_Matrix10F1_Mult_1F10, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
 	         "Test_Matrix10F1_Mult_1F10");
 
-
-
     return(UtTest_Run());
 
 }

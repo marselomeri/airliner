@@ -44,6 +44,7 @@ void Test_Matrix10F10_Mult_10F1(void);
 void Test_Matrix10F10_Mult_10F3(void);
 void Test_Matrix10F10_Mult_10F6(void);
 void Test_Matrix10F10_Mult_10F10(void);
+void Test_Matrix10F10_Mult_Scaler(void);
 void Test_Matrix10F10_Addition(void);
 void Test_Matrix10F10_Subtraction(void);
 void Test_Matrix10F10_Zero(void);
