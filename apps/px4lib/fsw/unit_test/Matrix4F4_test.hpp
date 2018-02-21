@@ -44,7 +44,6 @@ void Test_Matrix4F4_ArrayOperator(void);
 void Test_Matrix4F4_MultiplicationByVector(void);
 void Test_Matrix4F4_NegateOperator(void);
 
-
 #ifdef __cplusplus
 }
 #endif

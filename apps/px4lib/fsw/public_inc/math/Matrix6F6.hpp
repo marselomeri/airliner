@@ -16,7 +16,6 @@ private:
 	Vector6F nan[SIZE];
     void getCofactor(const Matrix6F6 &mat, Matrix6F6 &temp, int p, int q, int n);
     float DeterminantRecursive(const Matrix6F6 &mat, int n);
-    
 
 public:
 	Matrix6F6(Vector6F m0, Vector6F m1, Vector6F m2, Vector6F m3,

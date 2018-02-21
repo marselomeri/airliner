@@ -154,6 +154,31 @@ void Test_Matrix6F6_Determinant(void)
 }
 
 
+void Test_Matrix6F6_Mult_6F(void)
+{
+    int i = 0;
+	math::Matrix6F6 matrix(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+    
+    math::Vector6F vector({1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
+
+    math::Matrix6F1 result;
+
+    result = matrix * vector;
+
+    for(i=0; i<6; i++)
+    {
+        UtAssert_True(result[i][0] == 91.0f, "result[i][0] == 91.0f");
+    }
+}
+
+
 void Test_Matrix6F6_Inverse(void)
 {
 	math::Matrix6F6 matrixA(
@@ -209,6 +234,104 @@ void Test_Matrix6F6_Inverse(void)
 	UtAssert_True(fabs(matrix[5][3] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][3] == - 1 / 7");
 	UtAssert_True(fabs(matrix[5][4] - (- 1.0f / 7.0f)) < 0.00001f, "matrix[5][4] == - 1 / 7");
 	UtAssert_True(fabs(matrix[5][5] - (6.0f / 7.0f)) < 0.00001f, "matrix[5][5] == 6 / 7");
+}
+
+
+void Test_Matrix6F6_Addition(void)
+{
+	math::Matrix6F6 matrixA(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+
+	math::Matrix6F6 matrixB(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+    
+    math::Matrix6F6 result;
+
+    result = matrixA + matrixB;
+
+	/* Verify results */
+	UtAssert_True(result[0][0] == 2.0f, "result[0][0] == 2.0f");
+	UtAssert_True(result[1][0] == 2.0f, "result[1][0] == 2.0f");
+	UtAssert_True(result[2][0] == 2.0f, "result[2][0] == 2.0f");
+	UtAssert_True(result[3][0] == 2.0f, "result[3][0] == 2.0f");
+	UtAssert_True(result[4][0] == 2.0f, "result[4][0] == 2.0f");
+	UtAssert_True(result[5][0] == 2.0f, "result[5][0] == 2.0f");
+
+	UtAssert_True(result[0][1] == 4.0f, "result[0][1] == 4.0f");
+	UtAssert_True(result[1][1] == 4.0f, "result[1][1] == 4.0f");
+	UtAssert_True(result[2][1] == 4.0f, "result[2][1] == 4.0f");
+	UtAssert_True(result[3][1] == 4.0f, "result[3][1] == 4.0f");
+	UtAssert_True(result[4][1] == 4.0f, "result[4][1] == 4.0f");
+	UtAssert_True(result[5][1] == 4.0f, "result[5][1] == 4.0f");
+
+	UtAssert_True(result[0][2] == 6.0f, "result[0][2] == 6.0f");
+	UtAssert_True(result[1][2] == 6.0f, "result[1][2] == 6.0f");
+	UtAssert_True(result[2][2] == 6.0f, "result[2][2] == 6.0f");
+	UtAssert_True(result[3][2] == 6.0f, "result[3][2] == 6.0f");
+	UtAssert_True(result[4][2] == 6.0f, "result[4][2] == 6.0f");
+	UtAssert_True(result[5][2] == 6.0f, "result[5][2] == 6.0f");
+
+	UtAssert_True(result[0][3] == 8.0f, "result[0][3] == 8.0f");
+	UtAssert_True(result[1][3] == 8.0f, "result[1][3] == 8.0f");
+	UtAssert_True(result[2][3] == 8.0f, "result[2][3] == 8.0f");
+	UtAssert_True(result[3][3] == 8.0f, "result[3][3] == 8.0f");
+	UtAssert_True(result[4][3] == 8.0f, "result[4][3] == 8.0f");
+	UtAssert_True(result[5][3] == 8.0f, "result[5][3] == 8.0f");
+
+	UtAssert_True(result[0][4] == 10.0f, "result[0][4] == 10.0f");
+	UtAssert_True(result[1][4] == 10.0f, "result[1][4] == 10.0f");
+	UtAssert_True(result[2][4] == 10.0f, "result[2][4] == 10.0f");
+	UtAssert_True(result[3][4] == 10.0f, "result[3][4] == 10.0f");
+	UtAssert_True(result[4][4] == 10.0f, "result[4][4] == 10.0f");
+	UtAssert_True(result[5][4] == 10.0f, "result[5][4] == 10.0f");
+
+	UtAssert_True(result[0][5] == 12.0f, "result[0][5] == 12.0f");
+	UtAssert_True(result[1][5] == 12.0f, "result[1][5] == 12.0f");
+	UtAssert_True(result[2][5] == 12.0f, "result[2][5] == 12.0f");
+	UtAssert_True(result[3][5] == 12.0f, "result[3][5] == 12.0f");
+	UtAssert_True(result[4][5] == 12.0f, "result[4][5] == 12.0f");
+	UtAssert_True(result[5][5] == 12.0f, "result[5][5] == 12.0f");
+}
+
+
+void Test_Matrix6F6_Zero(void)
+{
+    int i, j = 0;
+	math::Matrix6F6 matrixA(
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+			{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}
+	);
+
+    math::Matrix6F6 result;
+
+    matrixA.Zero();
+
+	/* Verify results */
+    for(i=0; i<6; i++)
+    {
+        for(j=0; j<6; j++)
+        {
+            UtAssert_True(matrixA[i][j] == 0.0f, "matrix[i][j] == 0.0f");
+        }
+    }
+
+
 }
 
 	//math::Matrix6F6 matrixA(

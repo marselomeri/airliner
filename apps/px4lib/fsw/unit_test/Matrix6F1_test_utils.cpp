@@ -31,23 +31,18 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX10F6_TEST_H
-#define MATRIX10F6_TEST_H
+#include "Matrix6F1_test_utils.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/*
+ * Function Definitions
+ */
 
-void Test_Matrix10F6_Constructor(void);
-void Test_Matrix10F6_OutOfBounds(void);
-void Test_Matrix10F6_Mult_6F6(void);
-void Test_Matrix10F6_Mult_6F(void);
-void Test_Matrix10F6_Mult_6F10(void);
-void Test_Matrix10F6_Zero(void);
+void Matrix6F1_Test_Setup(void)
+{
+    /* initialize test environment to default state for every test */
 
-
-#ifdef __cplusplus
 }
-#endif
 
-#endif /* MATRIX10F6_TEST_H */
+void Matrix6F1_Test_TearDown(void)
+{
+}

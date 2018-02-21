@@ -32,7 +32,6 @@ public:
     Vector1F operator [] (uint32 i) const;
     Matrix10F1 operator*(const Matrix1F1 & matIn);
     Matrix10F10 operator*(const Matrix1F10 & matIn);
-    
     Matrix10F1 operator*(const Vector1F & vecIn);
     Vector10F ToVector(void);
     Matrix1F10 Transpose(void);

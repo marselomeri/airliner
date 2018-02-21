@@ -52,6 +52,12 @@ int main(void)
 	         "Test_Matrix10F3_Mult_3F10");
 	UtTest_Add(Test_Matrix10F3_Mult_3F3, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
 	         "Test_Matrix10F3_Mult_3F3");
+	UtTest_Add(Test_Matrix10F3_Mult_Scaler, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Mult_Scaler");
+	UtTest_Add(Test_Matrix10F3_Transpose, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Transpose");
+	UtTest_Add(Test_Matrix10F3_Addition, Matrix10F3_Test_Setup, Matrix10F3_Test_TearDown,
+	         "Test_Matrix10F3_Addition");
 
     return(UtTest_Run());
 

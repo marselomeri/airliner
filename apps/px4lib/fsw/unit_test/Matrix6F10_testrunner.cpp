@@ -44,6 +44,10 @@ int main(void)
 	         "Test_Matrix6F10_IndexOutOfBounds");
 	UtTest_Add(Test_Matrix6F10_Mult_10F, Matrix6F10_Test_Setup, Matrix6F10_Test_TearDown,
 	         "Test_Matrix6F10_Mult_10F");
+	UtTest_Add(Test_Matrix6F10_Mult_10F6, Matrix6F10_Test_Setup, Matrix6F10_Test_TearDown,
+	         "Test_Matrix6F10_Mult_10F6");
+	UtTest_Add(Test_Matrix6F10_Mult_10F10, Matrix6F10_Test_Setup, Matrix6F10_Test_TearDown,
+	         "Test_Matrix6F10_Mult_10F10");
 
     return(UtTest_Run());
 

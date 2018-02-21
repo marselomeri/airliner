@@ -114,7 +114,6 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
 {
     Matrix10F10 matOut;
     matOut.Zero();
-    //matOut.Print();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
@@ -137,7 +136,7 @@ Matrix10F10 Matrix10F3::operator*(const Matrix3F10 &matIn)
 Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
 {
     Vector10F vecOut;
-    float value = 0.0f;
+    vecOut.Zero();
 
     // TODO: verify correct
     for(int i = 0; i < ROWS; i++)
@@ -149,5 +148,39 @@ Vector10F Matrix10F3::operator*(const Vector3F &vecIn)
     }
 
     return vecOut;
+}
+
+
+Matrix10F3 Matrix10F3::operator*(const float &scalar)
+{
+    Matrix10F3 matOut;
+
+    // TODO: verify correct
+    for(int i = 0; i < ROWS; i++)
+    {
+    	for(int j = 0; j < COLS; j++)
+		{
+    		matOut[i][j] = scalar*data[i][j];
+		}
+    }
+
+    return matOut;
+}
+
+
+Matrix10F3 Matrix10F3::operator+(const Matrix10F3 &matIn) const
+{
+    Matrix10F3 matOut;
+
+    // TODO: verify correct
+	for(int i = 0; i < ROWS; i++)
+	{
+		for(int j = 0; j < COLS; j++)
+		{
+			matOut[i][j] = data[i][j] + matIn[i][j];
+		}
+	}
+
+    return matOut;
 }
 
