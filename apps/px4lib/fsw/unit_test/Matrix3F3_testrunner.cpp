@@ -62,6 +62,12 @@ int main(void)
 		     "Test_Matrix3F3_RotationMatrix");
 	UtTest_Add(Test_Matrix3F3_Zero, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
 		     "Test_Matrix3F3_Zero");
+	UtTest_Add(Test_Matrix3F3_Inverse, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Inverse");
+	UtTest_Add(Test_Matrix3F3_Determinant, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Determinant");
+	UtTest_Add(Test_Matrix3F3_Inverse2, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Inverse2");
 
     return(UtTest_Run());
 

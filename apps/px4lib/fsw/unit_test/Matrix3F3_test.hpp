@@ -50,7 +50,9 @@ void Test_Matrix3F3_MatrixAddition(void);
 void Test_Matrix3F3_FromEuler(void);
 void Test_Matrix3F3_RotationMatrix(void);
 void Test_Matrix3F3_Zero(void);
-
+void Test_Matrix3F3_Determinant(void);
+void Test_Matrix3F3_Inverse(void);
+void Test_Matrix3F3_Inverse2(void);
 
 #ifdef __cplusplus
 }
