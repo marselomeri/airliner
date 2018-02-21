@@ -735,8 +735,8 @@ int NAV::Execute(){
 			// avoid subsequent takeoffs
 			if(!subsequent_takeoffs){
 
-				if(CVT.VehicleCommandMsg.Command == previous_command.Command){
-					(void) CFE_EVS_SendEvent(NAV_SUBSEQ_TAKEOFF_EID, CFE_EVS_ERROR, "Subsequent takeoff is not allowed");
+				if(CVT.VehicleCommandMsg.Command == previous_command.Command && !CVT.VehicleLandDetectedMsg.Landed){
+					(void) CFE_EVS_SendEvent(NAV_SUBSEQ_TAKEOFF_EID, CFE_EVS_ERROR, "Subsequent takeoff is not allowed while flying");
 					return 0;
 				}
 			}
@@ -863,12 +863,6 @@ int NAV::Execute(){
 	PositionSetpointTripletMsg.Timestamp = now;
 	MissionResultMsg.Timestamp = now;
 
-//	VehicleLandDetectedMsg.Timestamp = now;
-//	VehicleCommandMsgOut.Timestamp = now;
-//	ActuatorControls3Msg.Timestamp = now;
-//	GeofenceResultMsg.Timestamp = now;
-//	FenceMsg.Timestamp = now;
-
 	if (PositionSetpointTripletUpdated) {
 		PositionSetpointTriplet_ptr->Timestamp = PX4LIB_GetPX4TimeUs();
 		SendPositionSetpointTripletMsg();
@@ -879,11 +873,6 @@ int NAV::Execute(){
 		SendMissionResultMsg();
 		MissionResultUpdated = false;
 	}
-
-
-	/*copy vitals to  hk*/
-	memcpy(&HkTlm.PositionSetpointTripletMsg, &PositionSetpointTripletMsg, sizeof(&HkTlm.PositionSetpointTripletMsg));
-	memcpy(&HkTlm.MissionResultMsg, &MissionResultMsg, sizeof(&HkTlm.MissionResultMsg));
 
 	return 0;
 }

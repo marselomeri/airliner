@@ -203,7 +203,7 @@ typedef enum
 	RTL_STATE_CLIMB = 1,
 	/*! The vehicle is in Return to home latitude and longitude state during RTL navigation */
 	RTL_STATE_RETURN = 2,
-	/*!  VTOL to MC transition state during RTL navigation*/
+	/*!  VTOL to MC transition state during RTL navigation */
 	RTL_STATE_TRANSITION_TO_MC = 3,
 	/*! The vehicle is in descend state during RTL navigation */
 	RTL_STATE_DESCEND = 4,

@@ -60,9 +60,13 @@
 
 typedef enum
 {
-	PX4_GPS_NO_FIX                      = 0,
-	PX4_GPS_2D_FIX                      = 1,
-	PX4_GPS_3D_FIX                      = 2
+	PX4_GPS_NONE0_FIX                   = 0,
+	PX4_GPS_NONE1_FIX                   = 1,
+	PX4_GPS_2D_FIX                      = 2,
+	PX4_GPS_3D_FIX                      = 3,
+	PX4_GPS_DGPS_FIX                    = 4,
+	PX4_GPS_RTK_FIX                     = 5
+
 } PX4_GpsFixType_t;
 
 typedef enum
@@ -1735,7 +1739,7 @@ typedef struct
 	float Vel_d_m_s;
 	float COG;
 	int32 TimestampTimeRelative;
-	uint8 FixType;
+	PX4_GpsFixType_t FixType;
 	boolean VelNedValid;
 	uint8 SatellitesUsed;
 } PX4_VehicleGpsPositionMsg_t;
