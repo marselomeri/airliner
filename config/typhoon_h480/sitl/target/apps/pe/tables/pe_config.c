@@ -72,7 +72,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//LAND_Z_STDDEV
     .03f,
 	//LAND_VXY_STDDEV
-    .03f,
+    .05f,
 	//PN_P_NOISE_DENSITY
     .1f,
 	//PN_V_NOISE_DENSITY
