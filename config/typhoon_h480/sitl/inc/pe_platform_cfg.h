@@ -109,7 +109,12 @@ extern "C" {
 */
 #define PE_STARTUP_TIMEOUT_MSEC    (1000)
 
-
+/** \brief MAx event filters the PE app can use.
+**
+**  \par Limits:
+**       This parameter cannot exceed TODO
+*/
+#define PE_MAX_EVENT_FILTERS       (32)
 
 
 #ifdef __cplusplus
