@@ -343,7 +343,6 @@ Matrix3F3 Matrix3F3::Inversed(void)
     float determinant = 0;
 
     determinant = Determinant();
-    printf("Determinant %.10f\n\n\n", determinant);
 
     if (0.0f == determinant || !isfinite(determinant))
     {
