@@ -38,6 +38,10 @@ block main
                 table.table.table-hover.table-condensed.table-compressed
                   tbody
                     tr
+                      th Timestamp:
+                      td 
+                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Timestamp"}]}) ---
+                    tr
                       th Error Count:
                       td 
                         span(data-sage={tlm: [{name: "/CFS/PX4/SM_ErrorCount"}]}) ---
