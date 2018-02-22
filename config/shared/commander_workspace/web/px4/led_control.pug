@@ -1,0 +1,53 @@
+extends ../../web_includes/common/layout
+
+block includes
+    include ../../web_includes/common/common_includes.pug
+
+
+block header
+        i.fa-fw.fa.fa-signal
+        | PX4
+
+block main
+    .row.row-fluid
+      +msg_macro_specific_telemetry_control([{macro: 'PX4_LED_CONTROL_MID'}])
+
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-LC.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 LED Control
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/LC_Timestamp"}}) ---
+                    tr
+                      th Mask:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/LC_LedMask"}}) ---
+                    tr
+                      th Color:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/LC_Color"}}) ---
+                    tr
+                      th Mode:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/LC_Mode"}}) ---
+                    tr
+                      th Number of Blinks:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/LC_NumBlinks"}}) ---
+                    tr
+                      th Priority:
+                      td 
+                        span(data-sage={tlm: {name: "/CFS/PX4/LC_Priority"}}) ---
+                        

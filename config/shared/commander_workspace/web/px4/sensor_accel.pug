@@ -38,9 +38,13 @@ block main
                 table.table.table-condensed
                   tbody
                     tr
+                      th Timestamp:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SA_Timestamp'}]}) ---
+                    tr
                       th Integral:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SA_Integral'}]}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SA_IntegralDt'}]}) ---
                     tr
                       th ErrorCount:
                       td
