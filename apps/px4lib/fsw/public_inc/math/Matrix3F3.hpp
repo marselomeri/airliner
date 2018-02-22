@@ -2,7 +2,6 @@
 #define MATRIX3F3_HPP
 
 #include "cfe.h"
-#include "Matrix3F3.hpp"
 #include "Vector3F.hpp"
 
 #define M_DEG_TO_RAD_F		(0.01745329251994329576f)
@@ -58,29 +57,34 @@ public:
 
 private:
 	static const int SIZE = 3;
-	Vector3F data[SIZE];
 	Vector3F nan;
 
 	static const RotLookup_t RotLookup[];
 
 public:
-	Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2);
-	~Matrix3F3();
-	Vector3F& operator [] (uint32 i);
-	Vector3F operator [] (uint32 i) const;
-	Matrix3F3();
-	Matrix3F3 Transpose(void);
-	static Matrix3F3 Identity(void);
-	Vector3F operator*(const Vector3F &vecIn);
-	Matrix3F3 operator*(const Matrix3F3 &matIn);
-	Matrix3F3 operator*(const float &scalar);
-	void Zero(void);
+    Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2);
+    ~Matrix3F3();
+    Vector3F& operator [] (uint32 i);
+    Vector3F operator [] (uint32 i) const;
+    Matrix3F3();
+    Matrix3F3 Transpose(void);
+    static Matrix3F3 Identity(void);
+    Vector3F operator*(const Vector3F &vecIn);
+    Matrix3F3 operator*(const Matrix3F3 &matIn);
+    Matrix3F3 operator*(const float &scalar);
     Matrix3F3 operator+(const Matrix3F3 &matIn) const;
-	static Matrix3F3 RotationMatrix(Matrix3F3::Rotation_t boardRotation);
-	static Matrix3F3 FromEuler(float roll, float pitch, float yaw);
-	Vector3F ToEuler(void) const;
+    static Matrix3F3 RotationMatrix(Matrix3F3::Rotation_t boardRotation);
+    static Matrix3F3 FromEuler(float roll, float pitch, float yaw);
+    Vector3F ToEuler(void) const;
+    void Zero(void);
+
+    Matrix3F3 Inversed(void);
+    float Determinant(void);
+    void getCofactor(const Matrix3F3 &mat, Matrix3F3 &temp, int p, int q, int n);
+    float DeterminantRecursive(const Matrix3F3 &mat, int n);
 
 protected:
+	Vector3F data[SIZE];
 
 };
 

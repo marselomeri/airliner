@@ -275,34 +275,6 @@ void Test_Matrix3F3_MatrixAddition(void)
 }
 
 
-
-void Test_Matrix3F3_MatrixSubtraction(void)
-{
-	math::Matrix3F3 matrixA(
-		{1.0f, 3.0f, 5.0f},
-		{7.0f, 9.0f, 11.0f},
-		{13.0f, 15.0f, 17.0f}
-	);
-	math::Matrix3F3 matrixB(
-		{10.0f, 11.0f, 12.0f},
-		{13.0f, 14.0f, 15.0f},
-		{16.0f, 17.0f, 18.0f}
-	);
-	math::Matrix3F3 result = matrixA + matrixB;
-
-	UtAssert_True(result[0][0] == 11.0f, "[0][0]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[0][1] == 14.0f, "[0][1]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[0][2] == 17.0f, "[0][2]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[1][0] == 20.0f, "[1][0]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[1][1] == 23.0f, "[1][1]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[1][2] == 26.0f, "[1][2]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[2][0] == 29.0f, "[2][0]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[2][1] == 32.0f, "[2][1]:  Matrix3F3 + Matrix3F3");
-	UtAssert_True(result[2][2] == 35.0f, "[2][2]:  Matrix3F3 + Matrix3F3");
-}
-
-
-
 void Test_Matrix3F3_FromEuler(void)
 {
 	math::Matrix3F3 matrixA = math::Matrix3F3::FromEuler(M_PI / 4.0, 0.0f, 0.0f);
@@ -360,7 +332,6 @@ void Test_Matrix3F3_FromEuler(void)
 }
 
 
-
 void Test_Matrix3F3_RotationMatrix(void)
 {
 	math::Matrix3F3 matrix = math::Matrix3F3::RotationMatrix(math::Matrix3F3::ROTATION_ROLL_90_YAW_45);
@@ -377,3 +348,104 @@ void Test_Matrix3F3_RotationMatrix(void)
 	UtAssert_True(fabs(matrix[2][1] - 1.0f) < 0.00001,        "[2][1]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
 	UtAssert_True(fabs(matrix[2][2] - 0.0f) < 0.00001,        "[2][2]:  math::Matrix3F3::RotationMatrix(ROTATION_ROLL_90_YAW_45)");
 }
+
+
+void Test_Matrix3F3_Zero(void)
+{
+    math::Matrix3F3 matrixA(
+        {1.0f, 3.0f, 5.0f},
+        {7.0f, 9.0f, 11.0f},
+        {13.0f, 15.0f, 17.0f}
+    );
+    
+    matrixA.Zero();
+    
+	UtAssert_True(matrixA[0][0] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[0][1] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[0][2] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[1][0] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[1][1] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[1][2] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[2][0] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[2][1] == 0.0f, "matrixA[0][0] == 0.0f");
+	UtAssert_True(matrixA[2][2] == 0.0f, "matrixA[0][0] == 0.0f");
+}
+
+void Test_Matrix3F3_Inverse(void)
+{
+	math::Matrix3F3 matrixA(
+		{2.0f, 1.0f, 1.0f},
+		{1.0f, 2.0f, 1.0f},
+		{1.0f, 1.0f, 2.0f}
+	);
+
+    math::Matrix3F3 matrix = matrixA.Inversed();
+
+	/* Verify results */
+	UtAssert_True(fabs(matrix[0][0] - (3.0f / 4.0f)) < 0.00001f, "matrix[0][0] == 3 / 4");
+	UtAssert_True(fabs(matrix[0][1] - (- 1.0f / 4.0f)) < 0.00001f, "matrix[0][1] == - 1 / 4");
+	UtAssert_True(fabs(matrix[0][2] - (- 1.0f / 4.0f)) < 0.00001f, "matrix[0][2] == - 1 / 4");
+    
+	UtAssert_True(fabs(matrix[1][0] - (- 1.0f / 4.0f)) < 0.00001f, "matrix[1][0] == - 1 / 4");
+	UtAssert_True(fabs(matrix[1][1] - (3.0f / 4.0f)) < 0.00001f, "matrix[1][1] == 3 / 4");
+	UtAssert_True(fabs(matrix[1][2] - (- 1.0f / 4.0f)) < 0.00001f, "matrix[1][2] == - 1 / 4");
+
+	UtAssert_True(fabs(matrix[2][0] - (- 1.0f / 4.0f)) < 0.00001f, "matrix[2][0] == - 1 / 4");
+	UtAssert_True(fabs(matrix[2][1] - (- 1.0f / 4.0f)) < 0.00001f, "matrix[2][1] == - 1 / 4");
+	UtAssert_True(fabs(matrix[2][2] - (3.0f / 4.0f)) < 0.00001f, "matrix[2][2] == 3 / 4");
+
+}
+
+void Test_Matrix3F3_Determinant(void)
+{
+	math::Matrix3F3 matrix(
+		{2.0f, 1.0f, 1.0f},
+		{1.0f, 2.0f, 1.0f},
+		{1.0f, 1.0f, 2.0f}
+	);
+
+	float result = 0;
+
+    result = matrix.Determinant();
+    
+    //printf("result %f\n", result);
+
+    UtAssert_True(result == 4, "result == 4");
+}
+
+void Test_Matrix3F3_Inverse2(void)
+{
+	math::Matrix3F3 matrixA(
+        {0.004737, -0.000000, 0.000000},
+        {-0.000000, 0.004737, 0.000000}, 
+        {0.000000, 0.000000, 0.002761} 
+	);
+
+    math::Matrix3F3 matrix = matrixA.Inversed();
+
+    printf("inverse\n");
+    for(int i = 0; i < 3; i++)
+	{
+		for(int j = 0; j < 3; j++)
+		{
+			printf("%f, ", matrix[i][j]);
+		}
+		printf("\n");
+	}
+
+	/* Verify results */
+	UtAssert_True(fabs(matrix[0][0] - (1000000.0f / 4737.0f)) < 0.0001f, "matrix[0][0] == 3 / 4");
+	UtAssert_True(matrix[0][1] == 0, "matrix[0][1] == - 1 / 4");
+	UtAssert_True(matrix[0][2] == 0, "matrix[0][2] == - 1 / 4");
+    
+	UtAssert_True(matrix[1][0] == 0, "matrix[1][0] == - 1 / 4");
+	UtAssert_True(fabs(matrix[1][1] - (1000000.0f / 4737.0f)) < 0.0001f, "matrix[1][1] == 3 / 4");
+	UtAssert_True(matrix[1][2] == 0, "matrix[1][2] == - 1 / 4");
+
+	UtAssert_True(matrix[2][0] == 0, "matrix[2][0] == - 1 / 4");
+	UtAssert_True(matrix[2][1] == 0, "matrix[2][1] == - 1 / 4");
+	UtAssert_True(fabs(matrix[2][2] - (1000000.0f / 2761.0f)) < 0.0001f, "matrix[2][2] == 3 / 4");
+
+}
+
+

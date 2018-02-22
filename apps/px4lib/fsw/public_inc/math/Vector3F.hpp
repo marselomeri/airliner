@@ -2,15 +2,18 @@
 #define VECTOR3F_HPP
 
 #include "cfe.h"
+#include "Vector10F.hpp"
 
 namespace math
 {
 
+class Vector10F;
+class Matrix1F3;
+
 class Vector3F
 {
 private:
-	static const int SIZE = 3;
-	float data[SIZE];
+    static const int SIZE = 3;
 	float nan;
 
 public:
@@ -21,6 +24,7 @@ public:
 	float operator [] (uint32 i) const;
 	float Length(void) const;
 	void Zero(void);
+    Matrix1F3 Transpose(void);
 	Vector3F operator+(const Vector3F &vecIn);
 	Vector3F operator+(const Vector3F &vecIn) const;
 	Vector3F operator-(const Vector3F &vecIn);
@@ -37,6 +41,7 @@ public:
 	const Vector3F EDivide(const Vector3F &v) const;
 
 protected:
+	float data[SIZE];
 
 };
 

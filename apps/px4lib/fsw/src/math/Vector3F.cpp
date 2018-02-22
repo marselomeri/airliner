@@ -1,4 +1,5 @@
 #include <math/Vector3F.hpp>
+#include <math/Matrix1F3.hpp>
 #include <math.h>
 
 using namespace math;
@@ -54,6 +55,18 @@ void Vector3F::Zero()
     data[0] = 0.0f;
     data[1] = 0.0f;
     data[2] = 0.0f;
+}
+
+Matrix1F3 Vector3F::Transpose(void)
+{
+    Matrix1F3 matOut;
+    matOut.Zero();
+
+    matOut[0][0] = data[0];
+    matOut[0][1] = data[1];
+    matOut[0][2] = data[2];
+
+    return matOut; 
 }
 
 

@@ -430,6 +430,16 @@ add_airliner_app(
 )
 
 add_airliner_app(
+    pe
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pe/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pe
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pe_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_perfids.h
+)
+
+add_airliner_app(
     qae
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/qae/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/qae

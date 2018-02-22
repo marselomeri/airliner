@@ -61,6 +61,7 @@
 #define PARAMS_MAIN_TASK_PERF_ID    90
 /* TODO remove me after AE is deleted, see QAE above */
 #define AE_MAIN_TASK_PERF_ID        91
+#define PE_MAIN_TASK_PERF_ID        92
 
 #endif
 

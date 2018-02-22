@@ -31,8 +31,8 @@
 *
 *****************************************************************************/
 
-#ifndef MATRIX4F4_TEST_H
-#define MATRIX4F4_TEST_H
+#ifndef MATRIX3F3_TEST_H
+#define MATRIX3F3_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,13 +47,15 @@ void Test_Matrix3F3_VectorMultiply(void);
 void Test_Matrix3F3_MatrixMultiply(void);
 void Test_Matrix3F3_ScalarMultiply(void);
 void Test_Matrix3F3_MatrixAddition(void);
-void Test_Matrix3F3_MatrixSubtraction(void);
 void Test_Matrix3F3_FromEuler(void);
 void Test_Matrix3F3_RotationMatrix(void);
-
+void Test_Matrix3F3_Zero(void);
+void Test_Matrix3F3_Determinant(void);
+void Test_Matrix3F3_Inverse(void);
+void Test_Matrix3F3_Inverse2(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* VECTOR4F_TEST_H */
+#endif /* MATRIX3F3_TEST_H */
