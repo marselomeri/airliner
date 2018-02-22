@@ -34,6 +34,7 @@ block main
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/AMC/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/AMC/Reset'}}) Reset
                 
+  .row.row-fluid
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
         #wid-AMC-ActuatorArmed.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header
@@ -135,6 +136,7 @@ block main
                         span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_7'}]}) ---
                         
                 
+  .row.row-fluid
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
         #wid-AMC-ActuatorOutputs.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header

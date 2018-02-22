@@ -1922,12 +1922,12 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
-	uint64 Timestamp;
+    uint64 Timestamp;
     uint8 LedMask;
     uint8 Color;
     uint8 Mode;
     uint8 NumBlinks;
-    uint8 Priority;0
+    uint8 Priority;
 } PX4_LedControlMsg_t;
 
 #endif
