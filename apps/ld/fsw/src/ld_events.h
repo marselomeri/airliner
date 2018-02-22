@@ -250,6 +250,54 @@ typedef enum {
 */
 	LD_CFGTBL_LOAD_ERR_EID,
 
+/** \brief <tt> 'Freefall detected' </tt>
+**  \event <tt> 'Freefall detected' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS LD Task detects freefall.
+**
+*/
+	LD_FREEFALL_DETECTED_EID,
+
+/** \brief <tt> 'Ground contact detected' </tt>
+**  \event <tt> 'Ground contact detected' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS LD Task detects groundcontact.
+**
+*/
+	LD_GROUNDCONTACT_DETECTED_EID,
+
+/** \brief <tt> 'Land detected' </tt>
+**  \event <tt> 'Land detected' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS LD Task detects land.
+**
+*/
+	LD_LAND_DETECTED_EID,
+
+/** \brief <tt> 'Vehicle in flight' </tt>
+**  \event <tt> 'Vehicle in flight' </tt>
+**
+**  \par Type: INFORMATION
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS LD Task detects flight.
+**
+*/
+	LD_FLIGHT_DETECTED_EID,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	LD_EVT_CNT
 } LD_EventIds_t;

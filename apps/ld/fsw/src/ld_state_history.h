@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "px4lib.h"
-//#include <stdint.h>
 #include "cfe.h"
 
 
@@ -60,18 +59,12 @@ public:
 		time_since_false_state(0),
 		time_since_state_change(0)
 	{}
-
-
     ~StateHistory()
     {}
-
     void update();
     bool getState()const;
     void setState(const bool new_state);
     void setTimeSince(const bool from_state, const uint64 new_time);
-
-
-
 
 private:
     bool state;
@@ -79,8 +72,6 @@ private:
     uint64 time_since_true_state;
     uint64 time_since_false_state;
     uint64 time_since_state_change;
-
-
 };
 
 #ifdef __cplusplus
