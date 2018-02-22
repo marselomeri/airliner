@@ -299,7 +299,7 @@ float Matrix3F3::DeterminantRecursive(const Matrix3F3 &mat, int n)
         return NAN;
     }
 
-    int D = 0; // Initialize result
+    float D = 0.0f; // Initialize result
  
     //  Base case : if matrix contains single element
     if (n == 1)
@@ -310,7 +310,7 @@ float Matrix3F3::DeterminantRecursive(const Matrix3F3 &mat, int n)
     Matrix3F3 temp; // To store cofactors
     temp.Zero();
  
-    int sign = 1;  // To store sign multiplier
+    float sign = 1.0f;  // To store sign multiplier
  
      // Iterate for each element of first row
     for (int f = 0; f < n; f++)
@@ -344,7 +344,7 @@ Matrix3F3 Matrix3F3::Inversed(void)
 
     determinant = Determinant();
 
-    if (0 == determinant || !isfinite(determinant))
+    if (0.0f == determinant || !isfinite(determinant))
     {
         return Matrix3F3(nan, nan, nan);
     }

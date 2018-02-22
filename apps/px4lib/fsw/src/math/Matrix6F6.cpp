@@ -197,7 +197,7 @@ float Matrix6F6::DeterminantRecursive(const Matrix6F6 &mat, int n)
         return NAN;
     }
 
-    float D = 0.0f; // Initialize result
+    float D = 0; // Initialize result
  
     //  Base case : if matrix contains single element
     if (n == 1)
@@ -208,7 +208,7 @@ float Matrix6F6::DeterminantRecursive(const Matrix6F6 &mat, int n)
     Matrix6F6 temp; // To store cofactors
     temp.Zero();
  
-    float sign = 1.0f;  // To store sign multiplier
+    float sign = 1;  // To store sign multiplier
  
      // Iterate for each element of first row
     for (int f = 0; f < n; f++)

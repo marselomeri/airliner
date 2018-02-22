@@ -4623,7 +4623,7 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	/* Check for errors... */
 	if (!status)
 	{
-        OS_printf("local PB enc error: %s", PB_GET_ERROR(&stream));
+        OS_printf("local PB enc error: %s\n", PB_GET_ERROR(&stream));
 		return 0;
 	}
 
