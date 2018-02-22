@@ -4592,6 +4592,50 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	bool status = false;
 	px4br_vehicle_local_position_pb pbMsg;
 
+/*	pbMsg.timestamp = 0;*/
+/*	pbMsg.ref_timestamp = 0;*/
+/*	pbMsg.ref_lat = 0;*/
+/*	pbMsg.ref_lon = 0;*/
+/*	pbMsg.surface_bottom_timestamp  = 0;*/
+/*	pbMsg.x = 0;*/
+/*	pbMsg.y = 0;*/
+/*	pbMsg.z = 0;*/
+/*	pbMsg.delta_xy_count = 2;*/
+/*	pbMsg.delta_xy[0] = 0;*/
+/*	pbMsg.delta_xy[1] = 0;*/
+/*	pbMsg.delta_z = 0;*/
+/*	pbMsg.vx = 0;*/
+/*	pbMsg.vy = 0;*/
+/*	pbMsg.vz = 0;*/
+/*	pbMsg.delta_vxy_count = 2;*/
+/*	pbMsg.delta_vxy[0] = 0;*/
+/*	pbMsg.delta_vxy[1] = 0;*/
+/*	pbMsg.delta_vz = 0;*/
+/*	pbMsg.ax = 0;*/
+/*	pbMsg.ay = 0;*/
+/*	pbMsg.az = 0;*/
+/*	pbMsg.yaw = 0;*/
+/*	pbMsg.ref_alt = 0;*/
+/*	pbMsg.dist_bottom = 0;*/
+/*	pbMsg.dist_bottom_rate = 0;*/
+/*	pbMsg.eph = 0;*/
+/*	pbMsg.epv = 0;*/
+/*	pbMsg.evh = 0;*/
+/*	pbMsg.evv = 0;*/
+/*	pbMsg.estimator_type = 0;//inObject->EstimatorType;*/
+/*	pbMsg.xy_valid = 0;*/
+/*	pbMsg.z_valid = 0;*/
+/*	pbMsg.v_xy_valid = 0;*/
+/*	pbMsg.v_z_valid = 0;*/
+/*	pbMsg.xy_reset_counter = 0;*/
+/*	pbMsg.z_reset_counter = 0;*/
+/*	pbMsg.vxy_reset_counter = 0;*/
+/*	pbMsg.vz_reset_counter = 0;*/
+/*	pbMsg.xy_global = 0;*/
+/*	pbMsg.z_global = 0;*/
+/*	pbMsg.dist_bottom_valid = 0;*/
+
+
 	pbMsg.timestamp = inObject->Timestamp;
 	pbMsg.ref_timestamp = inObject->RefTimestamp;
 	pbMsg.ref_lat = inObject->RefLat;
