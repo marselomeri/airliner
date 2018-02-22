@@ -60,6 +60,8 @@ softsim:
              spec: "/mdb/BAT.xls"
            - type: "sheet"
              spec: "/mdb/NAV.xls"
+           - type: "sheet"
+             spec: "/mdb/LD.xls"
 
 mavlink:
     # Configuration of the active loaders
