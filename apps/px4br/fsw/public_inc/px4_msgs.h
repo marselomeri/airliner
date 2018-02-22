@@ -1927,7 +1927,7 @@ typedef struct
     uint8 Color;
     uint8 Mode;
     uint8 NumBlinks;
-    uint8 Priority;0
+    uint8 Priority;
 } PX4_LedControlMsg_t;
 
 #endif
