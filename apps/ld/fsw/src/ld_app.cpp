@@ -927,9 +927,9 @@ void LD::DetectStateChange(){
 		else if(CurrentLandDetectedMsg.GroundContact){
 			(void) CFE_EVS_SendEvent(LD_FREEFALL_DETECTED_EID, CFE_EVS_INFORMATION,"Ground contact detected");
 		}
-		else{
+		/*else{
 			(void) CFE_EVS_SendEvent(LD_FLIGHT_DETECTED_EID, CFE_EVS_INFORMATION,"Vehicle in flight");
-		}
+		}*/
 		PreviousLandDetectedMsg = CurrentLandDetectedMsg;
 	}
 }
