@@ -1626,8 +1626,8 @@ boolean NAV::IsMissionItemReached(){
 
 void NAV::SetMissionFaliure(const char* reason){
 	PX4_MissionResultMsg_t* mr = GetMissionResultMsg();
-	if(! mr->MissionFailure){
-		mr->MissionFailure = true;
+	if(! mr->Failure){
+		mr->Failure = true;
 		(void) CFE_EVS_SendEvent(NAV_MSN_FAILED_ERR_EID, CFE_EVS_CRITICAL,
 		            		"Mission failed (%s)",
 							reason);
