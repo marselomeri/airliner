@@ -961,7 +961,7 @@ void PX4BR_RouteMessageToPX4(CFE_SB_MsgPtr_t sbMsg)
 		uint16 contentSize = CFE_SB_GetTotalMsgLength(sbMsg);
 		if(route->EncodeFunc != 0)
 		{
-		    int32 encSize = route->EncodeFunc((const char*)sbMsg, &buffer[PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH], PX4BR_MAX_MSG_SIZE-(PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH));
+		    uint32 encSize = route->EncodeFunc((const char*)sbMsg, &buffer[PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH], PX4BR_MAX_MSG_SIZE-(PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH));
 
             uint32 totalSize = encSize + PX4BR_NAME_FIELD_LENGTH + PX4BR_SIZE_FIELD_LENGTH;
 

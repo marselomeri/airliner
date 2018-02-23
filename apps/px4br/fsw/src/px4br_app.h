@@ -61,21 +61,21 @@
 #define PX4BR_NONVOL_PEER_FILENAME      "/cf/apps/PX4BridgeData.dat"
 #define PX4BR_PEER_FILE_LINE_SIZE       128
 #define PX4BR_MAX_NETWORK_PEERS         6
-#define PX4BR_PEER_PIPE_DEPTH           64
+#define PX4BR_PEER_PIPE_DEPTH           256
 #define PX4BR_DEFAULT_MSG_LIM           8
 #define PX4BR_ITEMS_PER_FILE_LINE       3
 #define PX4BR_SUB_PIPE_DEPTH            256
 #define PX4BR_MAX_ONESUB_PKTS_ON_PIPE   256
-#define PX4BR_MAX_ALLSUBS_PKTS_ON_PIPE  64
+#define PX4BR_MAX_ALLSUBS_PKTS_ON_PIPE  256
 
-#define PX4BR_MAX_MSG_SIZE              1500
+#define PX4BR_MAX_MSG_SIZE              32000
 #define PX4BR_MAX_SUBS_PER_PEER         255
 #define PX4BR_MAX_PEERNAME_LENGTH       8
 
 #define PX4BR_SIZE_FIELD_LENGTH         2
 #define PX4BR_NAME_FIELD_LENGTH         50
 
-#define PX4BR_SCH_PIPE_DEPTH      		200
+#define PX4BR_SCH_PIPE_DEPTH      		256
 #define PX4BR_CMD_PIPE_DEPTH      		2
 #define PX4BR_ROUTER_PIPE_DEPTH    		PX4BR_MAX_SUBS_PER_PEER
 #define PX4BR_SCH_PIPE_NAME       		"PX4BR_SCH_PIPE"
