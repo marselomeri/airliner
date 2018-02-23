@@ -1531,12 +1531,53 @@ uint32 PX4BR_FwVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4
 
 uint32 PX4BR_GeofenceResult_Enc(const PX4_GeofenceResultMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
-	return 0;
+	bool status = false;
+	px4br_geofence_result_pb pbMsg;
+
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.geofence_violated = inObject->GeofenceViolated;
+	pbMsg.geofence_action = inObject->GeofenceAction;
+	pbMsg.home_required = inObject->HomeRequired;
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4br_geofence_result_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_GeofenceResult_Enc failed\n");
+		return 0;
+	}
+
+	return stream.bytes_written;
 }
 
 uint32 PX4BR_GeofenceResult_Dec(const char *inBuffer, uint32 inSize, PX4_GeofenceResultMsg_t *inOutObject)
 {
-	return 0;
+	bool status = false;
+	px4br_geofence_result_pb pbMsg;
+
+	/* Create a stream that reads from the buffer. */
+	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4br_geofence_result_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_GeofenceResult_Dec failed\n");
+		return 0;
+	}
+
+	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->GeofenceViolated = pbMsg.geofence_violated;
+	inOutObject->GeofenceAction = pbMsg.geofence_action;
+	inOutObject->HomeRequired = pbMsg.home_required;
+
+	return sizeof(PX4_GeofenceResultMsg_t);
 }
 
 
@@ -2233,23 +2274,127 @@ uint32 PX4BR_McVirtualRatesSetpoint_Dec(const char *inBuffer, uint32 inSize, PX4
 
 uint32 PX4BR_Mission_Enc(const PX4_MissionMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
-	return 0;
+	bool status = false;
+	px4br_mission_pb pbMsg;
+
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.dataman_id = inObject->DatamanID;
+	pbMsg.count = inObject->Count;
+	pbMsg.current_seq = inObject->CurrentSeq;
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4br_mission_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_Mission_Enc failed\n");
+		return 0;
+	}
+
+	return stream.bytes_written;
 }
 
 uint32 PX4BR_Mission_Dec(const char *inBuffer, uint32 inSize, PX4_MissionMsg_t *inOutObject)
 {
-	return 0;
+	bool status = false;
+	px4br_mission_pb pbMsg;
+
+	/* Create a stream that reads from the buffer. */
+	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4br_mission_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_Mission_Dec failed\n");
+		return 0;
+	}
+
+	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->DatamanID = pbMsg.dataman_id;
+	inOutObject->Count = pbMsg.count;
+	inOutObject->CurrentSeq = pbMsg.current_seq;
+
+	return sizeof(PX4_MissionMsg_t);
 }
 
 
 uint32 PX4BR_MissionResult_Enc(const PX4_MissionResultMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
-	return 0;
+	bool status = false;
+	px4br_mission_result_pb pbMsg;
+
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.instance_count = inObject->InstanceCount;
+	pbMsg.seq_reached = inObject->SeqReached;
+	pbMsg.seq_current = inObject->SeqCurrent;
+	pbMsg.seq_total = inObject->SeqTotal;
+	pbMsg.item_changed_index = inObject->ItemChangedIndex;
+	pbMsg.item_do_jump_remaining = inObject->ItemDoJumpRemaining;
+	pbMsg.valid = inObject->Valid;
+	pbMsg.warning = inObject->Warning;
+	pbMsg.reached = inObject->Reached;
+	pbMsg.finished = inObject->Finished;
+	pbMsg.failure = inObject->Failure;
+	pbMsg.stay_in_failsafe = inObject->StayInFailsafe;
+	pbMsg.flight_termination = inObject->FlightTermination;
+	pbMsg.item_do_jump_changed = inObject->ItemDoJumpChanged;
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4br_mission_result_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_MissionResult_Enc failed\n");
+		return 0;
+	}
+
+	return stream.bytes_written;
 }
 
 uint32 PX4BR_MissionResult_Dec(const char *inBuffer, uint32 inSize, PX4_MissionResultMsg_t *inOutObject)
 {
-	return 0;
+	bool status = false;
+	px4br_mission_result_pb pbMsg;
+
+	/* Create a stream that reads from the buffer. */
+	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4br_mission_result_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_MissionResult_Dec failed\n");
+		return 0;
+	}
+
+	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->InstanceCount = pbMsg.instance_count;
+	inOutObject->SeqReached = pbMsg.seq_reached;
+	inOutObject->SeqCurrent = pbMsg.seq_current;
+	inOutObject->SeqTotal = pbMsg.seq_total;
+	inOutObject->ItemChangedIndex = pbMsg.item_changed_index;
+	inOutObject->ItemDoJumpRemaining = pbMsg.item_do_jump_remaining;
+	inOutObject->Valid = pbMsg.valid;
+	inOutObject->Warning = pbMsg.warning;
+	inOutObject->Reached = pbMsg.reached;
+	inOutObject->Finished = pbMsg.finished;
+	inOutObject->Failure = pbMsg.failure;
+	inOutObject->StayInFailsafe = pbMsg.stay_in_failsafe;
+	inOutObject->FlightTermination = pbMsg.flight_termination;
+	inOutObject->ItemDoJumpChanged = pbMsg.item_do_jump_changed;
+
+	return sizeof(PX4_MissionResultMsg_t);
 }
 
 
@@ -4068,12 +4213,51 @@ uint32 PX4BR_VehicleAttitudeSetpoint_Dec(const char *inBuffer, uint32 inSize, PX
 
 uint32 PX4BR_VehicleCommandAck_Enc(const PX4_VehicleCommandAckMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
-	return 0;
+	bool status = false;
+	px4br_vehicle_command_ack_pb pbMsg;
+
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.command = inObject->Command;
+	pbMsg.result = inObject->Result;
+
+	/* Create a stream that will write to our buffer. */
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+	/* Now we are ready to encode the message. */
+	status = pb_encode(&stream, px4br_vehicle_command_ack_pb_fields, &pbMsg);
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_VehicleCommandAck_Enc failed\n");
+		return 0;
+	}
+
+	return stream.bytes_written;
 }
 
 uint32 PX4BR_VehicleCommandAck_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleCommandAckMsg_t *inOutObject)
 {
-	return 0;
+	bool status = false;
+	px4br_vehicle_command_ack_pb pbMsg;
+
+	/* Create a stream that reads from the buffer. */
+	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+
+	/* Now we are ready to decode the message. */
+	status = pb_decode(&stream, px4br_vehicle_command_ack_pb_fields, &pbMsg);
+
+	/* Check for errors... */
+	if (!status)
+	{
+        OS_printf("PX4BR_VehicleCommandAck_Dec failed\n");
+		return 0;
+	}
+
+	inOutObject->Timestamp = pbMsg.timestamp;
+	inOutObject->Command = pbMsg.command;
+	inOutObject->Result = pbMsg.result;
+
+	return sizeof(PX4_VehicleCommandAckMsg_t);
 }
 
 

@@ -943,6 +943,7 @@ typedef struct
 	uint64 Timestamp;
 	boolean GeofenceViolated;
 	PX4_GeofenceAction_t GeofenceAction;
+	boolean HomeRequired;
 } PX4_GeofenceResultMsg_t;
 
 typedef struct
@@ -1171,16 +1172,17 @@ typedef struct
 	uint32 InstanceCount;
 	uint32 SeqReached;
 	uint32 SeqCurrent;
+	uint32 SeqTotal;
 	uint32 ItemChangedIndex;
 	uint32 ItemDoJumpRemaining;
 	boolean Valid;
 	boolean Warning;
 	boolean Reached;
 	boolean Finished;
+	boolean Failure;
 	boolean StayInFailsafe;
 	boolean FlightTermination;
 	boolean ItemDoJumpChanged;
-	boolean MissionFailure;
 } PX4_MissionResultMsg_t;
 
 
