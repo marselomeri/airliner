@@ -68,7 +68,7 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     *  \par Limits:
 	     *  	Min > Max (incr.) 0.1 > 10 , default 2.0.
 	     */
-	    2.0,
+	    1.4,
 
 	    /** \brief Multicopter sub-hover throttle scaling.
 	     *
