@@ -4293,7 +4293,7 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 		/* Check for errors... */
 		if (!status)
 		{
-            OS_printf("PX4BR_VehicleCommand_Enc failed\n");
+            OS_printf("PX4BR_VehicleCommand_Enc (%u) failed\n", inObject->Timestamp);
 			return 0;
 		}
 
@@ -4303,7 +4303,7 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 	}
 	else
 	{
-            OS_printf("PX4BR_VehicleCommand_Enc reflected\n");
+            OS_printf("PX4BR_VehicleCommand_Enc (%u) reflected\n", inObject->Timestamp);
             return 0;
 	}
 }
@@ -4330,7 +4330,7 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 			return 0;
 		}
 
-        OS_printf("PX4BR_VehicleCommand_Dec decoded\n");
+        OS_printf("PX4BR_VehicleCommand_Dec (%u) decoded\n", inOutObject->Timestamp);
 
 		inOutObject->Timestamp = pbMsg.timestamp;
 		inOutObject->Param5 = pbMsg.param5;
@@ -4350,7 +4350,7 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 	}
 	else
 	{
-        OS_printf("PX4BR_VehicleCommand_Dec reflected\n");
+        OS_printf("PX4BR_VehicleCommand_Dec (%u) reflected\n", inOutObject->Timestamp);
 		return 0;
 	}
 }
