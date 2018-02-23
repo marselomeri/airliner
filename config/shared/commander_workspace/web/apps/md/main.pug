@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -92,4 +95,20 @@ block main
                     td 
                       span(data-sage={tlm:[{name:'/CFS/MD/Countdown[#{index}]'}]}) ---
                   - }
+                                        
+  .row
+    +app_specific_telemetry_control("MD")
+                                              
+  .row          
+    +app_specific_mempools("MD")
+    
+  .row
+    +app_specific_application_control("MD") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("MD")
+    
+  .row
+    +app_specific_scheduler_control("MD")
           

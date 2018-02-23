@@ -126,6 +126,8 @@
 
 
 uint64_t vehicle_rates_timestamp = 0;
+uint64_t vehicle_command_timestamp = 0;
+uint64_t vehicle_command_ack_timestamp = 0;
 
 
 void PX4_DisplayBuffer(const char* inBuffer, int inSize)
@@ -4080,34 +4082,43 @@ uint32 PX4BR_VehicleCommand_Enc(const PX4_VehicleCommandMsg_t *inObject, char *i
 	bool status = false;
 	px4br_vehicle_command_pb pbMsg;
 
-	pbMsg.timestamp = inObject->Timestamp;
-	pbMsg.param5 = inObject->Param5;
-	pbMsg.param6 = inObject->Param6;
-	pbMsg.param1 = inObject->Param1;
-	pbMsg.param2 = inObject->Param2;
-	pbMsg.param3 = inObject->Param3;
-	pbMsg.param4 = inObject->Param4;
-	pbMsg.param7 = inObject->Param7;
-	pbMsg.command = inObject->Command;
-	pbMsg.target_system = inObject->TargetSystem;
-	pbMsg.target_component = inObject->TargetComponent;
-	pbMsg.source_system = inObject->SourceSystem;
-	pbMsg.source_component = inObject->SourceComponent;
-	pbMsg.confirmation = inObject->Confirmation;
-
-	/* Create a stream that will write to our buffer. */
-	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
-
-	/* Now we are ready to encode the message. */
-	status = pb_encode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
-	/* Check for errors... */
-	if (!status)
+	if(inObject->Timestamp > vehicle_command_timestamp)
 	{
-        OS_printf("PX4BR_VehicleCommand_Enc failed\n");
-		return 0;
-	}
+		vehicle_command_timestamp = inObject->Timestamp;
 
-	return stream.bytes_written;
+		pbMsg.timestamp = inObject->Timestamp;
+		pbMsg.param5 = inObject->Param5;
+		pbMsg.param6 = inObject->Param6;
+		pbMsg.param1 = inObject->Param1;
+		pbMsg.param2 = inObject->Param2;
+		pbMsg.param3 = inObject->Param3;
+		pbMsg.param4 = inObject->Param4;
+		pbMsg.param7 = inObject->Param7;
+		pbMsg.command = inObject->Command;
+		pbMsg.target_system = inObject->TargetSystem;
+		pbMsg.target_component = inObject->TargetComponent;
+		pbMsg.source_system = inObject->SourceSystem;
+		pbMsg.source_component = inObject->SourceComponent;
+		pbMsg.confirmation = inObject->Confirmation;
+
+		/* Create a stream that will write to our buffer. */
+		pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);
+
+		/* Now we are ready to encode the message. */
+		status = pb_encode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
+		/* Check for errors... */
+		if (!status)
+		{
+			return 0;
+		}
+
+		return stream.bytes_written;
+	}
+	else
+	{
+            OS_printf("PX4BR_VehicleCommand_Enc failed\n");
+            return 0;
+	}
 }
 
 uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_VehicleCommandMsg_t *inOutObject)
@@ -4115,35 +4126,43 @@ uint32 PX4BR_VehicleCommand_Dec(const char *inBuffer, uint32 inSize, PX4_Vehicle
 	bool status = false;
 	px4br_vehicle_command_pb pbMsg;
 
-	/* Create a stream that reads from the buffer. */
-	pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
+	if(inOutObject->Timestamp > vehicle_command_timestamp)
+	{
+		vehicle_command_timestamp = inOutObject->Timestamp;
 
-	/* Now we are ready to decode the message. */
-	status = pb_decode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
+		/* Create a stream that reads from the buffer. */
+		pb_istream_t stream = pb_istream_from_buffer((const pb_byte_t *)inBuffer, inSize);
 
-	/* Check for errors... */
-	if (!status)
+		/* Now we are ready to decode the message. */
+		status = pb_decode(&stream, px4br_vehicle_command_pb_fields, &pbMsg);
+
+		/* Check for errors... */
+		if (!status)
+		{
+			return 0;
+		}
+
+		inOutObject->Timestamp = pbMsg.timestamp;
+		inOutObject->Param5 = pbMsg.param5;
+		inOutObject->Param6 = pbMsg.param6;
+		inOutObject->Param1 = pbMsg.param1;
+		inOutObject->Param2 = pbMsg.param2;
+		inOutObject->Param3 = pbMsg.param3;
+		inOutObject->Param4 = pbMsg.param4;
+		inOutObject->Param7 = pbMsg.param7;
+		inOutObject->Command = pbMsg.command;
+		inOutObject->TargetSystem = pbMsg.target_system;
+		inOutObject->TargetComponent = pbMsg.target_component;
+		inOutObject->SourceSystem = pbMsg.source_system;
+		inOutObject->SourceComponent = pbMsg.source_component;
+		inOutObject->Confirmation = pbMsg.confirmation;
+		return sizeof(PX4_VehicleCommandMsg_t);
+	}
+	else
 	{
         OS_printf("PX4BR_VehicleCommand_Dec failed\n");
 		return 0;
 	}
-
-	inOutObject->Timestamp = pbMsg.timestamp;
-	inOutObject->Param5 = pbMsg.param5;
-	inOutObject->Param6 = pbMsg.param6;
-	inOutObject->Param1 = pbMsg.param1;
-	inOutObject->Param2 = pbMsg.param2;
-	inOutObject->Param3 = pbMsg.param3;
-	inOutObject->Param4 = pbMsg.param4;
-	inOutObject->Param7 = pbMsg.param7;
-	inOutObject->Command = pbMsg.command;
-	inOutObject->TargetSystem = pbMsg.target_system;
-	inOutObject->TargetComponent = pbMsg.target_component;
-	inOutObject->SourceSystem = pbMsg.source_system;
-	inOutObject->SourceComponent = pbMsg.source_component;
-	inOutObject->Confirmation = pbMsg.confirmation;
-
-	return sizeof(PX4_VehicleCommandMsg_t);
 }
 
 
@@ -4370,6 +4389,7 @@ uint32 PX4BR_VehicleGlobalPosition_Dec(const char *inBuffer, uint32 inSize, PX4_
 }
 
 
+
 uint32 PX4BR_VehicleGlobalVelocitySetpoint_Enc(const PX4_VehicleGlobalVelocitySetpointMsg_t *inObject, char *inOutBuffer, uint32 inSize)
 {
 	bool status = false;
@@ -4572,92 +4592,92 @@ uint32 PX4BR_VehicleLocalPosition_Enc(const PX4_VehicleLocalPositionMsg_t *inObj
 	bool status = false;
 	px4br_vehicle_local_position_pb pbMsg;
 
-	pbMsg.timestamp = 0;
-	pbMsg.ref_timestamp = 0;
-	pbMsg.ref_lat = 0;
-	pbMsg.ref_lon = 0;
-	pbMsg.surface_bottom_timestamp  = 0;
-	pbMsg.x = 0;
-	pbMsg.y = 0;
-	pbMsg.z = 0;
-	pbMsg.delta_xy_count = 2;
-	pbMsg.delta_xy[0] = 0;
-	pbMsg.delta_xy[1] = 0;
-	pbMsg.delta_z = 0;
-	pbMsg.vx = 0;
-	pbMsg.vy = 0;
-	pbMsg.vz = 0;
-	pbMsg.delta_vxy_count = 2;
-	pbMsg.delta_vxy[0] = 0;
-	pbMsg.delta_vxy[1] = 0;
-	pbMsg.delta_vz = 0;
-	pbMsg.ax = 0;
-	pbMsg.ay = 0;
-	pbMsg.az = 0;
-	pbMsg.yaw = 0;
-	pbMsg.ref_alt = 0;
-	pbMsg.dist_bottom = 0;
-	pbMsg.dist_bottom_rate = 0;
-	pbMsg.eph = 0;
-	pbMsg.epv = 0;
-	pbMsg.evh = 0;
-	pbMsg.evv = 0;
-	pbMsg.estimator_type = 0;//inObject->EstimatorType;
-	pbMsg.xy_valid = 0;
-	pbMsg.z_valid = 0;
-	pbMsg.v_xy_valid = 0;
-	pbMsg.v_z_valid = 0;
-	pbMsg.xy_reset_counter = 0;
-	pbMsg.z_reset_counter = 0;
-	pbMsg.vxy_reset_counter = 0;
-	pbMsg.vz_reset_counter = 0;
-	pbMsg.xy_global = 0;
-	pbMsg.z_global = 0;
-	pbMsg.dist_bottom_valid = 0;
-
-
-/*	pbMsg.timestamp = inObject->Timestamp;*/
-/*	pbMsg.ref_timestamp = inObject->RefTimestamp;*/
-/*	pbMsg.ref_lat = inObject->RefLat;*/
-/*	pbMsg.ref_lon = inObject->RefLon;*/
-/*	pbMsg.surface_bottom_timestamp = inObject->SurfaceBottomTimestamp;*/
-/*	pbMsg.x = inObject->X;*/
-/*	pbMsg.y = inObject->Y;*/
-/*	pbMsg.z = inObject->Z;*/
+/*	pbMsg.timestamp = 0;*/
+/*	pbMsg.ref_timestamp = 0;*/
+/*	pbMsg.ref_lat = 0;*/
+/*	pbMsg.ref_lon = 0;*/
+/*	pbMsg.surface_bottom_timestamp  = 0;*/
+/*	pbMsg.x = 0;*/
+/*	pbMsg.y = 0;*/
+/*	pbMsg.z = 0;*/
 /*	pbMsg.delta_xy_count = 2;*/
-/*	pbMsg.delta_xy[0] = inObject->Delta_XY[0];*/
-/*	pbMsg.delta_xy[1] = inObject->Delta_XY[1];*/
-/*	pbMsg.delta_z = inObject->Delta_Z;*/
-/*	pbMsg.vx = inObject->VX;*/
-/*	pbMsg.vy = inObject->VY;*/
-/*	pbMsg.vz = inObject->VZ;*/
+/*	pbMsg.delta_xy[0] = 0;*/
+/*	pbMsg.delta_xy[1] = 0;*/
+/*	pbMsg.delta_z = 0;*/
+/*	pbMsg.vx = 0;*/
+/*	pbMsg.vy = 0;*/
+/*	pbMsg.vz = 0;*/
 /*	pbMsg.delta_vxy_count = 2;*/
-/*	pbMsg.delta_vxy[0] = inObject->Delta_VXY[0];*/
-/*	pbMsg.delta_vxy[1] = inObject->Delta_VXY[1];*/
-/*	pbMsg.delta_vz = inObject->Delta_VZ;*/
-/*	pbMsg.ax = inObject->AX;*/
-/*	pbMsg.ay = inObject->AY;*/
-/*	pbMsg.az = inObject->AZ;*/
-/*	pbMsg.yaw = inObject->Yaw;*/
-/*	pbMsg.ref_alt = inObject->RefAlt;*/
-/*	pbMsg.dist_bottom = inObject->DistBottom;*/
-/*	pbMsg.dist_bottom_rate = inObject->DistBottomRate;*/
-/*	pbMsg.eph = inObject->EpH;*/
-/*	pbMsg.epv = inObject->EpV;*/
-/*	pbMsg.evh = inObject->EvH;*/
-/*	pbMsg.evv = inObject->EvV;*/
+/*	pbMsg.delta_vxy[0] = 0;*/
+/*	pbMsg.delta_vxy[1] = 0;*/
+/*	pbMsg.delta_vz = 0;*/
+/*	pbMsg.ax = 0;*/
+/*	pbMsg.ay = 0;*/
+/*	pbMsg.az = 0;*/
+/*	pbMsg.yaw = 0;*/
+/*	pbMsg.ref_alt = 0;*/
+/*	pbMsg.dist_bottom = 0;*/
+/*	pbMsg.dist_bottom_rate = 0;*/
+/*	pbMsg.eph = 0;*/
+/*	pbMsg.epv = 0;*/
+/*	pbMsg.evh = 0;*/
+/*	pbMsg.evv = 0;*/
 /*	pbMsg.estimator_type = 0;//inObject->EstimatorType;*/
-/*	pbMsg.xy_valid = inObject->XY_Valid;*/
-/*	pbMsg.z_valid = inObject->Z_Valid;*/
-/*	pbMsg.v_xy_valid = inObject->V_XY_Valid;*/
-/*	pbMsg.v_z_valid = inObject->V_Z_Valid;*/
-/*	pbMsg.xy_reset_counter = inObject->XY_ResetCounter;*/
-/*	pbMsg.z_reset_counter = inObject->Z_ResetCounter;*/
-/*	pbMsg.vxy_reset_counter = inObject->VXY_ResetCounter;*/
-/*	pbMsg.vz_reset_counter = inObject->VZ_ResetCounter;*/
-/*	pbMsg.xy_global = inObject->XY_Global;*/
-/*	pbMsg.z_global = inObject->Z_Global;*/
-/*	pbMsg.dist_bottom_valid = inObject->DistBottomValid;*/
+/*	pbMsg.xy_valid = 0;*/
+/*	pbMsg.z_valid = 0;*/
+/*	pbMsg.v_xy_valid = 0;*/
+/*	pbMsg.v_z_valid = 0;*/
+/*	pbMsg.xy_reset_counter = 0;*/
+/*	pbMsg.z_reset_counter = 0;*/
+/*	pbMsg.vxy_reset_counter = 0;*/
+/*	pbMsg.vz_reset_counter = 0;*/
+/*	pbMsg.xy_global = 0;*/
+/*	pbMsg.z_global = 0;*/
+/*	pbMsg.dist_bottom_valid = 0;*/
+
+
+	pbMsg.timestamp = inObject->Timestamp;
+	pbMsg.ref_timestamp = inObject->RefTimestamp;
+	pbMsg.ref_lat = inObject->RefLat;
+	pbMsg.ref_lon = inObject->RefLon;
+	pbMsg.surface_bottom_timestamp = inObject->SurfaceBottomTimestamp;
+	pbMsg.x = inObject->X;
+	pbMsg.y = inObject->Y;
+	pbMsg.z = inObject->Z;
+	pbMsg.delta_xy_count = 2;
+	pbMsg.delta_xy[0] = inObject->Delta_XY[0];
+	pbMsg.delta_xy[1] = inObject->Delta_XY[1];
+	pbMsg.delta_z = inObject->Delta_Z;
+	pbMsg.vx = inObject->VX;
+	pbMsg.vy = inObject->VY;
+	pbMsg.vz = inObject->VZ;
+	pbMsg.delta_vxy_count = 2;
+	pbMsg.delta_vxy[0] = inObject->Delta_VXY[0];
+	pbMsg.delta_vxy[1] = inObject->Delta_VXY[1];
+	pbMsg.delta_vz = inObject->Delta_VZ;
+	pbMsg.ax = inObject->AX;
+	pbMsg.ay = inObject->AY;
+	pbMsg.az = inObject->AZ;
+	pbMsg.yaw = inObject->Yaw;
+	pbMsg.ref_alt = inObject->RefAlt;
+	pbMsg.dist_bottom = inObject->DistBottom;
+	pbMsg.dist_bottom_rate = inObject->DistBottomRate;
+	pbMsg.eph = inObject->EpH;
+	pbMsg.epv = inObject->EpV;
+	pbMsg.evh = inObject->EvH;
+	pbMsg.evv = inObject->EvV;
+	pbMsg.estimator_type = inObject->EstimatorType;
+	pbMsg.xy_valid = inObject->XY_Valid;
+	pbMsg.z_valid = inObject->Z_Valid;
+	pbMsg.v_xy_valid = inObject->V_XY_Valid;
+	pbMsg.v_z_valid = inObject->V_Z_Valid;
+	pbMsg.xy_reset_counter = inObject->XY_ResetCounter;
+	pbMsg.z_reset_counter = inObject->Z_ResetCounter;
+	pbMsg.vxy_reset_counter = inObject->VXY_ResetCounter;
+	pbMsg.vz_reset_counter = inObject->VZ_ResetCounter;
+	pbMsg.xy_global = inObject->XY_Global;
+	pbMsg.z_global = inObject->Z_Global;
+	pbMsg.dist_bottom_valid = inObject->DistBottomValid;
 
 	/* Create a stream that will write to our buffer. */
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t *)inOutBuffer, inSize);

@@ -46,6 +46,7 @@ extern "C" {
 #endif
 
 #include "cfe.h"
+#include "px4_msgs.h"
 
 
 /************************************************************************
@@ -151,6 +152,9 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
+    PX4_ActuatorControlsMsg_t ActuatorControls0;
+    PX4_ActuatorArmedMsg_t    ActuatorArmed;
+    PX4_BatteryStatusMsg_t    BatteryStatusMsg;
 } BAT_HkTlm_t;
 
 

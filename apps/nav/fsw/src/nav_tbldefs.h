@@ -62,8 +62,83 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
+    /** \brief Default Accepted Radius.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0.05 > 200.0 , default 2.0.
+     */
+    float    NAV_ACC_RAD;
+
+    /** \brief Altitude Acceptance Radius.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0.05 > 200 , default 0.8.
+     */
+    float    NAV_ALT_RAD;
+
+    /** \brief The Loiter Radius.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 25 > 1000 , default 50.0.
+     */
+    float    NAV_LOITER_RAD;
+
+    /** \brief Take-off Altitude.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 80 , default 2.5.
+     */
+    float    NAV_MIS_TAKEOFF_ALT;
+
+    /** \brief Max yaw error in degrees needed for waypoint heading acceptance.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 90 , default 12.0.
+     */
+    float    NAV_MIS_YAW_ERR;
+
+    /** \brief Time in seconds we wait on reaching target heading at a waypoint if it is forced.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) -1 > 20 , default -1.0.
+     */
+    float    NAV_MIS_YAW_TMT;
+
+    /** \brief Minimum Loiter Altitude.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) -1 > 80 , default 1.20.
+     */
+    float    NAV_MIS_LTRMIN_ALT;
+
+    /** \brief RTL Altitude.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0 > 150 , default 30.0.
+     */
+    float    NAV_RTL_RETURN_ALT;
+
+    /** \brief RTL Loiter Altitude.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 2 > 100 , default 10.0.
+     */
+    float    NAV_RTL_DESCEND_ALT;
+
+    /** \brief RTL Delay.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) -1 > 300 , default 0.0.
+     */
+    float    NAV_RTL_LAND_DELAY;
+
+    /** \brief Minimum distance to trigger rising to a safe altitude.
+     *
+     *  \par Limits:
+     *       Min > Max (incr.) 0.5 > 20 , default 5.0.
+     */
+    float    NAV_RTL_MIN_DIST;
+
 } NAV_ConfigTbl_t;
 
 

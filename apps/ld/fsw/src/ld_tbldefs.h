@@ -62,8 +62,124 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
+    /** \brief Multicopter max climb rate.
+     *
+     *  \par Limits:
+     *  	default 0.5.
+     */
+    float    LD_Z_VEL_MAX;
+
+    /** \brief Multicopter max horizontal velocity.
+     *
+     *  \par Limits:
+     *  	default 1.5.
+     */
+    float    LD_XY_VEL_MAX;
+
+    /** \brief Multicopter max rotation.
+     *
+     *  \par Limits:
+     *  	default 20.0.
+     */
+    float    LD_ROT_MAX;
+
+    /** \brief Multicopter specific force threshold.
+     *
+     *  \par Limits:
+     *  	Min > Max (incr.) 0.1 > 10 , default 2.0.
+     */
+    float    LD_FFALL_THR ;
+
+    /** \brief Multicopter sub-hover throttle scaling.
+     *
+     *  \par Limits:
+     *  	Min > Max (incr.) 0.05 > 0.5 , default 0.1.
+     */
+    float    LD_THR_RANGE;
+
+    /** \brief Multicopter free-fall trigger time.
+     *
+     *  \par Limits:
+     *  	Min > Max (incr.) 0.02 > 5 , default 0.3.
+     */
+    float    LD_FFALL_TTRI;
+
+    /** \brief Multicopter Flight stick down threshold for landing.
+     *
+     *  \par Limits:
+     *  	default 0.15.
+     */
+    float    LD_MAN_DWNTHR;
+
+    /** \brief Multicopter Flight stick up threshold for take off.
+     *
+     *  \par Limits:
+     *  	default 0.65.
+     */
+    float    LD_POS_UPTHR;
+
+    /** \brief Total flight time in ms, higher 32 bits of the value.
+     *
+     *  \par Limits:
+     *  	default 0.
+     */
+    float    LD_FLT_TME_HI;
+
+    /** \brief Total flight time in ms, lower 32 bits of the value.
+     *
+     *  \par Limits:
+     *  	default 60299599.
+     */
+    float    LD_FLT_TME_LO;
+
+    /** \brief Multicopter maximum altitude.
+     *
+     *  \par Limits:
+     *  	default 10000.0.
+     */
+    float    LD_ALT_MAX;
+
+    /** \brief Multicopter minimum throttle.
+     *
+     *  \par Limits:
+     *  	default 0.12.
+     */
+    float    LD_MIN_THR;
+
+    /** \brief Multicopter hover throttle.
+     *
+     *  \par Limits:
+     *  	default 0.5.
+     */
+    float    LD_HVR_THR;
+
+    /** \brief Multicopter throttle range.
+     *
+     *  \par Limits:
+     *  	default 0.1.
+     */
+    float    LD_THR_RANGE_B;
+
+    /** \brief Multicopter minimum throttle in manual mode.
+     *
+     *  \par Limits:
+     *  	default 0.08.
+     */
+    float    LD_MAN_MIN_THR;
+
+    /** \brief Multicopter takeoff stick up threshold in position control mode.
+     *
+     *  \par Limits:
+     *  	default 0.65.
+     */
+    float    LD_POS_STK_UP_THRES;
+
+    /** \brief Multicopter takeoff stick down threshold in position control mode.
+     *
+     *  \par Limits:
+     *  	default 0.15.
+     */
+    float    LD_POS_STK_DW_THRES;
 } LD_ConfigTbl_t;
 
 

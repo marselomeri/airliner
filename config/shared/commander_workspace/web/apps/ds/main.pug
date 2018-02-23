@@ -1,4 +1,7 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
         i.fa-fw.fa.fa-signal
@@ -393,5 +396,20 @@ block main
                      span(data-sage={tlm:[{name:'/CFS/DS/FileInfo_15_OpenState'}]}) ---
                    td
                      span(data-sage={tlm:[{name:'/CFS/DS/FileInfo_15_FileName'}]}) ---
-         
+                                        
+  .row
+    +app_specific_telemetry_control("DS")
+                            
+  .row          
+    +app_specific_mempools("DS")
+    
+  .row
+    +app_specific_application_control("DS") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("DS")
+    
+  .row
+    +app_specific_scheduler_control("DS")
    

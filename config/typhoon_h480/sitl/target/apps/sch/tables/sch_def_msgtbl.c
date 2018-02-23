@@ -164,7 +164,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
    /* Command ID #61 */
    { { SCH_FIX_HEADER(MAC_RUN_CONTROLLER_MID, 0xC000, 0x0001), 0x0000 } },
    /* Command ID #62 */
-   { { SCH_FIX_HEADER(EIM_SEND_HK_MID, 0xC000, 0x0001), 0x0000 } },
+   { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #63 */
    { { SCH_FIX_HEADER(SCH_UNUSED_MID, 0, 0), 0 } },
    /* Command ID #64 */

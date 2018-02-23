@@ -1,273 +1,159 @@
-extends ../../common/layout
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
 
 block header
-        i.fa-fw.fa.fa-signal
-        | Invensese MPU9250 Driver
+  i.fa-fw.fa.fa-signal
+  | MPU9250 Inertial Measurement Unit Driver
 
 block main
-  .row
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-MPU9250-Application.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Application
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Cmd Count
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/CmdCounter'}}) ---
-                  tr
-                    th Error Count
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/ErrCounter'}}) ---
-                  tr
-                    th Acc Divider
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccDivider'}}) ---
-                  tr
-                    th Gyro Divider
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroDivider'}}) ---
-                  tr
-                    th Acc X Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccXCoef'}}) ---
-                  tr
-                    th Acc Y Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccYCoef'}}) ---
-                  tr
-                    th Acc Z Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccZCoef'}}) ---
-                  tr
-                    th Acc X Bias
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccXBias'}}) ---
-                  tr
-                    th Acc Y Bias
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccYBias'}}) ---
-                  tr
-                    th Acc Z Bias
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccZBias'}}) ---
-                  tr
-                    th Gyro X Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroXCoef'}}) ---
-                  tr
-                    th Gyro Y Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroYCoef'}}) ---
-                  tr
-                    th Gyro Z Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroZCoef'}}) ---
-                  tr
-                    th Mag X Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagXCoef'}}) ---
-                  tr
-                    th Mag Y Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagYCoef'}}) ---
-                  tr
-                    th Mag Z Coef
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagZCoef'}}) ---
-                  tr
-                    th Mag X Bias
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagXBias'}}) ---
-                  tr
-                    th Mag Y Bias
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagYBias'}}) ---
-                  tr
-                    th Mag Z Bias
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagZBias'}}) ---
-                  tr
-                    th Room Temp Offset
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RoomTempOffset'}}) ---
-                  tr
-                    th Temp Sensitivity
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/TempSensitivity'}}) ---
-                  tr
-                    th AppID
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AppID'}}) ---
-                  tr
-                    th Table Verify Success Count
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/TableVerifySuccessCount'}}) ---
-                  tr
-                    th Table Verify Failure Count
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/TableVerifyFailureCount'}}) ---
-                  tr
-                    th Table Pass Count
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/TablePassCount'}}) ---
-            footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/MPU9250/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd:{Name:'/CFS/MPU9250/Reset'}}) Reset
-                  
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-MPU9250-Raw-Application.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Raw
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Accel X
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawAccelX'}}) ---
-                  tr
-                    th Accel Y
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawAccelY'}}) ---
-                  tr
-                    th Accel Z
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawAccelZ'}}) ---
-                  tr
-                    th Gyro X
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawGyroX'}}) ---
-                  tr
-                    th Gyro Y
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawGyroY'}}) ---
-                  tr
-                    th Gyro Z
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawGyroZ'}}) ---
-                  tr
-                    th Mag X
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawMagX'}}) ---
-                  tr
-                    th Mag Y
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawMagY'}}) ---
-                  tr
-                    th Mag Z
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawMagZ'}}) ---
-                  tr
-                    th Mag X Adj
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawMagXAdj'}}) ---
-                  tr
-                    th Mag Y Adj
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawMagYAdj'}}) ---
-                  tr
-                    th Temp
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawTemp'}}) ---
-                  tr
-                    th WOM
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawWOM'}}) ---
-                  tr
-                    th Fifo Overflow
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawFifoOvflw'}}) ---
-                  tr
-                    th Fsync
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawFsync'}}) ---
-                  tr
-                    th IMU Data Ready
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawImuDataReady'}}) ---
-                  tr
-                    th Overrun
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawOverrun'}}) ---
-                  tr
-                    th Mag Data Ready
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawMagDataReady'}}) ---
-                  tr
-                    th Overflow
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawOverflow'}}) ---
-                  tr
-                    th Output 16 Bit
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/RawOutput16Bit'}}) ---
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-MPU9250-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Housekeeping
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Cmd Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/CmdCounter'}]}) ---
+                    tr
+                      th Error Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/ErrCounter'}]}) ---
+                    tr
+                      th State
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/State'}]}) ---
+              footer
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPU9250/NoOp'}}) No-Op
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPU9250/Reset'}}) Reset
+                
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:650px')
+        #wid-MPU9250-Diagnostic.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Diagnostic
+              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name:'/CFS/MPU9250/SendDiag'}}) Send
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th(style={width:"250px"}) Accel Scale
+                      td(style={width:"100px"})
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccScaleX'}]}) ---
+                      td(style={width:"100px"})
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccScaleY'}]}) ---
+                      td(style={width:"100px"})
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccScaleZ'}]}) ---
+                    tr
+                      th Accel Offset
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccOffsetX'}]}) ---
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccOffsetY'}]}) ---
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccOffsetZ'}]}) ---
+                    tr
+                      th Gyro Scale
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroScaleX'}]}) ---
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroScaleY'}]}) ---
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroScaleZ'}]}) ---
+                    tr
+                      th Gyro Offset
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroOffsetX'}]}) ---
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroOffsetY'}]}) ---
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroOffsetZ'}]}) ---
+                    tr
+                      th Rotation
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_Rotation'}]}) ---
+                      td
+                      td
+                    tr
+                      th Accel Unit
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccUnit'}]}) ---
+                      td
+                      td
+                    tr
+                      th Gyro Unit
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroUnit'}]}) ---
+                      td
+                      td
+                    tr
+                      th Accel Divider
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccDivider'}]}) ---
+                      td
+                      td
+                    tr
+                      th Gyro Divider
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroDivider'}]}) ---
+                      td
+                      td
+                    tr
+                      th Room Temperature Offset
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_RoomTempOffset'}]}) ---
+                      td
+                      td
+                    tr
+                      th Temperature Sensitivity
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_TempSensitivity'}]}) ---
+                      td
+                      td
+                    tr
+                      th Accel Scale
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_AccScale'}]}) ---
+                      td
+                      td
+                    tr
+                      th Gyro Scale
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPU9250/Diag_GyroScale'}]}) ---
+                      td
+                      td
 
-                  
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-MPU9250-Raw-Application.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Calibrated
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Accel X
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccelX'}}) ---
-                  tr
-                    th Accel Y
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccelY'}}) ---
-                  tr
-                    th Accel Z
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/AccelZ'}}) ---
-                  tr
-                    th Gyro X
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroX'}}) ---
-                  tr
-                    th Gyro Y
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroY'}}) ---
-                  tr
-                    th Gyro Z
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/GyroZ'}}) ---
-                  tr
-                    th Mag X
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagX'}}) ---
-                  tr
-                    th Mag Y
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagY'}}) ---
-                  tr
-                    th Mag Z
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/MagZ'}}) ---
-                  tr
-                    th Temp
-                    td
-                      span.sage-tlm(data-sage={tlm:{name:'/CFS/MPU9250/Temp'}}) ---
+                                        
+  .row
+    +app_specific_telemetry_control("MPU9250")
+                                    
+  .row          
+    +app_specific_mempools("MPU9250")
+    
+  .row
+    +app_specific_application_control("MPU9250")
+    +registered_applications() 
+
+  .row
+    +app_specific_event_filters("MPU9250")
+    
+  .row
+    +app_specific_scheduler_control("MPU9250")
+

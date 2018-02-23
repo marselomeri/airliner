@@ -26,20 +26,8 @@ LD oLD;
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-LD::LD() :
-	freefall_history(false),
-	landed_history(true),//k_change
-	ground_contact_history(true),//k_change
-	state{},
-	total_flight_time{0},
-	takeoff_time{0},
-	VehicleLandDetectedMsg{0,false,false}
+LD::LD()
 {
-	// Use Trigger time when transitioning from in-air (false) to landed (true) / ground contact (true).
-
-	landed_history.setTimeSince(false, LAND_DETECTOR_TRIGGER_TIME_US);
-	ground_contact_history.setTimeSince(false, GROUND_CONTACT_TRIGGER_TIME_US);
-
 
 }
 
@@ -242,7 +230,6 @@ int32 LD::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
-    //int publish_counter = 0;
 
 
     iStatus = InitEvent();
@@ -269,6 +256,9 @@ int32 LD::InitApp()
     {
         goto LD_InitApp_Exit_Tag;
     }
+
+    /* Updating application params from platform-nav-config-table */
+    UpdateParamsFromTable();
 
 LD_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -632,7 +622,7 @@ void LD::AppMain()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Detect if vehicle in free fall.                     		   */
+/* Detect if vehicle in free fall. 	                    		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::DetectFreeFall()
@@ -649,29 +639,18 @@ boolean LD::DetectFreeFall()
 			+ CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ;
 	net_acc = sqrtf(net_acc);
 	if(net_acc < ld_params.lndmc_ffall_thr){
-//	OS_printf("____________________________________________")	;
-//	OS_printf("CSMsgX :  %f \n",CVT.ControlStateMsg.AccX);
-//	OS_printf("CSMsgY :  %f \n",CVT.ControlStateMsg.AccY);
-//	OS_printf("CSMsgZ :  %f \n",CVT.ControlStateMsg.AccZ);
-//	OS_printf("CSMsg Netforce :  %f \n",(CVT.ControlStateMsg.AccX * CVT.ControlStateMsg.AccX
-//			+CVT.ControlStateMsg.AccY * CVT.ControlStateMsg.AccY
-//			+ CVT.ControlStateMsg.AccZ * CVT.ControlStateMsg.AccZ));
-//	OS_printf("sqrt of ntfrce :  %f \n",net_acc);
-//	OS_printf("g:  %f < %f = %d \n",net_acc,ld_params.lndmc_ffall_thr,(net_acc < ld_params.lndmc_ffall_thr));
-//	OS_printf("____________________________________________\n\n\n")	;
-
+		/* Free fall event */
 	}
-//	OS_printf("vz: %f \n",(double)CVT.VehicleLocalPositionMsg.VZ);
-//	OS_printf('time:  %ld', (long)PX4LIB_GetPX4TimeUs());
-	return (net_acc < ld_params.lndmc_ffall_thr);	//true if we are currently falling
+	return (net_acc < ld_params.lndmc_ffall_thr);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Get ground contact state.                   		   */
+/* Get ground contact state.			                   		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::DetectGroundContactState(){
+
 	const uint64 now = PX4LIB_GetPX4TimeUs();
 	float armingThreshFactor = 1.0f;
 	boolean minimal_thrust;
@@ -680,7 +659,6 @@ boolean LD::DetectGroundContactState(){
 	if (!CVT.ActuatorArmedMsg.Armed){
 		arming_time = 0;
 		return true;
-
 	}
 	else if (arming_time = 0){
 		arming_time = now;
@@ -702,24 +680,21 @@ boolean LD::DetectGroundContactState(){
 		return true;
 	}
 	return false;
-
-
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Get landed state.                   		   */
+/* Get landed state.					                   		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::DetectLandedState(){
 	const uint64 now = PX4LIB_GetPX4TimeUs();
 	float armingThreshFactor = 1.0f;
-	//----
+
 	if (!CVT.ActuatorArmedMsg.Armed){
 		return true;
 	}
 
-	//----
 	if(state == LandDetectionState::LANDED  && ManualControlPresent()){
 		if (CVT.ManualControlSetpointMsg.Z < TakeoffThrottle()){
 			return true;
@@ -730,7 +705,7 @@ boolean LD::DetectLandedState(){
 			return false;
 		}
 	}
-	//----
+
 	if(MinimalThrust()){
 		if (min_thrust_start == 0){
 			min_thrust_start = now;
@@ -739,7 +714,7 @@ boolean LD::DetectLandedState(){
 	else{
 		min_thrust_start = 0;
 	}
-	//----
+
 	if(!AltitudeLock()){
 		if((min_thrust_start>0) && ((PX4LIB_GetPX4TimeUs()- min_thrust_start)>8000000)){
 			return true;
@@ -748,7 +723,7 @@ boolean LD::DetectLandedState(){
 			return false;
 		}
 	}
-	//----
+
 	if((PX4LIB_GetPX4TimeUs() - now)<LAND_DETECTOR_ARM_PHASE_TIME_US){
 			armingThreshFactor = 2.5f;
 	}
@@ -756,20 +731,18 @@ boolean LD::DetectLandedState(){
 	float max_rotation_scaled = ld_params.lndmc_rot_max * armingThreshFactor;
 	boolean rotation =(fabsf(CVT.VehicleAttitudeMsg.RollSpeed)  > max_rotation_scaled) || (fabsf(CVT.VehicleAttitudeMsg.PitchSpeed) > max_rotation_scaled) || (fabsf(CVT.VehicleAttitudeMsg.YawSpeed) > max_rotation_scaled);
 
-	//----
+
 	if(ground_contact_history.getState() && MinimalThrust() && !rotation && (!horizontal_movement || !PositionLock())){
 		return true;
 	}
 
 	return false;
 
-
-
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Get take off throttle.                   		   */
+/* Get take off throttle.				                   		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 float LD::TakeoffThrottle(){
@@ -786,7 +759,7 @@ float LD::TakeoffThrottle(){
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Get maximum altitude.                   		   */
+/* Get maximum altitude.				                   		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 float LD::MaxAltitude(){
@@ -811,7 +784,7 @@ float LD::MaxAltitude(){
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Check altitude lock presence.                   		   */
+/* Check altitude lock presence.                   		  		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::AltitudeLock(){
@@ -821,7 +794,7 @@ boolean LD::AltitudeLock(){
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Check position lock presence.                       		   */
+/* Check position lock presence.           	            		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::PositionLock(){
@@ -831,7 +804,7 @@ boolean LD::PositionLock(){
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/*  Check manual control presence.                    		   */
+/*  Check manual control presence.     		               		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::ManualControlPresent(){
@@ -840,7 +813,7 @@ boolean LD::ManualControlPresent(){
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Check for minimum thrust.                 		   */
+/* Check for minimum thrust.    			             		   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean LD::MinimalThrust(){
@@ -855,9 +828,12 @@ boolean LD::MinimalThrust(){
 
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Update State.                 		 						  */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LD::UpdateState(){
-
 
 	freefall_history.setState(DetectFreeFall());
 	landed_history.setState(DetectLandedState());
@@ -865,36 +841,28 @@ void LD::UpdateState(){
 
 	if (freefall_history.getState()) {
 		state = LandDetectionState::FREEFALL;
-
 	} else if (landed_history.getState()) {
 		state = LandDetectionState::LANDED;
-
 	} else if (ground_contact_history.getState()) {
 		state = LandDetectionState::GROUND_CONTACT;
-
 	} else {
 		state = LandDetectionState::FLYING;
 	}
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Execute								                 		   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LD::Execute()
 {
-    /* TODO:  on wake up! */
-	//uint64 now = PX4LIB_GetPX4TimeUs();
 	if (publish_counter==0){
-		//VehicleLandDetectedMsg.AltitudeMax = ld_params.lndmc_alt_max;
 		VehicleLandDetectedMsg.Freefall=false;
 		VehicleLandDetectedMsg.Landed=false;
 		VehicleLandDetectedMsg.GroundContact=false;
-//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
-//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
-//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
 		publish_counter += 1;
 	}
-
-	//SendVehicleLandDetectedMsg();
-
 	uint64 now = PX4LIB_GetPX4TimeUs();
 
 	UpdateState();
@@ -911,9 +879,9 @@ void LD::Execute()
 			(VehicleLandDetectedMsg.GroundContact!=gcd) ||
 			(fabsf(VehicleLandDetectedMsg.AltMax - prev_altitude_max)>FLT_EPSILON))
 	{
-//					if((!gcd && !ld) && ffd){
-//						ffd=false;
-//					}
+		/*if((!gcd && !ld) && ffd){
+			ffd=false;
+		}*/
 		if(!ld && VehicleLandDetectedMsg.Landed)
 		{
 			takeoff_time = now;
@@ -928,25 +896,77 @@ void LD::Execute()
 			flight_time = total_flight_time & 0xffffffff;
 			ld_params.lnd_flight_t_lo = flight_time;
 		}
-
 		VehicleLandDetectedMsg.Timestamp = PX4LIB_GetPX4TimeUs();
 		VehicleLandDetectedMsg.AltMax = altitude_max;
 		VehicleLandDetectedMsg.Freefall=(state == LandDetectionState::FREEFALL);
 		VehicleLandDetectedMsg.Landed=(state == LandDetectionState::LANDED);
 		VehicleLandDetectedMsg.GroundContact=(state == LandDetectionState::GROUND_CONTACT);
-
-//					OS_printf("Free Fall : %d \n",VehicleLandDetectedMsg.Freefall);
-//					OS_printf("Land detection : %d \n",VehicleLandDetectedMsg.Landed);
-//					OS_printf("Ground contact : %d \n",VehicleLandDetectedMsg.GroundContact);
-//					OS_printf("STATE : %d \n",state);
 		HkTlm.state = state;
+	}
+	DetectStateChange();
+	SendVehicleLandDetectedMsg();
+}
+void LD::DetectStateChange(){
+	/* When there is a change in state this function will return true flag */
+	PX4_VehicleLandDetectedMsg_t CurrentLandDetectedMsg = VehicleLandDetectedMsg;
+
+	if(&PreviousLandDetectedMsg==nullptr){
+		PreviousLandDetectedMsg = CurrentLandDetectedMsg;
+	}
+	else if(PreviousLandDetectedMsg.Landed == CurrentLandDetectedMsg.Landed &&
+			PreviousLandDetectedMsg.Freefall == CurrentLandDetectedMsg.Freefall &&
+			PreviousLandDetectedMsg.GroundContact == CurrentLandDetectedMsg.GroundContact ){
+		PreviousLandDetectedMsg = CurrentLandDetectedMsg;
+	}else{
+		if(CurrentLandDetectedMsg.Landed){
+			(void) CFE_EVS_SendEvent(LD_LAND_DETECTED_EID, CFE_EVS_INFORMATION,"Land detected");
+		}
+		else if(CurrentLandDetectedMsg.Freefall){
+			(void) CFE_EVS_SendEvent(LD_GROUNDCONTACT_DETECTED_EID, CFE_EVS_INFORMATION,"Freefall detected");
+		}
+		else if(CurrentLandDetectedMsg.GroundContact){
+			(void) CFE_EVS_SendEvent(LD_FREEFALL_DETECTED_EID, CFE_EVS_INFORMATION,"Ground contact detected");
+		}
+		else{
+			(void) CFE_EVS_SendEvent(LD_FLIGHT_DETECTED_EID, CFE_EVS_INFORMATION,"Vehicle in flight");
+		}
+		PreviousLandDetectedMsg = CurrentLandDetectedMsg;
+	}
+}
+
+void LD::UpdateParamsFromTable(){
+
+	/* Use Trigger time when transitioning from in-air (false) to landed (true) / ground contact (true) */
+	landed_history.setTimeSince(false, LAND_DETECTOR_TRIGGER_TIME_US);
+	ground_contact_history.setTimeSince(false, GROUND_CONTACT_TRIGGER_TIME_US);
+
+	/* Initialize Params */
+	if(ConfigTblPtr != nullptr){
+
+		ld_params.lndmc_z_vel_max 								= ConfigTblPtr->LD_Z_VEL_MAX;
+		ld_params.lndmc_xy_vel_max 								= ConfigTblPtr->LD_XY_VEL_MAX;
+		ld_params.lndmc_rot_max 								= ConfigTblPtr->LD_ROT_MAX;
+		ld_params.lndmc_ffall_thr 								= ConfigTblPtr->LD_FFALL_THR;
+		ld_params.lndmc_thr_range 								= ConfigTblPtr->LD_THR_RANGE;
+		ld_params.lndmc_ffall_ttri 								= ConfigTblPtr->LD_FFALL_TTRI;
+		ld_params.lndmc_man_dwnthr 								= ConfigTblPtr->LD_MAN_DWNTHR;
+		ld_params.lndmc_pos_upthr 								= ConfigTblPtr->LD_POS_UPTHR;
+		ld_params.lnd_flight_t_hi 								= ConfigTblPtr->LD_FLT_TME_HI;
+		ld_params.lnd_flight_t_lo 								= ConfigTblPtr->LD_FLT_TME_LO;
+		ld_params.lndmc_alt_max 								= ConfigTblPtr->LD_ALT_MAX;
+		ld_params.minThrottle 									= ConfigTblPtr->LD_MIN_THR;
+		ld_params.hoverThrottle 								= ConfigTblPtr->LD_HVR_THR;
+		ld_params.throttleRange 								= ConfigTblPtr->LD_THR_RANGE_B;
+		ld_params.minManThrottle 								= ConfigTblPtr->LD_MAN_MIN_THR;
+		ld_params.manual_stick_up_position_takeoff_threshold 	= ConfigTblPtr->LD_POS_STK_UP_THRES;
+		ld_params.manual_stick_down_threshold 					= ConfigTblPtr->LD_POS_STK_DW_THRES;
+
 
 	}
 
-	SendVehicleLandDetectedMsg();
+
+
 }
-
-
 
 /************************/
 /*  End of File Comment */

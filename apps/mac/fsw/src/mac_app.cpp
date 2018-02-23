@@ -511,6 +511,7 @@ int32 MAC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case MAC_SEND_HK_MID:
+            	ProcessNewCmds();
                 ReportHousekeeping();
                 break;
 

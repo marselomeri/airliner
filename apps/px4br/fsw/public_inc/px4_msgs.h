@@ -60,9 +60,13 @@
 
 typedef enum
 {
-	PX4_GPS_NO_FIX                      = 0,
-	PX4_GPS_2D_FIX                      = 1,
-	PX4_GPS_3D_FIX                      = 2
+	PX4_GPS_NONE0_FIX                   = 0,
+	PX4_GPS_NONE1_FIX                   = 1,
+	PX4_GPS_2D_FIX                      = 2,
+	PX4_GPS_3D_FIX                      = 3,
+	PX4_GPS_DGPS_FIX                    = 4,
+	PX4_GPS_RTK_FIX                     = 5
+
 } PX4_GpsFixType_t;
 
 typedef enum
@@ -356,6 +360,7 @@ typedef enum
 	PX4_VEHICLE_CMD_NAV_LOITER_UNLIM = 17,
 	PX4_VEHICLE_CMD_NAV_LOITER_TURNS = 18,
 	PX4_VEHICLE_CMD_NAV_LOITER_TIME = 19,
+	PX4_VEHICLE_CMD_NAV_LOITER_TO_ALT = 31, //added to
 	PX4_VEHICLE_CMD_NAV_RETURN_TO_LAUNCH = 20,
 	PX4_VEHICLE_CMD_NAV_LAND = 21,
 	PX4_VEHICLE_CMD_NAV_TAKEOFF = 22,
@@ -1734,14 +1739,14 @@ typedef struct
 	float Vel_d_m_s;
 	float COG;
 	int32 TimestampTimeRelative;
-	uint8 FixType;
+	PX4_GpsFixType_t FixType;
 	boolean VelNedValid;
 	uint8 SatellitesUsed;
 } PX4_VehicleGpsPositionMsg_t;
 
 typedef struct
 {
-        uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE];
 	uint64  Timestamp;
 	float   AltMax;
 	boolean Landed;
@@ -1886,6 +1891,7 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+	uint64 Timestamp;
     float gyro_offset_0[3];
     float gyro_scale_0[3];
     float gyro_offset_1[3];
@@ -1916,6 +1922,7 @@ typedef struct
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint64 Timestamp;
     uint8 LedMask;
     uint8 Color;
     uint8 Mode;
