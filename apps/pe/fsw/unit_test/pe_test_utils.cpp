@@ -45,6 +45,8 @@
 #include "ut_cfe_sb_stubs.h"
 #include "ut_cfe_es_stubs.h"
 #include "ut_cfe_evs_stubs.h"
+#include "pe_stubs.h"
+#include "pe_block_delay_stubs.hpp"
 
 #include <time.h>
 
@@ -82,9 +84,9 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//GPS_EPV_MAX
     5.0f,
 	//LAND_Z_STDDEV
-    .03f,
+    5.0f,
 	//LAND_VXY_STDDEV
-    .05f,
+    .80f,
 	//PN_P_NOISE_DENSITY
     .1f,
 	//PN_V_NOISE_DENSITY
@@ -98,9 +100,9 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//FAKE_ORIGIN
     0,
 	//INIT_ORIGIN_LAT
-    29.562144f,
+    47.397742f,
 	//INIT_ORIGIN_LON
-    -95.144554
+    8.545594
 };
 
 /*
@@ -120,9 +122,14 @@ void PE_Test_Setup(void)
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
 
+    /* Clear mocked return values */
+    memset(&Geo_Project_Returns, 0, sizeof(Geo_Project_Returns));
+    memset(&delay::Block_Delay_Returns, 0, sizeof(delay::Block_Delay_Returns));
+
     Ut_CFE_TBL_AddTable(PE_CONFIG_TABLE_FILENAME, (void *) &PE_ConfigTbl);
 }
 
-void PE_Test_TearDown(void) {
+void PE_Test_TearDown(void) 
+{
 
 }

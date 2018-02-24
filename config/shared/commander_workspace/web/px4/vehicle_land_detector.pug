@@ -45,4 +45,40 @@ block main
                       th GroundContact:
                       td
                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_GroundContact'}]}) ---
-                    
+    .row.row-fluid
+      article.col-xs-12.col-sm-12.col-md-12.col-lg-12
+        #wid-VLD.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 VLD
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #VLD(style='width:100%; height:300px;')
+      
+                        
+    script.
+        $(function () {
+            var vldDataplotDef = {
+                'data': [
+                    { 'tlm': {'name': '/CFS/PX4/VLD_Landed'},
+                      'label': 'Landed',
+                      'color': '#ff00ff'
+                    },
+                    { 'tlm': {'name': '/CFS/PX4/VLD_Freefall'},
+                      'label': 'Freefall',
+                      'color': '#00ffff'
+                    },
+                    { 'tlm': {'name': '/CFS/PX4/VLD_GroundContact'},
+                      'label': 'GroundContact',
+                      'color': '#ffff00'
+                    }
+                ]
+            };
+    
+            var vldDataplot = new SageTimeSeriesDataplot($('#VLD'), vldDataplotDef);
+            
+
+        });

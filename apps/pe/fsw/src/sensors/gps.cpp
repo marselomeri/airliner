@@ -128,6 +128,7 @@ void PE::gpsCorrect()
     float  alt = y_global[2];
     float px = 0;
     float py = 0;
+
     float pz = -(alt - m_GpsAltOrigin);
     map_projection_project(&m_MapRef, lat, lon, &px, &py);
     math::Vector6F y;
@@ -223,17 +224,16 @@ void PE::gpsCorrect()
     
     math::Matrix10F1 temp;
     temp = m_XDelay.Get(i_hist);
-    
     math::Vector10F x0;
-    x0 = temp.ToVector();
 
+    x0 = temp.ToVector();
     /* residual */
     //	Vector<float, n_y_gps> r = y - C * x0;
     /* 6F - 6F10 * 10x1(10F)*/
     math::Vector6F r;
     r.Zero();
     r = y - C * x0;
-    
+
     //	for (int i = 0; i < 6; i ++) {
     //		_pub_innov.get().vel_pos_innov[i] = r(i);
     //		_pub_innov.get().vel_pos_innov_var[i] = R(i, i);
@@ -294,15 +294,18 @@ void PE::gpsCorrect()
     //	Matrix<float, n_x, n_y_gps> K = _P * C.transpose() * S_I;
     math::Matrix10F6 K;
     K.Zero();
+
     /* 10x10 * 6x10' (10x6) * 6x6 */
     K = m_StateCov * C.Transpose() * S_I;
     //	Vector<float, n_x> dx = K * r;
     math::Vector10F dx;
     dx.Zero();
     dx = K * r;
+
     //	_x += dx;
     /* 10F * 10F */
     m_StateVec = m_StateVec + dx;
+
     //	_P -= K * C * _P;
     /* 10x10 - (10x6 * 6x10 * 10x10)*/
     m_StateCov = m_StateCov - K * C * m_StateCov;

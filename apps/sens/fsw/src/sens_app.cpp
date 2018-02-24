@@ -1142,14 +1142,21 @@ void SENS::CombineSensorInput(void)
 			SensorCombinedMsg.BaroTemp = CVT.SensorBaroMsg.Temperature;
 
 			/* Now calculate and populate the time relative to the main timestamp. */
-			//if(SensorCombinedMsg.Timestamp > CVT.SensorBaroMsg.Timestamp)
-			//{
-			SensorCombinedMsg.BaroTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
-			//}
-			//else
-			//{
-				//SensorCombinedMsg.BaroTimestampRelative = CVT.SensorBaroMsg.Timestamp - SensorCombinedMsg.Timestamp;
-			//}
+			if(SensorCombinedMsg.Timestamp > CVT.SensorBaroMsg.Timestamp)
+			{
+                /* if gyro is after baro */
+                SensorCombinedMsg.BaroTimestampRelative = SensorCombinedMsg.Timestamp - CVT.SensorBaroMsg.Timestamp;
+			}
+			else if (SensorCombinedMsg.Timestamp < CVT.SensorBaroMsg.Timestamp)
+			{
+                /* if gyro is before baro */
+                SensorCombinedMsg.BaroTimestampRelative = CVT.SensorBaroMsg.Timestamp - SensorCombinedMsg.Timestamp;
+			}
+            else
+            {
+                /* should never get here */
+                SensorCombinedMsg.BaroTimestampRelative = 0;
+            }
 
 			SensorCombinedMsg.BaroRelTimeInvalid = false;
 
