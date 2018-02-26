@@ -10,11 +10,11 @@ block header
 block main
   .row.row-fluid
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-      #wid-VM-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+      #wid-VM-HK.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Housekeeping
+          h2 Command Handling
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -30,15 +30,96 @@ block main
                     th Error Count
                     td
                       span(data-sage={tlm: [{name:'/CFS/VM/ErrCounter'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Reset'}}) Reset
+              
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+      #wid-VM-ArmingState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Arming State
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
                   tr
                     th Arming State
                     td
                       span(data-sage={tlm: [{name:'/CFS/VM/ArmingState'}]}) ---
-            footer
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Reset'}}) Reset
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Arm'}}) Arm
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Disarm'}}) Disarm
+              
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+      #wid-VM-MainState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Main State
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Main State
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VM/MainState'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainManual'}}) Manual
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAltCtl'}}) AltCtl
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainPosCtl'}}) PosCtl
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoMission'}}) Mission 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoLoiter'}}) Loiter 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoRTL'}}) RTL 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAcro'}}) Acro 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainOffboard'}}) Offboard 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainStab'}}) Stab 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainRattitude'}}) Ratt 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoTakeoff'}}) Takeoff 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoLand'}}) Land 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoFollowTarget'}}) Follow 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoPrecland'}}) Precland 
+              
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+      #wid-VM-NavState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Navigation State
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Nav State
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VM/NavState'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavManual'}}) Manual
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAltCtl'}}) AltCtl
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavPosCtl'}}) PosCtl
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoMission'}}) Mission 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoLoiter'}}) Loiter 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoRTL'}}) RTL 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavRCRecover'}}) RC Recover 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavRTGS'}}) RTGS 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavLandEngFail'}}) Land Engine Fail 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavLandGpsFail'}}) Land GPS Fail 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAcro'}}) Acro 
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavDescend'}}) Descend 
                                         
   .row
     +app_specific_telemetry_control("VM")
