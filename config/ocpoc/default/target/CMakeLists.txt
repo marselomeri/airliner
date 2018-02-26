@@ -40,6 +40,10 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
 
 add_airliner_app(
+    prmlib
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build)
+
+add_airliner_app(
     sch
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
@@ -397,6 +401,18 @@ add_airliner_app(
 )
 
 add_airliner_app(
+    mavlink
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mavlink
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mavlink/mavlink_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mavlink_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mavlink_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mavlink_perfids.h
+)
+
+
+add_airliner_app(
     hmc5883
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/hmc5883/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883
@@ -406,6 +422,16 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hmc5883_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
+)
+
+add_airliner_app(
+    pe
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pe/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pe
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pe_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_perfids.h
 )
 
 add_airliner_app(
