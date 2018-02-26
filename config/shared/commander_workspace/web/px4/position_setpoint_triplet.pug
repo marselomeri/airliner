@@ -17,7 +17,7 @@ block main
           header(style="overflow:hidden;")
             span.widget-icon
               i.fa.fa-table
-            h2 Position Setpoint Triplet (Previous)
+            h2 Position Setpoint Triplet
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -29,6 +29,25 @@ block main
                       th Timestamp:
                       td
                         span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Timestamp'}]}) ---
+      
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
+        #wid-PST.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Previous
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_Timestamp'}]}) ---
                     tr
                       th Latitude:
                       td
@@ -159,7 +178,7 @@ block main
           header(style="overflow:hidden;")
             span.widget-icon
               i.fa.fa-table
-            h2 Position Setpoint Triplet (Current)
+            h2 Current
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -170,7 +189,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Timestamp'}]}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_Timestamp'}]}) ---
                     tr
                       th Latitude:
                       td
@@ -301,7 +320,7 @@ block main
           header(style="overflow:hidden;")
             span.widget-icon
               i.fa.fa-table
-            h2 Position Setpoint Triplet (Next)
+            h2 Next
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -312,7 +331,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Timestamp'}]}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_Timestamp'}]}) ---
                     tr
                       th Latitude:
                       td

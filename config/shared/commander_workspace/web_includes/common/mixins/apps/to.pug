@@ -91,9 +91,10 @@ mixin msg_macro_specific_telemetry_control(inMsgs)
             msgs.push(fsw.msgDefs[idxMsgs]);
         }
       }
+    }
       
-      /* Don't go any further unless we actually have messages in our msgs array. */
-      if(msgs.length > 0){
+    /* Don't go any further unless we actually have messages in our msgs array. */
+    if(msgs.length > 0){
   article.col-xs-12.col-sm-12.col-md-12.col-lg-8
     #wid-TO-Control.jarviswidget.jarviswidget-color-blueDark(style='width: 860px' data-widget-editbutton='false')
       header
@@ -130,5 +131,4 @@ mixin msg_macro_specific_telemetry_control(inMsgs)
                     button.btn.btn-xs.btn-primary.btn-labeled(data-sage= cmdRemoveEntry) Tlm Stop
                 - }
   -
-      }
     }
