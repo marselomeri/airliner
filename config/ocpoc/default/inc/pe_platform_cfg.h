@@ -1,15 +1,15 @@
-#ifndef AMC_PLATFORM_CFG_H
-#define AMC_PLATFORM_CFG_H
+#ifndef PE_PLATFORM_CFG_H
+#define PE_PLATFORM_CFG_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
-** amc Platform Configuration Parameter Definitions
+** PE Platform Configuration Parameter Definitions
 */
 
-/** \brief Mission specific version number for AMC application
+/** \brief Mission specific version number for PE application
 **  
 **  \par Description:
 **       An application version number consists of four parts:
@@ -22,35 +22,21 @@ extern "C" {
 **       Must be defined as a numeric value that is greater than
 **       or equal to zero.
 */
-#define AMC_MISSION_REV                (0)
+#define PE_MISSION_REV                (0)
 
 /** \brief Pipe depth for the Scheduler pipe 
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define AMC_SCH_PIPE_DEPTH             (5)
+#define PE_SCH_PIPE_DEPTH             (20)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define AMC_SCH_PIPE_NAME              ("AMC_SCH_PIPE")
-
-/** \brief Pipe depth for the data pipe 
-**
-**  \par Limits:
-**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
-*/
-#define AMC_PARAM_PIPE_DEPTH            (4)
-
-/** \brief Pipe name for the Scheduler pipe 
-**
-**  \par Limits:
-**       Note, this name must fit in OS_MAX_API_NAME.
-*/
-#define AMC_PARAM_PIPE_NAME             ("AMC_PARAM_PIPE")
+#define PE_SCH_PIPE_NAME              ("PE_SCH_PIPE")
 
 /** \brief The SB pend behavior type for the Scheduler pipe.
 **
@@ -60,53 +46,53 @@ extern "C" {
 **       Note, using CFE_SB_PEND_FOREVER may cause an unresponsive
 **       application if no messages arrive on this pipe.
 */
-#define AMC_SCH_PIPE_PEND_TIME         (2000)
+#define PE_SCH_PIPE_PEND_TIME         (2000)
 
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max limited to CFE_SB_MAX_PIPE_DEPTH-1.  Note the
-**       AMC_SCH_PIPE_WAKEUP_RESERVED and AMC_SCH_PIPE_SEND_HK_RESERVED
-**       must be less than AMC_SCH_PIPE_DEPTH.
+**       PE_WAKEUP_MID_MAX_MSG_COUNT and PE_SEND_HK_MID_MAX_MSG_COUNT
+**       must be less than PE_SCH_PIPE_DEPTH.
 */
-#define AMC_SCH_PIPE_WAKEUP_RESERVED   (1)
+#define PE_WAKEUP_MID_MAX_MSG_COUNT   (1)
 
 /** \brief The number of SEND_HK messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
-**       AMC_SCH_PIPE_WAKEUP_RESERVED and AMC_SCH_PIPE_SEND_HK_RESERVED
-**       must be less than AMC_SCH_PIPE_DEPTH.
+**       PE_WAKEUP_MID_MAX_MSG_COUNT and PE_SEND_HK_MID_MAX_MSG_COUNT
+**       must be less than PE_SCH_PIPE_DEPTH.
 */
-#define AMC_SCH_PIPE_SEND_HK_RESERVED  (1)
+#define PE_SEND_HK_MID_MAX_MSG_COUNT  (1)
 
 /** \brief Pipe depth for the command pipe
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define AMC_CMD_PIPE_DEPTH             (4)
+#define PE_CMD_PIPE_DEPTH             (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define AMC_CMD_PIPE_NAME              ("AMC_CMD_PIPE")
+#define PE_CMD_PIPE_NAME              ("PE_CMD_PIPE")
 
 /** \brief Pipe depth for the data pipe 
 **
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define AMC_DATA_PIPE_DEPTH            (4)
+#define PE_DATA_PIPE_DEPTH            (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define AMC_DATA_PIPE_NAME             ("AMC_DATA_PIPE")
+#define PE_DATA_PIPE_NAME             ("PE_DATA_PIPE")
 
 /** \brief The config table default filename
 **
@@ -114,26 +100,28 @@ extern "C" {
 **       The length of each string, including the NULL terminator cannot exceed
 **       the #OS_MAX_PATH_LEN value.
 */
-#define AMC_PWM_CONFIG_TABLE_FILENAME      ("/cf/apps/amc_pwmcfg.tbl")
-
-#define AMC_MIXER_CONFIG_TABLE_FILENAME      ("/cf/apps/amc_mixercfg.tbl")
+#define PE_CONFIG_TABLE_FILENAME      ("/cf/apps/pe_config.tbl")
 
 /** \brief The timeout value, in milliseconds, to wait for ES application startup sync.
 **
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define AMC_STARTUP_TIMEOUT_MSEC    (1000)
+#define PE_STARTUP_TIMEOUT_MSEC    (1000)
 
-/* TODO:  Add Doxygen markup. */
-#define AMC_MAX_MOTOR_OUTPUTS       (8)
+/** \brief MAx event filters the PE app can use.
+**
+**  \par Limits:
+**       This parameter cannot exceed TODO
+*/
+#define PE_MAX_EVENT_FILTERS       (32)
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AMC_PLATFORM_CFG_H */
+#endif /* PE_PLATFORM_CFG_H */
 
 /************************/
 /*  End of File Comment */
