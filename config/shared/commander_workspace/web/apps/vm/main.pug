@@ -5,16 +5,16 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | Video Control
+        | Vehicle Manager
 
 block main
   .row.row-fluid
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-      #wid-VC-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+      #wid-VM-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Video Control
+          h2 Housekeeping
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -25,20 +25,20 @@ block main
                   tr
                     th Cmd Count
                     td
-                      span(data-sage={tlm: [{name:'/CFS/VC/CmdCounter'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/VM/CmdCounter'}]}) ---
                   tr
                     th Error Count
                     td
-                      span(data-sage={tlm: [{name:'/CFS/VC/ErrCounter'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/VM/ErrCounter'}]}) ---
                   tr
-                    th State
+                    th Arming State
                     td
-                      span(data-sage={tlm: [{name:'/CFS/VC/State'}]}) ---
+                      span(data-sage={tlm: [{name:'/CFS/VM/ArmingState'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/Reset'}}) Reset
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StartStreaming'}}) Start Streaming
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StopStreaming'}}) Stop Streaming
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Reset'}}) Reset
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Arm'}}) Arm
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Disarm'}}) Disarm
                                         
   .row
     +app_specific_telemetry_control("VM")

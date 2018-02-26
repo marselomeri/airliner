@@ -65,8 +65,6 @@ TO_ChannelTbl_t TO_ConfigTbl =
         {TO_DATA_TYPE_MID,			      1,	TO_PQUEUE_HIGH_IDX},
         {EA_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
         {VC_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {RGBLED_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
-        {ULR_HK_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
         {TO_DIAG_TLM_MID,			      1,	TO_PQUEUE_HIGH_IDX},
         {GPS_HK_TLM_MID,			      1,        TO_PQUEUE_HIGH_IDX},
         {MAVLINK_HK_TLM_MID,                      1,        TO_PQUEUE_HIGH_IDX},
