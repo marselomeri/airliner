@@ -20,7 +20,7 @@ void PE::landInit()
 	// if finished
 	if (m_LandCount > REQ_LAND_INIT_COUNT)
 	{
-		m_LandTimeout = false;
+		m_LandTimeout = FALSE;
 
 		(void) CFE_EVS_SendEvent(PE_LAND_OK_INF_EID, CFE_EVS_INFORMATION,
 								 "Land detector initialized");
@@ -37,6 +37,7 @@ int PE::landMeasure(math::Vector3F &y)
 
 void PE::landCorrect()
 {
+    CFE_ES_PerfLogEntry(PE_SENSOR_LAND_PERF_ID);
 	// measure land
 	math::Vector3F y;
 	y.Zero();
@@ -85,7 +86,7 @@ void PE::landCorrect()
 	{
 		if (!m_LandFault)
 		{
-			m_LandFault = true;
+			m_LandFault = TRUE;
 			(void) CFE_EVS_SendEvent(PE_LAND_FAULT_ERR_EID, CFE_EVS_ERROR,
 									 "Land detector fault, beta %5.2f", double(beta));
 		}
@@ -95,10 +96,10 @@ void PE::landCorrect()
 	}
 	else if (m_LandFault)
 	{
-		m_LandFault = false;
+		m_LandFault = FALSE;
 		(void) CFE_EVS_SendEvent(PE_LAND_OK_INF_EID, CFE_EVS_ERROR,
 								 "Land detector OK");
-		m_LandInitialized = true;
+		m_LandInitialized = TRUE;
 	}
 
 	// kalman filter correction always for land detector
@@ -116,6 +117,7 @@ void PE::landCorrect()
 	m_StateCov = m_StateCov - K * C * m_StateCov;
     //OS_printf("LAND CORRECTED\n");
     //m_StateCov.Print();
+    CFE_ES_PerfLogExit(PE_SENSOR_LAND_PERF_ID);
 }
 
 void PE::landCheckTimeout()
@@ -124,7 +126,7 @@ void PE::landCheckTimeout()
 	{
 		if (!m_LandTimeout)
 		{
-			m_LandTimeout = true;
+			m_LandTimeout = TRUE;
 			m_LandCount = 0;
 			(void) CFE_EVS_SendEvent(PE_LAND_TIMEOUT_ERR_EID, CFE_EVS_ERROR,
 									 "Land detector timeout");

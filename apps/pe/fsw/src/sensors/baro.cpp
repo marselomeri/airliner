@@ -28,11 +28,11 @@ void PE::baroInit()
 								 (int)m_BaroStats.getMean()[0],
 								 (int)(100 * m_BaroStats.getStdDev()[0]));
 
-		m_BaroTimeout = false;
+		m_BaroTimeout = FALSE;
 
 		if (!m_AltOriginInitialized)
 		{
-			m_AltOriginInitialized = true;
+			m_AltOriginInitialized = TRUE;
 			m_AltOrigin = m_BaroAltOrigin;
 		}
 	}
@@ -52,6 +52,7 @@ int32 PE::baroMeasure(math::Vector1F &y)
 
 void PE::baroCorrect()
 {
+    CFE_ES_PerfLogEntry(PE_SENSOR_BARO_PERF_ID);
     /* measure */
     math::Vector1F y;
     y.Zero();
@@ -104,17 +105,17 @@ void PE::baroCorrect()
         {
             (void) CFE_EVS_SendEvent(PE_BARO_FAULT_ERR_EID, CFE_EVS_ERROR,
                     "Baro fault, r %5.2f m, beta %5.2f", r[0], beta);
-            m_BaroFault = true;
+            m_BaroFault = TRUE;
         }
 
     }
     else if (m_BaroFault)
     {
-    	m_BaroFault = false;
+    	m_BaroFault = FALSE;
         (void) CFE_EVS_SendEvent(PE_BARO_OK_INF_EID, CFE_EVS_INFORMATION,
                 "Baro OK");
 
-        m_BaroInitialized = true;
+        m_BaroInitialized = TRUE;
     }
 
 // kalman filter correction always
@@ -145,6 +146,7 @@ void PE::baroCorrect()
     m_StateCov = m_StateCov - K * C * m_StateCov;
     //OS_printf("BARO CORRECTED\n");
     //m_StateCov.Print();
+    CFE_ES_PerfLogExit(PE_SENSOR_BARO_PERF_ID);
 }
 
 
@@ -165,7 +167,7 @@ void PE::baroCheckTimeout()
 	{
 		if (!m_BaroTimeout)
 		{
-			m_BaroTimeout = true;
+			m_BaroTimeout = TRUE;
 			m_BaroStats.reset();
 			(void) CFE_EVS_SendEvent(PE_BARO_TIMEOUT_ERR_EID, CFE_EVS_ERROR,
 									 "Baro timeout: %llu us", Timestamp);
