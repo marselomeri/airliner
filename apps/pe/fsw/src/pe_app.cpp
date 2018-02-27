@@ -290,19 +290,19 @@ void PE::InitData()
     m_TimestampLastBaro     = 0;
 
     /* Timeouts */
-    m_BaroTimeout           = true;
-    m_GpsTimeout            = true;
-    m_LandTimeout           = true;
+    m_BaroTimeout           = TRUE;
+    m_GpsTimeout            = TRUE;
+    m_LandTimeout           = TRUE;
 
     /* Faults */
-    m_BaroFault             = false;
-    m_GpsFault              = false;
-    m_LandFault             = false;
+    m_BaroFault             = TRUE;
+    m_GpsFault              = TRUE;
+    m_LandFault             = TRUE;
 
     /* Validity */
-    m_XyEstValid            = false;
-    m_ZEstValid             = false;
-    m_TzEstValid            = false;
+    m_XyEstValid            = FALSE;
+    m_ZEstValid             = FALSE;
+    m_TzEstValid            = FALSE;
 
 	/* Reference altitudes */
 	m_AltOrigin             = 0.0f;
@@ -333,7 +333,55 @@ void PE::InitData()
 	InitStateSpace();
 
 	/* Map */
-	m_MapRef.init_done      = false;
+	m_MapRef.init_done      = FALSE;
+
+    /* Sensor baro data */
+    m_Baro.y.Zero();
+    m_Baro.C.Zero();
+    m_Baro.R.Zero();
+    m_Baro.S_I.Zero();
+    m_Baro.r.Zero();
+    m_Baro.beta = 0.0f;
+    m_Baro.K.Zero();
+    m_Baro.temp.Zero();
+    m_Baro.dx.Zero();
+    
+    /* Sensor GPS data */
+    m_GPS.y_global.Zero();
+    m_GPS.lat = 0.0f;
+    m_GPS.lon = 0.0f;
+    m_GPS.px = 0.0f;
+    m_GPS.py = 0.0f;
+    m_GPS.pz = 0.0f;
+    m_GPS.y.Zero();
+    m_GPS.C.Zero();
+    m_GPS.R.Zero();
+    m_GPS.var_xy = 0.0f;
+    m_GPS.var_z = 0.0f;
+    m_GPS.var_vxy = 0.0f;
+    m_GPS.var_vz = 0.0f;
+    m_GPS.gps_s_stddev = 0.0f;
+    m_GPS.i_hist = 0;
+    m_GPS.temp.Zero();
+    m_GPS.x0.Zero();
+    m_GPS.r.Zero();
+    m_GPS.S_I.Zero();
+    m_GPS.rTranspose.Zero();
+    m_GPS.beta = 0.0f;
+    m_GPS.beta_thresh = 0.0f;
+    m_GPS.K.Zero();
+    m_GPS.dx.Zero();
+    
+    /* Sensor Land data */
+    m_Land.y.Zero();
+    m_Land.C.Zero();
+    m_Land.R.Zero();
+    m_Land.S_I.Zero();
+    m_Land.r.Zero();
+    m_Land.beta = 0.0f;
+    m_Land.beta_thresh = 0.0f;
+    m_Land.K.Zero();
+    m_Land.dx.Zero();
 
     /* Initialize delay blocks */
     m_XDelay.Initialize();
@@ -561,15 +609,17 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_VEHICLE_LAND_DETECTED_MID:
                 memcpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
-                if(m_LandTimeout)
+                if(landed())
                 {
-                	landInit();
+					if(m_LandTimeout)
+					{
+						landInit();
+					}
+					else
+					{
+						landCorrect();
+					}
                 }
-                else
-                {
-                	landCorrect();
-                }
-
                 break;
 
             case PX4_ACTUATOR_ARMED_MID:
@@ -764,6 +814,10 @@ void PE::ReportHousekeeping()
 	HkTlm.AltOriginInitialized = m_AltOriginInitialized;
 	HkTlm.BaroAltOrigin = m_BaroAltOrigin;
 	HkTlm.GpsAltOrigin = m_GpsAltOrigin;
+	HkTlm.GpsInitialized = m_GpsInitialized;
+	HkTlm.BaroInitialized = m_BaroInitialized;
+	HkTlm.LandInitialized = m_LandInitialized;
+
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -783,7 +837,7 @@ void PE::SendVehicleLocalPositionMsg()
 	float eph			 = 0;
 	float eph_thresh	 = 3.0f;
 	float epv_thresh     = 3.0f;
-	bool data_valid = false;
+	boolean data_valid = FALSE;
 
 	vxy_stddev = sqrtf(m_StateCov[X_vx][X_vx] + m_StateCov[X_vy][X_vy]);
 	epv = sqrt(m_StateCov[X_z][X_z]);
@@ -809,7 +863,7 @@ void PE::SendVehicleLocalPositionMsg()
 		isfinite(m_XLowPass[X_y]) &&
 		isfinite(m_XLowPass[X_z]))
 	{
-		data_valid = true;
+		data_valid = TRUE;
 	}
 
 	if(data_valid)
@@ -859,7 +913,7 @@ void PE::SendVehicleGlobalPositionMsg()
 	float eph			 = 0;
 	float eph_thresh	 = 3.0f;
 	float epv_thresh     = 3.0f;
-	bool data_valid = false;
+	boolean data_valid = FALSE;
 
 	map_projection_reproject(&m_MapRef, m_XLowPass[X_x], m_XLowPass[X_y], &lat, &lon);
 
@@ -888,7 +942,7 @@ void PE::SendVehicleGlobalPositionMsg()
 		isfinite(m_XLowPass[X_vy]) &&
 		isfinite(m_XLowPass[X_vz]))
 	{
-		data_valid = true;
+		data_valid = TRUE;
 	}
 
 	if(data_valid)
@@ -1031,6 +1085,7 @@ void PE::CheckTimeouts()
 
 void PE::Update()
 {
+    CFE_ES_PerfLogEntry(PE_UPDATE_TASK_PERF_ID);
 	/* Update timestamps */
 	float dt = 0.0f;
 	uint64 newTimestamp = PX4LIB_GetPX4TimeUs();
@@ -1038,81 +1093,113 @@ void PE::Update()
 	m_Timestamp = newTimestamp;
 	CheckTimeouts();
 
+	/* Check if initialized */
+    if(!m_EstimatorInitialized &&
+			m_BaroInitialized &&
+			m_GpsInitialized &&
+			m_LandInitialized)
+	{
+		m_EstimatorInitialized = TRUE;
+		(void) CFE_EVS_SendEvent(PE_ESTIMATOR_INF_EID, CFE_EVS_INFORMATION,
+								 "Estimator initialized");
+	}
+
 	/* Check if params are updated */
 	if(m_ParamsUpdated)
 	{
 		updateStateSpaceParams();
-		m_ParamsUpdated = false;
+		m_ParamsUpdated = FALSE;
 	}
 
-	/* Check if xy is valid */
-	bool VxyStdDevValid = false;
-	if (fmax(m_StateCov[X_vx][X_vx], m_StateCov[X_vy][X_vy]) <
-		m_Params.VXY_PUB_THRESH * m_Params.VXY_PUB_THRESH)
+	/* Update current GPS validity */
+	if(m_GpsInitialized)
 	{
-		VxyStdDevValid = true;
-	}
-
-	/* Update current validity if needed */
-	if(m_XyEstValid)
-	{
-		if(!VxyStdDevValid && m_GpsTimeout) // TODO: Should this really be AND?
+		/* Check if xy is valid */
+		boolean VxyStdDevValid = FALSE;
+		if (fmax(m_StateCov[X_vx][X_vx], m_StateCov[X_vy][X_vy]) <
+			m_Params.VXY_PUB_THRESH * m_Params.VXY_PUB_THRESH)
 		{
-			m_XyEstValid = false;
+			VxyStdDevValid = TRUE;
+		}
+
+		if(m_XyEstValid)
+		{
+			if(!VxyStdDevValid && m_GpsTimeout) // TODO: Should this really be AND?
+			{
+				m_XyEstValid = FALSE;
+			}
+		}
+		else
+		{
+			if(VxyStdDevValid && !m_GpsTimeout)
+			{
+				m_XyEstValid = TRUE;
+			}
 		}
 	}
 	else
 	{
-		if(VxyStdDevValid && !m_GpsTimeout)
+		m_XyEstValid = FALSE;
+	}
+
+	/* Update current baro validity */
+	if(m_BaroInitialized)
+	{
+		/* Check if z is valid */
+		boolean ZStdDevValid = FALSE;
+		if(sqrtf(m_StateCov[X_z][X_z]) < m_Params.Z_PUB_THRESH)
 		{
-			m_XyEstValid = true;
+			ZStdDevValid = TRUE;
 		}
-	}
 
-	/* Check if z is valid */
-	bool ZStdDevValid = false;
-	if(sqrtf(m_StateCov[X_z][X_z]) < m_Params.Z_PUB_THRESH)
-	{
-		ZStdDevValid = true;
-	}
-
-	/* Update current validity if needed */
-	if(m_ZEstValid)
-	{
-		if(!ZStdDevValid && m_BaroTimeout) // TODO: Should this really be AND?
+		if(m_ZEstValid)
 		{
-			m_ZEstValid = false;
+			if(!ZStdDevValid && m_BaroTimeout) // TODO: Should this really be AND?
+			{
+				m_ZEstValid = FALSE;
+			}
+		}
+		else
+		{
+			if(ZStdDevValid && !m_BaroTimeout)
+			{
+				m_ZEstValid = TRUE;
+			}
 		}
 	}
 	else
 	{
-		if(ZStdDevValid && !m_BaroTimeout)
+		m_ZEstValid = FALSE;
+	}
+
+	/* Update current land validity */
+	if(m_LandInitialized)
+	{
+		/* Check if terrain is valid */
+		boolean TzStdDevValid = FALSE;
+		if(sqrtf(m_StateCov[X_tz][X_tz]) < m_Params.Z_PUB_THRESH)
 		{
-			m_ZEstValid = true;
+			TzStdDevValid = TRUE;
 		}
-	}
 
-	/* Check if terrain is valid */
-	bool TzStdDevValid = false;
-	if(sqrtf(m_StateCov[X_tz][X_tz]) < m_Params.Z_PUB_THRESH)
-	{
-		TzStdDevValid = true;
-	}
-
-	/* Update current validity if needed */
-	if(m_TzEstValid)
-	{
-		if(!TzStdDevValid)
+		if(m_TzEstValid)
 		{
-			m_TzEstValid = false;
+			if(!TzStdDevValid)
+			{
+				m_TzEstValid = FALSE;
+			}
+		}
+		else
+		{
+			if(TzStdDevValid)
+			{
+				m_TzEstValid = TRUE;
+			}
 		}
 	}
 	else
 	{
-		if(TzStdDevValid)
-		{
-			m_TzEstValid = true;
-		}
+		m_TzEstValid = FALSE;
 	}
 
 	/* Initialize map projection to INIT_ORIGIN_LAT, INIT_ORIGIN_LON if we don't
@@ -1132,12 +1219,12 @@ void PE::Update()
 	}
 
 	/* Check if state vector needs to be reinitialized  */
-	bool ReinitStateVec = false;
+	boolean ReinitStateVec = FALSE;
 	for (int i = 0; i < n_x; i++)
 	{
 		if (!isfinite(m_StateVec[i]))
 		{
-			ReinitStateVec = true;
+			ReinitStateVec = TRUE;
 			(void) CFE_EVS_SendEvent(PE_ESTIMATOR_ERR_EID, CFE_EVS_INFORMATION,
 									 "Reinitializing state vector. Index (%i) not finite", i);
 			break;
@@ -1151,7 +1238,7 @@ void PE::Update()
 	}
 
 	/* Force state covariance symmetry and reinitialize matrix if necessary */
-	bool ReinitStateCov = false;
+	boolean ReinitStateCov = FALSE;
 	for (int i = 0; i < n_x; i++)
 	{
 		for (int j = 0; j <= i; j++)
@@ -1163,7 +1250,7 @@ void PE::Update()
 					(void) CFE_EVS_SendEvent(PE_ESTIMATOR_ERR_EID, CFE_EVS_ERROR,
 										 "Reinitializing state covariance. Index (%i, %i) not finite", i, j);
 				}
-				ReinitStateCov = true;
+				ReinitStateCov = TRUE;
 				break;
 			}
 			if (i == j)
@@ -1176,7 +1263,7 @@ void PE::Update()
 						(void) CFE_EVS_SendEvent(PE_ESTIMATOR_ERR_EID, CFE_EVS_ERROR,
 												 "Reinitializing state covariance. Index (%i, %i) negative", i, j);
 					}
-					ReinitStateCov = true;
+					ReinitStateCov = TRUE;
 					break;
 				}
 			}
@@ -1196,15 +1283,8 @@ void PE::Update()
 	Predict(dt);
 
 	/* Publish updated data if initialized */
-	if(m_AltOriginInitialized)
+	if(Initialized())
 	{
-		if(!m_EstimatorInitialized)
-		{
-			m_EstimatorInitialized = true;
-			(void) CFE_EVS_SendEvent(PE_ESTIMATOR_INF_EID, CFE_EVS_INFORMATION,
-									 "Estimator initialized");
-		}
-
 		SendVehicleLocalPositionMsg();
 
 		if(m_XyEstValid && (m_MapRef.init_done || m_Params.FAKE_ORIGIN))
@@ -1228,9 +1308,12 @@ void PE::Update()
         m_XDelay.Update(m_StateVec);
         m_Timestamp_Hist = m_Timestamp;
     }
+
+    CFE_ES_PerfLogExit(PE_UPDATE_TASK_PERF_ID);
 }
 
-bool PE::Initialized(void)
+
+boolean PE::Initialized(void)
 {
 	return m_EstimatorInitialized && m_BaroInitialized && m_GpsInitialized && m_LandInitialized;
 }

@@ -54,6 +54,8 @@
 #define CI_1HZ_PROC_TIMEOUTS_MIDX   51
 #define CI_SEND_HK_MIDX             52
 
+#define PARAMS_WAKEUP_MIDX          53
+#define PARAMS_SEND_HK_MIDX         54
 
 #define CF_SEND_HK_MIDX				57
 #define CF_WAKE_UP_REQ_CMD_MIDX		58
@@ -104,6 +106,9 @@
 
 #define BAT_SEND_HK_MIDX		    117
 #define BAT_WAKEUP_MIDX			    118
+
+#define MAVLINK_WAKEUP_MIDX         119
+#define MAVLINK_SEND_HK_MIDX        120
 
 #define GPS_READ_SENSOR_MIDX 	    122
 #define GPS_SEND_HK_MIDX        	123

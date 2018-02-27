@@ -46,6 +46,9 @@ class Pyliner(object):
         self.ingest_active = True
         self.__recv_telemetry()
 
+    def get_time(self):
+        return int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 10000)
+
     def __init_socket(self):
         """ Creates a UDP socket object and returns it """
         return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
