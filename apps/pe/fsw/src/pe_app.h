@@ -65,6 +65,7 @@ extern "C" {
 #include "math/Matrix10F3.hpp"
 #include "math/Matrix3F3.hpp"
 #include "math/Matrix1F3.hpp"
+#include "math/Matrix1F6.hpp"
 #include "math/LowPass.hpp"
 #include "math/LowPassVector10F.hpp"
 #include "math/Stats1F.hpp"
@@ -231,9 +232,9 @@ public:
     uint16 m_LandCount;
 
     /* Validity */
-    bool m_XyEstValid;
-    bool m_ZEstValid;
-    bool m_TzEstValid;
+    boolean m_XyEstValid;
+    boolean m_ZEstValid;
+    boolean m_TzEstValid;
 
     /* map */
     struct map_projection_reference_s m_MapRef;
@@ -255,14 +256,14 @@ public:
 	uint64 m_TimeLastLand;
 
     /* Timeouts */
-	bool   m_BaroTimeout;
-	bool   m_GpsTimeout;
-	bool   m_LandTimeout;
+	boolean   m_BaroTimeout;
+	boolean   m_GpsTimeout;
+	boolean   m_LandTimeout;
 
     /* Faults */
-	bool   m_BaroFault;
-	bool   m_GpsFault;
-	bool   m_LandFault;
+	boolean   m_BaroFault;
+	boolean   m_GpsFault;
+	boolean   m_LandFault;
 
 	/* Reference altitudes */
 	float m_AltOrigin;
@@ -270,14 +271,14 @@ public:
 	float m_GpsAltOrigin;
 
 	/* status */
-	bool m_ReceivedGps;
-	bool m_LastArmedState;
-	bool m_EstimatorInitialized;
-	bool m_BaroInitialized;
-	bool m_GpsInitialized;
-	bool m_LandInitialized;
-	bool m_AltOriginInitialized;
-    bool m_ParamsUpdated;
+	boolean m_ReceivedGps;
+	boolean m_LastArmedState;
+	boolean m_EstimatorInitialized;
+	boolean m_BaroInitialized;
+	boolean m_GpsInitialized;
+	boolean m_LandInitialized;
+	boolean m_AltOriginInitialized;
+    boolean m_ParamsUpdated;
 
 	/* state space */
 	math::Vector10F     m_StateVec; // state vector
@@ -291,6 +292,64 @@ public:
 	math::Matrix10F3    m_InputMat; // input matrix
 	math::Matrix3F3     m_InputCov; // input covariance
 	math::Matrix10F10   m_NoiseCov; // process noise covariance
+
+    struct Baro
+    {
+        math::Vector1F y;
+        math::Matrix1F10 C;
+        math::Matrix1F1 R;
+        math::Matrix1F1 S_I;
+        math::Vector1F r;
+        float beta;
+        math::Matrix10F1 K;
+        math::Matrix10F1 temp;
+        math::Vector10F dx;
+    } m_Baro;
+
+
+    struct GPS
+    {
+        math::Vector6F y_global;
+        double  lat;
+        double  lon;
+        float  alt;
+        float px;
+        float py;
+        float pz;
+        math::Vector6F y;
+        math::Matrix6F10 C;
+        math::Matrix6F6 R;
+        float var_xy;
+        float var_z;
+        float var_vxy;
+        float var_vz;
+        float gps_s_stddev;
+        uint8 i_hist;
+        math::Matrix10F1 temp;
+        math::Vector10F x0;
+        math::Vector6F r;
+        math::Matrix6F6 S_I;
+        math::Matrix1F6 rTranspose;
+        float beta;
+        float beta_thresh;
+        math::Matrix10F6 K;
+        math::Vector10F dx;
+        
+    } m_GPS;
+    
+    struct Land
+    {
+        math::Vector3F y;
+        math::Matrix3F10 C;
+        math::Matrix3F3 R;
+        math::Matrix3F3 S_I;
+        math::Vector3F r;
+        float beta;
+        float beta_thresh;
+        math::Matrix10F3 K;
+        math::Vector10F dx;
+        
+    } m_Land;
 
 	PE_Params_t m_Params;
 
@@ -566,6 +625,8 @@ private:
 	void updateStateSpaceParams();
 
 public:
+	void SendEkf2InnovationsMsg();
+
 	// predict the next state
 	void predict();
 
@@ -586,13 +647,13 @@ public:
 	void landCorrect();
 	void landInit();
 	void landCheckTimeout();
+	boolean landed();
 
 	// timeouts
 	void CheckTimeouts();
 
 	// misc
 	//inline float agl() { return _x(X_tz) - _x(X_z); }
-	bool landed();
 	int getDelayPeriods(float delay, uint8 *periods);
 
 	void UpdateLocalParams();
@@ -602,7 +663,7 @@ public:
 
 	math::Vector10F dynamics(const math::Vector10F &x, const math::Vector3F &u);
 
-	bool Initialized(void);
+	boolean Initialized(void);
 
 };
 
