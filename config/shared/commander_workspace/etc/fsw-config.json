@@ -1674,7 +1674,7 @@
 	            {"macro": "PE_GLOBAL_POS_MSG_ERR_EID", "id": 26}
 			],
 		    "tables": [
-		        {"id": "PE_ConfigTbl", "title": "PE default config table", "isDumpTable": false}
+		        {"id": "CONFIG_TBL", "title": "PE default config table", "isDumpTable": false}
 		    ],
 		    "msgs": [
 		        {"macro": "PE_HK_TLM_MID", "type": "CMD", "id": 3193},
