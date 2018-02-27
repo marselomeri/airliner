@@ -477,23 +477,6 @@ int32 VM::RcvSchPipeMsg(int32 iBlocking)
 
             	/* Update the VehicleControlMode message */
             	VehicleControlModeMsg.Timestamp = timestamp;
-            	//VehicleControlModeMsg.Armed;
-            	VehicleControlModeMsg.ExternalManualOverrideOk = false;
-            	VehicleControlModeMsg.SystemHilEnabled = false;
-            	VehicleControlModeMsg.ControlManualEnabled = false;
-            	VehicleControlModeMsg.ControlAutoEnabled = true;
-            	VehicleControlModeMsg.ControlOffboardEnabled = false;
-            	VehicleControlModeMsg.ControlRatesEnabled = true;
-            	VehicleControlModeMsg.ControlAttitudeEnabled = true;
-            	VehicleControlModeMsg.ControlRattitudeEnabled = false;
-            	VehicleControlModeMsg.ControlForceEnabled = false;
-            	VehicleControlModeMsg.ControlAccelerationEnabled = false;
-            	VehicleControlModeMsg.ControlVelocityEnabled = true;
-            	VehicleControlModeMsg.ControlPositionEnabled = true;
-            	VehicleControlModeMsg.ControlAltitudeEnabled = true;
-            	VehicleControlModeMsg.ControlClimbRateEnabled = true;
-            	VehicleControlModeMsg.ControlTerminationEnabled = false;
-            	VehicleControlModeMsg.ControlFixedHdgEnabled = false;
 
             	/* Publish all the messages. */
             	SendActuatorArmedMsg();
@@ -1326,6 +1309,8 @@ void VM::AppMain()
 
     /* TODO:  Replace with appropriate code to cause a transition. */
     ArmingSM.FSM.InitComplete();
+    MainSM.FSM.trInitComplete();
+    NavigationSM.FSM.trInitComplete();
 
     /* Application main loop */
     while (CFE_ES_RunLoop(&uiRunStatus) == TRUE)
