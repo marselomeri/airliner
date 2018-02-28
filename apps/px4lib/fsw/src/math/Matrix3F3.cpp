@@ -333,35 +333,215 @@ float Matrix3F3::Determinant(void)
 }
 
 
+//Matrix3F3 Matrix3F3::Inversed(void)
+//{
+    //Matrix3F3 matOut;
+    //matOut.Zero();
+    //Matrix3F3 temp;
+    //temp.Zero();
+    //int i,j = 0;
+    //float determinant = 0;
+
+    //determinant = Determinant();
+
+    //if (0.0f == determinant || !isfinite(determinant))
+    //{
+        //return Matrix3F3(nan, nan, nan);
+    //}
+
+    //for(j = 0; j < SIZE; j++)
+    //{
+        //for(i = 0; i < SIZE; i++)
+        //{
+            //getCofactor(*this, temp, j, i, SIZE);
+            //matOut[i][j] = DeterminantRecursive(temp, SIZE - 1) / determinant;
+            //if (1 == (i+j)%2)
+            //{
+                //matOut[i][j] = -matOut[i][j];
+            //}
+
+        //}
+    //}
+    
+    //return matOut;
+//}
+
+
+/**
+ * inverse based on LU factorization with partial pivotting
+ */
 Matrix3F3 Matrix3F3::Inversed(void)
 {
-    Matrix3F3 matOut;
-    matOut.Zero();
-    Matrix3F3 temp;
-    temp.Zero();
-    int i,j = 0;
-    float determinant = 0;
+    Matrix3F3 L(
+            {1.0f, 0.0f, 0.0f},
+            {0.0f, 1.0f, 0.0f},
+            {0.0f, 0.0f, 1.0f}
+    );
+    Matrix3F3 P(
+            {1.0f, 0.0f, 0.0f},
+            {0.0f, 1.0f, 0.0f},
+            {0.0f, 0.0f, 1.0f}
+    );
+    Matrix3F3 U;
 
-    determinant = Determinant();
+    uint8 n, i, j, k, c = 0;
+    boolean success = TRUE;
 
-    if (0.0f == determinant || !isfinite(determinant))
+    U = *this;
+    
+    for (n = 0; n < SIZE; n++)
     {
-        return Matrix3F3(nan, nan, nan);
+        /* if diagonal is zero, swap with row below */
+        if(fabs(U[n][n]) < 1e-8f)
+        {
+            for (i = n + 1; i < SIZE; i++)
+            {
+                if(fabs(U[i][n]) > 1e-8f)
+                {
+                    U.SwapRows(i, n);
+                    P.SwapRows(i, n);
+                    L.SwapRows(i, n);
+                    L.SwapCols(i, n);
+                    break;
+                }
+            }
+        }
+        
+        if(fabs(U[n][n]) < 1e-8f)
+        {
+            /* failsafe, return zero matrix */
+            success = FALSE;
+            goto end_of_function;
+        }
+        
+        for(i = (n + 1); i < SIZE; i++)
+        {
+            L[i][n] = U[i][n] / U[n][n];
+            /* add i-th row and n-th row */
+            /* multiplied by: -a(i,n/a(n,n) */
+            for(k = n; k < SIZE; k++)
+            {
+                U[i][k] = U[i][k] - L[i][n] * U[n][k];
+            }
+        }
     }
 
-    for(j = 0; j < SIZE; j++)
+    /* for all columns of Y */
+    for(c = 0; c < SIZE; c++)
     {
+        /* for all rows of L */
         for(i = 0; i < SIZE; i++)
         {
-            getCofactor(*this, temp, j, i, SIZE);
-            matOut[i][j] = DeterminantRecursive(temp, SIZE - 1) / determinant;
-            if (1 == (i+j)%2)
+            /* for all columns of L */
+            for(j = 0; j < i; j++)
             {
-                matOut[i][j] = -matOut[i][j];
+                /* for all existing y
+                 * subtract the component they
+                 * contribute to the solution
+                 */
+                P[i][c] = P[i][c] - L[i][j] * P[j][c];
             }
-
         }
     }
     
-    return matOut;
+    /* for all columns of X */
+    for (c = 0; c < SIZE; c++) 
+    {
+        /* for all rows of U */
+        for (k = 0; k < SIZE; k++) 
+        {
+            /* have to go in reverse order */
+            i = SIZE - 1 - k;
+
+            /* for all columns of U */
+            for (j = i + 1; j < SIZE; j++) 
+            {
+                // for all existing x
+                // subtract the component they
+                // contribute to the solution
+                P[i][c] = P[i][c] - U[i][j] * P[j][c];
+            }
+
+            /* divide by the factor
+             * on current
+             * term to be solved
+             *
+             * we know that U(i, i) != 0 from above
+             */
+             P[i][c] = P[i][c] / U[i][i];
+        }
+    }
+
+    /* check sanity of results */
+    for(i = 0; i < SIZE; i++)
+    {
+        for(j = 0; j < SIZE; j++)
+        {
+            if(!isfinite(P[i][j]))
+            {
+                success = FALSE;
+                goto end_of_function;
+            }
+        }
+    }
+
+end_of_function:
+
+    if(TRUE == success)
+    {
+        return P;
+    }
+    else
+    {
+        Matrix3F3 Zero;
+        Zero.Zero();
+        return Zero;
+    }
 }
+
+
+void Matrix3F3::SwapRows(uint8 a, uint8 b)
+{
+    uint8 j = 0;
+    float tmp = 0;
+
+    if(a == b)
+    {
+        goto end_of_function;
+    }
+    
+    for(j = 0; j< SIZE; j++)
+    {
+        tmp = data[a][j];
+        data[a][j] = data[b][j];
+        data[b][j] = tmp;
+    }
+    
+end_of_function:
+;
+}
+
+
+void Matrix3F3::SwapCols(uint8 a, uint8 b)
+{
+    uint8 i = 0;
+    float tmp = 0;
+
+    if(a == b)
+    {
+        goto end_of_function;
+    }
+    
+    for(i = 0; i< SIZE; i++)
+    {
+        tmp = data[i][a];
+        data[i][a] = data[i][b];
+        data[i][b] = tmp;
+    }
+    
+end_of_function:
+;
+}
+
+
+

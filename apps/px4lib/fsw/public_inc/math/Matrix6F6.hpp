@@ -18,6 +18,7 @@ private:
     float DeterminantRecursive(const Matrix6F6 &mat, int n);
 
 public:
+	Matrix6F6();
 	Matrix6F6(Vector6F m0, Vector6F m1, Vector6F m2, Vector6F m3,
                Vector6F m4, Vector6F m5);
 	~Matrix6F6();
@@ -29,7 +30,9 @@ public:
     Matrix6F6 Identity(void);
     float Determinant(void);
     void Zero(void);
-	Matrix6F6();
+    void SwapRows(uint8 a, uint8 b);
+    void SwapCols(uint8 a, uint8 b);
+
 
 protected:
 

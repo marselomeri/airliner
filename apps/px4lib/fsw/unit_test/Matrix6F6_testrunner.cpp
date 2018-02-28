@@ -54,6 +54,10 @@ int main(void)
 			 "Test_Matrix6F6_Zero");
 	UtTest_Add(Test_Matrix6F6_Addition, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
 			 "Test_Matrix6F6_Addition");
+	UtTest_Add(Test_Matrix6F6_SwapRows, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
+			 "Test_Matrix6F6_SwapRows");
+	UtTest_Add(Test_Matrix6F6_SwapCols, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
+			 "Test_Matrix6F6_SwapCols");
 
     return(UtTest_Run());
 

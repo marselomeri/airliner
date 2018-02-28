@@ -46,6 +46,8 @@ void Test_Matrix6F6_Inverse(void);
 void Test_Matrix6F6_Mult_6F(void);
 void Test_Matrix6F6_Addition(void);
 void Test_Matrix6F6_Zero(void);
+void Test_Matrix6F6_SwapRows(void);
+void Test_Matrix6F6_SwapCols(void);
 
 
 #ifdef __cplusplus

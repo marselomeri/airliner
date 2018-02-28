@@ -330,9 +330,66 @@ void Test_Matrix6F6_Zero(void)
             UtAssert_True(matrixA[i][j] == 0.0f, "matrix[i][j] == 0.0f");
         }
     }
-
-
 }
+
+
+void Test_Matrix6F6_SwapRows(void)
+{
+	math::Matrix6F6 matrix(
+			{1.0f,   2.0f,  3.0f,  4.0f,  5.0f, 6.0f},
+			{7.0f,   8.0f,  9.0f, 10.0f, 11.0f, 12.0f},
+			{13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f},
+			{19.0f, 20.0f, 21.0f, 22.0f, 23.0f, 24.0f},
+			{25.0f, 26.0f, 27.0f, 28.0f, 29.0f, 30.0f},
+			{31.0f, 32.0f, 33.0f, 34.0f, 35.0f, 36.0f}
+	);
+    
+    matrix.SwapRows(0,1);
+
+    UtAssert_True(matrix[0][0] == 7.0f, "matrix[0][0] == 7.0f");
+    UtAssert_True(matrix[0][1] == 8.0f, "matrix[0][1] == 8.0f");
+    UtAssert_True(matrix[0][2] == 9.0f, "matrix[0][2] == 9.0f");
+    UtAssert_True(matrix[0][3] == 10.0f, "matrix[0][3] == 10.0f");
+    UtAssert_True(matrix[0][4] == 11.0f, "matrix[0][4] == 11.0f");
+    UtAssert_True(matrix[0][5] == 12.0f, "matrix[0][5] == 12.0f");
+
+    UtAssert_True(matrix[1][0] == 1.0f, "matrix[1][0] == 1.0f");
+    UtAssert_True(matrix[1][1] == 2.0f, "matrix[1][1] == 2.0f");
+    UtAssert_True(matrix[1][2] == 3.0f, "matrix[1][2] == 3.0f");
+    UtAssert_True(matrix[1][3] == 4.0f, "matrix[1][3] == 4.0f");
+    UtAssert_True(matrix[1][4] == 5.0f, "matrix[1][4] == 5.0f");
+    UtAssert_True(matrix[1][5] == 6.0f, "matrix[1][5] == 6.0f");
+}
+
+
+void Test_Matrix6F6_SwapCols(void)
+{
+	math::Matrix6F6 matrix(
+			{1.0f,   2.0f,  3.0f,  4.0f,  5.0f, 6.0f},
+			{7.0f,   8.0f,  9.0f, 10.0f, 11.0f, 12.0f},
+			{13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f},
+			{19.0f, 20.0f, 21.0f, 22.0f, 23.0f, 24.0f},
+			{25.0f, 26.0f, 27.0f, 28.0f, 29.0f, 30.0f},
+			{31.0f, 32.0f, 33.0f, 34.0f, 35.0f, 36.0f}
+	);
+    
+    matrix.SwapCols(0,1);
+
+    UtAssert_True(matrix[0][0] == 2.0f, "matrix[0][0] == 2.0f");
+    UtAssert_True(matrix[1][0] == 8.0f, "matrix[1][0] == 8.0f");
+    UtAssert_True(matrix[2][0] == 14.0f, "matrix[2][0] == 14.0f");
+    UtAssert_True(matrix[3][0] == 20.0f, "matrix[3][0] == 20.0f");
+    UtAssert_True(matrix[4][0] == 26.0f, "matrix[4][0] == 26.0f");
+    UtAssert_True(matrix[5][0] == 32.0f, "matrix[5][0] == 32.0f");
+
+    UtAssert_True(matrix[0][1] == 1.0f, "matrix[0][1] == 1.0f");
+    UtAssert_True(matrix[1][1] == 7.0f, "matrix[1][1] == 7.0f");
+    UtAssert_True(matrix[2][1] == 13.0f, "matrix[2][1] == 13.0f");
+    UtAssert_True(matrix[3][1] == 19.0f, "matrix[3][1] == 19.0f");
+    UtAssert_True(matrix[4][1] == 25.0f, "matrix[4][1] == 25.0f");
+    UtAssert_True(matrix[5][1] == 31.0f, "matrix[5][1] == 31.0f");
+}
+
 
 	//math::Matrix6F6 matrixA(
 			//{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
