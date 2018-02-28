@@ -264,73 +264,74 @@ Vector3F Matrix3F3::ToEuler(void) const
 	return euler;
 }
 
-void Matrix3F3::getCofactor(const Matrix3F3 &mat, Matrix3F3 &temp, int p, int q, int n)
-{
-    int i = 0, j = 0;
 
-    // Looping for each element of the matrix
-    for (int row = 0; row < n; row++)
-    {
-        for (int col = 0; col < n; col++)
-        {
-            //  Copying into temporary matrix only those element
-            //  which are not in given row and column
-            if (row != p && col != q)
-            {
-                temp[i][j++] = mat[row][col];
-                // Row is filled, so increase row index and
-                // reset col index
-                if (j == n - 1)
-                {
-                    j = 0;
-                    i++;
-                }
-            }
-        }
-    }
-}
+//void Matrix3F3::getCofactor(const Matrix3F3 &mat, Matrix3F3 &temp, int p, int q, int n)
+//{
+    //int i = 0, j = 0;
+
+    //// Looping for each element of the matrix
+    //for (int row = 0; row < n; row++)
+    //{
+        //for (int col = 0; col < n; col++)
+        //{
+            ////  Copying into temporary matrix only those element
+            ////  which are not in given row and column
+            //if (row != p && col != q)
+            //{
+                //temp[i][j++] = mat[row][col];
+                //// Row is filled, so increase row index and
+                //// reset col index
+                //if (j == n - 1)
+                //{
+                    //j = 0;
+                    //i++;
+                //}
+            //}
+        //}
+    //}
+//}
 
 
 
-float Matrix3F3::DeterminantRecursive(const Matrix3F3 &mat, int n)
-{
-    if (n < 1)
-    {
-        return NAN;
-    }
+//float Matrix3F3::DeterminantRecursive(const Matrix3F3 &mat, int n)
+//{
+    //if (n < 1)
+    //{
+        //return NAN;
+    //}
 
-    float D = 0.0f; // Initialize result
+    //float D = 0.0f; // Initialize result
  
-    //  Base case : if matrix contains single element
-    if (n == 1)
-    {
-        return mat[0][0];
-    }
+    ////  Base case : if matrix contains single element
+    //if (n == 1)
+    //{
+        //return mat[0][0];
+    //}
 
-    Matrix3F3 temp; // To store cofactors
-    temp.Zero();
+    //Matrix3F3 temp; // To store cofactors
+    //temp.Zero();
  
-    float sign = 1.0f;  // To store sign multiplier
+    //float sign = 1.0f;  // To store sign multiplier
  
-     // Iterate for each element of first row
-    for (int f = 0; f < n; f++)
-    {
-        // Getting Cofactor of mat[0][f]
-        getCofactor(mat, temp, 0, f, n);
-        D += sign * mat[0][f] * DeterminantRecursive(temp, n - 1);
+     //// Iterate for each element of first row
+    //for (int f = 0; f < n; f++)
+    //{
+        //// Getting Cofactor of mat[0][f]
+        //getCofactor(mat, temp, 0, f, n);
+        //D += sign * mat[0][f] * DeterminantRecursive(temp, n - 1);
  
-        // terms are to be added with alternate sign
-        sign = -sign;
-    }
+        //// terms are to be added with alternate sign
+        //sign = -sign;
+    //}
  
-    return D;
-}
+    //return D;
+//}
 
 
-float Matrix3F3::Determinant(void)
-{
-    return DeterminantRecursive(*this, SIZE);
-}
+//float Matrix3F3::Determinant(void)
+//{
+    //return DeterminantRecursive(*this, SIZE);
+//}
 
 
 //Matrix3F3 Matrix3F3::Inversed(void)

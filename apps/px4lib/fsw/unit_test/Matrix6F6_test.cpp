@@ -135,22 +135,22 @@ void Test_Matrix6F6_ArrayOperator(void)
 
 void Test_Matrix6F6_Determinant(void)
 {
-	math::Matrix6F6 matrix(
-			{2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-			{1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-			{1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f},
-			{1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f},
-			{1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f},
-			{1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f}
-	);
+	//math::Matrix6F6 matrix(
+			//{2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+			//{1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+			//{1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f},
+			//{1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f},
+			//{1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f},
+			//{1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f}
+	//);
 
-	float result = 0;
+	//float result = 0;
 
-    result = matrix.Determinant();
+    //result = matrix.Determinant();
     
-    //printf("result %f\n", result);
+    ////printf("result %f\n", result);
 
-    UtAssert_True(result == 7, "result == 7");
+    //UtAssert_True(result == 7, "result == 7");
 }
 
 

@@ -398,19 +398,19 @@ void Test_Matrix3F3_Inverse(void)
 
 void Test_Matrix3F3_Determinant(void)
 {
-	math::Matrix3F3 matrix(
-		{2.0f, 1.0f, 1.0f},
-		{1.0f, 2.0f, 1.0f},
-		{1.0f, 1.0f, 2.0f}
-	);
+	//math::Matrix3F3 matrix(
+		//{2.0f, 1.0f, 1.0f},
+		//{1.0f, 2.0f, 1.0f},
+		//{1.0f, 1.0f, 2.0f}
+	//);
 
-	float result = 0;
+	//float result = 0;
 
-    result = matrix.Determinant();
+    //result = matrix.Determinant();
     
-    //printf("result %f\n", result);
+    ////printf("result %f\n", result);
 
-    UtAssert_True(result == 4, "result == 4");
+    //UtAssert_True(result == 4, "result == 4");
 }
 
 void Test_Matrix3F3_Inverse2(void)
