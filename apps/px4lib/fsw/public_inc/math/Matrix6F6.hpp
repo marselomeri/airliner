@@ -14,8 +14,8 @@ private:
 	static const int SIZE = 6;
 	Vector6F data[SIZE];
 	Vector6F nan[SIZE];
-    void getCofactor(const Matrix6F6 &mat, Matrix6F6 &temp, int p, int q, int n);
-    float DeterminantRecursive(const Matrix6F6 &mat, int n);
+    //void getCofactor(const Matrix6F6 &mat, Matrix6F6 &temp, int p, int q, int n);
+    //float DeterminantRecursive(const Matrix6F6 &mat, int n);
 
 public:
 	Matrix6F6();
@@ -28,7 +28,7 @@ public:
     Matrix6F1 operator*(const Vector6F &vecIn);
     Matrix6F6 Inversed(void);
     Matrix6F6 Identity(void);
-    float Determinant(void);
+    //float Determinant(void);
     void Zero(void);
     void SwapRows(uint8 a, uint8 b);
     void SwapCols(uint8 a, uint8 b);
