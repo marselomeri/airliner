@@ -677,6 +677,9 @@ int NAV::Execute(){
 		vehicle_status_update_once = true;
 	}
 
+	//OS_printf("cmd %d\n",CVT.VehicleCommandMsg.Command );
+	//OS_printf("nvstate %d\n--------\n\n\n", CVT.VehicleStatusMsg.NavState);
+
 	/* Execute only on command event*/
 	if(new_command_arrived){
 		/* Reset new command flag*/
@@ -739,7 +742,7 @@ int NAV::Execute(){
 					return 0;
 				}
 			}
-
+			OS_printf("GO!\n");
 			PX4_PositionSetpointTripletMsg_t *TakeoffTriplet_ptr = GetTakeoffTripletMsg();
 			/* Store current position as previous and goal as next */
 			TakeoffTriplet_ptr->Previous.Yaw = CVT.VehicleGlobalPosition.Yaw;
