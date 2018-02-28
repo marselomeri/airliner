@@ -48,6 +48,9 @@ add_airliner_app_def(px4lib
         ${PX4LIB_PUBLIC_INCLUDE_DIR}/
 )
 
+# set optimization for px4lib
+target_compile_options(px4lib PRIVATE -O3)
+
 add_airliner_app_unit_test(px4lib-vector1f-ut
     UTASSERT
     SOURCES
