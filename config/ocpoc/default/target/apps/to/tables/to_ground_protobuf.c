@@ -17,25 +17,6 @@
 ** Local Structure Definitions
 *************************************************************************/
 
-/**
-** \brief The cFE TO config table definition.
-**
-** Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
-**    ObjName - variable name of config table, e.g., TO_ConfigDefTbl[]
-**    TblName - app's table name, e.g., TO.CONFIG_TBL, where TO is the same app name
-**              used in cfe_es_startup.scr, and TO_defConfigTbl is the same table
-**              name passed in to CFE_TBL_Register()
-**    Desc - description of table in string format
-**    TgtFileName[20] - table file name, compiled as .tbl file extension
-**    ObjSize - size of the entire table
-**
-*/
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
-{
-    "TO_ConfigTbl", "TO.GRND_PB_CFG", "TO ground config table",
-    "to_grnd_pb.tbl", (sizeof(TO_ChannelTbl_t))
-};
-
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
@@ -61,7 +42,9 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	{
 		/* Message Flows */
 		/* Ground Queues */
-		{CFE_ES_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX}
+		{CFE_ES_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
+		{SENS_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX},
+		{GPS_HK_TLM_MID,			1,	TO_PQUEUE_MEDIUM_IDX}
 	},{
 		/* Priority Queues */
 		/* TO_PQUEUE_SINGLE_PASS_IDX */
@@ -88,6 +71,8 @@ TO_ChannelTbl_t TO_ConfigTbl =
 /************************************************************************
 ** Function Definitions
 *************************************************************************/
+
+CFE_TBL_FILEDEF(TO_ConfigTbl, TO.GRND_PB_CFG, TO ground config table, to_grnd_pb.tbl )
 
 /************************/
 /*  End of File Comment */
