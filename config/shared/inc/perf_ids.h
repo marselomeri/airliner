@@ -66,7 +66,7 @@
 #define PE_SENSOR_GPS_PERF_ID       94
 #define PE_SENSOR_BARO_PERF_ID      95
 #define PE_SENSOR_LAND_PERF_ID      96
-
+#define PE_INVERSE_MAT_PERF_ID      97
 
 #endif
 
