@@ -57,40 +57,6 @@ block main
               
   .row.row-fluid
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-      #wid-VM-MainState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Main State
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Main State
-                    td
-                      span(data-sage={tlm: [{name:'/CFS/VM/MainState'}]}) ---
-            footer
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainManual'}}) Manual
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAltCtl'}}) AltCtl
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainPosCtl'}}) PosCtl
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoMission'}}) Mission 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoLoiter'}}) Loiter 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoRTL'}}) RTL 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAcro'}}) Acro 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainOffboard'}}) Offboard 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainStab'}}) Stab 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainRattitude'}}) Ratt 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoTakeoff'}}) Takeoff 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoLand'}}) Land 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoFollowTarget'}}) Follow 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetMainAutoPrecland'}}) Precland 
-              
-  .row.row-fluid
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
       #wid-VM-NavState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
