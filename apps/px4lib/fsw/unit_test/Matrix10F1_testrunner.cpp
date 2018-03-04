@@ -42,13 +42,18 @@ int main(void)
 	         "Test_Matrix10F1_Constructor");
 	UtTest_Add(Test_Matrix10F1_Transpose, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
 	         "Test_Matrix10F1_Transpose");
-	UtTest_Add(Test_Matrix10F1_Mult_1F1, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
-	         "Test_Matrix10F1_Mult_1F1");
 	UtTest_Add(Test_Matrix10F1_Mult_1F, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
 	         "Test_Matrix10F1_Mult_1F");
+	UtTest_Add(Test_Matrix10F1_Mult_1F_Random, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
+	         "Test_Matrix10F1_Mult_1F_Random");
+	UtTest_Add(Test_Matrix10F1_Mult_1F1, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
+	         "Test_Matrix10F1_Mult_1F1");
+	UtTest_Add(Test_Matrix10F1_Mult_1F1_Random, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
+	         "Test_Matrix10F1_Mult_1F1_Random");
 	UtTest_Add(Test_Matrix10F1_Mult_1F10, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
 	         "Test_Matrix10F1_Mult_1F10");
-
+	UtTest_Add(Test_Matrix10F1_Mult_1F10_Random, Matrix10F1_Test_Setup, Matrix10F1_Test_TearDown,
+	         "Test_Matrix10F1_Mult_1F10_Random");
     return(UtTest_Run());
 
 }
