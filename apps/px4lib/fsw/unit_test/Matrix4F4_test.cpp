@@ -121,6 +121,38 @@ void Test_Matrix4F4_MultiplicationByVector(void)
 }
 
 
+void Test_Matrix4F4_Mult_4F_Random(void)
+{
+    int i, j = 0;
+
+    math::Matrix4F4 A (
+        {-0.829441, 0.933767, -0.141631, -0.864443},
+        {-0.535494, -0.404551, -0.608416, 0.466376},
+        {-0.959111, -0.214757, 0.863463, 0.567176},
+        {-0.925036, -0.172581, 0.274853, -0.668142}
+    );
+
+    math::Vector4F B (
+        {-0.832417,-0.999814,0.492776,-0.435221}
+    );
+
+    math::Vector4F expected (
+        {0.063279,0.347441,1.191744,1.368795}
+    );
+
+    math::Vector4F result;
+    result.Zero();
+
+    result = A * B;
+
+    for(i = 0; i < 4; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
 void Test_Matrix4F4_NegateOperator(void)
 {
 //	/* vectorActual = vectorA - vectorB */

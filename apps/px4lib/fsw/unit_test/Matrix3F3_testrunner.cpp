@@ -68,6 +68,10 @@ int main(void)
 	         "Test_Matrix3F3_Determinant");
 	UtTest_Add(Test_Matrix3F3_Inverse2, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
 	         "Test_Matrix3F3_Inverse2");
+	UtTest_Add(Test_Matrix3F3_Mult_3F_Random, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Mult_3F_Random");
+	UtTest_Add(Test_Matrix3F3_Mult_3F3_Random, Matrix3F3_Test_Setup, Matrix3F3_Test_TearDown,
+	         "Test_Matrix3F3_Mult_3F3_Random");
 
     return(UtTest_Run());
 

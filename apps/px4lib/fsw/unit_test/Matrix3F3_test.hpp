@@ -53,6 +53,9 @@ void Test_Matrix3F3_Zero(void);
 void Test_Matrix3F3_Determinant(void);
 void Test_Matrix3F3_Inverse(void);
 void Test_Matrix3F3_Inverse2(void);
+void Test_Matrix3F3_Mult_3F_Random(void);
+void Test_Matrix3F3_Mult_3F3_Random(void);
+
 
 #ifdef __cplusplus
 }

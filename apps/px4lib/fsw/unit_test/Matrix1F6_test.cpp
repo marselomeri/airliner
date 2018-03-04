@@ -92,12 +92,56 @@ void Test_Matrix1F6_Zero(void)
 void Test_Matrix1F6_Mult_6F1(void)
 {
     math::Matrix1F6 matrixA({1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
-    math::Matrix6F1 matrixB({1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
+    math::Matrix6F1 matrixB(
+        {1.0f},
+        {2.0f}, 
+        {3.0f}, 
+        {4.0f}, 
+        {5.0f}, 
+        {6.0f}
+    );
     math::Matrix1F1 result;
 
     result = matrixA * matrixB;
 
     /* Verify results */
     UtAssert_True(result[0][0] == 91.0f, "result[0][0] == 91.0f");
+}
+
+
+void Test_Matrix1F6_Mult_6F1_Random(void)
+{
+    int i, j = 0;
+
+    math::Matrix1F6 A (
+        {0.622881, -0.048872, -0.457310, 0.469925, 0.240354, -0.844799}
+    );
+
+    math::Matrix6F1 B (
+        {0.133304},
+        {0.706889},
+        {0.036132},
+        {-0.427166},
+        {-0.230887},
+        {-0.474628}
+    );
+
+    math::Matrix1F1 expected (
+        0.176696
+    );
+
+    math::Matrix1F1 result;
+    result.Zero();
+
+    result = A * B;
+
+    for(i = 0; i < 1; i++)
+    {
+        for(j = 0; j < 1; j++)
+        {
+            UtAssert_True(fabs(result[i][j] - expected[i][j]) < 0.00001f, "fabs(result[i][j] - expected[i][j]) < 0.00001f");
+
+        }
+    }
 }
 
