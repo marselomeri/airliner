@@ -4,8 +4,10 @@
 using namespace math;
 
 
-Matrix10F1::Matrix10F1(Vector10F m0) :
-	data{m0[0], m0[1], m0[2], m0[3], m0[4], m0[5], m0[6], m0[7], m0[8], m0[9]},
+Matrix10F1::Matrix10F1(
+        Vector1F m0, Vector1F m1, Vector1F m2, Vector1F m3, Vector1F m4, 
+        Vector1F m5, Vector1F m6, Vector1F m7, Vector1F m8, Vector1F m9) :
+	data{m0, m1, m2, m3, m4, m5, m6, m7, m8, m9},
 	nan{NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN}
 {
 };

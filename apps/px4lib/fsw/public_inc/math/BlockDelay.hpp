@@ -2,26 +2,26 @@
 #define BLOCK_DELAY_HPP
 
 #include "cfe.h"
-#include <math/Matrix10F1.hpp>
+#include <math/Vector10F.hpp>
 
 namespace delay
 {
 
-class BlockDelay10F1LEN10
+class BlockDelay10FLEN10
 {
 private:
     static const int LEN = 10;
     uint8 m_Index;
     int m_Delay;
-    math::Matrix10F1 m_Storage[LEN];
+    math::Vector10F m_Storage[LEN];
     
 
 public:
-    BlockDelay10F1LEN10();
-    ~BlockDelay10F1LEN10();
-    math::Matrix10F1 Update(const math::Matrix10F1 &input);
+    BlockDelay10FLEN10();
+    ~BlockDelay10FLEN10();
+    math::Vector10F Update(const math::Vector10F &input);
     void Initialize(void);
-    math::Matrix10F1 Get(uint8 delay);
+    math::Vector10F Get(uint8 delay);
 
 protected:
 

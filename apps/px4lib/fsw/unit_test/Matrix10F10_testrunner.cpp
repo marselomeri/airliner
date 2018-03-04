@@ -42,22 +42,36 @@ int main(void)
 	         "Test_Matrix10F10_Constructor");
 	UtTest_Add(Test_Matrix10F10_Mult_10F, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F");
+	UtTest_Add(Test_Matrix10F10_Mult_10F_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F_Random");
 	UtTest_Add(Test_Matrix10F10_Mult_10F1, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F1");
+	UtTest_Add(Test_Matrix10F10_Mult_10F1_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F1_Random");
 	UtTest_Add(Test_Matrix10F10_Mult_10F3, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F3");
+	UtTest_Add(Test_Matrix10F10_Mult_10F3_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F3_Random");
 	UtTest_Add(Test_Matrix10F10_Mult_10F6, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F6");
-	UtTest_Add(Test_Matrix10F10_Mult_10F10, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
-	         "Test_Matrix10F10_Mult_10F10");
+	UtTest_Add(Test_Matrix10F10_Mult_10F6, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F6");
+	UtTest_Add(Test_Matrix10F10_Mult_10F10_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F10_Random");
 	UtTest_Add(Test_Matrix10F10_Mult_10F10_Sparse, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F10_Sparse");
+	UtTest_Add(Test_Matrix10F10_Mult_10F10_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F10_Random");
 	UtTest_Add(Test_Matrix10F10_Mult_Scaler, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_Scaler");
 	UtTest_Add(Test_Matrix10F10_Addition, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Addition");
+	UtTest_Add(Test_Matrix10F10_Addition_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Addition_Random");
 	UtTest_Add(Test_Matrix10F10_Subtraction, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Subtraction");
+	UtTest_Add(Test_Matrix10F10_Subtraction_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Subtraction_Random");
 	UtTest_Add(Test_Matrix10F10_Zero, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Zero");
 	UtTest_Add(Test_Matrix10F10_Identity, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
