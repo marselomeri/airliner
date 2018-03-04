@@ -1,9 +1,9 @@
 # Dimensions of matrix 1 rows
 ROWM1 = 10;
 # Dimensions of matrix 1 cols
-COLM1 = 6;
+COLM1 = 3;
 # Dimensions of matrix 2 rows
-ROWM2 = 6;
+ROWM2 = 3;
 # Dimensions of matrix 2 cols
 COLM2 = 1;
 # Max random value of generated matrices

@@ -100,8 +100,8 @@ Matrix10F3 Matrix10F3::operator*(const Matrix3F3 &matIn)
 		{
 
     		for(int k = 0; k < 3; k++)
-			{
-    			matOut[i][j] += data[i][j] * matIn[j][k];
+            {
+    			matOut[i][j] += data[i][k] * matIn[k][j];
 			}
 		}
     }
