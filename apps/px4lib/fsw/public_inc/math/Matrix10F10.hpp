@@ -41,8 +41,8 @@ public:
     Matrix10F6 operator*(const Matrix10F6 &matIn);
 	Matrix10F10 operator*(const Matrix10F10 &matIn);
 	Matrix10F10 operator*(const float &scalar);
-	void operator+=(const Matrix10F10 &mat);
-    void operator-=(const Matrix10F10 &matIn);
+	//void operator+=(const Matrix10F10 &mat);
+    //void operator-=(const Matrix10F10 &matIn);
 	void Zero(void);
     Matrix10F10 operator+(const Matrix10F10 &matIn) const;
     Matrix10F10 operator-(const Matrix10F10 &matIn) const;

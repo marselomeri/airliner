@@ -188,30 +188,30 @@ Vector10F Matrix10F10::operator*(const Vector10F &vecIn)
 }
 
 
-void Matrix10F10::operator+=(const Matrix10F10 &mat)
-{
-    // TODO: verify correct
-    for(int i = 0; i < SIZE; i++)
-    {
-    	for(int j = 0; j < SIZE; j++)
-		{
-    		 data[i][j] += mat[i][j];
-		}
-    }
-}
+//void Matrix10F10::operator+=(const Matrix10F10 &mat)
+//{
+    //// TODO: verify correct
+    //for(int i = 0; i < SIZE; i++)
+    //{
+    	//for(int j = 0; j < SIZE; j++)
+		//{
+    		 //data[i][j] += mat[i][j];
+		//}
+    //}
+//}
 
 
-void Matrix10F10::operator-=(const Matrix10F10 &matIn)
-{
-    // TODO: verify correct
-	for(int i = 0; i < SIZE; i++)
-	{
-		for(int j = 0; j < SIZE; j++)
-		{
-			data[j][i] -= matIn[j][i];
-		}
-	}
-}
+//void Matrix10F10::operator-=(const Matrix10F10 &matIn)
+//{
+    //// TODO: verify correct
+	//for(int i = 0; i < SIZE; i++)
+	//{
+		//for(int j = 0; j < SIZE; j++)
+		//{
+			//data[j][i] -= matIn[j][i];
+		//}
+	//}
+//}
 
 
 Matrix10F1 Matrix10F10::operator*(const Matrix10F1 &matIn)

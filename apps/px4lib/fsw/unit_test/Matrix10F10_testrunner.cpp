@@ -80,8 +80,12 @@ int main(void)
 	         "Test_Matrix10F10_Transpose");
 	UtTest_Add(Test_Matrix10F10_PlusEquals, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_PlusEquals");
+	UtTest_Add(Test_Matrix10F10_PlusEquals_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_PlusEquals_Random");
 	UtTest_Add(Test_Matrix10F10_MinusEquals, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_MinusEquals");
+	UtTest_Add(Test_Matrix10F10_MinusEquals_Random, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_MinusEquals_Random");
 
     return(UtTest_Run());
 

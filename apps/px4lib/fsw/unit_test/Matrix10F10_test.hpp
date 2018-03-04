@@ -59,7 +59,9 @@ void Test_Matrix10F10_Zero(void);
 void Test_Matrix10F10_Identity(void);
 void Test_Matrix10F10_Transpose(void);
 void Test_Matrix10F10_PlusEquals(void);
+void Test_Matrix10F10_PlusEquals_Random(void);
 void Test_Matrix10F10_MinusEquals(void);
+void Test_Matrix10F10_MinusEquals_Random(void);
 
 
 #ifdef __cplusplus
