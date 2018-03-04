@@ -143,7 +143,7 @@ Matrix6F10 Matrix6F10::operator*(const Matrix10F10 &matIn)
 		{
     		for(int k = 0; k < cols1; k++)
 			{
-    			value += data[i][j] * matIn[k][j];
+    			value += data[i][k] * matIn[k][j];
 			}
 
     		matOut[i][j] = value;
