@@ -28,8 +28,8 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
     **    ObjSize - size of the entire table
     */
 
-    "AMC_MixerCfgTbl", "AMC.MIXERCFG_TBL", "AMC default mixer config table",
-    "amc_mixercfg.tbl", (sizeof(MultirotorMixer_ConfigTable_t))
+    "AMC_MixerCfgTbl", "AMC.MIXERCFG_TBL", "AMC 3a mixer config table",
+    "amc_mixercfg3a.tbl", (sizeof(MultirotorMixer_ConfigTable_t))
 };
 
 
@@ -53,9 +53,9 @@ MultirotorMixer_ConfigTable_t AMC_MixerCfgTbl =
 	MIXER_HEX_X,  /* Rotor Geometry */
     {
         /* Rotor # | Roll Scale  |  Pitch Scale  |  Yaw Scale  |  Output Scale */
-		/*  0  */  { -1.0,           0.0,           -1.000000,     1.000000 },
-		/*  1  */  {  1.0,           0.0,            1.000000,     1.000000 },
-		/*  2  */  { -0.5,           0.866024971,   -1.000000,     1.000000 },
+		/*  0  */  {  0.0,           0.0,            0.000000,     0.000000 },
+		/*  1  */  {  0.0,           0.0,            0.000000,     0.000000 },
+		/*  2  */  {  0.5,           0.866024971,   -1.000000,     1.000000 },
 		/*  3  */  { -0.5,          -0.866024971,    1.000000,     1.000000 },
 		/*  4  */  { -0.5,           0.866024971,    1.000000,     1.000000 },
 		/*  5  */  {  0.5,          -0.866024971,   -1.000000,     1.000000 }
