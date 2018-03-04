@@ -1,9 +1,9 @@
 # Dimensions of matrix 1 rows
 ROWM1 = 10;
 # Dimensions of matrix 1 cols
-COLM1 = 10;
+COLM1 = 6;
 # Dimensions of matrix 2 rows
-ROWM2 = 10;
+ROWM2 = 6;
 # Dimensions of matrix 2 cols
 COLM2 = 1;
 # Max random value of generated matrices
@@ -69,15 +69,15 @@ fprintf(fid, "\n    );\n\n");
 # Expected matrix
 fprintf(fid, "    math::Vector%dF expected (\n", ROWM1);
 fprintf(fid, "        {");
-for i = 1:ROWM2
+for i = 1:ROWM1
         for j = 1:COLM2
             fprintf(fid, "%f", R(i,j));
             if(j < COLM2)
                 fprintf(fid, ", ");
             elseif(j == COLM2)
-                if(i < ROWM2)
+                if(i < ROWM1)
                     fprintf(fid, ",");
-                elseif(i == ROWM2)
+                elseif(i == ROWM1)
                     fprintf(fid, "}");
                 endif
             endif

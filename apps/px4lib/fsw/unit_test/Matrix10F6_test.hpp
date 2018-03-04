@@ -40,9 +40,12 @@ extern "C" {
 
 void Test_Matrix10F6_Constructor(void);
 void Test_Matrix10F6_OutOfBounds(void);
-void Test_Matrix10F6_Mult_6F6(void);
 void Test_Matrix10F6_Mult_6F(void);
+void Test_Matrix10F6_Mult_6F_Random(void);
+void Test_Matrix10F6_Mult_6F6(void);
+void Test_Matrix10F6_Mult_6F6_Random(void);
 void Test_Matrix10F6_Mult_6F10(void);
+void Test_Matrix10F6_Mult_6F10_Random(void);
 void Test_Matrix10F6_Zero(void);
 
 
