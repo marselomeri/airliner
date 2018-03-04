@@ -111,6 +111,7 @@ void Matrix10F10::Zero(void)
 Matrix10F10 Matrix10F10::operator*(const Matrix10F10 &matIn)
 {
     Matrix10F10 matOut;
+    matOut.Zero();
     float value = 0.0f;
 
     // TODO: verify correct
@@ -121,7 +122,7 @@ Matrix10F10 Matrix10F10::operator*(const Matrix10F10 &matIn)
 
     		for(int k = 0; k < SIZE; k++)
 			{
-    			value += data[i][j] * matIn[j][k];
+    			value += data[i][k] * matIn[k][j];
 			}
 
     		matOut[i][j] = value;

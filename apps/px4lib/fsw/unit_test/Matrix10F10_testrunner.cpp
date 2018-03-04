@@ -50,6 +50,8 @@ int main(void)
 	         "Test_Matrix10F10_Mult_10F6");
 	UtTest_Add(Test_Matrix10F10_Mult_10F10, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_10F10");
+	UtTest_Add(Test_Matrix10F10_Mult_10F10_Sparse, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
+	         "Test_Matrix10F10_Mult_10F10_Sparse");
 	UtTest_Add(Test_Matrix10F10_Mult_Scaler, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
 	         "Test_Matrix10F10_Mult_Scaler");
 	UtTest_Add(Test_Matrix10F10_Addition, Matrix10F10_Test_Setup, Matrix10F10_Test_TearDown,
