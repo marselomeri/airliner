@@ -50,6 +50,8 @@ int main(void)
 			 "Test_Matrix6F6_Inverse");
 	UtTest_Add(Test_Matrix6F6_Mult_6F, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
 			 "Test_Matrix6F6_Mult_6F");
+	UtTest_Add(Test_Matrix6F6_Mult_6F_Random, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
+			 "Test_Matrix6F6_Mult_6F_Random");
 	UtTest_Add(Test_Matrix6F6_Zero, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
 			 "Test_Matrix6F6_Zero");
 	UtTest_Add(Test_Matrix6F6_Addition, Matrix6F6_Test_Setup, Matrix6F6_Test_TearDown,
