@@ -47,7 +47,6 @@ void Test_Vector10F_AdditionOperator(void);
 void Test_Vector10F_SubtractionOperator(void);
 void Test_Vector10F_ScalarMultiplyOperator(void);
 void Test_Vector10F_ScalarDivOperator(void);
-void Test_Vector10F_DotProductOperator(void);
 void Test_Vector10F_EMult(void);
 void Test_Vector10F_EDivide(void);
 void Test_Vector10F_Constrain(void);
@@ -55,6 +54,9 @@ void Test_Vector10F_PlusEquals(void);
 void Test_Vector10F_Normalized(void);
 void Test_Vector10F_Normalize(void);
 void Test_Vector10F_Negate(void);
+void Test_Vector10F_Add_10F_Random(void);
+void Test_Vector10F_PlusEquals_10F_Random(void);
+void Test_Vector10F_Sub_10F_Random(void);
 
 #ifdef __cplusplus
 }

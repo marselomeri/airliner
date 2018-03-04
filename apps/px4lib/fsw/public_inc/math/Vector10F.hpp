@@ -33,7 +33,7 @@ public:
 	//Vector10F operator%(const Vector10F &vecIn);
 	Vector10F operator*(const float scalar);
 	Vector10F operator/(const float scalar);
-	float operator*(const Vector10F &vecIn);
+	//float operator*(const Vector10F &vecIn);
 	Vector10F operator-() const;
 	Vector10F EMult(const Vector10F &vecIn);
 	void Constrain(uint32 i, float min, float max);
