@@ -278,3 +278,54 @@ void Test_Vector1F_Normalize(void)
 }
 
 
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector1F_Add_1F_Random(void)
+{
+    int i = 0;
+
+    math::Vector1F A (
+        -0.295051
+    );
+
+    math::Vector1F B (
+        -0.932045
+    );
+
+    math::Vector1F expected (
+        -1.227096
+    );
+
+    math::Vector1F result;
+    result.Zero();
+
+    result = A + B;
+
+    UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector1F_Sub_1F_Random(void)
+{
+    int i = 0;
+
+    math::Vector1F A (
+        0.824133
+    );
+
+    math::Vector1F B (
+        -0.916948
+    );
+
+    math::Vector1F expected (
+        1.741082
+    );
+
+    math::Vector1F result;
+    result.Zero();
+
+    result = A - B;
+
+    UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+}

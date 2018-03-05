@@ -72,6 +72,11 @@ int main(void)
 	         "Test_Vector1F_Normalized");
 	UtTest_Add(Test_Vector1F_Normalize, Vector1F_Test_Setup, Vector1F_Test_TearDown,
 	         "Test_Vector1F_Normalize");
+	UtTest_Add(Test_Vector1F_Add_1F_Random, Vector1F_Test_Setup, Vector1F_Test_TearDown,
+	         "Test_Vector1F_Add_1F_Random");
+	UtTest_Add(Test_Vector1F_Sub_1F_Random, Vector1F_Test_Setup, Vector1F_Test_TearDown,
+	         "Test_Vector1F_Sub_1F_Random");
+
 
     return(UtTest_Run());
 

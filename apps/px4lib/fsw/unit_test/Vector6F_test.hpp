@@ -55,7 +55,8 @@ void Test_Vector6F_Pow(void);
 void Test_Vector6F_Normalized(void);
 void Test_Vector6F_Normalize(void);
 void Test_Vector6F_Negate(void);
-
+void Test_Vector6F_Add_6F_Random(void);
+void Test_Vector6F_Sub_6F_Random(void);
 
 #ifdef __cplusplus
 }

@@ -412,3 +412,65 @@ void Test_Vector6F_Negate(void)
 
 
 }
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector6F_Add_6F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector6F A (
+        {-0.887414,-0.119126,0.079142,0.499716,0.354095,0.723813}
+    );
+
+    math::Vector6F B (
+        {-0.286455,0.349328,-0.464778,0.454298,0.534963,-0.156184}
+    );
+
+    math::Vector6F expected (
+        {-1.173869,0.230201,-0.385635,0.954014,0.889058,0.567630}
+    );
+
+    math::Vector6F result;
+    result.Zero();
+
+    result = A + B;
+
+    for(i = 0; i < 6; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector6F_Sub_6F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector6F A (
+        {-0.955791,0.700360,-0.770943,-0.839343,-0.449211,0.917790}
+    );
+
+    math::Vector6F B (
+        {0.712302,-0.770698,0.392407,0.275895,0.684654,-0.541848}
+    );
+
+    math::Vector6F expected (
+        {-1.668094,1.471058,-1.163350,-1.115237,-1.133865,1.459638}
+    );
+
+    math::Vector6F result;
+    result.Zero();
+
+    result = A - B;
+
+    for(i = 0; i < 6; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+

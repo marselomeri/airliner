@@ -52,7 +52,8 @@ void Test_Vector2F_Negate(void);
 void Test_Vector2F_EMult(void);
 void Test_Vector2F_Constrain(void);
 void Test_Vector2F_Normalized(void);
-
+void Test_Vector2F_Add_2F_Random(void);
+void Test_Vector2F_Sub_2F_Random(void);
 
 #ifdef __cplusplus
 }

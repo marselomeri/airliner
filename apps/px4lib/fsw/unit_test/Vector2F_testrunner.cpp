@@ -66,6 +66,10 @@ int main(void)
 	         "Test_Vector2F_Constrain");
 	UtTest_Add(Test_Vector2F_Normalized, Vector2F_Test_Setup, Vector2F_Test_TearDown,
 	         "Test_Vector2F_Normalized");
+	UtTest_Add(Test_Vector2F_Add_2F_Random, Vector2F_Test_Setup, Vector2F_Test_TearDown,
+	         "Test_Vector2F_Add_2F_Random");
+	UtTest_Add(Test_Vector2F_Sub_2F_Random, Vector2F_Test_Setup, Vector2F_Test_TearDown,
+	         "Test_Vector2F_Sub_2F_Random");
 
     return(UtTest_Run());
 
