@@ -85,7 +85,7 @@ int32 VC_CustomTransmit_InitData()
     /* Set all non-zero values for channel zero */
     VC_AppCustomData.Channel[0].Mode = VC_CHANNEL_ENABLED;
     VC_AppCustomData.Channel[0].ChannelID = 0;
-    VC_AppCustomData.Channel[0].DestPort = "192.168.1.3";
+    VC_AppCustomData.Channel[0].DestPort = VC_DESTINATION_PORT;
     VC_AppCustomData.Channel[0].SocketFd = 0;
 
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
