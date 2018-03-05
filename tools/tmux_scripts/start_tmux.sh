@@ -8,7 +8,7 @@ session="flight_test"
 tmux start-server
 
 # create a new tmux session
-tmux new-session -d -s $session 
+tmux -f ~/tmux.conf new-session -d -s $session 
 
 # Select pane 1, set dir, get root
 tmux selectp -t 1 
