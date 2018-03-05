@@ -263,8 +263,6 @@ void Test_Vector3F_DotProductOperator(void)
 	float actualeRzcosB = vectorRzB * vectorRspzB;
 	float actualeRzcosC = vectorRzC * vectorRspzC;
 
-
-    printf("actualeRzcosA %.10f, actualeRzcosB %.10f\n\n", actualeRzcosA, actualeRzcosB);
 	float expectedAB = 173.75;
 	float expectedeRzcosA = 1.000000;
 	float expectedeRzcosB = 1.000000;
@@ -328,6 +326,66 @@ void Test_Vector3F_Constrain(void)
 	UtAssert_True(fabs(vectorB[0] - vectorBExpected[0]) <= 0.00001, "[0] vectorBExpected == vectorB.Constrain(0, min, max)");
 	UtAssert_True(fabs(vectorB[1] - vectorBExpected[1]) <= 0.00001, "[1] vectorBExpected == vectorB.Constrain(1, min, max)");
 	UtAssert_True(fabs(vectorB[2] - vectorBExpected[2]) <= 0.00001, "[2] vectorBExpected == vectorB.Constrain(2, min, max)");
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector3F_Add_3F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector3F A (
+        {-0.985966,-0.370751,0.697822}
+    );
+
+    math::Vector3F B (
+        {-0.862678,-0.264839,-0.097175}
+    );
+
+    math::Vector3F expected (
+        {-1.848644,-0.635590,0.600647}
+    );
+
+    math::Vector3F result;
+    result.Zero();
+
+    result = A + B;
+
+    for(i = 0; i < 3; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector3F_Sub_3F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector3F A (
+        {0.675745,-0.357198,-0.637360}
+    );
+
+    math::Vector3F B (
+        {0.972953,0.849521,0.308778}
+    );
+
+    math::Vector3F expected (
+        {-0.297208,-1.206719,-0.946138}
+    );
+
+    math::Vector3F result;
+    result.Zero();
+
+    result = A - B;
+
+    for(i = 0; i < 3; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
 }
 
 

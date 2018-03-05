@@ -51,7 +51,8 @@ void Test_Vector4F_DotProductOperator(void);
 void Test_Vector4F_EqualityOperator(void);
 void Test_Vector4F_ArrayOperator(void);
 void Test_Vector4F_NegateOperator(void);
-
+void Test_Vector4F_Add_4F_Random(void);
+void Test_Vector4F_Sub_4F_Random(void);
 
 #ifdef __cplusplus
 }

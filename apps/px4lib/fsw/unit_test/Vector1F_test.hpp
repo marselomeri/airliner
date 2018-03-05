@@ -55,8 +55,8 @@ void Test_Vector1F_EDivide(void);
 void Test_Vector1F_Constrain(void);
 void Test_Vector1F_Normalized(void);
 void Test_Vector1F_Normalize(void);
-
-
+void Test_Vector1F_Add_1F_Random(void);
+void Test_Vector1F_Sub_1F_Random(void);
 
 #ifdef __cplusplus
 }

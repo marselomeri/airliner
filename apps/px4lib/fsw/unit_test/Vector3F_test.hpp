@@ -51,7 +51,8 @@ void Test_Vector3F_ScalarDivOperator(void);
 void Test_Vector3F_DotProductOperator(void);
 void Test_Vector3F_EMult(void);
 void Test_Vector3F_Constrain(void);
-
+void Test_Vector3F_Add_3F_Random(void);
+void Test_Vector3F_Sub_3F_Random(void);
 
 #ifdef __cplusplus
 }

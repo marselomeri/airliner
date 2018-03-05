@@ -60,11 +60,14 @@ int main(void)
 	         "Test_Vector4F_DotProductOperator");
 	UtTest_Add(Test_Vector4F_EqualityOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
 	         "Test_Vector4F_EqualityOperator");
-             
 	UtTest_Add(Test_Vector4F_ArrayOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
 			 "Test_Vector4F_ArrayOperator");
 	UtTest_Add(Test_Vector4F_NegateOperator, Vector4F_Test_Setup, Vector4F_Test_TearDown,
 	         "Test_Vector4F_NegateOperator");
+	UtTest_Add(Test_Vector4F_Add_4F_Random, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_Add_4F_Random");
+	UtTest_Add(Test_Vector4F_Sub_4F_Random, Vector4F_Test_Setup, Vector4F_Test_TearDown,
+	         "Test_Vector4F_Sub_4F_Random");
 
     return(UtTest_Run());
 

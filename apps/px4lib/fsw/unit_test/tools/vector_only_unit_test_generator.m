@@ -1,5 +1,5 @@
 # Dimensions of matrix 1 rows
-ROWM1 = 10;
+ROWM1 = 1;
 # Dimensions of matrix 1 cols
 COLM1 = 1;
 # Dimensions of matrix 2 rows
