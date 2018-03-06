@@ -200,8 +200,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.h
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_custom.c
@@ -282,7 +280,6 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/gps/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps
     CONFIG_SOURCES
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_custom_sim_simple.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_ubx_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_common.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_common.c
@@ -448,4 +445,3 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_perfids.h
 )
-

@@ -2107,58 +2107,6 @@ void GPS_Nav_ParseChar_EOE(uint8 byte, GPS_DeviceMessage_t* message)
 
 
 
-/* Outgoing messages */
-
-//int32 GPS_NAV_EnablePOSLLH(void)
-//{
-    //uint8 cmd[] = {
-            //GPS_PARSER_SYNC1_VALUE,            /* Header */
-            //GPS_PARSER_SYNC2_VALUE,             /*        */
-            //GPS_PARSER_CLASS_NAV_VALUE,         /* Class         */
-            //GPS_PARSER_NAV_POSLLH_ID_VALUE,     /* ID             */
-            //0x00, 0x00,                         /* Length         */
-            //0x00, 0x00                            /* Checksum        */
-    //};
-    //uint8 resp[sizeof(cmd)];
-    //GPS_SetChecksum(cmd, sizeof(cmd));
-    //return GPS_Transfer(cmd, resp, sizeof(cmd));
-//}
-
-
-
-
-//int32 GPS_Ena_EnableSBAS()
-//{
-    //uint8 cmd[] = {
-            //GPS_PARSER_SYNC1_VALUE,            /* Header */
-            //GPS_PARSER_SYNC2_VALUE,             /*        */
-            //GPS_PARSER_CLASS_NAV_VALUE,        /* Class         */
-            //GPS_PARSER_NAV_SBAS_ID_VALUE,    /* ID             */
-            //0x19, 0x00,                         /* Length         */
-            //0x00, 0x00, 0x00, 0x00,                /* iTOW            */
-            //0x00, 0x00, 0x00, 0x00,                /* geo            */
-            //0x00, 0x00, 0x00, 0x00,                /* mode            */
-            //0x00, 0x00, 0x00, 0x00,                /* sys            */
-            //0x00, 0x00, 0x00, 0x00,                /* service        */
-            //0x00, 0x00, 0x00, 0x00,                /* cnt            */
-            //0x00, 0x00, 0x00, 0x00,                /* reserved        */
-            //0x00, 0x00, 0x00, 0x00,                /* svid            */
-            //0x00, 0x00, 0x00, 0x00,                /* flags        */
-            //0x00, 0x00, 0x00, 0x00,                /* udre            */
-            //0x00, 0x00, 0x00, 0x00,                /* svSys        */
-            //0x00, 0x00, 0x00, 0x00,                /* svService    */
-            //0x00, 0x00, 0x00, 0x00,                /* reserved2    */
-            //0x00, 0x00, 0x00, 0x00,                /* prc            */
-            //0x00, 0x00, 0x00, 0x00,                /* reserved3    */
-            //0x00, 0x00, 0x00, 0x00,                /* ic            */
-            //0x00, 0x00                            /* Checksum        */
-    //};
-    //uint8 resp[sizeof(cmd)];
-    //GPS_SetChecksum(cmd, sizeof(cmd));
-    //return GPS_Transfer(cmd, resp, sizeof(cmd));
-//}
-
-
 
 /************************/
 /*  End of File Comment */
