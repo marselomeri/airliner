@@ -89,26 +89,35 @@ mixin app_specific_table_control(appID)
                 .table-responsive
                   table.table.table-condensed
                     tbody        
-                    - for (var idx = 0; idx < appObj.tables.length; ++idx) {      
+                    - for (var idx = 0; idx < appObj.tables.length; ++idx) {   
+                    -   var tblName = "" + appObj.id + "." + appObj.tables[idx].id;   
                     -   if (appObj.tables[idx].isDumpTable == false) {
+                    -     var cmdDump = {cmd: {name: '/CFS/CFE_TBL/Dump', argument:[{name:'TableName', value:tblName}]}};
+                    -     var cmdValidate = {cmd: {name: '/CFS/CFE_TBL/Validate', argument:[{name:'TableName', value:tblName}]}};
+                    -     var cmdActivate = {cmd: {name: '/CFS/CFE_TBL/Activate', argument:[{name:'TableName', value:tblName}]}};
+                    -     var cmdTlmReg = {cmd: {name: '/CFS/CFE_TBL/TlmReg', argument:[{name:'TableName', value:tblName}]}};
+                    -     var cmdDelCDS = {cmd: {name: '/CFS/CFE_TBL/DeleteCDS', argument:[{name:'TableName', value:tblName}]}};
+                    -     var cmdAbort = {cmd: {name: '/CFS/CFE_TBL/AbortLoad', argument:[{name:'TableName', value:tblName}]}};
                       tr
                         th(style='width:150px') #{appObj.tables[idx].title}
                         td
                           .btn-group
                             button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/Load'}}) Load
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/Dump', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) Dump
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/Validate', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) Val
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/Activate', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) Act
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/TlmReg', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) TlmReg
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/DeleteCDS', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) DelCDS  
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/AbortLoad', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) Abort                  
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdDump) Dump
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdValidate) Val
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdActivate) Act
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdTlmReg) TlmReg
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdDelCDS) DelCDS  
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdAbort) Abort                  
                     -   } else {
+                    -     var cmdDump = {cmd: {name: '/CFS/CFE_TBL/Dump', argument:[{name:'TableName', value:tblName}]}};
+                    -     var cmdTlmReg = {cmd: {name: '/CFS/CFE_TBL/TlmReg', argument:[{name:'TableName', value:tblName}]}};
                       tr
                         th(style='width:150px') Ground Dump
                         td
                           .btn-group
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/Dump', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) Dump
-                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_TBL/TlmReg', argument:[{name:'TableName', value:'#{appObj.id}.#{appObj.tables[idx].id}'}]}}) TlmReg
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdDump) Dump
+                            button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage= cmdTlmReg) TlmReg
                     -   }
                     - }                      
   -   }
