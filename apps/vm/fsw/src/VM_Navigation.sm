@@ -1,0 +1,537 @@
+%start VM_NavigationMap::Init
+%class VM_Navigation
+%fsmclass VM_NavigationContext
+%header vm_Navigation.h
+%map VM_NavigationMap
+
+%%
+Manual
+    Entry
+    {
+        EnteredManual();
+    }
+{
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AltitudeControl
+    Entry
+    {
+        EnteredAltitudeControl();
+    }
+{
+    trManual             Manual             { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+PositionControl
+    Entry
+    {
+        EnteredPositionControl();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoMission
+    Entry
+    {
+        EnteredAutoMission();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoLoiter
+    Entry
+    {
+        EnteredAutoLoiter();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoReturnToLaunch
+    Entry
+    {
+        EnteredAutoReturnToLaunch();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoRCRecover
+    Entry
+    {
+        EnteredAutoRCRecover();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoRtgs
+    Entry
+    {
+        EnteredAutoRtgs();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoLandEngineFail
+    Entry
+    {
+        EnteredAutoLandEngineFail();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoLandGpsFail
+    Entry
+    {
+        EnteredAutoLandGpsFail();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+Acrobatic
+    Entry
+    {
+        EnteredAcrobatic();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+Unused
+{
+}
+Descend
+    Entry
+    {
+        EnteredDescend();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+Termination
+    Entry
+    {
+        EnteredTermination();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+Offboard
+    Entry
+    {
+        EnteredOffboard();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+Stabilize
+    Entry
+    {
+        EnteredStabilize();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+Rattitude
+    Entry
+    {
+        EnteredRattitude();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoTakeoff
+    Entry
+    {
+        EnteredAutoTakeoff();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoLand
+    Entry
+    {
+        EnteredAutoLand();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoFollowTarget
+    Entry
+    {
+        EnteredAutoFollowTarget();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoPrecland       AutoPrecland       { }
+}
+AutoPrecland
+    Entry
+    {
+        EnteredAutoPrecland();
+    }
+{
+    trManual             Manual             { }
+    trAltitudeControl    AltitudeControl    { }
+    trPositionControl    PositionControl    { }
+    trAutoMission        AutoMission        { }
+    trAutoLoiter         AutoLoiter         { }
+    trAutoReturnToLaunch AutoReturnToLaunch { }
+    trAutoRCRecover      AutoRCRecover      { }
+    trAutoRtgs           AutoRtgs           { }
+    trAutoLandEngineFail AutoLandEngineFail { }
+    trAutoLandGpsFail    AutoLandGpsFail    { }
+    trAcrobatic          Acrobatic          { }
+    trDescend            Descend            { }
+    trTermination        Termination        { }
+    trOffboard           Offboard           { }
+    trStabilize          Stabilize          { }
+    trRattitude          Rattitude          { }
+    trAutoTakeoff        AutoTakeoff        { }
+    trAutoLand           AutoLand           { }
+    trAutoFollowTarget   AutoFollowTarget   { }
+}
+Init
+{
+    trInitComplete       AutoLoiter         { }
+}
+    
+
+%%
