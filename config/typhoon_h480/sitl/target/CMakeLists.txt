@@ -4,9 +4,10 @@ include(../set-vars.cmake)
 # cross toolchain or has target independent functions.
 
 build_airliner_cfe(
-    PSP ${PSP}
-    OSAL ${OSAL}
+    PSP ${TARGET_PSP}
+    OSAL ${TARGET_OSAL}
     CONFIG
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc
     FILESYS
@@ -34,12 +35,32 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build)
 
 add_airliner_app(
+    px4br
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4br
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/px4br_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_perfids.h
+    )
+    
+add_airliner_app(
     pblib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
 
 add_airliner_app(
     prmlib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build)
+
+add_airliner_app(
+    sim
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sim_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_perfids.h
+)
 
 add_airliner_app(
     sch
@@ -210,16 +231,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_perfids.h
-    )
-
-add_airliner_app(
-    px4br
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4br
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/px4br_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_perfids.h
     )
 
 add_airliner_app(
@@ -394,16 +405,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ms5611_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_perfids.h
-)
-
-add_airliner_app(
-    sim
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sim_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_perfids.h
 )
 
 add_airliner_app(
