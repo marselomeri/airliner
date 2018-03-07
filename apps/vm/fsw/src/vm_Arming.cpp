@@ -38,7 +38,7 @@ void VM_Arming::Init(void)
 	App.VehicleStatusMsg.ArmingState = PX4_ARMING_STATE_INIT;
     App.VehicleStatusMsg.SystemID = 1;
     App.VehicleStatusMsg.ComponentID = 1;
-	App.SendActuatorArmedMsg();
+	//App.SendActuatorArmedMsg();
 }
 
 
@@ -48,7 +48,7 @@ void VM_Arming::EnteredStandby()
     App.ActuatorArmedMsg.Prearmed = true;
     App.ActuatorArmedMsg.ReadyToArm = true;
 	App.VehicleStatusMsg.ArmingState = PX4_ARMING_STATE_STANDBY;
-	App.SendActuatorArmedMsg();
+	//App.SendActuatorArmedMsg();
 
     CFE_EVS_SendEvent(VM_ARMING_ENTERED_STANDBY_STATE_INFO_EID, CFE_EVS_INFORMATION,
     		"Arming::Standby");
@@ -96,7 +96,7 @@ void VM_Arming::EnteredArmedError()
 
 
 void VM_Arming::DoAction()
-{
+{	
 	if(strcmp(FSM.getState().getName(),"VM_ArmingMap::Init") == 0)
 	{
 		/* TODO */
@@ -120,6 +120,7 @@ void VM_Arming::DoAction()
 	    CFE_EVS_SendEvent(VM_IN_UNKNOWN_STATE_ERR_EID, CFE_EVS_ERROR,
 	    		"VM_ArmingMap is in unknown state (%u, '%s')", FSM.getState().getId(), FSM.getState().getName());
 	}
+	App.SendActuatorArmedMsg();
 
 }
 
@@ -146,17 +147,6 @@ boolean VM_Arming::PreFlightCheckCleared(){
 	if(!App.status_flags.condition_power_input_valid){
 		OS_printf("Connect power module\n");
 		power_ok = false;
-	}
-	/* Check avionics rail voltages */
-	if(AvionicsPowerRailVoltage<4.5f){
-		OS_printf("NOT ARMING: Avionics power low: %6.2f Volt\n",AvionicsPowerRailVoltage);
-		power_ok = false;
-	}
-	else if(AvionicsPowerRailVoltage<4.9f){
-		OS_printf("CAUTION: Avionics power low: %6.2f Volt\n",AvionicsPowerRailVoltage);
-
-	}else if(AvionicsPowerRailVoltage>5.4f){
-		OS_printf("CAUTION: Avionics power high: %6.2f Volt\n",AvionicsPowerRailVoltage);
 	}
 
 	if (!App.status_flags.condition_system_sensors_initialized) {
