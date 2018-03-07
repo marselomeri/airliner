@@ -973,6 +973,31 @@ void SENS::ProcessRCInput(void)
 			ManualControlSetpointMsg.ManSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_MAN,
 					ConfigTblPtr->ManTh, (ConfigTblPtr->ManTh < 0));
 
+            /* Set flight mode flags according to mode switch. TODO: Make modes configurable */
+            if(1 == ConfigTblPtr->ModeSwitchControl)
+            {
+                ManualControlSetpointMsg.ManSwitch = PX4_SWITCH_POS_OFF;
+                ManualControlSetpointMsg.LoiterSwitch = PX4_SWITCH_POS_OFF;
+                ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_OFF;
+
+                if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_OFF)
+                {
+                    ManualControlSetpointMsg.ManSwitch = PX4_SWITCH_POS_ON;
+                }
+                else if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_MIDDLE)
+                {
+                    ManualControlSetpointMsg.LoiterSwitch = PX4_SWITCH_POS_ON;
+                }
+                else if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_ON)
+                {
+                    ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_ON;
+                }
+                else
+                {
+                    //invalid mode switch pos
+                }
+            }
+
 			/* Copy from mapped manual control to control group 3 */
 			ActuatorControls3Msg.Timestamp = CVT.InputRcMsg.LastSignal;
 

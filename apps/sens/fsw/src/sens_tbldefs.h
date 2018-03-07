@@ -119,6 +119,15 @@ typedef struct
 
 	float FltSmpRate;                               /* RC_FLT_SMP_RATE      */
 	float FltCutoff;                                /* RC_FLT_CUTOFF        */
+
+    /* This is a flag that if enabled, will set mode flags
+    *  in the manualcontrolsetpoint message based on the
+    *  mode switch position rather than individual switches
+    *  for  individual modes */
+	boolean ModeSwitchControl;                      /* ModeSwitchControl    */
+
+
+
 } SENS_ConfigTbl_t;
 
 
