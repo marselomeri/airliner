@@ -71,7 +71,6 @@ int32 AMC::InitDevice(void)
     /* Initialize just in case we were reloaded and the ctor wasn't called. */
     SharedMemCmd = 0;
 
-    //signal(SIGBUS,catch_sigbus);
     mem_fd = open(AMC_DEVICE_PATH, O_RDWR | O_SYNC);
     SharedMemCmd = (AMC_SharedMemCmd_t *) mmap(0, 0x1000, PROT_READ | PROT_WRITE,
                         MAP_SHARED, mem_fd, AMC_RCOUT_ZYNQ_PWM_BASE);
@@ -80,14 +79,7 @@ int32 AMC::InitDevice(void)
     if (SharedMemCmd == 0) {
         return errno;
     }
-
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) {
-        SharedMemCmd->PeriodHi[i].Period = AMC_Freq2tick(AMC_FREQUENCY_PWM);
-        SharedMemCmd->PeriodHi[i].Hi     = AMC_Freq2tick(AMC_FREQUENCY_PWM) / 2; // i prefer it is zero at the beginning
-        //PX4_ERR("initialize pwm pointer failed.%d, %d", sharedMem_cmd->periodhi[i].period, sharedMem_cmd->periodhi[i].hi);
-    }
-
-    OS_TaskDelay(100);
+    
     StopMotors();
 
     return 0;
