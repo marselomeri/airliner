@@ -322,16 +322,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    ae
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ae/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ae
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ae_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_perfids.h
-)
-
-add_airliner_app(
     vm
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/vm/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vm

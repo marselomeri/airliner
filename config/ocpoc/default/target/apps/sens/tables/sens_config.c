@@ -162,15 +162,15 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 	/* RC_MAP_THROTTLE      */  3,
 	/* RC_MAP_FAILSAFE      */  0,
 
-	/* RC_MAP_MODE_SW       */  5,
-	/* RC_MAP_RETURN_SW     */  0,
+	/* RC_MAP_MODE_SW       */  8,
+	/* RC_MAP_RETURN_SW     */  5,
 	/* RC_MAP_RATT_SW       */  0,
-	/* RC_MAP_POSCTL_SW     */  5,
+	/* RC_MAP_POSCTL_SW     */  0,
 	/* RC_MAP_LOITER_SW     */  0,
 	/* RC_MAP_ACRO_SW       */  0,
 	/* RC_MAP_OFFB_SW       */  0,
-	/* RC_MAP_KILL_SW       */  5,
-	/* RC_MAP_ARM_SW        */  0,
+	/* RC_MAP_KILL_SW       */  7,
+	/* RC_MAP_ARM_SW        */  6,
 	/* RC_MAP_TRANS_SW      */  0,
 	/* RC_MAP_GEAR_SW       */  0,
 	/* RC_MAP_STAB_SW       */  0,
@@ -183,7 +183,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 	/* RC_MAP_AUX4          */  0,
 	/* RC_MAP_AUX5          */  0,
 
-	/* RC_MAP_PARAM%d (1)   */  7,
+	/* RC_MAP_PARAM%d (1)   */  0,
 	/* RC_MAP_PARAM%d (2)   */  0,
 	/* RC_MAP_PARAM%d (3)   */  0,
 
@@ -198,15 +198,17 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 	/* RC_LOITER_TH         */  0.5f,
 	/* RC_ACRO_TH           */  0.5f,
 	/* RC_OFFB_TH           */  0.5f,
-	/* RC_KILLSWITCH_TH     */  0.25f,
-	/* RC_ARMSWITCH_TH      */  0.25f,
+	/* RC_KILLSWITCH_TH     */  0.5f,
+	/* RC_ARMSWITCH_TH      */  0.5f,
 	/* RC_TRANS_TH          */  0.25f,
 	/* RC_GEAR_TH           */  0.25f,
 	/* RC_STAB_TH           */  0.5f,
 	/* RC_MAN_TH            */  0.5f,
 
 	/* RC_FLT_SMP_RATE      */  50.0f,
-	/* RC_FLT_CUTOFF        */  10.0f
+	/* RC_FLT_CUTOFF        */  10.0f,
+
+	/* ModeSwitchControl    */  1
 };
 
 /*
