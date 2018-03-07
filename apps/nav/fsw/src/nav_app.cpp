@@ -386,8 +386,6 @@ int32 NAV::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_VEHICLE_COMMAND_MID:
             	new_command_arrived = true;
-            	OS_printf("command received NAV\n");
-
                 memcpy(&CVT.VehicleCommandMsg, MsgPtr, sizeof(CVT.VehicleCommandMsg));
                 break;
 
@@ -680,11 +678,9 @@ int NAV::Execute(){
 	}
 
 
-	//OS_printf("nvstate %d\n--------\n\n\n", CVT.VehicleStatusMsg.NavState);
 
 	/* Execute only on command event*/
 	if(new_command_arrived){
-		OS_printf("cmd %d\n",CVT.VehicleCommandMsg.Command );
 		/* Reset new command flag*/
 		new_command_arrived = false;
 		/* Configure messages on command receipt */
@@ -745,7 +741,6 @@ int NAV::Execute(){
 					return 0;
 				}
 			}
-			OS_printf("GO!\n");
 			PX4_PositionSetpointTripletMsg_t *TakeoffTriplet_ptr = GetTakeoffTripletMsg();
 			/* Store current position as previous and goal as next */
 			TakeoffTriplet_ptr->Previous.Yaw = CVT.VehicleGlobalPosition.Yaw;
@@ -779,7 +774,6 @@ int NAV::Execute(){
 			TakeoffTriplet_ptr->Current.Alt = CVT.VehicleCommandMsg.Param7;
 			TakeoffTriplet_ptr->Current.Valid = true;
 			TakeoffTriplet_ptr->Next.Valid = false;
-			OS_printf("%lf\n",PX4LIB_GetPX4TimeUs());
 		}
 	}
 
@@ -874,7 +868,6 @@ int NAV::Execute(){
 }
 
 void NAV::Takeoff(){
-	OS_printf("to ---- %lf\n",PX4LIB_GetPX4TimeUs());
 	/* Initialize pointers to messages */
 	PX4_PositionSetpointTripletMsg_t *TakeoffTriplet_ptr = GetTakeoffTripletMsg();
 	PX4_VehicleGlobalPositionMsg_t *VehicleGlobalPosition_ptr = GetVehicleGlobalPositionMsg();
@@ -902,7 +895,7 @@ void NAV::Takeoff(){
 		if(AbsoluteAltitude < MinAbsoluteAltitude){
 			AbsoluteAltitude = MinAbsoluteAltitude;
 			(void) CFE_EVS_SendEvent(NAV_LOW_CLEARANCE_ALT_EID, CFE_EVS_INFORMATION,
-					"1--Set altitude lower than minimum clearance : %.2f meters",AbsoluteAltitude);
+					"Set altitude lower than minimum clearance : %.2f meters",AbsoluteAltitude);
 		}
 	}
 	else{
