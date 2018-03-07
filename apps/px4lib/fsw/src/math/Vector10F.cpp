@@ -188,23 +188,23 @@ Vector10F Vector10F::operator/(const float scalar)
 
 
 // overload dot product operator to provide a vector scalar product
-float Vector10F::operator*(const Vector10F &vecIn)
-{
-	float res = 0.0f;
+//float Vector10F::operator*(const Vector10F &vecIn)
+//{
+	//float res = 0.0f;
 
-	res = data[0] * vecIn[0];
-	res += data[1] * vecIn[1];
-	res += data[2] * vecIn[2];
-	res += data[3] * vecIn[3];
-	res += data[4] * vecIn[4];
-	res += data[5] * vecIn[5];
-	res += data[6] * vecIn[6];
-	res += data[7] * vecIn[7];
-	res += data[8] * vecIn[8];
-	res += data[9] * vecIn[9];
+	//res = data[0] * vecIn[0];
+	//res += data[1] * vecIn[1];
+	//res += data[2] * vecIn[2];
+	//res += data[3] * vecIn[3];
+	//res += data[4] * vecIn[4];
+	//res += data[5] * vecIn[5];
+	//res += data[6] * vecIn[6];
+	//res += data[7] * vecIn[7];
+	//res += data[8] * vecIn[8];
+	//res += data[9] * vecIn[9];
 
-	return res;
-}
+	//return res;
+//}
 
 
 Vector10F Vector10F::operator-() const

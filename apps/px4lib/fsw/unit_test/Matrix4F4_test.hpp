@@ -42,6 +42,7 @@ void Test_Matrix4F4_Constructor(void);
 void Test_Matrix4F4_IndexOutOfBounds(void);
 void Test_Matrix4F4_ArrayOperator(void);
 void Test_Matrix4F4_MultiplicationByVector(void);
+void Test_Matrix4F4_Mult_4F_Random(void);
 void Test_Matrix4F4_NegateOperator(void);
 
 #ifdef __cplusplus

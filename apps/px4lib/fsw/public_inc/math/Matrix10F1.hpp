@@ -26,7 +26,8 @@ private:
 
 public:
     Matrix10F1();
-    Matrix10F1(Vector10F m0);
+    Matrix10F1(Vector1F m0, Vector1F m1, Vector1F m2, Vector1F m3, Vector1F m4,
+               Vector1F m5, Vector1F m6, Vector1F m7, Vector1F m8, Vector1F m9);
     ~Matrix10F1();
     Vector1F& operator [] (uint32 i);
     Vector1F operator [] (uint32 i) const;

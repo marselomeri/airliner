@@ -19,7 +19,7 @@ private:
 
 public:
     Matrix6F1();
-    Matrix6F1(Vector6F m0);
+    Matrix6F1(Vector1F m0, Vector1F m1, Vector1F m2, Vector1F m3, Vector1F m4, Vector1F m5);
     ~Matrix6F1();
     Vector1F& operator [] (uint32 i);
     Vector1F operator [] (uint32 i) const;

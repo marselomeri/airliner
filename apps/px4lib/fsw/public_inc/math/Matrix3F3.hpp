@@ -58,8 +58,9 @@ public:
 private:
 	static const int SIZE = 3;
 	Vector3F nan;
-
 	static const RotLookup_t RotLookup[];
+    //void getCofactor(const Matrix3F3 &mat, Matrix3F3 &temp, int p, int q, int n);
+    //float DeterminantRecursive(const Matrix3F3 &mat, int n);
 
 public:
     Matrix3F3(Vector3F m0, Vector3F m1, Vector3F m2);
@@ -79,9 +80,9 @@ public:
     void Zero(void);
 
     Matrix3F3 Inversed(void);
-    float Determinant(void);
-    void getCofactor(const Matrix3F3 &mat, Matrix3F3 &temp, int p, int q, int n);
-    float DeterminantRecursive(const Matrix3F3 &mat, int n);
+    //float Determinant(void);
+    void SwapRows(uint8 a, uint8 b);
+    void SwapCols(uint8 a, uint8 b);
 
 protected:
 	Vector3F data[SIZE];

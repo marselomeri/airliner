@@ -43,7 +43,9 @@ void Test_Matrix3F10_OutOfBounds(void);
 void Test_Matrix3F10_Zero(void);
 void Test_Matrix3F10_Transpose(void);
 void Test_Matrix3F10_Mult_10F(void);
+void Test_Matrix3F10_Mult_10F_Random(void);
 void Test_Matrix3F10_Mult_10F3(void);
+void Test_Matrix3F10_Mult_10F3_Random(void);
 
 #ifdef __cplusplus
 }

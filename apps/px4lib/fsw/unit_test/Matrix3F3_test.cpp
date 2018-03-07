@@ -398,19 +398,19 @@ void Test_Matrix3F3_Inverse(void)
 
 void Test_Matrix3F3_Determinant(void)
 {
-	math::Matrix3F3 matrix(
-		{2.0f, 1.0f, 1.0f},
-		{1.0f, 2.0f, 1.0f},
-		{1.0f, 1.0f, 2.0f}
-	);
+	//math::Matrix3F3 matrix(
+		//{2.0f, 1.0f, 1.0f},
+		//{1.0f, 2.0f, 1.0f},
+		//{1.0f, 1.0f, 2.0f}
+	//);
 
-	float result = 0;
+	//float result = 0;
 
-    result = matrix.Determinant();
+    //result = matrix.Determinant();
     
-    //printf("result %f\n", result);
+    ////printf("result %f\n", result);
 
-    UtAssert_True(result == 4, "result == 4");
+    //UtAssert_True(result == 4, "result == 4");
 }
 
 void Test_Matrix3F3_Inverse2(void)
@@ -449,3 +449,72 @@ void Test_Matrix3F3_Inverse2(void)
 }
 
 
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Matrix3F3_Mult_3F_Random(void)
+{
+    int i, j = 0;
+
+    math::Matrix3F3 A (
+        {-0.638700, -0.785700, -0.650849},
+        {0.855696, -0.983750, -0.685714},
+        {0.104937, -0.908615, -0.519282}
+    );
+
+    math::Vector3F B (
+        {-0.379527,0.695147,-0.297576}
+    );
+
+    math::Vector3F expected (
+        {-0.110096,-0.804559,-0.516922}
+    );
+
+    math::Vector3F result;
+    result.Zero();
+
+    result = A * B;
+
+    for(i = 0; i < 3; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Matrix3F3_Mult_3F3_Random(void)
+{
+    int i, j = 0;
+
+    math::Matrix3F3 A (
+        {-0.515712, -0.736414, -0.231187},
+        {0.594396, -0.471127, -0.258234},
+        {-0.479417, 0.628603, 0.732344}
+    );
+
+    math::Matrix3F3 B (
+        {-0.804984, 0.134784, -0.553694},
+        {0.669973, -0.573392, -0.071690},
+        {-0.657323, 0.005375, -0.120588}
+    );
+
+    math::Matrix3F3 expected (
+        {0.073727, 0.351502, 0.366218},
+        {-0.624379, 0.348868, -0.264199},
+        {0.325684, -0.421118, 0.132074}
+    );
+
+    math::Matrix3F3 result;
+    result.Zero();
+
+    result = A * B;
+
+    for(i = 0; i < 3; i++)
+    {
+        for(j = 0; j < 3; j++)
+        {
+            UtAssert_True(fabs(result[i][j] - expected[i][j]) < 0.00001f, "fabs(result[i][j] - expected[i][j]) < 0.00001f");
+
+        }
+    }
+}

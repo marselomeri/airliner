@@ -257,3 +257,63 @@ void Test_Vector4F_NegateOperator(void)
 }
 
 
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector4F_Add_4F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector4F A (
+        {-0.244349,-0.942404,-0.994364,-0.911892}
+    );
+
+    math::Vector4F B (
+        {0.938821,-0.411616,0.447763,0.157745}
+    );
+
+    math::Vector4F expected (
+        {0.694471,-1.354020,-0.546601,-0.754147}
+    );
+
+    math::Vector4F result;
+    result.Zero();
+
+    result = A + B;
+
+    for(i = 0; i < 4; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector4F_Sub_4F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector4F A (
+        {-0.235606,-0.062519,0.850069,-0.347899}
+    );
+
+    math::Vector4F B (
+        {-0.741309,0.910904,0.565218,-0.748560}
+    );
+
+    math::Vector4F expected (
+        {0.505703,-0.973423,0.284851,0.400661}
+    );
+
+    math::Vector4F result;
+    result.Zero();
+
+    result = A - B;
+
+    for(i = 0; i < 4; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+

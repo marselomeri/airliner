@@ -66,6 +66,11 @@ int main(void)
 	         "Test_Vector3F_EMult");
 	UtTest_Add(Test_Vector3F_Constrain, Vector3F_Test_Setup, Vector3F_Test_TearDown,
 	         "Test_Vector3F_Constrain");
+	UtTest_Add(Test_Vector3F_Add_3F_Random, Vector3F_Test_Setup, Vector3F_Test_TearDown,
+	         "Test_Vector3F_Add_3F_Random");
+	UtTest_Add(Test_Vector3F_Sub_3F_Random, Vector3F_Test_Setup, Vector3F_Test_TearDown,
+	         "Test_Vector3F_Sub_3F_Random");
+
 
     return(UtTest_Run());
 

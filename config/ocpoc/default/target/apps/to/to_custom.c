@@ -97,7 +97,7 @@ int32 TO_Custom_Init(void)
     uint32 i = 0;
 
     TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[0].IP, "10.10.0.10", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[0].IP, "192.168.1.3", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[0].DstPort = 5011;
     TO_AppCustomData.Channel[0].Priority = 50;
     TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_BinaryChannelTask;
@@ -105,7 +105,7 @@ int32 TO_Custom_Init(void)
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
     TO_AppCustomData.Channel[1].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[1].IP, "10.10.0.10", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[1].IP, "192.168.1.3", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[1].DstPort = 5012;
     TO_AppCustomData.Channel[1].Priority = 50;
     TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_ProtobufChannelTask;
@@ -511,11 +511,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                     &buffer, sizeof(buffer), &msgSize, TO_CUSTOM_CHANNEL_GET_TIMEOUT);
             if(iStatus == OS_SUCCESS)
             {
-                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
-
                 struct sockaddr_in s_addr;
-                int                       status = 0;
-                int32                     returnCode = 0;
+                int status = 0;
                 uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
 
                 bzero((char *) &s_addr, sizeof(s_addr));

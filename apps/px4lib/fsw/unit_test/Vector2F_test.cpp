@@ -253,3 +253,65 @@ void Test_Vector2F_Normalized(void)
 	UtAssert_True(fabs(vectorA[1] - vectorAExpected[1]) <= 0.00001, "[1] vectorAExpected == vectorA.Constrain(1, min, max)");
 }
 
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector2F_Add_2F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector2F A (
+        {0.585336,0.080683}
+    );
+
+    math::Vector2F B (
+        {0.108697,0.051081}
+    );
+
+    math::Vector2F expected (
+        {0.694033,0.131764}
+    );
+
+    math::Vector2F result;
+    result.Zero();
+
+    result = A + B;
+
+    for(i = 0; i < 2; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector2F_Sub_2F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector2F A (
+        {-0.855277,-0.210917}
+    );
+
+    math::Vector2F B (
+        {0.635585,0.791613}
+    );
+
+    math::Vector2F expected (
+        {-1.490862,-1.002530}
+    );
+
+    math::Vector2F result;
+    result.Zero();
+
+    result = A - B;
+
+    for(i = 0; i < 2; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+

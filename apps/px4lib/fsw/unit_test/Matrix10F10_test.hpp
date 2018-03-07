@@ -41,17 +41,27 @@ extern "C" {
 void Test_Matrix10F10_Constructor(void);
 void Test_Matrix10F10_Mult_10F(void);
 void Test_Matrix10F10_Mult_10F1(void);
+void Test_Matrix10F10_Mult_10F_Random(void);
+void Test_Matrix10F10_Mult_10F1_Random(void);
 void Test_Matrix10F10_Mult_10F3(void);
+void Test_Matrix10F10_Mult_10F3_Random(void);
 void Test_Matrix10F10_Mult_10F6(void);
+void Test_Matrix10F10_Mult_10F6_Random(void);
 void Test_Matrix10F10_Mult_10F10(void);
+void Test_Matrix10F10_Mult_10F10_Sparse(void);
+void Test_Matrix10F10_Mult_10F10_Random(void);
 void Test_Matrix10F10_Mult_Scaler(void);
 void Test_Matrix10F10_Addition(void);
+void Test_Matrix10F10_Addition_Random(void);
 void Test_Matrix10F10_Subtraction(void);
+void Test_Matrix10F10_Subtraction_Random(void);
 void Test_Matrix10F10_Zero(void);
 void Test_Matrix10F10_Identity(void);
 void Test_Matrix10F10_Transpose(void);
 void Test_Matrix10F10_PlusEquals(void);
+void Test_Matrix10F10_PlusEquals_Random(void);
 void Test_Matrix10F10_MinusEquals(void);
+void Test_Matrix10F10_MinusEquals_Random(void);
 
 
 #ifdef __cplusplus

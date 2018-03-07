@@ -46,6 +46,8 @@ int main(void)
 	         "Test_Matrix1F3_Zero");
 	UtTest_Add(Test_Matrix1F3_DotProduct, Matrix1F3_Test_Setup, Matrix1F3_Test_TearDown,
 	         "Test_Matrix1F3_DotProduct");
+	UtTest_Add(Test_Matrix1F3_Mult_3F_Random, Matrix1F3_Test_Setup, Matrix1F3_Test_TearDown,
+	         "Test_Matrix1F3_Mult_3F_Random");
 
     return(UtTest_Run());
 

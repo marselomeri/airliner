@@ -260,21 +260,6 @@ void Test_Vector10F_ScalarDivOperator(void)
 }
 
 
-void Test_Vector10F_DotProductOperator(void)
-{
-	/* actual = vectorA * vectorB */
-	math::Vector10F vectorA(1.5f, 2.5f, 3.5f, 4.5f, 5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f);
-	math::Vector10F vectorB(10.5f, 20.5f, 30.5f, 40.5f, 50.5f, 60.5f, 70.5f, 80.5f, 90.5f, 100.5f);
-
-	float actualAB = vectorA * vectorB;
-
-	float expectedAB = 4155.0f;
-    
-	/* Verify results */
-	UtAssert_True(actualAB == expectedAB, "expected == vectorA dot vectorB");
-}
-
-
 void Test_Vector10F_EMult(void)
 {
 	/* actual = vectorA / scalar */
@@ -539,3 +524,96 @@ void Test_Vector10F_Negate(void)
 	UtAssert_True(vectorA[8] == -9.5f, "vectorA[8] == -9.5f");
 	UtAssert_True(vectorA[9] == -10.5f, "vectorA[8] == -10.5f");
 }
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector10F_Add_10F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector10F A (
+        {0.025518,0.404600,0.713228,0.090022,-0.785246,0.763062,-0.603314,-0.427869,0.444792,-0.471371}
+    );
+
+    math::Vector10F B (
+        {0.328385,0.293871,0.745552,-0.501815,0.882076,-0.813979,0.209484,-0.234234,0.378351,0.521002}
+    );
+
+    math::Vector10F expected (
+        {0.353903,0.698470,1.458780,-0.411794,0.096830,-0.050917,-0.393830,-0.662104,0.823143,0.049631}
+    );
+
+    math::Vector10F result;
+    result.Zero();
+
+    result = A + B;
+
+    for(i = 0; i < 10; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector10F_PlusEquals_10F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector10F A (
+        {0.025518,0.404600,0.713228,0.090022,-0.785246,0.763062,-0.603314,-0.427869,0.444792,-0.471371}
+    );
+
+    math::Vector10F B (
+        {0.328385,0.293871,0.745552,-0.501815,0.882076,-0.813979,0.209484,-0.234234,0.378351,0.521002}
+    );
+
+    math::Vector10F expected (
+        {0.353903,0.698470,1.458780,-0.411794,0.096830,-0.050917,-0.393830,-0.662104,0.823143,0.049631}
+    );
+
+    math::Vector10F result;
+    result.Zero();
+
+    A += B;
+
+    result = A;
+
+    for(i = 0; i < 10; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Vector10F_Sub_10F_Random(void)
+{
+    int i, j = 0;
+
+    math::Vector10F A (
+        {0.296611,0.072534,-0.648729,-0.556663,0.391361,-0.013357,-0.403058,0.310833,0.714922,-0.855171}
+    );
+
+    math::Vector10F B (
+        {0.317210,-0.987583,-0.404500,0.493143,-0.402748,-0.216720,0.282142,-0.009202,0.038401,0.422956}
+    );
+
+    math::Vector10F expected (
+        {-0.020599,1.060117,-0.244229,-1.049806,0.794110,0.203363,-0.685200,0.320035,0.676521,-1.278127}
+    );
+
+    math::Vector10F result;
+    result.Zero();
+
+    result = A - B;
+
+    for(i = 0; i < 10; i++)
+    {
+        UtAssert_True(fabs(result[i] - expected[i]) < 0.00001f, "fabs(result[i] - expected[i]) < 0.00001f");
+
+    }
+}
+

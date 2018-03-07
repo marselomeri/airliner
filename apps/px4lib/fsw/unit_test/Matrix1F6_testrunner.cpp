@@ -46,6 +46,8 @@ int main(void)
 	         "Test_Matrix1F6_Zero");
 	UtTest_Add(Test_Matrix1F6_Mult_6F1, Matrix1F6_Test_Setup, Matrix1F6_Test_TearDown,
 	         "Test_Matrix1F6_Mult_6F1");
+	UtTest_Add(Test_Matrix1F6_Mult_6F1_Random, Matrix1F6_Test_Setup, Matrix1F6_Test_TearDown,
+	         "Test_Matrix1F6_Mult_6F1_Random");
 
     return(UtTest_Run());
 

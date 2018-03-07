@@ -52,9 +52,6 @@ int32 PE::InitEvent()
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
     memset(EventTbl, 0x00, sizeof(EventTbl));
     
-    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
-     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
-     * (the default) has been provided as an example. */
     EventTbl[  ind].EventID = PE_RESERVED_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = PE_ESTIMATOR_INF_EID;
@@ -163,14 +160,6 @@ int32 PE::InitPipe()
 					 iStatus);
             goto PE_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_CONTROL_MODE_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_VEHICLE_CONTROL_MODE_MID. (0x%08lX)",
-					 iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
         iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
@@ -184,14 +173,6 @@ int32 PE::InitPipe()
         {
             (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
 					 "CMD Pipe failed to subscribe to PX4_VEHICLE_ATTITUDE_SETPOINT_MID. (0x%08lX)",
-					 iStatus);
-            goto PE_InitPipe_Exit_Tag;
-        }
-        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(PE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
 					 iStatus);
             goto PE_InitPipe_Exit_Tag;
         }
@@ -362,7 +343,6 @@ void PE::InitData()
     m_GPS.var_vz = 0.0f;
     m_GPS.gps_s_stddev = 0.0f;
     m_GPS.i_hist = 0;
-    m_GPS.temp.Zero();
     m_GPS.x0.Zero();
     m_GPS.r.Zero();
     m_GPS.S_I.Zero();
@@ -383,10 +363,22 @@ void PE::InitData()
     m_Land.K.Zero();
     m_Land.dx.Zero();
 
+    /* Predict data */
+    m_Predict.q.Zero();
+    m_Predict.a.Zero();
+    m_Predict.k1.Zero();
+    m_Predict.k2.Zero();
+    m_Predict.k3.Zero();
+    m_Predict.k4.Zero();
+    m_Predict.dx.Zero();
+    m_Predict.bx = 0.0f;
+    m_Predict.by = 0.0f;
+    m_Predict.bz = 0.0f;
+    m_Predict.dP.Zero();
+
     /* Initialize delay blocks */
     m_XDelay.Initialize();
     m_TDelay.Initialize();
-
 }
 
 
@@ -580,7 +572,7 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
         MsgId = CFE_SB_GetMsgId(MsgPtr);
         switch (MsgId)
         {
-        	/* Cyclic op - 250hz */
+        	/* Cyclic op - 125hz */
             case PE_WAKEUP_MID:
                 Update();
                 break;
@@ -612,13 +604,17 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 memcpy(&m_VehicleLandDetectedMsg, MsgPtr, sizeof(m_VehicleLandDetectedMsg));
                 if(landed())
                 {
-					if(m_LandTimeout)
+					/* Throttle rate */
+					if((m_Timestamp - m_TimeLastLand) > 1.0e6f / LAND_RATE)
 					{
-						landInit();
-					}
-					else
-					{
-						landCorrect();
+						if(m_LandTimeout)
+						{
+							landInit();
+						}
+						else
+						{
+							landCorrect();
+						}
 					}
                 }
                 break;
@@ -629,10 +625,6 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
 
             case PX4_VEHICLE_ATTITUDE_MID:
                 memcpy(&m_VehicleAttitudeMsg, MsgPtr, sizeof(m_VehicleAttitudeMsg));
-                break;
-
-            case PX4_VEHICLE_CONTROL_MODE_MID:
-                memcpy(&m_VehicleControlModeMsg, MsgPtr, sizeof(m_VehicleControlModeMsg));
                 break;
 
             case PX4_SENSOR_COMBINED_MID:
@@ -667,10 +659,6 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
                 memcpy(&m_VehicleAttitudeSetpointMsg, MsgPtr, sizeof(m_VehicleAttitudeSetpointMsg));
                 break;
 
-            case PX4_MANUAL_CONTROL_SETPOINT_MID:// TODO: verify needed
-                memcpy(&m_ManualControlSetpointMsg, MsgPtr, sizeof(m_ManualControlSetpointMsg));
-                break;
-
             default:
                 (void) CFE_EVS_SendEvent(PE_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
@@ -678,17 +666,10 @@ int32 PE::RcvSchPipeMsg(int32 iBlocking)
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
-         * Note, this section is dead code only if the iBlocking arg
-         * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else
@@ -876,7 +857,7 @@ void PE::SendVehicleLocalPositionMsg()
 		m_VehicleLocalPositionMsg.V_Z_Valid = m_ZEstValid;
 		m_VehicleLocalPositionMsg.X = m_XLowPass[X_x];
 		m_VehicleLocalPositionMsg.Y = m_XLowPass[X_y];
-		m_VehicleLocalPositionMsg.Z = m_XLowPass[X_z]; // todo check if this should be agl
+		m_VehicleLocalPositionMsg.Z = m_XLowPass[X_z]; // Note: This can be be updated to AGL later
 		m_VehicleLocalPositionMsg.VX = m_XLowPass[X_vx];
 		m_VehicleLocalPositionMsg.VY = m_XLowPass[X_vy];
 		m_VehicleLocalPositionMsg.VZ = m_XLowPass[X_vz];
@@ -887,7 +868,7 @@ void PE::SendVehicleLocalPositionMsg()
 		m_VehicleLocalPositionMsg.RefLat = m_MapRef.lat_rad * 180/M_PI;
 		m_VehicleLocalPositionMsg.RefLon = m_MapRef.lon_rad * 180/M_PI;
 		m_VehicleLocalPositionMsg.RefAlt = m_AltOrigin;
-		//m_VehicleLocalPositionMsg.DistBottom = ; //TODO agl low pass
+		//m_VehicleLocalPositionMsg.DistBottom = ; //TODO Populate this with AGL once ULR integrated
 		m_VehicleLocalPositionMsg.DistBottomRate = m_XLowPass[X_vz];
 		m_VehicleLocalPositionMsg.SurfaceBottomTimestamp = m_Timestamp;
 		m_VehicleLocalPositionMsg.DistBottomValid = m_ZEstValid;
@@ -1133,7 +1114,7 @@ void PE::Update()
 
 		if(m_XyEstValid)
 		{
-			if(!VxyStdDevValid && m_GpsTimeout) // TODO: Should this really be AND?
+			if(!VxyStdDevValid && m_GpsTimeout)
 			{
 				m_XyEstValid = FALSE;
 			}
@@ -1163,7 +1144,7 @@ void PE::Update()
 
 		if(m_ZEstValid)
 		{
-			if(!ZStdDevValid && m_BaroTimeout) // TODO: Should this really be AND?
+			if(!ZStdDevValid && m_BaroTimeout)
 			{
 				m_ZEstValid = FALSE;
 			}
@@ -1218,7 +1199,7 @@ void PE::Update()
 		map_projection_init(&m_MapRef,
 							m_Params.INIT_ORIGIN_LAT,
 							m_Params.INIT_ORIGIN_LON,
-							m_Timestamp); //TODO: Verify correct time
+							m_Timestamp);
 
 		(void) CFE_EVS_SendEvent(PE_GPS_OK_INF_EID, CFE_EVS_INFORMATION,
 								 "GPS fake origin init. Lat: %6.2f Lon: %6.2f Alt: %5.1f m",
@@ -1243,7 +1224,6 @@ void PE::Update()
 	if (ReinitStateVec)
 	{
 		m_StateVec.Zero();
-		/* TODO: Decide if we want to reinit sensors here. PX4 didn't */
 	}
 
 	/* Force state covariance symmetry and reinitialize matrix if necessary */
@@ -1333,19 +1313,19 @@ boolean PE::Initialized(void)
 void PE::Predict(float dt)
 {
 	/* Get acceleration */
-	math::Quaternion q(m_VehicleAttitudeMsg.Q[0],
-					   m_VehicleAttitudeMsg.Q[1],
-					   m_VehicleAttitudeMsg.Q[2],
-					   m_VehicleAttitudeMsg.Q[3]);
+	m_Predict.q[0] = m_VehicleAttitudeMsg.Q[0];
+    m_Predict.q[1] = m_VehicleAttitudeMsg.Q[1];
+    m_Predict.q[2] = m_VehicleAttitudeMsg.Q[2];
+    m_Predict.q[3] = m_VehicleAttitudeMsg.Q[3];
 
-	m_RotationMat = math::Dcm(q);
+	m_RotationMat = math::Dcm(m_Predict.q);
 	m_Euler = math::Euler(m_RotationMat);
-	math::Vector3F a(m_SensorCombinedMsg.Acc[0], 
-                     m_SensorCombinedMsg.Acc[1], 
-                     m_SensorCombinedMsg.Acc[2]);
+	m_Predict.a[0] = m_SensorCombinedMsg.Acc[0];
+    m_Predict.a[1] = m_SensorCombinedMsg.Acc[1];
+    m_Predict.a[2] = m_SensorCombinedMsg.Acc[2];
 
 	/* Note: bias is removed in dynamics function */
-	m_InputVec = m_RotationMat * a;
+	m_InputVec = m_RotationMat * m_Predict.a;
 	m_InputVec[U_az] += 9.81f; // add g
 
 	/* Update state space based on new states */
@@ -1353,60 +1333,62 @@ void PE::Predict(float dt)
 
 	/* Continuous time Kalman filter prediction. Integrate runge kutta 4th order.
 	 * https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods */
-	math::Vector10F k1, k2, k3, k4;
-	k1 = dynamics(m_StateVec, m_InputVec);
-	k2 = dynamics(m_StateVec + k1 * dt / 2, m_InputVec);
-	k3 = dynamics(m_StateVec + k2 * dt / 2, m_InputVec);
-	k4 = dynamics(m_StateVec + k3 * dt, m_InputVec);
-	math::Vector10F dx = (k1 + k2 * 2 + k3 * 2 + k4) * (dt / 6);
-
+	//math::Vector10F k1, k2, k3, k4;
+	m_Predict.k1 = dynamics(m_StateVec, m_InputVec);
+	m_Predict.k2 = dynamics(m_StateVec + m_Predict.k1 * dt / 2, m_InputVec);
+	m_Predict.k3 = dynamics(m_StateVec + m_Predict.k2 * dt / 2, m_InputVec);
+	m_Predict.k4 = dynamics(m_StateVec + m_Predict.k3 * dt, m_InputVec);
+	//math::Vector10F dx = (k1 + k2 * 2 + k3 * 2 + k4) * (dt / 6);
+    m_Predict.dx = (m_Predict.k1 + m_Predict.k2 * 2 + m_Predict.k3 * 2 + 
+    m_Predict.k4) * (dt / 6);
 	/* Don't integrate position if no valid xy data */
 	if (!m_XyEstValid)
 	{
-		dx[X_x]  = 0;
-		dx[X_vx] = 0;
-		dx[X_y]  = 0;
-		dx[X_vy] = 0;
+		m_Predict.dx[X_x]  = 0;
+		m_Predict.dx[X_vx] = 0;
+		m_Predict.dx[X_y]  = 0;
+		m_Predict.dx[X_vy] = 0;
 	}
 
 	/* Don't integrate z if no valid z data */
 	if (!m_ZEstValid)
 	{
-		dx[X_z] = 0;
+		m_Predict.dx[X_z] = 0;
 	}
 
 	/* Don't integrate tz if no valid tz data */
 	if (!m_TzEstValid)
 	{
-		dx[X_tz] = 0;
+		m_Predict.dx[X_tz] = 0;
 	}
 
 	/* Saturate bias */
-	float bx = dx[X_bx] + m_StateVec[X_bx];
-	float by = dx[X_by] + m_StateVec[X_by];
-	float bz = dx[X_bz] + m_StateVec[X_bz];
+	m_Predict.bx = m_Predict.dx[X_bx] + m_StateVec[X_bx];
+	m_Predict.by = m_Predict.dx[X_by] + m_StateVec[X_by];
+	m_Predict.bz = m_Predict.dx[X_bz] + m_StateVec[X_bz];
 
-	if (::abs(bx) > BIAS_MAX)
+	if (::abs(m_Predict.bx) > BIAS_MAX)
 	{
-		bx = BIAS_MAX * bx / ::abs(bx);
-		dx[X_bx] = bx - m_StateVec[X_bx];
+		m_Predict.bx = BIAS_MAX * m_Predict.bx / ::abs(m_Predict.bx);
+		m_Predict.dx[X_bx] = m_Predict.bx - m_StateVec[X_bx];
 	}
 
-	if (::abs(by) > BIAS_MAX)
+	if (::abs(m_Predict.by) > BIAS_MAX)
 	{
-		by = BIAS_MAX * by / ::abs(by);
-		dx[X_by] = by - m_StateVec[X_by];
+		m_Predict.by = BIAS_MAX * m_Predict.by / ::abs(m_Predict.by);
+		m_Predict.dx[X_by] = m_Predict.by - m_StateVec[X_by];
 	}
 
-	if (::abs(bz) > BIAS_MAX)
+	if (::abs(m_Predict.bz) > BIAS_MAX)
 	{
-		bz = BIAS_MAX * bz / ::abs(bz);
-		dx[X_bz] = bz - m_StateVec[X_bz];
+		m_Predict.bz = BIAS_MAX * m_Predict.bz / ::abs(m_Predict.bz);
+		m_Predict.dx[X_bz] = m_Predict.bz - m_StateVec[X_bz];
 	}
 
 	/* Propagate */
-	m_StateVec += dx;
-	math::Matrix10F10 dP = (m_DynamicsMat * m_StateCov + m_StateCov * 
+	m_StateVec += m_Predict.dx;
+	//math::Matrix10F10 dP = (m_DynamicsMat * m_StateCov + m_StateCov * 
+    m_Predict.dP = (m_DynamicsMat * m_StateCov + m_StateCov * 
             m_DynamicsMat.Transpose() + m_InputMat * m_InputCov * 
             m_InputMat.Transpose() + m_NoiseCov) * dt;
 
@@ -1416,18 +1398,18 @@ void PE::Predict(float dt)
 		if (m_StateCov[i][i] > P_MAX)
 		{
 			/* If diagonal element greater than max stop propagating */
-			dP[i][i] = 0;
+			m_Predict.dP[i][i] = 0;
 
 			for (int j = 0; j < n_x; j++)
 			{
-				dP[i][j] = 0;
-				dP[j][i] = 0;
+				m_Predict.dP[i][j] = 0;
+				m_Predict.dP[j][i] = 0;
 			}
 		}
 	}
 
 	/* Update state */
-	m_StateCov += dP;
+	m_StateCov = m_StateCov + m_Predict.dP;
 	m_XLowPass.Update(m_StateVec, dt, LOW_PASS_CUTOFF);
 }
 

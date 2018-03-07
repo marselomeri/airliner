@@ -80,6 +80,7 @@ extern "C" {
 #define FAILSAFE_DEFAULT_TIMEOUT	(3 * 1000 * 1000)	/**< hysteresis time - the failsafe will trigger after 3 seconds in this state */
 #define POSITION_TIMEOUT		(1 * 1000 * 1000)
 
+#define STICK_ON_OFF_LIMIT 0.9f
 
 
 #define CBRK_SUPPLY_CHK_KEY	894281
@@ -195,7 +196,7 @@ typedef struct
 	float ef_time = 10.0;//	COM_EF_TIME
 	int gf_action = 1;//	GF_ACTION
 	int disarm_land = 3;//	COM_DISARM_LAND
-	int low_bat_act = 0;//	COM_LOW_BAT_ACT
+	int low_bat_act = 1;//	COM_LOW_BAT_ACT
 	float of_loss_t = 0.0;//	COM_OF_LOSS_T
 	int obl_act = 0;//	COM_OBL_ACT
 	int obl_rcl_act = 0;//	COM_OBL_RC_ACT
@@ -316,27 +317,32 @@ public:
     boolean ArmWithoutGps = false;
     boolean ArmMissionRequired = false;
     PX4_VehicleGlobalPositionMsg_t PreviousGlobalPosition = {};
-    boolean test = true;
+boolean not_initialized = true;
     VM_StatusFlags status_flags = {};
     VM_MainStateHold local_state = {};
     VM_MainStateHold prev_local_state = {};
     VM_StateTransition ArmingState;
-    StateHistory arm_disarm_history = {false};
+    StateHistory auto_disarm_history = {false};
 
     /** \brief Flags main thread initialize */
     boolean vm_initialized = false;
 
     boolean vh_landed = true;
+    boolean vh_prev_landed = true;
     boolean vh_freefall = false;
     boolean vh_armed = false;
 
 	unsigned counter = 0;
 	unsigned stick_off_counter = 0;
 	unsigned stick_on_counter = 0;
+	unsigned last_sp_man_arm_switch = 0;
+
 
 	bool low_battery_voltage_actions_done = false;
 	bool critical_battery_voltage_actions_done = false;
 	bool emergency_battery_voltage_actions_done = false;
+
+	uint64 rc_signal_lost_timestamp;
 
 	bool status_changed = true;
 	bool param_init_forced = true;
@@ -627,12 +633,11 @@ public:
     uint64 TimeNow(void);
 
     void Initialization();
+    void FlightSessionInit();
     void Execute();
     void SetCircuitBreakers();
 	boolean CircuitBreakerEnabled(int , int );
 	void CheckValidity(uint64 , uint64 , bool , bool *, bool *);
-
-	void TakeoffPackage();
 
 private:
     /************************************************************************/

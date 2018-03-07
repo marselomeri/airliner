@@ -38,22 +38,11 @@
 ** Includes
 *************************************************************************/
 #include "gps_parser_ubx_ack.h"
-//#include "gps_parser_ubx_aid.h"
 #include "gps_parser_ubx_cfg.h"
-//#include "gps_parser_ubx_esf.h"
-//#include "gps_parser_ubx_hnr.h"
-//#include "gps_parser_ubx_inf.h"
-//#include "gps_parser_ubx_log.h"
-//#include "gps_parser_ubx_mga.h"
 #include "gps_parser_ubx_mon.h"
 #include "gps_parser_ubx_nav.h"
 #include "gps_ubx_msg.h"
-//#include "gps_parser_ubx_rxm.h"
-//#include "gps_parser_ubx_sec.h"
-//#include "gps_parser_ubx_tim.h"
-//#include "gps_parser_ubx_upd.h"
 #include "../gps_custom_shared.h"
-//#include "../gps_interface_uart/gps_serial.h"
 
 
 #ifdef __cplusplus

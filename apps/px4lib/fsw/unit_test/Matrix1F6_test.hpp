@@ -42,7 +42,7 @@ void Test_Matrix1F6_Constructor(void);
 void Test_Matrix1F6_IndexOutOfBounds(void);
 void Test_Matrix1F6_Zero(void);
 void Test_Matrix1F6_Mult_6F1(void);
-
+void Test_Matrix1F6_Mult_6F1_Random(void);
 
 #ifdef __cplusplus
 }

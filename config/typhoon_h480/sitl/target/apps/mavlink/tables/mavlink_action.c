@@ -31,7 +31,7 @@
 **    ObjSize - size of the entire table
 **
 */
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     "MAVLINK_ConfigTbl", "MAVLINK.ACTION_MAP", "MAVLINK default config table",
     "mavlink_action.tbl", (sizeof(MAVLINK_ActionMapTbl_t))

@@ -90,3 +90,31 @@ void Test_Matrix1F3_DotProduct(void)
     /* Verify results */
     UtAssert_True(result == 14.0f, "result == 14.0f");
 }
+
+
+/* Auto generated with GNU Octave, version 4.0.0 */
+void Test_Matrix1F3_Mult_3F_Random(void)
+{
+    int i, j = 0;
+
+    math::Matrix1F3 A (
+        {-0.893243, -0.740157, -0.948225}
+    );
+
+    math::Vector3F B (
+        {0.890827,0.088834,-0.522814}
+    );
+
+    float expected = -0.365731;
+
+    float result = 0.0f;
+
+    result = A * B;
+
+    for(i = 0; i < 1; i++)
+    {
+        UtAssert_True(fabs(result - expected) < 0.00001f, "fabs(result - expected) < 0.00001f");
+
+    }
+}
+

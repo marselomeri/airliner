@@ -56,8 +56,6 @@ int main(void)
 	         "Test_Vector10F_ScalarMultiplyOperator");
 	UtTest_Add(Test_Vector10F_ScalarDivOperator, Vector10F_Test_Setup, Vector10F_Test_TearDown,
 	         "Test_Vector10F_ScalarDivOperator");
-	UtTest_Add(Test_Vector10F_DotProductOperator, Vector10F_Test_Setup, Vector10F_Test_TearDown,
-	         "Test_Vector10F_DotProductOperator");
 	UtTest_Add(Test_Vector10F_EMult, Vector10F_Test_Setup, Vector10F_Test_TearDown,
 	         "Test_Vector10F_EMult");
 	UtTest_Add(Test_Vector10F_EDivide, Vector10F_Test_Setup, Vector10F_Test_TearDown,
@@ -72,6 +70,12 @@ int main(void)
 	         "Test_Vector10F_Normalize");
 	UtTest_Add(Test_Vector10F_Negate, Vector10F_Test_Setup, Vector10F_Test_TearDown,
 	         "Test_Vector10F_Negate");
+	UtTest_Add(Test_Vector10F_Add_10F_Random, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_Add_10F_Random");
+	UtTest_Add(Test_Vector10F_PlusEquals_10F_Random, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_PlusEquals_10F_Random");
+	UtTest_Add(Test_Vector10F_Sub_10F_Random, Vector10F_Test_Setup, Vector10F_Test_TearDown,
+	         "Test_Vector10F_Sub_10F_Random");
 
     return(UtTest_Run());
 

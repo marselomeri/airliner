@@ -1087,7 +1087,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, GPS_ParserStatus_
 
         case GPS_PARSE_STATE_GOT_CHECKSUMA:
         {
-            //GPS_AppCustomData.ParserStatus.ChecksumB = byte;
             CFE_SB_TimeStampMsg((CFE_SB_MsgPtr_t)message);
             msg_received = 1;
             *done = TRUE;
