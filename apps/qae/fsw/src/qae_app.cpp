@@ -183,6 +183,7 @@ void QAE::InitData()
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm,
     		AE_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    OS_printf("------>>>>>> %d \n",sizeof(HkTlm));
       /* Init output messages */
       CFE_SB_InitMsg(&VehicleAttitudeMsg,
       		PX4_VEHICLE_ATTITUDE_MID, sizeof(PX4_VehicleAttitudeMsg_t), TRUE);
@@ -451,8 +452,13 @@ void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void QAE::ReportHousekeeping()
 {
+
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    OS_printf("                     cmdcnt: %hhu \n",HkTlm.usCmdCnt);
+    	OS_printf("                     errcnt: %hhu \n",HkTlm.usCmdErrCnt);
+    	OS_printf("                     state: %hhu \n",HkTlm.State);
+    	OS_printf("                     e_state: %hhu \n",HkTlm.EstimatorState);
 }
 
 
