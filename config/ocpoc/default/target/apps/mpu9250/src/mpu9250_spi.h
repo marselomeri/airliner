@@ -224,8 +224,8 @@
 #define MPU9250_BITS_FS_8G                  (0x10)
 /** \brief Accel Full Scale Select bit 16G. */
 #define MPU9250_BITS_FS_16G                 (0x18)
-//#define MPU9250_BITS_FS_MASK                (0x18)
 /** \brief Digital Low Pass Filter Configuration bit 250Hz. */
+#define MPU9250_BITS_FS_MASK                (0x18)
 #define MPU9250_BITS_DLPF_CFG_250HZ         (0x00)
 /** \brief Digital Low Pass Filter Configuration bit 184Hz. */
 #define MPU9250_BITS_DLPF_CFG_184HZ         (0x01)
@@ -241,7 +241,7 @@
 #define MPU9250_BITS_DLPF_CFG_5HZ           (0x06)
 /** \brief Digital Low Pass Filter Configuration bit 3600Hz. */
 #define MPU9250_BITS_DLPF_CFG_3600HZ        (0x07)
-//#define MPU9250_BITS_DLPF_CFG_MASK          (0x07)
+#define MPU9250_BITS_DLPF_CFG_MASK          (0x07)
 /** \brief Interrupt status cleared configuration bit. */
 #define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
 /** \brief Enable raw sensor data ready interrupt to pin bit. */
@@ -250,10 +250,12 @@
 #define MPU9250_BIT_I2C_IF_DIS              (0x10)
 
 #define MPU9250_READ_FLAG                   (0x80)
+#define MPU9250_BIT_RAW_RDY_EN              (0x01)
+#define MPU9250_BIT_INT_ANYRD_2CLEAR        (0x10)
 /** \brief The default value of the MPU9250 device ID. */
 #define MPU9250_WHOAMI_9250                 (0x71)
 /** \brief The I2C address of the Magnetometer. */
-#define MPU9250_AK8963_I2C_ADDR             (0x0C)
+#define MPU9250_AK8963_I2C_ADDR             (0x0c)
 /** \brief The default value of the AK8963 device ID. */
 #define MPU9250_AK8963_Device_ID            (0x48)
 
@@ -323,10 +325,10 @@
 #define MPU9250_ST_INT_FIFO_OFL_MASK        (0x05)
 /** \brief Wake on motion interrupt occurred. */
 #define MPU9250_ST_INT_WOM_MASK             (0x07)
+
 /** \brief Array initializer. */
 #define MPU_InitRegNum                      (20)
 /** \brief Array initializer 2. */
-//#define MPU_InitRegNum2                     (10)
 /** \brief Stop between slave reads. */
 #define MPU9250_I2C_MST_P_NSR               (0x10)
 /** \brief Delay data ready int until external sensor data is loaded. */
@@ -412,17 +414,8 @@ int32 MPU9250_Ioctl(int fh, int request, void *arg);
 
 
 int32 MPU9250_ResetDevice(void);
-//boolean MPU9250_Read_MagInfo(uint8 *Value);
 boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);
-//boolean MPU9250_Custom_Read_MagAdj(void);
 boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif 
 
 #endif /* MPU9250_SPI_H */

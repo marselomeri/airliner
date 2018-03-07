@@ -33,7 +33,7 @@
 **    ObjSize - size of the entire table
 **
 */
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     "EA_ConfigTbl", "EA.CONFIG_TBL", "EA default config table",
     "ea_config.tbl", (sizeof(EA_ConfigTblEntry_t) * EA_CONFIG_TABLE_MAX_ENTRIES)

@@ -107,7 +107,7 @@ extern "C" {
 **  \par Limits:
 **       This parameter must be at least 1000 (ms).
 */
-#define HMC5883_STARTUP_TIMEOUT_MSEC        (1000)
+#define HMC5883_STARTUP_TIMEOUT_MSEC    (1000)
 
 /** \brief Mag divider for calculated scaling */
 #define HMC5883_MAG_DIVIDER                 (820.0f)

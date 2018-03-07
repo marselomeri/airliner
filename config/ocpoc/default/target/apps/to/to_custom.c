@@ -511,11 +511,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                     &buffer, sizeof(buffer), &msgSize, TO_CUSTOM_CHANNEL_GET_TIMEOUT);
             if(iStatus == OS_SUCCESS)
             {
-                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
-
                 struct sockaddr_in s_addr;
-                int                       status = 0;
-                int32                     returnCode = 0;
+                int status = 0;
                 uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
 
                 bzero((char *) &s_addr, sizeof(s_addr));

@@ -208,7 +208,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         goto end_of_function;
     }
     
-    if (Format.fmt.pix.sizeimage != VC_AppCustomDevice.Channel[DeviceID].Buffer_Size)
+    if (Format.fmt.pix.sizeimage > VC_AppCustomDevice.Channel[DeviceID].Buffer_Size)
     {
          CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC device %s channel %u size image %u > buffer size %lu.",

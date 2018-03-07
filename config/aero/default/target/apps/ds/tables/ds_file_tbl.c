@@ -14,15 +14,13 @@
 **       when creating ground system database entries that require
 **       file index numbers for command arguments.
 */
-#define FILE_ALL_EVENTS       0
+#define FILE_ALL_EVENTS          0
 
-#define FILE_ALL_APP_HK_PKTS  1
-#define FILE_ALL_APP_TLM_PKTS 2
-
-#define FILE_ALL_HW_TLM_PKTS  3
-
-#define FILE_CFE_APP_HK_PKTS  4
-#define FILE_CFE_APP_TLM_PKTS 5
+#define FILE_ALL_APP_HK_PKTS     1
+#define FILE_FLIGHT_APP_TLM_PKTS 2
+#define FILE_ALL_HW_TLM_PKTS     3
+#define FILE_CFE_APP_HK_PKTS     4
+#define FILE_CFE_APP_TLM_PKTS    5
 
 
 /*
@@ -30,7 +28,7 @@
 */
 DS_DestFileTable_t DS_DestFileTable =
 {
-  /* .Descriptor = */ "Sample File Table Data",
+  /* .Descriptor = */ "Events",
   /* .File       = */
   {
     /* File Index 00 -- event packets only */
@@ -38,14 +36,14 @@ DS_DestFileTable_t DS_DestFileTable =
 #if (DS_MOVE_FILES == TRUE)
       /* .Movename      = */ DS_EMPTY_STRING,
 #endif
-      /* .Pathname      = */ "set_by_cmd_b4_enable",
+      /* .Pathname      = */ "/cf/log/",
       /* .Basename      = */ "events",
       /* .Extension     = */ ".dat",
 
       /* .FileNameType  = */ DS_BY_COUNT,
-      /* .EnableState   = */ DS_DISABLED,
-      /* .MaxFileSize   = */ (1024 * 32),               /* 32 K-bytes */
-      /* .MaxFileAge    = */ (60 * 45),                 /* 45 minutes */
+      /* .EnableState   = */ DS_ENABLED,
+      /* .MaxFileSize   = */ (1024 * 1024),               /* 1 MB */
+      /* .MaxFileAge    = */ (60 * 20),                   /* 20 minutes */
       /* .SequenceCount = */ 1000,
     },
     /* File Index 01 -- application housekeeping packets */

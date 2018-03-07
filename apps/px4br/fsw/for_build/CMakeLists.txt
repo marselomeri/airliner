@@ -322,9 +322,6 @@ add_airliner_app_def(px4br
 
     PROTOBUF_MSGS_DIR        
         ${PX4BR_PROTOBUF_MSGS_DIR}
-        
-    PUBLIC_INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../public_inc/
 )
 
 set(PX4_MSGS_DIR ${PX4_MSGS_DIR} PARENT_SCOPE)
