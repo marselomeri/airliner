@@ -41,16 +41,16 @@ HS_XCTEntry_t      HS_Default_ExeCount_Tbl[HS_MAX_EXEC_CNT_SLOTS] =
 /*  19 */ { "SCH",                     0,       HS_XCT_TYPE_APP_MAIN       },
 /*  20 */ { "TO",                      0,       HS_XCT_TYPE_APP_MAIN       },
 /*  21 */ { "VC",                      0,       HS_XCT_TYPE_APP_MAIN       },
-/*  22 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  23 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  24 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  25 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  26 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  27 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  28 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  29 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  30 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
-/*  31 */ { "",                        0,       HS_XCT_TYPE_NOTYPE         },
+/*  22 */ { "MAC",                     0,       HS_XCT_TYPE_APP_MAIN       },
+/*  23 */ { "AMC",                     0,       HS_XCT_TYPE_APP_MAIN       },
+/*  24 */ { "PX4BR",                   0,       HS_XCT_TYPE_APP_MAIN       },
+/*  25 */ { "SENS",                    0,       HS_XCT_TYPE_APP_MAIN       },
+/*  26 */ { "MPU9250",                 0,       HS_XCT_TYPE_APP_MAIN       },
+/*  27 */ { "HMC5883",                 0,       HS_XCT_TYPE_APP_MAIN       },
+/*  28 */ { "ULR",                     0,       HS_XCT_TYPE_APP_MAIN       },
+/*  29 */ { "GPS",                     0,       HS_XCT_TYPE_APP_MAIN       },
+/*  30 */ { "MS5611",                  0,       HS_XCT_TYPE_APP_MAIN       },
+/*  31 */ { "SIM",                     0,       HS_XCT_TYPE_APP_MAIN       }
 
 };
 

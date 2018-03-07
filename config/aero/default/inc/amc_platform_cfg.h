@@ -29,7 +29,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define AMC_SCH_PIPE_DEPTH             (2)
+#define AMC_SCH_PIPE_DEPTH             (15)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
@@ -85,14 +85,14 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define AMC_DATA_PIPE_DEPTH            (4)
+#define AMC_PARAM_PIPE_DEPTH            (4)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
 **  \par Limits:
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
-#define AMC_DATA_PIPE_NAME             ("AMC_DATA_PIPE")
+#define AMC_PARAM_PIPE_NAME             ("AMC_PARAM_PIPE")
 
 /** \brief The config table default filename
 **
@@ -113,6 +113,9 @@ extern "C" {
 
 /* TODO:  Add Doxygen markup. */
 #define AMC_MAX_MOTOR_OUTPUTS       (8)
+
+#define AMC_MAX_PARAMS       (3)
+
 
 
 #ifdef __cplusplus
