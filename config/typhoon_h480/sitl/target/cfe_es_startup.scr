@@ -25,7 +25,6 @@ CFE_APP, /cf/apps/SC.so,        SC_AppMain,      SC,        91, 32768, 0x0, 0;
 CFE_APP, /cf/apps/MD.so,        MD_AppMain,      MD,        85, 32768, 0x0, 0;
 CFE_APP, /cf/apps/EA.so,        EA_AppMain,      EA,        40, 32768, 0x0, 0;
 CFE_APP, /cf/apps/VC.so,        VC_AppMain,      VC,       100, 32768, 0x0, 0;
-CFE_APP, /cf/apps/AE.so,        AE_AppMain,      AE,       90, 32768, 0x0, 0;
 CFE_APP, /cf/apps/PE.so,        PE_AppMain,      PE,       90, 32768, 0x0, 0;
 CFE_APP, /cf/apps/QAE.so,       QAE_AppMain,     QAE,       90, 32768, 0x0, 0;
 CFE_APP, /cf/apps/MPC.so,       MPC_AppMain,     MPC,       90, 32768, 0x0, 0;
