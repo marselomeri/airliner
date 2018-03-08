@@ -1728,6 +1728,8 @@ typedef struct
 	float VZ;
 } PX4_VehicleGlobalVelocitySetpointMsg_t;
 
+/* TODO remove pragma pack after verifying OcPoC padding/alignment*/
+#pragma pack(push, 1)
 typedef struct
 {
     uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
@@ -1755,6 +1757,7 @@ typedef struct
 	boolean VelNedValid;
 	uint8 SatellitesUsed;
 } PX4_VehicleGpsPositionMsg_t;
+#pragma pack(pop)
 
 typedef struct
 {
