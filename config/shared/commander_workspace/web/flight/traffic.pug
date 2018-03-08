@@ -36,7 +36,7 @@ block main
       var viewer = new Cesium.Viewer('cesiumContainer');
       var AIRCRAFT = {};
       var tracking_step_limit = 10;
-      var outdated_seconds = 5;
+      var outdated_seconds = 30;
       
       function prepareRoute(lo,la,h,t,hex){
         var INSTANCE_VARIABLES = {lo:lo,la:la,h:h,t:t};
@@ -118,14 +118,14 @@ block main
 
       
       function executeQuery(){
+      	
         session.getADSBJson(function(adsb) {
           //variables
           console.log(adsb)
-          time_stamp = adsb.now
-          message_counter = adsb.messages
-          aircraft_list = adsb.aircraft
-          for(i=0; i<aircraft_list.length;i++){
-            instance = aircraft_list[i]
+          var time_stamp = Math.floor(Date.now());
+          //message_counter = adsb.messages
+          for(i=0; i<adsb.length;i++){
+            instance = adsb[i]
             try{
               latitude = instance.lat
               longitude = instance.lon
