@@ -11,623 +11,535 @@ Manual
         EnteredManual();
     }
 {
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+                             ctxt.IsTransitionAutoTakeoffValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
+
 AltitudeControl
     Entry
     {
         EnteredAltitudeControl();
     }
 {
-    trManual             Manual             { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+    trAutoLand            
+                         [    ctxt.IsTransitionAutoLandValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLand           { }
     Reset		  		 Init 				{ }
     
 }
+
 PositionControl
     Entry
     {
         EnteredPositionControl();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-AutoMission
-    Entry
-    {
-        EnteredAutoMission();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
+
 AutoLoiter
     Entry
     {
         EnteredAutoLoiter();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
+
 AutoReturnToLaunch
     Entry
     {
         EnteredAutoReturnToLaunch();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-AutoRCRecover
-    Entry
-    {
-        EnteredAutoRCRecover();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
-AutoRtgs
-    Entry
-    {
-        EnteredAutoRtgs();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-AutoLandEngineFail
-    Entry
-    {
-        EnteredAutoLandEngineFail();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-AutoLandGpsFail
-    Entry
-    {
-        EnteredAutoLandGpsFail();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
+
 Acrobatic
     Entry
     {
         EnteredAcrobatic();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-Unused
-{
-}
-Descend
-    Entry
-    {
-        EnteredDescend();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
-Termination
-    Entry
-    {
-        EnteredTermination();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-Offboard
-    Entry
-    {
-        EnteredOffboard();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
+
 Stabilize
     Entry
     {
         EnteredStabilize();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
+
 Rattitude
     Entry
     {
         EnteredRattitude();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+    trAutoLand           [
+                             ctxt.IsTransitionAutoLandValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
+
 AutoTakeoff
     Entry
     {
         EnteredAutoTakeoff();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
+    trAutoLand           [ 
+                             ctxt.IsTransitionAutoLandValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLand           { }
     Reset		  		 Init 				{ }
 }
+
 AutoLand
     Entry
     {
         EnteredAutoLand();
     }
 {
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
+    trManual             [ 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Manual             { }
+    trAltitudeControl    [ 
+                             ctxt.IsTransitionAltCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AltitudeControl    { }
+    trPositionControl    [ 
+                             ctxt.IsTransitionPosCtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         PositionControl    { }
+    trAutoLoiter         [ 
+                             ctxt.IsTransitionAutoLoiterValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoLoiter         { }
+    trAutoReturnToLaunch [ 
+                             ctxt.IsTransitionRtlValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         AutoReturnToLaunch { }
+    trAcrobatic          [ 
+                             ctxt.IsTransitionAcrobaticValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Acrobatic          { }
+    trStabilize          [ 
+                             ctxt.IsTransitionStabilizeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Stabilize          { }
+    trRattitude          [ 
+                             ctxt.IsTransitionRattitudeValid() == true && 
+                             ctxt.IsVehicleArmed() == true
+                         ]
+                         Rattitude          { }
     trAutoTakeoff        [ 
                              ctxt.IsConditionLocalPositionValid() == true && 
                              ctxt.IsVehicleArmed() == true
                          ]
                          AutoTakeoff        { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    trAutoPrecland       AutoPrecland       { }
     Reset		  		 Init 				{ }
 }
-AutoFollowTarget
-    Entry
-    {
-        EnteredAutoFollowTarget();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoPrecland       AutoPrecland       { }
-    Reset		  		 Init 				{ }
-}
-AutoPrecland
-    Entry
-    {
-        EnteredAutoPrecland();
-    }
-{
-    trManual             Manual             { }
-    trAltitudeControl    AltitudeControl    { }
-    trPositionControl    PositionControl    { }
-    trAutoMission        AutoMission        { }
-    trAutoLoiter         AutoLoiter         { }
-    trAutoReturnToLaunch AutoReturnToLaunch { }
-    trAutoRCRecover      AutoRCRecover      { }
-    trAutoRtgs           AutoRtgs           { }
-    trAutoLandEngineFail AutoLandEngineFail { }
-    trAutoLandGpsFail    AutoLandGpsFail    { }
-    trAcrobatic          Acrobatic          { }
-    trDescend            Descend            { }
-    trTermination        Termination        { }
-    trOffboard           Offboard           { }
-    trStabilize          Stabilize          { }
-    trRattitude          Rattitude          { }
-    trAutoTakeoff        [ 
-                             ctxt.IsConditionLocalPositionValid() == true && 
-                             ctxt.IsVehicleArmed() == true
-                         ]
-                         AutoTakeoff        { }
-    trAutoLand           AutoLand           { }
-    trAutoFollowTarget   AutoFollowTarget   { }
-    Reset		  		 Init 				{ }
-}
+
 Init
 {
-    trInitComplete       AutoLoiter         { }
+    trInitComplete       Manual             { }
     Reset		         Init               { }
 		                 
 }
