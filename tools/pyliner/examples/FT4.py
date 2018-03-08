@@ -10,7 +10,7 @@ airliner = Pyliner(**{"airliner_map": "cookiecutter.json",
 #                      "address": "192.168.0.2",
                       "ci_port": 5009,
                       "to_port": 5012,
-                      "script_name": "flight_test",
+                      "script_name": "FT4",
                       "log_dir": "./logs/"})
 
 # Subscribe to es HK commander counter
