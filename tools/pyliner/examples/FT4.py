@@ -49,7 +49,7 @@ def vehicle_arm():
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
         {'name':'GearSwitch', 'value':0},
-        {'name':'ArmSwitch', 'value':3}, # ON
+        {'name':'ArmSwitch', 'value':3}, # OFF
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
@@ -110,7 +110,7 @@ def vehicle_disarm():
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
         {'name':'GearSwitch', 'value':0},
-        {'name':'ArmSwitch', 'value':0}, # OFF
+        {'name':'ArmSwitch', 'value':3}, # OFF
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
@@ -416,7 +416,7 @@ vehicle_land()
 
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})
-time.sleep(2)
+time.sleep(15)
 
 # print received telemetry
 es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')

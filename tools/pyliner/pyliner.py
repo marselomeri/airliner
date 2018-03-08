@@ -505,7 +505,7 @@ class Pyliner(object):
         for x in range(0,self.fails):
             test_cases[0].add_failure_info(self.test_description[x])
         ts = TestSuite("test suite", test_cases)
-        with open('results.xml', 'w') as f:
+        with open(join(self.log_dir, self.script_name + '_results.xml'), 'w') as f:
             TestSuite.to_file(f, [ts], prettyprint=False)
 
 
