@@ -49,6 +49,35 @@ def vehicle_arm():
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
         {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':3}, # ON
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+    time.sleep(2)
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':0.0},
+        {'name':'Z', 'value':0.0},
+        {'name':'R', 'value':0.0},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':0},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
         {'name':'ArmSwitch', 'value':1}, # ON
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -384,7 +413,6 @@ vehicle_stable_hover()
 vehicle_fly_square_ccw()
 vehicle_fly_square_cw()
 vehicle_land()
-vehicle_disarm()
 
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})
