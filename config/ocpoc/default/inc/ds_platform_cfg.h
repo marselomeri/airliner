@@ -461,7 +461,7 @@
 **		 The value must be greater than zero and cannot exceed the
 **       definition of #DS_APP_PIPE_DEPTH.
 */
-#define DS_PER_PACKET_PIPE_LIMIT        50
+#define DS_PER_PACKET_PIPE_LIMIT        1
 
 
 #endif /* DS_PLATFORM_CFG_H */
