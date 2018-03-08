@@ -206,7 +206,9 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 	/* RC_MAN_TH            */  0.5f,
 
 	/* RC_FLT_SMP_RATE      */  50.0f,
-	/* RC_FLT_CUTOFF        */  10.0f
+	/* RC_FLT_CUTOFF        */  10.0f,
+
+	/* ModeSwitchControl    */  1
 };
 
 /*
