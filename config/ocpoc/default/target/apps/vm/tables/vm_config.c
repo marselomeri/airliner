@@ -52,7 +52,7 @@ VM_ConfigTbl_t VM_ConfigTbl =
 		1,
 		1,
 		0,
-		0
+		0,
 		0,
 		284953,
 		0,
