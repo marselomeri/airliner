@@ -390,6 +390,9 @@ int32 VM::InitApp()
         goto VM_InitApp_Exit_Tag;
     }
 
+    /* Updating application params from platform-nav-config-table */
+	UpdateParamsFromTable();
+
 VM_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -1456,8 +1459,19 @@ void VM::Execute(){
 		uint64 Now = TimeNow();
 		(void) CFE_EVS_SendEvent(VM_RC_SIGN_LOST_INFO_EID, CFE_EVS_INFORMATION,
 				"Manual control lost at t = (%llu)ums", (Now));
-		ManualControlSetpointMsg.ReturnSwitch = PX4_SWITCH_POS_ON;
-		RcModes();
+		try{
+			NavigationSM.FSM.trAutoReturnToLaunch();
+			HkTlm.usCmdCnt++;
+			(void) CFE_EVS_SendEvent(VM_RC_MAN_INFO_EID, CFE_EVS_INFORMATION,
+					"Mode switched to auto rtl autonomously ");
+		}
+		catch(statemap::TransitionUndefinedException e)
+		{
+			HkTlm.usCmdErrCnt++;
+			CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
+					"Illegal Nav transition. Switched to auto rtl rejected.");
+		}
+
 		VehicleStatusMsg.RcSignalLost  = true;
 		rc_signal_lost_timestamp = ManualControlSetpointMsg.Timestamp;
 	}
@@ -1472,10 +1486,17 @@ void VM::RcModes(){
 	boolean posctl = (ManualControlSetpointMsg.PosctlSwitch == PX4_SWITCH_POS_ON);
 	boolean rtl = (ManualControlSetpointMsg.ReturnSwitch == PX4_SWITCH_POS_ON);
 	boolean loiter = (ManualControlSetpointMsg.LoiterSwitch == PX4_SWITCH_POS_ON);
-	boolean manual = (!posctl && !rtl && !loiter);
-	boolean mode_changed = !( posctl==previous_modes.inPosCtl && rtl==previous_modes.inRtl && loiter==previous_modes.inLoiter && manual==previous_modes.inManual);
+	boolean takeoff = (ManualControlSetpointMsg.TransitionSwitch == PX4_SWITCH_POS_ON);
+	boolean manual = (!posctl && !rtl && !loiter && !takeoff);
+	boolean mode_changed = !(
+			posctl==previous_modes.inPosCtl
+			&& rtl==previous_modes.inRtl
+			&& loiter==previous_modes.inLoiter
+			&& manual==previous_modes.inManual
+			&& takeoff==previous_modes.intakeoff
+			);
 
-	if(posctl && !rtl && !loiter && mode_changed){
+	if(posctl && !rtl && !loiter && !takeoff && mode_changed){
 
 		try{
 			NavigationSM.FSM.trPositionControl();
@@ -1487,11 +1508,11 @@ void VM::RcModes(){
 		{
 			HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
-					"Illegal Nav transition.  Command rejected.");
+					"Illegal Nav transition. Switched to position control rejected.");
 		}
 
 	}
-	else if(!posctl && rtl && !loiter && mode_changed){
+	else if(!posctl && rtl && !loiter && !takeoff && mode_changed){
 
 		try{
 			NavigationSM.FSM.trAutoReturnToLaunch();
@@ -1503,10 +1524,10 @@ void VM::RcModes(){
 		{
 			HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
-					"Illegal Nav transition.  Command rejected.");
+					"Illegal Nav transition. Switched to auto rtl rejected.");
 		}
 
-	}else if(!posctl && !rtl && loiter && mode_changed){
+	}else if(!posctl && !rtl && loiter && !takeoff && mode_changed){
 		try{
 			NavigationSM.FSM.trAutoLoiter();
 			HkTlm.usCmdCnt++;
@@ -1517,7 +1538,20 @@ void VM::RcModes(){
 		{
 			HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
-					"Illegal Nav transition.  Command rejected.");
+					"Illegal Nav transition. Switched to auto loiter rejected.");
+		}
+	}else if(!posctl && !rtl && !loiter && takeoff && mode_changed){
+		try{
+			NavigationSM.FSM.trAutoTakeoff();
+			HkTlm.usCmdCnt++;
+			(void) CFE_EVS_SendEvent(VM_RC_LTR_INFO_EID, CFE_EVS_INFORMATION,
+					"Mode switched to auto takeoff by rc");
+		}
+		catch(statemap::TransitionUndefinedException e)
+		{
+			HkTlm.usCmdErrCnt++;
+			CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
+					"Illegal Nav transition. Switched to auto takeoff rejected.");
 		}
 	}
 	else if(manual && mode_changed){
@@ -1531,13 +1565,14 @@ void VM::RcModes(){
 		{
 			HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(VM_NAV_ILLEGAL_TRANSITION_ERR_EID, CFE_EVS_INFORMATION,
-					"Illegal Nav transition.  Command rejected.");
+					"Illegal Nav transition.  Switched to Manual rejected.");
 		}
 	}
 	previous_modes.inPosCtl = posctl;
 	previous_modes.inRtl = rtl;
 	previous_modes.inLoiter =loiter;
 	previous_modes.inManual = manual;
+	previous_modes.intakeoff = takeoff;
 }
 
 
@@ -1557,7 +1592,64 @@ void VM::FlightSessionInit(){
 
 }
 
+void VM::UpdateParamsFromTable(){
+	if(ConfigTblPtr != nullptr){
 
+
+
+
+		vm_params.autostart_id                     			 =   ConfigTblPtr->        		SYS_AUTOSTART;
+		vm_params.rc_in_off                     			 =   ConfigTblPtr->         	COM_RC_IN_MODE;
+		vm_params.arm_switch_is_button                		 =   ConfigTblPtr->         	COM_ARM_SWISBTN;
+		vm_params.arm_without_gps                   		 =   ConfigTblPtr->         	COM_ARM_WO_GPS;
+		vm_params.arm_mission_required           			 =   ConfigTblPtr->         	COM_ARM_MIS_REQ;
+		vm_params.rc_arm_hyst                   			 =   ConfigTblPtr->         	COM_RC_ARM_HYST;
+		vm_params.mav_type                   				 =   ConfigTblPtr->         	MAV_TYPE;
+		vm_params.system_id                   				 =   ConfigTblPtr->         	MAV_SYS_ID;
+		vm_params.component_id                				 =   ConfigTblPtr->         	MAV_COMP_ID;
+		vm_params.cbrk_supply_chk              				 =   ConfigTblPtr->         	CBRK_SUPPLY_CHK;
+		vm_params.cbrk_usb_chk                 				 =   ConfigTblPtr->         	CBRK_USB_CHK;
+		vm_params.cbrk_airspd_chk         			         =   ConfigTblPtr->         	CBRK_AIRSPD_CHK;
+		vm_params.cbrk_enginefail_chk               		 =   ConfigTblPtr->         	CBRK_ENGINEFAIL;
+		vm_params.cbrk_gpsdail_chk                			 =   ConfigTblPtr->         	CBRK_GPSFAIL;
+		vm_params.cbrk_flightterm_chk                		 =   ConfigTblPtr->         	CBRK_FLIGHTTERM;
+		vm_params.cbrk_velposerr_chk                         =   ConfigTblPtr->         	CBRK_VELPOSERR;
+		vm_params.nav_dll_act                                =   ConfigTblPtr->         	NAV_DLL_ACT;
+		vm_params.nav_rcl_act              				     =   ConfigTblPtr->         	NAV_RCL_ACT;
+		vm_params.dl_loss_t             				     =   ConfigTblPtr->         	COM_DL_LOSS_T;
+		vm_params.rc_loss_t               				     =   ConfigTblPtr->         	COM_RC_LOSS_T;
+		vm_params.rc_stick_ovrde           				     =   ConfigTblPtr->         	COM_RC_STICK_OV;
+		vm_params.rc_ovrde             					     =   ConfigTblPtr->         	COM_RC_OVERRIDE;
+		vm_params.dl_reg_t             				         =   ConfigTblPtr->         	COM_DL_REG_T;
+		vm_params.ef_throt            						 =   ConfigTblPtr->         	COM_EF_THROT;
+		vm_params.ef_c2t           				             =   ConfigTblPtr->         	COM_EF_C2T;
+		vm_params.ef_time           					     =   ConfigTblPtr->         	COM_EF_TIME;
+		vm_params.gf_action          						 =   ConfigTblPtr->         	GF_ACTION;
+		vm_params.disarm_land                    		     =   ConfigTblPtr->        		COM_DISARM_LAND;
+		vm_params.low_bat_act              			         =   ConfigTblPtr->         	COM_LOW_BAT_ACT;
+		vm_params.of_loss_t           					     =   ConfigTblPtr->         	COM_OF_LOSS_T;
+		vm_params.obl_act            						 =   ConfigTblPtr->         	COM_OBL_ACT;
+		vm_params.obl_rcl_act       				         =   ConfigTblPtr->         	COM_OBL_RC_ACT;
+		vm_params.home_h_t           						 =   ConfigTblPtr->         	COM_HOME_H_T;
+		vm_params.home_v_t        					         =   ConfigTblPtr->         	COM_HOME_V_T;
+		vm_params.flt_mode_1       					         =   ConfigTblPtr->         	COM_FLTMODE1;
+		vm_params.flt_mode_2        			             =   ConfigTblPtr->         	COM_FLTMODE2;
+		vm_params.flt_mode_3         					     =   ConfigTblPtr->         	COM_FLTMODE3;
+		vm_params.flt_mode_4        					     =   ConfigTblPtr->         	COM_FLTMODE4;
+		vm_params.flt_mode_5        					     =   ConfigTblPtr->         	COM_FLTMODE5;
+		vm_params.flt_mode_6        					     =   ConfigTblPtr->         	COM_FLTMODE6;
+		vm_params.arm_ekf_pos        					     =   ConfigTblPtr->         	COM_ARM_EKF_POS;
+		vm_params.arm_ekf_vel        					     =   ConfigTblPtr->         	COM_ARM_EKF_VEL;
+		vm_params.arm_ekf_hgt         					     =   ConfigTblPtr->         	COM_ARM_EKF_HGT;
+		vm_params.arm_ekf_yaw         					     =   ConfigTblPtr->         	COM_ARM_EKF_YAW;
+		vm_params.arm_ekf_ab          					     =   ConfigTblPtr->         	COM_ARM_EKF_AB;
+		vm_params.arm_ekf_gb         					     =   ConfigTblPtr->         	COM_ARM_EKF_GB;
+		vm_params.arm_imu_acc        					     =   ConfigTblPtr->         	COM_ARM_IMU_ACC;
+		vm_params.arm_imu_gyr         					     =   ConfigTblPtr->         	COM_ARM_IMU_GYR;
+		vm_params.posctl_navl         					     =   ConfigTblPtr->         	COM_POSCTL_NAVL;
+	}
+
+}
 
 /************************/
 /*  End of File Comment */
