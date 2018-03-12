@@ -414,6 +414,7 @@ def vehicle_fly_square_cw():
 
 # vehicle control
 vehicle_arm()
+time.sleep(5)
 vehicle_takeoff()
 vehicle_posctl_mode()
 vehicle_stable_hover()
