@@ -7,7 +7,7 @@ from px4_msg_enums import *
 
 # Initialize pyliner object
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
-                      "address": "10.10.0.135",
+                      "address": "192.168.0.2",
                       "ci_port": 5009,
                       "to_port": 5012,
                       "script_name": "FT4",
