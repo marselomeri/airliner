@@ -79,6 +79,13 @@ int32 AMC::InitDevice(void)
     if (SharedMemCmd == 0) {
         return errno;
     }
+
+    // Note: this appears to be required actuators to initialize
+    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) 
+    {
+       SharedMemCmd->PeriodHi[i].Period = AMC_Freq2tick(AMC_FREQUENCY_PWM);
+       SharedMemCmd->PeriodHi[i].Hi     = AMC_Freq2tick(AMC_FREQUENCY_PWM) / 2; 
+    }
     
     StopMotors();
 
