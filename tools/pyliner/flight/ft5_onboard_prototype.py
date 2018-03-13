@@ -337,8 +337,72 @@ def vehicle_full_right():
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
 
+
+def vehicle_full_down():
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':0.0},
+        {'name':'Z', 'value':0.0},
+        {'name':'R', 'value':0.0},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':1},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':1},
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+
+
+def vehicle_full_up():
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':0.0},
+        {'name':'Z', 'value':0.65},
+        {'name':'R', 'value':0.0},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':1},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':1},
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+
+
+
 def vehicle_land():
-    print "RTL"
+    print "RTL and land"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -367,10 +431,219 @@ def vehicle_land():
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    time.sleep(10)
 
+
+def vehicle_orbit_cw():
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':-0.5},
+        {'name':'Z', 'value':0.5},
+        {'name':'R', 'value':0.25},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':1},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':1},
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+
+
+def vehicle_orbit_ccw():
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':0.5},
+        {'name':'Z', 'value':0.5},
+        {'name':'R', 'value':-0.25},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':1},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':1},
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+
+
+def vehicle_spiral_ccw():
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':0.5},
+        {'name':'Z', 'value':0.65},
+        {'name':'R', 'value':-0.5},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':1},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':1},
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+
+
+def vehicle_spiral_cw():
+    airliner.send_telemetry(
+        {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
+        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'X', 'value':0.0},
+        {'name':'Y', 'value':-0.5},
+        {'name':'Z', 'value':0.65},
+        {'name':'R', 'value':0.5},
+        {'name':'Flaps', 'value':0.0},
+        {'name':'Aux1', 'value':0.0},
+        {'name':'Aux2', 'value':0.0},
+        {'name':'Aux3', 'value':0.0},
+        {'name':'Aux4', 'value':0.0},
+        {'name':'Aux5', 'value':0.0},
+        {'name':'ModeSwitch', 'value':0},
+        {'name':'ReturnSwitch', 'value':0},
+        {'name':'RattitudeSwitch', 'value':0},
+        {'name':'PosctlSwitch', 'value':1},
+        {'name':'LoiterSwitch', 'value':0},
+        {'name':'AcroSwitch', 'value':0},
+        {'name':'OffboardSwitch', 'value':0},
+        {'name':'KillSwitch', 'value':0},
+        {'name':'TransitionSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':0},
+        {'name':'ArmSwitch', 'value':1},
+        {'name':'StabSwitch', 'value':0},
+        {'name':'ManSwitch', 'value':0},
+        {'name':'ModeSlot', 'value':0},
+        {'name':'DataSource', 'value':0}]})
+
+def vehicle_fly_vertical_square():
+    print "Fly vertical sqaure"
+    vehicle_fly_up(10)
+    vehicle_full_right()
+    time.sleep(3)
+    vehicle_stable_hover()
+    time.sleep(1)
+    vehicle_fly_down(10)
+    vehicle_full_left()
+    time.sleep(3)
+    vehicle_stable_hover()
+    time.sleep(1)
+
+def vehicle_fly_up(deltaZ):
+    print "Move up " + str(deltaZ) + " meters"
+    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
+    current_baro_sensor_combined = initial_baro_sensor_combined
+    while(current_baro_sensor_combined < (initial_baro_sensor_combined + deltaZ)):
+        vehicle_full_up()
+        time.sleep(1)
+        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        print "baro_sensor_combined: " + str(current_baro_sensor_combined)
+    vehicle_stable_hover()
+    time.sleep(1)
+
+
+def vehicle_fly_down(deltaZ):
+    print "Move down " + str(deltaZ) + " meters"
+    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
+    current_baro_sensor_combined = initial_baro_sensor_combined
+    while(current_baro_sensor_combined > (initial_baro_sensor_combined - deltaZ)):
+        vehicle_full_down()
+        time.sleep(1)
+        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        print "baro_sensor_combined: " + str(current_baro_sensor_combined)
+    vehicle_stable_hover()
+    time.sleep(1)
+
+def check_land (timeout = 60):
+    print "Check landing complete with timeout: " + str(timeout) + " sec"
+    # check RTL Completion
+    time_spent = 0
+    baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')   
+    while((baro_sensor_combined > 1.0) and (time_spent < timeout)):
+        time.sleep(1.0)
+        time_spent +=1
+        baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        print "baro_sensor_combined: " + str(baro_sensor_combined)
+        #print "time_spent: " + str(time_spent) + " timeout: " + str(timeout)
+
+    if baro_sensor_combined > 0.0 and baro_sensor_combined  < 1.0:
+        description = "passed check baro height " + str(baro_sensor_combined)
+        airliner.assert_true(True, description)
+        print description
+    else:
+        description = "failed check baro height " + str(baro_sensor_combined)
+        description += " timeout(sec): " +str(timeout)
+        airliner.assert_true(False, description)
+        print description
+        all_test_passed = False
+
+def check_stable_hover(timeout = 5):
+    print "Check stable hover with timeout: " + str(timeout) + " sec"
+    # Check stable hover
+    time_spent = 0
+    accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+    while(accel_sensor_combined[2] > -9.0 or accel_sensor_combined[2] < -11.0) and time_spent < timeout:
+        print "accel_sensor_combined_z: " + str(accel_sensor_combined[2])
+        time.sleep(1.0)
+        time_spent +=1
+        accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+
+    # check gravity vector
+    if accel_sensor_combined[2] < -9.0 and accel_sensor_combined[2] > -11.0:
+        description = "passed check gravity vector " + str(accel_sensor_combined[2])
+        airliner.assert_true(True, description)
+        print description
+    else:
+        description = "failed check gravity vector " + str(accel_sensor_combined[2])
+        description += " timeout(sec): " +str(timeout)
+        airliner.assert_true(False,description)
+        print description
+        all_test_passed = False   
 
 def vehicle_fly_square_ccw():
+    print "Fly CCW square"
     vehicle_full_forward()
     time.sleep(1)
     vehicle_stable_hover()
@@ -390,6 +663,7 @@ def vehicle_fly_square_ccw():
 
 
 def vehicle_fly_square_cw():
+    print "Fly CW square"
     vehicle_full_forward()
     time.sleep(1)
     vehicle_stable_hover()
@@ -408,19 +682,82 @@ def vehicle_fly_square_cw():
     time.sleep(1)
 
 
+def vehicle_fly_orbit_cw(delay):
+    print "Fly CW orbit for " + str(delay) + " sec"
+    vehicle_orbit_cw()
+    time.sleep(delay)
+    vehicle_stable_hover()
+    time.sleep(1)
+
+def vehicle_fly_orbit_ccw(delay):
+    print "Fly CCW orbit for " + str(delay) + " sec"
+    vehicle_orbit_ccw()
+    time.sleep(delay)
+    vehicle_stable_hover()
+    time.sleep(1)
+
+def vehicle_fly_spiral_ccw(deltaZ):
+    print "Fly spiral CCW and up " + str(deltaZ) +" meters"
+    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
+    current_baro_sensor_combined = initial_baro_sensor_combined
+    while(current_baro_sensor_combined < (initial_baro_sensor_combined + deltaZ)):
+        vehicle_spiral_ccw()
+        time.sleep(1.0)
+        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        print "baro_sensor_combined: " + str(current_baro_sensor_combined)
+    vehicle_stable_hover()
+    time.sleep(1)
+    vehicle_fly_down(deltaZ)
+
+def vehicle_fly_spiral_cw(deltaZ):
+    print "Fly spiral CW and up " + str(deltaZ) +" meters"
+    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
+    current_baro_sensor_combined = initial_baro_sensor_combined
+    while(current_baro_sensor_combined < (initial_baro_sensor_combined + deltaZ)):
+        vehicle_spiral_cw()
+        time.sleep(1.0)
+        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        print "baro_sensor_combined: " + str(current_baro_sensor_combined)
+    vehicle_stable_hover()
+    time.sleep(1)
+    vehicle_fly_down(deltaZ)
+
 # vehicle control
 vehicle_arm()
 time.sleep(5)
 vehicle_takeoff()
 vehicle_posctl_mode()
 vehicle_stable_hover()
+check_stable_hover()
+
+vehicle_fly_vertical_square()
+vehicle_stable_hover()
+check_stable_hover()
+
+vehicle_fly_up(5)
+vehicle_fly_orbit_cw(7)
+vehicle_stable_hover()
+check_stable_hover()
+vehicle_fly_orbit_ccw(7)
+vehicle_fly_down(5)
+
 vehicle_fly_square_ccw()
 vehicle_fly_square_cw()
-vehicle_land()
 
+vehicle_fly_spiral_ccw(10)
+vehicle_fly_spiral_cw(10)
+
+vehicle_land()
+check_land()
+
+initial_es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
+print "initial_es_hk_cmdcnt: " + str(initial_es_hk_cmdcnt)
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})
-time.sleep(15)
+time.sleep(5)
+
 
 # print received telemetry
 es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
@@ -438,30 +775,10 @@ print "mag: " + str(mag)
 
 all_test_passed = True
 
-# check gravity vector
-if accel_sensor_combined[2] < -9.0 and accel_sensor_combined[2] > -11.0:
-    description = "passed check gravity vector " + str(accel_sensor_combined[2])
-    airliner.assert_true(True, description)
-    print description
-else:
-    description = "failed check gravity vector " + str(accel_sensor_combined[2])
-    airliner.assert_true(False,description)
-    print description
-    all_test_passed = False
 
-# check baro height
-if baro_sensor_combined > 0.0 and baro_sensor_combined  < 1.0:
-    description = "passed check baro height " + str(baro_sensor_combined)
-    airliner.assert_true(True, description)
-    print description
-else:
-    description = "failed check baro height " + str(baro_sensor_combined)
-    airliner.assert_true(False, description)
-    print description
-    all_test_passed = False
-    
+ 
 # check es command count
-if es_hk_cmdcnt == 1:
+if es_hk_cmdcnt == initial_es_hk_cmdcnt + 1:
     description = "passed check command count"
     airliner.assert_true(True, description)
     print description
