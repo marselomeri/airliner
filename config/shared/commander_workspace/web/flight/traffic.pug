@@ -71,7 +71,7 @@ block main
       var AIRCRAFT = {};
       var HISTORY = {} ;
       var ALLMYLINES = [];                    
-      var tracking_step_limit = 10;
+      var tracking_step_limit = 200;
       var outdated_seconds = 30;
       
       function AddMyVehicle(){
@@ -196,6 +196,7 @@ block main
       
       function CleanSlate(current_time){
       	RemovePoints(ALLMYLINES);
+      	ALLMYLINES = [];
         for(var k in AIRCRAFT){
         var PQ = AIRCRAFT[k];
         if(PQ.length <1){
