@@ -96,14 +96,14 @@ NAV_ConfigTbl_t NAV_ConfigTbl =
 	 *  \par Limits:
 	 *       Min > Max (incr.) 0 > 150 , default 30.0.
 	 */
-	30.0,
+	10.0,
 
 	/** \brief RTL Loiter Altitude.
 	 *
 	 *  \par Limits:
 	 *       Min > Max (incr.) 2 > 100 , default 10.0.
 	 */
-	10.0,
+	5.0,
 
 	/** \brief RTL Delay.
 	 *
