@@ -1,0 +1,67 @@
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
+
+block header
+        i.fa-fw.fa.fa-signal
+        | Telemetry Output
+
+block main
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+        #wid-TO-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 General
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Cmd Count
+                      td 
+                        span(data-sage={tlm: [{name:'/CFS/TO/CmdCounter'}]}) ---
+                    tr
+                      th Cmd Error Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/ErrCounter'}]}) ---
+                    tr
+                      th Total Messages Dropped
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/TotalMsgsDropped'}]}) ---
+                    tr
+                      th No Serialization Func Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/TO/NoSerFuncCount'}]}) ---
+              footer
+                .btn-group.btn-group-sm.btn-space
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/NoOp'}}) No-Op
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/Reset'}}) Reset Counters
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/AddMessage'}}) Add Message
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/RemoveMessage'}}) Remove Message
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/QueryMessageFlow'}}) Query Message Flow
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/QueryPriorityQueue'}}) Query Priority Queue
+                  button.btn.btn-primary(data-sage={cmd: {name:'/CFS/TO/QueryOutputChannel'}}) Query Output Channel
+                                        
+  .row
+    +app_specific_telemetry_control("TO")
+                                              
+  .row          
+    +app_specific_mempools("TO")
+    
+  .row
+    +app_specific_application_control("TO") 
+    +registered_applications() 
+  
+  .row
+    +app_specific_table_control("TO")
+    
+  .row
+    +app_specific_scheduler_control("TO")
+                
+      
