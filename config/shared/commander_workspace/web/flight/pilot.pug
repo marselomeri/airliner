@@ -109,7 +109,7 @@ block main
         if (HUDStarted == true) {
           updateHUDHeading(Attitude.Yaw * 57.2958);
           updateHUDPitch(Attitude.Pitch * 57.2958);
-          updateHUDRoll(Attitude.Roll * 57.2958);
+          updateHUDRoll(-Attitude.Roll * 57.2958);
         }
       }
     );
