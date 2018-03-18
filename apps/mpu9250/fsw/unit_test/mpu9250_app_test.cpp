@@ -288,6 +288,10 @@ void Test_MPU9250_InitApp_Fail_InitData(void)
     int32 result = CFE_SUCCESS;
     int32 expected = CFE_SUCCESS;
 
+    /* Pass validate device */
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
+
     /* Execute the function being tested */
     result = oMPU9250.InitApp();
 
@@ -327,6 +331,10 @@ void Test_MPU9250_InitApp_Nominal(void)
     int32 result = (CFE_SEVERITY_BITMASK & CFE_SEVERITY_ERROR)
                    | CFE_EXECUTIVE_SERVICE | CFE_ES_ERR_APP_REGISTER;
     int32 expected = CFE_SUCCESS;
+
+    /* Pass validate device */
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
 
     /* Execute the function being tested */
     result = oMPU9250.InitApp();
@@ -426,6 +434,10 @@ void Test_MPU9250_AppMain_Nominal_SendHK(void)
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, MPU9250_SEND_HK_MID, 1);
 
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_RUNLOOP_INDEX, FALSE, 2);
+
+    /* Pass validate device */
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
 
     /* Used to verify HK was transmitted correctly. */
     hookCalledCount = 0;
