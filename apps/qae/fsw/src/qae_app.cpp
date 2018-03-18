@@ -236,14 +236,14 @@ int32 QAE::InitApp()
         goto QAE_InitApp_Exit_Tag;
     }
 
-    InitData();
-
     iStatus = InitConfigTbl();
     if (iStatus != CFE_SUCCESS)
     {
         goto QAE_InitApp_Exit_Tag;
     }
-    
+
+    InitData();
+
     /* Set application state to initialized */
     HkTlm.State = QAE_INITIALIZED;
 
