@@ -48,6 +48,7 @@
 #include "ut_cfe_tbl_stubs.h"
 #include "ut_cfe_fs_stubs.h"
 #include "ut_cfe_time_stubs.h"
+#include "mpu9250_custom_stubs.h"
 
 int32 hookCalledCount = 0;
 
@@ -458,6 +459,138 @@ void Test_MPU9250_AppMain_Nominal_Wakeup(void)
 }
 
 
+/**
+ * Test MPU9250_ReadDevice(), Nominal
+ */
+void Test_MPU9250_ReadDevice_Nominal(void)
+{
+    uint16 expected = 10000;
+    float expectedCal = 48.0f;
+    int16 expectedX = 1000;
+    int16 expectedY = 2000;
+    int16 expectedZ = 3000;
+    uint64 expectedTime = 10000;
+
+    MPU9250 oMPU9250;
+    
+    oMPU9250.InitApp();
+    oMPU9250.InitData();
+
+    /* Set time return value */
+    MPU9250_Custom_Returns.MPU9250_Get_Time_Return = expectedTime;
+    /* Set accel return values */
+    MPU9250_Custom_Returns.MPU9250_Read_Accel_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value = expectedX;
+    MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value = expectedY;
+    MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value = expectedZ;
+    /* Set gyro return values */
+    MPU9250_Custom_Returns.MPU9250_Read_Gyro_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value = expectedX;
+    MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value = expectedY;
+    MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value = expectedZ;
+    /* Set temperature return values */
+    MPU9250_Custom_Returns.MPU9250_Read_Temp_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_Read_Temp_Value = expected;
+
+    oMPU9250.ReadDevice();
+    
+    /* Validate time */
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Get_Time_Return == expectedTime, "result != expected");
+    /* Validate accel */
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value == expectedX, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value == expectedY, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value == expectedZ, "result != expected");
+    /* Validate gyro */
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value == expectedX, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value == expectedY, "result != expected");
+    UtAssert_True(MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value == expectedZ, "result != expected");
+    /* Validate temperature */
+    UtAssert_True(oMPU9250.SensorAccel.TemperatureRaw == expected, "result != expected");
+    UtAssert_True(oMPU9250.SensorGyro.TemperatureRaw == expected, "result != expected");
+    UtAssert_True(oMPU9250.SensorAccel.Temperature == expectedCal, "result != expected");
+    UtAssert_True(oMPU9250.SensorGyro.Temperature == expectedCal, "result != expected");
+}
+
+
+/**
+ * Test MPU9250_ValidateDevice(), Nominal
+ */
+void Test_MPU9250_ValidateDevice_Nominal(void)
+{
+    boolean returnBool = FALSE;
+    boolean expected = TRUE;
+    
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
+
+    MPU9250 oMPU9250;
+    
+    oMPU9250.InitApp();
+    
+    returnBool = oMPU9250.ValidateDevice();
+
+    UtAssert_True(returnBool == expected, "result != expected");
+}
+
+
+/**
+ * Test MPU9250_ValidateDevice(), Fail
+ */
+void Test_MPU9250_ValidateDevice_Fail(void)
+{
+    boolean returnBool = TRUE;
+    boolean expected = FALSE;
+
+    MPU9250 oMPU9250;
+    
+    oMPU9250.InitApp();
+    
+    returnBool = oMPU9250.ValidateDevice();
+
+    UtAssert_True(returnBool == expected, "result != expected");
+}
+
+
+/**
+ * Test MPU9250_CleanupCallback(), Nominal
+ */
+void Test_MPU9250_CleanupCallback_Nominal(void)
+{
+    MPU9250 oMPU9250;
+    
+    oMPU9250.InitApp();
+
+    MPU9250_CleanupCallback();
+
+    UtAssert_True(oMPU9250.HkTlm.State == MPU9250_UNINITIALIZED, "State != MPU9250_UNINITIALIZED");
+}
+
+
+/**
+ * Test UpdateParamsFromTable(), Nominal
+ */
+void Test_MPU9250_UpdateParamsFromTable_Nominal(void)
+{
+    MPU9250 oMPU9250;
+    
+    oMPU9250.InitApp();
+    oMPU9250.UpdateParamsFromTable();
+
+    /* Verify results */
+    UtAssert_True(oMPU9250.m_Params.AccXScale == oMPU9250.ConfigTblPtr->AccXScale, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.AccYScale == oMPU9250.ConfigTblPtr->AccYScale, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.AccZScale == oMPU9250.ConfigTblPtr->AccZScale, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.AccXOffset == oMPU9250.ConfigTblPtr->AccXOffset, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.AccYOffset == oMPU9250.ConfigTblPtr->AccYOffset, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.AccZOffset == oMPU9250.ConfigTblPtr->AccZOffset, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.GyroXScale == oMPU9250.ConfigTblPtr->GyroXScale, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.GyroYScale == oMPU9250.ConfigTblPtr->GyroYScale, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.GyroZScale == oMPU9250.ConfigTblPtr->GyroZScale, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.GyroXOffset == oMPU9250.ConfigTblPtr->GyroXOffset, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.GyroYOffset == oMPU9250.ConfigTblPtr->GyroYOffset, "m_Param != ConfigTblPtr");
+    UtAssert_True(oMPU9250.m_Params.GyroZOffset == oMPU9250.ConfigTblPtr->GyroZOffset, "m_Param != ConfigTblPtr");
+}
+
 
 /**************************************************************************
  * Rollup Test Cases
@@ -506,6 +639,17 @@ void MPU9250_App_Test_AddTestCases(void)
                "Test_MPU9250_AppMain_Nominal_SendHK");
     UtTest_Add(Test_MPU9250_AppMain_Nominal_Wakeup, MPU9250_Test_Setup, MPU9250_Test_TearDown,
                "Test_MPU9250_AppMain_Nominal_Wakeup");
+              
+    UtTest_Add(Test_MPU9250_ReadDevice_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
+               "Test_MPU9250_ReadDevice_Nominal");
+    UtTest_Add(Test_MPU9250_ValidateDevice_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
+               "Test_MPU9250_ValidateDevice_Nominal");
+    UtTest_Add(Test_MPU9250_ValidateDevice_Fail, MPU9250_Test_Setup, MPU9250_Test_TearDown,
+               "Test_MPU9250_ValidateDevice_Fail");
+    UtTest_Add(Test_MPU9250_CleanupCallback_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
+               "Test_MPU9250_CleanupCallback_Nominal");
+    UtTest_Add(Test_MPU9250_UpdateParamsFromTable_Nominal, MPU9250_Test_Setup, MPU9250_Test_TearDown,
+               "Test_MPU9250_UpdateParamsFromTable_Nominal");
 
 }
 

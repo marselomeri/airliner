@@ -42,7 +42,37 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MPU9250 config table data */
 MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
 {
-	/* TODO:  Define table. */
+        /* User calibration params */
+        /* AccXScale */
+        1.0f,
+        /* AccYScale */
+        1.0f,
+        /* AccZScale */
+        1.0f,
+        /* AccXOffset */
+        0.0f,
+        /* AccYOffset */
+        0.0f,
+        /* AccZOffset */
+        0.0f,
+        /* GyroXScale */
+        1.0f,
+        /* GyroYScale */
+        1.0f,
+        /* GyroZScale */
+        1.0f,
+        /* GyroXOffset */
+        0.0f,
+        /* GyroYOffset */
+        0.0f,
+        /* GyroZOffset */
+        0.0f
+        /* MagXScale */
+        /* MagYScale */
+        /* MagZScale */
+        /* MagXOffset */
+        /* MagYOffset */
+        /* MagZOffset */
 };
 
 /*

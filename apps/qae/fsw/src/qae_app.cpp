@@ -25,7 +25,6 @@
 QAE oQAE;
 
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Default constructor.                                            */
@@ -46,6 +45,7 @@ QAE::~QAE()
 {
 
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -194,13 +194,7 @@ void QAE::InitData()
       /* Init params table to zero */
       memset(&m_Params, 0, sizeof(m_Params));
       /* Set params default values */
-      m_Params.mag_declination_auto = TRUE;
-      m_Params.acc_compensation = TRUE;
-      m_Params.mag_weight = 0.1f;
-      m_Params.gyro_weight = 0.1f;
-      m_Params.acc_weight = 0.2f;
-      /* TODO check if default value isn't actually 0 */
-      m_Params.gyro_bias_max = 0.05f;
+      UpdateParamsFromTable();
       /* Init members */
       m_Quaternion.Zero();
       m_Gyro.Zero();

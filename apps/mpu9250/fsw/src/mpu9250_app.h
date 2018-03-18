@@ -63,6 +63,9 @@ extern "C" {
  ** Local Defines
  *************************************************************************/
 
+/** \brief Params mutex name. */
+#define MPU9250_MUTEX_PARAMS                ("MPU9250_MUTEX_PARAMS")
+
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -76,6 +79,33 @@ typedef enum
     /*! App status uninitialized */
     MPU9250_INITIALIZED   = 1
 } MPU9250_Status_t;
+
+
+/**
+ * \brief application parameters
+ */
+typedef struct
+{
+    float AccXScale;
+    float AccYScale;
+    float AccZScale;
+    float AccXOffset;
+    float AccYOffset;
+    float AccZOffset;
+    float GyroXScale;
+    float GyroYScale;
+    float GyroZScale;
+    float GyroXOffset;
+    float GyroYOffset;
+    float GyroZOffset;
+    //float MagXScale;
+    //float MagYScale;
+    //float MagZScale;
+    //float MagXOffset;
+    //float MagYOffset;
+    //float MagZOffset;
+} MPU9250_Params_t;
+
 
 /**
  **  \brief MPU9250 Application Class
@@ -91,6 +121,9 @@ public:
 
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t CmdPipeId;
+
+    /** \brief Param Pipe ID */
+    CFE_SB_PipeId_t ParamPipeId;
 
     /* Task-related */
 
@@ -115,7 +148,15 @@ public:
 
     /** \brief Diagnostic data for downlink */
     MPU9250_DiagPacket_t Diag;
+    
+    /* Params related */
+    
+    /** \brief params from the config table */
+    MPU9250_Params_t m_Params;
 
+    /** \brief param mutex */
+    uint32 m_Params_Mutex;
+    
     /************************************************************************/
     /** \brief MPU9250 (MPU9250) application entry point
      **
@@ -437,6 +478,17 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
+    
+    /************************************************************************/
+    /** \brief Update parameters from the configuration table.
+     **
+     **  \par Description
+     **       This function updates the current paramamters from the 
+     **       currently loaded configuration table.
+     **
+     *************************************************************************/
+    void UpdateParamsFromTable(void);
+
 };
 
 

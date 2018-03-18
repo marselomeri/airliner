@@ -41,6 +41,27 @@ extern "C" {
 #include "cfe.h"
 
 
+typedef struct
+{
+    boolean    MPU9250_WhoAmI_Return;
+    int8       MPU9250_WhoAmI_Value;
+    boolean    MPU9250_Read_Gyro_Return;
+    int16      MPU9250_Read_Gyro_X_Value;
+    int16      MPU9250_Read_Gyro_Y_Value;
+    int16      MPU9250_Read_Gyro_Z_Value;
+    int16      MPU9250_Read_Accel_X_Value;
+    int16      MPU9250_Read_Accel_Y_Value;
+    int16      MPU9250_Read_Accel_Z_Value;
+    boolean    MPU9250_Read_Accel_Return;
+    boolean    MPU9250_Read_Temp_Return;
+    uint16     MPU9250_Read_Temp_Value;
+    uint64     MPU9250_Get_Time_Return;
+} MPU9250_Custom_Returns_t;
+
+
+extern MPU9250_Custom_Returns_t MPU9250_Custom_Returns;
+
+
 #ifdef __cplusplus
 }
 #endif
