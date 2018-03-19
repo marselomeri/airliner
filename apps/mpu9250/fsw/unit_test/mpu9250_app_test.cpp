@@ -223,14 +223,21 @@ void Test_MPU9250_InitData(void)
 {
     MPU9250 oMPU9250;
 
-    /* Set a fail result */
+    int32 result = 1;
     int32 expected = CFE_SUCCESS;
 
+    /* Pass validate device */
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
+    MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
+    
+    /* Pass install delete handler */
+    Ut_OSAPI_SetReturnCode(UT_OSAPI_TASKINSTALLDELETEHANDLER_INDEX, 0, 1);
+
     /* Execute the function being tested */
-    oMPU9250.InitData();
+    result = oMPU9250.InitApp();
 
     /* Verify results */
-    //UtAssert_True (result == expected, "InitData");
+    UtAssert_True (result == expected, "InitData");
 }
 
 
@@ -285,12 +292,15 @@ void Test_MPU9250_InitApp_Fail_InitData(void)
 {
     MPU9250 oMPU9250;
 
-    int32 result = CFE_SUCCESS;
+    int32 result = 1;
     int32 expected = CFE_SUCCESS;
 
     /* Pass validate device */
     MPU9250_Custom_Returns.MPU9250_WhoAmI_Return = TRUE;
     MPU9250_Custom_Returns.MPU9250_WhoAmI_Value = MPU9250_DEVICE_ID;
+    
+    /* Pass install delete handler */
+    Ut_OSAPI_SetReturnCode(UT_OSAPI_TASKINSTALLDELETEHANDLER_INDEX, 0, 1);
 
     /* Execute the function being tested */
     result = oMPU9250.InitApp();

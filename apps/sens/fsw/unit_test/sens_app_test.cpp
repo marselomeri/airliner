@@ -222,14 +222,14 @@ void Test_SENS_InitData(void)
 {
     SENS oSENS;
 
-    /* Set a fail result */
+    int32 result = 1;
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
-    oSENS.InitData();
+    result = oSENS.InitApp();
 
     /* Verify results */
-    //UtAssert_True (result == expected, "InitData");
+    UtAssert_True (result == expected, "InitData");
 }
 
 
@@ -284,7 +284,7 @@ void Test_SENS_InitApp_Fail_InitData(void)
 {
     SENS oSENS;
 
-    int32 result = CFE_SUCCESS;
+    int32 result = 1;
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
