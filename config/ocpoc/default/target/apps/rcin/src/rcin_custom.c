@@ -691,7 +691,6 @@ void RCIN_Custom_Read(void)
                         else
                         {
                             /* The end byte wasn't found so find a header candidate */
-                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "RCIN out of sync.");

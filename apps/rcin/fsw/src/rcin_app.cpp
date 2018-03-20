@@ -461,8 +461,6 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 void RCIN::ReadDevice(void)
 {
     boolean returnBool = FALSE;
-    /* TODO remove temp */
-    //int temp = 0;
 
     returnBool = RCIN_Custom_Measure(&InputRcMsg);
     if(FALSE == returnBool)
@@ -478,12 +476,6 @@ void RCIN::ReadDevice(void)
 
     InputRcMsg.LastSignal = InputRcMsg.Timestamp;
     InputRcMsg.Timestamp = PX4LIB_GetPX4TimeUs();
-
-    //OS_printf("RCIN State %u\n", HkTlm.State);
-    //for (temp = 0; temp < 18; temp++)
-    //{
-        //OS_printf("RCIN value %d = %u\n", temp, InputRcMsg.Values[temp]);
-    //}
 }
 
 
