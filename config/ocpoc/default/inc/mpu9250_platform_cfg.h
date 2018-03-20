@@ -50,6 +50,19 @@ extern "C" {
 */
 #define MPU9250_SCH_PIPE_PEND_TIME         (2000)
 
+/** \brief Pipe depth for the params pipe 
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define MPU9250_PARAM_PIPE_DEPTH            (4)
+
+/** \brief Pipe name for the params pipe 
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define MPU9250_PARAM_PIPE_NAME             ("MPU9250_PARAM_PIPE")
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:

@@ -150,12 +150,11 @@ public:
     MPU9250_DiagPacket_t Diag;
     
     /* Params related */
-    
     /** \brief params from the config table */
     MPU9250_Params_t m_Params;
 
     /** \brief param mutex */
-    uint32 m_Params_Mutex;
+    //uint32 m_Params_Mutex;
     
     /************************************************************************/
     /** \brief MPU9250 (MPU9250) application entry point

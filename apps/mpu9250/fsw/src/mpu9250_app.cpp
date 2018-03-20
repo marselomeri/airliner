@@ -168,30 +168,30 @@ int32 MPU9250::InitPipe()
         goto MPU9250_InitPipe_Exit_Tag;
     }
 
-    /* Init param pipe and subscribe to param updated messages */
-    iStatus = CFE_SB_CreatePipe(&ParamPipeId,
-                                MPU9250_PARAM_PIPE_DEPTH,
-                                MPU9250_PARAM_PIPE_NAME);
-    if (iStatus == CFE_SUCCESS)
-    {
-        /* Subscribe to data messages */
-        iStatus = CFE_SB_Subscribe(PRMLIB_PARAM_UPDATED_MID, ParamPipeId);
+    ///* Init param pipe and subscribe to param updated messages */
+    //iStatus = CFE_SB_CreatePipe(&ParamPipeId,
+                                //MPU9250_PARAM_PIPE_DEPTH,
+                                //MPU9250_PARAM_PIPE_NAME);
+    //if (iStatus == CFE_SUCCESS)
+    //{
+        ///* Subscribe to data messages */
+        //iStatus = CFE_SB_Subscribe(PRMLIB_PARAM_UPDATED_MID, ParamPipeId);
 
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(MPU9250_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                                     "DATA Pipe failed to subscribe to PRMLIB_PARAM_UPDATED_MID. (0x%08X)",
-                                     (unsigned int)iStatus);
-            goto MPU9250_InitPipe_Exit_Tag;
-        }
-    }
-    else
-    {
-        (void) CFE_EVS_SendEvent(MPU9250_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-                                 "Failed to create Data pipe (0x%08X)",
-                                 (unsigned int)iStatus);
-        goto MPU9250_InitPipe_Exit_Tag;
-    }
+        //if (iStatus != CFE_SUCCESS)
+        //{
+            //(void) CFE_EVS_SendEvent(MPU9250_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                                     //"DATA Pipe failed to subscribe to PRMLIB_PARAM_UPDATED_MID. (0x%08X)",
+                                     //(unsigned int)iStatus);
+            //goto MPU9250_InitPipe_Exit_Tag;
+        //}
+    //}
+    //else
+    //{
+        //(void) CFE_EVS_SendEvent(MPU9250_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 //"Failed to create Data pipe (0x%08X)",
+                                 //(unsigned int)iStatus);
+        //goto MPU9250_InitPipe_Exit_Tag;
+    //}
 
 MPU9250_InitPipe_Exit_Tag:
     return iStatus;
@@ -324,14 +324,14 @@ int32 MPU9250::InitApp()
         //goto MPU9250_InitApp_Exit_Tag;
     //}
     
-    iStatus = OS_MutSemCreate(&m_Params_Mutex, MPU9250_MUTEX_PARAMS, 0);
-    if (iStatus != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
-            "Params mutex create failed");
-        returnBool = FALSE;
-        goto MPU9250_InitApp_Exit_Tag;
-    }
+    //iStatus = OS_MutSemCreate(&m_Params_Mutex, MPU9250_MUTEX_PARAMS, 0);
+    //if (iStatus != CFE_SUCCESS)
+    //{
+        //CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+            //"Params mutex create failed");
+        //returnBool = FALSE;
+        //goto MPU9250_InitApp_Exit_Tag;
+    //}
     
     HkTlm.State = MPU9250_INITIALIZED;
 

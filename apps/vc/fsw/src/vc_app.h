@@ -34,6 +34,7 @@
 
 #ifndef _VC_APP_H
 #define _VC_APP_H
+
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -84,20 +85,16 @@ typedef struct
 {
     /** \brief Housekeeping Telemetry for downlink */
     VC_HkTlm_t  HkTlm;
-    
     /**\brief Scheduling Pipe ID */
     CFE_SB_PipeId_t  SchPipeId;
-
     /** \brief Command Pipe ID */
     CFE_SB_PipeId_t  CmdPipeId;
-
     /* Run Status variable used in the main processing loop */
     /** \brief Task Run Status */
     uint32                uiRunStatus;
-    
     /** \brief VC App State */
     VC_Status_t           AppState;
-
+    
 } VC_AppData_t;
 
 
