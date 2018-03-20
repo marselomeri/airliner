@@ -53,12 +53,13 @@
 ** Local Defines
 *************************************************************************/
 
-#define MS5611_CUSTOM_C1	(40127)
-#define MS5611_CUSTOM_C2	(36924)
-#define MS5611_CUSTOM_C3	(23317)
-#define MS5611_CUSTOM_C4	(23282)
-#define MS5611_CUSTOM_C5	(33464)
-#define MS5611_CUSTOM_C6	(28312)
+/* Simulated PROM values */
+#define MS5611_CUSTOM_C1        (40127)
+#define MS5611_CUSTOM_C2        (36924)
+#define MS5611_CUSTOM_C3        (23317)
+#define MS5611_CUSTOM_C4        (23282)
+#define MS5611_CUSTOM_C5        (33464)
+#define MS5611_CUSTOM_C6        (28312)
 
 
 /************************************************************************
@@ -155,50 +156,50 @@ boolean MS5611_Custom_Uninit(void)
 
 boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 {
-	switch(Addr)
-	{
-		case 0:
+    switch(Addr)
+    {
+        case 0:
             /* Reserved for manufacturer, magic number added for sim */
-			*returnVal = 777;
-			break;
+            *returnVal = 777;
+            break;
 
-		case 1:
-			*returnVal = MS5611_CUSTOM_C1;
-			break;
+        case 1:
+            *returnVal = MS5611_CUSTOM_C1;
+            break;
 
-		case 2:
-			*returnVal = MS5611_CUSTOM_C2;
-			break;
+        case 2:
+            *returnVal = MS5611_CUSTOM_C2;
+            break;
 
-		case 3:
-			*returnVal = MS5611_CUSTOM_C3;
-			break;
+        case 3:
+            *returnVal = MS5611_CUSTOM_C3;
+            break;
 
-		case 4:
-			*returnVal = MS5611_CUSTOM_C4;
-			break;
+        case 4:
+            *returnVal = MS5611_CUSTOM_C4;
+            break;
 
-		case 5:
-			*returnVal = MS5611_CUSTOM_C5;
-			break;
+        case 5:
+            *returnVal = MS5611_CUSTOM_C5;
+            break;
 
-		case 6:
-			*returnVal = MS5611_CUSTOM_C6;
-			break;
+        case 6:
+            *returnVal = MS5611_CUSTOM_C6;
+            break;
 
-		case 7:
-		{
-		    *returnVal = 0x0F & oMS5611.CRC4(oMS5611.MS5611_Coefficients);
+        case 7:
+        {
+            *returnVal = 0x0F & oMS5611.CRC4(oMS5611.MS5611_Coefficients);
 
-			break;
-		}
+            break;
+        }
 
-		default:
-		{
-			*returnVal = 0;
-			break;
-		}
-	}
+        default:
+        {
+            *returnVal = 0;
+            break;
+        }
+    }
 
     return TRUE;
 }
@@ -206,7 +207,7 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 
 boolean MS5611_D1Conversion(void)
 {
-	MS5611_AppCustomData.State = MS5611_CUSTOM_D1_CONV;
+    MS5611_AppCustomData.State = MS5611_CUSTOM_D1_CONV;
 
     return TRUE;
 }
@@ -214,7 +215,7 @@ boolean MS5611_D1Conversion(void)
 
 boolean MS5611_D2Conversion(void)
 {
-	MS5611_AppCustomData.State = MS5611_CUSTOM_D2_CONV;
+    MS5611_AppCustomData.State = MS5611_CUSTOM_D2_CONV;
 
     return TRUE;
 }
@@ -222,95 +223,94 @@ boolean MS5611_D2Conversion(void)
 
 boolean MS5611_ReadADCResult(uint32 *returnVal)
 {
-	boolean result = FALSE;
+    boolean result = FALSE;
 
-	if(returnVal == 0)
-	{
-		result = FALSE;
-	}
-	else
-	{
-		switch(MS5611_AppCustomData.State)
-		{
-			case MS5611_CUSTOM_D1_CONV:
-			{
-				float Altitude = 0.0f;
-				float Temperature = 0.0f;
-		        /* tropospheric properties (0-11km) for standard atmosphere */
-		        /* temperature at base height in Kelvin */
-		        const double T1 = 15.0 + 273.15;
-		        /* temperature gradient in degrees per metre */
-		        const double a  = -6.5 / 1000;
-		        /* gravity constant in m/s/s */
-		        const double g  = 9.80665;
-		        /* ideal gas constant in J/kg/K */
-		        const double R  = 287.05;
+    if(returnVal == 0)
+    {
+        result = FALSE;
+    }
+    else
+    {
+        switch(MS5611_AppCustomData.State)
+        {
+            case MS5611_CUSTOM_D1_CONV:
+            {
+                float Altitude = 0.0f;
+                float Temperature = 0.0f;
+                /* tropospheric properties (0-11km) for standard atmosphere */
+                /* temperature at base height in Kelvin */
+                const double T1 = 15.0 + 273.15;
+                /* temperature gradient in degrees per metre */
+                const double a  = -6.5 / 1000;
+                /* gravity constant in m/s/s */
+                const double g  = 9.80665;
+                /* ideal gas constant in J/kg/K */
+                const double R  = 287.05;
 
-		        /* current pressure at MSL in kPa */
-		        double p1 = 101325 / 1000.0;
+                /* current pressure at MSL in kPa */
+                double p1 = 101325 / 1000.0;
 
-		        /* measured pressure in kPa */
-		        double p = 0.0f;
+                /* measured pressure in kPa */
+                double p = 0.0f;
 
-		        /* Difference between actual and reference temperature. */
-		        int32 dT = 0;
+                /* Difference between actual and reference temperature. */
+                int32 dT = 0;
 
-		        /* Offset at actual temperature */
-		        int64 OFF = 0;
+                /* Offset at actual temperature */
+                int64 OFF = 0;
 
-		        /* Sensitivity at actual temperature */
-		        int64 SENS = 0;
+                /* Sensitivity at actual temperature */
+                int64 SENS = 0;
 
-				SIMLIB_GetPressureAltitude(&Altitude);
-				SIMLIB_GetTemp(&Temperature);
+                SIMLIB_GetPressureAltitude(&Altitude);
+                SIMLIB_GetTemp(&Temperature);
 
                 if(0 == Temperature)
                 {
+                    /* If the sim isn't publishing temperature */
                     Temperature = 20.0;
                 }
 
                 /* Alternate form 
                  * p = p1*pow((a*((T1/a)+Altitude))/T1,(-g/(a*R)));
                  */
-		        p = p1*pow(((a*(Altitude)+T1)/T1),(-g/(a*R)));
+                p = p1*pow(((a*(Altitude)+T1)/T1),(-g/(a*R)));
 
-		        dT = (0x800000*((Temperature*100)-2000)) / MS5611_CUSTOM_C6;
+                dT = (0x800000*((Temperature*100)-2000)) / MS5611_CUSTOM_C6;
 
-		        MS5611_AppCustomData.D2 = dT + (MS5611_CUSTOM_C5 << 8);
-                /* TODO remove after debug */
-                //MS5611_AppCustomData.D2 = 8564500;
+                MS5611_AppCustomData.D2 = dT + (MS5611_CUSTOM_C5 << 8);
 
-		        OFF = ((int64)MS5611_CUSTOM_C2 << 16)  + (((int64)MS5611_CUSTOM_C4 * dT) >> 7);
+                OFF = ((int64)MS5611_CUSTOM_C2 << 16)  + (((int64)MS5611_CUSTOM_C4 * dT) >> 7);
 
-		        SENS = ((int64)MS5611_CUSTOM_C1 << 15) + (((int64)dT * MS5611_CUSTOM_C3) >> 8);
+                SENS = ((int64)MS5611_CUSTOM_C1 << 15) + (((int64)dT * MS5611_CUSTOM_C3) >> 8);
 
-		        MS5611_AppCustomData.D1 = (0x200000*(OFF+0x8000*(p*1000)))/SENS;
+                MS5611_AppCustomData.D1 = (0x200000*(OFF+0x8000*(p*1000)))/SENS;
 
-				*returnVal = MS5611_AppCustomData.D1;
-				result = TRUE;
+                *returnVal = MS5611_AppCustomData.D1;
+                result = TRUE;
 
-				break;
-			}
+                break;
+            }
 
-			case MS5611_CUSTOM_D2_CONV:
-			{
-				*returnVal = MS5611_AppCustomData.D2;
+            case MS5611_CUSTOM_D2_CONV:
+            {
+                *returnVal = MS5611_AppCustomData.D2;
 
-				result = TRUE;
+                result = TRUE;
 
-				break;
-			}
+                break;
+            }
 
-			default:
-			{
-				*returnVal = 0;
+            default:
+            {
+                *returnVal = 0;
 
-				result = FALSE;
+                result = FALSE;
 
-				break;
-			}
-		}
-	}
+                break;
+            }
+        }
+    }
 
     return result;
 }
