@@ -92,9 +92,11 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_ld.dox
+INPUT                 += @APP_DEFINITION_DIR@/../src/ld_app.h
 INPUT                 += @APP_DEFINITION_DIR@/../src/ld_events.h
 INPUT                 += @APP_DEFINITION_DIR@/../src/ld_msg.h 
 INPUT                 += @APP_DEFINITION_DIR@/../src/ld_tbldefs.h
+INPUT                 += @APP_DEFINITION_DIR@/../src/ld_version.h
 INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8

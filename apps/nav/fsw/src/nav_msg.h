@@ -136,8 +136,13 @@ typedef struct
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } NAV_NoArgCmd_t;
 
-/** 
-**  \brief NAV application housekeeping data
+/** \navtlm Housekeeping data
+**
+**  \par Description
+**  	 NAV application housekeeping data
+**
+**  \par Criticality
+**       None
 */
 typedef struct
 {

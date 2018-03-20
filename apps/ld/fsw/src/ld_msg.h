@@ -135,8 +135,13 @@ typedef struct
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } LD_NoArgCmd_t;
 
-/** 
-**  \brief LD application housekeeping data
+/** \ldtlm Housekeeping data
+**
+**  \par Description
+**  	 LD application housekeeping data
+**
+**  \par Criticality
+**       None
 */
 typedef struct
 {

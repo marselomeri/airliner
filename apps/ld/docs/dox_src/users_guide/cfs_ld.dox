@@ -8,7 +8,7 @@
 /*      insert at that location.                                            */
 /*==========================================================================*/
 /**
-    \mainpage Landing Detector Application (LD) User's Guide    
+    \mainpage Landing Detector (LD) User's Guide    
 
        <UL>
            <LI> \subpage cfsldrevhist
@@ -100,65 +100,63 @@
 /**
   \page cfsldovr LD Application Overview
     
-  The LD Application (LD) application does some cool stuff.
-
-  (Insert paragraph providing application purpose and a high level description of 
-  application capabilites)
+  The LD Application (LD) application detects if the vehicle is landed, free falling, had ground contact or flying.
     
   LD Design Overview
   ====
-
-  (Insert text and/or diagrams to describe high-level design.  Remember your audience is
-  not necessarily going to be a software engineer!)
-
-  (Inserting Diagrams)
-  ----
-
-  (Diagrams can be inserted using the following formatting:
-    \image html My_Diagram_Image_Filename.jpg "My Diagram Label" <BR>
-  The referenced jpg file should be put into the same directory as this file.)
+  1. The LD application reads various messages such as vehicle local position, actuator controls, control state, battery status, 
+  vehicle attitude, and manual control setpoint.
+  2. Determines if the vehicle is in free fall.
+  3. Determines if the vehicle has ground contact.
+  4. Determines if the vehicle has landed.
+  5. Sets and publishes vehicle land detected message.
     
   Prev: \ref cfsldintro <BR>
   Next: \ref cfsldopr
 **/
 
 /**
-    \page cfsldopr LD Application Operation
-   
-  (Insert intended operational scenarios.  This should include references to appropriate commands
-   and telemetry points as needed.  Detailed explanation of telemetry could also be useful.)
-
-    1. The application version number
-    ----
-  
-    The application version number is displayed in the initialization event and the
-    no-op event.
-
-    2. Table Handling
-    ----
-
-    TODO High-level stuff on tables goes here.
-
-    3. Sending the No-op Command
-    ----
-
-    TODO Discuss the No-Op command here.
-    
-    4. Sending the reset counters command
-    ----
-
-    TODO Discuss the reset counters command here.
-
-    5. Monitoring the command counter
-    ----
-
-    TODO Discuss the counter here.
-
-    6. Monitoring the command error counter
-    ----
-
-    TODO Discuss the counter behavior here.
-    
+  \page cfsldopr LD Application Operation
+  The following operations are carried out by the LD Application:
+	1.Detect if vehicle is in free fall state
+     ----
+	    1) If parameter is set to zero or invalid, disable free-fall detection.<BR>
+	    2) Get x,y,z accelerations acting on the vehicle and compute the net acceleration.<BR>
+	    3) If acceleration is less than a predefined threshold, flag state to true.<BR>
+	2.Detect if vehicle is has ground contact state
+	 ----
+	    1) If the vehicle is not armed then it is in ground contact state.<BR>
+	    2) If vehicle is in manual mode never report landed.
+	    <OL>
+	        <LI>If the user has more than idle throttle.
+	        <LI>Check throttle and report no ground contact based on the pilots intent to take off.
+	    </OL>
+	    3) Increase acceptance thresholds for landed state after arming the vehicle so that the increasing motor speed and other effects do not trigger false negatives.<BR>
+	    4) Mark vehicle state as ground contact if. 
+	    <OL>
+	        <LI>Not moving vertically.
+	        <LI>Pilot reduces thrust, or in auto mode we are below minimum thrust.
+	        <LI>We cannot move any further down.
+	    </OL>    
+	3.Detect if vehicle is landed state
+     ----
+	    1) If the vehicle is not armed then it is in landed state.<BR>
+	    2) If the vehicle is manually controlled and is idling,  vehicle stays in landed state until the pilot increases throttle for takeoff.
+	    <OL>
+	        <LI>If throttle is more than a given threshold, set ground contact state history to false.
+	    </OL>
+	    3) If the vehicle is not in altitude lock mode, check if the vehicle has minimum thrust and the drone stays that way of at least 8 seconds then  mark state as landed.<BR>
+	    4) Increase acceptance thresholds for landed state after arming the vehicle so that the increasing motor speed and other effects do not trigger false negatives.<BR>
+	    5) Mark vehicle state as landed if.
+	    <OL>    
+	        <LI>Not moving horizontally.
+	        <LI>Have no thrust. (look if all rotation angles are not moving)
+	        <LI>Ground contact persists.
+	    </OL>
+	4.Determining current state of the vehicle
+     ----
+	    1) The state of the vehicle is determined by the land detector. A vehicle is said to be in landed state if it has seen a ground contact state previously.<BR> 
+	    
     Next: \ref cfsldreq <BR>
     Prev: \ref cfsldovr
 **/
