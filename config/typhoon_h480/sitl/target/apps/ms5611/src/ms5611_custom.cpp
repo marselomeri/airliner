@@ -158,7 +158,8 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 	switch(Addr)
 	{
 		case 0:
-			*returnVal = 0;
+            /* Reserved for manufacturer, magic number added for sim */
+			*returnVal = 777;
 			break;
 
 		case 1:
