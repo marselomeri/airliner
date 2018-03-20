@@ -28,132 +28,236 @@ block main
             style.
               @import url(bower_components/cesium/Source/Widgets/widgets.css);
             #cesiumContainer.fullSize
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
+        #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Vehicle Global Position
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_Timestamp'}]}) ---
+                    tr
+                      th Lat:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_Lat'}]}) ---
+                    tr
+                      th Lon:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_Lon'}]}) ---
+                    tr
+                      th Altitude:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_PressureAlt'}]}) ---
+                    tr
+                      th Satellites Used:
+                      td
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_SatellitesUsed'}]}) ---
 
   script.
-    loadScript('node_modules/cesium/Build/CesiumUnminified/Cesium.js', function () {
-      
+    loadScript('node_modules/cesium/Build/CesiumUnminified/Cesium.js',function(){
+                                
       Cesium.BingMapsApi.defaultKey = 'Anb5ZQS9_Qvje--nom_9ZKwQyQVnOOU04Fctd1uxMHnYoQKIcp1XFDrZuXN6evOQ';
       var viewer = new Cesium.Viewer('cesiumContainer');
       var AIRCRAFT = {};
-      var tracking_step_limit = 10;
-      var outdated_seconds = 5;
+      var HISTORY = {} ;
+      var ALLMYLINES = [];                    
+      var tracking_step_limit = 200;
+      var outdated_seconds = 30;
       
-      function prepareRoute(lo,la,h,t,hex){
-        var INSTANCE_VARIABLES = {lo:lo,la:la,h:h,t:t};
-        if(!(hex in AIRCRAFT)){
-            //NEW AIRCRAFT
-            var T_QUE = [];
-            //Packing Information
-            var key1 = addPoint(lo,la,h);
-            INSTANCE_VARIABLES.key=key1;
-            T_QUE.push(INSTANCE_VARIABLES);
-            AIRCRAFT[hex]=T_QUE;
-        }
-        else{
-            //SEEN AIRCRAFT
-            var T_QUE2 = AIRCRAFT[hex];
-              //Check Tail Limit
-              if (T_QUE2.length>tracking_step_limit-1){
-                var key2 = addPoint(lo,la,h);
-                INSTANCE_VARIABLES.key=key2;
-                var last_element_key = T_QUE2[0].key;
-                removePoint(last_element_key);    
-                T_QUE2.shift();
-                T_QUE2.push(INSTANCE_VARIABLES);
-                AIRCRAFT[hex]=T_QUE2;
-              }
-              else{
-                var key3 = addPoint(lo,la,h);
-                INSTANCE_VARIABLES.key=key3;    
-                T_QUE2.push(INSTANCE_VARIABLES);
-                AIRCRAFT[hex]=T_QUE2;
-              }
-        }
+      function AddMyVehicle(){
+        var lat = parseFloat($("[data-sage]")[1].innerHTML);
+        var lon = parseFloat($("[data-sage]")[2].innerHTML);
+        var alt = parseFloat($("[data-sage]")[3].innerHTML);
+        mystruct = {};
+        mystruct.lat  = lat;
+        mystruct.lon  = lon;
+        mystruct.altitude  = alt;
+        mystruct.hex  = "MYVEH";
+        mystruct.lat  = lat;
+        return mystruct;    
       }
       
+      function DrawLines(){
+        for(var k in AIRCRAFT){
+          var this_aircraft = AIRCRAFT[k];
+          var my_arr = [];
+          for(var i  = 0; i< this_aircraft.length;i++){
+            my_arr.push(this_aircraft[i].la);
+            my_arr.push(this_aircraft[i].lo);
+            my_arr.push(this_aircraft[i].h);
+          }
+          if(k == "MYVEH"){
+            var key = AddMainLine(my_arr);
+          }else{
+            var key = AddLine(my_arr);
+          }
+          ALLMYLINES.push(key);
+        }
+        
       
-      function addPoint(lo,la,h) {
-        var color = Cesium.Color.fromHsl((0.6 - (30 * 0.5)), 1.0, 0.5);
-        var surfacePosition = Cesium.Cartesian3.fromDegrees(lo, la, 0);
-        var heightPosition = Cesium.Cartesian3.fromDegrees(lo, la, h );
-        //WebGL Globe only contains lines, so that's the only graphics we create.
-        var polyline = new Cesium.PolylineGraphics();
-        polyline.material = new Cesium.ColorMaterialProperty(color);
-        polyline.width = new Cesium.ConstantProperty(2);
-        polyline.followSurface = new Cesium.ConstantProperty(false);
-        polyline.positions = new Cesium.ConstantProperty([surfacePosition, heightPosition]);
-        var ENTITY = viewer.entities.add({polyline : polyline});
+      
+      
+      }
+         
+      function PrepareRoute(lo,la,h,t,hex){
+        var current = {lo:lo,la:la,h:h,t:t};
+        if(!(hex in AIRCRAFT)){
+          //Fresh point
+          var PQ = [];
+          if(hex == "MYVEH"){
+            var key = AddMainPoint(lo,la,h);
+          }else{
+            var key = AddPoint(lo,la,h);
+          }
+          current.key = key;
+          PQ.push(current);
+          AIRCRAFT[hex]=PQ;
+         
+        }else{
+          //Existing Point
+          PQ = AIRCRAFT[hex];
+          if(hex == "MYVEH"){
+            var key = AddMainPoint(lo,la,h);
+          }else{
+            var key = AddPoint(lo,la,h);
+          }
+          current.key = key;
+ 
+          //Check tail length
+          if(PQ.length >tracking_step_limit){
+            var element_to_rm = PQ[0].key;
+            RemovePoint(element_to_rm);
+            PQ.shift();
+          }
+          PQ.push(current);
+          AIRCRAFT[hex] = PQ;
+        }
+        
+      }
+
+      function AddLine(arr){
+        var dashedLine = viewer.entities.add({
+          polyline : {
+            positions : Cesium.Cartesian3.fromDegreesArrayHeights(arr),
+            width : 1,
+            material : Cesium.Color.YELLOW
+          }
+        });
+        return  dashedLine.id
+      }      
+      
+      function AddMainLine(arr){
+         var dashedLine = viewer.entities.add({
+         polyline : {
+            positions : Cesium.Cartesian3.fromDegreesArrayHeights(arr),
+            width : 1,
+            material : Cesium.Color.RED
+
+         }
+        });
+      return  dashedLine.id
+      }  
+                          
+      function AddPoint(lo,la,h) {
+        var position = Cesium.Cartesian3.fromDegrees(la, lo, h);
+        var ENTITY = viewer.entities.add({
+          position : position,
+          point : {
+            pixelSize : 10,
+            color : Cesium.Color.YELLOW,
+            translucencyByDistance : new Cesium.NearFarScalar(1.5e2, 1.0, 1.5e7, 0.2)
+          }
+        });
         return ENTITY.id;    
       }
       
-      function cleanPoints(current_time){
+      function AddMainPoint(lo,la,h) {
+        var position = Cesium.Cartesian3.fromDegrees(la, lo, h);
+        var ENTITY = viewer.entities.add({
+          position : position,
+          point : {
+            pixelSize : 10,
+            color : Cesium.Color.RED,
+            translucencyByDistance : new Cesium.NearFarScalar(1.5e2, 1.0, 1.5e7, 0.2)
+          }
+        });
+        return ENTITY.id;    
+      }
+      
+      function CleanSlate(current_time){
+      	RemovePoints(ALLMYLINES);
+      	ALLMYLINES = [];
         for(var k in AIRCRAFT){
-        var T_QUE3 = AIRCRAFT[k];
-        var latest_aircraft_timestamp = T_QUE3[T_QUE3.length-1].t;
-        var difference = current_time-latest_aircraft_timestamp;
+        var PQ = AIRCRAFT[k];
+        if(PQ.length <1){
+        return;
+        }
+        var obj = PQ[PQ.length-1];
+        var latest_aircraft_timestamp = obj.t;
+        var difference = Math.abs(current_time-latest_aircraft_timestamp);
           if(difference>outdated_seconds){
-              for(var i=0;i<T_QUE3.length;i++){
-              removePoint(T_QUE3[i].key);
+              for(var i=0;i<PQ.length;i++){
+              RemovePoint(PQ[i].key);
               }
               delete AIRCRAFT.k;
           }
         }
       }
-      
-      
-      function addPointOld(lo,la) {
-        viewer.entities.add({
-            position : Cesium.Cartesian3.fromDegrees(lo, la),
-            point : {
-                pixelSize : 2,
-                color : Cesium.Color.YELLOW
-            }
-        });
-      }
-      
-      function removePoint(entityid){
+
+      function RemovePoint(entityid){
         var response = viewer.entities.removeById(entityid);
         return response;
       }
-
       
-      function executeQuery(){
-        session.getADSBJson(function(adsb) {
-          //variables
-          console.log(adsb)
-          time_stamp = adsb.now
-          message_counter = adsb.messages
-          aircraft_list = adsb.aircraft
-          for(i=0; i<aircraft_list.length;i++){
-            instance = aircraft_list[i]
-            try{
-              latitude = instance.lat
-              longitude = instance.lon
-              height = instance.altitude
-              time = time_stamp
-              hex = instance.hex
-              try{
-                cleanPoints(time)
-              }catch(err1){
-                console.log("INTERTNAL ERROR: [NOT ABLE TO CLEAR POINTS] "+err1)
-              }
-              console.log(typeof(latitude)+"  "+typeof(longitude))
-              if (isNaN(latitude) && isNaN(logitude) && isNaN(height)){
-                console.log("skipped")
-              }else{
-                prepareRoute(longitude,latitude,height,time,hex)
-              }
-
-            }
-            catch(err){
-            
-            console.log("INTERTNAL ERROR: "+err)
-            }
-          }
-            console.log(adsb);
-            setTimeout(executeQuery,1000)
-        });
+      function RemovePoints(arr){
+      	for(var e in arr){
+      	viewer.entities.removeById(arr[e]);
+      	} 
       }
-      
-      $(document).ready(function(){setTimeout(executeQuery,1000)});
-    });
+     
+      function ExecuteQuery(){
+        session.getADSBJson(function(adsb){
+          //Create common timestamp
+          var timestamp = Math.floor(Date.now());
+          
+          // Copy vehicle information into rendering queue
+          var vh = AddMyVehicle();
+          adsb.push(vh);
+          
+          //Iterate through each aircraft item
+          for(i=0; i<adsb.length;i++){
+            var instance = adsb[i];
+            // Full information needed to plot not available
+            if(isNaN(instance.lat)  || isNaN(instance.lon) || isNaN(instance.altitude) || instance.lat==0  || instance.lon==0 || instance.altitude ==0){
+              continue;
+            }else{      
+               //Clean previous, old and corrupt points
+               CleanSlate(timestamp);
+              lat = instance.lat;
+              lon = instance.lon;
+              alt = instance.altitude;
+              tme = timestamp;
+              hex = instance.hex;
+              PrepareRoute(lat,lon, alt,tme,hex);
+              DrawLines();   
+            }  
+          }
+          //console.log(AIRCRAFT);
+          setTimeout(ExecuteQuery,1000);                  
+          
+        });
+      }                          
+
+      $(document).ready(function(){setTimeout(ExecuteQuery,1000)});
+                        });
+

@@ -1,0 +1,244 @@
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
+
+block header
+  i.fa-fw.fa.fa-signal
+  | Actuator and Motor Control
+
+block main
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-AMC-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 General
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Cmd Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/CmdCounter'}]}) ---
+                    tr
+                      th Error Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ErrCounter'}]}) ---
+              footer
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/AMC/NoOp'}}) No-Op
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/AMC/Reset'}}) Reset
+                
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-AMC-ActuatorArmed.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Actuator Armed (Input)
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_Timestamp'}]}) ---
+                    tr
+                      th Armed
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_Armed'}]}) ---
+                    tr
+                      th Prearmed
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_Prearmed'}]}) ---
+                    tr
+                      th Ready To Arm
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_ReadyToArm'}]}) ---
+                    tr
+                      th Lockdown
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_Lockdown'}]}) ---
+                    tr
+                      th Manual Lockdown
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_ManualLockdown'}]}) ---
+                    tr
+                      th Force Failsafe
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_ForceFailsafe'}]}) ---
+                    tr
+                      th In ESC Calibration Mode
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorArmed_InEscCalibrationMode'}]}) ---                       
+                
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-AMC-ActuatorControls.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Actuator Controls (Input)
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Timestamp'}]}) ---
+                    tr
+                      th Sample Time
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_SampleTime'}]}) ---
+                    tr
+                      th Control 0
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_0'}]}) ---
+                    tr
+                      th Control 1
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_1'}]}) ---
+                    tr
+                      th Control 2
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_2'}]}) ---
+                    tr
+                      th Control 3
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_3'}]}) ---
+                    tr
+                      th Control 4
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_4'}]}) ---
+                    tr
+                      th Control 5
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_5'}]}) ---
+                    tr
+                      th Control 6
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_6'}]}) ---
+                    tr
+                      th Control 7
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorControls_Control_7'}]}) ---
+                        
+                
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-AMC-ActuatorOutputs.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Actuator Outputs (Output)
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Timestamp
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Timestamp'}]}) ---
+                    tr
+                      th Count
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Count'}]}) ---
+                    tr
+                      th Output 0
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_0'}]}) ---
+                    tr
+                      th Output 1
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_1'}]}) ---
+                    tr
+                      th Output 2
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_2'}]}) ---
+                    tr
+                      th Output 3
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_3'}]}) ---
+                    tr
+                      th Output 4
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_4'}]}) ---
+                    tr
+                      th Output 5
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_5'}]}) ---
+                    tr
+                      th Output 6
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_6'}]}) ---
+                    tr
+                      th Output 7
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_7'}]}) ---
+                    tr
+                      th Output 8
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_8'}]}) ---
+                    tr
+                      th Output 9
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_9'}]}) ---
+                    tr
+                      th Output 10
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_10'}]}) ---
+                    tr
+                      th Output 11
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_11'}]}) ---
+                    tr
+                      th Output 12
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_12'}]}) ---
+                    tr
+                      th Output 13
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_13'}]}) ---
+                    tr
+                      th Output 14
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_14'}]}) ---
+                    tr
+                      th Output 15
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/AMC/ActuatorOutputs_Output_15'}]}) ---
+                                        
+  .row
+    +app_specific_telemetry_control("AMC")
+    
+  .row
+    +app_specific_table_control("AMC")
+                                    
+  .row          
+    +app_specific_mempools("AMC")
+    
+  .row
+    +registered_applications() 
+    +app_specific_application_control("AMC")
+
+  .row
+    +app_specific_event_filters("AMC")
+    
+  .row
+    +app_specific_scheduler_control("AMC")
+

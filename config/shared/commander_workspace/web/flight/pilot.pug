@@ -107,9 +107,9 @@ block main
         }
         
         if (HUDStarted == true) {
-          updateHUDHeading(Attitude.Yaw);
+          updateHUDHeading(Attitude.Yaw * 57.2958);
           updateHUDPitch(Attitude.Pitch * 57.2958);
-          updateHUDRoll(Attitude.Roll * 57.2958);
+          updateHUDRoll(-Attitude.Roll * 57.2958);
         }
       }
     );
@@ -117,7 +117,6 @@ block main
     session.subscribe({tlm: [{'name': '/CFS/PX4/VGP_Alt'}]}, function (param) {
         Position.Alt = param.engValue.floatValue - 488;
         updateHUDAltitude(Position.Alt);
-        console.log("" + param);
     });
       
     //setInterval(function () {
