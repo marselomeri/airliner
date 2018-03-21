@@ -37,37 +37,52 @@
 ** Includes
 *************************************************************************/
 #include "ms5611_custom.h"
+#include "ms5611_platform_cfg.h"
 #include "cfe.h"
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-#define MS5611_SPI_DEVICE_PATH              "/dev/spidev1.1"
+/** \brief SPI Device path of the MS5611 */
+#define MS5611_SPI_DEVICE_PATH              MS5611_DEVICE_PATH
+/** \brief SPI device mode */
 #define MS5611_SPI_DEVICE_MODE              (3)
+/** \brief SPI device bits per word */
 #define MS5611_SPI_DEVICE_BITS              (8)
+/** \brief SPI device speed */
 #define MS5611_SPI_DEVICE_SPEED             (1000000)
+/** \brief SPI device transmit delay */
 #define MS5611_SPI_TX_DELAY                 (0)
+/** \brief SPI device receive delay */
 #define MS5611_SPI_RX_DELAY                 (0)
-// SPI Commands
+/* SPI Commands */
+/** \brief MS5611 command reset */
 #define MS5611_SPI_CMD_RESET                (0x1e)
+/** \brief MS5611 command convert D1 (OSR=256) */
 #define MS5611_SPI_CMD_CONVERT_D1_MASK      (0x40)
+/** \brief MS5611 command convert D2 (OSR=256) */
 #define MS5611_SPI_CMD_CONVERT_D2_MASK      (0x50)
+/** \brief MS5611 command mask convert OSR 256 */
 #define MS5611_SPI_CMD_OSR_256_MASK         (0x00)
+/** \brief MS5611 command mask convert OSR 512 */
 #define MS5611_SPI_CMD_OSR_512_MASK         (0x02)
+/** \brief MS5611 command mask convert OSR 1024 */
 #define MS5611_SPI_CMD_OSR_1024_MASK        (0x04)
+/** \brief MS5611 command mask convert OSR 2048 */
 #define MS5611_SPI_CMD_OSR_2048_MASK        (0x06)
+/** \brief MS5611 command mask convert OSR 4096 */
 #define MS5611_SPI_CMD_OSR_4096_MASK        (0x08)
+/** \brief MS5611 command ADC read */
 #define MS5611_SPI_CMD_ADC_READ             (0x00)
+/** \brief MS5611 command mask PROM read */
 #define MS5611_SPI_CMD_PROM_READ_MASK       (0xa0)
+/** \brief MS5611 command PROM read shift */
 #define MS5611_SPI_CMD_PROM_ADDR_SHIFT      (1)
-
-#define MS5611_ADDR                         (0xee) /* Module address write mode 1110 1110 bit1=CSB bit0=0 write */
-#define MS5611_ADDR_PROM_SETUP              (0xa0)
-
+/** \brief MS5611 command convert D1 with OSR mask */
 #define MS5611_SPI_CMD_CONVERT_D1           (MS5611_SPI_CMD_CONVERT_D1_MASK + MS5611_SPI_CMD_OSR_1024_MASK)
+/** \brief MS5611 command convert D2 with OSR mask */
 #define MS5611_SPI_CMD_CONVERT_D2           (MS5611_SPI_CMD_CONVERT_D2_MASK + MS5611_SPI_CMD_OSR_1024_MASK)
 
-#define MS5611_READ_FLAG                    (0x80)
 
 /** \brief Retry attemps for interrupted ioctl calls.
 **
@@ -92,10 +107,10 @@
  */
 typedef enum
 {
-    /*! MS5611 status uninitialized */
+    /*! status uninitialized */
     MS5611_CUSTOM_UNINITIALIZED  = 0,
-    /*! RGBLED status initialized */
-    MS5611_CUSTOM_INITIALIZED   = 1
+    /*! status initialized */
+    MS5611_CUSTOM_INITIALIZED    = 1
 } MS5611_Custom_Status_t;
 
 

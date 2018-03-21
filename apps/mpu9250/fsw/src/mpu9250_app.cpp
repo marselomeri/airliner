@@ -78,8 +78,7 @@ int32 MPU9250::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = MPU9250_READ_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
-    
-    
+
     /* Add custom events to the filter table */
     customEventCount = MPU9250_Custom_Init_EventFilters(ind, EventTbl);
     
@@ -169,6 +168,31 @@ int32 MPU9250::InitPipe()
         goto MPU9250_InitPipe_Exit_Tag;
     }
 
+    ///* Init param pipe and subscribe to param updated messages */
+    //iStatus = CFE_SB_CreatePipe(&ParamPipeId,
+                                //MPU9250_PARAM_PIPE_DEPTH,
+                                //MPU9250_PARAM_PIPE_NAME);
+    //if (iStatus == CFE_SUCCESS)
+    //{
+        ///* Subscribe to data messages */
+        //iStatus = CFE_SB_Subscribe(PRMLIB_PARAM_UPDATED_MID, ParamPipeId);
+
+        //if (iStatus != CFE_SUCCESS)
+        //{
+            //(void) CFE_EVS_SendEvent(MPU9250_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                                     //"DATA Pipe failed to subscribe to PRMLIB_PARAM_UPDATED_MID. (0x%08X)",
+                                     //(unsigned int)iStatus);
+            //goto MPU9250_InitPipe_Exit_Tag;
+        //}
+    //}
+    //else
+    //{
+        //(void) CFE_EVS_SendEvent(MPU9250_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
+                                 //"Failed to create Data pipe (0x%08X)",
+                                 //(unsigned int)iStatus);
+        //goto MPU9250_InitPipe_Exit_Tag;
+    //}
+
 MPU9250_InitPipe_Exit_Tag:
     return iStatus;
 }
@@ -211,27 +235,10 @@ void MPU9250::InitData()
     Diag.Conversion.AccScale        = MPU9250_ACC_SCALE;
     Diag.Conversion.GyroScale       = MPU9250_GYRO_SCALE;
     /* Temperature */
-    Diag.Conversion.RoomTempOffset  = 0.0;
+    Diag.Conversion.RoomTempOffset  = MPU9250_ROOM_TEMP_OFFSET;
     Diag.Conversion.TempSensitivity = MPU9250_TEMP_SENS;
     /* Start initialization of user calibration values */
-    Diag.Calibration.AccXScale       = 1.0;
-    Diag.Calibration.AccYScale       = 1.0;
-    Diag.Calibration.AccZScale       = 1.0;
-    Diag.Calibration.AccXOffset      = 0.0;
-    Diag.Calibration.AccYOffset      = 0.0;
-    Diag.Calibration.AccZOffset      = 0.0;
-    Diag.Calibration.GyroXScale      = 1.0;
-    Diag.Calibration.GyroYScale      = 1.0;
-    Diag.Calibration.GyroZScale      = 1.0;
-    Diag.Calibration.GyroXOffset     = 0.0;
-    Diag.Calibration.GyroYOffset     = 0.0;
-    Diag.Calibration.GyroZOffset     = 0.0;
-    //Diag.Calibration.MagXScale       = 1.0;
-    //Diag.Calibration.MagYScale       = 1.0;
-    //Diag.Calibration.MagZScale       = 1.0;
-    //Diag.Calibration.MagXOffset      = 0.0;
-    //Diag.Calibration.MagYOffset      = 0.0;
-    //Diag.Calibration.MagZOffset      = 0.0;
+    UpdateParamsFromTable();
 }
 
 
@@ -314,6 +321,15 @@ int32 MPU9250::InitApp()
         //iStatus = -1;
         //CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
                 //"Get Mag adjustment values failed.");
+        //goto MPU9250_InitApp_Exit_Tag;
+    //}
+    
+    //iStatus = OS_MutSemCreate(&m_Params_Mutex, MPU9250_MUTEX_PARAMS, 0);
+    //if (iStatus != CFE_SUCCESS)
+    //{
+        //CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+            //"Params mutex create failed");
+        //returnBool = FALSE;
         //goto MPU9250_InitApp_Exit_Tag;
     //}
     
@@ -727,9 +743,9 @@ void MPU9250::ReadDevice(void)
     calZ_f = rawZ_f * (Diag.Conversion.GyroUnit / Diag.Conversion.GyroDivider); 
     
     /* Gyro Calibrate */
-    calX_f = (calX_f - Diag.Calibration.GyroXOffset) * Diag.Calibration.GyroXScale;
-    calY_f = (calY_f - Diag.Calibration.GyroYOffset) * Diag.Calibration.GyroYScale;
-    calZ_f = (calZ_f - Diag.Calibration.GyroZOffset) * Diag.Calibration.GyroZScale;
+    calX_f = (calX_f - m_Params.GyroXOffset) * m_Params.GyroXScale;
+    calY_f = (calY_f - m_Params.GyroYOffset) * m_Params.GyroYScale;
+    calZ_f = (calZ_f - m_Params.GyroZOffset) * m_Params.GyroZScale;
 
     /* Gyro Filter */
     SensorGyro.X = _gyro_filter_x.apply(calX_f);
@@ -785,9 +801,9 @@ void MPU9250::ReadDevice(void)
     calZ_f = rawZ_f * (Diag.Conversion.AccUnit / Diag.Conversion.AccDivider);
     
     /* Accel Calibrate */
-    calX_f = (calX_f - Diag.Calibration.AccXOffset) * Diag.Calibration.AccXScale;
-    calY_f = (calY_f - Diag.Calibration.AccYOffset) * Diag.Calibration.AccYScale;
-    calZ_f = (calZ_f - Diag.Calibration.AccZOffset) * Diag.Calibration.AccZScale;
+    calX_f = (calX_f - m_Params.AccXOffset) * m_Params.AccXScale;
+    calY_f = (calY_f - m_Params.AccYOffset) * m_Params.AccYScale;
+    calZ_f = (calZ_f - m_Params.AccZOffset) * m_Params.AccZScale;
 
     /* Accel Filter */
     SensorAccel.X = _accel_filter_x.apply(calX_f);
@@ -838,9 +854,9 @@ void MPU9250::ReadDevice(void)
     //}
 
     ///* Mag Calibrate */
-    //SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagXScale) + Diag.Calibration.MagXOffset) / 1000.0f;
-    //SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagYScale) + Diag.Calibration.MagYOffset) / 1000.0f;
-    //SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * Diag.Calibration.MagZScale) + Diag.Calibration.MagZOffset) / 1000.0f;
+    //SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * m_Params.MagXScale) + m_Params.MagXOffset) / 1000.0f;
+    //SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * m_Params.MagYScale) + m_Params.MagYOffset) / 1000.0f;
+    //SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * m_Params.MagZScale) + m_Params.MagZOffset) / 1000.0f;
 
     /////* Mag Scale, Range, DeviceID */
     //SensorMag.Scaling = -1.0f;
@@ -856,8 +872,10 @@ void MPU9250::ReadDevice(void)
     }
 
     SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
+
     calTemp = (SensorAccel.TemperatureRaw / Diag.Conversion.TempSensitivity) + 21.0 - Diag.Conversion.RoomTempOffset;
     //SensorMag.Temperature
+
     SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
 
 end_of_function:
@@ -869,6 +887,7 @@ end_of_function:
     }
     //return returnBool;
 }
+
 
 boolean MPU9250::ValidateDevice(void)
 {
@@ -908,6 +927,7 @@ end_of_function:
     return returnBool;
 }
 
+
 void MPU9250_CleanupCallback(void)
 {
     oMPU9250.HkTlm.State = MPU9250_UNINITIALIZED;
@@ -915,6 +935,53 @@ void MPU9250_CleanupCallback(void)
     {
         CFE_EVS_SendEvent(MPU9250_UNINIT_ERR_EID, CFE_EVS_ERROR,"MPU9250_Uninit failed");
         oMPU9250.HkTlm.State = MPU9250_INITIALIZED;
+    }
+}
+
+
+void MPU9250::UpdateParamsFromTable(void)
+{
+    if(0 != ConfigTblPtr)
+    {
+        /* Copy to m_Params from the config table */
+        m_Params.AccXScale      = ConfigTblPtr->AccXScale;
+        m_Params.AccYScale      = ConfigTblPtr->AccYScale;
+        m_Params.AccZScale      = ConfigTblPtr->AccZScale;
+        m_Params.AccXOffset     = ConfigTblPtr->AccXOffset;
+        m_Params.AccYOffset     = ConfigTblPtr->AccYOffset;
+        m_Params.AccZOffset     = ConfigTblPtr->AccZOffset;
+        m_Params.GyroXScale     = ConfigTblPtr->GyroXScale;
+        m_Params.GyroYScale     = ConfigTblPtr->GyroYScale;
+        m_Params.GyroZScale     = ConfigTblPtr->GyroZScale;
+        m_Params.GyroXOffset    = ConfigTblPtr->GyroXOffset;
+        m_Params.GyroYOffset    = ConfigTblPtr->GyroYOffset;
+        m_Params.GyroZOffset    = ConfigTblPtr->GyroZOffset;
+        //m_Params.MagXScale      = ConfigTblPtr->MagXScale;
+        //m_Params.MagYScale      = ConfigTblPtr->MagYScale;
+        //m_Params.MagZScale      = ConfigTblPtr->MagZScale;
+        //m_Params.MagXOffset     = ConfigTblPtr->MagXOffset;
+        //m_Params.MagYOffset     = ConfigTblPtr->MagYOffset;
+        //m_Params.MagZOffset     = ConfigTblPtr->MagZOffset;
+        
+        /* Copy to the diag message for downlink */
+        Diag.Calibration.AccXScale       = m_Params.AccXScale;
+        Diag.Calibration.AccYScale       = m_Params.AccYScale;
+        Diag.Calibration.AccZScale       = m_Params.AccZScale;
+        Diag.Calibration.AccXOffset      = m_Params.AccXOffset;
+        Diag.Calibration.AccYOffset      = m_Params.AccYOffset;
+        Diag.Calibration.AccZOffset      = m_Params.AccZOffset;
+        Diag.Calibration.GyroXScale      = m_Params.GyroXScale;
+        Diag.Calibration.GyroYScale      = m_Params.GyroYScale;
+        Diag.Calibration.GyroZScale      = m_Params.GyroZScale;
+        Diag.Calibration.GyroXOffset     = m_Params.GyroXOffset;
+        Diag.Calibration.GyroYOffset     = m_Params.GyroYOffset;
+        Diag.Calibration.GyroZOffset     = m_Params.GyroZOffset;
+        //Diag.Calibration.MagXScale       = m_Params.MagXScale;
+        //Diag.Calibration.MagYScale       = m_Params.MagYScale;
+        //Diag.Calibration.MagZScale       = m_Params.MagZScale;
+        //Diag.Calibration.MagXOffset      = m_Params.MagXOffset;
+        //Diag.Calibration.MagYOffset      = m_Params.MagYOffset;
+        //Diag.Calibration.MagZOffset      = m_Params.MagZOffset; 
     }
 }
 

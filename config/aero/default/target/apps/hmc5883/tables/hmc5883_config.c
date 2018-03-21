@@ -42,7 +42,19 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MPU9250 config table data */
 HMC5883_ConfigTbl_t HMC5883_ConfigTbl =
 {
-	/* TODO:  Define table. */
+    /* User calibration params */
+    /* x_scale */
+    1.0f,
+    /* y_scale */
+    1.0f,
+    /* z_scale */
+    1.0f,
+    /* x_offset */
+    0.0f,
+    /* y_offset */
+    0.0f,
+    /* z_offset */
+    0.0f
 };
 
 /*

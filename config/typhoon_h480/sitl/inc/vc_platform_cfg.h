@@ -154,7 +154,7 @@ extern "C" {
 **  \par Limits:
 **       0 to MAX_PRIORITY (usually 255)
 */
-#define VC_STREAMING_TASK_PRIORITY      (50)
+#define VC_STREAMING_TASK_PRIORITY      (150)
 
 /** \brief Streaming task name
 **

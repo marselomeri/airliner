@@ -225,16 +225,16 @@ void Test_QAE_InitPipe_Fail_CreateDATAPipe(void)
  */
 void Test_QAE_InitData(void)
 {
-    QAE oQAE;
-
-    /* Set a fail result */
+    int32 result = CFE_SUCCESS;
     int32 expected = CFE_SUCCESS;
 
+    QAE oQAE;
+
     /* Execute the function being tested */
-    oQAE.InitData();
+    result = oQAE.InitApp();
 
     /* Verify results */
-    //UtAssert_True (result == expected, "InitData");
+    UtAssert_True (result == expected, "InitData");
 }
 
 
