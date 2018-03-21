@@ -42,12 +42,133 @@
 namespace math
 {
 
+/************************************************************************/
+/** \brief Float Min
+ **
+ **  \par Description
+ **       This function return the smaller of two passed floats
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   a      A #float to compare
+ **  \param [in]   b      A #float to compare
+ **
+ **  \returns
+ **  Min of two arguments
+ **  \endreturns
+ *************************************************************************/
 const float &min(const float &a, const float &b);
+
+/************************************************************************/
+/** \brief Float Max
+ **
+ **  \par Description
+ **       This function return the larger of two passed floats
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   a      A #float to compare
+ **  \param [in]   b      A #float to compare
+ **
+ **  \returns
+ **  Max of two arguments
+ **  \endreturns
+ **
+ *************************************************************************/
 const float &max(const float &a, const float &b);
+
+/************************************************************************/
+/** \brief Constrain
+ **
+ **  \par Description
+ **       This function constrains a value between a passed range.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   val    A #float index of value to constrain
+ **  \param [in]   min    A #float index of value to constrain
+ **  \param [in]   max    A #float index of value to constrain
+ **
+ **  \returns
+ **  Constrained value
+ **  \endreturns
+ **
+ *************************************************************************/
 const float &constrain(const float &val, const float &min_val, const float &max_val);
+
+/************************************************************************/
+/** \brief Float Degrees To Radians
+ **
+ **  \par Description
+ **       This function converts degrees to radians
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   degrees      A #float value in degrees
+ **
+ **  \returns
+ **  Value in radians
+ **  \endreturns
+ **
+ *************************************************************************/
 float radians(float degrees);
+
+/************************************************************************/
+/** \brief Double Degrees To Radians
+ **
+ **  \par Description
+ **       This function converts degrees to radians
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   degrees      A #double value in degrees
+ **
+ **  \returns
+ **  Value in radians
+ **  \endreturns
+ **
+ *************************************************************************/
 double radians(double degrees);
+
+/************************************************************************/
+/** \brief Float Radians To Degrees
+ **
+ **  \par Description
+ **       This function converts radians to degrees
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   degrees      A #float value in radians
+ **
+ **  \returns
+ **  Value in degrees
+ **  \endreturns
+ **
+ *************************************************************************/
 float degrees(float radians);
+
+/************************************************************************/
+/** \brief Double Radians To Degrees
+ **
+ **  \par Description
+ **       This function converts radians to degrees
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \param [in]   degrees      A #double value in radians
+ **
+ **  \returns
+ **  Value in degrees
+ **  \endreturns
+ **
+ *************************************************************************/
 double degrees(double radians);
 
 }

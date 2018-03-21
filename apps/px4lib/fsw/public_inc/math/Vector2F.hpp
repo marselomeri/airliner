@@ -258,8 +258,8 @@ public:
 	 **       None
 	 **
 	 **  \param [in]   i      A #uint32 index of value to constrain
-	 **  \param [in]   min    A #float index of value to constrain
-	 **  \param [in]   max    A #float index of value to constrain
+	 **  \param [in]   min    A #float of min value
+	 **  \param [in]   max    A #float of max value
 	 **
 	 *************************************************************************/
 	void Constrain(uint32 i, float min, float max);
