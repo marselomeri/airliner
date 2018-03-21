@@ -13,8 +13,8 @@ block main
       +msg_macro_specific_telemetry_control([{macro: 'PX4_SENSOR_GYRO_MID'}])
       
     .row.row-fluid
-      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
-        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
+        #wid-SG.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header(style="overflow:hidden;")
             span.widget-icon
               i.fa.fa-table
@@ -41,78 +41,78 @@ block main
                     tr
                       th Timestamp:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Timestamp"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_Timestamp'}]}) ---
                     tr
                       th Integral:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_IntegralDt"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_IntegralDt'}]}) ---
                     tr
                       th Error Count:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ErrorCount"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_ErrorCount'}]}) ---
                     tr
                       th X:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_X"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_X'}]}) ---
                     tr
                       th Y:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Y"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_Y'}]}) ---
                     tr
                       th Z:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Z"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_Z'}]}) ---
                     tr
                       th X Int:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XInt"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_XInt'}]}) ---
                     tr
                       th Y Int:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YInt"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_YInt'}]}) ---
                     tr
                       th Z Int:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZInt"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_ZInt'}]}) ---
                     tr
                       th Temp:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Temp"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_Temp'}]}) ---
                     tr
                       th Range:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Range"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_Range'}]}) ---
                     tr
                       th Scaling:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_Scaling"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_Scaling'}]}) ---
                     tr
                       th Device ID:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_DeviceID"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_DeviceID'}]}) ---
                     tr
                       th X Raw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_XRaw"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_XRaw'}]}) ---
                     tr
                       th Y Raw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_YRaw"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_YRaw'}]}) ---
                     tr
                       th Z Raw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_ZRaw"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_ZRaw'}]}) ---
                     tr
                       th Temp Raw:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SG_TempRaw"}}) ---
+                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SG_TempRaw'}]}) ---
                         
     script.
         $(function () {
             var dataplotDef = {
                 data: [
                     { 
-                      tlm: {name: '/CFS/PX4/SG_X'},
+                      tlm: {'name': '/CFS/PX4/SG_X'},
                       label: 'X',
                       color: '#ff00ff'
                     },
@@ -123,7 +123,7 @@ block main
                     },
                     { 
                       tlm: {'name': '/CFS/PX4/SG_Z'},
-                      labe: 'Z',
+                      label: 'Z',
                       color: '#ffff00'
                     }
                 ],
