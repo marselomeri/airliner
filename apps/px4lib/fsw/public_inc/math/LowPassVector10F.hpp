@@ -38,7 +38,7 @@ public:
 	/** \brief Update Low Pass
 	 **
 	 **  \par Description
-	 **       This function
+	 **       This function updates the low pass filter with new values.
 	 **
 	 **  \par Assumptions, External Events, and Notes:
 	 **       None
