@@ -59,6 +59,8 @@ typedef enum
     UT_CFE_TIME_FS2CFESECONDS_INDEX,
     UT_CFE_TIME_REGISTERSYNCHCALLBACK_INDEX,
     UT_CFE_TIME_UNREGISTERSYNCHCALLBACK_INDEX,
+    UT_CFE_TIME_GETMETSUBSECS_INDEX,
+    UT_CFE_TIME_GETCLOCKINFO_INDEX,
     UT_CFE_TIME_MAX_INDEX
 } Ut_CFE_TIME_INDEX_t;
 
@@ -77,6 +79,8 @@ typedef struct
     uint32 (*CFE_TIME_FS2CFESeconds)(uint32 SecondsFS);
     int32  (*CFE_TIME_RegisterSynchCallback)(CFE_TIME_SynchCallbackPtr_t CallbackFuncPtr);
     int32  (*CFE_TIME_UnregisterSynchCallback)(CFE_TIME_SynchCallbackPtr_t CallbackFuncPtr);
+    uint32 (*CFE_TIME_GetMETsubsecs)(void);
+    uint16 (*CFE_TIME_GetClockInfo)(void);
 } Ut_CFE_TIME_HookTable_t;
 
 typedef struct
