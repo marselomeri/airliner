@@ -4,8 +4,6 @@ add_airliner_app_def(nav
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_app.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_take_off.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_take_off.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_msg.h
@@ -35,8 +33,6 @@ add_airliner_app_unit_test(nav-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/nav_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_app.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_take_off.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_take_off.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_config_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_events.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/nav_msg.h
