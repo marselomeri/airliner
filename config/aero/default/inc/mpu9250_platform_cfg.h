@@ -142,6 +142,8 @@ extern "C" {
 #define MPU9250_ONE_G                       (9.80665f)
 /** \brief Radians per degree. */
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
+/** \brief Room temperature offset */
+#define MPU9250_ROOM_TEMP_OFFSET            (0.0f)
 /** \brief Temperature sensitivity */
 #define MPU9250_TEMP_SENS                   (361.0f)
 

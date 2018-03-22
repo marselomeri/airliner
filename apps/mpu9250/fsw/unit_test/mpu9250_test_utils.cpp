@@ -45,6 +45,7 @@
 #include "ut_cfe_sb_stubs.h"
 #include "ut_cfe_es_stubs.h"
 #include "ut_cfe_evs_stubs.h"
+#include "mpu9250_custom_stubs.h"
 
 #include <time.h>
 
@@ -52,8 +53,37 @@
  * Config table for testing
  */
 MPU9250_ConfigTbl_t ConfigTbl = {
-        /* TODO:  Define table */
-		0
+        /* User calibration params */
+        /* AccXScale */
+        1.0f,
+        /* AccYScale */
+        1.0f,
+        /* AccZScale */
+        1.0f,
+        /* AccXOffset */
+        0.0f,
+        /* AccYOffset */
+        0.0f,
+        /* AccZOffset */
+        0.0f,
+        /* GyroXScale */
+        1.0f,
+        /* GyroYScale */
+        1.0f,
+        /* GyroZScale */
+        1.0f,
+        /* GyroXOffset */
+        0.0f,
+        /* GyroYOffset */
+        0.0f,
+        /* GyroZOffset */
+        0.0f
+        /* MagXScale */
+        /* MagYScale */
+        /* MagZScale */
+        /* MagXOffset */
+        /* MagYOffset */
+        /* MagZOffset */
 };
 
 /*
@@ -72,6 +102,7 @@ void MPU9250_Test_Setup(void)
     Ut_CFE_ES_Reset();
     Ut_OSAPI_Reset();
     Ut_OSFILEAPI_Reset();
+    memset(&MPU9250_Custom_Returns, 0, sizeof(MPU9250_Custom_Returns));
 
     Ut_CFE_TBL_AddTable(MPU9250_CONFIG_TABLE_FILENAME, (void *) &ConfigTbl);
 }

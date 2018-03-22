@@ -222,14 +222,14 @@ void Test_GPS_InitData(void)
 {
     GPS oGPS;
 
-    /* Set a fail result */
+    int32 result = 1;
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
-    oGPS.InitData();
+    result = oGPS.InitApp();
 
     /* Verify results */
-    //UtAssert_True (result == expected, "InitData");
+    UtAssert_True (result == expected, "InitData");
 }
 
 

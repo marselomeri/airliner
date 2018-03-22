@@ -33,6 +33,9 @@
 
 #include "mpu9250_custom_stubs.h"
 
+MPU9250_Custom_Returns_t MPU9250_Custom_Returns;
+
+
 void MPU9250_Custom_InitData(void)
 {
     
@@ -70,13 +73,19 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
 
 boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z)
 {
-    return TRUE;
+    *X = MPU9250_Custom_Returns.MPU9250_Read_Gyro_X_Value;
+    *Y = MPU9250_Custom_Returns.MPU9250_Read_Gyro_Y_Value;
+    *Z = MPU9250_Custom_Returns.MPU9250_Read_Gyro_Z_Value;
+    return MPU9250_Custom_Returns.MPU9250_Read_Gyro_Return;
 }
 
 
 boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z)
 {
-    return TRUE;
+    *X = MPU9250_Custom_Returns.MPU9250_Read_Accel_X_Value;
+    *Y = MPU9250_Custom_Returns.MPU9250_Read_Accel_Y_Value;
+    *Z = MPU9250_Custom_Returns.MPU9250_Read_Accel_Z_Value;
+    return MPU9250_Custom_Returns.MPU9250_Read_Accel_Return;
 }
 
 
@@ -88,7 +97,8 @@ boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 
 boolean MPU9250_Read_Temp(uint16 *Temp)
 {
-    return TRUE;
+    *Temp = MPU9250_Custom_Returns.MPU9250_Read_Temp_Value;
+    return MPU9250_Custom_Returns.MPU9250_Read_Temp_Return;
 }
 
 
@@ -112,7 +122,8 @@ boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 
 boolean MPU9250_Read_WhoAmI(uint8 *Value)
 {
-    return TRUE;
+    *Value = MPU9250_Custom_Returns.MPU9250_WhoAmI_Value;
+    return MPU9250_Custom_Returns.MPU9250_WhoAmI_Return;
 }
 
 
@@ -124,7 +135,7 @@ boolean MPU9250_Read_MagDeviceID(uint8 *Value)
 
 uint64 PX4LIB_GetPX4TimeUs(void)
 {
-    return 0;
+    return MPU9250_Custom_Returns.MPU9250_Get_Time_Return;
 }
 
 

@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "ms5611_platform_cfg.h"
 #include "ms5611_mission_cfg.h"
 #include "ms5611_tbldefs.h"
@@ -59,10 +58,53 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+
+/** \brief Minimum raw temperature measurement for error checking.
+**  
+**  \par Description:
+**       The minimum value of temperature for the MS5611 for temperature
+**       validation.
+**
+**  \par Limits:
+**       Must be defined as a minimum numeric value of the raw MS5611
+**       temperature measurement.
+*/
 #define MS5611_TEMP_MIN                     (-4000)
+
+/** \brief Maximum raw temperature measurement for error checking.
+**  
+**  \par Description:
+**       The maximum value of temperature for the MS5611 for temperature
+**       validation.
+**
+**  \par Limits:
+**       Must be defined as a maximum numeric value of the raw MS5611
+**       temperature measurement.
+*/
 #define MS5611_TEMP_MAX                     (8500)
 
+/** \brief Minimum raw pressure measurement for error checking.
+**  
+**  \par Description:
+**       The minimum value of pressure for the MS5611 for pressure
+**       validation.
+**
+**  \par Limits:
+**       Must be defined as a minimum numeric value of the raw MS5611
+**       pressure measurement.
+*/
 #define MS5611_PRESS_MIN                    (1000)
+
+/** \brief Maximum raw pressure measurement for error checking.
+**  
+**  \par Description:
+**       The maximum value of pressure for the MS5611 for pressure
+**       validation.
+**
+**  \par Limits:
+**       Must be defined as a maximum numeric value of the raw MS5611
+**       pressure measurement.
+*/
 #define MS5611_PRESS_MAX                    (120000)
 
 /************************************************************************
@@ -81,6 +123,15 @@ typedef enum
 
 
 /**
+ * \brief application parameters
+ */
+typedef struct
+{
+    double p1;
+} MS5611_Params_t;
+
+
+/**
  **  \brief MS5611 Application Class
  */
 class MS5611
@@ -96,7 +147,6 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
-
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
@@ -106,6 +156,9 @@ public:
 
     /** \brief Config Table Pointer */
     MS5611_ConfigTbl_t* ConfigTblPtr;
+    
+    /** \brief params from the config table */
+    MS5611_Params_t m_Params;
 
     /** \brief Output Data published at the end of cycle */
     PX4_SensorBaroMsg_t SensorBaro;
@@ -434,6 +487,16 @@ public:
     **
     *************************************************************************/
     static int32  ValidateConfigTbl(void*);
+    
+    /************************************************************************/
+    /** \brief Update parameters from the configuration table.
+     **
+     **  \par Description
+     **       This function updates the current parameters from the 
+     **       currently loaded configuration table.
+     **
+     *************************************************************************/
+    void UpdateParamsFromTable(void);
 };
 
 

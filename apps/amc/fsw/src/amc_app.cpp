@@ -55,6 +55,7 @@ extern "C" {
 #include "px4lib.h"
 #include "prm_lib.h"
 #include "prm_ids.h"
+#include "px4lib.h"
 
 /* TODO:  Delete this when the PWM is no longer simulated on the PX4 side. */
 #define PWM_SIM_DISARMED_MAGIC (900)
@@ -791,6 +792,7 @@ int32 AMC::ControlCallback(
 
     return iStatus;
 }
+
 
 int32 AMC::InitParams()
 {

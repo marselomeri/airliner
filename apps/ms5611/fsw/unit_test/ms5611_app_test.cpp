@@ -284,7 +284,7 @@ void Test_MS5611_InitApp_Fail_InitData(void)
 {
     MS5611 oMS5611;
 
-    int32 result = CFE_SUCCESS;
+    int32 result = 1;
     int32 expected = CFE_SUCCESS;
 
     /* Execute the function being tested */
@@ -458,6 +458,35 @@ void Test_MS5611_AppMain_Nominal_Wakeup(void)
 }
 
 
+/**
+ * Test UpdateParamsFromTable(), Nominal
+ */
+void Test_MS5611_UpdateParamsFromTable_Nominal(void)
+{
+    MS5611 oMS5611;
+    
+    oMS5611.InitApp();
+    oMS5611.UpdateParamsFromTable();
+
+    /* Verify results */
+    UtAssert_True(oMS5611.m_Params.p1 == oMS5611.ConfigTblPtr->p1, "m_Param != ConfigTblPtr");
+}
+
+
+/**
+ * Test MS5611_CleanupCallback(), Nominal
+ */
+void Test_MS5611_CleanupCallback_Nominal(void)
+{
+    MS5611 oMS5611;
+
+    oMS5611.HkTlm.State == MS5611_INITIALIZED;
+
+    MS5611_CleanupCallback();
+
+    UtAssert_True(oMS5611.HkTlm.State == MS5611_UNINITIALIZED, "State != MS5611_UNINITIALIZED");
+}
+
 
 /**************************************************************************
  * Rollup Test Cases
@@ -506,7 +535,10 @@ void MS5611_App_Test_AddTestCases(void)
                "Test_MS5611_AppMain_Nominal_SendHK");
     UtTest_Add(Test_MS5611_AppMain_Nominal_Wakeup, MS5611_Test_Setup, MS5611_Test_TearDown,
                "Test_MS5611_AppMain_Nominal_Wakeup");
-
+    UtTest_Add(Test_MS5611_UpdateParamsFromTable_Nominal, MS5611_Test_Setup, MS5611_Test_TearDown,
+               "Test_MS5611_UpdateParamsFromTable_Nominal");
+    UtTest_Add(Test_MS5611_CleanupCallback_Nominal, MS5611_Test_Setup, MS5611_Test_TearDown,
+               "Test_MS5611_CleanupCallback_Nominal");
 }
 
 

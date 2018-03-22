@@ -332,7 +332,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     /* Dequeue the ready buffer */
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_DQBUF, &Buffer))
     {
-        /* VIDIOC_DQBUF failed */
+            /* VIDIOC_DQBUF failed */
             CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "VC VIDIOC_DQBUF returned %i on %s channel %u", errno,
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
@@ -347,7 +347,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC Packet on %s channel %u is too large",
                 VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
-            returnCode = -1;
+            //returnCode = -1;
             goto queue_next_buffer;
     }
     
@@ -514,7 +514,13 @@ void VC_Stream_Task(void)
                         if(FD_ISSET(VC_AppCustomDevice.Channel[i].DeviceFd, &fds))
                         {
                             /* Call send buffer with the device that is ready */
-                            VC_Send_Buffer(i);
+                            returnCode = VC_Send_Buffer(i);
+                            if(returnCode != 0)
+                            {
+                                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                                    "VC Send_Buffer failed, a device may have been disconnected, disabling device %u", i);
+                                VC_DisableDevice(i);
+                            }
                         }
                     }
                 }

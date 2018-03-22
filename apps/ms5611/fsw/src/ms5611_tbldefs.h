@@ -62,7 +62,8 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    float temp;
+    /** \brief Current pressure at MSL in kPa  */
+    double p1;
 } MS5611_ConfigTbl_t;
 
 
