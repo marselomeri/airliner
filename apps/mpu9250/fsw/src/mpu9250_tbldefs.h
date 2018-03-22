@@ -34,6 +34,10 @@
 #ifndef MPU9250_TBLDEFS_H
 #define MPU9250_TBLDEFS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -41,10 +45,6 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
 #include "mpu9250_platform_cfg.h"
 
@@ -62,23 +62,41 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
+    /*! Acceleration X-axis calibration param scale. */
     float AccXScale;
+    /*! Acceleration Y-axis calibration param scale. */
     float AccYScale;
+    /*! Acceleration Z-axis calibration param scale. */
     float AccZScale;
+    /*! Acceleration X-axis calibration param offset. */
     float AccXOffset;
+    /*! Acceleration Y-axis calibration param offset. */
     float AccYOffset;
+    /*! Acceleration Z-axis calibration param offset. */
     float AccZOffset;
+    /*! Gyro X-axis calibration param scale. */
     float GyroXScale;
+    /*! Gyro Y-axis calibration param scale. */
     float GyroYScale;
+    /*! Gyro Z-axis calibration param scale. */
     float GyroZScale;
+    /*! Gyro X-axis calibration param offset. */
     float GyroXOffset;
+    /*! Gyro Y-axis calibration param offset. */
     float GyroYOffset;
+    /*! Gyro Z-axis calibration param offset. */
     float GyroZOffset;
+    /*! Mag X-axis calibration param scale. */
     //float MagXScale;
+    /*! Mag Y-axis calibration param scale. */
     //float MagYScale;
+    /*! Mag Z-axis calibration param scale. */
     //float MagZScale;
+    /*! Mag X-axis calibration param offset. */
     //float MagXOffset;
+    /*! Mag Y-axis calibration param offset. */
     //float MagYOffset;
+    /*! Mag Z-axis calibration param offset. */
     //float MagZOffset;
 } MPU9250_ConfigTbl_t;
 

@@ -287,7 +287,6 @@ RCIN_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -353,7 +352,6 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void RCIN::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -402,7 +400,6 @@ void RCIN::ProcessCmdPipe()
 /* Process RCIN Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void RCIN::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -441,7 +438,6 @@ void RCIN::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send RCIN Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void RCIN::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -494,6 +490,11 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Read from the Radio Control Receiver                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RCIN::ReadDevice(void)
 {
     boolean returnBool = FALSE;

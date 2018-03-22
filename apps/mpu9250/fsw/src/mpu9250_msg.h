@@ -34,6 +34,10 @@
 #ifndef MPU9250_MSG_H
 #define MPU9250_MSG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -41,10 +45,6 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
 
 
@@ -194,25 +194,45 @@ typedef struct
 */
 typedef struct
 {
+    /*! Acceleration X-axis calibration param scale. */
     float AccXScale;
+    /*! Acceleration Y-axis calibration param scale. */
     float AccYScale;
+    /*! Acceleration Z-axis calibration param scale. */
     float AccZScale;
+    /*! Acceleration X-axis calibration param offset. */
     float AccXOffset;
+    /*! Acceleration Y-axis calibration param offset. */
     float AccYOffset;
+    /*! Acceleration Z-axis calibration param offset. */
     float AccZOffset;
+    /*! Gyro X-axis calibration param scale. */
     float GyroXScale;
+    /*! Gyro Y-axis calibration param scale. */
     float GyroYScale;
+    /*! Gyro Z-axis calibration param scale. */
     float GyroZScale;
+    /*! Gyro X-axis calibration param offset. */
     float GyroXOffset;
+    /*! Gyro Y-axis calibration param offset. */
     float GyroYOffset;
+    /*! Gyro Z-axis calibration param offset. */
     float GyroZOffset;
+    /*! Platform rotation. */
     uint8 Rotation;
+    /*! Mag X-axis calibration param scale. */
     //float MagXScale;
+    /*! Mag Y-axis calibration param scale. */
     //float MagYScale;
+    /*! Mag Z-axis calibration param scale. */
     //float MagZScale;
+    /*! Mag X-axis calibration param offset. */
     //float MagXOffset;
+    /*! Mag Y-axis calibration param offset. */
     //float MagYOffset;
+    /*! Mag Z-axis calibration param offset. */
     //float MagZOffset;
+    /*! Mag Platform Rotation */
     //uint8 MagRotation;
 } MPU9250_CalibrationMsg_t;
 
@@ -222,16 +242,27 @@ typedef struct
 */
 typedef struct
 {
+    /*! Accel unit value */
     float AccUnit;
+    /*! Gyro unit value */
     float GyroUnit;
+    /*! Accel divider value */
     float AccDivider;
+    /*! Gyro divider value */
     float GyroDivider;
+    /*! Room temperature offset value */
     float RoomTempOffset;
+    /*! Temperature sensitivity value */
     float TempSensitivity;
+    /*! Accel scale value*/
     uint16 AccScale;
+    /*! Gyro scale value*/
     uint16 GyroScale;
+    /*! Mag X-axis sensitivity adjustment value */
     //uint8 MagXAdj;
+    /*! Mag Y-axis sensitivity adjustment value */
     //uint8 MagYAdj;
+    /*! Mag Z-axis sensitivity adjustment value */
     //uint8 MagZAdj;
 } MPU9250_ConversionMsg_t;
 
@@ -242,7 +273,9 @@ typedef struct
 typedef struct
 {
     uint8           TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    /*! All calibration info */
     MPU9250_CalibrationMsg_t          Calibration;
+    /*! All conversion info */
     MPU9250_ConversionMsg_t           Conversion;
 } MPU9250_DiagPacket_t;
 

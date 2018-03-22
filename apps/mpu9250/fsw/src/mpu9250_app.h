@@ -47,7 +47,6 @@ extern "C" {
  *************************************************************************/
 #include "cfe.h"
 #include <math.h>
-
 #include "mpu9250_platform_cfg.h"
 #include "mpu9250_mission_cfg.h"
 #include "mpu9250_perfids.h"
