@@ -187,6 +187,6 @@ void Test_EA_PerfmonCustom_Idle(void)
 void EA_Perfmon_Test_AddTestCases(void)
 {
 	UtTest_Add(Test_EA_PerfmonCustom_Nominal, EA_Test_Setup, EA_Test_TearDown, "Test_EA_PerfmonCustom_Nominal");
-	//UtTest_Add(Test_EA_PerfmonCustom_Idle, EA_Test_Setup, EA_Test_TearDown, "Test_EA_PerfmonCustom_Idle");
+	UtTest_Add(Test_EA_PerfmonCustom_Idle, EA_Test_Setup, EA_Test_TearDown, "Test_EA_PerfmonCustom_Idle");
 }
 
