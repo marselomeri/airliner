@@ -51,7 +51,7 @@ extern "C" {
 typedef enum {
 
 /** \brief <tt> Value of zero is reserved, and should not be used. </tt> */
-	QAE_RESERVED_EID = 0,  /* Do not use this event ID */
+    QAE_RESERVED_EID = 0,  /* Do not use this event ID */
 
 /** \brief <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
@@ -72,7 +72,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #QAE_MISSION_REV.
 */
-	QAE_INIT_INF_EID,
+    QAE_INIT_INF_EID,
 
 /** \brief <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
@@ -95,7 +95,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #QAE_MISSION_REV.
 */
-	QAE_CMD_NOOP_EID,
+    QAE_CMD_NOOP_EID,
 
     /** \brief <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
     **  \event <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
@@ -112,7 +112,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	QAE_SUBSCRIBE_ERR_EID,
+    QAE_SUBSCRIBE_ERR_EID,
 
 /** \brief <tt> 'Failed to create \%s pipe (0x\%08X)' </tt>
 **  \event <tt> 'Failed to create \%s pipe (0x\%08X' </tt>
@@ -128,7 +128,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	QAE_PIPE_INIT_ERR_EID,
+    QAE_PIPE_INIT_ERR_EID,
 
 /** \brief <tt> 'Failed to manage Config table (0x\%08X)' </tt>
 **  \event <tt> 'Failed to manage Config table (0x\%08X)' </tt>
@@ -141,7 +141,7 @@ typedef enum {
 **  #CFE_TBL_Manage function.
 **
 */
-	QAE_CFGTBL_MANAGE_ERR_EID,
+    QAE_CFGTBL_MANAGE_ERR_EID,
 
 /** \brief <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
 **  \event <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
@@ -154,7 +154,7 @@ typedef enum {
 **  #CFE_TBL_GetAddress function.
 **
 */
-	QAE_CFGTBL_GETADDR_ERR_EID,
+    QAE_CFGTBL_GETADDR_ERR_EID,
 
 /** \brief <tt> '\%s pipe read error (0x\%08X).' </tt>
 **  \event <tt> '\%s pipe read error (0x\%08X).' </tt>
@@ -170,7 +170,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	QAE_RCVMSG_ERR_EID,
+    QAE_RCVMSG_ERR_EID,
 
 /** \brief <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
 **  \event <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
@@ -185,7 +185,7 @@ typedef enum {
 **  The \c %s field contains the name of the pipe.
 **  The 16 bit hexadecimal number is the actual message ID received.
 */
-	QAE_MSGID_ERR_EID,
+    QAE_MSGID_ERR_EID,
 
 /** \brief <tt> 'Recvd invalid command code (\%u)' </tt>
 **  \event <tt> 'Recvd invalid command code (\%u)' </tt>
@@ -199,7 +199,7 @@ typedef enum {
 **
 **  The %u field contains the actual command code received.
 */
-	QAE_CC_ERR_EID,
+    QAE_CC_ERR_EID,
 
 /** \brief <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
 **  \event <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
@@ -216,7 +216,7 @@ typedef enum {
 **  The third \c %d field contains the actual length.
 **  The fourth \c %d field contains the expected length.
 */
-	QAE_MSGLEN_ERR_EID,
+    QAE_MSGLEN_ERR_EID,
 
 /** \brief <tt> 'Failed to register config table (0x%08X)' </tt>
 **  \event <tt> 'Failed to register config table (0x%08X)' </tt>
@@ -232,7 +232,7 @@ typedef enum {
 **  #CFE_TBL_Register function.
 **
 */
-	QAE_CFGTBL_REG_ERR_EID,
+    QAE_CFGTBL_REG_ERR_EID,
 
 /** \brief <tt> 'Failed to load Config Table (0x%08X)' </tt>
 **  \event <tt> 'Failed to load Config Table (0x%08X)' </tt>
@@ -248,7 +248,7 @@ typedef enum {
 **  #CFE_TBL_Load function.
 **
 */
-	QAE_CFGTBL_LOAD_ERR_EID,
+    QAE_CFGTBL_LOAD_ERR_EID,
 
 /** \brief <tt> 'Degenerate input data accel vector length %f' </tt>
 **  \event <tt> 'Degenerate input data accel vector length %f' </tt>
@@ -262,7 +262,7 @@ typedef enum {
 **
 **
 */
-	QAE_DEGENERATE_ACC_ERR_EID,
+    QAE_DEGENERATE_ACC_ERR_EID,
 
 /** \brief <tt> 'Degenerate input data mag vector length %f' </tt>
 **  \event <tt> 'Degenerate input data mag vector length %f' </tt>
@@ -276,7 +276,7 @@ typedef enum {
 **
 **
 */
-	QAE_DEGENERATE_MAG_ERR_EID,
+    QAE_DEGENERATE_MAG_ERR_EID,
 
 /** \brief <tt> 'Update attitude estimate failed, reset to last state' </tt>
 **  \event <tt> 'Update attitude estimate failed, reset to last state' </tt>
@@ -290,7 +290,7 @@ typedef enum {
 **
 **
 */
-	QAE_UPDATE_EST_ERR_EID,
+    QAE_UPDATE_EST_ERR_EID,
 
 /** \brief <tt> 'Config params table validation error' </tt>
 **  \event <tt> 'Config params table validation error' </tt>
@@ -303,10 +303,11 @@ typedef enum {
 **  fails.
 **
 */
-	QAE_CFGTBL_VALIDATION_ERR_EID,
+    QAE_CFGTBL_VALIDATION_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-	QAE_EVT_CNT
+    QAE_EVT_CNT
+
 } QAE_EventIds_t;
 
 

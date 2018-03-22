@@ -290,7 +290,8 @@ typedef enum {
     RCIN_READ_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-	RCIN_EVT_CNT
+    RCIN_EVT_CNT
+
 } RCIN_EventIds_t;
 
 

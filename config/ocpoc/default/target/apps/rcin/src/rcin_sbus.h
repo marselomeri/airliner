@@ -34,13 +34,16 @@
 #ifndef RCIN_SBUS_H
 #define RCIN_SBUS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include "rcin_custom.h"
 #include "px4_msgs.h"
 #include <termios.h>
-//#include <asm-generic/termbits.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -49,9 +52,6 @@
 #include <errno.h>
 #include <time.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -78,33 +78,12 @@ extern "C" {
 */
 #define RCIN_SERIAL_INPUT_SPEED         (100000)
 
-/** \brief Output speed.
-**
-**  \par Description:
-**       The serial ouput speed.
-*/
-//#define RCIN_SERIAL_OUTPUT_SPEED        (100000)
-
 /** \brief Size of the raw RCIN message block.
 **
 **  \par Description:
 **       The size of an SBUS packet.
 */
 #define RCIN_SERIAL_READ_SIZE           (25)
-
-/** \brief Serial c_cc VMIN setting.
-**
-**  \par Description:
-**       Minimum number of characters for noncanonical read (MIN).
-*/
-//#define RCIN_SERIAL_VMIN_SETTING        RCIN_SERIAL_READ_SIZE
-
-/** \brief Serial c_cc VTIME setting.
-**
-**  \par Description:
-**       Timeout in deciseconds for noncanonical read (TIME).
-*/
-//#define RCIN_SERIAL_VTIME_SETTING       (0)
 
 /** \brief SBUS channels
 **
@@ -114,14 +93,32 @@ extern "C" {
 #define RCIN_SBUS_CHANNEL_COUNT         (8)
 
 /* define range mapping here, -+100% -> 1000..2000 */
+/** \brief SBUS range minimum. */
 #define RCIN_SBUS_RANGE_MIN             (200.0f)
-#define RCIN_SBUS_RANGE_MAX             (1800.0f)
-#define RCIN_SBUS_TARGET_MIN            (1000.0f)
-#define RCIN_SBUS_TARGET_MAX            (2000.0f)
-/* pre-calculate the floating point stuff as far as possible at compile time */
-#define RCIN_SBUS_SCALE_FACTOR ((RCIN_SBUS_TARGET_MAX - RCIN_SBUS_TARGET_MIN) / (RCIN_SBUS_RANGE_MAX - RCIN_SBUS_RANGE_MIN))
-#define RCIN_SBUS_SCALE_OFFSET (int)(RCIN_SBUS_TARGET_MIN - (RCIN_SBUS_SCALE_FACTOR * RCIN_SBUS_RANGE_MIN + 0.5f))
 
+/** \brief SBUS range maximum. */
+#define RCIN_SBUS_RANGE_MAX             (1800.0f)
+
+/** \brief Target range minimum. */
+#define RCIN_SBUS_TARGET_MIN            (1000.0f)
+
+/** \brief Target range maximum. */
+#define RCIN_SBUS_TARGET_MAX            (2000.0f)
+
+/* pre-calculate the floating point stuff as far as possible at compile time */
+/** \brief SBUS scale factor
+**
+**  \par Description:
+**       The SBUS scale factor for value from SBUS conversion.
+*/
+#define RCIN_SBUS_SCALE_FACTOR ((RCIN_SBUS_TARGET_MAX - RCIN_SBUS_TARGET_MIN) / (RCIN_SBUS_RANGE_MAX - RCIN_SBUS_RANGE_MIN))
+
+/** \brief SBUS scale offset
+**
+**  \par Description:
+**       The SBUS scale offset for value from SBUS conversion.
+*/
+#define RCIN_SBUS_SCALE_OFFSET (int)(RCIN_SBUS_TARGET_MIN - (RCIN_SBUS_SCALE_FACTOR * RCIN_SBUS_RANGE_MIN + 0.5f))
 
 /** \brief Max device path.
 **
@@ -143,8 +140,8 @@ extern "C" {
 **       None.
 */
 #define RCIN_MAX_RETRY_SLEEP_USEC       (10)
-/* Timeout settings */
 
+/* Timeout settings */
 /** \brief Wait time for data in seconds.
 **
 **  \par Limits:
@@ -176,8 +173,7 @@ extern "C" {
 */
 #define RCIN_STREAMING_TASK_NAME       "RCIN_STREAM"
 
-/** \brief Maximum amount of errors before going to failsafe.
-*/
+/** \brief Maximum amount of errors before going to failsafe. */
 #define RCIN_MAX_ERROR_COUNT            (50)
 
 /************************************************************************
