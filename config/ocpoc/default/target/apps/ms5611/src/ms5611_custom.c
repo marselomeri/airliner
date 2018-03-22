@@ -41,7 +41,6 @@
 #include "ms5611_spi.h"
 #include "ms5611_events.h"
 #include "ms5611_perfids.h"
-
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
