@@ -52,6 +52,7 @@ typedef enum
     UT_CFE_EVS_SENDTIMEDEVENT_INDEX,
     UT_CFE_EVS_SENDEVENTWITHAPPID_INDEX,
     UT_CFE_EVS_CLEANUPAPP_INDEX,
+    UT_CFE_EVS_RESETALLFILTERS_INDEX,
     UT_CFE_EVS_MAX_INDEX
 } Ut_CFE_EVS_INDEX_t;
 
@@ -62,6 +63,7 @@ typedef struct
     int32 (*CFE_EVS_SendTimedEvent)(CFE_TIME_SysTime_t Time, uint16 EventID, uint16 EventType, const char *Spec, ... );
     int32 (*CFE_EVS_SendEventWithAppID)(uint16 EventID, uint16 EventType, uint32 AppID, const char *Spec, ... );
     int32 (*CFE_EVS_CleanUpApp)(uint32 AppId);
+    int32 (*CFE_EVS_ResetAllFilters)(void);
 } Ut_CFE_EVS_HookTable_t;
 
 typedef struct
