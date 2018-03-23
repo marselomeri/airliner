@@ -31,10 +31,6 @@
 *
 *****************************************************************************/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 int SOCK_RET_CODE = 0;
 int HTONL_RET_CODE = 0;
 int HTONS_RET_CODE = 0;

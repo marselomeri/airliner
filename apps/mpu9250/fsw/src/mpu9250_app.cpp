@@ -844,6 +844,7 @@ void MPU9250::ReadDevice(void)
     SensorAccel.X = _accel_filter_x.apply(calX_f);
     SensorAccel.Y = _accel_filter_y.apply(calY_f);
     SensorAccel.Z = _accel_filter_z.apply(calZ_f);
+
     /* Accel Integrate */
     aval[0] = SensorAccel.X;
     aval[1] = SensorAccel.Y;
