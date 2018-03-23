@@ -30,7 +30,6 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
 #ifndef QAE_EVENTS_H
 #define QAE_EVENTS_H
 

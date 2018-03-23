@@ -280,10 +280,10 @@ QAE_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(QAE_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 QAE_MAJOR_VERSION,
-								 QAE_MINOR_VERSION,
-								 QAE_REVISION,
-								 QAE_MISSION_REV);
+                                 QAE_MAJOR_VERSION,
+                                 QAE_MINOR_VERSION,
+                                 QAE_REVISION,
+                                 QAE_MISSION_REV);
     }
     else
     {
@@ -302,7 +302,6 @@ QAE_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -370,7 +369,7 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(QAE_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+              "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -595,6 +594,7 @@ void QAE::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* QAE Update Magnetic Declination                                 */
@@ -618,6 +618,7 @@ void QAE::UpdateMagDeclination(const float new_declination)
     }
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* QAE Estimate Attitude                                           */
@@ -632,7 +633,6 @@ void QAE::EstimateAttitude(void)
     uint64 delta_time_gps = 0;
     uint64 time_now = 0;
     float delta_time = 0;
-    
     boolean update_success = FALSE;
 
     /* If there is a new sensor combined message */
@@ -895,7 +895,6 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     /* Angular rate of correction */
     math::Vector3F corr(0.0f, 0.0f, 0.0f);
     math::Vector3F mag_earth(0.0f, 0.0f, 0.0f);
-
     float spinRate = 0.0f;
     float magErr   = 0.0f;
     float gainMult = 1.0f;
@@ -988,6 +987,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
         return FALSE;
     }
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

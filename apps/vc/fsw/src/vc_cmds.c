@@ -31,7 +31,6 @@
 *
 *****************************************************************************/
 
-
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -39,7 +38,6 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-
 #include "vc_cmds.h"
 #include "vc_app.h"
 #include <string.h>
@@ -68,6 +66,11 @@
 ** Local Function Definitions
 *************************************************************************/
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* NO-OP Command                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VC_NoopCmd(CFE_SB_Msg_t* MsgPtr)
 {
     uint16 ExpectedLength = sizeof(VC_NoArgCmd_t);
@@ -90,6 +93,11 @@ void VC_NoopCmd(CFE_SB_Msg_t* MsgPtr)
 } /* End of VC_NoopCmd() */
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Reset Command                                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VC_ResetCmd(CFE_SB_Msg_t* MsgPtr)
 {
     uint16 ExpectedLength = sizeof(VC_NoArgCmd_t); 
@@ -109,6 +117,11 @@ void VC_ResetCmd(CFE_SB_Msg_t* MsgPtr)
 } /* End of VC_ResetCmd() */
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Report Housekeeping                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VC_ReportHousekeeping(CFE_SB_Msg_t* MsgPtr)
 {
     uint16 ExpectedLength = sizeof(VC_NoArgCmd_t); 
@@ -139,7 +152,6 @@ void VC_ReportHousekeeping(CFE_SB_Msg_t* MsgPtr)
 /* Verify Command Length                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 boolean VC_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen)
 {

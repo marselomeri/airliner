@@ -137,15 +137,15 @@ int32 GPS::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		GPS_SCH_PIPE_DEPTH,
-			GPS_SCH_PIPE_NAME);
+            GPS_SCH_PIPE_DEPTH,
+            GPS_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(GPS_READ_SENSOR_MID, SchPipeId, CFE_SB_Default_Qos, GPS_READ_SENSOR_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(GPS_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to GPS_READ_SENSOR_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to GPS_READ_SENSOR_MID. (0x%08lX)",
                     iStatus);
             goto GPS_InitPipe_Exit_Tag;
         }
@@ -154,31 +154,31 @@ int32 GPS::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(GPS_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to GPS_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                     "CMD Pipe failed to subscribe to GPS_SEND_HK_MID. (0x%08X)",
+                     (unsigned int)iStatus);
             goto GPS_InitPipe_Exit_Tag;
         }
         iStatus = CFE_SB_SubscribeEx(PX4_GPS_INJECT_DATA_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(GPS_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_GPS_INJECT_DATA_MID. (0x%08lX)",
-					 iStatus);
+                     "CMD Pipe failed to subscribe to PX4_GPS_INJECT_DATA_MID. (0x%08lX)",
+                     iStatus);
             goto GPS_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(GPS_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create SCH pipe (0x%08lX)",
+             iStatus);
         goto GPS_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		GPS_CMD_PIPE_DEPTH,
-			GPS_CMD_PIPE_NAME);
+            GPS_CMD_PIPE_DEPTH,
+            GPS_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -187,16 +187,16 @@ int32 GPS::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(GPS_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to GPS_CMD_MID. (0x%08lX)",
-				 iStatus);
+                 "CMD Pipe failed to subscribe to GPS_CMD_MID. (0x%08lX)",
+                 iStatus);
             goto GPS_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(GPS_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create CMD pipe (0x%08lX)",
+             iStatus);
         goto GPS_InitPipe_Exit_Tag;
     }
 
@@ -289,10 +289,10 @@ GPS_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(GPS_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 GPS_MAJOR_VERSION,
-								 GPS_MINOR_VERSION,
-								 GPS_REVISION,
-								 GPS_MISSION_REV);
+                                 GPS_MAJOR_VERSION,
+                                 GPS_MINOR_VERSION,
+                                 GPS_REVISION,
+                                 GPS_MISSION_REV);
     }
     else
     {
@@ -311,7 +311,6 @@ GPS_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 GPS::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -377,7 +376,7 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
                 break;
 
             case GPS_SEND_HK_MID:
-            	ProcessCmdPipe();
+                ProcessCmdPipe();
                 // TODO:  Need a mutex for this in the current event driven publish.
                 memcpy(&HkTlm.VehicleGpsMsg, &VehicleGps, sizeof(VehicleGps));
                 ReportHousekeeping();
@@ -410,7 +409,7 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(GPS_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+              "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -422,7 +421,6 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void GPS::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -471,7 +469,6 @@ void GPS::ProcessCmdPipe()
 /* Process GPS Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void GPS::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -484,11 +481,11 @@ void GPS::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case GPS_NOOP_CC:
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(GPS_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					GPS_MAJOR_VERSION,
-					GPS_MINOR_VERSION,
-					GPS_REVISION,
-					GPS_MISSION_REV);
+                    "Recvd NOOP. Version %d.%d.%d.%d",
+                    GPS_MAJOR_VERSION,
+                    GPS_MINOR_VERSION,
+                    GPS_REVISION,
+                    GPS_MISSION_REV);
                 break;
 
             case GPS_RESET_CC:
@@ -510,7 +507,6 @@ void GPS::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send GPS Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void GPS::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);

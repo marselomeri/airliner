@@ -30,7 +30,6 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
 #ifndef QAE_MSG_H
 #define QAE_MSG_H
 

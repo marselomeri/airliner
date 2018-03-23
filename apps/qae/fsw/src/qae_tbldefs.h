@@ -30,7 +30,6 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
 #ifndef QAE_TBLDEFS_H
 #define QAE_TBLDEFS_H
 

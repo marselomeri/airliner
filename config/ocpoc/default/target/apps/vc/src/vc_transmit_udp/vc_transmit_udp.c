@@ -91,7 +91,7 @@ int32 VC_CustomTransmit_InitData()
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
     
-    return (iStatus);
+    return iStatus;
 }
 
 
@@ -120,7 +120,8 @@ int32 VC_EnableChannel(uint8 ChannelID)
         goto end_of_function;
     }
 
-    if((VC_AppCustomData.Channel[ChannelID].SocketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+    VC_AppCustomData.Channel[ChannelID].SocketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP;
+    if(VC_AppCustomData.Channel[ChannelID].SocketFd < 0)
     {
         VC_AppCustomData.Channel[ChannelID].Mode = VC_CHANNEL_DISABLED;
         CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,

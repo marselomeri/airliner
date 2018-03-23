@@ -89,7 +89,7 @@ int32 VC_Devices_InitData(void)
     VC_AppCustomDevice.Channel[0].Socket     = 0;
     VC_AppCustomDevice.Channel[0].Port       = VC_GST_GAZEBO_PORT;
 
-    return (iStatus);
+    return iStatus;
 }
 
 

@@ -106,15 +106,15 @@ int32 RGBLED::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		RGBLED_SCH_PIPE_DEPTH,
-			RGBLED_SCH_PIPE_NAME);
+            RGBLED_SCH_PIPE_DEPTH,
+            RGBLED_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(RGBLED_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, RGBLED_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to RGBLED_WAKEUP_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to RGBLED_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
@@ -123,31 +123,31 @@ int32 RGBLED::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to RGBLED_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                     "CMD Pipe failed to subscribe to RGBLED_SEND_HK_MID. (0x%08X)",
+                     (unsigned int)iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
         iStatus = CFE_SB_SubscribeEx(PX4_LED_CONTROL_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_LED_CONTROL_MID. (0x%08lX)",
-					 iStatus);
+                     "CMD Pipe failed to subscribe to PX4_LED_CONTROL_MID. (0x%08lX)",
+                     iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(RGBLED_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create SCH pipe (0x%08lX)",
+             iStatus);
         goto RGBLED_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		RGBLED_CMD_PIPE_DEPTH,
-			RGBLED_CMD_PIPE_NAME);
+            RGBLED_CMD_PIPE_DEPTH,
+            RGBLED_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -156,16 +156,16 @@ int32 RGBLED::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to RGBLED_CMD_MID. (0x%08lX)",
-				 iStatus);
+                 "CMD Pipe failed to subscribe to RGBLED_CMD_MID. (0x%08lX)",
+                 iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(RGBLED_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create CMD pipe (0x%08lX)",
+             iStatus);
         goto RGBLED_InitPipe_Exit_Tag;
     }
 
@@ -190,7 +190,7 @@ void RGBLED::InitData()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* RGBLED initialization                                              */
+/* RGBLED initialization                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::InitApp()
@@ -242,10 +242,10 @@ RGBLED_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(RGBLED_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 RGBLED_MAJOR_VERSION,
-								 RGBLED_MINOR_VERSION,
-								 RGBLED_REVISION,
-								 RGBLED_MISSION_REV);
+                                 RGBLED_MAJOR_VERSION,
+                                 RGBLED_MINOR_VERSION,
+                                 RGBLED_REVISION,
+                                 RGBLED_MISSION_REV);
     }
     else
     {
@@ -496,14 +496,6 @@ void RGBLED::ReportHousekeeping()
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Publish Output Data                                             */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

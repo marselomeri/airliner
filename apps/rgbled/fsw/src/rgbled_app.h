@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "rgbled_platform_cfg.h"
 #include "rgbled_mission_cfg.h"
 #include "rgbled_perfids.h"
@@ -110,7 +109,9 @@ typedef enum
     RGBLED_MODE_BREATHE      = 6
 } RGBLED_Modes_t;
 
-
+/**
+ * \brief LED Message current value table.
+ */
 typedef struct
 {
     PX4_LedControlMsg_t RGBLEDControl;
@@ -133,7 +134,6 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
-
     /** \brief Task Run Status */
     uint32 uiRunStatus;
     

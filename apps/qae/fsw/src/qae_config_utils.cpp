@@ -61,10 +61,10 @@ int32 QAE::InitConfigTbl()
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		QAE_CONFIG_TABLENAME,
-		(sizeof(QAE_ConfigTbl_t)),
-		CFE_TBL_OPT_DEFAULT,
-		QAE::ValidateConfigTbl);
+        QAE_CONFIG_TABLENAME,
+        (sizeof(QAE_ConfigTbl_t)),
+        CFE_TBL_OPT_DEFAULT,
+        QAE::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -78,7 +78,7 @@ int32 QAE::InitConfigTbl()
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   QAE_CONFIG_TABLE_FILENAME);
+                           QAE_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -103,8 +103,7 @@ QAE_InitConfigTbl_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 QAE::ValidateConfigTbl(void* ConfigTblPtr)
 {
-    /* TODO:  Add validation code here. */
-    int32  iStatus=0;
+    int32  iStatus = 0;
     boolean valid_bool = TRUE;
     QAE_ConfigTbl_t* QAE_ConfigTblPtr = (QAE_ConfigTbl_t*)(ConfigTblPtr);
     
@@ -149,11 +148,11 @@ int32 QAE::ValidateConfigTbl(void* ConfigTblPtr)
     }
 
 QAE_ValidateConfigTbl_Exit_Tag:
-    /* For now just raise an error event */
     if(FALSE == valid_bool)
     {
         CFE_EVS_SendEvent(QAE_CFGTBL_VALIDATION_ERR_EID, CFE_EVS_ERROR,
             "Config params table validation error");
+        iStatus = -1;
     }
     return iStatus;
 }
@@ -198,7 +197,7 @@ int32 QAE::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ConfigTblPtr = 0;
+        ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(QAE_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);
