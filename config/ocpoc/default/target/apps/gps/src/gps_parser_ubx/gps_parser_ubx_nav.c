@@ -454,7 +454,7 @@ void GPS_Nav_ParseChar_STATUS(uint8 byte, GPS_DeviceMessage_t* message)
             {
                 payload->iTOW += byte << 24;
                 break;
-            {
+            }
             case 4:
             {
                 payload->gpsFix = byte;

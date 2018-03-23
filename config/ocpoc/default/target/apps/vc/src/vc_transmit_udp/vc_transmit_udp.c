@@ -120,7 +120,7 @@ int32 VC_EnableChannel(uint8 ChannelID)
         goto end_of_function;
     }
 
-    VC_AppCustomData.Channel[ChannelID].SocketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP;
+    VC_AppCustomData.Channel[ChannelID].SocketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if(VC_AppCustomData.Channel[ChannelID].SocketFd < 0)
     {
         VC_AppCustomData.Channel[ChannelID].Mode = VC_CHANNEL_DISABLED;
