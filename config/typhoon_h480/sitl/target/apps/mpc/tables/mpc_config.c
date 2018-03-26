@@ -202,7 +202,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	1.0f,
 
 	/**
-	 * MPC_Z_FF
+	 * MPC_Z_FF //TODO: test
 	 * Vertical velocity feed forward
 	 *
 	 * Feed forward weight for altitude control in stabilized modes (ALTCTRL, POSCTRL). 0 will give slow responce and no overshot, 1 - fast responce and big overshot.
@@ -324,7 +324,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	5.0f,
 
 	/**
-	 * MPC_XY_FF
+	 * MPC_XY_FF //TODO: test
 	 * Horizontal velocity feed forward
 	 *
 	 * Feed forward weight for position control in position control mode (POSCTRL). 0 will give slow responce and no overshot, 1 - fast responce and big overshot.
@@ -337,7 +337,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	0.5f,
 
 	/**
-	 * MPC_TILTMAX_AIR
+	 * MPC_TILTMAX_AIR //TODO: test
 	 * Maximum tilt angle in air
 	 *
 	 * Limits maximum tilt in AUTO and POSCTRL modes during flight.
@@ -459,7 +459,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	5.0f,
 
 	/**
-	 * MPC_ACC_HOR_MAX
+	 * MPC_ACC_HOR_MAX //TODO: test
 	 * Maximum horizonal acceleration in velocity controlled modes
 	 *
 	 * @unit m/s/s
@@ -472,7 +472,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	10.0f,
 
 	/**
-	 * MPC_DEC_HOR_MAX
+	 * MPC_DEC_HOR_MAX TODO: lower
 	 * Maximum horizonal braking deceleration in velocity controlled modes
 	 *
 	 * @unit m/s/s
@@ -485,7 +485,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	10.0f,
 
 	/**
-	 * MPC_ACC_UP_MAX
+	 * MPC_ACC_UP_MAX //TODO: test
 	 * Maximum vertical acceleration in velocity controlled modes upward
 	 *
 	 * @unit m/s/s
@@ -498,7 +498,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	5.0f,
 
 	/**
-	 * MPC_ACC_DOWN_MAX
+	 * MPC_ACC_DOWN_MAX //TODO: test
 	 * Maximum vertical acceleration in velocity controlled modes down
 	 *
 	 * @unit m/s/s
@@ -523,7 +523,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	0,
 
 	/**
-	 * MPC_XY_MAN_EXPO
+	 * MPC_XY_MAN_EXPO //TODO: test
 	 * Manual control stick exponential curve sensitivity attenuation with small velocity setpoints
 	 *
 	 * The higher the value the less sensitivity the stick has around zero
@@ -540,7 +540,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	0,
 
 	/**
-	 * MPC_Z_MAN_EXPO
+	 * MPC_Z_MAN_EXPO //TODO: test
 	 * Manual control stick vertical exponential curve
 	 *
 	 * The higher the value the less sensitivity the stick has around zero
