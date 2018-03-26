@@ -1,3 +1,40 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
+/************************************************************************
+** Pragmas
+*************************************************************************/
+
 /************************************************************************
 ** Includes
 *************************************************************************/
@@ -101,15 +138,15 @@ int32 HMC5883::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		HMC5883_SCH_PIPE_DEPTH,
-			HMC5883_SCH_PIPE_NAME);
+            HMC5883_SCH_PIPE_DEPTH,
+            HMC5883_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(HMC5883_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, HMC5883_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(HMC5883_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to HMC5883_WAKEUP_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to HMC5883_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto HMC5883_InitPipe_Exit_Tag;
         }
@@ -118,23 +155,23 @@ int32 HMC5883::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(HMC5883_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to HMC5883_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                     "CMD Pipe failed to subscribe to HMC5883_SEND_HK_MID. (0x%08X)",
+                     (unsigned int)iStatus);
             goto HMC5883_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(HMC5883_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create SCH pipe (0x%08lX)",
+             iStatus);
         goto HMC5883_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		HMC5883_CMD_PIPE_DEPTH,
-			HMC5883_CMD_PIPE_NAME);
+            HMC5883_CMD_PIPE_DEPTH,
+            HMC5883_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -143,23 +180,23 @@ int32 HMC5883::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(HMC5883_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to HMC5883_CMD_MID. (0x%08lX)",
-				 iStatus);
+                 "CMD Pipe failed to subscribe to HMC5883_CMD_MID. (0x%08lX)",
+                 iStatus);
             goto HMC5883_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(HMC5883_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create CMD pipe (0x%08lX)",
+             iStatus);
         goto HMC5883_InitPipe_Exit_Tag;
     }
 
 HMC5883_InitPipe_Exit_Tag:
     return iStatus;
 }
-    
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -330,7 +367,6 @@ HMC5883_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 HMC5883::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -397,7 +433,6 @@ int32 HMC5883::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void HMC5883::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -446,7 +481,6 @@ void HMC5883::ProcessCmdPipe()
 /* Process HMC5883 Commands                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void HMC5883::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -493,7 +527,7 @@ void HMC5883::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 void HMC5883::ReportHousekeeping()
 {
-	memcpy(&HkTlm.SensorMagMsg, &SensorMagMsg, sizeof(SensorMagMsg));
+    memcpy(&HkTlm.SensorMagMsg, &SensorMagMsg, sizeof(SensorMagMsg));
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
@@ -620,6 +654,11 @@ void HMC5883::AppMain()
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Read from the device                                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void HMC5883::ReadDevice(void)
 {
     boolean returnBool = FALSE;
@@ -697,7 +736,11 @@ end_of_function:
 ;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Run Self-Calibration Routine                                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean HMC5883::SelfCalibrate(HMC5883_CalibrationMsg_t *Calibration)
 {
     uint8 range = 0;
@@ -829,6 +872,11 @@ end_of_function:
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Sanity Check Scale Values                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean HMC5883::CheckScale(float X, float Y, float Z)
 {
     boolean returnBool = FALSE;
@@ -848,7 +896,11 @@ boolean HMC5883::CheckScale(float X, float Y, float Z)
     return returnBool;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Sanity Check Offset Values                                      */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean CheckOffset(float X, float Y, float Z)
 {
     boolean returnBool = FALSE;
@@ -868,7 +920,11 @@ boolean CheckOffset(float X, float Y, float Z)
     return returnBool;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Update Params from the Config Table                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void HMC5883::UpdateParamsFromTable(void)
 {
     if(0 != ConfigTblPtr)
@@ -890,7 +946,11 @@ void HMC5883::UpdateParamsFromTable(void)
     }
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Cleanup prior to exit                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void HMC5883_CleanupCallback(void)
 {
     oHMC5883.HkTlm.State = HMC5883_UNINITIALIZED;

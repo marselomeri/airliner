@@ -42,7 +42,6 @@
 #include "hmc5883_events.h"
 #include "hmc5883_perfids.h"
 #include "px4lib.h"
-
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 #include <string.h>
@@ -530,7 +529,6 @@ end_of_function:
 
 void HMC5883_Get_Rotation(uint8 *Rotation)
 {
-    
     /* Null pointer check */
     if(0 == Rotation)
     {

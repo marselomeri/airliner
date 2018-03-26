@@ -51,7 +51,7 @@ extern "C" {
 typedef enum {
 
 /** \brief <tt> Value of zero is reserved, and should not be used. </tt> */
-	RGBLED_RESERVED_EID = 0,  /* Do not use this event ID */
+    RGBLED_RESERVED_EID = 0,  /* Do not use this event ID */
 
 /** \brief <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
@@ -72,7 +72,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #RGBLED_MISSION_REV.
 */
-	RGBLED_INIT_INF_EID,
+    RGBLED_INIT_INF_EID,
 
 /** \brief <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
@@ -95,7 +95,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #RGBLED_MISSION_REV.
 */
-	RGBLED_CMD_NOOP_EID,
+    RGBLED_CMD_NOOP_EID,
 
     /** \brief <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
     **  \event <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
@@ -112,7 +112,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	RGBLED_SUBSCRIBE_ERR_EID,
+    RGBLED_SUBSCRIBE_ERR_EID,
 
 /** \brief <tt> 'Failed to create \%s pipe (0x\%08X)' </tt>
 **  \event <tt> 'Failed to create \%s pipe (0x\%08X' </tt>
@@ -173,7 +173,7 @@ typedef enum {
 **
 **  The %u field contains the actual command code received.
 */
-	RGBLED_CC_ERR_EID,
+    RGBLED_CC_ERR_EID,
 
 /** \brief <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
 **  \event <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
@@ -230,7 +230,7 @@ typedef enum {
     
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-	RGBLED_EVT_CNT
+    RGBLED_EVT_CNT
 } RGBLED_EventIds_t;
 
 

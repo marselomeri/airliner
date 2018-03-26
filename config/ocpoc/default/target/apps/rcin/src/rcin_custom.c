@@ -213,7 +213,6 @@ boolean RCIN_Custom_Init(void)
     RCIN_AppCustomData.TerminalConfig.c_cflag &= ~PARODD;
     RCIN_AppCustomData.TerminalConfig.c_iflag |= INPCK;
     RCIN_AppCustomData.TerminalConfig.c_cflag |= CSTOPB;
-
     RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = 0;
     RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = 0;
 
@@ -509,7 +508,6 @@ void RCIN_Custom_Read(void)
     {
         for(i = 0; i < bytesRead; i++)
         {
-            //OS_printf("read %hhx\n", sbusTemp[i]);
             switch(RCIN_AppCustomData.ParserState)
             {
                 case RCIN_PARSER_STATE_UNKNOWN:
@@ -746,11 +744,7 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     {
         returnBool = FALSE;
     }
-    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
-    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
-    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
-    
-    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+
     Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
     //Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
     //Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;

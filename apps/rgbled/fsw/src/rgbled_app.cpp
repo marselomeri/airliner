@@ -1,10 +1,45 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
+/************************************************************************
+** Pragmas
+*************************************************************************/
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include <string.h>
-
 #include "cfe.h"
-
 #include "rgbled_app.h"
 #include "rgbled_msg.h"
 #include "rgbled_version.h"
@@ -71,15 +106,15 @@ int32 RGBLED::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		RGBLED_SCH_PIPE_DEPTH,
-			RGBLED_SCH_PIPE_NAME);
+            RGBLED_SCH_PIPE_DEPTH,
+            RGBLED_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(RGBLED_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, RGBLED_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to RGBLED_WAKEUP_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to RGBLED_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
@@ -88,31 +123,31 @@ int32 RGBLED::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to RGBLED_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                     "CMD Pipe failed to subscribe to RGBLED_SEND_HK_MID. (0x%08X)",
+                     (unsigned int)iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
         iStatus = CFE_SB_SubscribeEx(PX4_LED_CONTROL_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_LED_CONTROL_MID. (0x%08lX)",
-					 iStatus);
+                     "CMD Pipe failed to subscribe to PX4_LED_CONTROL_MID. (0x%08lX)",
+                     iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(RGBLED_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create SCH pipe (0x%08lX)",
+             iStatus);
         goto RGBLED_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		RGBLED_CMD_PIPE_DEPTH,
-			RGBLED_CMD_PIPE_NAME);
+            RGBLED_CMD_PIPE_DEPTH,
+            RGBLED_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -121,16 +156,16 @@ int32 RGBLED::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(RGBLED_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to RGBLED_CMD_MID. (0x%08lX)",
-				 iStatus);
+                 "CMD Pipe failed to subscribe to RGBLED_CMD_MID. (0x%08lX)",
+                 iStatus);
             goto RGBLED_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(RGBLED_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create CMD pipe (0x%08lX)",
+             iStatus);
         goto RGBLED_InitPipe_Exit_Tag;
     }
 
@@ -155,7 +190,7 @@ void RGBLED::InitData()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* RGBLED initialization                                              */
+/* RGBLED initialization                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RGBLED::InitApp()
@@ -207,10 +242,10 @@ RGBLED_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(RGBLED_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 RGBLED_MAJOR_VERSION,
-								 RGBLED_MINOR_VERSION,
-								 RGBLED_REVISION,
-								 RGBLED_MISSION_REV);
+                                 RGBLED_MAJOR_VERSION,
+                                 RGBLED_MINOR_VERSION,
+                                 RGBLED_REVISION,
+                                 RGBLED_MISSION_REV);
     }
     else
     {
@@ -229,7 +264,6 @@ RGBLED_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -294,7 +328,7 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
                             RGBLED_Custom_SetColor(255, 255, 255);
                             break;
         
-                            default: // COLOR_OFF
+                            default: /* COLOR_OFF */
                             RGBLED_Custom_SetColor(0, 0, 0);
                             HkTlm.State = RGBLED_INITIALIZED;
                             break;
@@ -349,7 +383,6 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void RGBLED::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -395,10 +428,9 @@ void RGBLED::ProcessCmdPipe()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Process RGBLED Commands                                            */
+/* Process RGBLED Commands                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -456,23 +488,14 @@ void RGBLED::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Send RGBLED Housekeeping                                           */
+/* Send RGBLED Housekeeping                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void RGBLED::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
 }
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Publish Output Data                                             */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -509,7 +532,7 @@ boolean RGBLED::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* RGBLED Application C style main entry point.                       */
+/* RGBLED Application C style main entry point.                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 extern "C" void RGBLED_AppMain()
@@ -520,7 +543,7 @@ extern "C" void RGBLED_AppMain()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* RGBLED Application C++ style main entry point.                     */
+/* RGBLED Application C++ style main entry point.                  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED::AppMain()
@@ -568,13 +591,21 @@ void RGBLED::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* RGBLED Self-Test Complete, Update State                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED_SelfTest_Complete(void)
 {
     oRGBLED.HkTlm.State = oRGBLED.previousState;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* RGBLED Cleanup prior to exit                                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RGBLED_CleanupCallback(void)
 {
     if(RGBLED_Custom_Uninit() != TRUE)

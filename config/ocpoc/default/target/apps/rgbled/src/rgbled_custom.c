@@ -41,7 +41,6 @@
 #include "rgbled_driver.h"
 #include "rgbled_events.h"
 #include "rgbled_perfids.h"
-
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 #include <string.h>
@@ -101,6 +100,7 @@ typedef enum {
 ** Global Variables
 *************************************************************************/
 RGBLED_AppCustomData_t RGBLED_AppCustomData;
+
 /************************************************************************
 ** Local Variables
 *************************************************************************/

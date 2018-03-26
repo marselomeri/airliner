@@ -34,6 +34,10 @@
 #ifndef GPS_TBLDEFS_H
 #define GPS_TBLDEFS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -41,10 +45,6 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
 #include "gps_platform_cfg.h"
 
@@ -63,7 +63,7 @@ extern "C" {
 typedef struct
 {
     /* TODO:  Define the configuration table. */
-	uint32  temp;
+    uint32  temp;
 } GPS_ConfigTbl_t;
 
 

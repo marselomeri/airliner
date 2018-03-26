@@ -33,10 +33,6 @@
 
 #include <unistd.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 int FORK_RET_CODE = 0;
 int EXECVP_RET_CODE = 0;
 int KILL_RET_CODE = 0;

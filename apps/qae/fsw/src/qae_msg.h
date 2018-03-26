@@ -30,9 +30,12 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
 #ifndef QAE_MSG_H
 #define QAE_MSG_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /************************************************************************
 ** Pragmas
@@ -41,13 +44,8 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
 #include "px4_msgs.h"
-
 
 /************************************************************************
 ** Local Defines
@@ -143,11 +141,9 @@ typedef struct
 {
     /** \brief cFE SB Tlm Msg Hdr */
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-
     /** \qaetlmmnemonic \QAE_CMDACPTCNT
         \brief Count of accepted commands */
     uint8              usCmdCnt;   
-
     /** \qaetlmmnemonic \QAE_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 

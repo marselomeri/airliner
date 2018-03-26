@@ -1,20 +1,49 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its
+*    contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include <string.h>
 #include <math.h>
-
 #include "cfe.h"
-
 #include "qae_app.hpp"
 #include "qae_msg.h"
 #include "qae_version.h"
-
 #include <geo_lookup/geo_mag_declination.h>
 #include <geo/geo.h>
 #include <math/Limits.hpp>
 #include <px4lib.h>
-
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -97,15 +126,15 @@ int32 QAE::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		QAE_SCH_PIPE_DEPTH,
-			QAE_SCH_PIPE_NAME);
+            QAE_SCH_PIPE_DEPTH,
+            QAE_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(AE_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, QAE_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to QAE_WAKEUP_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to QAE_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto QAE_InitPipe_Exit_Tag;
         }
@@ -114,39 +143,39 @@ int32 QAE::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to QAE_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                     "CMD Pipe failed to subscribe to QAE_SEND_HK_MID. (0x%08X)",
+                     (unsigned int)iStatus);
             goto QAE_InitPipe_Exit_Tag;
         }
         iStatus = CFE_SB_SubscribeEx(PX4_SENSOR_COMBINED_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
-					 iStatus);
+                     "CMD Pipe failed to subscribe to PX4_SENSOR_COMBINED_MID. (0x%08lX)",
+                     iStatus);
             goto QAE_InitPipe_Exit_Tag;
         }
         iStatus = CFE_SB_SubscribeEx(PX4_VEHICLE_GLOBAL_POSITION_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to PX4_VEHICLE_GLOBAL_POSITION_MID. (0x%08lX)",
-					 iStatus);
+                     "CMD Pipe failed to subscribe to PX4_VEHICLE_GLOBAL_POSITION_MID. (0x%08lX)",
+                     iStatus);
             goto QAE_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(QAE_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create SCH pipe (0x%08lX)",
+             iStatus);
         goto QAE_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		QAE_CMD_PIPE_DEPTH,
-			QAE_CMD_PIPE_NAME);
+            QAE_CMD_PIPE_DEPTH,
+            QAE_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -155,16 +184,16 @@ int32 QAE::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(QAE_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to QAE_CMD_MID. (0x%08lX)",
-				 iStatus);
+                 "CMD Pipe failed to subscribe to QAE_CMD_MID. (0x%08lX)",
+                 iStatus);
             goto QAE_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(QAE_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+             "Failed to create CMD pipe (0x%08lX)",
+             iStatus);
         goto QAE_InitPipe_Exit_Tag;
     }
 
@@ -181,31 +210,30 @@ QAE_InitPipe_Exit_Tag:
 void QAE::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    		AE_HK_TLM_MID, sizeof(HkTlm), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&VehicleAttitudeMsg,
-      		PX4_VEHICLE_ATTITUDE_MID, sizeof(PX4_VehicleAttitudeMsg_t), TRUE);
-      /* Init output messages */
-      CFE_SB_InitMsg(&ControlStateMsg,
-      		PX4_CONTROL_STATE_MID, sizeof(PX4_ControlStateMsg_t), TRUE);
-      /* Init current value table to zero */
-      memset(&CVT, 0, sizeof(CVT));
-      /* Init params table to zero */
-      memset(&m_Params, 0, sizeof(m_Params));
-      /* Set params default values */
-      UpdateParamsFromTable();
-      /* Init members */
-      m_Quaternion.Zero();
-      m_Gyro.Zero();
-      m_Accel.Zero();
-      m_Mag.Zero();
-      m_LastVelocity.Zero();
-      m_LastVelocityTime = 0;
-      m_PositionAcc.Zero();
-      m_GyroBias.Zero();
-      m_Rates.Zero();
-      m_TimeLast = 0;
+    CFE_SB_InitMsg(&HkTlm, AE_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&VehicleAttitudeMsg,
+            PX4_VEHICLE_ATTITUDE_MID, sizeof(PX4_VehicleAttitudeMsg_t), TRUE);
+    /* Init output messages */
+    CFE_SB_InitMsg(&ControlStateMsg,
+            PX4_CONTROL_STATE_MID, sizeof(PX4_ControlStateMsg_t), TRUE);
+    /* Init current value table to zero */
+    memset(&CVT, 0, sizeof(CVT));
+    /* Init params table to zero */
+    memset(&m_Params, 0, sizeof(m_Params));
+    /* Set params default values */
+    UpdateParamsFromTable();
+    /* Init members */
+    m_Quaternion.Zero();
+    m_Gyro.Zero();
+    m_Accel.Zero();
+    m_Mag.Zero();
+    m_LastVelocity.Zero();
+    m_LastVelocityTime = 0;
+    m_PositionAcc.Zero();
+    m_GyroBias.Zero();
+    m_Rates.Zero();
+    m_TimeLast = 0;
 }
 
 
@@ -252,10 +280,10 @@ QAE_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(QAE_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 QAE_MAJOR_VERSION,
-								 QAE_MINOR_VERSION,
-								 QAE_REVISION,
-								 QAE_MISSION_REV);
+                                 QAE_MAJOR_VERSION,
+                                 QAE_MINOR_VERSION,
+                                 QAE_REVISION,
+                                 QAE_MISSION_REV);
     }
     else
     {
@@ -274,7 +302,6 @@ QAE_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -342,7 +369,7 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(QAE_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+              "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -354,7 +381,6 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void QAE::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -403,7 +429,6 @@ void QAE::ProcessCmdPipe()
 /* Process QAE Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -416,11 +441,11 @@ void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case QAE_NOOP_CC:
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(QAE_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					QAE_MAJOR_VERSION,
-					QAE_MINOR_VERSION,
-					QAE_REVISION,
-					QAE_MISSION_REV);
+                        "Recvd NOOP. Version %d.%d.%d.%d",
+                        QAE_MAJOR_VERSION,
+                        QAE_MINOR_VERSION,
+                        QAE_REVISION,
+                        QAE_MISSION_REV);
                 break;
 
             case QAE_RESET_CC:
@@ -442,7 +467,6 @@ void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* Send QAE Housekeeping                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void QAE::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -571,6 +595,11 @@ void QAE::AppMain()
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* QAE Update Magnetic Declination                                 */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void QAE::UpdateMagDeclination(const float new_declination)
 {
     if (HkTlm.EstimatorState == QAE_EST_UNINITIALIZED || 
@@ -590,6 +619,11 @@ void QAE::UpdateMagDeclination(const float new_declination)
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* QAE Estimate Attitude                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void QAE::EstimateAttitude(void)
 {
     math::Vector3F euler(0.0f, 0.0f, 0.0f);
@@ -599,7 +633,6 @@ void QAE::EstimateAttitude(void)
     uint64 delta_time_gps = 0;
     uint64 time_now = 0;
     float delta_time = 0;
-    
     boolean update_success = FALSE;
 
     /* If there is a new sensor combined message */
@@ -789,6 +822,11 @@ end_of_function:
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* QAE Initialize the Attitude Estimation                          */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean QAE::InitEstimateAttitude(void)
 {
     math::Vector3F k(0.0f, 0.0f, 0.0f);
@@ -845,6 +883,11 @@ boolean QAE::InitEstimateAttitude(void)
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* QAE Update the Attitude Estimate                                */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean QAE::UpdateEstimateAttitude(float dt)
 {
     math::Quaternion q_last(0.0f, 0.0f, 0.0f, 0.0f);
@@ -852,11 +895,9 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     /* Angular rate of correction */
     math::Vector3F corr(0.0f, 0.0f, 0.0f);
     math::Vector3F mag_earth(0.0f, 0.0f, 0.0f);
-
     float spinRate = 0.0f;
     float magErr   = 0.0f;
     float gainMult = 1.0f;
-    //const float fiftyDPS = 0.873f;
     uint8 i = 0;
 
     if (HkTlm.EstimatorState != QAE_EST_INITIALIZED)
@@ -948,6 +989,11 @@ boolean QAE::UpdateEstimateAttitude(float dt)
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* QAE Update Params from the Config Table                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void QAE::UpdateParamsFromTable(void)
 {
     if(0 != ConfigTblPtr)

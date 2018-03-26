@@ -97,12 +97,10 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
-
     /** \brief Task Run Status */
     uint32 uiRunStatus;
 
     /* Config table-related */
-
     /** \brief Config Table Handle */
     CFE_TBL_Handle_t ConfigTblHdl;
 

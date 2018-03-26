@@ -75,7 +75,6 @@ VC_AppData_t VC_AppData;
 /* Initialize event tables                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 VC_InitEvent()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -121,7 +120,6 @@ end_of_function:
 /* Initialize Message Pipes                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 VC_InitPipe()
 {
     int32  iStatus=CFE_SUCCESS;
@@ -196,7 +194,6 @@ VC_InitPipe_Exit_Tag:
 /* Initialize Global Variables                                     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 VC_InitData()
 {
     int32  iStatus = CFE_SUCCESS;
@@ -228,7 +225,11 @@ end_of_function:
     return (iStatus);
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Cleanup prior to exit                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VC_CleanupCallback()
 {
     if(VC_Transmit_Uninit() != TRUE)
@@ -247,7 +248,11 @@ void VC_CleanupCallback()
     }
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Initialize the application                                      */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VC_InitApp(void)
 {
     int32  iStatus = CFE_SUCCESS;
@@ -349,7 +354,7 @@ VC_InitApp_Exit_Tag:
             (void) CFE_ES_WriteToSysLog("VC - Application failed to initialize\n");
         }
     }
-    return(iStatus);
+    return (iStatus);
 } /* End of VC_AppInit() */
 
 
@@ -358,7 +363,6 @@ VC_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 VC_RcvMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -426,7 +430,6 @@ int32 VC_RcvMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void VC_ProcessNewCmds()
 {
     int iStatus = CFE_SUCCESS;
@@ -483,7 +486,6 @@ void VC_ProcessNewCmds()
 /* Process VC Commands                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void VC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -514,7 +516,6 @@ void VC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 /* VC application entry point and main process loop                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void VC_AppMain(void)
 {
     /* Setup the RunStatus variable */

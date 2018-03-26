@@ -30,7 +30,6 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
 #ifndef QAE_VERSION_H
 #define QAE_VERSION_H
 

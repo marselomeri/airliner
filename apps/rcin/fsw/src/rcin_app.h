@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "rcin_platform_cfg.h"
 #include "rcin_mission_cfg.h"
 #include "rcin_perfids.h"
@@ -54,6 +53,7 @@ extern "C" {
 #include "rcin_msg.h"
 #include "rcin_events.h"
 #include "px4_msgs.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -269,6 +269,7 @@ public:
      **
      *************************************************************************/
     void SendInputRcMsg(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **

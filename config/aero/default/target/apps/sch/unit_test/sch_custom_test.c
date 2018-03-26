@@ -99,7 +99,7 @@ void SCH_CustomLateInit_Test_TimerSetError(void)
 
 void SCH_CustomGetCurrentSlotNumber_Test_LowCurrentSlot(void)
 {
-    int32   Result;
+    int32   Result = 0;
 
     SCH_AppData.SyncToMET       = 99;
     SCH_AppData.LastSyncMETSlot = 10;
@@ -116,7 +116,7 @@ void SCH_CustomGetCurrentSlotNumber_Test_LowCurrentSlot(void)
 
 void SCH_CustomGetCurrentSlotNumber_Test_HighCurrentSlot(void)
 {
-    int32   Result;
+    int32   Result = 0;
 
     SCH_AppData.SyncToMET       = 99;
     SCH_AppData.LastSyncMETSlot = 0;
@@ -136,7 +136,7 @@ void SCH_CustomGetCurrentSlotNumber_Test_HighCurrentSlot(void)
 
 void SCH_CustomGetCurrentSlotNumber_Test_NotSynchronized(void)
 {
-    int32   Result;
+    int32   Result = 0;
 
     SCH_AppData.SyncToMET            = SCH_NOT_SYNCHRONIZED;
     SCH_AppData.MinorFramesSinceTone = 10;
@@ -163,7 +163,7 @@ void SCH_CustomCleanup_Test(void)
 
 void SCH_GetMETSlotNumber_Test_Rollover(void)
 {
-    uint32   Result;
+    uint32   Result = 1;
 
     /* Set to make function under test return 0 by rollover */
     Ut_CFE_TIME_SetReturnCode(UT_CFE_TIME_SUB2MICROSECS_INDEX, SCH_NORMAL_SLOT_PERIOD * SCH_TOTAL_SLOTS, 1);
@@ -180,7 +180,7 @@ void SCH_GetMETSlotNumber_Test_Rollover(void)
 
 void SCH_GetMETSlotNumber_Test_NoRollover(void)
 {
-    uint32   Result;
+    uint32   Result = 0;
 
     /* Set to make function under test return 1 */
     Ut_CFE_TIME_SetReturnCode(UT_CFE_TIME_SUB2MICROSECS_INDEX, SCH_NORMAL_SLOT_PERIOD, 1);

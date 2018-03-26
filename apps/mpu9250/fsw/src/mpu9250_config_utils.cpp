@@ -54,10 +54,10 @@ int32 MPU9250::InitConfigTbl()
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
-		MPU9250_CONFIG_TABLENAME,
-		(sizeof(MPU9250_ConfigTbl_t)),
-		CFE_TBL_OPT_DEFAULT,
-		MPU9250::ValidateConfigTbl);
+        MPU9250_CONFIG_TABLENAME,
+        (sizeof(MPU9250_ConfigTbl_t)),
+        CFE_TBL_OPT_DEFAULT,
+        MPU9250::ValidateConfigTbl);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, a critical table could return another nominal code.  If this table is
@@ -71,7 +71,7 @@ int32 MPU9250::InitConfigTbl()
     /* Load Config table file */
     iStatus = CFE_TBL_Load(ConfigTblHdl,
                            CFE_TBL_SRC_FILE,
-						   MPU9250_CONFIG_TABLE_FILENAME);
+                           MPU9250_CONFIG_TABLE_FILENAME);
     if (iStatus != CFE_SUCCESS)
     {
         /* Note, CFE_SUCCESS is for a successful full table load.  If a partial table
@@ -145,7 +145,7 @@ int32 MPU9250::AcquireConfigPointers(void)
     }
     else if(iStatus != CFE_SUCCESS)
     {
-    	ConfigTblPtr = 0;
+        ConfigTblPtr = 0;
         (void) CFE_EVS_SendEvent(MPU9250_CFGTBL_GETADDR_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to get Config table's address (0x%08lX)",
                                  iStatus);

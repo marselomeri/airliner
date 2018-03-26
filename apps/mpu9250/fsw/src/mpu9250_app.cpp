@@ -1,11 +1,46 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
+/************************************************************************
+** Pragmas
+*************************************************************************/
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include <string.h>
-
 #include "cfe.h"
 #include "mpu9250_custom.h"
-
 #include "mpu9250_app.h"
 #include "mpu9250_msg.h"
 #include "mpu9250_version.h"
@@ -113,8 +148,8 @@ int32 MPU9250::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		MPU9250_SCH_PIPE_DEPTH,
-			MPU9250_SCH_PIPE_NAME);
+            MPU9250_SCH_PIPE_DEPTH,
+            MPU9250_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(MPU9250_MEASURE_MID, SchPipeId, CFE_SB_Default_Qos, MPU9250_MEASURE_MID_MAX_MSG_COUNT);
@@ -398,19 +433,19 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
         {
             case MPU9250_MEASURE_MID:
             {
-            	//static uint32 i = 0;
+                //static uint32 i = 0;
 
                 ReadDevice();
                 SendSensorGyro();
                 SendSensorAccel();
                 //if(i >= 4)
                 //{
-                	//SendSensorMag();
-                	//i = 0;
+                    //SendSensorMag();
+                    //i = 0;
                 //}
                 //else
                 //{
-                	//++i;
+                    //++i;
                 //}
                 break;
             }
@@ -442,7 +477,7 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(MPU9250_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+              "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -567,14 +602,14 @@ void MPU9250::SendSensorAccel()
 
 //void MPU9250::SendSensorMag()
 //{
-	//static uint32 i = 0;
-	//if(i >= 4)
-	//{
-		//CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
-		//CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
-		//i = 0;
-	//}
-	//++i;
+    //static uint32 i = 0;
+    //if(i >= 4)
+    //{
+        //CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorMag);
+        //CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorMag);
+        //i = 0;
+    //}
+    //++i;
 //}
 
 void MPU9250::SendSensorGyro()
@@ -626,7 +661,7 @@ boolean MPU9250::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* MPU9250 Application C style main entry point.                       */
+/* MPU9250 Application C style main entry point.                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 extern "C" void MPU9250_AppMain()
@@ -637,7 +672,7 @@ extern "C" void MPU9250_AppMain()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* MPU9250 Application C++ style main entry point.                     */
+/* MPU9250 Application C++ style main entry point.                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::AppMain()
@@ -691,7 +726,11 @@ void MPU9250::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Read from the device                                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::ReadDevice(void)
 {
     float rawX_f = 0;
@@ -763,7 +802,7 @@ void MPU9250::ReadDevice(void)
     /* TODO:  Replace this with real code, not a temporary estimate. */
     //if(prevTimeStamp != 0)
     //{
-    	//SensorGyro.IntegralDt = timeStamp - prevTimeStamp;
+        //SensorGyro.IntegralDt = timeStamp - prevTimeStamp;
     //}
 
     _gyro_int.put(timeStamp, gval, gval_integrated, SensorGyro.IntegralDt);
@@ -809,6 +848,7 @@ void MPU9250::ReadDevice(void)
     SensorAccel.X = _accel_filter_x.apply(calX_f);
     SensorAccel.Y = _accel_filter_y.apply(calY_f);
     SensorAccel.Z = _accel_filter_z.apply(calZ_f);
+
     /* Accel Integrate */
     aval[0] = SensorAccel.X;
     aval[1] = SensorAccel.Y;
@@ -820,9 +860,9 @@ void MPU9250::ReadDevice(void)
     /* TODO:  Replace this with real code, not a temporary estimate. */
     //if(prevTimeStamp != 0)
     //{
-    	//SensorAccel.IntegralDt = timeStamp - prevTimeStamp;
+        //SensorAccel.IntegralDt = timeStamp - prevTimeStamp;
     //}
-	//prevTimeStamp = timeStamp;
+    //prevTimeStamp = timeStamp;
 
     _accel_int.put(timeStamp, aval, aval_integrated, SensorAccel.IntegralDt);
     
@@ -885,10 +925,13 @@ end_of_function:
         (void) CFE_EVS_SendEvent(MPU9250_READ_ERR_EID, CFE_EVS_ERROR,
                 "MPU9250 read failed");
     }
-    //return returnBool;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate the Device via the Device ID                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean MPU9250::ValidateDevice(void)
 {
     uint8 value = 0;
@@ -927,7 +970,11 @@ end_of_function:
     return returnBool;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Cleanup before exit                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250_CleanupCallback(void)
 {
     oMPU9250.HkTlm.State = MPU9250_UNINITIALIZED;
@@ -938,7 +985,11 @@ void MPU9250_CleanupCallback(void)
     }
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Update Params from the Config Table                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::UpdateParamsFromTable(void)
 {
     if(0 != ConfigTblPtr)

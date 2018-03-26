@@ -625,8 +625,9 @@ int32 VC_InitDevice(uint8 DeviceID, const char *DeviceName)
         returnCode = -1;
         goto end_of_function;
     }
-    
-    if((VC_AppCustomDevice.Channel[DeviceID].DeviceFd = open(DeviceName, O_RDWR | O_NONBLOCK, 0)) < 0)
+
+    VC_AppCustomDevice.Channel[DeviceID].DeviceFd = open(DeviceName, O_RDWR | O_NONBLOCK, 0);
+    if(VC_AppCustomDevice.Channel[DeviceID].DeviceFd < 0)
     {
         CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC Device open errno: %i on channel %u", errno, (unsigned int)i);
@@ -649,7 +650,8 @@ int32 VC_Init_CustomDevices(void)
         if(VC_AppCustomDevice.Channel[i].Mode == VC_DEVICE_ENABLED)
         {
             /* If the device is enabled initialize it */
-            if (returnCode = VC_InitDevice(i, VC_AppCustomDevice.Channel[i].DevName))
+            returnCode = VC_InitDevice(i, VC_AppCustomDevice.Channel[i].DevName);
+            if (returnCode)
             {
                 /* If the device failed to be initialized set to disabled 
                  * an error event will be generated in VC_InitDevice */
@@ -663,7 +665,8 @@ int32 VC_Init_CustomDevices(void)
                         (unsigned int)i, VC_AppCustomDevice.Channel[i].DevName);
                         
                 /* The device is initialized so now configure it */
-                if (returnCode = VC_ConfigureDevice(i))
+                returnCode = VC_ConfigureDevice(i);
+                if (returnCode)
                 {
                     /* The device failed to be configured so make sure
                      * the status is set to uninitialized 

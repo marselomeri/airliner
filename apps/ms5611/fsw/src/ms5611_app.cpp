@@ -1,3 +1,40 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
+/************************************************************************
+** Pragmas
+*************************************************************************/
+
 /************************************************************************
 ** Includes
 *************************************************************************/
@@ -568,7 +605,11 @@ void MS5611::AppMain()
     CFE_ES_ExitApp(uiRunStatus);
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Get a raw pressure and temperature measurement from the device  */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean MS5611::GetMeasurement(int32 *Pressure, int32 *Temperature)
 {
     /* ADC value of the pressure conversion */
@@ -703,7 +744,11 @@ end_of_function:
     return returnBool;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Read from the device and convert to altitude                    */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MS5611::ReadDevice(void)
 {
     int32 pressure = 0;
@@ -768,7 +813,11 @@ end_of_function:
 ;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Calculate a CRC4 code                                           */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 uint8 MS5611::CRC4(uint16 n_prom[])
 {
     int cnt; 
@@ -786,8 +835,14 @@ uint8 MS5611::CRC4(uint16 n_prom[])
     for (cnt = 0; cnt < 16; cnt++) 
     {
         /* choose LSB or MSB */
-        if (cnt%2==1) n_rem ^= (uint16) ((n_prom[cnt>>1]) & 0x00FF);
-        else n_rem ^= (uint16) (n_prom[cnt>>1]>>8);
+        if (cnt%2==1) 
+        {
+            n_rem ^= (uint16) ((n_prom[cnt>>1]) & 0x00FF);
+        }
+        else 
+        {
+            n_rem ^= (uint16) (n_prom[cnt>>1]>>8);
+        }
         for (n_bit = 8; n_bit > 0; n_bit--)
         {
             if (n_rem & (0x8000))
@@ -804,10 +859,14 @@ uint8 MS5611::CRC4(uint16 n_prom[])
     n_rem = (0x000F & (n_rem >> 12));
     /* Restore the crc_read to its original value */
     n_prom[7] = crc_read;
-    return (n_rem ^ 0x00);
+    return n_rem ^ 0x00;
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Validate the CRC code in PROM                                   */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 boolean MS5611::ValidateCRC(void)
 {
     unsigned char returnedCRC = 0;
@@ -830,6 +889,11 @@ boolean MS5611::ValidateCRC(void)
 }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Update params from the config table                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MS5611::UpdateParamsFromTable(void)
 {
     if(0 != ConfigTblPtr)
@@ -838,7 +902,11 @@ void MS5611::UpdateParamsFromTable(void)
     }
 }
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Cleanup before exit                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MS5611_CleanupCallback(void)
 {
     oMS5611.HkTlm.State = MS5611_UNINITIALIZED;

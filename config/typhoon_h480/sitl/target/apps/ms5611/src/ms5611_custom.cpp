@@ -54,11 +54,17 @@
 *************************************************************************/
 
 /* Simulated PROM values */
+/** \brief Simulated PROM value C1 */
 #define MS5611_CUSTOM_C1        (40127)
+/** \brief Simulated PROM value C2 */
 #define MS5611_CUSTOM_C2        (36924)
+/** \brief Simulated PROM value C3 */
 #define MS5611_CUSTOM_C3        (23317)
+/** \brief Simulated PROM value C4 */
 #define MS5611_CUSTOM_C4        (23282)
+/** \brief Simulated PROM value C5 */
 #define MS5611_CUSTOM_C5        (33464)
+/** \brief Simulated PROM value C6 */
 #define MS5611_CUSTOM_C6        (28312)
 
 
@@ -66,18 +72,25 @@
 ** Local Structure Declarations
 *************************************************************************/
 
+/** \brief Simulated custom app state */
 typedef enum {
-	MS5611_CUSTOM_UNINITIALIZED = 0,
-	MS5611_CUSTOM_D1_CONV       = 1,
-	MS5611_CUSTOM_D2_CONV       = 2
+    /** \brief State application uninitialized */
+    MS5611_CUSTOM_UNINITIALIZED = 0,
+    /** \brief State D1 Conversion */
+    MS5611_CUSTOM_D1_CONV       = 1,
+    /** \brief State D2 Conversion */
+    MS5611_CUSTOM_D2_CONV       = 2
 } MS5611_Custom_State_t;
 
 
 typedef struct
 {
-	MS5611_Custom_State_t State;
-	uint32 D1;
-	uint32 D2;
+    /** \brief Simulated custom app state */
+    MS5611_Custom_State_t State;
+    /** \brief MS5611 simulated D1 output */
+    uint32 D1;
+    /** \brief MS5611 simulated D2 output */
+    uint32 D2;
 } MS5611_AppCustomData_t;
 
 

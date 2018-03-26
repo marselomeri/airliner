@@ -33,6 +33,11 @@
 
 #ifndef MPU9250_CUSTOM_H
 #define MPU9250_CUSTOM_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Pragmas
 *************************************************************************/
@@ -40,11 +45,6 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
 
 /************************************************************************
@@ -124,24 +124,219 @@ boolean MPU9250_Custom_Uninit(void);
 *************************************************************************/
 int32 MPU9250_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl);
 
+/************************************************************************/
+/** \brief Set accel scale.
+**
+**  \par Description
+**       This function sets the scale of the accelerometer.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [in]   Scale      The scale to set.
+**
+**  \param [out]   Divider   The divider for the scale set.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_SetAccScale(uint8 Scale, float *AccDivider);
+
+/************************************************************************/
+/** \brief Set gyro scale.
+**
+**  \par Description
+**       This function sets the scale of the gyroscope.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [in]   Scale      The scale to set.
+**
+**  \param [out]   Divider   The divider for the scale set.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider);
+
+/************************************************************************/
+/** \brief Read raw gyro data.
+**
+**  \par Description
+**       This function reads raw X-axis, Y-axis, and Z-axis gyro data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called.
+**
+**  \param [out]   X      Raw X-axis value.
+**
+**  \param [out]   Y      Raw Y-axis value.
+**
+**  \param [out]   Z      Raw Z-axis value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z);
 
-
-boolean MPU9250_Read_Gyro(int16 *X, int16 *Y, int16 *Z);
+/************************************************************************/
+/** \brief Read raw accel data.
+**
+**  \par Description
+**       This function reads raw X-axis, Y-axis, and Z-axis accel data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [out]   X      Raw X-axis value.
+**
+**  \param [out]   Y      Raw Y-axis value.
+**
+**  \param [out]   Z      Raw Z-axis value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_Read_Accel(int16 *X, int16 *Y, int16 *Z);
-boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z);
+
+/************************************************************************/
+/** \brief Read raw mag data.
+**
+**  \par Description
+**       This function reads raw X-axis, Y-axis, and Z-axis mag data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [out]   X      Raw X-axis value.
+**
+**  \param [out]   Y      Raw Y-axis value.
+**
+**  \param [out]   Z      Raw Z-axis value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
+//boolean MPU9250_Read_Mag(int16 *X, int16 *Y, int16 *Z);
+
+/************************************************************************/
+/** \brief Read raw temperature data.
+**
+**  \par Description
+**       This function reads raw temperature data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [out]   Temp    Raw temperature value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_Read_Temp(uint16 *Temp);
 
+/************************************************************************/
+/** \brief Get platform rotation.
+**
+**  \par Description
+**       This function reads raw temperature data.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None.
+**
+**  \param [out]   Rotation    The platform rotation.
+**
+*************************************************************************/
 void MPU9250_Get_Rotation(uint8 *Rotation);
 
+/* TODO */
 //boolean MPU9250_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady);
+
+/* TODO */
 //boolean MPU9250_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit);
+
+/************************************************************************/
+/** \brief Read the mag sensitivity adjustment values.
+**
+**  \par Description
+**       Reads the sensitivity adjustment values of the mag (AK8963).
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [out]   X      X-axis value.
+**
+**  \param [out]   Y      Y-axis value.
+**
+**  \param [out]   Z      Z-axis value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 //boolean MPU9250_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z);
 
+/************************************************************************/
+/** \brief Apply the platform rotation to measurements.
+**
+**  \par Description
+**       This applies any required platform rotation to the X, Y, and Z
+**       measurements.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [in/out]   X      X-axis value.
+**
+**  \param [in/out]   Y      Y-axis value.
+**
+**  \param [in/out]   Z      Z-axis value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z);
+
+/************************************************************************/
+/** \brief Returns the device ID of the MPU9250.
+**
+**  \par Description
+**       This returns the device ID for identification.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [out]   Value      Device ID value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean MPU9250_Read_WhoAmI(uint8 *Value);
+
+/************************************************************************/
+/** \brief Returns the device ID of the Mag (AK8963).
+**
+**  \par Description
+**       This returns the device ID for identification.
+**
+**  \par Assumptions, External Events, and Notes:
+**       Initialization must be completed before this function is 
+**       called. 
+**
+**  \param [out]   Value      Device ID value.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 //boolean MPU9250_Read_MagDeviceID(uint8 *Value);
 
 #ifdef __cplusplus

@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "qae_platform_cfg.h"
 #include "qae_mission_cfg.h"
 #include "qae_perfids.h"
@@ -55,7 +54,6 @@ extern "C" {
 #include "qae_events.h"
 #include "qae_tbldefs.h"
 #include "px4_msgs.h"
-
 #include <math/Quaternion.hpp>
 #include <math/Vector3F.hpp>
 #include <math/Matrix3F3.hpp>
@@ -64,7 +62,9 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
+ /** \brief Max delta time between iterations */
 #define QAE_DELTA_TIME_MAX (0.02f)
+ /** \brief 50 degrees per second (rad/s) */
 #define QAE_FIFTY_DPS      (0.873f)
 
 /************************************************************************
