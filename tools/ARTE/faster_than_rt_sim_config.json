@@ -2,7 +2,7 @@
   "name": "ARTE simulation test config file",
   "version": 0.1,
   "date": "2018-03-22T00:00:00.000Z",
-  "timeout": 240,
+  "timeout": 120,
   "timeouts": 5,
   "watchdog": 5,
   "majorframe": 250,
@@ -11,6 +11,7 @@
   "clients": [
     {
       "name": "Gazebo Server",
+      "client": false,
       "command": "gzserver -u --verbose typhoon_h480.world",
       "output": "log_gazebo_server.txt",
       "cwd": "../../tools/sitl_gazebo/worlds/",
@@ -18,6 +19,7 @@
     },
     {
       "name": "Airliner",
+      "client": true,
       "command": "./core-bin -M TEST",
       "output": "log_airliner.txt",
       "cwd": "../../build/typhoon_h480/sitl/target/exe/",
@@ -25,6 +27,7 @@
     },
     {
       "name": "Pygazebo",
+      "client": true,
       "command": "python2 pygazebo_sim_stepper.py",
       "output": "log_pygazebo.txt",
       "cwd": "../../../pygazebo/",
