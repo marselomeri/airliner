@@ -23,6 +23,7 @@
 #include "md_events.h"
 #include "md_version.h"
 #include "md_test_utils.h"
+#include "md_tbldefs.h"
 #include "ut_osapi_stubs.h"
 #include "ut_cfe_sb_stubs.h"
 #include "ut_cfe_es_stubs.h"
@@ -735,6 +736,7 @@ void MD_InitTableServices_Test_TblRecoveredNotValid(void)
 void MD_InitTableServices_Test_TblTooLarge(void)
 {
     int32   Result;
+    char    EventText[CFE_EVS_MAX_MESSAGE_LENGTH];
 
     /* Set to satisfy condition "Status == CFE_TBL_ERR_INVALID_SIZE" */
     Ut_CFE_TBL_SetReturnCode(UT_CFE_TBL_REGISTER_INDEX, CFE_TBL_ERR_INVALID_SIZE, 1);
@@ -747,15 +749,15 @@ void MD_InitTableServices_Test_TblTooLarge(void)
     Result = MD_InitTableServices();
     
     /* Verify results */
-#if MD_SIGNATURE_OPTION == 1
+    snprintf(EventText, CFE_EVS_MAX_MESSAGE_LENGTH,
+            "Dwell Table(s) are too large to register: %d > %d bytes, %d > %d entries",
+            MD_TBL_LOAD_LNGTH, CFE_TBL_MAX_SNGL_TABLE_SIZE,
+            MD_DWELL_TABLE_SIZE, (uint16) ((CFE_TBL_MAX_SNGL_TABLE_SIZE -
+                    sizeof(uint32) ) / sizeof (MD_TableLoadEntry_t)));
+
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(MD_DWELL_TBL_TOO_LARGE_CRIT_EID, CFE_EVS_CRITICAL, "Dwell Table(s) are too large to register: 1836 > 16384 bytes, 25 > 227 entries"),
-        "Dwell Table(s) are too large to register: 1836 > 16384 bytes, 25 > 227 entries");
-#else
-    UtAssert_True
-        (Ut_CFE_EVS_EventSent(MD_DWELL_TBL_TOO_LARGE_CRIT_EID, CFE_EVS_CRITICAL, "Dwell Table(s) are too large to register: 1804 > 16384 bytes, 25 > 227 entries"),
-        "Dwell Table(s) are too large to register: 1836 > 16384 bytes, 25 > 227 entries");
-#endif
+        (Ut_CFE_EVS_EventSent(MD_DWELL_TBL_TOO_LARGE_CRIT_EID,
+                CFE_EVS_CRITICAL, EventText), EventText);
 
     UtAssert_True
         (Ut_CFE_EVS_EventSent(MD_TBL_INIT_INF_EID, CFE_EVS_INFORMATION, "Dwell Tables Recovered: 0, Dwell Tables Initialized: 0"),
