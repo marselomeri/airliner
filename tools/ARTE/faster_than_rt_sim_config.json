@@ -12,7 +12,7 @@
     {
       "name": "Gazebo Server",
       "client": false,
-      "command": "gzserver -u --verbose typhoon_h480.world",
+      "command": "gz topic -l",
       "output": "log_gazebo_server.txt",
       "cwd": "../../tools/sitl_gazebo/worlds/",
       "env": "GAZEBO_PLUGIN_PATH=../../../build/typhoon_h480/sitl/host/gazebo:${GAZEBO_PLUGIN_PATH} GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:../models LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../../build/typhoon_h480/sitl/host/gazebo/msgs/:../../../build/typhoon_h480/sitl/host/gazebo"
@@ -31,6 +31,14 @@
       "command": "python2 pygazebo_sim_stepper.py",
       "output": "log_pygazebo.txt",
       "cwd": "../../../pygazebo/",
+      "env": ""
+    },
+    {
+      "name": "Pyliner",
+      "client": true,
+      "command": "python2 ft4_gcs_frt.py",
+      "output": "pyliner_script.txt",
+      "cwd": "../../tools/pyliner/examples",
       "env": ""
     }
   ]
