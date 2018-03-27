@@ -30,7 +30,7 @@
       "client": true,
       "command": "python2 pygazebo_sim_stepper.py",
       "output": "log_pygazebo.txt",
-      "cwd": "../../../pygazebo/",
+      "cwd": "../../tools/pygazebo/",
       "env": ""
     },
     {
