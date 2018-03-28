@@ -977,7 +977,7 @@ void SENS::ProcessRCInput(void)
             if(1 == ConfigTblPtr->ModeSwitchControl)
             {
                 //ManualControlSetpointMsg.ManSwitch = PX4_SWITCH_POS_OFF;
-                ManualControlSetpointMsg.LoiterSwitch = PX4_SWITCH_POS_OFF;
+                ManualControlSetpointMsg.ReturnSwitch = PX4_SWITCH_POS_OFF;
                 ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_OFF;
 
                 if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_OFF)
@@ -986,11 +986,11 @@ void SENS::ProcessRCInput(void)
                 }
                 else if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_MIDDLE)
                 {
-                    ManualControlSetpointMsg.LoiterSwitch = PX4_SWITCH_POS_ON;
+                    ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_ON;
                 }
                 else if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_ON)
                 {
-                    ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_ON;
+                    ManualControlSetpointMsg.ReturnSwitch = PX4_SWITCH_POS_ON;
                 }
                 else
                 {
