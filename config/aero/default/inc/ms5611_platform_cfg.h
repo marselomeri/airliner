@@ -109,6 +109,13 @@ extern "C" {
 */
 #define MS5611_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief The ratio pressure per temperature measurements
+**
+**  \par Limits:
+**       Set to 3 for 3 pressure measurements for every temperature 
+**       measurement.
+*/
+#define MS5611_PRESS_TEMP_MEAS_RATIO    (3)
 
 #ifdef __cplusplus
 }
