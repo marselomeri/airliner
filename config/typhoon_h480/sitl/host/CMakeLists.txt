@@ -69,7 +69,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom_rt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sch_perfids.h
