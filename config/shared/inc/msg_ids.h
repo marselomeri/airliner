@@ -590,7 +590,7 @@
 #define SIM_WAKEUP_MID                              0x1c7f
 #define SIM_CMD_MID                                 0x1c80
 
-/* MAVLINK                   					        */
+/* MAVLINK                                              */
 #define MAVLINK_CMD_MID                             0x1c81
 #define MAVLINK_SEND_HK_MID                         0x1c82
 #define MAVLINK_HK_TLM_MID                          0x0c83
@@ -622,6 +622,12 @@
 /* PRMLIB                                               */
 #define PRMLIB_PARAM_UPDATED_MID                    0x0ca6
 
-#define SCH_ACTIVITY_DONE_MID			    0x0f00
+/* LGC                                                  */
+#define LGC_HK_TLM_MID                              0x0cb0
+#define LGC_SEND_HK_MID                             0x0cb1
+#define LGC_WAKEUP_MID                              0x0cb2
+#define LGC_CMD_MID                                 0x0cb3
+
+#define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif
