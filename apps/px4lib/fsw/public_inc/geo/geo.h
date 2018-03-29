@@ -68,13 +68,26 @@ struct crosstrack_error_s {
 	float bearing;		// Bearing in radians to closest point on line/arc
 } ;
 
-/* lat/lon are in radians */
+/**
+**  \brief Geo map projection struct
+*/
 struct map_projection_reference_s {
+	/** \brief Latitude in radians */
 	double lat_rad;
+
+	/** \brief Longitude in radians */
 	double lon_rad;
+
+	/** \brief Sin of latitude */
 	double sin_lat;
+
+	/** \brief Cosine of latitude */
 	double cos_lat;
+
+	/** \brief Initialized flag */
 	bool init_done;
+
+	/** \brief Timestamp of current data */
 	uint64 timestamp;
 };
 
@@ -83,237 +96,549 @@ struct globallocal_converter_reference_s {
 	bool init_done;
 };
 
-
-/**
- * Checks if global projection was initialized
- * @return true if map was initialized before, false else
- */
+/************************************************************************/
+/** \brief Projection Initialized
+ **
+ **  \par Description
+ **       This function checks if global projection was initialized.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \returns
+ **  True if map was initialized before, false else
+ **  \endreturns
+ **
+ *************************************************************************/
 bool map_projection_global_initialized(void);
 
-/**
- * Checks if projection given as argument was initialized
- * @return true if map was initialized before, false else
- */
+/************************************************************************/
+/** \brief Projection Reference Initialized
+ **
+ **  \par Description
+ **       This function checks if projection given as argument was initialized.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref      The #map_projection_reference_s to check
+ **
+ **  \returns
+ **  True if map was initialized before, false else
+ **  \endreturns
+ **
+ *************************************************************************/
 bool map_projection_initialized(const struct map_projection_reference_s *ref);
 
-/**
- * Get the timestamp of the global map projection
- * @return the timestamp of the map_projection
- */
+/************************************************************************/
+/** \brief Get Timestamp
+ **
+ **  \par Description
+ **       This function gets the timestamp of the global map projection.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \returns
+ **  The timestamp of the map_projection
+ **  \endreturns
+ **
+ *************************************************************************/
 uint64 map_projection_global_timestamp(void);
 
-/**
- * Get the timestamp of the map projection given by the argument
- * @return the timestamp of the map_projection
- */
+/************************************************************************/
+/** \brief Get Reference Timestamp
+ **
+ **  \par Description
+ **       This function gets the timestamp of the global map projection.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref      The #map_projection_reference_s to check
+ **
+ **  \returns
+ **  The timestamp of the map_projection
+ **  \endreturns
+ **
+ *************************************************************************/
 uint64 map_projection_timestamp(const struct map_projection_reference_s *ref);
 
-/**
- * Writes the reference values of the global projection to ref_lat and ref_lon
- * @return 0 if map_projection_init was called before, -1 else
- */
+/************************************************************************/
+/** \brief Get Lat Lon
+ **
+ **  \par Description
+ **       This function writes the reference values of the global projection
+ **       to ref_lat and ref_lon
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref_lat_rad     Latitude
+ **	 \param [in]   ref_lon_rad     Longitude
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_global_reference(double *ref_lat_rad, double *ref_lon_rad);
 
-/**
- * Writes the reference values of the projection given by the argument to ref_lat and ref_lon
- * @return 0 if map_projection_init was called before, -1 else
- */
+/************************************************************************/
+/** \brief Get Reference Lat Lon
+ **
+ **  \par Description
+ **       This function writes the reference values of the projection
+ **       given by the argument to ref_lat and ref_lon
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref		       #map_projection_reference_s to get lat lon
+ **	 \param [in]   ref_lat_rad     Latitude
+ **	 \param [in]   ref_lon_rad     Longitude
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_reference(const struct map_projection_reference_s *ref, double *ref_lat_rad,
 				      double *ref_lon_rad);
 
-/**
- * Initializes the global map transformation.
- *
- * Initializes the transformation between the geographic coordinate system and
- * the azimuthal equidistant plane
- * @param lat in degrees (47.1234567°, not 471234567°)
- * @param lon in degrees (8.1234567°, not 81234567°)
- */
+/************************************************************************/
+/** \brief Initializes Global Map Transformation.
+ **
+ **  \par Description
+ **       This function initializes the transformation between the geographic
+ **       coordinate system and the azimuthal equidistant plane
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   lat_0    	 Latitude in degrees
+ **	 \param [in]   lon_0     	 Longitude in degrees
+ **	 \param [in]   timestamp     Timestamp
+ **
+ **  \returns
+ **  0
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_global_init(double lat_0, double lon_0, uint64 timestamp);
 
-/**
- * Initializes the map transformation given by the argument.
- *
- * Initializes the transformation between the geographic coordinate system and
- * the azimuthal equidistant plane
- * @param lat in degrees (47.1234567°, not 471234567°)
- * @param lon in degrees (8.1234567°, not 81234567°)
- */
+/************************************************************************/
+/** \brief Initializes Reference Map Transformation.
+ **
+ **  \par Description
+ **       This function initializes the transformation between the geographic
+ **       coordinate system and the azimuthal equidistant plane
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref    		 #map_projection_reference_s to init
+ **	 \param [in]   lat_0    	 Latitude in degrees
+ **	 \param [in]   lon_0     	 Longitude in degrees
+ **	 \param [in]   timestamp     Timestamp
+ **
+ **  \returns
+ **  0
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_init_timestamped(struct map_projection_reference_s *ref,
 		double lat_0, double lon_0, uint64 timestamp);
 
-/**
- * Initializes the map transformation given by the argument and sets the timestamp to now.
- *
- * Initializes the transformation between the geographic coordinate system and
- * the azimuthal equidistant plane
- * @param lat in degrees (47.1234567°, not 471234567°)
- * @param lon in degrees (8.1234567°, not 81234567°)
- */
+/************************************************************************/
+/** \brief Initializes Reference Map Transformation.
+ **
+ **  \par Description
+ **       This function initializes the transformation between the geographic
+ **       coordinate system and the azimuthal equidistant plane
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref    		 #map_projection_reference_s to init
+ **	 \param [in]   lat_0    	 Latitude in degrees
+ **	 \param [in]   lon_0     	 Longitude in degrees
+ **	 \param [in]   timestamp     Timestamp
+ **
+ **  \returns
+ **  0
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_init(struct map_projection_reference_s *ref, double lat_0, double lon_0, double time);
 
-/**
- * Transforms a point in the geographic coordinate system to the local
- * azimuthal equidistant plane using the global projection
- * @param x north
- * @param y east
- * @param lat in degrees (47.1234567°, not 471234567°)
- * @param lon in degrees (8.1234567°, not 81234567°)
- * @return 0 if map_projection_init was called before, -1 else
- */
+/************************************************************************/
+/** \brief Project Global Map Transformation.
+ **
+ **  \par Description
+ **       This function Transforms a point in the geographic coordinate
+ **       system to the local azimuthal equidistant plane using the
+ **       global projection
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   x    	 North
+ **	 \param [in]   y    	 East
+ **	 \param [in]   lat    	 Latitude in degrees
+ **	 \param [in]   lon     	 Longitude in degrees
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_global_project(double lat, double lon, float *x, float *y);
 
-
-/* Transforms a point in the geographic coordinate system to the local
- * azimuthal equidistant plane using the projection given by the argument
-* @param x north
-* @param y east
-* @param lat in degrees (47.1234567°, not 471234567°)
-* @param lon in degrees (8.1234567°, not 81234567°)
-* @return 0 if map_projection_init was called before, -1 else
-*/
+/************************************************************************/
+/** \brief Project Reference Map Transformation.
+ **
+ **  \par Description
+ **       This function Transforms a point in the geographic coordinate
+ **       system to the local azimuthal equidistant plane using the
+ **       global projection
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   ref    	 #map_projection_reference_s to project
+ **	 \param [in]   x    	 North
+ **	 \param [in]   y    	 East
+ **	 \param [in]   lat    	 Latitude in degrees
+ **	 \param [in]   lon     	 Longitude in degrees
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_project(const struct map_projection_reference_s *ref, double lat, double lon, float *x,
 				    float *y);
 
-/**
- * Transforms a point in the local azimuthal equidistant plane to the
- * geographic coordinate system using the global projection
- *
- * @param x north
- * @param y east
- * @param lat in degrees (47.1234567°, not 471234567°)
- * @param lon in degrees (8.1234567°, not 81234567°)
- * @return 0 if map_projection_init was called before, -1 else
- */
+/************************************************************************/
+/** \brief Reproject Global Map Transformation.
+ **
+ **  \par Description
+ **       This function transforms a point in the local azimuthal
+ **       equidistant plane to the geographic coordinate system
+ **       using the global projection
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   x    	 North
+ **	 \param [in]   y    	 East
+ **	 \param [in]   lat    	 Latitude in degrees
+ **	 \param [in]   lon     	 Longitude in degrees
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_global_reproject(float x, float y, double *lat, double *lon);
 
-/**
- * Transforms a point in the local azimuthal equidistant plane to the
- * geographic coordinate system using the projection given by the argument
- *
- * @param x north
- * @param y east
- * @param lat in degrees (47.1234567°, not 471234567°)
- * @param lon in degrees (8.1234567°, not 81234567°)
- * @return 0 if map_projection_init was called before, -1 else
- */
+/************************************************************************/
+/** \brief Reproject Reference Map Transformation.
+ **
+ **  \par Description
+ **       This function transforms a point in the local azimuthal
+ **       equidistant plane to the geographic coordinate system
+ **       using the global projection
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   x    	 North
+ **	 \param [in]   y    	 East
+ **	 \param [in]   lat    	 Latitude in degrees
+ **	 \param [in]   lon     	 Longitude in degrees
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_reproject(const struct map_projection_reference_s *ref, float x, float y, double *lat,
 				      double *lon);
 
-/**
- * Get reference position of the global map projection
- */
+/************************************************************************/
+/** \brief Get Reference Position
+ **
+ **  \par Description
+ **       This function get reference position of the global map projection
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in/out]   lat_0    	 Latitude
+ **	 \param [in/out]   lon_0     	 Longitude
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int map_projection_global_getref(double *lat_0, double *lon_0);
 
-/**
- * Initialize the global mapping between global position (spherical) and local position (NED).
- */
+/************************************************************************/
+/** \brief Initialize Global Local Converter
+ **
+ **  \par Description
+ **       This function initializes the global mapping between global
+ **       position (spherical) and local position (NED).
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]   lat_0    	 Latitude
+ **	 \param [in]   lon_0     	 Longitude
+ **	 \param [in]   alt_0     	 Altitude
+ **	 \param [in]   timestamp     Timestamp
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int globallocalconverter_init(double lat_0, double lon_0, float alt_0, uint64 timestamp);
 
-/**
- * Checks if globallocalconverter was initialized
- * @return true if map was initialized before, false else
- */
+/************************************************************************/
+/** \brief Check Global Local Converter Initialized
+ **
+ **  \par Description
+ **       This function checks if globallocalconverter was initialized
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **  \returns
+ **  True if map was initialized before, false else
+ **  \endreturns
+ **
+ *************************************************************************/
 bool globallocalconverter_initialized(void);
 
-/**
- * Convert from global position coordinates to local position coordinates using the global reference
- */
+/************************************************************************/
+/** \brief Convert Global To Local
+ **
+ **  \par Description
+ **       This function convert from global position coordinates to local
+ **        position coordinates using the global reference
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]       lat    	 Latitude
+ **	 \param [in]   	   lon     	 Longitude
+ **	 \param [in]   	   alt     	 Altitude
+ **	 \param [in/out]   x     	 North
+ **	 \param [in/out]   y     	 East
+ **	 \param [in/out]   z     	 Down
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int globallocalconverter_tolocal(double lat, double lon, float alt, float *x, float *y, float *z);
 
-/**
- * Convert from local position coordinates to global position coordinates using the global reference
- */
+/************************************************************************/
+/** \brief Convert Local To Global
+ **
+ **  \par Description
+ **       This function converts from local position coordinates to global
+ **       position coordinates using the global reference
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]  		 x     	 North
+ **	 \param [in]   		 y     	 East
+ **	 \param [in] 		 z     	 Down
+ **	 \param [in/out]     lat     Latitude
+ **	 \param [in/out]   	 lon     Longitude
+ **	 \param [in/out]   	 alt     Altitude
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int globallocalconverter_toglobal(float x, float y, float z,  double *lat, double *lon, float *alt);
 
-/**
- * Get reference position of the global to local converter
- */
+/************************************************************************/
+/** \brief Get Position Reference
+ **
+ **  \par Description
+ **       This function gets reference position of the global to
+ **       local converter
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in/out]     lat_0     Latitude
+ **	 \param [in/out]   	 lon_0     Longitude
+ **	 \param [in/out]   	 alt_0     Altitude
+ **
+ **  \returns
+ **  0 if map_projection_init was called before, -1 else
+ **  \endreturns
+ **
+ *************************************************************************/
 int globallocalconverter_getref(double *lat_0, double *lon_0, float *alt_0);
 
-/**
- * Returns the distance to the next waypoint in meters.
- *
- * @param lat_now current position in degrees (47.1234567°, not 471234567°)
- * @param lon_now current position in degrees (8.1234567°, not 81234567°)
- * @param lat_next next waypoint position in degrees (47.1234567°, not 471234567°)
- * @param lon_next next waypoint position in degrees (8.1234567°, not 81234567°)
- */
+/************************************************************************/
+/** \brief Get Waypoint Distance
+ **
+ **  \par Description
+ **       This function returns the distance to the next waypoint in meters.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]     lat_now      Latitude now
+ **	 \param [in]   	 lon_now      Longitude now
+ **	 \param [in]     lat_next     Latitude next
+ **	 \param [in]   	 lon_next     Longitude next
+ **
+ **  \returns
+ **  Distance in meters
+ **  \endreturns
+ **
+ *************************************************************************/
 float get_distance_to_next_waypoint(double lat_now, double lon_now, double lat_next, double lon_next);
 
-
-/**
- * Creates a new waypoint C on the line of two given waypoints (A, B) at certain distance
- * from waypoint A
- *
- * @param lat_A waypoint A latitude in degrees (47.1234567°, not 471234567°)
- * @param lon_A waypoint A longitude in degrees (8.1234567°, not 81234567°)
- * @param lat_B waypoint B latitude in degrees (47.1234567°, not 471234567°)
- * @param lon_B waypoint B longitude in degrees (8.1234567°, not 81234567°)
- * @param dist distance of target waypoint from waypoint A in meters (can be negative)
- * @param lat_target latitude of target waypoint C in degrees (47.1234567°, not 471234567°)
- * @param lon_target longitude of target waypoint C in degrees (47.1234567°, not 471234567°)
- */
+/************************************************************************/
+/** \brief Create Waypoint
+ **
+ **  \par Description
+ **       This function creates a new waypoint C on the line of two given
+ **        waypoints (A, B) at certain distance from waypoint A
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]     	lat_A     	 	Latitude A
+ **	 \param [in]   	 	lon_A     		Longitude A
+ **	 \param [in]     	lat_B     		Latitude B
+ **	 \param [in]   		lon_B     		Longitude B
+ **	 \param [in]   		dist     		Distance
+ **	 \param [in/out]    lat_target      Latitude C
+ **	 \param [in/out]   	lon_target      Longitude C
+ **
+ *************************************************************************/
 void create_waypoint_from_line_and_dist(double lat_A, double lon_A, double lat_B, double lon_B, float dist,
 		double *lat_target, double *lon_target);
 
-/**
- * Creates a waypoint from given waypoint, distance and bearing
- * see http://www.movable-type.co.uk/scripts/latlong.html
- *
- * @param lat_start latitude of starting waypoint in degrees (47.1234567°, not 471234567°)
- * @param lon_start longitude of starting waypoint in degrees (8.1234567°, not 81234567°)
- * @param bearing in rad
- * @param distance in meters
- * @param lat_target latitude of target waypoint in degrees (47.1234567°, not 471234567°)
- * @param lon_target longitude of target waypoint in degrees (47.1234567°, not 471234567°)
- */
+/************************************************************************/
+/** \brief Create Waypoint From Heading
+ **
+ **  \par Description
+ **       This function creates a waypoint from given waypoint, distance
+ **       and bearing see http://www.movable-type.co.uk/scripts/latlong.html
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]     	lat_A     	 	Latitude A
+ **	 \param [in]   	 	lon_A     		Longitude A
+ **	 \param [in]     	bearing    		Bearin in radians
+ **	 \param [in]   		dist     		Distance
+ **	 \param [in/out]    lat_target      Latitude C
+ **	 \param [in/out]   	lon_target      Longitude C
+ **
+ *************************************************************************/
 void waypoint_from_heading_and_distance(double lat_start, double lon_start, float bearing, float dist,
 		double *lat_target, double *lon_target);
 
-/**
- * Returns the bearing to the next waypoint in radians.
- *
- * @param lat_now current position in degrees (47.1234567°, not 471234567°)
- * @param lon_now current position in degrees (8.1234567°, not 81234567°)
- * @param lat_next next waypoint position in degrees (47.1234567°, not 471234567°)
- * @param lon_next next waypoint position in degrees (8.1234567°, not 81234567°)
- */
+/************************************************************************/
+/** \brief Get Waypoint Bearing
+ **
+ **  \par Description
+ **       This function returns the bearing to the next waypoint in radians.
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]     lat_now      Latitude now
+ **	 \param [in]   	 lon_now      Longitude now
+ **	 \param [in]     lat_next     Latitude next
+ **	 \param [in]   	 lon_next     Longitude next
+ **
+ **  \returns
+ **  Bearing in radians
+ **  \endreturns
+ **
+ *************************************************************************/
 float get_bearing_to_next_waypoint(double lat_now, double lon_now, double lat_next, double lon_next);
 
-void get_vector_to_next_waypoint(double lat_now, double lon_now, double lat_next, double lon_next, float *v_n,
-		float *v_e);
-
-void get_vector_to_next_waypoint_fast(double lat_now, double lon_now, double lat_next, double lon_next,
-		float *v_n, float *v_e);
-
-void add_vector_to_global_position(double lat_now, double lon_now, float v_n, float v_e, double *lat_res,
-		double *lon_res);
-
-int get_distance_to_line(struct crosstrack_error_s *crosstrack_error, double lat_now, double lon_now,
-				  double lat_start, double lon_start, double lat_end, double lon_end);
-
-int get_distance_to_arc(struct crosstrack_error_s *crosstrack_error, double lat_now, double lon_now,
-				 double lat_center, double lon_center,
-				 float radius, float arc_start_bearing, float arc_sweep);
-
-/*
- * Calculate distance in global frame
- */
+/************************************************************************/
+/** \brief Calculate Global Distance
+ **
+ **  \par Description
+ **       This function Calculate distance in global frame
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]  	     lat_now      Latitude now
+ **	 \param [in]   		 lon_now      Longitude now
+ **	 \param [in]   		 alt_now      Altitude now
+ **	 \param [in] 	     lat_next     Latitude next
+ **	 \param [in]   		 lon_next     Longitude next
+ **	 \param [in]   		 alt_next     Altitude next
+ **	 \param [in/out]   	 dist_xy      Horizontal distance
+ **	 \param [in/out]   	 dist_z       Vertical distance
+ **
+ **  \returns
+ **  Euclidian distance
+ **  \endreturns
+ **
+ *************************************************************************/
 float get_distance_to_point_global_wgs84(double lat_now, double lon_now, float alt_now,
 		double lat_next, double lon_next, float alt_next,
 		float *dist_xy, float *dist_z);
 
-/*
- * Calculate distance in local frame (NED)
- */
-float mavlink_wpm_distance_to_point_local(float x_now, float y_now, float z_now,
-		float x_next, float y_next, float z_next,
-		float *dist_xy, float *dist_z);
-
-float _wrap_180(float bearing);
-float _wrap_360(float bearing);
+/************************************************************************/
+/** \brief Wrap Bearing PI
+ **
+ **  \par Description
+ **       This function wraps the bearing to PI
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]     bearing      Bearing
+ **
+ **  \returns
+ **  Wrapped bearing
+ **  \endreturns
+ **
+ *************************************************************************/
 float _wrap_pi(float bearing);
+
+/************************************************************************/
+/** \brief Wrap Bearing 2PI
+ **
+ **  \par Description
+ **       This function wraps the bearing to 2PI
+ **
+ **  \par Assumptions, External Events, and Notes:
+ **       None
+ **
+ **	 \param [in]     bearing      Bearing
+ **
+ **  \returns
+ **  Wrapped bearing
+ **  \endreturns
+ **
+ *************************************************************************/
 float _wrap_2pi(float bearing);
 
 #ifdef __cplusplus
