@@ -22,6 +22,9 @@
 #define SCH_AD_PIPE_DEPTH				3
 #define SCH_AD_CHILD_TASK_PRIORITY		10
 
+
+/*#define SCH_RTM_SUPPORTED
+
 /*
 ** Schedule table definitions...
 */

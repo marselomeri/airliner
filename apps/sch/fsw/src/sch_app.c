@@ -245,7 +245,9 @@ void SCH_AppMain(void)
         }
 
         SCH_CheckDeadlines();
+#ifdef SCH_RTM_SUPPORTED
         OS_RtmEndFrame();
+#endif
     } /* End of while */
 
     /*
@@ -321,6 +323,7 @@ void SCH_CheckDeadlines(void)
     	slot--;
     }
 
+#ifdef SCH_RTM_SUPPORTED
     if(OS_RtmGetRunMode() == OS_RUNTIME_MODE_NONREALTIME)
     {
     	while(SCH_GetOutstandingActivityCount(slot))
@@ -328,6 +331,7 @@ void SCH_CheckDeadlines(void)
     		OS_BinSemTake(SCH_AppData.ADHoldupSemaphore);
     	}
     }
+#endif
 }
 
 
