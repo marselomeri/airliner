@@ -39,8 +39,6 @@
 #include "px4lib.h"
 #include <time.h>
 #include <errno.h>
-#include "osapi-os-core.h"
-
 
 extern "C" {
 
@@ -91,21 +89,19 @@ int32 PX4LIB_LibInit(void)
 
 uint64 PX4LIB_GetPX4TimeUs(void)
 {
-    OS_time_t ts;
-    ts.seconds     = 0;
-    ts.microsecs   = 0;
+    struct timespec ts;
     int returnCode = 0;
     uint64 outTime = 0;
-    
-    returnCode = OS_GetLocalTime(&ts);
+
+    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
     if (-1 == returnCode)
     {
         OS_printf("PX4LIB_GetPX4Time clock_gettime errno: %i", errno);
         goto end_of_function;
     }
 
-    outTime = (uint64)(ts.seconds) * 1000000;
-    outTime += ts.microsecs;
+    outTime = (uint64)(ts.tv_sec) * 1000000;
+    outTime += ts.tv_nsec / 1000;
 
 end_of_function:
     return outTime;
@@ -115,21 +111,19 @@ end_of_function:
 
 uint64 PX4LIB_GetPX4TimeMs(void)
 {
-    OS_time_t ts;
-    ts.seconds     = 0;
-    ts.microsecs   = 0;
+    struct timespec ts;
     int returnCode = 0;
     uint64 outTime = 0;
 
-    returnCode = OS_GetLocalTime(&ts);
+    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
     if (-1 == returnCode)
     {
         OS_printf("PX4LIB_GetPX4Time clock_gettime errno: %i", errno);
         goto end_of_function;
     }
 
-    outTime = ts.seconds * 10000;
-    outTime += ts.microsecs / 1000;
+    outTime = ts.tv_sec * 10000;
+    outTime += ts.tv_nsec / 1000000;
 
 end_of_function:
     return outTime;
