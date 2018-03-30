@@ -150,7 +150,8 @@ typedef struct
     /** \lgctlmmnemonic \LGC_CMDRJCTCNT
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
-
+    /** \brief App State */
+    uint8              State;
 } LGC_HkTlm_t;
 
 

@@ -203,6 +203,8 @@ int32 LGC::InitApp()
         goto LGC_InitApp_Exit_Tag;
     }
 
+        HkTlm.State = LGC_INITIALIZED;
+
 LGC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -548,27 +550,40 @@ void LGC::RetractGear(void)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void LGC::CheckSwitchPosition(void)
 {
-    switch(CVT.m_ManualControlSetpointMsg.GearSwitch)
-    {
-        case PX4_SWITCH_POS_NONE:
+        switch(CVT.m_ManualControlSetpointMsg.GearSwitch)
         {
-            /* Do nothing */
-            break;
+            case PX4_SWITCH_POS_NONE:
+            {
+                /* Do nothing */
+                HkTlm.State
+                break;
+            }
+            case PX4_SWITCH_POS_ON:
+            {
+                if(HkTlm.State != LGC_RETRACTED)
+                {
+                    (void) CFE_EVS_SendEvent(LGC_RETRACT_INF_EID, CFE_EVS_ERROR,
+                        "Retracting Landing Gear");
+                    RetractGear();
+                    HkTlm.State = LGC_RETRACTED;
+                }
+            }
+            case PX4_SWITCH_POS_MIDDLE:
+            {
+                /* Do nothing */
+                break;
+            }
+            case PX4_SWITCH_POS_OFF:
+            {
+                if(HkTlm.State != LGC_EXTENDED)
+                {
+                    (void) CFE_EVS_SendEvent(LGC_EXTEND_INF_EID, CFE_EVS_ERROR,
+                        "Extending Landing Gear");
+                    ExtendGear();
+                    HkTlm.State = LGC_EXTENDED;
+                }
+            }
         }
-        case PX4_SWITCH_POS_ON:
-        {
-            RetractGear();
-        }
-        case PX4_SWITCH_POS_MIDDLE:
-        {
-            /* Do nothing */
-            break;
-        }
-        case PX4_SWITCH_POS_OFF:
-        {
-            ExtendGear();
-        }
-    }
     return;
 }
 

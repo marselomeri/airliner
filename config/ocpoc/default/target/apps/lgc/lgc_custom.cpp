@@ -83,8 +83,8 @@ uint32 LGC_Freq2tick(uint16 FreqHz);
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 LGC::InitDevice(void)
 {
-    uint32 i;
-    int mem_fd;
+    uint32 i = 0;
+    int mem_fd = 0;
 
     /* Initialize just in case we were reloaded and the ctor wasn't called. */
     LGC_SharedMemCmd = 0;
@@ -100,13 +100,13 @@ int32 LGC::InitDevice(void)
     }
 
     // Note: this appears to be required actuators to initialize
-    //for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) 
-    //{
-        //AMC_SharedMemCmd->PeriodHi[i].Period =
-                //AMC_Freq2tick(AMC_FREQUENCY_PWM);
-        //AMC_SharedMemCmd->PeriodHi[i].Hi     =
-                //AMC_Freq2tick(AMC_FREQUENCY_PWM) / 2;
-    //}
+    for (i = MOTOR_OUTPUTS_SKIPPED; i < LGC_MAX_GEAR_OUTPUTS; ++i) 
+    {
+        LGC_SharedMemCmd->PeriodHi[i].Period =
+                LGC_Freq2tick(LGC_FREQUENCY_PWM);
+        LGC_SharedMemCmd->PeriodHi[i].Hi     =
+                LGC_Freq2tick(LGC_FREQUENCY_PWM) / 2;
+    }
     
     //StopMotors();
 

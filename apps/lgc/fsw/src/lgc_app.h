@@ -69,6 +69,20 @@ typedef struct
     PX4_VehicleStatusMsg_t m_VehicleStatusMsg;
 } LGC_CurrentValueTable_t;
 
+/**
+ * \brief application status
+ */
+typedef enum
+{
+    /*! App status uninitialized */
+    LGC_UNINITIALIZED = 0,
+    /*! App status uninitialized */
+    LGC_INITIALIZED   = 1,
+    /*! App status gear retracted */
+    LGC_RETRACTED     = 2,
+    /*! App status gear extended */
+    LGC_INITIALIZED   = 3
+} LGC_Status_t;
 
 /**
  **  \brief LGC Application Class
