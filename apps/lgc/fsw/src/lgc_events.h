@@ -292,8 +292,8 @@ typedef enum {
 */
     LGC_DEVICE_INIT_ERR_EID,
 
-/** \brief <tt> 'Retracting Landing Gear' </tt>
-**  \event <tt> 'Retracting Landing Gear' </tt>
+/** \brief <tt> 'Landing Gear in Retracted State' </tt>
+**  \event <tt> 'Landing Gear in Retracted State' </tt>
 **
 **  \par Type: ERROR
 **
@@ -303,8 +303,8 @@ typedef enum {
 */
     LGC_RETRACT_INF_EID,
 
-/** \brief <tt> 'Extending Landing Gear' </tt>
-**  \event <tt> 'Extending Landing Gear' </tt>
+/** \brief <tt> 'Landing gear in Extended State' </tt>
+**  \event <tt> 'Landing gear in Extended State' </tt>
 **
 **  \par Type: ERROR
 **
@@ -315,7 +315,8 @@ typedef enum {
     LGC_EXTEND_INF_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
-	LGC_EVT_CNT
+    LGC_EVT_CNT
+
 } LGC_EventIds_t;
 
 

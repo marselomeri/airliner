@@ -81,7 +81,7 @@ typedef enum
     /*! App status gear retracted */
     LGC_RETRACTED     = 2,
     /*! App status gear extended */
-    LGC_INITIALIZED   = 3
+    LGC_EXTENDED      = 3
 } LGC_Status_t;
 
 /**

@@ -100,15 +100,13 @@ int32 LGC::InitDevice(void)
     }
 
     // Note: this appears to be required actuators to initialize
-    for (i = MOTOR_OUTPUTS_SKIPPED; i < LGC_MAX_GEAR_OUTPUTS; ++i) 
+    for (i = MOTOR_OUTPUTS_SKIPPED; i < (MOTOR_OUTPUTS_SKIPPED + LGC_MAX_GEAR_OUTPUTS); ++i) 
     {
         LGC_SharedMemCmd->PeriodHi[i].Period =
                 LGC_Freq2tick(LGC_FREQUENCY_PWM);
         LGC_SharedMemCmd->PeriodHi[i].Hi     =
                 LGC_Freq2tick(LGC_FREQUENCY_PWM) / 2;
     }
-    
-    //StopMotors();
 
     return 0;
 }
@@ -124,9 +122,9 @@ void LGC::SetMotorOutputs(const uint16 *PWM)
     uint32 i = 0;
 
     /* Convert this to duty_cycle in ns */
-    for (i = MOTOR_OUTPUTS_SKIPPED; i < LGC_MAX_GEAR_OUTPUTS; ++i)
+    for (i = MOTOR_OUTPUTS_SKIPPED; i < (MOTOR_OUTPUTS_SKIPPED + LGC_MAX_GEAR_OUTPUTS); ++i)
     {
-        LGC_SharedMemCmd->PeriodHi[i].Hi = LGC_TICK_PER_US * PWM[i];
+        LGC_SharedMemCmd->PeriodHi[i].Hi = LGC_TICK_PER_US * PWM[(i - MOTOR_OUTPUTS_SKIPPED)];
     }
 }
 

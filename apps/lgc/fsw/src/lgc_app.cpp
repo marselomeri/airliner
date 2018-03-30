@@ -555,7 +555,6 @@ void LGC::CheckSwitchPosition(void)
             case PX4_SWITCH_POS_NONE:
             {
                 /* Do nothing */
-                HkTlm.State
                 break;
             }
             case PX4_SWITCH_POS_ON:
@@ -563,10 +562,11 @@ void LGC::CheckSwitchPosition(void)
                 if(HkTlm.State != LGC_RETRACTED)
                 {
                     (void) CFE_EVS_SendEvent(LGC_RETRACT_INF_EID, CFE_EVS_ERROR,
-                        "Retracting Landing Gear");
+                        "Landing Gear in Retracted State");
                     RetractGear();
                     HkTlm.State = LGC_RETRACTED;
                 }
+                break;
             }
             case PX4_SWITCH_POS_MIDDLE:
             {
@@ -578,10 +578,11 @@ void LGC::CheckSwitchPosition(void)
                 if(HkTlm.State != LGC_EXTENDED)
                 {
                     (void) CFE_EVS_SendEvent(LGC_EXTEND_INF_EID, CFE_EVS_ERROR,
-                        "Extending Landing Gear");
+                        "Landing gear in Extended State");
                     ExtendGear();
                     HkTlm.State = LGC_EXTENDED;
                 }
+                break;
             }
         }
     return;
