@@ -29,6 +29,10 @@ add_airliner_app_unit_test(lgc-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/lgc_testrunner.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/lgc_test_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/lgc_test_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_lgc_custom_hooks.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_lgc_custom_hooks.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_lgc_custom_stubs.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/ut_lgc_custom_stubs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lgc_app.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lgc_app.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/lgc_config_utils.cpp
@@ -40,6 +44,7 @@ add_airliner_app_unit_test(lgc-ut
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/stubs/
         
     VALGRIND_SUPPRESSION_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/valgrind.supp
