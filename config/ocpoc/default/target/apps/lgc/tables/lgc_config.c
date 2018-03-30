@@ -42,7 +42,9 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default LGC config table data */
 LGC_ConfigTbl_t LGC_ConfigTbl =
 {
-    /* TODO:  Define table. */
+    900,  /* PwmDisarmed */
+    1000, /* PwmMin      */
+    2000  /* PwmMax      */
 };
 
 /*

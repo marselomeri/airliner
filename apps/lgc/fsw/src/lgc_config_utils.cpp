@@ -99,10 +99,30 @@ int32 LGC::ValidateConfigTbl(void* ConfigTblPtr)
     int32  iStatus=0;
     LGC_ConfigTbl_t* LGC_ConfigTblPtr = (LGC_ConfigTbl_t*)(ConfigTblPtr);
 
-    /* TODO:  Add validation code here. */
+
+    if(LGC_ConfigTblPtr->PwmMin < LGC_ConfigTblPtr->PwmDisarmed)
+    {
+        CFE_EVS_SendEvent(LGC_PWM_CFGTBL_MIN_LT_DISARMED_ERR_EID,
+                CFE_EVS_ERROR,
+                "PWM Tbl Vldt: Min (%u) less than Disarmed (%u) speed.",
+                (unsigned int)LGC_ConfigTblPtr->PwmMin,
+                (unsigned int)LGC_ConfigTblPtr->PwmDisarmed);
+        iStatus = -1;
+        goto LGC_ValidateConfigTbl_Exit_Tag;
+    }
+
+    if(LGC_ConfigTblPtr->PwmMax < LGC_ConfigTblPtr->PwmMin)
+    {
+        CFE_EVS_SendEvent(LGC_PWM_CFGTBL_MAX_LT_MIN_ERR_EID, CFE_EVS_ERROR,
+                "PWM Tbl Vldt: Max (%u) less than Min (%u) speed.",
+                (unsigned int)LGC_ConfigTblPtr->PwmMax,
+                (unsigned int)LGC_ConfigTblPtr->PwmMin);
+        iStatus = -1;
+        goto LGC_ValidateConfigTbl_Exit_Tag;
+    }
 
 LGC_ValidateConfigTbl_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 

@@ -87,6 +87,9 @@
 #define SENS_SEND_HK_MIDX			90
 #define SENS_WAKEUP_MIDX			91
 
+#define LGC_WAKEUP_MIDX             93
+#define LGC_SEND_HK_MIDX 			94
+
 #define PX4BR_PROC_CMD_MIDX			100
 #define PX4BR_SEND_HK_MIDX			101
 #define AE_SEND_HK_MIDX			    102
@@ -113,9 +116,12 @@
 #define GPS_READ_SENSOR_MIDX 	    122
 #define GPS_SEND_HK_MIDX        	123
 
+
+
 #define EA_WAKEUP_MIDX 				125
 #define EA_PERFMON_MIDX 			126
 #define EA_SEND_HK_MIDX 			127
+
 
 #endif /* SCH_TBL_IDX_H */
 

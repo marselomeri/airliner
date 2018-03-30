@@ -62,8 +62,14 @@ extern "C" {
 /** \brief Definition for a single config table entry */
 typedef struct
 {
-    /* TODO:  Define the configuration table. */
-	uint32  temp;
+    /** \brief Landing gear actuator disarmed value for this device. */
+    uint32  PwmDisarmed;
+
+    /** \brief Landing gear actuator minimum value for this device. */
+    uint32  PwmMin;
+
+    /** \brief Landing gear actuator maximum value for this device. */
+    uint32  PwmMax;
 } LGC_ConfigTbl_t;
 
 

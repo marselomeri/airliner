@@ -250,6 +250,48 @@ typedef enum {
 */
 	LGC_CFGTBL_LOAD_ERR_EID,
 
+/** \brief <tt> 'PWM Tbl Vldt: Min (\%u) less than Disarmed (\%u) speed.' </tt>
+**  \event <tt> 'PWM Tbl Vldt: Min (\%u) less than Disarmed (\%u) speed.' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  The first \c %d field contains the 'Minimum' value defined in the table.
+**  The second \c %d field contains the 'Disarmed' value defined in the table.
+**
+*/
+    LGC_PWM_CFGTBL_MIN_LT_DISARMED_ERR_EID,
+
+/** \brief <tt> 'PWM Tbl Vldt: Max (\%u) less than Min (\%u) speed.' </tt>
+**  \event <tt> 'PWM Tbl Vldt: Max (\%u) less than Min (\%u) speed.' </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  The first \c %d field contains the 'Maximum' value defined in the table.
+**  The second \c %d field contains the 'Minimum' value defined in the table.
+**
+*/
+    LGC_PWM_CFGTBL_MAX_LT_MIN_ERR_EID,
+
+/** \brief <tt> 'Failed to init device (0x\%08x)" </tt>
+**  \event <tt> 'Failed to init device (0x\%08x)" </tt>
+**
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the CFS LGC Task fails to
+**  properly initialize the device required to command the landing gear
+**  actuator(s).
+**
+**  The 32 bit hexadecimal number is the error code returned by the
+**  platform specific LGC::InitDevice() function.
+*/
+    LGC_DEVICE_INIT_ERR_EID,
+
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	LGC_EVT_CNT
 } LGC_EventIds_t;

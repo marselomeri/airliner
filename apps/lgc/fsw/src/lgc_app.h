@@ -65,7 +65,7 @@ extern "C" {
  *************************************************************************/
 typedef struct
 {
-    PX4_RcChannelsMsg_t m_RcChannelsMsg;
+    PX4_ManualControlSetpointMsg_t m_ManualControlSetpointMsg;
     PX4_VehicleStatusMsg_t m_VehicleStatusMsg;
 } LGC_CurrentValueTable_t;
 
@@ -102,6 +102,7 @@ public:
     LGC_HkTlm_t HkTlm;
     /** \brief Current Value Table */
     LGC_CurrentValueTable_t CVT;
+
     /************************************************************************/
     /** \brief Landing Gear Control (LGC) application entry point
      **
@@ -279,6 +280,82 @@ public:
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
 private:
+    /************************************************************************/
+    /** \brief Set the actual motor outputs.
+     **
+     **  \par Description
+     **       This function takes an array of uint16 representing motor
+     **       speeds for each of the motors in the array, and sets the motor
+     **       to that specific speed.  The range of inputs is configuration
+     **       specific.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   *PWM          A pointer to an array of uint16.  The
+     **                              array size is defined by
+     **                              AMC_MAX_MOTOR_OUTPUTS.
+     **                              references the software bus message
+     **
+     *************************************************************************/
+    void   SetMotorOutputs(const uint16 *PWM);
+
+    /************************************************************************/
+    /** \brief Initialize device
+     **
+     **  \par Description
+     **       This function is defined in the platform specific package and
+     **       initializes the device, whatever it is, to allow the application
+     **       to set motor speeds.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Returns 0 if successful.  Returns a negative number if unsuccessful.
+     **  Meaning of actual return value is platform specific.
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 InitDevice(void);
+
+    /************************************************************************/
+    /** \brief Decode the landing gear switch position.
+     **
+     **  \par Description
+     **       This function decodes the switch position to extend or
+     **       retract the landing gear.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void CheckSwitchPosition(void);
+
+    /************************************************************************/
+    /** \brief Extend the landing gear
+     **
+     **  \par Description
+     **       This function extends (lowers) the landing gear.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ExtendGear(void);
+
+    /************************************************************************/
+    /** \brief Retract the landing gear
+     **
+     **  \par Description
+     **       This function retracts (raises) the landing gear.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void RetractGear(void);
+
     /************************************************************************/
     /** \brief Initialize the LGC configuration tables.
     **

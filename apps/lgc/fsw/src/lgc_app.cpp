@@ -90,11 +90,11 @@ int32 LGC::InitPipe()
                      (unsigned int)iStatus);
             goto LGC_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_RC_CHANNELS_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        iStatus = CFE_SB_SubscribeEx(PX4_MANUAL_CONTROL_SETPOINT_MID, SchPipeId, CFE_SB_Default_Qos, 1);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(LGC_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_RC_CHANNELS_MID. (0x%08lX)",
+                     "CMD Pipe failed to subscribe to PX4_MANUAL_CONTROL_SETPOINT_MID. (0x%08lX)",
                      iStatus);
             goto LGC_InitPipe_Exit_Tag;
         }
@@ -193,6 +193,16 @@ int32 LGC::InitApp()
         goto LGC_InitApp_Exit_Tag;
     }
 
+    /* Initialize the hardware device for use. */
+    iStatus = InitDevice();
+    if (iStatus != CFE_SUCCESS)
+    {
+        (void) CFE_EVS_SendEvent(LGC_DEVICE_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Failed to init device (0x%08x)",
+                (unsigned int)iStatus);
+        goto LGC_InitApp_Exit_Tag;
+    }
+
 LGC_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -242,15 +252,15 @@ int32 LGC::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case LGC_WAKEUP_MID:
-                /* TODO:  Do something here. */
+                CheckSwitchPosition();
                 break;
 
             case LGC_SEND_HK_MID:
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
-            case PX4_RC_CHANNELS_MID:
-                memcpy(&CVT.m_RcChannelsMsg, MsgPtr, sizeof(CVT.m_RcChannelsMsg));
+            case PX4_MANUAL_CONTROL_SETPOINT_MID:
+                memcpy(&CVT.m_ManualControlSetpointMsg, MsgPtr, sizeof(CVT.m_ManualControlSetpointMsg));
                 break;
             case PX4_VEHICLE_STATUS_MID:
                 memcpy(&CVT.m_VehicleStatusMsg, MsgPtr, sizeof(CVT.m_VehicleStatusMsg));
@@ -494,6 +504,75 @@ void LGC::AppMain()
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Extend landing gear                                             */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void LGC::ExtendGear(void)
+{
+    uint16 min_pwm[LGC_MAX_GEAR_OUTPUTS];
+
+    for (uint32 i = 0; i < LGC_MAX_GEAR_OUTPUTS; ++i)
+    {
+        min_pwm[i] = ConfigTblPtr->PwmMin;
+    }
+
+    SetMotorOutputs(min_pwm);
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Retract landing gear                                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void LGC::RetractGear(void)
+{
+    uint16 max_pwm[LGC_MAX_GEAR_OUTPUTS];
+
+    for (uint32 i = 0; i < LGC_MAX_GEAR_OUTPUTS; ++i)
+    {
+        max_pwm[i] = ConfigTblPtr->PwmMax;
+    }
+
+    SetMotorOutputs(max_pwm);
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Decode landing gear switch position.                            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void LGC::CheckSwitchPosition(void)
+{
+    switch(CVT.m_ManualControlSetpointMsg.GearSwitch)
+    {
+        case PX4_SWITCH_POS_NONE:
+        {
+            /* Do nothing */
+            break;
+        }
+        case PX4_SWITCH_POS_ON:
+        {
+            RetractGear();
+        }
+        case PX4_SWITCH_POS_MIDDLE:
+        {
+            /* Do nothing */
+            break;
+        }
+        case PX4_SWITCH_POS_OFF:
+        {
+            ExtendGear();
+        }
+    }
+    return;
+}
+
+
 
 
 /************************/
