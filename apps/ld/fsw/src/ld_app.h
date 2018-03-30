@@ -1,35 +1,35 @@
 /****************************************************************************
-*
-*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*
-* 1. Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-* 2. Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in
-*    the documentation and/or other materials provided with the
-*    distribution.
-* 3. Neither the name Windhover Labs nor the names of its
-*    contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name Windhover Labs nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 
 #ifndef LD_APP_H
 #define LD_APP_H
@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 
 #include "ld_platform_cfg.h"
 #include "ld_mission_cfg.h"
@@ -72,7 +71,7 @@ extern "C" {
  */
 typedef struct
 {
-	/** \brief The actuator armed message */
+    /** \brief The actuator armed message */
     PX4_ActuatorArmedMsg_t ActuatorArmedMsg;
     /** \brief The air speed message */
     PX4_AirspeedMsg_t AirspeedMsg;
@@ -90,62 +89,62 @@ typedef struct
     PX4_VehicleLocalPositionMsg_t VehicleLocalPositionMsg;
     /** \brief The vehicle control mode message */
     PX4_VehicleControlModeMsg_t VehicleControlModeMsg;
-} LD_CurrentValueTable_t;
+}LD_CurrentValueTable_t;
 
 /**
  * \brief parameter table
  */
 typedef struct
 {
-	/**\brief Multicopter max climb rate (m/s) */
-	float lndmc_z_vel_max ;                                                                                //= 0.5f;
-	/**\brief  Multicopter max horizontal velocity (m/s) */
-	float lndmc_xy_vel_max ;                                                                               //= 1.50f;
-	/**\brief  Multicopter max rotation (degrees/s) */
-	float lndmc_rot_max ;                                                                                  //= 20.0f;
-	/**\brief  Multicopter specific force threshold (m/s^2) */
-	float lndmc_ffall_thr ;                                                                                //= 2.0f;
-	/**\brief  Multicopter sub-hover throttle scaling */
-	float lndmc_thr_range ;                                                                                //= 0.1f;
-	/**\brief  Multicopter free-fall trigger time */
-	float lndmc_ffall_ttri ;                                                                               //= 0.3;
-	/**\brief  Multicopter Flight stick down threshold for landing */
-	float lndmc_man_dwnthr ;                                                                               //= 0.15f;
-	/**\brief  Multicopter Flight stick up threshold for take off */
-	float lndmc_pos_upthr ;                                                                                //= 0.65f;
-	/**\brief  Total flight time in ms, higher 32 bits of the value */
-	uint32 lnd_flight_t_hi ;                                                                               //= 0;
-	/**\brief  Total flight time in ms, lower 32 bits of the value */
-	uint32 lnd_flight_t_lo ;                                                                               //= 60299599;
-	/**\brief  Multicopter maximum altitude (m) */
-	float lndmc_alt_max ;                                                                                  //= 10000.0f;
-	/**\brief  Multicopter minimum throttle */
-	float minThrottle ;                                                                                    //= 0.12f;
-	/**\brief  Multicopter hover throttle */
-	float hoverThrottle ;                                                                                  //= 0.5f;
-	/**\brief  Multicopter throttle range (m) */
-	float throttleRange ;                                                                                  //= 0.1f;
-	/**\brief  Multicopter minimum throttle in manual mode */
-	float minManThrottle ;                                                                                 //= 0.08f;
-	/**\brief  Multicopter takeoff stick up threshold in position control mode */
-	float manual_stick_up_position_takeoff_threshold ;                                                     //= 0.65f;
-	/**\brief  Multicopter takeoff stick down threshold in position control mode */
-	float manual_stick_down_threshold ;                                                                    //= 0.15f;
+    /**\brief Multicopter max climb rate (m/s) */
+    float lndmc_z_vel_max;                                             //= 0.5f;
+    /**\brief  Multicopter max horizontal velocity (m/s) */
+    float lndmc_xy_vel_max;                                           //= 1.50f;
+    /**\brief  Multicopter max rotation (degrees/s) */
+    float lndmc_rot_max;                                              //= 20.0f;
+    /**\brief  Multicopter specific force threshold (m/s^2) */
+    float lndmc_ffall_thr;                                             //= 2.0f;
+    /**\brief  Multicopter sub-hover throttle scaling */
+    float lndmc_thr_range;                                             //= 0.1f;
+    /**\brief  Multicopter free-fall trigger time */
+    float lndmc_ffall_ttri;                                             //= 0.3;
+    /**\brief  Multicopter Flight stick down threshold for landing */
+    float lndmc_man_dwnthr;                                           //= 0.15f;
+    /**\brief  Multicopter Flight stick up threshold for take off */
+    float lndmc_pos_upthr;                                            //= 0.65f;
+    /**\brief  Total flight time in ms, higher 32 bits of the value */
+    uint32 lnd_flight_t_hi;                                               //= 0;
+    /**\brief  Total flight time in ms, lower 32 bits of the value */
+    uint32 lnd_flight_t_lo;                                        //= 60299599;
+    /**\brief  Multicopter maximum altitude (m) */
+    float lndmc_alt_max;                                           //= 10000.0f;
+    /**\brief  Multicopter minimum throttle */
+    float minThrottle;                                                //= 0.12f;
+    /**\brief  Multicopter hover throttle */
+    float hoverThrottle;                                               //= 0.5f;
+    /**\brief  Multicopter throttle range (m) */
+    float throttleRange;                                               //= 0.1f;
+    /**\brief  Multicopter minimum throttle in manual mode */
+    float minManThrottle;                                             //= 0.08f;
+    /**\brief  Multicopter takeoff stick up threshold in position control mode */
+    float manual_stick_up_position_takeoff_threshold;                 //= 0.65f;
+    /**\brief  Multicopter takeoff stick down threshold in position control mode */
+    float manual_stick_down_threshold;                                //= 0.15f;
 
 }LD_Params_t;
 
 /**
  * \brief Land detection states
  */
-enum  LandDetectionState {
-		/**! Vehicle is in flying state */
-		FLYING = 0,
-		/**! Vehicle is in flying landed state */
-		LANDED = 1,
-		/**! Vehicle is in flying free fall state */
-		FREEFALL = 2,
-		/**! Vehicle is in flying ground contact state */
-		GROUND_CONTACT = 3
+enum LandDetectionState {
+    /**! Vehicle is in flying state */
+    FLYING = 0,
+    /**! Vehicle is in flying landed state */
+    LANDED = 1,
+    /**! Vehicle is in flying free fall state */
+    FREEFALL = 2,
+    /**! Vehicle is in flying ground contact state */
+    GROUND_CONTACT = 3
 };
 
 /**
@@ -190,11 +189,11 @@ public:
     /** \brief The previous land detection message */
     PX4_VehicleLandDetectedMsg_t PreviousLandDetectedMsg;
     /** \brief The free fall state history variable */
-	StateHistory freefall_history = {false};
+    StateHistory freefall_history = {false};
     /** \brief The landed state history variable */
-	StateHistory landed_history = {true};
+    StateHistory landed_history = {true};
     /** \brief The ground contact state history variable */
-	StateHistory ground_contact_history = {true};
+    StateHistory ground_contact_history = {true};
     /** \brief The arming time variable */
     uint64 arming_time = 0;
     /** \brief The minimum thrust on start variable */
@@ -204,17 +203,17 @@ public:
     /** \brief The maximum altitude value variable */
     float altitude_max;
     /** \brief The total flight time variable */
-	uint64 total_flight_time = 0;
+    uint64 total_flight_time = 0;
     /** \brief The take off time variable */
-	uint64 takeoff_time = 0;
-	/** \brief Run main land detector loop at this rate in Hz. */
-	static constexpr uint32 LAND_DETECTOR_UPDATE_RATE_HZ = 50;
-	/** \brief Time in us that landing conditions have to hold before triggering a land. */
-	static constexpr uint64 LAND_DETECTOR_TRIGGER_TIME_US = 1500000;
-	/** \brief Time in us that ground contact condition have to hold before triggering contact ground */
-	static constexpr uint64 GROUND_CONTACT_TRIGGER_TIME_US = 1000000;
-	/** \brief Time interval in us in which wider acceptance thresholds are used after arming. */
-	static constexpr uint64 LAND_DETECTOR_ARM_PHASE_TIME_US = 2000000;
+    uint64 takeoff_time = 0;
+    /** \brief Run main land detector loop at this rate in Hz. */
+    static constexpr uint32 LAND_DETECTOR_UPDATE_RATE_HZ = 50;
+    /** \brief Time in us that landing conditions have to hold before triggering a land. */
+    static constexpr uint64 LAND_DETECTOR_TRIGGER_TIME_US = 1500000;
+    /** \brief Time in us that ground contact condition have to hold before triggering contact ground */
+    static constexpr uint64 GROUND_CONTACT_TRIGGER_TIME_US = 1000000;
+    /** \brief Time interval in us in which wider acceptance thresholds are used after arming. */
+    static constexpr uint64 LAND_DETECTOR_ARM_PHASE_TIME_US = 2000000;
 
     /************************************************************************/
     /** \brief Landing Detector (LD) application entry point
@@ -407,263 +406,262 @@ public:
 private:
     /************************************************************************/
     /** \brief Initialize the LD configuration tables.
-    **
-    **  \par Description
-    **       This function initializes LD's configuration tables.  This
-    **       includes <TODO>.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \retstmt Return codes from #CFE_TBL_Register          \endcode
-    **  \retstmt Return codes from #CFE_TBL_Load              \endcode
-    **  \retstmt Return codes from #LD_AcquireConfigPointers \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  InitConfigTbl(void);
+     **
+     **  \par Description
+     **       This function initializes LD's configuration tables.  This
+     **       includes <TODO>.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+     **  \retstmt Return codes from #CFE_TBL_Register          \endcode
+     **  \retstmt Return codes from #CFE_TBL_Load              \endcode
+     **  \retstmt Return codes from #LD_AcquireConfigPointers \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 InitConfigTbl(void);
     /************************************************************************/
     /** \brief Obtain LD configuration tables data pointers.
-    **
-    **  \par Description
-    **       This function manages the configuration tables
-    **       and obtains a pointer to their data.
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    int32  AcquireConfigPointers(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
+     **
+     **  \par Description
+     **       This function manages the configuration tables
+     **       and obtains a pointer to their data.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    int32 AcquireConfigPointers(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
     boolean DetectFreeFall(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	boolean DetectGroundContactState(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	boolean DetectLandedState(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	float TakeoffThrottle(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	float MaxAltitude(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean DetectGroundContactState(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean DetectLandedState(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    float TakeoffThrottle(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    float MaxAltitude(void);
 
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	boolean AltitudeLock(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	boolean PositionLock(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	boolean ManualControlPresent(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
-	boolean MinimalThrust(void);
-	/************************************************************************/
-	/** \brief Detect if vehicle is in free fall state.
-	**
-	**  \par Description
-	**       Computes net acceleration acting on the vehicle. if the value
-	**       is close to the free fall threshold then true is returned
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	**  \returns
-	**  True id net acceleration acting on the vehicle's body is less than
-	**  free fall threshold value.
-	**  \endreturns
-	**
-	*************************************************************************/
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean AltitudeLock(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean PositionLock(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean ManualControlPresent(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
+    boolean MinimalThrust(void);
+    /************************************************************************/
+    /** \brief Detect if vehicle is in free fall state.
+     **
+     **  \par Description
+     **       Computes net acceleration acting on the vehicle. if the value
+     **       is close to the free fall threshold then true is returned
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  True id net acceleration acting on the vehicle's body is less than
+     **  free fall threshold value.
+     **  \endreturns
+     **
+     *************************************************************************/
     void UpdateState(void);
-	/************************************************************************/
-	/** \brief Land Detector Task
-	 **
-	 **  \par Description
-	 **       Executes every time a new message is available, determines if
-	 **       vehicle is in one of three states, writes this information to
-	 **       VehicleLandDetectedMsg and publishes it.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Land Detector Task
+     **
+     **  \par Description
+     **       Executes every time a new message is available, determines if
+     **       vehicle is in one of three states, writes this information to
+     **       VehicleLandDetectedMsg and publishes it.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void Execute(void);
-	/************************************************************************/
-	/** \brief Detect Change In State.
-	**
-	**  \par Description
-	**       Reads VehicleLandDetectedMsg and determines if state of the
-	**       vehicle has changed.
-	**
-	**  \par Assumptions, External Events, and Notes:
-	**       None
-	**
-	*************************************************************************/
+    /************************************************************************/
+    /** \brief Detect Change In State.
+     **
+     **  \par Description
+     **       Reads VehicleLandDetectedMsg and determines if state of the
+     **       vehicle has changed.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void DetectStateChange(void);
-	/************************************************************************/
-	/** \brief Updates application params from param table
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 *************************************************************************/
+    /************************************************************************/
+    /** \brief Updates application params from param table
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
     void UpdateParamsFromTable(void);
-
 
 public:
     /************************************************************************/
     /** \brief Validate LD configuration table
-    **
-    **  \par Description
-    **       This function validates LD's configuration table
-    **
-    **  \par Assumptions, External Events, and Notes:
-    **       None
-    **
-    **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
-    **
-    **  \returns
-    **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
-    **  \endreturns
-    **
-    *************************************************************************/
-    static int32  ValidateConfigTbl(void*);
+     **
+     **  \par Description
+     **       This function validates LD's configuration table
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   ConfigTblPtr    A pointer to the table to validate.
+     **
+     **  \returns
+     **  \retcode #CFE_SUCCESS  \retdesc \copydoc CFE_SUCCESS  \endcode
+     **  \endreturns
+     **
+     *************************************************************************/
+    static int32 ValidateConfigTbl(void*);
 };
 
 #ifdef __cplusplus

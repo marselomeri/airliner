@@ -100,23 +100,13 @@
 /**
   \page cfsnavovr NAV Application Overview
     
-  The NAV Application (NAV) application does some cool stuff.
-
-  (Insert paragraph providing application purpose and a high level description of 
-  application capabilites)
+  The NAV Application is responsible for safely navigating or moving the vehicle from one location to another.
     
-  NAV Design Overview
+  VM Design Overview
   ====
-
-  (Insert text and/or diagrams to describe high-level design.  Remember your audience is
-  not necessarily going to be a software engineer!)
-
-  (Inserting Diagrams)
-  ----
-
-  (Diagrams can be inserted using the following formatting:
-    \image html My_Diagram_Image_Filename.jpg "My Diagram Label" <BR>
-  The referenced jpg file should be put into the same directory as this file.)
+  1. Fuses position, vehicle status and land detection data to set position setpoint triplet.
+  2. This message has enough information for a vehicle to move from one position to another.
+  3. The message is published on the software bus which is eventually picked up by MPC.
     
   Prev: \ref cfsnavintro <BR>
   Next: \ref cfsnavopr
@@ -124,41 +114,29 @@
 
 /**
     \page cfsnavopr NAV Application Operation
-   
-  (Insert intended operational scenarios.  This should include references to appropriate commands
-   and telemetry points as needed.  Detailed explanation of telemetry could also be useful.)
-
-    1. The application version number
-    ----
-  
-    The application version number is displayed in the initialization event and the
-    no-op event.
-
-    2. Table Handling
-    ----
-
-    TODO High-level stuff on tables goes here.
-
-    3. Sending the No-op Command
-    ----
-
-    TODO Discuss the No-Op command here.
     
-    4. Sending the reset counters command
-    ----
+    The following operations are carried out by the VM Application:
+  	1. Receive and act to vehicle command message
+     ----
+     a. When a command is passed, either takeoff, land or return to launch navigator reads the command.<BR>
+     b. Store current position as previous and goal as next.<BR>
+     c. Store new current position.<BR>
+     d. Assign yaw to current position set point.<BR>
+     e. Assign latitude and longitude to current set point.<BR>
+     f. Assign altitude to current set point.<BR>
+     g. Assign set point triplet validity.<BR>
 
-    TODO Discuss the reset counters command here.
+	2. Receive and act to vehicle status message
+     ----
+     a. On receipt of a new navigation state set position setpoint triplet message.<BR>
+     b. while in a navigation state do activities to update position setpoint triplet message and identify if the next position is reached.<BR>
 
-    5. Monitoring the command counter
-    ----
+	3. Set and publish position set point triplet
+     ----
+     a. The position setpoint triplet contains 3 position setpoints they are named as previous, current and next.<BR>
+     b. Previous setpoint store history as old as one level, current setpoint stores present position and next setpoint will store position which is supposed to be reached by the vehicle.<BR>
+     c. This message is published on to software bus.<BR>
 
-    TODO Discuss the counter here.
-
-    6. Monitoring the command error counter
-    ----
-
-    TODO Discuss the counter behavior here.
-    
     Next: \ref cfsnavreq <BR>
     Prev: \ref cfsnavovr
 **/

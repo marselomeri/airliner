@@ -5,6 +5,9 @@ add_custom_command(
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/sm_src
     COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -c++ -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm 
     COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -c++ -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm 
+    COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -graph -glevel 0 -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Arming.sm 
+    COMMAND java -jar ${PROJECT_SOURCE_DIR}/tools/smc/bin/Smc.jar -graph -glevel 0 -d ${CMAKE_CURRENT_BINARY_DIR}/sm_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/VM_Navigation.sm 
+    
     BYPRODUCTS 
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.h
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_MainContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.h
@@ -16,6 +19,8 @@ add_custom_target(vm-smc-gen ALL
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_ArmingContext.h
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.cpp ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.h
 )
+
+
 
 add_airliner_app_def(vm
     FILE VM
@@ -37,8 +42,6 @@ add_airliner_app_def(vm
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/CautionWarningHelper.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/CautionWarningHelper.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_state_history.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_state_history.h
 
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
@@ -83,8 +86,6 @@ add_airliner_app_unit_test(vm-ut
         ${CMAKE_CURRENT_BINARY_DIR}/sm_src/VM_NavigationContext.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/CautionWarningHelper.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/CautionWarningHelper.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_state_history.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../src/vm_state_history.h
         #${PX4LIB_LIB_SOURCES}
         # Adding lib sources individually so stubs can be used.
         # Math
