@@ -43,7 +43,7 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MAC config table data */
 MAC_ParamTbl_t MAC_ParamTbl =
 {
-		6.0,		/* MC_ROLL_P 	   */
+		6.5,		/* MC_ROLL_P 	   */
 		0.15,		/* MC_ROLLRATE_P   */
 		0.05,		/* MC_ROLLRATE_I   */
 		0.30,		/* MC_RR_INT_LIM   */
@@ -67,7 +67,7 @@ MAC_ParamTbl_t MAC_ParamTbl =
 		0.30,       /* MC_YR_INT_LIM   */
 		0.0,		/* MC_YAWRATE_D    */
 		0.0,		/* MC_YAWRATE_FF   */
-		0.5,		/* MC_YAW_FF       */
+		0.75,		/* MC_YAW_FF       */
 		220.0,		/* MC_ROLLRATE_MAX */
 		220.0,		/* MC_PITCHRATE_MAX */
 		200.0,		/* MC_YAWRATE_MAX   */

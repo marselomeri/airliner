@@ -186,7 +186,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 1
 	 * @group Multicopter Position Control
 	 */
-	2.5f,
+	3.0f,
 
 	/**
 	 * MPC_Z_VEL_MAX_DN
@@ -275,7 +275,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	2.0f,
+	5.0f,
 
 	/**
 	 * MPC_VEL_MAN_MAX
@@ -288,7 +288,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	5.0f,
+	10.0f,
 
 	/**
 	 * MPC_TARGET_THRE
@@ -321,7 +321,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	2.5f,
+	5.0f,
 
 	/**
 	 * MPC_XY_FF
@@ -348,7 +348,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 1
 	 * @group Multicopter Position Control
 	 */
-	30.0f,
+	45.0f,
 
 	/**
 	 * MPC_TILTMAX_LND
@@ -397,7 +397,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 1
 	 * @group Multicopter Position Control
 	 */
-	30.0f,
+	35.0f,
 
 	/**
 	 * MPC_MAN_Y_MAX
@@ -469,7 +469,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	3.0f,
+	10.0f,
 
 	/**
 	 * MPC_DEC_HOR_MAX
@@ -482,7 +482,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	3.0f,
+	10.0f,
 
 	/**
 	 * MPC_ACC_UP_MAX
@@ -495,7 +495,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	3.0f,
+	5.0f,
 
 	/**
 	 * MPC_ACC_DOWN_MAX
@@ -508,7 +508,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	3.0f,
+	5.0f,
 
 	/**
 	 * MPC_ALT_MODE
@@ -537,7 +537,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	1,
+	0,
 
 	/**
 	 * MPC_Z_MAN_EXPO
@@ -554,7 +554,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	1,
+	0.0f,
 
 	/**
 	 * MPC_LAND_ALT1
