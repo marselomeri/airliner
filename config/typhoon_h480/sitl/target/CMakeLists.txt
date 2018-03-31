@@ -417,3 +417,15 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_perfids.h
 )
+
+add_airliner_app(
+    lgc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/lgc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
+)
+
