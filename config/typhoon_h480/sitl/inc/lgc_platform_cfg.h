@@ -110,6 +110,14 @@ extern "C" {
 #define LGC_STARTUP_TIMEOUT_MSEC    (1000)
 
 
+/** \brief The number of landing gear actuators.
+**
+**  \par Limits:
+**       None.
+*/
+#define LGC_MAX_GEAR_OUTPUTS        (1)
+
+
 #ifdef __cplusplus
 }
 #endif

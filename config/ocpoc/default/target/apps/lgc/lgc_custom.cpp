@@ -84,6 +84,7 @@ uint32 LGC_Freq2tick(uint16 FreqHz);
 int32 LGC::InitDevice(void)
 {
     uint32 i = 0;
+    int returnVal = 0;
     int mem_fd = 0;
 
     /* Initialize just in case we were reloaded and the ctor wasn't called. */
@@ -95,8 +96,10 @@ int32 LGC::InitDevice(void)
             LGC_RCOUT_ZYNQ_PWM_BASE);
     close(mem_fd);
 
-    if (LGC_SharedMemCmd == 0) {
-        return errno;
+    if (LGC_SharedMemCmd == 0) 
+    {
+        returnVal = errno;
+        goto end_of_function;
     }
 
     // Note: this appears to be required actuators to initialize
@@ -108,7 +111,8 @@ int32 LGC::InitDevice(void)
                 LGC_Freq2tick(LGC_FREQUENCY_PWM) / 2;
     }
 
-    return 0;
+end_of_function:
+    return returnVal;
 }
 
 
@@ -126,6 +130,7 @@ void LGC::SetMotorOutputs(const uint16 *PWM)
     {
         LGC_SharedMemCmd->PeriodHi[i].Hi = LGC_TICK_PER_US * PWM[(i - MOTOR_OUTPUTS_SKIPPED)];
     }
+    return;
 }
 
 
