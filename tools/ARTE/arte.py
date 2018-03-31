@@ -89,7 +89,9 @@ def count_clients(config):
     
     client_count = 0
     for i in config['clients']:
-        client_count += 1
+        # If Arte client == true
+        if i['client'] == 1:
+            client_count += 1
     return client_count
 
 

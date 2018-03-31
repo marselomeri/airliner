@@ -33,6 +33,11 @@
 
 #ifndef MS5611_SPI_H
 #define MS5611_SPI_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Includes
 *************************************************************************/
@@ -180,11 +185,6 @@ boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind);
 **
 *************************************************************************/
 int32 MS5611_ResetDevice(void);
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifdef __cplusplus
 }
