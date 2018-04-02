@@ -353,7 +353,7 @@ void RCIN_Stream_Task(void)
             {
                 OS_MutSemTake(RCIN_AppCustomData.Mutex);
                 RCIN_AppCustomData.Status = RCIN_CUSTOM_NOTSTREAMING;
-                RCIN_Custom_SetDefaultValues();
+                //RCIN_Custom_SetDefaultValues();
                 OS_MutSemGive(RCIN_AppCustomData.Mutex); 
                 continue;
             } 
@@ -383,16 +383,16 @@ void RCIN_Stream_Task(void)
 }
 
 
-void RCIN_Custom_SetDefaultValues(void)
-{
-    uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0x0f, 0x01, 0x04, 0x20, 0x00,
-                                              0xff, 0x07, 0x40, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0x00, 0x00 };
+//void RCIN_Custom_SetDefaultValues(void)
+//{
+    //uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0x0f, 0x01, 0x04, 0x20, 0x00,
+                                              //0xff, 0x07, 0x40, 0x00, 0x02,
+                                              //0x10, 0x80, 0x2c, 0x64, 0x21,
+                                              //0x0b, 0x59, 0x08, 0x40, 0x00,
+                                              //0x02, 0x10, 0x80, 0x00, 0x00 };
 
-    RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
-}
+    //RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
+//}
 
 
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
