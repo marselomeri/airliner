@@ -217,6 +217,7 @@ def vehicle_stable_hover():
 
 
 def vehicle_full_forward():
+    print "Move forward"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -423,6 +424,7 @@ vehicle_posctl_mode()
 vehicle_stable_hover()
 vehicle_fly_square_ccw()
 vehicle_fly_square_cw()
+raw_input("Press enter to engage RTL>")
 vehicle_land()
 
 # Send one NoOp command
