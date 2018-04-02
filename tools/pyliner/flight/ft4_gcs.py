@@ -176,7 +176,7 @@ def vehicle_posctl_mode():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':0},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -209,7 +209,7 @@ def vehicle_stable_hover():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -240,7 +240,7 @@ def vehicle_full_forward():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -272,7 +272,7 @@ def vehicle_full_left():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -304,7 +304,7 @@ def vehicle_full_reverse():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -336,7 +336,7 @@ def vehicle_full_right():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -367,7 +367,7 @@ def vehicle_land():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':3},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -425,7 +425,7 @@ vehicle_land()
 
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})
-time.sleep(15)
+time.sleep(20)
 
 # print received telemetry
 es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
