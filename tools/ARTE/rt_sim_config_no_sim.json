@@ -22,7 +22,7 @@
       "client": true,
       "command": "python2 ft4_gcs_rt.py",
       "output": "log_test_script.txt",
-      "cwd": "/home/vagrant/Desktop/airliner/tools/pyliner/examples/",
+      "cwd": "../pyliner/examples/",
       "env": ""
     }
   ]
