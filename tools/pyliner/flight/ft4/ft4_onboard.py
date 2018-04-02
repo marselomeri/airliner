@@ -1,5 +1,5 @@
 from os import path, sys
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+sys.path.append(path.dirname( path.dirname( path.dirname( path.abspath(__file__) ) ) ) )
 from pyliner import Pyliner
 import time
 import math
