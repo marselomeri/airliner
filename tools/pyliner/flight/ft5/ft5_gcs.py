@@ -1,5 +1,5 @@
 from os import path, sys
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+sys.path.append(path.dirname( path.dirname( path.dirname( path.abspath(__file__) ) ) ) )
 from pyliner import Pyliner
 import time
 import math
@@ -7,9 +7,10 @@ from px4_msg_enums import *
 
 # Initialize pyliner object
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
+                      "address": "192.168.1.2",
                       "ci_port": 5009,
                       "to_port": 5012,
-                      "script_name": "FT4_Onboard",
+                      "script_name": "FT5_Onboard",
                       "log_dir": "./logs/"})
 
 # Subscribe to es HK commander counter
@@ -376,45 +377,48 @@ def vehicle_land():
 
 
 def vehicle_fly_square_ccw():
+    print "Starting counter clockwise square pattern..."
+    raw_input("Press enter to move forward>")
     vehicle_full_forward()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
+    raw_input("Press enter to move left>")
     vehicle_full_left()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
+    raw_input("Press enter to move backwards>")
     vehicle_full_reverse()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
+    raw_input("Press enter to move right>")
     vehicle_full_right()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
 
 
 def vehicle_fly_square_cw():
+    print "Starting clockwise square pattern..."
+    raw_input("Press enter to move forward>")
     vehicle_full_forward()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
+    raw_input("Press enter to move right>")
     vehicle_full_right()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
+    raw_input("Press enter to move backwards>")
     vehicle_full_reverse()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
+    raw_input("Press enter to move left>")
     vehicle_full_left()
-    time.sleep(2)
+    time.sleep(3)
     vehicle_stable_hover()
-    time.sleep(2)
 
 # vehicle control
 vehicle_arm()
-time.sleep(5)
+time.sleep(2)
+raw_input("Press enter to takeoff>")
 vehicle_takeoff()
 vehicle_posctl_mode()
 vehicle_stable_hover()

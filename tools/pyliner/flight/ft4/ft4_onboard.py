@@ -1,5 +1,5 @@
 from os import path, sys
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+sys.path.append(path.dirname( path.dirname( path.dirname( path.abspath(__file__) ) ) ) )
 from pyliner import Pyliner
 import time
 import math
@@ -7,10 +7,9 @@ from px4_msg_enums import *
 
 # Initialize pyliner object
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
-                      "address": "192.168.1.2",
                       "ci_port": 5009,
                       "to_port": 5012,
-                      "script_name": "FT4_GCS",
+                      "script_name": "FT4_Onboard",
                       "log_dir": "./logs/"})
 
 # Subscribe to es HK commander counter
@@ -425,7 +424,7 @@ vehicle_land()
 
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})
-time.sleep(20)
+time.sleep(15)
 
 # print received telemetry
 es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
