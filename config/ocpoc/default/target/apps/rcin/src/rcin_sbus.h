@@ -354,18 +354,6 @@ void RCIN_Custom_Read(void);
 
 
 /************************************************************************/
-/** \brief Set initial startup values if the RCIN receiver is not
- *         writing data yet. I.e. select() is timing out.
-**
-**  \par Description
-**       Sets inital RC_Input message values if the RC receiver is 
-**       silent on startup before the remote control is turned on.
-**
-*************************************************************************/
-void RCIN_Custom_SetDefaultValues(void);
-
-
-/************************************************************************/
 /** \brief Called if the input stream is out of sync or a device read
 **         error occurs.
 **
