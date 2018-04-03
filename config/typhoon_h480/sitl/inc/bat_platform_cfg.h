@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define BAT_LISTENER_TASK_FLAGS            OS_ENABLE_CORE_0
+
 /*
 ** BAT Platform Configuration Parameter Definitions
 */

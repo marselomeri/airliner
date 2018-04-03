@@ -240,6 +240,8 @@ typedef struct
     uint32                          ChildTaskID;
     /*! Streaming task function pointer */
     CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    /*! Streaming task flags */
+    CFE_ES_ChildTaskMainFuncPtr_t   TaskFlags;
 } RGBLED_AppCustomData_t;
 
 

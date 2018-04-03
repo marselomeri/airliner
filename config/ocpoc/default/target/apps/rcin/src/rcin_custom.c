@@ -41,6 +41,7 @@
 #include "rcin_events.h"
 #include "perf_ids.h"
 #include "px4lib.h"
+#include "rcin_platform_cfg.h"
 
 /************************************************************************
 ** Local Defines
@@ -267,7 +268,7 @@ boolean RCIN_Custom_Init(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         RCIN_AppCustomData.Priority,
-        0);
+		RCIN_STREAMING_TASK_FLAGS);
         
     if(CFE_SUCCESS != returnCode)
     {

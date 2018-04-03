@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 
+#define EA_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
+
+
 /*
 ** ea Platform Configuration Parameter Definitions
 */

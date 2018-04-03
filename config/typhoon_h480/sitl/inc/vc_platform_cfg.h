@@ -7,6 +7,8 @@ extern "C" {
 
 #include <arpa/inet.h>
 
+#define VC_STREAMING_TASK_FLAGS       OS_ENABLE_CORE_0
+
 /*
 ** VC Platform Configuration Parameter Definitions
 */

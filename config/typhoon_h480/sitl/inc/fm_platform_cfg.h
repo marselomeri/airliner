@@ -1,12 +1,16 @@
 #ifndef FM_PLATFORM_CFG_H
 #define FM_PLATFORM_CFG_H
 
+#include "osapi.h"
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* FM platform configuration parameters - application definitions  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#define FM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
 
 /** \fmcfg File Manager Application Name
 **

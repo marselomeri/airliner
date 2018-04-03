@@ -63,6 +63,7 @@ extern "C" {
 **       Note, this name must fit in OS_MAX_API_NAME.
 */
 #define MPU9250_PARAM_PIPE_NAME             ("MPU9250_PARAM_PIPE")
+
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:

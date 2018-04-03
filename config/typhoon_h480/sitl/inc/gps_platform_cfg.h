@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define GPS_CUSTOM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
+
 /*
 ** GPS Platform Configuration Parameter Definitions
 */

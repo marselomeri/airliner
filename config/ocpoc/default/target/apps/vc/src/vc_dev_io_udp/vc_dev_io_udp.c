@@ -108,7 +108,7 @@ boolean VC_Devices_Start(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         VC_AppCustomDevice.Priority,
-        0);
+        VC_STREAMING_TASK_FLAGS);
 
     if(returnCode != CFE_SUCCESS)
     {

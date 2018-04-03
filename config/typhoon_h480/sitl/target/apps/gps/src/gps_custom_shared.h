@@ -288,6 +288,7 @@ typedef struct
     boolean                      ContinueFlag;
     /*! The last timestamp */
     //CFE_TIME_SysTime_t           LastTimeStamp;
+    uint32						  TaskFlags;
 } GPS_AppCustomData_t;
 
 

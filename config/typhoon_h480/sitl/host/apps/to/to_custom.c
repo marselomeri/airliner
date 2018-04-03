@@ -407,7 +407,7 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
             0,
             CFE_ES_DEFAULT_STACK_SIZE,
             TO_AppCustomData.Channel[ChannelID].Priority,
-            0);
+			TO_CUSTOM_CHILD_TASK_FLAGS);
 
 end_of_function:
     return returnCode;

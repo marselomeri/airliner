@@ -719,7 +719,7 @@ int32 ULR::InitListenerTask(void)
 								   NULL,
 								   ULR_LISTENER_TASK_STACK_SIZE,
 								   ULR_LISTENER_TASK_PRIORITY,
-								   0);
+								   ULR_LISTENER_TASK_FLAGS);
 	if (Status != CFE_SUCCESS)
 	{
 		goto end_of_function;

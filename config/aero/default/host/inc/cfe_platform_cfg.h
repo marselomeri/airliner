@@ -1075,6 +1075,8 @@
 */
 #define CFE_ES_PERF_CHILD_STACK_SIZE              4096
 
+#define CFE_ES_START_TASK_FLAGS				      OS_ENABLE_CORE_0
+
 /**
 **  \cfeescfg Define Performance Analyzer Child Task Delay
 **
@@ -1137,6 +1139,8 @@
 */
 #define CFE_EVS_START_TASK_STACK_SIZE             CFE_ES_DEFAULT_STACK_SIZE
 
+#define CFE_EVS_START_TASK_FLAGS				  OS_ENABLE_CORE_0
+
 /**
 **  \cfeescfg Define SB Task Priority
 **
@@ -1183,6 +1187,8 @@
 */
 #define CFE_ES_START_TASK_STACK_SIZE             16384
 
+#define CFE_ES_START_TASK_FLAGS				     OS_ENABLE_CORE_0
+
 /**
 **  \cfetimecfg Define TIME Task Priorities
 **
@@ -1216,6 +1222,10 @@
 #define CFE_TIME_TONE_TASK_STACK_SIZE             4096
 #define CFE_TIME_1HZ_TASK_STACK_SIZE              8192
 
+#define CFE_TIME_START_TASK_FLAGS			      OS_ENABLE_CORE_0
+#define CFE_TIME_TONE_TASK_FLAGS			      OS_ENABLE_CORE_0
+#define CFE_TIME_1HZ_TASK_FLAGS			          OS_ENABLE_CORE_0
+
 /**
 **  \cfeescfg Define TBL Task Priority
 **
@@ -1238,6 +1248,8 @@
 **       configuration paramater.
 */
 #define CFE_TBL_START_TASK_STACK_SIZE             CFE_ES_DEFAULT_STACK_SIZE
+
+#define CFE_TBL_START_TASK_FLAGS				  OS_ENABLE_CORE_0
 
 /**
 **  \cfeescfg Define Maximum Number of Registered CDS Blocks

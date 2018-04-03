@@ -1,9 +1,13 @@
 #ifndef CS_PLATFORM_CFG_H
 #define CS_PLATFORM_CFG_H
 
+#include "osapi.h"
+
 /*************************************************************************
  ** Macro Definitions
  *************************************************************************/
+
+#define CS_CHILD_TASK_FLAGS							OS_ENABLE_CORE_0
 
 /**
 **  \cscfg EEPROM File Table -- default table filename

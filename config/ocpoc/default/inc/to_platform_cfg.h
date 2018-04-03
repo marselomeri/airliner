@@ -7,6 +7,8 @@ extern "C" {
 
 #include "cfe_platform_cfg.h"
 
+#define TO_CUSTOM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
+
 /*
 ** to Platform Configuration Parameter Definitions
 */

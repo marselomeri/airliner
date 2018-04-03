@@ -1533,7 +1533,7 @@ int32 SCH_ChildTaskInit(void)
                                    NULL,
                                    CFE_ES_DEFAULT_STACK_SIZE,
                                    SCH_AD_CHILD_TASK_PRIORITY,
-                                   0);
+                                   SCH_AD_CHILD_TASK_FLAGS);
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_AD_CHILD_TASK_CREATE_ERR_EID, CFE_EVS_ERROR,

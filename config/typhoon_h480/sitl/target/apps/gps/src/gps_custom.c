@@ -44,6 +44,7 @@
 #include "msg_ids.h"
 #include "simlib.h"
 #include "px4lib.h"
+#include "gps_platform_cfg.h"
 
 #include "gps_event_driven.h"
 
@@ -119,7 +120,7 @@ boolean GPS_Custom_Init()
             0,
             CFE_ES_DEFAULT_STACK_SIZE,
             GPS_AppCustomData.Priority,
-            0);
+			GPS_CUSTOM_CHILD_TASK_FLAGS);
     if(CFE_SUCCESS != returnCode)
     {
         GPS_AppCustomData.ContinueFlag = FALSE;

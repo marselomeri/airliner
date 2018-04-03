@@ -1,9 +1,9 @@
-CFE_LIB, /cf/apps/CFS_LIB.so,   CFS_LibInit,     CFS_LIB,    0,     0, 0x0, 0;
-CFE_APP, /cf/apps/CI.so,        CI_AppMain,      CI,        43, 32768, 0x0, 0;
-CFE_APP, /cf/apps/TO.so,        TO_AppMain,      TO,        80, 32768, 0x0, 0;
-CFE_APP, /cf/apps/CF.so,        CF_AppMain,      CF,        50, 32768, 0x0, 0;
-CFE_APP, /cf/apps/SCH.so,       SCH_AppMain,     SCH,       34,  4096, 0x0, 0;
-!CFE_APP, /cf/apps/SBN.so,     SBN_AppMain,     SBN,       37, 32768, 0x0, 0;
+CFE_LIB, /cf/apps/CFS_LIB.so,   CFS_LibInit,     CFS_LIB,    0,     0, 0x0, 0, 2;
+CFE_APP, /cf/apps/CI.so,        CI_AppMain,      CI,        43, 32768, 0x0, 0, 2;
+CFE_APP, /cf/apps/TO.so,        TO_AppMain,      TO,        80, 32768, 0x0, 0, 2;
+CFE_APP, /cf/apps/CF.so,        CF_AppMain,      CF,        50, 32768, 0x0, 0, 2;
+CFE_APP, /cf/apps/SCH.so,       SCH_AppMain,     SCH,       34,  4096, 0x0, 0, 2;
+!CFE_APP, /cf/apps/SBN.so,     SBN_AppMain,     SBN,       37, 32768, 0x0, 0, 2;
 !
 ! Startup script fields:
 ! 1. Object Type      -- CFE_APP for an Application, or CFE_LIB for a library.

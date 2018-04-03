@@ -1,9 +1,13 @@
 #ifndef RGBLED_PLATFORM_CFG_H
 #define RGBLED_PLATFORM_CFG_H
 
+#include "osapi.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define RGBLED_SELFTEST_TASK_FLAGS            OS_ENABLE_CORE_0
 
 /*
 ** RGBLED Platform Configuration Parameter Definitions

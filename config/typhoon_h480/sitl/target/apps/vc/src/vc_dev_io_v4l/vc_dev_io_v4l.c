@@ -88,6 +88,7 @@ int32 VC_CustomDevice_InitData()
     /* Set all non-zero values for channel zero */
     VC_AppCustomDevice.ContinueFlag          = TRUE;
     VC_AppCustomDevice.Priority              = VC_STREAMING_TASK_PRIORITY;
+    VC_AppCustomDevice.TaskFlags             = VC_STREAMING_TASK_FLAGS;
     VC_AppCustomDevice.StreamingTask         = VC_Stream_Task;
     VC_AppCustomDevice.Channel[0].Status        = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[0].Mode          = VC_DEVICE_ENABLED;
@@ -766,7 +767,7 @@ boolean VC_Devices_Start(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         VC_AppCustomDevice.Priority,
-        0);
+	VC_STREAMING_TASK_FLAGS);
 
     if(returnCode != CFE_SUCCESS)
     {
