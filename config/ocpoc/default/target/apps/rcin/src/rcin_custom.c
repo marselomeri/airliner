@@ -765,6 +765,12 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     {
         returnBool = FALSE;
     }
+    
+    if(RCIN_AppCustomData.Measure.RcFailsafe == TRUE &&
+       RCIN_AppCustomData.Measure.RcLost == TRUE)
+    {
+        returnBool = FALSE;
+    }
 
     Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
     Measure->ChannelCount = RCIN_AppCustomData.Measure.ChannelCount;
