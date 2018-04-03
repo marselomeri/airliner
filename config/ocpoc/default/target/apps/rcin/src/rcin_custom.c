@@ -337,6 +337,7 @@ void RCIN_Stream_Task(void)
                 /* select was interrupted, try again */
                 if (EINTR == errno)
                 {
+                    RCIN_Custom_RC_Lost(TRUE);
                     CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RCIN select was interrupted");
                     usleep(RCIN_MAX_RETRY_SLEEP_USEC);
@@ -344,6 +345,7 @@ void RCIN_Stream_Task(void)
                 }
                 else
                 {
+                    RCIN_Custom_RC_Lost(TRUE);
                     /* select returned an error other than EINTR */
                     CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RCIN stream failed select() returned %i", errno);
@@ -354,22 +356,27 @@ void RCIN_Stream_Task(void)
             /* select timed out */
             if (0 == returnCode)
             {
+                RCIN_Custom_RC_Lost(TRUE);
                 OS_MutSemTake(RCIN_AppCustomData.Mutex);
-                RCIN_AppCustomData.Status = RCIN_CUSTOM_NOTSTREAMING;
+                
                 OS_MutSemGive(RCIN_AppCustomData.Mutex); 
                 continue;
             } 
             /* select() returned and data is ready to be read */
             if(returnCode > 0)
             {
+                RCIN_Custom_RC_Lost(FALSE);
                 OS_MutSemTake(RCIN_AppCustomData.Mutex);
-                RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
                 RCIN_Custom_Read();
                 OS_MutSemGive(RCIN_AppCustomData.Mutex);
                 continue;
             }
         } /* end while loop */
     } /* end if status == success */
+
+    /* Set failsafe and RcLost */
+    RCIN_AppCustomData.Measure.RcFailsafe    = 1;
+    RCIN_AppCustomData.Measure.RcLost        = 1;
 
     /* Streaming task is exiting so set app flag to initialized */
     RCIN_AppCustomData.Status = RCIN_CUSTOM_ENABLED;
@@ -465,21 +472,36 @@ end_of_function:
 void RCIN_Custom_RC_Lost(boolean notReset)
 {
     static int errorCount = 0;
-    
+
     if (FALSE == notReset)
     {
-        errorCount = 0;
-    }
-
-    if(RCIN_MAX_ERROR_COUNT == errorCount)
-    {
-        RCIN_AppCustomData.Measure.RcFailsafe = TRUE;
-        RCIN_AppCustomData.Measure.RcLost = TRUE;
+        RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
         errorCount = 0;
     }
     else
     {
+        if (RCIN_AppCustomData.Status != RCIN_CUSTOM_RC_LOST 
+            && RCIN_AppCustomData.Status != RCIN_CUSTOM_NOTSTREAMING
+            && RCIN_AppCustomData.Status != RCIN_CUSTOM_OUT_OF_SYNC)
+        {
+            RCIN_AppCustomData.Status = RCIN_CUSTOM_NOTSTREAMING;
+        }
         errorCount++;
+    }
+
+    if(RCIN_MAX_ERROR_COUNT == errorCount)
+    {
+        OS_MutSemTake(RCIN_AppCustomData.Mutex);
+        RCIN_AppCustomData.Measure.RcFailsafe = TRUE;
+        RCIN_AppCustomData.Measure.RcLost = TRUE;
+        OS_MutSemGive(RCIN_AppCustomData.Mutex);
+        errorCount = 0;
+        if (RCIN_AppCustomData.Status != RCIN_CUSTOM_RC_LOST)
+        {
+            CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "RCIN RC LOST, setting failsafe and lost flags");
+            RCIN_AppCustomData.Status = RCIN_CUSTOM_RC_LOST;
+        }
     }
 }
 
@@ -666,7 +688,6 @@ void RCIN_Custom_Read(void)
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             if (FALSE == sync)
                             {
-                                RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
                                 sync = TRUE;
                                 (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                         "RCIN in sync.");
@@ -683,7 +704,7 @@ void RCIN_Custom_Read(void)
                             (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "RCIN out of sync.");
                             sync = FALSE;
-                            RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
+                            //RCIN_AppCustomData.Status = RCIN_CUSTOM_OUT_OF_SYNC;
                             RCIN_Custom_RC_Lost(TRUE);
                         }
                     }
@@ -694,7 +715,7 @@ void RCIN_Custom_Read(void)
                         (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "Parser in invalid state.");
                         RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
-                        RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
+                        //RCIN_AppCustomData.Status = RCIN_CUSTOM_OUT_OF_SYNC;
                         RCIN_Custom_RC_Lost(TRUE);
                     }
                     break;
@@ -706,7 +727,7 @@ void RCIN_Custom_Read(void)
     {
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error, errno: %i", errno);
-        RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
+        //RCIN_AppCustomData.Status = RCIN_CUSTOM_OUT_OF_SYNC;
         RCIN_Custom_RC_Lost(TRUE);
     }
 }

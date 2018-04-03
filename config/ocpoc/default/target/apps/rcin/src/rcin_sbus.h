@@ -174,7 +174,7 @@ extern "C" {
 #define RCIN_STREAMING_TASK_NAME       "RCIN_STREAM"
 
 /** \brief Maximum amount of errors before going to failsafe. */
-#define RCIN_MAX_ERROR_COUNT            (50)
+#define RCIN_MAX_ERROR_COUNT            (25)
 
 /************************************************************************
 ** Structure Declarations
@@ -189,14 +189,16 @@ typedef enum
     RCIN_CUSTOM_UNINITIALIZED   = 0,
     /*! Status initialized */
     RCIN_CUSTOM_INITIALIZED     = 1,
-    /*! Status initialized */
+    /*! Status enabled */
     RCIN_CUSTOM_ENABLED         = 2,
     /*! Status not streaming */
     RCIN_CUSTOM_NOTSTREAMING    = 3,
     /*! Status streaming */
     RCIN_CUSTOM_STREAMING       = 4,
     /*! Status out of sync */
-    RCIN_OUT_OF_SYNC            = 5
+    RCIN_CUSTOM_OUT_OF_SYNC     = 5,
+    /*! Status RC Lost */
+    RCIN_CUSTOM_RC_LOST         = 6
 } RCIN_Custom_Status_t;
 
 
