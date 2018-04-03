@@ -95,7 +95,16 @@ block main
     var imageBuffer;
     var Q = [];
     var AltOffset = 0;
+    var prevTS = 0;
+    var currTS = 0;
+    var ctr = 0;
+    var fps = 0;
 
+    var GetTime = function(){
+        var d = new Date();
+        var seconds = d.getTime()/1000;
+        return seconds;
+    }
     var setAltitudeOffset = function(){
         try{
             AltOffset = parseFloat($("#AltitudeOffsetValue").val());
@@ -239,9 +248,21 @@ block main
             if ($(this).is(':checked')) {
             
                 session.subscribeToVideo(function(image) {
+                  if(ctr==0){
+                      prevTS = GetTime();
+                  }
+                  if(ctr%1000==0 && ctr!=0){
+                      currTS = GetTime();
+                      delta = currTS-prevTS;
+                      fps = Math.round(1000/delta);
+                      console.log("FPS : ",fps);
+                    
+                      prevTS = GetTime();
+                  }
                   imageBuffer = image;
-                  //cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
+                  cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
                   //console.log(imageBuffer);
+                  ctr++;
                 });
                 
             }
@@ -275,9 +296,9 @@ block main
          Draw the camera video
          ------------------------- */
         //var defs = draw.defs();
-        $("#SvgjsImage2653").attr("href",'data:image/jpeg;base64,' + imageBuffer);
+        //$("#SvgjsImage2653").attr("href",'data:image/jpeg;base64,' + imageBuffer);
         //var cameraVideoClip = defs.clip().rect(hudWidth, hudHeight).move(0, 0);
-        //cameraImage = draw.image('data:image/jpeg;base64,' + imageBuffer, hudWidth, hudHeight);
+        cameraImage = draw.image('data:image/jpeg;base64,' + imageBuffer, hudWidth, hudHeight);
 
         var rollIndicator = draw.group();
 
