@@ -358,26 +358,25 @@ void RCIN_Stream_Task(void)
             if (0 == returnCode)
             {
                 RCIN_Custom_RC_Lost(TRUE);
-                OS_MutSemTake(RCIN_AppCustomData.Mutex);
-                
-                OS_MutSemGive(RCIN_AppCustomData.Mutex); 
                 continue;
             } 
             /* select() returned and data is ready to be read */
             if(returnCode > 0)
             {
                 RCIN_Custom_RC_Lost(FALSE);
-                OS_MutSemTake(RCIN_AppCustomData.Mutex);
                 RCIN_Custom_Read();
-                OS_MutSemGive(RCIN_AppCustomData.Mutex);
                 continue;
             }
         } /* end while loop */
     } /* end if status == success */
 
+    /* Take shared data mutex */
+    OS_MutSemTake(RCIN_AppCustomData.Mutex);
     /* Set failsafe and RcLost */
     RCIN_AppCustomData.Measure.RcFailsafe    = 1;
     RCIN_AppCustomData.Measure.RcLost        = 1;
+    /* Give shared data mutex */
+    OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
     /* Streaming task is exiting so set app flag to initialized */
     RCIN_AppCustomData.Status = RCIN_CUSTOM_ENABLED;
@@ -414,6 +413,9 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
         returnBool = FALSE;
         goto end_of_function;
     }
+
+    /* Take shared data mutex */
+    OS_MutSemTake(RCIN_AppCustomData.Mutex);
 
     RCIN_AppCustomData.Measure.Values[0] = (uint16)(((data[1] | data[2] << 8) 
             & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
@@ -465,6 +467,9 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
     RCIN_AppCustomData.Measure.RcLost = (data[23] & (1 << 2)) ? TRUE : FALSE;
     RCIN_AppCustomData.Measure.InputSource = PX4_RC_INPUT_SOURCE_PX4FMU_SBUS;
 
+    /* Give shared data mutex */
+    OS_MutSemGive(RCIN_AppCustomData.Mutex);
+
 end_of_function:
     return returnBool;
 }
@@ -474,16 +479,20 @@ void RCIN_Custom_RC_Lost(boolean notReset)
 {
     static int errorCount = 0;
 
+    /* Take shared data mutex */
+    OS_MutSemTake(RCIN_AppCustomData.Mutex);
+
     if (FALSE == notReset)
     {
+        /* Set status to streaming state */
         RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
         errorCount = 0;
     }
     else
     {
+        /* Set status to not streaming if we're not in RC Lost*/
         if (RCIN_AppCustomData.Status != RCIN_CUSTOM_RC_LOST 
-            && RCIN_AppCustomData.Status != RCIN_CUSTOM_NOTSTREAMING
-            && RCIN_AppCustomData.Status != RCIN_CUSTOM_OUT_OF_SYNC)
+            && RCIN_AppCustomData.Status != RCIN_CUSTOM_NOTSTREAMING)
         {
             RCIN_AppCustomData.Status = RCIN_CUSTOM_NOTSTREAMING;
         }
@@ -492,18 +501,20 @@ void RCIN_Custom_RC_Lost(boolean notReset)
 
     if(RCIN_MAX_ERROR_COUNT == errorCount)
     {
-        OS_MutSemTake(RCIN_AppCustomData.Mutex);
+        /* We're at max error count, set failsafe and lost flags */
         RCIN_AppCustomData.Measure.RcFailsafe = TRUE;
         RCIN_AppCustomData.Measure.RcLost = TRUE;
-        OS_MutSemGive(RCIN_AppCustomData.Mutex);
-        errorCount = 0;
+
         if (RCIN_AppCustomData.Status != RCIN_CUSTOM_RC_LOST)
         {
             CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN RC LOST, setting failsafe and lost flags");
             RCIN_AppCustomData.Status = RCIN_CUSTOM_RC_LOST;
         }
+        errorCount = 0;
     }
+        /* Give shared data mutex */
+        OS_MutSemGive(RCIN_AppCustomData.Mutex);
 }
 
 
@@ -685,6 +696,8 @@ void RCIN_Custom_Read(void)
                     {
                         if(0x00 == sbusTemp[i])
                         {
+                            /* Reset the error counter */
+                            RCIN_Custom_RC_Lost(FALSE);
                             RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             if (FALSE == sync)
@@ -695,29 +708,25 @@ void RCIN_Custom_Read(void)
                             }
                             /* We have a valid packet, translate SBUS data */
                             RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
-                            /* Reset the error counter */
-                            RCIN_Custom_RC_Lost(FALSE);
                         }
                         else
                         {
+                            RCIN_Custom_RC_Lost(TRUE);
                             /* The end byte wasn't found so find a header candidate */
                             RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
                             (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "RCIN out of sync.");
                             sync = FALSE;
-                            //RCIN_AppCustomData.Status = RCIN_CUSTOM_OUT_OF_SYNC;
-                            RCIN_Custom_RC_Lost(TRUE);
                         }
                     }
                     break;
                 default:
                     {
+                        RCIN_Custom_RC_Lost(TRUE);
                         /* Unknown parser state */
                         (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
                                 "Parser in invalid state.");
                         RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
-                        //RCIN_AppCustomData.Status = RCIN_CUSTOM_OUT_OF_SYNC;
-                        RCIN_Custom_RC_Lost(TRUE);
                     }
                     break;
             }
@@ -726,10 +735,9 @@ void RCIN_Custom_Read(void)
     /* Read returned an error */
     else
     {
+        RCIN_Custom_RC_Lost(TRUE);
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "RCIN device read error, errno: %i", errno);
-        //RCIN_AppCustomData.Status = RCIN_CUSTOM_OUT_OF_SYNC;
-        RCIN_Custom_RC_Lost(TRUE);
     }
 }
 
@@ -751,15 +759,15 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
         goto end_of_function;
     }
 
+    /* Take the shared data mutex */
     OS_MutSemTake(RCIN_AppCustomData.Mutex);
+
     if(RCIN_CUSTOM_STREAMING != RCIN_AppCustomData.Status)
     {
         returnBool = FALSE;
     }
 
     Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
-    //Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
-    //Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;
     Measure->ChannelCount = RCIN_AppCustomData.Measure.ChannelCount;
     Measure->RSSI = RCIN_AppCustomData.Measure.RSSI;
     Measure->RcLostFrameCount = RCIN_AppCustomData.Measure.RcLostFrameCount;
@@ -773,6 +781,7 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     Measure->RcLost = RCIN_AppCustomData.Measure.RcLost;
     Measure->InputSource = RCIN_AppCustomData.Measure.InputSource;
 
+    /* Give the shared data mutex */
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:
