@@ -257,7 +257,7 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when MS5611 has
+**  This event message is issued when RCIN has
 **  had an error in uninitialization.
 **
 */
@@ -270,7 +270,7 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the MS5611 has
+**  This event message is issued when the RCIN has
 **  had an error in initialization.
 **
 */
@@ -283,11 +283,35 @@ typedef enum {
 **
 **  \par Cause:
 **
-**  This event message is issued when the MS5611 has
-**  had an error in initialization.
+**  This event message is issued when RCIN encountered a read error.
 **
 */
     RCIN_READ_ERR_EID,
+
+/** \brief <tt> 'RCIN is publishing fresh data' </tt>
+**  \event <tt> 'RCIN is publishing fresh data' </tt>
+**  
+**  \par Type: INFO
+**
+**  \par Cause:
+**
+**  This event message is issued when RCIN is publishing fresh data or 
+**  previously not publishing fresh data.
+**
+*/
+    RCIN_PUBLISHING_INF_EID,
+
+/** \brief <tt> 'RCIN is NOT publishing fresh data' </tt>
+**  \event <tt> 'RCIN is NOT publishing fresh data' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when RCIN is not publishing fresh data.
+**
+*/
+    RCIN_NOT_PUBLISHING_ERR_EID,
 
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
     RCIN_EVT_CNT

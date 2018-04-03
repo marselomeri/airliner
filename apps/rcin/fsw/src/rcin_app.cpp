@@ -503,22 +503,34 @@ void RCIN::ReadDevice(void)
     returnBool = RCIN_Custom_Measure(&InputRcMsg);
     if(FALSE == returnBool)
     {
+        /* Rollover */
         if(strikeCount == 255)
         {
             strikeCount = 0;
         }
+        /* Increment strike count */
         strikeCount++;
         /* Measure is returning FALSE set state to not publishing */
         if(strikeCount == 10)
         {
-            HkTlm.State = RCIN_NOTPUBLISHING;
+            if (HkTlm.State != RCIN_NOTPUBLISHING)
+            {
+                HkTlm.State = RCIN_NOTPUBLISHING;
+                (void) CFE_EVS_SendEvent(RCIN_NOT_PUBLISHING_ERR_EID, CFE_EVS_ERROR,
+                    "RCIN is NOT publishing fresh data");
+            }
         }
     }
     else
     {
         strikeCount = 0;
-        /* Measure is returning TRUE set state to publishing */
-        HkTlm.State = RCIN_PUBLISHING;
+        if (HkTlm.State != RCIN_PUBLISHING)
+        {
+            /* Measure is returning TRUE set state to publishing */
+            HkTlm.State = RCIN_PUBLISHING;
+            (void) CFE_EVS_SendEvent(RCIN_PUBLISHING_INF_EID, CFE_EVS_INFORMATION,
+                    "RCIN is publishing fresh data");
+        }
     }
 
     InputRcMsg.LastSignal = InputRcMsg.Timestamp;
