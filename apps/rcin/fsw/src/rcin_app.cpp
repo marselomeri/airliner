@@ -498,15 +498,25 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 void RCIN::ReadDevice(void)
 {
     boolean returnBool = FALSE;
+    static uint8 strikeCount = 0;
 
     returnBool = RCIN_Custom_Measure(&InputRcMsg);
     if(FALSE == returnBool)
     {
+        if(strikeCount == 255)
+        {
+            strikeCount = 0;
+        }
+        strikeCount++;
         /* Measure is returning FALSE set state to not publishing */
-        HkTlm.State = RCIN_NOTPUBLISHING;
+        if(strikeCount == 10)
+        {
+            HkTlm.State = RCIN_NOTPUBLISHING;
+        }
     }
     else
     {
+        strikeCount = 0;
         /* Measure is returning TRUE set state to publishing */
         HkTlm.State = RCIN_PUBLISHING;
     }
