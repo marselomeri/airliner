@@ -203,7 +203,7 @@ extern "C" {
 **  \par Limits:
 **       INET_ADDRSTRLEN
 */
-#define VC_DESTINATION_IP               "192.168.1.3"
+#define VC_DESTINATION_IP               "192.168.1.19"
 
 /** \brief Ground system port 
 **
