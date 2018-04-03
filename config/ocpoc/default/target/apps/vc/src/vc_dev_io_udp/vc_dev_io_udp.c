@@ -176,10 +176,26 @@ int32 VC_CleanupDevices(void)
             else
             {
                 VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
+                VC_AppCustomDevice.Channel[i].Socket = 0;
             }
         }
     }
     return returnCode;
+}
+
+
+void VC_Devices_Critical_Cleanup(void)
+{
+    uint8 i = 0;
+
+    for(i=0; i < VC_MAX_DEVICES; i++)
+    {
+        if(VC_AppCustomDevice.Channel[i].Socket != 0)
+        {
+            close(VC_AppCustomDevice.Channel[i].Socket);
+        }
+    }
+    return;
 }
 
 

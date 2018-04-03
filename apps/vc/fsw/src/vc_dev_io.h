@@ -146,8 +146,7 @@ boolean VC_Devices_Init(void);
 **       This function is called in preparation for loading a new
 **       configuration, allowing the custom layer to do whatever it
 **       needs with the current configuration before reconfiguration,
-**       if anything. Also, called in cleanup to close and uninitialize
-**       device resources.
+**       if anything. Also, called before application exit.
 **
 **  \par Assumptions, External Events, and Notes:
 **       This function must be defined, but not all custom
@@ -160,6 +159,21 @@ boolean VC_Devices_Init(void);
 *************************************************************************/
 boolean VC_Devices_Uninit(void);
 
+
+/************************************************************************/
+/** \brief Custom function to perform any critical cleanup after a 
+**         failuse.
+**
+**  \par Description
+**       This function is called in cleanup to close and uninitialize
+**       device resources.
+**
+**  \par Assumptions, External Events, and Notes:
+**       This function must be defined, but not all custom
+**       layers will do anything in this function.
+**
+*************************************************************************/
+void VC_Devices_Critical_Cleanup(void);
 
 #endif
 

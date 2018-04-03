@@ -87,3 +87,9 @@ int32 VC_Devices_InitData(void)
 {
     return VC_Device_Test_Returns.VC_Devices_InitData_Return;
 }
+
+
+void VC_Devices_Critical_Cleanup(void)
+{
+    return;
+}
