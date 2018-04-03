@@ -240,7 +240,7 @@ block main
             
                 session.subscribeToVideo(function(image) {
                   imageBuffer = image;
-                  cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
+                  //cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
                   //console.log(imageBuffer);
                 });
                 
@@ -275,9 +275,9 @@ block main
          Draw the camera video
          ------------------------- */
         //var defs = draw.defs();
-        //$("#SvgjsImage2653").attr("href",'data:image/jpeg;base64,' + imageBuffer);
+        $("#SvgjsImage2653").attr("href",'data:image/jpeg;base64,' + imageBuffer);
         //var cameraVideoClip = defs.clip().rect(hudWidth, hudHeight).move(0, 0);
-        cameraImage = draw.image('data:image/jpeg;base64,' + imageBuffer, hudWidth, hudHeight);
+        //cameraImage = draw.image('data:image/jpeg;base64,' + imageBuffer, hudWidth, hudHeight);
 
         var rollIndicator = draw.group();
 
