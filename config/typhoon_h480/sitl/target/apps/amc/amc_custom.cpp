@@ -46,7 +46,33 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 AMC::InitDevice(void)
 {
-    return 0;
+    float controls[16];
+    uint32 controlCount = 16;
+    uint32 i = 0;
+
+    for (i = 0; i < 16; ++i)
+    {
+        controls[i] = PWM_CUSTOM_OUT_MIN;
+    }
+
+    /* gimbal roll */
+    controls[6] = 0.0f;
+    /* gimbal pitch */
+    controls[7] = 0.0f;
+    /* gimbal yaw */
+    controls[8] = 0.0f;
+    /* left leg min value (see sdf scale and offset) */
+    controls[9] = -1.0f;
+    /* right leg min value (see sdf scale and offset) */
+    controls[10] = -1.0f;
+    /* unused in typhoon sdf below this point i.e. 11-15 */
+    controls[11] = 0.0f;
+    controls[12] = 0.0f;
+    controls[13] = 0.0f;
+    controls[14] = 0.0f;
+    controls[15] = 0.0f;
+
+    SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }
 
 
@@ -84,7 +110,7 @@ float AMC_Map(float inValue, uint16 in_min, uint16 in_max, float out_min,
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
     float controls[16];
-    uint32 controlCount = 11;
+    uint32 controlCount = 6;
     uint32 i = 0;
 
     for (i = 0; i < 6; ++i)
@@ -93,17 +119,6 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
                 PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN,
                 PWM_CUSTOM_OUT_MAX);
     }
-
-    controls[6] = 0.0f;
-    controls[7] = 0.0f;
-    controls[8] = 0.0f;
-    controls[9] = NAN;
-    controls[10] = NAN;
-    controls[11] = 0.0f;
-    controls[12] = 0.0f;
-    controls[13] = 0.0f;
-    controls[14] = 0.0f;
-    controls[15] = 0.0f;
 
     SIMLIB_SetActuatorControls(controls, controlCount, 0);
 }

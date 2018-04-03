@@ -75,7 +75,7 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     *  \par Limits:
 	     *  	Min > Max (incr.) 0.05 > 0.5 , default 0.1.
 	     */
-	    0.1,
+	    0.5,
 
 	    /** \brief Multicopter free-fall trigger time.
 	     *

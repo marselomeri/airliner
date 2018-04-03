@@ -83,7 +83,7 @@ QAE::~QAE()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 QAE::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
     int32  ind = 0;
 
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
@@ -92,9 +92,7 @@ int32 QAE::InitEvent()
      * Note: 0 is the CFE_EVS_NO_FILTER mask and event 0 is reserved (not used) */
     memset(EventTbl, 0x00, sizeof(EventTbl));
     
-    /* TODO: Choose the events you want to filter.  CFE_EVS_MAX_EVENT_FILTERS
-     * limits the number of filters per app.  An explicit CFE_EVS_NO_FILTER 
-     * (the default) has been provided as an example. */
+    /* CFE_EVS_MAX_EVENT_FILTERS limits the number of filters per app. */
     EventTbl[  ind].EventID = QAE_RESERVED_EID;
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = QAE_DEGENERATE_ACC_ERR_EID;
@@ -111,7 +109,7 @@ int32 QAE::InitEvent()
         (void) CFE_ES_WriteToSysLog("QAE - Failed to register with EVS (0x%08lX)\n", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -122,7 +120,7 @@ int32 QAE::InitEvent()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 QAE::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
@@ -198,7 +196,7 @@ int32 QAE::InitPipe()
     }
 
 QAE_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
     
 
@@ -229,11 +227,11 @@ void QAE::InitData()
     m_Accel.Zero();
     m_Mag.Zero();
     m_LastVelocity.Zero();
+    m_TimeLast = 0;
     m_LastVelocityTime = 0;
     m_PositionAcc.Zero();
     m_GyroBias.Zero();
     m_Rates.Zero();
-    m_TimeLast = 0;
 }
 
 
@@ -293,7 +291,7 @@ QAE_InitApp_Exit_Tag:
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -304,9 +302,9 @@ QAE_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
-    CFE_SB_MsgId_t  MsgId;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
+    CFE_SB_MsgId_t  MsgId   = 0;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(QAE_MAIN_TASK_PERF_ID);
@@ -372,7 +370,7 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
               "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -383,9 +381,9 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void QAE::ProcessCmdPipe()
 {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
-    CFE_SB_MsgId_t  CmdMsgId;
+    int32 iStatus             = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr = NULL;
+    CFE_SB_MsgId_t  CmdMsgId  = 0;
 
     /* Process command messages until the pipe is empty */
     while (1)
@@ -522,7 +520,7 @@ boolean QAE::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 
@@ -628,12 +626,12 @@ void QAE::EstimateAttitude(void)
 {
     math::Vector3F euler(0.0f, 0.0f, 0.0f);
     math::Vector3F vel(0.0f, 0.0f, 0.0f);
-    float length_check = 0.0f;
-    float delta_time_velocity = 0.0f;
-    uint64 delta_time_gps = 0;
-    uint64 time_now = 0;
-    float delta_time = 0;
-    boolean update_success = FALSE;
+    float length_check          = 0.0f;
+    float delta_time_velocity   = 0.0f;
+    uint64 delta_time_gps       = 0;
+    uint64 time_now             = 0;
+    float delta_time            = 0;
+    boolean update_success      = FALSE;
 
     /* If there is a new sensor combined message */
     if(CVT.SensorCombinedMsg.Timestamp > CVT.LastSensorCombinedTime)
@@ -818,7 +816,7 @@ void QAE::EstimateAttitude(void)
     SendControlStateMsg();
     
 end_of_function:
-;
+    return;
 }
 
 
@@ -879,7 +877,7 @@ boolean QAE::InitEstimateAttitude(void)
         HkTlm.EstimatorState = QAE_EST_UNINITIALIZED;
     }
 
-    return return_bool;
+    return (return_bool);
 }
 
 
@@ -898,7 +896,7 @@ boolean QAE::UpdateEstimateAttitude(float dt)
     float spinRate = 0.0f;
     float magErr   = 0.0f;
     float gainMult = 1.0f;
-    uint8 i = 0;
+    uint8 i        = 0;
 
     if (HkTlm.EstimatorState != QAE_EST_INITIALIZED)
     {

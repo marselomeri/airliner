@@ -1,5 +1,5 @@
 from os import path, sys
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+sys.path.append(path.dirname( path.dirname( path.dirname( path.abspath(__file__) ) ) ) )
 from pyliner import Pyliner
 import time
 import math
@@ -7,10 +7,9 @@ from px4_msg_enums import *
 
 # Initialize pyliner object
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
-                      "address": "192.168.1.2",
                       "ci_port": 5009,
                       "to_port": 5012,
-                      "script_name": "FT4_GCS",
+                      "script_name": "FT4_Onboard",
                       "log_dir": "./logs/"})
 
 # Subscribe to es HK commander counter
@@ -176,7 +175,7 @@ def vehicle_posctl_mode():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':0},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -209,7 +208,7 @@ def vehicle_stable_hover():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -240,7 +239,7 @@ def vehicle_full_forward():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -272,7 +271,7 @@ def vehicle_full_left():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -304,7 +303,7 @@ def vehicle_full_reverse():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -336,7 +335,7 @@ def vehicle_full_right():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':1},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -367,7 +366,7 @@ def vehicle_land():
         {'name':'OffboardSwitch', 'value':0},
         {'name':'KillSwitch', 'value':0},
         {'name':'TransitionSwitch', 'value':0},
-        {'name':'GearSwitch', 'value':0},
+        {'name':'GearSwitch', 'value':3},
         {'name':'ArmSwitch', 'value':1},
         {'name':'StabSwitch', 'value':0},
         {'name':'ManSwitch', 'value':0},
@@ -378,40 +377,40 @@ def vehicle_land():
 
 def vehicle_fly_square_ccw():
     vehicle_full_forward()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_full_left()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_full_reverse()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_full_right()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
 
 
 def vehicle_fly_square_cw():
     vehicle_full_forward()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_full_right()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_full_reverse()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_full_left()
-    time.sleep(1)
+    time.sleep(2)
     vehicle_stable_hover()
-    time.sleep(1)
+    time.sleep(2)
 
 # vehicle control
 vehicle_arm()

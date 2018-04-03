@@ -1,7 +1,7 @@
-CFE_LIB, /cf/apps/CFS_LIB.so,   CFS_LibInit,     CFS_LIB,    0,     0, 0x0, 0, 0;
-CFE_LIB, /cf/apps/PBLIB.so,     PBLIB_LibInit,   PBLIB,      0,     0, 0x0, 0, 0;
-CFE_LIB, /cf/apps/PRMLIB.so,    PRMLIB_LibInit,  PRMLIB,      0,     0, 0x0, 0, 0;
-CFE_LIB, /cf/apps/PX4LIB.so,    PX4LIB_LibInit,  PX4LIB,    0,     0, 0x0, 0, 0;
+CFE_LIB, /cf/apps/CFS_LIB.so,   CFS_LibInit,     CFS_LIB,    0,     0, 0x0, 0, 2;
+CFE_LIB, /cf/apps/PBLIB.so,     PBLIB_LibInit,   PBLIB,      0,     0, 0x0, 0, 2;
+CFE_LIB, /cf/apps/PRMLIB.so,    PRMLIB_LibInit,  PRMLIB,      0,     0, 0x0, 0, 2;
+CFE_LIB, /cf/apps/PX4LIB.so,    PX4LIB_LibInit,  PX4LIB,    0,     0, 0x0, 0, 2;
 CFE_APP, /cf/apps/AMC.so,       AMC_AppMain,     AMC,       40, 32768, 0x0, 0, 2;
 CFE_APP, /cf/apps/SENS.so,      SENS_AppMain,    SENS,      83, 32768, 0x0, 0, 2;
 CFE_APP, /cf/apps/MPU9250.so,   MPU9250_AppMain,     MPU9250,      100, 32768, 0x0, 0, 2;
@@ -32,11 +32,12 @@ CFE_APP, /cf/apps/CS.so,        CS_AppMain,      CS,        55, 32768, 0x0, 0, 2
 CFE_APP, /cf/apps/RCIN.so,      RCIN_AppMain,    RCIN,      90, 32768, 0x0, 0, 2;
 CFE_APP, /cf/apps/LD.so,        LD_AppMain,      LD,       90, 32768, 0x0, 0, 4;
 CFE_APP, /cf/apps/RGBLED.so,    RGBLED_AppMain,  RGBLED,   100, 32768, 0x0, 0, 2;
+CFE_APP, /cf/apps/LGC.so,       LGC_AppMain,     LGC,      120, 32768, 0x0, 0, 2;
 CFE_APP, /cf/apps/SCH.so,       SCH_AppMain,     SCH,       34,  4096, 0x0, 0, 2;
-!CFE_LIB, /cf/apps/schlib.so,    SCH_LibInit,     SCH_LIB,    0,     0, 0x0, 0, 0;
+!CFE_LIB, /cf/apps/schlib.so,    SCH_LibInit,     SCH_LIB,    0,     0, 0x0, 0, 2;
 CFE_APP, /cf/apps/MAVLINK.so,   MAVLINK_AppMain, MAVLINK,       90, 32768, 0x0, 0, 2;
 CFE_APP, /cf/apps/HS.so,        HS_AppMain,      HS,       123, 32768, 0x0, 0, 2;
-!CFE_LIB, /cf/apps/PBLIB.so,     PBLIB_LibInit,   PBLIB,      0,     0, 0x0, 0, 0;
+!CFE_LIB, /cf/apps/PBLIB.so,     PBLIB_LibInit,   PBLIB,      0,     0, 0x0, 0, 2;
 !CFE_APP, /cf/apps/ETA.so,     ETA_AppMain,     ETA,      100, 32768, 0x0, 0, 2;
 !CFE_APP, /cf/apps/SBN.so,     SBN_AppMain,     SBN,       37, 32768, 0x0, 0, 2;
 !

@@ -57,10 +57,10 @@
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
-typedef enum {
-
-/** \brief <tt> 'RGBLED - ' </tt>
-**  \event <tt> 'RGBLED - ' </tt>
+typedef enum 
+{
+/** \brief <tt> 'MS5611 - ' </tt>
+**  \event <tt> 'MS5611 - ' </tt>
 **  
 **  \par Type: ERROR
 **
@@ -78,7 +78,7 @@ typedef enum {
 **       int32
 */
     MS5611_CUSTOM_EVT_CNT
-} RGBLED_CustomEventIds_t;
+} MS5611_CustomEventIds_t;
 
 
 /************************************************************************
@@ -117,7 +117,7 @@ int32 MS5611_Ioctl(int fh, int request, void *arg)
         }
     }
 
-    return returnCode;
+    return (returnCode);
 }
 
 
@@ -140,7 +140,7 @@ boolean MS5611_Custom_Init()
     MS5611_AppCustomData.DeviceFd = open(MS5611_SPI_DEVICE_PATH, O_RDWR);
     if (MS5611_AppCustomData.DeviceFd < 0) 
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MS5611 Device open errno: %i", errno);
         returnBool = FALSE;
         goto end_of_function;
@@ -149,7 +149,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_WR_MODE, &mode);
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Can't set SPI mode.");
         returnBool = FALSE;
         goto end_of_function;
@@ -158,7 +158,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_RD_MODE, &mode);
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Can't get SPI mode.");
         returnBool = FALSE;
         goto end_of_function;
@@ -167,7 +167,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_WR_BITS_PER_WORD, &bits);
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Can't set bits per word.");
         returnBool = FALSE;
         goto end_of_function;
@@ -176,7 +176,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_RD_BITS_PER_WORD, &bits);
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Can't get bits per word.");
         returnBool = FALSE;
         goto end_of_function;
@@ -185,7 +185,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Can't set max speed.");
         returnBool = FALSE;
         goto end_of_function;
@@ -194,7 +194,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Can't get max speed.");
         returnBool = FALSE;
         goto end_of_function;
@@ -209,7 +209,7 @@ boolean MS5611_Custom_Init()
     ret = MS5611_ResetDevice();
     if (-1 == ret)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                           "Reset device failed.");
         returnBool = FALSE;
         goto end_of_function;
@@ -218,7 +218,7 @@ boolean MS5611_Custom_Init()
     MS5611_AppCustomData.Status = MS5611_CUSTOM_INITIALIZED;
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -230,7 +230,7 @@ boolean MS5611_Custom_Uninit(void)
     returnCode = close(MS5611_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MS5611 Device close errno: %i", errno);
         returnBool = FALSE;
     }
@@ -238,7 +238,7 @@ boolean MS5611_Custom_Uninit(void)
     {
         MS5611_AppCustomData.Status = MS5611_CUSTOM_UNINITIALIZED;
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -260,14 +260,14 @@ int32 MS5611_ResetDevice(void)
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
     }
     else
     {
         usleep(100000);
     }
-    return ret;
+    return (ret);
 }
 
 
@@ -300,7 +300,7 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
         returnBool = FALSE;
         goto end_of_function;
@@ -308,7 +308,7 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
     *returnVal = (rxBuf[1] << 8) + rxBuf[2];
     
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -332,7 +332,7 @@ boolean MS5611_D1Conversion(void)
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
         returnBool = FALSE;
     }
@@ -340,7 +340,7 @@ boolean MS5611_D1Conversion(void)
     {
         usleep(10000);
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -364,7 +364,7 @@ boolean MS5611_D2Conversion(void)
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
         returnBool = FALSE;
     }
@@ -372,7 +372,7 @@ boolean MS5611_D2Conversion(void)
     {
         usleep(10000);
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -388,8 +388,8 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
     /* Null pointer check */
     if(0 == returnVal)
     {
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MS5611 ReadProm Null Pointer");
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "MS5611 ReadProm Null Pointer");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -405,7 +405,7 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
     ret = MS5611_Ioctl(MS5611_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), MS5611_SPI_Xfer);
     if (-1 == ret) 
     {            
-        CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MS5611_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5611 ioctl returned %i", errno);
         returnBool = FALSE;
         goto end_of_function;
@@ -414,7 +414,7 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 
 end_of_function:
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -455,6 +455,6 @@ int32 MS5611_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     
 end_of_function:
 
-    return customEventCount;
+    return (customEventCount);
 }
 

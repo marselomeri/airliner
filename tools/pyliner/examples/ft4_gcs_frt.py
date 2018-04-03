@@ -4,12 +4,14 @@ from pyliner import Pyliner
 import time
 import math
 from px4_msg_enums import *
+from arte_client import ArteClient
 
 # Initialize pyliner object
 airliner = Pyliner(**{"airliner_map": "cookiecutter.json", 
+                      "address": "127.0.0.1",
                       "ci_port": 5009,
                       "to_port": 5012,
-                      "script_name": "FT4_Onboard",
+                      "script_name": "FT4_GCS",
                       "log_dir": "./logs/"})
 
 # Subscribe to es HK commander counter
@@ -54,7 +56,7 @@ def vehicle_arm():
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    time.sleep(2)
+    #time.sleep(2)
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -83,7 +85,7 @@ def vehicle_arm():
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    time.sleep(1)
+    #time.sleep(1)
 
 
 def vehicle_disarm():
@@ -148,7 +150,7 @@ def vehicle_takeoff():
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    time.sleep(5)
+    #time.sleep(5)
 
 
 def vehicle_posctl_mode():
@@ -181,7 +183,7 @@ def vehicle_posctl_mode():
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    time.sleep(0.1)
+    #time.sleep(0.1)
 
 
 def vehicle_stable_hover():
@@ -372,7 +374,7 @@ def vehicle_land():
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    time.sleep(10)
+    #time.sleep(10)
 
 
 def vehicle_fly_square_ccw():
@@ -412,15 +414,60 @@ def vehicle_fly_square_cw():
     vehicle_stable_hover()
     time.sleep(1)
 
+# connect to ARTE and wait for everything to launch
+IP, PORT = "localhost", 9999
+client = ArteClient(IP, PORT)
+time.sleep(1)
+callcount = 0
+
 # vehicle control
+# RT wait for home set
+for x in range (0, 2000):
+    client.send_ready()
+    client.receive_response()
+
+
+# Send arm vehicle 5 seconds
+#for x in range (0, 10):
+    #client.send_ready()
+    #client.receive_response()
+    #vehicle_arm()
+
 vehicle_arm()
-time.sleep(5)
 vehicle_takeoff()
+
+# RT wait
+for x in range (0, 2000):
+    client.send_ready()
+    client.receive_response()
+
 vehicle_posctl_mode()
+
+# 1 second RT wait
+for x in range (0, 500):
+    client.send_ready()
+    client.receive_response()
+
 vehicle_stable_hover()
+
+# 1 second RT wait
+for x in range (0, 250):
+    client.send_ready()
+    client.receive_response()
+
+vehicle_land()
+
+
+for x in range (0, 1000):
+    client.send_ready()
+    client.receive_response()
+    
+client.send_shutdown(True)
+time.sleep(100)
+
 vehicle_fly_square_ccw()
 vehicle_fly_square_cw()
-vehicle_land()
+
 
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})

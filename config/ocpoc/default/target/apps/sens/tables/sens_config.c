@@ -163,7 +163,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 	/* RC_MAP_FAILSAFE      */  0,
 
 	/* RC_MAP_MODE_SW       */  8,
-	/* RC_MAP_RETURN_SW     */  5,
+	/* RC_MAP_RETURN_SW     */  0,
 	/* RC_MAP_RATT_SW       */  0,
 	/* RC_MAP_POSCTL_SW     */  0,
 	/* RC_MAP_LOITER_SW     */  0,
@@ -172,7 +172,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 	/* RC_MAP_KILL_SW       */  7,
 	/* RC_MAP_ARM_SW        */  6,
 	/* RC_MAP_TRANS_SW      */  0,
-	/* RC_MAP_GEAR_SW       */  0,
+	/* RC_MAP_GEAR_SW       */  5,
 	/* RC_MAP_STAB_SW       */  0,
 	/* RC_MAP_MAN_SW        */  0,
 	/* RC_MAP_FLAPS         */  0,
