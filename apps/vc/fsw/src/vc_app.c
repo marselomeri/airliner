@@ -225,12 +225,25 @@ end_of_function:
     return (iStatus);
 }
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Cleanup prior to exit                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VC_CleanupCallback()
+{
+    VC_Devices_Critical_Cleanup();
+    VC_Transmit_Critical_Cleanup();
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* Normal application exit                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void VC_CleanupExit(void)
 {
     if(VC_Devices_Stop() != TRUE)
     {
@@ -247,6 +260,7 @@ void VC_CleanupCallback()
         CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Uninit failed");
     }
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -562,10 +576,13 @@ void VC_AppMain(void)
         }
 
     } /* end CFS_ES_RunLoop while */
-   
+
+    /* Pre-normal exit cleanup */
+    VC_CleanupExit();
+
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(VC_MAIN_TASK_PERF_ID);
-   
+
    /* Exit the application */
    CFE_ES_ExitApp(VC_AppData.uiRunStatus);
 } /* end VC_AppMain */
