@@ -740,8 +740,16 @@ int32 VC_DisableDevice(uint8 DeviceID)
         goto end_of_function;
     }
 
-    close(VC_AppCustomDevice.Channel[DeviceID].DeviceFd);
-    VC_AppCustomDevice.Channel[DeviceID].DeviceFd = 0;
+    returnCode = close(VC_AppCustomDevice.Channel[DeviceID].DeviceFd);
+    if (0 != returnCode)
+    {
+        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "VC Close Device %u Failed, errno %i", (unsigned int)DeviceID, errno);
+    }
+    else
+    {
+        VC_AppCustomDevice.Channel[DeviceID].DeviceFd = 0;
+    }
 
 end_of_function:
     return returnCode;
