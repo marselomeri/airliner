@@ -303,17 +303,9 @@ int32 VC_Stop_StreamingDevice(uint8 DeviceID)
     
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMOFF, &Type))
     {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "VC VIDIOC_STREAMOFF returned %i on %s channel %u", errno,
-                    VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
         returnCode = -1;
     }
-    else
-    {
-        CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                "VC VIDIOC_STREAMOFF success on %s channel %u", 
-                    VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
-    }
+
     return returnCode;
 }
 
@@ -735,14 +727,15 @@ int32 VC_DisableDevice(uint8 DeviceID)
 
     if(VC_AppCustomDevice.Channel[DeviceID].Mode != VC_DEVICE_ENABLED)
     {
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                        "VC Device for channel %u is not enabled.", (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
     }
 
-    close(VC_AppCustomDevice.Channel[DeviceID].DeviceFd);
-    VC_AppCustomDevice.Channel[DeviceID].DeviceFd = 0;
+    returnCode = close(VC_AppCustomDevice.Channel[DeviceID].DeviceFd);
+    if (0 == returnCode)
+    {
+        VC_AppCustomDevice.Channel[DeviceID].DeviceFd = 0;
+    }
 
 end_of_function:
     return returnCode;
@@ -799,7 +792,7 @@ boolean VC_Devices_Stop(void)
     
     /* Set streaming task loop flag to stop */
     VC_AppCustomDevice.ContinueFlag = FALSE;
-    
+
     /* Set app state to initialized */
     VC_AppData.AppState = VC_INITIALIZED;
     
