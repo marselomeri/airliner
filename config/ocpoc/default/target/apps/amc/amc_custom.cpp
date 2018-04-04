@@ -94,7 +94,9 @@ int32 AMC::InitDevice(void)
             AMC_RCOUT_ZYNQ_PWM_BASE);
     close(mem_fd);
 
-    if (AMC_SharedMemCmd == 0) {
+    if (AMC_SharedMemCmd <= 0)
+    {
+    	AMC_SharedMemCmd = 0;
         return errno;
     }
 
@@ -122,10 +124,13 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
 {
     uint32 i = 0;
 
-    /* Convert this to duty_cycle in ns */
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
+    if(AMC_SharedMemCmd != 0)
     {
-        AMC_SharedMemCmd->PeriodHi[i].Hi = AMC_TICK_PER_US * PWM[i];
+		/* Convert this to duty_cycle in ns */
+		for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
+		{
+			AMC_SharedMemCmd->PeriodHi[i].Hi = AMC_TICK_PER_US * PWM[i];
+		}
     }
 }
 
