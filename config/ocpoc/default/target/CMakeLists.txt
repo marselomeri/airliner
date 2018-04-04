@@ -29,6 +29,10 @@ build_airliner_cfe(
 )
 
 add_subdirectory(allstop allstop)
+set_target_properties(allstop
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/exe
+)
 
 add_airliner_app(
     cfs_lib
