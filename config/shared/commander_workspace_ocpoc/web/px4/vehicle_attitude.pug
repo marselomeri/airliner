@@ -123,10 +123,24 @@ block main
                        var q3 = params[2].engValue.floatValue;
                        var q4 = params[3].engValue.floatValue;
 
-                       var phi = Math.atan2((q1*q3)+(q2*q4), (q1*q4)-(q2*q3));
-                       var theta = Math.acos(-(q1*q1)-(q2*q2)+(q3*q3)+(q4*q4));
-                       var psi = Math.atan2((q1*q3)-(q2*q4),(q2*q3)+(q1*q4));
+                       //var phi = Math.atan2((q1*q3)+(q2*q4), (q1*q4)-(q2*q3));
+                       //var theta = Math.acos(-(q1*q1)-(q2*q2)+(q3*q3)+(q4*q4));
+                       //var psi = Math.atan2((q1*q3)-(q2*q4),(q2*q3)+(q1*q4));
 
+
+                       var phi = Math.atan2(2*((q3*q4)+(q1*q2)), 1.0-2.0*((q2*q2)-(q3*q3)));
+                       var t = 2.0 * (q2*q4+q1*q3);
+                       if(t>1){
+                       t = 1;
+                       }
+                       else if(t<-1){
+                       t = -1;
+                       }
+                       var theta =Math.asin(t);
+                       var psi = Math.atan2(2.0*((q2*q3)+(q1*q4)),1.0-2.0*((q3*q3)+(q4*q4)));
+                  
+                       
+                        
                        var roll = (phi*360) / (2 * 3.1415926);
                        var pitch = (theta*360) / (2 * 3.1415926);
                        var yaw = (psi*360) / (2 * 3.1415926);
