@@ -34,6 +34,10 @@ block main
                     th State
                     td
                       span(data-sage={tlm: [{name:'/CFS/RGBLED/State'}]}) ---
+                  tr
+                    th Color
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/RGBLED/Color'}]}) ---
             footer
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/RGBLED/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd: {name:'/CFS/RGBLED/Reset'}}) Reset

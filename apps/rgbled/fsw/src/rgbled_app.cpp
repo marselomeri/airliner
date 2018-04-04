@@ -297,40 +297,67 @@ int32 RGBLED::RcvSchPipeMsg(int32 iBlocking)
                         switch (CVT.RGBLEDControl.Color)
                         {
                             case RGBLED_COLOR_RED:
-                            RGBLED_Custom_SetColor(255, 0, 0);
+                            {
+                                RGBLED_Custom_SetColor(255, 0, 0);
+                                HkTlm.Color = RGBLED_COLOR_RED;
+                            }
                             break;
         
                             case RGBLED_COLOR_GREEN:
-                            RGBLED_Custom_SetColor(0, 255, 0);
+                            {
+                                RGBLED_Custom_SetColor(0, 255, 0);
+                                HkTlm.Color = RGBLED_COLOR_GREEN;
+                            }
                             break;
         
                             case RGBLED_COLOR_BLUE:
-                            RGBLED_Custom_SetColor(0, 0, 255);
+                            {
+                                RGBLED_Custom_SetColor(0, 0, 255);
+                                HkTlm.Color = RGBLED_COLOR_BLUE;
+                            }
                             break;
         
-                            case RGBLED_COLOR_AMBER: 
-                            RGBLED_Custom_SetColor(255, 255, 0);
+                            case RGBLED_COLOR_AMBER:
+                            {
+                                RGBLED_Custom_SetColor(255, 255, 0);
+                                HkTlm.Color = RGBLED_COLOR_AMBER;
+                            }
                             break;
                             
                             case RGBLED_COLOR_YELLOW:
-                            RGBLED_Custom_SetColor(255, 255, 0);
+                            {
+                                RGBLED_Custom_SetColor(255, 255, 0);
+                                HkTlm.Color = RGBLED_COLOR_YELLOW;
+                            }
                             break;
         
                             case RGBLED_COLOR_PURPLE:
-                            RGBLED_Custom_SetColor(255, 0, 255);
+                            {
+                                RGBLED_Custom_SetColor(255, 0, 255);
+                                HkTlm.Color = RGBLED_COLOR_PURPLE;
+                            }
                             break;
         
                             case RGBLED_COLOR_CYAN:
-                            RGBLED_Custom_SetColor(0, 255, 255);
+                            {
+                                RGBLED_Custom_SetColor(0, 255, 255);
+                                HkTlm.Color = RGBLED_COLOR_CYAN;
+                            }
                             break;
         
                             case RGBLED_COLOR_WHITE:
-                            RGBLED_Custom_SetColor(255, 255, 255);
+                            {
+                                RGBLED_Custom_SetColor(255, 255, 255);
+                                HkTlm.Color = RGBLED_COLOR_WHITE;
+                            }
                             break;
         
                             default: /* COLOR_OFF */
-                            RGBLED_Custom_SetColor(0, 0, 0);
-                            HkTlm.State = RGBLED_INITIALIZED;
+                            {
+                                RGBLED_Custom_SetColor(0, 0, 0);
+                                HkTlm.Color = RGBLED_COLOR_OFF;
+                                HkTlm.State = RGBLED_INITIALIZED;
+                            }
                             break;
                         }
                     }
