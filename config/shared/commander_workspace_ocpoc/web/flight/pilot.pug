@@ -256,6 +256,7 @@ block main
                       delta = currTS-prevTS;
                       fps = Math.round(1000/delta);
                       console.log("FPS : ",fps);
+                      //console.log("FPS : ",fps);
                     
                       prevTS = GetTime();
                   }
@@ -299,6 +300,8 @@ block main
         //$("#SvgjsImage2653").attr("href",'data:image/jpeg;base64,' + imageBuffer);
         //var cameraVideoClip = defs.clip().rect(hudWidth, hudHeight).move(0, 0);
         cameraImage = draw.image('data:image/jpeg;base64,' + imageBuffer, hudWidth, hudHeight);
+        delete cameraImage;
+        delete imageBuffer;
 
         var rollIndicator = draw.group();
 
@@ -337,7 +340,7 @@ block main
         /* Draw ticks group. */
         var altTicksArea = altimeter.group();
         altTicks = altTicksArea.group();
-        console.log('test');
+        //console.log('test');
         for (i = 0; i < (10 * (altPosMetersOnScreen + 1 + 30)); i++) {
           y = (hudHeight / 2) - i * (altPxPerDecimeter);
           /* Draw a longer line if its a meter interval. */
