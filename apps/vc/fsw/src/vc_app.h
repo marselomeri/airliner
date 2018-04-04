@@ -172,6 +172,20 @@ int32 VC_InitPipe(void);
 
 
 /************************************************************************/
+/** \brief Video Control (VC) critical cleanup prior to exit.
+**
+**  \par Description
+**       This function handles any critical cleanup prior
+**       to application exit.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+*************************************************************************/
+void VC_CleanupCallback(void);
+
+
+/************************************************************************/
 /** \brief Video Control (VC) cleanup prior to exit
 **
 **  \par Description
@@ -182,7 +196,7 @@ int32 VC_InitPipe(void);
 **       None
 **
 *************************************************************************/
-void VC_CleanupCallback(void);
+void VC_CleanupExit(void);
 
 
 /************************************************************************/

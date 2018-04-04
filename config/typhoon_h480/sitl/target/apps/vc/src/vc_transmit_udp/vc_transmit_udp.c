@@ -264,6 +264,21 @@ boolean VC_Transmit_Uninit(void)
 }
 
 
+void VC_Transmit_Critical_Cleanup(void)
+{
+    uint8 i = 0;
+
+    for(i=0; i < VC_MAX_OUTPUT_CHANNELS; i++)
+    {
+        if(VC_AppCustomData.Channel[i].SocketFd != 0)
+        {
+            close(VC_AppCustomData.Channel[i].SocketFd);
+        }
+    }
+    return;
+}
+
+
 int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
     static struct sockaddr_in s_addr;

@@ -721,6 +721,22 @@ int32 VC_CleanupDevices(void)
 }
 
 
+void VC_Devices_Critical_Cleanup(void)
+{
+    uint8 i = 0;
+
+    for(i=0; i < VC_MAX_DEVICES; i++)
+    {
+        if(VC_AppCustomDevice.Channel[i].DeviceFd != 0)
+        {
+            ioctl(VC_AppCustomDevice.Channel[i].DeviceFd, VIDIOC_STREAMOFF, &VC_AppCustomDevice.Channel[i].BufferType);
+            close(VC_AppCustomDevice.Channel[i].DeviceFd);
+        }
+    }
+    return;
+}
+
+
 int32 VC_DisableDevice(uint8 DeviceID)
 {
     int32 returnCode = 0;
@@ -787,6 +803,8 @@ boolean VC_Devices_Start(void)
  */
 boolean VC_Devices_Stop(void)
 {
+    boolean returnBool = TRUE;
+
     /* Delete the child task */
     CFE_ES_DeleteChildTask(VC_AppCustomDevice.ChildTaskID);
     
@@ -798,9 +816,10 @@ boolean VC_Devices_Stop(void)
     
     if(-1 == VC_Stop_Streaming())
     {
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+
+    return returnBool;
 }
 
 

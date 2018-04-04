@@ -195,10 +195,8 @@ typedef enum
     RCIN_CUSTOM_NOTSTREAMING    = 3,
     /*! Status streaming */
     RCIN_CUSTOM_STREAMING       = 4,
-    /*! Status out of sync */
-    RCIN_CUSTOM_OUT_OF_SYNC     = 5,
     /*! Status RC Lost */
-    RCIN_CUSTOM_RC_LOST         = 6
+    RCIN_CUSTOM_RC_LOST         = 5
 } RCIN_Custom_Status_t;
 
 

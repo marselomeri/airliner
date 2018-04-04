@@ -210,7 +210,7 @@ int32 VC_DisableChannel(uint8 ChannelID)
     }
     else
     {
-    VC_AppCustomData.Channel[ChannelID].SocketFd = 0;
+        VC_AppCustomData.Channel[ChannelID].SocketFd = 0;
     }
 
 end_of_function:
@@ -256,6 +256,21 @@ boolean VC_Transmit_Uninit(void)
         return FALSE;
     }
     return TRUE;
+}
+
+
+void VC_Transmit_Critical_Cleanup(void)
+{
+    uint8 i = 0;
+
+    for(i=0; i < VC_MAX_OUTPUT_CHANNELS; i++)
+    {
+        if(VC_AppCustomData.Channel[i].SocketFd != 0)
+        {
+            close(VC_AppCustomData.Channel[i].SocketFd);
+        }
+    }
+    return;
 }
 
 

@@ -99,3 +99,8 @@ int32 VC_Transmit_InitData(void)
     return VC_Transmit_Test_Returns.VC_Transmit_InitData_Return;
 }
 
+
+void VC_Transmit_Critical_Cleanup(void)
+{
+    return;
+}
