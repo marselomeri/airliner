@@ -64,12 +64,12 @@ MPU9250 oMPU9250;
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 MPU9250::MPU9250() :
-    //_accel_filter_x(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
-    //_accel_filter_y(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
-    //_accel_filter_z(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
-    //_gyro_filter_x(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
-    //_gyro_filter_y(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
-    //_gyro_filter_z(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
+    _accel_filter_x(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
+    _accel_filter_y(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
+    _accel_filter_z(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ),
+    _gyro_filter_x(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
+    _gyro_filter_y(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
+    _gyro_filter_z(MPU9250_GYRO_SAMPLE_RATE, MPU9250_GYRO_FILTER_CUTOFF_FREQ),
     //_accel_int(MPU9250_NEVER_AUTOPUBLISH_US, FALSE),
     //_gyro_int(MPU9250_NEVER_AUTOPUBLISH_US, TRUE)
     _accel_int(MPU9250_ACCEL_INT_PUB_RATE, TRUE),
@@ -272,17 +272,8 @@ void MPU9250::InitData()
     /* Temperature */
     Diag.Conversion.RoomTempOffset  = MPU9250_ROOM_TEMP_OFFSET;
     Diag.Conversion.TempSensitivity = MPU9250_TEMP_SENS;
-
     /* Start initialization of user calibration values */
     UpdateParamsFromTable();
-
-    /* Initialize low pass filters */
-    m_Accel_Filter_X.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Accel_Filter_Y.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Accel_Filter_Z.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Gyro_Filter_X.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Gyro_Filter_Y.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Gyro_Filter_Z.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
 }
 
 
@@ -796,9 +787,9 @@ void MPU9250::ReadDevice(void)
     calZ_f = (calZ_f - m_Params.GyroZOffset) * m_Params.GyroZScale;
 
     /* Gyro Filter */
-    SensorGyro.X = m_Gyro_Filter_X.apply(calX_f);
-    SensorGyro.Y = m_Gyro_Filter_Y.apply(calY_f);
-    SensorGyro.Z = m_Gyro_Filter_Z.apply(calZ_f);
+    SensorGyro.X = _gyro_filter_x.apply(calX_f);
+    SensorGyro.Y = _gyro_filter_y.apply(calY_f);
+    SensorGyro.Z = _gyro_filter_z.apply(calZ_f);
 
     /* Gyro Integrate */
     gval[0] = SensorGyro.X;
@@ -854,9 +845,9 @@ void MPU9250::ReadDevice(void)
     calZ_f = (calZ_f - m_Params.AccZOffset) * m_Params.AccZScale;
 
     /* Accel Filter */
-    SensorAccel.X = m_Accel_Filter_X.apply(calX_f);
-    SensorAccel.Y = m_Accel_Filter_Y.apply(calY_f);
-    SensorAccel.Z = m_Accel_Filter_Z.apply(calZ_f);
+    SensorAccel.X = _accel_filter_x.apply(calX_f);
+    SensorAccel.Y = _accel_filter_y.apply(calY_f);
+    SensorAccel.Z = _accel_filter_z.apply(calZ_f);
 
     /* Accel Integrate */
     aval[0] = SensorAccel.X;
