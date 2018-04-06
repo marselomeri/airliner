@@ -79,7 +79,7 @@ public:
      **  \par Description
      **       This function initializes the object. The sample frequency
      **       and cutoff frequency must be set when using this
-     **       constructor.
+     **       constructor by calling init_lowpass_filter.
      **
      **  \par Assumptions, External Events, and Notes:
      **       None
@@ -138,6 +138,29 @@ public:
      *************************************************************************/
     ~LowPassFilter2p()
     {
+    };
+
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Initializer
+     **
+     **  \par Description
+     **       This function updates the object attributes with passed values
+     **       and initializes the delay elements to zero.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   sample_freq      A #float specifying frequency of the sample
+     **  \param [in]   cutoff_freq      A #float specifying the cutoff frequency
+     **
+     *************************************************************************/
+    void init_lowpass_filter(float sample_freq, float cutoff_freq)
+    {
+        _delay_element_1 = 0.0f;
+        _delay_element_2 = 0.0f;
+        set_cutoff_frequency(sample_freq, cutoff_freq);
+        return;
     };
 
 

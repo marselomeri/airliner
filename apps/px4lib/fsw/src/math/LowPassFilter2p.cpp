@@ -62,6 +62,7 @@ void LowPassFilter2p::set_cutoff_frequency(float sample_freq, float cutoff_freq)
     _b2 = _b0;
     _a1 = 2.0f * (ohm * ohm - 1.0f) / c;
     _a2 = (1.0f - 2.0f * cosf(M_PI_F / 4.0f) * ohm + ohm * ohm) / c;
+    return;
 }
 
 

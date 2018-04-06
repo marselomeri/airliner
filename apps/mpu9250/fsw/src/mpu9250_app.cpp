@@ -277,12 +277,12 @@ void MPU9250::InitData()
     UpdateParamsFromTable();
 
     /* Initialize low pass filters */
-    m_Accel_Filter_X.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Accel_Filter_Y.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Accel_Filter_Z.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Gyro_Filter_X.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Gyro_Filter_Y.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
-    m_Gyro_Filter_Z.set_cutoff_frequency(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
+    m_Accel_Filter_X.init_lowpass_filter(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
+    m_Accel_Filter_Y.init_lowpass_filter(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
+    m_Accel_Filter_Z.init_lowpass_filter(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
+    m_Gyro_Filter_X.init_lowpass_filter(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
+    m_Gyro_Filter_Y.init_lowpass_filter(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
+    m_Gyro_Filter_Z.init_lowpass_filter(MPU9250_ACCEL_SAMPLE_RATE, MPU9250_ACCEL_FILTER_CUTOFF_FREQ);
 }
 
 
