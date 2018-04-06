@@ -152,6 +152,24 @@ public:
     /** \brief params from the config table */
     MPU9250_Params_t m_Params;
 
+    /* Low pass filters */
+    /** \brief Gyro filter X-axis */
+    math::LowPassFilter2p m_Accel_Filter_X;
+    /** \brief Gyro filter Y-axis */
+    math::LowPassFilter2p m_Accel_Filter_Y;
+    /** \brief Gyro filter Z-axis */
+    math::LowPassFilter2p m_Accel_Filter_Z;
+    /** \brief Accel filter X-axis */
+    math::LowPassFilter2p m_Gyro_Filter_X;
+    /** \brief Accel filter Y-axis */
+    math::LowPassFilter2p m_Gyro_Filter_Y;
+    /** \brief Accel filter Z-axis */
+    math::LowPassFilter2p m_Gyro_Filter_Z;
+
+    /* Integrators */
+    Integrator              _accel_int;
+    Integrator              _gyro_int;
+
     /** \brief param mutex */
     //uint32 m_Params_Mutex;
     
@@ -448,15 +466,6 @@ private:
     **
     *************************************************************************/
     int32  AcquireConfigPointers(void);
-
-    math::LowPassFilter2p   _accel_filter_x;
-    math::LowPassFilter2p   _accel_filter_y;
-    math::LowPassFilter2p   _accel_filter_z;
-    math::LowPassFilter2p   _gyro_filter_x;
-    math::LowPassFilter2p   _gyro_filter_y;
-    math::LowPassFilter2p   _gyro_filter_z;
-    Integrator              _accel_int;
-    Integrator              _gyro_int;
 
 public:
     /************************************************************************/
