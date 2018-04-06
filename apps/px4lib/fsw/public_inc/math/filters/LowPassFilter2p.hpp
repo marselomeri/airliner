@@ -38,133 +38,178 @@
 /// Author: Leonard Hall <LeonardTHall@gmail.com>
 /// Adapted for PX4 by Andrew Tridgell
 
-//#pragma once
 #ifndef LOWPASSFILTER2P_H
 #define LOWPASSFILTER2P_H
 
 namespace math
 {
+
 class LowPassFilter2p
 {
-public:
-	/************************************************************************/
-	/** \brief Low Pass Filter Constructor
-	 **
-	 **  \par Description
-	 **       This function initializes the object with passed values.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 **  \param [in]   sample_freq      A #float specifying frequency of the sample
-	 **  \param [in]   cutoff_freq      A #float specifying the cutoff frequency
-	 **
-	 *************************************************************************/
-	LowPassFilter2p(float sample_freq, float cutoff_freq) :
-		_cutoff_freq(cutoff_freq),
-		_a1(0.0f),
-		_a2(0.0f),
-		_b0(0.0f),
-		_b1(0.0f),
-		_b2(0.0f),
-		_delay_element_1(0.0f),
-		_delay_element_2(0.0f)
-	{
-		// set initial parameters
-		set_cutoff_frequency(sample_freq, cutoff_freq);
-	}
-
-	/************************************************************************/
-	/** \brief Low Pass Filter Mutator
-	 **
-	 **  \par Description
-	 **       This function updates the object attributes with passed values.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 **  \param [in]   sample_freq      A #float specifying frequency of the sample
-	 **  \param [in]   cutoff_freq      A #float specifying the cutoff frequency
-	 **
-	 *************************************************************************/
-	void set_cutoff_frequency(float sample_freq, float cutoff_freq);
-
-	/************************************************************************/
-	/** \brief Low Pass Filter Mutator
-	 **
-	 **  \par Description
-	 **       This function updates the object attributes with passed values.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 **  \param [in]   sample      A #float of a new raw value to add to the filter
-	 **
-	 *************************************************************************/
-	float apply(float sample);
-
-	/************************************************************************/
-	/** \brief Low Pass Filter Accessor
-	 **
-	 **  \par Description
-	 **       This function returns the cutoff frequency
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
- 	 **  \returns
-	 **  Cutoff frequency
-	 **  \endreturns
-	 **
-	 *************************************************************************/
-	float get_cutoff_freq() const
-	{
-		return _cutoff_freq;
-	}
-
-	/************************************************************************/
-	/** \brief Low Pass Filter Mutator
-	 **
-	 **  \par Description
-	 **       This function resets the filter state to passed value.
-	 **
-	 **  \par Assumptions, External Events, and Notes:
-	 **       None
-	 **
-	 **  \param [in]   sample      A #float of the new raw value
-	 **
-	 **  \returns
-	 **  Filtered sample
-	 **  \endreturns
-	 **
-	 *************************************************************************/
-	float reset(float sample);
 
 private:
-	/** \brief Cutoff Frequency */
-	float           _cutoff_freq;
+    /** \brief Cutoff Frequency */
+    float           _cutoff_freq;
 
-	/** \brief Equation variable */
-	float           _a1;
+    /** \brief Coefficient a1 */
+    float           _a1;
 
-	/** \brief Equation variable */
-	float           _a2;
+    /** \brief Coefficient a2 */
+    float           _a2;
 
-	/** \brief Equation variable */
-	float           _b0;
+    /** \brief Coefficient b0 */
+    float           _b0;
 
-	/** \brief Equation variable */
-	float           _b1;
+    /** \brief Coefficient b1 */
+    float           _b1;
 
-	/** \brief Equation variable */
-	float           _b2;
+    /** \brief Coefficient b2 */
+    float           _b2;
 
-	/** \brief Buffered sample -1 */
-	float           _delay_element_1;
+    /** \brief Buffered sample -1 */
+    float           _delay_element_1;
 
-	/** \brief Buffered sample -2*/
-	float           _delay_element_2;
+    /** \brief Buffered sample -2*/
+    float           _delay_element_2;
+
+public:
+    /************************************************************************/
+    /** \brief Low Pass Filter Constructor
+     **
+     **  \par Description
+     **       This function initializes the object. The sample frequency
+     **       and cutoff frequency must be set when using this
+     **       constructor.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    LowPassFilter2p() :
+        _cutoff_freq(0.0f),
+        _a1(0.0f),
+        _a2(0.0f),
+        _b0(0.0f),
+        _b1(0.0f),
+        _b2(0.0f),
+        _delay_element_1(0.0f),
+        _delay_element_2(0.0f)
+    {
+    };
+
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Constructor
+     **
+     **  \par Description
+     **       This function initializes the object with passed values.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   sample_freq      A #float specifying frequency of the sample
+     **  \param [in]   cutoff_freq      A #float specifying the cutoff frequency
+     **
+     *************************************************************************/
+    LowPassFilter2p(float sample_freq, float cutoff_freq) :
+        _cutoff_freq(cutoff_freq),
+        _a1(0.0f),
+        _a2(0.0f),
+        _b0(0.0f),
+        _b1(0.0f),
+        _b2(0.0f),
+        _delay_element_1(0.0f),
+        _delay_element_2(0.0f)
+    {
+        /* set initial parameters */
+        set_cutoff_frequency(sample_freq, cutoff_freq);
+    };
+    
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Destructor
+     **
+     **  \par Description
+     **       This function destructs the object.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    ~LowPassFilter2p()
+    {
+    };
+
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Mutator
+     **
+     **  \par Description
+     **       This function updates the object attributes with passed values.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   sample_freq      A #float specifying frequency of the sample
+     **  \param [in]   cutoff_freq      A #float specifying the cutoff frequency
+     **
+     *************************************************************************/
+    void set_cutoff_frequency(float sample_freq, float cutoff_freq);
+
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Mutator
+     **
+     **  \par Description
+     **       This function updates the object attributes with passed values.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   sample      A #float of a new raw value to add to the filter
+     **
+     *************************************************************************/
+    float apply(float sample);
+
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Accessor
+     **
+     **  \par Description
+     **       This function returns the cutoff frequency
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \returns
+     **  Cutoff frequency
+     **  \endreturns
+     **
+     *************************************************************************/
+    float get_cutoff_freq() const
+    {
+        return _cutoff_freq;
+    };
+
+
+    /************************************************************************/
+    /** \brief Low Pass Filter Mutator
+     **
+     **  \par Description
+     **       This function resets the filter state to passed value.
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     **  \param [in]   sample      A #float of the new raw value
+     **
+     **  \returns
+     **  Filtered sample
+     **  \endreturns
+     **
+     *************************************************************************/
+    float reset(float sample);
 };
 
-} // namespace math
-#endif // LOWPASSFILTER2P_H
+} /* end namespace math */
+#endif /* end LOWPASSFILTER2P_H */
