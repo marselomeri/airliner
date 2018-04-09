@@ -41,7 +41,6 @@
 #include "ms5611_events.h"
 #include "ms5611_perfids.h"
 #include "ms5611_app.h"
-
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
@@ -172,38 +171,45 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
     switch(Addr)
     {
         case 0:
+        {
             /* Reserved for manufacturer, magic number added for sim */
             *returnVal = 777;
             break;
+        }
 
         case 1:
+        {
             *returnVal = MS5611_CUSTOM_C1;
             break;
-
+        }
         case 2:
+        {
             *returnVal = MS5611_CUSTOM_C2;
             break;
-
+        }
         case 3:
+        {
             *returnVal = MS5611_CUSTOM_C3;
             break;
-
+        }
         case 4:
+        {
             *returnVal = MS5611_CUSTOM_C4;
             break;
-
+        }
         case 5:
+        {
             *returnVal = MS5611_CUSTOM_C5;
             break;
-
+        }
         case 6:
+        {
             *returnVal = MS5611_CUSTOM_C6;
             break;
-
+        }
         case 7:
         {
             *returnVal = 0x0F & oMS5611.CRC4(oMS5611.MS5611_Coefficients);
-
             break;
         }
 
@@ -214,7 +220,7 @@ boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
         }
     }
 
-    return TRUE;
+    return (TRUE);
 }
 
 
@@ -222,7 +228,7 @@ boolean MS5611_D1Conversion(void)
 {
     MS5611_AppCustomData.State = MS5611_CUSTOM_D1_CONV;
 
-    return TRUE;
+    return (TRUE);
 }
 
 
@@ -230,7 +236,7 @@ boolean MS5611_D2Conversion(void)
 {
     MS5611_AppCustomData.State = MS5611_CUSTOM_D2_CONV;
 
-    return TRUE;
+    return (TRUE);
 }
 
 
@@ -259,22 +265,18 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
                 const double g  = 9.80665;
                 /* ideal gas constant in J/kg/K */
                 const double R  = 287.05;
-
                 /* current pressure at MSL in kPa */
                 double p1 = 101325 / 1000.0;
-
                 /* measured pressure in kPa */
                 double p = 0.0f;
-
                 /* Difference between actual and reference temperature. */
                 int32 dT = 0;
-
                 /* Offset at actual temperature */
                 int64 OFF = 0;
-
                 /* Sensitivity at actual temperature */
                 int64 SENS = 0;
 
+                /* Get simulation measurements */
                 SIMLIB_GetPressureAltitude(&Altitude);
                 SIMLIB_GetTemp(&Temperature);
 
@@ -286,6 +288,8 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 
                 /* Alternate form 
                  * p = p1*pow((a*((T1/a)+Altitude))/T1,(-g/(a*R)));
+                 * Inverse operations to get back to raw pressure and
+                 * temperature.
                  */
                 p = p1*pow(((a*(Altitude)+T1)/T1),(-g/(a*R)));
 
@@ -304,7 +308,6 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 
                 break;
             }
-
             case MS5611_CUSTOM_D2_CONV:
             {
                 *returnVal = MS5611_AppCustomData.D2;
@@ -313,7 +316,6 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 
                 break;
             }
-
             default:
             {
                 *returnVal = 0;
@@ -331,14 +333,14 @@ boolean MS5611_ReadADCResult(uint32 *returnVal)
 
 boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind)
 {
+    boolean returnBool = FALSE;
+
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
     {
-        return TRUE;
+        returnBool = TRUE;
     }
-    else
-    {
-        return FALSE;
-    }
+
+    return (returnBool);
 }
 
 

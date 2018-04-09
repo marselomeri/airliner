@@ -43,7 +43,6 @@
 #include "hmc5883_events.h"
 #include "hmc5883_perfids.h"
 #include "px4lib.h"
-
 #include "simlib.h"
 #include <string.h>
 #include <unistd.h>
@@ -51,7 +50,6 @@
 #include <sys/ioctl.h>
 #include <errno.h>
 #include <time.h>
-
 
 extern HMC5883 oHMC5883;
 
@@ -107,6 +105,7 @@ void HMC5883_Custom_InitData(void)
     /* Set all struct zero values */
     bzero(&HMC5883_AppCustomData, sizeof(HMC5883_AppCustomData));
     HMC5883_AppCustomData.SelfTestMode = FALSE;
+    return;
 }
 
 
@@ -116,7 +115,7 @@ boolean HMC5883_Custom_Init()
     HMC5883_AppCustomData.Status = HMC5883_CUSTOM_INITIALIZED;
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -133,47 +132,37 @@ boolean HMC5883_Custom_Set_Range(uint8 Range)
         HMC5883_AppCustomData.SelfTestMode = FALSE;
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean HMC5883_Custom_Get_Range(uint8 *Range)
 {
-    boolean returnBool = TRUE;
-
-    return returnBool;
+    return (TRUE);
 }
 
 
 boolean HMC5883_Custom_Check_Range(uint8 Range)
 {
-    boolean returnBool = TRUE;
-
-    return returnBool;
+    return (TRUE);
 }
 
 
 boolean HMC5883_Custom_Set_Config(uint8 Config)
 {
-    boolean returnBool = TRUE;
-
-    return returnBool;
+    return (TRUE);
 }
 
 
 boolean HMC5883_Custom_Get_Config(uint8 *Config)
 {
-    boolean returnBool = TRUE;
-
-    return returnBool;
+    return (TRUE);
 }
 
 
 boolean HMC5883_Custom_Check_Config(uint8 Config)
 {
-    boolean returnBool = TRUE;
-
-    return returnBool;
+    return (TRUE);
 }
 
 
@@ -190,7 +179,7 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Read_Gyro Null Pointer");
     }
 
@@ -200,7 +189,7 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     if(FALSE == HMC5883_AppCustomData.SelfTestMode)
     {
         /* Apply inverse rotation */
-        temp = calY_f;
+        temp   = calY_f;
         calY_f = calX_f * -1;
         calX_f = temp;
         
@@ -216,7 +205,7 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
         *Z = 1.08f / (1.0f / 660.0f);
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -227,7 +216,7 @@ boolean HMC5883_Custom_Measure_Temp(int16 *Temp)
     /* Null pointer check */
     if(0 == Temp)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Measure_Temp Null Pointer");
     }
 
@@ -237,25 +226,19 @@ boolean HMC5883_Custom_Measure_Temp(int16 *Temp)
 
     *Temp = (int16) 128 * (calTemp -25);
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean HMC5883_Custom_ValidateID(void)
 {
-    boolean returnBool = TRUE;
-
-end_of_function:
-
-    return returnBool;
+    return (TRUE);
 }
 
 
 boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data)
 {
-    boolean returnBool = TRUE;
-
-    return returnBool;
+    return (TRUE);
 }
 
 
@@ -264,25 +247,25 @@ boolean HMC5883_Custom_Uninit(void)
     boolean returnBool = TRUE;
     HMC5883_AppCustomData.Status = HMC5883_CUSTOM_UNINITIALIZED;
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 int32 HMC5883_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 {
-    return 0;
+    return (0);
 }
 
 
 boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
-    float temp = 0;
+    float temp         = 0;
 
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Apply_Platform_Rotation Null Pointer");
         returnBool = FALSE;
         goto end_of_function;
@@ -297,7 +280,7 @@ boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 
 end_of_function:
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -309,10 +292,9 @@ void HMC5883_Get_Rotation(uint8 *Rotation)
     {
         goto end_of_function;
     }
-    
-    /* TODO move to a table */
-    *Rotation = ROTATION_NONE;
+
+    *Rotation = ROTATION_YAW_90;
 
 end_of_function:
-;
+    return;
 }

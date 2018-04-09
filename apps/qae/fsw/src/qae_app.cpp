@@ -84,7 +84,7 @@ QAE::~QAE()
 int32 QAE::InitEvent()
 {
     int32  iStatus = CFE_SUCCESS;
-    int32  ind = 0;
+    int32  ind     = 0;
 
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
     
@@ -321,11 +321,13 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case AE_WAKEUP_MID:
+            {
                 /* TODO:  Do something here. */
                 //EstimateAttitude();
                 break;
-
+            }
             case AE_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 /* Copy the current vehicle attitude message */
                 memcpy(&HkTlm.VehicleAttitudeMsg, &VehicleAttitudeMsg, sizeof(VehicleAttitudeMsg));
@@ -333,33 +335,37 @@ int32 QAE::RcvSchPipeMsg(int32 iBlocking)
                 memcpy(&HkTlm.ControlStateMsg, &ControlStateMsg, sizeof(ControlStateMsg));
                 ReportHousekeeping();
                 break;
-
+            }
             case PX4_SENSOR_COMBINED_MID:
+            {
                 memcpy(&CVT.SensorCombinedMsg, MsgPtr, sizeof(CVT.SensorCombinedMsg));
                 /* TODO currently event driven */
                 EstimateAttitude();
                 break;
-
+            }
             case PX4_VEHICLE_GLOBAL_POSITION_MID:
+            {
                 memcpy(&CVT.VehicleGlobalPositionMsg, MsgPtr, sizeof(CVT.VehicleGlobalPositionMsg));
                 break;
-
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(QAE_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, you can do nothing here, 
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via 
+         * the iBlocking arg, do nothing here.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -395,10 +401,12 @@ void QAE::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case AE_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -406,6 +414,7 @@ void QAE::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(QAE_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -419,6 +428,7 @@ void QAE::ProcessCmdPipe()
             break;
         }
     }
+    return;
 }
 
 
@@ -437,6 +447,7 @@ void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case QAE_NOOP_CC:
+            {
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(QAE_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                         "Recvd NOOP. Version %d.%d.%d.%d",
@@ -445,19 +456,23 @@ void QAE::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                         QAE_REVISION,
                         QAE_MISSION_REV);
                 break;
-
+            }
             case QAE_RESET_CC:
+            {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
-
+            }
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(QAE_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -469,6 +484,7 @@ void QAE::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    return;
 }
 
 
@@ -481,13 +497,14 @@ void QAE::SendVehicleAttitudeMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleAttitudeMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleAttitudeMsg);
+    return;
 }
-
 
 void QAE::SendControlStateMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&ControlStateMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&ControlStateMsg);
+    return;
 }
 
 
@@ -614,6 +631,7 @@ void QAE::UpdateMagDeclination(const float new_declination)
         m_Quaternion = decl_rotation * m_Quaternion;
         m_Params.mag_declination = new_declination;
     }
+    return;
 }
 
 
@@ -752,7 +770,6 @@ void QAE::EstimateAttitude(void)
     {
         (void) CFE_EVS_SendEvent(QAE_UPDATE_EST_ERR_EID, CFE_EVS_ERROR,
                 "Update attitude estimate failed, reset to last state");
-        /* TODO raise event here */
         goto end_of_function;
     }
     
@@ -1005,6 +1022,7 @@ void QAE::UpdateParamsFromTable(void)
         m_Params.gyro_bias_max        = ConfigTblPtr->ATT_BIAS_MAX;
         m_Params.airspeed_mode        = ConfigTblPtr->FW_ARSP_MODE;
     }
+    return;
 }
 
 /************************/

@@ -131,11 +131,11 @@ void MS5611_Custom_InitData(void)
 boolean MS5611_Custom_Init()
 {
     boolean returnBool = TRUE;
-    int ret = 0;
-    int i = 0;
-    int8 mode = MS5611_SPI_DEVICE_MODE;
-    int8 bits = MS5611_SPI_DEVICE_BITS;
-    uint32 speed = MS5611_SPI_DEVICE_SPEED;
+    int ret            = 0;
+    int i              = 0;
+    int8 mode          = MS5611_SPI_DEVICE_MODE;
+    int8 bits          = MS5611_SPI_DEVICE_BITS;
+    uint32 speed       = MS5611_SPI_DEVICE_SPEED;
 
     MS5611_AppCustomData.DeviceFd = open(MS5611_SPI_DEVICE_PATH, O_RDWR);
     if (MS5611_AppCustomData.DeviceFd < 0) 
@@ -201,9 +201,9 @@ boolean MS5611_Custom_Init()
     }
 
     /* Keep CS activated */
-    MS5611_SPI_Xfer[0].cs_change = 0; 
-    MS5611_SPI_Xfer[0].delay_usecs = 0; 
-    MS5611_SPI_Xfer[0].speed_hz = speed; 
+    MS5611_SPI_Xfer[0].cs_change     = 0; 
+    MS5611_SPI_Xfer[0].delay_usecs   = 0; 
+    MS5611_SPI_Xfer[0].speed_hz      = speed; 
     MS5611_SPI_Xfer[0].bits_per_word = 8;
 
     ret = MS5611_ResetDevice();
@@ -225,7 +225,7 @@ end_of_function:
 boolean MS5611_Custom_Uninit(void)
 {
     boolean returnBool = TRUE;
-    int returnCode = 0;
+    int returnCode     = 0;
 
     returnCode = close(MS5611_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
@@ -273,8 +273,8 @@ int32 MS5611_ResetDevice(void)
 
 boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 {
-    int ret = 0;
-    uint32 i = 0;
+    int ret            = 0;
+    uint32 i           = 0;
     boolean returnBool = TRUE;
     
     /* Null pointer check */
@@ -314,8 +314,8 @@ end_of_function:
 
 boolean MS5611_D1Conversion(void)
 {
-    int ret = 0;
-    int32 result = 0;
+    int ret            = 0;
+    int32 result       = 0;
     boolean returnBool = TRUE;
 
     unsigned char   txBuf[1];
@@ -346,8 +346,8 @@ boolean MS5611_D1Conversion(void)
 
 boolean MS5611_D2Conversion(void)
 {
-    int ret = 0;
-    int32 result = 0;
+    int ret            = 0;
+    int32 result       = 0;
     boolean returnBool = TRUE;
 
     unsigned char   txBuf[1];
@@ -378,12 +378,13 @@ boolean MS5611_D2Conversion(void)
 
 boolean MS5611_ReadADCResult(uint32 *returnVal)
 {
-    int ret = 0;
-    int32 result = 0;
-    uint32 i = 0;
+    int ret            = 0;
+    int32 result       = 0;
+    uint32 i           = 0;
+    boolean returnBool = TRUE;
+    
     unsigned char   txBuf[30];
     unsigned char   rxBuf[30];
-    boolean returnBool = TRUE;
 
     /* Null pointer check */
     if(0 == returnVal)
@@ -420,14 +421,14 @@ end_of_function:
 
 boolean MS5611_Custom_Max_Events_Not_Reached(int32 ind)
 {
+    boolean returnBool = FALSE;
+
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
     {
-        return TRUE;
+        returnBool = TRUE;
     }
-    else
-    {
-        return FALSE;
-    }
+
+    return (returnBool);
 }
 
 
