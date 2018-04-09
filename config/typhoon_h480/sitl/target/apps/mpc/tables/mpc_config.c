@@ -321,7 +321,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	2.5f,
+	10.0f,
 
 	/**
 	 * MPC_XY_FF
