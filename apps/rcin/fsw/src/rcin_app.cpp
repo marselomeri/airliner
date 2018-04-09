@@ -84,8 +84,8 @@ RCIN::~RCIN()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RCIN::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
-    int32  ind = 0;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
     int32 customEventCount = 0;
     
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
@@ -219,8 +219,8 @@ void RCIN::InitData()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RCIN::InitApp()
 {
-    int32  iStatus   = CFE_SUCCESS;
-    int8   hasEvents = 0;
+    int32  iStatus     = CFE_SUCCESS;
+    int8   hasEvents   = 0;
     boolean returnBool = TRUE;
 
     iStatus = InitEvent();

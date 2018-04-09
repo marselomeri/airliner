@@ -51,7 +51,7 @@ extern "C" {
 typedef enum {
 
 /** \brief <tt> Value of zero is reserved, and should not be used. </tt> */
-	LGC_RESERVED_EID = 0,  /* Do not use this event ID */
+    LGC_RESERVED_EID = 0,  /* Do not use this event ID */
 
 /** \brief <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Initialized. Version \%d.\%d.\%d.\%d' </tt>
@@ -72,7 +72,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #LGC_MISSION_REV.
 */
-	LGC_INIT_INF_EID,
+    LGC_INIT_INF_EID,
 
 /** \brief <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
 **  \event <tt> 'Recvd NOOP. Version \%d.\%d.\%d.\%d' </tt>
@@ -95,7 +95,7 @@ typedef enum {
 **  The fourth \c %d field contains the application revision number defined
 **      in #LGC_MISSION_REV.
 */
-	LGC_CMD_NOOP_EID,
+    LGC_CMD_NOOP_EID,
 
     /** \brief <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
     **  \event <tt> '\%s Pipe failed to subscribe to \%s. (0x\%08X)' </tt>
@@ -112,7 +112,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	LGC_SUBSCRIBE_ERR_EID,
+    LGC_SUBSCRIBE_ERR_EID,
 
 /** \brief <tt> 'Failed to create \%s pipe (0x\%08X)' </tt>
 **  \event <tt> 'Failed to create \%s pipe (0x\%08X' </tt>
@@ -128,7 +128,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	LGC_PIPE_INIT_ERR_EID,
+    LGC_PIPE_INIT_ERR_EID,
 
 /** \brief <tt> 'Failed to manage Config table (0x\%08X)' </tt>
 **  \event <tt> 'Failed to manage Config table (0x\%08X)' </tt>
@@ -141,7 +141,7 @@ typedef enum {
 **  #CFE_TBL_Manage function.
 **
 */
-	LGC_CFGTBL_MANAGE_ERR_EID,
+    LGC_CFGTBL_MANAGE_ERR_EID,
 
 /** \brief <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
 **  \event <tt> 'Failed to get Config table's address (0x\%08X)' </tt>
@@ -154,7 +154,7 @@ typedef enum {
 **  #CFE_TBL_GetAddress function.
 **
 */
-	LGC_CFGTBL_GETADDR_ERR_EID,
+    LGC_CFGTBL_GETADDR_ERR_EID,
 
 /** \brief <tt> '\%s pipe read error (0x\%08X).' </tt>
 **  \event <tt> '\%s pipe read error (0x\%08X).' </tt>
@@ -170,7 +170,7 @@ typedef enum {
 **  The 32 bit hexadecimal number is the error code returned by CFE.
 **
 */
-	LGC_RCVMSG_ERR_EID,
+    LGC_RCVMSG_ERR_EID,
 
 /** \brief <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
 **  \event <tt> 'Recvd invalid \%s msgId (0x\%04X)' </tt>
@@ -185,7 +185,7 @@ typedef enum {
 **  The \c %s field contains the name of the pipe.
 **  The 16 bit hexadecimal number is the actual message ID received.
 */
-	LGC_MSGID_ERR_EID,
+    LGC_MSGID_ERR_EID,
 
 /** \brief <tt> 'Recvd invalid command code (\%u)' </tt>
 **  \event <tt> 'Recvd invalid command code (\%u)' </tt>
@@ -199,7 +199,7 @@ typedef enum {
 **
 **  The %u field contains the actual command code received.
 */
-	LGC_CC_ERR_EID,
+    LGC_CC_ERR_EID,
 
 /** \brief <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
 **  \event <tt> 'Rcvd invalid msgLen: msgId=0x\%08X, cmdCode=\%d, msgLen=\%d, expectedLen=\%d" </tt>
@@ -216,7 +216,7 @@ typedef enum {
 **  The third \c %d field contains the actual length.
 **  The fourth \c %d field contains the expected length.
 */
-	LGC_MSGLEN_ERR_EID,
+    LGC_MSGLEN_ERR_EID,
 
 /** \brief <tt> 'Failed to register config table (0x%08X)' </tt>
 **  \event <tt> 'Failed to register config table (0x%08X)' </tt>
@@ -232,7 +232,7 @@ typedef enum {
 **  #CFE_TBL_Register function.
 **
 */
-	LGC_CFGTBL_REG_ERR_EID,
+    LGC_CFGTBL_REG_ERR_EID,
 
 /** \brief <tt> 'Failed to load Config Table (0x%08X)' </tt>
 **  \event <tt> 'Failed to load Config Table (0x%08X)' </tt>
@@ -248,7 +248,7 @@ typedef enum {
 **  #CFE_TBL_Load function.
 **
 */
-	LGC_CFGTBL_LOAD_ERR_EID,
+    LGC_CFGTBL_LOAD_ERR_EID,
 
 /** \brief <tt> 'PWM Tbl Vldt: Min (\%u) less than Disarmed (\%u) speed.' </tt>
 **  \event <tt> 'PWM Tbl Vldt: Min (\%u) less than Disarmed (\%u) speed.' </tt>

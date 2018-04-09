@@ -91,22 +91,22 @@ int32 VC_CustomTransmit_InitData()
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
     
-    return iStatus;
+    return (iStatus);
 }
 
 
 int32 VC_EnableChannel(uint8 ChannelID)
 {
     int32 returnCode = 0;
-    uint32 i = 0;
+    uint32 i         = 0;
     struct sockaddr_in servaddr;
     int status;
-    int reuseaddr=1;
+    int reuseaddr    = 1;
 
     if((VC_AppCustomData.Channel[ChannelID].Mode == VC_CHANNEL_ENABLED) &&
         (VC_AppCustomData.Channel[ChannelID].SocketFd != 0))
     {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                         "VC UDP for channel %u already enabled.", (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
@@ -124,7 +124,7 @@ int32 VC_EnableChannel(uint8 ChannelID)
     if(VC_AppCustomData.Channel[ChannelID].SocketFd < 0)
     {
         VC_AppCustomData.Channel[ChannelID].Mode = VC_CHANNEL_DISABLED;
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                         "VC socket errno: %i on channel %u", errno, (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
@@ -155,20 +155,20 @@ int32 VC_EnableChannel(uint8 ChannelID)
             (struct sockaddr *)&servaddr,sizeof(servaddr));
     if(status < 0)
     {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                         "VC bind errno: %i on channel %u", errno, (unsigned int)i);
         VC_AppCustomData.Channel[ChannelID].Mode = VC_CHANNEL_DISABLED;
         returnCode = -1;
     }
 
 end_of_function:
-    return returnCode;
+    return (returnCode);
 }
 
 
 int32 VC_Init_CustomTransmitters(void)
 {
-    uint32 i = 0;
+    uint32 i         = 0;
     int32 returnCode = 0;
 
     for (i=0; i < VC_MAX_OUTPUT_CHANNELS; i++)
@@ -182,14 +182,14 @@ int32 VC_Init_CustomTransmitters(void)
             }
             else
             {
-                CFE_EVS_SendEvent(VC_CHA_INF_EID, CFE_EVS_INFORMATION,
+                (void) CFE_EVS_SendEvent(VC_CHA_INF_EID, CFE_EVS_INFORMATION,
                         "VC UDP output enabled channel %u to %s:%u",
                         (unsigned int)i, VC_AppCustomData.Channel[i].DestIP,
                         (unsigned int)VC_AppCustomData.Channel[i].DestPort);
             }
         }
     }
-    return returnCode;
+    return (returnCode);
 }
 
 
@@ -214,7 +214,7 @@ int32 VC_DisableChannel(uint8 ChannelID)
     }
 
 end_of_function:
-    return returnCode;
+    return (returnCode);
 }
 
 
@@ -233,29 +233,31 @@ int32 VC_CleanupCustom(void)
             }
         }
     }
-return returnCode;
+    return returnCode;
 }
 
 
 boolean VC_Transmit_Init(void)
 {
+    boolean returnBool = TRUE;
     if(-1 == VC_Init_CustomTransmitters())
     {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, \
+        (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, \
                 "VC_Transmit_Init Failed");
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+    return (returnBool);
 }
 
 
 boolean VC_Transmit_Uninit(void)
 {
+    boolean returnBool = TRUE;
     if(-1 == VC_CleanupCustom())
     {
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+    return (returnBool);
 }
 
 
@@ -277,7 +279,7 @@ void VC_Transmit_Critical_Cleanup(void)
 int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 {
     static struct sockaddr_in s_addr;
-    int status = 0;
+    int status       = 0;
     int32 returnCode = 0;
 
     bzero((char *) &s_addr, sizeof(s_addr));
@@ -300,12 +302,12 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
             {
                 if(errno == 90)
                 {
-                    CFE_EVS_SendEvent(VC_SOCKET_ERR_EID,CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID,CFE_EVS_ERROR,
                                 "L%d VC sendto errno %d.  Message too long.  Size=%u", __LINE__, errno, (unsigned int)Size);
                 }
                 else
                 {
-                    CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                                 "L%d VC sendto errno %d.", __LINE__, errno);
                     channel->Mode = VC_CHANNEL_DISABLED;
                 }
@@ -314,23 +316,25 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
             CFE_ES_PerfLogExit(VC_SOCKET_SEND_PERF_ID);
         }
     }
-    return returnCode;
+    return (returnCode);
 }
 
 
 boolean VC_Address_Verification(const char *Address)
 {
+    boolean returnBool = FALSE;
     static struct sockaddr_in s_addr;
     if(0 != inet_aton(Address, &s_addr.sin_addr))
     {
-        return TRUE;
+        returnBool = TRUE;
     }
-    return FALSE;
+    return (returnBool);
 }
 
 
 boolean VC_Update_Destination(const char *Address, uint16 Port)
 {
+    boolean returnBool = TRUE;
     uint32 i = 0;
     
     for (i=0; i < VC_MAX_OUTPUT_CHANNELS; i++)
@@ -339,13 +343,13 @@ boolean VC_Update_Destination(const char *Address, uint16 Port)
         {
             VC_AppCustomData.Channel[i].DestPort = Port;
             
-            if(strncpy(VC_AppCustomData.Channel[i].DestIP, Address, sizeof(Address)))
+            if(!strncpy(VC_AppCustomData.Channel[i].DestIP, Address, sizeof(Address)))
             {
-                return TRUE;
+                returnBool = FALSE;
             }
         }
     }
-    return FALSE;
+    return (returnBool);
 }
 
 
