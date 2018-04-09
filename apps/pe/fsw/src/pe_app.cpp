@@ -864,7 +864,7 @@ void PE::SendVehicleLocalPositionMsg()
 		m_VehicleLocalPositionMsg.Yaw = m_Euler[2];
 		m_VehicleLocalPositionMsg.XY_Global = m_XyEstValid;
 		m_VehicleLocalPositionMsg.Z_Global = !m_BaroTimeout;
-		m_VehicleLocalPositionMsg.RefTimestamp = m_Timestamp;
+		m_VehicleLocalPositionMsg.RefTimestamp = m_TimestampOrigin;
 		m_VehicleLocalPositionMsg.RefLat = m_MapRef.lat_rad * 180/M_PI;
 		m_VehicleLocalPositionMsg.RefLon = m_MapRef.lon_rad * 180/M_PI;
 		m_VehicleLocalPositionMsg.RefAlt = m_AltOrigin;
@@ -1203,6 +1203,8 @@ void PE::Update()
 							m_Params.INIT_ORIGIN_LAT,
 							m_Params.INIT_ORIGIN_LON,
 							m_Timestamp);
+
+		m_TimestampOrigin = m_Timestamp;
 
 		(void) CFE_EVS_SendEvent(PE_GPS_OK_INF_EID, CFE_EVS_INFORMATION,
 								 "GPS fake origin init. Lat: %6.2f Lon: %6.2f Alt: %5.1f m",
