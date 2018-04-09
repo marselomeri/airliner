@@ -246,7 +246,6 @@ public:
 
 	/* Timestamps */
 	uint64 m_Timestamp;
-	uint64 m_TimestampOrigin;
     uint64 m_Timestamp_Hist;
 	uint64 m_TimestampLastBaro;
 	uint64 m_TimeLastBaro;
