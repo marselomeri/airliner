@@ -46,7 +46,6 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "gps_platform_cfg.h"
 #include "gps_mission_cfg.h"
 #include "gps_perfids.h"
@@ -108,12 +107,13 @@ public:
     GPS_ConfigTbl_t* ConfigTblPtr;
 
     /** \brief Output Data published at the end of cycle */
-    PX4_GpsDumpMsg_t GpsDump;
+    //PX4_GpsDumpMsg_t GpsDump;
     PX4_VehicleGpsPositionMsg_t VehicleGps;
-    PX4_SatelliteInfoMsg_t SatelliteInfo;
+    //PX4_SatelliteInfoMsg_t SatelliteInfo;
 
     /** \brief Housekeeping Telemetry for downlink */
     GPS_HkTlm_t HkTlm;
+
     /** \brief Current Value Table */
     GPS_CurrentValueTable_t CVT;
     /************************************************************************/

@@ -153,6 +153,12 @@ boolean MS5611_Custom_Uninit(void)
 }
 
 
+void MS5611_Critical_Cleanup(void)
+{
+    close(MS5611_AppCustomData.DeviceFd);
+}
+
+
 boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 {
 	switch(Addr)

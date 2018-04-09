@@ -166,6 +166,12 @@ boolean MS5611_Custom_Uninit(void)
 }
 
 
+void MS5611_Critical_Cleanup(void)
+{
+    return;
+}
+
+
 boolean MS5611_ReadPROM(uint8 Addr, uint16 *returnVal)
 {
     switch(Addr)

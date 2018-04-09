@@ -142,8 +142,10 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     RGBLED_HkTlm_t HkTlm;
+
     /** \brief Current Value Table */
     RGBLED_CurrentValueTable_t CVT;
+
     /************************************************************************/
     /** \brief RGBLED Control (RGBLED) application entry point
      **

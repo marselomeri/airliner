@@ -63,7 +63,7 @@ extern "C" {
  *************************************************************************/
 
 /** \brief Params mutex name. */
-#define MPU9250_MUTEX_PARAMS                ("MPU9250_MUTEX_PARAMS")
+#define MPU9250_MUTEX_PARAMS    ("MPU9250_MUTEX_PARAMS")
 
 /************************************************************************
  ** Local Structure Definitions
