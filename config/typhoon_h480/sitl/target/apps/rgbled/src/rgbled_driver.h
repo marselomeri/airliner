@@ -34,14 +34,15 @@
 #ifndef RGBLED_DRIVER_H
 #define RGBLED_DRIVER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include "rgbled_custom.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -190,7 +191,8 @@ extern "C" {
 **  \par Limits:
 **       OS_MAX_API_NAME
 */
-#define RGBLED_SELFTEST_TASK_NAME          "RGBLED_TEST"
+#define RGBLED_SELFTEST_TASK_NAME          ("RGBLED_TEST")
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -209,6 +211,9 @@ typedef enum
 } RGBLED_Custom_Status_t;
 
 
+/**
+ * \brief LED device settings
+ */
 typedef struct
 {
     boolean     Enabled;
@@ -235,6 +240,8 @@ typedef struct
     uint32                          ChildTaskID;
     /*! Streaming task function pointer */
     CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    /*! Streaming task flags */
+    uint32                          TaskFlags;
 } RGBLED_AppCustomData_t;
 
 

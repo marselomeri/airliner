@@ -77,8 +77,8 @@ VC_AppData_t VC_AppData;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VC_InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
-    int32  ind = 0;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
     int32 customEventCount = 0;
 
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
@@ -122,7 +122,7 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VC_InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&VC_AppData.SchPipeId,
@@ -235,6 +235,7 @@ void VC_CleanupCallback()
 {
     VC_Devices_Critical_Cleanup();
     VC_Transmit_Critical_Cleanup();
+    return;
 }
 
 
@@ -247,18 +248,19 @@ void VC_CleanupExit(void)
 {
     if(VC_Devices_Stop() != TRUE)
     {
-        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Stop failed");
+        (void) CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Stop failed");
     }
 
     if(VC_Devices_Uninit() != TRUE)
     {
-        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Uninit failed");
+        (void) CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Uninit failed");
     }
 
     if(VC_Transmit_Uninit() != TRUE)
     {
-        CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Uninit failed");
+        (void) CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Uninit failed");
     }
+    return;
 }
 
 
@@ -269,7 +271,7 @@ void VC_CleanupExit(void)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VC_InitApp(void)
 {
-    int32  iStatus = CFE_SUCCESS;
+    int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
     
     iStatus = VC_InitEvent();
@@ -305,7 +307,7 @@ int32 VC_InitApp(void)
     if (FALSE == VC_Transmit_Init()) 
     {
         /* Data transmit sink failed to initialize for now error out */   
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Init failed");
+        (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Transmit_Init failed");
         iStatus = -1;
         goto VC_InitApp_Exit_Tag;
     }
@@ -314,7 +316,7 @@ int32 VC_InitApp(void)
     if (FALSE == VC_Devices_Init()) 
     {
         /* Device failed to initialize for now error out */
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Init failed");
+        (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Init failed");
         iStatus = -1;
         goto VC_InitApp_Exit_Tag;
     }
@@ -328,7 +330,7 @@ int32 VC_InitApp(void)
     if (FALSE == VC_Devices_Start()) 
     {
         /* Start streaming failed, raise event but for now don't error out */
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed in InitApp");
+        (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,"VC_Devices_Start failed in InitApp");
     }
     else
     {
@@ -340,7 +342,7 @@ int32 VC_InitApp(void)
     iStatus = OS_TaskInstallDeleteHandler(&VC_CleanupCallback);
     if (iStatus != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init register cleanup callback (0x%08X)",
                                  (unsigned int)iStatus);
         goto VC_InitApp_Exit_Tag;
@@ -379,8 +381,8 @@ VC_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 VC_RcvMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
@@ -398,30 +400,33 @@ int32 VC_RcvMsg(int32 iBlocking)
         switch (MsgId)
     {
             case VC_WAKEUP_MID:
+            {
                 VC_ProcessNewCmds();
-
                 break;
-
+            }
             case VC_SEND_HK_MID:
+            {
                 VC_ReportHousekeeping(MsgPtr);
                 break;
-
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(VC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid SCH msgId (0x%04X)", (unsigned short)MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, do nothing here.
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via the
+         * iBlocking arg, do nothing here. 
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -460,18 +465,12 @@ void VC_ProcessNewCmds()
             switch (CmdMsgId)
             {
                 case VC_CMD_MID:
+                {
                     VC_ProcessNewAppCmds(CmdMsgPtr);
                     break;
-
-                /* TODO:  Add code to process other subscribed commands here
-                **
-                ** Example:
-                **     case CFE_TIME_DATA_CMD_MID:
-                **         VC_ProcessTimeDataCmd(CmdMsgPtr);
-                **         break;
-                */
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -479,6 +478,7 @@ void VC_ProcessNewCmds()
                     (void) CFE_EVS_SendEvent(VC_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -493,6 +493,7 @@ void VC_ProcessNewCmds()
             break;
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -502,7 +503,7 @@ void VC_ProcessNewCmds()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void VC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
-    uint32  uiCmdCode=0;
+    uint32  uiCmdCode = 0;
 
     if (MsgPtr != NULL)
     {
@@ -510,16 +511,20 @@ void VC_ProcessNewAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case VC_NOOP_CC:
+            {
                 VC_NoopCmd(MsgPtr);
                 break;
-                
+            }
             case VC_RESET_CC:
+            {
                 VC_ResetCmd(MsgPtr);
                 break;
-    
+            }
             default:
+            {
                 VC_ProcessNewCustomCmds(MsgPtr);
                 break;
+            }
         }
     }
 } /* end VC_ProcessNewAppCmds() */

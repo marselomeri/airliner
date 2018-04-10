@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define ULR_LISTENER_TASK_FLAGS            OS_ENABLE_CORE_0
+
 /*
 ** ULR Platform Configuration Parameter Definitions
 */

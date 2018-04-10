@@ -1,12 +1,16 @@
 #ifndef FM_PLATFORM_CFG_H
 #define FM_PLATFORM_CFG_H
 
+#include "osapi.h"
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* FM platform configuration parameters - application definitions  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#define FM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
 
 /** \fmcfg File Manager Application Name
 **
@@ -303,7 +307,7 @@
 **       parent defeats the purpose of having a child task to run in
 **       the background.
 */
-#define FM_CHILD_TASK_PRIORITY          205
+#define FM_CHILD_TASK_PRIORITY          208
 
 
 /** \fmcfg Child Task Semaphore Name - cFE object name

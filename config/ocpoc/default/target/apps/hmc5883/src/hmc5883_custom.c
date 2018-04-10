@@ -101,7 +101,7 @@ HMC5883_AppCustomData_t HMC5883_AppCustomData;
 int32 HMC5883_Ioctl(int fh, int request, void *arg)
 {
     int32 returnCode = 0;
-    uint32 i = 0;
+    uint32 i         = 0;
 
     for (i=0; i < HMC5883_MAX_RETRY_ATTEMPTS; i++)
     {
@@ -117,7 +117,7 @@ int32 HMC5883_Ioctl(int fh, int request, void *arg)
         }
     }
 
-    return returnCode;
+    return (returnCode);
 }
 
 
@@ -125,6 +125,7 @@ void HMC5883_Custom_InitData(void)
 {
     /* Set all struct zero values */
     bzero(&HMC5883_AppCustomData, sizeof(HMC5883_AppCustomData));
+    return;
 }
 
 
@@ -136,7 +137,7 @@ boolean HMC5883_Custom_Init()
     
     if (HMC5883_AppCustomData.DeviceFd < 0) 
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Device open errno: %i", errno);
         returnBool = FALSE;
         goto end_of_function;
@@ -147,7 +148,7 @@ boolean HMC5883_Custom_Init()
     }
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -158,7 +159,7 @@ boolean HMC5883_Custom_Set_Range(uint8 Range)
     returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_CONFIG_B, 
             Range);
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -169,7 +170,7 @@ boolean HMC5883_Custom_Get_Range(uint8 *Range)
     returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_B, 
             Range, 1);
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -187,7 +188,7 @@ boolean HMC5883_Custom_Check_Range(uint8 Range)
         returnBool = HMC5883_Custom_Set_Range(Range);
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -198,7 +199,7 @@ boolean HMC5883_Custom_Set_Config(uint8 Config)
     returnBool = HMC5883_Custom_Send(HMC5883_I2C_REG_CONFIG_A, 
             Config);
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -209,7 +210,7 @@ boolean HMC5883_Custom_Get_Config(uint8 *Config)
     returnBool = HMC5883_Custom_Receive(HMC5883_I2C_REG_CONFIG_A, 
             Config, 1);
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -226,7 +227,7 @@ boolean HMC5883_Custom_Check_Config(uint8 Config)
         returnBool = HMC5883_Custom_Set_Config(Config);
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -242,7 +243,7 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Read_Gyro Null Pointer");
         returnBool = FALSE;
         goto end_of_function;
@@ -274,7 +275,7 @@ boolean HMC5883_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
 
 end_of_function:
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -288,7 +289,7 @@ boolean HMC5883_Custom_Measure_Temp(int16 *Temp)
     /* Null pointer check */
     if(0 == Temp)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Read Temp Null Pointer");
         returnBool = FALSE;
         goto end_of_function;
@@ -306,7 +307,7 @@ boolean HMC5883_Custom_Measure_Temp(int16 *Temp)
 
 end_of_function:
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -355,14 +356,14 @@ boolean HMC5883_Custom_ValidateID(void)
 
 end_of_function:
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data)
 {
-    int returnCode = 0;
-    boolean returnBool = FALSE;
+    int returnCode      = 0;
+    boolean returnBool  = FALSE;
     struct i2c_msg Messages[1];
     struct i2c_rdwr_ioctl_data Packets;
     uint8 buf[2];
@@ -384,32 +385,33 @@ boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data)
     
     if (-1 == returnCode) 
     {            
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "HMC5883 ioctl returned errno %i", errno);
-        returnBool = FALSE;
     }
     else
     {
         returnBool = TRUE;
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length)
 {
-    int returnCode = 0;
-    boolean returnBool = FALSE;
-    struct i2c_msg Messages[2];
+    int returnCode       = 0;
+    boolean returnBool   = FALSE;
+    uint8 cmd            = Reg;
+
     struct i2c_rdwr_ioctl_data Packets;
-    uint8 cmd = Reg;
-    
+    struct i2c_msg Messages[2];
+
     /* send */
     Messages[0].addr  = HMC5883_I2C_SLAVE_ADDRESS;
     Messages[0].flags = 0;
     Messages[0].buf   = &cmd;
     Messages[0].len   = 1;
+
     /* receive */
     Messages[1].addr  = HMC5883_I2C_SLAVE_ADDRESS;
     Messages[1].flags = HMC5883_I2C_M_READ;
@@ -425,16 +427,15 @@ boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length)
 
     if (-1 == returnCode) 
     {            
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "HMC5883 ioctl returned errno %i", errno);
-        returnBool = FALSE;
     }
     else
     {
         returnBool = TRUE;
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -442,12 +443,12 @@ boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length)
 boolean HMC5883_Custom_Uninit(void)
 {
     boolean returnBool = TRUE;
-    int returnCode = 0;
+    int returnCode     = 0;
 
     returnCode = close(HMC5883_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Device close errno: %i", errno);
         returnBool = FALSE;
     }
@@ -455,20 +456,20 @@ boolean HMC5883_Custom_Uninit(void)
     {
         HMC5883_AppCustomData.Status = HMC5883_CUSTOM_UNINITIALIZED;
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind)
 {
+    boolean returnBool = FALSE;
+
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
     {
-        return TRUE;
+        returnBool = TRUE;
     }
-    else
-    {
-        return FALSE;
-    }
+
+    return (returnBool);
 }
 
 
@@ -496,19 +497,19 @@ int32 HMC5883_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     
 end_of_function:
 
-    return customEventCount;
+    return (customEventCount);
 }
 
 
 boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
-    int16 temp = 0;
+    int16 temp         = 0;
 
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
     {
-        CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(HMC5883_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "HMC5883 Apply_Platform_Rotation Null Pointer");
         returnBool = FALSE;
         goto end_of_function;
@@ -523,7 +524,7 @@ boolean HMC5883_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 
 end_of_function:
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -534,10 +535,9 @@ void HMC5883_Get_Rotation(uint8 *Rotation)
     {
         goto end_of_function;
     }
-    
-    /* TODO move to a table */
-    *Rotation = ROTATION_NONE;
+
+    *Rotation = ROTATION_YAW_90;
 
 end_of_function:
-;
+    return;
 }

@@ -582,7 +582,7 @@ int32 BAT::InitListenerTask(void)
 			NULL,
 			BAT_LISTENER_TASK_STACK_SIZE,
 			BAT_LISTENER_TASK_PRIORITY,
-			0);
+			BAT_LISTENER_TASK_FLAGS);
 	if (Status != CFE_SUCCESS)
 	{
 		goto end_of_function;

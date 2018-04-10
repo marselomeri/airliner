@@ -80,7 +80,8 @@ int32 FM_ChildInit(void)
                                              FM_CHILD_TASK_NAME,
                                              FM_ChildTask, 0,
                                              FM_CHILD_TASK_STACK_SIZE,
-                                             FM_CHILD_TASK_PRIORITY, 0);
+                                             FM_CHILD_TASK_PRIORITY,
+                                             FM_CHILD_TASK_FLAGS);
             if (Result != CFE_SUCCESS)
             {
                 strncpy(TaskText, "create task failed", TaskTextLen);

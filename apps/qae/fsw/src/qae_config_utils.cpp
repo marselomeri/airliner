@@ -57,7 +57,7 @@ extern "C" {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 QAE::InitConfigTbl()
 {
-    int32  iStatus=0;
+    int32  iStatus = 0;
 
     /* Register Config table */
     iStatus = CFE_TBL_Register(&ConfigTblHdl,
@@ -92,7 +92,7 @@ int32 QAE::InitConfigTbl()
     iStatus = AcquireConfigPointers();
 
 QAE_InitConfigTbl_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -150,11 +150,11 @@ int32 QAE::ValidateConfigTbl(void* ConfigTblPtr)
 QAE_ValidateConfigTbl_Exit_Tag:
     if(FALSE == valid_bool)
     {
-        CFE_EVS_SendEvent(QAE_CFGTBL_VALIDATION_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(QAE_CFGTBL_VALIDATION_ERR_EID, CFE_EVS_ERROR,
             "Config params table validation error");
         iStatus = -1;
     }
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -204,7 +204,7 @@ int32 QAE::AcquireConfigPointers(void)
     }
 
 QAE_AcquireConfigPointers_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
 
 

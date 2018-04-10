@@ -463,7 +463,7 @@ void CS_RecomputeBaselineCfeCoreCmd (CFE_SB_MsgPtr_t MessagePtr)
                                            NULL,
                                            CFE_ES_DEFAULT_STACK_SIZE,
                                            CS_CHILD_TASK_PRIORITY,
-                                           0);
+										   CS_CHILD_TASK_FLAGS);
             
             if (Status == CFE_SUCCESS)
             {
@@ -526,7 +526,7 @@ void CS_RecomputeBaselineOSCmd (CFE_SB_MsgPtr_t MessagePtr)
                                            NULL,
                                            CFE_ES_DEFAULT_STACK_SIZE,
                                            CS_CHILD_TASK_PRIORITY,
-                                           0);
+                                           CS_CHILD_TASK_FLAGS);
             if (Status == CFE_SUCCESS)
             {
                 CFE_EVS_SendEvent (CS_RECOMPUTE_OS_STARTED_DBG_EID, 
@@ -604,7 +604,7 @@ void CS_OneShotCmd (CFE_SB_MsgPtr_t MessagePtr)
                                                 NULL,
                                                 CFE_ES_DEFAULT_STACK_SIZE,
                                                 CS_CHILD_TASK_PRIORITY,
-                                                0);
+                                                CS_CHILD_TASK_FLAGS);
                 if (Status == CFE_SUCCESS)
                 {
                     CFE_EVS_SendEvent (CS_ONESHOT_STARTED_DBG_EID,

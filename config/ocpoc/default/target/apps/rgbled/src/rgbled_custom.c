@@ -41,6 +41,7 @@
 #include "rgbled_driver.h"
 #include "rgbled_events.h"
 #include "rgbled_perfids.h"
+#include "rgbled_platform_cfg.h"
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 #include <string.h>
@@ -127,7 +128,7 @@ int32 RGBLED_Ioctl(int fh, int request, void *arg)
         }
     }
 
-    return returnCode;
+    return (returnCode);
 }
 
 
@@ -137,8 +138,8 @@ void RGBLED_Custom_InitData(void)
     bzero(&RGBLED_AppCustomData, sizeof(RGBLED_AppCustomData));
 
     strncpy(RGBLED_AppCustomData.DevName, RGBLED_DEVICE_PATH, RGBLED_MAX_DEVICE_PATH);
-    RGBLED_AppCustomData.Priority      = RGBLED_SELFTEST_TASK_PRIORITY;
-    RGBLED_AppCustomData.StreamingTask = RGBLED_Custom_SelfTest_Task;
+    RGBLED_AppCustomData.SelfTestTask = RGBLED_Custom_SelfTest_Task;
+    return;
 }
 
 
@@ -150,7 +151,7 @@ boolean RGBLED_Custom_Init(void)
 
     if (RGBLED_AppCustomData.DeviceFd < 0) 
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED Device open errno: %i", errno);
         returnBool = FALSE;
         goto end_of_function;
@@ -163,7 +164,7 @@ boolean RGBLED_Custom_Init(void)
     returnBool = RGBLED_Custom_GetSettings();
     if (FALSE == returnBool)
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED Device custom enable failed to get initial settings");
         goto end_of_function;
     }
@@ -171,7 +172,7 @@ boolean RGBLED_Custom_Init(void)
     returnBool = RGBLED_Custom_Enable();
     if (FALSE == returnBool)
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED Device custom enable failed errno: %i", errno);
         goto end_of_function;
     }
@@ -181,14 +182,14 @@ boolean RGBLED_Custom_Init(void)
     }
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RGBLED_Custom_Enable(void)
 {
     boolean returnBool = FALSE; 
-    uint8 settings = 0;
+    uint8 settings     = 0;
 
     /* Enable output */
     settings |= RGBLED_I2C_SET_ENABLE;
@@ -206,17 +207,17 @@ boolean RGBLED_Custom_Enable(void)
     returnBool = RGBLED_Custom_Validate();
     if(FALSE == returnBool)
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED device settings validation failed in custom enable");
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RGBLED_Custom_Disable(void)
 {
     boolean returnBool = FALSE;
-    uint8 settings = 0;
+    uint8 settings     = 0;
     
     uint8 data[2] = { RGBLED_I2C_SUB_ADDR_SETTINGS, settings };
     
@@ -230,10 +231,10 @@ boolean RGBLED_Custom_Disable(void)
     returnBool = RGBLED_Custom_Validate();
     if(FALSE == returnBool)
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED device settings validation failed in custom disable");
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -242,10 +243,10 @@ boolean RGBLED_Custom_GetSettings(void)
     boolean returnBool   = TRUE;
     boolean enabled      = FALSE;
     boolean notPowerSave = FALSE;
-    uint8 settings = 0;
-    uint8 redPWM   = 0;
-    uint8 greenPWM = 0;
-    uint8 bluePWM  = 0;
+    uint8 settings       = 0;
+    uint8 redPWM         = 0;
+    uint8 greenPWM       = 0;
+    uint8 bluePWM        = 0;
 
     /* The TCA62724FMG LED driver returns 2-bytes */
     uint8 Result[2] = {0, 0};
@@ -290,7 +291,7 @@ boolean RGBLED_Custom_GetSettings(void)
     RGBLED_AppCustomData.Settings.BlueDutyCycle  = bluePWM;
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -299,10 +300,10 @@ boolean RGBLED_Custom_Validate(void)
     boolean returnBool   = FALSE;
     boolean enabled      = FALSE;
     boolean notPowerSave = FALSE;
-    uint8 settings = 0;
-    uint8 redPWM   = 0;
-    uint8 greenPWM = 0;
-    uint8 bluePWM  = 0;
+    uint8 settings       = 0;
+    uint8 redPWM         = 0;
+    uint8 greenPWM       = 0;
+    uint8 bluePWM        = 0;
 
     /* The TCA62724FMG LED driver returns 2-bytes */
     uint8 Result[2] = {0, 0};
@@ -354,14 +355,14 @@ boolean RGBLED_Custom_Validate(void)
     }
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length)
 {
-    int returnCode = 0;
-    boolean returnBool = FALSE;
+    int returnCode       = 0;
+    boolean returnBool   = FALSE;
     struct i2c_msg Messages[1];
     struct i2c_rdwr_ioctl_data Packets;
 
@@ -379,7 +380,7 @@ boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length)
     
     if (-1 == returnCode) 
     {            
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RGBLED ioctl returned %i", errno);
         returnBool = FALSE;
     }
@@ -388,13 +389,13 @@ boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length)
         returnBool = TRUE;
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length)
 {
-    int returnCode = 0;
+    int returnCode     = 0;
     boolean returnBool = FALSE;
     struct i2c_msg messages[1];
     struct i2c_rdwr_ioctl_data Packets;
@@ -413,7 +414,7 @@ boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length)
 
     if (-1 == returnCode) 
     {            
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RGBLED ioctl returned %i", errno);
         returnBool = FALSE;
     }
@@ -422,7 +423,7 @@ boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length)
         returnBool = TRUE;
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
@@ -448,34 +449,34 @@ boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
     returnBool = RGBLED_Custom_Validate();
     if(FALSE == returnBool)
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED device settings validation failed");
     }
 
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RGBLED_Custom_SelfTest(void)
 {
-    boolean returnBool = FALSE;
+    boolean returnBool = TRUE;
     int32 returnCode = 0;
     
     /* Create the self-test task */
     returnCode = CFE_ES_CreateChildTask(
         &RGBLED_AppCustomData.ChildTaskID,
         RGBLED_SELFTEST_TASK_NAME,
-        RGBLED_AppCustomData.StreamingTask,
+        RGBLED_AppCustomData.SelfTestTask,
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
-        RGBLED_AppCustomData.Priority,
-        0);
+        RGBLED_SELFTEST_TASK_PRIORITY,
+        RGBLED_SELFTEST_TASK_FLAGS);
 
     if(returnCode != CFE_SUCCESS)
     {
         return FALSE;
     }
-    return TRUE;
+    return (returnBool);
 }
 
 
@@ -485,10 +486,11 @@ void RGBLED_Custom_SelfTest_Task(void)
     uint8 redPWM;
     uint8 greenPWM;
     uint8 bluePWM;
+
     /* Save the original settings */
-    redPWM = RGBLED_AppCustomData.Settings.RedDutyCycle;
+    redPWM   = RGBLED_AppCustomData.Settings.RedDutyCycle;
     greenPWM = RGBLED_AppCustomData.Settings.GreenDutyCycle;
-    bluePWM = RGBLED_AppCustomData.Settings.BlueDutyCycle;
+    bluePWM  = RGBLED_AppCustomData.Settings.BlueDutyCycle;
 
     iStatus = CFE_ES_RegisterChildTask();
 
@@ -512,10 +514,11 @@ void RGBLED_Custom_SelfTest_Task(void)
         RGBLED_Custom_SetColor((redPWM << 4), (greenPWM << 4), (bluePWM << 4));
         
     }
-    CFE_EVS_SendEvent(RGBLED_DEVICE_INF_EID, CFE_EVS_INFORMATION,
+    (void) CFE_EVS_SendEvent(RGBLED_DEVICE_INF_EID, CFE_EVS_INFORMATION,
             "RGBLED Device completed self test");
     /* Set app status in none custom code back to previous value */
     RGBLED_SelfTest_Complete();
+
     /* The child task was successfully created so exit from it */
     if (iStatus == CFE_SUCCESS)
     {
@@ -528,12 +531,12 @@ void RGBLED_Custom_SelfTest_Task(void)
 boolean RGBLED_Custom_Uninit(void)
 {
     boolean returnBool = TRUE;
-    int returnCode = 0;
+    int returnCode     = 0;
 
     returnBool = RGBLED_Custom_Disable();
     if(FALSE == returnBool)
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED Device disable error");
     }
     else
@@ -544,7 +547,7 @@ boolean RGBLED_Custom_Uninit(void)
     returnCode = close(RGBLED_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
-        CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RGBLED_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RGBLED Device close errno: %i", errno);
         returnBool = FALSE;
     }
@@ -552,7 +555,7 @@ boolean RGBLED_Custom_Uninit(void)
     {
         RGBLED_AppCustomData.Status = RGBLED_CUSTOM_UNINITIALIZED;
     }
-    return returnBool;
+    return (returnBool);
 }
 
 

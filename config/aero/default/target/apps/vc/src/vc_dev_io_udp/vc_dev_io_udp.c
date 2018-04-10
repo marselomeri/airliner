@@ -83,6 +83,7 @@ int32 VC_Devices_InitData(void)
     /* Set all non-zero values for channel zero */
     VC_AppCustomDevice.ContinueFlag          = TRUE;
     VC_AppCustomDevice.Priority              = VC_STREAMING_TASK_PRIORITY;
+    VC_AppCustomDevice.TaskFlags             = VC_STREAMING_TASK_FLAGS;
     VC_AppCustomDevice.StreamingTask         = VC_Stream_Task;
     VC_AppCustomDevice.Channel[0].Status     = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[0].Mode       = VC_DEVICE_ENABLED;

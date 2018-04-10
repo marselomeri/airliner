@@ -84,8 +84,8 @@ RCIN::~RCIN()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RCIN::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
-    int32  ind = 0;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
     int32 customEventCount = 0;
     
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
@@ -122,7 +122,7 @@ int32 RCIN::InitEvent()
 
 end_of_function:
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -133,7 +133,7 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RCIN::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId, RCIN_SCH_PIPE_DEPTH,
@@ -190,7 +190,7 @@ int32 RCIN::InitPipe()
     }
 
 RCIN_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
     
 
@@ -208,6 +208,7 @@ void RCIN::InitData()
         sizeof(PX4_InputRcMsg_t), TRUE);
     /* Init custom data */
     RCIN_Custom_InitData();
+    return;
 }
 
 
@@ -218,8 +219,8 @@ void RCIN::InitData()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RCIN::InitApp()
 {
-    int32  iStatus   = CFE_SUCCESS;
-    int8   hasEvents = 0;
+    int32  iStatus     = CFE_SUCCESS;
+    int8   hasEvents   = 0;
     boolean returnBool = TRUE;
 
     iStatus = InitEvent();
@@ -278,7 +279,7 @@ RCIN_InitApp_Exit_Tag:
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -289,8 +290,8 @@ RCIN_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
@@ -308,31 +309,35 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case RCIN_WAKEUP_MID:
+            {
                 ReadDevice();
                 SendInputRcMsg();
                 break;
-
+            }
             case RCIN_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
-
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(RCIN_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, do nothing here, 
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via the
+         * iBlocking arg, do nothing here.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -343,7 +348,7 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
                 "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -354,8 +359,8 @@ int32 RCIN::RcvSchPipeMsg(int32 iBlocking)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RCIN::ProcessCmdPipe()
 {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    int32 iStatus             = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr = NULL;
     CFE_SB_MsgId_t  CmdMsgId;
 
     /* Process command messages until the pipe is empty */
@@ -368,10 +373,12 @@ void RCIN::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case RCIN_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -379,6 +386,7 @@ void RCIN::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(RCIN_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -392,6 +400,7 @@ void RCIN::ProcessCmdPipe()
             break;
         }
     }
+    return;
 }
 
 
@@ -410,6 +419,7 @@ void RCIN::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case RCIN_NOOP_CC:
+            {
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(RCIN_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
@@ -418,19 +428,23 @@ void RCIN::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     RCIN_REVISION,
                     RCIN_MISSION_REV);
                 break;
-
+            }
             case RCIN_RESET_CC:
+            {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
-
+            }
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(RCIN_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -442,6 +456,7 @@ void RCIN::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    return;
 }
 
 
@@ -454,6 +469,7 @@ void RCIN::SendInputRcMsg()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&InputRcMsg);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&InputRcMsg);
+    return;
 }
 
 
@@ -486,7 +502,7 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 
@@ -497,7 +513,7 @@ boolean RCIN::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void RCIN::ReadDevice(void)
 {
-    boolean returnBool = FALSE;
+    boolean returnBool       = FALSE;
     static uint8 strikeCount = 0;
 
     returnBool = RCIN_Custom_Measure(&InputRcMsg);
@@ -535,6 +551,7 @@ void RCIN::ReadDevice(void)
 
     InputRcMsg.LastSignal = InputRcMsg.Timestamp;
     InputRcMsg.Timestamp = PX4LIB_GetPX4TimeUs();
+    return;
 }
 
 
@@ -613,6 +630,7 @@ void RCIN_CleanupCallback(void)
         CFE_EVS_SendEvent(RCIN_UNINIT_ERR_EID, CFE_EVS_ERROR,"RCIN_Uninit failed");
         oRCIN.HkTlm.State = RCIN_INITIALIZED;
     }
+    return;
 }
 
 /************************/

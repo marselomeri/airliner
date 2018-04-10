@@ -93,6 +93,7 @@ typedef struct
     CFE_ES_ChildTaskMainFuncPtr_t   ListenerTask;
     int                             Socket;
     uint32                          ChildTaskID;
+    uint32                          TaskFlags;
 } TO_TlmChannels_t;
 
 typedef struct

@@ -780,7 +780,7 @@ int32 PX4BR_InitPeers(void)
 					0,
 					PX4BR_LISTENER_TASK_STACK_SIZE,
 					PX4BR_LISTENER_TASK_PRIORITY,
-					0);
+					PX4B4_LISTENER_TASK_FLAGS);
 			if (Status != CFE_SUCCESS)
 			{
 				/* Failed to create the task.  Raise an event. */
@@ -797,7 +797,7 @@ int32 PX4BR_InitPeers(void)
 					0,
 					PX4BR_DATAOUT_TASK_STACK_SIZE,
 					PX4BR_DATAOUT_TASK_PRIORITY,
-					0);
+					PX4BR_LISTENER_TASK_FLAGS);
 			if (Status != CFE_SUCCESS)
 			{
 				/* Failed to create the task.  Raise an event. */

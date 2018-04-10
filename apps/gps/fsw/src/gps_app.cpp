@@ -84,8 +84,8 @@ GPS::~GPS()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 GPS::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
-    int32  ind = 0;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
     int32 customEventCount = 0;
     
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
@@ -101,8 +101,7 @@ int32 GPS::InitEvent()
     EventTbl[ind++].Mask    = CFE_EVS_NO_FILTER;
     EventTbl[  ind].EventID = GPS_READ_ERR_EID;
     EventTbl[ind++].Mask    = CFE_EVS_FIRST_16_STOP;
-    
-    
+
     /* Add custom events to the filter table */
     customEventCount = GPS_Custom_Init_EventFilters(ind, EventTbl);
     
@@ -122,7 +121,7 @@ int32 GPS::InitEvent()
 
 end_of_function:
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -133,7 +132,7 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 GPS::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
@@ -158,14 +157,14 @@ int32 GPS::InitPipe()
                      (unsigned int)iStatus);
             goto GPS_InitPipe_Exit_Tag;
         }
-        iStatus = CFE_SB_SubscribeEx(PX4_GPS_INJECT_DATA_MID, SchPipeId, CFE_SB_Default_Qos, 1);
-        if (iStatus != CFE_SUCCESS)
-        {
-            (void) CFE_EVS_SendEvent(GPS_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-                     "CMD Pipe failed to subscribe to PX4_GPS_INJECT_DATA_MID. (0x%08lX)",
-                     iStatus);
-            goto GPS_InitPipe_Exit_Tag;
-        }
+        //iStatus = CFE_SB_SubscribeEx(PX4_GPS_INJECT_DATA_MID, SchPipeId, CFE_SB_Default_Qos, 1);
+        //if (iStatus != CFE_SUCCESS)
+        //{
+            //(void) CFE_EVS_SendEvent(GPS_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                     //"CMD Pipe failed to subscribe to PX4_GPS_INJECT_DATA_MID. (0x%08lX)",
+                     //iStatus);
+            //goto GPS_InitPipe_Exit_Tag;
+        //}
     }
     else
     {
@@ -201,7 +200,7 @@ int32 GPS::InitPipe()
     }
 
 GPS_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
     
 
@@ -216,16 +215,15 @@ void GPS::InitData()
     CFE_SB_InitMsg(&HkTlm,
             GPS_HK_TLM_MID, sizeof(HkTlm), TRUE);
     /* Init output messages */
-    CFE_SB_InitMsg(&GpsDump,
-            PX4_GPS_DUMP_MID, sizeof(PX4_GpsDumpMsg_t), TRUE);
-    /* Init output messages */
+    //CFE_SB_InitMsg(&GpsDump,
+            //PX4_GPS_DUMP_MID, sizeof(PX4_GpsDumpMsg_t), TRUE);
     CFE_SB_InitMsg(&VehicleGps,
             PX4_VEHICLE_GPS_POSITION_MID, sizeof(PX4_VehicleGpsPositionMsg_t), TRUE);
-    /* Init output messages */
-    CFE_SB_InitMsg(&SatelliteInfo,
-            PX4_SATELLITE_INFO_MID, sizeof(PX4_SatelliteInfoMsg_t), TRUE);
+    //CFE_SB_InitMsg(&SatelliteInfo,
+            //PX4_SATELLITE_INFO_MID, sizeof(PX4_SatelliteInfoMsg_t), TRUE);
     /* Init custom data */
     GPS_Custom_InitData();
+    return;
 }
 
 
@@ -236,9 +234,9 @@ void GPS::InitData()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 GPS::InitApp()
 {
-    int32  iStatus   = CFE_SUCCESS;
+    int32  iStatus     = CFE_SUCCESS;
     boolean returnBool = TRUE;
-    int8   hasEvents = 0;
+    int8   hasEvents   = 0;
 
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
@@ -302,7 +300,7 @@ GPS_InitApp_Exit_Tag:
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -313,10 +311,10 @@ GPS_InitApp_Exit_Tag:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 GPS::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
+    boolean returnBool      = FALSE;
     CFE_SB_MsgId_t  MsgId;
-    boolean returnBool = FALSE;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(GPS_MAIN_TASK_PERF_ID);
@@ -333,75 +331,50 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case GPS_READ_SENSOR_MID:
-            
+            {
                 //returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
                 //if(TRUE == returnBool)
                 //{
-                    //OS_printf("Lat %d ", VehicleGps.Lat);
-                    //OS_printf("Lon %d ", VehicleGps.Lon);
-                    //OS_printf("Alt %d ", VehicleGps.Alt);
-                    //OS_printf("AltEllipsoid %d ", VehicleGps.AltEllipsoid);
-                    //OS_printf("SVariance %f ", VehicleGps.SVariance);
-                    //OS_printf("CVariance %f ", VehicleGps.CVariance);
-                    //OS_printf("EpH %f ", VehicleGps.EpH);
-                    //OS_printf("EpV %f ", VehicleGps.EpV);
-                    //OS_printf("HDOP %f ", VehicleGps.HDOP);
-                    //OS_printf("VDOP %f ", VehicleGps.VDOP);
-                    //OS_printf("NoisePerMs %d ", VehicleGps.NoisePerMs);
-                    //OS_printf("JammingIndicator %d ", VehicleGps.JammingIndicator);
-                    //OS_printf("Vel_m_s %f ", VehicleGps.Vel_m_s);
-                    //OS_printf("Vel_n_m_s %f ", VehicleGps.Vel_n_m_s);
-                    //OS_printf("Vel_e_m_s %f ", VehicleGps.Vel_e_m_s);
-                    //OS_printf("Vel_d_m_s %f ", VehicleGps.Vel_d_m_s);
-                    //OS_printf("COG %f ", VehicleGps.COG);
-                    //OS_printf("TimestampTimeRelative %d ", VehicleGps.TimestampTimeRelative);
-                    //OS_printf("FixType %hhu ", VehicleGps.FixType);
-                    //OS_printf("VelNedValid %u ", VehicleGps.VelNedValid);
-                    //OS_printf("SatellitesUsed %hhu ", VehicleGps.SatellitesUsed);
-
                     //SendVehicleGps();
                 //}
                 //returnBool = GPS_Custom_Measure_SatInfoMsg(&SatelliteInfo);
                 //if(TRUE == returnBool)
                 //{
-                    ////OS_printf("Count %hhu ", SatelliteInfo.Count);
-                    ////OS_printf("SVID[0] %hhu ", SatelliteInfo.SVID[0]);
-                    ////OS_printf("Used[0] %hhu ", SatelliteInfo.Used[0]);
-                    ////OS_printf("Elevation[0] %hhu ", SatelliteInfo.Elevation[0]);
-                    ////OS_printf("Azimuth[0] %hhu ", SatelliteInfo.Azimuth[0]);
-                    ////OS_printf("SNR[0] %hhu ", SatelliteInfo.SNR[0]);
-
                     //SendSatelliteInfo();
                 //}
                 break;
-
+            }
             case GPS_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 // TODO:  Need a mutex for this in the current event driven publish.
                 memcpy(&HkTlm.VehicleGpsMsg, &VehicleGps, sizeof(VehicleGps));
                 ReportHousekeeping();
                 break;
-
-            case PX4_GPS_INJECT_DATA_MID:
-                memcpy(&CVT.GpsInjectData, MsgPtr, sizeof(CVT.GpsInjectData));
-                break;
-
+            }
+            //case PX4_GPS_INJECT_DATA_MID:
+            //{
+                //memcpy(&CVT.GpsInjectData, MsgPtr, sizeof(CVT.GpsInjectData));
+                //break;
+            //}
             default:
+            {
                 (void) CFE_EVS_SendEvent(GPS_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, do nothing here.  
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via the
+         * iBlocking arg, do nothing here.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -412,7 +385,7 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
               "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -423,8 +396,8 @@ int32 GPS::RcvSchPipeMsg(int32 iBlocking)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void GPS::ProcessCmdPipe()
 {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    int32 iStatus             = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr = NULL;
     CFE_SB_MsgId_t  CmdMsgId;
 
     /* Process command messages until the pipe is empty */
@@ -437,10 +410,12 @@ void GPS::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case GPS_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -448,6 +423,7 @@ void GPS::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(GPS_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -461,6 +437,7 @@ void GPS::ProcessCmdPipe()
             break;
         }
     }
+    return;
 }
 
 
@@ -471,7 +448,7 @@ void GPS::ProcessCmdPipe()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void GPS::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
-    uint32  uiCmdCode=0;
+    uint32  uiCmdCode = 0;
 
     if (MsgPtr != NULL)
     {
@@ -479,6 +456,7 @@ void GPS::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case GPS_NOOP_CC:
+            {
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(GPS_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
@@ -487,19 +465,23 @@ void GPS::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     GPS_REVISION,
                     GPS_MISSION_REV);
                 break;
-
+            }
             case GPS_RESET_CC:
+            {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
-
+            }
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(GPS_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -511,6 +493,7 @@ void GPS::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    return;
 }
 
 
@@ -519,23 +502,26 @@ void GPS::ReportHousekeeping()
 /* Publish Output Data                                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void GPS::SendGpsDump()
-{
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&GpsDump);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&GpsDump);
-}
+//void GPS::SendGpsDump()
+//{
+    //CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&GpsDump);
+    //CFE_SB_SendMsg((CFE_SB_Msg_t*)&GpsDump);
+    //return;
+//}
 
 void GPS::SendVehicleGps()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&VehicleGps);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&VehicleGps);
+    return;
 }
 
-void GPS::SendSatelliteInfo()
-{
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SatelliteInfo);
-    CFE_SB_SendMsg((CFE_SB_Msg_t*)&SatelliteInfo);
-}
+//void GPS::SendSatelliteInfo()
+//{
+    //CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SatelliteInfo);
+    //CFE_SB_SendMsg((CFE_SB_Msg_t*)&SatelliteInfo);
+    //return;
+//}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -566,7 +552,7 @@ boolean GPS::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 
@@ -651,6 +637,7 @@ void GPS_CleanupCallback(void)
         CFE_EVS_SendEvent(GPS_UNINIT_ERR_EID, CFE_EVS_ERROR,"GPS_Uninit failed");
         oGPS.HkTlm.State = GPS_INITIALIZED;
     }
+    return;
 }
 
 
@@ -663,51 +650,18 @@ void GPS_EventDrivenPublish(void)
 void GPS::EventDrivenPublish(void)
 {
     boolean returnBool = FALSE;
-    //static int count = 0;
 
     returnBool = GPS_Custom_Measure_PositionMsg(&VehicleGps);
     if(TRUE == returnBool)
     {
-        //if (count % 25 == 0)
-        //{
-            //count = 0;
-        //OS_printf("Lat %d \n", VehicleGps.Lat);
-        //OS_printf("Lon %d \n", VehicleGps.Lon);
-        //OS_printf("Alt %d \n", VehicleGps.Alt);
-        //OS_printf("AltEllipsoid %d \n", VehicleGps.AltEllipsoid);
-        //OS_printf("SVariance %f \n", VehicleGps.SVariance);
-        //OS_printf("CVariance %f \n", VehicleGps.CVariance);
-        //OS_printf("EpH %f \n", VehicleGps.EpH);
-        //OS_printf("EpV %f \n", VehicleGps.EpV);
-        //OS_printf("HDOP %f \n", VehicleGps.HDOP);
-        //OS_printf("VDOP %f \n", VehicleGps.VDOP);
-        //OS_printf("NoisePerMs %d \n", VehicleGps.NoisePerMs);
-        //OS_printf("JammingIndicator %d \n", VehicleGps.JammingIndicator);
-        //OS_printf("Vel_m_s %f \n", VehicleGps.Vel_m_s);
-        //OS_printf("Vel_n_m_s %f \n", VehicleGps.Vel_n_m_s);
-        //OS_printf("Vel_e_m_s %f \n", VehicleGps.Vel_e_m_s);
-        //OS_printf("Vel_d_m_s %f \n", VehicleGps.Vel_d_m_s);
-        //OS_printf("COG %f \n", VehicleGps.COG);
-        //OS_printf("TimestampTimeRelative %d \n", VehicleGps.TimestampTimeRelative);
-        //OS_printf("FixType %hhu \n", VehicleGps.FixType);
-        //OS_printf("VelNedValid %u \n", VehicleGps.VelNedValid);
-        //OS_printf("SatellitesUsed %hhu \n", VehicleGps.SatellitesUsed);
-        //}
-        //count++;
         SendVehicleGps();
     }
     //returnBool = GPS_Custom_Measure_SatInfoMsg(&SatelliteInfo);
     //if(TRUE == returnBool)
     //{
-        ////OS_printf("Count %hhu ", SatelliteInfo.Count);
-        ////OS_printf("SVID[0] %hhu ", SatelliteInfo.SVID[0]);
-        ////OS_printf("Used[0] %hhu ", SatelliteInfo.Used[0]);
-        ////OS_printf("Elevation[0] %hhu ", SatelliteInfo.Elevation[0]);
-        ////OS_printf("Azimuth[0] %hhu ", SatelliteInfo.Azimuth[0]);
-        ////OS_printf("SNR[0] %hhu ", SatelliteInfo.SNR[0]);
-
         //SendSatelliteInfo();
     //}
+    return;
 }
 
 /************************/

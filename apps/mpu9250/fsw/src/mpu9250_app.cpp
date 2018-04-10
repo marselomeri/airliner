@@ -47,7 +47,6 @@
 #include "math/Vector3F.hpp"
 #include "px4lib.h"
 
-//#include <unistd.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -96,8 +95,8 @@ MPU9250::~MPU9250()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MPU9250::InitEvent()
 {
-    int32  iStatus=CFE_SUCCESS;
-    int32  ind = 0;
+    int32  iStatus         = CFE_SUCCESS;
+    int32  ind             = 0;
     int32 customEventCount = 0;
     
     CFE_EVS_BinFilter_t   EventTbl[CFE_EVS_MAX_EVENT_FILTERS];
@@ -133,7 +132,7 @@ int32 MPU9250::InitEvent()
 
 end_of_function:
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -144,7 +143,7 @@ end_of_function:
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 MPU9250::InitPipe()
 {
-    int32  iStatus=CFE_SUCCESS;
+    int32  iStatus = CFE_SUCCESS;
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
@@ -229,7 +228,7 @@ int32 MPU9250::InitPipe()
     //}
 
 MPU9250_InitPipe_Exit_Tag:
-    return iStatus;
+    return (iStatus);
 }
     
 
@@ -326,7 +325,7 @@ int32 MPU9250::InitApp()
     if (FALSE == returnBool)
     {
         iStatus = -1;
-        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Validate device failed");
         goto MPU9250_InitApp_Exit_Tag;
     }
@@ -335,7 +334,7 @@ int32 MPU9250::InitApp()
     if(FALSE == returnBool)
     {
         iStatus = -1;
-        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Set accelerometer scale failed");
         goto MPU9250_InitApp_Exit_Tag;
     }
@@ -344,7 +343,7 @@ int32 MPU9250::InitApp()
     if(FALSE == returnBool)
     {
         iStatus = -1;
-        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Set gyroscope scale failed");
         goto MPU9250_InitApp_Exit_Tag;
     }
@@ -354,7 +353,7 @@ int32 MPU9250::InitApp()
     //if(FALSE == returnBool)
     //{
         //iStatus = -1;
-        //CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+        // (void) CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
                 //"Get Mag adjustment values failed.");
         //goto MPU9250_InitApp_Exit_Tag;
     //}
@@ -362,7 +361,7 @@ int32 MPU9250::InitApp()
     //iStatus = OS_MutSemCreate(&m_Params_Mutex, MPU9250_MUTEX_PARAMS, 0);
     //if (iStatus != CFE_SUCCESS)
     //{
-        //CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+        // (void) CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
             //"Params mutex create failed");
         //returnBool = FALSE;
         //goto MPU9250_InitApp_Exit_Tag;
@@ -374,7 +373,7 @@ int32 MPU9250::InitApp()
     iStatus = OS_TaskInstallDeleteHandler(&MPU9250_CleanupCallback);
     if (iStatus != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(MPU9250_INIT_ERR_EID, CFE_EVS_ERROR,
                                  "Failed to init register cleanup callback (0x%08X)",
                                  (unsigned int)iStatus);
         goto MPU9250_InitApp_Exit_Tag;
@@ -401,7 +400,7 @@ MPU9250_InitApp_Exit_Tag:
         }
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -413,8 +412,8 @@ MPU9250_InitApp_Exit_Tag:
 
 int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
 {
-    int32           iStatus=CFE_SUCCESS;
-    CFE_SB_Msg_t*   MsgPtr=NULL;
+    int32           iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t*   MsgPtr  = NULL;
     CFE_SB_MsgId_t  MsgId;
 
     /* Stop Performance Log entry */
@@ -451,25 +450,29 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
             }
 
             case MPU9250_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(MPU9250_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
     {
-        /* TODO: If there's no incoming message, you can do something here, or 
-         * nothing.  Note, this section is dead code only if the iBlocking arg
+        /* If there's no incoming message, do nothing here, 
+         * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
     }
     else if (iStatus == CFE_SB_TIME_OUT)
     {
-        /* TODO: If there's no incoming message within a specified time (via the
-         * iBlocking arg, you can do something here, or nothing.  
+        /* If there's no incoming message within a specified time (via 
+         * the iBlocking arg, you can do nothing here.  
          * Note, this section is dead code only if the iBlocking arg
          * is CFE_SB_PEND_FOREVER. */
         iStatus = CFE_SUCCESS;
@@ -480,7 +483,7 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
               "SCH pipe read error (0x%08lX).", iStatus);
     }
 
-    return iStatus;
+    return (iStatus);
 }
 
 
@@ -492,8 +495,8 @@ int32 MPU9250::RcvSchPipeMsg(int32 iBlocking)
 
 void MPU9250::ProcessCmdPipe()
 {
-    int32 iStatus = CFE_SUCCESS;
-    CFE_SB_Msg_t*   CmdMsgPtr=NULL;
+    int32 iStatus             = CFE_SUCCESS;
+    CFE_SB_Msg_t*   CmdMsgPtr = NULL;
     CFE_SB_MsgId_t  CmdMsgId;
 
     /* Process command messages until the pipe is empty */
@@ -506,10 +509,12 @@ void MPU9250::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case MPU9250_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -517,6 +522,7 @@ void MPU9250::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(MPU9250_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -530,6 +536,7 @@ void MPU9250::ProcessCmdPipe()
             break;
         }
     }
+    return;
 }
 
 
@@ -541,7 +548,7 @@ void MPU9250::ProcessCmdPipe()
 
 void MPU9250::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
-    uint32  uiCmdCode=0;
+    uint32  uiCmdCode = 0;
 
     if (MsgPtr != NULL)
     {
@@ -549,6 +556,7 @@ void MPU9250::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case MPU9250_NOOP_CC:
+            {
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(MPU9250_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
@@ -557,23 +565,28 @@ void MPU9250::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     MPU9250_REVISION,
                     MPU9250_MISSION_REV);
                 break;
-
+            }
             case MPU9250_RESET_CC:
+            {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
-
+            }
             case MPU9250_SEND_DIAG_CC:
+            {
                 SendDiag();
                 break;
-
+            }
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(MPU9250_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -586,6 +599,7 @@ void MPU9250::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&HkTlm);
+    return;
 }
 
 
@@ -598,6 +612,7 @@ void MPU9250::SendSensorAccel()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorAccel);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorAccel);
+    return;
 }
 
 //void MPU9250::SendSensorMag()
@@ -610,12 +625,14 @@ void MPU9250::SendSensorAccel()
         //i = 0;
     //}
     //++i;
+    //return;
 //}
 
 void MPU9250::SendSensorGyro()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&SensorGyro);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&SensorGyro);
+    return;
 }
 
 
@@ -623,6 +640,7 @@ void MPU9250::SendDiag()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&Diag);
     CFE_SB_SendMsg((CFE_SB_Msg_t*)&Diag);
+    return;
 }
 
 
@@ -655,7 +673,7 @@ boolean MPU9250::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
         }
     }
 
-    return bResult;
+    return (bResult);
 }
 
 
@@ -733,31 +751,31 @@ void MPU9250::AppMain()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void MPU9250::ReadDevice(void)
 {
-    float rawX_f = 0;
-    float rawY_f = 0;
-    float rawZ_f = 0;
-    float calX_f = 0;
-    float calY_f = 0;
-    float calZ_f = 0;
+    float rawX_f       = 0;
+    float rawY_f       = 0;
+    float rawZ_f       = 0;
+    float calX_f       = 0;
+    float calY_f       = 0;
+    float calZ_f       = 0;
+    uint64 timeStamp   = 0;
+    uint16 rawTemp     = 0;
+    int16 calTemp      = 0;
+    boolean returnBool = TRUE;
     //float magXAdj_f = Diag.Calibration.MagXAdj;
     //float magYAdj_f = Diag.Calibration.MagYAdj;
     //float magZAdj_f = Diag.Calibration.MagZAdj;
-    uint64 timeStamp = 0;
-    CFE_TIME_SysTime_t cfeTimeStamp = {0, 0};
-    uint16 rawTemp = 0;
-    int16 calTemp = 0;
-    boolean returnBool =  TRUE;
     math::Vector3F gval;
     math::Vector3F gval_integrated;
     math::Vector3F aval;
     math::Vector3F aval_integrated;
-    static uint64 prevTimeStamp = 0;
 
+    /* Get a timestamp */
     timeStamp = PX4LIB_GetPX4TimeUs();
-    
-    /* Timestamps */
-    //SensorMag.Timestamp
-    SensorGyro.Timestamp = SensorAccel.Timestamp = timeStamp;
+
+    /* Set measurement timestamps */
+    //SensorMag.Timestamp   = timeStamp;
+    SensorGyro.Timestamp  = timeStamp;
+    SensorAccel.Timestamp = timeStamp;
 
     /* Gyro */
     returnBool = MPU9250_Read_Gyro(&SensorGyro.XRaw, &SensorGyro.YRaw, &SensorGyro.ZRaw);
@@ -798,12 +816,6 @@ void MPU9250::ReadDevice(void)
     gval_integrated[0] = 0.0f;
     gval_integrated[1] = 0.0f;
     gval_integrated[2] = 0.0f;
-
-    /* TODO:  Replace this with real code, not a temporary estimate. */
-    //if(prevTimeStamp != 0)
-    //{
-        //SensorGyro.IntegralDt = timeStamp - prevTimeStamp;
-    //}
 
     _gyro_int.put(timeStamp, gval, gval_integrated, SensorGyro.IntegralDt);
     
@@ -857,13 +869,6 @@ void MPU9250::ReadDevice(void)
     aval_integrated[1] = 0.0f;
     aval_integrated[2] = 0.0f;
 
-    /* TODO:  Replace this with real code, not a temporary estimate. */
-    //if(prevTimeStamp != 0)
-    //{
-        //SensorAccel.IntegralDt = timeStamp - prevTimeStamp;
-    //}
-    //prevTimeStamp = timeStamp;
-
     _accel_int.put(timeStamp, aval, aval_integrated, SensorAccel.IntegralDt);
     
     SensorAccel.XIntegral = aval_integrated[0];
@@ -893,7 +898,7 @@ void MPU9250::ReadDevice(void)
         //goto end_of_function;
     //}
 
-    ///* Mag Calibrate */
+    ///* Mag Convert and Calibrate */
     //SensorMag.X = ((rawX_f * ((((Diag.Calibration.MagXAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * m_Params.MagXScale) + m_Params.MagXOffset) / 1000.0f;
     //SensorMag.Y = ((rawY_f * ((((Diag.Calibration.MagYAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * m_Params.MagYScale) + m_Params.MagYOffset) / 1000.0f;
     //SensorMag.Z = ((rawZ_f * ((((Diag.Calibration.MagZAdj - 128.0f) * 0.5f) / 128.0f) + 1.0) * m_Params.MagZScale) + m_Params.MagZOffset) / 1000.0f;
@@ -914,9 +919,9 @@ void MPU9250::ReadDevice(void)
     SensorGyro.TemperatureRaw = SensorAccel.TemperatureRaw = (int16) rawTemp;
 
     calTemp = (SensorAccel.TemperatureRaw / Diag.Conversion.TempSensitivity) + 21.0 - Diag.Conversion.RoomTempOffset;
-    //SensorMag.Temperature
-
-    SensorGyro.Temperature = SensorAccel.Temperature = calTemp;
+    //SensorMag.Temperature   = calTemp;
+    SensorGyro.Temperature  = calTemp;
+    SensorAccel.Temperature = calTemp;
 
 end_of_function:
 
@@ -925,6 +930,7 @@ end_of_function:
         (void) CFE_EVS_SendEvent(MPU9250_READ_ERR_EID, CFE_EVS_ERROR,
                 "MPU9250 read failed");
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -967,7 +973,7 @@ end_of_function:
         (void) CFE_EVS_SendEvent(MPU9250_VALIDATE_ERR_EID, CFE_EVS_ERROR,
                 "MPU9250 validate failed");
     }
-    return returnBool;
+    return (returnBool);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -983,6 +989,7 @@ void MPU9250_CleanupCallback(void)
         CFE_EVS_SendEvent(MPU9250_UNINIT_ERR_EID, CFE_EVS_ERROR,"MPU9250_Uninit failed");
         oMPU9250.HkTlm.State = MPU9250_INITIALIZED;
     }
+    return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1034,6 +1041,7 @@ void MPU9250::UpdateParamsFromTable(void)
         //Diag.Calibration.MagYOffset      = m_Params.MagYOffset;
         //Diag.Calibration.MagZOffset      = m_Params.MagZOffset; 
     }
+    return;
 }
 
 

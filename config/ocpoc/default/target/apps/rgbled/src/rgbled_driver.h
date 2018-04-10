@@ -184,14 +184,14 @@ extern "C" {
 **  \par Limits:
 **       0 to MAX_PRIORITY (usually 255)
 */
-#define RGBLED_SELFTEST_TASK_PRIORITY      (50)
+#define RGBLED_SELFTEST_TASK_PRIORITY    (50)
 
 /** \brief Streaming task name
 **
 **  \par Limits:
 **       OS_MAX_API_NAME
 */
-#define RGBLED_SELFTEST_TASK_NAME          ("RGBLED_TEST")
+#define RGBLED_SELFTEST_TASK_NAME        ("RGBLED_TEST")
 
 /************************************************************************
 ** Structure Declarations
@@ -216,10 +216,15 @@ typedef enum
  */
 typedef struct
 {
+    /*! RGBLED device enabled */
     boolean     Enabled;
+    /*! RGBLED NOT powersave */
     boolean     NotPowerSave;
+    /*! RGBLED duty cycle of red LED */
     uint8       RedDutyCycle;
+    /*! RGBLED duty cycle of green LED */
     uint8       GreenDutyCycle;
+    /*! RGBLED duty cycle of blue LED */
     uint8       BlueDutyCycle;
 } RGBLED_Device_Settings_t;
 
@@ -234,12 +239,10 @@ typedef struct
     RGBLED_Device_Settings_t        Settings;
     /*! The current device status */
     RGBLED_Custom_Status_t          Status;
-    /*! Streaming task priority */
-    uint8                           Priority;
     /*! Streaming child task identifier */
     uint32                          ChildTaskID;
     /*! Streaming task function pointer */
-    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    CFE_ES_ChildTaskMainFuncPtr_t   SelfTestTask;
 } RGBLED_AppCustomData_t;
 
 

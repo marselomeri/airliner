@@ -134,6 +134,8 @@ typedef struct
     CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
     /*! Device resource(s) channels */
     VC_Device_Handle_t              Channel[VC_MAX_DEVICES];
+    /*! Streaming task flags */
+    uint32                          TaskFlags;
 } VC_AppCustomDevice_t;
 
 

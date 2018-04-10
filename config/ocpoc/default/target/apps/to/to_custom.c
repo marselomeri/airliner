@@ -99,15 +99,15 @@ int32 TO_Custom_Init(void)
     TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
     strncpy(TO_AppCustomData.Channel[0].IP, "192.168.1.3", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[0].DstPort = 5011;
-    TO_AppCustomData.Channel[0].Priority = 50;
+    TO_AppCustomData.Channel[0].Priority = 119;
     TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_BinaryChannelTask;
     TO_AppCustomData.Channel[0].Socket = 0;
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
-    TO_AppCustomData.Channel[1].Mode = TO_CHANNEL_ENABLED;
     strncpy(TO_AppCustomData.Channel[1].IP, "192.168.1.3", INET_ADDRSTRLEN);
+    TO_AppCustomData.Channel[1].Mode = TO_CHANNEL_ENABLED;
     TO_AppCustomData.Channel[1].DstPort = 5012;
-    TO_AppCustomData.Channel[1].Priority = 50;
+    TO_AppCustomData.Channel[1].Priority = 121;
     TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_ProtobufChannelTask;
     TO_AppCustomData.Channel[1].Socket = 0;
     TO_AppCustomData.Channel[1].ChildTaskID = 0;
@@ -405,9 +405,9 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
             (const char *)TaskName,
             TO_AppCustomData.Channel[ChannelID].ListenerTask,
             0,
-            CFE_ES_DEFAULT_STACK_SIZE,
+			TO_CUSTOM_TASK_STACK_SIZE,
             TO_AppCustomData.Channel[ChannelID].Priority,
-            0);
+			TO_CUSTOM_CHILD_TASK_FLAGS);
 
 end_of_function:
     return returnCode;

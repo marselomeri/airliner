@@ -7,6 +7,9 @@ extern "C" {
 
 #include "cfe_platform_cfg.h"
 
+#define TO_CUSTOM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
+#define TO_CUSTOM_TASK_STACK_SIZE             131072
+
 /*
 ** to Platform Configuration Parameter Definitions
 */

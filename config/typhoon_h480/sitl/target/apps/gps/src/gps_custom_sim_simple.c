@@ -115,7 +115,7 @@ boolean GPS_Custom_Init()
             0,
             CFE_ES_DEFAULT_STACK_SIZE,
             GPS_AppCustomData.Priority,
-            0);
+            GPS_CUSTOM_CHILD_TASK_FLAGS);
     if(CFE_SUCCESS != returnCode)
     {
         GPS_AppCustomData.ContinueFlag = FALSE;
