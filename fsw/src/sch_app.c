@@ -245,7 +245,9 @@ void SCH_AppMain(void)
         }
 
         SCH_CheckDeadlines();
+#ifdef SCH_RTM_SUPPORTED
         OS_RtmEndFrame();
+#endif
     } /* End of while */
 
     /*
@@ -321,6 +323,7 @@ void SCH_CheckDeadlines(void)
     	slot--;
     }
 
+#ifdef SCH_RTM_SUPPORTED
     if(OS_RtmGetRunMode() == OS_RUNTIME_MODE_NONREALTIME)
     {
     	while(SCH_GetOutstandingActivityCount(slot))
@@ -328,6 +331,7 @@ void SCH_CheckDeadlines(void)
     		OS_BinSemTake(SCH_AppData.ADHoldupSemaphore);
     	}
     }
+#endif
 }
 
 
@@ -1196,22 +1200,30 @@ int32 SCH_ValidateScheduleData(void *TableData)
     uint16 Remainder;
     uint16 MessageIndex;
     uint32 GroupData;
+    uint32 Deadline;
 
     int32 GoodCount   = 0;
     int32 BadCount    = 0;
     int32 UnusedCount = 0;
+    uint32 DeadlineSearchIndex = 0;
 
     /*
     ** Verify each entry in pending SCH schedule table
     */
     for (TableIndex = 0; TableIndex < SCH_TABLE_ENTRIES; TableIndex++)
     {
+        uint16 SearchMessageIndex;
+        uint32 Deadline;
+        uint32 FailCount = 0;
+        uint16 SearchMinorFrames = 0;
+
         EnableState  = TableArray[TableIndex].EnableState;
         Type         = TableArray[TableIndex].Type;
         Frequency    = TableArray[TableIndex].Frequency;
         Remainder    = TableArray[TableIndex].Remainder;
         MessageIndex = TableArray[TableIndex].MessageIndex;
         GroupData    = TableArray[TableIndex].GroupData;
+        Deadline     = TableArray[TableIndex].Deadline;
 
         EntryResult  = CFE_SUCCESS;
 
@@ -1224,7 +1236,8 @@ int32 SCH_ValidateScheduleData(void *TableData)
                 (Remainder != SCH_UNUSED) ||
                 (GroupData != SCH_UNUSED) ||
                 (Type      != SCH_UNUSED) ||
-                (MessageIndex != SCH_UNUSED))
+                (MessageIndex != SCH_UNUSED) ||
+                (Deadline != SCH_UNUSED))
             {
                 EntryResult = SCH_SDT_GARBAGE_ENTRY;
                 BadCount++;
@@ -1265,7 +1278,57 @@ int32 SCH_ValidateScheduleData(void *TableData)
             {
                 EntryResult = SCH_SDT_BAD_MSG_INDEX;
             }
-            
+            else
+            {
+                boolean FoundNextEntry = FALSE;
+
+				/* If deadline is set to 0 we don't care about it */
+				if (Deadline == 0)
+				{
+					FoundNextEntry = TRUE;
+				}
+
+				/* Search for next occurrence of this message */
+				DeadlineSearchIndex = TableIndex + 1;
+				SearchMinorFrames = 0;
+				while(!FoundNextEntry)
+				{
+					/* Need an index safeguard in case rollover into next major frame */
+					if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
+					{
+						DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
+					}
+
+					/* Update search minor frame number */
+					if (DeadlineSearchIndex % SCH_ENTRIES_PER_SLOT == 0)
+					{
+						SearchMinorFrames++;
+					}
+
+					/* If we've already checked every frame within the deadline without finding
+					 * it we can stop looking */
+					if(SearchMinorFrames > Deadline)
+					{
+						FoundNextEntry = TRUE;
+					}
+
+					/* Get message index for the current search index */
+					SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
+
+					if(SearchMessageIndex == MessageIndex)
+					{
+						/* We found the next occurrence, did it overlap? */
+						if(SearchMinorFrames < Deadline)
+						{
+							EntryResult = SCH_SDT_BAD_DEADLINE;
+						}
+						FoundNextEntry = TRUE;
+					}
+
+					DeadlineSearchIndex++;
+				}
+            }
+
             if (EntryResult != CFE_SUCCESS)
             {
                 BadCount++;
@@ -1289,14 +1352,9 @@ int32 SCH_ValidateScheduleData(void *TableData)
             TableResult = EntryResult;
 
             CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
-                              "Schedule tbl verify error - idx[%d] ena[%d] typ[%d] fre[%d] rem[%d] msg[%d] grp[0x%08X]",
-                              (int)TableIndex, EnableState, Type, Frequency, Remainder, MessageIndex, (unsigned int)GroupData);
+                              "Schedule tbl verify error - idx[%d] ena[%d] typ[%d] fre[%d] rem[%d] msg[%d] grp[0x%08X] dl[%d]",
+                              (int)TableIndex, EnableState, Type, Frequency, Remainder, MessageIndex, (unsigned int)GroupData, (unsigned int)Deadline);
         }
-    }
-
-    if (TableResult == CFE_SUCCESS)
-    {
-    	TableResult = SCH_ValidateScheduleDeadlines(TableArray);
     }
 
     /*
@@ -1320,104 +1378,6 @@ int32 SCH_ValidateScheduleData(void *TableData)
     return(TableResult);
 
 } /* End of SCH_ValidateScheduleData() */
-
-/*******************************************************************
-**
-** SCH_ValidateScheduleDeadlines
-**
-** NOTE: For complete prolog information, see above
-********************************************************************/
-
-int32 SCH_ValidateScheduleDeadlines(void *TableData)
-{
-    SCH_ScheduleEntry_t *TableArray = (SCH_ScheduleEntry_t *) TableData;
-    int32 TableResult = CFE_SUCCESS;
-    uint32 TableIndex;
-    uint32 DeadlineSearchIndex = 0;
-    uint16 MessageIndex;
-    uint16 SearchMessageIndex;
-    uint32 Deadline;
-    uint32 FailCount = 0;
-    uint16 SearchMinorFrames = 0;
-    boolean FoundNextEntry = FALSE;
-
-    /* Iterate over each entry in SCH schedule table */
-    for (TableIndex = 0; TableIndex < SCH_TABLE_ENTRIES; TableIndex++)
-    {
-    	/* Get data for this index */
-        MessageIndex = TableArray[TableIndex].MessageIndex;
-        Deadline     = TableArray[TableIndex].Deadline;
-
-        /* If deadline is set to 0 we don't care about it */
-        if (Deadline == 0)
-        {
-        	FoundNextEntry = TRUE;
-        }
-
-        /* Search for next occurrence of this message */
-        DeadlineSearchIndex = TableIndex + 1;
-        SearchMinorFrames = 0;
-        while(!FoundNextEntry)
-        {
-        	/* Need an index safeguard in case rollover into next major frame */
-        	if(DeadlineSearchIndex >= SCH_TABLE_ENTRIES)
-        	{
-        		DeadlineSearchIndex = DeadlineSearchIndex % SCH_TABLE_ENTRIES;
-        	}
-
-        	/* Update search minor frame number */
-            if (DeadlineSearchIndex % SCH_ENTRIES_PER_SLOT == 0)
-            {
-            	SearchMinorFrames++;
-            }
-
-        	/* If we've already checked every frame within the deadline without finding
-        	 * it we can stop looking */
-			if(SearchMinorFrames > Deadline)
-			{
-				FoundNextEntry = TRUE;
-			}
-
-        	/* Get message index for the current search index */
-        	SearchMessageIndex = TableArray[DeadlineSearchIndex].MessageIndex;
-
-        	if(SearchMessageIndex == MessageIndex)
-        	{
-        		/* We found the next occurrence, did it overlap? */
-        		if(SearchMinorFrames < Deadline)
-        		{
-        			TableResult = SCH_SDT_BAD_DEADLINE;
-        			FailCount++;
-        			CFE_EVS_SendEvent(SCH_SCHEDULE_TBL_ERR_EID, CFE_EVS_ERROR,
-						  "Schedule tbl validate error - Overlapping message deadline occurrence for msg[%d]: %lu frames",
-						  MessageIndex, Deadline - SearchMinorFrames);
-        		}
-        		FoundNextEntry = TRUE;
-        	}
-
-        	DeadlineSearchIndex++;
-        }
-
-        FoundNextEntry = FALSE;
-    }
-
-    /* Send event describing results */
-	CFE_EVS_SendEvent(SCH_SCHEDULE_TABLE_EID, CFE_EVS_DEBUG,
-					  "Schedule table deadline verify results -- fails[%lu]", FailCount);
-
-	/* Maintain table verification statistics */
-	if (TableResult == CFE_SUCCESS)
-	{
-		SCH_AppData.TableVerifySuccessCount++;
-	}
-	else
-	{
-		SCH_AppData.TableVerifyFailureCount++;
-	}
-
-    return(TableResult);
-
-} /* End of SCH_ValidateScheduleDeadlines() */
 
 
 /*******************************************************************
@@ -1573,7 +1533,7 @@ int32 SCH_ChildTaskInit(void)
                                    NULL,
                                    CFE_ES_DEFAULT_STACK_SIZE,
                                    SCH_AD_CHILD_TASK_PRIORITY,
-                                   0);
+                                   SCH_AD_CHILD_TASK_FLAGS);
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SCH_AD_CHILD_TASK_CREATE_ERR_EID, CFE_EVS_ERROR,
