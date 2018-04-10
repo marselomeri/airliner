@@ -28,6 +28,11 @@ vehicle_takeoff(rocky)
 
 vehicle_flight_mode(rocky, FlightMode.PosCtl)
 
+vehicle_move(rocky, Direction.Forward, 1.0, 3)
+vehicle_move(rocky, Direction.Left, 1.0, 3)
+vehicle_move(rocky, Direction.Backward, 1.0, 3)
+vehicle_move(rocky, Direction.Right, 1.0, 3)
+
 #vehicle_fly_square_ccw()
 #vehicle_fly_square_cw()
 raw_input("Press enter to engage RTL>")

@@ -21,8 +21,32 @@ class Direction(Enum):
     West                        = 8    
 
 # Flight control commands
+def vehicle_move(airliner, direction, speed = 0.5, time = 1, stop = True):
+    """ Router for move commands. Note: speed is stick position percentage, not velocity. """
+
+    # Move in the specified direction
+    if direction == Direction.Forward:
+        vehicle_move_forward(airliner, speed, time)
+    elif direction == Direction.Backward:
+        vehicle_move_backward(airliner, speed, time)
+    elif direction == Direction.Right:
+        vehicle_move_right(airliner, speed, time)
+    elif direction == Direction.Left:
+        vehicle_move_left(airliner, speed, time)
+    else:
+        airliner.log("Unknown move direction specified", LogLevel.Error)
+
+    # Sleep for passed time
+    if time:
+        sleep(time)
+
+    # If user wants vehicle to hold after executing maneuvor return to stable hover
+    if stop:
+        vehicle_stable_hover(airliner)
+        sleep(1) # Give vehicle time to slow if they want to stop it.
+
 def vehicle_arm(airliner):
-    print "Pyliner: Arming vehicle"
+    print "%s: Arming vehicle" % airliner.script_name
     airliner.log("Arming vehicle")
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
@@ -83,7 +107,7 @@ def vehicle_arm(airliner):
         {'name':'DataSource', 'value':0}]})
 
 def vehicle_disarm(airliner):
-    print "Pyliner: Disarming vehicle"
+    print "%s: Disarming vehicle" % airliner.script_name
     airliner.log("Disarming vehicle")
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
@@ -116,7 +140,7 @@ def vehicle_disarm(airliner):
 
 
 def vehicle_takeoff(airliner):
-    print "Pyliner: Auto takeoff"
+    print "%s: Auto takeoff" % airliner.script_name
     airliner.log("Auto takeoff")
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
@@ -146,7 +170,7 @@ def vehicle_takeoff(airliner):
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-        sleep(5)
+    sleep(5)
 
 def vehicle_flight_mode(airliner, mode):
     if not mode:
@@ -159,7 +183,7 @@ def vehicle_flight_mode(airliner, mode):
         vehicle_mode_posctl(airliner)
 
 def vehicle_mode_posctl(airliner):
-    print "Pyliner: Position control"
+    print "%s: Position control" % airliner.script_name
     airliner.log("Position control")
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
@@ -221,22 +245,9 @@ def vehicle_stable_hover(airliner):
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
 
-def vehicle_move(airliner, direction, speed = 0.5, time = 1):
-    """ Router for move commands. Note: speed is stick position percentage, not velocity. """
-    if direction == Direction.Forward:
-        vehicle_move_forward(airliner, direction, speed, time)
-    elif direction == Direction.Backward:
-        vehicle_move_backward(airliner, direction, speed, time)
-    elif direction == Direction.Right:
-        vehicle_move_right(airliner, direction, speed, time)
-    elif direction == Direction.Left:
-        vehicle_move_left(airliner, direction, speed, time)
-    else:
-        airliner.log("Unknown move direction specified", LogLevel.Error)
-
 def vehicle_move_forward(airliner, percent_speed, time):
-    print "Pyliner: moving forward at %s percent for %s seconds" % (percent_speed, time)
-    airliner.log("Pyliner: moving forward at %s percent for %s seconds" % (percent_speed, time))
+    print "%s: moving forward at %s%% for %s seconds" % (airliner.script_name, percent_speed * 100, time)
+    airliner.log("Moving forward at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -265,11 +276,10 @@ def vehicle_move_forward(airliner, percent_speed, time):
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    sleep(time)
 
 def vehicle_move_left(airliner, percent_speed, time):
-    print "Pyliner: moving left at %s percent for %s seconds" % (percent_speed, time)
-    airliner.log("Pyliner: moving left at %s percent for %s seconds" % (percent_speed, time))
+    print "%s: moving left at %s%% for %s seconds" % (airliner.script_name, percent_speed * 100, time)
+    airliner.log("Moving left at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -298,11 +308,10 @@ def vehicle_move_left(airliner, percent_speed, time):
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    sleep(time)
 
 def vehicle_move_backward(airliner, percent_speed, time):
-    print "Pyliner: moving backward at %s percent for %s seconds" % (percent_speed, time)
-    airliner.log("Pyliner: moving backward at %s percent for %s seconds" % (percent_speed, time))
+    print "%s: moving backward at %s%% for %s seconds" % (airliner.script_name, percent_speed * 100, time)
+    airliner.log("Moving backward at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -331,11 +340,10 @@ def vehicle_move_backward(airliner, percent_speed, time):
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    sleep(time)
 
 def vehicle_move_right(airliner, percent_speed, time):
-    print "Pyliner: moving backward at %s percent for %s seconds" % (percent_speed, time)
-    airliner.log("Pyliner: moving backward at %s percent for %s seconds" % (percent_speed, time))
+    print "%s: moving right at %s%% for %s seconds" % (airliner.script_name, percent_speed * 100, time)
+    airliner.log("Moving right at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':airliner.get_time()},
@@ -364,10 +372,9 @@ def vehicle_move_right(airliner, percent_speed, time):
         {'name':'ManSwitch', 'value':0},
         {'name':'ModeSlot', 'value':0},
         {'name':'DataSource', 'value':0}]})
-    sleep(time)
 
 def vehicle_rtl(airliner):
-    print "Pyliner: RTL"
+    print "%s: RTL" % airliner.script_name
     airliner.log("RTL")
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
