@@ -124,3 +124,6 @@
 [submodule "apps/vm"]
 	path = apps/vm
 	url = git@bitbucket.org:windhoverlabs/vm.git
+[submodule "apps/hk"]
+	path = apps/hk
+	url = git@bitbucket.org:windhoverlabs/hk.git
