@@ -628,6 +628,14 @@
 #define LGC_WAKEUP_MID                              0x0cb2
 #define LGC_CMD_MID                                 0x0cb3
 
+/* MS5607                                               */
+#define MS5607_SEND_HK_MID                          0x0cb5
+#define MS5607_HK_TLM_MID                           0x0cb6
+#define MS5607_DIAG_TLM_MID                         0x0cb7
+#define MS5607_CMD_MID                              0x0cb8
+#define MS5607_MEASURE_MID                          0x0cb9
+
+
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif
