@@ -79,6 +79,9 @@
 [submodule "apps/ms5611"]
 	path = apps/ms5611
 	url = git@bitbucket.org:windhoverlabs/ms5611.git
+[submodule "apps/ms5607"]
+	path = apps/ms5607
+	url = git@bitbucket.org:windhoverlabs/ms5607.git
 [submodule "apps/nav"]
 	path = apps/nav
 	url = git@bitbucket.org:windhoverlabs/nav.git
