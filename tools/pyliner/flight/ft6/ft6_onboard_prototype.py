@@ -21,63 +21,29 @@ rocky.subscribe({'tlm': ['/Airliner/CNTL/VehicleGlobalPosition/Lat',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelE',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelD']})
 
+# Wait for pyliner data dictionary to populate with initial values
+while rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt') == 'NULL':
+    print "Waiting for telemetry downlink..."
+    time.sleep(1)
+
 alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "alt: " + str(alt)
 
 vehicle_arm(rocky)
-
-raw_input("Press enter to takeoff>")
+atp(rocky, "Takeoff")
 vehicle_takeoff(rocky)
-
 vehicle_flight_mode(rocky, FlightMode.PosCtl)
+
 alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "alt: " + str(alt)
-vehicle_move(rocky, Direction.Forward, 1.0, 3)
-vehicle_move(rocky, Direction.Left, 1.0, 3)
-vehicle_move(rocky, Direction.Backward, 1.0, 3)
-vehicle_move(rocky, Direction.Right, 1.0, 3)
 
-#vehicle_fly_square_ccw()
-#vehicle_fly_square_cw()
-raw_input("Press enter to engage RTL>")
+vehicle_move(rocky, Direction.Forward, speed = 1.0, time = 2, stop = True, stop_wait = 3)
+vehicle_move(rocky, Direction.Left, speed = 1.0, time = 2, stop = True, stop_wait = 3)
+vehicle_move(rocky, Direction.Backward, speed = 1.0, time = 2, stop = True, stop_wait = 3)
+vehicle_move(rocky, Direction.Right, speed = 1.0, time = 2, stop = True, stop_wait = 3)
+
+atp(rocky, "RTL")
 vehicle_rtl(rocky)
 
-#def vehicle_fly_square_ccw():
-#    print "Starting counter clockwise square pattern..."
-#    raw_input("Press enter to move forward>")
-#    vehicle_full_forward()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-#    raw_input("Press enter to move left>")
-#    vehicle_full_left()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-#    raw_input("Press enter to move backwards>")
-#    vehicle_full_reverse()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-#    raw_input("Press enter to move right>")
-#    vehicle_full_right()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-
-
-#def vehicle_fly_square_cw():
-#    print "Starting clockwise square pattern..."
-#    raw_input("Press enter to move forward>")
-#    vehicle_full_forward()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-#    raw_input("Press enter to move right>")
-#    vehicle_full_right()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-#    raw_input("Press enter to move backwards>")
-#    vehicle_full_reverse()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-#    raw_input("Press enter to move left>")
-#    vehicle_full_left()
-#    time.sleep(3)
-#    vehicle_stable_hover()
-
+alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+print "alt: " + str(alt)

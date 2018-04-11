@@ -20,8 +20,13 @@ class Direction(Enum):
     East                        = 7
     West                        = 8    
 
+def atp(airliner, txt):
+    print "%s requires authorization for: %s" % (airliner.script_name, txt)
+    raw_input("Press enter to proceed >>>")
+    airliner.log("%s requires authorization to proceed. Requesting: %s" % (airliner.script_name, txt))
+
 # Flight control commands
-def vehicle_move(airliner, direction, speed = 0.5, time = 1, stop = True):
+def vehicle_move(airliner, direction, speed = 0.5, time = 1, stop = True, stop_wait = 0):
     """ Router for move commands. Note: speed is stick position percentage, not velocity. """
 
     # Move in the specified direction
@@ -36,14 +41,15 @@ def vehicle_move(airliner, direction, speed = 0.5, time = 1, stop = True):
     else:
         airliner.log("Unknown move direction specified", LogLevel.Error)
 
-    # Sleep for passed time
+    # Execute manuevor for specified durationm4
     if time:
         sleep(time)
 
-    # If user wants vehicle to hold after executing maneuvor return to stable hover
+    # If user wants vehicle to stop vehicle after executing manuevor return to stable hover
     if stop:
         vehicle_stable_hover(airliner)
-        sleep(1) # Give vehicle time to slow if they want to stop it.
+        if stop_wait:
+            sleep(stop_wait)
 
 def vehicle_arm(airliner):
     print "%s: Arming vehicle" % airliner.script_name
