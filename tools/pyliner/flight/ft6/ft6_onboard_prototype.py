@@ -21,13 +21,17 @@ rocky.subscribe({'tlm': ['/Airliner/CNTL/VehicleGlobalPosition/Lat',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelE',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelD']})
 
+alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+print "alt: " + str(alt)
+
 vehicle_arm(rocky)
 
 raw_input("Press enter to takeoff>")
 vehicle_takeoff(rocky)
 
 vehicle_flight_mode(rocky, FlightMode.PosCtl)
-
+alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+print "alt: " + str(alt)
 vehicle_move(rocky, Direction.Forward, 1.0, 3)
 vehicle_move(rocky, Direction.Left, 1.0, 3)
 vehicle_move(rocky, Direction.Backward, 1.0, 3)
