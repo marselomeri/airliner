@@ -127,3 +127,12 @@
 [submodule "apps/hk"]
 	path = apps/hk
 	url = git@bitbucket.org:windhoverlabs/hk.git
+[submodule "cfe"]
+	path = cfe
+	url = git@bitbucket.org:windhoverlabs/cfe.git
+[submodule "psp"]
+	path = psp
+	url = git@bitbucket.org:windhoverlabs/psp.git
+[submodule "osal"]
+	path = osal
+	url = git@bitbucket.org:windhoverlabs/osal.git

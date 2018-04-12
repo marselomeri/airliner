@@ -348,7 +348,7 @@ boolean VC_Update_Destination(const char *Address, uint16 Port)
         {
             VC_AppCustomData.Channel[i].DestPort = Port;
             
-            if(!strncpy(VC_AppCustomData.Channel[i].DestIP, Address, sizeof(Address)))
+            if(!strncpy(VC_AppCustomData.Channel[i].DestIP, Address, INET_ADDRSTRLEN))
             {
                 returnBool = FALSE;
             }

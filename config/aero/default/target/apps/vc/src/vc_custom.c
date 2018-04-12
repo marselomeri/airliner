@@ -116,20 +116,20 @@ void VC_StartStreamingCmd(CFE_SB_Msg_t* MsgPtr)
                 CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
                                 "Destination update failed in cmd start streaming");
             }
-            /* Call VC_Transmit_Uninit() */
-            else if (FALSE == VC_Transmit_Uninit())
-            {
-                VC_AppData.HkTlm.usCmdErrCnt++;
-                CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,
-                                "VC_Transmit_Uninit failed in cmd start streaming");
-            }
-            /* Call VC_Transmit_Init() */
-            else if (FALSE == VC_Transmit_Init())
-            {
-                VC_AppData.HkTlm.usCmdErrCnt++;
-                CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
-                                "VC_Transmit_Init failed in cmd start streaming");
-            }
+            ///* Call VC_Transmit_Uninit() */
+            //else if (FALSE == VC_Transmit_Uninit())
+            //{
+                //VC_AppData.HkTlm.usCmdErrCnt++;
+                //CFE_EVS_SendEvent(VC_UNINIT_ERR_EID, CFE_EVS_ERROR,
+                                //"VC_Transmit_Uninit failed in cmd start streaming");
+            //}
+            ///* Call VC_Transmit_Init() */
+            //else if (FALSE == VC_Transmit_Init())
+            //{
+                //VC_AppData.HkTlm.usCmdErrCnt++;
+                //CFE_EVS_SendEvent(VC_INIT_ERR_EID, CFE_EVS_ERROR,
+                                //"VC_Transmit_Init failed in cmd start streaming");
+            //}
             /* Call VC_Devices_Start() */
             else if (FALSE == VC_Devices_Start())
             {

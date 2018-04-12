@@ -291,6 +291,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 
         if(channel->Mode == VC_CHANNEL_ENABLED)
         {
+
             CFE_ES_PerfLogEntry(VC_SOCKET_SEND_PERF_ID);
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->DestIP);
@@ -342,13 +343,14 @@ boolean VC_Update_Destination(const char *Address, uint16 Port)
         if(VC_AppCustomData.Channel[i].Mode == VC_CHANNEL_ENABLED)
         {
             VC_AppCustomData.Channel[i].DestPort = Port;
-            
-            if(!strncpy(VC_AppCustomData.Channel[i].DestIP, Address, sizeof(Address)))
+
+            if(!strncpy(VC_AppCustomData.Channel[i].DestIP, Address, INET_ADDRSTRLEN))
             {
                 returnBool = FALSE;
             }
         }
     }
+
     return (returnBool);
 }
 
