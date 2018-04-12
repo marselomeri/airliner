@@ -6,7 +6,7 @@ from google.protobuf import text_format
 import json
 import logging
 from os import mkdir
-from os.path import exists,join
+from os.path import exists,join,dirname,realpath
 import python_pb.pyliner_msgs as pyliner_msgs
 import socket
 import SocketServer
@@ -36,7 +36,7 @@ class Pyliner(object):
         self.ci_port = kwargs.get("ci_port", DEFAULT_CI_PORT)
         self.to_port = kwargs.get("to_port", DEFAULT_TO_PORT)
         self.script_name = kwargs.get("script_name", "Unspecified")
-        self.airliner_data = self.__read_json(kwargs.get("airliner_map", "cookiecutter.json"))
+        self.airliner_data = self.__read_json(kwargs.get("airliner_map", join(dirname(realpath(__file__)), "airliner.json")))
         self.ci_socket = self.__init_socket()
         self.to_socket = self.__init_socket()
         self.subscribers = []
@@ -48,7 +48,7 @@ class Pyliner(object):
         self.duration = 0
         self.test_description = []
         self.start_time = datetime.now()
-        self.log_dir = kwargs.get("log_dir", "./logs/")
+        self.log_dir = kwargs.get("log_dir", join(dirname(realpath(__file__)), "logs"))
         self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + "_pyliner_" + self.script_name + ".log"
         self.all_telemetry = []
         self.__setup_log()
@@ -338,7 +338,7 @@ class Pyliner(object):
             return
         
         self.all_telemetry.append(tlm)
-        self.log("Recvd tlm: " + str(tlm), LogLevel.Debug)
+        #self.log("Recvd tlm: " + str(tlm), LogLevel.Debug)
         
         # TODO: Check if needed
         hdr = tlm[0][:12]
