@@ -5,7 +5,7 @@ block includes
 
 block header
   i.fa-fw.fa.fa-signal
-  | Pilot Display (Test)
+  | Pilot Display
 
 block main
   .row
@@ -50,17 +50,17 @@ block main
           td(style="width:110px")
             input.form-control#AltitudeOffsetValue(style="margin:5px; width:100px" value="0")
           td  
-            p(style="margin:5px;") M
+            p(style="margin:5px;") meters
           td
             p#AltitudeOffsetStatus(style="color:green;width:500px;text-align:end") [OK]
-            
+    
   .row.row-fluid
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-      #wid-VM-ArmingState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:650px')
+      #wid-VM-HK.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Arming State
+          h2 Telemetry
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -68,20 +68,30 @@ block main
             .table-responsive
               table.table.table-condensed
                 tbody
+                  tr
+                    th Cmd Count
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VM/CmdCounter'}]}) ---
+                  tr
+                    th Error Count
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VM/ErrCounter'}]}) ---
                   tr
                     th Arming State
                     td
                       span(data-sage={tlm: [{name:'/CFS/VM/ArmingState'}]}) ---
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Arm'}}) Arm
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Disarm'}}) Disarm
-              
+                  tr
+                    th Nav State
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VM/NavState'}]}) ---
+                  
   .row.row-fluid
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-      #wid-VM-NavState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:650px')
+      #wid-VM-ArmingState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Navigation State
+          h2 Commanding
         div
           .jarviswidget-editbox
             input.form-control(type='text')
@@ -89,21 +99,25 @@ block main
             .table-responsive
               table.table.table-condensed
                 tbody
-                  tr
-                    th Nav State
-                    td
-                      span(data-sage={tlm: [{name:'/CFS/VM/NavState'}]}) ---
-            footer
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavManual'}}) Manual
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAltCtl'}}) AltCtl
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavPosCtl'}}) PosCtl
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoLoiter'}}) Loiter 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoRTL'}}) Auto RTL 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAcro'}}) Acro 
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavStabilize'}}) Stabilize  
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavRattitude'}}) Rattitude  
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoTakeoff'}}) Auto Takeoff  
-              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoLand'}}) Auto Land
+
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/NoOp'}}) No-Op
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Reset'}}) Reset
+                    hr
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Arm'}}) Arm
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/Disarm'}}) Disarm
+                    hr
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavManual'}}) Manual
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAltCtl'}}) AltCtl
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavPosCtl'}}) PosCtl
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoLoiter'}}) Loiter 
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoRTL'}}) Auto RTL 
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAcro'}}) Acro 
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavStabilize'}}) Stabilize  
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavRattitude'}}) Rattitude  
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoTakeoff'}}) Auto Takeoff  
+                    button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoLand'}}) Auto Land
+              
+
 
   script.
     var Position = {Lat: 0, Lon: 0, Alt: 0};
@@ -116,6 +130,7 @@ block main
     /* Heads Up Display */
 
     var draw;
+    var bgOpacity = 0.5;
     var curHeading = 0;
     var curPitch = 0;
     var curRoll = 0;
@@ -149,6 +164,12 @@ block main
     var currTS = 0;
     var ctr = 0;
     var fps = 0;
+    var currentAltimeterCenter = 0.0;
+    var altitudeOffsetSwitch = false;
+    var altimeter;
+    var altTicksArea;
+    
+    
 
     var GetTime = function(){
         var d = new Date();
@@ -163,6 +184,7 @@ block main
             }
             $("#AltitudeOffsetStatus").css("color","green");
             $("#AltitudeOffsetStatus").text("[OK]");
+            altitudeOffsetSwitch = true;
         }
         catch(e){
             $("#AltitudeOffsetStatus").css("color","red");
@@ -246,7 +268,7 @@ block main
     //  }
     //}, 50);
 
-    drawHUD();
+    //drawHUD();
 
     function updateHUDHeading(newHeading) {
       if(newHeading<0){
@@ -276,13 +298,42 @@ block main
         newAltitude = newAltitude + AltOffset;
       }  
       textAltitude.text(newAltitude.toFixed(1).toString());
-      altTicks.y(newAltitude * altPxPerMeter);
+      
+      var upperBound = currentAltimeterCenter + 35;
+      var lowerBound = currentAltimeterCenter - 5;
+      if(newAltitude > upperBound - 3 || newAltitude < lowerBound + 3 || altitudeOffsetSwitch){
+        console.log("report");
+        altTicks.y(0 * altPxPerMeter);
+        currentAltimeterCenter = parseInt(newAltitude);
+        drawAltimeter()
+        altitudeOffsetSwitch = false;
+      } 
+      else{
+        altTicks.y(( newAltitude-currentAltimeterCenter) * altPxPerMeter);
+      }
+      
+      //altTicks.y(newAltitude * altPxPerMeter);
+
     }
 
-    $('#hud').on('resize', function (event) {
-      //console.log("Resized");
+    $('#hud').on('load', function (event) {
+      console.log("load");
       $('svg').remove();
       drawHUD();
+      //drawAltimeter()
+
+      //updateHUDAltitude(10);
+      //updateHUDHeading(20);
+      //updateHUDPitch(30);
+      //updateHUDRoll(40);
+    });
+
+    $('#hud').on('resize', function (event) {
+      console.log("Resized");
+      $('svg').remove();
+      drawHUD();
+      //drawAltimeter()
+
       //updateHUDAltitude(10);
       //updateHUDHeading(20);
       //updateHUDPitch(30);
@@ -338,9 +389,8 @@ block main
         alert('SVG not supported with ths browser.');
       }
       else {
-        var bgOpacity = 0.5;
-        var rect = draw.rect('100%', '100%').attr({fill: '#000000'});
-        //draw.fixSubPixelOffset();
+        bgOpacity = 0.5;
+        var rect = draw.rect('100%', '100%').attr({fill: '#ffffff'});//background
         draw.attr('preserveAspectRatio', 'x320Y180 meet');
 
         /* -------------------------
@@ -360,14 +410,13 @@ block main
          ------------------------- */
         var altWidth = 50;
         var altHeight = hudHeight - 10;
-        var altWidth = 50;
         var altHeight = hudHeight - 10;
-        altPxPerMeter = altHeight / altPosMetersOnScreen;
+        altPxPerMeter = altHeight / altPosMetersOnScreen; 
         var altPxPerDecimeter = altPxPerMeter / 10.0;
         var altPxPerCentimeter = altPxPerMeter / 100.0;
         var altPxPerMillimeter = altPxPerMeter / 1000.0;
 
-        var altimeter = draw.group();
+        altimeter = draw.group();
         var altBorder = altimeter.group();
         /* Draw border. */
         var altRec1 = altBorder.rect(altWidth, altHeight).attr({
@@ -388,11 +437,11 @@ block main
           'fill-opacity': bgOpacity
         });
         /* Draw ticks group. */
-        var altTicksArea = altimeter.group();
+        altTicksArea = altimeter.group();
         altTicks = altTicksArea.group();
         //console.log('test');
         for (i = 0; i < (10 * (altPosMetersOnScreen + 1 + 30)); i++) {
-          y = (hudHeight / 2) - i * (altPxPerDecimeter);
+          y = (hudHeight / 2) - i * (altPxPerDecimeter); //y co ordinate of major tick
           /* Draw a longer line if its a meter interval. */
           if (i % 10 == 0) {
             altTicks.line(hudWidth - altWidth - 3, y, hudWidth - altWidth + 20, y).attr({
@@ -400,11 +449,11 @@ block main
               stroke: '#00ff00'
             });
 
-            var textAltTick = altTicks.text((i / 10.0).toString()).move(hudWidth - altWidth + 30, y - 5);
+            var textAltTick = altTicks.text((i / 10.0).toString()).move(hudWidth - altWidth + 22, y - 3);
             textAltTick.font({
               fill: '#00ff00',
               anchor: 'start',
-              size: 13
+              size: 11
             });
           }
           else {
@@ -424,11 +473,11 @@ block main
               stroke: '#00ff00'
             });
 
-            var textAltTick = altTicks.text((i / 10.0).toString()).move(hudWidth - altWidth + 30, y - 5);
+            var textAltTick = altTicks.text((i / 10.0).toString()).move(hudWidth - altWidth + 22, y - 3);
             textAltTick.font({
               fill: '#00ff00',
               anchor: 'start',
-              size: 13
+              size: 11
             });
           }
           else {
@@ -792,3 +841,23 @@ block main
     var altitudeDirection = 0.01;
 
      
+    function drawAltimeter(){
+      var pc = 0;
+      var nc = 0;
+      altTicks.node.childNodes.forEach(function(e){
+        if(e.nodeName == "text"){
+          var spn  = e.firstChild;
+          if(pc<=35){
+            spn.firstChild.nodeValue = String(currentAltimeterCenter+pc);
+            //console.log(spn.firstChild,currentAltimeterCenter+pc,nc,pc);
+            pc++;
+          }
+          else{
+            spn.firstChild.nodeValue = String(currentAltimeterCenter-nc);
+            //console.log(spn.firstChild,currentAltimeterCenter-nc,nc,pc);
+            nc++;
+            pc++;
+          }
+        }
+        });
+    }
