@@ -136,3 +136,6 @@
 [submodule "osal"]
 	path = osal
 	url = git@bitbucket.org:windhoverlabs/osal.git
+[submodule "tools/commanderjs"]
+	path = tools/commanderjs
+	url = git@bitbucket.org:windhoverlabs/commanderjs.git
