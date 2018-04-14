@@ -226,7 +226,7 @@ boolean MS5607_ReadPROM(uint8 Addr, uint16 *returnVal)
         goto end_of_function;
     }
 
-    *returnVal = (rxBuf[1] << 8) + rxBuf[2];
+    *returnVal = (rxBuf[0] << 8) + rxBuf[1];
     
 end_of_function:
     return (returnBool);
@@ -276,7 +276,7 @@ boolean MS5607_ReadADCResult(uint32 *returnVal)
     boolean returnBool = TRUE;
     uint8 reg          = MS5607_I2C_CMD_ADC_READ;
 
-    uint8  rxBuf[4] = {0, 0, 0, 0};
+    uint8  rxBuf[3] = {0, 0, 0};
 
     /* Null pointer check */
     if(0 == returnVal)
@@ -287,14 +287,14 @@ boolean MS5607_ReadADCResult(uint32 *returnVal)
         goto end_of_function;
     }
 
-    returnBool = MS5607_Custom_Receive(reg, &rxBuf[0], 4);
+    returnBool = MS5607_Custom_Receive(reg, &rxBuf[0], 3);
     if (FALSE == returnBool) 
     {            
         (void) CFE_EVS_SendEvent(MS5607_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "MS5607 receive failed in ReadADCResult");
         goto end_of_function;
     }
-    *returnVal = (rxBuf[1] << 16) + (rxBuf[2] << 8) + rxBuf[3];
+    *returnVal = (rxBuf[0] << 16) + (rxBuf[1] << 8) + rxBuf[2];
 
 end_of_function:
 
