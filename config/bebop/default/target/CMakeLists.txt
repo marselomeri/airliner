@@ -382,15 +382,15 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    hmc5883
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/hmc5883/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883
+    ak8963
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883/src/hmc5883_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883/src/hmc5883_i2c.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hmc5883_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hmc5883_perfids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963/src/ak8963_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963/src/ak8963_i2c.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ak8963_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ak8963_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ak8963_perfids.h
 )
 
 add_airliner_app(
