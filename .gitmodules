@@ -139,3 +139,6 @@
 [submodule "osal"]
 	path = osal
 	url = git@bitbucket.org:windhoverlabs/osal.git
+[submodule "apps/ak8963"]
+	path = apps/ak8963
+	url = git@bitbucket.org:windhoverlabs/ak8963.git
