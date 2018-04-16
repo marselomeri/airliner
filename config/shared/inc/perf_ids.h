@@ -68,6 +68,7 @@
 #define PE_SENSOR_LAND_PERF_ID      96
 #define PE_INVERSE_MAT_PERF_ID      97
 #define LGC_MAIN_TASK_PERF_ID       98
+#define PE_SENSOR_ULR_PERF_ID       99
 
 #endif
 
