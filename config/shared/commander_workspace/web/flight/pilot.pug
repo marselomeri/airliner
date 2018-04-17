@@ -55,7 +55,7 @@ block main
             p#AltitudeOffsetStatus(style="color:green;width:500px;text-align:end") [OK]
     
   .row.row-fluid
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:650px')
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:750px')
       #wid-VM-HK.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
@@ -86,7 +86,7 @@ block main
                       span(data-sage={tlm: [{name:'/CFS/VM/NavState'}]}) ---
                   
   .row.row-fluid
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:650px')
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:750px')
       #wid-VM-ArmingState.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
           span.widget-icon
@@ -116,7 +116,37 @@ block main
                     button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavRattitude'}}) Rattitude  
                     button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoTakeoff'}}) Auto Takeoff  
                     button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VM/SetNavAutoLand'}}) Auto Land
-              
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:750px')
+      #wid-VC-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Video Control
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Cmd Count
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VC/CmdCounter'}]}) ---
+                  tr
+                    th Error Count
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VC/ErrCounter'}]}) ---
+                  tr
+                    th State
+                    td
+                      span(data-sage={tlm: [{name:'/CFS/VC/State'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/Reset'}}) Reset
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StartStreaming'}}) Start Streaming
+              button.btn.btn-primary(data-sage={cmd: {name:'/CFS/VC/StopStreaming'}}) Stop Streaming            
 
 
   script.
@@ -315,6 +345,7 @@ block main
       //altTicks.y(newAltitude * altPxPerMeter);
 
     }
+    drawHUD();
 
     $('#hud').on('load', function (event) {
       console.log("load");
