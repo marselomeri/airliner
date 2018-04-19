@@ -82,7 +82,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//PN_T_NOISE_DENSITY
     .001f,
 	//T_MAX_GRADE
-    1.0f,
+    0.0f,
 	//FAKE_ORIGIN
     1,
 	//INIT_ORIGIN_LAT
@@ -92,7 +92,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
     //ULR_STDDEV
     .05f,
     //ULR_OFF_Z
-    0.0f
+    0.15f
 };
 
 /*
