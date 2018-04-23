@@ -92,7 +92,8 @@ PE_ConfigTbl_t PE_ConfigTbl =
     //ULR_STDDEV
     .05f,
     //ULR_OFF_Z
-    0.15f
+    0.0f
+
 };
 
 /*
