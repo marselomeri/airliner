@@ -159,7 +159,14 @@ LD_ConfigTbl_t LD_ConfigTbl =
 	     *  \par Limits:
 	     *  	default 0.15.
 	     */
-	    0.15
+	    0.15,
+
+        /** \brief Landing descend rate.
+         *
+         *  \par Limits:
+         *      default 0.5.
+         */
+        0.5
 };
 
 /*
