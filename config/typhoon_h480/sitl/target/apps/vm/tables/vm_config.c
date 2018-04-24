@@ -467,9 +467,9 @@ VM_ConfigTbl_t VM_ConfigTbl =
         /** \brief Padding for home position altitude message, to avoid hover above ground.
          *
          *  \par Limits:
-         *       default 1.
+         *       default 1.0.
          */
-        1
+        1.0
 
 
 };
