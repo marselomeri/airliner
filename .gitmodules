@@ -139,3 +139,6 @@
 [submodule "tools/commanderjs"]
 	path = tools/commanderjs
 	url = git@bitbucket.org:windhoverlabs/commanderjs.git
+[submodule "tools/jmavsim"]
+	path = tools/jmavsim
+	url = git@bitbucket.org:windhoverlabs/jmavsim.git
