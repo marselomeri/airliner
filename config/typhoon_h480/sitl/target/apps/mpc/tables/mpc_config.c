@@ -373,7 +373,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 1
 	 * @group Multicopter Position Control
 	 */
-	0.5f,
+	0.55f,
 
 	/**
 	 * MPC_TKO_SPEED
