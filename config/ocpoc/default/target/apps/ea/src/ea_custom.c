@@ -51,67 +51,56 @@ void EA_StartAppCustom()
 
 	if (Status == CFE_SUCCESS)
 	{
-		/* Create child process to execute app */
+		/*
+		** Create child process to execute app
+		*/
 		pid_t pid = fork();
-		
-        /* Child process has pid of 0 */
+		/*
+		** Child process
+		*/
 		if (pid == 0)
 		{
-            /* Get env variable for ea workspace and change to its dir */
-            const char* EA_WORKSPACE = getenv("EA_WORKSPACE");
-            if (EA_WORKSPACE != NULL)
-            {
-                Status = chdir(EA_WORKSPACE);
-                if (Status == 0)
-                {
-			        char *argv[] = {EA_AppData.ChildData.AppInterpreter, EA_AppData.ChildData.AppScript, NULL};
-			        if(execvp(EA_AppData.ChildData.AppInterpreter, argv) == -1)
-			        {
-				        CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-									        "Error starting external application");
-			        }
-                }
-                else
-                {
-                    CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-    									"Unable to change directory to EA workspace. Chdir errno: %i", Status);
-                }
-            }
-            else
-            {
-                CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-									"Environment variable for EA workspace is not set");
-            }
-
-            /* NOTE: This exit is required here as a means to shut down the child process. */  
+			char *argv[] = {EA_AppData.ChildData.AppInterpreter, EA_AppData.ChildData.AppScript, NULL};
+			if(execvp(EA_AppData.ChildData.AppInterpreter, argv) == -1)
+			{
+				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
+									"Error starting external application");
+			}
+            /*
+		    ** NOTE: This exit is required here as a means to shut down the child process.
+		    */  
 			exit(0); 
 		}
-		/* Failed Fork */
+		/*
+		** Failed Fork
+		*/
 		else if (pid == -1)
 		{
 			EA_AppData.HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
 								"Error starting new process");
 		}
-		/* Parent process */
+		/*
+		** Parent process
+		*/
 		else
 		{
 			EA_AppData.HkTlm.usCmdCnt++;
 			CFE_EVS_SendEvent(EA_INF_APP_START_EID, CFE_EVS_INFORMATION,
 								"External application started");
-			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, OS_MAX_PATH_LEN);
+			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, EA_MAX_PATH_LEN);
 			EA_AppData.HkTlm.ActiveAppPID = pid;
 			waitpid(pid, (int*)&EA_AppData.HkTlm.LastAppStatus, 0);
 			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus;
 			EA_AppData.HkTlm.ActiveAppPID = 0;
 			EA_AppData.HkTlm.ActiveAppUtil = 0;
-			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
-			memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
-			memset(EA_AppData.ChildData.AppInterpreter, '\0', OS_MAX_PATH_LEN);
-			memset(EA_AppData.ChildData.AppScript, '\0', OS_MAX_PATH_LEN);
+			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, EA_MAX_PATH_LEN);
+			memset(EA_AppData.HkTlm.ActiveApp, '\0', EA_MAX_PATH_LEN);
+			memset(EA_AppData.ChildData.AppInterpreter, '\0', EA_MAX_PATH_LEN);
+			memset(EA_AppData.ChildData.AppScript, '\0', EA_MAX_PATH_LEN);
 
 		}
-	}
+	}/*end if register child task*/
     else
     {
         /* Can't send event or write to syslog because this task isn't registered with the cFE. */
@@ -145,9 +134,9 @@ void EA_TermAppCustom()
 			EA_AppData.HkTlm.usCmdCnt++;
 			EA_AppData.HkTlm.ActiveAppPID = 0;
 			EA_AppData.HkTlm.ActiveAppUtil = 0;
-			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, OS_MAX_PATH_LEN);
+			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, EA_MAX_PATH_LEN);
 			EA_AppData.HkTlm.LastAppStatus = -1; // TODO: Add meaningful number to this
-			memset(EA_AppData.HkTlm.ActiveApp, '\0', OS_MAX_PATH_LEN);
+			memset(EA_AppData.HkTlm.ActiveApp, '\0', EA_MAX_PATH_LEN);
 			EA_AppData.ChildAppTaskInUse = FALSE;
 			CFE_EVS_SendEvent(EA_INF_APP_TERM_EID, CFE_EVS_INFORMATION,
 						"External application terminated");

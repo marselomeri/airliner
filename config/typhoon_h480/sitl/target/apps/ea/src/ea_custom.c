@@ -91,6 +91,7 @@ void EA_StartAppCustom()
 			strncpy(EA_AppData.HkTlm.ActiveApp, EA_AppData.ChildData.AppScript, EA_MAX_PATH_LEN);
 			EA_AppData.HkTlm.ActiveAppPID = pid;
 			waitpid(pid, (int*)&EA_AppData.HkTlm.LastAppStatus, 0);
+			EA_AppData.HkTlm.LastAppStatus = EA_AppData.HkTlm.LastAppStatus;
 			EA_AppData.HkTlm.ActiveAppPID = 0;
 			EA_AppData.HkTlm.ActiveAppUtil = 0;
 			strncpy(EA_AppData.HkTlm.LastAppRun, EA_AppData.HkTlm.ActiveApp, EA_MAX_PATH_LEN);

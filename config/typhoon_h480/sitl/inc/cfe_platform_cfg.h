@@ -1073,7 +1073,7 @@
 **       is limited by the maximum value allowed by the data type. In this case, the data
 **       type is an unsigned 32-bit integer, so the valid range is 0 to 0xFFFFFFFF.
 */
-#define CFE_ES_PERF_CHILD_STACK_SIZE              4096
+#define CFE_ES_PERF_CHILD_STACK_SIZE              16384
 
 /**
 **  \cfeescfg Define Performance Analyzer Child Task Delay
@@ -1111,7 +1111,7 @@
 **       There is a lower limit of 2048 and an upper limit of 16384 on this
 **       configuration paramater.
 */
-#define CFE_ES_DEFAULT_STACK_SIZE 8192
+#define CFE_ES_DEFAULT_STACK_SIZE 16384
 
 
 /**
@@ -1219,8 +1219,8 @@
 **       configuration paramaters.
 */
 #define CFE_TIME_START_TASK_STACK_SIZE            CFE_ES_DEFAULT_STACK_SIZE
-#define CFE_TIME_TONE_TASK_STACK_SIZE             4096
-#define CFE_TIME_1HZ_TASK_STACK_SIZE              8192
+#define CFE_TIME_TONE_TASK_STACK_SIZE             16384
+#define CFE_TIME_1HZ_TASK_STACK_SIZE              16384
 
 #define CFE_TIME_START_TASK_FLAGS			      OS_ENABLE_CORE_0
 #define CFE_TIME_TONE_TASK_FLAGS			      OS_ENABLE_CORE_0

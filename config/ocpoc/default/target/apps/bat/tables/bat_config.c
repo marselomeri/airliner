@@ -43,7 +43,7 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 BAT_ConfigTbl_t BAT_ConfigTbl =
 {
 	/* V_EMPTY       */  3.4f,
-    /* V_CHARGED     */  4.05f,
+        /* V_CHARGED     */  4.05f,
 	/* N_CELLS       */  6,
 	/* CAPACITY      */  12000.0f,
 	/* V_LOAD_DROP   */  0.3f,
