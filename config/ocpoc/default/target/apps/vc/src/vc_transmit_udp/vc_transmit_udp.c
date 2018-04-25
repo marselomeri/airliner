@@ -114,7 +114,7 @@ int32 VC_EnableChannel(uint8 ChannelID)
 
     if(ChannelID >= VC_MAX_OUTPUT_CHANNELS)
     {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                         "VC ChannelID (%u) invalid.", (unsigned int)ChannelID);
         returnCode = -1;
         goto end_of_function;
@@ -145,7 +145,7 @@ int32 VC_EnableChannel(uint8 ChannelID)
     
     if (inet_aton(VC_AppCustomData.Channel[ChannelID].MyIP, &servaddr.sin_addr) == 0)
     {
-        CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                         "VC inet_aton errno: %i on channel %u", errno, (unsigned int)i);
         returnCode = -1;
         goto end_of_function;
@@ -310,9 +310,10 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
                 {
                     (void) CFE_EVS_SendEvent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR,
                                 "L%d VC sendto errno %d.", __LINE__, errno);
-                    channel->Mode = VC_CHANNEL_DISABLED;
                 }
-                returnCode = -1;
+                
+                /* Delay the task to prevent the possibility of busy waiting and accidental denial of service. */
+                OS_TaskDelay(1000);
             }
             CFE_ES_PerfLogExit(VC_SOCKET_SEND_PERF_ID);
         }
