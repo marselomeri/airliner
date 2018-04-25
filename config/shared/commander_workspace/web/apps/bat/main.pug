@@ -46,7 +46,7 @@ block main
           header
             span.widget-icon
               i.fa.fa-table
-            h2 Battery Status (Output)
+            h2 Battery Status
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -93,7 +93,7 @@ block main
                     tr
                       th Connected
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Connected'}]}) ---
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Connected'}]}) ---
                     tr
                       th Warning
                       td

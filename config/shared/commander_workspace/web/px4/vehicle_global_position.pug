@@ -41,7 +41,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_Timestamp'}]}) ---
                     tr
                       th Time UTC Usec:
                       td
@@ -113,11 +113,11 @@ block main
                     tr
                       th Terrain Alt Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_TerrainAltValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_TerrainAltValid'}]})
                     tr
                       th Dead Reckoning:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_DeadReckoning'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VGP_DeadReckoning'}]})
 
     script.
         $(function () {

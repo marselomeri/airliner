@@ -39,57 +39,57 @@ block main
                   tr
                     th Is Set
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/ClockSet'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/ClockSet'}]})
                     td
                   tr
                     th Is Flying
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Flying'}]}) ---
+                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/CFE_TIME/Flying'}]})
                     td
                   tr
                     th Source Internal
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/SrcInt'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/SrcInt'}]})
                     td
                   tr
                     th Signal is Primary
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/SigPri'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/SigPri'}]})
                     td
                   tr
                     th Server is Flying
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/SrvFly'}]}) ---
+                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/CFE_TIME/SrvFly'}]})
                     td
                   tr
                     th Commanded Flying
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/CmdFly'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/CmdFly'}]})
                     td
                   tr
                     th Add Adjust
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/AddAdj'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/AddAdj'}]})
                     td
                   tr
                     th Add 1Hz
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Add1Hz'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Add1Hz'}]})
                     td
                   tr
                     th Add TCL
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/AddTcl'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/AddTcl'}]})
                     td
                   tr
                     th Is Server
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Server'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Server'}]})
                     td
                   tr
                     th Tone Good
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/GoodTone'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/GoodTone'}]})
                     td
                   tr
                     th State API
@@ -108,17 +108,6 @@ block main
                       span#CFE_TIME_MET_Seconds --- 
                     td
                       button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CFE_TIME/SetMET'}}) Set
-                  tr
-                    th MET
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/MET_Seconds'}]}) ---
-                    td
-                      button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CFE_TIME/SetMET'}}) Set
-                  tr
-                    th
-                    td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/MET_Subseconds'}]}) ---
-                    td
                   tr
                     th STCF
                     td 
@@ -265,11 +254,11 @@ block main
                   tr
                     th Forced to Fly
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Forced2Fly'}]}) ---
+                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Forced2Fly'}]}) ---
                   tr
                     th Clock Set
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_ClkSet'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_ClkSet'}]}) ---
             footer
               button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd:{name:'/CFS/CFE_TIME/DiagTlm'}}) Telemeter Diag
                       
@@ -289,43 +278,43 @@ block main
                   tr
                     th Clock Flying
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Flying'}]}) ---
+                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Flying'}]}) ---
                   tr
                     th Source Internal
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_SrcInt'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_SrcInt'}]}) ---
                   tr
                     th Signal Primary
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_SigPri'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_SigPri'}]}) ---
                   tr
                     th Server Flying
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_SrvFly'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_SrvFly'}]}) ---
                   tr
                     th Commanded Flying
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_CmdFly'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_CmdFly'}]}) ---
                   tr
                     th Add Adjust
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_AddAdj'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_AddAdj'}]}) ---
                   tr
                     th Add 1Hz Adjust
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Add1Hz'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Add1Hz'}]}) ---
                   tr
                     th Add TCL
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_AddTcl'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_AddTcl'}]}) ---
                   tr
                     th Is Server
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Server'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_Server'}]}) ---
                   tr
                     th Good Tone
                     td 
-                      span(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_GoodTone'}]}) ---
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/CFE_TIME/Diag_GoodTone'}]}) ---
                   tr
                     th One Time Direction
                     td 
