@@ -10,6 +10,19 @@ block header
 block main
     .row.row-fluid
       +msg_macro_specific_telemetry_control([{macro: 'PX4_VEHICLE_LOCAL_POSITION_MID'}])
+
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Local Altitude
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #AltitudeAGL(style='width:100%; height:300px;') 
       
     .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
@@ -189,3 +202,19 @@ block main
                       th Bottom Distance Valid:
                       td
                          span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_DistBottomValid'}]}) ---
+
+    script.
+        $(function () {
+            var dataplotDef = {
+                'data': [
+                    { 'tlm': {'name': '/CFS/PX4/VLP_DistBottom'},
+                      'label': 'Altitude AGL (m)',
+                      'color': '#ff00ff'
+                    }
+                ],
+                'options': {
+                }
+            };
+    
+            var dataplot = new SageTimeSeriesDataplot($('#AltitudeAGL'), dataplotDef);
+        });

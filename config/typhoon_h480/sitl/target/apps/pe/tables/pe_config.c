@@ -88,7 +88,13 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//INIT_ORIGIN_LAT
     29.562144f,
 	//INIT_ORIGIN_LON
-    -95.144554
+    -95.144554,
+    //ULR_FUSE
+    TRUE,
+    //ULR_STDDEV
+    .05f,
+    //ULR_OFF_Z
+    0.0f
 };
 
 /*

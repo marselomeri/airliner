@@ -51,38 +51,49 @@ void EA_StartAppCustom()
 
 	if (Status == CFE_SUCCESS)
 	{
-		/*
-		** Create child process to execute app
-		*/
+		/* Create child process to execute app */
 		pid_t pid = fork();
-		/*
-		** Child process
-		*/
+		
+        /* Child process has pid of 0 */
 		if (pid == 0)
 		{
-			char *argv[] = {EA_AppData.ChildData.AppInterpreter, EA_AppData.ChildData.AppScript, NULL};
-			if(execvp(EA_AppData.ChildData.AppInterpreter, argv) == -1)
-			{
-				CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
-									"Error starting external application");
-			}
-            /*
-		    ** NOTE: This exit is required here as a means to shut down the child process.
-		    */  
+            /* Get env variable for ea workspace and change to its dir */
+            const char* EA_WORKSPACE = getenv("EA_WORKSPACE");
+            if (EA_WORKSPACE != NULL)
+            {
+                Status = chdir(EA_WORKSPACE);
+                if (Status == 0)
+                {
+			        char *argv[] = {EA_AppData.ChildData.AppInterpreter, EA_AppData.ChildData.AppScript, NULL};
+			        if(execvp(EA_AppData.ChildData.AppInterpreter, argv) == -1)
+			        {
+				        CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
+									        "Error starting external application");
+			        }
+                }
+                else
+                {
+                    CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
+    									"Unable to change directory to EA workspace. Chdir errno: %i", Status);
+                }
+            }
+            else
+            {
+                CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
+									"Environment variable for EA workspace is not set");
+            }
+
+            /* NOTE: This exit is required here as a means to shut down the child process. */  
 			exit(0); 
 		}
-		/*
-		** Failed Fork
-		*/
+		/* Failed Fork */
 		else if (pid == -1)
 		{
 			EA_AppData.HkTlm.usCmdErrCnt++;
 			CFE_EVS_SendEvent(EA_CMD_ERR_EID, CFE_EVS_ERROR,
 								"Error starting new process");
 		}
-		/*
-		** Parent process
-		*/
+		/* Parent process */
 		else
 		{
 			EA_AppData.HkTlm.usCmdCnt++;
@@ -100,7 +111,7 @@ void EA_StartAppCustom()
 			memset(EA_AppData.ChildData.AppScript, '\0', OS_MAX_PATH_LEN);
 
 		}
-	}/*end if register child task*/
+	}
     else
     {
         /* Can't send event or write to syslog because this task isn't registered with the cFE. */
@@ -227,7 +238,7 @@ EA_ProcData_t EA_ParsePidUtil(int32 pid)
 	int stime_ln = 14;
 	int count_ndx = 0;
 	char *tok;
-	for (*tok = strtok(data," "); tok != NULL; tok = strtok(NULL, " "))
+	for (tok = strtok(data," "); tok != NULL; tok = strtok(NULL, " "))
 	{
 		if (count_ndx == utime_ln)
 		{

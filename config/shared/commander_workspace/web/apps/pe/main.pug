@@ -34,6 +34,23 @@ block main
                     th Timestamp
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/Timestamp'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/Reset'}}) Reset
+
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Estimator Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
                   tr
                     th Local Estimation Initialized
                     td
@@ -43,13 +60,39 @@ block main
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/EstimatorGlobalInitialized'}]}) ---
                   tr
-                    th Altitude Origin
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/PE/AltitudeOrigin'}]}) ---
-                  tr
                     th Altitude Origin Initialized
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/AltOriginInitialized'}]}) ---
+                  tr
+                    th Altitude Origin
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/AltitudeOrigin', format:'%0.3f m'}]}) ---
+                  tr
+                    th Horizontal Estimate Valid
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/XyEstValid'}]}) ---
+                  tr
+                    th Vertical Estimate Valid
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/ZestValid'}]}) ---
+                  tr
+                    th Terrain Estimate Valid
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/TzEstValid'}]}) ---
+
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Baro Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
                   tr
                     th Baro Initialized
                     td
@@ -70,6 +113,21 @@ block main
                     th Baro Altitude Origin
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/BaroAltOrigin'}]}) ---
+
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 GPS Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
                   tr
                     th Gps Initialized
                     td
@@ -90,6 +148,20 @@ block main
                     th Gps Altitude Origin
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/GpsAltOrigin'}]}) ---
+
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Land Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
                   tr
                     th Land Initialized
                     td
@@ -106,25 +178,47 @@ block main
                     th Time Last Land
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/TimeLastLand'}]}) ---
+
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Distance Sensor Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
                   tr
-                    th Horizontal Estimate Valid
+                    th Ulr Fused
                     td
-                      span(data-sage={tlm:[{name:'/CFS/PE/XyEstValid'}]}) ---
+                      span(data-sage={tlm:[{name:'/CFS/PE/UlrFused'}]}) ---
                   tr
-                    th Vertical Estimate Valid
+                    th Ulr Initialized
                     td
-                      span(data-sage={tlm:[{name:'/CFS/PE/ZestValid'}]}) ---
+                      span(data-sage={tlm:[{name:'/CFS/PE/UlrInitialized'}]}) ---
                   tr
-                    th Land Estimate Valid
+                    th Ulr Fault
                     td
-                      span(data-sage={tlm:[{name:'/CFS/PE/TzEstValid'}]}) ---
+                      span(data-sage={tlm:[{name:'/CFS/PE/UlrFault'}]}) ---
+                  tr
+                    th Ulr Timeout
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/UlrTimeout'}]}) ---
+                  tr
+                    th Time Last Ulr
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/TimeLastUlr'}]}) ---
+                  tr
+                    th Ulr Altitude Origin
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/UlrAltOrigin'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/Reset'}}) Reset
-
-                      
-              
-
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseUlr'}}) Fuse ULR
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableUlr'}}) Disable ULR
                                         
   .row
     +app_specific_telemetry_control("PE")
