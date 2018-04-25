@@ -38,6 +38,10 @@ block main
                 table.table.table-condensed
                   tbody
                     tr
+                      th Timestamp:
+                      td
+                        span.format-microseconds(data-sage={tlm: [{name: "/CFS/PX4/DS_Timestamp"}]}) ---
+                    tr
                       th Minimum:
                       td 
                         span(data-sage={tlm: [{name: "/CFS/PX4/DS_MinDistance"}]}) ---

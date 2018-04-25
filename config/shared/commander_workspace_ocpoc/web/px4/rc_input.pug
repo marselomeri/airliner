@@ -41,11 +41,11 @@ block main
                     tr
                       th Timestamp:
                       td 
-                        span(data-sage={'tlm': [{'name': "/CFS/PX4/IRC_Timestamp"}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': "/CFS/PX4/IRC_Timestamp"}]}) ---
                     tr
                       th Last Signal Time:
                       td 
-                        span(data-sage={'tlm': [{'name': "/CFS/PX4/IRC_LastSignalTime"}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': "/CFS/PX4/IRC_LastSignalTime"}]}) ---
                     tr
                       th Channel Count:
                       td 

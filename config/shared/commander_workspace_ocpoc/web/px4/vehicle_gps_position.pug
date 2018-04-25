@@ -28,11 +28,11 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_Timestamp'}]}) ---
                     tr
                       th Time UTC Usec:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_TimeUtcUsec'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_TimeUtcUsec'}]}) ---
                     tr
                       th Lat:
                       td
@@ -112,7 +112,7 @@ block main
                     tr
                       th Vel NED Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_VelNedValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_VelNedValid'}]})
                     tr
                       th Satellites Used:
                       td

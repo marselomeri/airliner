@@ -41,11 +41,11 @@ block main
                    tr
                       th Timestamp:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Timestamp'}]}) ---
+                         span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Timestamp'}]}) ---
                    tr
                       th Reference Timestamp:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_RefTimestamp'}]}) ---
+                         span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_RefTimestamp'}]}) ---
                    tr
                       th Reference Lat:
                       td
@@ -159,49 +159,47 @@ block main
                    tr
                       th XY Valid:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_XY_Valid'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_XY_Valid'}]})
                    tr
                       th Z Valid:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Z_Valid'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Z_Valid'}]})
                    tr
                       th VXY Valid:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_V_XY_Valid'}]}) ---
-
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_V_XY_Valid'}]})
                    tr
                       th VZ Valid:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_V_Z_Valid'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_V_Z_Valid'}]})
                    tr
                       th XY Reset Counter:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_XY_ResetCounter'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_XY_ResetCounter'}]})
                    tr
                       th Z Reset Counter:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Z_ResetCounter'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Z_ResetCounter'}]})
                    tr
                       th VXY Reset Counter:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_VXY_ResetCounter'}]}) ---    
-    
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_VXY_ResetCounter'}]})  
                    tr
                       th VZ Reset Counter:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_VZ_ResetCounter'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_VZ_ResetCounter'}]})
                    tr
                       th XY Global:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_XY_Global'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_XY_Global'}]})
                    tr
                       th Z Global:
                       td                         
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Z_Global'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_Z_Global'}]})
                    tr
                       th Bottom Distance Valid:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_DistBottomValid'}]}) ---
+                         div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLP_DistBottomValid'}]})
 
     script.
         $(function () {

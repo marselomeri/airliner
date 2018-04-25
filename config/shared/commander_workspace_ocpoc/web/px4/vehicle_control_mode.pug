@@ -29,72 +29,72 @@ block main
                     tr
                       th Timestamp
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_Timestamp'}]}) ---
                     tr
                       th Armed
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_Armed'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_Armed'}]})
                     tr
                       th External Manual Override OK
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_ExtManOvrrdOk'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_ExtManOvrrdOk'}]})
                     tr
                       th System HIL Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_SysHilEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_SysHilEna'}]})
                     tr
                       th Manual Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlManEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlManEna'}]})
                     tr
                       th Auto Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAutoEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAutoEna'}]})
                     tr
                       th Offboard Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlOffbrdEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlOffbrdEna'}]})
                     tr
                       th Rates Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlRatesEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlRatesEna'}]})
                     tr
                       th Attitude Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAttEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAttEna'}]})
                     tr
                       th Rattitude Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlRattEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlRattEna'}]})
                     tr
                       th Force Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlForceEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlForceEna'}]})
                     tr
                       th Acceleration Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAccEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAccEna'}]})
                     tr
                       th Velocity Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlVelEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlVelEna'}]})
                     tr
                       th Position Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlPosEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlPosEna'}]})
                     tr
                       th Altitude Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAltEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlAltEna'}]})
                     tr
                       th Climb Rate Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlClimbRateEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlClimbRateEna'}]})
                     tr
                       th Termination Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlTermEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlTermEna'}]})
                     tr
                       th Fixed Heading Control Enabled
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlFixedHdgEna'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VCM_CtrlFixedHdgEna'}]})

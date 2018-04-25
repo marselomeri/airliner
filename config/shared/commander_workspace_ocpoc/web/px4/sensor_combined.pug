@@ -27,7 +27,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SC_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/SC_Timestamp'}]}) ---
                     tr
                       th Gyro X:
                       td
@@ -51,7 +51,7 @@ block main
                     tr
                       th Accel Invalid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SC_AccRelTimeInvalid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/SC_AccRelTimeInvalid'}]})
                     tr
                       th Accel X:
                       td
@@ -75,7 +75,7 @@ block main
                     tr
                       th Mag Invalid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SC_MagRelTimeInvalid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/SC_MagRelTimeInvalid'}]})
                     tr
                       th Mag X:
                       td
@@ -95,7 +95,7 @@ block main
                     tr
                       th Baro Invalid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/SC_BaroRelTimeInvalid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/SC_BaroRelTimeInvalid'}]})
                     tr
                       th Baro Altitude:
                       td
