@@ -57,47 +57,47 @@ block main
                     tr
                       th Timestamp
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={tlm: [{name:'/CFS/BAT/Timestamp'}]}) ---
                     tr
                       th Voltage
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Voltage'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Voltage'}]}) ---
                     tr
                       th Voltage (filtered)
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_VoltageFiltered'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/VoltageFiltered'}]}) ---
                     tr
                       th Current
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Current'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Current'}]}) ---
                     tr
                       th Current (filtered)
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_CurrentFiltered'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/CurrentFiltered'}]}) ---
                     tr
                       th Discharged
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Discharged'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Discharged'}]}) ---
                     tr
                       th Remaining
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Remaining', format:'%.0f%%', calibration:{type:'function', function:'FloatToPercent(value)'}}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Remaining', format:'%.0f%%', calibration:{type:'function', function:'FloatToPercent(value)'}}]}) ---
                     tr
                       th Scale
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Scale'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Scale'}]}) ---
                     tr
                       th Cell Count
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_CellCount'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/CellCount'}]}) ---
                     tr
                       th Connected
                       td
-                        div.bool-led(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Connected'}]}) ---
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/BAT/Connected'}]})
                     tr
                       th Warning
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Warning'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Warning'}]}) ---
                                         
   .row
     +app_specific_telemetry_control("BAT")
