@@ -14,35 +14,6 @@ block main
         header
           span.widget-icon
             i.fa.fa-table
-          h2 Housekeeping
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Cmd Count
-                    td
-                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/PE/CmdCounter'}]}) ---
-                  tr
-                    th Error Count
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/PE/ErrCounter'}]}) ---
-                  tr
-                    th Timestamp
-                    td
-                      span.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/Timestamp'}]}) ---
-            footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/NoOp'}}) No-Op
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/Reset'}}) Reset
-
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
           h2 Estimator Status
         div
           .jarviswidget-editbox
@@ -79,43 +50,7 @@ block main
                     th Terrain Estimate Valid
                     td
                       div.bool-led(data-sage={tlm:[{name:'/CFS/PE/TzEstValid'}]})
-                  
 
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Baro Status
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Baro Initialized
-                    td
-                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/BaroInitialized'}]})
-                  tr
-                    th Baro Fault
-                    td
-                      div.bool-led.bool-led-error(data-sage={tlm:[{name:'/CFS/PE/BaroFault'}]})
-                  tr
-                    th Baro Timeout
-                    td
-                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/PE/BaroTimeout'}]})
-                  tr
-                    th Time Last Baro
-                    td
-                      span.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastBaro'}]}) ---
-                  tr
-                    th Baro Altitude Origin
-                    td
-                      span(data-sage={tlm:[{name:'/CFS/PE/BaroAltOrigin'}]}) ---
-
-  .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -130,55 +65,33 @@ block main
               table.table.table-condensed
                 tbody
                   tr
-                    th Gps Initialized
+                    th Fused
+                    td
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/GpsFused'}]})
+                  tr
+                    th Initialized
                     td
                       div.bool-led(data-sage={tlm:[{name:'/CFS/PE/GpsInitialized'}]})
                   tr
-                    th Gps Fault
+                    th Fault
                     td
                       div.bool-led.bool-led-error(data-sage={tlm:[{name:'/CFS/PE/GpsFault'}]})
                   tr
-                    th Gps Timeout
+                    th Timeout
                     td
                       div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/PE/GpsTimeout'}]})
                   tr
-                    th Time Last Gps
+                    th Last Timestamp
                     td
                       span.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastGps'}]}) ---
                   tr
-                    th Gps Altitude Origin
+                    th Altitude Origin
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/GpsAltOrigin'}]}) ---
-
-    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
-      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-        header
-          span.widget-icon
-            i.fa.fa-table
-          h2 Land Status
-        div
-          .jarviswidget-editbox
-            input.form-control(type='text')
-          .widget-body
-            .table-responsive
-              table.table.table-condensed
-                tbody
-                  tr
-                    th Land Initialized
-                    td
-                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/LandInitialized'}]})
-                  tr
-                    th Land Fault
-                    td
-                      div.bool-led.bool-led-error(data-sage={tlm:[{name:'/CFS/PE/LandFault'}]})
-                  tr
-                    th Land Timeout
-                    td
-                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/PE/LandTimeout'}]})
-                  tr
-                    th Time Last Land
-                    td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastLand'}]}) ---
-
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseGps'}}) Enable GPS
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableGps'}}) Disable GPS
+                
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -193,30 +106,137 @@ block main
               table.table.table-condensed
                 tbody
                   tr
-                    th Ulr Fused
+                    th Fused
                     td
                       div.bool-led(data-sage={tlm:[{name:'/CFS/PE/UlrFused'}]})
                   tr
-                    th Ulr Initialized
+                    th Initialized
                     td
                       div.bool-led(data-sage={tlm:[{name:'/CFS/PE/UlrInitialized'}]})
                   tr
-                    th Ulr Fault
+                    th Fault
                     td
                       div.bool-led.bool-led-error(data-sage={tlm:[{name:'/CFS/PE/UlrFault'}]})
                   tr
-                    th Ulr Timeout
+                    th Timeout
                     td
                       div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/PE/UlrTimeout'}]})
                   tr
-                    th Time Last Ulr
+                    th Last Timestamp
                     td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastUlr'}]}) ---
                   tr
-                    th Ulr Altitude Origin
+                    th Altitude Origin
                     td(data-sage={tlm:[{name:'/CFS/PE/UlrAltOrigin'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseUlr'}}) Fuse ULR
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseUlr'}}) Enable ULR
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableUlr'}}) Disable ULR
+
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Baro Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Fused
+                    td
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/BaroFused'}]})
+                  tr
+                    th Initialized
+                    td
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/BaroInitialized'}]})
+                  tr
+                    th Fault
+                    td
+                      div.bool-led.bool-led-error(data-sage={tlm:[{name:'/CFS/PE/BaroFault'}]})
+                  tr
+                    th Timeout
+                    td
+                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/PE/BaroTimeout'}]})
+                  tr
+                    th Last Timestamp
+                    td
+                      span.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastBaro'}]}) ---
+                  tr
+                    th Altitude Origin
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/BaroAltOrigin'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseBaro'}}) Enable Baro
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableBaro'}}) Disable Baro
+
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Land Detector Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Fused
+                    td
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/LandFused'}]})
+                  tr
+                    th Initialized
+                    td
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/LandInitialized'}]})
+                  tr
+                    th Fault
+                    td
+                      div.bool-led.bool-led-error(data-sage={tlm:[{name:'/CFS/PE/LandFault'}]})
+                  tr
+                    th Timeout
+                    td
+                      div.bool-led.bool-led-warn(data-sage={tlm:[{name:'/CFS/PE/LandTimeout'}]})
+                  tr
+                    th Last Timestamp
+                    td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastLand'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseLand'}}) Enable Land
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableLand'}}) Disable Land
+
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Housekeeping
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Cmd Count
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/PE/CmdCounter'}]}) ---
+                  tr
+                    th Error Count
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/PE/ErrCounter'}]}) ---
+                  tr
+                    th Timestamp
+                    td
+                      span.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/Timestamp'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/Reset'}}) Reset
                                         
   .row
     +app_specific_telemetry_control("PE")
