@@ -193,7 +193,7 @@ extern "C" {
 **  \par Limits:
 **       OS_MAX_LOCAL_PATH_LEN
 */
-#define VC_DEVICE_PATH                  "/dev/video0"
+#define VC_DEVICE_PATH                  "/dev/wide_cam"
 
 
 /* Ground system settings */
