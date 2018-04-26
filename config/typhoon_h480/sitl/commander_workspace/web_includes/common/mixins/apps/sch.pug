@@ -83,7 +83,6 @@ mixin app_specific_scheduler_control(appID)
                     - var strSlotID = '' + appSchEntryObj[idx].slot;
                     - var strActID =  '' + appSchEntryObj[idx].activity;
                     - var strEntryID = '' + entryID;
-                    - console.log('' + entryID);
                     - var tlmEntryState = {tlm:[{name:'/CFS/SCH/EntryState_'+strEntryID}]};
                     - var tlmMsgID = {tlm:[{name:'/CFS/SCH/MsgID_'+entryID}]};
                     - var cmdEnableEntry = {cmd: {name:'/CFS/SCH/EnableEntry', argument:[{name:'Slot', value:strSlotID},{name:'Entry', value:strActID}]}};
