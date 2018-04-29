@@ -43,7 +43,7 @@
 ** Local Defines
 *************************************************************************/
 /** \brief I2C device path. */
-#define AK8963_I2C_DEVICE_PATH               "/dev/i2c-ak8963"
+#define AK8963_I2C_DEVICE_PATH               "/dev/i2c-akm8963"
 
 /** \brief I2C slave address. */
 #define AK8963_I2C_SLAVE_ADDRESS             (0x0D)
