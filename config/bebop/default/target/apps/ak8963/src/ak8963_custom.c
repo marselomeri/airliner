@@ -521,7 +521,9 @@ boolean AK8963_PowerOn(void)
 boolean AK8963_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
-    float temp;
+    float tempX = 0.0f;
+    float tempY = 0.0f;
+    float tempZ = 0.0f;
 
     /* Null pointer check */
     if(0 == X || 0 == Y || 0 == Z)
@@ -531,11 +533,14 @@ boolean AK8963_Apply_Platform_Rotation(float *X, float *Y, float *Z)
         returnBool = FALSE;
         goto end_of_function;
     }
-    /* ROTATION_ROLL_180_YAW_90 */
-    //temp = *X; 
-    //*X = *Y; 
-    //*Y = temp; 
-    //*Z = -*Z;
+    /* ROTATION_PITCH_9_YAW_180 */
+    tempX = *X;
+    tempY = *Y;
+    tempZ = *Z;
+
+    *X = -0.987688f * tempX +  0.000000f * tempY + -0.156434f * tempZ;
+    *Y =  0.000000f * tempX + -1.000000f * tempY +  0.000000f * tempZ;
+    *Z = -0.156434f * tempX +  0.000000f * tempY +  0.987688f * tempZ;
 
 end_of_function:
 
@@ -595,8 +600,8 @@ void AK8963_Get_Rotation(uint8 *Rotation)
         goto end_of_function;
     }
 
-    //*Rotation = ROTATION_ROLL_180_YAW_90;
+    *Rotation = ROTATION_PITCH_9_YAW_180;
 
 end_of_function:
-;
+    return;
 }
