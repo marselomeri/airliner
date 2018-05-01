@@ -3,7 +3,7 @@ import os
    
 up_ip = "http://18.188.47.171:8080"
 
-json_input = "prmlib.json"
+json_input = "cfslib.json"
 discs = {}
 acc = []
 rej = []
@@ -47,7 +47,7 @@ for res1, res2 in discs.iteritems():
                     elif lab["name"] == "code style" or lab["name"] == "nit":
                         style.append(disc)
                     elif lab["name"] == "bug":
-                        big.append(disc)
+                        bugs.append(disc)
 
 with open(os.path.join(os.getcwd(), "accepted_comments.txt"), 'w+') as f:
     f.write(get_print(acc))

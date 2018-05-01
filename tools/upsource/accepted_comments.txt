@@ -1,94 +1,26 @@
-Total issues: 23
+Total issues: 6
 
 Discussion comment: 1
-Global: Remove commented out code.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=2a4f462f-ae75-40a7-9ada-fa394e8f93fa&filePath=/fsw/src/prm_lib.c
+Is this our code, shouldn't we initialize the variables.
+http://18.188.47.171:8080/cfslib/review/CFSLIB-CR-1?commentId=880c66d6-ca21-4b07-bb31-7d2741dd9a5e&filePath=/fsw/src/cfs_utils.c
 
 Discussion comment: 2
-Global Comment. Doxygen.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=c749c56b-d65f-416e-95ef-fad42d7a744b&filePath=/fsw/public_inc/prm_lib.h
+shouldn't else be enclosed in {}
+http://18.188.47.171:8080/cfslib/review/CFSLIB-CR-1?commentId=98b78dcb-0b3a-48c6-9ffd-722ed60b30be&filePath=/fsw/src/cfs_utils.c
 
 Discussion comment: 3
-Global Comment: const for pointers that are input.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=ee948094-64c0-4947-a9d1-0be395fb15d8&filePath=/fsw/public_inc/prm_lib.h
+Add doxy for this function
+http://18.188.47.171:8080/cfslib/review/CFSLIB-CR-1?commentId=20eef96c-5efd-4a0d-97e0-15e990a2eb9d&filePath=/fsw/public_inc/cfs_utils.h
 
 Discussion comment: 4
-Remove. Seems to be for debug.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=437fa583-5fae-4248-a866-0245a9628f7a&filePath=/fsw/public_inc/prm_lib.h
+Initialize this value
+http://18.188.47.171:8080/cfslib/review/CFSLIB-CR-1?commentId=fa616b78-7ce1-43f8-a8d1-aa02e3e4ef22&filePath=/fsw/src/cfs_utils.c
 
 Discussion comment: 5
-Prepend PRMLIB_TYPE_INT8 etc
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=83c93555-5c55-4117-ab67-f671af2bc2dd&filePath=/fsw/public_inc/prm_lib.h
+No unit tests.
+http://18.188.47.171:8080/cfslib/review/CFSLIB-CR-1?commentId=9bfc6269-a889-423b-903f-b23f26ade80c&filePath=/fsw/for_build/CMakeLists.txt
 
 Discussion comment: 6
-global comment doxygen
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=24f37f48-eb10-4dca-b9c6-5424f7096a51&filePath=/fsw/public_inc/prm_lib.h
-
-Discussion comment: 7
-add cpp extern c
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=1c0d4139-cea0-4e62-978d-f6c518bf6752&filePath=/fsw/public_inc/prm_lib.h
-
-Discussion comment: 8
-Add multiple includes if not defined define and extern c for cpp include.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=c334e9a0-792f-4846-a498-ff0f009abe68&filePath=/fsw/public_inc/prm_ids.h
-
-Discussion comment: 9
-goto not needed.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=0758b5df-475a-4dbc-84d5-a1642d3f5c2a&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 10
-Global comment. Null pointer checks.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=01b78e7c-024f-472f-8d13-2adf7e8e5aa8&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 11
-Remove. Seems to be debug.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=12603498-4c4e-4b38-802a-c68cc8e2e0ac&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 12
-Function comments.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=829198eb-2c17-4d53-b5bf-be07177fc5f5&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 13
-braces around case statements.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=b6499a6b-5065-4d23-a46b-d2e1278c8161&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 14
-0.0f
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=937d52c1-b30e-4424-b41d-5e1b1e559cb2&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 15
-const for val.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=133194f5-d4a4-416c-b04b-8325e1ab18e4&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 16
-const for srcVal.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=85e81e09-aa0c-4466-ba91-bd2625879192&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 17
-Braces around cases.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=7a2036f2-cb6a-472c-b1b4-66ac81d701ee&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 18
-0.0f
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=f0d693d7-dbb1-4b10-9a90-a4011e209a4f&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 19
-braces around case style.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=1941c058-7167-49d5-8942-2ae2d2f3e87b&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 20
-0.0f
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=7361ee7e-dcf8-4f91-a9c1-de16179b5632&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 21
-TODO
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=5e2b165f-6514-44de-8fa0-837bd0f92c9e&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 22
-Global comment. return (Status);
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=d052aaa9-1aba-4103-a7fc-f098cd27a6db&filePath=/fsw/src/prm_lib.c
-
-Discussion comment: 23
-TODO
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=9c4b4ee8-93be-4754-bad9-e8d37822c706&filePath=/fsw/src/prm_lib.c
+See if we can use this function to replace the PX4_GetTime function.
+http://18.188.47.171:8080/cfslib/review/CFSLIB-CR-1?commentId=3935e7d4-01d7-4bc4-b54c-0d2b23c08516&filePath=/fsw/src/cfs_utils.c
 

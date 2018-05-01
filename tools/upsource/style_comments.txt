@@ -1,10 +1,2 @@
-Total issues: 2
-
-Discussion comment: 1
-nit space around assignment operator.
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=1da41724-a04a-4ec9-8936-6d03cd03af36&filePath=/fsw/public_inc/prm_lib.h
-
-Discussion comment: 2
-global nit: uint32
-http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=3e729f2a-a57e-4bac-86d2-afb9f8953773&filePath=/fsw/src/prm_lib.c
+Total issues: 0
 
