@@ -1,0 +1,418 @@
+Discussion comment: 1
+Update to new event with pb error
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=299c96cc-4d45-4f0a-9e38-849d7d559770&filePath=/fsw/src/ci_serialization.c
+
+Discussion comment: 2
+Update to new event with pb error
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=9e380c5d-d784-4f63-82e5-4cb841be7c03&filePath=/fsw/src/ci_serialization.c
+
+Discussion comment: 3
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=fea8bb65-c92a-4208-9354-00b570dd4b7a&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 4
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=881be7a4-8d70-4f14-9d6b-e5b62f2959eb&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 5
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=90f0c843-d3d1-4497-85ed-d8ecf0fc6883&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 6
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=689a6a98-c2c3-4d67-918f-274eeca60810&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 7
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=02627ee4-fdf8-4c4a-ba4b-405454dbdf74&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 8
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=0c9df9e0-54f7-4a67-b7c7-25e049bf8d53&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 9
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7c42b5a1-1f45-4479-9564-69dbcb17668f&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 10
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=bf77c857-13dc-4539-95c2-412e93f6acf6&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 11
+Should this pointer argument be const? Is the function modifying the message?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=ae67b5bf-9786-45fa-a511-f99de7d71232&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 12
+()
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=762f5f54-1947-40d5-b349-cc3d828beeb2&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 13
+("CI_LISTENER")
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=fb8147e3-8e33-4db9-91a3-40f85b380e05&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 14
+(16000)
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7e818028-c925-4db5-88fc-33bb3ed37cf5&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 15
+(100)
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=37d86398-1476-428b-bddc-addb1833be17&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 16
+(16000)
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=0b08a82f-9793-415c-816d-acaf3b1d965c&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 17
+Initialize
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=db37c7e0-7e11-42a1-a30a-fa12b00ec1a4&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 18
+Initialize
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=e0fc0971-b49e-44ed-bee9-ce95e5e7121f&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 19
+Initialize
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=483fcc07-2ccf-4566-b5c5-347be527393a&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 20
+Set to NULL
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=50f0f6f5-78fa-4b7d-89c8-4b31fac50b29&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 21
+More missing cast to (void*)
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=904687ce-bb25-45a7-918e-29d3a2129ba1&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 22
+missing cast to (void*)
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7c37cf8d-847e-427b-a16d-fe949c414c5f&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 23
+Set to NULL or set both pointers to 0.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=3d02871f-4321-4c09-9ce5-e87a18bf5dff&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 24
+Consider adding a 4th revision number for the custom layer.  Maybe CI_PLATFORM_REVISION.  If you have mission level configuration header files, consider a CI_MISSION_REVISION to reflect the mission configuration.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=f6175090-daf7-44e8-be13-1f870fd1718c&filePath=/fsw/src/ci_version.h
+
+Discussion comment: 25
+Again, probably goto to keep to the pattern.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=3885daa8-4732-4001-aa26-71f0d4bb2149&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 26
+Consider a goto here for the single return path pattern so far.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=b1108801-41a6-408e-9759-b3f645de2190&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 27
+User doxy is a subset of detail doxy, right? 
+In that case this line would specify file/s that will be included as a part of this doxy (not all files)
+refer to line 94
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=0523823e-a3e5-4d20-bf81-501dea55a678&filePath=/fsw/for_build/user_doxy.in
+
+Discussion comment: 28
+Is this correct?  Should the max entries be set to 1?  Even if so, should this be moved to a platform config header file?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=8364a7f6-8f2f-4316-8aad-e4c8da7ea856&filePath=/fsw/src/ci_tbldefs.h
+
+Discussion comment: 29
+int is an intrinsic type.  Change this to int32.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=3e216384-3b7b-4fb6-824d-6c3274cbeb85&filePath=/fsw/src/ci_tbldefs.h
+
+Discussion comment: 30
+Consider namespacing all these enumerations with "CI_"
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=ac8c21b2-9429-4f93-b45a-bd4e0fbccc35&filePath=/fsw/src/ci_private_types.h
+
+Discussion comment: 31
+Include the citlmnemonic custom Doxygen tag here for all the HK parameters and update the cfs_ci_tlm_mnem_map file.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=f1f0ef32-960b-4d26-b306-716e47852cc5&filePath=/fsw/src/ci_msg.h
+
+Discussion comment: 32
+Consider changing command code definitions from macros to enumerations.  This will prevent duplicates and allow us to enforce type safety.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=a6024310-859f-4ba8-a8b7-0dde3bfcb953&filePath=/fsw/src/ci_msg.h
+
+Discussion comment: 33
+What is a 2-step command?  That should be defined somewhere in documentation.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=3c4e5005-2569-4fbb-bf89-eab3fb251fc5&filePath=/fsw/src/ci_msg.h
+
+Discussion comment: 34
+Check out the cfs_ci_cmd_mnem_map file.  I think thats what this custom tag refers to.  Make sure these are all set correctly and that the cfs_ci_cmd_mnem_map file includes all of them.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=f1e4bcde-46f8-4f45-878d-01f75aec59aa&filePath=/fsw/src/ci_msg.h
+
+Discussion comment: 35
+Consider changing this to CI_EVT_MAX.  This macro will be misleading if/when you change the code to explicitly set the enum values AND delete an enumeration at a later time.  If you had 15 explicitly defined enumerations, and then delete one of them, the values won't change, but the actual count will be 1 less.  "CI_EVT_CNT" suggests "count", which would suggest it would really be 14 in this case, which may result in undesirable behavior.  Instead, change this to "CI_EVT_MAX" to reflect the maximum value.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=a49a0ef5-ed1d-4d86-9f8e-23fbf8bbf6fb&filePath=/fsw/src/ci_events.h
+
+Discussion comment: 36
+Autogenerated boiler plate.  Update all these comments.  Use TO as an example.  In particular, notice that the 'brief' and 'event' basically contain the event string?  If you reuse event IDs in your code, but use different spec strings, this documentation paradigm doesn't work.  To make this work, don't reuse event strings.  TO had several events reused with different event strings, but to make the documentation work, TO was updated so the data was generalized and could be representing in multiple places with the same spec string.  Any differences in the actual string were captured as different input to the spec string.  Then, the 'brief' and 'event' need only contain the spec string, with a more detailed explanation of the string contents in the text sections.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=681695b5-6025-454f-b06b-e05de8bf31d2&filePath=/fsw/src/ci_events.h
+
+Discussion comment: 37
+Add Doxygen documentation here.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=8ea58b93-ff2d-4283-9455-dbd35e56134b&filePath=/fsw/src/ci_custom.h
+
+Discussion comment: 38
+Consider running memset(&CIAppData, 0, sizeof(CIAppData)) somewhere to ensure the structure is clear at startup.  There is an issue with linux that can result in your struct containing old data when your application gets reloaded.  Clearing it gets around that issue.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=4ba25d14-0cf1-45ec-8167-c5ebc4817e71&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 39
+Consider namespacing the enums with a "CI_" prefix.  We have more options in C++, but the prefix is a good way to prevent accidental collision in C.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=9e80a3c6-cbc8-4993-9ad4-e8109298aee0&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 40
+Do you have a CDS table?  If not, delete everything associated with CDS tables.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=d4c21c1b-f173-429c-94a5-39aab1f840dd&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 41
+Autogenerated boiler plate. Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=9a6dcd52-dd45-4543-bea1-6f0dba446915&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 42
+Autogenerated boiler plate. Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5b7037fc-9459-46e3-a66d-b7d24205da03&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 43
+Is this function even needed?  Do you have an "OutData" message?  Its probably just autogenerated boiler plate.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=62af6c44-7957-47df-8f5a-661cce60e508&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 44
+Autogenerated boiler plate. Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=416d975f-0898-4aff-acf7-6f81bbf2e0c7&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 45
+Autogenerated boiler plate. Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=8848715c-265d-4fcb-be1a-bab856453dac&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 46
+Are the commands still being validated and resulting in ErrCnt++ when the parameters are invalid?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=e5c52c8c-680b-459d-9f52-02ab94f889ac&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 47
+Autogenerated boiler plate.  Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5839f056-c39a-4771-a156-997c627d3fb4&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 48
+Is this function even needed?  Do you have incoming "DATA".  This is probably just autogenerated boiler plate.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=40769049-bf12-4c21-9b04-c466d82e7965&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 49
+Autogenerated boiler plate.  Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7ee7c7c0-2bff-41d4-b479-e24fc096f7b8&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 50
+Autogenerated boiler plate.  Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=053c7b93-84b3-4200-9d9c-73c72107664e&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 51
+Autogenerated boiler plate.  Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=b7f3409a-dc99-4513-9162-bb70dc3a1bc1&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 52
+Autogenerated boiler plate.  Tailor this for your application and remove the TODO comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=471671cf-701e-4e3c-8543-54d97c9eb051&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 53
+Autogenerated boiler plate.  Remove the comment.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5a0735a4-98b6-48a7-a092-ec862bdb1521&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 54
+Similar to a previous comment, make sure this guard condition gets evaluated fast enough that a command to CFE ES to unload the application results in a graceful termination before CFE ES flags the termination as failed.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=c53969cf-9019-4cf8-91b1-fd261fc26286&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 55
+I think you can still use syslog.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=1db9cf27-bf3d-49c5-8796-3b7bea117c4a&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 56
+Consider making this 100 a platform configurable parameter.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=8ac43cca-a3c7-4c51-9cfd-3962876cb88c&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 57
+Initialize this pointer.  Get in the habit of just always initializing all variables.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=d0318c83-633c-49d9-aed6-76db0777995c&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 58
+Are you sure about that comment?  I think you can still log to syslog.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=f4591dca-56e5-43cc-a8a0-13211bac56e9&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 59
+Did you test unloading this application in an integrated environment?  Make sure this guard condition is evaluated fast enough that a CFE ES command to stop the application causes this to drop out fast enough that CFE ES doesn't flag it as a failed termination.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=d6c773ad-b5fb-4d1c-997f-2334b21a5969&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 60
+Consider making that 100 a platform configurable parameter.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=acb485ad-d05b-49e9-b75b-dc954d02ab77&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 61
+What are these magic numbers and magic string?  What is this "EA_StartCmd_t" you speak of?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=4ef1f0c4-a6fe-4acf-95a4-65de54609b27&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 62
+Having complete event strings would be helpful in tracing the purpose of an event from console output. Applies to lines 136,149 and 162
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=f126ffb9-f4b3-4f72-97a0-8d42a438d9c0&filePath=/fsw/src/ci_events.h
+
+Discussion comment: 63
+Make sure payloadSize can't be an illegal or out of bounds value.  Check it against the size of decodeBuf so you can't get a buffer overrun.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=27af26b7-7e0a-4cf3-8c39-49b3cb8529b2&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 64
+Address todo. We aren't using CDS. Should be even have this?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=02da7031-4dfd-45eb-869b-9082bed2acbc&filePath=/fsw/src/ci_tbldefs.h
+
+Discussion comment: 65
+Add doxy  to table attributes
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=3358a372-8847-4eee-b7bc-4e7d98314e0c&filePath=/fsw/src/ci_tbldefs.h
+
+Discussion comment: 66
+Add doxy to all of these structs
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=1471983c-3acd-417a-b3f2-b786693a946b&filePath=/fsw/src/ci_private_types.h
+
+Discussion comment: 67
+Is this file required?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=bf8ae01b-8c64-4fdc-8e8c-ac974b435275&filePath=/fsw/src/ci_private_ids.h
+
+Discussion comment: 68
+Add doxy to struct attributes for this and the other structs
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5092785a-8acd-4a6f-a42c-6627b9d6bd44&filePath=/fsw/src/ci_msg.h
+
+Discussion comment: 69
+Is this struct used?
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=9d664599-311e-4f20-ba1c-1c92f2682b24&filePath=/fsw/src/ci_msg.h
+
+Discussion comment: 70
+Could you assign corresponding numeric values to every enumeration.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=e8e35dbe-ec1a-47ae-b3f8-bac7dfc9f033&filePath=/fsw/src/ci_events.h
+
+Discussion comment: 71
+This can return a -1 and cause a buffer overrun at line 804.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=c40a5a0e-cd03-43b7-b471-67d525212ee2&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 72
+This can return a -1 and will cause line 727 to buffer overrun.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=16a112de-a3fc-4c6f-ab61-66b6f56f3358&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 73
+Initialize pointer to 0 or NULL.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=b42fad83-c77e-4f60-b9ab-a0ca883d9ccd&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 74
+Address boilerplate code
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=fcd21e93-69b7-4827-a652-52cefd3b290e&filePath=/fsw/src/ci_config_utils.c
+
+Discussion comment: 75
+Address boilerplate code. Is this function required? Timeout table values are not stored anywhere in the app.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=401d7816-b9ad-45f2-8c29-16e0fcfaff9e&filePath=/fsw/src/ci_config_utils.c
+
+Discussion comment: 76
+Address boilerplate code. Is this function required? Config table only holds registered commands which are not stored anywhere in the app.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=8b1e5966-6040-4e92-b3ca-24eec22dd2c3&filePath=/fsw/src/ci_config_utils.c
+
+Discussion comment: 77
+Set this value to 0.  Always initialize pointers to 0 or a valid address so if you accidentally follow the pointer without setting it, it will at least segfault.  Since this variable is allocated on stack, it will have an undefined value and could actually have a valid address which could be worse than if it just segfaulted.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=f0db0cd5-8e32-41b8-b3ec-d1a31d542169&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 78
+Address boilerplate code and write config validation
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=25a68259-4542-44db-aa42-0514fc51ff62&filePath=/fsw/src/ci_config_utils.c
+
+Discussion comment: 79
+Similar to a previous comment, this function can return an implicitly casted -1 and will result in a buffer overrun in line 588.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=6a22e546-b97f-4dd8-952e-3f4c935e9ebb&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 80
+Consider using %u rather than %i since the data type is an unsigned integer.  There are more of these so I will not comment further on them.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=357ec044-f32b-4f85-aaa3-aa3e0b86fce8&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 81
+Multiple returns.  Consider refactoring.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=c4e3b7b0-ee82-463c-927f-937411dbd9e4&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 82
+You're setting a -1 on an unsigned int again.  There are probably more so I'm going to stop harping on this one.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=fa3d9355-5354-4407-8ba6-111de3a9d96c&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 83
+Consider making %i a %u since the data type is unsigned.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5f11d906-5f50-4422-8255-8a1418478b88&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 84
+This function can return an implicitly casted -1.  However, that -1 is not caught here.  This can result in a buffer overrun in line 521.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=486877b0-68f7-4fda-85da-340954f307c2&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 85
+Write more descriptive doxy
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=1bb0cf4f-8142-4a02-9c5d-87422278f90c&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 86
+Write more descriptive doxy
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=ff58e0d1-209c-4a1a-bb23-17911f50d6c2&filePath=/fsw/src/ci_app.h
+
+Discussion comment: 87
+Multiple returns are a coding standard violation.  Consider refactoring to remove the multiple returns.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=fc449272-c130-49a2-b47e-a8f4a5cfba34&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 88
+Correct me if I'm wrong, but I think the cmdCode is a uint16. Your spec string indicates i which is a signed integer. Change %i to %u.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=666b076f-3d21-4459-b019-48333b1dfbd2&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 89
+Setting a negative number to an unsigned integer.  Either change this to a positive number or make the data type signed.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=66e16f69-18be-429a-8816-9630ce8d9f3d&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 90
+Correct me if I'm wrong, but I think the cmdCode is a uint16.  Your spec string indicates i which is a signed integer.  Change %i to %u.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=2988f6ae-8473-4cdc-81a0-a3c2eda82f6d&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 91
+I think the purpose of the -1 was meant to signify an error.  This means the return code is polymorphic in that, if positive, its an index and if negative, its an error.  Consider passing the index as reference and making the return code specifically just a status, i.e. 0 for success and -1 for failure.  Then you can make the prototype int32 and the index can still remain uint32.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7eafb8c5-c69c-456d-83a6-12cfea3e3397&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 92
+Same as above.  This is an unsigned integer, not signed.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=b6b7a2a7-943d-47f7-b9e4-8188f50c8d79&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 93
+You are setting "-1" to an unsigned integer.  Don't do this.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=ac4c5fdf-ef00-42d8-a84d-7314772dc553&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 94
+This should be a CFE Event.  We only need to write to the SysLog when an error occurs before the application has successfully registered with EVS.  At this point, your app has already registered with EVS.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=b2d34d72-db6e-4781-833b-60b44920ea7f&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 95
+Change TO to CI
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=11fc246c-f10f-4c25-9e12-2cca02410567&filePath=/fsw/mission_inc/ci_perfids.h
+
+Discussion comment: 96
+Verify this, but I don't think you need to send this event.  All the error conditions are caught and result in an error message already.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=31b95b56-3932-4c99-9664-fc5b9cf8a63c&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 97
+This looks like unmodified autogenerated boilerplate.  Tailor this to fit your application.  Are you using InData and OutData?  If not, just delete them.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=b2d106b2-8920-4a9c-8dbb-28bb67cf1cde&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 98
+Unmodified autogenerated boilerplate.  Tailor this to fit your application.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=ccdf8a27-e9cc-4e9d-bea8-a758a65c7bfe&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 99
+This block looks like unmodified autogenerated boiler plate.  Read the TODO comment and tailor this to fit the application.  Try to add all events to this table.  Make sure no event can spam the console or the downlink by setting a limiting filter, not "CFE_EVS_NO_FILTER".
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5c220c6c-0ad4-43f2-8993-1a0546bf1356&filePath=/fsw/src/ci_app.c
+
+Discussion comment: 100
+Copy in a working copy, from typhoon/sitl, to serve as a starting point for future integrators.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7730767d-ec8b-44c3-ab10-0d3cabdf209b&filePath=/fsw/mission_inc/ci_perfids.h
+
+Discussion comment: 101
+Copy in a working copy, from typhoon/sitl, to serve as a starting point for future integrators.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=5cddc8c5-6cfe-47cd-a8df-0cf79b42e36c&filePath=/fsw/mission_inc/ci_mission_cfg.h
+
+Discussion comment: 102
+Update this to better reflect the documentation from Confluence.  It still contains boiler plate.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=bbfe0f2c-afbd-4402-8d99-11403ff7fd95&filePath=/docs/dox_src/users_guide/cfs_ci.dox
+
+Discussion comment: 103
+Add the additional telemetry. I'm not sure, but I think this might be used by Doxygen. Verify that and make sure these are being used correctly.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=7a6b6938-3740-4aec-b120-3cc8ff384195&filePath=/docs/dox_src/mnem_maps/cfs_ci_tlm_mnem_map
+
+Discussion comment: 104
+Add the additional commands.  I'm not sure, but I think this might be used by Doxygen.  Verify that and make sure these are being used correctly.
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=8294de2e-6ba2-44b0-8e18-418c7d6d92ff&filePath=/docs/dox_src/mnem_maps/cfs_ci_cmd_mnem_map
+

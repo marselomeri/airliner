@@ -1,0 +1,8 @@
+Discussion comment: 1
+nit: space between assignment op
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=587a05da-e989-40fd-bd14-04f0f710621c&filePath=/fsw/src/ci_cds_utils.c
+
+Discussion comment: 2
+nit: space
+http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=34941448-52c9-407a-9b13-ee4ff73cff2a&filePath=/fsw/src/ci_app.h
+
