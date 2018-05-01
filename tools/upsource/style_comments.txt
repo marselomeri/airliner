@@ -1,8 +1,10 @@
+Total issues: 2
+
 Discussion comment: 1
-nit: space between assignment op
-http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=587a05da-e989-40fd-bd14-04f0f710621c&filePath=/fsw/src/ci_cds_utils.c
+nit space around assignment operator.
+http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=1da41724-a04a-4ec9-8936-6d03cd03af36&filePath=/fsw/public_inc/prm_lib.h
 
 Discussion comment: 2
-nit: space
-http://18.188.47.171:8080/ci/review/CI-CR-1?commentId=34941448-52c9-407a-9b13-ee4ff73cff2a&filePath=/fsw/src/ci_app.h
+global nit: uint32
+http://18.188.47.171:8080/prmlib/review/PRMLB-CR-1?commentId=3e729f2a-a57e-4bac-86d2-afb9f8953773&filePath=/fsw/src/prm_lib.c
 
