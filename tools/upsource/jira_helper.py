@@ -3,9 +3,8 @@ import os
    
 up_ip = "http://18.188.47.171:8080"
 
-#json_inputs = ["ds", "fm", "lc", "lgc", "md", "mpu", "ms5611", "qae", "rcin", "rgb", "ulr", "vc", "vm"]
-#json_inputs = ["mac", "mpc", "osal", "psp", "px4lib", "sch", "sens", "to"]
-json_inputs = ["mac"]
+#json_inputs = ["bat", "cs", "ds", "fm", "lc", "lgc", "mac", "md", "mpu", "ms5611", "qae", "rcin", "rgb", "ulr", "vc", "vm"]
+json_inputs = ["osal", "psp"]
 discs = {}
 acc = []
 rej = []
@@ -25,11 +24,11 @@ def get_url(disc):
 
 def get_print(disc_list):
     count = 1
-    out = "Total issues: " + str(len(disc_list)) + "\n\n"
+    out = "Total issues: " + str(len(disc_list)) + "   \n\n"
     for disc in disc_list:
-        out += "Discussion comment: " + str(count) + "\n"
-        out += disc["comments"][0]["text"] + "\n"
-        out += get_url(disc) + "\n\n"
+        out += "Discussion comment: " + str(count) + "   \n"
+        out += disc["comments"][0]["text"] + " \n"
+        out += get_url(disc) + "   \n\n"
         count += 1
 
     return out.encode('utf8')
