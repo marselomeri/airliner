@@ -13,9 +13,9 @@ def vehicle_spiral_ccw():
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
         {'name':'Timestamp', 'value':rocky.get_time()},
         {'name':'X', 'value':0.0},
-        {'name':'Y', 'value':0.75},
-        {'name':'Z', 'value':0.55},
-        {'name':'R', 'value':-0.2},
+        {'name':'Y', 'value':0.65},
+        {'name':'Z', 'value':0.65},
+        {'name':'R', 'value':-0.35},
         {'name':'Flaps', 'value':0.0},
         {'name':'Aux1', 'value':0.0},
         {'name':'Aux2', 'value':0.0},
@@ -41,13 +41,13 @@ def vehicle_spiral_ccw():
 def  vehicle_fly_spiral_ccw(deltaZ):
     print "Fly spiral CCW and up " + str(deltaZ) +" meters"
     initial_altitude = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
-    print "initial altitude: " + str(initial_altitude)
+    print "Initial altitude: " + str(initial_altitude)
     current_altitude = initial_altitude
     while(current_altitude < (initial_altitude + deltaZ)):
         vehicle_spiral_ccw()
         time.sleep(1.0)
         current_altitude = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
-        print "altitude: " + str(current_altitude)
+        print "Current altitude: " + str(current_altitude)
     vehicle_stable_hover(rocky)
     time.sleep(1)
 
@@ -92,7 +92,6 @@ alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Fly spiral")
-print "Fly spiral up 10 meters"
 vehicle_fly_spiral_ccw(10)
 
 #atp(rocky, "Move forward")
