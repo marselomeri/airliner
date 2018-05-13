@@ -117,7 +117,7 @@ int32 AK8963_Ioctl(int fh, int request, void *arg)
     int32 returnCode = 0;
     uint32 i = 0;
 
-    for (i=0; i < AK8963_MAX_RETRY_ATTEMPTS; i++)
+    for (i = 0; i < AK8963_MAX_RETRY_ATTEMPTS; ++i)
     {
         returnCode = ioctl(fh, request, arg);
             
@@ -310,6 +310,12 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
             goto end_of_function;
         }
     }
+    else
+    {
+        /* Data not ready skipping measurement. */
+        returnBool = FALSE;
+        goto end_of_function;
+    }
     
     /* Check for overflow... */
     if (sample.st2 & AK8963_BITS_ST2_HOFL)
@@ -324,11 +330,7 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
     *Z = sample.val[2];
 
 end_of_function:
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "AK8963 read error in Read_Mag");
-    }
+
     return (returnBool);
 }
 
@@ -456,6 +458,8 @@ boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
             "AK8963 set power down mode failed");
         goto end_of_function;
     }
+
+    usleep(10000);
 
     /* Enable fuse ROM access mode */
     returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, AK8963_BITS_CNTL1_MODE_ROM_ACCESS);

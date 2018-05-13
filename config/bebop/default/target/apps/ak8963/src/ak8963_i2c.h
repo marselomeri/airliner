@@ -51,6 +51,12 @@
 /** \brief Read data, from slave to master. */
 #define AK8963_I2C_M_READ                    (0x0001)
 
+/** \brief Retry attemps for interrupted ioctl calls. */
+#define AK8963_MAX_RETRY_ATTEMPTS           (2)
+
+/** \brief Sleep time micro seconds for interrupted calls. */
+#define AK8963_MAX_RETRY_SLEEP_USEC         (10)
+
 /* AK8963 Register map for the Magnetometer */
 /** \brief Device ID. */
 #define AK8963_REG_WIA                       (0x00)
@@ -124,15 +130,6 @@
 #define AK8963_BITS_ST2_HOFL                 (0x08)
 /** \brief Mask Output bit setting (mirror). */
 #define AK8963_BITS_ST2_BITM                 (0x10)
-
-
-
-/** \brief Retry attemps for interrupted ioctl calls. */
-#define AK8963_MAX_RETRY_ATTEMPTS           (2)
-
-/** \brief Sleep time micro seconds for interrupted calls. */
-#define AK8963_MAX_RETRY_SLEEP_USEC         (10)
-
 
 /************************************************************************
 ** Structure Declarations
