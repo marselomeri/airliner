@@ -382,18 +382,6 @@ end_of_function:
 //}
 
 
-//boolean AK8963_Start_MagSelfTest(void)
-//{
-    //return TRUE;
-//}
-
-
-//boolean AK8963_Stop_MagSelfTest(void)
-//{
-    //return TRUE;
-//}
-
-
 //boolean AK8963_Read_MagStatus(boolean *Overrun, boolean *DataReady, boolean *Overflow, boolean *Output16Bit)
 //{
     //uint8 value = 0;
@@ -484,6 +472,11 @@ boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
     *X = MagAdjXYZ[0];
     *Y = MagAdjXYZ[1];
     *Z = MagAdjXYZ[2];
+
+    /* Store in custom data for self-test. */
+    AK8963_AppCustomData.MagAdjX = (MagAdjXYZ[0] - 128.0f) / 256.0f + 1.0f;
+    AK8963_AppCustomData.MagAdjY = (MagAdjXYZ[1] - 128.0f) / 256.0f + 1.0f;
+    AK8963_AppCustomData.MagAdjZ = (MagAdjXYZ[2] - 128.0f) / 256.0f + 1.0f;
 
     /* Return to power-down mode */
     returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, AK8963_BITS_CNTL1_MODE_POWER_DOWN);
@@ -608,4 +601,126 @@ void AK8963_Get_Rotation(uint8 *Rotation)
 
 end_of_function:
     return;
+}
+
+
+boolean AK8963_RunSelfTest(void)
+{
+    boolean returnBool = FALSE;
+    uint8 bits = 0;
+    AK8963_Sample_t sample = {0};
+    uint32 i = 0;
+    uint8 Xadj = AK8963_AppCustomData.MagAdjX;
+    uint8 Yadj = AK8963_AppCustomData.MagAdjY;
+    uint8 Zadj = AK8963_AppCustomData.MagAdjZ;
+
+    /* Set power-down mode */
+    returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, AK8963_BITS_CNTL1_MODE_POWER_DOWN);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AK8963 set power-down mode failed");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+    /* Set self-test */
+    returnBool = AK8963_WriteReg(AK8963_REG_ASTC, AK8963_BITS_ASTC_SELF_TEST);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AK8963 set self-test failed");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+    bits = AK8963_BITS_CNTL1_MODE_SELF_TEST | AK8963_BITS_CNTL1_OUTPUT_16BIT;
+
+    /* Set self-test mode */
+    returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, bits);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AK8963 set self-test mode failed");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+    /* Wait for data ready. */
+    for(i = 0; i < AK8963_SELFTEST_READ_STATUS_ATTEMPTS; ++i)
+    {
+        returnBool = AK8963_ReadReg(AK8963_REG_ST1, &bits, 1);
+        if(FALSE == returnBool)
+        {
+            CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "AK8963 self-test read status failed");
+            goto end_of_function;
+        }
+
+        if(bits & AK8963_BITS_ST1_DRDY)
+        {
+            break;
+        }
+        
+        usleep(100);
+    }
+
+    returnBool = AK8963_ReadReg(AK8963_REG_HXL, &sample, sizeof(sample));
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Check if the measurements are in reasonable range (see the data sheet) */
+    if (AK8963_Custom_In_Range(sample.val[0] * Xadj, -200.0, 200.0) &&
+        AK8963_Custom_In_Range(sample.val[1] * Yadj, -200.0, 200.0) &&
+        AK8963_Custom_In_Range(sample.val[2] * Zadj, -3200.0, -800.0)) 
+    {
+        CFE_EVS_SendEvent(AK8963_DEVICE_INF_EID, CFE_EVS_INFORMATION,
+            "AK8963 self-test passed.");
+    }
+    else
+    {
+        returnBool = FALSE;
+        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AK8963 self-test range check failed");
+        goto end_of_function;
+    }
+
+    bits = AK8963_BITS_ASTC_NORMAL;
+
+    /* Return to normal */
+    returnBool = AK8963_WriteReg(AK8963_REG_ASTC, bits);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AK8963 set self-test normal failed");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+    /* Set power-down mode */
+    returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, AK8963_BITS_CNTL1_MODE_POWER_DOWN);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AK8963 set power-down mode failed");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+end_of_function:
+
+    return (returnBool);
+}
+
+
+boolean AK8963_Custom_In_Range(float value, float min, float max)
+{
+    return (min <= value) && (value <= max);
 }

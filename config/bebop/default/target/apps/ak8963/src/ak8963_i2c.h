@@ -55,7 +55,10 @@
 #define AK8963_MAX_RETRY_ATTEMPTS           (2)
 
 /** \brief Sleep time micro seconds for interrupted calls. */
-#define AK8963_MAX_RETRY_SLEEP_USEC         (10)
+#define AK8963_MAX_RETRY_SLEEP_USEC          (10)
+
+/** \brief Max self-test read attempts.  */
+#define AK8963_SELFTEST_READ_STATUS_ATTEMPTS (100)
 
 /* AK8963 Register map for the Magnetometer */
 /** \brief Device ID. */
@@ -195,6 +198,6 @@ int32 AK8963_Ioctl(int fh, int request, void *arg);
 boolean AK8963_WriteReg(uint8 Addr, uint8 Data);
 boolean AK8963_ReadReg(uint8 Reg, void *Buffer, size_t Length);
 boolean AK8963_Custom_Max_Events_Not_Reached(int32 ind);
-
+boolean AK8963_Custom_In_Range(float value, float min, float max);
 
 #endif /* AK8963_SPI_H */
