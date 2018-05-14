@@ -466,7 +466,7 @@ class CCSDS_CmdPkt_t(ctypes.Structure):
         
         Args:
             cmd_packet (bytes): The encoded command packet to decode 
-            and set.
+                and set.
         """
         self.PriHdr.set_decoded(cmd_packet[0:6])
         self.SecHdr.set_decoded(cmd_packet[6:8])
@@ -626,7 +626,7 @@ class CCSDS_TlmPkt_t(ctypes.Structure):
         
         Args:
             cmd_packet (bytes): The encoded telemetry packet to decode 
-            and set.
+                and set.
         """
         self.PriHdr.set_decoded(telemetry_packet[0:6])
         self.SecHdr.set_decoded(telemetry_packet[6:12])
