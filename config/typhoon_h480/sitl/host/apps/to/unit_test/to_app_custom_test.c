@@ -399,39 +399,6 @@ void TO_OutputChannel_ChannelHandle_QueueGetFail(void)
 
 
 /**
- * Test TO_OutputChannel_ChannelHandler() fail sendto
- */
-void TO_OutputChannel_ChannelHandle_SendToFail(void)
-{
-    uint8 ChannelID = 0;
-    
-    /* Set test channel to enabled */
-    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
-    
-    /* Set sendto call to fail */
-    TO_Platform_Stubs_Returns.TO_Wrap_SendTo_Return = -1;
-    
-    /* Set all status returns after the first call to disabled 
-     * NOTE: calls to TO_Channel_State sets the channel mode to
-     * TO_CHANNEL_DISABLED disabled after the first call
-     */
-    TO_App_Return.TO_Channel_State_Return = TO_CHANNEL_OPENED;
-    TO_App_Return.TO_Channel_State_Return1 = TO_CHANNEL_CLOSED;
-
-    /* Call the function under test */
-    TO_OutputChannel_ChannelHandler(ChannelID);
-    
-    /* Verify results */
-    /* Events sendto error and disable channel info message */
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
-    UtAssert_EventSent(TO_TLMOUTSTOP_ERR_EID, CFE_EVS_ERROR, "", 
-            "TO_OutputChannel_Send() failed to raise an event");
-    UtAssert_EventSent(TO_CMD_INF_EID, CFE_EVS_INFORMATION, "", 
-            "TO_OutputChannel_Send() failed to raise an event");
-}
-
-
-/**
  * Test TO_OutputChannel_ChannelHandler() fail CFE_ES_PutPoolBuf()
  */
 void TO_OutputChannel_ChannelHandle_PutPoolBufFail(void)
@@ -833,12 +800,9 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ChannelHandle_QueueGetFail, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_QueueGetFail");
-    UtTest_Add(TO_OutputChannel_ChannelHandle_SendToFail,
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ChannelHandle_SendToFail");
-    UtTest_Add(TO_OutputChannel_ChannelHandle_PutPoolBufFail,
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ChannelHandle_PutPoolBufFail");
+    //UtTest_Add(TO_OutputChannel_ChannelHandle_PutPoolBufFail,
+    //            TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+    //           "TO_OutputChannel_ChannelHandle_PutPoolBufFail");
     UtTest_Add(TO_OutputChannel_ChannelHandle_OSQueueTimeout, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_OSQueueTimeout");
