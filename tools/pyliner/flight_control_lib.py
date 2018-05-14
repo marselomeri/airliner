@@ -6,6 +6,9 @@ from pyliner import LogLevel
 
 
 # Enums
+from util import get_time
+
+
 class FlightMode(Enum):
     Manual = 1
     AltCtl = 2
@@ -70,7 +73,7 @@ def vehicle_arm(airliner):
     airliner.log("Arming vehicle")
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.0},
@@ -99,7 +102,7 @@ def vehicle_arm(airliner):
     sleep(1)
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.0},
@@ -132,7 +135,7 @@ def vehicle_disarm(airliner):
     airliner.log("Disarming vehicle")
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.0},
@@ -165,7 +168,7 @@ def vehicle_takeoff(airliner):
     airliner.log("Auto takeoff")
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.0},
@@ -210,7 +213,7 @@ def vehicle_mode_posctl(airliner):
     airliner.log("Position control")
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.5},
@@ -242,7 +245,7 @@ def vehicle_stable_hover(airliner):
     airliner.log("Stable hover")
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.5},  # 50% Throttle
@@ -277,7 +280,7 @@ def vehicle_move_forward(airliner, percent_speed, time):
         "Moving forward at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': percent_speed},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.5},
@@ -311,7 +314,7 @@ def vehicle_move_left(airliner, percent_speed, time):
     airliner.log("Moving left at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': -percent_speed},
             {'name': 'Z', 'value': 0.5},
@@ -346,7 +349,7 @@ def vehicle_move_backward(airliner, percent_speed, time):
         "Moving backward at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': -percent_speed},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.5},
@@ -380,7 +383,7 @@ def vehicle_move_right(airliner, percent_speed, time):
     airliner.log("Moving right at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': percent_speed},
             {'name': 'Z', 'value': 0.5},
@@ -414,7 +417,7 @@ def vehicle_move_up(airliner, percent_speed, time):
     airliner.log("Moving up at %s%% for %s seconds" % (percent_speed, time))
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.5 + (percent_speed * .5)},
@@ -447,7 +450,7 @@ def vehicle_rtl(airliner):
     airliner.log("RTL")
     airliner.send_telemetry(
         {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': airliner.get_time()},
+            {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
             {'name': 'Z', 'value': 0.0},

@@ -1,3 +1,4 @@
-*.pyc
 /logs/*
+*.pyc
 .idea/*
+venv/*

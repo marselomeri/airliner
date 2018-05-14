@@ -1,4 +1,7 @@
 from os import path, sys
+
+from util import get_time
+
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 from pyliner import Pyliner
 import time
@@ -23,7 +26,7 @@ def vehicle_arm():
     print "Arming vehicle"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -52,7 +55,7 @@ def vehicle_arm():
     time.sleep(2)
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -85,7 +88,7 @@ def vehicle_disarm():
     print "Disarming vehicle"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -117,7 +120,7 @@ def vehicle_takeoff():
     print "Auto takeoff"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -150,7 +153,7 @@ def vehicle_posctl_mode():
     print "Position control"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -183,7 +186,7 @@ def vehicle_stable_hover():
     # 50% Throttle
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -214,7 +217,7 @@ def vehicle_stable_hover():
 def vehicle_full_forward():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.5},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -246,7 +249,7 @@ def vehicle_full_left():
     print "Move left"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-0.5},
         {'name':'Z', 'value':0.5},
@@ -278,7 +281,7 @@ def vehicle_full_reverse():
     print "Move backwards"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':-0.5},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -310,7 +313,7 @@ def vehicle_full_right():
     print "Move right"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.5},
         {'name':'Z', 'value':0.5},
@@ -341,7 +344,7 @@ def vehicle_full_right():
 def vehicle_full_down():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -372,7 +375,7 @@ def vehicle_full_down():
 def vehicle_full_up():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.65},
@@ -405,7 +408,7 @@ def vehicle_land():
     print "RTL and land"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -436,7 +439,7 @@ def vehicle_land():
 def vehicle_orbit_cw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-0.5},
         {'name':'Z', 'value':0.5},
@@ -467,7 +470,7 @@ def vehicle_orbit_cw():
 def vehicle_orbit_ccw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.5},
         {'name':'Z', 'value':0.5},
@@ -498,7 +501,7 @@ def vehicle_orbit_ccw():
 def vehicle_spiral_ccw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.5},
         {'name':'Z', 'value':0.65},
@@ -529,7 +532,7 @@ def vehicle_spiral_ccw():
 def vehicle_spiral_cw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-0.5},
         {'name':'Z', 'value':0.65},

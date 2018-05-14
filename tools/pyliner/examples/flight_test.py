@@ -1,4 +1,7 @@
 from os import path, sys
+
+from util import get_time
+
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 from pyliner import Pyliner
 import time
@@ -135,7 +138,7 @@ airliner.subscribe({'tlm': ['/Airliner/GPS/HK/Lat',
 def vehicle_arm():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'Command', 'value':int(MsgVehicleCmd.component_arm_disarm)},
         # 1.0 = True = Arm
         {'name':'Param1', 'value':1.0},
@@ -156,7 +159,7 @@ def vehicle_arm():
 def vehicle_disarm():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'Command', 'value':int(MsgVehicleCmd.component_arm_disarm)},
         {'name':'Param1', 'value':0.0},
         {'name':'Param2', 'value':0.0},
@@ -175,7 +178,7 @@ def vehicle_disarm():
 def vehicle_takeoff():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'Command', 'value':int(MsgVehicleCmd.nav_takeoff)},
         {'name':'Param1', 'value':0.0},
         {'name':'Param2', 'value':0.0},
@@ -197,7 +200,7 @@ def vehicle_posctl_mode():
     # First transition to altitude hold mode.
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'Command', 'value':int(MsgVehicleCmd.do_set_mode)},
         {'name':'Param1', 'value':custom_mode},
         {'name':'Param2', 'value':int(MavCustomMainMode.altctl)},
@@ -216,7 +219,7 @@ def vehicle_posctl_mode():
     # Transition to posctl mode.
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'Command', 'value':int(MsgVehicleCmd.do_set_mode)},
         {'name':'Param1', 'value':custom_mode},
         {'name':'Param2', 'value':int(MavCustomMainMode.posctl)},
@@ -238,7 +241,7 @@ def vehicle_stable_hover():
     # 50% Throttle
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -269,7 +272,7 @@ def vehicle_stable_hover():
 def vehicle_full_forward():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':1.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -300,7 +303,7 @@ def vehicle_full_forward():
 def vehicle_full_left():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-1.0},
         {'name':'Z', 'value':0.5},
@@ -331,7 +334,7 @@ def vehicle_full_left():
 def vehicle_full_reverse():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':-1.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -362,7 +365,7 @@ def vehicle_full_reverse():
 def vehicle_full_right():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':1.0},
         {'name':'Z', 'value':0.5},
@@ -392,7 +395,7 @@ def vehicle_full_right():
 def vehicle_land():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/VehicleCommand', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'Command', 'value':int(MsgVehicleCmd.nav_land)},
         {'name':'Param1', 'value':0.0},
         {'name':'Param2', 'value':0.0},
