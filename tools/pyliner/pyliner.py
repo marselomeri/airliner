@@ -12,19 +12,11 @@ from junit_xml import TestSuite, TestCase
 
 import python_pb.pyliner_msgs as pyliner_msgs
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
+from exceptions import InvalidCommandException, InvalidOperationException
 from util import init_socket, server_factory, read_json, serialize
 
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
-
-
-# Custom exceptions
-class InvalidCommandException(RuntimeError):
-    pass
-
-
-class InvalidOperationException(RuntimeError):
-    pass
 
 
 # Enums
@@ -43,7 +35,8 @@ class Pyliner(object):
         if airliner_map is None:
             airliner_map = join(dirname(realpath(__file__)), "airliner.json")
         if log_dir is None:
-            join(dirname(realpath(__file__)), "logs")
+            log_dir = join(dirname(realpath(__file__)), "logs")
+
         self.address = address
         self.airliner_data = read_json(airliner_map)
         self.all_telemetry = []
@@ -52,23 +45,29 @@ class Pyliner(object):
         self.duration = 0
         self.fails = 0
         self.ingest_active = True
-        self.listener_thread = threading.Thread(
-            target=self.tlm_listener.serve_forever)
-        self.log_dir = log_dir
-        self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + \
-            "_pyliner_" + self.script_name + ".log"
         self.passes = 0
-        self._recv_telemetry()
-        self.script_name = script_name
-        self._setup_log()
-        self.start_time = datetime.now()
         self.subscribers = []
         self.telemetry = {}
         self.test_description = []
-        self.tlm_listener = SocketServer.UDPServer(
-            ("0.0.0.0", self.to_port), server_factory(self._on_recv_telemetry))
         self.to_port = to_port
         self.to_socket = init_socket()
+
+        # Threading
+        self.tlm_listener = SocketServer.UDPServer(
+            ("0.0.0.0", self.to_port), server_factory(self._on_recv_telemetry))
+        self.listener_thread = threading.Thread(
+            target=self.tlm_listener.serve_forever)
+
+        # Logging
+        self.log_dir = log_dir
+        self.script_name = script_name
+        self.start_time = datetime.now()
+        self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + \
+                        "_pyliner_" + self.script_name + ".log"
+        self._setup_log()
+
+        # Start Telemetry
+        self._recv_telemetry()
 
     def _get_airliner_op(self, op_path):
         """

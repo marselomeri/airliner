@@ -14,10 +14,11 @@ get_script_dir () {
      echo "$DIR"
 }
 
-export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}$(get_script_dir)"
+PYLINER_DIR=$(get_script_dir)
+export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}${PYLINER_DIR}"
 
 if [ -z "$1" ]; then
     echo "Pyliner expects a script to execute."
 else
-    python $1
+    python ${PYLINER_DIR}/execliner.py $1
 fi
