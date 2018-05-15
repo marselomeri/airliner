@@ -12,7 +12,7 @@ from junit_xml import TestSuite, TestCase
 
 import python_pb.pyliner_msgs as pyliner_msgs
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
-from util import init_socket, server_factory, read_json
+from util import init_socket, server_factory, read_json, serialize
 
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
@@ -36,6 +36,7 @@ class LogLevel(Enum):
 
 
 class Pyliner(object):
+    """A connection to a vehicle"""
     def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT,
                  to_port=DEFAULT_TO_PORT, script_name=None, airliner_map=None,
                  log_dir=None):
@@ -57,29 +58,19 @@ class Pyliner(object):
         self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + \
             "_pyliner_" + self.script_name + ".log"
         self.passes = 0
-        self.__recv_telemetry()
+        self._recv_telemetry()
         self.script_name = script_name
-        self.__setup_log()
+        self._setup_log()
         self.start_time = datetime.now()
         self.subscribers = []
         self.telemetry = {}
         self.test_description = []
         self.tlm_listener = SocketServer.UDPServer(
-            ("0.0.0.0", self.to_port), server_factory(self.__on_recv_telemetry))
+            ("0.0.0.0", self.to_port), server_factory(self._on_recv_telemetry))
         self.to_port = to_port
         self.to_socket = init_socket()
 
-    def __setup_log(self):
-        """ Setup log for Pyliner """
-        if not exists(self.log_dir):
-            mkdir(self.log_dir)
-
-        logging.basicConfig(format='%(asctime)s\t%(levelname)s: %(message)s',
-                            datefmt='%m/%d/%Y %I:%M:%S %p',
-                            filename=join(self.log_dir, self.log_name),
-                            level=logging.DEBUG)
-
-    def __get_airliner_op(self, op_path):
+    def _get_airliner_op(self, op_path):
         """
         Receive a ops path and returns the dict for that op defined in
         the input file
@@ -96,7 +87,7 @@ class Pyliner(object):
 
         return ret_op
 
-    def __get_ccsds_msg(self, op):
+    def _get_ccsds_msg(self, op):
         """ Receive a ops dict and returns a ccsds msg """
         # If the command code is -1 this is telemetry
         if op["airliner_cc"] == -1:
@@ -113,26 +104,16 @@ class Pyliner(object):
 
         return ret_msg
 
-    def serialize(self, header, payload):
-        """
-        Receive a CCSDS message and payload then returns the
-        serialized concatenation of them.
-        """
-        if not payload:
-            return str(header.get_encoded())
-        else:
-            return str(header.get_encoded()) + payload.SerializeToString()
-
     def _get_op_attr(self, op_path):
-        """ Gets the operation path from airliner data for a specified attribute 
-        
+        """ Gets the operation path from airliner data for a specified attribute
+
         Args:
             op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
-            
+
         Returns:
             True path to access this attribute in protobuf message (E.g. Payload.CmdCounter)
         """
-        op = self.__get_airliner_op(op_path)
+        op = self._get_airliner_op(op_path)
         ops_names = op_path.split('/')[1:]
         for fsw, fsw_data in self.airliner_data.iteritems():
             if fsw == ops_names[0]:
@@ -145,17 +126,37 @@ class Pyliner(object):
 
         return None
 
-    def __proto_obj_factory(self, msg):
-        """ Returns a protobuf object for the type of airliner msg passed """
-        return pyliner_msgs.proto_msg_map[msg]()
+    def _get_pb_decode_obj(self, raw_tlm, op_path):
+        """ Generates protobuf object from raw telemetry
 
-    def __get_pb_encode_obj(self, cmd, op):
+        Args:
+            raw_tlm (str): Raw bytes received from socket
+            op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
+
+        Returns:
+            Protobuf object for this specific message with set values
+        """
+        op = self._get_airliner_op(op_path)
+        if not op:
+            return None
+
+        # Check if no args cmd
+        if len(op["airliner_msg"]) == 0:
+            return None
+
+        # Call the correct protobuf constructor for this command
+        pb_msg = self._proto_obj_factory(op["airliner_msg"])
+        pb_msg.ParseFromString(raw_tlm)
+
+        return pb_msg
+
+    def _get_pb_encode_obj(self, cmd, op):
         """ Generates protobuf object from user script command
-        
+
         Args:
             cmd (dict): User command specifying op and args
             op (dict): Operation dictionary
-            
+
         Returns:
             Protobuf object for this specific message with set values
         """
@@ -164,7 +165,7 @@ class Pyliner(object):
             return None
 
         # Call the correct protobuf constructor for this command
-        pb_obj = self.__proto_obj_factory(op["airliner_msg"])
+        pb_obj = self._proto_obj_factory(op["airliner_msg"])
 
         # Generate executable string assigning correct values to pb object
         assign = ""
@@ -178,116 +179,13 @@ class Pyliner(object):
 
         return pb_obj
 
-    def __get_pb_decode_obj(self, raw_tlm, op_path):
-        """ Generates protobuf object from raw telemetry
-        
-        Args:
-            raw_tlm (str): Raw bytes received from socket
-            op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
-            
-        Returns:
-            Protobuf object for this specific message with set values
-        """
-        op = self.__get_airliner_op(op_path)
-        if not op:
-            return None
-
-        # Check if no args cmd
-        if len(op["airliner_msg"]) == 0:
-            return None
-
-        # Call the correct protobuf constructor for this command
-        pb_msg = self.__proto_obj_factory(op["airliner_msg"])
-        pb_msg.ParseFromString(raw_tlm)
-
-        return pb_msg
-
-    def send_command(self, cmd):
-        """ User accessible function to send a command to the software bus. 
-        
-        Args:
-            cmd (dict): A command specifiying the operation to execute and any args for it.
-                       E.g.    {'name':'/Airliner/ES/Noop'} 
-                                    or
-                               {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
-                                   {'name':'X', 'value':'0'},
-                                   {'name':'Y', 'value':'0'},
-                                   {'name':'Z', 'value':'500'}]}
-        """
-        args_present = False
-
-        if "name" not in cmd:
-            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
-
-        # Check if no args cmd
-        if "args" in cmd:
-            args_present = True
-
-        # Get command operation        
-        op = self.__get_airliner_op(cmd["name"])
-        if not op:
-            raise InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
-
-        # Generate airliner cmd
-        header = self.__get_ccsds_msg(op)
-        payload = self.__get_pb_encode_obj(cmd, op) if args_present else None
-
-        # Set header correctly
-        payload_size = payload.ByteSize() if args_present else 0
-        header.set_user_data_length(payload_size)
-        payload_checksum = payload.SerializeToString() if args_present else 0
-        header.SecHdr.Command.bits.checksum = header.compute_checksum(payload_checksum) if args_present else 0
-
-        serial_cmd = self.serialize(header, payload)
-        self.send_to_airliner(serial_cmd)
-        self.log('Sending command to airliner: %s' % (cmd))
-
-    def send_telemetry(self, tlm):
-        """ User accessible function to send a command to the software bus. 
-        
-        Args:
-            cmd (dict): A command specifiying the operation to execute and any args for it.
-                       E.g.    {'name':'/Airliner/ES/Noop'} 
-                                    or
-                               {'name':'/Airliner/PX4/ManualControlSetpoint',
-                                'args':[
-                                   {'name':'X', 'value':'0'},
-                                   {'name':'Y', 'value':'0'},
-                                   {'name':'Z', 'value':'500'}]}
-        """
-        args_present = False
-
-        if "name" not in tlm:
-            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
-
-        # Check if no args tlm
-        args_present = "args" in tlm
-
-        # Get command operation        
-        op = self.__get_airliner_op(tlm["name"])
-        if not op:
-            raise InvalidCommandException("Invalid telemetry received. Operation (%s) not defined." % tlm["name"])
-
-        # Generate airliner cmd
-        header = self.__get_ccsds_msg(op)
-        payload = self.__get_pb_encode_obj(tlm, op) if args_present else None
-
-        # Set header correctly
-        payload_size = payload.ByteSize() if args_present else 0
-        header.set_user_data_length(payload_size)
-
-        serial_cmd = self.serialize(header, payload)
-        self.send_to_airliner(serial_cmd)
-        self.log('Sending telemetry to airliner: %s' % (tlm))
-        # header.print_base10()
-
-    def __get_pb_value(self, pb_msg, op_path):
+    def _get_pb_value(self, pb_msg, op_path):
         """ Get value from protobuf object
-        
+
         Args:
             pb_msg (ProtoObj): Protobuf object for this message
             op_path (str): Operation path as located in input file (E.g. "/Airliner/ES/Noop")
-            
+
         Returns:
             Value of attribute for passed proto message
         """
@@ -299,26 +197,12 @@ class Pyliner(object):
         exec (assign_string)
         return value
 
-    def get_tlm_value(self, tlm):
-        """ Get current value of specified telemetry item
-        
-        Args:
-            tlm (str): Operational name of requested telemetry
-        
-        Returns:
-            Current value of telemetry or None if not found
-        """
-        if tlm not in self.telemetry:
-            return None
-        else:
-            return self.telemetry[tlm]['value']
-
     def get_tlm(self, tlm):
         """ Get all data of specified telemetry item
-        
+
         Args:
             tlm (str): Operational name of requested telemetry
-        
+
         Returns:
             Telemetry data dict or None if not found
         """
@@ -327,9 +211,23 @@ class Pyliner(object):
         else:
             return self.telemetry[tlm]
 
-    def __on_recv_telemetry(self, tlm):
-        """ Callback for TO socket listener 
-        
+    def get_tlm_value(self, tlm):
+        """ Get current value of specified telemetry item
+
+        Args:
+            tlm (str): Operational name of requested telemetry
+
+        Returns:
+            Current value of telemetry or None if not found
+        """
+        if tlm not in self.telemetry:
+            return None
+        else:
+            return self.telemetry[tlm]['value']
+
+    def _on_recv_telemetry(self, tlm):
+        """ Callback for TO socket listener
+
         Args:
             tlm(str): Raw bytes received from socket
         """
@@ -359,12 +257,12 @@ class Pyliner(object):
         for subscribed_tlm in self.subscribers:
             if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):
                 # Get pb msg for this msg
-                pb_msg = self.__get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
+                pb_msg = self._get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
 
                 # Generate telemtry dictionary for callback
                 cb_dict = {'name': subscribed_tlm['op_path'],
-                           'value': self.__get_pb_value(pb_msg,
-                                                        cb_dict['name']),
+                           'value': self._get_pb_value(pb_msg,
+                                                       cb_dict['name']),
                            'time': tlm_time}
 
                 # Update telemetry dictionary with fresh data
@@ -374,23 +272,128 @@ class Pyliner(object):
                 if subscribed_tlm['callback']:
                     subscribed_tlm['callback'](cb_dict)
 
+    def _proto_obj_factory(self, msg):
+        """ Returns a protobuf object for the type of airliner msg passed """
+        return pyliner_msgs.proto_msg_map[msg]()
+
+    def _recv_telemetry(self):
+        """
+        Listen to the the socket TO is publishing to. If it receives telemetry
+        we're subscribed to notify the correct callback.
+        """
+        self.listener_thread.daemon = True
+        self.listener_thread.start()
+
+    def send_command(self, cmd):
+        """ User accessible function to send a command to the software bus.
+
+        Args:
+            cmd (dict): A command specifiying the operation to execute and any args for it.
+                       E.g.    {'name':'/Airliner/ES/Noop'}
+                                    or
+                               {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
+                                   {'name':'X', 'value':'0'},
+                                   {'name':'Y', 'value':'0'},
+                                   {'name':'Z', 'value':'500'}]}
+        """
+        args_present = False
+
+        if "name" not in cmd:
+            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
+
+        # Check if no args cmd
+        if "args" in cmd:
+            args_present = True
+
+        # Get command operation
+        op = self._get_airliner_op(cmd["name"])
+        if not op:
+            raise InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
+
+        # Generate airliner cmd
+        header = self._get_ccsds_msg(op)
+        payload = self._get_pb_encode_obj(cmd, op) if args_present else None
+
+        # Set header correctly
+        payload_size = payload.ByteSize() if args_present else 0
+        header.set_user_data_length(payload_size)
+        payload_checksum = payload.SerializeToString() if args_present else 0
+        header.SecHdr.Command.bits.checksum = header.compute_checksum(payload_checksum) if args_present else 0
+
+        serial_cmd = serialize(header, payload)
+        self.send_to_airliner(serial_cmd)
+        self.log('Sending command to airliner: %s' % (cmd))
+
+    def send_telemetry(self, tlm):
+        """ User accessible function to send a command to the software bus.
+
+        Args:
+            cmd (dict): A command specifiying the operation to execute and any args for it.
+                       E.g.    {'name':'/Airliner/ES/Noop'}
+                                    or
+                               {'name':'/Airliner/PX4/ManualControlSetpoint',
+                                'args':[
+                                   {'name':'X', 'value':'0'},
+                                   {'name':'Y', 'value':'0'},
+                                   {'name':'Z', 'value':'500'}]}
+        """
+        args_present = False
+
+        if "name" not in tlm:
+            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
+
+        # Check if no args tlm
+        args_present = "args" in tlm
+
+        # Get command operation
+        op = self._get_airliner_op(tlm["name"])
+        if not op:
+            raise InvalidCommandException("Invalid telemetry received. Operation (%s) not defined." % tlm["name"])
+
+        # Generate airliner cmd
+        header = self._get_ccsds_msg(op)
+        payload = self._get_pb_encode_obj(tlm, op) if args_present else None
+
+        # Set header correctly
+        payload_size = payload.ByteSize() if args_present else 0
+        header.set_user_data_length(payload_size)
+
+        serial_cmd = serialize(header, payload)
+        self.send_to_airliner(serial_cmd)
+        self.log('Sending telemetry to airliner: %s' % (tlm))
+        # header.print_base10()
+
+    def send_to_airliner(self, msg):
+        """ Publish the passed message to airliner """
+        self.ci_socket.sendto(msg, (self.address, self.ci_port))
+
+    def _setup_log(self):
+        """ Setup log for Pyliner """
+        if not exists(self.log_dir):
+            mkdir(self.log_dir)
+
+        logging.basicConfig(format='%(asctime)s\t%(levelname)s: %(message)s',
+                            datefmt='%m/%d/%Y %I:%M:%S %p',
+                            filename=join(self.log_dir, self.log_name),
+                            level=logging.DEBUG)
+
     def subscribe(self, tlm, callback=None):
         """ Receives an operational path to an airliner msg attribute to subscribe
         to, as well as an optional callback function.
 
         Args:
-            tlm (dict): Dictionary specifying the telemtry items to subscribe to, using the 
-                       telemtry item's operational names. 
+            tlm (dict): Dictionary specifying the telemtry items to subscribe to, using the
+                       telemtry item's operational names.
                        E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}
                             or
                             {'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/ErrCounter']}
 
             callback (function, optional): Function to call when this telemetry is updated. If not specified
-                                defaults to on_recv_telemetry                                
+                                defaults to on_recv_telemetry
         """
         for tlm_item in tlm["tlm"]:
             # Get operation for specified telemetry
-            op = self.__get_airliner_op(tlm_item)
+            op = self._get_airliner_op(tlm_item)
             if not op:
                 err_msg = "Invalid telemetry operational name received. Operation (%s) not defined." % tlm_item
                 self.log(err_msg, LogLevel.Error)
@@ -410,18 +413,7 @@ class Pyliner(object):
 
             self.log('Subscribing to the following telemetry: %s' % (tlm))
 
-    def send_to_airliner(self, msg):
-        """ Publish the passed message to airliner """
-        self.ci_socket.sendto(msg, (self.address, self.ci_port))
-
-    def __recv_telemetry(self):
-        """ 
-        Listen to the the socket TO is publishing to. If it receives telemetry 
-        we're subscribed to notify the correct callback.
-        """
-        self.listener_thread.daemon = True
-        self.listener_thread.start()
-
+    # Testing Code. TODO Figure out where to put this
     def reset_test(self):
         """ Reset  """
         pass  # Need this?

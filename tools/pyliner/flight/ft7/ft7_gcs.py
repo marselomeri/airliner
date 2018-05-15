@@ -1,18 +1,17 @@
 from os import sys
 from os.path import join, dirname, abspath
-sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
 from pyliner import Pyliner
 from flight_control_lib import *
 import math
 import time
 
 # Initialize pyliner object
-rocky = Pyliner(**{"airliner_map": join(dirname(abspath(__file__)), "cookiecutter.json"), 
-                   "address": "192.168.1.2",
-                   "ci_port": 5009,
-                   "to_port": 5012,
-                   "script_name": "FT6_GCS",
-                   "log_dir": join(dirname(abspath(__file__)), "logs")})
+rocky = Pyliner(airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
+                address="192.168.1.2",
+                ci_port=5009,
+                to_port=5012,
+                script_name="FT6_GCS",
+                log_dir=join(dirname(abspath(__file__)), "logs"))
 
 # Subscribe to desired telemetry
 rocky.subscribe({'tlm': ['/Airliner/CNTL/VehicleGlobalPosition/Lat',

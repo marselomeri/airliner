@@ -4,6 +4,15 @@ import socket
 from datetime import datetime
 
 
+class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
+    def __init__(self, callback, *args, **keys):
+        self.callback = callback
+        SocketServer.BaseRequestHandler.__init__(self, *args, **keys)
+
+    def handle(self):
+        self.callback(self.request)
+
+
 def get_time():
     return int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 10000)
 
@@ -11,13 +20,6 @@ def get_time():
 def init_socket():
     """ Creates a UDP socket object and returns it """
     return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-
-def server_factory(callback):
-    """ Creates server object and sets the callback """
-    def create_handler(*args, **kwargs):
-        return ThreadedUDPRequestHandler(callback, *args, **kwargs)
-    return create_handler
 
 
 def read_json(file_path):
@@ -31,10 +33,19 @@ def read_json(file_path):
         print e
 
 
-class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
-    def __init__(self, callback, *args, **keys):
-        self.callback = callback
-        SocketServer.BaseRequestHandler.__init__(self, *args, **keys)
+def serialize(header, payload):
+    """
+    Receive a CCSDS message and payload then returns the
+    serialized concatenation of them.
+    """
+    if not payload:
+        return str(header.get_encoded())
+    else:
+        return str(header.get_encoded()) + payload.SerializeToString()
 
-    def handle(self):
-        self.callback(self.request)
+
+def server_factory(callback):
+    """ Creates server object and sets the callback """
+    def create_handler(*args, **kwargs):
+        return ThreadedUDPRequestHandler(callback, *args, **kwargs)
+    return create_handler
