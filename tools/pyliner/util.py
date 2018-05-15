@@ -3,6 +3,15 @@ import json
 import socket
 from datetime import datetime
 
+from flufl.enum import Enum
+
+
+class LogLevel(Enum):
+    Debug = 1
+    Info = 2
+    Warn = 3
+    Error = 4
+
 
 class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
     def __init__(self, callback, *args, **keys):

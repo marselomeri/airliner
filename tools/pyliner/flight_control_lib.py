@@ -2,11 +2,8 @@ from time import sleep
 
 from flufl.enum import Enum
 
-from pyliner import LogLevel
-
-
 # Enums
-from util import get_time
+from util import get_time, LogLevel
 
 
 class FlightMode(Enum):

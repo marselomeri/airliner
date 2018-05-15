@@ -7,24 +7,15 @@ from datetime import datetime
 from os import mkdir
 from os.path import exists, join, dirname, realpath
 
-from flufl.enum import Enum
 from junit_xml import TestSuite, TestCase
 
 import python_pb.pyliner_msgs as pyliner_msgs
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from exceptions import InvalidCommandException, InvalidOperationException
-from util import init_socket, server_factory, read_json, serialize
+from util import init_socket, server_factory, read_json, serialize, LogLevel
 
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
-
-
-# Enums
-class LogLevel(Enum):
-    Debug = 1
-    Info = 2
-    Warn = 3
-    Error = 4
 
 
 class Pyliner(object):
