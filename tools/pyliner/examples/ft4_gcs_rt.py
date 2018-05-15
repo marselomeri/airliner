@@ -441,16 +441,16 @@ airliner.send_command({'name':'/Airliner/ES/Noop'})
 time.sleep(15)
 
 # print received telemetry
-es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
+es_hk_cmdcnt = airliner.tlm_value('/Airliner/ES/HK/CmdCounter')
 print "es_hk_cmdcnt: " + str(es_hk_cmdcnt)
-accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+accel_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/Acc')
 print "accel_sensor_combined_z: " + str(accel_sensor_combined[2])
-baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
 print "baro_sensor_combined: " + str(baro_sensor_combined)
 # GPS not yet implemented on flight side
-gps_lat = airliner.get_tlm_value('/Airliner/GPS/HK/Lat')
+gps_lat = airliner.tlm_value('/Airliner/GPS/HK/Lat')
 print "/Airliner/ES/GPS/Lat: " + str(gps_lat)
-gps_lon = airliner.get_tlm_value('/Airliner/GPS/HK/Lon')
+gps_lon = airliner.tlm_value('/Airliner/GPS/HK/Lon')
 print "/Airliner/ES/GPS/Lon: " + str(gps_lon)
 
 all_test_passed = True

@@ -10,7 +10,7 @@ rocky = Pyliner(
     address="192.168.1.2",
     ci_port=5009,
     to_port=5012,
-    script_name="FT6_GCS",
+    script_name="FT7_GCS",
     log_dir=join(dirname(abspath(__file__)), "logs"))
 
 # Subscribe to desired telemetry
@@ -23,11 +23,11 @@ rocky.subscribe({'tlm': ['/Airliner/CNTL/VehicleGlobalPosition/Lat',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelD']})
 
 # Wait for pyliner data dictionary to populate with initial values
-while rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt') == 'NULL':
+while rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt') == 'NULL':
     print "Waiting for telemetry downlink..."
     time.sleep(1)
 
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+alt = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Arm")
@@ -36,13 +36,13 @@ atp(rocky, "Takeoff")
 vehicle_takeoff(rocky)
 vehicle_flight_mode(rocky, FlightMode.PosCtl)
 
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+alt = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Move up")
 vehicle_move(rocky, Direction.Up, speed=1.0, time=2, stop=True, stop_wait=3)
 
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+alt = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Move forward")

@@ -20,5 +20,6 @@ export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}${PYLINER_DIR}"
 if [ -z "$1" ]; then
     echo "Pyliner expects a script to execute."
 else
-    python ${PYLINER_DIR}/execliner.py $1
+#    python ${PYLINER_DIR}/execliner.py $1
+    python $1
 fi

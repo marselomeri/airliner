@@ -3,15 +3,18 @@
 import SocketServer
 import logging
 import threading
+import time
 from datetime import datetime
 from os import mkdir
 from os.path import exists, join, dirname, realpath
 
 from junit_xml import TestSuite, TestCase
+from deprecated import deprecated
 
+import exceptions
 import python_pb.pyliner_msgs as pyliner_msgs
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
-from exceptions import InvalidCommandException, InvalidOperationException
+from pyliner_module import PylinerModule
 from util import init_socket, server_factory, read_json, serialize, LogLevel
 
 DEFAULT_CI_PORT = 5008
@@ -19,7 +22,10 @@ DEFAULT_TO_PORT = 5011
 
 
 class Pyliner(object):
-    """A connection to a vehicle"""
+    """A connection to a vehicle.
+
+
+    """
     def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT,
                  to_port=DEFAULT_TO_PORT, script_name=None, airliner_map=None,
                  log_dir=None):
@@ -58,7 +64,55 @@ class Pyliner(object):
         self._setup_log()
 
         # Start Telemetry
-        self._recv_telemetry()
+        self.listener_thread.daemon = True
+        self.listener_thread.start()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            print(exc_type, exc_val, exc_tb)
+
+    def await_fresh(self, tlm, poll=1, out=None):
+        """Loop until the telemetry value changes. This is blocking.
+
+        Args:
+            tlm (str): The telemetry to monitor.
+            poll (float): Check every `poll` seconds.
+            out (Any): If not None, print this every loop.
+        """
+        old_val = self.tlm_value(tlm)
+        while self.tlm_value(tlm) == old_val:
+            if out is not None:
+                print(out)
+            time.sleep(poll)
+
+    def disable_module(self, name):
+        """Disable a module. Does not unsubscribe from any telemetry."""
+        if isinstance(getattr(self, name, None), PylinerModule):
+            delattr(self, name)
+        else:
+            raise AttributeError('Cannot disable a module that was never '
+                                 'enabled.')
+
+    def enable_module(self, name, module):
+        """
+        Enable a Pyliner Module on this vehicle. All required telemetry for the
+        new module will be subscribed to.
+
+        Args:
+            name (str): The name that the module will be initialized under.
+            module (Type[PylinerModule]): The module to enable.
+        """
+        if not issubclass(module, PylinerModule):
+            return TypeError('module must implement PylinerModule.')
+        if not hasattr(self, name):
+            self.subscribe({'tlm': module.required_telemetry()})
+            setattr(self, name, module(self))
+        else:
+            raise ValueError('Attempting to enable a module on top of an '
+                             'existing variable or module.')
 
     def _get_airliner_op(self, op_path):
         """
@@ -162,7 +216,7 @@ class Pyliner(object):
         for arg in cmd["args"]:
             arg_path = self._get_op_attr(cmd["name"] + '/' + arg["name"])
             if not arg_path:
-                raise InvalidCommandException(
+                raise exceptions.InvalidCommandException(
                     "Invalid command received. Argument operational name (%s) not found." % arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
         exec (assign)
@@ -187,7 +241,7 @@ class Pyliner(object):
         exec (assign_string)
         return value
 
-    def get_tlm(self, tlm):
+    def tlm(self, tlm):
         """ Get all data of specified telemetry item
 
         Args:
@@ -201,7 +255,7 @@ class Pyliner(object):
         else:
             return self.telemetry[tlm]
 
-    def get_tlm_value(self, tlm):
+    def tlm_value(self, tlm):
         """ Get current value of specified telemetry item
 
         Args:
@@ -266,14 +320,7 @@ class Pyliner(object):
         """ Returns a protobuf object for the type of airliner msg passed """
         return pyliner_msgs.proto_msg_map[msg]()
 
-    def _recv_telemetry(self):
-        """
-        Listen to the the socket TO is publishing to. If it receives telemetry
-        we're subscribed to notify the correct callback.
-        """
-        self.listener_thread.daemon = True
-        self.listener_thread.start()
-
+    @deprecated
     def send_command(self, cmd):
         """ User accessible function to send a command to the software bus.
 
@@ -289,16 +336,15 @@ class Pyliner(object):
         args_present = False
 
         if "name" not in cmd:
-            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
+            raise exceptions.InvalidCommandException("Invalid command received. Missing \"name\" attribute")
 
         # Check if no args cmd
-        if "args" in cmd:
-            args_present = True
+        args_present = "args" in cmd
 
         # Get command operation
         op = self._get_airliner_op(cmd["name"])
         if not op:
-            raise InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
+            raise exceptions.InvalidCommandException("Invalid command received. Operation (%s) not defined." % cmd["name"])
 
         # Generate airliner cmd
         header = self._get_ccsds_msg(op)
@@ -319,18 +365,16 @@ class Pyliner(object):
 
         Args:
             cmd (dict): A command specifiying the operation to execute and any args for it.
-                       E.g.    {'name':'/Airliner/ES/Noop'}
-                                    or
-                               {'name':'/Airliner/PX4/ManualControlSetpoint',
-                                'args':[
-                                   {'name':'X', 'value':'0'},
-                                   {'name':'Y', 'value':'0'},
-                                   {'name':'Z', 'value':'500'}]}
+                E.g. {'name':'/Airliner/ES/Noop'}
+                    or
+                     {'name':'/Airliner/PX4/ManualControlSetpoint',
+                      'args':[
+                          {'name':'X', 'value':'0'},
+                          {'name':'Y', 'value':'0'},
+                          {'name':'Z', 'value':'500'}]}
         """
-        args_present = False
-
         if "name" not in tlm:
-            raise InvalidCommandException("Invalid command received. Missing \"name\" attribute")
+            raise exceptions.InvalidCommandException("Invalid command received. Missing \"name\" attribute")
 
         # Check if no args tlm
         args_present = "args" in tlm
@@ -338,7 +382,7 @@ class Pyliner(object):
         # Get command operation
         op = self._get_airliner_op(tlm["name"])
         if not op:
-            raise InvalidCommandException("Invalid telemetry received. Operation (%s) not defined." % tlm["name"])
+            raise exceptions.InvalidCommandException("Invalid telemetry received. Operation (%s) not defined." % tlm["name"])
 
         # Generate airliner cmd
         header = self._get_ccsds_msg(op)
@@ -368,18 +412,19 @@ class Pyliner(object):
                             level=logging.DEBUG)
 
     def subscribe(self, tlm, callback=None):
-        """ Receives an operational path to an airliner msg attribute to subscribe
+        """
+        Receives an operational path to an airliner msg attribute to subscribe
         to, as well as an optional callback function.
 
         Args:
-            tlm (dict): Dictionary specifying the telemtry items to subscribe to, using the
-                       telemtry item's operational names.
-                       E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}
-                            or
-                            {'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/ErrCounter']}
+            tlm (dict): Dictionary specifying the telemtry items to subscribe
+                to, using the telemetry item's operational names.
+                E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}
+                    or
+                     {'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/ErrCounter']}
 
-            callback (function, optional): Function to call when this telemetry is updated. If not specified
-                                defaults to on_recv_telemetry
+            callback (function): Function to call when this telemetry is
+                updated. If not specified defaults to on_recv_telemetry.
         """
         for tlm_item in tlm["tlm"]:
             # Get operation for specified telemetry
@@ -387,7 +432,7 @@ class Pyliner(object):
             if not op:
                 err_msg = "Invalid telemetry operational name received. Operation (%s) not defined." % tlm_item
                 self.log(err_msg, LogLevel.Error)
-                raise InvalidOperationException(err_msg)
+                raise exceptions.InvalidOperationException(err_msg)
 
             # Add entry to subscribers list
             self.subscribers.append({'op_path': tlm_item,
@@ -509,5 +554,3 @@ class Pyliner(object):
         ts = TestSuite("test suite", test_cases)
         with open(join(self.log_dir, self.script_name + '_results.xml'), 'w') as f:
             TestSuite.to_file(f, [ts], prettyprint=False)
-
-

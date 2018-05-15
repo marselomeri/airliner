@@ -8,7 +8,7 @@ rocky = Pyliner(
     airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
     ci_port=5009,
     to_port=5012,
-    script_name="FT6_Onboard",
+    script_name="FT7_Onboard",
     log_dir=join(dirname(abspath(__file__)), "logs"))
 
 vehicle_arm(rocky)

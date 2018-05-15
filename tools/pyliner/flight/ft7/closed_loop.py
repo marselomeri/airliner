@@ -43,13 +43,13 @@ def vehicle_spiral_ccw():
 
 def  vehicle_fly_spiral_ccw(deltaZ):
     print "Fly spiral CCW and up " + str(deltaZ) +" meters"
-    initial_altitude = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+    initial_altitude = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
     print "initial altitude: " + str(initial_altitude)
     current_altitude = initial_altitude
     while(current_altitude < (initial_altitude + deltaZ)):
         vehicle_spiral_ccw()
         time.sleep(1.0)
-        current_altitude = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+        current_altitude = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
         print "altitude: " + str(current_altitude)
     vehicle_stable_hover(rocky)
     time.sleep(1)
@@ -72,11 +72,11 @@ rocky.subscribe({'tlm': ['/Airliner/CNTL/VehicleGlobalPosition/Lat',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelD']})
 
 # Wait for pyliner data dictionary to populate with initial values
-while rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt') == 'NULL':
+while rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt') == 'NULL':
     print "Waiting for telemetry downlink..."
     time.sleep(1)
 
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+alt = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Arm")
@@ -85,13 +85,13 @@ atp(rocky, "Takeoff")
 vehicle_takeoff(rocky)
 vehicle_flight_mode(rocky, FlightMode.PosCtl)
 
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+alt = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Move up")
 vehicle_move(rocky, Direction.Up, speed = .85, time = 1, stop = True, stop_wait = 3)
 
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
+alt = rocky.tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Fly spiral")

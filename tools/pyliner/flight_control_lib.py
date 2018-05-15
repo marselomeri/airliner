@@ -69,7 +69,8 @@ def vehicle_arm(airliner):
     print "%s: Arming vehicle" % airliner.script_name
     airliner.log("Arming vehicle")
     airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
+        {'name': '/Airliner/CNTL/ManualSetpoint',
+         'args': [
             {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
@@ -98,7 +99,8 @@ def vehicle_arm(airliner):
             {'name': 'DataSource', 'value': 0}]})
     sleep(1)
     airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
+        {'name': '/Airliner/CNTL/ManualSetpoint',
+         'args': [
             {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
@@ -131,7 +133,8 @@ def vehicle_disarm(airliner):
     print "%s: Disarming vehicle" % airliner.script_name
     airliner.log("Disarming vehicle")
     airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
+        {'name': '/Airliner/CNTL/ManualSetpoint',
+         'args': [
             {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
@@ -164,7 +167,8 @@ def vehicle_takeoff(airliner):
     print "%s: Auto takeoff" % airliner.script_name
     airliner.log("Auto takeoff")
     airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
+        {'name': '/Airliner/CNTL/ManualSetpoint',
+         'args': [
             {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
@@ -209,7 +213,8 @@ def vehicle_mode_posctl(airliner):
     print "%s: Position control" % airliner.script_name
     airliner.log("Position control")
     airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
+        {'name': '/Airliner/CNTL/ManualSetpoint',
+         'args': [
             {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
@@ -241,7 +246,8 @@ def vehicle_mode_posctl(airliner):
 def vehicle_stable_hover(airliner):
     airliner.log("Stable hover")
     airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
+        {'name': '/Airliner/CNTL/ManualSetpoint',
+         'args': [
             {'name': 'Timestamp', 'value': get_time()},
             {'name': 'X', 'value': 0.0},
             {'name': 'Y', 'value': 0.0},
