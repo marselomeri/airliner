@@ -67,31 +67,13 @@ rocky.subscribe({'tlm': ['/Airliner/CNTL/VehicleGlobalPosition/Lat',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelN',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelE',
                          '/Airliner/CNTL/VehicleGlobalPosition/VelD',
-                         '/Airliner/CNTL/SetpointTriplet/Timestamp']})
+                         '/Airliner/CNTL/SetpointTriplet/Timestamp',
+                         '/Airliner/CNTL/SetpointTriplet/Cur_Lat']})
 
 # Wait for pyliner data dictionary to populate with initial values
 while rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt') == 'NULL':
     print "Waiting for telemetry downlink..."
     time.sleep(1)
-    
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
-print "Alt: " + str(alt)
-
-atp(rocky, "Arm")
-vehicle_arm(rocky)
-
-atp(rocky, "Takeoff")
-vehicle_takeoff(rocky)
-vehicle_flight_mode(rocky, FlightMode.PosCtl)
-
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
-print "Alt: " + str(alt)
-
-atp(rocky, "Move up")
-vehicle_move(rocky, Direction.Up, speed = .85, time = 1, stop = True, stop_wait = 3)
-
-alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
-print "Alt: " + str(alt)
 
 rocky.send_telemetry(
     {'name':'/Airliner/CNTL/SetpointTriplet', 'args':[
@@ -184,18 +166,7 @@ rocky.send_telemetry(
     {'name':'Next_AccelerationValid', 'value':0},
     {'name':'Next_AccelerationIsForce', 'value':0}]})
 
+print rocky.get_tlm_value("/Airliner/CNTL/SetpointTriplet/Cur_Lat")
+sleep(1)
+print rocky.get_tlm_value("/Airliner/CNTL/SetpointTriplet/Cur_Lat")
 
-#atp(rocky, "Fly spiral")
-#vehicle_fly_spiral_ccw(10)
-
-#atp(rocky, "Move forward")
-#vehicle_move(rocky, Direction.Forward, speed = .75, time = 2, stop = True, stop_wait = 3)
-#atp(rocky, "Move left")
-#vehicle_move(rocky, Direction.Left, speed = .75, time = 2, stop = True, stop_wait = 3)
-#atp(rocky, "Move backward")
-#vehicle_move(rocky, Direction.Backward, speed = .75, time = 2, stop = True, stop_wait = 3)
-#atp(rocky, "Move right")
-#vehicle_move(rocky, Direction.Right, speed = .75, time = 2, stop = True, stop_wait = 3)
-
-atp(rocky, "RTL")
-vehicle_rtl(rocky)
