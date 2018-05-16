@@ -1,5 +1,6 @@
 import logging
 from abc import abstractmethod, ABCMeta
+from builtins import isinstance
 from datetime import datetime
 from genericpath import exists
 from os import mkdir
@@ -19,6 +20,8 @@ class BasePyliner(object):
             log_dir = join(dirname(realpath(__file__)), "logs")
 
         self._modules = {}
+        """:type: Dict[str, PylinerModule]"""
+        self.start_time = datetime.now()
 
         # Logging
         self.fails = 0
@@ -27,7 +30,6 @@ class BasePyliner(object):
                         "_pyliner_" + self.script_name + ".log"
         self.test_description = []
         self.passes = 0
-        self.start_time = datetime.now()
         self.log_dir = log_dir
         self.duration = 0
         self._setup_log()
@@ -43,6 +45,8 @@ class BasePyliner(object):
     def __getattr__(self, item):
         if item in self._modules:
             return self._modules[item]
+        raise AttributeError('{} is not a function or module of this '
+                             'Pyliner instance.'.format(item))
 
     @abstractmethod
     def critical_failure(self, exc_type, exc_val, exc_tb):
@@ -52,21 +56,23 @@ class BasePyliner(object):
         """Disable a module by removing it from the vehicle.
 
         Note:
-            Any modules that attempt to call this module will result in crashing
-            the script.
+            Any modules that attempt to call the disabled module will produce
+            an error.
         """
         if name in self._modules:
             raise AttributeError('Cannot disable a module that was never '
                                  'enabled.')
+        self._modules[name].detach()
         del self._modules[name]
 
     def enable_module(self, name, module):
         """Enable a Pyliner Module on this vehicle."""
-        if not issubclass(module, PylinerModule):
-            return TypeError('module must implement PylinerModule.')
-        elif name in self._modules:
+        if name in self._modules:
             raise ValueError('Attempting to enable a module on top of an '
-                             'existing variable or module.')
+                             'existing module.')
+        if not isinstance(module, PylinerModule):
+            return TypeError('module must implement PylinerModule.')
+        module.attach(self)
         self._modules[name] = module
 
     def log(self, text, level=LogLevel.Info):

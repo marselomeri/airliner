@@ -24,7 +24,8 @@ class Pyliner(BasePyliner):
     default modules. TODO Implement replacing in constructor
     """
 
-    def __init__(self, script_name=None, log_dir=None):
+    def __init__(self, airliner_map, ci_port, to_port,
+                 script_name=None, log_dir=None):
         """Create an instance of Pyliner.
 
         Args:
@@ -36,12 +37,11 @@ class Pyliner(BasePyliner):
         super(Pyliner, self).__init__(script_name=script_name, log_dir=log_dir)
 
         # Default modules
-        self.enable_module('com', lambda s: Communication(
-            s,
-            airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
-            ci_port=5009,
-            to_port=5012))
-        self.enable_module('nav', Navigation)
+        self.enable_module('com', Communication(
+            airliner_map=airliner_map,
+            ci_port=ci_port,
+            to_port=to_port))
+        self.enable_module('nav', Navigation())
 
     def critical_failure(self, exc_type, exc_val, exc_tb):
         print(exc_type, exc_val, exc_tb)
@@ -50,13 +50,13 @@ class Pyliner(BasePyliner):
         self.wait_clean()
 
     def wait_clean(self):
-        while self.send_dirty:
+        while self.com.send_dirty:
             time.sleep(1 / 32)
 
     def arm(self):
         print("%s: Arming vehicle" % self.script_name)
         self.log("Arming vehicle")
-        self.send_telemetry(
+        self.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [
                  {'name': 'Timestamp', 'value': get_time()},
@@ -86,7 +86,7 @@ class Pyliner(BasePyliner):
                  {'name': 'ModeSlot', 'value': 0},
                  {'name': 'DataSource', 'value': 0}]})
         self.wait_clean()
-        self.send_telemetry(
+        self.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [
                  {'name': 'Timestamp', 'value': get_time()},
@@ -147,7 +147,7 @@ class Pyliner(BasePyliner):
             module (Type[PylinerModule]): The module to enable.
         """
         super(Pyliner, self).enable_module(name, module)
-        self.subscribe({'tlm': module.required_telemetry_paths()})
+        self.com.subscribe({'tlm': module.required_telemetry_paths()})
 
     def flight_mode(self, mode):
         if not mode:
@@ -164,7 +164,7 @@ class Pyliner(BasePyliner):
     def mode_posctl(self):
         print "%s: Position control" % self.script_name
         self.log("Position control")
-        self.send_telemetry(
+        self.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [
                  {'name': 'Timestamp', 'value': get_time()},
@@ -197,7 +197,7 @@ class Pyliner(BasePyliner):
     def takeoff(self):
         print("%s: Auto takeoff" % self.script_name)
         self.log("Auto takeoff")
-        self.send_telemetry(
+        self.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [
                  {'name': 'Timestamp', 'value': get_time()},
@@ -240,7 +240,7 @@ class Pyliner(BasePyliner):
         if tlm not in self.telemetry:
             return None
         else:
-            return self.telemetry[tlm]
+            return self.com.telemetry[tlm]
 
     def tlm_value(self, tlm):
         """ Get current value of specified telemetry item
@@ -251,15 +251,15 @@ class Pyliner(BasePyliner):
         Returns:
             Current value of telemetry or None if not found
         """
-        if tlm not in self.telemetry:
+        if tlm not in self.com.telemetry:
             return None
         else:
-            return self.telemetry[tlm]['value']
+            return self.com.telemetry[tlm]['value']
 
     def rtl(self):
         print("%s: RTL" % self.script_name)
         self.log("RTL")
-        self.send_telemetry(
+        self.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [
                  {'name': 'Timestamp', 'value': get_time()},

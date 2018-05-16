@@ -17,17 +17,20 @@ DEFAULT_TO_PORT = 5011
 
 class Communication(PylinerModule):
     """Provide methods to send and receive telemetry to a vehicle."""
-    def __init__(self, vehicle, address='localhost', ci_port=DEFAULT_CI_PORT,
+    def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT,
                  to_port=DEFAULT_TO_PORT, airliner_map=None):
-        super(Communication, self).__init__(vehicle)
+        super(Communication, self).__init__()
 
         if airliner_map is None:
             airliner_map = join(dirname(realpath(__file__)), "airliner.json")
+        self.airliner_data = read_json(airliner_map)
+        if self.airliner_data is None:
+            raise ValueError('There was a problem reading Airliner data at '
+                             '{}'.format(airliner_map))
 
         # Telemetry variables
         self.address = address
         self.all_telemetry = []
-        self.airliner_data = read_json(airliner_map)
         self.ci_port = ci_port
         self.ci_socket = init_socket()
         self.ingest_active = True
@@ -343,7 +346,7 @@ class Communication(PylinerModule):
                      {'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/ErrCounter']}
 
             callback (function): Function to call when this telemetry is
-                updated. If not specified defaults to on_recv_telemetry.
+                updated. If not specified defaults to _on_recv_telemetry.
         """
         for tlm_item in tlm["tlm"]:
             # Get operation for specified telemetry

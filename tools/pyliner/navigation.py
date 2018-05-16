@@ -56,7 +56,7 @@ class Navigation(PylinerModule):
         while (target_altitude - self.altitude) > tolerance:
             new_z = method(self.altitude, target_altitude)
             capped_z = min(max(new_z, -1), 1)
-            self.vehicle.send_telemetry(
+            self.vehicle.com.send_telemetry(
                 {'name': '/Airliner/CNTL/ManualSetpoint',
                  'args': [
                      {'name': 'Timestamp', 'value': get_time()},
@@ -86,7 +86,7 @@ class Navigation(PylinerModule):
                      {'name': 'ModeSlot', 'value': 0},
                      {'name': 'DataSource', 'value': 0}]})
             time.sleep(1/32)
-        self.vehicle.send_telemetry(
+        self.vehicle.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [
                  {'name': 'Timestamp', 'value': get_time()},
