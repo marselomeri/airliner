@@ -1,8 +1,10 @@
 import SocketServer
 import json
 import socket
+import threading
 from datetime import datetime
 
+import time
 from flufl.enum import Enum
 
 
@@ -20,6 +22,24 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
         self.callback(self.request)
+
+
+class PeriodicExecutor(threading.Thread):
+    """Executes a callback function every x-seconds."""
+    _exec_num = 0
+
+    def __init__(self, callback, every=1):
+        super(PeriodicExecutor, self).__init__(
+            name='PeriodicExecutor{}'.format(self._exec_num))
+        self._exec_num += 1
+        self.callback = callback
+        self.every = every
+        self.daemon = True
+
+    def run(self):
+        while True:
+            self.callback()
+            time.sleep(self.every)
 
 
 def get_time():

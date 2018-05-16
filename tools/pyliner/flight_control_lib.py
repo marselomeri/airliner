@@ -25,13 +25,6 @@ class Direction(Enum):
     Up = 9
 
 
-def atp(airliner, txt):
-    print "%s requires authorization for: %s" % (airliner.script_name, txt)
-    raw_input("Press enter to proceed >>>")
-    airliner.log("%s requires authorization to proceed. Requesting: %s" % (
-        airliner.script_name, txt))
-
-
 # Flight control commands
 def vehicle_move(airliner, direction, speed=0.5, time=1, stop=True,
                  stop_wait=0):
@@ -65,70 +58,6 @@ def vehicle_move(airliner, direction, speed=0.5, time=1, stop=True,
             sleep(stop_wait)
 
 
-def vehicle_arm(airliner):
-    print "%s: Arming vehicle" % airliner.script_name
-    airliner.log("Arming vehicle")
-    airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint',
-         'args': [
-            {'name': 'Timestamp', 'value': get_time()},
-            {'name': 'X', 'value': 0.0},
-            {'name': 'Y', 'value': 0.0},
-            {'name': 'Z', 'value': 0.0},
-            {'name': 'R', 'value': 0.0},
-            {'name': 'Flaps', 'value': 0.0},
-            {'name': 'Aux1', 'value': 0.0},
-            {'name': 'Aux2', 'value': 0.0},
-            {'name': 'Aux3', 'value': 0.0},
-            {'name': 'Aux4', 'value': 0.0},
-            {'name': 'Aux5', 'value': 0.0},
-            {'name': 'ModeSwitch', 'value': 0},
-            {'name': 'ReturnSwitch', 'value': 0},
-            {'name': 'RattitudeSwitch', 'value': 0},
-            {'name': 'PosctlSwitch', 'value': 0},
-            {'name': 'LoiterSwitch', 'value': 0},
-            {'name': 'AcroSwitch', 'value': 0},
-            {'name': 'OffboardSwitch', 'value': 0},
-            {'name': 'KillSwitch', 'value': 0},
-            {'name': 'TransitionSwitch', 'value': 0},
-            {'name': 'GearSwitch', 'value': 0},
-            {'name': 'ArmSwitch', 'value': 3},  # OFF
-            {'name': 'StabSwitch', 'value': 0},
-            {'name': 'ManSwitch', 'value': 0},
-            {'name': 'ModeSlot', 'value': 0},
-            {'name': 'DataSource', 'value': 0}]})
-    sleep(1)
-    airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint',
-         'args': [
-            {'name': 'Timestamp', 'value': get_time()},
-            {'name': 'X', 'value': 0.0},
-            {'name': 'Y', 'value': 0.0},
-            {'name': 'Z', 'value': 0.0},
-            {'name': 'R', 'value': 0.0},
-            {'name': 'Flaps', 'value': 0.0},
-            {'name': 'Aux1', 'value': 0.0},
-            {'name': 'Aux2', 'value': 0.0},
-            {'name': 'Aux3', 'value': 0.0},
-            {'name': 'Aux4', 'value': 0.0},
-            {'name': 'Aux5', 'value': 0.0},
-            {'name': 'ModeSwitch', 'value': 0},
-            {'name': 'ReturnSwitch', 'value': 0},
-            {'name': 'RattitudeSwitch', 'value': 0},
-            {'name': 'PosctlSwitch', 'value': 0},
-            {'name': 'LoiterSwitch', 'value': 0},
-            {'name': 'AcroSwitch', 'value': 0},
-            {'name': 'OffboardSwitch', 'value': 0},
-            {'name': 'KillSwitch', 'value': 0},
-            {'name': 'TransitionSwitch', 'value': 0},
-            {'name': 'GearSwitch', 'value': 0},
-            {'name': 'ArmSwitch', 'value': 1},  # ON
-            {'name': 'StabSwitch', 'value': 0},
-            {'name': 'ManSwitch', 'value': 0},
-            {'name': 'ModeSlot', 'value': 0},
-            {'name': 'DataSource', 'value': 0}]})
-
-
 def vehicle_disarm(airliner):
     print "%s: Disarming vehicle" % airliner.script_name
     airliner.log("Disarming vehicle")
@@ -157,86 +86,6 @@ def vehicle_disarm(airliner):
             {'name': 'TransitionSwitch', 'value': 0},
             {'name': 'GearSwitch', 'value': 0},
             {'name': 'ArmSwitch', 'value': 3},  # OFF
-            {'name': 'StabSwitch', 'value': 0},
-            {'name': 'ManSwitch', 'value': 0},
-            {'name': 'ModeSlot', 'value': 0},
-            {'name': 'DataSource', 'value': 0}]})
-
-
-def vehicle_takeoff(airliner):
-    print "%s: Auto takeoff" % airliner.script_name
-    airliner.log("Auto takeoff")
-    airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint',
-         'args': [
-            {'name': 'Timestamp', 'value': get_time()},
-            {'name': 'X', 'value': 0.0},
-            {'name': 'Y', 'value': 0.0},
-            {'name': 'Z', 'value': 0.0},
-            {'name': 'R', 'value': 0.0},
-            {'name': 'Flaps', 'value': 0.0},
-            {'name': 'Aux1', 'value': 0.0},
-            {'name': 'Aux2', 'value': 0.0},
-            {'name': 'Aux3', 'value': 0.0},
-            {'name': 'Aux4', 'value': 0.0},
-            {'name': 'Aux5', 'value': 0.0},
-            {'name': 'ModeSwitch', 'value': 0},
-            {'name': 'ReturnSwitch', 'value': 0},
-            {'name': 'RattitudeSwitch', 'value': 0},
-            {'name': 'PosctlSwitch', 'value': 0},
-            {'name': 'LoiterSwitch', 'value': 0},
-            {'name': 'AcroSwitch', 'value': 0},
-            {'name': 'OffboardSwitch', 'value': 0},
-            {'name': 'KillSwitch', 'value': 0},
-            {'name': 'TransitionSwitch', 'value': 1},  # ON
-            {'name': 'GearSwitch', 'value': 0},
-            {'name': 'ArmSwitch', 'value': 1},
-            {'name': 'StabSwitch', 'value': 0},
-            {'name': 'ManSwitch', 'value': 0},
-            {'name': 'ModeSlot', 'value': 0},
-            {'name': 'DataSource', 'value': 0}]})
-    sleep(5)
-
-
-def vehicle_flight_mode(airliner, mode):
-    if not mode:
-        airliner.log("Mode transition requires a passed mode.", LogLevel.Error)
-    if mode == FlightMode.Manual:
-        raise NotImplemented()
-    elif mode == FlightMode.AltCtl:
-        raise NotImplemented()
-    elif mode == FlightMode.PosCtl:
-        vehicle_mode_posctl(airliner)
-
-
-def vehicle_mode_posctl(airliner):
-    print "%s: Position control" % airliner.script_name
-    airliner.log("Position control")
-    airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint',
-         'args': [
-            {'name': 'Timestamp', 'value': get_time()},
-            {'name': 'X', 'value': 0.0},
-            {'name': 'Y', 'value': 0.0},
-            {'name': 'Z', 'value': 0.5},
-            {'name': 'R', 'value': 0.0},
-            {'name': 'Flaps', 'value': 0.0},
-            {'name': 'Aux1', 'value': 0.0},
-            {'name': 'Aux2', 'value': 0.0},
-            {'name': 'Aux3', 'value': 0.0},
-            {'name': 'Aux4', 'value': 0.0},
-            {'name': 'Aux5', 'value': 0.0},
-            {'name': 'ModeSwitch', 'value': 0},
-            {'name': 'ReturnSwitch', 'value': 0},
-            {'name': 'RattitudeSwitch', 'value': 0},
-            {'name': 'PosctlSwitch', 'value': 1},  # ON
-            {'name': 'LoiterSwitch', 'value': 0},
-            {'name': 'AcroSwitch', 'value': 0},
-            {'name': 'OffboardSwitch', 'value': 0},
-            {'name': 'KillSwitch', 'value': 0},
-            {'name': 'TransitionSwitch', 'value': 0},
-            {'name': 'GearSwitch', 'value': 1},
-            {'name': 'ArmSwitch', 'value': 0},
             {'name': 'StabSwitch', 'value': 0},
             {'name': 'ManSwitch', 'value': 0},
             {'name': 'ModeSlot', 'value': 0},
@@ -447,35 +296,3 @@ def vehicle_move_up(airliner, percent_speed, time):
             {'name': 'ModeSlot', 'value': 0},
             {'name': 'DataSource', 'value': 0}]})
 
-
-def vehicle_rtl(airliner):
-    print "%s: RTL" % airliner.script_name
-    airliner.log("RTL")
-    airliner.send_telemetry(
-        {'name': '/Airliner/CNTL/ManualSetpoint', 'args': [
-            {'name': 'Timestamp', 'value': get_time()},
-            {'name': 'X', 'value': 0.0},
-            {'name': 'Y', 'value': 0.0},
-            {'name': 'Z', 'value': 0.0},
-            {'name': 'R', 'value': 0.0},
-            {'name': 'Flaps', 'value': 0.0},
-            {'name': 'Aux1', 'value': 0.0},
-            {'name': 'Aux2', 'value': 0.0},
-            {'name': 'Aux3', 'value': 0.0},
-            {'name': 'Aux4', 'value': 0.0},
-            {'name': 'Aux5', 'value': 0.0},
-            {'name': 'ModeSwitch', 'value': 0},
-            {'name': 'ReturnSwitch', 'value': 1},  # ON
-            {'name': 'RattitudeSwitch', 'value': 0},
-            {'name': 'PosctlSwitch', 'value': 0},
-            {'name': 'LoiterSwitch', 'value': 0},
-            {'name': 'AcroSwitch', 'value': 0},
-            {'name': 'OffboardSwitch', 'value': 0},
-            {'name': 'KillSwitch', 'value': 0},
-            {'name': 'TransitionSwitch', 'value': 0},
-            {'name': 'GearSwitch', 'value': 3},
-            {'name': 'ArmSwitch', 'value': 1},
-            {'name': 'StabSwitch', 'value': 0},
-            {'name': 'ManSwitch', 'value': 0},
-            {'name': 'ModeSlot', 'value': 0},
-            {'name': 'DataSource', 'value': 0}]})

@@ -2,9 +2,7 @@ from os.path import join, dirname, abspath, basename
 
 import pyliner
 from flight_control_lib import FlightMode
-from navigation import Navigation
-
-print(basename(__file__))
+from navigation import Navigation, constant, proportional
 
 with pyliner.Pyliner(
         airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
@@ -32,8 +30,7 @@ with pyliner.Pyliner(
     rocky.flight_mode(FlightMode.PosCtl)
 
     rocky.atp('Move Up')
-    print(rocky.nav.altitude)
-    rocky.nav.up(10)
+    rocky.nav.up(10, proportional(0.1), tolerance=0.5)
 
     rocky.atp('First')
     rocky.nav.forward(5)

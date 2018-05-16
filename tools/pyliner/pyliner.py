@@ -14,6 +14,7 @@ from deprecated import deprecated
 import exceptions
 import python_pb.pyliner_msgs as pyliner_msgs
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
+from flight_control_lib import FlightMode
 from pyliner_module import PylinerModule
 from util import init_socket, server_factory, read_json, serialize, LogLevel
 
@@ -22,9 +23,7 @@ DEFAULT_TO_PORT = 5011
 
 
 class Pyliner(object):
-    """A connection to a vehicle.
-
-
+    """A Pyliner object represents a vehicle that the user may control.
     """
     def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT,
                  to_port=DEFAULT_TO_PORT, script_name=None, airliner_map=None,
@@ -73,6 +72,83 @@ class Pyliner(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type:
             print(exc_type, exc_val, exc_tb)
+            print('Error in execution. Returning to Launch')
+            self.rtl()
+            self.wait_clean()
+
+    def wait_clean(self):
+        while self.send_dirty:
+            time.sleep(1 / 32)
+
+    def arm(self):
+        print("%s: Arming vehicle" % self.script_name)
+        self.log("Arming vehicle")
+        self.send_telemetry(
+            {'name': '/Airliner/CNTL/ManualSetpoint',
+             'args': [
+                 {'name': 'Timestamp', 'value': get_time()},
+                 {'name': 'X', 'value': 0.0},
+                 {'name': 'Y', 'value': 0.0},
+                 {'name': 'Z', 'value': 0.0},
+                 {'name': 'R', 'value': 0.0},
+                 {'name': 'Flaps', 'value': 0.0},
+                 {'name': 'Aux1', 'value': 0.0},
+                 {'name': 'Aux2', 'value': 0.0},
+                 {'name': 'Aux3', 'value': 0.0},
+                 {'name': 'Aux4', 'value': 0.0},
+                 {'name': 'Aux5', 'value': 0.0},
+                 {'name': 'ModeSwitch', 'value': 0},
+                 {'name': 'ReturnSwitch', 'value': 0},
+                 {'name': 'RattitudeSwitch', 'value': 0},
+                 {'name': 'PosctlSwitch', 'value': 0},
+                 {'name': 'LoiterSwitch', 'value': 0},
+                 {'name': 'AcroSwitch', 'value': 0},
+                 {'name': 'OffboardSwitch', 'value': 0},
+                 {'name': 'KillSwitch', 'value': 0},
+                 {'name': 'TransitionSwitch', 'value': 0},
+                 {'name': 'GearSwitch', 'value': 0},
+                 {'name': 'ArmSwitch', 'value': 3},  # OFF
+                 {'name': 'StabSwitch', 'value': 0},
+                 {'name': 'ManSwitch', 'value': 0},
+                 {'name': 'ModeSlot', 'value': 0},
+                 {'name': 'DataSource', 'value': 0}]})
+        self.wait_clean()
+        self.send_telemetry(
+            {'name': '/Airliner/CNTL/ManualSetpoint',
+             'args': [
+                 {'name': 'Timestamp', 'value': get_time()},
+                 {'name': 'X', 'value': 0.0},
+                 {'name': 'Y', 'value': 0.0},
+                 {'name': 'Z', 'value': 0.0},
+                 {'name': 'R', 'value': 0.0},
+                 {'name': 'Flaps', 'value': 0.0},
+                 {'name': 'Aux1', 'value': 0.0},
+                 {'name': 'Aux2', 'value': 0.0},
+                 {'name': 'Aux3', 'value': 0.0},
+                 {'name': 'Aux4', 'value': 0.0},
+                 {'name': 'Aux5', 'value': 0.0},
+                 {'name': 'ModeSwitch', 'value': 0},
+                 {'name': 'ReturnSwitch', 'value': 0},
+                 {'name': 'RattitudeSwitch', 'value': 0},
+                 {'name': 'PosctlSwitch', 'value': 0},
+                 {'name': 'LoiterSwitch', 'value': 0},
+                 {'name': 'AcroSwitch', 'value': 0},
+                 {'name': 'OffboardSwitch', 'value': 0},
+                 {'name': 'KillSwitch', 'value': 0},
+                 {'name': 'TransitionSwitch', 'value': 0},
+                 {'name': 'GearSwitch', 'value': 0},
+                 {'name': 'ArmSwitch', 'value': 1},  # ON
+                 {'name': 'StabSwitch', 'value': 0},
+                 {'name': 'ManSwitch', 'value': 0},
+                 {'name': 'ModeSlot', 'value': 0},
+                 {'name': 'DataSource', 'value': 0}]})
+        self.wait_clean()
+
+    def atp(self, txt):
+        print("%s requires authorization for: %s" % (self.script_name, txt))
+        raw_input("Press enter to proceed >>>")
+        self.log("%s requires authorization to proceed. Requesting: %s" % (
+            self.script_name, txt))
 
     def await_fresh(self, tlm, poll=1, out=None):
         """Loop until the telemetry value changes. This is blocking.
@@ -108,7 +184,7 @@ class Pyliner(object):
         if not issubclass(module, PylinerModule):
             return TypeError('module must implement PylinerModule.')
         if not hasattr(self, name):
-            self.subscribe({'tlm': module.required_telemetry()})
+            self.subscribe({'tlm': module.required_telemetry_paths()})
             setattr(self, name, module(self))
         else:
             raise ValueError('Attempting to enable a module on top of an '
@@ -241,6 +317,85 @@ class Pyliner(object):
         exec (assign_string)
         return value
 
+    def flight_mode(self, mode):
+        if not mode:
+            self.log("Mode transition requires a passed mode.",
+                         LogLevel.Error)
+        if mode == FlightMode.Manual:
+            raise NotImplemented()
+        elif mode == FlightMode.AltCtl:
+            raise NotImplemented()
+        elif mode == FlightMode.PosCtl:
+            self.mode_posctl()
+        self.wait_clean()
+
+    def mode_posctl(self):
+        print "%s: Position control" % self.script_name
+        self.log("Position control")
+        self.send_telemetry(
+            {'name': '/Airliner/CNTL/ManualSetpoint',
+             'args': [
+                 {'name': 'Timestamp', 'value': get_time()},
+                 {'name': 'X', 'value': 0.0},
+                 {'name': 'Y', 'value': 0.0},
+                 {'name': 'Z', 'value': 0.5},
+                 {'name': 'R', 'value': 0.0},
+                 {'name': 'Flaps', 'value': 0.0},
+                 {'name': 'Aux1', 'value': 0.0},
+                 {'name': 'Aux2', 'value': 0.0},
+                 {'name': 'Aux3', 'value': 0.0},
+                 {'name': 'Aux4', 'value': 0.0},
+                 {'name': 'Aux5', 'value': 0.0},
+                 {'name': 'ModeSwitch', 'value': 0},
+                 {'name': 'ReturnSwitch', 'value': 0},
+                 {'name': 'RattitudeSwitch', 'value': 0},
+                 {'name': 'PosctlSwitch', 'value': 1},  # ON
+                 {'name': 'LoiterSwitch', 'value': 0},
+                 {'name': 'AcroSwitch', 'value': 0},
+                 {'name': 'OffboardSwitch', 'value': 0},
+                 {'name': 'KillSwitch', 'value': 0},
+                 {'name': 'TransitionSwitch', 'value': 0},
+                 {'name': 'GearSwitch', 'value': 1},
+                 {'name': 'ArmSwitch', 'value': 0},
+                 {'name': 'StabSwitch', 'value': 0},
+                 {'name': 'ManSwitch', 'value': 0},
+                 {'name': 'ModeSlot', 'value': 0},
+                 {'name': 'DataSource', 'value': 0}]})
+
+    def takeoff(self):
+        print("%s: Auto takeoff" % self.script_name)
+        self.log("Auto takeoff")
+        self.send_telemetry(
+            {'name': '/Airliner/CNTL/ManualSetpoint',
+             'args': [
+                 {'name': 'Timestamp', 'value': get_time()},
+                 {'name': 'X', 'value': 0.0},
+                 {'name': 'Y', 'value': 0.0},
+                 {'name': 'Z', 'value': 0.0},
+                 {'name': 'R', 'value': 0.0},
+                 {'name': 'Flaps', 'value': 0.0},
+                 {'name': 'Aux1', 'value': 0.0},
+                 {'name': 'Aux2', 'value': 0.0},
+                 {'name': 'Aux3', 'value': 0.0},
+                 {'name': 'Aux4', 'value': 0.0},
+                 {'name': 'Aux5', 'value': 0.0},
+                 {'name': 'ModeSwitch', 'value': 0},
+                 {'name': 'ReturnSwitch', 'value': 0},
+                 {'name': 'RattitudeSwitch', 'value': 0},
+                 {'name': 'PosctlSwitch', 'value': 0},
+                 {'name': 'LoiterSwitch', 'value': 0},
+                 {'name': 'AcroSwitch', 'value': 0},
+                 {'name': 'OffboardSwitch', 'value': 0},
+                 {'name': 'KillSwitch', 'value': 0},
+                 {'name': 'TransitionSwitch', 'value': 1},  # ON
+                 {'name': 'GearSwitch', 'value': 0},
+                 {'name': 'ArmSwitch', 'value': 1},
+                 {'name': 'StabSwitch', 'value': 0},
+                 {'name': 'ManSwitch', 'value': 0},
+                 {'name': 'ModeSlot', 'value': 0},
+                 {'name': 'DataSource', 'value': 0}]})
+        time.sleep(5)
+
     def tlm(self, tlm):
         """ Get all data of specified telemetry item
 
@@ -269,56 +424,38 @@ class Pyliner(object):
         else:
             return self.telemetry[tlm]['value']
 
-    def _on_recv_telemetry(self, tlm):
-        """ Callback for TO socket listener
-
-        Args:
-            tlm(str): Raw bytes received from socket
-        """
-        if not self.ingest_active:
-            return
-
-        self.all_telemetry.append(tlm)
-        # self.log("Recvd tlm: " + str(tlm), LogLevel.Debug)
-
-        # TODO: Check if needed
-        hdr = tlm[0][:12]
-        if len(hdr) < 12:
-            self.log("Rcvd tlm with header length: " + str(len(hdr)), LogLevel.Debug)
-            # print "Rcvd tlm with header length: " + str(len(hdr))
-
-        # Get python CCSDS object #TODO: Check what causes this to fail on some tlm pkts
-        try:
-            header = bytearray(hdr)
-            tlm_pkt = CCSDS_TlmPkt_t()
-            tlm_pkt.set_decoded(header)
-            tlm_time = tlm_pkt.get_time()
-        except Exception as e:
-            self.log("Exception when decoding tlm in ccsds: " + str(e), LogLevel.Debug)
-            # print e
-
-        # Iterate over subscribed telemetry to check if we care
-        for subscribed_tlm in self.subscribers:
-            if int(subscribed_tlm['airliner_mid'], 0) == int(tlm_pkt.PriHdr.StreamId.data):
-                # Get pb msg for this msg
-                pb_msg = self._get_pb_decode_obj(tlm[0][12:], subscribed_tlm['op_path'])
-
-                # Generate telemtry dictionary for callback
-                cb_dict = {'name': subscribed_tlm['op_path'],
-                           'value': self._get_pb_value(pb_msg,
-                                                       cb_dict['name']),
-                           'time': tlm_time}
-
-                # Update telemetry dictionary with fresh data
-                self.telemetry[subscribed_tlm['op_path']] = cb_dict
-
-                # Call specified callback for this telemetry if it has one
-                if subscribed_tlm['callback']:
-                    subscribed_tlm['callback'](cb_dict)
-
-    def _proto_obj_factory(self, msg):
-        """ Returns a protobuf object for the type of airliner msg passed """
-        return pyliner_msgs.proto_msg_map[msg]()
+    def rtl(self):
+        print("%s: RTL" % self.script_name)
+        self.log("RTL")
+        self.send_telemetry(
+            {'name': '/Airliner/CNTL/ManualSetpoint',
+             'args': [
+                {'name': 'Timestamp', 'value': get_time()},
+                {'name': 'X', 'value': 0.0},
+                {'name': 'Y', 'value': 0.0},
+                {'name': 'Z', 'value': 0.0},
+                {'name': 'R', 'value': 0.0},
+                {'name': 'Flaps', 'value': 0.0},
+                {'name': 'Aux1', 'value': 0.0},
+                {'name': 'Aux2', 'value': 0.0},
+                {'name': 'Aux3', 'value': 0.0},
+                {'name': 'Aux4', 'value': 0.0},
+                {'name': 'Aux5', 'value': 0.0},
+                {'name': 'ModeSwitch', 'value': 0},
+                {'name': 'ReturnSwitch', 'value': 1},  # ON
+                {'name': 'RattitudeSwitch', 'value': 0},
+                {'name': 'PosctlSwitch', 'value': 0},
+                {'name': 'LoiterSwitch', 'value': 0},
+                {'name': 'AcroSwitch', 'value': 0},
+                {'name': 'OffboardSwitch', 'value': 0},
+                {'name': 'KillSwitch', 'value': 0},
+                {'name': 'TransitionSwitch', 'value': 0},
+                {'name': 'GearSwitch', 'value': 3},
+                {'name': 'ArmSwitch', 'value': 1},
+                {'name': 'StabSwitch', 'value': 0},
+                {'name': 'ManSwitch', 'value': 0},
+                {'name': 'ModeSlot', 'value': 0},
+                {'name': 'DataSource', 'value': 0}]})
 
     @deprecated
     def send_command(self, cmd):
@@ -393,8 +530,9 @@ class Pyliner(object):
         header.set_user_data_length(payload_size)
 
         serial_cmd = serialize(header, payload)
-        self.send_to_airliner(serial_cmd)
-        self.log('Sending telemetry to airliner: %s' % (tlm))
+        self.msg = serial_cmd
+        self.send_dirty = True
+        self.log('Sending telemetry to airliner: %s' % tlm)
         # header.print_base10()
 
     def send_to_airliner(self, msg):
