@@ -40,7 +40,7 @@ class BasePyliner(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         # If the context manager exits without error, all good. Otherwise...
         if exc_type:
-            self.critical_failure(exc_type, exc_val, exc_tb)
+            self.failure_callback(exc_type, exc_val, exc_tb)
 
     def __getattr__(self, item):
         if item in self._modules:

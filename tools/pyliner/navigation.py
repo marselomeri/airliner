@@ -38,16 +38,27 @@ class Navigation(PylinerModule):
     }
 
     # Public Navigation Properties
-    latitude = property(PylinerModule.telem(req_telem['latitude']))
-    longitude = property(PylinerModule.telem(req_telem['longitude']))
-    altitude = property(PylinerModule.telem(req_telem['altitude']))
-    yaw = property(PylinerModule.telem(req_telem['yaw']))
+    @property
+    def altitude(self):
+        return PylinerModule.telem(Navigation.req_telem['altitude'])
+
+    @property
+    def latitude(self):
+        return PylinerModule.telem(Navigation.req_telem['latitude'])
+
+    @property
+    def longitude(self):
+        return PylinerModule.telem(Navigation.req_telem['longitude'])
+
+    @property
+    def yaw(self):
+        return PylinerModule.telem(Navigation.req_telem['yaw'])
 
     def down(self, amount, method=None, tolerance=1):
         self.vnav(by=-amount, method=method, tolerance=tolerance)
 
     def forward(self, amount, tolerance=1):
-        pass
+        print(self.latitude, self.longitude)
 
     def send_telemetry(self, **kwargs):
         telem_dict = {

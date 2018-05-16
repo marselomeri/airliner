@@ -25,7 +25,7 @@ class Pyliner(BasePyliner):
     """
 
     def __init__(self, airliner_map, ci_port, to_port,
-                 script_name=None, log_dir=None):
+                 script_name=None, log_dir=None, failure_callback=None):
         """Create an instance of Pyliner.
 
         Args:
@@ -43,11 +43,11 @@ class Pyliner(BasePyliner):
             to_port=to_port))
         self.enable_module('nav', Navigation())
 
+        self.failure_callback = failure_callback
+
     def critical_failure(self, exc_type, exc_val, exc_tb):
-        print(exc_type, exc_val, exc_tb)
-        print('Error in execution. Returning to Launch')
-        self.rtl()
-        self.wait_clean()
+        if self.failure_callback is not None:
+            self.failure_callback(self, (exc_type, exc_val, exc_tb))
 
     def wait_clean(self):
         while self.com.send_dirty:
