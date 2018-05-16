@@ -53,7 +53,6 @@ class Navigation(PylinerModule):
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a real positive number.')
         target_altitude = self.altitude + by if by else to
-        i = 0
         while (target_altitude - self.altitude) > tolerance:
             new_z = method(self.altitude, target_altitude)
             capped_z = min(max(new_z, -1), 1)

@@ -7,7 +7,6 @@ from base_pyliner import BasePyliner
 from communication import Communication
 from flight_control_lib import FlightMode
 from navigation import Navigation
-from pyliner_module import PylinerModule
 from util import LogLevel, get_time
 
 
@@ -44,12 +43,11 @@ class Pyliner(BasePyliner):
             to_port=5012))
         self.enable_module('nav', Navigation)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type:
-            print(exc_type, exc_val, exc_tb)
-            print('Error in execution. Returning to Launch')
-            self.rtl()
-            self.wait_clean()
+    def critical_failure(self, exc_type, exc_val, exc_tb):
+        print(exc_type, exc_val, exc_tb)
+        print('Error in execution. Returning to Launch')
+        self.rtl()
+        self.wait_clean()
 
     def wait_clean(self):
         while self.send_dirty:
@@ -138,6 +136,18 @@ class Pyliner(BasePyliner):
             if out is not None:
                 print(out)
             time.sleep(poll)
+
+    def enable_module(self, name, module):
+        """
+        Enable a Pyliner Module on this vehicle. All required telemetry for the
+        new module will be subscribed to.
+
+        Args:
+            name (str): The name that the module will be initialized under.
+            module (Type[PylinerModule]): The module to enable.
+        """
+        super(Pyliner, self).enable_module(name, module)
+        self.subscribe({'tlm': module.required_telemetry_paths()})
 
     def flight_mode(self, mode):
         if not mode:
@@ -278,29 +288,3 @@ class Pyliner(BasePyliner):
                  {'name': 'ManSwitch', 'value': 0},
                  {'name': 'ModeSlot', 'value': 0},
                  {'name': 'DataSource', 'value': 0}]})
-
-    def disable_module(self, name):
-        """Disable a module. Does not unsubscribe from any telemetry."""
-        if isinstance(getattr(self, name, None), PylinerModule):
-            delattr(self, name)
-        else:
-            raise AttributeError('Cannot disable a module that was never '
-                                 'enabled.')
-
-    def enable_module(self, name, module):
-        """
-        Enable a Pyliner Module on this vehicle. All required telemetry for the
-        new module will be subscribed to.
-
-        Args:
-            name (str): The name that the module will be initialized under.
-            module (Type[PylinerModule]): The module to enable.
-        """
-        if not issubclass(module, PylinerModule):
-            return TypeError('module must implement PylinerModule.')
-        if hasattr(self, name):
-            raise ValueError('Attempting to enable a module on top of an '
-                             'existing variable or module.')
-        else:
-            self.subscribe({'tlm': module.required_telemetry_paths()})
-            setattr(self, name, module(self))

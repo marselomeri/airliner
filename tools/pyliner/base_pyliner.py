@@ -7,6 +7,7 @@ from os.path import join, dirname, realpath
 
 from junit_xml import TestCase, TestSuite
 
+from pyliner_module import PylinerModule
 from util import LogLevel
 
 
@@ -17,6 +18,9 @@ class BasePyliner(object):
         if log_dir is None:
             log_dir = join(dirname(realpath(__file__)), "logs")
 
+        self._modules = {}
+
+        # Logging
         self.fails = 0
         self.script_name = script_name
         self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + \
@@ -26,26 +30,44 @@ class BasePyliner(object):
         self.start_time = datetime.now()
         self.log_dir = log_dir
         self.duration = 0
-
-        # Logging
         self._setup_log()
 
     def __enter__(self):
         return self
 
-    @abstractmethod
     def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
+        # If the context manager exits without error, all good. Otherwise...
+        if exc_type:
+            self.critical_failure(exc_type, exc_val, exc_tb)
+
+    def __getattr__(self, item):
+        if item in self._modules:
+            return self._modules[item]
 
     @abstractmethod
+    def critical_failure(self, exc_type, exc_val, exc_tb):
+        raise NotImplementedError()
+
     def disable_module(self, name):
-        """Disable a module."""
-        pass
+        """Disable a module by removing it from the vehicle.
 
-    @abstractmethod
+        Note:
+            Any modules that attempt to call this module will result in crashing
+            the script.
+        """
+        if name in self._modules:
+            raise AttributeError('Cannot disable a module that was never '
+                                 'enabled.')
+        del self._modules[name]
+
     def enable_module(self, name, module):
         """Enable a Pyliner Module on this vehicle."""
-        pass
+        if not issubclass(module, PylinerModule):
+            return TypeError('module must implement PylinerModule.')
+        elif name in self._modules:
+            raise ValueError('Attempting to enable a module on top of an '
+                             'existing variable or module.')
+        self._modules[name] = module
 
     def log(self, text, level=LogLevel.Info):
         """ Wrapper for logging function """
@@ -59,6 +81,10 @@ class BasePyliner(object):
             logging.error(text)
         else:
             logging.debug("Specified log mode unsupported")
+
+    @property
+    def modules(self):
+        return self._modules.copy()
 
     def _setup_log(self):
         """ Setup log for Pyliner """
