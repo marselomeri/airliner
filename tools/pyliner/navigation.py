@@ -1,8 +1,8 @@
-from collections import namedtuple
-from numbers import Number, Real
+from numbers import Real
 
 import time
 
+from geographic import GeographicWrapper
 from pyliner_module import PylinerModule
 from util import get_time
 
@@ -15,9 +15,6 @@ def proportional(const, neutral=0.5):
     return lambda current, target: (target - current) * const + neutral
 
 
-# LatLon = namedtuple('LatLon', ['latitude', 'longitude'])
-
-
 class Navigation(PylinerModule):
     """Navigation module. Contains all navigation features.
     
@@ -26,6 +23,9 @@ class Navigation(PylinerModule):
         components, and only executes one at a time. 
     TODO: In a future version a more integrated 3d-space will be implemented.
     """
+    def __init__(self):
+        super(Navigation, self).__init__()
+        self.geographic = GeographicWrapper
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
@@ -46,6 +46,9 @@ class Navigation(PylinerModule):
     def down(self, amount, method=None, tolerance=1):
         self.vnav(by=-amount, method=method, tolerance=tolerance)
 
+    def forward(self, amount, tolerance=1):
+        pass
+
     def send_telemetry(self, **kwargs):
         telem_dict = {
             'Timestamp': get_time(), 'X': 0.0, 'Y': 0.0, 'Z': 0.5, 'R': 0.0,
@@ -56,12 +59,15 @@ class Navigation(PylinerModule):
             'TransitionSwitch': 0, 'GearSwitch': 1, 'ArmSwitch': 1,
             'StabSwitch': 0, 'ManSwitch': 0, 'ModeSlot': 0, 'DataSource': 0
         }
+        for key in kwargs:
+            if key not in telem_dict:
+                raise ValueError('Cannot send {}, does not exist in '
+                                 'command'.format(key))
         telem_dict.update(kwargs)
         self.vehicle.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
              'args': [{'name': name, 'value': value} for name, value in
-                      telem_dict.items()]}
-        )
+                      telem_dict.items()]})
 
     @classmethod
     def required_telemetry_paths(cls):
