@@ -1,3 +1,4 @@
+from collections import namedtuple
 from numbers import Number, Real
 
 import time
@@ -14,8 +15,17 @@ def proportional(const, neutral=0.5):
     return lambda current, target: (target - current) * const + neutral
 
 
+# LatLon = namedtuple('LatLon', ['latitude', 'longitude'])
+
+
 class Navigation(PylinerModule):
-    """Navigation module. Contains all navigation features."""
+    """Navigation module. Contains all navigation features.
+    
+    Note:
+        Currently this module takes lateral and vertical navigation as separate
+        components, and only executes one at a time. 
+    TODO: In a future version a more integrated 3d-space will be implemented.
+    """
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
@@ -33,12 +43,29 @@ class Navigation(PylinerModule):
     altitude = property(PylinerModule.telem(req_telem['altitude']))
     yaw = property(PylinerModule.telem(req_telem['yaw']))
 
+    def down(self, amount, method=None, tolerance=1):
+        self.vnav(by=-amount, method=method, tolerance=tolerance)
+
+    def send_telemetry(self, **kwargs):
+        telem_dict = {
+            'Timestamp': get_time(), 'X': 0.0, 'Y': 0.0, 'Z': 0.5, 'R': 0.0,
+            'Flaps': 0.0, 'Aux1': 0.0, 'Aux2': 0.0, 'Aux3': 0.0, 'Aux4': 0.0,
+            'Aux5': 0.0, 'ModeSwitch': 0, 'ReturnSwitch': 0,
+            'RattitudeSwitch': 0, 'PosctlSwitch': 1, 'LoiterSwitch': 0,
+            'AcroSwitch': 0, 'OffboardSwitch': 0, 'KillSwitch': 0,
+            'TransitionSwitch': 0, 'GearSwitch': 1, 'ArmSwitch': 1,
+            'StabSwitch': 0, 'ManSwitch': 0, 'ModeSlot': 0, 'DataSource': 0
+        }
+        telem_dict.update(kwargs)
+        self.vehicle.com.send_telemetry(
+            {'name': '/Airliner/CNTL/ManualSetpoint',
+             'args': [{'name': name, 'value': value} for name, value in
+                      telem_dict.items()]}
+        )
+
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
-
-    def down(self, amount, method=None, tolerance=1):
-        self.vnav(by=-amount, method=method, tolerance=tolerance)
 
     def up(self, amount, method=None, tolerance=1):
         self.vnav(by=amount, method=method, tolerance=tolerance)
@@ -56,62 +83,6 @@ class Navigation(PylinerModule):
         while (target_altitude - self.altitude) > tolerance:
             new_z = method(self.altitude, target_altitude)
             capped_z = min(max(new_z, -1), 1)
-            self.vehicle.com.send_telemetry(
-                {'name': '/Airliner/CNTL/ManualSetpoint',
-                 'args': [
-                     {'name': 'Timestamp', 'value': get_time()},
-                     {'name': 'X', 'value': 0.0},
-                     {'name': 'Y', 'value': 0.0},
-                     {'name': 'Z', 'value': capped_z},
-                     {'name': 'R', 'value': 0.0},
-                     {'name': 'Flaps', 'value': 0.0},
-                     {'name': 'Aux1', 'value': 0.0},
-                     {'name': 'Aux2', 'value': 0.0},
-                     {'name': 'Aux3', 'value': 0.0},
-                     {'name': 'Aux4', 'value': 0.0},
-                     {'name': 'Aux5', 'value': 0.0},
-                     {'name': 'ModeSwitch', 'value': 0},
-                     {'name': 'ReturnSwitch', 'value': 0},
-                     {'name': 'RattitudeSwitch', 'value': 0},
-                     {'name': 'PosctlSwitch', 'value': 1},
-                     {'name': 'LoiterSwitch', 'value': 0},
-                     {'name': 'AcroSwitch', 'value': 0},
-                     {'name': 'OffboardSwitch', 'value': 0},
-                     {'name': 'KillSwitch', 'value': 0},
-                     {'name': 'TransitionSwitch', 'value': 0},
-                     {'name': 'GearSwitch', 'value': 3},
-                     {'name': 'ArmSwitch', 'value': 1},
-                     {'name': 'StabSwitch', 'value': 0},
-                     {'name': 'ManSwitch', 'value': 0},
-                     {'name': 'ModeSlot', 'value': 0},
-                     {'name': 'DataSource', 'value': 0}]})
-            time.sleep(1/32)
-        self.vehicle.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [
-                 {'name': 'Timestamp', 'value': get_time()},
-                 {'name': 'X', 'value': 0.0},
-                 {'name': 'Y', 'value': 0.0},
-                 {'name': 'Z', 'value': 0.5},
-                 {'name': 'R', 'value': 0.0},
-                 {'name': 'Flaps', 'value': 0.0},
-                 {'name': 'Aux1', 'value': 0.0},
-                 {'name': 'Aux2', 'value': 0.0},
-                 {'name': 'Aux3', 'value': 0.0},
-                 {'name': 'Aux4', 'value': 0.0},
-                 {'name': 'Aux5', 'value': 0.0},
-                 {'name': 'ModeSwitch', 'value': 0},
-                 {'name': 'ReturnSwitch', 'value': 0},
-                 {'name': 'RattitudeSwitch', 'value': 0},
-                 {'name': 'PosctlSwitch', 'value': 1},
-                 {'name': 'LoiterSwitch', 'value': 0},
-                 {'name': 'AcroSwitch', 'value': 0},
-                 {'name': 'OffboardSwitch', 'value': 0},
-                 {'name': 'KillSwitch', 'value': 0},
-                 {'name': 'TransitionSwitch', 'value': 0},
-                 {'name': 'GearSwitch', 'value': 3},
-                 {'name': 'ArmSwitch', 'value': 1},
-                 {'name': 'StabSwitch', 'value': 0},
-                 {'name': 'ManSwitch', 'value': 0},
-                 {'name': 'ModeSlot', 'value': 0},
-                 {'name': 'DataSource', 'value': 0}]})
+            self.send_telemetry(Z=capped_z)
+            time.sleep(1 / 32)
+        self.send_telemetry(Z=0.5)
