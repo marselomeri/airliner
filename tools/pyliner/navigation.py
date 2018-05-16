@@ -2,7 +2,9 @@ from numbers import Real
 
 import time
 
-from geographic import GeographicWrapper
+import math
+
+from geographic import GeographicWrapper, LatLon
 from pyliner_module import PylinerModule
 from util import get_time
 
@@ -40,45 +42,38 @@ class Navigation(PylinerModule):
     # Public Navigation Properties
     @property
     def altitude(self):
-        return PylinerModule.telem(Navigation.req_telem['altitude'])
+        """meters"""
+        return PylinerModule.telem(Navigation.req_telem['altitude'])(self)
+
+    @property
+    def coordinate(self):
+        return LatLon(self.latitude, self.longitude)
+
+    @property
+    def heading(self):
+        """Degrees"""
+        return math.degrees(self.yaw) % 360
 
     @property
     def latitude(self):
-        return PylinerModule.telem(Navigation.req_telem['latitude'])
+        """Degrees"""
+        return PylinerModule.telem(Navigation.req_telem['latitude'])(self)
 
     @property
     def longitude(self):
-        return PylinerModule.telem(Navigation.req_telem['longitude'])
+        """Degrees"""
+        return PylinerModule.telem(Navigation.req_telem['longitude'])(self)
 
     @property
     def yaw(self):
-        return PylinerModule.telem(Navigation.req_telem['yaw'])
+        """Radians. North 0 incrementing clockwise. Wrap at Pi (180 degrees)"""
+        return PylinerModule.telem(Navigation.req_telem['yaw'])(self)
 
     def down(self, amount, method=None, tolerance=1):
         self.vnav(by=-amount, method=method, tolerance=tolerance)
 
     def forward(self, amount, tolerance=1):
-        print(self.latitude, self.longitude)
-
-    def send_telemetry(self, **kwargs):
-        telem_dict = {
-            'Timestamp': get_time(), 'X': 0.0, 'Y': 0.0, 'Z': 0.5, 'R': 0.0,
-            'Flaps': 0.0, 'Aux1': 0.0, 'Aux2': 0.0, 'Aux3': 0.0, 'Aux4': 0.0,
-            'Aux5': 0.0, 'ModeSwitch': 0, 'ReturnSwitch': 0,
-            'RattitudeSwitch': 0, 'PosctlSwitch': 1, 'LoiterSwitch': 0,
-            'AcroSwitch': 0, 'OffboardSwitch': 0, 'KillSwitch': 0,
-            'TransitionSwitch': 0, 'GearSwitch': 1, 'ArmSwitch': 1,
-            'StabSwitch': 0, 'ManSwitch': 0, 'ModeSlot': 0, 'DataSource': 0
-        }
-        for key in kwargs:
-            if key not in telem_dict:
-                raise ValueError('Cannot send {}, does not exist in '
-                                 'command'.format(key))
-        telem_dict.update(kwargs)
-        self.vehicle.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [{'name': name, 'value': value} for name, value in
-                      telem_dict.items()]})
+        old_coor = self.coordinate
 
     @classmethod
     def required_telemetry_paths(cls):
@@ -100,6 +95,6 @@ class Navigation(PylinerModule):
         while (target_altitude - self.altitude) > tolerance:
             new_z = method(self.altitude, target_altitude)
             capped_z = min(max(new_z, -1), 1)
-            self.send_telemetry(Z=capped_z)
+            self.vehicle.fd.z = capped_z
             time.sleep(1 / 32)
-        self.send_telemetry(Z=0.5)
+        self.vehicle.fd.z = 0.5

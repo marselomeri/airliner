@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
 import time
-from os.path import join, dirname, abspath
 
 from base_pyliner import BasePyliner
 from communication import Communication
 from flight_control_lib import FlightMode
+from flight_director import FlightDirector
 from navigation import Navigation
 from util import LogLevel, get_time
 
@@ -41,6 +41,7 @@ class Pyliner(BasePyliner):
             airliner_map=airliner_map,
             ci_port=ci_port,
             to_port=to_port))
+        self.enable_module('fd', FlightDirector())
         self.enable_module('nav', Navigation())
 
         self.failure_callback = failure_callback
