@@ -57,9 +57,9 @@ def read_json(file_path):
         with open(file_path, 'r') as airliner_map:
             return json.load(airliner_map)
     except IOError:
-        print "Specified input file (%s) does not exist" % file_path
+        print("Specified input file (%s) does not exist" % file_path)
     except Exception as e:
-        print e
+        print(e)
 
 
 def serialize(header, payload):

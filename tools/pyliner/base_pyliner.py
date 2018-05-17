@@ -175,9 +175,8 @@ class BasePyliner(object):
 
     def finish_test(self):
         """ Do all the clean up post test execution """
-        self.ingest_active = False
         self.dump_tlm()
-        print self.get_test_results()
+        print(self.get_test_results())
         self.generate_junit()
 
     def generate_junit(self):

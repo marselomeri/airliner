@@ -13,7 +13,7 @@ def constant(value):
     return lambda current, target: value
 
 
-def proportional(const, neutral=0.5):
+def proportional(const, neutral=0.0):
     return lambda current, target: (target - current) * const + neutral
 
 
@@ -45,6 +45,9 @@ class Navigation(PylinerModule):
         """meters"""
         return PylinerModule.telem(Navigation.req_telem['altitude'])(self)
 
+    def backward(self, amount, method, tolerence=1):
+        self.lnav(amount, 'x', method, tolerence, True)
+
     @property
     def coordinate(self):
         return LatLon(self.latitude, self.longitude)
@@ -59,6 +62,19 @@ class Navigation(PylinerModule):
         """Degrees"""
         return PylinerModule.telem(Navigation.req_telem['latitude'])(self)
 
+    def left(self, amount, method, tolerance=1):
+        self.lnav(amount, 'y', method, tolerance, True)
+
+    def lnav(self, amount, axis, method, tolerance, negate=False):
+        old_coor = self.coordinate
+        distance = self.geographic.distance(old_coor, self.coordinate)
+        while (amount - distance) > tolerance:
+            velocity = method(distance, amount)
+            setattr(self.vehicle.fd, axis, -velocity if negate else velocity)
+            time.sleep(1 / 32)
+            distance = self.geographic.distance(old_coor, self.coordinate)
+        setattr(self.vehicle.fd, axis, 0.0)
+
     @property
     def longitude(self):
         """Degrees"""
@@ -72,12 +88,15 @@ class Navigation(PylinerModule):
     def down(self, amount, method=None, tolerance=1):
         self.vnav(by=-amount, method=method, tolerance=tolerance)
 
-    def forward(self, amount, tolerance=1):
-        old_coor = self.coordinate
+    def forward(self, amount, method, tolerance=1):
+        self.lnav(amount, 'x', method, tolerance)
 
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
+
+    def right(self, amount, method=None, tolerance=1):
+        self.lnav(amount, 'y', method, tolerance)
 
     def up(self, amount, method=None, tolerance=1):
         self.vnav(by=amount, method=method, tolerance=tolerance)

@@ -33,7 +33,6 @@ class Communication(PylinerModule):
         self.all_telemetry = []
         self.ci_port = ci_port
         self.ci_socket = init_socket()
-        self.ingest_active = True
         self.msg = None
         self.send_dirty = True
         self.telemetry = {}
@@ -189,9 +188,6 @@ class Communication(PylinerModule):
         Args:
             tlm(str): Raw bytes received from socket
         """
-        if not self.ingest_active:
-            return
-
         self.all_telemetry.append(tlm)
         # self.log("Recvd tlm: " + str(tlm), LogLevel.Debug)
 

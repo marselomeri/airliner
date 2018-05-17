@@ -8,8 +8,9 @@ class FlightDirector(PylinerModule):
         self._x = self._y = self._z = self._r = 0.0
 
     def send_telemetry(self):
+        mod_z = self.z / 2 + 0.5
         telem_dict = {
-            'Timestamp': get_time(), 'X': self.x, 'Y': self.y, 'Z': self.z,
+            'Timestamp': get_time(), 'X': self.x, 'Y': self.y, 'Z': mod_z,
             'R': self.r, 'Flaps': 0.0, 'Aux1': 0.0, 'Aux2': 0.0, 'Aux3': 0.0,
             'Aux4': 0.0, 'Aux5': 0.0, 'ModeSwitch': 0, 'ReturnSwitch': 0,
             'RattitudeSwitch': 0, 'PosctlSwitch': 1, 'LoiterSwitch': 0,

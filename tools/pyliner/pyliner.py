@@ -16,6 +16,8 @@ class Pyliner(BasePyliner):
     The basic modules that a vehicle presents are:
         com (Communication): Provides methods to communicate with the physical
             vehicle in the air.
+        fd (FlightDirector): Provides methods for controlling the raw x, y, z,
+            and rotation axes of the vehicle.
         nav (Navigation): Provides methods for controlling the direction and
             speed of the vehicle.
 
@@ -163,7 +165,7 @@ class Pyliner(BasePyliner):
         self.wait_clean()
 
     def mode_posctl(self):
-        print "%s: Position control" % self.script_name
+        print("%s: Position control" % self.script_name)
         self.log("Position control")
         self.com.send_telemetry(
             {'name': '/Airliner/CNTL/ManualSetpoint',
