@@ -17,6 +17,10 @@ def proportional(const, neutral=0.0):
     return lambda current, target: (target - current) * const + neutral
 
 
+def limiter(min_val, max_val):
+    return lambda val: max(min(val, max_val), min_val)
+
+
 class Navigation(PylinerModule):
     """Navigation module. Contains all navigation features.
     
@@ -25,6 +29,7 @@ class Navigation(PylinerModule):
         components, and only executes one at a time. 
     TODO: In a future version a more integrated 3d-space will be implemented.
     """
+
     def __init__(self):
         super(Navigation, self).__init__()
         self.geographic = GeographicWrapper
@@ -45,9 +50,6 @@ class Navigation(PylinerModule):
         """meters"""
         return PylinerModule.telem(Navigation.req_telem['altitude'])(self)
 
-    def backward(self, amount, method, tolerence=1):
-        self.lnav(amount, 'x', method, tolerence, True)
-
     @property
     def coordinate(self):
         return LatLon(self.latitude, self.longitude)
@@ -62,6 +64,19 @@ class Navigation(PylinerModule):
         """Degrees"""
         return PylinerModule.telem(Navigation.req_telem['latitude'])(self)
 
+    @property
+    def longitude(self):
+        """Degrees"""
+        return PylinerModule.telem(Navigation.req_telem['longitude'])(self)
+
+    @property
+    def yaw(self):
+        """Radians. North 0 incrementing clockwise. Wrap at Pi (180 degrees)"""
+        return PylinerModule.telem(Navigation.req_telem['yaw'])(self)
+
+    def backward(self, amount, method, tolerence=1):
+        self.lnav(amount, 'x', method, tolerence, True)
+
     def left(self, amount, method, tolerance=1):
         self.lnav(amount, 'y', method, tolerance, True)
 
@@ -74,16 +89,6 @@ class Navigation(PylinerModule):
             time.sleep(1 / 32)
             distance = self.geographic.distance(old_coor, self.coordinate)
         setattr(self.vehicle.fd, axis, 0.0)
-
-    @property
-    def longitude(self):
-        """Degrees"""
-        return PylinerModule.telem(Navigation.req_telem['longitude'])(self)
-
-    @property
-    def yaw(self):
-        """Radians. North 0 incrementing clockwise. Wrap at Pi (180 degrees)"""
-        return PylinerModule.telem(Navigation.req_telem['yaw'])(self)
 
     def down(self, amount, method=None, tolerance=1):
         self.vnav(by=-amount, method=method, tolerance=tolerance)
@@ -98,6 +103,32 @@ class Navigation(PylinerModule):
     def right(self, amount, method=None, tolerance=1):
         self.lnav(amount, 'y', method, tolerance)
 
+    def rot_clk(self, degrees, method, tolerance=1):
+        old_heading = self.heading
+        target_heading = (old_heading + degrees) % 360
+        min_tol = (target_heading - tolerance) % 360
+
+        def unroll_heading():
+            return self.heading if self.heading < target_heading \
+                else self.heading - 360
+        while unroll_heading() < min_tol:
+            rotate = method(unroll_heading(), target_heading)
+            self.vehicle.fd.r = rotate
+        self.vehicle.fd.r = 0.0
+
+    def rot_ctr(self, degrees, method, tolerance=1):
+        old_heading = self.heading
+        target_heading = (old_heading - degrees) % 360
+        max_tol = (target_heading + tolerance) % 360
+
+        def unroll_heading():
+            return self.heading if self.heading > target_heading \
+                else self.heading + 360
+        while unroll_heading() > max_tol:
+            rotate = method(unroll_heading(), target_heading)
+            self.vehicle.fd.r = rotate
+        self.vehicle.fd.r = 0.0
+
     def up(self, amount, method=None, tolerance=1):
         self.vnav(by=amount, method=method, tolerance=tolerance)
 
@@ -110,8 +141,8 @@ class Navigation(PylinerModule):
             raise ValueError('Must have navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
-        target_altitude = self.altitude + by if by else to
-        while (target_altitude - self.altitude) > tolerance:
+        target_altitude = (self.altitude + by) if by is not None else to
+        while abs(target_altitude - self.altitude) > tolerance:
             new_z = method(self.altitude, target_altitude)
             capped_z = min(max(new_z, -1), 1)
             self.vehicle.fd.z = capped_z

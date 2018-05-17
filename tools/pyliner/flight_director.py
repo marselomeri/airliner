@@ -67,3 +67,7 @@ class FlightDirector(PylinerModule):
     def z(self, value):
         self._z = value
         self.send_telemetry()
+
+    def zero(self):
+        self._x = self._y = self._z = self._r = 0
+        self.send_telemetry()
