@@ -109,11 +109,11 @@ class Navigation(PylinerModule):
         if not method:
             raise ValueError('Must have navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
-            raise ValueError('Tolerance must be set to a real positive number.')
+            raise ValueError('Tolerance must be set to a positive real number.')
         target_altitude = self.altitude + by if by else to
         while (target_altitude - self.altitude) > tolerance:
             new_z = method(self.altitude, target_altitude)
             capped_z = min(max(new_z, -1), 1)
             self.vehicle.fd.z = capped_z
             time.sleep(1 / 32)
-        self.vehicle.fd.z = 0.5
+        self.vehicle.fd.z = 0.0

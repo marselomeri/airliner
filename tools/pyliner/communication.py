@@ -1,6 +1,7 @@
 import SocketServer
 import threading
 from os.path import join, dirname, realpath
+import time
 
 from deprecated import deprecated
 
@@ -281,7 +282,7 @@ class Communication(PylinerModule):
 
         serial_cmd = serialize(header, payload)
         self.send_to_airliner(serial_cmd)
-        self.log('Sending command to airliner: %s' % (cmd))
+        self.log('Sending command to airliner: %s' % cmd)
 
     def send_telemetry(self, tlm):
         """ User accessible function to send a command to the software bus.
@@ -327,6 +328,7 @@ class Communication(PylinerModule):
     def send_to_airliner(self):
         """ Publish the passed message to airliner """
         if self.msg is not None:
+            print('Sending {}'.format(round(time.time(), 1)))
             self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
 
     def subscribe(self, tlm, callback=None):

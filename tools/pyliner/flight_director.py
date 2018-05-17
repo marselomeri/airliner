@@ -3,12 +3,16 @@ from util import get_time
 
 
 class FlightDirector(PylinerModule):
+    # TODO: Limit axis assignment
     def __init__(self):
         super(FlightDirector, self).__init__()
         self._x = self._y = self._z = self._r = 0.0
 
     def send_telemetry(self):
         mod_z = self.z / 2 + 0.5
+        # print('Sending Telem: {} {} {}'.format(round(self.x, 2),
+        #                                        round(self.y, 2),
+        #                                        round(self.z, 2)))
         telem_dict = {
             'Timestamp': get_time(), 'X': self.x, 'Y': self.y, 'Z': mod_z,
             'R': self.r, 'Flaps': 0.0, 'Aux1': 0.0, 'Aux2': 0.0, 'Aux3': 0.0,

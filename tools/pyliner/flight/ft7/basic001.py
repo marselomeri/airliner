@@ -27,12 +27,12 @@ with pyliner.Pyliner(
     rocky.flight_mode(FlightMode.PosCtl)
 
     rocky.atp('Move Up')
-    rocky.nav.up(10, proportional(0.1, 0.5), tolerance=0.5)
+    rocky.nav.up(10, proportional(0.2), tolerance=0.5)
 
     rocky.atp('First')
     rocky.nav.forward(5, constant(0.3))
     rocky.nav.right(5, proportional(0.1))
-    rocky.nav.backward(5, constant(0.7))
+    rocky.nav.backward(5, constant(0.5))
     rocky.nav.left(5, constant(0.5))
 
     rocky.atp('Second')
