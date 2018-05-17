@@ -26,7 +26,7 @@ class Pyliner(BasePyliner):
     default modules. TODO Implement replacing in constructor
     """
 
-    def __init__(self, airliner_map, ci_port, to_port,
+    def __init__(self, airliner_map, ci_port, to_port, address='localhost',
                  script_name=None, log_dir=None, failure_callback=None):
         """Create an instance of Pyliner.
 
@@ -40,6 +40,7 @@ class Pyliner(BasePyliner):
 
         # Default modules
         self.enable_module('com', Communication(
+            address=address,
             airliner_map=airliner_map,
             ci_port=ci_port,
             to_port=to_port))

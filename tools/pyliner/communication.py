@@ -1,7 +1,6 @@
 import SocketServer
 import threading
 from os.path import join, dirname, realpath
-import time
 
 from deprecated import deprecated
 
