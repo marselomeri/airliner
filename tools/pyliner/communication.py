@@ -328,7 +328,7 @@ class Communication(PylinerModule):
     def send_to_airliner(self):
         """ Publish the passed message to airliner """
         if self.msg is not None:
-            print('Sending {}'.format(round(time.time(), 1)))
+            # print('Sending {}'.format(round(time.time(), 1)))
             self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
 
     def subscribe(self, tlm, callback=None):

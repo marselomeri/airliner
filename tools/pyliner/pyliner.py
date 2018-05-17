@@ -291,3 +291,4 @@ class Pyliner(BasePyliner):
                  {'name': 'ManSwitch', 'value': 0},
                  {'name': 'ModeSlot', 'value': 0},
                  {'name': 'DataSource', 'value': 0}]})
+        self.wait_clean()
