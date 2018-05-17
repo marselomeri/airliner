@@ -1,12 +1,9 @@
-from numbers import Real
-
-import time
-
 import math
+import time
+from numbers import Real
 
 from geographic import GeographicWrapper, LatLon
 from pyliner_module import PylinerModule
-from util import get_time
 
 
 def constant(value):
