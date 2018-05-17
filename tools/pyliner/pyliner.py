@@ -126,7 +126,7 @@ class Pyliner(BasePyliner):
         self.log("%s requires authorization to proceed. Requesting: %s" % (
             self.script_name, txt))
 
-    def await_fresh(self, tlm, poll=1, out=None):
+    def await_fresh(self, tlm, poll=1.0, out=None):
         """Loop until the telemetry value changes. This is blocking.
 
         Args:
@@ -137,8 +137,9 @@ class Pyliner(BasePyliner):
         old_val = self.tlm_value(tlm)
         while self.tlm_value(tlm) == old_val:
             if out is not None:
-                print(out)
+                out()
             time.sleep(poll)
+        return self.tlm_value(tlm)
 
     def enable_module(self, name, module):
         """

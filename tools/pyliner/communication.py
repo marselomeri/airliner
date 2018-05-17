@@ -180,7 +180,8 @@ class Communication(PylinerModule):
         arg_path = self._get_op_attr(op_path)
         if not arg_path:
             return None
-        value = getattr(pb_msg, arg_path)
+        # value = getattr(pb_msg, arg_path)
+        exec 'value = pb_msg.' + arg_path
         return value
 
     def _on_recv_telemetry(self, tlm):
