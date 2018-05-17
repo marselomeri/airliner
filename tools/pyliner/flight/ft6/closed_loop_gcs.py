@@ -54,7 +54,6 @@ def  vehicle_fly_spiral_ccw(deltaZ):
 
 # Initialize pyliner object
 rocky = Pyliner(**{"airliner_map": join(dirname(abspath(__file__)), "cookiecutter.json"), 
-                   "address": "192.168.1.2",
                    "ci_port": 5009,
                    "to_port": 5012,
                    "script_name": "FT6_GCS",
@@ -93,7 +92,7 @@ alt = rocky.get_tlm_value('/Airliner/CNTL/VehicleGlobalPosition/Alt')
 print "Alt: " + str(alt)
 
 atp(rocky, "Fly spiral")
-print "Fly spiral up `0 meters"
+print "Fly spiral up 10 meters"
 vehicle_fly_spiral_ccw(10)
 
 #atp(rocky, "Move forward")
