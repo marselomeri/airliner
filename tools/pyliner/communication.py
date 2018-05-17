@@ -50,7 +50,6 @@ class Communication(PylinerModule):
 
         # Send Telemetry
         def callback():
-            # print('Sending')
             self.send_to_airliner()
             self.send_dirty = False
 
@@ -288,7 +287,8 @@ class Communication(PylinerModule):
         """ User accessible function to send a command to the software bus.
 
         Args:
-            cmd (dict): A command specifiying the operation to execute and any args for it.
+            cmd (dict): A command specifiying the operation to execute and any
+                args for it.
                 E.g. {'name':'/Airliner/ES/Noop'}
                     or
                      {'name':'/Airliner/PX4/ManualControlSetpoint',
@@ -328,7 +328,6 @@ class Communication(PylinerModule):
     def send_to_airliner(self):
         """ Publish the passed message to airliner """
         if self.msg is not None:
-            # print('Sending {}'.format(round(time.time(), 1)))
             self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
 
     def subscribe(self, tlm, callback=None):

@@ -1,11 +1,8 @@
-from os import sys
-from os.path import join, dirname, abspath
 import time
+from os.path import join, dirname, abspath
 
-sys.path.append(dirname(dirname(abspath(__file__))))
-from pyliner import Pyliner
-from flight_control_lib import *
 import util
+from pyliner import Pyliner
 
 # Initialize pyliner object
 rocky = Pyliner(**{
@@ -123,8 +120,13 @@ rocky.com.send_telemetry(
         {'name': 'Next_AccelerationValid', 'value': 0},
         {'name': 'Next_AccelerationIsForce', 'value': 0}]})
 
+
 print rocky.tlm_value("/Airliner/CNTL/SetpointTriplet/Cur_Lat")
+
+
 def wait():
     print('Waiting')
+
+
 rocky.await_fresh("/Airliner/CNTL/SetpointTriplet/Cur_Lat", out=wait)
 print rocky.tlm_value("/Airliner/CNTL/SetpointTriplet/Cur_Lat")
