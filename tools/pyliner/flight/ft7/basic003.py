@@ -13,7 +13,7 @@ def critical_failure(vehicle, errors):
 
 
 def range_limit(current, target):
-    return limiter(-0.1, 0.1)(proportional(0.1 / 50.0)(current, target))
+    return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
 
 
 with pyliner.Pyliner(

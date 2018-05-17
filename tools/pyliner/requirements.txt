@@ -1,5 +1,6 @@
 Deprecated
 flufl.enum
+future
 geographiclib
 junit_xml
 rx

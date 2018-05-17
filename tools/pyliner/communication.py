@@ -54,7 +54,7 @@ class Communication(PylinerModule):
             self.send_to_airliner()
             self.send_dirty = False
 
-        self.periodic_send = PeriodicExecutor(callback, every=1)
+        self.periodic_send = PeriodicExecutor(callback, every=1.0 / 10.0)
         self.periodic_send.start()
 
     def _get_airliner_op(self, op_path):
