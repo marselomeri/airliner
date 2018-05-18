@@ -8,6 +8,7 @@ class Telemetry(dict):
     primitives (ex. int, float) or a callable that takes no arguments which
     will be invoked when to_json is called.
     """
+
     def __init__(self, name, **kwargs):
         super(Telemetry, self).__init__(**kwargs)
         self.name = name

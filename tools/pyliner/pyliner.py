@@ -3,11 +3,12 @@
 import time
 
 from base_pyliner import BasePyliner
+from commands import ManualSetpoint
 from communication import Communication
 from flight_control_lib import FlightMode
 from flight_director import FlightDirector
 from navigation import Navigation
-from util import LogLevel, get_time
+from util import LogLevel
 
 
 class Pyliner(BasePyliner):
@@ -60,65 +61,9 @@ class Pyliner(BasePyliner):
     def arm(self):
         print("%s: Arming vehicle" % self.script_name)
         self.log("Arming vehicle")
-        self.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [
-                 {'name': 'Timestamp', 'value': get_time()},
-                 {'name': 'X', 'value': 0.0},
-                 {'name': 'Y', 'value': 0.0},
-                 {'name': 'Z', 'value': 0.0},
-                 {'name': 'R', 'value': 0.0},
-                 {'name': 'Flaps', 'value': 0.0},
-                 {'name': 'Aux1', 'value': 0.0},
-                 {'name': 'Aux2', 'value': 0.0},
-                 {'name': 'Aux3', 'value': 0.0},
-                 {'name': 'Aux4', 'value': 0.0},
-                 {'name': 'Aux5', 'value': 0.0},
-                 {'name': 'ModeSwitch', 'value': 0},
-                 {'name': 'ReturnSwitch', 'value': 0},
-                 {'name': 'RattitudeSwitch', 'value': 0},
-                 {'name': 'PosctlSwitch', 'value': 0},
-                 {'name': 'LoiterSwitch', 'value': 0},
-                 {'name': 'AcroSwitch', 'value': 0},
-                 {'name': 'OffboardSwitch', 'value': 0},
-                 {'name': 'KillSwitch', 'value': 0},
-                 {'name': 'TransitionSwitch', 'value': 0},
-                 {'name': 'GearSwitch', 'value': 0},
-                 {'name': 'ArmSwitch', 'value': 3},  # OFF
-                 {'name': 'StabSwitch', 'value': 0},
-                 {'name': 'ManSwitch', 'value': 0},
-                 {'name': 'ModeSlot', 'value': 0},
-                 {'name': 'DataSource', 'value': 0}]})
+        self.com.send_telemetry(ManualSetpoint(ArmSwitch=3))
         self.wait_clean()
-        self.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [
-                 {'name': 'Timestamp', 'value': get_time()},
-                 {'name': 'X', 'value': 0.0},
-                 {'name': 'Y', 'value': 0.0},
-                 {'name': 'Z', 'value': 0.0},
-                 {'name': 'R', 'value': 0.0},
-                 {'name': 'Flaps', 'value': 0.0},
-                 {'name': 'Aux1', 'value': 0.0},
-                 {'name': 'Aux2', 'value': 0.0},
-                 {'name': 'Aux3', 'value': 0.0},
-                 {'name': 'Aux4', 'value': 0.0},
-                 {'name': 'Aux5', 'value': 0.0},
-                 {'name': 'ModeSwitch', 'value': 0},
-                 {'name': 'ReturnSwitch', 'value': 0},
-                 {'name': 'RattitudeSwitch', 'value': 0},
-                 {'name': 'PosctlSwitch', 'value': 0},
-                 {'name': 'LoiterSwitch', 'value': 0},
-                 {'name': 'AcroSwitch', 'value': 0},
-                 {'name': 'OffboardSwitch', 'value': 0},
-                 {'name': 'KillSwitch', 'value': 0},
-                 {'name': 'TransitionSwitch', 'value': 0},
-                 {'name': 'GearSwitch', 'value': 0},
-                 {'name': 'ArmSwitch', 'value': 1},  # ON
-                 {'name': 'StabSwitch', 'value': 0},
-                 {'name': 'ManSwitch', 'value': 0},
-                 {'name': 'ModeSlot', 'value': 0},
-                 {'name': 'DataSource', 'value': 0}]})
+        self.com.send_telemetry(ManualSetpoint(ArmSwitch=1))
         self.wait_clean()
 
     def atp(self, txt):
@@ -170,67 +115,12 @@ class Pyliner(BasePyliner):
         print("%s: Position control" % self.script_name)
         self.log("Position control")
         self.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [
-                 {'name': 'Timestamp', 'value': get_time()},
-                 {'name': 'X', 'value': 0.0},
-                 {'name': 'Y', 'value': 0.0},
-                 {'name': 'Z', 'value': 0.5},
-                 {'name': 'R', 'value': 0.0},
-                 {'name': 'Flaps', 'value': 0.0},
-                 {'name': 'Aux1', 'value': 0.0},
-                 {'name': 'Aux2', 'value': 0.0},
-                 {'name': 'Aux3', 'value': 0.0},
-                 {'name': 'Aux4', 'value': 0.0},
-                 {'name': 'Aux5', 'value': 0.0},
-                 {'name': 'ModeSwitch', 'value': 0},
-                 {'name': 'ReturnSwitch', 'value': 0},
-                 {'name': 'RattitudeSwitch', 'value': 0},
-                 {'name': 'PosctlSwitch', 'value': 1},  # ON
-                 {'name': 'LoiterSwitch', 'value': 0},
-                 {'name': 'AcroSwitch', 'value': 0},
-                 {'name': 'OffboardSwitch', 'value': 0},
-                 {'name': 'KillSwitch', 'value': 0},
-                 {'name': 'TransitionSwitch', 'value': 0},
-                 {'name': 'GearSwitch', 'value': 1},
-                 {'name': 'ArmSwitch', 'value': 0},
-                 {'name': 'StabSwitch', 'value': 0},
-                 {'name': 'ManSwitch', 'value': 0},
-                 {'name': 'ModeSlot', 'value': 0},
-                 {'name': 'DataSource', 'value': 0}]})
+            ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
 
     def takeoff(self):
         print("%s: Auto takeoff" % self.script_name)
         self.log("Auto takeoff")
-        self.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [
-                 {'name': 'Timestamp', 'value': get_time()},
-                 {'name': 'X', 'value': 0.0},
-                 {'name': 'Y', 'value': 0.0},
-                 {'name': 'Z', 'value': 0.0},
-                 {'name': 'R', 'value': 0.0},
-                 {'name': 'Flaps', 'value': 0.0},
-                 {'name': 'Aux1', 'value': 0.0},
-                 {'name': 'Aux2', 'value': 0.0},
-                 {'name': 'Aux3', 'value': 0.0},
-                 {'name': 'Aux4', 'value': 0.0},
-                 {'name': 'Aux5', 'value': 0.0},
-                 {'name': 'ModeSwitch', 'value': 0},
-                 {'name': 'ReturnSwitch', 'value': 0},
-                 {'name': 'RattitudeSwitch', 'value': 0},
-                 {'name': 'PosctlSwitch', 'value': 0},
-                 {'name': 'LoiterSwitch', 'value': 0},
-                 {'name': 'AcroSwitch', 'value': 0},
-                 {'name': 'OffboardSwitch', 'value': 0},
-                 {'name': 'KillSwitch', 'value': 0},
-                 {'name': 'TransitionSwitch', 'value': 1},  # ON
-                 {'name': 'GearSwitch', 'value': 0},
-                 {'name': 'ArmSwitch', 'value': 1},
-                 {'name': 'StabSwitch', 'value': 0},
-                 {'name': 'ManSwitch', 'value': 0},
-                 {'name': 'ModeSlot', 'value': 0},
-                 {'name': 'DataSource', 'value': 0}]})
+        self.com.send_telemetry(ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
         time.sleep(5)
 
     def tlm(self, tlm):
@@ -265,32 +155,5 @@ class Pyliner(BasePyliner):
         print("%s: RTL" % self.script_name)
         self.log("RTL")
         self.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [
-                 {'name': 'Timestamp', 'value': get_time()},
-                 {'name': 'X', 'value': 0.0},
-                 {'name': 'Y', 'value': 0.0},
-                 {'name': 'Z', 'value': 0.0},
-                 {'name': 'R', 'value': 0.0},
-                 {'name': 'Flaps', 'value': 0.0},
-                 {'name': 'Aux1', 'value': 0.0},
-                 {'name': 'Aux2', 'value': 0.0},
-                 {'name': 'Aux3', 'value': 0.0},
-                 {'name': 'Aux4', 'value': 0.0},
-                 {'name': 'Aux5', 'value': 0.0},
-                 {'name': 'ModeSwitch', 'value': 0},
-                 {'name': 'ReturnSwitch', 'value': 1},  # ON
-                 {'name': 'RattitudeSwitch', 'value': 0},
-                 {'name': 'PosctlSwitch', 'value': 0},
-                 {'name': 'LoiterSwitch', 'value': 0},
-                 {'name': 'AcroSwitch', 'value': 0},
-                 {'name': 'OffboardSwitch', 'value': 0},
-                 {'name': 'KillSwitch', 'value': 0},
-                 {'name': 'TransitionSwitch', 'value': 0},
-                 {'name': 'GearSwitch', 'value': 3},
-                 {'name': 'ArmSwitch', 'value': 1},
-                 {'name': 'StabSwitch', 'value': 0},
-                 {'name': 'ManSwitch', 'value': 0},
-                 {'name': 'ModeSlot', 'value': 0},
-                 {'name': 'DataSource', 'value': 0}]})
+            ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
         self.wait_clean()

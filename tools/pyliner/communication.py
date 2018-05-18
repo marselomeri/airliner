@@ -17,6 +17,7 @@ DEFAULT_TO_PORT = 5011
 
 class Communication(PylinerModule):
     """Provide methods to send and receive telemetry to a vehicle."""
+
     def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT,
                  to_port=DEFAULT_TO_PORT, airliner_map=None):
         super(Communication, self).__init__()
@@ -50,7 +51,8 @@ class Communication(PylinerModule):
 
         # Send Telemetry
         def callback():
-            self.send_to_airliner()
+            if self.msg is not None:
+                self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
             self.send_dirty = False
 
         self.periodic_send = PeriodicExecutor(callback, every=1.0 / 10.0)
@@ -159,7 +161,8 @@ class Communication(PylinerModule):
             arg_path = self._get_op_attr(cmd["name"] + '/' + arg["name"])
             if not arg_path:
                 raise exceptions.InvalidCommandException(
-                    "Invalid command received. Argument operational name (%s) not found." % arg["name"])
+                    "Invalid command received. Argument operational name (%s) not found." %
+                    arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
         exec assign
         return pb_obj
@@ -287,33 +290,27 @@ class Communication(PylinerModule):
         """ User accessible function to send a command to the software bus.
 
         Args:
-            cmd (dict): A command specifiying the operation to execute and any
-                args for it.
-                E.g. {'name':'/Airliner/ES/Noop'}
-                    or
-                     {'name':'/Airliner/PX4/ManualControlSetpoint',
-                      'args':[
-                          {'name':'X', 'value':'0'},
-                          {'name':'Y', 'value':'0'},
-                          {'name':'Z', 'value':'500'}]}
+            tlm (Telemetry): Telemetry specifying the operation to execute and
+                any args for it.
         """
-        if "name" not in tlm:
+        json = tlm.to_json()
+        if "name" not in json:
             raise exceptions.InvalidCommandException(
                 "Invalid command received. Missing \"name\" attribute")
 
         # Check if no args tlm
-        args_present = "args" in tlm
+        args_present = "args" in json
 
         # Get command operation
-        op = self._get_airliner_op(tlm["name"])
+        op = self._get_airliner_op(json["name"])
         if not op:
             raise exceptions.InvalidCommandException(
-                "Invalid telemetry received. Operation (%s) not defined." % tlm[
-                    "name"])
+                "Invalid telemetry received. Operation ({}) not "
+                "defined.".format(json["name"]))
 
         # Generate airliner cmd
         header = self._get_ccsds_msg(op)
-        payload = self._get_pb_encode_obj(tlm, op) if args_present else None
+        payload = self._get_pb_encode_obj(json, op) if args_present else None
 
         # Set header correctly
         payload_size = payload.ByteSize() if args_present else 0
@@ -322,13 +319,8 @@ class Communication(PylinerModule):
         serial_cmd = serialize(header, payload)
         self.msg = serial_cmd
         self.send_dirty = True
-        self.vehicle.log('Sending telemetry to airliner: %s' % tlm)
+        self.vehicle.log('Sending telemetry to airliner: {}'.format(json))
         # header.print_base10()
-
-    def send_to_airliner(self):
-        """ Publish the passed message to airliner """
-        if self.msg is not None:
-            self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
 
     def subscribe(self, tlm, callback=None):
         """

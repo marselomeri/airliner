@@ -1,3 +1,4 @@
+from commands import ManualSetpoint
 from pyliner_module import PylinerModule
 from util import get_time
 
@@ -14,19 +15,9 @@ class FlightDirector(PylinerModule):
         #                                              round(self.y, 2),
         #                                              round(self.z, 2),
         #                                              round(mod_z, 2)))
-        telem_dict = {
-            'Timestamp': get_time(), 'X': self.x, 'Y': self.y, 'Z': mod_z,
-            'R': self.r, 'Flaps': 0.0, 'Aux1': 0.0, 'Aux2': 0.0, 'Aux3': 0.0,
-            'Aux4': 0.0, 'Aux5': 0.0, 'ModeSwitch': 0, 'ReturnSwitch': 0,
-            'RattitudeSwitch': 0, 'PosctlSwitch': 1, 'LoiterSwitch': 0,
-            'AcroSwitch': 0, 'OffboardSwitch': 0, 'KillSwitch': 0,
-            'TransitionSwitch': 0, 'GearSwitch': 1, 'ArmSwitch': 1,
-            'StabSwitch': 0, 'ManSwitch': 0, 'ModeSlot': 0, 'DataSource': 0
-        }
         self.vehicle.com.send_telemetry(
-            {'name': '/Airliner/CNTL/ManualSetpoint',
-             'args': [{'name': name, 'value': value} for name, value in
-                      telem_dict.items()]})
+            ManualSetpoint(X=self._x, Y=self._y, Z=mod_z, R=self._r,
+                           PosctlSwitch=1, GearSwitch=1, ArmSwitch=1))
 
     @property
     def r(self):
