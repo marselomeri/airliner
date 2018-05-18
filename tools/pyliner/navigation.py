@@ -2,7 +2,7 @@ import math
 import time
 from numbers import Real
 
-from geographic import GeographicWrapper, LatLon
+from geographic import Geographic, LatLon
 from pyliner_module import PylinerModule
 
 
@@ -29,7 +29,7 @@ class Navigation(PylinerModule):
 
     def __init__(self):
         super(Navigation, self).__init__()
-        self.geographic = GeographicWrapper
+        self.geographic = Geographic
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',

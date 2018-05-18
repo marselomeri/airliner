@@ -1,14 +1,18 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
-from numbers import Number, Real
+from numbers import Real
 
 from geographiclib.geodesic import Geodesic
-
 
 LatLon = namedtuple('LatLon', ['latitude', 'longitude'])
 
 
-class Geographic(object):
+class GeographicBase(object):
+    """Interface to hold static methods for geographic calculations.
+
+    The user is free to implement their own methods, though an implementation
+    is provided as Geographic.
+    """
     __metaclass__ = ABCMeta
 
     @staticmethod
@@ -47,10 +51,10 @@ class Geographic(object):
         raise NotImplementedError()
 
 
-class GeographicWrapper(Geographic):
+class Geographic(GeographicBase):
     @staticmethod
     def bearing(a, b):
-        return GeographicWrapper._inverse(a, b)['azi1'] % 360
+        return Geographic._inverse(a, b)['azi1'] % 360
 
     @staticmethod
     def _direct(a, azim, dist):
@@ -60,7 +64,7 @@ class GeographicWrapper(Geographic):
 
     @staticmethod
     def distance(a, b):
-        return GeographicWrapper._inverse(a, b)['s12']
+        return Geographic._inverse(a, b)['s12']
 
     @staticmethod
     def _inverse(a, b):
@@ -72,5 +76,5 @@ class GeographicWrapper(Geographic):
 
     @staticmethod
     def pbd(a, bearing, distance):
-        direct = GeographicWrapper._direct(a, bearing, distance)
+        direct = Geographic._direct(a, bearing, distance)
         return LatLon(direct['lat2'], direct['lon2'])
