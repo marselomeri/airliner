@@ -13,6 +13,13 @@ class Geographic(object):
 
     @staticmethod
     @abstractmethod
+    def bearing(a, b):
+        # type: (LatLon, LatLon) -> float
+        """Calculate the bearing from a to b in degrees."""
+        raise NotImplementedError()
+
+    @staticmethod
+    @abstractmethod
     def distance(a, b):
         # type: (LatLon, LatLon) -> float
         """Calculate the distance between two points on the globe.
@@ -42,9 +49,8 @@ class Geographic(object):
 
 class GeographicWrapper(Geographic):
     @staticmethod
-    def pbd(a, bearing, distance):
-        direct = GeographicWrapper._direct(a, bearing, distance)
-        return LatLon(direct['lat2'], direct['lon2'])
+    def bearing(a, b):
+        return GeographicWrapper._inverse(a, b)['azi1'] % 360
 
     @staticmethod
     def _direct(a, azim, dist):
@@ -63,3 +69,8 @@ class GeographicWrapper(Geographic):
         # noinspection PyUnresolvedReferences
         return Geodesic.WGS84.Inverse(a.latitude, a.longitude,
                                       b.latitude, b.longitude)
+
+    @staticmethod
+    def pbd(a, bearing, distance):
+        direct = GeographicWrapper._direct(a, bearing, distance)
+        return LatLon(direct['lat2'], direct['lon2'])
