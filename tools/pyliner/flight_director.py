@@ -1,6 +1,5 @@
-from commands import ManualSetpoint
 from pyliner_module import PylinerModule
-from util import get_time
+from telemetry import ManualSetpoint
 
 
 class FlightDirector(PylinerModule):

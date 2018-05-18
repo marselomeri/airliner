@@ -3,11 +3,11 @@
 import time
 
 from base_pyliner import BasePyliner
-from commands import ManualSetpoint
 from communication import Communication
 from flight_control_lib import FlightMode
 from flight_director import FlightDirector
 from navigation import Navigation
+from telemetry import ManualSetpoint
 from util import LogLevel
 
 

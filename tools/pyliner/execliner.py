@@ -16,7 +16,7 @@ import argparse
 import imp
 import traceback
 
-from exceptions import PylinerError
+from pyliner_exceptions import PylinerError
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(

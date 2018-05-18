@@ -4,7 +4,7 @@ from os.path import join, dirname, realpath
 
 from deprecated import deprecated
 
-import exceptions
+import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner_module import PylinerModule
 from python_pb import pyliner_msgs
@@ -160,9 +160,10 @@ class Communication(PylinerModule):
         for arg in cmd["args"]:
             arg_path = self._get_op_attr(cmd["name"] + '/' + arg["name"])
             if not arg_path:
-                raise exceptions.InvalidCommandException(
-                    "Invalid command received. Argument operational name (%s) not found." %
-                    arg["name"])
+                print(dir(pyliner_exceptions))
+                raise pyliner_exceptions.InvalidCommandException(
+                    "Invalid command received. Argument operational name (%s) "
+                    "not found." % arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
         exec assign
         return pb_obj
@@ -258,7 +259,7 @@ class Communication(PylinerModule):
                                    {'name':'Z', 'value':'500'}]}
         """
         if "name" not in cmd:
-            raise exceptions.InvalidCommandException(
+            raise pyliner_exceptions.InvalidCommandException(
                 "Invalid command received. Missing \"name\" attribute")
 
         # Check if no args cmd
@@ -267,7 +268,7 @@ class Communication(PylinerModule):
         # Get command operation
         op = self._get_airliner_op(cmd["name"])
         if not op:
-            raise exceptions.InvalidCommandException(
+            raise pyliner_exceptions.InvalidCommandException(
                 "Invalid command received. Operation (%s) not defined." % cmd[
                     "name"])
 
@@ -295,7 +296,7 @@ class Communication(PylinerModule):
         """
         json = tlm.to_json()
         if "name" not in json:
-            raise exceptions.InvalidCommandException(
+            raise pyliner_exceptions.InvalidCommandException(
                 "Invalid command received. Missing \"name\" attribute")
 
         # Check if no args tlm
@@ -304,7 +305,7 @@ class Communication(PylinerModule):
         # Get command operation
         op = self._get_airliner_op(json["name"])
         if not op:
-            raise exceptions.InvalidCommandException(
+            raise pyliner_exceptions.InvalidCommandException(
                 "Invalid telemetry received. Operation ({}) not "
                 "defined.".format(json["name"]))
 
@@ -343,7 +344,7 @@ class Communication(PylinerModule):
             if not op:
                 err_msg = "Invalid telemetry operational name received. Operation (%s) not defined." % tlm_item
                 self.vehicle.log(err_msg, LogLevel.Error)
-                raise exceptions.InvalidOperationException(err_msg)
+                raise pyliner_exceptions.InvalidOperationException(err_msg)
 
             # Add entry to subscribers list
             self.subscribers.append({'op_path': tlm_item,

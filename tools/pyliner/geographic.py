@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
+from numbers import Number, Real
 
 from geographiclib.geodesic import Geodesic
 
@@ -27,8 +28,9 @@ class Geographic(object):
 
     @staticmethod
     @abstractmethod
-    def place_bearing_distance(a, bearing, distance):
-        """Calculate a new LatLon based on an initial position.
+    def pbd(a, bearing, distance):
+        # type: (LatLon, Real, Real) -> LatLon
+        """Calculate a Place-Bearing-Distance (PBD) coordinate.
 
         Args:
             a (LatLon): Point A
@@ -40,13 +42,13 @@ class Geographic(object):
 
 class GeographicWrapper(Geographic):
     @staticmethod
-    def place_bearing_distance(a, bearing, distance):
+    def pbd(a, bearing, distance):
         direct = GeographicWrapper._direct(a, bearing, distance)
         return LatLon(direct['lat2'], direct['lon2'])
 
     @staticmethod
     def _direct(a, azim, dist):
-        # type: (LatLon, float, float) -> dict
+        # type: (LatLon, Real, Real) -> dict
         # noinspection PyUnresolvedReferences
         return Geodesic.WGS84.Direct(a.latitude, a.longitude, azim, dist)
 
