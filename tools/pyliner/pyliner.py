@@ -2,13 +2,21 @@
 
 import time
 
+from flufl.enum import Enum
+
 from base_pyliner import BasePyliner
 from communication import Communication
-from flight_control_lib import FlightMode
 from flight_director import FlightDirector
 from navigation import Navigation
 from telemetry import ManualSetpoint
 from util import LogLevel
+
+
+class FlightMode(Enum):
+    Manual = 1
+    AltCtl = 2
+    PosCtl = 3
+    RTL = 4
 
 
 class Pyliner(BasePyliner):
@@ -98,6 +106,11 @@ class Pyliner(BasePyliner):
         """
         super(Pyliner, self).enable_module(name, module)
         self.com.subscribe({'tlm': module.required_telemetry_paths()})
+
+    def disarm(self):
+        print "%s: Disarming vehicle" % self.script_name
+        self.log("Disarming vehicle")
+        self.send_telemetry(ManualSetpoint(ArmSwitch=3))
 
     def flight_mode(self, mode):
         if not mode:

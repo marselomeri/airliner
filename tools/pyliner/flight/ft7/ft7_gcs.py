@@ -1,8 +1,7 @@
 import time
 from os.path import join, dirname, abspath
 
-from flight_control_lib import *
-from pyliner import Pyliner
+from pyliner import Pyliner, FlightMode
 
 # Initialize pyliner object
 rocky = Pyliner(

@@ -1,7 +1,7 @@
 from os.path import join, dirname, abspath, basename
 
 import pyliner
-from flight_control_lib import FlightMode
+from pyliner import FlightMode
 from navigation import Navigation, constant, proportional
 
 
