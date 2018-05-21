@@ -1,7 +1,5 @@
-import SocketServer
+import socketserver
 import threading
-
-from deprecated import deprecated
 
 import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
@@ -38,7 +36,7 @@ class Communication(PylinerModule):
         self.to_socket = init_socket()
 
         # Receive Telemetry
-        self.tlm_listener = SocketServer.UDPServer(
+        self.tlm_listener = socketserver.UDPServer(
             ("0.0.0.0", self.to_port), server_factory(self._on_recv_telemetry))
         self.listener_thread = threading.Thread(
             target=self.tlm_listener.serve_forever)
@@ -62,9 +60,9 @@ class Communication(PylinerModule):
         ret_op = None
         ops_names = op_path.split('/')[1:]
 
-        for fsw, fsw_data in self.airliner_map.iteritems():
+        for fsw, fsw_data in self.airliner_map.items():
             if fsw == ops_names[0]:
-                for app, app_data in fsw_data["apps"].iteritems():
+                for app, app_data in fsw_data["apps"].items():
                     if app_data["app_ops_name"] == ops_names[1]:
                         op = app_data["operations"][ops_names[2]]
                         ret_op = op if op else None
@@ -99,13 +97,13 @@ class Communication(PylinerModule):
         """
         op = self._get_airliner_op(op_path)
         ops_names = op_path.split('/')[1:]
-        for fsw, fsw_data in self.airliner_map.iteritems():
+        for fsw, fsw_data in self.airliner_map.items():
             if fsw == ops_names[0]:
-                for app, app_data in fsw_data["apps"].iteritems():
+                for app, app_data in fsw_data["apps"].items():
                     if app_data["app_ops_name"] == ops_names[1]:
                         for op_name, op_data in app_data["proto_msgs"] \
                                 [op["airliner_msg"]] \
-                                ["operational_names"].iteritems():
+                                ["operational_names"].items():
                             if op_name == ops_names[3]:
                                 return op_data["field_path"]
         return None
@@ -161,7 +159,7 @@ class Communication(PylinerModule):
                     "Invalid command received. Argument operational name (%s) "
                     "not found." % arg["name"])
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
-        exec assign
+        exec(assign)
         return pb_obj
 
     def _get_pb_value(self, pb_msg, op_path):
@@ -179,7 +177,8 @@ class Communication(PylinerModule):
         if not arg_path:
             return None
         # value = getattr(pb_msg, arg_path)
-        exec 'value = pb_msg.' + arg_path
+        value = None
+        exec('value = pb_msg.' + arg_path)
         return value
 
     def _on_recv_telemetry(self, tlm):
@@ -240,48 +239,6 @@ class Communication(PylinerModule):
     @classmethod
     def required_telemetry_paths(cls):
         return []
-
-    @deprecated
-    def send_command(self, cmd):
-        """ User accessible function to send a command to the software bus.
-
-        Args:
-            cmd (dict): A command specifiying the operation to execute and any args for it.
-                       E.g.    {'name':'/Airliner/ES/Noop'}
-                                    or
-                               {'name':'/Airliner/PX4/ManualControlSetpoint', 'args':[
-                                   {'name':'X', 'value':'0'},
-                                   {'name':'Y', 'value':'0'},
-                                   {'name':'Z', 'value':'500'}]}
-        """
-        if "name" not in cmd:
-            raise pyliner_exceptions.InvalidCommandException(
-                "Invalid command received. Missing \"name\" attribute")
-
-        # Check if no args cmd
-        args_present = "args" in cmd
-
-        # Get command operation
-        op = self._get_airliner_op(cmd["name"])
-        if not op:
-            raise pyliner_exceptions.InvalidCommandException(
-                "Invalid command received. Operation (%s) not defined." % cmd[
-                    "name"])
-
-        # Generate airliner cmd
-        header = self._get_ccsds_msg(op)
-        payload = self._get_pb_encode_obj(cmd, op) if args_present else None
-
-        # Set header correctly
-        payload_size = payload.ByteSize() if args_present else 0
-        header.set_user_data_length(payload_size)
-        payload_checksum = payload.SerializeToString() if args_present else 0
-        header.SecHdr.Command.bits.checksum = header.compute_checksum(
-            payload_checksum) if args_present else 0
-
-        serial_cmd = serialize(header, payload)
-        self.send_to_airliner(serial_cmd)
-        self.log('Sending command to airliner: %s' % cmd)
 
     def send_telemetry(self, tlm):
         """ User accessible function to send a command to the software bus.

@@ -1,4 +1,4 @@
-import SocketServer
+import socketserver
 import json
 import socket
 import threading
@@ -15,10 +15,10 @@ class LogLevel(Enum):
     Error = 4
 
 
-class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
+class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
     def __init__(self, callback, *args, **keys):
         self.callback = callback
-        SocketServer.BaseRequestHandler.__init__(self, *args, **keys)
+        socketserver.BaseRequestHandler.__init__(self, *args, **keys)
 
     def handle(self):
         self.callback(self.request)
@@ -72,9 +72,9 @@ def serialize(header, payload):
     serialized concatenation of them.
     """
     if not payload:
-        return str(header.get_encoded())
+        return header.get_encoded()
     else:
-        return str(header.get_encoded()) + payload.SerializeToString()
+        return header.get_encoded() + payload.SerializeToString()
 
 
 def server_factory(callback):

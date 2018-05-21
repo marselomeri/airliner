@@ -12,6 +12,9 @@ from telemetry import ManualSetpoint
 from util import LogLevel
 
 
+__version__ = 0.1
+
+
 class FlightMode(Enum):
     Manual = 1
     AltCtl = 2
@@ -98,7 +101,7 @@ class Pyliner(BasePyliner):
         Args:
             tlm (str): The telemetry to monitor.
             poll (float): Check every `poll` seconds.
-            out (Any): If not None, print this every loop.
+            out (Callable[[], None]): If not None, print this every loop.
         """
         old_val = self.tlm_value(tlm)
         while self.tlm_value(tlm) == old_val:
@@ -120,7 +123,7 @@ class Pyliner(BasePyliner):
         self.com.subscribe({'tlm': module.required_telemetry_paths()})
 
     def disarm(self):
-        print "%s: Disarming vehicle" % self.script_name
+        print("%s: Disarming vehicle" % self.script_name)
         self.log("Disarming vehicle")
         self.send_telemetry(ManualSetpoint(ArmSwitch=3))
 
@@ -149,32 +152,32 @@ class Pyliner(BasePyliner):
         time.sleep(5)
 
     def tlm(self, tlm):
-        """ Get all data of specified telemetry item
+        """ Get all data of specified telemetry item.
 
         Args:
-            tlm (str): Operational name of requested telemetry
+            tlm (str): Operational name of requested telemetry.
 
         Returns:
-            Telemetry data dict or None if not found
+            dict: Telemetry data.
+
+        Raises:
+            KeyError: If telemetry is not found.
         """
-        if tlm not in self.telemetry:
-            return None
-        else:
-            return self.com.telemetry[tlm]
+        return self.com.telemetry[tlm]
 
     def tlm_value(self, tlm):
-        """ Get current value of specified telemetry item
+        """ Get current value of specified telemetry item.
 
         Args:
-            tlm (str): Operational name of requested telemetry
+            tlm (str): Operational name of requested telemetry.
 
         Returns:
-            Current value of telemetry or None if not found
+            Any: Current value of telemetry.
+
+        Raises:
+            KeyError: If telemetry is not found.
         """
-        if tlm not in self.com.telemetry:
-            return None
-        else:
-            return self.com.telemetry[tlm]['value']
+        return self.tlm(tlm)['value']
 
     def rtl(self):
         print("%s: RTL" % self.script_name)
