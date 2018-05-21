@@ -1,6 +1,5 @@
 import SocketServer
 import threading
-from os.path import join, dirname, realpath
 
 from deprecated import deprecated
 
@@ -8,29 +7,26 @@ import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner_module import PylinerModule
 from python_pb import pyliner_msgs
-from util import read_json, init_socket, PeriodicExecutor, server_factory, \
+from util import init_socket, PeriodicExecutor, server_factory, \
     LogLevel, serialize
-
-DEFAULT_CI_PORT = 5008
-DEFAULT_TO_PORT = 5011
 
 
 class Communication(PylinerModule):
     """Provide methods to send and receive telemetry to a vehicle."""
 
-    def __init__(self, address='localhost', ci_port=DEFAULT_CI_PORT,
-                 to_port=DEFAULT_TO_PORT, airliner_map=None):
+    def __init__(self, airliner_map, address, ci_port, to_port):
+        """
+        Args:
+            airliner_map (dict): Airliner Mapping, typically read from a JSON.
+            address (str): Address to connect to the vehicle.
+            ci_port (int):
+            to_port (int):
+        """
         super(Communication, self).__init__()
-
-        if airliner_map is None:
-            airliner_map = join(dirname(realpath(__file__)), "airliner.json")
-        self.airliner_data = read_json(airliner_map)
-        if self.airliner_data is None:
-            raise ValueError('There was a problem reading Airliner data at '
-                             '{}'.format(airliner_map))
 
         # Telemetry variables
         self.address = address
+        self.airliner_map = airliner_map
         self.all_telemetry = []
         self.ci_port = ci_port
         self.ci_socket = init_socket()
@@ -66,7 +62,7 @@ class Communication(PylinerModule):
         ret_op = None
         ops_names = op_path.split('/')[1:]
 
-        for fsw, fsw_data in self.airliner_data.iteritems():
+        for fsw, fsw_data in self.airliner_map.iteritems():
             if fsw == ops_names[0]:
                 for app, app_data in fsw_data["apps"].iteritems():
                     if app_data["app_ops_name"] == ops_names[1]:
@@ -103,7 +99,7 @@ class Communication(PylinerModule):
         """
         op = self._get_airliner_op(op_path)
         ops_names = op_path.split('/')[1:]
-        for fsw, fsw_data in self.airliner_data.iteritems():
+        for fsw, fsw_data in self.airliner_map.iteritems():
             if fsw == ops_names[0]:
                 for app, app_data in fsw_data["apps"].iteritems():
                     if app_data["app_ops_name"] == ops_names[1]:

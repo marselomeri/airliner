@@ -3,6 +3,7 @@ from os.path import join, dirname, abspath, basename
 import pyliner
 from pyliner import FlightMode
 from navigation import Navigation, constant, proportional, limiter
+from util import read_json
 
 
 def critical_failure(vehicle, errors):
@@ -17,7 +18,7 @@ def range_limit(current, target):
 
 
 with pyliner.Pyliner(
-    airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
+    airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
     ci_port=5009,
     to_port=5012,
     script_name=basename(__file__),

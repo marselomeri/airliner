@@ -19,6 +19,10 @@ class FlightMode(Enum):
     RTL = 4
 
 
+DEFAULT_CI_PORT = 5008
+DEFAULT_TO_PORT = 5011
+
+
 class Pyliner(BasePyliner):
     """Represents a vehicle that the user may control.
 
@@ -35,22 +39,30 @@ class Pyliner(BasePyliner):
     default modules. TODO Implement replacing in constructor
     """
 
-    def __init__(self, airliner_map, ci_port, to_port, address='localhost',
+    def __init__(self, airliner_map, address='localhost',
+                 ci_port=DEFAULT_CI_PORT, to_port=DEFAULT_TO_PORT,
                  script_name=None, log_dir=None, failure_callback=None):
         """Create an instance of Pyliner.
 
         Args:
+            airliner_map (dict): Airliner Mapping, typically read from a JSON.
+            address (str): Address to connect to vehicle.
+            ci_port (int):
+            to_port (int):
             script_name (str): The script currently being executed. Used for
                 generating log file names.
             log_dir (str): The directory that log files will be saved to.
                 Defaults to *pyliner*/logs.
+            failure_callback (Callable[[Pyliner, Tuple], None]): Function
+                handle that will be invoked on a failure of the controlling
+                script.
         """
         super(Pyliner, self).__init__(script_name=script_name, log_dir=log_dir)
 
         # Default modules
         self.enable_module('com', Communication(
-            address=address,
             airliner_map=airliner_map,
+            address=address,
             ci_port=ci_port,
             to_port=to_port))
         self.enable_module('fd', FlightDirector())

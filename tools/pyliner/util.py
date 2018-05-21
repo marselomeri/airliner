@@ -52,7 +52,11 @@ def init_socket():
 
 
 def read_json(file_path):
-    """ Parses the required JSON input file containing Airliner mappings """
+    """Parses the required JSON input file containing Airliner mappings.
+
+    Returns:
+        dict
+    """
     try:
         with open(file_path, 'r') as airliner_map:
             return json.load(airliner_map)

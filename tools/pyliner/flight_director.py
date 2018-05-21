@@ -4,9 +4,20 @@ from telemetry import ManualSetpoint
 
 class FlightDirector(PylinerModule):
     # TODO: Limit axis assignment
-    def __init__(self):
+    def __init__(self, strict_set=False):
         super(FlightDirector, self).__init__()
         self._x = self._y = self._z = self._r = 0.0
+        self.strict_set = strict_set
+
+    def __call__(self, x=None, y=None, z=None, r=None):
+        if x is not None:
+            self.x = x
+        if y is not None:
+            self.y = y
+        if z is not None:
+            self.z = z
+        if r is not None:
+            self.r = r
 
     def send_telemetry(self):
         mod_z = self.z / 2.0 + 0.5
@@ -24,6 +35,8 @@ class FlightDirector(PylinerModule):
 
     @r.setter
     def r(self, value):
+        if self.strict_set and (value > 1 or value < -1):
+            raise ValueError('Cannot assign R outside of [-1, 1].')
         self._r = value
         self.send_telemetry()
 
@@ -37,6 +50,8 @@ class FlightDirector(PylinerModule):
 
     @x.setter
     def x(self, value):
+        if self.strict_set and (value > 1 or value < -1):
+            raise ValueError('Cannot assign R outside of [-1, 1].')
         self._x = value
         self.send_telemetry()
 
@@ -46,6 +61,8 @@ class FlightDirector(PylinerModule):
 
     @y.setter
     def y(self, value):
+        if self.strict_set and (value > 1 or value < -1):
+            raise ValueError('Cannot assign R outside of [-1, 1].')
         self._y = value
         self.send_telemetry()
 
@@ -55,9 +72,11 @@ class FlightDirector(PylinerModule):
 
     @z.setter
     def z(self, value):
+        if self.strict_set and (value > 1 or value < -1):
+            raise ValueError('Cannot assign R outside of [-1, 1].')
         self._z = value
         self.send_telemetry()
 
     def zero(self):
-        self._x = self._y = self._z = self._r = 0
+        self.x = self.y = self.z = self.r = 0.0
         self.send_telemetry()

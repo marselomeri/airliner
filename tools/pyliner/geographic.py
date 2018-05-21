@@ -59,6 +59,7 @@ class Geographic(GeographicBase):
     @staticmethod
     def _direct(a, azim, dist):
         # type: (LatLon, Real, Real) -> dict
+        # Possibility of LRU cache here.
         # noinspection PyUnresolvedReferences
         return Geodesic.WGS84.Direct(a.latitude, a.longitude, azim, dist)
 

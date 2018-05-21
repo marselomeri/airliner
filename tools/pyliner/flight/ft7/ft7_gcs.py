@@ -4,8 +4,10 @@ from os.path import join, dirname, abspath
 from pyliner import Pyliner, FlightMode
 
 # Initialize pyliner object
+from util import read_json
+
 rocky = Pyliner(
-    airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
+    airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
     address="192.168.1.2",
     ci_port=5009,
     to_port=5012,

@@ -4,6 +4,7 @@ import time
 
 import pyliner
 from telemetry import SetpointTriplet
+from util import read_json
 
 
 def critical_failure(vehicle, errors):
@@ -14,7 +15,7 @@ def critical_failure(vehicle, errors):
 
 
 rocky = pyliner.Pyliner(
-    airliner_map=join(dirname(abspath(__file__)), "cookiecutter.json"),
+    airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
     ci_port=5009,
     to_port=5012,
     script_name=basename(__file__),

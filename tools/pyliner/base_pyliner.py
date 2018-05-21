@@ -157,9 +157,8 @@ class BasePyliner(object):
         """ Generates a string with all test results """
         time_diff = datetime.now() - self.start_time
         diff = divmod(time_diff.total_seconds(), 60)
-        duration = "%i minutes %i seconds" % (diff[0], diff[1]) if diff[
-                                                                       0] > 0 else "%i seconds" % (
-            diff[1])
+        duration = "%i minutes %i seconds" % (diff[0], diff[1]) if diff[0] > 0 \
+            else "%i seconds" % (diff[1])
         self.duration = time_diff.seconds
         result = "PASS" if self.fails == 0 else "FAIL"
 
