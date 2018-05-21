@@ -71,10 +71,10 @@ def serialize(header, payload):
     Receive a CCSDS message and payload then returns the
     serialized concatenation of them.
     """
-    if not payload:
-        return header.get_encoded()
-    else:
-        return header.get_encoded() + payload.SerializeToString()
+    ser = header.get_encoded()
+    if payload:
+        ser += payload.SerializeToString()
+    return ser
 
 
 def server_factory(callback):

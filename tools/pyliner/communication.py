@@ -55,21 +55,38 @@ class Communication(PylinerModule):
     def _get_airliner_op(self, op_path):
         """
         Receive a ops path and returns the dict for that op defined in
-        the input file
+        the input file.
+
+        Args:
+            op_path (str): Operational path of command to retrieve. Leading "/"
+                is required. "/Airliner/CNTL/ManualSetpoint"
+
+        Returns:
+            dict: Operational dictionary of requested path.
+
+        Raises:
+            KeyError: If any part of the Airliner map is invalid. Including if
+                the requested path does not exist.
         """
-        ret_op = None
         ops_names = op_path.split('/')[1:]
 
-        for fsw, fsw_data in self.airliner_map.items():
-            if fsw == ops_names[0]:
-                for app, app_data in fsw_data["apps"].items():
-                    if app_data["app_ops_name"] == ops_names[1]:
-                        op = app_data["operations"][ops_names[2]]
-                        ret_op = op if op else None
-        return ret_op
+        def get_app(app_ops_name):
+            for app in self.airliner_map[ops_names[0]]['apps'].values():
+                if app['app_ops_name'] == app_ops_name:
+                    return app
+        return get_app(ops_names[1])['operations'][ops_names[2]]
 
-    def _get_ccsds_msg(self, op):
-        """ Receive a ops dict and returns a ccsds msg """
+    @staticmethod
+    def _get_ccsds_msg(op):
+        """Receive a ops dict and returns a ccsds msg
+
+        Args:
+            op (dict): Operational dictionary of an app operation.
+
+        Returns:
+            Union[CCSDS_TlmPkt_t, CCSDS_CmdPkt_t]: Ctypes packet structure
+                based on the operational dictionary.
+        """
         # If the command code is -1 this is telemetry
         if op["airliner_cc"] == -1:
             ret_msg = CCSDS_TlmPkt_t()
@@ -132,18 +149,18 @@ class Communication(PylinerModule):
         pb_msg.ParseFromString(raw_tlm)
         return pb_msg
 
-    def _get_pb_encode_obj(self, cmd, op):
+    def _get_pb_encode_obj(self, json, op):
         """ Generates protobuf object from user script command
 
         Args:
-            cmd (dict): User command specifying op and args
+            json (dict): User command specifying op and args
             op (dict): Operation dictionary
 
         Returns:
             Protobuf object for this specific message with set values
         """
         # Check if no args cmd
-        if len(op["airliner_msg"]) == 0:
+        if not op["airliner_msg"]:
             return None
 
         # Call the correct protobuf constructor for this command
@@ -151,13 +168,13 @@ class Communication(PylinerModule):
 
         # Generate executable string assigning correct values to pb object
         assign = ""
-        for arg in cmd["args"]:
-            arg_path = self._get_op_attr(cmd["name"] + '/' + arg["name"])
+        for arg in json["args"]:
+            arg_path = self._get_op_attr(json["name"] + '/' + arg["name"])
             if not arg_path:
-                print(dir(pyliner_exceptions))
                 raise pyliner_exceptions.InvalidCommandException(
                     "Invalid command received. Argument operational name (%s) "
                     "not found." % arg["name"])
+            # print(json["name"] + '/' + arg["name"], arg_path)
             assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
         exec(assign)
         return pb_obj
