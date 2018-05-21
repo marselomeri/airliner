@@ -232,17 +232,16 @@ class Communication(PylinerModule):
             if int(subscribed_tlm['airliner_mid'], 0) == int(
                     tlm_pkt.PriHdr.StreamId.data):
                 # Get pb msg for this msg
-                pb_msg = self._get_pb_decode_obj(tlm[0][12:],
-                                                 subscribed_tlm['op_path'])
+                op_path = subscribed_tlm['op_path']
+                pb_msg = self._get_pb_decode_obj(tlm[0][12:], op_path)
 
-                # Generate telemtry dictionary for callback
-                cb_dict = {}
-                cb_dict['name'] = subscribed_tlm['op_path']
-                cb_dict['value'] = self._get_pb_value(pb_msg, cb_dict['name'])
-                cb_dict['time'] = tlm_time
+                # Generate telemetry dictionary for callback
+                cb_dict = {'name': op_path,
+                           'value': self._get_pb_value(pb_msg, op_path),
+                           'time': tlm_time}
 
                 # Update telemetry dictionary with fresh data
-                self.telemetry[subscribed_tlm['op_path']] = cb_dict
+                self.telemetry[op_path] = cb_dict
 
                 # Call specified callback for this telemetry if it has one
                 if subscribed_tlm['callback']:
@@ -312,7 +311,8 @@ class Communication(PylinerModule):
             # Get operation for specified telemetry
             op = self._get_airliner_op(tlm_item)
             if not op:
-                err_msg = "Invalid telemetry operational name received. Operation (%s) not defined." % tlm_item
+                err_msg = "Invalid telemetry operational name received. " \
+                          "Operation (%s) not defined." % tlm_item
                 self.vehicle.log(err_msg, LogLevel.Error)
                 raise pyliner_exceptions.InvalidOperationException(err_msg)
 

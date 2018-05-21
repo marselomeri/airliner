@@ -25,7 +25,7 @@ class FlightDirector(PylinerModule):
         #                                              round(self.y, 2),
         #                                              round(self.z, 2),
         #                                              round(mod_z, 2)))
-        self.vehicle.com.send_telemetry(
+        self.vehicle.buffer_telemetry(
             ManualSetpoint(X=self._x, Y=self._y, Z=mod_z, R=self._r,
                            PosctlSwitch=1, GearSwitch=1, ArmSwitch=1))
 

@@ -1,4 +1,5 @@
 import logging
+import re
 from abc import abstractmethod, ABCMeta
 from builtins import isinstance
 from datetime import datetime
@@ -8,26 +9,57 @@ from os.path import join, dirname, realpath
 
 from junit_xml import TestCase, TestSuite
 
+from communication import Communication
 from pyliner_module import PylinerModule
 from util import LogLevel
 
 
 class BasePyliner(object):
+    """
+    Contains the bare-minimum required for Pyliner. All additional functionality
+    is provided through the Pyliner class.
+
+    Implements context manager functionality (with-statement). Unhandled
+    exceptions in the context manager are passed to `critical_failure` to give
+    the user a chance to fail gracefully before exiting the context manager.
+
+    Module management is performed via the `enable_module` and `disable_module`
+    methods. Modules are given a name which must be a valid Python identifier.
+    The module is then accessible directly by that name (pyliner.module).
+
+    By way of the communications instance given in the constructor, telemetry
+    from the vehicle is exposed via the TODO methods.
+    """
     __metaclass__ = ABCMeta
 
-    def __init__(self, script_name=None, log_dir=None):
+    def __init__(self, communications, script_name=None, log_dir=None):
+        """Constructor for BasePyliner.
+
+        Args:
+            communications (Communication): Communications PylinerModule.
+                Not exposed as a public module for direct access, but the user
+                is given the option to use a custom class if they desire.
+            script_name (str): Accessor of Pyliner. Used in generating the log
+                file name.
+            log_dir (str): Directory of logging. If None defaults to "logs"
+                directory under Pyliner.
+        """
         if log_dir is None:
             log_dir = join(dirname(realpath(__file__)), "logs")
 
         self._modules = {}
-        """:type: Dict[str, PylinerModule]"""
-        self.start_time = datetime.now()
+        """:type: dict[str, PylinerModule]"""
+        self._communications = communications
+        """:type: Communication"""
+
+        self._communications.attach(self)
 
         # Logging
+        self.start_time = datetime.now()
         self.fails = 0
         self.script_name = script_name
         self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + \
-                        "_pyliner_" + self.script_name + ".log"
+            "_pyliner_" + self.script_name + ".log"
         self.test_description = []
         self.passes = 0
         self.log_dir = log_dir
@@ -48,6 +80,9 @@ class BasePyliner(object):
         raise AttributeError('{} is not a function or module of this '
                              'Pyliner instance.'.format(item))
 
+    def buffer_telemetry(self, telemetry):
+        self._communications.send_telemetry(telemetry)
+
     @abstractmethod
     def critical_failure(self, exc_type, exc_val, exc_tb):
         raise NotImplementedError()
@@ -56,10 +91,10 @@ class BasePyliner(object):
         """Disable a module by removing it from the vehicle.
 
         Note:
-            Any modules that attempt to call the disabled module will produce
-            an error.
+            Any modules that attempt to call the disabled module by name will
+            produce an error.
         """
-        if name in self._modules:
+        if name not in self._modules:
             raise AttributeError('Cannot disable a module that was never '
                                  'enabled.')
         self._modules[name].detach()
@@ -67,10 +102,16 @@ class BasePyliner(object):
 
     def enable_module(self, name, module):
         """Enable a Pyliner Module on this vehicle."""
+        identifier = re.compile(r"^[^\d\W]\w*\Z")
+
         if name in self._modules:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
-        if not isinstance(module, PylinerModule):
+        elif not re.match(identifier, name):
+            raise ValueError('Attempting to enable a module with an illegal '
+                             'name. Module names must be valid Python '
+                             'identifiers.')
+        elif not isinstance(module, PylinerModule):
             return TypeError('module must implement PylinerModule.')
         module.attach(self)
         self._modules[name] = module
@@ -90,6 +131,7 @@ class BasePyliner(object):
 
     @property
     def modules(self):
+        """Mapping of enabled modules."""
         return self._modules.copy()
 
     def _setup_log(self):
@@ -107,18 +149,19 @@ class BasePyliner(object):
         """ Assert for Pyliner that tracks passes and failures """
         if a == b:
             self.passes += 1
+            self.test_description.append(description)
             self.log('Valid assertion made: %s == %s' % (a, b))
         else:
             self.fails += 1
+            self.test_description.append(description)
             self.log('Invalid assertion made: %s == %s' % (a, b), LogLevel.Warn)
 
-    def assert_not_equals(self, a, b, description, result):
+    def assert_not_equals(self, a, b, description):
         """ Assert for Pyliner that tracks passes and failures """
         if a != b:
             self.passes += 1
             self.test_description.append(description)
             self.log('Valid assertion made: %s != %s' % (a, b))
-
         else:
             self.fails += 1
             self.test_description.append(description)

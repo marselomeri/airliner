@@ -60,14 +60,16 @@ class Pyliner(BasePyliner):
                 handle that will be invoked on a failure of the controlling
                 script.
         """
-        super(Pyliner, self).__init__(script_name=script_name, log_dir=log_dir)
+        super(Pyliner, self).__init__(
+            communications=Communication(
+                airliner_map=airliner_map,
+                address=address,
+                ci_port=ci_port,
+                to_port=to_port),
+            script_name=script_name,
+            log_dir=log_dir)
 
         # Default modules
-        self.enable_module('com', Communication(
-            airliner_map=airliner_map,
-            address=address,
-            ci_port=ci_port,
-            to_port=to_port))
         self.enable_module('fd', FlightDirector())
         self.enable_module('nav', Navigation())
 
@@ -78,15 +80,15 @@ class Pyliner(BasePyliner):
             self.failure_callback(self, (exc_type, exc_val, exc_tb))
 
     def wait_clean(self):
-        while self.com.send_dirty:
+        while self._communications.send_dirty:
             time.sleep(1 / 32)
 
     def arm(self):
         print("%s: Arming vehicle" % self.script_name)
         self.log("Arming vehicle")
-        self.com.send_telemetry(ManualSetpoint(ArmSwitch=3))
+        self.buffer_telemetry(ManualSetpoint(ArmSwitch=3))
         self.wait_clean()
-        self.com.send_telemetry(ManualSetpoint(ArmSwitch=1))
+        self.buffer_telemetry(ManualSetpoint(ArmSwitch=1))
         self.wait_clean()
 
     def atp(self, txt):
@@ -120,7 +122,7 @@ class Pyliner(BasePyliner):
             module (Type[PylinerModule]): The module to enable.
         """
         super(Pyliner, self).enable_module(name, module)
-        self.com.subscribe({'tlm': module.required_telemetry_paths()})
+        self._communications.subscribe({'tlm': module.required_telemetry_paths()})
 
     def disarm(self):
         print("%s: Disarming vehicle" % self.script_name)
@@ -142,13 +144,13 @@ class Pyliner(BasePyliner):
     def mode_posctl(self):
         print("%s: Position control" % self.script_name)
         self.log("Position control")
-        self.com.send_telemetry(
+        self.buffer_telemetry(
             ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
 
     def takeoff(self):
         print("%s: Auto takeoff" % self.script_name)
         self.log("Auto takeoff")
-        self.com.send_telemetry(ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
+        self.buffer_telemetry(ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
         time.sleep(5)
 
     def tlm(self, tlm):
@@ -163,7 +165,7 @@ class Pyliner(BasePyliner):
         Raises:
             KeyError: If telemetry is not found.
         """
-        return self.com.telemetry[tlm]
+        return self._communications.telemetry[tlm]
 
     def tlm_value(self, tlm):
         """ Get current value of specified telemetry item.
@@ -182,6 +184,6 @@ class Pyliner(BasePyliner):
     def rtl(self):
         print("%s: RTL" % self.script_name)
         self.log("RTL")
-        self.com.send_telemetry(
+        self.buffer_telemetry(
             ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
         self.wait_clean()
