@@ -16,9 +16,10 @@ get_script_dir () {
 
 PYLINER_DIR=$(get_script_dir)
 export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}${PYLINER_DIR}"
+PYTHON=python
 
 if [ -z "$1" ]; then
-    echo "Pyliner expects a script to execute."
+    ${PYTHON} -i $PYLINER_DIR/interactive.py
 else
-    python $@
+    ${PYTHON} $@
 fi

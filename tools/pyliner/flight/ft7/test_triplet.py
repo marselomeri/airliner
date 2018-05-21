@@ -3,6 +3,7 @@ from os.path import join, dirname, basename, abspath
 import time
 
 import pyliner
+from navigation import constant
 from telemetry import SetpointTriplet
 from util import read_json
 
@@ -73,4 +74,5 @@ with rocky as rocky:
             time.sleep(1 / 10)
 
     rocky.atp('Return')
+    rocky.nav.vnav(to=500, method=constant(-1))
     rocky.rtl()
