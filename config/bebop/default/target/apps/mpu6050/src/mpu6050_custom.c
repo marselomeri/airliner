@@ -227,7 +227,7 @@ boolean MPU6050_Custom_Init()
     usleep(1000);
 
     /* Set accel resolution. */
-    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_4G, MPU6050_REG_ACCEL_CONFIG, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_16G, MPU6050_REG_ACCEL_CONFIG, 1);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,

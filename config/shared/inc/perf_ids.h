@@ -74,6 +74,9 @@
 #define AK8963_RECEIVE_PERF_ID      102
 #define AK8963_SEND_PERF_ID         103
 #define AK8963_MAIN_TASK_PERF_ID    104
+#define MPU6050_MAIN_TASK_PERF_ID   105
+#define MPU6050_RECEIVE_PERF_ID     106
+#define MPU6050_SEND_PERF_ID        107
 
 #endif
 
