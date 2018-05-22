@@ -308,7 +308,7 @@
 /** \brief I2C master clock speed */
 #define MPU6050_I2C_MST_CLOCK_400HZ         (0x0D)
 
-#define MPU6050_DEFAULT_LOWPASS_FILTER MPU6050_BITS_DLPF_CFG_250HZ
+#define MPU6050_DEFAULT_LOWPASS_FILTER MPU6050_BITS_DLPF_CFG_44HZ
 
 /** \brief Retry attemps for interrupted ioctl calls.
 **
@@ -354,6 +354,12 @@ typedef struct
 } MPU6050_AppCustomData_t;
 
 
+typedef struct
+{
+    int16 val[7];
+} MPU6050_Sample_t;
+
+
 /************************************************************************
 ** External Global Variables
 *************************************************************************/
@@ -385,6 +391,6 @@ int32 MPU6050_ResetDevice(void);
 boolean MPU6050_WriteReg(uint8 Addr, uint8 Data);
 boolean MPU6050_ReadReg(uint8 Reg, void *Buffer, size_t Length);
 boolean MPU6050_Custom_Max_Events_Not_Reached(int32 ind);
-
+uint16 MPU6050_Swap16(uint16 val);
 
 #endif /* MPU6050_I2C_H */

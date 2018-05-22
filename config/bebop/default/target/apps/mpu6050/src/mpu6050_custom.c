@@ -167,8 +167,9 @@ boolean MPU6050_Custom_Init()
 
     /* TODO Add Gyroscope Self-Test */
     /* TODO Add Accelerometer Self-Test */
+
     /* Set clock source. */
-    returnBool = MPU6050_WriteReg(MPU6050_MPU_CLK_SEL_PLLGYROZ, MPU6050_REG_PWR_MGMT_1, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_MPU_CLK_SEL_PLLGYROX, MPU6050_REG_PWR_MGMT_1, 1);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -178,16 +179,7 @@ boolean MPU6050_Custom_Init()
 
     usleep(1000);
 
-    /* Set clock source. */
-    returnBool = MPU6050_WriteReg(MPU6050_MPU_CLK_SEL_PLLGYROZ, MPU6050_REG_PWR_MGMT_2, 1);
-    if(FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "Set clock source failed.");
-        goto end_of_function;
-    }
-    
-    /* Enable acc & gyro. */
+    /* Clear any standby modes. */
     returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_PWR_MGMT_2, 1);
     if(FALSE == returnBool)
     {
@@ -195,6 +187,8 @@ boolean MPU6050_Custom_Init()
                 "Enable Acc and Gyro failed");
         goto end_of_function;
     }
+
+    usleep(1000);
 
     /* Set DLPF.  */
     returnBool = MPU6050_WriteReg(MPU6050_DEFAULT_LOWPASS_FILTER, MPU6050_REG_CONFIG, 1);
@@ -205,8 +199,56 @@ boolean MPU6050_Custom_Init()
         goto end_of_function;
     }
 
-    /* Set gyro scale. */
-    /* Set acc scale. */
+    usleep(1000);
+
+    /* Set sample divider.  
+     * sample rate = Gyroscope_Output_Rate / (1 + sample_divider)
+     * If DLPF is disabled (0 or 7) Gyroscope_Output_Rate = 8 kHz
+     * otherwise Gyroscope_Output_Rate = 1kHz */
+    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_SMPLRT_DIV, 1);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Set accel resolution failed. ");
+        goto end_of_function;
+    }
+    
+    usleep(1000);
+
+    /* Set gyro resolution. */
+    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_2000DPS, MPU6050_REG_GYRO_CONFIG, 1);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Set gyro resolution failed. ");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+    /* Set accel resolution. */
+    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_4G, MPU6050_REG_ACCEL_CONFIG, 1);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Set accel resolution failed. ");
+        goto end_of_function;
+    }
+
+    usleep(1000);
+
+    /* LATCH_INT_EN INT pin level held unitl interrupt status is 
+     * cleared. IN_ANYRD_2CLEAR interrupt status is cleared if
+     * any read operation is performed. */
+    //returnBool = MPU6050_WriteReg(0x30, MPU6050_REG_INT_PIN_CFG, 1);
+    //if(FALSE == returnBool)
+    //{
+        //CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                //"Set accel resolution failed. ");
+        //goto end_of_function;
+    //}
+
+    //usleep(1000);
 
     MPU6050_AppCustomData.Status = MPU6050_CUSTOM_INITIALIZED;
 
@@ -220,11 +262,11 @@ boolean MPU6050_Custom_Uninit(void)
     boolean returnBool = TRUE;
     int returnCode = 0;
 
+    (void) MPU6050_ResetDevice();
+
     returnCode = close(MPU6050_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 Device close errno: %i", errno);
         returnBool = FALSE;
     }
     else
@@ -378,7 +420,7 @@ boolean MPU6050_SetAccScale(uint8 Scale, float *AccDivider)
             goto end_of_function;
     }
 
-    returnBool = MPU6050_WriteReg(MPU6050_REG_ACCEL_CONFIG, value);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_ACCEL_CONFIG, value, 1);
     if (FALSE == returnBool)
     {
         goto end_of_function;
@@ -430,7 +472,7 @@ boolean MPU6050_SetGyroScale(uint32 Scale, float *GyroDivider)
             goto end_of_function;
     }
 
-    returnBool = MPU6050_WriteReg(MPU6050_REG_GYRO_CONFIG, value);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_GYRO_CONFIG, value, 1);
     if (FALSE == returnBool)
     {
         goto end_of_function;
@@ -441,14 +483,15 @@ end_of_function:
 }
 
 
-boolean MPU6050_Read_Gyro(int16 *X, int16 *Y, int16 *Z)
+/* Todo update to passing a structure to this function. */
+boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, int16 *AZ, int16 Temp)
 {
-    uint8 hValue = 0;
-    uint8 lValue = 0;
+    uint8 intStatus = 0;
+    MPU6050_Sample_t sample = {0};
     boolean returnBool = TRUE;
 
     /* Null pointer check */
-    if(0 == X || 0 == Y || 0 == Z)
+    if(0 == GX || 0 == GY || 0 == GZ || 0 == AX || 0 == AY || 0 == AZ || 0 == Temp)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MPU6050 Read_Gyro Null Pointer");
@@ -456,165 +499,43 @@ boolean MPU6050_Read_Gyro(int16 *X, int16 *Y, int16 *Z)
         goto end_of_function;
     }
 
-    returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_XOUT_H, &hValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_XOUT_L, &lValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    *X = (hValue << 8) | lValue;
-
-    returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_YOUT_H, &hValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_YOUT_L, &lValue);
+    /* Check data ready interrupt bit. */
+    returnBool = MPU6050_ReadReg(MPU6050_REG_INT_STATUS, &intStatus);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
         goto end_of_function;
     }
 
-    *Y = (hValue << 8) | lValue;
-
-    returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_ZOUT_H, &hValue);
-    if(FALSE == returnBool)
+    /* Check for DATA_RDY_INT set... */
+    if(intStatus & MPU6050_BIT_INT_STATUS_DATA)
     {
+        returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_XOUT_H, &sample, sizeof(sample));
+        if(FALSE == returnBool)
+        {
+            goto end_of_function;
+        }
+    }
+    else
+    {
+        /* Data not ready skipping measurement. */
         returnBool = FALSE;
         goto end_of_function;
     }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_ZOUT_L, &lValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
 
-    *Z = (hValue << 8) | lValue;
+    *GX = MPU6050_Swap16(sample.val[0]);
+    *GY = MPU6050_Swap16(sample.val[1]);
+    *GZ = MPU6050_Swap16(sample.val[2]);
+    *Temp = MPU6050_Swap16(sample.val[3]);
+    *AX = MPU6050_Swap16(sample.val[4]);
+    *AY = MPU6050_Swap16(sample.val[5]);
+    *AZ = MPU6050_Swap16(sample.val[6]);
 
 end_of_function:
     if (FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 read error in Read_Gyro");
-    }
-    return returnBool;
-}
-
-
-boolean MPU6050_Read_Accel(int16 *X, int16 *Y, int16 *Z)
-{
-    uint8 hValue = 0;
-    uint8 lValue = 0;
-    boolean returnBool = TRUE;
-
-    /* Null pointer check */
-    if(0 == X || 0 == Y || 0 == Z)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 Read_Accel Null Pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_XOUT_H, &hValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_XOUT_L, &lValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    *X = (hValue << 8) | lValue;
-
-    returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_YOUT_H, &hValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_YOUT_L, &lValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    *Y = (hValue << 8) | lValue;
-
-    returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_ZOUT_H, &hValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_ZOUT_L, &lValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    *Z = (hValue << 8) | lValue;
-
-end_of_function:
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 read error in Read_Accel");
-    }
-    return returnBool;
-};
-
-
-boolean MPU6050_Read_Temp(uint16 *Temp)
-{
-    uint8 hValue = 0;
-    uint8 lValue = 0;
-    boolean returnBool = TRUE;
-
-    /* Null pointer check */
-    if(0 == Temp)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 Read_Temp Null Pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    returnBool = MPU6050_ReadReg(MPU6050_REG_TEMP_OUT_H, &hValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    returnBool = MPU6050_ReadReg(MPU6050_REG_TEMP_OUT_L, &lValue);
-    if(FALSE == returnBool)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    *Temp = (hValue << 8) | lValue;
-
-end_of_function:
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 read error in Read_Temp");
+            "MPU6050 read error in Measure");
     }
     return returnBool;
 }
@@ -656,41 +577,6 @@ boolean MPU6050_Perform_GyroSelfTest(void)
 }
 
 
-
-/* TODO */
-boolean MPU6050_Read_ImuStatus(boolean *WOM, boolean *FifoOvflw, boolean *Fsync, boolean *DataReady)
-{
-    uint8 value = 0;
-    boolean returnBool = TRUE;
-    
-    /* Null pointer check */
-    if(0 == WOM || 0 == FifoOvflw || 0 == Fsync|| 0 == DataReady)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 Read_ImuStatus Null Pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    
-    returnBool = MPU6050_ReadReg(MPU6050_REG_INT_STATUS, &value);
-    if(FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 read error in ImuStatus");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    *WOM        = value & MPU6050_ST_INT_WOM_MASK;
-    *FifoOvflw  = value & MPU6050_ST_INT_FIFO_OFL_MASK;
-    *Fsync      = value & MPU6050_ST_INT_FSYNC_MASK;
-    *DataReady  = value & MPU6050_ST_INT_RDY_MASK;
-
-end_of_function:
-    return returnBool;
-}
-
-
 boolean MPU6050_Apply_Platform_Rotation(float *X, float *Y, float *Z)
 {
     boolean returnBool = TRUE;
@@ -704,10 +590,8 @@ boolean MPU6050_Apply_Platform_Rotation(float *X, float *Y, float *Z)
         returnBool = FALSE;
         goto end_of_function;
     }
-    /* ROTATION_ROLL_180_YAW_90 */
-    temp = *X; 
-    *X = *Y; 
-    *Y = temp; 
+    /* ROTATION_ROLL_180 */
+    *Y = -*Y; 
     *Z = -*Z;
 
 end_of_function:
@@ -769,8 +653,14 @@ void MPU6050_Get_Rotation(uint8 *Rotation)
     }
     
     /* TODO move to a table */
-    *Rotation = ROTATION_ROLL_180_YAW_90;
+    *Rotation = ROTATION_ROLL_180;
 
 end_of_function:
 ;
+}
+
+
+uint16 MPU6050_Swap16(uint16 val) 
+{
+    return (val >> 8) | (val << 8); 
 }
