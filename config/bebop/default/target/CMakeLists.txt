@@ -370,15 +370,15 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    mpu9250
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpu9250/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250
+    mpu6050
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250/src/mpu9250_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu9250/src/mpu9250_spi.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpu9250_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu9250_perfids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/src/mpu6050_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/src/mpu6050_i2c.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpu6050_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu6050_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu6050_perfids.h
 )
 
 add_airliner_app(

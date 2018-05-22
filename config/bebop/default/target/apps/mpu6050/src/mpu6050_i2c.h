@@ -47,7 +47,7 @@
 /** \brief MPU6050 device ID to verify on I2C. */
 #define MPU6050_WHOAMI_ID           (0x68)
 /** \brief MPU6050 I2C slave address. */
-#define MPU6050_SLAVE_ADDRESS       (0x68)
+#define MPU6050_I2C_SLAVE_ADDRESS       (0x68)
 /* MPU6050 register map for Gyroscope and Accelerometer. */
 /* Self test registers. */
 /** \brief Self test registers gyro and accel X-axis. */
@@ -55,7 +55,7 @@
 /** \brief Self test registers gyro and accel Y-axis. */
 #define MPU6050_REG_SELF_TEST_Y             (0x0E)
 /** \brief Self test registers gyro and accel Z-axis. */
-#define MPU6050_REG_SELF_TEST_Y             (0x0F)
+#define MPU6050_REG_SELF_TEST_Z             (0x0F)
 /** \brief Self test registers accel XYZ remaining bits. */
 #define MPU6050_REG_SELF_TEST_A             (0x10)
 /* Divides the internal sample rate to generate the sample rate that

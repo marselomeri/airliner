@@ -4,6 +4,7 @@ CFE_LIB, /cf/apps/PRMLIB.so,    PRMLIB_LibInit,  PRMLIB,      0,     0, 0x0, 0, 
 CFE_LIB, /cf/apps/PX4LIB.so,    PX4LIB_LibInit,  PX4LIB,    0,     0, 0x0, 0, 2;
 CFE_APP, /cf/apps/AK8963.so,    AK8963_AppMain,     AK8963,      49, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/MS5607.so,    MS5607_AppMain,      MS5607,       82, 327680, 0x0, 0, 2;
+CFE_APP, /cf/apps/MPU6050.so,   MPU6050_AppMain,     MPU6050,      46, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/GPS.so,       GPS_AppMain,     GPS,       97, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/CI.so,        CI_AppMain,      CI,        115, 327680, 0x0, 0, 2;
 CFE_APP, /cf/apps/TO.so,        TO_AppMain,      TO,        124, 327680, 0x0, 0, 2;

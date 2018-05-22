@@ -169,7 +169,7 @@ boolean MPU6050_Custom_Init()
     /* TODO Add Accelerometer Self-Test */
 
     /* Set clock source. */
-    returnBool = MPU6050_WriteReg(MPU6050_MPU_CLK_SEL_PLLGYROX, MPU6050_REG_PWR_MGMT_1, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_MPU_CLK_SEL_PLLGYROX, MPU6050_REG_PWR_MGMT_1);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -180,7 +180,7 @@ boolean MPU6050_Custom_Init()
     usleep(1000);
 
     /* Clear any standby modes. */
-    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_PWR_MGMT_2, 1);
+    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_PWR_MGMT_2);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -191,7 +191,7 @@ boolean MPU6050_Custom_Init()
     usleep(1000);
 
     /* Set DLPF.  */
-    returnBool = MPU6050_WriteReg(MPU6050_DEFAULT_LOWPASS_FILTER, MPU6050_REG_CONFIG, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_DEFAULT_LOWPASS_FILTER, MPU6050_REG_CONFIG);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -205,7 +205,7 @@ boolean MPU6050_Custom_Init()
      * sample rate = Gyroscope_Output_Rate / (1 + sample_divider)
      * If DLPF is disabled (0 or 7) Gyroscope_Output_Rate = 8 kHz
      * otherwise Gyroscope_Output_Rate = 1kHz */
-    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_SMPLRT_DIV, 1);
+    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_SMPLRT_DIV);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -216,7 +216,7 @@ boolean MPU6050_Custom_Init()
     usleep(1000);
 
     /* Set gyro resolution. */
-    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_2000DPS, MPU6050_REG_GYRO_CONFIG, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_2000DPS, MPU6050_REG_GYRO_CONFIG);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -227,7 +227,7 @@ boolean MPU6050_Custom_Init()
     usleep(1000);
 
     /* Set accel resolution. */
-    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_16G, MPU6050_REG_ACCEL_CONFIG, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_16G, MPU6050_REG_ACCEL_CONFIG);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -282,7 +282,7 @@ int32 MPU6050_ResetDevice(void)
     int32 ret = 0;
     boolean returnBool = TRUE;
     
-    returnBool = MPU6050_WriteReg(MPU6050_BIT_H_RESET, MPU6050_REG_PWR_MGMT_1, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_BIT_H_RESET, MPU6050_REG_PWR_MGMT_1);
     if (FALSE == returnBool) 
     {            
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -420,7 +420,7 @@ boolean MPU6050_SetAccScale(uint8 Scale, float *AccDivider)
             goto end_of_function;
     }
 
-    returnBool = MPU6050_WriteReg(MPU6050_REG_ACCEL_CONFIG, value, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_ACCEL_CONFIG, value);
     if (FALSE == returnBool)
     {
         goto end_of_function;
@@ -472,7 +472,7 @@ boolean MPU6050_SetGyroScale(uint32 Scale, float *GyroDivider)
             goto end_of_function;
     }
 
-    returnBool = MPU6050_WriteReg(MPU6050_REG_GYRO_CONFIG, value, 1);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_GYRO_CONFIG, value);
     if (FALSE == returnBool)
     {
         goto end_of_function;
@@ -484,7 +484,7 @@ end_of_function:
 
 
 /* Todo update to passing a structure to this function. */
-boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, int16 *AZ, int16 Temp)
+boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, int16 *AZ, int16 *Temp)
 {
     uint8 intStatus = 0;
     MPU6050_Sample_t sample = {0};
@@ -500,7 +500,7 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
     }
 
     /* Check data ready interrupt bit. */
-    returnBool = MPU6050_ReadReg(MPU6050_REG_INT_STATUS, &intStatus);
+    returnBool = MPU6050_ReadReg(MPU6050_REG_INT_STATUS, &intStatus, 1);
     if(FALSE == returnBool)
     {
         returnBool = FALSE;
