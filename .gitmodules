@@ -142,3 +142,6 @@
 [submodule "apps/ak8963"]
 	path = apps/ak8963
 	url = git@bitbucket.org:windhoverlabs/ak8963.git
+[submodule "apps/mpu6050"]
+	path = apps/mpu6050
+	url = git@bitbucket.org:windhoverlabs/mpu6050.git
