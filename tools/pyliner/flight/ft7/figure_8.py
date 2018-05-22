@@ -1,3 +1,20 @@
+"""
+Fly in a figure-8. Fly at full-speed during approach and retreat, and slow down
+during the turn to allow for a smaller turn radius.
+
+Requirements Fulfilled:
+    PYLINER001
+    PYLINER003
+    PYLINER004
+    PYLINER006
+    PYLINER009
+    PYLINER010
+    PYLINER011
+    PYLINER012
+    PYLINER013
+    PYLINER014
+    PYLINER016
+"""
 from os.path import join, dirname, abspath, basename
 from time import sleep
 

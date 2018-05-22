@@ -18,6 +18,9 @@ def limiter(min_val, max_val):
     return lambda val: max(min(val, max_val), min_val)
 
 
+# TODO Look into using decimal library for precision at any lat/lon
+
+
 class Navigation(PylinerModule):
     """Navigation module. Contains all navigation features.
     

@@ -5,7 +5,7 @@ import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner_module import PylinerModule
 from python_pb import pyliner_msgs
-from util import init_socket, PeriodicExecutor, server_factory, \
+from util import init_socket, PeriodicExecutor, handler_factory, \
     LogLevel, serialize
 
 
@@ -17,8 +17,8 @@ class Communication(PylinerModule):
         Args:
             airliner_map (dict): Airliner Mapping, typically read from a JSON.
             address (str): Address to connect to the vehicle.
-            ci_port (int):
-            to_port (int):
+            ci_port (int): Command-Ingest port
+            to_port (int): Telemetry-Output port
         """
         super(Communication, self).__init__()
 
@@ -33,7 +33,7 @@ class Communication(PylinerModule):
         self.telemetry = {}
         self.subscribers = []
         self.to_port = to_port
-        self.to_socket = init_socket()
+        # self.to_socket = init_socket()
 
         # Receive Telemetry
         self.tlm_listener = socketserver.UDPServer(
@@ -44,12 +44,11 @@ class Communication(PylinerModule):
         self.listener_thread.start()
 
         # Send Telemetry
-        def callback():
+        def send_telem():
             if self.msg is not None:
                 self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
             self.send_dirty = False
-
-        self.periodic_send = PeriodicExecutor(callback, every=1.0 / 10.0)
+        self.periodic_send = PeriodicExecutor(send_telem, every=0.1)
         self.periodic_send.start()
 
     def _get_airliner_op(self, op_path):
@@ -302,10 +301,10 @@ class Communication(PylinerModule):
                 to, using the telemetry item's operational names.
                 E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}
                     or
-                     {'tlm': ['/Airliner/ES/HK/CmdCounter', '/Airliner/ES/HK/ErrCounter']}
-
-            callback (function): Function to call when this telemetry is
-                updated. If not specified defaults to _on_recv_telemetry.
+                     {'tlm': ['/Airliner/ES/HK/CmdCounter',
+                              '/Airliner/ES/HK/ErrCounter']}
+            callback (Callable[[], None]): Function to call when this telemetry
+                is updated.
         """
         for tlm_item in tlm["tlm"]:
             # Get operation for specified telemetry

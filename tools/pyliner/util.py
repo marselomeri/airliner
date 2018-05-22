@@ -15,23 +15,10 @@ class LogLevel(Enum):
     Error = 4
 
 
-class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
-    def __init__(self, callback, *args, **keys):
-        self.callback = callback
-        socketserver.BaseRequestHandler.__init__(self, *args, **keys)
-
-    def handle(self):
-        self.callback(self.request)
-
-
 class PeriodicExecutor(threading.Thread):
     """Executes a callback function every x-seconds."""
-    _exec_num = 0
-
     def __init__(self, callback, every=1):
-        super(PeriodicExecutor, self).__init__(
-            name='PeriodicExecutor{}'.format(self._exec_num))
-        self._exec_num += 1
+        super(PeriodicExecutor, self).__init__()
         self.callback = callback
         self.every = every
         self.daemon = True
@@ -42,8 +29,22 @@ class PeriodicExecutor(threading.Thread):
             time.sleep(self.every)
 
 
+class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
+    def __init__(self, callback, *args, **keys):
+        self.callback = callback
+        socketserver.BaseRequestHandler.__init__(self, *args, **keys)
+
+    def handle(self):
+        self.callback(self.request)
+
+
 def get_time():
     return int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 10000)
+
+
+def handler_factory(callback):
+    """ Creates server object and sets the callback """
+    return lambda *args, **kwargs: ThreadedUDPRequestHandler(callback, *args, **kwargs)
 
 
 def init_socket():
@@ -75,10 +76,3 @@ def serialize(header, payload):
     if payload:
         ser += payload.SerializeToString()
     return ser
-
-
-def server_factory(callback):
-    """ Creates server object and sets the callback """
-    def create_handler(*args, **kwargs):
-        return ThreadedUDPRequestHandler(callback, *args, **kwargs)
-    return create_handler

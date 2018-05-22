@@ -1,6 +1,9 @@
 import util
 
 
+# TODO Remove all of this, change to wrapper of python_pb protobuf objects.
+
+
 class Telemetry(dict):
     """Subclass of dict representing FSW telemetry objects.
 
