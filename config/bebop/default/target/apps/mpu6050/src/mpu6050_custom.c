@@ -510,7 +510,7 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
     /* Check for DATA_RDY_INT set... */
     if(intStatus & MPU6050_BIT_INT_STATUS_DATA)
     {
-        returnBool = MPU6050_ReadReg(MPU6050_REG_GYRO_XOUT_H, &sample, sizeof(sample));
+        returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_XOUT_H, &sample, sizeof(sample));
         if(FALSE == returnBool)
         {
             goto end_of_function;
@@ -523,13 +523,13 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
         goto end_of_function;
     }
 
-    *GX = MPU6050_Swap16(sample.val[0]);
-    *GY = MPU6050_Swap16(sample.val[1]);
-    *GZ = MPU6050_Swap16(sample.val[2]);
+    *AX   = MPU6050_Swap16(sample.val[0]);
+    *AY   = MPU6050_Swap16(sample.val[1]);
+    *AZ   = MPU6050_Swap16(sample.val[2]);
     *Temp = MPU6050_Swap16(sample.val[3]);
-    *AX = MPU6050_Swap16(sample.val[4]);
-    *AY = MPU6050_Swap16(sample.val[5]);
-    *AZ = MPU6050_Swap16(sample.val[6]);
+    *GX   = MPU6050_Swap16(sample.val[4]);
+    *GY   = MPU6050_Swap16(sample.val[5]);
+    *GZ   = MPU6050_Swap16(sample.val[6]);
 
 end_of_function:
     if (FALSE == returnBool)

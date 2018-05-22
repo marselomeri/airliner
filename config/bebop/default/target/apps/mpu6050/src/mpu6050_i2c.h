@@ -334,7 +334,7 @@
 ** Structure Declarations
 *************************************************************************/
 /**
- * \brief MPU6050 device status
+ * \brief MPU6050 device status.
  */
 typedef enum
 {
@@ -345,6 +345,9 @@ typedef enum
 } MPU6050_Custom_Status_t;
 
 
+/**
+ * \brief MPU6050 application custom data.
+ */
 typedef struct
 {
     /*! Device file descriptor */
@@ -354,6 +357,9 @@ typedef struct
 } MPU6050_AppCustomData_t;
 
 
+/**
+ * \brief MPU6050 block read sample for accel, temp, and gyro.
+ */
 typedef struct
 {
     int16 val[7];
