@@ -1,10 +1,40 @@
+import math
 from abc import abstractmethod, ABCMeta
-from collections import namedtuple
+from copy import copy
 from numbers import Real
 
 from geographiclib.geodesic import Geodesic
 
-LatLon = namedtuple('LatLon', ['latitude', 'longitude'])
+__all__ = ['Geographic', 'LatLon', 'Waypoint']
+
+
+class LatLon(object):
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude
+        self.longitude = longitude
+
+    def __repr__(self):
+        return '{}({}, {})'.format(self.__class__.__name__,
+                                   self.latitude, self.longitude)
+
+
+class Waypoint(LatLon):
+    def __init__(self, latitude, longitude, altitude=None, heading=None):
+        super(Waypoint, self).__init__(latitude, longitude)
+        self.altitude = altitude
+        self.heading = heading
+
+    def __repr__(self):
+        return '{}({}, {}, {}, {})'.format(
+            self.__class__.__name__, self.latitude, self.longitude,
+            self.altitude, self.heading)
+
+    @property
+    def yaw(self):
+        if self.heading is None:
+            return None
+        return math.radians(self.heading if self.heading < 180
+                            else self.heading - 360)
 
 
 class GeographicBase(object):
@@ -43,6 +73,9 @@ class GeographicBase(object):
         # type: (LatLon, Real, Real) -> LatLon
         """Calculate a Place-Bearing-Distance (PBD) coordinate.
 
+        Returns:
+            (LatLon): A copy of `a` with updated latitude and longitude.
+
         Args:
             a (LatLon): Point A
             bearing (float): Direction in degrees [0, 360)
@@ -78,4 +111,7 @@ class Geographic(GeographicBase):
     @staticmethod
     def pbd(a, bearing, distance):
         direct = Geographic._direct(a, bearing, distance)
-        return LatLon(direct['lat2'], direct['lon2'])
+        b = copy(a)
+        b.latitude = direct['lat2']
+        b.longitude = direct['lon2']
+        return b

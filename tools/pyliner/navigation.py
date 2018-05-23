@@ -2,8 +2,10 @@ import math
 import time
 from numbers import Real
 
-from geographic import Geographic, LatLon
+from geographic import Geographic
+from geographic import Waypoint
 from pyliner_module import PylinerModule
+from telemetry import SetpointTriplet
 
 
 def constant(value):
@@ -52,7 +54,7 @@ class Navigation(PylinerModule):
 
     @property
     def coordinate(self):
-        return LatLon(self.latitude, self.longitude)
+        return Waypoint(self.latitude, self.longitude, self.altitude)
 
     @property
     def heading(self):
@@ -108,6 +110,18 @@ class Navigation(PylinerModule):
 
     def forward(self, amount, method, tolerance=1):
         self.lnav(amount, 'x', method, tolerance)
+
+    def goto(self, waypoint, tolerance=1):
+        # type: (Waypoint) -> None
+        self.vehicle.buffer_telemetry(SetpointTriplet(
+            Cur_Lat=waypoint.latitude,
+            Cur_Lon=waypoint.longitude,
+            Cur_Alt=0 if waypoint.altitude is None else waypoint.altitude,
+            Cur_Yaw=0 if waypoint.heading is None else waypoint.yaw,
+            Cur_Valid=1, Cur_PositionValid=1
+        ))
+        while self.geographic.distance(waypoint, self.coordinate) > tolerance:
+            time.sleep(0.1)
 
     def left(self, amount, method, tolerance=1):
         self.lnav(amount, 'y', method, tolerance, True)

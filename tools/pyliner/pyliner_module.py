@@ -1,12 +1,14 @@
-from collections import Iterable
 from abc import abstractmethod
+from collections import Iterable
 
 
 class PylinerModule(object):
     def __init__(self):
         self._vehicle = None
+        """:type: BasePyliner"""
 
     def attach(self, vehicle):
+        # type: (BasePyliner) -> None
         if self._vehicle is not None:
             raise ValueError('Cannot reattach a module while it is currently'
                              'attached. Detach first.')

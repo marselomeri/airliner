@@ -1,10 +1,13 @@
 """
-Rotate the vehicle
+Fly a heading and to a waypoint.
 
 Requirements Fulfilled:
     PYLINER001
+    PYLINER002
     PYLINER003
     PYLINER004
+    PYLINER005
+    PYLINER006
     PYLINER010
     PYLINER011
     PYLINER012
@@ -15,12 +18,8 @@ Requirements Fulfilled:
 
 from os.path import join, dirname, abspath, basename
 
-import time
-
 import pyliner
-from pyliner import FlightMode
-from navigation import Navigation, constant, proportional, limiter
-from telemetry import SetpointTriplet
+from navigation import proportional, limiter
 from util import read_json
 
 
@@ -47,22 +46,17 @@ with pyliner.Pyliner(
     rocky.arm()
     # rocky.atp('Takeoff')
     rocky.takeoff()
-    rocky.flight_mode(FlightMode.PosCtl)
+    # rocky.flight_mode(FlightMode.PosCtl)
 
     rocky.atp('Move Up')
-    rocky.nav.up(10, proportional(0.2), tolerance=0.5)
+    # rocky.nav.up(10, proportional(0.2), tolerance=0.5)
 
     home = rocky.nav.coordinate
-    current = rocky.nav.geographic.pbd(home, 270, 20)
+    new = rocky.nav.geographic.pbd(home, 0, 20)
+    new.altitude = 500
 
-    rocky.buffer_telemetry(SetpointTriplet(
-        Cur_Lat=current.latitude,
-        Cur_Lon=current.longitude,
-
-    ))
-
-    while rocky.nav.geographic.distance(current, rocky.nav.coordinate) > 1:
-        time.sleep(0.1)
+    rocky.nav.goto(new)
+    rocky.nav.goto(rocky.nav.geographic.pbd(new, 180, 40))
 
     rocky.atp('Return')
     rocky.rtl()
