@@ -19,8 +19,8 @@ from os.path import join, dirname, abspath, basename
 from time import sleep
 
 import pyliner
+from navigation import constant, proportional, limiter
 from pyliner import FlightMode
-from navigation import Navigation, constant, proportional, limiter
 from util import read_json
 
 
@@ -49,7 +49,7 @@ with pyliner.Pyliner(
     rocky.takeoff()
     rocky.flight_mode(FlightMode.PosCtl)
 
-    home = rocky.nav.coordinate
+    home = rocky.nav.position
 
     rocky.nav.vnav(to=500, method=constant(1.0))
 
@@ -59,12 +59,12 @@ with pyliner.Pyliner(
     while True:
         # Wait until close to home
         print('Approach')
-        while rocky.nav.geographic.distance(home, rocky.nav.coordinate) > 7:
+        while rocky.nav.geographic.distance(home, rocky.nav.position) > 7:
             sleep(0.1)
 
         # Wait until away from home
         print('Retreat')
-        while rocky.nav.geographic.distance(home, rocky.nav.coordinate) < 7:
+        while rocky.nav.geographic.distance(home, rocky.nav.position) < 7:
             sleep(0.1)
 
         print('Rotate')
@@ -74,7 +74,7 @@ with pyliner.Pyliner(
 
         # Face home
         def home_bear():
-            return rocky.nav.geographic.bearing(rocky.nav.coordinate, home)
+            return rocky.nav.geographic.bearing(rocky.nav.position, home)
 
         diff = float('inf')
         while diff > 2:

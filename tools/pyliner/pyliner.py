@@ -114,6 +114,11 @@ class Pyliner(BasePyliner):
         if self.failure_callback is not None:
             self.failure_callback(self, (exc_type, exc_val, exc_tb))
 
+    def disarm(self):
+        print("%s: Disarming vehicle" % self.script_name)
+        self.log("Disarming vehicle")
+        self.send_telemetry(ManualSetpoint(ArmSwitch=3))
+
     def enable_module(self, name, module):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
@@ -125,11 +130,6 @@ class Pyliner(BasePyliner):
         """
         super(Pyliner, self).enable_module(name, module)
         self._communications.subscribe({'tlm': module.required_telemetry_paths()})
-
-    def disarm(self):
-        print("%s: Disarming vehicle" % self.script_name)
-        self.log("Disarming vehicle")
-        self.send_telemetry(ManualSetpoint(ArmSwitch=3))
 
     def flight_mode(self, mode):
         if not mode:

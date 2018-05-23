@@ -53,10 +53,6 @@ class Navigation(PylinerModule):
         return PylinerModule.telem(Navigation.req_telem['altitude'])(self)
 
     @property
-    def coordinate(self):
-        return Waypoint(self.latitude, self.longitude, self.altitude)
-
-    @property
     def heading(self):
         """Degrees"""
         return math.degrees(self.yaw) % 360
@@ -70,6 +66,10 @@ class Navigation(PylinerModule):
     def longitude(self):
         """Degrees"""
         return PylinerModule.telem(Navigation.req_telem['longitude'])(self)
+
+    @property
+    def position(self):
+        return Waypoint(self.latitude, self.longitude, self.altitude)
 
     @property
     def yaw(self):
@@ -120,20 +120,20 @@ class Navigation(PylinerModule):
             Cur_Yaw=0 if waypoint.heading is None else waypoint.yaw,
             Cur_Valid=1, Cur_PositionValid=1
         ))
-        while self.geographic.distance(waypoint, self.coordinate) > tolerance:
+        while self.geographic.distance(waypoint, self.position) > tolerance:
             time.sleep(0.1)
 
     def left(self, amount, method, tolerance=1):
         self.lnav(amount, 'y', method, tolerance, True)
 
     def lnav(self, amount, axis, method, tolerance, negate=False):
-        old_coor = self.coordinate
-        distance = self.geographic.distance(old_coor, self.coordinate)
+        old_coor = self.position
+        distance = self.geographic.distance(old_coor, self.position)
         while (amount - distance) > tolerance:
             velocity = method(distance, amount)
             setattr(self.vehicle.fd, axis, -velocity if negate else velocity)
             time.sleep(1 / 32)
-            distance = self.geographic.distance(old_coor, self.coordinate)
+            distance = self.geographic.distance(old_coor, self.position)
         setattr(self.vehicle.fd, axis, 0.0)
 
     @classmethod

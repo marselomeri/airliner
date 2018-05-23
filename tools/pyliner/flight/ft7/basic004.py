@@ -51,7 +51,7 @@ with pyliner.Pyliner(
     rocky.atp('Move Up')
     # rocky.nav.up(10, proportional(0.2), tolerance=0.5)
 
-    home = rocky.nav.coordinate
+    home = rocky.nav.position
     new = rocky.nav.geographic.pbd(home, 0, 20)
     new.altitude = 500
 

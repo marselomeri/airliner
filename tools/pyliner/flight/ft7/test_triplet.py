@@ -1,6 +1,5 @@
-from os.path import join, dirname, basename, abspath
-
 import time
+from os.path import join, dirname, basename, abspath
 
 import pyliner
 from navigation import constant
@@ -29,7 +28,7 @@ with rocky as rocky:
 
     rocky.atp('Start')
 
-    waypoints = [(rocky.nav.coordinate, 495)]
+    waypoints = [(rocky.nav.position, 495)]
     waypoints.append(
         (rocky.nav.geographic.pbd(waypoints[-1][0], 0, 50), 500))
     waypoints.append(
@@ -70,7 +69,7 @@ with rocky as rocky:
 
     for prev, cur, nxt in collector(iter(waypoints)):
         rocky.buffer_telemetry(triplet(prev, cur, nxt))
-        while rocky.nav.geographic.distance(cur[0], rocky.nav.coordinate) > 1:
+        while rocky.nav.geographic.distance(cur[0], rocky.nav.position) > 1:
             time.sleep(1 / 10)
 
     rocky.atp('Return')
