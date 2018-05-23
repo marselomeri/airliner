@@ -69,7 +69,7 @@ with rocky as rocky:
             yield s1, s2, s3
 
     for prev, cur, nxt in collector(iter(waypoints)):
-        rocky.com.send_telemetry(triplet(prev, cur, nxt))
+        rocky.buffer_telemetry(triplet(prev, cur, nxt))
         while rocky.nav.geographic.distance(cur[0], rocky.nav.coordinate) > 1:
             time.sleep(1 / 10)
 

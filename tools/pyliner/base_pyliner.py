@@ -11,6 +11,7 @@ from junit_xml import TestCase, TestSuite
 
 from communication import Communication
 from pyliner_module import PylinerModule
+from telemetry import Telemetry
 from util import LogLevel
 
 
@@ -81,6 +82,7 @@ class BasePyliner(object):
                              'Pyliner instance.'.format(item))
 
     def buffer_telemetry(self, telemetry):
+        # type: (Telemetry) -> None
         self._communications.send_telemetry(telemetry)
 
     @abstractmethod

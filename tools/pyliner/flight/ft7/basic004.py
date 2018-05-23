@@ -15,9 +15,12 @@ Requirements Fulfilled:
 
 from os.path import join, dirname, abspath, basename
 
+import time
+
 import pyliner
 from pyliner import FlightMode
 from navigation import Navigation, constant, proportional, limiter
+from telemetry import SetpointTriplet
 from util import read_json
 
 
@@ -49,25 +52,17 @@ with pyliner.Pyliner(
     rocky.atp('Move Up')
     rocky.nav.up(10, proportional(0.2), tolerance=0.5)
 
-    rocky.atp('First')
-    for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
+    home = rocky.nav.coordinate
+    current = rocky.nav.geographic.pbd(home, 270, 20)
 
-    rocky.atp('Second')
-    for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
+    rocky.buffer_telemetry(SetpointTriplet(
+        Cur_Lat=current.latitude,
+        Cur_Lon=current.longitude,
 
-    rocky.atp('Third')
-    for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
+    ))
 
-    rocky.atp('Fourth')
-    for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
+    while rocky.nav.geographic.distance(current, rocky.nav.coordinate) > 1:
+        time.sleep(0.1)
 
     rocky.atp('Return')
     rocky.rtl()

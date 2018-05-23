@@ -5,3 +5,4 @@ geographiclib
 junit_xml
 protobuf
 rx
+sympy

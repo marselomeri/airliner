@@ -74,8 +74,40 @@ class Navigation(PylinerModule):
         """Radians. North 0 incrementing clockwise. Wrap at Pi (180 degrees)"""
         return PylinerModule.telem(Navigation.req_telem['yaw'])(self)
 
-    def backward(self, amount, method, tolerence=1):
-        self.lnav(amount, 'x', method, tolerence, True)
+    def backward(self, amount, method, tolerance=1):
+        self.lnav(amount, 'x', method, tolerance, True)
+
+    def clockwise(self, degrees, method, tolerance=1):
+        old_heading = self.heading
+        target_heading = (old_heading + degrees) % 360
+        min_tol = (target_heading - tolerance) % 360
+
+        def unroll_heading():
+            return self.heading if self.heading < target_heading \
+                else self.heading - 360
+        while unroll_heading() < min_tol:
+            rotate = method(unroll_heading(), target_heading)
+            self.vehicle.fd.r = rotate
+        self.vehicle.fd.r = 0.0
+
+    def counterclockwise(self, degrees, method, tolerance=1):
+        old_heading = self.heading
+        target_heading = (old_heading - degrees) % 360
+        max_tol = (target_heading + tolerance) % 360
+
+        def unroll_heading():
+            return self.heading if self.heading > target_heading \
+                else self.heading + 360
+        while unroll_heading() > max_tol:
+            rotate = method(unroll_heading(), target_heading)
+            self.vehicle.fd.r = rotate
+        self.vehicle.fd.r = 0.0
+
+    def down(self, amount, method=None, tolerance=1):
+        self.vnav(by=-amount, method=method, tolerance=tolerance)
+
+    def forward(self, amount, method, tolerance=1):
+        self.lnav(amount, 'x', method, tolerance)
 
     def left(self, amount, method, tolerance=1):
         self.lnav(amount, 'y', method, tolerance, True)
@@ -90,44 +122,12 @@ class Navigation(PylinerModule):
             distance = self.geographic.distance(old_coor, self.coordinate)
         setattr(self.vehicle.fd, axis, 0.0)
 
-    def down(self, amount, method=None, tolerance=1):
-        self.vnav(by=-amount, method=method, tolerance=tolerance)
-
-    def forward(self, amount, method, tolerance=1):
-        self.lnav(amount, 'x', method, tolerance)
-
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
 
     def right(self, amount, method=None, tolerance=1):
         self.lnav(amount, 'y', method, tolerance)
-
-    def rot_clk(self, degrees, method, tolerance=1):
-        old_heading = self.heading
-        target_heading = (old_heading + degrees) % 360
-        min_tol = (target_heading - tolerance) % 360
-
-        def unroll_heading():
-            return self.heading if self.heading < target_heading \
-                else self.heading - 360
-        while unroll_heading() < min_tol:
-            rotate = method(unroll_heading(), target_heading)
-            self.vehicle.fd.r = rotate
-        self.vehicle.fd.r = 0.0
-
-    def rot_ctr(self, degrees, method, tolerance=1):
-        old_heading = self.heading
-        target_heading = (old_heading - degrees) % 360
-        max_tol = (target_heading + tolerance) % 360
-
-        def unroll_heading():
-            return self.heading if self.heading > target_heading \
-                else self.heading + 360
-        while unroll_heading() > max_tol:
-            rotate = method(unroll_heading(), target_heading)
-            self.vehicle.fd.r = rotate
-        self.vehicle.fd.r = 0.0
 
     def up(self, amount, method=None, tolerance=1):
         self.vnav(by=amount, method=method, tolerance=tolerance)

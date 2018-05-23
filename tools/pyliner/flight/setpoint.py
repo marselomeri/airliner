@@ -128,5 +128,5 @@ def wait():
     print('Waiting')
 
 
-rocky.await_fresh("/Airliner/CNTL/SetpointTriplet/Cur_Lat", out=wait)
+rocky.await_change("/Airliner/CNTL/SetpointTriplet/Cur_Lat", out=wait)
 print rocky.tlm_value("/Airliner/CNTL/SetpointTriplet/Cur_Lat")

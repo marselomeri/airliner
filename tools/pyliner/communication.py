@@ -37,7 +37,7 @@ class Communication(PylinerModule):
 
         # Receive Telemetry
         self.tlm_listener = socketserver.UDPServer(
-            ("0.0.0.0", self.to_port), server_factory(self._on_recv_telemetry))
+            ("0.0.0.0", self.to_port), handler_factory(self._on_recv_telemetry))
         self.listener_thread = threading.Thread(
             target=self.tlm_listener.serve_forever)
         self.listener_thread.daemon = True

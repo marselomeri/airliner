@@ -91,13 +91,13 @@ class Pyliner(BasePyliner):
         self.buffer_telemetry(ManualSetpoint(ArmSwitch=1))
         self.wait_clean()
 
-    def atp(self, txt):
-        print("%s requires authorization for: %s" % (self.script_name, txt))
+    def atp(self, text):
+        print("%s requires authorization for: %s" % (self.script_name, text))
         raw_input("Press enter to proceed >>>")
         self.log("%s requires authorization to proceed. Requesting: %s" % (
-            self.script_name, txt))
+            self.script_name, text))
 
-    def await_fresh(self, tlm, poll=1.0, out=None):
+    def await_change(self, tlm, poll=1.0, out=None):
         """Loop until the telemetry value changes. This is blocking.
 
         Args:
@@ -138,10 +138,10 @@ class Pyliner(BasePyliner):
         elif mode == FlightMode.AltCtl:
             raise NotImplemented()
         elif mode == FlightMode.PosCtl:
-            self.mode_posctl()
+            self._mode_posctl()
         self.wait_clean()
 
-    def mode_posctl(self):
+    def _mode_posctl(self):
         print("%s: Position control" % self.script_name)
         self.log("Position control")
         self.buffer_telemetry(
