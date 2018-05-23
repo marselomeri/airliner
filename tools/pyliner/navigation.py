@@ -3,7 +3,7 @@ import time
 from numbers import Real
 
 from geographic import Geographic
-from geographic import Waypoint
+from position import Position
 from pyliner_module import PylinerModule
 from telemetry import SetpointTriplet
 
@@ -23,12 +23,31 @@ def limiter(min_val, max_val):
 # TODO Look into using decimal library for precision at any lat/lon
 
 
+class Waypoint(Position):
+    """A container for part of the args to a triplet."""
+    def __init__(self, latitude, longitude, altitude, heading):
+        super(Waypoint, self).__init__(latitude, longitude, altitude)
+        self.heading = heading
+
+    def __repr__(self):
+        return '{}({}, {}, {}, {})'.format(
+            self.__class__.__name__, self.latitude, self.longitude,
+            self.altitude, self.heading)
+
+    @property
+    def yaw(self):
+        if self.heading is None:
+            return None
+        return math.radians(self.heading if self.heading < 180
+                            else self.heading - 360)
+
+
 class Navigation(PylinerModule):
     """Navigation module. Contains all navigation features.
-    
+
     Note:
         Currently this module takes lateral and vertical navigation as separate
-        components, and only executes one at a time. 
+        components, and only executes one at a time.
     TODO: In a future version a more integrated 3d-space will be implemented.
     """
 

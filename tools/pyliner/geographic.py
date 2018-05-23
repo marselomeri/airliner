@@ -1,40 +1,8 @@
-import math
 from abc import abstractmethod, ABCMeta
 from copy import copy
 from numbers import Real
 
 from geographiclib.geodesic import Geodesic
-
-__all__ = ['Geographic', 'LatLon', 'Waypoint']
-
-
-class LatLon(object):
-    def __init__(self, latitude, longitude):
-        self.latitude = latitude
-        self.longitude = longitude
-
-    def __repr__(self):
-        return '{}({}, {})'.format(self.__class__.__name__,
-                                   self.latitude, self.longitude)
-
-
-class Waypoint(LatLon):
-    def __init__(self, latitude, longitude, altitude=None, heading=None):
-        super(Waypoint, self).__init__(latitude, longitude)
-        self.altitude = altitude
-        self.heading = heading
-
-    def __repr__(self):
-        return '{}({}, {}, {}, {})'.format(
-            self.__class__.__name__, self.latitude, self.longitude,
-            self.altitude, self.heading)
-
-    @property
-    def yaw(self):
-        if self.heading is None:
-            return None
-        return math.radians(self.heading if self.heading < 180
-                            else self.heading - 360)
 
 
 class GeographicBase(object):
@@ -59,8 +27,8 @@ class GeographicBase(object):
         """Calculate the distance between two points on the globe.
 
         Args:
-            a (LatLon): Point A
-            b (LatLon): Point B
+            a (position.Coordinate): Point A
+            b (position.Coordinate): Point B
 
         Returns:
             float: Distance in meters.
@@ -77,7 +45,7 @@ class GeographicBase(object):
             (LatLon): A copy of `a` with updated latitude and longitude.
 
         Args:
-            a (LatLon): Point A
+            a (position.Coordinate): Point A
             bearing (float): Direction in degrees [0, 360)
             distance (float): Distance in meters
         """
