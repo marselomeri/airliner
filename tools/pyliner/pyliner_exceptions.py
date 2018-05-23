@@ -8,3 +8,7 @@ class InvalidCommandException(PylinerError):
 
 class InvalidOperationException(PylinerError):
     pass
+
+
+class UnauthorizedAtpError(PylinerError):
+    pass

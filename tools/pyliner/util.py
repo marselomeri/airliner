@@ -1,3 +1,5 @@
+import sys
+
 import socketserver
 import json
 import socket
@@ -50,6 +52,37 @@ def handler_factory(callback):
 def init_socket():
     """ Creates a UDP socket object and returns it """
     return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
+def query_yes_no(question, default=None):
+    """Ask a yes/no question via raw_input() and return their answer.
+
+    "question" is a string that is presented to the user.
+    "default" is the presumed answer if the user just hits <Enter>.
+
+    The "answer" return value is one of "yes" or "no".
+    Adapted from: http://code.activestate.com/recipes/577058/
+    """
+    valid = {True: {'y', 'ye', 'yes'},
+             False: {'n', 'no'}}
+    if default is None:
+        prompt = " [y/n] "
+    elif default:
+        prompt = " [Y/n] "
+    else:
+        prompt = " [y/N] "
+
+    while True:
+        sys.stdout.write(question + prompt)
+        choice = raw_input().lower()
+        if default is not None and choice == '':
+            return default
+        for answer, options in valid.items():
+            if choice in options:
+                return answer
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' "
+                             "(or 'y' or 'n').\n")
 
 
 def read_json(file_path):

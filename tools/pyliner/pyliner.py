@@ -8,9 +8,9 @@ from base_pyliner import BasePyliner
 from communication import Communication
 from flight_director import FlightDirector
 from navigation import Navigation
+from pyliner_exceptions import UnauthorizedAtpError
 from telemetry import ManualSetpoint
-from util import LogLevel
-
+from util import LogLevel, query_yes_no
 
 __version__ = 0.1
 
@@ -69,19 +69,12 @@ class Pyliner(BasePyliner):
             script_name=script_name,
             log_dir=log_dir)
 
+        self.atp_override = None
+        self.failure_callback = failure_callback
+
         # Default modules
         self.enable_module('fd', FlightDirector())
         self.enable_module('nav', Navigation())
-
-        self.failure_callback = failure_callback
-
-    def critical_failure(self, exc_type, exc_val, exc_tb):
-        if self.failure_callback is not None:
-            self.failure_callback(self, (exc_type, exc_val, exc_tb))
-
-    def wait_clean(self):
-        while self._communications.send_dirty:
-            time.sleep(1 / 32)
 
     def arm(self):
         print("%s: Arming vehicle" % self.script_name)
@@ -92,13 +85,18 @@ class Pyliner(BasePyliner):
         self.wait_clean()
 
     def atp(self, text):
-        print("%s requires authorization for: %s" % (self.script_name, text))
-        raw_input("Press enter to proceed >>>")
-        self.log("%s requires authorization to proceed. Requesting: %s" % (
-            self.script_name, text))
+        """Collect authorization to proceed (ATP) from the user."""
+        if self.atp_override is None:
+            atp_auth = query_yes_no("{} requires authorization for: {}"
+                                    .format(self.script_name, text))
+        else:
+            atp_auth = self.atp_override
+        self.log("{} ATP: {} Auth: {}".format(self.script_name, text, atp_auth))
+        if not atp_auth:
+            raise UnauthorizedAtpError
 
     def await_change(self, tlm, poll=1.0, out=None):
-        """Loop until the telemetry value changes. This is blocking.
+        """Block until the telemetry value changes.
 
         Args:
             tlm (str): The telemetry to monitor.
@@ -111,6 +109,10 @@ class Pyliner(BasePyliner):
                 out()
             time.sleep(poll)
         return self.tlm_value(tlm)
+
+    def critical_failure(self, exc_type, exc_val, exc_tb):
+        if self.failure_callback is not None:
+            self.failure_callback(self, (exc_type, exc_val, exc_tb))
 
     def enable_module(self, name, module):
         """
@@ -147,6 +149,13 @@ class Pyliner(BasePyliner):
         self.buffer_telemetry(
             ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
 
+    def rtl(self):
+        print("%s: RTL" % self.script_name)
+        self.log("RTL")
+        self.buffer_telemetry(
+            ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
+        self.wait_clean()
+
     def takeoff(self):
         print("%s: Auto takeoff" % self.script_name)
         self.log("Auto takeoff")
@@ -181,9 +190,6 @@ class Pyliner(BasePyliner):
         """
         return self.tlm(tlm)['value']
 
-    def rtl(self):
-        print("%s: RTL" % self.script_name)
-        self.log("RTL")
-        self.buffer_telemetry(
-            ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
-        self.wait_clean()
+    def wait_clean(self):
+        while self._communications.send_dirty:
+            time.sleep(1 / 32)
