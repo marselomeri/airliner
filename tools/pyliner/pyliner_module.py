@@ -20,10 +20,12 @@ class PylinerModule(object):
     @classmethod
     @abstractmethod
     def required_telemetry_paths(cls):
+        # type: () -> Iterable[str]
         """Return the required telemetry to enable this module.
 
         Return:
             Iterable[str]: An iterable of telemetry paths required.
+                May be None if no telemetry is required.
         """
         raise NotImplementedError()
 

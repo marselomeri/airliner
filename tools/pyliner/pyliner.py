@@ -129,7 +129,9 @@ class Pyliner(BasePyliner):
             module (Type[PylinerModule]): The module to enable.
         """
         super(Pyliner, self).enable_module(name, module)
-        self._communications.subscribe({'tlm': module.required_telemetry_paths()})
+        required_ops = module.required_telemetry_paths()
+        if required_ops:
+            self._communications.subscribe({'tlm': required_ops})
 
     def flight_mode(self, mode):
         if not mode:

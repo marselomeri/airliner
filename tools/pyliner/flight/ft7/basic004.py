@@ -27,7 +27,6 @@ def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
     vehicle.rtl()
-    vehicle.wait_clean()
 
 
 def range_limit(current, target):

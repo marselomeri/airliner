@@ -1,5 +1,6 @@
-import socketserver
 import threading
+
+import socketserver
 
 import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
@@ -253,7 +254,7 @@ class Communication(PylinerModule):
 
     @classmethod
     def required_telemetry_paths(cls):
-        return []
+        return None
 
     def send_telemetry(self, tlm):
         """ User accessible function to send a command to the software bus.

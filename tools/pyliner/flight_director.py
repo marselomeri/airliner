@@ -42,7 +42,7 @@ class FlightDirector(PylinerModule):
 
     @classmethod
     def required_telemetry_paths(cls):
-        return []
+        return None
 
     @property
     def x(self):
