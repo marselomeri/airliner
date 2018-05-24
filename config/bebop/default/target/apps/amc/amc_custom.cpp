@@ -30,7 +30,9 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
+/************************************************************************
+** Includes
+*************************************************************************/
 #include "cfe.h"
 #include "amc_app.h"
 #include <sys/types.h>
@@ -40,39 +42,48 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define AMC_RCOUT_ZYNQ_PWM_BASE (0x43c00000)
-#define AMC_FREQUENCY_PWM       (400)
-#define AMC_TICK_PER_S          (50000000)
-#define AMC_TICK_PER_US         (50)
-#define AMC_DEVICE_PATH         "/dev/mem"
+/************************************************************************
+** Local Defines
+*************************************************************************/
+AMC_AppCustomData_t AMC_AppCustomData;
 
+/************************************************************************
+** Local Structure Declarations
+*************************************************************************/
+typedef enum {
 
-/* The following struct is used by the AMC_SharedMemCmd_t struct and overlayed
- * over the ocpoc PPM registers to control the PWM hardware.
- */
-typedef struct {
-    uint32 Period;
-    uint32 Hi;
-} AMC_PeriodHi_t;
+/** \brief <tt> 'AMC - ' </tt>
+**  \event <tt> 'AMC - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device resource encounters an 
+**  error.
+**
+*/
+    AMC_DEVICE_ERR_EID = AMC_EVT_CNT,
 
-
-/* The following struct is overlayed over the ocpoc PPM registers to control
- * the PWM hardware.
- */
-typedef struct
-{
-    AMC_PeriodHi_t PeriodHi[AMC_MAX_MOTOR_OUTPUTS];
-} AMC_SharedMemCmd_t;
-
-volatile AMC_SharedMemCmd_t *AMC_SharedMemCmd;
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* AMC_Freq2tick function.                                         */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-uint32 AMC_Freq2tick(uint16 FreqHz);
+/** \brief <tt> 'AMC - ' </tt>
+**  \event <tt> 'AMC - ' </tt>
+**  
+**  \par Type: Info
+**
+**  \par Cause:
+**
+**  This event message is issued when a device successfully complete a
+**  self test.
+**
+*/
+    AMC_DEVICE_INF_EID,
+/** \brief Number of custom events 
+**
+**  \par Limits:
+**       int32
+*/
+    AMC_CUSTOM_EVT_CNT
+} AMC_CustomEventIds_t;
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -82,37 +93,42 @@ uint32 AMC_Freq2tick(uint16 FreqHz);
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 AMC::InitDevice(void)
 {
-    uint32 i;
-    int mem_fd;
+    int32 returnValue = CFE_SUCCESS;
+    boolean returnBool = FALSE;
 
-    /* Initialize just in case we were reloaded and the ctor wasn't called. */
-    AMC_SharedMemCmd = 0;
-
-    mem_fd = open(AMC_DEVICE_PATH, O_RDWR | O_SYNC);
-    AMC_SharedMemCmd = (AMC_SharedMemCmd_t *) mmap(0, 0x1000,
-            PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd,
-            AMC_RCOUT_ZYNQ_PWM_BASE);
-    close(mem_fd);
-
-    if (AMC_SharedMemCmd <= 0)
+    AMC_AppCustomData.DeviceFd = open(AMC_BLDC_I2C_DEVICE_PATH, O_RDWR);
+    if (AMC_AppCustomData.DeviceFd < 0) 
     {
-    	AMC_SharedMemCmd = 0;
-        return errno;
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "AMC Device open errno: %i", errno);
+        returnValue = -1;
+        goto end_of_function;
     }
 
-    // Note: this appears to be required actuators to initialize
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) 
+    returnBool = AMC_Clear_Errors();
+    if (FALSE == returnBool)
     {
-        AMC_SharedMemCmd->PeriodHi[i].Period =
-                AMC_Freq2tick(AMC_FREQUENCY_PWM);
-        AMC_SharedMemCmd->PeriodHi[i].Hi     =
-                AMC_Freq2tick(AMC_FREQUENCY_PWM) / 2;
+        returnValue = -1;
+        goto end_of_function;
     }
-    
-    StopMotors();
 
-    return 0;
+    AMC_AppCustomData.Status = AMC_CUSTOM_INITIALIZED;
+
+end_of_function:
+    return (returnValue);
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* AMC::DeInitDevice function.                                     */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+//int32 AMC::DeInitDevice(void)
+//{
+    //int32 returnCode = CFE_SUCCESS;
+    //returnCode = close(AMC_AppCustomData.DeviceFd);
+    //return (returnCode);
+//}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -123,26 +139,389 @@ int32 AMC::InitDevice(void)
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
     uint32 i = 0;
+    float motor_speeds[4];
 
-    if(AMC_SharedMemCmd != 0)
+    /* If disarmed stop motors. */
+    if(PWM[0] <= AMC_PWM_DISARMED)
     {
-		/* Convert this to duty_cycle in ns */
-		for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
-		{
-			AMC_SharedMemCmd->PeriodHi[i].Hi = AMC_TICK_PER_US * PWM[i];
-		}
+        /* If motors aren't already stopped... */
+        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STARTED)
+        {
+            (void) AMC_Stop_Motors();
+        }
+    }
+
+    /* If armed start motors. */
+    if(PWM[0] > AMC_PWM_DISARMED)
+    {
+        /* If motors aren't already started... */
+        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STOPPED)
+        {
+            (void) AMC_Start_Motors();
+        }
+    }
+
+    for (i = 0; i < 4; ++i)
+    {
+        motor_speeds[i] = AMC_Scale_To_Dimensionless(PWM[i]);
+    }
+
+    (void) AMC_Set_ESC_Speeds(motor_speeds);
+}
+
+
+int32 AMC_Ioctl(int fh, int request, void *arg)
+{
+    int32 returnCode = 0;
+    uint32 i = 0;
+
+    for (i = 0; i < AMC_MAX_RETRY_ATTEMPTS; ++i)
+    {
+        returnCode = ioctl(fh, request, arg);
+            
+        if (-1 == returnCode && EINTR == errno)
+        {
+            usleep(AMC_MAX_RETRY_SLEEP_USEC);
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return returnCode;
+}
+
+
+boolean AMC_WriteReg(uint8 Addr, uint8 Data)
+{
+    int returnCode      = 0;
+    boolean returnBool  = FALSE;
+    struct i2c_msg Messages[1];
+    struct i2c_rdwr_ioctl_data Packets;
+    uint8 buf[2];
+
+    buf[0] = Addr;
+    buf[1] = Data;
+
+    Messages[0].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf   = &buf[0];
+    Messages[0].len   = 2;
+
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 1;
+
+    CFE_ES_PerfLogEntry(AMC_SEND_PERF_ID);
+    returnCode = AMC_Ioctl(AMC_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    CFE_ES_PerfLogExit(AMC_SEND_PERF_ID);
+    
+    if (-1 == returnCode) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC write register failed. ");
+    }
+    else
+    {
+        returnBool = TRUE;
+    }
+
+    return (returnBool);
+}
+
+
+boolean AMC_ReadReg(uint8 Reg, void *Buffer, size_t Length)
+{
+    int returnCode       = 0;
+    boolean returnBool   = FALSE;
+    uint8 cmd            = Reg;
+
+    struct i2c_rdwr_ioctl_data Packets;
+    struct i2c_msg Messages[2];
+
+    /* send */
+    Messages[0].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf   = &cmd;
+    Messages[0].len   = 1;
+
+    /* receive */
+    Messages[1].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
+    Messages[1].flags = AMC_I2C_M_READ;
+    Messages[1].buf   = Buffer;
+    Messages[1].len   = Length;
+
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 2;
+
+    CFE_ES_PerfLogEntry(AMC_RECEIVE_PERF_ID);
+    returnCode = AMC_Ioctl(AMC_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    CFE_ES_PerfLogExit(AMC_RECEIVE_PERF_ID);
+
+    if (-1 == returnCode) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC read register failed. ");
+    }
+    else
+    {
+        returnBool = TRUE;
+    }
+
+    return (returnBool);
+}
+
+
+boolean AMC_Start_Motors(void)
+{
+    boolean returnBool = TRUE;
+    
+    returnBool = AMC_WriteReg(AMC_BLDC_REG_START_BLDC, AMC_BLDC_BITS_RLRL);
+    if (FALSE == returnBool) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC start motors failed. ");
+    }
+    else
+    {
+        AMC_AppCustomData.Status = AMC_CUSTOM_MOTORS_STARTED;
+    }
+
+    return (returnBool);
+}
+
+
+boolean AMC_Stop_Motors(void)
+{
+    int returnCode      = 0;
+    boolean returnBool  = FALSE;
+    struct i2c_msg Messages[1];
+    struct i2c_rdwr_ioctl_data Packets;
+    uint8 buf[1];
+
+    buf[0] = AMC_BLDC_REG_STOP_BLDC;
+
+    Messages[0].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf   = &buf[0];
+    Messages[0].len   = 1;
+
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 1;
+
+    CFE_ES_PerfLogEntry(AMC_SEND_PERF_ID);
+    returnCode = AMC_Ioctl(AMC_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    CFE_ES_PerfLogExit(AMC_SEND_PERF_ID);
+    
+    if (-1 == returnCode) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC stop motors failed. ");
+    }
+    else
+    {
+        returnBool = TRUE;
+        AMC_AppCustomData.Status = AMC_CUSTOM_MOTORS_STOPPED;
+    }
+
+    return (returnBool);
+}
+
+
+boolean AMC_Clear_Errors(void)
+{
+    int returnCode      = 0;
+    boolean returnBool  = FALSE;
+    struct i2c_msg Messages[1];
+    struct i2c_rdwr_ioctl_data Packets;
+    uint8 buf[1];
+
+    buf[0] = AMC_BLDC_REG_CLEAR_ERROR;
+
+    Messages[0].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf   = &buf[0];
+    Messages[0].len   = 1;
+
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 1;
+
+    CFE_ES_PerfLogEntry(AMC_SEND_PERF_ID);
+    returnCode = AMC_Ioctl(AMC_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    CFE_ES_PerfLogExit(AMC_SEND_PERF_ID);
+    
+    if (-1 == returnCode) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC stop motors failed. ");
+    }
+    else
+    {
+        returnBool = TRUE;
+    }
+
+    return (returnBool);
+}
+
+
+uint8 AMC_Calculate_Checksum(uint8 initial, uint8 *data, uint16 packet_size)
+{
+    uint8 checksum = initial;
+    uint32 i       = 0;
+
+    for (i = 0; i < packet_size; ++i) 
+    {
+        checksum = checksum ^ data[i];
+    }
+
+    return (checksum);
+}
+
+
+uint16 AMC_Scale_To_RPM(float scale)
+{
+    float checked_scale = scale;
+
+    if (checked_scale < 0.0f) 
+    {
+        checked_scale = 0.0f;
+    }
+
+    if (checked_scale > 1.0f) 
+    {
+        checked_scale = 1.0f;
+    }
+
+    // we assume that scale is a dimensionless desired thrust force in the range [0,1]
+    // remap scale to the range [scale_min, 1], where scale_min represents the minimum
+    // dimensionless force that we can output (because lowest motor speed is constrained).
+    // Then calculate back from dimensionless force to desired motor speed
+    // Force_norm = w^2 / w_max^2
+    // Force_norm: dimensionless force in range [scale_min, 1]
+    // w: desired motor speed in rpm
+    // w_max: maximum motor speed
+    float rpm_min_sq = (AMC_BLDC_LIMITS_RPM_MIN * AMC_BLDC_LIMITS_RPM_MIN);
+    float rmp_max_sq = (AMC_BLDC_LIMITS_RPM_MAX * AMC_BLDC_LIMITS_RPM_MAX);
+    float scale_min = rpm_min_sq / rmp_max_sq;
+
+    // remap dimensionless force to range [scale_min, 1]
+    scale = scale_min + (1.0f - scale_min) * scale;
+
+    // use Force_norm = w^2 / w_max^2 and solve for w
+    return sqrtf(scale * rmp_max_sq);
+}
+
+
+float AMC_Scale_To_Dimensionless(uint16 PWM)
+{
+    float returnVal = 0;
+
+    /* Normalize PWM to dimensionless range 0 to 1 */
+    returnVal = (float) (PWM - AMC_PWM_MIN) / (AMC_PWM_MAX - AMC_PWM_MIN);
+    
+    return (returnVal);
+}
+
+
+boolean AMC_Set_ESC_Speeds(const float speeds[4])
+{
+    AMC_BLDC_ESC_Speeds_t data = {0};
+    int returnCode      = 0;
+    boolean returnBool  = FALSE;
+    struct i2c_msg Messages[1];
+    struct i2c_rdwr_ioctl_data Packets;
+    uint8 buf[11];
+    memset(&data, 0, sizeof(data));
+
+    // Correct endians and scale to MIN-MAX rpm
+    data.rpm_front_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[0]));
+    data.rpm_front_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[1]));
+    data.rpm_back_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[2]));
+    data.rpm_back_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[3]));
+
+    AMC_AppCustomData.SpeedSetpoint[0] = AMC_Swap16(data.rpm_front_right);
+    AMC_AppCustomData.SpeedSetpoint[1] = AMC_Swap16(data.rpm_front_left);
+    AMC_AppCustomData.SpeedSetpoint[2] = AMC_Swap16(data.rpm_back_right);
+    AMC_AppCustomData.SpeedSetpoint[3] = AMC_Swap16(data.rpm_back_left);
+
+    data.enable_security = 0x00;
+
+    data.checksum = AMC_Calculate_Checksum(AMC_BLDC_REG_SET_ESC_SPEED, (uint8 *) &data, sizeof(data) - 1);
+
+    buf[0] = AMC_BLDC_REG_SET_ESC_SPEED;
+    memcpy(&buf[1], &data, 10);
+
+    Messages[0].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
+    Messages[0].flags = 0;
+    Messages[0].buf   = &buf[0];
+    Messages[0].len   = 11;
+
+    Packets.msgs  = Messages;
+    Packets.nmsgs = 1;
+
+    CFE_ES_PerfLogEntry(AMC_SEND_PERF_ID);
+    returnCode = AMC_Ioctl(AMC_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
+    CFE_ES_PerfLogExit(AMC_SEND_PERF_ID);
+    
+    if (-1 == returnCode) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC write register failed. ");
+    }
+    else
+    {
+        returnBool = TRUE;
+    }
+
+    return (returnBool);
+}
+
+
+uint16 AMC_Swap16(uint16 val) 
+{
+    return (val >> 8) | (val << 8); 
+}
+
+
+
+boolean AMC_Custom_Max_Events_Not_Reached(int32 ind)
+{
+    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
     }
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* AMC_Freq2tick function.                                         */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-uint32 AMC_Freq2tick(uint16 FreqHz)
+int32 AMC_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 {
-    uint32 duty = AMC_TICK_PER_S / (unsigned long)FreqHz;
+    int32 customEventCount = ind;
+    
+    /* Null check */
+    if(0 == EventTbl)
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
 
-    return duty;
+    if(TRUE == AMC_Custom_Max_Events_Not_Reached(customEventCount))
+    {
+        EventTbl[  customEventCount].EventID = AMC_DEVICE_ERR_EID;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+    }
+    else
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+    
+end_of_function:
+
+    return customEventCount;
 }
+
+

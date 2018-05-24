@@ -47,6 +47,22 @@ extern "C" {
 /** \brief Motor controller I2C slave address. */
 #define AMC_BLDC_I2C_SLAVE_ADDRESS   (0x08)
 
+/** \brief Read data, from slave to master. */
+#define AMC_I2C_M_READ               (0x0001)
+
+/** \brief Retry attemps for interrupted ioctl calls. */
+#define AMC_MAX_RETRY_ATTEMPTS       (2)
+
+/** \brief Sleep time micro seconds for interrupted calls. */
+#define AMC_MAX_RETRY_SLEEP_USEC     (10)
+
+/* TODO temporary defines for PWM disarmed min and max. */
+#define AMC_PWM_DISARMED             (900)
+#define AMC_PWM_MIN                  (1000)
+#define AMC_PWM_MAX                  (2000)
+
+
+
 /* Bebop motor controller Cypress BLDC register map. */
 /** \brief BLDC Register set speed. */
 #define AMC_BLDC_REG_SET_ESC_SPEED   (0x02)
@@ -149,13 +165,16 @@ typedef enum
 } AMC_BLDC_GPIO_t;
 
 
+#pragma pack(push, 1)
 typedef struct 
 {
     float battery_voltage_v;
     uint16_t rpm[4];
 } AMC_BLDC_State_t;
+#pragma pack(pop)
 
 
+#pragma pack(push, 1)
 typedef struct
 {
     uint16 rpm_front_left;
@@ -169,8 +188,10 @@ typedef struct
     uint8  temperatur_c;
     uint8  checksum;
 } AMC_BLDC_Observation_t;
+#pragma pack(pop)
 
 
+#pragma pack(push, 1)
 typedef struct
 {
     uint8 version_major;
@@ -182,8 +203,10 @@ typedef struct
     uint32 total_flight_time;
     uint8 last_error;
 } AMC_BLDC_Info_t;
+#pragma pack(pop)
 
 
+#pragma pack(push, 1)
 typedef struct 
 {
     uint16 rpm_front_left;
@@ -193,7 +216,69 @@ typedef struct
     uint8  enable_security;
     uint8  checksum;
 } AMC_BLDC_ESC_Speeds_t;
+#pragma pack(pop)
 
+
+/**
+ * \brief AMC device status
+ */
+typedef enum
+{
+    /*! AMC status uninitialized */
+    AMC_CUSTOM_UNINITIALIZED  = 0,
+    /*! AMC status initialized */
+    AMC_CUSTOM_INITIALIZED    = 1,
+    /*! AMC status motors started */
+    AMC_CUSTOM_MOTORS_STARTED = 2,
+    /*! AMC status motors stoped */
+    AMC_CUSTOM_MOTORS_STOPPED = 3
+} AMC_Custom_Status_t;
+
+
+typedef struct
+{
+    /*! Device file descriptor */
+    int                          DeviceFd;
+    /*! The current device status */
+    AMC_Custom_Status_t          Status;
+    /*! The current motor speeds */
+    uint16                       SpeedSetpoint[4];
+} AMC_AppCustomData_t;
+
+
+/************************************************************************/
+/** \brief ioctl with limited EINTR retry attempts. 
+**
+**  \par Description
+**       This function is a wrapper for ioctl with retry attempts added.
+**
+**  \param [in] fh file descriptor.
+**  \param [in] request code.
+**  \param [in] arg pointer to a device specific struct.
+**
+**  \returns
+**  usually 0 for success and -1 for failure, see ioctl man-page for 
+**  more info.
+**  \endreturns
+**
+*************************************************************************/
+int32 AMC_Ioctl(int fh, int request, void *arg);
+
+boolean AMC_WriteReg(uint8 Addr, uint8 Data);
+boolean AMC_ReadReg(uint8 Reg, void *Buffer, size_t Length);
+boolean AMC_Custom_Max_Events_Not_Reached(int32 ind);
+boolean AMC_Custom_In_Range(float value, float min, float max);
+
+
+boolean AMC_Start_Motors(void);
+boolean AMC_Sop_Motors(void);
+boolean AMC_Clear_Errors(void);
+uint8 AMC_Calculate_Checksum(uint8 initial, uint8 *data, uint16 packet_size);
+uint16 AMC_Scale_To_RPM(float scale);
+float AMC_Scale_To_Dimensionless(uint16 PWM);
+boolean AMC_Set_ESC_Speeds(const float speeds[4]);
+
+uint16 AMC_Swap16(uint16 val);
 
 #ifdef __cplusplus
 }
