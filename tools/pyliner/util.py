@@ -1,12 +1,11 @@
-import sys
-
-import socketserver
 import json
 import socket
+import sys
 import threading
+import time
 from datetime import datetime
 
-import time
+import socketserver
 from flufl.enum import Enum
 
 
@@ -47,6 +46,11 @@ def get_time():
 def handler_factory(callback):
     """ Creates server object and sets the callback """
     return lambda *args, **kwargs: ThreadedUDPRequestHandler(callback, *args, **kwargs)
+
+
+def indent(level, iterable):
+    for string in iterable:
+        yield ' '*level + str(string)
 
 
 def init_socket():

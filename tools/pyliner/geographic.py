@@ -4,6 +4,8 @@ from numbers import Real
 
 from geographiclib.geodesic import Geodesic
 
+from position import Coordinate
+
 
 class GeographicBase(object):
     """Interface to hold static methods for geographic calculations.
@@ -16,14 +18,14 @@ class GeographicBase(object):
     @staticmethod
     @abstractmethod
     def bearing(a, b):
-        # type: (LatLon, LatLon) -> float
+        # type: (Coordinate, Coordinate) -> Real
         """Calculate the bearing from a to b in degrees."""
         raise NotImplementedError()
 
     @staticmethod
     @abstractmethod
     def distance(a, b):
-        # type: (LatLon, LatLon) -> float
+        # type: (Coordinate, Coordinate) -> Real
         """Calculate the distance between two points on the globe.
 
         Args:
@@ -38,11 +40,11 @@ class GeographicBase(object):
     @staticmethod
     @abstractmethod
     def pbd(a, bearing, distance):
-        # type: (LatLon, Real, Real) -> LatLon
+        # type: (Coordinate, Real, Real) -> Coordinate
         """Calculate a Place-Bearing-Distance (PBD) coordinate.
 
         Returns:
-            (LatLon): A copy of `a` with updated latitude and longitude.
+            (Coordinate): A copy of `a` with updated latitude and longitude.
 
         Args:
             a (position.Coordinate): Point A
@@ -59,7 +61,7 @@ class Geographic(GeographicBase):
 
     @staticmethod
     def _direct(a, azim, dist):
-        # type: (LatLon, Real, Real) -> dict
+        # type: (Coordinate, Real, Real) -> dict
         # Possibility of LRU cache here.
         # noinspection PyUnresolvedReferences
         return Geodesic.WGS84.Direct(a.latitude, a.longitude, azim, dist)
@@ -70,7 +72,7 @@ class Geographic(GeographicBase):
 
     @staticmethod
     def _inverse(a, b):
-        # type: (LatLon, LatLon) -> dict
+        # type: (Coordinate, Coordinate) -> dict
         # Possibility of LRU cache here.
         # noinspection PyUnresolvedReferences
         return Geodesic.WGS84.Inverse(a.latitude, a.longitude,

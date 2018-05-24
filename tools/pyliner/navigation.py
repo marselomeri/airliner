@@ -2,7 +2,7 @@ import math
 import time
 from numbers import Real
 
-from geographic import Geographic
+from geographic import GeographicBase
 from position import Position
 from pyliner_module import PylinerModule
 from telemetry import SetpointTriplet
@@ -51,9 +51,10 @@ class Navigation(PylinerModule):
     TODO: In a future version a more integrated 3d-space will be implemented.
     """
 
-    def __init__(self):
+    def __init__(self, geographic):
+        # type: (GeographicBase) -> None
         super(Navigation, self).__init__()
-        self.geographic = Geographic
+        self.geographic = geographic
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',

@@ -7,6 +7,7 @@ from flufl.enum import Enum
 from base_pyliner import BasePyliner
 from communication import Communication
 from flight_director import FlightDirector
+from geographic import Geographic
 from navigation import Navigation
 from pyliner_exceptions import UnauthorizedAtpError
 from telemetry import ManualSetpoint
@@ -71,10 +72,11 @@ class Pyliner(BasePyliner):
 
         self.atp_override = None
         self.failure_callback = failure_callback
+        self.geographic = Geographic()
 
         # Default modules
         self.enable_module('fd', FlightDirector())
-        self.enable_module('nav', Navigation())
+        self.enable_module('nav', Navigation(self.geographic))
 
     def arm(self):
         print("%s: Arming vehicle" % self.script_name)
