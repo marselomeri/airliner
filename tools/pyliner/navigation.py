@@ -54,7 +54,7 @@ class Navigation(PylinerModule):
     def __init__(self, geographic):
         # type: (GeographicBase) -> None
         super(Navigation, self).__init__()
-        self.geographic = geographic
+        self._geographic = geographic
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
@@ -70,7 +70,7 @@ class Navigation(PylinerModule):
     @property
     def altitude(self):
         """meters"""
-        return PylinerModule.telem(Navigation.req_telem['altitude'])(self)
+        return PylinerModule.telem(self.req_telem['altitude'])(self)
 
     @property
     def heading(self):
@@ -80,21 +80,21 @@ class Navigation(PylinerModule):
     @property
     def latitude(self):
         """Degrees"""
-        return PylinerModule.telem(Navigation.req_telem['latitude'])(self)
+        return PylinerModule.telem(self.req_telem['latitude'])(self)
 
     @property
     def longitude(self):
         """Degrees"""
-        return PylinerModule.telem(Navigation.req_telem['longitude'])(self)
+        return PylinerModule.telem(self.req_telem['longitude'])(self)
 
     @property
     def position(self):
-        return Waypoint(self.latitude, self.longitude, self.altitude)
+        return Waypoint(self.latitude, self.longitude, self.altitude, self.heading)
 
     @property
     def yaw(self):
         """Radians. North 0 incrementing clockwise. Wrap at Pi (180 degrees)"""
-        return PylinerModule.telem(Navigation.req_telem['yaw'])(self)
+        return PylinerModule.telem(self.req_telem['yaw'])(self)
 
     def backward(self, amount, method, tolerance=1):
         self.lnav(amount, 'x', method, tolerance, True)
@@ -125,14 +125,14 @@ class Navigation(PylinerModule):
             self.vehicle.fd.r = rotate
         self.vehicle.fd.r = 0.0
 
-    def down(self, amount, method=None, tolerance=1):
+    def down(self, amount, method, tolerance=1):
         self.vnav(by=-amount, method=method, tolerance=tolerance)
 
     def forward(self, amount, method, tolerance=1):
         self.lnav(amount, 'x', method, tolerance)
 
     def goto(self, waypoint, tolerance=1):
-        # type: (Waypoint) -> None
+        # type: (Waypoint, Real) -> None
         self.vehicle.buffer_telemetry(SetpointTriplet(
             Cur_Lat=waypoint.latitude,
             Cur_Lon=waypoint.longitude,
@@ -140,7 +140,7 @@ class Navigation(PylinerModule):
             Cur_Yaw=0 if waypoint.heading is None else waypoint.yaw,
             Cur_Valid=1, Cur_PositionValid=1
         ))
-        while self.geographic.distance(waypoint, self.position) > tolerance:
+        while self._geographic.distance(waypoint, self.position) > tolerance:
             time.sleep(0.1)
 
     def left(self, amount, method, tolerance=1):
@@ -148,12 +148,12 @@ class Navigation(PylinerModule):
 
     def lnav(self, amount, axis, method, tolerance, negate=False):
         old_coor = self.position
-        distance = self.geographic.distance(old_coor, self.position)
+        distance = self._geographic.distance(old_coor, self.position)
         while (amount - distance) > tolerance:
             velocity = method(distance, amount)
             setattr(self.vehicle.fd, axis, -velocity if negate else velocity)
             time.sleep(1 / 32)
-            distance = self.geographic.distance(old_coor, self.position)
+            distance = self._geographic.distance(old_coor, self.position)
         setattr(self.vehicle.fd, axis, 0.0)
 
     @classmethod

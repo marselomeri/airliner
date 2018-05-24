@@ -17,17 +17,39 @@ class LogLevel(Enum):
 
 
 class PeriodicExecutor(threading.Thread):
-    """Executes a callback function every x-seconds."""
-    def __init__(self, callback, every=1):
+    """Executes a callback function every x-seconds.
+
+    Optionally takes callbacks for exception and last-pass handling.
+    """
+
+    def __init__(self, callback, every=1, exception=None, finalize=None):
         super(PeriodicExecutor, self).__init__()
-        self.callback = callback
-        self.every = every
         self.daemon = True
 
+        self.callback = callback
+        self.exception = exception
+        self.every = every
+        self.finalize = finalize
+        self.running = False
+
     def run(self):
-        while True:
-            self.callback()
-            time.sleep(self.every)
+        self.running = True
+        try:
+            while self.running:
+                self.callback()
+                time.sleep(self.every)
+        except Exception as e:
+            if callable(self.exception):
+                self.exception(e)
+        finally:
+            if callable(self.finalize):
+                self.finalize()
+
+    def stop(self):
+        if self.running:
+            self.running = False
+        else:
+            raise RuntimeError('This thread cannot be stopped now.')
 
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
@@ -39,18 +61,25 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         self.callback(self.request)
 
 
+def feet(feet):
+    """Convert from given feet to meters."""
+    return feet * 0.3048
+
+
 def get_time():
-    return int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 10000)
+    return int(
+        (datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 10000)
 
 
 def handler_factory(callback):
     """ Creates server object and sets the callback """
-    return lambda *args, **kwargs: ThreadedUDPRequestHandler(callback, *args, **kwargs)
+    return lambda *args, **kwargs: ThreadedUDPRequestHandler(callback, *args,
+                                                             **kwargs)
 
 
 def indent(level, iterable):
     for string in iterable:
-        yield ' '*level + str(string)
+        yield ' ' * level + str(string)
 
 
 def init_socket():
@@ -68,7 +97,8 @@ def query_yes_no(question, default=None):
     Adapted from: http://code.activestate.com/recipes/577058/
     """
     valid = {True: {'y', 'ye', 'yes'},
-             False: {'n', 'no'}}
+             False: {'n', 'no'},
+             'takeover': {'takeover'}}
     if default is None:
         prompt = " [y/n] "
     elif default:

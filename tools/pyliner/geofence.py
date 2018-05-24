@@ -6,6 +6,7 @@ Notes:
 """
 
 from abc import abstractmethod
+from collections import Container
 from enum import Enum
 from numbers import Real
 
@@ -15,15 +16,10 @@ from geographic import GeographicBase
 from position import Coordinate
 from position import Position
 from pyliner_module import PylinerModule
-from util import indent
+from util import indent, PeriodicExecutor
 
 
-class Volume(object):
-    @abstractmethod
-    def __contains__(self, item):
-        """True if the given item is contained within this Volume."""
-        raise NotImplementedError
-
+class Volume(Container):
     @property
     @abstractmethod
     def bounding_box(self):
@@ -127,7 +123,7 @@ class _Layer(Volume):
         self.name = name
         self.kind = kind
         self._volumes = []
-        """:type: list[Container]"""
+        """:type: list[Volume]"""
 
     def __contains__(self, item):
         return any(item in volume for volume in self._volumes) \
@@ -161,10 +157,17 @@ class Geofence(PylinerModule):
     that layer were taken as a union.
     """
 
+    req_telem = {
+        'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
+        'longitude': '/Airliner/CNTL/VehicleGlobalPosition/Lon',
+        'altitude': '/Airliner/CNTL/VehicleGlobalPosition/Alt'
+    }
+
     def __init__(self):
         super(Geofence, self).__init__()
         self.layers = SortedDict()
         """:type: dict[Any, Layer]"""
+        self._check_thread = None
 
     def __contains__(self, item):
         """True if the given item is contained within the Geofence."""
@@ -179,6 +182,19 @@ class Geofence(PylinerModule):
                 '+' if layer.kind is LayerKind.ADDITIVE else '-',
                 order, layer) for order, layer in self.layers.items()) + '\n}'
 
+    @property
+    def position(self):
+        return Position(
+            PylinerModule.telem(self.req_telem['latitude'])(self),
+            PylinerModule.telem(self.req_telem['longitude'])(self),
+            PylinerModule.telem(self.req_telem['altitude'])(self)
+        )
+
+    def attach(self, vehicle):
+        super(Geofence, self).attach(vehicle)
+        self._check_thread = PeriodicExecutor(self._check_fence)
+        self._check_thread.start()
+
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
             raise KeyError('This layer already exists.')
@@ -186,9 +202,16 @@ class Geofence(PylinerModule):
         self.layers[layer_position] = layer
         return layer
 
+    def _check_fence(self):
+        self.fence_violation = self.position not in self
+
+    def detach(self):
+        super(Geofence, self).detach()
+        self._check_thread.stop()
+
     def remove_layer(self, position):
         del self.layers[position]
 
     @classmethod
     def required_telemetry_paths(cls):
-        return None
+        return cls.req_telem.values()

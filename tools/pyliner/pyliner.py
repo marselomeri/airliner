@@ -1,12 +1,14 @@
 #!/usr/bin/python
 
 import time
+from code import interact
 
 from flufl.enum import Enum
 
 from base_pyliner import BasePyliner
 from communication import Communication
 from flight_director import FlightDirector
+from geofence import Geofence
 from geographic import Geographic
 from navigation import Navigation
 from pyliner_exceptions import UnauthorizedAtpError
@@ -56,7 +58,7 @@ class Pyliner(BasePyliner):
             script_name (str): The script currently being executed. Used for
                 generating log file names.
             log_dir (str): The directory that log files will be saved to.
-                Defaults to *pyliner*/logs.
+                Defaults to *PylinerDirectory*/logs.
             failure_callback (Callable[[Pyliner, Tuple], None]): Function
                 handle that will be invoked on a failure of the controlling
                 script.
@@ -88,12 +90,20 @@ class Pyliner(BasePyliner):
 
     def atp(self, text):
         """Collect authorization to proceed (ATP) from the user."""
-        if self.atp_override is None:
-            atp_auth = query_yes_no("{} requires authorization for: {}"
-                                    .format(self.script_name, text))
-        else:
-            atp_auth = self.atp_override
+        atp_auth = self.atp_override() if callable(self.atp_override) else \
+            self.atp_override if self.atp_override is not None else \
+                query_yes_no("{} requires authorization for: {}".format(
+                    self.script_name, text))
         self.log("{} ATP: {} Auth: {}".format(self.script_name, text, atp_auth))
+        if atp_auth == 'takeover':
+            try:
+                interact(
+                    banner='Entering ATP local override mode.\nAccess vehicle '
+                           'using "self". ex. self.nav.position\nExit '
+                           'interactive mode via Ctrl+D.', local=locals())
+            except SystemExit:
+                pass
+            self.atp(text)
         if not atp_auth:
             raise UnauthorizedAtpError
 
@@ -103,7 +113,7 @@ class Pyliner(BasePyliner):
         Args:
             tlm (str): The telemetry to monitor.
             poll (float): Check every `poll` seconds.
-            out (Callable[[], None]): If not None, print this every loop.
+            out (Callable[[], None]): If not None, call this every loop.
         """
         old_val = self.tlm_value(tlm)
         while self.tlm_value(tlm) == old_val:
@@ -128,7 +138,7 @@ class Pyliner(BasePyliner):
 
         Args:
             name (str): The name that the module will be initialized under.
-            module (Type[PylinerModule]): The module to enable.
+            module (PylinerModule): The module to enable.
         """
         super(Pyliner, self).enable_module(name, module)
         required_ops = module.required_telemetry_paths()
