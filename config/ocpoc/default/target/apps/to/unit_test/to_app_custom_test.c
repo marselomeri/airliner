@@ -125,7 +125,7 @@ void TO_Custom_Init_Nominal(void)
     int32 expected = 0;
     uint8 ChannelID = 0;
     uint16 testPort = 5011;
-    char *testIP = "127.0.0.1";
+    char *testIP = "192.168.1.3";
     
     char returnString[128];
     snprintf(returnString, 128, "UDP telemetry output enabled channel %u to %s:%u", 
