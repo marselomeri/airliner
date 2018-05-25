@@ -125,6 +125,7 @@ void TO_Custom_Init_Nominal(void)
     int32 expected = 0;
     uint8 ChannelID = 0;
     uint16 testPort = 5011;
+    /* Todo get this from platform config. */
     char *testIP = "192.168.1.3";
     
     char returnString[128];
