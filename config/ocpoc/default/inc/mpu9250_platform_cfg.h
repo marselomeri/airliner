@@ -159,7 +159,7 @@ extern "C" {
 /** \brief Room temperature offset */
 #define MPU9250_ROOM_TEMP_OFFSET            (0.0f)
 /** \brief Temperature sensitivity */
-#define MPU9250_TEMP_SENS                   (333.87f)
+#define MPU9250_TEMP_SENS                   (361.0f)
 
 
 #ifdef __cplusplus
