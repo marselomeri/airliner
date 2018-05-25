@@ -1307,12 +1307,8 @@ void Test_VC_Custom_StopStreamingDevices_StreamOff(void)
     
     /* Call the function under test */
     result = VC_Stop_Streaming();
-    
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+
     UtAssert_True(result == expected,"VC_Stop_StreamingDevice() did not fail");
-    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
-                        "VC_Stop_StreamingDevice() failed to raise an event");
-    
 }
 
 /**
@@ -1336,12 +1332,8 @@ void Test_VC_Custom_StopStreamingDevices_Nominal(void)
     
     /* Call the function under test */
     result = VC_Stop_Streaming();
-    
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+
     UtAssert_True(result == expected,"VC_Stop_StreamingDevice() did not succeed");
-    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString, 
-                        "VC_Stop_StreamingDevice() failed to raise an event");
-    
 }
 
 
@@ -1385,10 +1377,7 @@ void Test_VC_Custom_DevicesStop_FailStopStreaming(void)
     /* Call the function under test */
     result = VC_Devices_Stop();
     
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
     UtAssert_True(result == expected,"VC_Stop_StreamingDevice() did not fail");
-    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
-                        "VC_Stop_StreamingDevice() failed to raise an event");
 }
 
  /**
@@ -1413,10 +1402,7 @@ void Test_VC_Custom_DevicesStop_Nominal(void)
     /* Call the function under test */
     result = VC_Devices_Stop();
     
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
     UtAssert_True(result == expected,"VC_Stop_StreamingDevice() did not succeed");
-    UtAssert_EventSent(VC_DEV_INF_EID, CFE_EVS_INFORMATION, returnString, 
-                        "VC_Stop_StreamingDevice() failed to raise an event");
     UtAssert_True(VC_AppCustomDevice.ContinueFlag==FALSE,"Continue flag wasn't set");
     UtAssert_True(VC_AppData.AppState==VC_INITIALIZED,"App state isn't initialized");
 }
