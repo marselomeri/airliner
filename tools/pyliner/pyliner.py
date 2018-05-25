@@ -1,29 +1,18 @@
 #!/usr/bin/python
 
 import time
-from code import interact
-
-from flufl.enum import Enum
 
 from base_pyliner import BasePyliner
 from communication import Communication
+from controller import Controller
 from flight_director import FlightDirector
-from geofence import Geofence
+from geofence import Geofence, LayerKind
 from geographic import Geographic
 from navigation import Navigation
-from pyliner_exceptions import UnauthorizedAtpError
+from pyliner_module import PylinerModule
 from telemetry import ManualSetpoint
-from util import LogLevel, query_yes_no
 
 __version__ = 0.1
-
-
-class FlightMode(Enum):
-    Manual = 1
-    AltCtl = 2
-    PosCtl = 3
-    RTL = 4
-
 
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
@@ -77,35 +66,13 @@ class Pyliner(BasePyliner):
         self.geographic = Geographic()
 
         # Default modules
-        self.enable_module('fd', FlightDirector())
-        self.enable_module('nav', Navigation(self.geographic))
+        self.enable_module(0, 'fence', Geofence())
+        self.enable_module(1, 'cont', Controller())
+        self.enable_module(2, 'fd', FlightDirector())
+        self.enable_module(3, 'nav', Navigation(self.geographic))
 
-    def arm(self):
-        print("%s: Arming vehicle" % self.script_name)
-        self.log("Arming vehicle")
-        self.buffer_telemetry(ManualSetpoint(ArmSwitch=3))
-        self.wait_clean()
-        self.buffer_telemetry(ManualSetpoint(ArmSwitch=1))
-        self.wait_clean()
-
-    def atp(self, text):
-        """Collect authorization to proceed (ATP) from the user."""
-        atp_auth = self.atp_override() if callable(self.atp_override) else \
-            self.atp_override if self.atp_override is not None else \
-                query_yes_no("{} requires authorization for: {}".format(
-                    self.script_name, text))
-        self.log("{} ATP: {} Auth: {}".format(self.script_name, text, atp_auth))
-        if atp_auth == 'takeover':
-            try:
-                interact(
-                    banner='Entering ATP local override mode.\nAccess vehicle '
-                           'using "self". ex. self.nav.position\nExit '
-                           'interactive mode via Ctrl+D.', local=locals())
-            except SystemExit:
-                pass
-            self.atp(text)
-        if not atp_auth:
-            raise UnauthorizedAtpError
+        # Add helpful default settings
+        self.fence.add_layer(0, 'base', LayerKind.ADDITIVE)
 
     def await_change(self, tlm, poll=1.0, out=None):
         """Block until the telemetry value changes.
@@ -113,7 +80,7 @@ class Pyliner(BasePyliner):
         Args:
             tlm (str): The telemetry to monitor.
             poll (float): Check every `poll` seconds.
-            out (Callable[[], None]): If not None, call this every loop.
+            out (Callable): If not None, call this every loop.
         """
         old_val = self.tlm_value(tlm)
         while self.tlm_value(tlm) == old_val:
@@ -131,7 +98,7 @@ class Pyliner(BasePyliner):
         self.log("Disarming vehicle")
         self.send_telemetry(ManualSetpoint(ArmSwitch=3))
 
-    def enable_module(self, name, module):
+    def enable_module(self, priority, name, module):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
         new module will be subscribed to.
@@ -140,41 +107,10 @@ class Pyliner(BasePyliner):
             name (str): The name that the module will be initialized under.
             module (PylinerModule): The module to enable.
         """
-        super(Pyliner, self).enable_module(name, module)
+        super(Pyliner, self).enable_module(priority, name, module)
         required_ops = module.required_telemetry_paths()
         if required_ops:
             self._communications.subscribe({'tlm': required_ops})
-
-    def flight_mode(self, mode):
-        if not mode:
-            self.log("Mode transition requires a passed mode.",
-                     LogLevel.Error)
-        if mode == FlightMode.Manual:
-            raise NotImplemented()
-        elif mode == FlightMode.AltCtl:
-            raise NotImplemented()
-        elif mode == FlightMode.PosCtl:
-            self._mode_posctl()
-        self.wait_clean()
-
-    def _mode_posctl(self):
-        print("%s: Position control" % self.script_name)
-        self.log("Position control")
-        self.buffer_telemetry(
-            ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
-
-    def rtl(self):
-        print("%s: RTL" % self.script_name)
-        self.log("RTL")
-        self.buffer_telemetry(
-            ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
-        self.wait_clean()
-
-    def takeoff(self):
-        print("%s: Auto takeoff" % self.script_name)
-        self.log("Auto takeoff")
-        self.buffer_telemetry(ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
-        time.sleep(5)
 
     def tlm(self, tlm):
         """ Get all data of specified telemetry item.
@@ -188,7 +124,8 @@ class Pyliner(BasePyliner):
         Raises:
             KeyError: If telemetry is not found.
         """
-        return self._communications.telemetry[tlm]
+        # TODO Rename variable
+        return self._communications._telemetry[tlm]
 
     def tlm_value(self, tlm):
         """ Get current value of specified telemetry item.
@@ -203,7 +140,3 @@ class Pyliner(BasePyliner):
             KeyError: If telemetry is not found.
         """
         return self.tlm(tlm)['value']
-
-    def wait_clean(self):
-        while self._communications.send_dirty:
-            time.sleep(1 / 32)

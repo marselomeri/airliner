@@ -15,12 +15,13 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
+import threading
 from os.path import join, dirname, abspath, basename
 from time import sleep
 
 import pyliner
+from controller import FlightMode
 from navigation import constant, proportional, limiter
-from pyliner import FlightMode
 from util import read_json
 
 
@@ -31,8 +32,7 @@ def range_limit(current, target):
 def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
-    vehicle.rtl()
-    vehicle.wait_clean()
+    vehicle.cont.rtl()
 
 
 with pyliner.Pyliner(
@@ -43,11 +43,11 @@ with pyliner.Pyliner(
     log_dir=join(dirname(abspath(__file__)), "logs"),
     failure_callback=critical_failure
 ) as rocky:
-    # rocky.atp('Arm')
-    rocky.arm()
-    # rocky.atp('Takeoff')
-    rocky.takeoff()
-    rocky.flight_mode(FlightMode.PosCtl)
+    # rocky.cont.atp('Arm')
+    rocky.cont.arm()
+    # rocky.cont.atp('Takeoff')
+    rocky.cont.takeoff()
+    rocky.cont.flight_mode(FlightMode.PosCtl)
 
     home = rocky.nav.position
 
@@ -56,15 +56,25 @@ with pyliner.Pyliner(
     rocky.fd.x = 1.0
     direction = -1
 
-    while True:
+    global running
+    running = True
+
+    def stop():
+        raw_input('Press enter to stop')
+        global running
+        running = False
+
+    threading.Thread(target=stop).start()
+
+    while running:
         # Wait until close to home
         print('Approach')
-        while rocky.nav.geographic.distance(home, rocky.nav.position) > 7:
+        while rocky.geographic.distance(home, rocky.nav.position) > 7:
             sleep(0.1)
 
         # Wait until away from home
         print('Retreat')
-        while rocky.nav.geographic.distance(home, rocky.nav.position) < 7:
+        while rocky.geographic.distance(home, rocky.nav.position) < 7:
             sleep(0.1)
 
         print('Rotate')
@@ -74,7 +84,7 @@ with pyliner.Pyliner(
 
         # Face home
         def home_bear():
-            return rocky.nav.geographic.bearing(rocky.nav.position, home)
+            return rocky.geographic.bearing(rocky.nav.position, home)
 
         diff = float('inf')
         while diff > 2:
@@ -83,14 +93,10 @@ with pyliner.Pyliner(
             diff = diff % 360  # if diff > 0 else -(diff % 360)
             diff = diff if diff < 180 else -(diff - 360)
             rocky.fd.r = abs(limiter(-0.25, 0.25)(diff / 150)) * direction
-            # print('{:3} - {:3} = {:3}: {:3}'.format(
-            #     round(bear, 2),
-            #     round(rocky.nav.heading, 2),
-            #     round(diff, 2),
-            #     round(rocky.fd.r, 2)
-            # ))
-            sleep(0.1)
+            sleep(1.0 / 16)
 
         # Stop rotating
         rocky.fd.x = 0.75
         rocky.fd.r = 0.0
+
+    rocky.cont.rtl()

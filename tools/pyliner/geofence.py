@@ -16,6 +16,7 @@ from geographic import GeographicBase
 from position import Coordinate
 from position import Position
 from pyliner_module import PylinerModule
+from telemetry import ManualSetpoint
 from util import indent, PeriodicExecutor
 
 
@@ -165,9 +166,11 @@ class Geofence(PylinerModule):
 
     def __init__(self):
         super(Geofence, self).__init__()
-        self.layers = SortedDict()
-        """:type: dict[Any, Layer]"""
         self._check_thread = None
+        self.enabled = False
+        self.fence_violation = False
+        self.layers = SortedDict()
+        """:type: dict[Any, _Layer]"""
 
     def __contains__(self, item):
         """True if the given item is contained within the Geofence."""
@@ -182,32 +185,43 @@ class Geofence(PylinerModule):
                 '+' if layer.kind is LayerKind.ADDITIVE else '-',
                 order, layer) for order, layer in self.layers.items()) + '\n}'
 
-    @property
-    def position(self):
-        return Position(
-            PylinerModule.telem(self.req_telem['latitude'])(self),
-            PylinerModule.telem(self.req_telem['longitude'])(self),
-            PylinerModule.telem(self.req_telem['altitude'])(self)
-        )
+    def add_layer(self, layer_position, layer_name, layer_kind):
+        if layer_position in self.layers:
+            raise KeyError('This layer already exists.')
+        if not isinstance(layer_kind, LayerKind):
+            raise TypeError('layer_kind must be of type LayerKind.')
+        layer = _Layer(name=layer_name, kind=layer_kind)
+        self.layers[layer_position] = layer
+        return layer
 
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
         self._check_thread = PeriodicExecutor(self._check_fence)
         self._check_thread.start()
 
-    def add_layer(self, layer_position, layer_name, layer_kind):
-        if layer_position in self.layers:
-            raise KeyError('This layer already exists.')
-        layer = _Layer(name=layer_name, kind=layer_kind)
-        self.layers[layer_position] = layer
-        return layer
-
     def _check_fence(self):
-        self.fence_violation = self.position not in self
+        old = self.fence_violation
+        self.fence_violation = self.fence_violation or \
+                               (self.enabled and self.position not in self)
+        if not old and self.fence_violation:
+            print('Fence Violation')
 
     def detach(self):
         super(Geofence, self).detach()
         self._check_thread.stop()
+
+    def layer_by_name(self, name):
+        for layer in self.layers.values():
+            if layer.name == name:
+                return layer
+
+    @property
+    def position(self):
+        return Position(
+            PylinerModule._telem(self.req_telem['latitude'])(self),
+            PylinerModule._telem(self.req_telem['longitude'])(self),
+            PylinerModule._telem(self.req_telem['altitude'])(self)
+        )
 
     def remove_layer(self, position):
         del self.layers[position]
@@ -215,3 +229,13 @@ class Geofence(PylinerModule):
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
+
+    @property
+    def telemetry(self):
+        if self.fence_violation:
+            return ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1)
+        return None
+
+    @property
+    def telemetry_available(self):
+        return self.fence_violation

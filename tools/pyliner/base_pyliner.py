@@ -1,13 +1,14 @@
 import logging
 import re
 from abc import abstractmethod, ABCMeta
-from builtins import isinstance
 from datetime import datetime
 from genericpath import exists
 from os import mkdir
 from os.path import join, dirname, realpath
 
+from builtins import isinstance
 from junit_xml import TestCase, TestSuite
+from sortedcontainers import SortedDict
 
 from communication import Communication
 from pyliner_module import PylinerModule
@@ -20,7 +21,7 @@ class BasePyliner(object):
     Contains the bare-minimum required for Pyliner. All additional functionality
     is provided through the Pyliner class.
 
-    Implements context manager functionality (with-statement). Unhandled
+    Implements context manager (with-statement) functionality. Unhandled
     exceptions in the context manager are passed to `critical_failure` to give
     the user a chance to fail gracefully before exiting the context manager.
 
@@ -52,7 +53,10 @@ class BasePyliner(object):
         """:type: dict[str, PylinerModule]"""
         self._communications = communications
         """:type: Communication"""
+        self._com_priority = SortedDict()
+        """:type: SortedDict[Real, PylinerModule]"""
 
+        # Only uses log method. May eventually remove when logging is unified.
         self._communications.attach(self)
 
         # Logging
@@ -78,12 +82,8 @@ class BasePyliner(object):
     def __getattr__(self, item):
         if item in self._modules:
             return self._modules[item]
-        raise AttributeError('{} is not a function or module of this '
+        raise AttributeError('{} is not a method or module of this '
                              'Pyliner instance.'.format(item))
-
-    def buffer_telemetry(self, telemetry):
-        # type: (Telemetry) -> None
-        self._communications.send_telemetry(telemetry)
 
     @abstractmethod
     def critical_failure(self, exc_type, exc_val, exc_tb):
@@ -99,14 +99,21 @@ class BasePyliner(object):
         if name not in self._modules:
             raise AttributeError('Cannot disable a module that was never '
                                  'enabled.')
-        self._modules[name].detach()
+        module = self._modules[name]
         del self._modules[name]
+        module.detach()
+        for priority, pri_module in self._com_priority.items():
+            if module is pri_module:
+                self._com_priority.pop(priority)
 
-    def enable_module(self, name, module):
+    def enable_module(self, priority, name, module):
         """Enable a Pyliner Module on this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
 
-        if name in self._modules:
+        if priority in self._com_priority:
+            raise ValueError('There is already a module with priority '
+                             '{}'.format(priority))
+        elif name in self._modules:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
         elif not re.match(identifier, name):
@@ -117,6 +124,17 @@ class BasePyliner(object):
             return TypeError('module must implement PylinerModule.')
         module.attach(self)
         self._modules[name] = module
+        self._com_priority[priority] = module
+
+    def telemetry(self):
+        # type: () -> Telemetry
+        """Return telemetry to send, or None."""
+        # Iterate through every module in priority order to see if any have
+        # telemetry to send.
+        for module in self._com_priority.values():  # type: PylinerModule
+            if module.telemetry_available:
+                return module.telemetry
+        return None
 
     def log(self, text, level=LogLevel.Info):
         """ Wrapper for logging function """

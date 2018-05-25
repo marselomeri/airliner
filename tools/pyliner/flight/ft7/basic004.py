@@ -26,7 +26,7 @@ from util import read_json
 def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
-    vehicle.rtl()
+    vehicle.cont.rtl()
 
 
 def range_limit(current, target):
@@ -41,21 +41,20 @@ with pyliner.Pyliner(
     log_dir=join(dirname(abspath(__file__)), "logs"),
     failure_callback=critical_failure
 ) as rocky:
-    # rocky.atp('Arm')
-    rocky.arm()
+    # rocky.cont.atp('Arm')
+    rocky.cont.arm()
     # rocky.atp('Takeoff')
-    rocky.takeoff()
-    # rocky.flight_mode(FlightMode.PosCtl)
+    rocky.cont.takeoff()
+    # rocky.cont.flight_mode(FlightMode.PosCtl)
 
-    rocky.atp('Move Up')
-    # rocky.nav.up(10, proportional(0.2), tolerance=0.5)
+    rocky.cont.atp('Goto')
 
     home = rocky.nav.position
-    new = rocky.nav.geographic.pbd(home, 0, 20)
+    new = rocky.geographic.pbd(home, 0, 20)
     new.altitude = 500
 
     rocky.nav.goto(new)
-    rocky.nav.goto(rocky.nav.geographic.pbd(new, 180, 40))
+    rocky.nav.goto(rocky.geographic.pbd(new, 180, 40))
 
-    rocky.atp('Return')
-    rocky.rtl()
+    rocky.cont.atp('Return')
+    rocky.cont.rtl()

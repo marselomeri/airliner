@@ -23,16 +23,28 @@ class PeriodicExecutor(threading.Thread):
     """
 
     def __init__(self, callback, every=1, exception=None, finalize=None):
+        """
+        Args:
+            callback (_abcoll.Callable): This method will be called every loop
+                with no arguments.
+            every (Real): Number of seconds to sleep between calls.
+            exception (_abcoll.Callable): If an exception is raised this will
+                be called with the exception as an argument.
+            finalize (_abcoll.Callable): This method will be called sometime
+                after the thread is stopped with no arguments.
+        """
         super(PeriodicExecutor, self).__init__()
         self.daemon = True
 
         self.callback = callback
+        # TODO if move to Python 3, use a default print handler.
         self.exception = exception
         self.every = every
         self.finalize = finalize
         self.running = False
 
     def run(self):
+        """Do not call this directly. Use PeriodicExecutor.start()"""
         self.running = True
         try:
             while self.running:
@@ -41,11 +53,19 @@ class PeriodicExecutor(threading.Thread):
         except Exception as e:
             if callable(self.exception):
                 self.exception(e)
+            else:
+                print('Exception in thread {}'.format(self.callback))
         finally:
             if callable(self.finalize):
                 self.finalize()
 
     def stop(self):
+        """Stops the thread from continuing to loop.
+
+        Thread will not stop immediately. When the thread wakes up next it will
+        see that it has been stopped, will execute the finalize method if it was
+        given, and will then complete.
+        """
         if self.running:
             self.running = False
         else:

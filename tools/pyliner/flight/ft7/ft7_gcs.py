@@ -1,8 +1,8 @@
 import time
 from os.path import join, dirname, abspath
 
-from pyliner import Pyliner, FlightMode
-
+from controller import FlightMode
+from pyliner import Pyliner
 # Initialize pyliner object
 from util import read_json
 

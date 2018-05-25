@@ -9,9 +9,16 @@ from python_pb import pyliner_msgs
 from util import init_socket, PeriodicExecutor, handler_factory, \
     LogLevel, serialize
 
+SEND_TIME = 0.1
+
 
 class Communication(PylinerModule):
-    """Provide methods to send and receive telemetry to a vehicle."""
+    """Provide reactive methods to send and receive telemetry to a vehicle.
+
+    Exposes telemetry through RxPY Reactive Extensions. Exposes a single
+    Observable, `telemetry` with a stream of every telemetry update coming down
+    from the vehicle.
+    """
 
     def __init__(self, airliner_map, address, ci_port, to_port):
         """
@@ -29,12 +36,11 @@ class Communication(PylinerModule):
         self.all_telemetry = []
         self.ci_port = ci_port
         self.ci_socket = init_socket()
-        self.msg = None
-        self.send_dirty = True
-        self.telemetry = {}
+        self._telemetry = {}
         self.subscribers = []
         self.to_port = to_port
         # self.to_socket = init_socket()
+        self.periodic_send = None
 
         # Receive Telemetry
         self.tlm_listener = socketserver.UDPServer(
@@ -44,13 +50,25 @@ class Communication(PylinerModule):
         self.listener_thread.daemon = True
         self.listener_thread.start()
 
+    def attach(self, vehicle):
+        super(Communication, self).attach(vehicle)
+
         # Send Telemetry
-        def send_telem():
-            if self.msg is not None:
-                self.ci_socket.sendto(self.msg, (self.address, self.ci_port))
-            self.send_dirty = False
-        self.periodic_send = PeriodicExecutor(send_telem, every=0.1)
+        def send_telemetry():
+            telemetry = self.vehicle.telemetry()
+            if telemetry:
+                msg = self._serialize(telemetry)
+                self.vehicle.log('Sending telemetry to airliner: {}'
+                                 .format(telemetry.to_json()))
+                self.ci_socket.sendto(msg, (self.address, self.ci_port))
+
+
+        self.periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME)
         self.periodic_send.start()
+
+    def detach(self):
+        super(Communication, self).detach()
+        self.periodic_send.stop()
 
     def _get_airliner_op(self, op_path):
         """
@@ -241,7 +259,7 @@ class Communication(PylinerModule):
                            'time': tlm_time}
 
                 # Update telemetry dictionary with fresh data
-                self.telemetry[op_path] = cb_dict
+                self._telemetry[op_path] = cb_dict
 
                 # Call specified callback for this telemetry if it has one
                 if subscribed_tlm['callback']:
@@ -256,14 +274,14 @@ class Communication(PylinerModule):
     def required_telemetry_paths(cls):
         return None
 
-    def send_telemetry(self, tlm):
+    def _serialize(self, telemetry):
         """ User accessible function to send a command to the software bus.
 
         Args:
-            tlm (Telemetry): Telemetry specifying the operation to execute and
+            telemetry (Telemetry): Telemetry specifying the operation to execute and
                 any args for it.
         """
-        json = tlm.to_json()
+        json = telemetry.to_json()
         if "name" not in json:
             raise pyliner_exceptions.InvalidCommandException(
                 "Invalid command received. Missing \"name\" attribute")
@@ -287,10 +305,7 @@ class Communication(PylinerModule):
         header.set_user_data_length(payload_size)
 
         serial_cmd = serialize(header, payload)
-        self.msg = serial_cmd
-        self.send_dirty = True
-        self.vehicle.log('Sending telemetry to airliner: {}'.format(json))
-        # header.print_base10()
+        return serial_cmd
 
     def subscribe(self, tlm, callback=None):
         """
@@ -324,8 +339,8 @@ class Communication(PylinerModule):
 
             # Add entry to telemetry dictionary to prevent key errors
             # in user scripts and set default values.
-            self.telemetry[tlm_item] = {'name': tlm_item,
-                                        'value': 'NULL',
-                                        'time': 'NULL'}
+            self._telemetry[tlm_item] = {'name': tlm_item,
+                                         'value': 'NULL',
+                                         'time': 'NULL'}
 
             self.vehicle.log('Subscribing to the following telemetry: %s' % tlm)
