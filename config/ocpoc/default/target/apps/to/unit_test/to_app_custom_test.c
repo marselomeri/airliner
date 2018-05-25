@@ -438,7 +438,10 @@ void TO_OutputChannel_ChannelHandle_SendToFail(void)
 void TO_OutputChannel_ChannelHandle_PutPoolBufFail(void)
 {
     uint8 ChannelID = 0;
-    
+
+    /* Set return code for get total message length */
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETTOTALMSGLENGTH_INDEX, 0, 1);
+
     /* Set CFE_ES_PutPoolBuf to fail */
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_PUTPOOLBUF_INDEX, -1, 1);
     
