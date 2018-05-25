@@ -495,8 +495,8 @@ void Test_VC_Custom_UpdateDestination_Fail(void)
 {
     boolean result = TRUE;
     boolean expected = FALSE;
-    
-    result = VC_Update_Destination("test", 5000);
+
+    result = VC_Update_Destination("", 5000);
 
     UtAssert_True(result == expected,"VC_Update_Destination() did not return the correct value");
 }
@@ -512,17 +512,10 @@ void Test_VC_Custom_DisableChannel_Fail(void)
 {
     int32 result = 0;
     int32 expected = -1;
-    
-    char returnString[128];
-    snprintf(returnString, 128, "UDP VC for channel %u is not enabled.", 0);
-    
+
     result = VC_DisableChannel(0);
-    
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+
     UtAssert_True(result == expected,"VC_DisableChannel() did not return the correct value");
-    UtAssert_EventSent(VC_SOCKET_ERR_EID, CFE_EVS_ERROR, returnString, 
-                        "VC_SendData() failed to raise an event");
-    
 }
 
 /**
