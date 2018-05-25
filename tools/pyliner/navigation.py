@@ -1,4 +1,5 @@
 import math
+import re
 import time
 from numbers import Real
 
@@ -93,17 +94,21 @@ class Navigation(PylinerModule):
 
     @property
     def position(self):
+        """The spatial state of the vehicle."""
         return Waypoint(self.latitude, self.longitude,
                         self.altitude, self.heading)
 
     @property
     def yaw(self):
+        """The vehicle yaw in clockwise radians from north."""
         return math.degrees(PylinerModule._telem(self.req_telem['yaw'])(self))
 
-    def backward(self, amount, method, tolerance=1):
-        self.lnav(amount, 'x', method, tolerance, True)
+    def backward(self, distance, method, tolerance=1):
+        """Move backward by a distance. See lnav for full documentation."""
+        self.lnav(distance, '-x', method, tolerance)
 
     def clockwise(self, degrees, method, tolerance=1):
+        """Rotate clockwise by a number of degrees."""
         old_heading = self.heading
         target_heading = (old_heading + degrees) % 360
         min_tol = (target_heading - tolerance) % 360
@@ -118,6 +123,7 @@ class Navigation(PylinerModule):
         self.vehicle.fd.r = 0.0
 
     def counterclockwise(self, degrees, method, tolerance=1):
+        """Rotate counterclockwise by a number of degrees."""
         old_heading = self.heading
         target_heading = (old_heading - degrees) % 360
         max_tol = (target_heading + tolerance) % 360
@@ -131,14 +137,21 @@ class Navigation(PylinerModule):
             time.sleep(_NAV_SLEEP)
         self.vehicle.fd.r = 0.0
 
-    def down(self, amount, method, tolerance=1):
-        self.vnav(by=-amount, method=method, tolerance=tolerance)
+    def down(self, distance, method, tolerance=1):
+        """Move down by a distance. See vnav for full documentation."""
+        self.vnav(by=-distance, method=method, tolerance=tolerance)
 
-    def forward(self, amount, method, tolerance=1):
-        self.lnav(amount, 'x', method, tolerance)
+    def forward(self, distance, method, tolerance=1):
+        """Move forward by a distance. See lnav for full documentation."""
+        self.lnav(distance, 'x', method, tolerance)
 
     def goto(self, waypoint, tolerance=1):
         # type: (Waypoint, Real) -> None
+        """Move the vehicle to a waypoint.
+
+        Block until the distance between the waypoint and the vehicle is within
+        tolerance.
+        """
         self._telemetry = SetpointTriplet(
             Cur_Lat=waypoint.latitude,
             Cur_Lon=waypoint.longitude,
@@ -149,26 +162,46 @@ class Navigation(PylinerModule):
         while self._geographic.distance(waypoint, self.position) > tolerance:
             time.sleep(_NAV_SLEEP)
 
-    def left(self, amount, method, tolerance=1):
-        self.lnav(amount, 'y', method, tolerance, True)
+    def left(self, distance, method, tolerance=1):
+        """Move left by a distance. See lnav for full documentation."""
+        self.lnav(distance, '-y', method, tolerance)
 
-    def lnav(self, amount, axis, method, tolerance, negate=False):
-        # TODO remove negate, make axis "-x"
-        old_coor = self.position
-        distance = self._geographic.distance(old_coor, self.position)
-        while (amount - distance) > tolerance:
-            velocity = method(distance, amount)
-            setattr(self.vehicle.fd, axis, -velocity if negate else velocity)
+    def lnav(self, distance, axis, method, tolerance):
+        """Perform a lateral movement.
+
+        Block until the distance traveled is within the tolerance of the target
+        distance.
+
+        Args:
+            distance (Real): Distance in meters to move.
+            axis (str): Must be one of the lateral movement axes (x, y, or z),
+                and may be prefixed by an optional "-" for negative movement.
+            method (Callable[[Real, Real], Real]): Callable takes two arguments,
+                the distance traveled and the target distance, and returns an
+                axis control value within [-1, 1].
+            tolerance (Real): The allowable error in movement before the method
+                sets the control to 0 and returns.
+        """
+        axis_match = re.match('(-)?([xyz])', axis)
+        if not axis_match:
+            raise ValueError('Axis must match "(-)?([xyz])".')
+        original = self.position
+        delta = self._geographic.distance(original, self.position)
+        while (distance - delta) > tolerance:
+            velocity = method(delta, distance)
+            setattr(self.vehicle.fd, axis_match.group(2),
+                    -velocity if axis_match.group(1) else velocity)
             time.sleep(_NAV_SLEEP)
-            distance = self._geographic.distance(old_coor, self.position)
+            delta = self._geographic.distance(original, self.position)
         setattr(self.vehicle.fd, axis, 0.0)
 
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
 
-    def right(self, amount, method=None, tolerance=1):
-        self.lnav(amount, 'y', method, tolerance)
+    def right(self, distance, method, tolerance=1):
+        """Move right by a distance. See lnav for full documentation."""
+        self.lnav(distance, 'y', method, tolerance)
 
     @property
     def telemetry(self):
@@ -180,10 +213,27 @@ class Navigation(PylinerModule):
     def telemetry_available(self):
         return self._telemetry is not None
 
-    def up(self, amount, method=None, tolerance=1):
-        self.vnav(by=amount, method=method, tolerance=tolerance)
+    def up(self, distance, method=None, tolerance=1):
+        """Move up by a distance. See vnav for full documentation."""
+        self.vnav(by=distance, method=method, tolerance=tolerance)
 
     def vnav(self, by=None, to=None, method=None, tolerance=1):
+        """Perform a vertical navigation.
+
+        Blocks until the vehicle altitude is within tolerance of the target
+        change or absolute altitude.
+
+        Args:
+            by (Real): Change altitude by this amount. May be negative. Cannot
+                be set at the same time as `to`.
+            to (Real): Ascend or descend to this altitude. Cannot be set at the
+                same time as `by`.
+            method (Callable[[Real, Real], Real]): Callable takes two arguments,
+                the current altitude and the target altitude, and returns an
+                axis control value within [-1, 1].
+            tolerance (Real): The allowable error in altitude before the method
+                sets the z-axis to 0 and returns.
+        """
         if not any((by, to)):
             raise ValueError('Must set either by or to.')
         elif by and to:
@@ -194,8 +244,6 @@ class Navigation(PylinerModule):
             raise ValueError('Tolerance must be set to a positive real number.')
         target_altitude = (self.altitude + by) if by is not None else to
         while abs(target_altitude - self.altitude) > tolerance:
-            new_z = method(self.altitude, target_altitude)
-            capped_z = min(max(new_z, -1), 1)
-            self.vehicle.fd.z = capped_z
+            self.vehicle.fd.z = method(self.altitude, target_altitude)
             time.sleep(_NAV_SLEEP)
         self.vehicle.fd.z = 0.0
