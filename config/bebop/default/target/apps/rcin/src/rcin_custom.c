@@ -472,7 +472,7 @@ void RCIN_Custom_Read(void)
     boolean lost_flag     = FALSE;
     uint8 i               = 0;
 
-    recv_len = recv(CI_AppCustomData.Socket, &packet, sizeof(packet), 0);
+    recv_len = recv(RCIN_AppCustomData.Socket, &packet, sizeof(packet), 0);
 
     /* Partial socket read. */
     if(recv_len != sizeof(packet))
@@ -484,7 +484,7 @@ void RCIN_Custom_Read(void)
     }
 
     /* Version check. */
-    if(packet.version != version)
+    if(packet.version != RCIN_UDP_VERSION)
     {
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN bad protocol version. ");
@@ -501,7 +501,7 @@ void RCIN_Custom_Read(void)
     }
     RCIN_AppCustomData.Last_Packet_Timestamp = packet.timestamp_us;
 
-    if(RCIN_AppCustomData.Last_Packet_Sequence - packet.sequence) > 10)
+    if((RCIN_AppCustomData.Last_Packet_Sequence - packet.sequence) > 10)
     {
         CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN large gap in commands.");

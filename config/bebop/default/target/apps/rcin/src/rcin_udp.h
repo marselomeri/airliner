@@ -72,6 +72,13 @@ extern "C" {
 */
 #define RCIN_BUFFER_FILL_TIMEOUT_USEC   (13000)
 
+/** \brief Sleep time micro seconds for interrupted calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define RCIN_MAX_RETRY_SLEEP_USEC       (10)
+
 /** \brief Streaming task priority
 **
 **  \par Limits:
