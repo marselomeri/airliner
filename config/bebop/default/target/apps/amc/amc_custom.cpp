@@ -167,8 +167,10 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
         }
     }
 
+
     for (i = 0; i < 4; ++i)
     {
+        
         motor_speeds[i] = AMC_Scale_To_Dimensionless(PWM[i]);
     }
 
@@ -421,9 +423,24 @@ uint16 AMC_Scale_To_RPM(float scale)
 float AMC_Scale_To_Dimensionless(uint16 PWM)
 {
     float returnVal = 0;
+    uint16 PWM_Constrained = 0;
+
+    /* Constrain */
+    if(PWM < AMC_PWM_MIN)
+    {
+        PWM_Constrained = AMC_PWM_MIN;
+    }
+    else if (PWM > AMC_PWM_MAX)
+    {
+        PWM_Constrained = AMC_PWM_MAX;
+    }
+    else
+    {
+        PWM_Constrained = PWM;
+    }
 
     /* Normalize PWM to dimensionless range 0 to 1 */
-    returnVal = (float) (PWM - AMC_PWM_MIN) / (AMC_PWM_MAX - AMC_PWM_MIN);
+    returnVal = (float) (PWM_Constrained - AMC_PWM_MIN) / (AMC_PWM_MAX - AMC_PWM_MIN);
     
     return (returnVal);
 }
