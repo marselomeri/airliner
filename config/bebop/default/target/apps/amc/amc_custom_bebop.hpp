@@ -64,7 +64,6 @@ extern "C" {
 #define AMC_PWM_MAX                  (2000)
 
 
-
 /* Bebop motor controller Cypress BLDC register map. */
 /** \brief BLDC Register set speed. */
 #define AMC_BLDC_REG_SET_ESC_SPEED   (0x02)
