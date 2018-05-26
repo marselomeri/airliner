@@ -145,3 +145,6 @@
 [submodule "apps/mpu6050"]
 	path = apps/mpu6050
 	url = git@bitbucket.org:windhoverlabs/mpu6050.git
+[submodule "tools/commanderjs"]
+	path = tools/commanderjs
+	url = git@bitbucket.org:windhoverlabs/commanderjs.git
