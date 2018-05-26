@@ -6,7 +6,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4
+        | Mag Sensor
 
 block main
     .row.row-fluid
@@ -40,7 +40,7 @@ block main
                     tr
                       th Timestamp:
                       td 
-                        span(data-sage={tlm: [{name: "/CFS/PX4/SM_Timestamp"}]}) ---
+                        span.format-microseconds(data-sage={tlm: [{name: "/CFS/PX4/SM_Timestamp"}]}) ---
                     tr
                       th Error Count:
                       td 

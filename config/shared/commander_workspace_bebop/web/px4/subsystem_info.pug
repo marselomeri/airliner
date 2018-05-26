@@ -6,7 +6,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4
+        | Subsystem Information
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                     tr
                       th Timestamp:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/SSI_Timestamp"}}) ---
+                        span.format-microseconds(data-sage={tlm: {name: "/CFS/PX4/SSI_Timestamp"}}) ---
                     tr
                       th Subsystem Type:
                       td 

@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Vehicle Commands
+        | Vehicle Commands
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                    tr
                       th Timestamp:
                       td
-                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VC_Timestamp'}]}) ---
+                         span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VC_Timestamp'}]}) ---
                    tr
                       th Param 5:
                       td

@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Position Setpoint Triplet
+        | Position Setpoint Triplet
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Timestamp'}]}) ---
       
     .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
@@ -47,7 +47,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_Timestamp'}]}) ---
                     tr
                       th Latitude:
                       td
@@ -127,7 +127,7 @@ block main
                     tr
                       th Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_Valid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_Valid'}]})
                     tr
                       th Type:
                       td
@@ -135,11 +135,11 @@ block main
                     tr
                       th Position Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_PositionValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_PositionValid'}]})
                     tr
                       th Velocity Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_VelocityValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_VelocityValid'}]})
                     tr
                       th Velocity Frame:
                       td
@@ -147,19 +147,19 @@ block main
                     tr
                       th Alt Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_AltValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_AltValid'}]})
                     tr
                       th Yaw Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_YawValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_YawValid'}]})
                     tr
                       th Disable MC Yaw Control:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_DisableMcYawControl'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_DisableMcYawControl'}]})
                     tr
                       th Yawspeed Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_YawspeedValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_YawspeedValid'}]})
                     tr
                       th Loiter Direction:
                       td
@@ -167,11 +167,11 @@ block main
                     tr
                       th Acceleration Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_AccelerationValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_AccelerationValid'}]})
                     tr
                       th Acceleration Is Force:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_AccelerationIsForce'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Previous_AccelerationIsForce'}]})
                         
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -189,7 +189,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_Timestamp'}]}) ---
                     tr
                       th Latitude:
                       td
@@ -269,7 +269,7 @@ block main
                     tr
                       th Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_Valid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_Valid'}]})
                     tr
                       th Type:
                       td
@@ -277,31 +277,31 @@ block main
                     tr
                       th Position Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_PositionValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_PositionValid'}]})
                     tr
                       th Velocity Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_VelocityValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_VelocityValid'}]})
                     tr
                       th Velocity Frame:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_VelocityFrame'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_VelocityFrame'}]}) ---
                     tr
                       th Alt Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_AltValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_AltValid'}]})
                     tr
                       th Yaw Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_YawValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_YawValid'}]})
                     tr
                       th Disable MC Yaw Control:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_DisableMcYawControl'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_DisableMcYawControl'}]})
                     tr
                       th Yawspeed Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_YawspeedValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_YawspeedValid'}]})
                     tr
                       th Loiter Direction:
                       td
@@ -309,11 +309,11 @@ block main
                     tr
                       th Acceleration Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_AccelerationValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_AccelerationValid'}]})
                     tr
                       th Acceleration Is Force:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_AccelerationIsForce'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Current_AccelerationIsForce'}]})
                         
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -331,7 +331,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_Timestamp'}]}) ---
                     tr
                       th Latitude:
                       td
@@ -411,7 +411,7 @@ block main
                     tr
                       th Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_Valid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_Valid'}]})
                     tr
                       th Type:
                       td
@@ -419,11 +419,11 @@ block main
                     tr
                       th Position Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_PositionValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_PositionValid'}]})
                     tr
                       th Velocity Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_VelocityValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_VelocityValid'}]})
                     tr
                       th Velocity Frame:
                       td
@@ -431,19 +431,19 @@ block main
                     tr
                       th Alt Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_AltValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_AltValid'}]})
                     tr
                       th Yaw Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_YawValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_YawValid'}]})
                     tr
                       th Disable MC Yaw Control:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_DisableMcYawControl'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_DisableMcYawControl'}]})
                     tr
                       th Yawspeed Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_YawspeedValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_YawspeedValid'}]})
                     tr
                       th Loiter Direction:
                       td
@@ -451,8 +451,8 @@ block main
                     tr
                       th Acceleration Valid:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_AccelerationValid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_AccelerationValid'}]})
                     tr
                       th Acceleration Is Force:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_AccelerationIsForce'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/PST_Next_AccelerationIsForce'}]})

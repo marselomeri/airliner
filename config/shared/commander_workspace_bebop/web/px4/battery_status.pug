@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Battery Status
+        | Battery Status
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                     tr
                       th Timestamp
                       td
-                        span(data-sage={tlm: [{name: '/CFS/PX4/BS_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={tlm: [{name: '/CFS/PX4/BS_Timestamp'}]}) ---
                     tr
                       th Voltage:
                       td 
@@ -123,4 +123,3 @@ block main
             var currentDataplot = new SageTimeSeriesDataplot($('#Current'), currentDataplotDef);
         });
               
-

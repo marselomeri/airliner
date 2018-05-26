@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Vehicle Status
+        | Vehicle Status
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VS_Timestamp'}]}) ---
                     tr
                       th System ID:
                       td
@@ -64,7 +64,7 @@ block main
                     tr
                       th Fail-safe:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_Failsafe'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/VS_Failsafe'}]})
                     tr
                       th System Type:
                       td
@@ -72,15 +72,15 @@ block main
                     tr
                       th Is Rotary Wing:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_IsRotaryWing'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VS_IsRotaryWing'}]})
                     tr
                       th Is VTOL:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_IsVtol'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VS_IsVtol'}]})
                     tr
                       th VTOL FW Perm Stab:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_VtolFwPermStab'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VS_VtolFwPermStab'}]})
                     tr
                       th In Trans Mode:
                       td
@@ -88,7 +88,7 @@ block main
                     tr
                       th RC Signal Lost:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_RcSignalLost'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/VS_RcSignalLost'}]})
                     tr
                       th RC Input Mode:
                       td
@@ -96,7 +96,7 @@ block main
                     tr
                       th Datalink Lost:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_DataLinkLost'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/VS_DataLinkLost'}]})
                     tr
                       th Datalink Lost Counter:
                       td
@@ -104,12 +104,12 @@ block main
                     tr
                       th Engine Failure:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_EngineFailure'}]}) ---
+                        div.bool-led.bool-led-error(data-sage={'tlm': [{'name': '/CFS/PX4/VS_EngineFailure'}]})
                     tr
                       th Engine Failure Cmd:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_EngineFailureCmd'}]}) ---
+                        div.bool-led.bool-led-error(data-sage={'tlm': [{'name': '/CFS/PX4/VS_EngineFailureCmd'}]})
                     tr
                       th Mission Failure:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VS_MissionFailure'}]}) ---
+                        div.bool-led.bool-led-error(data-sage={'tlm': [{'name': '/CFS/PX4/VS_MissionFailure'}]})

@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Actuator Controls
+        | Actuator Controls
 
 block main
     .row.row-fluid
@@ -28,11 +28,11 @@ block main
                     tr
                       th Timestamp
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC0_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/AC0_Timestamp'}]}) ---
                     tr
                       th Sample Timestamp
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AC0_SampleTimestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/AC0_SampleTimestamp'}]}) ---
                     tr
                       th Control 0
                       td

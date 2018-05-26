@@ -6,7 +6,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Actuator Armed
+        | Actuator Armed
 
 block main
     .row.row-fluid
@@ -29,33 +29,33 @@ block main
                     tr
                       th Time (Seconds)
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Timestamp'}]}) ---
                     tr
                       th Armed
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Armed'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Armed'}]})
                     tr
                       th Prearmed
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Prearmed'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Prearmed'}]})
                     tr
                       th Ready to Arm
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_ReadyToArm'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/AA_ReadyToArm'}]})
                     tr
                       th Lockdown
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Lockdown'}]}) ---
+                        div.bool-led.bool-led-err(data-sage={'tlm': [{'name': '/CFS/PX4/AA_Lockdown'}]})
                     tr
                       th Manual Lockdown
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_ManualLockdown'}]}) ---
+                        div.bool-led.bool-led-err(data-sage={'tlm': [{'name': '/CFS/PX4/AA_ManualLockdown'}]})
                     tr
                       th Force Failsafe
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_ForceFailsafe'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/AA_ForceFailsafe'}]})
                     tr
                       th In ESC Calibration Mode
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/AA_InEscCalibrationMode'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/AA_InEscCalibrationMode'}]})
                         
