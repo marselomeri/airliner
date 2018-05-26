@@ -77,6 +77,8 @@
 #define MPU6050_MAIN_TASK_PERF_ID   105
 #define MPU6050_RECEIVE_PERF_ID     106
 #define MPU6050_SEND_PERF_ID        107
+#define AMC_SEND_PERF_ID            108
+#define AMC_RECEIVE_PERF_ID         109
 
 #endif
 

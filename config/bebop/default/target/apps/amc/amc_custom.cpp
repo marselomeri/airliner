@@ -35,12 +35,18 @@
 *************************************************************************/
 #include "cfe.h"
 #include "amc_app.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/mman.h>
+#include "amc_custom_bebop.hpp"
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/types.h>
+#include <linux/i2c.h>
+#include <linux/i2c-dev.h>
+#include <sys/wait.h>
 #include <errno.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
 
 /************************************************************************
 ** Local Defines
@@ -248,7 +254,7 @@ boolean AMC_ReadReg(uint8 Reg, void *Buffer, size_t Length)
     /* receive */
     Messages[1].addr  = AMC_BLDC_I2C_SLAVE_ADDRESS;
     Messages[1].flags = AMC_I2C_M_READ;
-    Messages[1].buf   = Buffer;
+    Messages[1].buf   = (uint8 *) Buffer;
     Messages[1].len   = Length;
 
     Packets.msgs  = Messages;

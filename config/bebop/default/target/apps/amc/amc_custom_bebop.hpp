@@ -38,6 +38,8 @@
 extern "C" {
 #endif
 
+#include "cfe.h"
+
 /* Defines for the Bebop Brushless Driver Controller (BLDC). */
 
 
@@ -169,7 +171,7 @@ typedef enum
 typedef struct 
 {
     float battery_voltage_v;
-    uint16_t rpm[4];
+    uint16 rpm[4];
 } AMC_BLDC_State_t;
 #pragma pack(pop)
 
@@ -271,7 +273,7 @@ boolean AMC_Custom_In_Range(float value, float min, float max);
 
 
 boolean AMC_Start_Motors(void);
-boolean AMC_Sop_Motors(void);
+boolean AMC_Stop_Motors(void);
 boolean AMC_Clear_Errors(void);
 uint8 AMC_Calculate_Checksum(uint8 initial, uint8 *data, uint16 packet_size);
 uint16 AMC_Scale_To_RPM(float scale);
