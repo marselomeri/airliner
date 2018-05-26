@@ -101,6 +101,7 @@ int32 AMC::InitDevice(void)
 {
     int32 returnValue = CFE_SUCCESS;
     boolean returnBool = FALSE;
+    AMC_BLDC_Info_t info = {0};
 
     AMC_AppCustomData.DeviceFd = open(AMC_BLDC_I2C_DEVICE_PATH, O_RDWR);
     if (AMC_AppCustomData.DeviceFd < 0) 
@@ -113,6 +114,19 @@ int32 AMC::InitDevice(void)
 
     returnBool = AMC_Clear_Errors();
     if (FALSE == returnBool)
+    {
+        returnValue = -1;
+        goto end_of_function;
+    }
+
+    returnBool = AMC_Custom_Get_Info(&info);
+    if(TRUE == returnBool)
+    {
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_INF_EID, CFE_EVS_INFORMATION,
+            "AMC Bebop BLDC controller initialized version %hhu.%hhu type %hhu motors %hhu", 
+            info.version_major, info.version_minor, info.type, info.n_motors_controlled);
+    }
+    else
     {
         returnValue = -1;
         goto end_of_function;
@@ -506,6 +520,11 @@ uint16 AMC_Swap16(uint16 val)
 }
 
 
+uint32 AMC_Swap32(uint32 val)
+{
+    return (val >> 24) | ((val >> 8) & 0x0000FF00) | ((val << 8) & 0x00FF0000) | (val << 24); 
+}
+
 
 boolean AMC_Custom_Max_Events_Not_Reached(int32 ind)
 {
@@ -548,3 +567,27 @@ end_of_function:
 }
 
 
+boolean AMC_Custom_Get_Info(AMC_BLDC_Info_t *info)
+{
+    boolean returnBool = FALSE;
+
+    if(0 == info)
+    {
+        goto end_of_function;
+    }
+
+    returnBool = AMC_ReadReg(AMC_BLDC_REG_GET_INFO, (void *) info, sizeof(AMC_BLDC_Info_t));
+
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* correct endianness */
+    info->n_flights = AMC_Swap16(info->n_flights);
+    info->last_flight_time = AMC_Swap16(info->last_flight_time);
+    info->total_flight_time = AMC_Swap32(info->total_flight_time);
+
+end_of_function:
+    return returnBool;
+}

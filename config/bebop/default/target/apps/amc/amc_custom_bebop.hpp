@@ -279,8 +279,10 @@ uint8 AMC_Calculate_Checksum(uint8 initial, uint8 *data, uint16 packet_size);
 uint16 AMC_Scale_To_RPM(float scale);
 float AMC_Scale_To_Dimensionless(uint16 PWM);
 boolean AMC_Set_ESC_Speeds(const float speeds[4]);
+boolean AMC_Custom_Get_Info(AMC_BLDC_Info_t *info);
 
 uint16 AMC_Swap16(uint16 val);
+uint32 AMC_Swap32(uint32 val);
 
 #ifdef __cplusplus
 }
