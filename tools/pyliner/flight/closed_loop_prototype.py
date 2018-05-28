@@ -1,4 +1,7 @@
 from os import path, sys
+
+from util import get_time
+
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 from pyliner import Pyliner
 import time
@@ -23,7 +26,7 @@ def vehicle_arm():
     print "Arming vehicle"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -52,7 +55,7 @@ def vehicle_arm():
     time.sleep(2)
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -85,7 +88,7 @@ def vehicle_disarm():
     print "Disarming vehicle"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -117,7 +120,7 @@ def vehicle_takeoff():
     print "Auto takeoff"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -150,7 +153,7 @@ def vehicle_posctl_mode():
     print "Position control"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -183,7 +186,7 @@ def vehicle_stable_hover():
     # 50% Throttle
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -214,7 +217,7 @@ def vehicle_stable_hover():
 def vehicle_full_forward():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.5},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -246,7 +249,7 @@ def vehicle_full_left():
     print "Move left"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-0.5},
         {'name':'Z', 'value':0.5},
@@ -278,7 +281,7 @@ def vehicle_full_reverse():
     print "Move backwards"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':-0.5},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.5},
@@ -310,7 +313,7 @@ def vehicle_full_right():
     print "Move right"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.5},
         {'name':'Z', 'value':0.5},
@@ -341,7 +344,7 @@ def vehicle_full_right():
 def vehicle_full_down():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -372,7 +375,7 @@ def vehicle_full_down():
 def vehicle_full_up():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.65},
@@ -405,7 +408,7 @@ def vehicle_land():
     print "RTL and land"
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.0},
         {'name':'Z', 'value':0.0},
@@ -436,7 +439,7 @@ def vehicle_land():
 def vehicle_orbit_cw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-0.5},
         {'name':'Z', 'value':0.5},
@@ -467,7 +470,7 @@ def vehicle_orbit_cw():
 def vehicle_orbit_ccw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.5},
         {'name':'Z', 'value':0.5},
@@ -498,7 +501,7 @@ def vehicle_orbit_ccw():
 def vehicle_spiral_ccw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':0.5},
         {'name':'Z', 'value':0.65},
@@ -529,7 +532,7 @@ def vehicle_spiral_ccw():
 def vehicle_spiral_cw():
     airliner.send_telemetry(
         {'name':'/Airliner/CNTL/ManualSetpoint', 'args':[
-        {'name':'Timestamp', 'value':airliner.get_time()},
+        {'name':'Timestamp', 'value': get_time()},
         {'name':'X', 'value':0.0},
         {'name':'Y', 'value':-0.5},
         {'name':'Z', 'value':0.65},
@@ -571,13 +574,13 @@ def vehicle_fly_vertical_square():
 
 def vehicle_fly_up(deltaZ):
     print "Move up " + str(deltaZ) + " meters"
-    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    initial_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
     print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
     current_baro_sensor_combined = initial_baro_sensor_combined
     while(current_baro_sensor_combined < (initial_baro_sensor_combined + deltaZ)):
         vehicle_full_up()
         time.sleep(1)
-        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        current_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
         print "baro_sensor_combined: " + str(current_baro_sensor_combined)
     vehicle_stable_hover()
     time.sleep(1)
@@ -585,13 +588,13 @@ def vehicle_fly_up(deltaZ):
 
 def vehicle_fly_down(deltaZ):
     print "Move down " + str(deltaZ) + " meters"
-    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    initial_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
     print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
     current_baro_sensor_combined = initial_baro_sensor_combined
     while(current_baro_sensor_combined > (initial_baro_sensor_combined - deltaZ)):
         vehicle_full_down()
         time.sleep(1)
-        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        current_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
         print "baro_sensor_combined: " + str(current_baro_sensor_combined)
     vehicle_stable_hover()
     time.sleep(1)
@@ -600,11 +603,11 @@ def check_land (timeout = 60):
     print "Check landing complete with timeout: " + str(timeout) + " sec"
     # check RTL Completion
     time_spent = 0
-    baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')   
+    baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
     while((baro_sensor_combined > 1.0) and (time_spent < timeout)):
         time.sleep(1.0)
         time_spent +=1
-        baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
         print "baro_sensor_combined: " + str(baro_sensor_combined)
         #print "time_spent: " + str(time_spent) + " timeout: " + str(timeout)
 
@@ -623,12 +626,12 @@ def check_stable_hover(timeout = 5):
     print "Check stable hover with timeout: " + str(timeout) + " sec"
     # Check stable hover
     time_spent = 0
-    accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+    accel_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/Acc')
     while(accel_sensor_combined[2] > -9.0 or accel_sensor_combined[2] < -11.0) and time_spent < timeout:
         print "accel_sensor_combined_z: " + str(accel_sensor_combined[2])
         time.sleep(1.0)
         time_spent +=1
-        accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+        accel_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/Acc')
 
     # check gravity vector
     if accel_sensor_combined[2] < -9.0 and accel_sensor_combined[2] > -11.0:
@@ -698,13 +701,13 @@ def vehicle_fly_orbit_ccw(delay):
 
 def vehicle_fly_spiral_ccw(deltaZ):
     print "Fly spiral CCW and up " + str(deltaZ) +" meters"
-    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    initial_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
     print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
     current_baro_sensor_combined = initial_baro_sensor_combined
     while(current_baro_sensor_combined < (initial_baro_sensor_combined + deltaZ)):
         vehicle_spiral_ccw()
         time.sleep(1.0)
-        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        current_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
         print "baro_sensor_combined: " + str(current_baro_sensor_combined)
     vehicle_stable_hover()
     time.sleep(1)
@@ -712,13 +715,13 @@ def vehicle_fly_spiral_ccw(deltaZ):
 
 def vehicle_fly_spiral_cw(deltaZ):
     print "Fly spiral CW and up " + str(deltaZ) +" meters"
-    initial_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+    initial_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
     print "initial_baro_sensor_combined: " + str(initial_baro_sensor_combined)
     current_baro_sensor_combined = initial_baro_sensor_combined
     while(current_baro_sensor_combined < (initial_baro_sensor_combined + deltaZ)):
         vehicle_spiral_cw()
         time.sleep(1.0)
-        current_baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+        current_baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
         print "baro_sensor_combined: " + str(current_baro_sensor_combined)
     vehicle_stable_hover()
     time.sleep(1)
@@ -752,7 +755,7 @@ vehicle_fly_spiral_cw(10)
 vehicle_land()
 check_land()
 
-initial_es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
+initial_es_hk_cmdcnt = airliner.tlm_value('/Airliner/ES/HK/CmdCounter')
 print "initial_es_hk_cmdcnt: " + str(initial_es_hk_cmdcnt)
 # Send one NoOp command
 airliner.send_command({'name':'/Airliner/ES/Noop'})
@@ -760,17 +763,17 @@ time.sleep(5)
 
 
 # print received telemetry
-es_hk_cmdcnt = airliner.get_tlm_value('/Airliner/ES/HK/CmdCounter')
+es_hk_cmdcnt = airliner.tlm_value('/Airliner/ES/HK/CmdCounter')
 print "es_hk_cmdcnt: " + str(es_hk_cmdcnt)
-accel_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/Acc')
+accel_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/Acc')
 print "accel_sensor_combined_z: " + str(accel_sensor_combined[2])
-baro_sensor_combined = airliner.get_tlm_value('/Airliner/SENS/HK/BaroAlt')
+baro_sensor_combined = airliner.tlm_value('/Airliner/SENS/HK/BaroAlt')
 print "baro_sensor_combined: " + str(baro_sensor_combined)
-gps_lat = airliner.get_tlm_value('/Airliner/GPS/HK/Lat') / 10000000.0
+gps_lat = airliner.tlm_value('/Airliner/GPS/HK/Lat') / 10000000.0
 print "/Airliner/ES/GPS/Lat: " + str(gps_lat)
-gps_lon = airliner.get_tlm_value('/Airliner/GPS/HK/Lon') / 10000000.0
+gps_lon = airliner.tlm_value('/Airliner/GPS/HK/Lon') / 10000000.0
 print "/Airliner/ES/GPS/Lon: " + str(gps_lon)
-mag = airliner.get_tlm_value('/Airliner/SENS/HK/Mag')
+mag = airliner.tlm_value('/Airliner/SENS/HK/Mag')
 print "mag: " + str(mag)
 
 all_test_passed = True
