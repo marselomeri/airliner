@@ -44,7 +44,8 @@ TO_ChannelTbl_t TO_ConfigTbl =
 		{CFE_ES_HK_TLM_MID,		        1,	  TO_PQUEUE_MEDIUM_IDX},
 		{SENS_HK_TLM_MID,			1,	  TO_PQUEUE_MEDIUM_IDX},
 		{GPS_HK_TLM_MID,			1,	  TO_PQUEUE_MEDIUM_IDX},
-                {PX4_VEHICLE_GLOBAL_POSITION_MID,       1,        TO_PQUEUE_MEDIUM_IDX}
+        {PX4_VEHICLE_GLOBAL_POSITION_MID,       1,        TO_PQUEUE_MEDIUM_IDX},
+        {PX4_POSITION_SETPOINT_TRIPLET_MID,       1,        TO_PQUEUE_MEDIUM_IDX}
 	},{
 		/* Priority Queues */
 		/* TO_PQUEUE_SINGLE_PASS_IDX */
