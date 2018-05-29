@@ -25,7 +25,6 @@ class FenceGenerator(object):
         self.geographic = geographic
 
 
-
 class Volume(Container):
     @property
     @abstractmethod
@@ -33,6 +32,18 @@ class Volume(Container):
         # type: () -> Box
         """The min and max values for latitude, longitude, and altitude."""
         raise NotImplementedError
+
+
+class Arc(Volume):
+    def __init__(self, geographic, ):
+        pass
+
+    def __contains__(self, x):
+        pass
+
+    @property
+    def bounding_box(self):
+        pass
 
 
 class Box(Volume):
@@ -46,10 +57,10 @@ class Box(Volume):
         self.min_altitude = min(corner_1.altitude, corner_2.altitude)
         self.max_altitude = max(corner_1.altitude, corner_2.altitude)
 
-    def __contains__(self, item):
-        return self.min_latitude <= item.latitude <= self.max_latitude \
-            and self.min_longitude <= item.longitude <= self.max_longitude \
-            and self.min_altitude <= item.altitude <= self.max_altitude
+    def __contains__(self, other):
+        return self.min_latitude <= other.latitude <= self.max_latitude \
+               and self.min_longitude <= other.longitude <= self.max_longitude \
+               and self.min_altitude <= other.altitude <= self.max_altitude
 
     def __or__(self, other):
         box = other.bounding_box
@@ -74,6 +85,60 @@ class Box(Volume):
         return self
 
 
+class LayerCake(Volume):
+    """Define a layer-cake volume.
+
+    Airspace around major airports is often described as an "upside-down layered
+    cake", with larger rings at higher altitudes. Each ring is additive to the
+    whole volume, and rings may intersect in altitude.
+    """
+    def __init__(self, geographic, center):
+        self.geographic = geographic
+        self.center = center
+        self.rings = []
+
+    def __contains__(self, x):
+        return any(x in ring for ring in self.rings)
+
+    def add_ring(self, radius, low, high):
+        self.rings.append(VerticalCylinder(self.geographic, self.center,
+                                           low, high, radius))
+
+    @property
+    def bounding_box(self):
+        return reduce(lambda x, y: x.bounding_box | y.bounding_box,
+                      self.rings, NullBox())
+
+
+class NullBox(Box):
+    """A box with no size nor position. Can be safely OR'd with other volumes.
+
+    OR'ing a NullBox with any other volume will return the bounding box of the
+    other volume.
+
+    A null box does not define any any attributes on purpose. It is meant as a
+    base condition for loops which take unions of volumes without needing an
+    explicit initial volume.
+
+    bounding_box and __contains__ raise AttributeError instead of returning a
+    default value to indicate that the user is meant to take the union of this
+    volume and something else first before performing other operations.
+    """
+    def __init__(self):
+        super(NullBox, self).__init__(
+            Position(None, None, None), Position(None, None, None))
+
+    def __contains__(self, other):
+        raise AttributeError('NullBox does not contain anything.')
+
+    def __or__(self, other):
+        return other.bounding_box
+
+    @property
+    def bounding_box(self):
+        raise AttributeError('NullBox does not define a bounding box.')
+
+
 class VerticalCylinder(Volume):
     """A vertical right circular cylinder.
 
@@ -81,22 +146,21 @@ class VerticalCylinder(Volume):
     radius in meters.
     """
 
-    def __init__(self, geographic, center, low_altitude, high_altitude, radius):
+    def __init__(self, geographic, center, radius, low, high):
         # type: (GeographicBase, Coordinate, Real, Real, Real) -> None
         self.geographic = geographic
         self.center = center
-        self.high = high_altitude
-        self.low = low_altitude
+        self.high = high
+        self.low = low
         self.radius = radius
 
-    def __contains__(self, item):
-        return self.low <= item.altitude <= self.high and \
-               self.geographic.distance(self.center, item) <= self.radius
+    def __contains__(self, other):
+        return self.low <= other.altitude <= self.high and \
+               self.geographic.distance(self.center, other) <= self.radius
 
-    def __str__(self):
-        return 'VerticalCylinder(latitude={}, longitude={}, radius={}, low={}, ' \
-               'high={})'.format(self.center.latitude, self.center.longitude,
-                                 self.radius, self.low, self.high)
+    def __repr__(self):
+        return 'VerticalCylinder({}, {}, {}, {}, {})'.format(
+            self.geographic, self.center, self.radius, self.low, self.high)
 
     @property
     def bounding_box(self):
@@ -132,9 +196,9 @@ class _Layer(Volume):
         self._volumes = []
         """:type: list[Volume]"""
 
-    def __contains__(self, item):
-        return any(item in volume for volume in self._volumes) \
-            if item in self.bounding_box else False
+    def __contains__(self, other):
+        return any(other in volume for volume in self._volumes) \
+            if other in self.bounding_box else False
 
     def __str__(self):
         return '{}\n'.format(self.name) + '\n'.join(
@@ -178,11 +242,11 @@ class Geofence(PylinerModule):
         self.layers = SortedDict()
         """:type: dict[Any, _Layer]"""
 
-    def __contains__(self, item):
-        """True if the given item is contained within the Geofence."""
+    def __contains__(self, other):
+        """True if the given other is contained within the Geofence."""
         contained = False
         for layer in self.layers.values():
-            if item in layer:
+            if other in layer:
                 contained = layer.kind is LayerKind.ADDITIVE
         return contained
 

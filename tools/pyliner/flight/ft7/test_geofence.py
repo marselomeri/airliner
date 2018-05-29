@@ -30,7 +30,7 @@ with pyliner.Pyliner(
     base = fence.layers[0]
     base.add_volume(VerticalCylinder(
         rocky.geographic, rocky.nav.position,
-        low_altitude=0, high_altitude=600, radius=20))
+        low=0, high=600, radius=20))
     fence.enabled = True
 
     home = rocky.nav.position
