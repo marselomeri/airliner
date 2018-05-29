@@ -22,14 +22,16 @@ from util import indent, PeriodicExecutor
 
 
 class FenceGenerator(object):
-    def __init__(self, geographic):
+    def __init__(self, geographic, *classes):
         self.geographic = geographic
+        self.curry(classes)
 
-    def curry(self, cls):
-        if not issubclass(cls, Volume):
-            warnings.warn('Curry was expecting a subclass of Volume and '
-                          'received a {}'.format(cls))
-        setattr(self, cls.__name__, partial(cls, geographic=self.geographic))
+    def curry(self, *classes):
+        for c in classes:
+            if not issubclass(c, Volume):
+                warnings.warn('Curry was expecting a subclass of Volume and '
+                              'received a {}'.format(c))
+            setattr(self, c.__name__, partial(c, geographic=self.geographic))
 
 
 class Volume(Container):
@@ -42,18 +44,6 @@ class Volume(Container):
         # type: () -> Box
         """The min and max values for latitude, longitude, and altitude."""
         raise NotImplementedError
-
-
-class Arc(Volume):
-    def __init__(self, geographic):
-        super(Arc, self).__init__(geographic)
-
-    def __contains__(self, x):
-        pass
-
-    @property
-    def bounding_box(self):
-        pass
 
 
 class Box(Volume):
@@ -254,6 +244,7 @@ class Geofence(PylinerModule):
         self._check_thread = None
         self.enabled = False
         self.fence_violation = False
+        self.gen = None
         self.layers = SortedDict()
         """:type: dict[Any, _Layer]"""
 
@@ -273,7 +264,7 @@ class Geofence(PylinerModule):
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
             raise KeyError('This layer already exists.')
-        if not isinstance(layer_kind, LayerKind):  # TODO make this work with Enum
+        if not isinstance(layer_kind, LayerKind):
             raise TypeError('layer_kind must be of type LayerKind.')
         layer = Layer(name=layer_name, kind=layer_kind)
         self.layers[layer_position] = layer
@@ -283,17 +274,17 @@ class Geofence(PylinerModule):
         super(Geofence, self).attach(vehicle)
         self._check_thread = PeriodicExecutor(self._check_fence)
         self._check_thread.start()
+        self.gen = FenceGenerator(self.vehicle.geographic,
+                                  Box, LayerCake, VerticalCylinder)
 
     def _check_fence(self):
-        old = self.fence_violation
         self.fence_violation = self.fence_violation or \
                                (self.enabled and self.position not in self)
-        if not old and self.fence_violation:
-            print('Fence Violation')
 
     def detach(self):
         super(Geofence, self).detach()
         self._check_thread.stop()
+        self.gen = None
 
     def layer_by_name(self, name):
         for layer in self.layers.values():

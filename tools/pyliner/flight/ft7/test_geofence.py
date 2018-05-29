@@ -1,7 +1,7 @@
 from os.path import join, dirname, abspath, basename
 
 import pyliner
-from geofence import Geofence, VerticalCylinder
+from geofence import Geofence
 from util import read_json
 
 
@@ -28,8 +28,8 @@ with pyliner.Pyliner(
     rocky.cont.atp('Enable Fence')
     fence = rocky.fence  # type: Geofence
     base = fence.layers[0]
-    base.add_volume(VerticalCylinder(
-        rocky.geographic, rocky.nav.position,
+    base.add_volume(fence.gen.VerticalCylinder(
+        rocky.nav.position,
         low=0, high=600, radius=20))
     fence.enabled = True
 
