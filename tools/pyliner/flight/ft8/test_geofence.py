@@ -19,6 +19,10 @@ with pyliner.Pyliner(
     log_dir=join(dirname(abspath(__file__)), "logs"),
     failure_callback=critical_failure
 ) as rocky:
+    while rocky.nav.altitude == "NULL":
+        sleep(1)
+        print "Waiting for telemetry downlink..."
+    
     # rocky.cont.atp('Arm')
     rocky.cont.arm()
     # rocky.atp('Takeoff')

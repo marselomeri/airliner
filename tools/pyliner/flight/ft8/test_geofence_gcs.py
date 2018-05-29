@@ -1,26 +1,7 @@
-"""
-Fly a heading and to a waypoint.
-
-Requirements Fulfilled:
-    PYLINER001
-    PYLINER002
-    PYLINER003
-    PYLINER004
-    PYLINER005
-    PYLINER006
-    PYLINER010
-    PYLINER011
-    PYLINER012
-    PYLINER013
-    PYLINER014
-    PYLINER016
-"""
-
 from os.path import join, dirname, abspath, basename
 
 import pyliner
-from navigation import proportional, limiter
-from time import sleep
+from geofence import Geofence, VerticalCylinder
 from util import read_json
 
 
@@ -28,10 +9,6 @@ def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
     vehicle.cont.rtl()
-
-
-def range_limit(current, target):
-    return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
 
 
 with pyliner.Pyliner(
@@ -45,21 +22,27 @@ with pyliner.Pyliner(
     while rocky.nav.altitude == "NULL":
         sleep(1)
         print "Waiting for telemetry downlink..."
-    
     # rocky.cont.atp('Arm')
     rocky.cont.arm()
     # rocky.atp('Takeoff')
     rocky.cont.takeoff()
     # rocky.cont.flight_mode(FlightMode.PosCtl)
 
-    rocky.cont.atp('Goto')
+    rocky.cont.atp('Enable Fence')
+    fence = rocky.fence  # type: Geofence
+    base = fence.layers[0]
+    base.add_volume(VerticalCylinder(
+        rocky.geographic, rocky.nav.position,
+        low_altitude=rocky.nav.altitude - 10, high_altitude=rocky.nav.altitude + 100, radius=20))
+    fence.enabled = True
 
     home = rocky.nav.position
-    new = rocky.geographic.pbd(home, 90, 20)
+    new = rocky.geographic.pbd(home, 90, 15)
     new.altitude = rocky.nav.altitude + 10
-
     rocky.nav.goto(new)
-    rocky.nav.goto(rocky.geographic.pbd(new, 270, 40))
 
-    rocky.cont.atp('Return')
+    new = rocky.geographic.pbd(new, 0, 20)
+    rocky.nav.goto(new)
+
+    rocky.cont.atp('Return (if you got here the fence failed)')
     rocky.cont.rtl()

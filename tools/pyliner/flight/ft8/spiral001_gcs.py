@@ -1,13 +1,11 @@
 """
-Fly a heading and to a waypoint.
+Fly in a rising spiral.
 
 Requirements Fulfilled:
     PYLINER001
-    PYLINER002
     PYLINER003
     PYLINER004
-    PYLINER005
-    PYLINER006
+    PYLINER009
     PYLINER010
     PYLINER011
     PYLINER012
@@ -15,12 +13,11 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-
+import time
 from os.path import join, dirname, abspath, basename
 
 import pyliner
-from navigation import proportional, limiter
-from time import sleep
+from controller import FlightMode
 from util import read_json
 
 
@@ -28,10 +25,6 @@ def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
     vehicle.cont.rtl()
-
-
-def range_limit(current, target):
-    return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
 
 
 with pyliner.Pyliner(
@@ -43,23 +36,25 @@ with pyliner.Pyliner(
     failure_callback=critical_failure
 ) as rocky:
     while rocky.nav.altitude == "NULL":
-        sleep(1)
+        time.sleep(1)
         print "Waiting for telemetry downlink..."
     
-    # rocky.cont.atp('Arm')
+    rocky.cont.atp('Arm')
     rocky.cont.arm()
-    # rocky.atp('Takeoff')
+    rocky.cont.atp('Takeoff')
     rocky.cont.takeoff()
-    # rocky.cont.flight_mode(FlightMode.PosCtl)
+    rocky.cont.flight_mode(FlightMode.PosCtl)
 
-    rocky.cont.atp('Goto')
+    start_altitude = rocky.nav.altitude
 
-    home = rocky.nav.position
-    new = rocky.geographic.pbd(home, 90, 20)
-    new.altitude = rocky.nav.altitude + 10
+    rocky.cont.atp('Start Spiral')
+    rocky.fd.y = 0.75
+    rocky.fd.z = 0.5
+    rocky.fd.r = -0.2
 
-    rocky.nav.goto(new)
-    rocky.nav.goto(rocky.geographic.pbd(new, 270, 40))
+    while rocky.nav.altitude < start_altitude + 10:
+        time.sleep(1)
+    rocky.fd.zero()
 
     rocky.cont.atp('Return')
     rocky.cont.rtl()
