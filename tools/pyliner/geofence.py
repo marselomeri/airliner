@@ -20,6 +20,12 @@ from telemetry import ManualSetpoint
 from util import indent, PeriodicExecutor
 
 
+class FenceGenerator(object):
+    def __init__(self, geographic):
+        self.geographic = geographic
+
+
+
 class Volume(Container):
     @property
     @abstractmethod
@@ -188,8 +194,8 @@ class Geofence(PylinerModule):
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
             raise KeyError('This layer already exists.')
-        if not isinstance(layer_kind, LayerKind):
-            raise TypeError('layer_kind must be of type LayerKind.')
+        # if not isinstance(layer_kind, LayerKind): # TODO make this work with Enum
+        #     raise TypeError('layer_kind must be of type LayerKind.')
         layer = _Layer(name=layer_name, kind=layer_kind)
         self.layers[layer_position] = layer
         return layer
