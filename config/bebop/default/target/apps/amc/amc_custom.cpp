@@ -132,6 +132,13 @@ int32 AMC::InitDevice(void)
         goto end_of_function;
     }
 
+    returnBool = AMC_Custom_Play_Sound();
+    if(FALSE == returnBool)
+    {
+        returnValue = -1;
+        goto end_of_function;
+    }
+
     AMC_AppCustomData.Status = AMC_CUSTOM_INITIALIZED;
 
 end_of_function:
@@ -179,16 +186,14 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
         {
             (void) AMC_Start_Motors();
         }
+        for (i = 0; i < 4; ++i)
+        {
+
+            motor_speeds[i] = AMC_Scale_To_Dimensionless(PWM[i]);
+        }
+
+        (void) AMC_Set_ESC_Speeds(motor_speeds);
     }
-
-
-    for (i = 0; i < 4; ++i)
-    {
-        
-        motor_speeds[i] = AMC_Scale_To_Dimensionless(PWM[i]);
-    }
-
-    (void) AMC_Set_ESC_Speeds(motor_speeds);
 }
 
 
@@ -481,6 +486,11 @@ boolean AMC_Set_ESC_Speeds(const float speeds[4])
     AMC_AppCustomData.SpeedSetpoint[2] = AMC_Swap16(data.rpm_back_right);
     AMC_AppCustomData.SpeedSetpoint[3] = AMC_Swap16(data.rpm_back_left);
 
+    //printf("set speeds 0 %hu\n", AMC_AppCustomData.SpeedSetpoint[0]);
+    //printf("set speeds 1 %hu\n", AMC_AppCustomData.SpeedSetpoint[1]);
+    //printf("set speeds 2 %hu\n", AMC_AppCustomData.SpeedSetpoint[2]);
+    //printf("set speeds 3 %hu\n", AMC_AppCustomData.SpeedSetpoint[3]);
+
     data.enable_security = 0x00;
 
     data.checksum = AMC_Calculate_Checksum(AMC_BLDC_REG_SET_ESC_SPEED, (uint8 *) &data, sizeof(data) - 1);
@@ -564,6 +574,21 @@ int32 AMC_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 end_of_function:
 
     return customEventCount;
+}
+
+
+boolean AMC_Custom_Play_Sound(void)
+{
+    boolean returnBool = TRUE;
+    
+    returnBool = AMC_WriteReg(AMC_BLDC_REG_PLAY_SOUND, AMC_BLDC_SOUND_BOOT);
+    if (FALSE == returnBool) 
+    {            
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "AMC play sound failed. ");
+    }
+
+    return (returnBool);
 }
 
 
