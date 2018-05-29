@@ -4,12 +4,13 @@ Notes:
     Currently you will get a large bounding box around the entire planet.
     TODO: How to identify bounding boxes that cross? Take smaller box?
 """
-
+import warnings
 from abc import abstractmethod
 from collections import Container
-from enum import Enum
+from functools import partial
 from numbers import Real
 
+from enum import Enum
 from sortedcontainers import SortedDict
 
 from geographic import GeographicBase
@@ -24,8 +25,17 @@ class FenceGenerator(object):
     def __init__(self, geographic):
         self.geographic = geographic
 
+    def curry(self, cls):
+        if not issubclass(cls, Volume):
+            warnings.warn('Curry was expecting a subclass of Volume and '
+                          'received a {}'.format(cls))
+        setattr(self, cls.__name__, partial(cls, geographic=self.geographic))
+
 
 class Volume(Container):
+    def __init__(self, geographic):
+        self.geographic = geographic
+
     @property
     @abstractmethod
     def bounding_box(self):
@@ -35,8 +45,8 @@ class Volume(Container):
 
 
 class Arc(Volume):
-    def __init__(self, geographic, ):
-        pass
+    def __init__(self, geographic):
+        super(Arc, self).__init__(geographic)
 
     def __contains__(self, x):
         pass
@@ -50,6 +60,7 @@ class Box(Volume):
     """A simple box. Aligned along latitude, longitude, and vertical."""
     def __init__(self, corner_1, corner_2):
         # type: (Position, Position) -> None
+        super(Box, self).__init__(None)
         self.min_latitude = min(corner_1.latitude, corner_2.latitude)
         self.max_latitude = max(corner_1.latitude, corner_2.latitude)
         self.min_longitude = min(corner_1.longitude, corner_2.longitude)
@@ -93,7 +104,7 @@ class LayerCake(Volume):
     whole volume, and rings may intersect in altitude.
     """
     def __init__(self, geographic, center):
-        self.geographic = geographic
+        super(LayerCake, self).__init__(geographic)
         self.center = center
         self.rings = []
 
@@ -148,7 +159,7 @@ class VerticalCylinder(Volume):
 
     def __init__(self, geographic, center, radius, low, high):
         # type: (GeographicBase, Coordinate, Real, Real, Real) -> None
-        self.geographic = geographic
+        super(VerticalCylinder, self).__init__(geographic)
         self.center = center
         self.high = high
         self.low = low
@@ -189,8 +200,9 @@ class LayerKind(Enum):
     SUBTRACTIVE = False
 
 
-class _Layer(Volume):
-    def __init__(self, name, kind):
+class Layer(Volume):
+    def __init__(self, name, kind, geographic=None):
+        super(Layer, self).__init__(geographic)
         self.name = name
         self.kind = kind
         self._volumes = []
@@ -205,6 +217,9 @@ class _Layer(Volume):
             '{}'.format(volume) for volume in indent(4, self._volumes))
 
     def add_volume(self, volume):
+        if self.geographic:
+            if volume.geographic is not self.geographic:
+                warnings.warn('Volume geographics do not match.')
         self._volumes.append(volume)
 
     @property
@@ -258,9 +273,9 @@ class Geofence(PylinerModule):
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
             raise KeyError('This layer already exists.')
-        # if not isinstance(layer_kind, LayerKind): # TODO make this work with Enum
-        #     raise TypeError('layer_kind must be of type LayerKind.')
-        layer = _Layer(name=layer_name, kind=layer_kind)
+        if not isinstance(layer_kind, LayerKind):  # TODO make this work with Enum
+            raise TypeError('layer_kind must be of type LayerKind.')
+        layer = Layer(name=layer_name, kind=layer_kind)
         self.layers[layer_position] = layer
         return layer
 
