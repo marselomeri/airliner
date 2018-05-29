@@ -280,6 +280,7 @@ float AMC_Scale_To_Dimensionless(uint16 PWM);
 boolean AMC_Set_ESC_Speeds(const float speeds[4]);
 boolean AMC_Custom_Get_Info(AMC_BLDC_Info_t *info);
 boolean AMC_Custom_Play_Sound(void);
+boolean AMC_Custom_Get_Observation(AMC_BLDC_Observation_t *observation);
 
 uint16 AMC_Swap16(uint16 val);
 uint32 AMC_Swap32(uint32 val);

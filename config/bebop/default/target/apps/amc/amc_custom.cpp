@@ -102,6 +102,7 @@ int32 AMC::InitDevice(void)
     int32 returnValue = CFE_SUCCESS;
     boolean returnBool = FALSE;
     AMC_BLDC_Info_t info = {0};
+    AMC_BLDC_Observation_t observation = {0};
 
     AMC_AppCustomData.DeviceFd = open(AMC_BLDC_I2C_DEVICE_PATH, O_RDWR);
     if (AMC_AppCustomData.DeviceFd < 0) 
@@ -134,6 +135,20 @@ int32 AMC::InitDevice(void)
 
     returnBool = AMC_Custom_Play_Sound();
     if(FALSE == returnBool)
+    {
+        returnValue = -1;
+        goto end_of_function;
+    }
+    
+    returnBool = AMC_Custom_Get_Observation(&observation);
+    if(TRUE == returnBool)
+    {
+        (void) CFE_EVS_SendEvent(AMC_DEVICE_INF_EID, CFE_EVS_INFORMATION,
+            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu", 
+            observation.battery_voltage_mv, observation.status, observation.error,
+            observation.motors_in_fault);
+    }
+    else
     {
         returnValue = -1;
         goto end_of_function;
@@ -476,6 +491,7 @@ boolean AMC_Set_ESC_Speeds(const float speeds[4])
     memset(&data, 0, sizeof(data));
 
     // Correct endians and scale to MIN-MAX rpm
+    // Adjust order of BLDCs from PX4 to Bebop here?
     data.rpm_front_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[0]));
     data.rpm_front_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[1]));
     data.rpm_back_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[2]));
@@ -612,6 +628,34 @@ boolean AMC_Custom_Get_Info(AMC_BLDC_Info_t *info)
     info->n_flights = AMC_Swap16(info->n_flights);
     info->last_flight_time = AMC_Swap16(info->last_flight_time);
     info->total_flight_time = AMC_Swap32(info->total_flight_time);
+
+end_of_function:
+    return returnBool;
+}
+
+
+boolean AMC_Custom_Get_Observation(AMC_BLDC_Observation_t *observation)
+{
+    boolean returnBool = FALSE;
+
+    if(0 == observation)
+    {
+        goto end_of_function;
+    }
+
+    returnBool = AMC_ReadReg(AMC_BLDC_REG_GET_OBS, (void *) observation, sizeof(AMC_BLDC_Observation_t));
+
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    // Endian conversion and remove saturation bit
+    observation->rpm_front_left = AMC_Swap16(observation->rpm_front_left) & ~(1 << 15);
+    observation->rpm_front_right = AMC_Swap16(observation->rpm_front_right) & ~(1 << 15);
+    observation->rpm_back_right = AMC_Swap16(observation->rpm_back_right) & ~(1 << 15);
+    observation->rpm_back_left = AMC_Swap16(observation->rpm_back_left) & ~(1 << 15);
+    observation->battery_voltage_mv = AMC_Swap16(observation->battery_voltage_mv);
 
 end_of_function:
     return returnBool;
