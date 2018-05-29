@@ -9,8 +9,9 @@ class PylinerModule(object):
 
     def attach(self, vehicle):
         # type: (BasePyliner) -> None
-        """Store a reference to vehicle. Use this vehicle for platform-dependant
-        operations.
+        """Attach this module to a vehicle.
+
+        Use this vehicle for platform-dependant operations.
         """
         if self._vehicle is not None:
             raise ValueError('Cannot reattach a module while it is currently'
@@ -18,7 +19,10 @@ class PylinerModule(object):
         self._vehicle = vehicle
 
     def detach(self):
-        """Delete previously attached vehicle reference."""
+        """Detach the previously attached vehicle from this module.
+
+        The module will not perform any operations on the vehicle anymore.
+        """
         self._vehicle = None
 
     @classmethod
