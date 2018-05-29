@@ -81,9 +81,9 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         self.callback(self.request)
 
 
-def feet(feet):
+def feet(ft):
     """Convert from given feet to meters."""
-    return feet * 0.3048
+    return ft * 0.3048
 
 
 def get_time():

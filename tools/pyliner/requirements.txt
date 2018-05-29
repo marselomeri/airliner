@@ -1,4 +1,5 @@
 Deprecated
+enum34
 flufl.enum
 future
 geographiclib

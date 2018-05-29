@@ -18,8 +18,10 @@ PYLINER_DIR=$(get_script_dir)
 export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}${PYLINER_DIR}"
 PYTHON=python
 
+source venv/bin/activate
 if [ -z "$1" ]; then
     ${PYTHON} -i $PYLINER_DIR/interactive.py
 else
     ${PYTHON} $@
 fi
+deactivate

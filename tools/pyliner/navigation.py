@@ -185,12 +185,12 @@ class Navigation(PylinerModule):
         axis_match = re.match('(-)?([xyz])', axis)
         if not axis_match:
             raise ValueError('Axis must match "(-)?([xyz])".')
+        neg, axis = axis_match.groups()
         original = self.position
         delta = self._geographic.distance(original, self.position)
         while (distance - delta) > tolerance:
             velocity = method(delta, distance)
-            setattr(self.vehicle.fd, axis_match.group(2),
-                    -velocity if axis_match.group(1) else velocity)
+            setattr(self.vehicle.fd, axis, -velocity if neg else velocity)
             time.sleep(_NAV_SLEEP)
             delta = self._geographic.distance(original, self.position)
         setattr(self.vehicle.fd, axis, 0.0)
