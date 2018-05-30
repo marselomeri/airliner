@@ -2,6 +2,7 @@ from os.path import join, dirname, abspath, basename
 
 import pyliner
 from geofence import Geofence, VerticalCylinder
+from time import sleep
 from util import read_json
 
 
@@ -23,9 +24,9 @@ with pyliner.Pyliner(
         sleep(1)
         print "Waiting for telemetry downlink..."
     
-    # rocky.cont.atp('Arm')
+    rocky.cont.atp('Arm')
     rocky.cont.arm()
-    # rocky.atp('Takeoff')
+    rocky.atp('Takeoff')
     rocky.cont.takeoff()
     # rocky.cont.flight_mode(FlightMode.PosCtl)
 
