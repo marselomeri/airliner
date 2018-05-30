@@ -58,6 +58,7 @@ with pyliner.Pyliner(
 
     home = rocky.nav.position
 
+    rocky.cont.atp('Move Up')
     rocky.nav.vnav(to=rocky.nav.altitude + 10, method=constant(1.0))
 
     rocky.fd.x = 1.0
