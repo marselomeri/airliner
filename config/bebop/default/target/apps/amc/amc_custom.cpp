@@ -187,7 +187,7 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
     if(PWM[0] <= AMC_PWM_DISARMED)
     {
         /* If motors aren't already stopped... */
-        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STARTED)
+        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STARTED || AMC_AppCustomData.Status == AMC_CUSTOM_INITIALIZED)
         {
             (void) AMC_Stop_Motors();
         }
@@ -501,11 +501,6 @@ boolean AMC_Set_ESC_Speeds(const float speeds[4])
     AMC_AppCustomData.SpeedSetpoint[1] = AMC_Swap16(data.rpm_front_left);
     AMC_AppCustomData.SpeedSetpoint[2] = AMC_Swap16(data.rpm_back_right);
     AMC_AppCustomData.SpeedSetpoint[3] = AMC_Swap16(data.rpm_back_left);
-
-    //printf("set speeds 0 %hu\n", AMC_AppCustomData.SpeedSetpoint[0]);
-    //printf("set speeds 1 %hu\n", AMC_AppCustomData.SpeedSetpoint[1]);
-    //printf("set speeds 2 %hu\n", AMC_AppCustomData.SpeedSetpoint[2]);
-    //printf("set speeds 3 %hu\n", AMC_AppCustomData.SpeedSetpoint[3]);
 
     data.enable_security = 0x00;
 

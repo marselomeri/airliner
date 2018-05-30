@@ -43,8 +43,8 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 AMC_PwmConfigTbl_t AMC_PwmCfgTbl =
 {
     900,  /* PwmDisarmed */
-    1000, /* PwmMin      */
-    2000  /* PwmMax      */
+    1100, /* PwmMin      */
+    1900  /* PwmMax      */
 };
 
 /*

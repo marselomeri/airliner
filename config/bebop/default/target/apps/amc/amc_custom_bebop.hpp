@@ -60,8 +60,8 @@ extern "C" {
 
 /* TODO temporary defines for PWM disarmed min and max. */
 #define AMC_PWM_DISARMED             (900)
-#define AMC_PWM_MIN                  (1000)
-#define AMC_PWM_MAX                  (2000)
+#define AMC_PWM_MIN                  (1100)
+#define AMC_PWM_MAX                  (1900)
 
 
 /* Bebop motor controller Cypress BLDC register map. */
