@@ -1,17 +1,14 @@
-import time
 from os.path import join, dirname, basename, abspath
 
 import pyliner
 from navigation import constant
-from telemetry import SetpointTriplet
 from util import read_json
 
 
 def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
-    vehicle.rtl()
-    vehicle.wait_clean()
+    vehicle.cont.rtl()
 
 
 rocky = pyliner.Pyliner(
@@ -23,55 +20,24 @@ rocky = pyliner.Pyliner(
     failure_callback=critical_failure
 )
 with rocky as rocky:
-    rocky.arm()
-    rocky.takeoff()
+    rocky.cont.arm()
+    rocky.cont.takeoff()
 
-    rocky.atp('Start')
+    rocky.cont.atp('Start')
+    dist = 20
 
-    waypoints = [(rocky.nav.position, 495)]
-    waypoints.append(
-        (rocky.nav.geographic.pbd(waypoints[-1][0], 0, 50), 500))
-    waypoints.append(
-        (rocky.nav.geographic.pbd(waypoints[-1][0], 90, 50), 510))
-    waypoints.append(
-        (rocky.nav.geographic.pbd(waypoints[-1][0], 180, 50), 520))
-    waypoints.append(
-        (rocky.nav.geographic.pbd(waypoints[-1][0], 270, 50), 530))
-    waypoints.append(waypoints[0])
+    w0 = rocky.nav.position
+    w0.altitude = rocky.nav.altitude + 5
+    w1 = rocky.geographic.pbd(w0, 0, dist)
+    w1.altitude = w0.altitude + 10
+    w2 = rocky.geographic.pbd(w1, 90, dist)
+    w2.altitude = w1.altitude + 0
+    w3 = rocky.geographic.pbd(w2, 180, dist)
+    w3.altitude = w2.altitude + 0
+    w4 = rocky.geographic.pbd(w3, 270, dist)
+    w4.altitude = w3.altitude + 0
+    rocky.nav.goto((w0, w1, w2, w3, w4, w0))
 
-    def triplet(prev, cur, nxt):
-        return SetpointTriplet(
-            Prev_Lat=prev[0].latitude,
-            Prev_Lon=prev[0].longitude,
-            Prev_Alt=prev[1],
-            Prev_PositionValid=1,
-            Prev_Valid=1,
-            Cur_Lat=cur[0].latitude,
-            Cur_Lon=cur[0].longitude,
-            Cur_Alt=cur[1],
-            Cur_PositionValid=1,
-            Cur_Valid=1,
-            Next_Lat=nxt[0].latitude,
-            Next_Lon=nxt[0].longitude,
-            Next_Alt=nxt[1],
-            Next_PositionValid=1,
-            Next_Valid=1)
-
-    def collector(iter):
-        s1 = None
-        s2 = next(iter)
-        s3 = next(iter)
-        while True:
-            s1 = s2
-            s2 = s3
-            s3 = next(iter)
-            yield s1, s2, s3
-
-    for prev, cur, nxt in collector(iter(waypoints)):
-        rocky.buffer_telemetry(triplet(prev, cur, nxt))
-        while rocky.nav.geographic.distance(cur[0], rocky.nav.position) > 1:
-            time.sleep(1 / 10)
-
-    rocky.atp('Return')
+    rocky.cont.atp('Return')
     rocky.nav.vnav(to=500, method=constant(-1))
-    rocky.rtl()
+    rocky.cont.rtl()

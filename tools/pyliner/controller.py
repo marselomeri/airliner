@@ -38,7 +38,7 @@ class Controller(PylinerModule):
         atp_auth = self.atp_override() if callable(self.atp_override) else \
             self.atp_override if self.atp_override is not None else \
                 query_yes_no("{} requires authorization for: {}".format(
-                    self.vehicle.script_name, text))
+                    self.vehicle.script_name, text), takeover={'takeover'})
         self.vehicle.log("{} ATP: {} Auth: {}".format(
             self.vehicle.script_name, text, atp_auth))
         if atp_auth == 'takeover':

@@ -1,12 +1,16 @@
 import math
 import re
 import time
+from collections import Iterable
 from numbers import Real
+
+from future.moves import itertools
 
 from geographic import GeographicBase
 from position import Position
 from pyliner_module import PylinerModule
 from telemetry import SetpointTriplet
+from util import shifter
 
 _NAV_SLEEP = 1/16
 
@@ -145,22 +149,44 @@ class Navigation(PylinerModule):
         """Move forward by a distance. See lnav for full documentation."""
         self.lnav(distance, 'x', method, tolerance)
 
-    def goto(self, waypoint, tolerance=1):
-        # type: (Waypoint, Real) -> None
-        """Move the vehicle to a waypoint.
+    def goto(self, waypoints, tolerance=1):
+        # type: (Real, Iterable[Waypoint]) -> None
+        """Move the vehicle to a waypoint or along a series of waypoints.
 
-        Block until the distance between the waypoint and the vehicle is within
-        tolerance.
+        Block until the vehicle is within tolerance of the final waypoint.
         """
-        self._telemetry = SetpointTriplet(
-            Cur_Lat=waypoint.latitude,
-            Cur_Lon=waypoint.longitude,
-            Cur_Alt=self.altitude if waypoint.altitude is None else waypoint.altitude,
-            Cur_Yaw=self.yaw if waypoint.heading is None else waypoint.yaw,
-            Cur_Valid=1, Cur_PositionValid=1
-        )
-        while self._geographic.distance(waypoint, self.position) > tolerance:
-            time.sleep(_NAV_SLEEP)
+        if not isinstance(waypoints, Iterable):
+            waypoints = (waypoints,)
+        for prv, cur, nxt in shifter(3, itertools.chain(
+                (None,), waypoints, (None,))):
+            palt = 0 if not prv else prv.altitude \
+                if prv.altitude is not None else self.altitude
+            calt = 0 if not cur else cur.altitude \
+                if cur.altitude is not None else self.altitude
+            nalt = 0 if not nxt else nxt.altitude \
+                if nxt.altitude is not None else self.altitude
+            pyaw = 0 if not prv else prv.yaw \
+                if prv.yaw is not None else self.yaw
+            cyaw = 0 if not cur else cur.yaw \
+                if cur.yaw is not None else self.yaw
+            nyaw = 0 if not nxt else nxt.yaw \
+                if nxt.yaw is not None else self.yaw
+            self._telemetry = SetpointTriplet(
+                Prev_Lat=prv.latitude if prv is not None else 0,
+                Prev_Lon=prv.longitude if prv is not None else 0,
+                Prev_Alt=palt, Prev_Yaw=pyaw,
+                Prev_Valid=prv is not None, Prev_PositionValid=prv is not None,
+                Cur_Lat=cur.latitude if cur is not None else 0,
+                Cur_Lon=cur.longitude if cur is not None else 0,
+                Cur_Alt=calt, Cur_Yaw=cyaw,
+                Cur_Valid=cur is not None, Cur_PositionValid=cur is not None,
+                Next_Lat=nxt.latitude if nxt is not None else 0,
+                Next_Lon=nxt.longitude if nxt is not None else 0,
+                Next_Alt=nalt, Next_Yaw=nyaw,
+                Next_Valid=nxt is not None, Next_PositionValid=nxt is not None
+            )
+            while self._geographic.distance(cur, self.position) > tolerance:
+                time.sleep(_NAV_SLEEP)
 
     def left(self, distance, method, tolerance=1):
         """Move left by a distance. See lnav for full documentation."""

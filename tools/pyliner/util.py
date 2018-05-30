@@ -3,6 +3,8 @@ import socket
 import sys
 import threading
 import time
+import traceback
+from collections import Iterator, Iterable
 from datetime import datetime
 
 import socketserver
@@ -54,7 +56,8 @@ class PeriodicExecutor(threading.Thread):
             if callable(self.exception):
                 self.exception(e)
             else:
-                print('Exception in thread {}'.format(self.callback))
+                print('\nException in thread {}'.format(self.callback))
+                traceback.print_exc()
         finally:
             if callable(self.finalize):
                 self.finalize()
@@ -79,6 +82,18 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         self.callback(self.request)
+
+
+def shifter(num, iterator):
+    if not isinstance(iterator, Iterator) \
+            and isinstance(iterator, Iterable):
+        iterator = iter(iterator)
+    output = tuple(next(iterator) for _ in range(num))
+    yield output
+    for item in iterator:
+        output = tuple(output[index+1] if index < num-1 else item
+                       for index in range(num))
+        yield output
 
 
 def feet(ft):
@@ -107,7 +122,7 @@ def init_socket():
     return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
-def query_yes_no(question, default=None):
+def query_yes_no(question, default=None, **extra):
     """Ask a yes/no question via raw_input() and return their answer.
 
     "question" is a string that is presented to the user.
@@ -117,8 +132,8 @@ def query_yes_no(question, default=None):
     Adapted from: http://code.activestate.com/recipes/577058/
     """
     valid = {True: {'y', 'ye', 'yes'},
-             False: {'n', 'no'},
-             'takeover': {'takeover'}}
+             False: {'n', 'no'}}
+    valid.update(extra)
     if default is None:
         prompt = " [y/n] "
     elif default:

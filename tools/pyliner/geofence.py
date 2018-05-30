@@ -24,7 +24,7 @@ from util import indent, PeriodicExecutor
 class FenceGenerator(object):
     def __init__(self, geographic, *classes):
         self.geographic = geographic
-        self.curry(classes)
+        self.curry(*classes)
 
     def curry(self, *classes):
         for c in classes:

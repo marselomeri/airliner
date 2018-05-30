@@ -185,16 +185,18 @@ class Communication(PylinerModule):
         pb_obj = self._proto_obj_factory(op["airliner_msg"])
 
         # Generate executable string assigning correct values to pb object
-        assign = ""
         for arg in json["args"]:
             arg_path = self._get_op_attr(json["name"] + '/' + arg["name"])
             if not arg_path:
                 raise pyliner_exceptions.InvalidCommandException(
                     "Invalid command received. Argument operational name (%s) "
                     "not found." % arg["name"])
-            # print(json["name"] + '/' + arg["name"], arg_path)
-            assign += ("pb_obj." + arg_path + "=" + str(arg["value"]) + "\n")
-        exec(assign)
+            stmt = "pb_obj.{} = {}".format(arg_path, arg["value"])
+            try:
+                exec(stmt)
+            except Exception as e:
+                print('Problem with {}\n{}'.format(stmt, e))
+
         return pb_obj
 
     def _get_pb_value(self, pb_msg, op_path):
