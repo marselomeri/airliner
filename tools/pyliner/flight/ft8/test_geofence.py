@@ -26,7 +26,7 @@ with pyliner.Pyliner(
     
     rocky.cont.atp('Arm')
     rocky.cont.arm()
-    rocky.atp('Takeoff')
+    rocky.cont.atp('Takeoff')
     rocky.cont.takeoff()
     # rocky.cont.flight_mode(FlightMode.PosCtl)
 
@@ -38,6 +38,7 @@ with pyliner.Pyliner(
         low_altitude=rocky.nav.altitude - 10, high_altitude=rocky.nav.altitude + 100, radius=20))
     fence.enabled = True
 
+    rocky.cont.atp('Start mission')
     home = rocky.nav.position
     new = rocky.geographic.pbd(home, 90, 15)
     new.altitude = rocky.nav.altitude + 10
