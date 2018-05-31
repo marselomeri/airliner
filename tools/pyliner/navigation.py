@@ -12,7 +12,7 @@ from pyliner_app import PylinerApp
 from telemetry import SetpointTriplet
 from util import shifter
 
-_NAV_SLEEP = 1/16
+_NAV_SLEEP = 1.0/16.0
 
 
 def constant(value):
@@ -214,9 +214,14 @@ class Navigation(PylinerApp):
         neg, axis = axis_match.groups()
         original = self.position
         delta = self._geographic.distance(original, self.position)
+        #i = 9
         while (distance - delta) > tolerance:
             velocity = method(delta, distance)
             setattr(self.vehicle.fd, axis, -velocity if neg else velocity)
+            #i = (i + 1) % 10
+            #if i == 0:
+            self.vehicle.log('LNAV {} dist {} brng {} axis {} {}'
+                    .format(self.position, delta, self._geographic.bearing(original, self.position), axis, velocity))
             time.sleep(_NAV_SLEEP)
             delta = self._geographic.distance(original, self.position)
         setattr(self.vehicle.fd, axis, 0.0)

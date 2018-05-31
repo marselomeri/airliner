@@ -48,6 +48,7 @@ class BasePyliner(object):
         """
         if log_dir is None:
             log_dir = join(dirname(realpath(__file__)), "logs")
+        print('Logging to {}'.format(log_dir))
 
         self._apps = {}
         """:type: dict[str, PylinerModule]"""
