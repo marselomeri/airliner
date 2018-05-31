@@ -1,8 +1,8 @@
-from pyliner_module import PylinerModule
+from pyliner_app import PylinerApp
 from telemetry import ManualSetpoint
 
 
-class FlightDirector(PylinerModule):
+class FlightDirector(PylinerApp):
     def __init__(self, strict_set=False):
         super(FlightDirector, self).__init__()
         self._x = self._y = self._z = self._r = 0.0

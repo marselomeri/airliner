@@ -9,7 +9,7 @@ from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
 from geographic import Geographic
 from navigation import Navigation
-from pyliner_module import PylinerModule
+from pyliner_app import PylinerApp
 from telemetry import ManualSetpoint
 
 __version__ = 0.1
@@ -66,10 +66,10 @@ class Pyliner(BasePyliner):
         self.geographic = Geographic()
 
         # Default modules
-        self.enable_module(0, 'fence', Geofence())
-        self.enable_module(1, 'cont', Controller())
-        self.enable_module(2, 'fd', FlightDirector())
-        self.enable_module(3, 'nav', Navigation(self.geographic))
+        self.enable_app(0, 'fence', Geofence())
+        self.enable_app(1, 'cont', Controller())
+        self.enable_app(2, 'fd', FlightDirector())
+        self.enable_app(3, 'nav', Navigation(self.geographic))
 
         # Add helpful default settings
         self.fence.add_layer(0, 'base', LayerKind.ADDITIVE)
@@ -98,17 +98,17 @@ class Pyliner(BasePyliner):
         self.log("Disarming vehicle")
         self.send_telemetry(ManualSetpoint(ArmSwitch=3))
 
-    def enable_module(self, priority, name, module):
+    def enable_app(self, priority, name, app):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
         new module will be subscribed to.
 
         Args:
             name (str): The name that the module will be initialized under.
-            module (PylinerModule): The module to enable.
+            app (PylinerApp): The module to enable.
         """
-        super(Pyliner, self).enable_module(priority, name, module)
-        required_ops = module.required_telemetry_paths()
+        super(Pyliner, self).enable_app(priority, name, app)
+        required_ops = app.required_telemetry_paths()
         if required_ops:
             self._communications.subscribe({'tlm': required_ops})
 

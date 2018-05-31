@@ -17,7 +17,7 @@ from sortedcontainers import SortedDict
 from geographic import GeographicBase
 from position import Coordinate
 from position import Position
-from pyliner_module import PylinerModule
+from pyliner_app import PylinerApp
 from telemetry import ManualSetpoint
 from util import indent, PeriodicExecutor
 
@@ -232,7 +232,7 @@ class Layer(CompositeVolume):
             '{}'.format(volume) for volume in indent(4, self))
 
 
-class Geofence(PylinerModule):
+class Geofence(PylinerApp):
     """A Geofence defines the space a vehicle is allowed to operate within.
 
     A geofence is constructed by layering additive and subtractive geometry
@@ -306,9 +306,9 @@ class Geofence(PylinerModule):
     @property
     def position(self):
         return Position(
-            PylinerModule._telem(self.req_telem['latitude'])(self),
-            PylinerModule._telem(self.req_telem['longitude'])(self),
-            PylinerModule._telem(self.req_telem['altitude'])(self)
+            PylinerApp._telem(self.req_telem['latitude'])(self),
+            PylinerApp._telem(self.req_telem['longitude'])(self),
+            PylinerApp._telem(self.req_telem['altitude'])(self)
         )
 
     def remove_layer(self, position):

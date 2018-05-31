@@ -11,7 +11,7 @@ from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
 
 from communication import Communication
-from pyliner_module import PylinerModule
+from pyliner_app import PylinerApp
 from telemetry import Telemetry
 from util import LogLevel
 
@@ -49,7 +49,7 @@ class BasePyliner(object):
         if log_dir is None:
             log_dir = join(dirname(realpath(__file__)), "logs")
 
-        self._modules = {}
+        self._apps = {}
         """:type: dict[str, PylinerModule]"""
         self._communications = communications
         """:type: Communication"""
@@ -80,8 +80,8 @@ class BasePyliner(object):
             self.critical_failure(exc_type, exc_val, exc_tb)
 
     def __getattr__(self, item):
-        if item in self._modules:
-            return self._modules[item]
+        if item in self._apps:
+            return self._apps[item]
         raise AttributeError('{} is not a method or module of this '
                              'Pyliner instance.'.format(item))
 
@@ -89,51 +89,51 @@ class BasePyliner(object):
     def critical_failure(self, exc_type, exc_val, exc_tb):
         raise NotImplementedError()
 
-    def disable_module(self, name):
-        """Disable a module by removing it from the vehicle.
+    def disable_app(self, name):
+        """Disable an app by removing it from the vehicle.
 
         Note:
-            Any modules that attempt to call the disabled module by name will
+            Any apps that attempt to call the disabled app by name will
             produce an error.
         """
-        if name not in self._modules:
+        if name not in self._apps:
             raise AttributeError('Cannot disable a module that was never '
                                  'enabled.')
-        module = self._modules[name]
-        del self._modules[name]
+        module = self._apps[name]
+        del self._apps[name]
         module.detach()
         for priority, pri_module in self._com_priority.items():
             if module is pri_module:
                 self._com_priority.pop(priority)
 
-    def enable_module(self, priority, name, module):
-        """Enable a Pyliner Module on this vehicle."""
+    def enable_app(self, priority, name, app):
+        """Enable a PylinerApp on this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
 
         if priority in self._com_priority:
             raise ValueError('There is already a module with priority '
                              '{}'.format(priority))
-        elif name in self._modules:
+        elif name in self._apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
         elif not re.match(identifier, name):
             raise ValueError('Attempting to enable a module with an illegal '
                              'name. Module names must be valid Python '
                              'identifiers.')
-        elif not isinstance(module, PylinerModule):
-            return TypeError('module must implement PylinerModule.')
-        module.attach(self)
-        self._modules[name] = module
-        self._com_priority[priority] = module
+        elif not isinstance(app, PylinerApp):
+            return TypeError('module must implement PylinerApp.')
+        app.attach(self)
+        self._apps[name] = app
+        self._com_priority[priority] = app
 
     def telemetry(self):
         # type: () -> Telemetry
         """Return telemetry to send, or None."""
-        # Iterate through every module in priority order to see if any have
+        # Iterate through every app in priority order to see if any have
         # telemetry to send.
-        for module in self._com_priority.values():  # type: PylinerModule
-            if module.telemetry_available:
-                return module.telemetry
+        for app in self._com_priority.values():  # type: PylinerApp
+            if app.telemetry_available:
+                return app.telemetry
         return None
 
     def log(self, text, level=LogLevel.Info):
@@ -150,9 +150,9 @@ class BasePyliner(object):
             logging.debug("Specified log mode unsupported")
 
     @property
-    def modules(self):
+    def apps(self):
         """Mapping of enabled modules."""
-        return self._modules.copy()
+        return self._apps.copy()
 
     def _setup_log(self):
         """ Setup log for Pyliner """
