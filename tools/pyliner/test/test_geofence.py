@@ -38,10 +38,10 @@ class TestGeofence(unittest.TestCase):
         fence = Geofence()
 
         base = fence.add_layer(0, 'base', LayerKind.ADDITIVE)
-        base.add_volume(Box(Position(1, 3, 0), Position(3, 5, 1000)))
+        base.add(Box(Position(1, 3, 0), Position(3, 5, 1000)))
 
         tfr = fence.add_layer(1, 'tfr', LayerKind.SUBTRACTIVE)
-        tfr.add_volume(VerticalCylinder(geo, Coordinate(2, 4), 500, 0, 1000))
+        tfr.add(VerticalCylinder(geo, Coordinate(2, 4), 500, 0, 1000))
 
         self.assertIn(Position(1.1, 3.2, 250), fence)
         self.assertNotIn(Position(2, 4, 100), fence)

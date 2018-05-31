@@ -33,7 +33,7 @@ with pyliner.Pyliner(
     rocky.cont.atp('Enable Fence')
     fence = rocky.fence  # type: Geofence
     base = fence.layers[0]
-    base.add_volume(VerticalCylinder(
+    base.add(VerticalCylinder(
         rocky.geographic, rocky.nav.position,
         low_altitude=rocky.nav.altitude - 10, high_altitude=rocky.nav.altitude + 100, radius=20))
     fence.enabled = True

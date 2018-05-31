@@ -11,6 +11,7 @@ from functools import partial
 from numbers import Real
 
 from enum import Enum
+from future.moves import itertools
 from sortedcontainers import SortedDict
 
 from geographic import GeographicBase
@@ -83,24 +84,37 @@ class Box(Volume):
         return self
 
 
-class CompositeVolume(Volume):
+class CompositeVolume(Volume, set):
     """A volume directly composed of the union of multiple other volumes."""
     def __init__(self, geographic, volumes=None):
-        super(CompositeVolume, self).__init__(geographic)
-        self._volumes = volumes if volumes else set()
+        Volume.__init__(self, geographic)
+        set.__init__(self)
+        if volumes:
+            self.update(volumes)
 
     def __contains__(self, x):
-        return any(x in volume for volume in self._volumes)
+        """Test whether a volume or a point are contained in this volume.
 
-    def add_volume(self, volume):
-        if self.geographic and volume.geographic is not self.geographic:
-            warnings.warn('Volume geographics do not match.')
-        self._volumes.add(volume)
+        If x is a Volume, test if the volume is a member of this
+        CompositeVolume. If x is anything else, test if x is contained in any of
+        the volumes that make up this CompositeVolume.
+
+        Notes:
+            Does not test if an arbitrary volume is entirely contained within
+            this CompositeVolume.
+        """
+        return any(x in volume for volume in self) \
+            if not isinstance(x, Volume) \
+            else super(CompositeVolume, self).__contains__(x)
+
+    def add(self, volume):
+        self._check_geographic(volume)
+        super(CompositeVolume, self).add(volume)
 
     @property
     def bounding_box(self):
         boxes = filter(lambda bb: bb is not None,
-                       (x.bounding_box for x in self._volumes))
+                       (x.bounding_box for x in self))
         if not boxes:
             return None
         return Box(
@@ -115,16 +129,26 @@ class CompositeVolume(Volume):
             )
         )
 
+    def _check_geographic(self, other):
+        if self.geographic and other.geographic \
+                and other.geographic is not self.geographic:
+            warnings.warn('Volume geographics do not match.')
+
     def flatten(self):
         """Return a flattened CompositeVolume."""
-        todo = list(self._volumes)
+        todo = list(self)
         flat = set()
         for volume in todo:
             if isinstance(volume, CompositeVolume):
-                todo.extend(volume._volumes)
+                todo.extend(volume)
             else:
                 flat.add(volume)
         return CompositeVolume(self.geographic, flat)
+
+    def update(self, *s):
+        for volume in itertools.chain(s):
+            self._check_geographic(volume)
+        super(CompositeVolume, self).update(*s)
 
 
 class LayerCake(CompositeVolume):
@@ -134,12 +158,12 @@ class LayerCake(CompositeVolume):
     cake", with larger rings at higher altitudes. Each ring is additive to the
     whole volume, and rings may intersect in altitude.
     """
-    def __init__(self, geographic, center):
-        super(LayerCake, self).__init__(geographic)
+    def __init__(self, geographic, center, rings=None):
+        super(LayerCake, self).__init__(geographic, rings)
         self.center = center
 
     def add_ring(self, radius, low, high):
-        self.add_volume(
+        self.add(
             VerticalCylinder(self.geographic, self.center, low, high, radius))
 
 
@@ -205,7 +229,7 @@ class Layer(CompositeVolume):
 
     def __str__(self):
         return '{}\n'.format(self.name) + '\n'.join(
-            '{}'.format(volume) for volume in indent(4, self._volumes))
+            '{}'.format(volume) for volume in indent(4, self))
 
 
 class Geofence(PylinerModule):
@@ -218,6 +242,8 @@ class Geofence(PylinerModule):
     Within a layer, a point is determined to be inside as if all the volumes in
     that layer were taken as a union.
     """
+    # TODO Use a small daatabase (like TinyDB) to handle layer mapping.
+    #   Added benefit of allowing both name and order mapping to layer at once.
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
