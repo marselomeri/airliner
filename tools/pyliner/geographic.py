@@ -55,6 +55,9 @@ class GeographicBase(object):
 
 
 class Geographic(GeographicBase):
+    def __str__(self):
+        return 'WGS84'
+
     @staticmethod
     def bearing(a, b):
         return Geographic._inverse(a, b)['azi1'] % 360

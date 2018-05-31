@@ -5,7 +5,7 @@ Notes:
     TODO: How to identify bounding boxes that cross? Take smaller box?
 """
 import warnings
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from collections import Container
 from functools import partial
 from numbers import Real
@@ -35,8 +35,17 @@ class FenceGenerator(object):
 
 
 class Volume(Container):
+    """A generic volume class. Extend to create concrete volumes.
+
+    By default, `c = a | b` will return a new CompositeVolume made of a and b.
+    """
+    __metaclass__ = ABCMeta
+
     def __init__(self, geographic):
         self.geographic = geographic
+
+    def __or__(self, other):
+        return CompositeVolume(self.geographic, {self, other})
 
     @property
     @abstractmethod
@@ -63,18 +72,6 @@ class Box(Volume):
                and self.min_longitude <= other.longitude <= self.max_longitude \
                and self.min_altitude <= other.altitude <= self.max_altitude
 
-    def __or__(self, other):
-        box = other.bounding_box
-        return Box(Position(
-            min(self.min_latitude, box.min_latitude),
-            min(self.min_longitude, box.min_longitude),
-            min(self.min_altitude, box.min_altitude)
-        ), Position(
-            max(self.max_latitude, box.max_latitude),
-            max(self.max_longitude, box.max_longitude),
-            max(self.max_altitude, box.max_altitude)
-        ))
-
     def __str__(self):
         return 'Box(latitude=[{}, {}], longitude=[{}, {}], altitude=[{}, {}' \
                '])'.format(self.min_latitude, self.max_latitude,
@@ -86,7 +83,51 @@ class Box(Volume):
         return self
 
 
-class LayerCake(Volume):
+class CompositeVolume(Volume):
+    """A volume directly composed of the union of multiple other volumes."""
+    def __init__(self, geographic, volumes=None):
+        super(CompositeVolume, self).__init__(geographic)
+        self._volumes = volumes if volumes else set()
+
+    def __contains__(self, x):
+        return any(x in volume for volume in self._volumes)
+
+    def add_volume(self, volume):
+        if self.geographic and volume.geographic is not self.geographic:
+            warnings.warn('Volume geographics do not match.')
+        self._volumes.add(volume)
+
+    @property
+    def bounding_box(self):
+        boxes = filter(lambda bb: bb is not None,
+                       (x.bounding_box for x in self._volumes))
+        if not boxes:
+            return None
+        return Box(
+            Position(
+                min(x.min_latitude for x in boxes),
+                min(x.min_longitude for x in boxes),
+                min(x.min_altitude for x in boxes)
+            ), Position(
+                max(x.max_latitude for x in boxes),
+                max(x.max_longitude for x in boxes),
+                max(x.max_altitude for x in boxes)
+            )
+        )
+
+    def flatten(self):
+        """Return a flattened CompositeVolume."""
+        todo = list(self._volumes)
+        flat = set()
+        for volume in todo:
+            if isinstance(volume, CompositeVolume):
+                todo.extend(volume._volumes)
+            else:
+                flat.add(volume)
+        return CompositeVolume(self.geographic, flat)
+
+
+class LayerCake(CompositeVolume):
     """Define a layer-cake volume.
 
     Airspace around major airports is often described as an "upside-down layered
@@ -96,48 +137,10 @@ class LayerCake(Volume):
     def __init__(self, geographic, center):
         super(LayerCake, self).__init__(geographic)
         self.center = center
-        self.rings = []
-
-    def __contains__(self, x):
-        return any(x in ring for ring in self.rings)
 
     def add_ring(self, radius, low, high):
-        self.rings.append(VerticalCylinder(self.geographic, self.center,
-                                           low, high, radius))
-
-    @property
-    def bounding_box(self):
-        return reduce(lambda x, y: x.bounding_box | y.bounding_box,
-                      self.rings, NullBox())
-
-
-class NullBox(Box):
-    """A box with no size nor position. Can be safely OR'd with other volumes.
-
-    OR'ing a NullBox with any other volume will return the bounding box of the
-    other volume.
-
-    A null box does not define any any attributes on purpose. It is meant as a
-    base condition for loops which take unions of volumes without needing an
-    explicit initial volume.
-
-    bounding_box and __contains__ raise AttributeError instead of returning a
-    default value to indicate that the user is meant to take the union of this
-    volume and something else first before performing other operations.
-    """
-    def __init__(self):
-        super(NullBox, self).__init__(
-            Position(None, None, None), Position(None, None, None))
-
-    def __contains__(self, other):
-        raise AttributeError('NullBox does not contain anything.')
-
-    def __or__(self, other):
-        return other.bounding_box
-
-    @property
-    def bounding_box(self):
-        raise AttributeError('NullBox does not define a bounding box.')
+        self.add_volume(
+            VerticalCylinder(self.geographic, self.center, low, high, radius))
 
 
 class VerticalCylinder(Volume):
@@ -190,36 +193,19 @@ class LayerKind(Enum):
     SUBTRACTIVE = False
 
 
-class Layer(Volume):
+class Layer(CompositeVolume):
     def __init__(self, name, kind, geographic=None):
         super(Layer, self).__init__(geographic)
         self.name = name
         self.kind = kind
-        self._volumes = []
-        """:type: list[Volume]"""
 
     def __contains__(self, other):
-        return any(other in volume for volume in self._volumes) \
-            if other in self.bounding_box else False
+        return other in self.bounding_box \
+               and super(Layer, self).__contains__(other)
 
     def __str__(self):
         return '{}\n'.format(self.name) + '\n'.join(
             '{}'.format(volume) for volume in indent(4, self._volumes))
-
-    def add_volume(self, volume):
-        if self.geographic:
-            if volume.geographic is not self.geographic:
-                warnings.warn('Volume geographics do not match.')
-        self._volumes.append(volume)
-
-    @property
-    def bounding_box(self):
-        if not len(self._volumes):
-            return None
-        box = self._volumes[0].bounding_box
-        for volume in self._volumes[1:]:
-            box |= volume
-        return box
 
 
 class Geofence(PylinerModule):
