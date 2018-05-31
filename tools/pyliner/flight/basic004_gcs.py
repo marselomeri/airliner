@@ -35,7 +35,7 @@ def range_limit(current, target):
 
 
 with pyliner.Pyliner(
-    airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
+    airliner_map=read_json("airliner.json"),
     address="192.168.1.2",
     ci_port=5009,
     to_port=5012,

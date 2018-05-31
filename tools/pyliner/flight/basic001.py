@@ -29,7 +29,7 @@ def critical_failure(vehicle, errors):
 
 
 with pyliner.Pyliner(
-    airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
+    airliner_map=read_json("airliner.json"),
     ci_port=5009,
     to_port=5012,
     script_name=basename(__file__),

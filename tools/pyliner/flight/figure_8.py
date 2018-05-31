@@ -24,6 +24,10 @@ from controller import FlightMode
 from navigation import constant, proportional, limiter
 from util import read_json
 
+FAST = 0.75
+SLOW = 0.50
+SLEEP = 0.1
+
 
 def range_limit(current, target):
     return limiter(0, 0.25)(proportional(0.1 / 50.0)(current, target))
@@ -38,7 +42,7 @@ def critical_failure(vehicle, errors):
 
 
 with pyliner.Pyliner(
-    airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
+    airliner_map=read_json('airliner.json'),
     ci_port=5009,
     to_port=5012,
     script_name=basename(__file__),
