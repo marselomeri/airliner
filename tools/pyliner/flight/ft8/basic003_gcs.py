@@ -56,12 +56,12 @@ with pyliner.Pyliner(
 
     rocky.cont.atp('First')
     for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
+        rocky.nav.forward(10, proportional(0.1))
         rocky.nav.clockwise(90, range_limit)
 
     rocky.cont.atp('Second')
     for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
+        rocky.nav.forward(10, proportional(0.1))
         rocky.nav.counterclockwise(90, range_limit)
 
     rocky.cont.atp('Third')
