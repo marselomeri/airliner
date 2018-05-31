@@ -1,10 +1,9 @@
 """
-Rotate the vehicle
+Flies up and down
 
 Requirements Fulfilled:
     PYLINER001
-    PYLINER003
-    PYLINER004
+    PYLINER002
     PYLINER010
     PYLINER011
     PYLINER012
@@ -14,11 +13,11 @@ Requirements Fulfilled:
 """
 
 from os.path import join, dirname, abspath, basename
+from time import sleep
 
 import pyliner
 from controller import FlightMode
-from navigation import proportional, limiter
-from time import sleep
+from navigation import proportional
 from util import read_json
 
 
@@ -28,12 +27,9 @@ def critical_failure(vehicle, errors):
     vehicle.cont.rtl()
 
 
-def range_limit(current, target):
-    return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
-
-
 with pyliner.Pyliner(
     airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
+    address="192.168.1.2",
     ci_port=5009,
     to_port=5012,
     script_name=basename(__file__),
@@ -53,25 +49,17 @@ with pyliner.Pyliner(
     rocky.cont.atp('Move Up')
     rocky.nav.up(10, proportional(0.2), tolerance=0.5)
 
-    rocky.cont.atp('First')
-    for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
+    rocky.cont.atp('Vertical Right')
+    rocky.nav.up(5, proportional(0.2))
+    rocky.nav.right(5, proportional(0.1))
+    rocky.nav.down(5, proportional(0.25))
+    rocky.nav.left(5, proportional(0.1))
 
-    rocky.cont.atp('Second')
-    for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
-
-    rocky.cont.atp('Third')
-    for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
-
-    rocky.cont.atp('Fourth')
-    for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
+    rocky.cont.atp('Vertical Left')
+    rocky.nav.up(5, proportional(0.2))
+    rocky.nav.left(5, proportional(0.1))
+    rocky.nav.down(5, proportional(0.25))
+    rocky.nav.right(5, proportional(0.1))
 
     rocky.cont.atp('Return')
     rocky.cont.rtl()

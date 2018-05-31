@@ -1,10 +1,13 @@
 """
-Rotate the vehicle
+Fly a heading and to a waypoint.
 
 Requirements Fulfilled:
     PYLINER001
+    PYLINER002
     PYLINER003
     PYLINER004
+    PYLINER005
+    PYLINER006
     PYLINER010
     PYLINER011
     PYLINER012
@@ -14,11 +17,10 @@ Requirements Fulfilled:
 """
 
 from os.path import join, dirname, abspath, basename
+from time import sleep
 
 import pyliner
-from controller import FlightMode
 from navigation import proportional, limiter
-from time import sleep
 from util import read_json
 
 
@@ -49,30 +51,16 @@ with pyliner.Pyliner(
     rocky.cont.arm()
     rocky.cont.atp('Takeoff')
     rocky.cont.takeoff()
-    rocky.cont.flight_mode(FlightMode.PosCtl)
+    # rocky.cont.flight_mode(FlightMode.PosCtl)
 
-    rocky.cont.atp('Move Up')
-    rocky.nav.up(10, proportional(0.2), tolerance=0.5)
+    rocky.cont.atp('Goto')
 
-    rocky.cont.atp('First')
-    for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
+    home = rocky.nav.position
+    new = rocky.geographic.pbd(home, 90, 20)
+    new.altitude = rocky.nav.altitude + 10
 
-    rocky.cont.atp('Second')
-    for _ in range(4):
-        rocky.nav.forward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
-
-    rocky.cont.atp('Third')
-    for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
-
-    rocky.cont.atp('Fourth')
-    for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
+    rocky.nav.goto(new)
+    rocky.nav.goto(rocky.geographic.pbd(new, 270, 40))
 
     rocky.cont.atp('Return')
     rocky.cont.rtl()

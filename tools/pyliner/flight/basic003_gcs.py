@@ -14,6 +14,7 @@ Requirements Fulfilled:
 """
 
 from os.path import join, dirname, abspath, basename
+from time import sleep
 
 import pyliner
 from controller import FlightMode
@@ -33,15 +34,20 @@ def range_limit(current, target):
 
 with pyliner.Pyliner(
     airliner_map=read_json(join(dirname(abspath(__file__)), "cookiecutter.json")),
+    address="192.168.1.2",
     ci_port=5009,
     to_port=5012,
     script_name=basename(__file__),
     log_dir=join(dirname(abspath(__file__)), "logs"),
     failure_callback=critical_failure
 ) as rocky:
-    # rocky.cont.atp('Arm')
+    while rocky.nav.altitude == "NULL":
+        sleep(1)
+        print "Waiting for telemetry downlink..."
+    
+    rocky.cont.atp('Arm')
     rocky.cont.arm()
-    # rocky.cont.atp('Takeoff')
+    rocky.cont.atp('Takeoff')
     rocky.cont.takeoff()
     rocky.cont.flight_mode(FlightMode.PosCtl)
 

@@ -1,8 +1,8 @@
 from os.path import join, dirname, abspath, basename
+from time import sleep
 
 import pyliner
 from geofence import Geofence, VerticalCylinder
-from time import sleep
 from util import read_json
 
 

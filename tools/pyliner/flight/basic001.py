@@ -1,9 +1,10 @@
 """
-Flies up and down
+Flies forward, backward, left, and right.
 
 Requirements Fulfilled:
     PYLINER001
     PYLINER002
+    PYLINER003
     PYLINER010
     PYLINER011
     PYLINER012
@@ -13,11 +14,11 @@ Requirements Fulfilled:
 """
 
 from os.path import join, dirname, abspath, basename
+from time import sleep
 
 import pyliner
 from controller import FlightMode
 from navigation import proportional
-from time import sleep
 from util import read_json
 
 
@@ -48,17 +49,29 @@ with pyliner.Pyliner(
     rocky.cont.atp('Move Up')
     rocky.nav.up(10, proportional(0.2), tolerance=0.5)
 
-    rocky.cont.atp('Vertical Right')
-    rocky.nav.up(5, proportional(0.2))
+    rocky.cont.atp('First')
+    rocky.nav.forward(5, proportional(0.1))
     rocky.nav.right(5, proportional(0.1))
-    rocky.nav.down(5, proportional(0.25))
+    rocky.nav.backward(5, proportional(0.1))
     rocky.nav.left(5, proportional(0.1))
 
-    rocky.cont.atp('Vertical Left')
-    rocky.nav.up(5, proportional(0.2))
+    rocky.cont.atp('Second')
+    rocky.nav.forward(5, proportional(0.1))
     rocky.nav.left(5, proportional(0.1))
-    rocky.nav.down(5, proportional(0.25))
+    rocky.nav.backward(5, proportional(0.1))
     rocky.nav.right(5, proportional(0.1))
+
+    rocky.cont.atp('Third')
+    rocky.nav.backward(5, proportional(0.1))
+    rocky.nav.left(5, proportional(0.1))
+    rocky.nav.forward(5, proportional(0.1))
+    rocky.nav.right(5, proportional(0.1))
+
+    rocky.cont.atp('Fourth')
+    rocky.nav.backward(5, proportional(0.1))
+    rocky.nav.right(5, proportional(0.1))
+    rocky.nav.forward(5, proportional(0.1))
+    rocky.nav.left(5, proportional(0.1))
 
     rocky.cont.atp('Return')
     rocky.cont.rtl()
