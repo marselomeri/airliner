@@ -15,6 +15,7 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
+import thread
 import threading
 from os.path import join, dirname, abspath, basename
 from time import sleep
@@ -53,62 +54,75 @@ with pyliner.Pyliner(
     while rocky.nav.altitude == "NULL":
         sleep(1)
         print "Waiting for telemetry downlink..."
-    
+
     rocky.ctrl.atp('Arm')
     rocky.ctrl.arm()
     rocky.ctrl.atp('Takeoff')
     rocky.ctrl.takeoff()
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
+    rocky.ctrl.atp('Move Up')
+    rocky.nav.vnav(by=10, method=constant(1.0))
     home = rocky.nav.position
 
-    rocky.ctrl.atp('Move Up')
-    rocky.nav.vnav(to=rocky.nav.altitude + 10, method=constant(1.0))
 
-    rocky.fd.x = 1.0
-    direction = -1
+    # Bearing to home
+    def home_bear():
+        return rocky.geographic.bearing(rocky.nav.position, home)
 
-    global running
+
+    def figure8():
+        def check():
+            if not running:
+                thread.exit()
+
+        direction = -1
+        while True:
+            rocky.fd.x = FAST
+            # Wait until past home
+            print('Approach')
+            old_dist = float('inf')
+            while True:
+                dist = rocky.geographic.distance(home, rocky.nav.position)
+                if dist > old_dist:
+                    break
+                old_dist = dist
+                sleep(SLEEP)
+                check()
+
+            # Wait until away from home
+            print('Retreat')
+            while rocky.geographic.distance(home, rocky.nav.position) < 7:
+                sleep(SLEEP)
+                check()
+
+            # Flip directions
+            rocky.fd.x = SLOW
+            direction *= -1
+
+            print('Rotate')
+            diff = float('inf')
+            while diff > 4:
+                bear = home_bear()
+                diff = rocky.nav.heading - bear
+                diff = diff % 360
+                diff = diff if diff < 180 else -(diff - 360)
+                rocky.fd.r = direction * abs(limiter(-0.25, 0.25)(diff / 100))
+                sleep(SLEEP)
+                check()
+
+            # Stop rotating
+            rocky.fd.r = 0.0
+
+
+    fig = threading.Thread(target=figure8)
     running = True
-
-    def stop():
+    try:
+        fig.start()
         raw_input('Press enter to stop\n')
-        global running
-        running = False
+    except KeyboardInterrupt:
+        pass
+    running = False
 
-    threading.Thread(target=stop).start()
-
-    while running:
-        # Wait until close to home
-        print('Approach')
-        while rocky.geographic.distance(home, rocky.nav.position) > 7:
-            sleep(0.1)
-
-        # Wait until away from home
-        print('Retreat')
-        while rocky.geographic.distance(home, rocky.nav.position) < 7:
-            sleep(0.1)
-
-        print('Rotate')
-        # Flip directions
-        rocky.fd.x = 5.0 / 8.0
-        direction *= -1
-
-        # Face home
-        def home_bear():
-            return rocky.geographic.bearing(rocky.nav.position, home)
-
-        diff = float('inf')
-        while diff > 2:
-            bear = home_bear()
-            diff = rocky.nav.heading - bear
-            diff = diff % 360  # if diff > 0 else -(diff % 360)
-            diff = diff if diff < 180 else -(diff - 360)
-            rocky.fd.r = abs(limiter(-0.25, 0.25)(diff / 150)) * direction
-            sleep(1.0 / 16)
-
-        # Stop rotating
-        rocky.fd.x = 0.75
-        rocky.fd.r = 0.0
-
+    fig.join()
     rocky.ctrl.rtl()
