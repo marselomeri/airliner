@@ -34,7 +34,7 @@ def critical_failure(vehicle, errors):
     print('Error in execution. Returning to Launch')
     global running
     running = False
-    vehicle.cont.rtl()
+    vehicle.ctrl.rtl()
 
 
 with pyliner.Pyliner(
@@ -49,15 +49,15 @@ with pyliner.Pyliner(
         sleep(1)
         print "Waiting for telemetry downlink..."
     
-    rocky.cont.atp('Arm')
-    rocky.cont.arm()
-    rocky.cont.atp('Takeoff')
-    rocky.cont.takeoff()
-    rocky.cont.flight_mode(FlightMode.PosCtl)
+    rocky.ctrl.atp('Arm')
+    rocky.ctrl.arm()
+    rocky.ctrl.atp('Takeoff')
+    rocky.ctrl.takeoff()
+    rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     home = rocky.nav.position
 
-    rocky.cont.atp('Move Up')
+    rocky.ctrl.atp('Move Up')
     rocky.nav.vnav(to=rocky.nav.altitude + 10, method=constant(1.0))
 
     rocky.fd.x = 1.0
@@ -106,4 +106,4 @@ with pyliner.Pyliner(
         rocky.fd.x = 0.75
         rocky.fd.r = 0.0
 
-    rocky.cont.rtl()
+    rocky.ctrl.rtl()

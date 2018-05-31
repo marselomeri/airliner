@@ -9,7 +9,7 @@ from util import read_json
 def critical_failure(vehicle, errors):
     print(errors)
     print('Error in execution. Returning to Launch')
-    vehicle.cont.rtl()
+    vehicle.ctrl.rtl()
 
 
 with pyliner.Pyliner(
@@ -24,13 +24,13 @@ with pyliner.Pyliner(
         sleep(1)
         print "Waiting for telemetry downlink..."
     
-    rocky.cont.atp('Arm')
-    rocky.cont.arm()
-    rocky.cont.atp('Takeoff')
-    rocky.cont.takeoff()
-    # rocky.cont.flight_mode(FlightMode.PosCtl)
+    rocky.ctrl.atp('Arm')
+    rocky.ctrl.arm()
+    rocky.ctrl.atp('Takeoff')
+    rocky.ctrl.takeoff()
+    # rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
-    rocky.cont.atp('Enable Fence')
+    rocky.ctrl.atp('Enable Fence')
     fence = rocky.fence  # type: Geofence
     base = fence.layers[0]
     base.add(VerticalCylinder(
@@ -38,7 +38,7 @@ with pyliner.Pyliner(
         low_altitude=rocky.nav.altitude - 10, high_altitude=rocky.nav.altitude + 100, radius=20))
     fence.enabled = True
 
-    rocky.cont.atp('Start mission')
+    rocky.ctrl.atp('Start mission')
     home = rocky.nav.position
     new = rocky.geographic.pbd(home, 90, 15)
     new.altitude = rocky.nav.altitude + 10
@@ -47,5 +47,5 @@ with pyliner.Pyliner(
     new = rocky.geographic.pbd(new, 0, 20)
     rocky.nav.goto(new)
 
-    rocky.cont.atp('Return (if you got here the fence failed)')
-    rocky.cont.rtl()
+    rocky.ctrl.atp('Return (if you got here the fence failed)')
+    rocky.ctrl.rtl()

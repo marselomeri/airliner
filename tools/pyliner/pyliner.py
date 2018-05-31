@@ -67,7 +67,7 @@ class Pyliner(BasePyliner):
 
         # Default modules
         self.enable_app(0, 'fence', Geofence())
-        self.enable_app(1, 'cont', Controller())
+        self.enable_app(1, 'ctrl', Controller())
         self.enable_app(2, 'fd', FlightDirector())
         self.enable_app(3, 'nav', Navigation(self.geographic))
 
