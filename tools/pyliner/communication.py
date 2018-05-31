@@ -40,7 +40,8 @@ class Communication(PylinerApp):
         self.subscribers = []
         self.to_port = to_port
         # self.to_socket = init_socket()
-        self.periodic_send = None
+        self._periodic_send = None
+        # self.send_obs = Some sort of observable
 
         # Receive Telemetry
         self.tlm_listener = socketserver.UDPServer(
@@ -62,13 +63,12 @@ class Communication(PylinerApp):
                                  .format(telemetry.to_json()))
                 self.ci_socket.sendto(msg, (self.address, self.ci_port))
 
-
-        self.periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME)
-        self.periodic_send.start()
+        self._periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME)
+        self._periodic_send.start()
 
     def detach(self):
         super(Communication, self).detach()
-        self.periodic_send.stop()
+        self._periodic_send.stop()
 
     def _get_airliner_op(self, op_path):
         """
