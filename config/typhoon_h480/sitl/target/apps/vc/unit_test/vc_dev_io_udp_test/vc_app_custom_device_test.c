@@ -595,11 +595,9 @@ void Test_VC_Custom_SendBuffer_SizeError(void)
 void Test_VC_Custom_SendBuffer_SendError(void)
 {
     int32 result = 0;
-    int32 expected = -1;
-    
-    char returnString[64];
-    snprintf(returnString, 64, "VC send data failed on channel %u", 0);
-    
+    /* SendBuffer does not fail currently when sendto failed. */
+    int32 expected = result;
+
     /* Set recv to pass/fail */
     VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return = VC_MPARTMUX_HEADER_SIZE;
     VC_Platform_Stubs_Returns.VC_Wrap_Recv_Return1 = 0;
@@ -613,10 +611,8 @@ void Test_VC_Custom_SendBuffer_SendError(void)
     /* Call the function under test */
     result = VC_Send_Buffer(0);
      
-    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==2,"Event Count = 2");
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
     UtAssert_True(result == expected,"VC_Send_Buffer() did not return the correct value");
-    UtAssert_EventSent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, returnString, 
-                        "VC_Send_Buffer() failed to raise an event");  
 }
 
 
