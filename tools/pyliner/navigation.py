@@ -6,9 +6,9 @@ from numbers import Real
 
 from future.moves import itertools
 
+from app import App
 from geographic import GeographicBase
 from position import Position
-from pyliner_app import PylinerApp
 from telemetry import SetpointTriplet
 from util import shifter
 
@@ -49,7 +49,7 @@ class Waypoint(Position):
                             else self.heading - 360)
 
 
-class Navigation(PylinerApp):
+class Navigation(App):
     """Navigation module. Contains all navigation features.
 
     Note:
@@ -78,7 +78,7 @@ class Navigation(PylinerApp):
     @property
     def altitude(self):
         """meters"""
-        return PylinerApp._telem(self.req_telem['altitude'])(self)
+        return App._telem(self.req_telem['altitude'])(self)
 
     @property
     def heading(self):
@@ -89,12 +89,12 @@ class Navigation(PylinerApp):
     @property
     def latitude(self):
         """Degrees"""
-        return PylinerApp._telem(self.req_telem['latitude'])(self)
+        return App._telem(self.req_telem['latitude'])(self)
 
     @property
     def longitude(self):
         """Degrees"""
-        return PylinerApp._telem(self.req_telem['longitude'])(self)
+        return App._telem(self.req_telem['longitude'])(self)
 
     @property
     def position(self):
@@ -105,7 +105,7 @@ class Navigation(PylinerApp):
     @property
     def yaw(self):
         """The vehicle yaw in clockwise radians from north."""
-        return math.degrees(PylinerApp._telem(self.req_telem['yaw'])(self))
+        return math.degrees(App._telem(self.req_telem['yaw'])(self))
 
     def backward(self, distance, method, tolerance=1):
         """Move backward by a distance. See lnav for full documentation."""

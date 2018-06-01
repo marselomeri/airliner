@@ -3,7 +3,7 @@ from code import interact
 
 from flufl.enum import Enum
 
-from pyliner_app import PylinerApp
+from app import App
 from pyliner_exceptions import UnauthorizedAtpError
 from telemetry import ManualSetpoint
 from util import query_yes_no, LogLevel
@@ -18,7 +18,7 @@ class FlightMode(Enum):
     RTL = 4
 
 
-class Controller(PylinerApp):
+class Controller(App):
     def __init__(self):
         super(Controller, self).__init__()
         self.atp_override = None

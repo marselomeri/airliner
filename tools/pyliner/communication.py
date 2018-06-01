@@ -3,8 +3,8 @@ import threading
 import socketserver
 
 import pyliner_exceptions
+from app import App
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
-from pyliner_app import PylinerApp
 from python_pb import pyliner_msgs
 from util import init_socket, PeriodicExecutor, handler_factory, \
     LogLevel, serialize
@@ -12,7 +12,7 @@ from util import init_socket, PeriodicExecutor, handler_factory, \
 SEND_TIME = 0.1
 
 
-class Communication(PylinerApp):
+class Communication(App):
     """Provide reactive methods to send and receive telemetry to a vehicle.
 
     Exposes telemetry through RxPY Reactive Extensions. Exposes a single

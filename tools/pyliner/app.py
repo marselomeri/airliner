@@ -2,7 +2,7 @@ from abc import abstractmethod
 from collections import Iterable
 
 
-class PylinerApp(object):
+class App(object):
     def __init__(self):
         self._vehicle = None
         """:type: BasePyliner"""

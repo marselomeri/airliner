@@ -2,6 +2,7 @@
 
 import time
 
+from app import App
 from base_pyliner import BasePyliner
 from communication import Communication
 from controller import Controller
@@ -9,7 +10,6 @@ from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
 from geographic import Geographic
 from navigation import Navigation
-from pyliner_app import PylinerApp
 from telemetry import ManualSetpoint
 
 __version__ = 0.1
@@ -105,7 +105,7 @@ class Pyliner(BasePyliner):
 
         Args:
             name (str): The name that the module will be initialized under.
-            app (PylinerApp): The module to enable.
+            app (App): The app to enable.
         """
         super(Pyliner, self).enable_app(priority, name, app)
         required_ops = app.required_telemetry_paths()

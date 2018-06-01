@@ -65,11 +65,9 @@ with pyliner.Pyliner(
     rocky.nav.vnav(by=10, method=constant(1.0))
     home = rocky.nav.position
 
-
     # Bearing to home
     def home_bear():
         return rocky.geographic.bearing(rocky.nav.position, home)
-
 
     def figure8():
         def check():

@@ -10,8 +10,8 @@ from builtins import isinstance
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
 
+from app import App
 from communication import Communication
-from pyliner_app import PylinerApp
 from telemetry import Telemetry
 from util import LogLevel
 
@@ -121,8 +121,8 @@ class BasePyliner(object):
             raise ValueError('Attempting to enable a module with an illegal '
                              'name. Module names must be valid Python '
                              'identifiers.')
-        elif not isinstance(app, PylinerApp):
-            return TypeError('module must implement PylinerApp.')
+        elif not isinstance(app, App):
+            return TypeError('module must implement App.')
         app.attach(self)
         self._apps[name] = app
         self._com_priority[priority] = app
@@ -132,7 +132,7 @@ class BasePyliner(object):
         """Return telemetry to send, or None."""
         # Iterate through every app in priority order to see if any have
         # telemetry to send.
-        for app in self._com_priority.values():  # type: PylinerApp
+        for app in self._com_priority.values():  # type: App
             if app.telemetry_available:
                 return app.telemetry
         return None

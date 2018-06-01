@@ -1,8 +1,8 @@
 """
 Container module for the basic 2 and 3-dimensional coordinate classes.
 
-Airspace is inherently 3-dimensional, favor Position over Coordinate whenever
-feasible.
+Airspace is inherently 3-dimensional, favor Position over Coordinate where
+appropriate.
 """
 import math
 
