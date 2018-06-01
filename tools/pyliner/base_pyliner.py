@@ -1,10 +1,7 @@
-import logging
 import re
 from abc import abstractmethod, ABCMeta
 from datetime import datetime
-from genericpath import exists
-from os import mkdir
-from os.path import join, dirname, realpath
+from os.path import join
 
 from builtins import isinstance
 from junit_xml import TestCase, TestSuite
@@ -12,8 +9,21 @@ from sortedcontainers import SortedDict
 
 from app import App
 from communication import Communication
+from logging_service import LoggingService
+from service import ServiceWrapper
 from telemetry import Telemetry
-from util import LogLevel
+
+
+class ScriptingWrapper:
+    def __init__(self, vehicle):
+        self._vehicle = vehicle
+
+    def __getattr__(self, item):
+        apps = self._vehicle.apps
+        if item in apps:
+            return apps[item]
+        raise AttributeError('{} is not a method or module of this '
+                             'Pyliner instance.'.format(item))
 
 
 class BasePyliner(object):
@@ -34,80 +44,39 @@ class BasePyliner(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, communications, script_name=None, log_dir=None):
+    def __init__(self, communications, logging):
         """Constructor for BasePyliner.
 
         Args:
             communications (Communication): Communications PylinerModule.
                 Not exposed as a public module for direct access, but the user
                 is given the option to use a custom class if they desire.
-            script_name (str): Accessor of Pyliner. Used in generating the log
-                file name.
-            log_dir (str): Directory of logging. If None defaults to "logs"
-                directory under Pyliner.
+            logging (LoggingService):
         """
-        if log_dir is None:
-            log_dir = join(dirname(realpath(__file__)), "logs")
-        print('Logging to {}'.format(log_dir))
-
         self._apps = {}
-        """:type: dict[str, PylinerModule]"""
+        self._services = set()
         self._communications = communications
-        """:type: Communication"""
         self._com_priority = SortedDict()
-        """:type: SortedDict[Real, PylinerModule]"""
 
         # Only uses log method. May eventually remove when logging is unified.
         self._communications.attach(self)
-
-        # Logging
-        self.start_time = datetime.now()
-        self.fails = 0
-        self.script_name = script_name
-        self.log_name = self.start_time.strftime("%Y-%m-%d_%I:%M:%S") + \
-            "_pyliner_" + self.script_name + ".log"
-        self.test_description = []
-        self.passes = 0
-        self.log_dir = log_dir
-        self.duration = 0
-        self._setup_log()
+        self.attach_service('logging', logging)
+        logging.start()
 
     def __enter__(self):
-        return self
+        return ScriptingWrapper(self)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # If the context manager exits without error, all good. Otherwise...
         if exc_type:
             self.critical_failure(exc_type, exc_val, exc_tb)
 
-    def __getattr__(self, item):
-        if item in self._apps:
-            return self._apps[item]
-        raise AttributeError('{} is not a method or module of this '
-                             'Pyliner instance.'.format(item))
+    @property
+    def apps(self):
+        """Mapping of enabled modules."""
+        return self._apps.copy()
 
-    @abstractmethod
-    def critical_failure(self, exc_type, exc_val, exc_tb):
-        raise NotImplementedError()
-
-    def disable_app(self, name):
-        """Disable an app by removing it from the vehicle.
-
-        Note:
-            Any apps that attempt to call the disabled app by name will
-            produce an error.
-        """
-        if name not in self._apps:
-            raise AttributeError('Cannot disable a module that was never '
-                                 'enabled.')
-        module = self._apps[name]
-        del self._apps[name]
-        module.detach()
-        for priority, pri_module in self._com_priority.items():
-            if module is pri_module:
-                self._com_priority.pop(priority)
-
-    def enable_app(self, priority, name, app):
+    def attach_app(self, priority, name, app):
         """Enable a PylinerApp on this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
 
@@ -126,6 +95,32 @@ class BasePyliner(object):
         app.attach(self)
         self._apps[name] = app
         self._com_priority[priority] = app
+
+    def attach_service(self, service_name, service):
+        sw = ServiceWrapper(self, service_name, service)
+        self._services.add(sw)
+        service.attach(sw)
+
+    @abstractmethod
+    def critical_failure(self, exc_type, exc_val, exc_tb):
+        raise NotImplementedError()
+
+    def detach_app(self, name):
+        """Disable an app by removing it from the vehicle.
+
+        Note:
+            Any apps that attempt to call the disabled app by name will
+            produce an error.
+        """
+        if name not in self._apps:
+            raise AttributeError('Cannot disable a module that was never '
+                                 'enabled.')
+        module = self._apps[name]
+        del self._apps[name]
+        module.detach()
+        for priority, pri_module in self._com_priority.items():
+            if module is pri_module:
+                self._com_priority.pop(priority)
 
     def telemetry(self):
         # type: () -> Telemetry
@@ -149,21 +144,6 @@ class BasePyliner(object):
             logging.error(text)
         else:
             logging.debug("Specified log mode unsupported")
-
-    @property
-    def apps(self):
-        """Mapping of enabled modules."""
-        return self._apps.copy()
-
-    def _setup_log(self):
-        """ Setup log for Pyliner """
-        if not exists(self.log_dir):
-            mkdir(self.log_dir)
-
-        logging.basicConfig(format='%(asctime)s\t%(levelname)s: %(message)s',
-                            datefmt='%m/%d/%Y %I:%M:%S %p',
-                            filename=join(self.log_dir, self.log_name),
-                            level=logging.DEBUG)
 
     # Testing Code. TODO Figure out where to put this
     def assert_equals(self, a, b, description):

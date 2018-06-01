@@ -1,4 +1,5 @@
 import json
+import logging
 import socket
 import sys
 import threading
@@ -11,11 +12,30 @@ import socketserver
 from flufl.enum import Enum
 
 
-class LogLevel(Enum):
-    Debug = 1
-    Info = 2
-    Warn = 3
-    Error = 4
+class EventType(Enum):
+    CONSOLE_OUT = 'CONSOLE_OUT'
+    CONSOLE_IN = 'CONSOLE_IN'
+    LOG = 'LOG'
+
+
+class Event(object):
+    def __init__(self, type):
+        self.type = type
+
+
+class Log(object):
+    """Reflects Android's util.Log class"""
+    def __init__(self, log_file, level):
+        self.fails = 0
+        self.passes = 0
+        self.duration = 0
+        self.test_description = []
+
+        self.log_file = log_file
+        logging.basicConfig(format='%(asctime)s\t%(levelname)s: %(message)s',
+                            datefmt='%m/%d/%Y %I:%M:%S %p',
+                            filename=log_file,
+                            level=level)
 
 
 class PeriodicExecutor(threading.Thread):
@@ -27,19 +47,19 @@ class PeriodicExecutor(threading.Thread):
     def __init__(self, callback, every=1, exception=None, finalize=None):
         """
         Args:
-            callback (_abcoll.Callable): This method will be called every loop
+            callback (Callable): This method will be called every loop
                 with no arguments.
             every (Real): Number of seconds to sleep between calls.
-            exception (_abcoll.Callable): If an exception is raised this will
+            exception (Callable): If an exception is raised this will
                 be called with the exception as an argument.
-            finalize (_abcoll.Callable): This method will be called sometime
+            finalize (Callable): This method will be called sometime
                 after the thread is stopped with no arguments.
         """
         super(PeriodicExecutor, self).__init__()
         self.daemon = True
 
         self.callback = callback
-        # TODO if move to Python 3, use a default print handler.
+        # TODO if move to Python 3, use lambda x: print(x)
         self.exception = exception
         self.every = every
         self.finalize = finalize

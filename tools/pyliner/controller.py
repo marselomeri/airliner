@@ -53,6 +53,12 @@ class Controller(App):
         if not atp_auth:
             raise UnauthorizedAtpError
 
+    def disarm(self):
+        print("%s: Disarming vehicle" % self.vehicle.script_name)
+        self.vehicle.log("Disarming vehicle")
+        self._telemetry = ManualSetpoint(ArmSwitch=3)
+        self._wait_clean()
+
     def flight_mode(self, mode):
         if not mode:
             self.vehicle.log("Mode transition requires a passed mode.",
@@ -69,6 +75,7 @@ class Controller(App):
         print("%s: Position control" % self.vehicle.script_name)
         self.vehicle.log("Position control")
         self._telemetry = ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1)
+        self._wait_clean()
 
     @classmethod
     def required_telemetry_paths(cls):
@@ -86,6 +93,7 @@ class Controller(App):
         print("%s: Auto takeoff" % self.vehicle.script_name)
         self.vehicle.log("Auto takeoff")
         self._telemetry = ManualSetpoint(TransitionSwitch=1, ArmSwitch=1)
+        self._wait_clean()
         time.sleep(5)
 
     @property

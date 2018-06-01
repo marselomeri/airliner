@@ -6,10 +6,11 @@ import pyliner_exceptions
 from app import App
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from python_pb import pyliner_msgs
-from util import init_socket, PeriodicExecutor, handler_factory, \
-    LogLevel, serialize
+from util import init_socket, PeriodicExecutor, handler_factory, serialize
 
 SEND_TIME = 0.1
+DEFAULT_CI_PORT = 5008
+DEFAULT_TO_PORT = 5011
 
 
 class Communication(App):
@@ -20,7 +21,7 @@ class Communication(App):
     from the vehicle.
     """
 
-    def __init__(self, airliner_map, address, ci_port, to_port):
+    def __init__(self, airliner_map, address='localhost', ci_port=DEFAULT_CI_PORT, to_port=DEFAULT_TO_PORT):
         """
         Args:
             airliner_map (dict): Airliner Mapping, typically read from a JSON.
