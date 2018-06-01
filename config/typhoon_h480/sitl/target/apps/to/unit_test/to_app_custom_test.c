@@ -399,12 +399,49 @@ void TO_OutputChannel_ChannelHandle_QueueGetFail(void)
 
 
 /**
+ * Test TO_OutputChannel_ChannelHandler() fail sendto
+ */
+void TO_OutputChannel_ChannelHandle_SendToFail(void)
+{
+    uint8 ChannelID = 0;
+
+    /* Set return code for get total message length */
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETTOTALMSGLENGTH_INDEX, 1, 1);
+
+    /* Set test channel to enabled */
+    TO_AppCustomData.Channel[ChannelID].Mode = TO_CHANNEL_ENABLED;
+    
+    /* Set sendto call to fail */
+    TO_Platform_Stubs_Returns.TO_Wrap_SendTo_Return = -1;
+    
+    /* Set all status returns after the first call to disabled 
+     * NOTE: calls to TO_Channel_State sets the channel mode to
+     * TO_CHANNEL_DISABLED disabled after the first call
+     */
+    TO_App_Return.TO_Channel_State_Return = TO_CHANNEL_OPENED;
+    TO_App_Return.TO_Channel_State_Return1 = TO_CHANNEL_CLOSED;
+
+    /* Call the function under test */
+    TO_OutputChannel_ChannelHandler(ChannelID);
+    
+    /* Verify results */
+    /* Events sendto error */
+    UtAssert_True(Ut_CFE_EVS_GetEventQueueDepth()==1,"Event Count = 1");
+    UtAssert_EventSent(TO_TLMOUTSTOP_ERR_EID, CFE_EVS_ERROR, "", 
+            "TO_OutputChannel_Send() failed to raise an event");
+}
+
+
+/**
  * Test TO_OutputChannel_ChannelHandler() fail CFE_ES_PutPoolBuf()
  */
 void TO_OutputChannel_ChannelHandle_PutPoolBufFail(void)
 {
     uint8 ChannelID = 0;
-    
+
+    /* Set return code for get total message length */
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETTOTALMSGLENGTH_INDEX, 0, 1);
+
     /* Set CFE_ES_PutPoolBuf to fail */
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_PUTPOOLBUF_INDEX, -1, 1);
     
