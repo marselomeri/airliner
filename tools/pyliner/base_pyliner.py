@@ -17,15 +17,8 @@ from telemetry import Telemetry
 class BasePyliner(object):
     """
     Contains the bare-minimum required for Pyliner. All additional functionality
-    is provided through the Pyliner class.
-
-    Implements context manager (with-statement) functionality. Unhandled
-    exceptions in the context manager are passed to `critical_failure` to give
-    the user a chance to fail gracefully before exiting the context manager.
-
-    Module management is performed via the `enable_module` and `disable_module`
-    methods. Modules are given a name which must be a valid Python identifier.
-    The module is then accessible directly by that name (pyliner.module).
+    is provided through the Pyliner class. App management is performed via the
+    app-lifecycle methods.
 
     By way of the communications instance given in the constructor, telemetry
     from the vehicle is exposed via the TODO methods.

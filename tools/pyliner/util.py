@@ -204,6 +204,13 @@ class ScriptingWrapper:
     def __init__(self, vehicle, failure_callback=None):
         """Wraps a vehicle for a scripting environment.
 
+        Implements context manager (with-statement) functionality. Unhandled
+        exceptions in the context manager are passed to `critical_failure` to
+        give the user a chance to fail gracefully before exiting the context
+        manager.
+
+        Apps on the vehicle are accessible by their name (pyliner.app).
+
         Args:
             vehicle (BasePyliner): The vehicle to wrap.
             failure_callback (Callable[[Pyliner, Tuple], None]): Function

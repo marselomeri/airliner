@@ -35,8 +35,8 @@ class Pyliner(BasePyliner):
             communication: Communications App
             logging: Logging App
         """
-        super(Pyliner, self).__init__(communications=communication,
-                                      logging=logging)
+        super(Pyliner, self).__init__(
+            communications=communication, logging=logging)
 
         self.atp_override = None
         self.geographic = Geographic()

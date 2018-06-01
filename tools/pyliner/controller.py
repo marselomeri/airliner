@@ -1,5 +1,4 @@
 import time
-from code import interact
 
 from flufl.enum import Enum
 
@@ -33,25 +32,32 @@ class Controller(App):
         self._telemetry = ManualSetpoint(ArmSwitch=1)
         self._wait_clean()
 
-    def atp(self, text):
+    def atp(self, text, error=True):
         """Collect authorization to proceed (ATP) from the user."""
-        atp_auth = self.atp_override() if callable(self.atp_override) else \
-            self.atp_override if self.atp_override is not None else \
-                query_yes_no("{} requires authorization for: {}".format(
-                    self.vehicle.script_name, text), takeover={'takeover'})
-        self.vehicle.log("{} ATP: {} Auth: {}".format(
-            self.vehicle.script_name, text, atp_auth))
-        if atp_auth == 'takeover':
-            try:
-                interact(
-                    banner='Entering ATP local override mode.\nAccess vehicle '
-                           'using "self". ex. self.nav.position\nExit '
-                           'interactive mode via Ctrl+D.', local=locals())
-            except SystemExit:
-                pass
-            self.atp(text)
-        if not atp_auth:
-            raise UnauthorizedAtpError
+        atp_auth = None
+        while atp_auth is None:
+            if callable(self.atp_override):
+                atp_auth = self.atp_override()
+            elif self.atp_override is not None:
+                atp_auth = self.atp_override
+            else:
+                atp_auth = query_yes_no(
+                    "{} requires authorization for: {}".format(
+                        self.vehicle.script_name, text))
+            self.vehicle.log("{} ATP: {} Auth: {}".format(
+                self.vehicle.script_name, text, atp_auth))
+            # if atp_auth == 'takeover':
+            #     try:
+            #         code.interact(
+            #             banner='Entering ATP local override mode.\nAccess vehicle '
+            #                    'using "self". ex. self.nav.position\nExit '
+            #                    'interactive mode via Ctrl+D.', local=locals())
+            #     except SystemExit:
+            #         pass
+            #     atp_auth = None
+            if error and atp_auth is False:
+                raise UnauthorizedAtpError
+            return atp_auth
 
     def disarm(self):
         print("%s: Disarming vehicle" % self.vehicle.script_name)
