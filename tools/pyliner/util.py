@@ -198,3 +198,32 @@ def serialize(header, payload):
     if payload:
         ser += payload.SerializeToString()
     return ser
+
+
+class ScriptingWrapper:
+    def __init__(self, vehicle, failure_callback=None):
+        """Wraps a vehicle for a scripting environment.
+
+        Args:
+            vehicle (BasePyliner): The vehicle to wrap.
+            failure_callback (Callable[[Pyliner, Tuple], None]): Function
+                handle that will be invoked on an unhandled exception of the
+                controlling script.
+        """
+        self._vehicle = vehicle
+        self.failure_callback = failure_callback
+
+    def __getattr__(self, item):
+        apps = self._vehicle.apps
+        if item in apps:
+            return apps[item]
+        raise AttributeError('{} is not a method or module of this '
+                             'Pyliner instance.'.format(item))
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # If the context manager exits without error, all good. Otherwise...
+        if exc_type and callable(self.failure_callback):
+                self.failure_callback(self, (exc_type, exc_val, exc_tb))

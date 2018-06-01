@@ -16,7 +16,7 @@ __version__ = '0.1'
 class Pyliner(BasePyliner):
     """Represents a vehicle that the user may control.
 
-    The basic modules that a vehicle presents are:
+    The basic apps that a vehicle presents are:
         com (Communication): Provides methods to communicate with the physical
             vehicle in the air.
         fd (FlightDirector): Provides methods for controlling the raw x, y, z,
@@ -24,26 +24,21 @@ class Pyliner(BasePyliner):
         nav (Navigation): Provides methods for controlling the direction and
             speed of the vehicle.
 
-    The user is free to replace the defaults of these modules in the constructor
-    but it is highly recommended that replacements implement or subclass the
-    default modules.
+    The user is free to replace the defaults of these apps in the constructor
+    but it is highly recommended that replacements subclass the default apps.
     """
 
-    def __init__(self, communication, logging, failure_callback=None):
+    def __init__(self, communication, logging):
         """Create an instance of Pyliner.
 
         Args:
             communication: Communications App
             logging: Logging App
-            failure_callback (Callable[[Pyliner, Tuple], None]): Function
-                handle that will be invoked on a failure of the controlling
-                script.
         """
         super(Pyliner, self).__init__(communications=communication,
                                       logging=logging)
 
         self.atp_override = None
-        self.failure_callback = failure_callback
         self.geographic = Geographic()
 
         # Default modules
@@ -70,16 +65,13 @@ class Pyliner(BasePyliner):
             time.sleep(poll)
         return self.tlm_value(tlm)
 
-    def critical_failure(self, exc_type, exc_val, exc_tb):
-        if self.failure_callback is not None:
-            self.failure_callback(self, (exc_type, exc_val, exc_tb))
-
     def attach_app(self, priority, name, app):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
         new module will be subscribed to.
 
         Args:
+            priority: The priority that the app communicates with the vehicle.
             name (str): The name that the module will be initialized under.
             app (App): The app to enable.
         """

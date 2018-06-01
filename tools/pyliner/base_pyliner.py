@@ -1,5 +1,5 @@
 import re
-from abc import abstractmethod, ABCMeta
+from abc import ABCMeta
 from datetime import datetime
 from os.path import join
 
@@ -12,18 +12,6 @@ from communication import Communication
 from logging_service import LoggingService
 from service import ServiceWrapper
 from telemetry import Telemetry
-
-
-class ScriptingWrapper:
-    def __init__(self, vehicle):
-        self._vehicle = vehicle
-
-    def __getattr__(self, item):
-        apps = self._vehicle.apps
-        if item in apps:
-            return apps[item]
-        raise AttributeError('{} is not a method or module of this '
-                             'Pyliner instance.'.format(item))
 
 
 class BasePyliner(object):
@@ -63,14 +51,6 @@ class BasePyliner(object):
         self.attach_service('logging', logging)
         logging.start()
 
-    def __enter__(self):
-        return ScriptingWrapper(self)
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        # If the context manager exits without error, all good. Otherwise...
-        if exc_type:
-            self.critical_failure(exc_type, exc_val, exc_tb)
-
     @property
     def apps(self):
         """Mapping of enabled modules."""
@@ -100,10 +80,6 @@ class BasePyliner(object):
         sw = ServiceWrapper(self, service_name, service)
         self._services.add(sw)
         service.attach(sw)
-
-    @abstractmethod
-    def critical_failure(self, exc_type, exc_val, exc_tb):
-        raise NotImplementedError()
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.

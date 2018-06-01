@@ -21,7 +21,7 @@ from communication import Communication
 from controller import FlightMode
 from logging_service import LoggingService
 from navigation import proportional
-from util import read_json
+from util import read_json, ScriptingWrapper
 
 
 def critical_failure(vehicle, errors):
@@ -30,14 +30,15 @@ def critical_failure(vehicle, errors):
     vehicle.ctrl.rtl()
 
 
-with pyliner.Pyliner(
+rky = pyliner.Pyliner(
     communication=Communication(
         airliner_map=read_json("airliner.json"),
         ci_port=5009,
         to_port=5012),
-    logging=LoggingService(basename(__file__)),
-    failure_callback=critical_failure
-) as rocky:
+    logging=LoggingService(basename(__file__), 'logs'),
+)
+
+with ScriptingWrapper(rky, critical_failure) as rocky:
     while rocky.nav.altitude == "NULL":
         sleep(1)
         print "Waiting for telemetry downlink..."
