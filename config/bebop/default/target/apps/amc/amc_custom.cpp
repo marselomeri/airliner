@@ -491,11 +491,11 @@ boolean AMC_Set_ESC_Speeds(const float speeds[4])
     memset(&data, 0, sizeof(data));
 
     // Correct endians and scale to MIN-MAX rpm
-    // Adjust order of BLDCs from PX4 to Bebop here?
-    data.rpm_front_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[0]));
-    data.rpm_front_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[1]));
-    data.rpm_back_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[2]));
-    data.rpm_back_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[3]));
+    // Adjust order of BLDCs from PX4 to Bebop
+    data.rpm_front_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[2]));
+    data.rpm_front_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[0]));
+    data.rpm_back_right = AMC_Swap16(AMC_Scale_To_RPM(speeds[3]));
+    data.rpm_back_left = AMC_Swap16(AMC_Scale_To_RPM(speeds[1]));
 
     AMC_AppCustomData.SpeedSetpoint[0] = AMC_Swap16(data.rpm_front_right);
     AMC_AppCustomData.SpeedSetpoint[1] = AMC_Swap16(data.rpm_front_left);
