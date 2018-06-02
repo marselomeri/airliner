@@ -49,7 +49,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 		1100.0f,
 		1100.0f,
 		1100.0f,
-		1000.0f,
+		1100.0f,
 		1100.0f,
 		1100.0f,
 		1100.0f,
