@@ -1,7 +1,6 @@
 from collections import Iterable
 
 from enum import Enum
-from typing import Optional
 
 from vehicle_access import VehicleAccess
 

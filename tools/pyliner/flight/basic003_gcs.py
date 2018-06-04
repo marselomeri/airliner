@@ -12,7 +12,6 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-
 from os.path import basename
 from time import sleep
 
@@ -21,12 +20,6 @@ from communication import Communication
 from controller import FlightMode
 from navigation import proportional, limiter
 from util import read_json, enable_logging, ScriptingWrapper
-
-
-def critical_failure(vehicle, errors):
-    print(errors)
-    print('Error in execution. Returning to Launch')
-    vehicle.ctrl.rtl()
 
 
 def range_limit(current, target):
@@ -44,7 +37,7 @@ rky = pyliner.Pyliner(
         to_port=5012)
 )
 
-with ScriptingWrapper(rky, critical_failure) as rocky:
+with ScriptingWrapper(rky) as rocky:
     while rocky.nav.altitude == "NULL":
         sleep(1)
         print "Waiting for telemetry downlink..."

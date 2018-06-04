@@ -284,7 +284,8 @@ class Geofence(App):
 
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
-        self._check_thread = PeriodicExecutor(self._check_fence)
+        self._check_thread = PeriodicExecutor(self._check_fence,
+                                              exception=self._failure)
         self._check_thread.start()
         self.gen = FenceGenerator(self.vehicle.geographic,
                                   Box, LayerCake, VerticalCylinder)
@@ -297,6 +298,9 @@ class Geofence(App):
         super(Geofence, self).detach()
         self._check_thread.stop()
         self.gen = None
+
+    def _failure(self, e):
+        self.vehicle.log.exception('Geofence Exception')
 
     def layer_by_name(self, name):
         for layer in self.layers.values():

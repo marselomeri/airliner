@@ -7,7 +7,6 @@ from os.path import join
 from builtins import isinstance
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
-from typing import Optional
 
 from app import App
 from communication import Communication

@@ -4,7 +4,6 @@ import socket
 import sys
 import threading
 import time
-import traceback
 from collections import Iterator, Iterable
 from datetime import datetime
 from os.path import join, dirname
@@ -24,19 +23,26 @@ class Event(object):
         self.type = type
 
 
-class Log(object):
-    """Reflects Android's util.Log class"""
-    def __init__(self, log_file, level):
-        self.fails = 0
-        self.passes = 0
-        self.duration = 0
-        self.test_description = []
+class LogStream(object):
+    def __init__(self, name, stream, level=logging.INFO):
+        self.level = level
+        self.name = name
+        self.stream = stream
 
-        self.log_file = log_file
-        logging.basicConfig(format='%(asctime)s\t%(levelname)s: %(message)s',
-                            datefmt='%m/%d/%Y %I:%M:%S %p',
-                            filename=log_file,
-                            level=level)
+    def read(self, length):
+        result = self.stream.read(length)
+        logging.log(self.level, '%s (read) - %s', self.name, repr(result))
+        return result
+
+    def readline(self):
+        result = self.stream.readline()
+        logging.log(self.level, '%s (readline) - %s', self.name, repr(result))
+        return result
+
+    def write(self, s):
+        if not s.isspace():
+            logging.log(self.level, '%s (write) - %s', self.name, repr(s))
+        self.stream.write(s)
 
 
 class PeriodicExecutor(threading.Thread):
@@ -45,7 +51,8 @@ class PeriodicExecutor(threading.Thread):
     Optionally takes callbacks for exception and last-pass handling.
     """
 
-    def __init__(self, callback, every=1, exception=None, finalize=None):
+    def __init__(self, callback, every=1, exception=None, finalize=None,
+                 name=None):
         """
         Args:
             callback (Callable): This method will be called every loop
@@ -56,11 +63,11 @@ class PeriodicExecutor(threading.Thread):
             finalize (Callable): This method will be called sometime
                 after the thread is stopped with no arguments.
         """
-        super(PeriodicExecutor, self).__init__()
+        super(PeriodicExecutor, self).__init__(name)
         self.daemon = True
 
         self.callback = callback
-        # TODO if move to Python 3, use lambda x: print(x)
+        # TODO if move to Python 3, use lambda x: print(x) if exception is None
         self.exception = exception
         self.every = every
         self.finalize = finalize
@@ -77,8 +84,7 @@ class PeriodicExecutor(threading.Thread):
             if callable(self.exception):
                 self.exception(e)
             else:
-                print('\nException in thread {}'.format(self.callback))
-                traceback.print_exc()
+                logging.exception('Exception in thread %s', self.name)
         finally:
             if callable(self.finalize):
                 self.finalize()
@@ -101,7 +107,7 @@ class ScriptingWrapper:
         """Wraps a vehicle for a scripting environment.
 
         Implements context manager (with-statement) functionality. Unhandled
-        exceptions in the context manager are passed to `critical_failure` to
+        exceptions in the context manager are passed to `failure_callback` to
         give the user a chance to fail gracefully before exiting the context
         manager.
 
@@ -129,8 +135,12 @@ class ScriptingWrapper:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # If the context manager exits without error, all good. Otherwise...
-        if exc_type and callable(self.failure_callback):
+        if exc_type:
+            if callable(self.failure_callback):
                 self.failure_callback(self, (exc_type, exc_val, exc_tb))
+            else:
+                print('Error in execution. Returning to Launch')
+                self._vehicle.apps['ctrl'].rtl()
 
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
@@ -143,8 +153,11 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
 
 
 def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
-                   filemode='a'):
+                   filemode='a', stdin=logging.INFO, stdout=logging.INFO,
+                   stderr=logging.ERROR):
     """Enable the base logger, which all other logging bases off of.
+
+    Logs stdin, stdout, and stderr if a logging level is passed to them.
 
     Args:
         log_dir (str): If None, defaults to '<pyliner>/logs'.
@@ -152,6 +165,9 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
         script (str): Script name, only used if log_file is None.
         level: The level to log at.
         filemode: The filemode of the log file. Either 'a' or 'w'.
+        stdin: Logging level or None
+        stdout: Logging level or None
+        stderr: Logging level or None
     """
     if log_dir is None:
         log_dir = join(dirname(__file__), 'logs')
@@ -164,11 +180,17 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
     print('Log at {}'.format(log_path))
     logging.basicConfig(
         level=level,
-        format='%(asctime)s %(levelname)-7s %(name)s %(message)s',
-        datefmt='%Y-%m-%d_%H:%M:%S',
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        # datefmt='%Y-%m-%d_%H:%M:%S',
         filename=log_path,
         filemode=filemode
     )
+    if stdin:
+        sys.stdin = LogStream('stdin', sys.stdin, stdin)
+    if stdout:
+        sys.stdout = LogStream('stdout', sys.stdout, stdout)
+    if stderr:
+        sys.stderr = LogStream('stderr', sys.stderr, stderr)
 
 
 def feet(ft):

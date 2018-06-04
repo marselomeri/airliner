@@ -2,6 +2,10 @@ class PylinerError(RuntimeError):
     pass
 
 
+class BlockedIoError(PylinerError):
+    pass
+
+
 class InvalidCommandException(PylinerError):
     pass
 
@@ -10,9 +14,9 @@ class InvalidOperationException(PylinerError):
     pass
 
 
-class UnauthorizedAtpError(PylinerError):
+class InvalidStateError(ValueError):
     pass
 
 
-class InvalidStateError(ValueError):
+class UnauthorizedAtpError(PylinerError):
     pass
