@@ -1,3 +1,4 @@
+import logging
 import time
 
 from flufl.enum import Enum
@@ -5,7 +6,7 @@ from flufl.enum import Enum
 from app import App
 from pyliner_exceptions import UnauthorizedAtpError
 from telemetry import ManualSetpoint
-from util import query_yes_no, LogLevel
+from util import query_yes_no
 
 _WAIT_TIME = 0.1
 
@@ -25,7 +26,7 @@ class Controller(App):
 
     def arm(self):
         """Arm vehicle."""
-        print("%s: Arming vehicle" % self.vehicle.script_name)
+        print("Arming vehicle")
         self.vehicle.log("Arming vehicle")
         self._telemetry = ManualSetpoint(ArmSwitch=3)
         self._wait_clean()
@@ -42,10 +43,8 @@ class Controller(App):
                 atp_auth = self.atp_override
             else:
                 atp_auth = query_yes_no(
-                    "{} requires authorization for: {}".format(
-                        self.vehicle.script_name, text))
-            self.vehicle.log("{} ATP: {} Auth: {}".format(
-                self.vehicle.script_name, text, atp_auth))
+                    "Requires authorization for: {}".format(text))
+            self.vehicle.log("ATP: {} Auth: {}".format(text, atp_auth))
             # if atp_auth == 'takeover':
             #     try:
             #         code.interact(
@@ -60,7 +59,7 @@ class Controller(App):
             return atp_auth
 
     def disarm(self):
-        print("%s: Disarming vehicle" % self.vehicle.script_name)
+        print("Disarming vehicle")
         self.vehicle.log("Disarming vehicle")
         self._telemetry = ManualSetpoint(ArmSwitch=3)
         self._wait_clean()
@@ -68,7 +67,7 @@ class Controller(App):
     def flight_mode(self, mode):
         if not mode:
             self.vehicle.log("Mode transition requires a passed mode.",
-                             LogLevel.Error)
+                             logging.ERROR)
         if mode == FlightMode.Manual:
             raise NotImplemented()
         elif mode == FlightMode.AltCtl:
@@ -78,7 +77,7 @@ class Controller(App):
         self._wait_clean()
 
     def _mode_posctl(self):
-        print("%s: Position control" % self.vehicle.script_name)
+        print("Position control")
         self.vehicle.log("Position control")
         self._telemetry = ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1)
         self._wait_clean()
@@ -89,14 +88,14 @@ class Controller(App):
 
     def rtl(self):
         """Return to launch."""
-        print("%s: RTL" % self.vehicle.script_name)
+        print("RTL")
         self.vehicle.log("RTL")
         self._telemetry = ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1)
         self._wait_clean()
 
     def takeoff(self):
         """Takeoff"""
-        print("%s: Auto takeoff" % self.vehicle.script_name)
+        print("Auto takeoff")
         self.vehicle.log("Auto takeoff")
         self._telemetry = ManualSetpoint(TransitionSwitch=1, ArmSwitch=1)
         self._wait_clean()

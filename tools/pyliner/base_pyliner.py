@@ -1,3 +1,4 @@
+import logging
 import re
 from abc import ABCMeta
 from datetime import datetime
@@ -9,7 +10,6 @@ from sortedcontainers import SortedDict
 
 from app import App
 from communication import Communication
-from logging_service import LoggingService
 from service import ServiceWrapper
 from telemetry import Telemetry
 
@@ -44,19 +44,16 @@ class BasePyliner(object):
         self.attach_service('logging', logging)
         logging.start()
 
-    @property
-    def apps(self):
-        """Mapping of enabled modules."""
-        return self._apps.copy()
+        self.communications.attach(self)
 
     def attach_app(self, priority, name, app):
-        """Enable a PylinerApp on this vehicle."""
+        """Attach an app to this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
 
-        if priority in self._com_priority:
+        if priority in self.com_priority:
             raise ValueError('There is already a module with priority '
                              '{}'.format(priority))
-        elif name in self._apps:
+        elif name in self.apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
         elif not re.match(identifier, name):
@@ -65,13 +62,14 @@ class BasePyliner(object):
                              'identifiers.')
         elif not isinstance(app, App):
             return TypeError('module must implement App.')
+
         app.attach(self)
-        self._apps[name] = app
-        self._com_priority[priority] = app
+        self.apps[name] = app
+        self.com_priority[priority] = app
 
     def attach_service(self, service_name, service):
         sw = ServiceWrapper(self, service_name, service)
-        self._services.add(sw)
+        self.services.add(sw)
         service.attach(sw)
 
     def detach_app(self, name):
@@ -81,22 +79,22 @@ class BasePyliner(object):
             Any apps that attempt to call the disabled app by name will
             produce an error.
         """
-        if name not in self._apps:
-            raise AttributeError('Cannot disable a module that was never '
-                                 'enabled.')
-        module = self._apps[name]
-        del self._apps[name]
+        if name not in self.apps:
+            raise AttributeError(
+                'Cannot disable a module that was never enabled.')
+        module = self.apps[name]
+        del self.apps[name]
         module.detach()
-        for priority, pri_module in self._com_priority.items():
+        for priority, pri_module in self.com_priority.items():
             if module is pri_module:
-                self._com_priority.pop(priority)
+                self.com_priority.pop(priority)
 
     def telemetry(self):
         # type: () -> Telemetry
         """Return telemetry to send, or None."""
         # Iterate through every app in priority order to see if any have
         # telemetry to send.
-        for app in self._com_priority.values():  # type: App
+        for app in self.com_priority.values():
             if app.telemetry_available:
                 return app.telemetry
         return None

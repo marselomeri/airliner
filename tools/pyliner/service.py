@@ -1,8 +1,9 @@
 from enum import Enum
 
+from pyliner_exceptions import InvalidStateError
+
 
 class ServiceState(Enum):
-    ATTACHED = 'ATTACHED'
     DETACHED = 'DETACHED'
     STARTED = 'STARTED'
     STOPPED = 'STOPPED'
@@ -29,7 +30,9 @@ class Service(object):
         The service is given a wrapper to interact with the vehicle it has been
         attached to.
         """
-        self._state = ServiceState.ATTACHED
+        if self._state is not ServiceState.DETACHED:
+            raise InvalidStateError('Service must be detached before attaching.')
+        self._state = ServiceState.STOPPED
         self.vehicle = service_wrapper
 
     def detach(self):
@@ -41,6 +44,8 @@ class Service(object):
 
         Sets vehicle to None.
         """
+        if self._state is not ServiceState.STOPPED:
+            raise InvalidStateError('Service must be stopped before detaching.')
         self._state = ServiceState.DETACHED
         self.vehicle = None
 
@@ -49,6 +54,8 @@ class Service(object):
 
         The service should start any threads or processes that it runs here.
         """
+        if self._state is not ServiceState.STOPPED:
+            raise InvalidStateError('Service must be stopped before starting.')
         self._state = ServiceState.STARTED
 
     def stop(self):
@@ -56,6 +63,8 @@ class Service(object):
 
         The service should stop any threads or processes that it started.
         """
+        if self._state is not ServiceState.STARTED:
+            raise InvalidStateError('Service must be started before stopping.')
         self._state = ServiceState.STOPPED
 
 

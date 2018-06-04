@@ -12,3 +12,7 @@ class InvalidOperationException(PylinerError):
 
 class UnauthorizedAtpError(PylinerError):
     pass
+
+
+class InvalidStateError(ValueError):
+    pass

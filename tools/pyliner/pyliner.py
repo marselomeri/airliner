@@ -33,7 +33,6 @@ class Pyliner(BasePyliner):
 
         Args:
             communication: Communications App
-            logging: Logging App
         """
         super(Pyliner, self).__init__(
             communications=communication, logging=logging)
@@ -78,7 +77,7 @@ class Pyliner(BasePyliner):
         super(Pyliner, self).attach_app(priority, name, app)
         required_ops = app.required_telemetry_paths()
         if required_ops:
-            self._communications.subscribe({'tlm': required_ops})
+            self.communications.subscribe({'tlm': required_ops})
 
     def tlm(self, tlm):
         """ Get all data of specified telemetry item.
@@ -93,7 +92,7 @@ class Pyliner(BasePyliner):
             KeyError: If telemetry is not found.
         """
         # TODO Rename variable
-        return self._communications._telemetry[tlm]
+        return self.communications._telemetry[tlm]
 
     def tlm_value(self, tlm):
         """ Get current value of specified telemetry item.

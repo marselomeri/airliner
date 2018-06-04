@@ -7,6 +7,7 @@ import time
 import traceback
 from collections import Iterator, Iterable
 from datetime import datetime
+from os.path import join, dirname
 
 import socketserver
 from flufl.enum import Enum
@@ -95,6 +96,42 @@ class PeriodicExecutor(threading.Thread):
             raise RuntimeError('This thread cannot be stopped now.')
 
 
+class ScriptingWrapper:
+    def __init__(self, vehicle, failure_callback=None):
+        """Wraps a vehicle for a scripting environment.
+
+        Implements context manager (with-statement) functionality. Unhandled
+        exceptions in the context manager are passed to `critical_failure` to
+        give the user a chance to fail gracefully before exiting the context
+        manager.
+
+        Apps on the vehicle are accessible by their name (pyliner.app).
+
+        Args:
+            vehicle (BasePyliner): The vehicle to wrap.
+            failure_callback (Callable[[Pyliner, Tuple], None]): Function
+                handle that will be invoked on an unhandled exception of the
+                controlling script.
+        """
+        self._vehicle = vehicle
+        self.failure_callback = failure_callback
+
+    def __getattr__(self, item):
+        apps = self._vehicle.apps
+        if item in apps:
+            return apps[item]
+        raise AttributeError('{} is not a method or module of this '
+                             'Pyliner instance.'.format(item))
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # If the context manager exits without error, all good. Otherwise...
+        if exc_type and callable(self.failure_callback):
+                self.failure_callback(self, (exc_type, exc_val, exc_tb))
+
+
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
     def __init__(self, callback, *args, **keys):
         self.callback = callback
@@ -104,16 +141,32 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         self.callback(self.request)
 
 
-def shifter(num, iterator):
-    if not isinstance(iterator, Iterator) \
-            and isinstance(iterator, Iterable):
-        iterator = iter(iterator)
-    output = tuple(next(iterator) for _ in range(num))
-    yield output
-    for item in iterator:
-        output = tuple(output[index+1] if index < num-1 else item
-                       for index in range(num))
-        yield output
+def enable_logging(log_dir=None, log_file=None, script=None, level=logging.DEBUG, filemode='a'):
+    """Enable the base logger, which all other logging bases off of.
+
+    Args:
+        log_dir (str): If None, defaults to '<pyliner>/logs'.
+        log_file (str): If None, defaults to '<time>_pyliner_<script_name>.log'.
+        script (str): Script name, only used if log_file is None.
+        level: The level to log at.
+        filemode: The filemode of the log file. Either 'a' or 'w'.
+    """
+    if log_dir is None:
+        log_dir = join(dirname(__file__), 'logs')
+    if log_file is None:
+        now = datetime.now()
+        time_str = now.strftime('%Y-%m-%d_%H:%M:%S')
+        log_file = '{}_pyliner_{}.log'.format(time_str, script)
+
+    log_path = join(log_dir, log_file)
+    print('Log at {}'.format(log_path))
+    logging.basicConfig(
+        level=level,
+        format='%(asctime)s %(name)s %(levelname)-7 %(message)s',
+        datefmt='%Y-%m-%d_%H:%M:%S',
+        filename=log_path,
+        filemode=filemode
+    )
 
 
 def feet(ft):
@@ -200,37 +253,13 @@ def serialize(header, payload):
     return ser
 
 
-class ScriptingWrapper:
-    def __init__(self, vehicle, failure_callback=None):
-        """Wraps a vehicle for a scripting environment.
-
-        Implements context manager (with-statement) functionality. Unhandled
-        exceptions in the context manager are passed to `critical_failure` to
-        give the user a chance to fail gracefully before exiting the context
-        manager.
-
-        Apps on the vehicle are accessible by their name (pyliner.app).
-
-        Args:
-            vehicle (BasePyliner): The vehicle to wrap.
-            failure_callback (Callable[[Pyliner, Tuple], None]): Function
-                handle that will be invoked on an unhandled exception of the
-                controlling script.
-        """
-        self._vehicle = vehicle
-        self.failure_callback = failure_callback
-
-    def __getattr__(self, item):
-        apps = self._vehicle.apps
-        if item in apps:
-            return apps[item]
-        raise AttributeError('{} is not a method or module of this '
-                             'Pyliner instance.'.format(item))
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        # If the context manager exits without error, all good. Otherwise...
-        if exc_type and callable(self.failure_callback):
-                self.failure_callback(self, (exc_type, exc_val, exc_tb))
+def shifter(num, iterator):
+    if not isinstance(iterator, Iterator) \
+            and isinstance(iterator, Iterable):
+        iterator = iter(iterator)
+    output = tuple(next(iterator) for _ in range(num))
+    yield output
+    for item in iterator:
+        output = tuple(output[index+1] if index < num-1 else item
+                       for index in range(num))
+        yield output
