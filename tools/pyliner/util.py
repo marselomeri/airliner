@@ -114,6 +114,7 @@ class ScriptingWrapper:
                 controlling script.
         """
         self._vehicle = vehicle
+        self.geographic = vehicle.geographic
         self.failure_callback = failure_callback
 
     def __getattr__(self, item):
@@ -141,7 +142,8 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         self.callback(self.request)
 
 
-def enable_logging(log_dir=None, log_file=None, script=None, level=logging.DEBUG, filemode='a'):
+def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
+                   filemode='a'):
     """Enable the base logger, which all other logging bases off of.
 
     Args:
@@ -162,7 +164,7 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.DEBUG
     print('Log at {}'.format(log_path))
     logging.basicConfig(
         level=level,
-        format='%(asctime)s %(name)s %(levelname)-7 %(message)s',
+        format='%(asctime)s %(levelname)-7s %(name)s %(message)s',
         datefmt='%Y-%m-%d_%H:%M:%S',
         filename=log_path,
         filemode=filemode

@@ -19,9 +19,8 @@ from time import sleep
 import pyliner
 from communication import Communication
 from controller import FlightMode
-from logging_service import LoggingService
 from navigation import proportional
-from util import read_json, ScriptingWrapper
+from util import read_json, ScriptingWrapper, enable_logging
 
 
 def critical_failure(vehicle, errors):
@@ -30,12 +29,14 @@ def critical_failure(vehicle, errors):
     vehicle.ctrl.rtl()
 
 
+enable_logging(script=basename(__file__))
+
 rky = pyliner.Pyliner(
+    vehicle_id='001',
     communication=Communication(
         airliner_map=read_json("airliner.json"),
         ci_port=5009,
-        to_port=5012),
-    logging=LoggingService(basename(__file__), 'logs'),
+        to_port=5012)
 )
 
 with ScriptingWrapper(rky, critical_failure) as rocky:

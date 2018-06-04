@@ -217,7 +217,7 @@ class Navigation(App):
         while (distance - delta) > tolerance:
             velocity = method(delta, distance)
             setattr(self.vehicle.apps['fd'], axis, -velocity if neg else velocity)
-            self.vehicle.log('LNAV {} dist {} brng {} axis {} {}'.format(self.position, delta, self._geographic.bearing(original, self.position), axis, velocity))
+            self.vehicle.logger.debug('LNAV {} dist {} brng {} axis {} {}'.format(self.position, delta, self._geographic.bearing(original, self.position), axis, velocity))
             time.sleep(_NAV_SLEEP)
             delta = self._geographic.distance(original, self.position)
         setattr(self.vehicle.apps['fd'], axis, 0.0)

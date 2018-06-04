@@ -14,11 +14,12 @@ Requirements Fulfilled:
     PYLINER016
 """
 import time
-from os.path import join, dirname, abspath, basename
+from os.path import basename
 
 import pyliner
+from communication import Communication
 from controller import FlightMode
-from util import read_json
+from util import read_json, enable_logging, ScriptingWrapper
 
 
 def critical_failure(vehicle, errors):
@@ -27,14 +28,17 @@ def critical_failure(vehicle, errors):
     vehicle.ctrl.rtl()
 
 
-with pyliner.Pyliner(
-    airliner_map=read_json("airliner.json"),
-    ci_port=5009,
-    to_port=5012,
-    script_name=basename(__file__),
-    log_dir=join(dirname(abspath(__file__)), "logs"),
-    failure_callback=critical_failure
-) as rocky:
+enable_logging(script=basename(__file__))
+
+rky = pyliner.Pyliner(
+    vehicle_id='001',
+    communication=Communication(
+        airliner_map=read_json("airliner.json"),
+        ci_port=5009,
+        to_port=5012)
+)
+
+with ScriptingWrapper(rky, critical_failure) as rocky:
     while rocky.nav.altitude == "NULL":
         time.sleep(1)
         print "Waiting for telemetry downlink..."

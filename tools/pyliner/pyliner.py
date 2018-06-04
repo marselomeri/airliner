@@ -7,7 +7,6 @@ from base_pyliner import BasePyliner
 from controller import Controller
 from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
-from geographic import Geographic
 from navigation import Navigation
 
 __version__ = '0.1'
@@ -28,17 +27,16 @@ class Pyliner(BasePyliner):
     but it is highly recommended that replacements subclass the default apps.
     """
 
-    def __init__(self, communication, logging):
+    def __init__(self, vehicle_id, communication):
         """Create an instance of Pyliner.
 
         Args:
+            vehicle_id: Vehicle ID. Should be unique.
             communication: Communications App
         """
-        super(Pyliner, self).__init__(
-            communications=communication, logging=logging)
+        super(Pyliner, self).__init__(vehicle_id, communication)
 
         self.atp_override = None
-        self.geographic = Geographic()
 
         # Default modules
         self.attach_app(0, 'fence', Geofence())

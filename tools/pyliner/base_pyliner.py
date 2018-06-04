@@ -10,6 +10,7 @@ from sortedcontainers import SortedDict
 
 from app import App
 from communication import Communication
+from geographic import Geographic
 from service import ServiceWrapper
 from telemetry import Telemetry
 
@@ -25,24 +26,26 @@ class BasePyliner(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, communications, logging):
+    def __init__(self, vehicle_id, communications, logger=None):
         """Constructor for BasePyliner.
 
         Args:
+            vehicle_id: Vehicle ID. Should be unique.
             communications (Communication): Communications PylinerModule.
                 Not exposed as a public module for direct access, but the user
                 is given the option to use a custom class if they desire.
-            logging (LoggingService):
+            logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
         """
-        self._apps = {}
-        self._services = set()
-        self._communications = communications
-        self._com_priority = SortedDict()
+        self.geographic = Geographic()
+        if logger is None:
+            logger = logging.getLogger(vehicle_id)
 
-        # Only uses log method. May eventually remove when logging is unified.
-        self._communications.attach(self)
-        self.attach_service('logging', logging)
-        logging.start()
+        self.apps = {}
+        self.services = set()
+        self.communications = communications
+        self.com_priority = SortedDict()
+        self.logger = logger
+        self.vehicle_id = vehicle_id
 
         self.communications.attach(self)
 
@@ -98,19 +101,6 @@ class BasePyliner(object):
             if app.telemetry_available:
                 return app.telemetry
         return None
-
-    def log(self, text, level=LogLevel.Info):
-        """ Wrapper for logging function """
-        if level == LogLevel.Debug:
-            logging.debug(text)
-        elif level == LogLevel.Info:
-            logging.info(text)
-        elif level == LogLevel.Warn:
-            logging.warn(text)
-        elif level == LogLevel.Error:
-            logging.error(text)
-        else:
-            logging.debug("Specified log mode unsupported")
 
     # Testing Code. TODO Figure out where to put this
     def assert_equals(self, a, b, description):

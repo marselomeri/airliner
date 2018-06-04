@@ -21,7 +21,8 @@ class Communication(App):
     from the vehicle.
     """
 
-    def __init__(self, airliner_map, address='localhost', ci_port=DEFAULT_CI_PORT, to_port=DEFAULT_TO_PORT):
+    def __init__(self, airliner_map, address='localhost',
+                 ci_port=DEFAULT_CI_PORT, to_port=DEFAULT_TO_PORT):
         """
         Args:
             airliner_map (dict): Airliner Mapping, typically read from a JSON.
@@ -60,8 +61,8 @@ class Communication(App):
             telemetry = self.vehicle.telemetry()
             if telemetry:
                 msg = self._serialize(telemetry)
-                self.vehicle.log('Sending telemetry to airliner: {}'
-                                 .format(telemetry.to_json()))
+                self.vehicle.logger.debug(
+                    'Sending telemetry to airliner: %s', telemetry.to_json())
                 self.ci_socket.sendto(msg, (self.address, self.ci_port))
 
         self._periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME)
@@ -226,14 +227,13 @@ class Communication(App):
             tlm(str): Raw bytes received from socket
         """
         self.all_telemetry.append(tlm)
-        # self.log("Recvd tlm: " + str(tlm), LogLevel.Debug)
+        self.vehicle.logger.debug("Recvd tlm: %s", tlm)
 
         # TODO: Check if needed
         hdr = tlm[0][:12]
         if len(hdr) < 12:
-            self.vehicle.log("Rcvd tlm with header length: " + str(len(hdr)),
-                             LogLevel.Debug)
-            # print "Rcvd tlm with header length: " + str(len(hdr))
+            self.vehicle.logger.error(
+                "Rcvd tlm with header length: %s", len(hdr))
 
         # Get python CCSDS object
         # TODO: Check what causes this to fail on some tlm packets
@@ -243,9 +243,8 @@ class Communication(App):
             tlm_pkt.set_decoded(header)
             tlm_time = tlm_pkt.get_time()
         except Exception as e:
-            self.vehicle.log("Exception when decoding tlm in ccsds: {}"
-                             .format(e), LogLevel.Debug)
-            print(e)
+            self.vehicle.logger.error(
+                "Exception when decoding tlm in ccsds: %s", e)
             return
 
         # Iterate over subscribed telemetry to check if we care
@@ -281,8 +280,8 @@ class Communication(App):
         """ User accessible function to send a command to the software bus.
 
         Args:
-            telemetry (Telemetry): Telemetry specifying the operation to execute and
-                any args for it.
+            telemetry (Telemetry): Telemetry specifying the operation to execute
+                and any args for it.
         """
         json = telemetry.to_json()
         if "name" not in json:
@@ -331,7 +330,7 @@ class Communication(App):
             if not op:
                 err_msg = "Invalid telemetry operational name received. " \
                           "Operation (%s) not defined." % tlm_item
-                self.vehicle.log(err_msg, LogLevel.Error)
+                self.vehicle.logger.error(err_msg)
                 raise pyliner_exceptions.InvalidOperationException(err_msg)
 
             # Add entry to subscribers list
@@ -346,4 +345,5 @@ class Communication(App):
                                          'value': 'NULL',
                                          'time': 'NULL'}
 
-            self.vehicle.log('Subscribing to the following telemetry: %s' % tlm)
+            self.vehicle.logger.info(
+                'Subscribing to the following telemetry: %s', tlm)

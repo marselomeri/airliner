@@ -1,4 +1,3 @@
-import logging
 import time
 
 from flufl.enum import Enum
@@ -27,7 +26,7 @@ class Controller(App):
     def arm(self):
         """Arm vehicle."""
         print("Arming vehicle")
-        self.vehicle.log("Arming vehicle")
+        self.vehicle.logger.info("Arming vehicle")
         self._telemetry = ManualSetpoint(ArmSwitch=3)
         self._wait_clean()
         self._telemetry = ManualSetpoint(ArmSwitch=1)
@@ -44,7 +43,7 @@ class Controller(App):
             else:
                 atp_auth = query_yes_no(
                     "Requires authorization for: {}".format(text))
-            self.vehicle.log("ATP: {} Auth: {}".format(text, atp_auth))
+            self.vehicle.logger.info("ATP: {} Auth: {}".format(text, atp_auth))
             # if atp_auth == 'takeover':
             #     try:
             #         code.interact(
@@ -60,14 +59,13 @@ class Controller(App):
 
     def disarm(self):
         print("Disarming vehicle")
-        self.vehicle.log("Disarming vehicle")
+        self.vehicle.logger.info("Disarming vehicle")
         self._telemetry = ManualSetpoint(ArmSwitch=3)
         self._wait_clean()
 
     def flight_mode(self, mode):
         if not mode:
-            self.vehicle.log("Mode transition requires a passed mode.",
-                             logging.ERROR)
+            raise ValueError('Mode transition requires a passed mode.')
         if mode == FlightMode.Manual:
             raise NotImplemented()
         elif mode == FlightMode.AltCtl:
@@ -78,7 +76,7 @@ class Controller(App):
 
     def _mode_posctl(self):
         print("Position control")
-        self.vehicle.log("Position control")
+        self.vehicle.logger.info("Position control")
         self._telemetry = ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1)
         self._wait_clean()
 
@@ -89,14 +87,14 @@ class Controller(App):
     def rtl(self):
         """Return to launch."""
         print("RTL")
-        self.vehicle.log("RTL")
+        self.vehicle.logger.info("RTL")
         self._telemetry = ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1)
         self._wait_clean()
 
     def takeoff(self):
         """Takeoff"""
         print("Auto takeoff")
-        self.vehicle.log("Auto takeoff")
+        self.vehicle.logger.info("Auto takeoff")
         self._telemetry = ManualSetpoint(TransitionSwitch=1, ArmSwitch=1)
         self._wait_clean()
         time.sleep(5)
