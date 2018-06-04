@@ -7,12 +7,13 @@ from os.path import join
 from builtins import isinstance
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
+from typing import Optional
 
 from app import App
 from communication import Communication
 from geographic import Geographic
-from service import ServiceWrapper
 from telemetry import Telemetry
+from vehicle_access import VehicleAccess
 
 
 class BasePyliner(object):
@@ -71,9 +72,9 @@ class BasePyliner(object):
         self.com_priority[priority] = app
 
     def attach_service(self, service_name, service):
-        sw = ServiceWrapper(self, service_name, service)
-        self.services.add(sw)
-        service.attach(sw)
+        vehicle_token = VehicleAccess(self, service_name, service)
+        self.services.add(vehicle_token)
+        service.attach(vehicle_token)
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.
@@ -93,7 +94,7 @@ class BasePyliner(object):
                 self.com_priority.pop(priority)
 
     def telemetry(self):
-        # type: () -> Telemetry
+        # type: () -> Optional[Telemetry]
         """Return telemetry to send, or None."""
         # Iterate through every app in priority order to see if any have
         # telemetry to send.

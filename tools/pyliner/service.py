@@ -1,6 +1,7 @@
 from enum import Enum
 
 from pyliner_exceptions import InvalidStateError
+from vehicle_access import VehicleAccess
 
 
 class ServiceState(Enum):
@@ -20,20 +21,22 @@ class Service(object):
     """
 
     def __init__(self):
-        self._state = ServiceState.DETACHED
+        self.state = ServiceState.DETACHED
+        """State of the Service, DETACHED, STOPPED, or STARTED."""
         self.vehicle = None
         """:type: ServiceWrapper"""
 
-    def attach(self, service_wrapper):
+    def attach(self, vehicle_wrapper):
+        # type: (VehicleAccess) -> None
         """Called when a service is attached to a vehicle.
 
         The service is given a wrapper to interact with the vehicle it has been
         attached to.
         """
-        if self._state is not ServiceState.DETACHED:
+        if self.state is not ServiceState.DETACHED:
             raise InvalidStateError('Service must be detached before attaching.')
-        self._state = ServiceState.STOPPED
-        self.vehicle = service_wrapper
+        self.state = ServiceState.STOPPED
+        self.vehicle = vehicle_wrapper
 
     def detach(self):
         """Called when a service is detached from a vehicle.
@@ -44,9 +47,9 @@ class Service(object):
 
         Sets vehicle to None.
         """
-        if self._state is not ServiceState.STOPPED:
+        if self.state is not ServiceState.STOPPED:
             raise InvalidStateError('Service must be stopped before detaching.')
-        self._state = ServiceState.DETACHED
+        self.state = ServiceState.DETACHED
         self.vehicle = None
 
     def start(self):
@@ -54,41 +57,17 @@ class Service(object):
 
         The service should start any threads or processes that it runs here.
         """
-        if self._state is not ServiceState.STOPPED:
+        if self.state is not ServiceState.STOPPED:
             raise InvalidStateError('Service must be stopped before starting.')
-        self._state = ServiceState.STARTED
+        self.state = ServiceState.STARTED
 
     def stop(self):
         """Called when a service is stopped.
 
         The service should stop any threads or processes that it started.
         """
-        if self._state is not ServiceState.STARTED:
+        if self.state is not ServiceState.STARTED:
             raise InvalidStateError('Service must be started before stopping.')
-        self._state = ServiceState.STOPPED
+        self.state = ServiceState.STOPPED
 
 
-class ServiceWrapper(object):
-    def __init__(self, vehicle, service_name, service):
-        self._service = service
-        self._service_name = service_name
-        self._vehicle = vehicle
-        self._filter = set()
-
-    def add_filter(self, predicate, callback):
-        if not callable(predicate) or not callable(callback):
-            raise ValueError('Filter predicate and callback must be callable.')
-        else:
-            self._filter.add((predicate, callback))
-        return predicate, callback
-
-    def clear_filter(self):
-        self._filter.clear()
-
-    def event(self, event):
-        for predicate, callback in self._filter:
-            if predicate(event):
-                callback(event)
-
-    def remove_filter(self, predicate_callback):
-        self._filter.remove(predicate_callback)
