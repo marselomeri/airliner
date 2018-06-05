@@ -52,8 +52,6 @@ class BasePyliner(object):
         self.attach_sensor('geographic', geographic)
         self.attach_service('comms', communications)
 
-        geographic.start()
-
     def attach_app(self, priority, name, app):
         """Attach an app to this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
