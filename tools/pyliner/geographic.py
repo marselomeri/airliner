@@ -56,6 +56,9 @@ class GeographicBase(object):
 
 
 class Geographic(GeographicBase, Sensor):
+    def __repr__(self):
+        return 'Geographic()'
+
     def __str__(self):
         return 'WGS84'
 

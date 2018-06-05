@@ -24,7 +24,7 @@ class VehicleAccess(object):
     def critical(self, msg):
         self._logger.critical(msg)
 
-    def debug(self, msg , *args, **kwargs):
+    def debug(self, msg, *args, **kwargs):
         self._logger.debug(msg, *args, **kwargs)
 
     def error(self, msg, *args, **kwargs):
