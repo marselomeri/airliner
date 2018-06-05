@@ -4,8 +4,6 @@ import time
 from collections import Iterable
 from numbers import Real
 
-from future.moves import itertools
-
 from app import App
 from position import Position
 from telemetry import SetpointTriplet
@@ -159,8 +157,7 @@ class Navigation(App):
         """
         if not isinstance(waypoints, Iterable):
             waypoints = (waypoints,)
-        for prv, cur, nxt in shifter(3, itertools.chain(
-                (None,), waypoints, (None,))):
+        for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
             palt = 0 if not prv else prv.altitude \
                 if prv.altitude is not None else self.altitude
             calt = 0 if not cur else cur.altitude \
@@ -187,7 +184,12 @@ class Navigation(App):
                 Next_Alt=nalt, Next_Yaw=nyaw,
                 Next_Valid=nxt is not None, Next_PositionValid=nxt is not None
             )
-            while self._geographic.distance(cur, self.position) > tolerance:
+            while True:
+                distance = self._geographic.distance(cur, self.position)
+                if distance < tolerance:
+                    self.vehicle.info('goto expected %s actual %s (%s < %s m)',
+                                      cur, self.position, distance, tolerance)
+                    break
                 time.sleep(_NAV_SLEEP)
 
     def left(self, distance, method, tolerance=1):
@@ -215,13 +217,15 @@ class Navigation(App):
             raise ValueError('Axis must match "(-)?([xyz])".')
         neg, axis = axis_match.groups()
         original = self.position
-        delta = self._geographic.distance(original, self.position)
+        delta = 0
         while (distance - delta) > tolerance:
             velocity = method(delta, distance)
-            setattr(self.vehicle.app('fd'), axis, -velocity if neg else velocity)
-            self.vehicle.debug('LNAV {} dist {} brng {} axis {} {}'.format(self.position, delta, self._geographic.bearing(original, self.position), axis, velocity))
+            setattr(self.vehicle.app('fd'), axis,
+                    -velocity if neg else velocity)
             time.sleep(_NAV_SLEEP)
             delta = self._geographic.distance(original, self.position)
+        self.vehicle.info('lnav expected %s actual %s (%s < %s m)',
+                          distance, delta, distance-delta, tolerance)
         setattr(self.vehicle.app('fd'), axis, 0.0)
 
     @classmethod
@@ -275,4 +279,7 @@ class Navigation(App):
         while abs(target_altitude - self.altitude) > tolerance:
             self.vehicle.app('fd').z = method(self.altitude, target_altitude)
             time.sleep(_NAV_SLEEP)
+        self.vehicle.info('vnav expected %s actual %s (%s < %s m)',
+                          target_altitude, self.altitude,
+                          abs(target_altitude - self.altitude), tolerance)
         self.vehicle.app('fd').z = 0.0

@@ -63,11 +63,13 @@ class PeriodicExecutor(threading.Thread):
         Args:
             callback (Callable): This method will be called with no arguments
                 continuously until stopped.
-            every (Real): Number of seconds to sleep between calls.
+            every (Real): Amount of seconds to sleep between calls.
             exception (Callable): If an exception is raised this will
                 be called with the exception as an argument.
             finalize (Callable): This method will be called with no arguments
                 after the thread is stopped.
+            name (str): The name of the thread. Default autogen.
+            logger (Logger): Logger to use. Default logging.getLogger(self.name)
         """
         super(PeriodicExecutor, self).__init__(name)
         self.daemon = True
