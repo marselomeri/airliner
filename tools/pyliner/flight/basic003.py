@@ -29,7 +29,7 @@ def range_limit(current, target):
 enable_logging(script=basename(__file__))
 
 rky = pyliner.Pyliner(
-    vehicle_id='001',
+    vehicle_id='rocky',
     communication=Communication(
         airliner_map=read_json("airliner.json"),
         ci_port=5009,
