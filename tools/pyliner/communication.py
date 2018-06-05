@@ -58,14 +58,15 @@ class Communication(Service):
 
         # Send Telemetry
         def send_telemetry():
-            telemetry = self.vehicle.telemetry()
+            telemetry = self.vehicle._vehicle.telemetry()
             if telemetry:
                 msg = self._serialize(telemetry)
-                self.vehicle.logger.debug(
+                self.vehicle.debug(
                     'Sending telemetry to airliner: %s', telemetry.to_json())
                 self.ci_socket.sendto(msg, (self.address, self.ci_port))
 
-        self._periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME)
+        self._periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME,
+                                               logger=self.vehicle.logger)
         self._periodic_send.start()
 
     def detach(self):
@@ -227,12 +228,12 @@ class Communication(Service):
             tlm(str): Raw bytes received from socket
         """
         self.all_telemetry.append(tlm)
-        self.vehicle.logger.debug("Recvd tlm: %s", tlm)
+        self.vehicle.debug("Recvd tlm: %s", tlm)
 
         # TODO: Check if needed
         hdr = tlm[0][:12]
         if len(hdr) < 12:
-            self.vehicle.logger.error(
+            self.vehicle.error(
                 "Rcvd tlm with header length: %s", len(hdr))
 
         # Get python CCSDS object
@@ -243,7 +244,7 @@ class Communication(Service):
             tlm_pkt.set_decoded(header)
             tlm_time = tlm_pkt.get_time()
         except Exception as e:
-            self.vehicle.logger.error(
+            self.vehicle.error(
                 "Exception when decoding tlm in ccsds: %s", e)
             return
 
@@ -324,13 +325,15 @@ class Communication(Service):
             callback (Callable[[], None]): Function to call when this telemetry
                 is updated.
         """
+        self.vehicle.info(
+            'Subscribing to the following telemetry: %s', tlm['tlm'])
         for tlm_item in tlm["tlm"]:
             # Get operation for specified telemetry
             op = self._get_airliner_op(tlm_item)
             if not op:
                 err_msg = "Invalid telemetry operational name received. " \
                           "Operation (%s) not defined." % tlm_item
-                self.vehicle.logger.error(err_msg)
+                self.vehicle.error(err_msg)
                 raise pyliner_exceptions.InvalidOperationException(err_msg)
 
             # Add entry to subscribers list
@@ -345,5 +348,3 @@ class Communication(Service):
                                          'value': 'NULL',
                                          'time': 'NULL'}
 
-            self.vehicle.logger.info(
-                'Subscribing to the following telemetry: %s', tlm)

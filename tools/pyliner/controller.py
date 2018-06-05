@@ -44,15 +44,6 @@ class Controller(App):
                 atp_auth = query_yes_no(
                     "Requires authorization for: {}".format(text))
             self.vehicle.info("ATP: {} Auth: {}".format(text, atp_auth))
-            # if atp_auth == 'takeover':
-            #     try:
-            #         code.interact(
-            #             banner='Entering ATP local override mode.\nAccess vehicle '
-            #                    'using "self". ex. self.nav.position\nExit '
-            #                    'interactive mode via Ctrl+D.', local=locals())
-            #     except SystemExit:
-            #         pass
-            #     atp_auth = None
             if error and atp_auth is False:
                 raise UnauthorizedAtpError
             return atp_auth

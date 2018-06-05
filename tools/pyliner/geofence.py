@@ -58,6 +58,7 @@ class Volume(Container):
 
 class Box(Volume):
     """A simple box. Aligned along latitude, longitude, and vertical."""
+
     def __init__(self, corner_1, corner_2):
         # type: (Position, Position) -> None
         super(Box, self).__init__(None)
@@ -86,6 +87,7 @@ class Box(Volume):
 
 class CompositeVolume(Volume, set):
     """A volume directly composed of the union of multiple other volumes."""
+
     def __init__(self, geographic, volumes=None):
         Volume.__init__(self, geographic)
         set.__init__(self)
@@ -158,6 +160,7 @@ class LayerCake(CompositeVolume):
     cake", with larger rings at higher altitudes. Each ring is additive to the
     whole volume, and rings may intersect in altitude.
     """
+
     def __init__(self, geographic, center, rings=None):
         super(LayerCake, self).__init__(geographic, rings)
         self.center = center
@@ -213,7 +216,7 @@ class VerticalCylinder(Volume):
             self.low
         ), Position(
             max_lat or pbd(self.center, 000, self.radius).latitude,
-            max_lon or pbd(self.center,  90, self.radius).longitude,
+            max_lon or pbd(self.center, 90, self.radius).longitude,
             self.high
         ))
 
@@ -276,8 +279,8 @@ class Geofence(App):
 
     def __str__(self):
         return 'Geofence{\n' + '\n'.join(' {}{}: {}'.format(
-                '+' if layer.kind is LayerKind.ADDITIVE else '-',
-                order, layer) for order, layer in self.layers.items()) + '\n}'
+            '+' if layer.kind is LayerKind.ADDITIVE else '-',
+            order, layer) for order, layer in self.layers.items()) + '\n}'
 
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
@@ -291,16 +294,20 @@ class Geofence(App):
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
         self._check_thread = PeriodicExecutor(
-            self._check_fence, every=1,
-            exception=self.vehicle.log.exception('Geofence Exception'))
+            self._check_fence, every=1, logger=self.vehicle.logger,
+            exception=lambda e: self.vehicle.exception('Geofence Exception'))
         self._check_thread.start()
         geographic = self.vehicle.sensor('geographic')
         self.gen = FenceGenerator(geographic,
                                   Box, LayerCake, VerticalCylinder)
 
     def _check_fence(self):
+        old = self.fence_violation
         self.fence_violation = self.fence_violation or \
                                (self.enabled and self.position not in self)
+        if not old and self.fence_violation:
+            self.vehicle.info('Encountered Fence Violation at %s',
+                              self.position)
 
     def detach(self):
         super(Geofence, self).detach()

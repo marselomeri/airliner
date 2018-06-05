@@ -40,18 +40,19 @@ class BasePyliner(object):
             logger = logging.getLogger(vehicle_id)
 
         self.apps = {}
-        self.services = {}
-        self.sensors = {}
-        self._sensor_tokens = {}
         self.communications = communications
         self.com_priority = SortedDict()
         self.logger = logger
+        self.services = {}
+        self.sensors = {}
+        self._sensor_tokens = {}
         self.vehicle_id = vehicle_id
 
         geographic = Geographic()
         self.attach_sensor('geographic', geographic)
+        self.attach_service('comms', communications)
+
         geographic.start()
-        self.communications.attach(self)
 
     def attach_app(self, priority, name, app):
         """Attach an app to this vehicle."""

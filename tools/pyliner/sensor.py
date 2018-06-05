@@ -22,6 +22,7 @@ class Sensor(object):
     def __init__(self):
         self.state = SensorState.DETACHED
         self.vehicle = None
+        """:type: VehicleAccess"""
 
     def attach(self, vehicle_wrapper):
         # type: (VehicleAccess) -> None

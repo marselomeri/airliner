@@ -6,7 +6,7 @@ class VehicleAccess(object):
         self._name = name
         self._vehicle = vehicle
         self._filter = set()
-        self._log = vehicle.logger.getChild(name)
+        self._logger = vehicle.logger.getChild(name)
 
     def add_filter(self, predicate, callback):
         if not callable(predicate) or not callable(callback):
@@ -22,13 +22,20 @@ class VehicleAccess(object):
         self._filter.clear()
 
     def critical(self, msg):
-        self._log.critical(msg)
+        self._logger.critical(msg)
 
-    def debug(self, msg):
-        self._log.debug(msg)
+    def debug(self, msg , *args, **kwargs):
+        self._logger.debug(msg, *args, **kwargs)
 
-    def error(self, msg):
-        self._log.error(msg)
+    def error(self, msg, *args, **kwargs):
+        self._logger.error(msg, *args, **kwargs)
+
+    def exception(self, msg, *args, **kwargs):
+        self._logger.exception(msg, *args, **kwargs)
+
+    @property
+    def logger(self):
+        return self._logger
 
     def post_event(self, event):
         for predicate, callback in self._filter:
@@ -38,8 +45,8 @@ class VehicleAccess(object):
     def push_event(self, event):
         self._vehicle.event(event)
 
-    def info(self, msg):
-        self._log.info(msg)
+    def info(self, msg, *args, **kwargs):
+        self._logger.info(msg, *args, **kwargs)
 
     def remove_filter(self, predicate_callback):
         self._filter.remove(predicate_callback)
@@ -56,5 +63,5 @@ class VehicleAccess(object):
     def stop(self):
         self._to.stop()
 
-    def warning(self, msg):
-        self._log.warning(msg)
+    def warning(self, msg, *args, **kwargs):
+        self._logger.warning(msg, *args, **kwargs)

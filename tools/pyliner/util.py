@@ -1,3 +1,4 @@
+import atexit
 import json
 import logging
 import socket
@@ -57,7 +58,7 @@ class PeriodicExecutor(threading.Thread):
     """
 
     def __init__(self, callback, every=1, exception=None, finalize=None,
-                 name=None):
+                 name=None, logger=None):
         """
         Args:
             callback (Callable): This method will be called with no arguments
@@ -76,10 +77,13 @@ class PeriodicExecutor(threading.Thread):
         self.exception = exception
         self.every = every
         self.finalize = finalize
+        self.logger = logger if logger else logging.getLogger(self.name)
         self.running = False
 
     def run(self):
         """Do not call this directly. Use PeriodicExecutor.start()"""
+        atexit.register(self._stop_atexit)
+        self.logger.info('Thread %s starting', self.name)
         self.running = True
         try:
             while self.running:
@@ -89,10 +93,14 @@ class PeriodicExecutor(threading.Thread):
             if callable(self.exception):
                 self.exception(e)
             else:
-                logging.exception('Unhandled exception in thread %s', self.name)
+                self.logger.exception('Unhandled exception in thread %s', self.name)
         finally:
             if callable(self.finalize):
                 self.finalize()
+
+    def _stop_atexit(self):
+        self.running = False
+        self.logger.info('Thread %s stopping.', self.name)
 
     def stop(self):
         """Stops the thread from continuing to loop.
@@ -102,7 +110,8 @@ class PeriodicExecutor(threading.Thread):
         given, and will then complete.
         """
         if self.running:
-            self.running = False
+            self._stop_atexit()
+            atexit._exithandlers.remove(self._stop_atexit)
         else:
             raise RuntimeError('This thread cannot be stopped now.')
 
