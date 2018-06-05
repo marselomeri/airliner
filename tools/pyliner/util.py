@@ -28,20 +28,21 @@ class LogStream(object):
         self.level = level
         self.name = name
         self.stream = stream
+        self.log = logging.getLogger(name)
 
     def read(self, length):
         result = self.stream.read(length)
-        logging.log(self.level, '%s (read) - %s', self.name, repr(result))
+        self.log.log(self.level, '(read) %s', repr(result))
         return result
 
     def readline(self):
         result = self.stream.readline()
-        logging.log(self.level, '%s (readline) - %s', self.name, repr(result))
+        self.log.log(self.level, '(readline) %s', repr(result))
         return result
 
     def write(self, s):
         if not s.isspace():
-            logging.log(self.level, '%s (write) - %s', self.name, repr(s))
+            self.log.log(self.level, '(write) %s', repr(s))
         self.stream.write(s)
 
 
@@ -120,7 +121,7 @@ class ScriptingWrapper:
                 controlling script.
         """
         self._vehicle = vehicle
-        self.geographic = vehicle.geographic
+        self.geographic = vehicle.sensors['geographic']
         self.failure_callback = failure_callback
 
     def __getattr__(self, item):

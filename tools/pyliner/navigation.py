@@ -7,7 +7,6 @@ from numbers import Real
 from future.moves import itertools
 
 from app import App
-from geographic import GeographicBase
 from position import Position
 from telemetry import SetpointTriplet
 from util import shifter
@@ -58,10 +57,9 @@ class Navigation(App):
     TODO: In a future version a more integrated 3d-space will be implemented.
     """
 
-    def __init__(self, geographic):
-        # type: (GeographicBase) -> None
+    def __init__(self):
         super(Navigation, self).__init__()
-        self._geographic = geographic
+        self._geographic = None
         self._telemetry = None
 
     req_telem = {
@@ -73,6 +71,10 @@ class Navigation(App):
         'velE': '/Airliner/CNTL/VehicleGlobalPosition/VelE',
         'velD': '/Airliner/CNTL/VehicleGlobalPosition/VelD'
     }
+
+    def attach(self, vehicle):
+        super(Navigation, self).attach(vehicle)
+        self._geographic = vehicle.sensor('geographic')
 
     # Public Navigation Properties
     @property
@@ -122,9 +124,9 @@ class Navigation(App):
                 else self.heading - 360
 
         while unroll_heading() < min_tol:
-            self.vehicle.apps['fd'].r = method(unroll_heading(), target_heading)
+            self.vehicle.app('fd').r = method(unroll_heading(), target_heading)
             time.sleep(_NAV_SLEEP)
-        self.vehicle.apps['fd'].r = 0.0
+        self.vehicle.app('fd').r = 0.0
 
     def counterclockwise(self, degrees, method, tolerance=1):
         """Rotate counterclockwise by a number of degrees."""
@@ -137,9 +139,9 @@ class Navigation(App):
                 else self.heading + 360
 
         while unroll_heading() > max_tol:
-            self.vehicle.apps['fd'].r = method(unroll_heading(), target_heading)
+            self.vehicle.app('fd').r = method(unroll_heading(), target_heading)
             time.sleep(_NAV_SLEEP)
-        self.vehicle.apps['fd'].r = 0.0
+        self.vehicle.app('fd').r = 0.0
 
     def down(self, distance, method, tolerance=1):
         """Move down by a distance. See vnav for full documentation."""
@@ -216,11 +218,11 @@ class Navigation(App):
         delta = self._geographic.distance(original, self.position)
         while (distance - delta) > tolerance:
             velocity = method(delta, distance)
-            setattr(self.vehicle.apps['fd'], axis, -velocity if neg else velocity)
-            self.vehicle.logger.debug('LNAV {} dist {} brng {} axis {} {}'.format(self.position, delta, self._geographic.bearing(original, self.position), axis, velocity))
+            setattr(self.vehicle.app('fd'), axis, -velocity if neg else velocity)
+            self.vehicle.debug('LNAV {} dist {} brng {} axis {} {}'.format(self.position, delta, self._geographic.bearing(original, self.position), axis, velocity))
             time.sleep(_NAV_SLEEP)
             delta = self._geographic.distance(original, self.position)
-        setattr(self.vehicle.apps['fd'], axis, 0.0)
+        setattr(self.vehicle.app('fd'), axis, 0.0)
 
     @classmethod
     def required_telemetry_paths(cls):
@@ -271,6 +273,6 @@ class Navigation(App):
             raise ValueError('Tolerance must be set to a positive real number.')
         target_altitude = (self.altitude + by) if by is not None else to
         while abs(target_altitude - self.altitude) > tolerance:
-            self.vehicle.apps['fd'].z = method(self.altitude, target_altitude)
+            self.vehicle.app('fd').z = method(self.altitude, target_altitude)
             time.sleep(_NAV_SLEEP)
-        self.vehicle.apps['fd'].z = 0.0
+        self.vehicle.app('fd').z = 0.0

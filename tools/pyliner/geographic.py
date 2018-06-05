@@ -5,6 +5,7 @@ from numbers import Real
 from geographiclib.geodesic import Geodesic
 
 from position import Coordinate
+from sensor import Sensor
 
 
 class GeographicBase(object):
@@ -54,7 +55,7 @@ class GeographicBase(object):
         raise NotImplementedError()
 
 
-class Geographic(GeographicBase):
+class Geographic(GeographicBase, Sensor):
     def __str__(self):
         return 'WGS84'
 

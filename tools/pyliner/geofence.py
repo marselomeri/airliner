@@ -287,7 +287,8 @@ class Geofence(App):
         self._check_thread = PeriodicExecutor(self._check_fence,
                                               exception=self._failure)
         self._check_thread.start()
-        self.gen = FenceGenerator(self.vehicle.geographic,
+        geographic = self.vehicle.sensor('geographic')
+        self.gen = FenceGenerator(geographic,
                                   Box, LayerCake, VerticalCylinder)
 
     def _check_fence(self):

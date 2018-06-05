@@ -36,17 +36,21 @@ class BasePyliner(object):
                 is given the option to use a custom class if they desire.
             logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
         """
-        self.geographic = Geographic()
         if logger is None:
             logger = logging.getLogger(vehicle_id)
 
         self.apps = {}
-        self.services = set()
+        self.services = {}
+        self.sensors = {}
+        self._sensor_tokens = {}
         self.communications = communications
         self.com_priority = SortedDict()
         self.logger = logger
         self.vehicle_id = vehicle_id
 
+        geographic = Geographic()
+        self.attach_sensor('geographic', geographic)
+        geographic.start()
         self.communications.attach(self)
 
     def attach_app(self, priority, name, app):
@@ -66,14 +70,21 @@ class BasePyliner(object):
         elif not isinstance(app, App):
             return TypeError('module must implement App.')
 
-        app.attach(self)
+        vehicle_token = VehicleAccess(self, name, app)
         self.apps[name] = app
         self.com_priority[priority] = app
+        app.attach(vehicle_token)
 
     def attach_service(self, service_name, service):
         vehicle_token = VehicleAccess(self, service_name, service)
-        self.services.add(vehicle_token)
+        self.services[service_name] = vehicle_token
         service.attach(vehicle_token)
+
+    def attach_sensor(self, sensor_name, sensor):
+        vehicle_token = VehicleAccess(self, sensor_name, sensor)
+        self.sensors[sensor_name] = sensor
+        self._sensor_tokens[sensor_name] = vehicle_token
+        sensor.attach(vehicle_token)
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.

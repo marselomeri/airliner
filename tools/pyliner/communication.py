@@ -3,9 +3,9 @@ import threading
 import socketserver
 
 import pyliner_exceptions
-from app import App
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from python_pb import pyliner_msgs
+from service import Service
 from util import init_socket, PeriodicExecutor, handler_factory, serialize
 
 SEND_TIME = 0.1
@@ -13,7 +13,7 @@ DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
 
 
-class Communication(App):
+class Communication(Service):
     """Provide reactive methods to send and receive telemetry to a vehicle.
 
     Exposes telemetry through RxPY Reactive Extensions. Exposes a single

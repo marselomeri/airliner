@@ -42,7 +42,7 @@ class Pyliner(BasePyliner):
         self.attach_app(0, 'fence', Geofence())
         self.attach_app(1, 'ctrl', Controller())
         self.attach_app(2, 'fd', FlightDirector())
-        self.attach_app(3, 'nav', Navigation(self.geographic))
+        self.attach_app(3, 'nav', Navigation())
 
         # Add helpful default settings
         self.apps['fence'].add_layer(0, 'base', LayerKind.ADDITIVE)
