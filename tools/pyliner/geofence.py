@@ -195,19 +195,25 @@ class VerticalCylinder(Volume):
         # Check for poles
         distance = self.geographic.distance
         pbd = self.geographic.pbd
-        min_lat = max_lat = None
+
+        # If the cylinder intersects a pole the latitude caps and the longitude
+        # is the full range.
+        min_lat = max_lat = min_lon = max_lon = None
         if distance(self.center, Coordinate(90, 0)) <= self.radius:
             max_lat = 90
         if distance(self.center, Coordinate(-90, 0)) <= self.radius:
             min_lat = -90
+        if max_lat or min_lat:
+            min_lon = 0
+            max_lon = 360
 
         return Box(Position(
             min_lat or pbd(self.center, 180, self.radius).latitude,
-            pbd(self.center, 270, self.radius).longitude,
+            min_lon or pbd(self.center, 270, self.radius).longitude,
             self.low
         ), Position(
             max_lat or pbd(self.center, 000, self.radius).latitude,
-            pbd(self.center,  90, self.radius).longitude,
+            max_lon or pbd(self.center,  90, self.radius).longitude,
             self.high
         ))
 
@@ -242,7 +248,7 @@ class Geofence(App):
     Within a layer, a point is determined to be inside as if all the volumes in
     that layer were taken as a union.
     """
-    # TODO Use a small daatabase (like TinyDB) to handle layer mapping.
+    # TODO Use a small memory database (like TinyDB) to handle layer mapping.
     #   Added benefit of allowing both name and order mapping to layer at once.
 
     req_telem = {
@@ -284,8 +290,9 @@ class Geofence(App):
 
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
-        self._check_thread = PeriodicExecutor(self._check_fence,
-                                              exception=self._failure)
+        self._check_thread = PeriodicExecutor(
+            self._check_fence, every=1,
+            exception=self.vehicle.log.exception('Geofence Exception'))
         self._check_thread.start()
         geographic = self.vehicle.sensor('geographic')
         self.gen = FenceGenerator(geographic,
@@ -299,9 +306,6 @@ class Geofence(App):
         super(Geofence, self).detach()
         self._check_thread.stop()
         self.gen = None
-
-    def _failure(self, e):
-        self.vehicle.log.exception('Geofence Exception')
 
     def layer_by_name(self, name):
         for layer in self.layers.values():

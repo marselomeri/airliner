@@ -50,19 +50,23 @@ class PeriodicExecutor(threading.Thread):
     """Executes a callback function every x-seconds.
 
     Optionally takes callbacks for exception and last-pass handling.
+
+    Exceptions may occur in Python 2.7 during interpreter shutdown, as daemon
+    threads are left alive until the process closes, during which time the
+    daemon thread is attempting to access garbage collected objects.
     """
 
     def __init__(self, callback, every=1, exception=None, finalize=None,
                  name=None):
         """
         Args:
-            callback (Callable): This method will be called every loop
-                with no arguments.
+            callback (Callable): This method will be called with no arguments
+                continuously until stopped.
             every (Real): Number of seconds to sleep between calls.
             exception (Callable): If an exception is raised this will
                 be called with the exception as an argument.
-            finalize (Callable): This method will be called sometime
-                after the thread is stopped with no arguments.
+            finalize (Callable): This method will be called with no arguments
+                after the thread is stopped.
         """
         super(PeriodicExecutor, self).__init__(name)
         self.daemon = True
@@ -85,7 +89,7 @@ class PeriodicExecutor(threading.Thread):
             if callable(self.exception):
                 self.exception(e)
             else:
-                logging.exception('Exception in thread %s', self.name)
+                logging.exception('Unhandled exception in thread %s', self.name)
         finally:
             if callable(self.finalize):
                 self.finalize()
