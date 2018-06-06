@@ -107,6 +107,13 @@ extern "C" {
 */
 #define GPS_MESSAGE_ID_CFG_PRT                    (0x00)
 
+/** \brief Message ID reset configuration.
+**
+**  \par Description:
+**       Message ID for reset.
+*/
+#define GPS_MESSAGE_ID_CFG_RST                    (0x04)
+
 /** \brief Message ID rate configuration.
 **
 **  \par Description:
@@ -277,6 +284,8 @@ extern "C" {
 #define GPS_MESSAGE_CFG_RATE         ((GPS_MESSAGE_CLASS_CFG) | \
                                        GPS_MESSAGE_ID_CFG_RATE << 8)
                                       
+#define GPS_MESSAGE_CFG_RST         ((GPS_MESSAGE_CLASS_CFG) | \
+                                       GPS_MESSAGE_ID_CFG_RST << 8)
 
 #define GPS_MESSAGE_CFG_NAV5         ((GPS_MESSAGE_CLASS_CFG) | \
                                        GPS_MESSAGE_ID_CFG_NAV5 << 8)
@@ -386,6 +395,21 @@ typedef struct
     /*! Alignment to reference time: 0 = UTC time, 1 = GPS time */
     uint16       timeRef;
 } GPS_Payload_TX_CFG_Rate_t;
+
+
+/**
+ * \brief GPS message Reset Receiver / Clear Backup Data Structures
+ */
+/* TODO move to gps_ubx_msg */
+typedef struct 
+{
+    /*! BBR Sections to clear.  */
+    uint16      navBbrMask;
+    /*! Reset Type. */
+    uint8       resetMode;
+    /*! Reserved. */
+    uint8       reserved1;
+} GPS_Payload_TX_CFG_Reset_t;
 
 
 /* TODO move to gps_ubx_msg*/

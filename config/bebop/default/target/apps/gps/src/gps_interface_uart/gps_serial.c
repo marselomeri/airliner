@@ -1135,10 +1135,15 @@ boolean GPS_Custom_Configure(void)
 
     /* TODO move this struct define to gps_ubx_msg */
     GPS_Payload_TX_CFG_Rate_t rateConfig;
-    
+    GPS_Payload_TX_CFG_Reset_t resetConfig;
+
     GPS_CFG_NAV5_t navConfig;
     GPS_CFG_SBAS_t sbasConfig;
-    
+
+    /* Controlled software reset. */
+    memset(&resetConfig, 0, sizeof(GPS_Payload_TX_CFG_Reset_t));
+    resetConfig.resetMode = 0x01;
+
     /* Setup rate configuration */
     memset(&rateConfig, 0, sizeof(GPS_Payload_TX_CFG_Rate_t));
     rateConfig.measRate = GPS_TX_CFG_RATE_MEASINTERVAL;
@@ -1154,7 +1159,16 @@ boolean GPS_Custom_Configure(void)
     /* Setup SBAS configuration */
     memset(&sbasConfig, 0, sizeof(GPS_CFG_SBAS_t));
     sbasConfig.mode     = GPS_TX_CFG_SBAS_MODE;
-     
+
+    /* Do a controlled software reset. */
+    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RST, 
+                (uint8 *)&resetConfig, sizeof(GPS_Payload_TX_CFG_Reset_t));
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(10000);
+
     /* Send a CFG-RATE message to define update rate */
     returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RATE, 
                 (uint8 *)&rateConfig, sizeof(GPS_Payload_TX_CFG_Rate_t));
