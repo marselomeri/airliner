@@ -294,7 +294,8 @@ class Geofence(App):
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
         self._check_thread = PeriodicExecutor(
-            self._check_fence, every=1, logger=self.vehicle.logger,
+            self._check_fence, every=1,
+            logger=self.vehicle.logger, name='FenceCheck',
             exception=lambda e: self.vehicle.exception('Geofence Exception'))
         self._check_thread.start()
         geographic = self.vehicle.sensor('geographic')

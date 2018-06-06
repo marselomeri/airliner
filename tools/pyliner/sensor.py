@@ -61,10 +61,11 @@ class SensorAccess(VehicleAccess):
     def attach(self, vehicle, component):
         self._vehicle = vehicle
         self._component = component
-        self._component.attach(self)
         self._logger = vehicle.logger.getChild(self._name)
+        self._component.attach(self)
 
     def detach(self):
         self._component.detach()
         self._vehicle = None
         self._component = None
+        self._logger = None

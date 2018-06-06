@@ -71,7 +71,7 @@ class PeriodicExecutor(threading.Thread):
             name (str): The name of the thread. Default autogen.
             logger (Logger): Logger to use. Default logging.getLogger(self.name)
         """
-        super(PeriodicExecutor, self).__init__(name)
+        super(PeriodicExecutor, self).__init__(name=name)
         self.daemon = True
 
         self.callback = callback

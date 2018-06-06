@@ -66,7 +66,8 @@ class Communication(Service):
                 self.ci_socket.sendto(msg, (self.address, self.ci_port))
 
         self._periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME,
-                                               logger=self.vehicle.logger)
+                                               logger=self.vehicle.logger,
+                                               name='PeriodicSend')
         self._periodic_send.start()
 
     def detach(self):
