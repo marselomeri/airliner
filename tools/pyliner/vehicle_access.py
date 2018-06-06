@@ -7,6 +7,7 @@ class VehicleAccess(object):
         self._logger = None
 
     # Vehicle Access
+    # TODO wrap access in case of Access Denial
     def app(self, name):
         return self._vehicle.apps[name]
 

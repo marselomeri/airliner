@@ -127,6 +127,9 @@ class Navigation(App):
         while unroll_heading() < min_tol:
             self.vehicle.app('fd').r = method(unroll_heading(), target_heading)
             time.sleep(_NAV_SLEEP)
+        self.vehicle.info('clockwise expected %s actual %s (%s > %s)',
+                          target_heading, unroll_heading(),
+                          unroll_heading(), min_tol)
         self.vehicle.app('fd').r = 0.0
 
     def counterclockwise(self, degrees, method, tolerance=1):
@@ -142,6 +145,9 @@ class Navigation(App):
         while unroll_heading() > max_tol:
             self.vehicle.app('fd').r = method(unroll_heading(), target_heading)
             time.sleep(_NAV_SLEEP)
+        self.vehicle.info('counterclockwise expected %s actual %s (%s < %s)',
+                          target_heading, unroll_heading(),
+                          unroll_heading(), max_tol)
         self.vehicle.app('fd').r = 0.0
 
     def down(self, distance, method, tolerance=1):

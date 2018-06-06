@@ -6,4 +6,3 @@ geographiclib
 junit_xml
 protobuf
 sortedcontainers
-sympy
