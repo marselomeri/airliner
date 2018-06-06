@@ -148,15 +148,15 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
 {
     /* #0 (unused) */
-    {   .DefaultState        = LC_ACTION_NOT_USED,
+    {   .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
         .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_CRITICAL,
+        .EventID             = LC_BASE_AP_EID + 47,
+        .EventText           = { "Auto request LGC retract" },
         .RPNEquation         = { /* (WP_0) */
                                  0,
                                  LC_RPN_EQUAL

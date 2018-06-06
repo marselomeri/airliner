@@ -6,6 +6,7 @@
 #include "lc_msgdefs.h"
 #include "lc_tbl.h"
 #include "lc_app.h"
+#include "msg_ids.h"
 
 /*************************************************************************
 ** Examples
@@ -74,16 +75,15 @@ LC_WDTEntry_t LC_DefaultWDT[LC_MAX_WATCHPOINTS] =
 {
     /* #0 (unused) */
     {
-        .DataType                   = LC_WATCH_NOT_USED,
-        .OperatorID                 = LC_NO_OPER,
-        .MessageID                  = 0,
-        .WatchpointOffset           = 0,
+        .DataType                   = LC_DATA_FLOAT_LE,
+        .OperatorID                 = LC_OPER_GE,
+        .MessageID                  = PX4_DISTANCE_SENSOR_MID,
+        .WatchpointOffset           = 28,
         .BitMask                    = LC_NO_BITMASK,
         .CustomFuncArgument         = 0,
         .ResultAgeWhenStale         = 0,
-        .ComparisonValue.Unsigned32 = 0,
+        .ComparisonValue.Float32    = 3.0,
     },
-
     /* #1 (unused) */
     {
         .DataType                   = LC_WATCH_NOT_USED,

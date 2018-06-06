@@ -30,19 +30,19 @@ block main
                     tr
                       th Cmd Count
                       td
-                        span(data-sage={tlm:{name:'/CFS/LC/CmdCounter'}}) ---
+                        span(data-sage={tlm:[{name:'/CFS/LC/CmdCounter'}]}) ---
                     tr
                       th Error Count
                       td
-                        span(data-sage={tlm:{name:'/CFS/LC/ErrCounter'}}) ---
+                        span(data-sage={tlm:[{name:'/CFS/LC/ErrCounter'}]}) ---
                     tr
                       th LC State
                       td
-                        span(style='width: 60px; display:inline-block;', data-sage={tlm:{name:'/CFS/LC/CurrentLCState'}}) ---
+                        span(style='width: 60px; display:inline-block;', data-sage={tlm:[{name:'/CFS/LC/CurrentLCState'}]}) ---
                         .btn-group
-                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/LC/SetLCState'}}) Disabled
-                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/LC/SetLCState'}}) Passive
-                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/LC/SetLCState'}}) Active
+                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/LC/SetLCState', Parameters:[{Name:'State', Value:'Active'}]}}) Active
+                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/LC/SetLCState', Parameters:[{Name:'State', Value:'Passive'}]}}) Passive
+                          button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd:{name:'/CFS/LC/SetLCState', Parameters:[{Name:'State', Value:'Disabled'}]}}) Disabled
               footer
                 button.btn.btn-primary(data-sage={cmd:{name:'/CFS/LC/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd:{name:'/CFS/LC/Reset'}}) Reset
