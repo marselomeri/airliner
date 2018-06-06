@@ -12,6 +12,7 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
+import logging
 from os.path import basename
 from time import sleep
 
@@ -21,7 +22,7 @@ from controller import FlightMode
 from navigation import proportional
 from util import read_json, ScriptingWrapper, enable_logging
 
-enable_logging(script=basename(__file__))
+enable_logging(script=basename(__file__), level=logging.DEBUG)
 
 rky = pyliner.Pyliner(
     vehicle_id='rocky',
@@ -35,7 +36,7 @@ with ScriptingWrapper(rky) as rocky:
     while rocky.nav.altitude == "NULL":
         sleep(1)
         print "Waiting for telemetry downlink..."
-    
+
     rocky.ctrl.atp('Arm')
     rocky.ctrl.arm()
     rocky.ctrl.atp('Takeoff')
@@ -43,31 +44,32 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Move Up')
-    rocky.nav.up(10, proportional(0.2), tolerance=0.5)
+    rocky.nav.vnav(method=proportional(0.2), tolerance=0.5)\
+        .up(10)
 
     rocky.ctrl.atp('First')
-    rocky.nav.forward(5, proportional(0.1))
-    rocky.nav.right(5, proportional(0.1))
-    rocky.nav.backward(5, proportional(0.1))
-    rocky.nav.left(5, proportional(0.1))
+    lnav = rocky.nav.lnav(method=proportional(0.15), tolerance=1.0)
+    lnav.forward(5)
+    lnav.right(5)
+    lnav.backward(5)
+    lnav.left(5)
 
     rocky.ctrl.atp('Second')
-    rocky.nav.forward(5, proportional(0.1))
-    rocky.nav.left(5, proportional(0.1))
-    rocky.nav.backward(5, proportional(0.1))
-    rocky.nav.right(5, proportional(0.1))
+    lnav.forward(5)
+    lnav.left(5)
+    lnav.backward(5)
+    lnav.right(5)
 
     rocky.ctrl.atp('Third')
-    rocky.nav.backward(5, proportional(0.1))
-    rocky.nav.left(5, proportional(0.1))
-    rocky.nav.forward(5, proportional(0.1))
-    rocky.nav.right(5, proportional(0.1))
+    rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)\
+        .backward(5)\
+        .left(5)\
+        .forward(5)\
+        .right(5)
 
     rocky.ctrl.atp('Fourth')
-    rocky.nav.backward(5, proportional(0.1))
-    rocky.nav.right(5, proportional(0.1))
-    rocky.nav.forward(5, proportional(0.1))
-    rocky.nav.left(5, proportional(0.1))
+    rocky.nav.lnav(method=proportional(0.15), tolerance=0.75) \
+        .backward(5).right(5).forward(5).left(5)
 
     rocky.ctrl.atp('Return')
     rocky.ctrl.rtl()

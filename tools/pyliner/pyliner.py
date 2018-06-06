@@ -9,7 +9,7 @@ from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
 from navigation import Navigation
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 
 class Pyliner(BasePyliner):

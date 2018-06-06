@@ -1,10 +1,13 @@
-class VehicleAccess(object):
+from util import Loggable
+
+
+class VehicleAccess(Loggable):
     def __init__(self, name):
+        super(VehicleAccess, self).__init__()
         self._component = None
         self._name = name
         self._vehicle = None
         self._filter = set()
-        self._logger = None
 
     # Vehicle Access
     # TODO wrap access in case of Access Denial
@@ -38,26 +41,3 @@ class VehicleAccess(object):
 
     def remove_filter(self, predicate_callback):
         self._filter.remove(predicate_callback)
-
-    # Logging
-    def critical(self, msg):
-        self._logger.critical(msg)
-
-    def debug(self, msg, *args, **kwargs):
-        self._logger.debug(msg, *args, **kwargs)
-
-    def error(self, msg, *args, **kwargs):
-        self._logger.error(msg, *args, **kwargs)
-
-    def exception(self, msg, *args, **kwargs):
-        self._logger.exception(msg, *args, **kwargs)
-
-    def info(self, msg, *args, **kwargs):
-        self._logger.info(msg, *args, **kwargs)
-
-    @property
-    def logger(self):
-        return self._logger
-
-    def warning(self, msg, *args, **kwargs):
-        self._logger.warning(msg, *args, **kwargs)

@@ -1,13 +1,14 @@
 import math
 import re
 import time
+from abc import abstractmethod
 from collections import Iterable
 from numbers import Real
 
 from app import App
 from position import Position
 from telemetry import SetpointTriplet
-from util import shifter
+from util import shifter, copy_update, Loggable
 
 _NAV_SLEEP = 1.0/16.0
 
@@ -46,6 +47,180 @@ class Waypoint(Position):
                             else self.heading - 360)
 
 
+class NavigationFactory(Loggable):
+    def __init__(self, navigation, **kwargs):
+        super(NavigationFactory, self).__init__(navigation.vehicle.logger)
+        self._nav = navigation
+        self.kwargs = copy_update(self._nav.defaults, kwargs)
+
+    @abstractmethod
+    def __call__(self, **kwargs):
+        raise NotImplementedError
+
+    def default(self, name):
+        return self.kwargs[name] if name in self.kwargs else None
+
+        
+class Lnav(NavigationFactory):
+    def __call__(self, distance, axis=None, method=None, tolerance=None):
+        """Perform a lateral movement.
+
+        Block until the distance traveled is within the tolerance of the target
+        distance.
+
+        Args:
+            distance (Real): Distance in meters to move.
+            axis (str): Must be one of the lateral movement axes (x, y, or z),
+                and may be prefixed by an optional "-" for negative movement.
+            method (Callable[[Real, Real], Real]): Callable takes two arguments,
+                the distance traveled and the target distance, and returns an
+                axis control value within [-1, 1].
+            tolerance (Real): The allowable error in movement before the method
+                sets the control to 0 and returns.
+        """
+        axis = axis if axis else self.default('axis')
+        method = method if method else self.default('method')
+        tolerance = tolerance if tolerance is not None \
+            else self.default('tolerance')
+
+        axis_match = re.match('(-)?([xyz])', axis)
+        if not axis_match:
+            raise ValueError('Axis must match "(-)?([xyz])".')
+
+        neg, axis = axis_match.groups()
+        original = self._nav.position
+        delta = 0
+        while (distance - delta) > tolerance:
+            control = method(delta, distance)
+            self.debug('lnav expected %.3f actual %.3f (%.3f < %.3f m) %.3f',
+                       distance, delta, distance - delta, tolerance, control)
+            setattr(self._nav.vehicle.app('fd'), axis,
+                    -control if neg else control)
+            time.sleep(_NAV_SLEEP)
+            delta = self._nav._geographic.distance(original, self._nav.position)
+        self.info('lnav expected %s actual %s (%s < %s m)',
+                  distance, delta, distance - delta, tolerance)
+        setattr(self._nav.vehicle.app('fd'), axis, 0.0)
+        return self
+
+    def backward(self, distance, **kwargs):
+        """Move backward by a distance. See lnav for full documentation."""
+        return self(distance, '-x', **kwargs)
+        
+    def forward(self, distance, **kwargs):
+        """Move forward by a distance. See lnav for full documentation."""
+        return self(distance, 'x', **kwargs)
+
+    def left(self, distance, **kwargs):
+        """Move left by a distance. See lnav for full documentation."""
+        return self(distance, '-y', **kwargs)
+
+    def right(self, distance, **kwargs):
+        """Move right by a distance. See lnav for full documentation."""
+        return self(distance, 'y', **kwargs)
+
+
+class Rotate(NavigationFactory):
+    def __call__(self, **kwargs):
+        super(Rotate, self).__call__()
+
+    def clockwise(self, degrees, method=None, tolerance=None):
+        """Rotate clockwise by a number of degrees."""
+        method = method if method else self.default('method')
+        tolerance = tolerance if tolerance is not None \
+            else self.default('tolerance')
+
+        old_heading = self._nav.heading
+        target_heading = (old_heading + degrees) % 360
+        min_tol = (target_heading - tolerance) % 360
+
+        def unroll_heading():
+            return self._nav.heading if self._nav.heading < target_heading \
+                else self._nav.heading - 360
+
+        while unroll_heading() < min_tol:
+            self._nav.vehicle.app('fd').r = method(unroll_heading(), target_heading)
+            time.sleep(_NAV_SLEEP)
+        self.info('clockwise expected %s actual %s (%s > %s)', target_heading,
+                  unroll_heading(), unroll_heading(), min_tol)
+        self._nav.vehicle.app('fd').r = 0.0
+
+    def counterclockwise(self, degrees, method, tolerance=1):
+        """Rotate counterclockwise by a number of degrees."""
+        method = method if method else self.default('method')
+        tolerance = tolerance if tolerance is not None \
+            else self.default('tolerance')
+
+        old_heading = self._nav.heading
+        target_heading = (old_heading - degrees) % 360
+        max_tol = (target_heading + tolerance) % 360
+
+        def unroll_heading():
+            return self._nav.heading if self._nav.heading > target_heading \
+                else self._nav.heading + 360
+
+        while unroll_heading() > max_tol:
+            self._nav.vehicle.app('fd').r = method(unroll_heading(), target_heading)
+            time.sleep(_NAV_SLEEP)
+        self.info('counterclockwise expected %s actual %s (%s < %s)',
+                  target_heading, unroll_heading(), unroll_heading(), max_tol)
+        self._nav.vehicle.app('fd').r = 0.0
+
+
+class Vnav(NavigationFactory):
+    def __call__(self, by=None, to=None, method=None, tolerance=None):
+        """Perform a vertical navigation.
+
+        Blocks until the vehicle altitude is within tolerance of the target
+        change or absolute altitude.
+
+        Args:
+            by (Real): Change altitude by this amount. May be negative. Cannot
+                be set at the same time as `to`.
+            to (Real): Ascend or descend to this altitude. Cannot be set at the
+                same time as `by`.
+            method (Callable[[Real, Real], Real]): Take two arguments, the
+                current altitude and the target altitude, and return an
+                axis control value within [-1, 1].
+            tolerance (Real): The allowable error in altitude before the method
+                sets the z-axis to 0 and returns.
+        """
+        if not any((by, to)):
+            raise ValueError('Must set either by or to.')
+        elif by and to:
+            raise ValueError('Cannot set both by and to.')
+        if not method:
+            raise ValueError('Must have navigation method.')
+        if not isinstance(tolerance, Real) or tolerance <= 0:
+            raise ValueError('Tolerance must be set to a positive real number.')
+
+        target_altitude = (self._nav.altitude + by) if by else to
+        while abs(target_altitude - self._nav.altitude) > tolerance:
+            control = method(self._nav.altitude, target_altitude)
+            self.debug('vnav expected %.3f actual %.3f (%.3f < %.3f m) %.3f',
+                       target_altitude, self._nav.altitude,
+                       target_altitude - self._nav.altitude, tolerance, control)
+            self._nav.vehicle.app('fd').z = control
+            time.sleep(_NAV_SLEEP)
+        self.info('vnav expected %s actual %s (%s < %s m)', target_altitude,
+                  self._nav.altitude, abs(target_altitude - self._nav.altitude),
+                  tolerance)
+        self._nav.vehicle.app('fd').z = 0.0
+        return self
+
+    def down(self, distance, **kwargs):
+        """Move down by a distance. See vnav for full documentation."""
+        return self(by=-distance, **copy_update(self.kwargs, kwargs))
+
+    def to(self, altitude, **kwargs):
+        """Climb or descend to altitude. See vnav for full documentation."""
+        return self(to=altitude, **copy_update(self.kwargs, kwargs))
+
+    def up(self, distance, **kwargs):
+        """Move up by a distance. See vnav for full documentation."""
+        return self(by=distance, **copy_update(self.kwargs, kwargs))
+
+
 class Navigation(App):
     """Navigation module. Contains all navigation features.
 
@@ -60,6 +235,10 @@ class Navigation(App):
         self._geographic = None
         self._telemetry = None
 
+        self.defaults = {
+            'method': None, 'tolerance': None
+        }
+
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
         'longitude': '/Airliner/CNTL/VehicleGlobalPosition/Lon',
@@ -70,12 +249,12 @@ class Navigation(App):
         'velD': '/Airliner/CNTL/VehicleGlobalPosition/VelD'
     }
 
+    # Public Navigation Properties
     @property
     def altitude(self):
         """meters"""
         return App._telem(self.req_telem['altitude'])(self)
 
-    # Public Navigation Properties
     @property
     def heading(self):
         """Degrees"""
@@ -109,54 +288,6 @@ class Navigation(App):
 
     def detach(self):
         self._geographic = None
-
-    def backward(self, distance, method, tolerance=1):
-        """Move backward by a distance. See lnav for full documentation."""
-        self.lnav(distance, '-x', method, tolerance)
-
-    def clockwise(self, degrees, method, tolerance=1):
-        """Rotate clockwise by a number of degrees."""
-        old_heading = self.heading
-        target_heading = (old_heading + degrees) % 360
-        min_tol = (target_heading - tolerance) % 360
-
-        def unroll_heading():
-            return self.heading if self.heading < target_heading \
-                else self.heading - 360
-
-        while unroll_heading() < min_tol:
-            self.vehicle.app('fd').r = method(unroll_heading(), target_heading)
-            time.sleep(_NAV_SLEEP)
-        self.vehicle.info('clockwise expected %s actual %s (%s > %s)',
-                          target_heading, unroll_heading(),
-                          unroll_heading(), min_tol)
-        self.vehicle.app('fd').r = 0.0
-
-    def counterclockwise(self, degrees, method, tolerance=1):
-        """Rotate counterclockwise by a number of degrees."""
-        old_heading = self.heading
-        target_heading = (old_heading - degrees) % 360
-        max_tol = (target_heading + tolerance) % 360
-
-        def unroll_heading():
-            return self.heading if self.heading > target_heading \
-                else self.heading + 360
-
-        while unroll_heading() > max_tol:
-            self.vehicle.app('fd').r = method(unroll_heading(), target_heading)
-            time.sleep(_NAV_SLEEP)
-        self.vehicle.info('counterclockwise expected %s actual %s (%s < %s)',
-                          target_heading, unroll_heading(),
-                          unroll_heading(), max_tol)
-        self.vehicle.app('fd').r = 0.0
-
-    def down(self, distance, method, tolerance=1):
-        """Move down by a distance. See vnav for full documentation."""
-        self.vnav(by=-distance, method=method, tolerance=tolerance)
-
-    def forward(self, distance, method, tolerance=1):
-        """Move forward by a distance. See lnav for full documentation."""
-        self.lnav(distance, 'x', method, tolerance)
 
     def goto(self, waypoints, tolerance=1):
         # type: (Real, Iterable[Waypoint]) -> None
@@ -201,49 +332,15 @@ class Navigation(App):
                     break
                 time.sleep(_NAV_SLEEP)
 
-    def left(self, distance, method, tolerance=1):
-        """Move left by a distance. See lnav for full documentation."""
-        self.lnav(distance, '-y', method, tolerance)
-
-    def lnav(self, distance, axis, method, tolerance):
-        """Perform a lateral movement.
-
-        Block until the distance traveled is within the tolerance of the target
-        distance.
-
-        Args:
-            distance (Real): Distance in meters to move.
-            axis (str): Must be one of the lateral movement axes (x, y, or z),
-                and may be prefixed by an optional "-" for negative movement.
-            method (Callable[[Real, Real], Real]): Callable takes two arguments,
-                the distance traveled and the target distance, and returns an
-                axis control value within [-1, 1].
-            tolerance (Real): The allowable error in movement before the method
-                sets the control to 0 and returns.
-        """
-        axis_match = re.match('(-)?([xyz])', axis)
-        if not axis_match:
-            raise ValueError('Axis must match "(-)?([xyz])".')
-        neg, axis = axis_match.groups()
-        original = self.position
-        delta = 0
-        while (distance - delta) > tolerance:
-            velocity = method(delta, distance)
-            setattr(self.vehicle.app('fd'), axis,
-                    -velocity if neg else velocity)
-            time.sleep(_NAV_SLEEP)
-            delta = self._geographic.distance(original, self.position)
-        self.vehicle.info('lnav expected %s actual %s (%s < %s m)',
-                          distance, delta, distance-delta, tolerance)
-        setattr(self.vehicle.app('fd'), axis, 0.0)
+    def lnav(self, **kwargs):
+        return Lnav(self, **kwargs)
 
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
 
-    def right(self, distance, method, tolerance=1):
-        """Move right by a distance. See lnav for full documentation."""
-        self.lnav(distance, 'y', method, tolerance)
+    def rotate(self, **kwargs):
+        return Rotate(self, **kwargs)
 
     @property
     def telemetry(self):
@@ -255,40 +352,5 @@ class Navigation(App):
     def telemetry_available(self):
         return self._telemetry is not None
 
-    def up(self, distance, method=None, tolerance=1):
-        """Move up by a distance. See vnav for full documentation."""
-        self.vnav(by=distance, method=method, tolerance=tolerance)
-
-    def vnav(self, by=None, to=None, method=None, tolerance=1):
-        """Perform a vertical navigation.
-
-        Blocks until the vehicle altitude is within tolerance of the target
-        change or absolute altitude.
-
-        Args:
-            by (Real): Change altitude by this amount. May be negative. Cannot
-                be set at the same time as `to`.
-            to (Real): Ascend or descend to this altitude. Cannot be set at the
-                same time as `by`.
-            method (Callable[[Real, Real], Real]): Callable takes two arguments,
-                the current altitude and the target altitude, and returns an
-                axis control value within [-1, 1].
-            tolerance (Real): The allowable error in altitude before the method
-                sets the z-axis to 0 and returns.
-        """
-        if not any((by, to)):
-            raise ValueError('Must set either by or to.')
-        elif by and to:
-            raise ValueError('Cannot set both by and to.')
-        if not method:
-            raise ValueError('Must have navigation method.')
-        if not isinstance(tolerance, Real) or tolerance <= 0:
-            raise ValueError('Tolerance must be set to a positive real number.')
-        target_altitude = (self.altitude + by) if by is not None else to
-        while abs(target_altitude - self.altitude) > tolerance:
-            self.vehicle.app('fd').z = method(self.altitude, target_altitude)
-            time.sleep(_NAV_SLEEP)
-        self.vehicle.info('vnav expected %s actual %s (%s < %s m)',
-                          target_altitude, self.altitude,
-                          abs(target_altitude - self.altitude), tolerance)
-        self.vehicle.app('fd').z = 0.0
+    def vnav(self, **kwargs):
+        return Vnav(self, **kwargs)
