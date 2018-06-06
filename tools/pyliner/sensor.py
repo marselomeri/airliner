@@ -1,12 +1,5 @@
-from enum import Enum
-
 from pyliner_exceptions import InvalidStateError
 from vehicle_access import VehicleAccess
-
-
-class SensorState(Enum):
-    ATTACHED = 'ATTACHED'
-    DETACHED = 'DETACHED'
 
 
 class Sensor(object):
@@ -24,9 +17,11 @@ class Sensor(object):
     Lifecycle:
         attach -> detach
     """
+    ATTACHED = 'ATTACHED'
+    DETACHED = 'DETACHED'
 
     def __init__(self):
-        self._state = SensorState.DETACHED
+        self._state = Sensor.DETACHED
         self.vehicle = None
         """:type: VehicleAccess"""
 
@@ -37,9 +32,9 @@ class Sensor(object):
         The service is given a wrapper to interact with the vehicle it has been
         attached to. Use this wrapper for platform-dependant operations.
         """
-        if self._state is not SensorState.DETACHED:
+        if self._state is not Sensor.DETACHED:
             raise InvalidStateError('Service must be detached before attaching.')
-        self._state = SensorState.ATTACHED
+        self._state = Sensor.ATTACHED
         self.vehicle = vehicle_wrapper
 
     def detach(self):
@@ -51,12 +46,25 @@ class Sensor(object):
 
         Sets vehicle to None.
         """
-        if self._state is not SensorState.ATTACHED:
+        if self._state is not Sensor.ATTACHED:
             raise InvalidStateError('Service must be stopped before detaching.')
-        self._state = SensorState.DETACHED
+        self._state = Sensor.DETACHED
         self.vehicle = None
 
     @property
     def state(self):
         """The state of the sensor."""
         return self._state
+
+
+class SensorAccess(VehicleAccess):
+    def attach(self, vehicle, component):
+        self._vehicle = vehicle
+        self._component = component
+        self._component.attach(self)
+        self._logger = vehicle.logger.getChild(self._name)
+
+    def detach(self):
+        self._component.detach()
+        self._vehicle = None
+        self._component = None

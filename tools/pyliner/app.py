@@ -1,6 +1,6 @@
 from collections import Iterable
 
-from service import Service
+from service import Service, ServiceAccess
 
 
 class App(Service):
@@ -32,3 +32,7 @@ class App(Service):
     @staticmethod
     def _telem(name):
         return lambda self: self.vehicle._vehicle.tlm_value(name)
+
+
+class AppAccess(ServiceAccess):
+    pass

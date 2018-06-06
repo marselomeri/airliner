@@ -8,11 +8,12 @@ from builtins import isinstance
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
 
-from app import App
+from app import App, AppAccess
 from communication import Communication
 from geographic import Geographic
+from sensor import SensorAccess
+from service import ServiceAccess
 from telemetry import Telemetry
-from vehicle_access import VehicleAccess
 
 
 class BasePyliner(object):
@@ -52,38 +53,38 @@ class BasePyliner(object):
         self.attach_sensor('geographic', geographic)
         self.attach_service('comms', communications)
 
-    def attach_app(self, priority, name, app):
+    def attach_app(self, priority, app_name, app):
         """Attach an app to this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
 
         if priority in self.com_priority:
             raise ValueError('There is already a module with priority '
                              '{}'.format(priority))
-        elif name in self.apps:
+        elif app_name in self.apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
-        elif not re.match(identifier, name):
+        elif not re.match(identifier, app_name):
             raise ValueError('Attempting to enable a module with an illegal '
                              'name. Module names must be valid Python '
                              'identifiers.')
         elif not isinstance(app, App):
             return TypeError('module must implement App.')
 
-        vehicle_token = VehicleAccess(self, name, app)
-        self.apps[name] = app
+        vehicle_token = AppAccess(app_name)
+        self.apps[app_name] = app
         self.com_priority[priority] = app
-        app.attach(vehicle_token)
+        vehicle_token.attach(self, app)
 
     def attach_service(self, service_name, service):
-        vehicle_token = VehicleAccess(self, service_name, service)
+        vehicle_token = ServiceAccess(service_name)
         self.services[service_name] = vehicle_token
-        service.attach(vehicle_token)
+        vehicle_token.attach(self, service)
 
     def attach_sensor(self, sensor_name, sensor):
-        vehicle_token = VehicleAccess(self, sensor_name, sensor)
+        vehicle_token = SensorAccess(sensor_name)
         self.sensors[sensor_name] = sensor
         self._sensor_tokens[sensor_name] = vehicle_token
-        sensor.attach(vehicle_token)
+        vehicle_token.attach(self, sensor)
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.

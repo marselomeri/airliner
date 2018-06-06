@@ -70,16 +70,12 @@ class Navigation(App):
         'velD': '/Airliner/CNTL/VehicleGlobalPosition/VelD'
     }
 
-    def attach(self, vehicle):
-        super(Navigation, self).attach(vehicle)
-        self._geographic = vehicle.sensor('geographic')
-
-    # Public Navigation Properties
     @property
     def altitude(self):
         """meters"""
         return App._telem(self.req_telem['altitude'])(self)
 
+    # Public Navigation Properties
     @property
     def heading(self):
         """Degrees"""
@@ -106,6 +102,13 @@ class Navigation(App):
     def yaw(self):
         """The vehicle yaw in clockwise radians from north."""
         return math.degrees(App._telem(self.req_telem['yaw'])(self))
+
+    def attach(self, vehicle):
+        super(Navigation, self).attach(vehicle)
+        self._geographic = vehicle.sensor('geographic')
+
+    def detach(self):
+        self._geographic = None
 
     def backward(self, distance, method, tolerance=1):
         """Move backward by a distance. See lnav for full documentation."""

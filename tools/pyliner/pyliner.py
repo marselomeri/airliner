@@ -38,7 +38,7 @@ class Pyliner(BasePyliner):
 
         self.atp_override = None
 
-        # Default modules
+        # Default components
         self.attach_app(0, 'fence', Geofence())
         self.attach_app(1, 'ctrl', Controller())
         self.attach_app(2, 'fd', FlightDirector())
@@ -62,17 +62,17 @@ class Pyliner(BasePyliner):
             time.sleep(poll)
         return self.tlm_value(tlm)
 
-    def attach_app(self, priority, name, app):
+    def attach_app(self, priority, app_name, app):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
         new module will be subscribed to.
 
         Args:
             priority: The priority that the app communicates with the vehicle.
-            name (str): The name that the module will be initialized under.
+            app_name (str): The name that the module will be initialized under.
             app (App): The app to enable.
         """
-        super(Pyliner, self).attach_app(priority, name, app)
+        super(Pyliner, self).attach_app(priority, app_name, app)
         required_ops = app.required_telemetry_paths()
         if required_ops:
             self.communications.subscribe({'tlm': required_ops})
@@ -89,7 +89,7 @@ class Pyliner(BasePyliner):
         Raises:
             KeyError: If telemetry is not found.
         """
-        # TODO Rename variable
+        # TODO Rename variable _telemetry
         return self.communications._telemetry[tlm]
 
     def tlm_value(self, tlm):
