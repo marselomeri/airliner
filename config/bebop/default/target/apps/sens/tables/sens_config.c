@@ -64,7 +64,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
     /* RC%d_TRIM (0..17)    */
 		1500.0f,
 		1500.0f,
-		1500.0f,
+		1100.0f,
 		1500.0f,
 		1500.0f,
 		1500.0f,
