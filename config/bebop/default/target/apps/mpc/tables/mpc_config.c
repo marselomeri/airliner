@@ -161,7 +161,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 3
 	 * @group Multicopter Position Control
 	 */
-	0.02f,
+	0.1f,
 
 	/**
 	 * MPC_Z_VEL_D
@@ -223,7 +223,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	0.95f,
+	1.3f,
 
 	/**
 	 * MPC_XY_VEL_P
@@ -234,7 +234,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	0.09,
+	0.12,
 
 	/**
 	 * MPC_XY_VEL_I
@@ -247,7 +247,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 3
 	 * @group Multicopter Position Control
 	 */
-	0.02f,
+	0.05f,
 
 	/**
 	 * MPC_XY_VEL_D
@@ -258,7 +258,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 3
 	 * @group Multicopter Position Control
 	 */
-	0.01f,
+	0.006f,
 
 	/**
 	 * MPC_XY_CRUISE
@@ -321,7 +321,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	10.0f,
+	2.0f,
 
 	/**
 	 * MPC_XY_FF
@@ -469,7 +469,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	3.0f,
+	2.0f,
 
 	/**
 	 * MPC_DEC_HOR_MAX
@@ -609,7 +609,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	/**
 	 * MC_YAW_P
 	 */
-	2.8f,
+	4.0f,
 
 	/**
 	 * VT_OPT_RECOV_EN
