@@ -53,9 +53,9 @@ extern "C" {
 /** \brief IO speed.
 **
 **  \par Description:
-**       The serial IO speed 38400 baud.
+**       The serial IO speed 230400 baud.
 */
-#define GPS_SERIAL_IO_SPEED                       38400
+#define GPS_SERIAL_IO_SPEED                       (230400)
 
 /** \brief Wait time (ms) before read.
 **
