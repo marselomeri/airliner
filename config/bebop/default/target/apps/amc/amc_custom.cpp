@@ -187,7 +187,7 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
     if(PWM[0] <= AMC_PWM_DISARMED)
     {
         /* If motors aren't already stopped... */
-        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STARTED || AMC_AppCustomData.Status == AMC_CUSTOM_INITIALIZED)
+        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STARTED)
         {
             (void) AMC_Stop_Motors();
         }
@@ -197,13 +197,12 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
     if(PWM[0] > AMC_PWM_DISARMED)
     {
         /* If motors aren't already started... */
-        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STOPPED)
+        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STOPPED || AMC_AppCustomData.Status == AMC_CUSTOM_INITIALIZED)
         {
             (void) AMC_Start_Motors();
         }
         for (i = 0; i < 4; ++i)
         {
-
             motor_speeds[i] = AMC_Scale_To_Dimensionless(PWM[i]);
         }
 
