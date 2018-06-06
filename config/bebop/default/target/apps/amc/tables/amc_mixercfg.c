@@ -47,8 +47,8 @@ MultirotorMixer_ConfigTable_t AMC_MixerCfgTbl =
     1.0,          /* Roll Scale     */
     1.0,          /* Pitch Scale    */
     1.0,          /* Yaw Scale      */
-    0.1,          /* Idle Speed     */
-    1.0,          /* Delta Out Max  */
+    0.0,          /* Idle Speed     */
+    0.0,          /* Delta Out Max  */
     4,            /* Rotor Count    */
     MIXER_QUAD_X, /* Rotor Geometry */
     {
