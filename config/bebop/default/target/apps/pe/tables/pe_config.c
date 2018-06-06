@@ -53,8 +53,12 @@ PE_ConfigTbl_t PE_ConfigTbl =
     .012f,
 	//ACCEL_Z_STDDEV
     .02f,
+	//BARO_FUSE
+    1,
 	//BARO_STDDEV
     3.0f,
+	//GPS_FUSE
+    1,
 	//GPS_DELAY
     .29f,
 	//GPS_XY_STDDEV
@@ -69,6 +73,8 @@ PE_ConfigTbl_t PE_ConfigTbl =
     3.0f,
 	//GPS_EPV_MAX
     5.0f,
+	//LAND_FUSE
+    1,
 	//LAND_Z_STDDEV
     .03f,
 	//LAND_VXY_STDDEV
@@ -84,11 +90,17 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//T_MAX_GRADE
     1.0f,
 	//FAKE_ORIGIN
-    1,
+    0,
 	//INIT_ORIGIN_LAT
     29.562144f,
 	//INIT_ORIGIN_LON
-    -95.144554
+    -95.144554,
+    //ULR_FUSE
+    TRUE,
+    //ULR_STDDEV
+    .05f,
+    //ULR_OFF_Z
+    0.0f
 };
 
 /*
