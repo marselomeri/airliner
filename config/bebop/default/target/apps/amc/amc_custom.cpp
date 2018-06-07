@@ -144,15 +144,24 @@ int32 AMC::InitDevice(void)
     if(TRUE == returnBool)
     {
         (void) CFE_EVS_SendEvent(AMC_DEVICE_INF_EID, CFE_EVS_INFORMATION,
-            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu", 
+            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu, \
+            flights %hu, last flight time %hu, total flight time %u, \
+            last error %hhu", 
             observation.battery_voltage_mv, observation.status, observation.error,
-            observation.motors_in_fault);
+            observation.motors_in_fault, observation.n_flights,
+            observation.last_flight_time, observation.total_flight_time,
+            observation.last_error);
     }
     else
     {
         returnValue = -1;
         goto end_of_function;
     }
+
+    uint16 n_flights;
+    uint16 last_flight_time;
+    uint32 total_flight_time;
+    uint8 last_error;
 
     AMC_AppCustomData.Status = AMC_CUSTOM_INITIALIZED;
 
@@ -196,17 +205,17 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
     /* If armed start motors. */
     if(PWM[0] > AMC_PWM_DISARMED)
     {
-        /* If motors aren't already started... */
-        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STOPPED || AMC_AppCustomData.Status == AMC_CUSTOM_INITIALIZED)
-        {
-            (void) AMC_Start_Motors();
-        }
         for (i = 0; i < 4; ++i)
         {
             motor_speeds[i] = AMC_Scale_To_Dimensionless(PWM[i]);
         }
 
         (void) AMC_Set_ESC_Speeds(motor_speeds);
+        /* If motors aren't already started... */
+        if (AMC_AppCustomData.Status == AMC_CUSTOM_MOTORS_STOPPED || AMC_AppCustomData.Status == AMC_CUSTOM_INITIALIZED)
+        {
+            (void) AMC_Start_Motors();
+        }
     }
 }
 
