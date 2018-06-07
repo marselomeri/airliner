@@ -124,8 +124,12 @@ int32 AMC::InitDevice(void)
     if(TRUE == returnBool)
     {
         (void) CFE_EVS_SendEvent(AMC_DEVICE_INF_EID, CFE_EVS_INFORMATION,
-            "AMC Bebop BLDC controller initialized version %hhu.%hhu type %hhu motors %hhu", 
-            info.version_major, info.version_minor, info.type, info.n_motors_controlled);
+            "AMC Bebop BLDC controller initialized version %hhu.%hhu \
+            type %hhu motors %hhu, flights %hu, last flight time %hu, \
+            total flight time %u, last error %hhu", info.version_major, 
+            info.version_minor, info.type, info.n_motors_controlled,
+            info.n_flights, info.last_flight_time, info.total_flight_time,
+            info.last_error);
     }
     else
     {
@@ -144,24 +148,16 @@ int32 AMC::InitDevice(void)
     if(TRUE == returnBool)
     {
         (void) CFE_EVS_SendEvent(AMC_DEVICE_INF_EID, CFE_EVS_INFORMATION,
-            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu, \
-            flights %hu, last flight time %hu, total flight time %u, \
-            last error %hhu", 
+            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu \
+            temperature C %hhu", 
             observation.battery_voltage_mv, observation.status, observation.error,
-            observation.motors_in_fault, observation.n_flights,
-            observation.last_flight_time, observation.total_flight_time,
-            observation.last_error);
+            observation.motors_in_fault, observation.temperatur_c);
     }
     else
     {
         returnValue = -1;
         goto end_of_function;
     }
-
-    uint16 n_flights;
-    uint16 last_flight_time;
-    uint32 total_flight_time;
-    uint8 last_error;
 
     AMC_AppCustomData.Status = AMC_CUSTOM_INITIALIZED;
 
