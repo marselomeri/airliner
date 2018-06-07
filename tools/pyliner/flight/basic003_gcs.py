@@ -41,7 +41,7 @@ with ScriptingWrapper(rky) as rocky:
     while rocky.nav.altitude == "NULL":
         sleep(1)
         print "Waiting for telemetry downlink..."
-    
+
     rocky.ctrl.atp('Arm')
     rocky.ctrl.arm()
     rocky.ctrl.atp('Takeoff')
@@ -49,27 +49,32 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Move Up')
-    rocky.nav.up(10, proportional(0.2), tolerance=0.5)
+    rocky.nav.vnav(method=proportional(0.2), tolerance=0.5).up(10)
+
+    rocky.nav.defaults['tolerance'] = 0.75
+    lnav = rocky.nav.lnav(method=proportional(0.15))
+    rocky.nav.defaults['tolerance'] = 2
+    yaw = rocky.nav.rotate(method=range_limit)
 
     rocky.ctrl.atp('First')
     for _ in range(4):
-        rocky.nav.forward(10, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
+        lnav.forward(5)
+        yaw.clockwise(90)
 
     rocky.ctrl.atp('Second')
     for _ in range(4):
-        rocky.nav.forward(10, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
+        lnav.forward(5)
+        yaw.counterclockwise(90)
 
     rocky.ctrl.atp('Third')
     for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.clockwise(90, range_limit)
+        lnav.backward(5)
+        yaw.clockwise(90)
 
     rocky.ctrl.atp('Fourth')
     for _ in range(4):
-        rocky.nav.backward(5, proportional(0.1))
-        rocky.nav.counterclockwise(90, range_limit)
+        lnav.backward(5)
+        yaw.counterclockwise(90)
 
     rocky.ctrl.atp('Return')
     rocky.ctrl.rtl()

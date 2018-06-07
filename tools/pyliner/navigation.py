@@ -115,6 +115,11 @@ class Lnav(NavigationFactory):
         tolerance = tolerance if tolerance is not None \
             else self.default('tolerance')
 
+        if not method or not callable(method):
+            raise ValueError('Must have a callable navigation method.')
+        if not isinstance(tolerance, Real) or tolerance <= 0:
+            raise ValueError('Tolerance must be set to a positive real number.')
+
         axis_match = re.match('(-)?([xyz])', axis)
         if not axis_match:
             raise ValueError('Axis must match "(-)?([xyz])".')
@@ -177,7 +182,7 @@ class Rotate(NavigationFactory):
                   unroll_heading(), unroll_heading(), min_tol)
         self._nav.vehicle.app('fd').r = 0.0
 
-    def counterclockwise(self, degrees, method, tolerance=1):
+    def counterclockwise(self, degrees, method=None, tolerance=None):
         """Rotate counterclockwise by a number of degrees."""
         method = method if method else self.default('method')
         tolerance = tolerance if tolerance is not None \
@@ -205,6 +210,11 @@ class Goto(NavigationFactory):
 
         Block until the vehicle is within tolerance of the final waypoint.
         """
+        tolerance = tolerance if tolerance is not None \
+            else self.default('tolerance')
+        if not isinstance(tolerance, Real) or tolerance <= 0:
+            raise ValueError('Tolerance must be set to a positive real number.')
+
         if not isinstance(waypoints, Iterable):
             waypoints = (waypoints,)
         for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
@@ -266,8 +276,8 @@ class Vnav(NavigationFactory):
             raise ValueError('Must set either by or to.')
         elif by and to:
             raise ValueError('Cannot set both by and to.')
-        if not method:
-            raise ValueError('Must have navigation method.')
+        if not method or not callable(method):
+            raise ValueError('Must have a callable navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
 

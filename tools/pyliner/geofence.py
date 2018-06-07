@@ -307,8 +307,9 @@ class Geofence(App):
         self.fence_violation = self.fence_violation or \
                                (self.enabled and self.position not in self)
         if not old and self.fence_violation:
-            self.vehicle.info('Encountered Fence Violation at %s',
-                              self.position)
+            self.vehicle.error('Encountered Fence Violation at %s',
+                               self.position)
+            print('Encountered fence violation. Press Ctrl-C twice to exit.')
 
     def detach(self):
         super(Geofence, self).detach()

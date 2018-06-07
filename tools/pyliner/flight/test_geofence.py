@@ -39,10 +39,11 @@ with ScriptingWrapper(rky) as rocky:
     home = rocky.nav.position
     new = rocky.geographic.pbd(home, 90, 15)
     new.altitude = rocky.nav.altitude + 10
-    rocky.nav.goto(new)
 
-    new = rocky.geographic.pbd(new, 0, 20)
-    rocky.nav.goto(new)
+    goto = rocky.nav.goto(tolerance=0.5)
+    goto(new)
+    new = rocky.geographic.pbd(new, 0, 30)
+    goto(new)
 
     rocky.ctrl.atp('Return (if you got here the fence failed)')
     rocky.ctrl.rtl()

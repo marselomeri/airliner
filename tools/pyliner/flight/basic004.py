@@ -50,13 +50,14 @@ with ScriptingWrapper(rky) as rocky:
     # rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Goto')
+    goto = rocky.nav.goto(tolerance=1)
 
     home = rocky.nav.position
     new = rocky.geographic.pbd(home, 90, 20)
     new.altitude = rocky.nav.altitude + 10
 
-    rocky.nav.goto(new)
-    rocky.nav.goto(rocky.geographic.pbd(new, 270, 40))
+    goto(new)
+    goto(rocky.geographic.pbd(new, 270, 40))
 
     rocky.ctrl.atp('Return')
     rocky.ctrl.rtl()

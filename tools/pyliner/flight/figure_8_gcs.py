@@ -58,7 +58,7 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Move Up')
-    rocky.nav.vnav(by=10, method=constant(1.0))
+    rocky.nav.vnav(method=constant(0.5), tolerance=0.5).up(10)
     home = rocky.nav.position
 
     # Bearing to home
