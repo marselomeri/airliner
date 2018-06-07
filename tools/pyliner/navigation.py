@@ -13,16 +13,48 @@ from util import shifter, copy_update, Loggable
 _NAV_SLEEP = 1.0/16.0
 
 
+def adder(*processes):
+    return lambda *args, **kwargs: sum(p(*args, **kwargs) for p in processes)
+
+
 def constant(value):
-    return lambda current, target: value
+    return lambda *args, **kwargs: value
 
 
-def proportional(const, neutral=0.0):
-    return lambda current, target: (target - current) * const + neutral
+def integral(gain, t_sample, t_integral):
+    """Generate an integral controller."""
+    factor = gain * t_sample / t_integral
+
+    def _integral():
+        result = 0.0
+        while True:
+            current, target = yield result
+            result += factor * (target - current)
+    gen = _integral()
+    next(gen)
+    return lambda current, target: gen.send((current, target))
 
 
 def limiter(min_val, max_val):
     return lambda val: max(min(val, max_val), min_val)
+
+
+def proportional(gain, bias=0.0):
+    return lambda current, target: gain * (target - current) + bias
+
+
+def pi(p_gain, i_gain, t_sample, t_integral, p_bias=0.0):
+    def _pi():
+        p = proportional(p_gain, p_bias)
+        i = integral(i_gain, t_sample, t_integral)
+        p_out = i_out = 0.0
+        while True:
+            current, target = yield p_out + i_out
+            p_out = p(current, target)
+            i_out = i(0.0, p_out)
+    gen = _pi()
+    next(gen)
+    return lambda current, target: gen.send((current, target))
 
 
 # TODO Look into using decimal library for precision at any lat/lon
@@ -167,6 +199,51 @@ class Rotate(NavigationFactory):
         self._nav.vehicle.app('fd').r = 0.0
 
 
+class Goto(NavigationFactory):
+    def __call__(self, waypoints, tolerance=None):
+        """Move the vehicle to a waypoint or along a series of waypoints.
+
+        Block until the vehicle is within tolerance of the final waypoint.
+        """
+        if not isinstance(waypoints, Iterable):
+            waypoints = (waypoints,)
+        for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
+            palt = 0 if not prv else prv.altitude \
+                if prv.altitude is not None else self._nav.altitude
+            calt = 0 if not cur else cur.altitude \
+                if cur.altitude is not None else self._nav.altitude
+            nalt = 0 if not nxt else nxt.altitude \
+                if nxt.altitude is not None else self._nav.altitude
+            pyaw = 0 if not prv else prv.yaw \
+                if prv.yaw is not None else self._nav.yaw
+            cyaw = 0 if not cur else cur.yaw \
+                if cur.yaw is not None else self._nav.yaw
+            nyaw = 0 if not nxt else nxt.yaw \
+                if nxt.yaw is not None else self._nav.yaw
+            self._nav._telemetry = SetpointTriplet(
+                Prev_Lat=prv.latitude if prv is not None else 0,
+                Prev_Lon=prv.longitude if prv is not None else 0,
+                Prev_Alt=palt, Prev_Yaw=pyaw,
+                Prev_Valid=prv is not None, Prev_PositionValid=prv is not None,
+                Cur_Lat=cur.latitude if cur is not None else 0,
+                Cur_Lon=cur.longitude if cur is not None else 0,
+                Cur_Alt=calt, Cur_Yaw=cyaw,
+                Cur_Valid=cur is not None, Cur_PositionValid=cur is not None,
+                Next_Lat=nxt.latitude if nxt is not None else 0,
+                Next_Lon=nxt.longitude if nxt is not None else 0,
+                Next_Alt=nalt, Next_Yaw=nyaw,
+                Next_Valid=nxt is not None, Next_PositionValid=nxt is not None
+            )
+            while True:
+                distance = self._nav._geographic.distance(cur, self._nav.position)
+                if distance < tolerance:
+                    self._nav.vehicle.info(
+                        'goto expected %s actual %s (%s < %s m)',
+                        cur, self._nav.position, distance, tolerance)
+                    break
+                time.sleep(_NAV_SLEEP)
+
+
 class Vnav(NavigationFactory):
     def __call__(self, by=None, to=None, method=None, tolerance=None):
         """Perform a vertical navigation.
@@ -287,50 +364,11 @@ class Navigation(App):
         self._geographic = vehicle.sensor('geographic')
 
     def detach(self):
+        super(Navigation, self).detach()
         self._geographic = None
 
-    def goto(self, waypoints, tolerance=1):
-        # type: (Real, Iterable[Waypoint]) -> None
-        """Move the vehicle to a waypoint or along a series of waypoints.
-
-        Block until the vehicle is within tolerance of the final waypoint.
-        """
-        if not isinstance(waypoints, Iterable):
-            waypoints = (waypoints,)
-        for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
-            palt = 0 if not prv else prv.altitude \
-                if prv.altitude is not None else self.altitude
-            calt = 0 if not cur else cur.altitude \
-                if cur.altitude is not None else self.altitude
-            nalt = 0 if not nxt else nxt.altitude \
-                if nxt.altitude is not None else self.altitude
-            pyaw = 0 if not prv else prv.yaw \
-                if prv.yaw is not None else self.yaw
-            cyaw = 0 if not cur else cur.yaw \
-                if cur.yaw is not None else self.yaw
-            nyaw = 0 if not nxt else nxt.yaw \
-                if nxt.yaw is not None else self.yaw
-            self._telemetry = SetpointTriplet(
-                Prev_Lat=prv.latitude if prv is not None else 0,
-                Prev_Lon=prv.longitude if prv is not None else 0,
-                Prev_Alt=palt, Prev_Yaw=pyaw,
-                Prev_Valid=prv is not None, Prev_PositionValid=prv is not None,
-                Cur_Lat=cur.latitude if cur is not None else 0,
-                Cur_Lon=cur.longitude if cur is not None else 0,
-                Cur_Alt=calt, Cur_Yaw=cyaw,
-                Cur_Valid=cur is not None, Cur_PositionValid=cur is not None,
-                Next_Lat=nxt.latitude if nxt is not None else 0,
-                Next_Lon=nxt.longitude if nxt is not None else 0,
-                Next_Alt=nalt, Next_Yaw=nyaw,
-                Next_Valid=nxt is not None, Next_PositionValid=nxt is not None
-            )
-            while True:
-                distance = self._geographic.distance(cur, self.position)
-                if distance < tolerance:
-                    self.vehicle.info('goto expected %s actual %s (%s < %s m)',
-                                      cur, self.position, distance, tolerance)
-                    break
-                time.sleep(_NAV_SLEEP)
+    def goto(self, **kwargs):
+        return Goto(self, **kwargs)
 
     def lnav(self, **kwargs):
         return Lnav(self, **kwargs)

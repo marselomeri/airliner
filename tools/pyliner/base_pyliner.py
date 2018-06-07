@@ -14,9 +14,10 @@ from geographic import Geographic
 from sensor import SensorAccess
 from service import ServiceAccess
 from telemetry import Telemetry
+from util import Loggable
 
 
-class BasePyliner(object):
+class BasePyliner(Loggable):
     """
     Contains the bare-minimum required for Pyliner. All additional functionality
     is provided through the Pyliner class. App management is performed via the
@@ -37,13 +38,12 @@ class BasePyliner(object):
                 is given the option to use a custom class if they desire.
             logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
         """
-        if logger is None:
-            logger = logging.getLogger(vehicle_id)
+        super(BasePyliner, self).__init__(
+            logger or logging.getLogger(vehicle_id))
 
         self.apps = {}
         self.communications = communications
         self.com_priority = SortedDict()
-        self.logger = logger
         self.services = {}
         self.sensors = {}
         self._sensor_tokens = {}
