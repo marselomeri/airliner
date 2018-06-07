@@ -23,7 +23,7 @@ from time import sleep
 import pyliner
 from communication import Communication
 from controller import FlightMode
-from navigation import constant, proportional, limiter
+from control import constant, limiter, proportional
 from util import read_json, enable_logging, ScriptingWrapper
 
 FAST = 0.75

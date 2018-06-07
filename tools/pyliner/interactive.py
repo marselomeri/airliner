@@ -1,6 +1,7 @@
 from os.path import basename
 
 import pyliner
+from control import *
 from communication import Communication
 from util import read_json, enable_logging
 

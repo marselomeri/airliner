@@ -19,7 +19,7 @@ from time import sleep
 import pyliner
 from communication import Communication
 from controller import FlightMode
-from navigation import proportional
+from control import proportional
 from util import read_json, ScriptingWrapper, enable_logging
 
 enable_logging(script=basename(__file__), level=logging.INFO)
