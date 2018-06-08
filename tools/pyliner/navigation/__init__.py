@@ -5,10 +5,13 @@ from abc import abstractmethod
 from collections import Iterable
 from numbers import Real
 
+from datetime import datetime
+
 from app import App
 from position import Position
+from pyliner_exceptions import CommandTimeout
 from telemetry import SetpointTriplet
-from util import shifter, copy_update, Loggable
+from util import shifter, copy_update, Loggable, OverlayDict
 
 _NAV_SLEEP = 1.0/16.0
 
@@ -35,23 +38,29 @@ class Waypoint(Position):
                             else self.heading - 360)
 
 
+NotSet = object()
+"""Indicate a kwarg that is not set (different than None). Use responsibly.
+You probably shouldn't re-assign this.
+"""
+
+
 class NavigationFactory(Loggable):
     def __init__(self, navigation, **kwargs):
         super(NavigationFactory, self).__init__(navigation.vehicle.logger)
         self._nav = navigation
-        self.kwargs = copy_update(self._nav.defaults, kwargs)
+        self._default = OverlayDict(kwargs, self._nav.defaults)
 
     @abstractmethod
     def __call__(self, **kwargs):
         raise NotImplementedError
 
-    def default(self, name):
-        return self.kwargs[name] if name in self.kwargs else None
+    def resolve(self, item, name):
+        return item if item is not NotSet else self._default[name]
 
 
 class Lnav(NavigationFactory):
-    def __call__(self, distance, axis=None, method=None, tolerance=None,
-                 timeout=None):
+    def __call__(self, distance, axis=NotSet, method=NotSet, tolerance=NotSet,
+                 timeout=NotSet):
         """Perform a lateral movement.
 
         Block until the distance traveled is within the tolerance of the target
@@ -67,12 +76,13 @@ class Lnav(NavigationFactory):
             tolerance (Real): The allowable error in movement before the method
                 sets the control to 0 and returns.
         """
-        axis = axis if axis else self.default('axis')
-        method = method if method else self.default('method')
-        tolerance = tolerance if tolerance is not None \
-            else self.default('tolerance')
-        timeout = timeout if timeout is not None else self.default('timeout')
+        # Default resolution
+        axis = self.resolve(axis, 'axis')
+        method = self.resolve(method, 'method')
+        tolerance = self.resolve(tolerance, 'tolerance')
+        timeout = self.resolve(timeout, 'timeout')
 
+        # Sanity checks
         if not method or not callable(method):
             raise ValueError('Must have a callable navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
@@ -80,25 +90,33 @@ class Lnav(NavigationFactory):
         if not isinstance(timeout, Real) or timeout <= 0:
             raise ValueError('Timeout must be set to a positive real number.')
 
+        # Match axis value
         axis_match = re.match('(-)?([xyz])', axis)
-        if not axis_match:
-            raise ValueError('Axis must match "(-)?([xyz])".')
-
+        if not axis_match: raise ValueError('Axis must match "(-)?([xyz])".')
         neg, axis = axis_match.groups()
+
+        # Timeout
+        # TODO Use vehicle time not local
+        if timeout is None:
+            timeout = datetime.max
+        else:
+            timeout += datetime.now()
+
         original = self._nav.position
-        delta = 0
-        while (distance - delta) > tolerance:
+        while datetime.now() < timeout:
+            delta = self._nav._geographic.distance(original, self._nav.position)
+            if (distance - delta) < tolerance:
+                self.info('lnav expected %s actual %s (%s < %s m)',
+                          distance, delta, distance - delta, tolerance)
+                setattr(self._nav.vehicle.app('fd'), axis, 0.0)
+                return self
             control = method(delta, distance)
             self.debug('lnav expected %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        distance, delta, distance - delta, tolerance, control)
             setattr(self._nav.vehicle.app('fd'), axis,
                     -control if neg else control)
             time.sleep(_NAV_SLEEP)
-            delta = self._nav._geographic.distance(original, self._nav.position)
-        self.info('lnav expected %s actual %s (%s < %s m)',
-                  distance, delta, distance - delta, tolerance)
-        setattr(self._nav.vehicle.app('fd'), axis, 0.0)
-        return self
+        raise CommandTimeout('lnav exceeded timeout')
 
     def backward(self, distance, **kwargs):
         """Move backward by a distance. See lnav for full documentation."""
@@ -121,11 +139,13 @@ class Rotate(NavigationFactory):
     def __call__(self, **kwargs):
         super(Rotate, self).__call__()
 
-    def clockwise(self, degrees, method=None, tolerance=None):
+    def clockwise(self, degrees, method=NotSet, tolerance=NotSet,
+                  timeout=NotSet):
         """Rotate clockwise by a number of degrees."""
-        method = method if method else self.default('method')
-        tolerance = tolerance if tolerance is not None \
-            else self.default('tolerance')
+        # Default resolution
+        method = self.resolve(method, 'method')
+        tolerance = self.resolve(tolerance, 'tolerance')
+        timeout = self.resolve(timeout, 'timeout')
 
         old_heading = self._nav.heading
         target_heading = (old_heading + degrees) % 360
@@ -144,9 +164,9 @@ class Rotate(NavigationFactory):
 
     def counterclockwise(self, degrees, method=None, tolerance=None):
         """Rotate counterclockwise by a number of degrees."""
-        method = method if method else self.default('method')
+        method = method if method else self.resolve('method')
         tolerance = tolerance if tolerance is not None \
-            else self.default('tolerance')
+            else self.resolve('tolerance')
 
         old_heading = self._nav.heading
         target_heading = (old_heading - degrees) % 360
@@ -171,7 +191,7 @@ class Goto(NavigationFactory):
         Block until the vehicle is within tolerance of the final waypoint.
         """
         tolerance = tolerance if tolerance is not None \
-            else self.default('tolerance')
+            else self.resolve('tolerance')
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
 

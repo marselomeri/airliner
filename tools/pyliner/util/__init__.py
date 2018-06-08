@@ -47,6 +47,18 @@ class LogStream(object):
         self.stream.write(s)
 
 
+class OverlayDict(object):
+    """Limited dict implementation that allows for fallback on key lookup."""
+    def __init__(self, *layers):
+        self.layers = list(layers)
+
+    def __getitem__(self, item):
+        for layer in self.layers:
+            if item in layer:
+                return layer[item]
+        raise KeyError(item)
+
+
 class PeriodicExecutor(threading.Thread):
     """Executes a callback function every x-seconds.
 
