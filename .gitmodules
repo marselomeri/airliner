@@ -36,7 +36,7 @@
 	url = ssh://git@hangar.windhoverlabs.com/airliner/sbn.git
 [submodule "apps/sc"]
 	path = apps/sc
-	url = git@bitbucket.org:windhoverlabs/sc.git
+	url = ssh://git@hangar.windhoverlabs.com/airliner/sc.git
 [submodule "apps/sch"]
 	path = apps/sch
 	url = git@bitbucket.org:windhoverlabs/sch.git
