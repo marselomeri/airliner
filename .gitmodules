@@ -141,7 +141,7 @@
 	url = ssh://git@hangar.windhoverlabs.com/airliner/commanderjs.git
 [submodule "tools/jmavsim"]
 	path = tools/jmavsim
-	url = ssh://git@hangar.windhoverlabs.com/airliner/jmavsim.git
+	url = ssh://git@hangar.windhoverlabs.com/airliner/jMAVSim.git
 [submodule "apps/cfe"]
 	url = ssh://git@hangar.windhoverlabs.com/airliner/cfe.git
 [submodule "apps/psp"]
