@@ -19,7 +19,7 @@ from time import sleep
 import pyliner
 from communication import Communication
 from controller import FlightMode
-from control import limiter, proportional
+from navigation.control import limiter, proportional
 from util import read_json, enable_logging, ScriptingWrapper
 
 

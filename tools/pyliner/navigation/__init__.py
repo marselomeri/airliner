@@ -40,8 +40,7 @@ class Waypoint(Position):
 
 NotSet = object()
 """Indicate a kwarg that is not set (different than None). Use responsibly.
-You probably shouldn't re-assign this.
-"""
+You probably shouldn't re-assign this."""
 
 
 class NavigationFactory(Loggable):

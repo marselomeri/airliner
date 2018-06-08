@@ -1,3 +1,19 @@
+# Function Decorators
+def even(func):
+    """Decorate if f(x)==f(-x) but func is only defined for x>=0."""
+    def wrapper(x):
+        return func(x) if x >= 0 else func(-x)
+    return wrapper
+
+
+def odd(func):
+    """Decorate if f(x)==-f(-x) but func is only defined for x>=0."""
+    def wrapper(x):
+        return func(x) if x >= 0 else -func(-x)
+    return wrapper
+
+
+# Control Methods
 def adder(*processes):
     return lambda *args, **kwargs: sum(p(*args, **kwargs) for p in processes)
 

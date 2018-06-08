@@ -1,6 +1,6 @@
 import unittest
 
-from navigation.heading import Heading, HeadingRange
+from navigation.heading import Heading, HeadingRange, Direction
 
 
 class TestHeading(unittest.TestCase):
@@ -28,6 +28,54 @@ class TestHeading(unittest.TestCase):
         a = Heading(10)
         a -= 20
         self.assertEqual(a, 350, 'Did not underflow 360.')
+
+    def test_distance_nowrap_clk(self):
+        fa, ta = 45, 90
+        a = Heading(fa)
+        a_nst = Heading.distance(a, ta)
+        a_clk = Heading.distance(a, ta, Direction.CLOCKWISE)
+        a_ctr = Heading.distance(a, ta, Direction.COUNTERCLOCKWISE)
+
+        self.assertEqual(45, a_nst)
+        self.assertEqual(45, a_clk)
+        self.assertEqual(-315, a_ctr)
+
+    def test_distance_nowrap_ctr(self):
+        fa, ta = 90, 45
+        a = Heading(fa)
+        a_nst = Heading.distance(a, ta)
+        a_clk = Heading.distance(a, ta, Direction.CLOCKWISE)
+        a_ctr = Heading.distance(a, ta, Direction.COUNTERCLOCKWISE)
+
+        self.assertEqual(-45, a_nst)
+        self.assertEqual(315, a_clk)
+        self.assertEqual(-45, a_ctr)
+
+    def test_distance_wrap_clk(self):
+        fa, ta = 355, 5
+        a = Heading(fa)
+        a_nst = Heading.distance(a, ta)
+        a_clk = Heading.distance(a, ta, Direction.CLOCKWISE)
+        a_ctr = Heading.distance(a, ta, Direction.COUNTERCLOCKWISE)
+
+        self.assertEqual(10, a_nst)
+        self.assertEqual(10, a_clk)
+        self.assertEqual(-350, a_ctr)
+
+    def test_distance_wrap_ctr(self):
+        fa, ta = 5, 355
+        a = Heading(fa)
+        a_nst = Heading.distance(a, ta)
+        a_clk = Heading.distance(a, ta, Direction.CLOCKWISE)
+        a_ctr = Heading.distance(a, ta, Direction.COUNTERCLOCKWISE)
+
+        self.assertEqual(-10, a_nst)
+        self.assertEqual(350, a_clk)
+        self.assertEqual(-10, a_ctr)
+
+    def test_negative(self):
+        a = Heading(-20)
+        self.assertEqual(a, 340, 'Heading is not allowed to be negative')
 
     def test_range(self):
         a = Heading(20)
