@@ -48,9 +48,10 @@ class NavigationFactory(Loggable):
     def default(self, name):
         return self.kwargs[name] if name in self.kwargs else None
 
-        
+
 class Lnav(NavigationFactory):
-    def __call__(self, distance, axis=None, method=None, tolerance=None):
+    def __call__(self, distance, axis=None, method=None, tolerance=None,
+                 timeout=None):
         """Perform a lateral movement.
 
         Block until the distance traveled is within the tolerance of the target
@@ -70,11 +71,14 @@ class Lnav(NavigationFactory):
         method = method if method else self.default('method')
         tolerance = tolerance if tolerance is not None \
             else self.default('tolerance')
+        timeout = timeout if timeout is not None else self.default('timeout')
 
         if not method or not callable(method):
             raise ValueError('Must have a callable navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
+        if not isinstance(timeout, Real) or timeout <= 0:
+            raise ValueError('Timeout must be set to a positive real number.')
 
         axis_match = re.match('(-)?([xyz])', axis)
         if not axis_match:

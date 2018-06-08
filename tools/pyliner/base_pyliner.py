@@ -14,6 +14,7 @@ from geographic import Geographic
 from sensor import SensorAccess
 from service import ServiceAccess
 from telemetry import Telemetry
+from time_sensor import TimeSensor
 from util import Loggable
 
 
@@ -28,7 +29,8 @@ class BasePyliner(Loggable):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, vehicle_id, communications, logger=None):
+    def __init__(self, vehicle_id, communications, geographic=None,
+                 logger=None, time=None):
         """Constructor for BasePyliner.
 
         Args:
@@ -36,10 +38,15 @@ class BasePyliner(Loggable):
             communications (Communication): Communications PylinerModule.
                 Not exposed as a public module for direct access, but the user
                 is given the option to use a custom class if they desire.
+            geographic: If None, defaults to Geographic().
             logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
+            time: If None, default to TimeSensor().
         """
         super(BasePyliner, self).__init__(
             logger or logging.getLogger(vehicle_id))
+
+        geographic = geographic or Geographic()
+        time = time or TimeSensor()
 
         self.apps = {}
         self.communications = communications
@@ -49,8 +56,8 @@ class BasePyliner(Loggable):
         self._sensor_tokens = {}
         self.vehicle_id = vehicle_id
 
-        geographic = Geographic()
         self.attach_sensor('geographic', geographic)
+        self.attach_service('time', time)
         self.attach_service('comms', communications)
 
     def attach_app(self, priority, app_name, app):

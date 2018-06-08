@@ -6,6 +6,10 @@ class BlockedIoError(PylinerError):
     pass
 
 
+class CommandTimeout(PylinerError):
+    pass
+
+
 class InvalidCommandException(PylinerError):
     pass
 
@@ -14,7 +18,7 @@ class InvalidOperationException(PylinerError):
     pass
 
 
-class InvalidStateError(ValueError):
+class InvalidStateError(PylinerError, ValueError):
     pass
 
 
