@@ -8,6 +8,7 @@ from numbers import Real
 from datetime import datetime
 
 from app import App
+from navigation.heading import Direction
 from position import Position
 from pyliner_exceptions import CommandTimeout
 from telemetry import SetpointTriplet
@@ -86,8 +87,6 @@ class Lnav(NavigationFactory):
             raise ValueError('Must have a callable navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
-        if not isinstance(timeout, Real) or timeout <= 0:
-            raise ValueError('Timeout must be set to a positive real number.')
 
         # Match axis value
         axis_match = re.match('(-)?([xyz])', axis)
@@ -96,10 +95,7 @@ class Lnav(NavigationFactory):
 
         # Timeout
         # TODO Use vehicle time not local
-        if timeout is None:
-            timeout = datetime.max
-        else:
-            timeout += datetime.now()
+        timeout = datetime.max if timeout is None else timeout + datetime.now()
 
         original = self._nav.position
         while datetime.now() < timeout:
@@ -135,52 +131,45 @@ class Lnav(NavigationFactory):
 
 
 class Rotate(NavigationFactory):
-    def __call__(self, **kwargs):
-        super(Rotate, self).__call__()
-
-    def clockwise(self, degrees, method=NotSet, tolerance=NotSet,
-                  timeout=NotSet):
-        """Rotate clockwise by a number of degrees."""
+    def __call__(self, degrees, method=NotSet, tolerance=NotSet,
+                 direction=Direction.NEAREST, timeout=NotSet):
         # Default resolution
         method = self.resolve(method, 'method')
         tolerance = self.resolve(tolerance, 'tolerance')
         timeout = self.resolve(timeout, 'timeout')
 
-        old_heading = self._nav.heading
-        target_heading = (old_heading + degrees) % 360
-        min_tol = (target_heading - tolerance) % 360
+        # Sanity checks
+        if not method or not callable(method):
+            raise ValueError('Must have a callable navigation method.')
+        if not isinstance(tolerance, Real) or tolerance <= 0:
+            raise ValueError('Tolerance must be set to a positive real number.')
 
-        def unroll_heading():
-            return self._nav.heading if self._nav.heading < target_heading \
-                else self._nav.heading - 360
+        # Timeout
+        # TODO Use vehicle time not local
+        timeout = datetime.max if timeout is None else timeout + datetime.now()
 
-        while unroll_heading() < min_tol:
-            self._nav.vehicle.app('fd').r = method(unroll_heading(), target_heading)
+        original = self._nav.heading
+        target = original + degrees
+        tolerance = target.range(tolerance)
+
+        while datetime.now() < timeout:
+            current = self._nav.heading
+            if current in tolerance:
+                self.info('clockwise expected %s actual %s (%s in %s)',
+                          target, current, current, tolerance)
+                self._nav.vehicle.app('fd').r = 0.0
+                return self
+            self._nav.vehicle.app('fd').r = method(current, target)
             time.sleep(_NAV_SLEEP)
-        self.info('clockwise expected %s actual %s (%s > %s)', target_heading,
-                  unroll_heading(), unroll_heading(), min_tol)
-        self._nav.vehicle.app('fd').r = 0.0
+        raise CommandTimeout('rotate exceeded timeout')
 
-    def counterclockwise(self, degrees, method=None, tolerance=None):
+    def clockwise(self, degrees, **kwargs):
+        """Rotate clockwise by a number of degrees."""
+        self(degrees, direction=Direction.CLOCKWISE, **kwargs)
+
+    def counterclockwise(self, degrees, **kwargs):
         """Rotate counterclockwise by a number of degrees."""
-        method = method if method else self.resolve('method')
-        tolerance = tolerance if tolerance is not None \
-            else self.resolve('tolerance')
-
-        old_heading = self._nav.heading
-        target_heading = (old_heading - degrees) % 360
-        max_tol = (target_heading + tolerance) % 360
-
-        def unroll_heading():
-            return self._nav.heading if self._nav.heading > target_heading \
-                else self._nav.heading + 360
-
-        while unroll_heading() > max_tol:
-            self._nav.vehicle.app('fd').r = method(unroll_heading(), target_heading)
-            time.sleep(_NAV_SLEEP)
-        self.info('counterclockwise expected %s actual %s (%s < %s)',
-                  target_heading, unroll_heading(), unroll_heading(), max_tol)
-        self._nav.vehicle.app('fd').r = 0.0
+        self(degrees, direction=Direction.COUNTERCLOCKWISE, **kwargs)
 
 
 class Goto(NavigationFactory):
