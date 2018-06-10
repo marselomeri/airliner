@@ -99,10 +99,10 @@ extern "C" {
 #define MS5607_I2C_CMD_PROM_ADDR_SHIFT      (1)
 
 /** \brief MS5607 command convert D1 with OSR mask */
-#define MS5607_I2C_CMD_CONVERT_D1           (MS5607_I2C_CMD_CONVERT_D1_MASK + MS5607_I2C_CMD_OSR_1024_MASK)
+#define MS5607_I2C_CMD_CONVERT_D1           (MS5607_I2C_CMD_CONVERT_D1_MASK + MS5607_I2C_CMD_OSR_2048_MASK)
 
 /** \brief MS5607 command convert D2 with OSR mask */
-#define MS5607_I2C_CMD_CONVERT_D2           (MS5607_I2C_CMD_CONVERT_D2_MASK + MS5607_I2C_CMD_OSR_1024_MASK)
+#define MS5607_I2C_CMD_CONVERT_D2           (MS5607_I2C_CMD_CONVERT_D2_MASK + MS5607_I2C_CMD_OSR_2048_MASK)
 
 /* Custom Layer Configuration */
 /** \brief Retry attemps for interrupted ioctl calls. */
