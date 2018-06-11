@@ -4,7 +4,6 @@ from abc import ABCMeta
 from datetime import datetime
 from os.path import join
 
-from builtins import isinstance
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
 
