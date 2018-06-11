@@ -79,6 +79,7 @@ class HeadingRange(Container):
         self.max = max
 
     def __contains__(self, x):
+        x = Heading(x)
         wrap = self.min > self.max
         xgtmin = x >= self.min
         xltmax = x <= self.max

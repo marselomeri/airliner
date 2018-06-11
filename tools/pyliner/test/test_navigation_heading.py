@@ -107,3 +107,12 @@ class TestHeadingRange(unittest.TestCase):
 
         self.assertNotIn(not1, a, 'Out of range.')
         self.assertNotIn(not2, a, 'Out of range.')
+
+    def test_extra(self):
+        low, high = 350, 10
+        in_low, out_low, in_high, out_high = -5, -15, 365, 375
+        a = HeadingRange(low, high)
+        self.assertIn(in_low, a, 'Negative should wrap.')
+        self.assertNotIn(out_low, a, 'Negative should wrap.')
+        self.assertIn(in_high, a, 'Above 360 should wrap.')
+        self.assertNotIn(out_high, a, 'Above 360 should wrap.')
