@@ -1,10 +1,7 @@
 from collections import Container
 from numbers import Real
 
-
 from enum import Enum
-
-from navigation.control import odd
 
 
 class Direction(Enum):
@@ -14,7 +11,7 @@ class Direction(Enum):
 
 
 class Heading(float):
-    """Subclass of float bounded [0, 360)."""
+    """Subclass of float bounded [0, 360). Arithmetic automatically wraps."""
     def __new__(cls, value=0.0):
         # Can't wrap inside init because by then self is already set.
         return super(Heading, cls).__new__(cls, value % 360)
@@ -48,7 +45,7 @@ class Heading(float):
         may be useful in the case of overshooting a turn and not wanting to go
         all the way around again.
         """
-        if 0 > h1 > 360 or 0 > h2 > 360:
+        if not 0 <= h1 < 360 or not 0 <= h2 < 360:
             raise ValueError('h1 and h2 must be [0, 360).')
 
         diff = float(h2) - float(h1)
@@ -64,7 +61,7 @@ class Heading(float):
         """Create a range relative to this heading.
 
         If high_range is not passed the range is centered on the current heading
-        and extends equally in both directions from low_range.
+        and extends equally in both directions by low_range.
         """
         return HeadingRange(
             self - low_range,
@@ -72,7 +69,10 @@ class Heading(float):
 
 
 class HeadingRange(Container):
-    """Create a range of heading values, clockwise from min to max."""
+    """Create a range of heading values, clockwise from min to max.
+
+    Is allowed to wrap around.
+    """
 
     def __init__(self, min, max):
         self.min = min

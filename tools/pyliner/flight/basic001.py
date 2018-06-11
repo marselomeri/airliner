@@ -22,7 +22,7 @@ from controller import FlightMode
 from navigation.control import proportional
 from util import read_json, ScriptingWrapper, enable_logging
 
-enable_logging(script=basename(__file__), level=logging.INFO)
+enable_logging(log_dir='logs', script=basename(__file__), level=logging.INFO)
 
 rky = pyliner.Pyliner(
     vehicle_id='rocky',
@@ -44,7 +44,7 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Move Up')
-    rocky.nav.vnav(method=proportional(0.2), tolerance=0.5)\
+    rocky.nav.vnav(method=proportional(0.2), tolerance=0.5) \
         .up(10)
 
     rocky.ctrl.atp('First')
@@ -61,7 +61,7 @@ with ScriptingWrapper(rky) as rocky:
     lnav.right(5)
 
     rocky.ctrl.atp('Third')
-    rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)\
+    rocky.nav.lnav(method=proportional(0.15), tolerance=0.75) \
         .backward(5)\
         .left(5)\
         .forward(5)\

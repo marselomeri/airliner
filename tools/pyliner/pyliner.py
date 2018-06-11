@@ -47,6 +47,8 @@ class Pyliner(BasePyliner):
         # Add helpful default settings
         self.apps['fence'].add_layer(0, 'base', LayerKind.ADDITIVE)
 
+        self.apps['nav'].defaults.update({'timeout': None, 'underflow': 5.0})
+
     def await_change(self, tlm, poll=1.0, out=None):
         """Block until the telemetry value changes.
 

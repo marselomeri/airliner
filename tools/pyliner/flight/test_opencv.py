@@ -17,7 +17,7 @@ rotator = proportional(1.0 / 200.0)
 lnav = proportional(1.0 / 10.0)
 
 
-enable_logging(script=basename(__file__))
+enable_logging(log_dir='logs', script=basename(__file__))
 
 
 # TODO OpenCV initialization here

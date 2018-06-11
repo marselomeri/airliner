@@ -36,7 +36,7 @@ def range_limit(current, target):
     return limiter(0, 0.25)(proportional(0.1 / 50.0)(current, target))
 
 
-enable_logging(script=basename(__file__), level=DEBUG)
+enable_logging(log_dir='logs', script=basename(__file__), level=DEBUG)
 
 rky = pyliner.Pyliner(
     vehicle_id='rocky',

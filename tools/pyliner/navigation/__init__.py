@@ -5,16 +5,16 @@ from abc import abstractmethod
 from collections import Iterable
 from numbers import Real
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app import App
-from navigation.heading import Direction
+from navigation.heading import Direction, Heading
 from position import Position
 from pyliner_exceptions import CommandTimeout
 from telemetry import SetpointTriplet
-from util import shifter, copy_update, Loggable, OverlayDict
+from util import shifter, Loggable, OverlayDict
 
-_NAV_SLEEP = 1.0/16.0
+_NAV_SLEEP = 1.0 / 16.0
 
 
 # TODO Look into using decimal library for precision at any lat/lon
@@ -22,6 +22,7 @@ _NAV_SLEEP = 1.0/16.0
 
 class Waypoint(Position):
     """A container for part of the args to a triplet."""
+
     def __init__(self, latitude, longitude, altitude, heading):
         super(Waypoint, self).__init__(latitude, longitude, altitude)
         self.heading = heading
@@ -55,7 +56,11 @@ class NavigationFactory(Loggable):
         raise NotImplementedError
 
     def resolve(self, item, name):
-        return item if item is not NotSet else self._default[name]
+        try:
+            return item if item is not NotSet else self._default[name]
+        except KeyError as e:
+            raise KeyError('No default set for unset parameter '
+                           '"{}".'.format(name))
 
 
 class Lnav(NavigationFactory):
@@ -76,7 +81,7 @@ class Lnav(NavigationFactory):
             tolerance (Real): The allowable error in movement before the method
                 sets the control to 0 and returns.
         """
-        # Default resolution
+        # NotSet resolution
         axis = self.resolve(axis, 'axis')
         method = self.resolve(method, 'method')
         tolerance = self.resolve(tolerance, 'tolerance')
@@ -90,7 +95,8 @@ class Lnav(NavigationFactory):
 
         # Match axis value
         axis_match = re.match('(-)?([xyz])', axis)
-        if not axis_match: raise ValueError('Axis must match "(-)?([xyz])".')
+        if not axis_match:
+            raise ValueError('Axis must match "(-)?([xyz])".')
         neg, axis = axis_match.groups()
 
         # Timeout
@@ -106,17 +112,17 @@ class Lnav(NavigationFactory):
                 setattr(self._nav.vehicle.app('fd'), axis, 0.0)
                 return self
             control = method(delta, distance)
-            self.debug('lnav expected %.3f actual %.3f (%.3f < %.3f m) %.3f',
+            control = -control if neg else control
+            self.debug('lnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        distance, delta, distance - delta, tolerance, control)
-            setattr(self._nav.vehicle.app('fd'), axis,
-                    -control if neg else control)
+            setattr(self._nav.vehicle.app('fd'), axis, control)
             time.sleep(_NAV_SLEEP)
         raise CommandTimeout('lnav exceeded timeout')
 
     def backward(self, distance, **kwargs):
         """Move backward by a distance. See lnav for full documentation."""
         return self(distance, '-x', **kwargs)
-        
+
     def forward(self, distance, **kwargs):
         """Move forward by a distance. See lnav for full documentation."""
         return self(distance, 'x', **kwargs)
@@ -131,16 +137,74 @@ class Lnav(NavigationFactory):
 
 
 class Rotate(NavigationFactory):
-    def __call__(self, degrees, method=NotSet, tolerance=NotSet,
-                 direction=Direction.NEAREST, timeout=NotSet):
-        # Default resolution
+    def __call__(self, by=None, to=None, method=NotSet, tolerance=NotSet,
+                 direction=Direction.NEAREST, timeout=NotSet, underflow=NotSet):
+        # NotSet resolution
         method = self.resolve(method, 'method')
         tolerance = self.resolve(tolerance, 'tolerance')
+        direction = self.resolve(direction, 'direction')
         timeout = self.resolve(timeout, 'timeout')
+        underflow = self.resolve(underflow, 'underflow')
 
         # Sanity checks
+        if not by and not to:
+            raise ValueError('Must set one of by or to.')
+        elif by and to:
+            raise ValueError('Must not set both by and to.')
         if not method or not callable(method):
             raise ValueError('Must have a callable navigation method.')
+        if not isinstance(tolerance, Real) or tolerance < 0.0:
+            raise ValueError('Tolerance must be a non-negative real number.')
+        if direction not in Direction:
+            raise TypeError('Direction must be a valid Direction.')
+        if timeout is not None and not isinstance(timeout, timedelta):
+            raise ValueError('Timeout must be None or a timedelta.')
+        if not isinstance(underflow, Real) or underflow < 0.0:
+            raise ValueError('Underflow must be a non-negative real number.')
+
+        # Timeout
+        # TODO Use vehicle time not local
+        timeout = datetime.max if timeout is None else datetime.now() + timeout
+
+        original = self._nav.heading
+        target = original + by if by else Heading(to)
+        tol_range = target.range(tolerance)
+
+        while datetime.now() < timeout:
+            current = self._nav.heading
+            if current in tol_range:
+                self.info('rotate expected %s actual %s (in %s)',
+                          target, current, tol_range)
+                self._nav.vehicle.app('fd').r = 0.0
+                return self
+            distance = Heading.distance(current, target, direction, underflow)
+            control = method(0.0, distance)
+            self.debug('rotate toward %.3f current %.3f (%.3f < %.3f) %.3f',
+                       target, current, abs(distance), tolerance, control)
+            self._nav.vehicle.app('fd').r = control
+            time.sleep(_NAV_SLEEP)
+        raise CommandTimeout('rotate exceeded timeout')
+
+    def clockwise(self, degrees, **kwargs):
+        """Rotate clockwise by a number of degrees."""
+        self(by=degrees, direction=Direction.CLOCKWISE, **kwargs)
+
+    def counterclockwise(self, degrees, **kwargs):
+        """Rotate counterclockwise by a number of degrees."""
+        self(by=-degrees, direction=Direction.COUNTERCLOCKWISE, **kwargs)
+
+
+class Goto(NavigationFactory):
+    def __call__(self, waypoints, timeout=NotSet, tolerance=NotSet):
+        """Move the vehicle to a waypoint or along a series of waypoints.
+
+        Block until the vehicle is within tolerance of the final waypoint.
+        """
+        # NotSet resolution
+        timeout = self.resolve(timeout, 'timeout')
+        tolerance = self.resolve(tolerance, 'tolerance')
+
+        # Sanity checks
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
 
@@ -148,41 +212,7 @@ class Rotate(NavigationFactory):
         # TODO Use vehicle time not local
         timeout = datetime.max if timeout is None else timeout + datetime.now()
 
-        original = self._nav.heading
-        target = original + degrees
-        tolerance = target.range(tolerance)
-
-        while datetime.now() < timeout:
-            current = self._nav.heading
-            if current in tolerance:
-                self.info('clockwise expected %s actual %s (%s in %s)',
-                          target, current, current, tolerance)
-                self._nav.vehicle.app('fd').r = 0.0
-                return self
-            self._nav.vehicle.app('fd').r = method(current, target)
-            time.sleep(_NAV_SLEEP)
-        raise CommandTimeout('rotate exceeded timeout')
-
-    def clockwise(self, degrees, **kwargs):
-        """Rotate clockwise by a number of degrees."""
-        self(degrees, direction=Direction.CLOCKWISE, **kwargs)
-
-    def counterclockwise(self, degrees, **kwargs):
-        """Rotate counterclockwise by a number of degrees."""
-        self(degrees, direction=Direction.COUNTERCLOCKWISE, **kwargs)
-
-
-class Goto(NavigationFactory):
-    def __call__(self, waypoints, tolerance=None):
-        """Move the vehicle to a waypoint or along a series of waypoints.
-
-        Block until the vehicle is within tolerance of the final waypoint.
-        """
-        tolerance = tolerance if tolerance is not None \
-            else self.resolve('tolerance')
-        if not isinstance(tolerance, Real) or tolerance <= 0:
-            raise ValueError('Tolerance must be set to a positive real number.')
-
+        # Iterate through all given waypoints
         if not isinstance(waypoints, Iterable):
             waypoints = (waypoints,)
         for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
@@ -213,7 +243,10 @@ class Goto(NavigationFactory):
                 Next_Valid=nxt is not None, Next_PositionValid=nxt is not None
             )
             while True:
-                distance = self._nav._geographic.distance(cur, self._nav.position)
+                if datetime.now() > timeout:
+                    raise CommandTimeout('goto exceeded timeout')
+                distance = self._nav._geographic.distance(
+                    cur, self._nav.position)
                 if distance < tolerance:
                     self._nav.vehicle.info(
                         'goto expected %s actual %s (%s < %s m)',
@@ -223,7 +256,8 @@ class Goto(NavigationFactory):
 
 
 class Vnav(NavigationFactory):
-    def __call__(self, by=None, to=None, method=None, tolerance=None):
+    def __call__(self, by=None, to=None, method=NotSet, timeout=NotSet,
+                 tolerance=NotSet):
         """Perform a vertical navigation.
 
         Blocks until the vehicle altitude is within tolerance of the target
@@ -237,43 +271,58 @@ class Vnav(NavigationFactory):
             method (Callable[[Real, Real], Real]): Take two arguments, the
                 current altitude and the target altitude, and return an
                 axis control value within [-1, 1].
+            timeout (Optional[Real]):
             tolerance (Real): The allowable error in altitude before the method
                 sets the z-axis to 0 and returns.
         """
-        if not any((by, to)):
+        # NotSet resolution
+        method = self.resolve(method, 'method')
+        timeout = self.resolve(timeout, 'timeout')
+        tolerance = self.resolve(tolerance, 'tolerance')
+
+        # Sanity checks
+        if not by and not to:
             raise ValueError('Must set either by or to.')
         elif by and to:
-            raise ValueError('Cannot set both by and to.')
+            raise ValueError('Must not set both by and to.')
         if not method or not callable(method):
             raise ValueError('Must have a callable navigation method.')
         if not isinstance(tolerance, Real) or tolerance <= 0:
             raise ValueError('Tolerance must be set to a positive real number.')
 
+        # Timeout
+        # TODO Use vehicle time not local
+        timeout = datetime.max if timeout is None else timeout + datetime.now()
+
         target_altitude = (self._nav.altitude + by) if by else to
-        while abs(target_altitude - self._nav.altitude) > tolerance:
+
+        while datetime.now() < timeout:
+            difference = abs(target_altitude - self._nav.altitude)
+            if difference <= tolerance:
+                self.info('vnav expected %s actual %s (%s < %s m)',
+                          target_altitude, self._nav.altitude,
+                          difference, tolerance)
+                self._nav.vehicle.app('fd').z = 0.0
+                return self
             control = method(self._nav.altitude, target_altitude)
-            self.debug('vnav expected %.3f actual %.3f (%.3f < %.3f m) %.3f',
+            self.debug('vnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        target_altitude, self._nav.altitude,
-                       target_altitude - self._nav.altitude, tolerance, control)
+                       difference, tolerance, control)
             self._nav.vehicle.app('fd').z = control
             time.sleep(_NAV_SLEEP)
-        self.info('vnav expected %s actual %s (%s < %s m)', target_altitude,
-                  self._nav.altitude, abs(target_altitude - self._nav.altitude),
-                  tolerance)
-        self._nav.vehicle.app('fd').z = 0.0
-        return self
+        raise CommandTimeout('vnav exceeded timeout')
 
     def down(self, distance, **kwargs):
         """Move down by a distance. See vnav for full documentation."""
-        return self(by=-distance, **copy_update(self.kwargs, kwargs))
+        return self(by=-distance, **kwargs)
 
     def to(self, altitude, **kwargs):
         """Climb or descend to altitude. See vnav for full documentation."""
-        return self(to=altitude, **copy_update(self.kwargs, kwargs))
+        return self(to=altitude, **kwargs)
 
     def up(self, distance, **kwargs):
         """Move up by a distance. See vnav for full documentation."""
-        return self(by=distance, **copy_update(self.kwargs, kwargs))
+        return self(by=distance, **kwargs)
 
 
 class Navigation(App):
@@ -290,9 +339,7 @@ class Navigation(App):
         self._geographic = None
         self._telemetry = None
 
-        self.defaults = {
-            'method': None, 'tolerance': None
-        }
+        self.defaults = {}
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
@@ -314,7 +361,7 @@ class Navigation(App):
     def heading(self):
         """Degrees"""
         # TODO add setter for property
-        return self.yaw % 360  # mod is for negative degrees.
+        return Heading(math.degrees(self.yaw))
 
     @property
     def latitude(self):
@@ -335,7 +382,7 @@ class Navigation(App):
     @property
     def yaw(self):
         """The vehicle yaw in clockwise radians from north."""
-        return math.degrees(App._telem(self.req_telem['yaw'])(self))
+        return App._telem(self.req_telem['yaw'])(self)
 
     def attach(self, vehicle):
         super(Navigation, self).attach(vehicle)

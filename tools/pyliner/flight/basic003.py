@@ -12,6 +12,7 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
+from datetime import timedelta
 from logging import DEBUG
 from os.path import basename
 from time import sleep
@@ -21,13 +22,14 @@ from communication import Communication
 from controller import FlightMode
 from navigation.control import limiter, proportional
 from util import read_json, enable_logging, ScriptingWrapper
+from util.conversions import seconds
 
 
 def range_limit(current, target):
     return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
 
 
-enable_logging(script=basename(__file__), level=DEBUG)
+enable_logging(log_dir='logs', script=basename(__file__), level=DEBUG)
 
 rky = pyliner.Pyliner(
     vehicle_id='rocky',
@@ -51,14 +53,12 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.atp('Move Up')
     rocky.nav.vnav(method=proportional(0.2), tolerance=0.5).up(10)
 
-    rocky.nav.defaults['tolerance'] = 0.75
-    lnav = rocky.nav.lnav(method=proportional(0.15))
-    rocky.nav.defaults['tolerance'] = 2
-    yaw = rocky.nav.rotate(method=range_limit)
+    lnav = rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)
+    yaw = rocky.nav.rotate(method=range_limit, tolerance=2)
 
     rocky.ctrl.atp('First')
     for _ in range(4):
-        lnav.forward(5)
+        lnav.forward(5, timeout=seconds(1))
         yaw.clockwise(90)
 
     rocky.ctrl.atp('Second')

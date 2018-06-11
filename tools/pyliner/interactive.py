@@ -5,7 +5,7 @@ from navigation.control import *
 from communication import Communication
 from util import read_json, enable_logging
 
-enable_logging(script=basename(__file__))
+enable_logging(log_dir='logs', script=basename(__file__))
 
 rocky = pyliner.Pyliner(
     vehicle_id='rocky',

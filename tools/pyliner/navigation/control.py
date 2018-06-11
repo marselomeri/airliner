@@ -1,15 +1,15 @@
 # Function Decorators
-def even(func):
-    """Decorate if f(x)==f(-x) but func is only defined for x>=0."""
+def even(f):
+    """Decorate if f(x)==f(-x) but f is only defined for x>=0."""
     def wrapper(x):
-        return func(x) if x >= 0 else func(-x)
+        return f(x) if x >= 0 else f(-x)
     return wrapper
 
 
-def odd(func):
-    """Decorate if f(x)==-f(-x) but func is only defined for x>=0."""
+def odd(f):
+    """Decorate if f(x)==-f(-x) but f is only defined for x>=0."""
     def wrapper(x):
-        return func(x) if x >= 0 else -func(-x)
+        return f(x) if x >= 0 else -f(-x)
     return wrapper
 
 
@@ -36,7 +36,8 @@ def integral(gain, t_sample, t_integral):
     return lambda current, target: gen.send((current, target))
 
 
-def limiter(min_val, max_val):
+def limiter(min_val=float('-inf'), max_val=float('inf')):
+    """Bound the output of a function to a range."""
     return lambda val: max(min(val, max_val), min_val)
 
 

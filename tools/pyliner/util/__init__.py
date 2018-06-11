@@ -222,11 +222,6 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
         sys.stderr = LogStream('stderr', sys.stderr, stderr)
 
 
-def feet(ft):
-    """Convert from given feet to meters."""
-    return ft * 0.3048
-
-
 def get_time():
     return int(
         (datetime.utcnow() - datetime(1970, 1, 1)).total_seconds() * 10000)
