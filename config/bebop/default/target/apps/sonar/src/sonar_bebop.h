@@ -1,0 +1,129 @@
+/****************************************************************************
+*
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+* 3. Neither the name Windhover Labs nor the names of its 
+*    contributors may be used to endorse or promote products derived 
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+* AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+*****************************************************************************/
+
+#ifndef SONAR_BEBOP_H
+#define SONAR_BEBOP_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/************************************************************************
+** Includes
+*************************************************************************/
+//#include "sonar_custom.h"
+
+/************************************************************************
+** Local Defines
+*************************************************************************/
+/** \brief Measure interval.
+**
+**  \par Description:
+**       Update frequency 16.66 Hz (reading 8192 samples at 160 kHz
+**       51200 us).
+*/
+#define SONAR_MEASURE_INTERVAL_US               (60000)
+
+/** \brief Device path. */
+#define SONAR_DEVICE_PATH                       ("/dev/spidev1.0")
+
+#define SONAR_MIN_DISTANCE                      (0.5f)
+
+#define SONAR_MAX_DISTANCE                      (8.5f)
+
+#define SONAR_BUFFER_LEN                        (8192)
+
+#define SONAR_PULSE_LEN                         (32)
+
+#define SONAR_SPEED_OF_SOUND                    (343.2f)
+
+#define SONAR_ADC_SAMPLING_FREZ_HZ              (160000.0f)
+
+/** \brief Request threshold.
+**
+**  \par Description:
+**       Threshold to detect the beginning of the send pulse.
+*/
+#define SONAR_REQUEST_THRESHOLD                (3276)
+
+/** \brief Send pulse length.
+**
+**  \par Description:
+**       The mic records the transmitted signal at the beginning of 
+**       received signal and defines when it should have ended. Used to
+**       if the vehicle is bellow the block distance. 
+*/
+#define SONAR_SEND_PULSE_LEN                    (420)
+
+/** \brief Noise level threshold.
+**
+**  \par Description:
+**       Defines the end of the transmitted signal. A valid received
+**       signal must be above this value to be accepted.
+*/
+#define SONAR_NOISE_LEVEL_THRESHOLD             (100)
+
+/************************************************************************
+** Structure Declarations
+*************************************************************************/
+/**
+ * \brief Sonar device status
+ */
+typedef enum
+{
+    /*! status uninitialized */
+    SONAR_CUSTOM_UNINITIALIZED  = 0,
+    /*! status initialized */
+    SONAR_CUSTOM_INITIALIZED    = 1
+} SONAR_Custom_Status_t;
+
+
+typedef struct
+{
+    /*! Device file descriptor */
+    int                         DeviceFd;
+    /*! The current device status */
+    SONAR_Custom_Status_t       Status;
+    uint8                       SendPulse[SONAR_PULSE_LEN];
+    uint16                      ReadBuffer[SONAR_BUFFER_LEN];
+    uint16                      FilteredBuffer[SONAR_BUFFER_LEN];
+    uint16                      SendLength;
+    uint16                      MaximumSignalVal;
+} SONAR_AppCustomData_t;
+
+
+#ifdef __cplusplus
+}
+#endif 
+
+#endif /* SONAR_BEBOP_H */
