@@ -7,12 +7,12 @@ from numbers import Real
 
 from datetime import datetime, timedelta
 
-from app import App
-from navigation.heading import Direction, Heading
-from position import Position
-from pyliner_exceptions import CommandTimeout
-from telemetry import SetpointTriplet
-from util import shifter, Loggable, OverlayDict
+from pyliner.app import App
+from pyliner.navigation.heading import Direction, Heading
+from pyliner.position import Position
+from pyliner.pyliner_exceptions import CommandTimeout
+from pyliner.telemetry import SetpointTriplet
+from pyliner.util import shifter, Loggable, OverlayDict
 
 _NAV_SLEEP = 1.0 / 16.0
 

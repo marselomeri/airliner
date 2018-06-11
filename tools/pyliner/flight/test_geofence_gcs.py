@@ -1,14 +1,14 @@
 from os.path import basename
 from time import sleep
 
-import pyliner
-from communication import Communication
-from geofence import Geofence, VerticalCylinder
-from util import read_json, enable_logging, ScriptingWrapper
+from pyliner.communication import Communication
+from pyliner.geofence import Geofence, VerticalCylinder
+from pyliner.pyliner import Pyliner
+from pyliner.util import read_json, enable_logging, ScriptingWrapper
 
 enable_logging(log_dir='logs', script=basename(__file__))
 
-rky = pyliner.Pyliner(
+rky = Pyliner(
     vehicle_id='rocky',
     communication=Communication(
         airliner_map=read_json("airliner.json"),

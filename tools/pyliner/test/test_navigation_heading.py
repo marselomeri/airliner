@@ -1,6 +1,6 @@
 import unittest
 
-from navigation.heading import Heading, HeadingRange, Direction
+from pyliner.navigation.heading import Heading, HeadingRange, Direction
 
 
 class TestHeading(unittest.TestCase):

@@ -6,7 +6,7 @@ import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from python_pb import pyliner_msgs
 from service import Service
-from util import init_socket, PeriodicExecutor, handler_factory, serialize
+from pyliner.util import init_socket, PeriodicExecutor, handler_factory, serialize
 
 SEND_TIME = 0.1
 DEFAULT_CI_PORT = 5008

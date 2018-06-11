@@ -7,9 +7,7 @@ from base_pyliner import BasePyliner
 from controller import Controller
 from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
-from navigation import Navigation
-
-__version__ = '0.2'
+from pyliner.navigation import Navigation
 
 
 class Pyliner(BasePyliner):

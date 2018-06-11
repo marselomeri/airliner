@@ -1,10 +1,11 @@
 from os.path import basename
 from time import sleep
 
-import pyliner
-from communication import Communication
-from navigation.control import proportional
-from util import enable_logging, read_json, ScriptingWrapper, PeriodicExecutor
+from pyliner.communication import Communication
+from pyliner.navigation.control import proportional
+from pyliner.pyliner import Pyliner
+from pyliner.util import enable_logging, read_json, ScriptingWrapper, \
+    PeriodicExecutor
 
 SLEEP = 0.1
 HALF_X = 400 / 2
@@ -16,15 +17,12 @@ rotator = proportional(1.0 / 200.0)
 # Scale distance by some factor
 lnav = proportional(1.0 / 10.0)
 
-
 enable_logging(log_dir='logs', script=basename(__file__))
-
 
 # TODO OpenCV initialization here
 
 
-
-rocky = ScriptingWrapper(pyliner.Pyliner(
+rocky = ScriptingWrapper(Pyliner(
     vehicle_id='rocky',
     communication=Communication(
         airliner_map=read_json("airliner.json"),
@@ -51,6 +49,7 @@ def opencv_follow():
 
     rocky.fd.r = rotator(x)
     # rocky.fd.z = lnav(z) # Uncomment for lateral following
+
 
 with rocky as rocky:
     while rocky.nav.altitude == "NULL":

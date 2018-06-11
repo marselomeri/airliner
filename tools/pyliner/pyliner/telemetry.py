@@ -1,4 +1,4 @@
-import util
+from pyliner import util
 
 
 # TODO Remove all of this, change to wrapper of python_pb protobuf objects.

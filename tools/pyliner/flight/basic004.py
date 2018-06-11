@@ -18,10 +18,10 @@ Requirements Fulfilled:
 from os.path import basename
 from time import sleep
 
-import pyliner
-from communication import Communication
-from navigation.control import limiter, proportional
-from util import read_json, enable_logging, ScriptingWrapper
+from pyliner.communication import Communication
+from pyliner.navigation.control import limiter, proportional
+from pyliner.pyliner import Pyliner
+from pyliner.util import read_json, enable_logging, ScriptingWrapper
 
 
 def range_limit(current, target):
@@ -30,7 +30,7 @@ def range_limit(current, target):
 
 enable_logging(log_dir='logs', script=basename(__file__))
 
-rky = pyliner.Pyliner(
+rky = Pyliner(
     vehicle_id='rocky',
     communication=Communication(
         airliner_map=read_json("airliner.json"),

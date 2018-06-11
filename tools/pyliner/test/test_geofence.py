@@ -1,8 +1,8 @@
 import unittest
 
-from geofence import Geofence, LayerKind, VerticalCylinder, Box
-from geographic import Geographic
-from position import Position, Coordinate
+from pyliner.geofence import Geofence, LayerKind, VerticalCylinder, Box
+from pyliner.geographic import Geographic
+from pyliner.position import Position, Coordinate
 
 
 class TestGeofence(unittest.TestCase):
