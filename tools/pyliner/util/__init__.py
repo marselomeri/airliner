@@ -24,6 +24,33 @@ class Event(object):
         self.type = type
 
 
+class Loggable(object):
+    def __init__(self, logger=None):
+        self._logger = logger
+
+    @property
+    def logger(self):
+        return self._logger
+
+    def critical(self, msg, *args, **kwargs):
+        self._logger.critical(msg, *args, **kwargs)
+
+    def debug(self, msg, *args, **kwargs):
+        self._logger.debug(msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        self._logger.error(msg, *args, **kwargs)
+
+    def exception(self, msg, *args, **kwargs):
+        self._logger.exception(msg, *args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        self._logger.info(msg, *args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        self._logger.warning(msg, *args, **kwargs)
+
+
 class LogStream(object):
     def __init__(self, name, stream, level=logging.INFO):
         self.level = level
@@ -318,30 +345,3 @@ def copy_update(old, new):
     copy = old.copy()
     copy.update(new)
     return copy
-
-
-class Loggable(object):
-    def __init__(self, logger=None):
-        self._logger = logger
-
-    @property
-    def logger(self):
-        return self._logger
-
-    def critical(self, msg, *args, **kwargs):
-        self._logger.critical(msg, *args, **kwargs)
-
-    def debug(self, msg, *args, **kwargs):
-        self._logger.debug(msg, *args, **kwargs)
-
-    def error(self, msg, *args, **kwargs):
-        self._logger.error(msg, *args, **kwargs)
-
-    def exception(self, msg, *args, **kwargs):
-        self._logger.exception(msg, *args, **kwargs)
-
-    def info(self, msg, *args, **kwargs):
-        self._logger.info(msg, *args, **kwargs)
-
-    def warning(self, msg, *args, **kwargs):
-        self._logger.warning(msg, *args, **kwargs)
