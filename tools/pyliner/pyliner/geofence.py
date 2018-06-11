@@ -19,7 +19,7 @@ from geographic import GeographicBase
 from position import Coordinate
 from position import Position
 from telemetry import ManualSetpoint
-from pyliner.util import indent, PeriodicExecutor
+from util import indent, PeriodicExecutor
 
 
 class FenceGenerator(object):

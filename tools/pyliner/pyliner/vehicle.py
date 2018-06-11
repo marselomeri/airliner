@@ -3,11 +3,11 @@
 import time
 
 from app import App
-from base_pyliner import BasePyliner
+from base_vehicle import BaseVehicle
 from controller import Controller
 from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
-from pyliner.navigation import Navigation
+from navigation import Navigation
 
 
 class Vehicle(BaseVehicle):

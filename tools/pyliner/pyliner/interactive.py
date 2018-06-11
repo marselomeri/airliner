@@ -2,7 +2,7 @@ from os.path import basename
 
 import vehicle
 from communication import Communication
-from pyliner.util import read_json, enable_logging
+from util import read_json, enable_logging
 
 enable_logging(log_dir='logs', script=basename(__file__))
 

@@ -14,7 +14,7 @@ from sensor import SensorAccess
 from service import ServiceAccess
 from telemetry import Telemetry
 from time_sensor import TimeSensor
-from pyliner.util import Loggable
+from util import Loggable
 
 
 class BaseVehicle(Loggable):

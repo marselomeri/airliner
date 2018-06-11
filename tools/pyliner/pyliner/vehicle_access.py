@@ -1,4 +1,4 @@
-from pyliner.util import Loggable
+from util import Loggable
 
 
 class VehicleAccess(Loggable):

@@ -5,7 +5,7 @@ from flufl.enum import Enum
 from app import App
 from pyliner_exceptions import UnauthorizedAtpError
 from telemetry import ManualSetpoint
-from pyliner.util import query_yes_no
+from util import query_yes_no
 
 _WAIT_TIME = 0.1
 
