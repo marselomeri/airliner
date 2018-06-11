@@ -19,12 +19,12 @@ from time import sleep
 from pyliner.communication import Communication
 from pyliner.controller import FlightMode
 from pyliner.navigation.control import proportional
-from pyliner.pyliner import Pyliner
+from pyliner.vehicle import Vehicle
 from pyliner.util import read_json, ScriptingWrapper, enable_logging
 
 enable_logging(log_dir='logs', script=basename(__file__), level=logging.INFO)
 
-rky = Pyliner(
+rky = Vehicle(
     vehicle_id='rocky',
     communication=Communication(
         airliner_map=read_json("airliner.json"),

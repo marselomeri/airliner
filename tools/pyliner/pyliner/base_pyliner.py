@@ -17,7 +17,7 @@ from time_sensor import TimeSensor
 from pyliner.util import Loggable
 
 
-class BasePyliner(Loggable):
+class BaseVehicle(Loggable):
     """
     Contains the bare-minimum required for Pyliner. All additional functionality
     is provided through the Pyliner class. App management is performed via the
@@ -41,7 +41,7 @@ class BasePyliner(Loggable):
             logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
             time: If None, default to TimeSensor().
         """
-        super(BasePyliner, self).__init__(
+        super(BaseVehicle, self).__init__(
             logger or logging.getLogger(vehicle_id))
 
         geographic = geographic or Geographic()

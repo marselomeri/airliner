@@ -10,7 +10,7 @@ from geofence import Geofence, LayerKind
 from pyliner.navigation import Navigation
 
 
-class Pyliner(BasePyliner):
+class Vehicle(BaseVehicle):
     """Represents a vehicle that the user may control.
 
     The basic apps that a vehicle presents are:
@@ -32,7 +32,7 @@ class Pyliner(BasePyliner):
             vehicle_id: Vehicle ID. Should be unique.
             communication: Communications App
         """
-        super(Pyliner, self).__init__(vehicle_id, communication)
+        super(Vehicle, self).__init__(vehicle_id, communication)
 
         self.atp_override = None
 
@@ -72,7 +72,7 @@ class Pyliner(BasePyliner):
             app_name (str): The name that the module will be initialized under.
             app (App): The app to enable.
         """
-        super(Pyliner, self).attach_app(priority, app_name, app)
+        super(Vehicle, self).attach_app(priority, app_name, app)
         required_ops = app.required_telemetry_paths()
         if required_ops:
             self.communications.subscribe({'tlm': required_ops})
