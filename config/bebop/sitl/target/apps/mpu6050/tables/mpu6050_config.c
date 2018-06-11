@@ -6,7 +6,7 @@
 ** Include Files
 */
 #include "cfe_tbl_filedef.h"
-#include "mpu9250_tbldefs.h"
+#include "mpu6050_tbldefs.h"
 
 /*
 ** Local Defines
@@ -27,8 +27,8 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
     **    ObjSize - size of the entire table
     */
 
-    "MPU9250_ConfigTbl", "MPU9250.CONFIG_TBL", "MPU9250 default config table",
-    "mpu9250_config.tbl", (sizeof(MPU9250_ConfigTbl_t))
+    "MPU6050_ConfigTbl", "MPU6050.CONFIG_TBL", "MPU6050 default config table",
+    "mpu6050_config.tbl", (sizeof(MPU6050_ConfigTbl_t))
 };
 
 /*
@@ -39,8 +39,8 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 ** Global Variables
 */
 
-/* Default MPU9250 config table data */
-MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
+/* Default MPU6050 config table data */
+MPU6050_ConfigTbl_t MPU6050_ConfigTbl =
 {
         /* User calibration params */
         /* AccXScale */
@@ -88,6 +88,6 @@ MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
 */
 
 /*=======================================================================================
-** End of file mpu9250_config.c
+** End of file mpu6050_config.c
 **=====================================================================================*/
     

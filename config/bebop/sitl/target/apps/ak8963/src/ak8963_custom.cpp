@@ -118,55 +118,12 @@ end_of_function:
     return (returnBool);
 }
 
-
-boolean AK8963_Custom_Set_Range(uint8 Range)
-{
-    boolean returnBool = TRUE;
-    
-    if(AK8963_BITS_CONFIG_B_RANGE_2GA5 == Range)
-    {
-        AK8963_AppCustomData.SelfTestMode = TRUE;
-    }
-    else
-    {
-        AK8963_AppCustomData.SelfTestMode = FALSE;
-    }
-
-    return (returnBool);
-}
-
-
-boolean AK8963_Custom_Get_Range(uint8 *Range)
+boolean AK8963_PowerOn(void)
 {
     return (TRUE);
 }
 
-
-boolean AK8963_Custom_Check_Range(uint8 Range)
-{
-    return (TRUE);
-}
-
-
-boolean AK8963_Custom_Set_Config(uint8 Config)
-{
-    return (TRUE);
-}
-
-
-boolean AK8963_Custom_Get_Config(uint8 *Config)
-{
-    return (TRUE);
-}
-
-
-boolean AK8963_Custom_Check_Config(uint8 Config)
-{
-    return (TRUE);
-}
-
-
-boolean AK8963_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
+boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 {
     boolean returnBool = TRUE;
 
@@ -193,9 +150,9 @@ boolean AK8963_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
         calY_f = calX_f * -1;
         calX_f = temp;
         
-        *X = ((calX_f / oAK8963.Diag.Calibration.x_scale) + oAK8963.Diag.Calibration.x_offset) / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
-        *Y = ((calY_f / oAK8963.Diag.Calibration.y_scale) + oAK8963.Diag.Calibration.y_offset) / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
-        *Z = ((calZ_f / oAK8963.Diag.Calibration.z_scale) + oAK8963.Diag.Calibration.z_offset) / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
+        *X = ((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset);// / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
+        *Y = ((calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset);// / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
+        *Z = ((calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset);// / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
     }
     else if (TRUE == AK8963_AppCustomData.SelfTestMode)
     {
@@ -208,27 +165,18 @@ boolean AK8963_Custom_Measure(int16 *X, int16 *Y, int16 *Z)
     return (returnBool);
 }
 
-
-boolean AK8963_Custom_Measure_Temp(int16 *Temp)
+boolean AK8963_Read_MagDeviceID(uint8 *Value)
 {
-    boolean returnBool = TRUE;
-
-    /* Null pointer check */
-    if(0 == Temp)
-    {
-        (void) CFE_EVS_SendEvent(AK8963_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "AK8963 Measure_Temp Null Pointer");
-    }
-
-    float calTemp = 0.0f;
-
-    SIMLIB_GetTemp(&calTemp);
-
-    *Temp = (int16) 128 * (calTemp -25);
-
-    return (returnBool);
+    *Value = AK8963_WAI_ID;
+    return (TRUE);
 }
 
+boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
+{
+    *X = 1.0;
+    *Y = 1.0;
+    *Z = 1.0;
+}
 
 boolean AK8963_Custom_ValidateID(void)
 {

@@ -272,8 +272,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/ms5607/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5607
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5607/src/ms5607_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5607/src/ms5607_i2c.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ms5607/src/ms5607_custom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ms5607_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5607_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ms5607_perfids.h
@@ -380,8 +379,8 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/mpu6050/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/src/mpu6050_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/src/mpu6050_i2c.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/src/mpu6050_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mpu6050/src/mpu6050_spi.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpu6050_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu6050_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpu6050_perfids.h
@@ -392,7 +391,7 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963/src/ak8963_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963/src/ak8963_custom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/ak8963/src/ak8963_i2c.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ak8963_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ak8963_msgids.h
