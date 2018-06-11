@@ -125,6 +125,12 @@ extern "C" {
 */
 #define AK8963_STARTUP_TIMEOUT_MSEC        (1000)
 
+/** \brief Mag divider for calculated scaling */
+#define AK8963_MAG_DIVIDER             (1090.0f)
+
+/** \brief Mag divider for calculated scaling */
+#define AK8963_MAG_UNIT                (1.0f)
+
 
 #ifdef __cplusplus
 }

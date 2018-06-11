@@ -142,7 +142,6 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
 
     SIMLIB_GetMag(&calX_f, &calY_f, &calZ_f);
 
-
     if(FALSE == AK8963_AppCustomData.SelfTestMode)
     {
         /* Apply inverse rotation */
@@ -150,9 +149,9 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
         calY_f = calX_f * -1;
         calX_f = temp;
         
-        *X = ((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset);// / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
-        *Y = ((calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset);// / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
-        *Z = ((calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset);// / (oAK8963.Diag.Conversion.Unit / oAK8963.Diag.Conversion.Divider);
+        *X = ((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
+        *Y = ((calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
+        *Z = ((calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
     }
     else if (TRUE == AK8963_AppCustomData.SelfTestMode)
     {
