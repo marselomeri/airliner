@@ -69,11 +69,11 @@ class PeriodicExecutor(threading.Thread):
     daemon thread is attempting to access garbage collected objects.
     """
 
-    def __init__(self, callback, every=1, exception=None, finalize=None,
+    def __init__(self, target, every=1, exception=None, finalize=None,
                  name=None, logger=None):
         """
         Args:
-            callback (Callable): This method will be called with no arguments
+            target (Callable): This method will be called with no arguments
                 continuously until stopped.
             every (Real): Amount of seconds to sleep between calls.
             exception (Callable): If an exception is raised this will
@@ -86,7 +86,7 @@ class PeriodicExecutor(threading.Thread):
         super(PeriodicExecutor, self).__init__(name=name)
         self.daemon = True
 
-        self.callback = callback
+        self.target = target
         # TODO if move to Python 3, use lambda x: print(x) if exception is None
         self.exception = exception
         self.every = every
@@ -101,9 +101,10 @@ class PeriodicExecutor(threading.Thread):
         self.running = True
         try:
             while self.running:
-                self.callback()
+                self.target()
                 time.sleep(self.every)
         except Exception as e:
+            self.stop()
             if callable(self.exception):
                 self.exception(e)
             else:
