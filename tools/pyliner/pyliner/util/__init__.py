@@ -114,8 +114,9 @@ class PeriodicExecutor(threading.Thread):
         self.daemon = True
 
         self.target = target
-        # TODO if move to Python 3, use lambda x: print(x) if exception is None
-        self.exception = exception
+        self.exception = exception if exception else \
+            lambda e: self.logger.exception(
+                'Unhandled exception in thread %s', self.name)
         self.every = every
         self.finalize = finalize
         self.logger = logger if logger else logging.getLogger(self.name)
@@ -131,14 +132,12 @@ class PeriodicExecutor(threading.Thread):
                 self.target()
                 time.sleep(self.every)
         except Exception as e:
-            self.stop()
             if callable(self.exception):
                 self.exception(e)
-            else:
-                self.logger.exception('Unhandled exception in thread %s', self.name)
         finally:
             if callable(self.finalize):
                 self.finalize()
+            self.stop()
 
     def _stop_atexit(self):
         self.running = False
@@ -151,11 +150,9 @@ class PeriodicExecutor(threading.Thread):
         see that it has been stopped, will execute the finalize method if it was
         given, and will then complete.
         """
-        if self.running:
-            self._stop_atexit()
+        self._stop_atexit()
+        if self._stop_atexit in atexit._exithandlers:
             atexit._exithandlers.remove(self._stop_atexit)
-        else:
-            raise RuntimeError('This thread cannot be stopped now.')
 
 
 class ScriptingWrapper:

@@ -31,12 +31,6 @@ rocky = ScriptingWrapper(Vehicle(
 ))
 
 
-def error(e):
-    """Something went wrong, RTL"""
-    rocky.exception('Something went wrong. RTL')
-    rocky.ctrl.rtl()
-
-
 def opencv_follow():
     # TODO Get video from rocky
     # x and y in pixels, z in meters
@@ -63,8 +57,7 @@ with rocky as rocky:
 
     follow = PeriodicExecutor(
         target=opencv_follow,
-        every=SLEEP,
-        exception=error)
+        every=SLEEP)
 
     try:
         follow.start()
