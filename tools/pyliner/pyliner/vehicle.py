@@ -1,4 +1,11 @@
-#!/usr/bin/python
+"""
+The Vehicle module provides the user with a concrete implementation of
+BaseVehicle, with some useful modules and settings pre-loaded. The user is free
+to not use Vehicle in favor of a completely custom subclass of BaseVehicle.
+
+Classes:
+    Vehicle  A vehicle for the user to control.
+"""
 
 import time
 

@@ -1,3 +1,21 @@
+"""
+The control module provides simple control mixin functions.
+
+Decorators:
+    even  Decorate if function should be even.
+    odd  Decorate if function should be odd.
+
+Controllers:
+    adder  Sum the result of all given functions.
+    constant  Give a single value no matter the input.
+    integral  Standard integral controller.
+    limiter  Limit the output of a function.
+    pi  Proportional-Integral controller.
+    proportional  Standard proportional controller.
+    scale  Scale an input by a factor.
+"""
+
+
 # Function Decorators
 def even(f):
     """Decorate if f(x)==f(-x) but f is only defined for x>=0."""
@@ -13,7 +31,7 @@ def odd(f):
     return wrapper
 
 
-# Control Methods
+# Zero (or any) input
 def adder(*processes):
     return lambda *args, **kwargs: sum(p(*args, **kwargs) for p in processes)
 
@@ -22,6 +40,17 @@ def constant(value):
     return lambda *args, **kwargs: value
 
 
+# One input
+def limiter(min_val=float('-inf'), max_val=float('inf')):
+    """Bound the output of a function to a range."""
+    return lambda val: max(min(val, max_val), min_val)
+
+
+def scale(factor):
+    return lambda val: val * factor
+
+
+# Two inputs: (current, target)
 def integral(gain, t_sample, t_integral):
     """Generate an integral controller."""
     factor = gain * t_sample / t_integral
@@ -36,15 +65,6 @@ def integral(gain, t_sample, t_integral):
     return lambda current, target: gen.send((current, target))
 
 
-def limiter(min_val=float('-inf'), max_val=float('inf')):
-    """Bound the output of a function to a range."""
-    return lambda val: max(min(val, max_val), min_val)
-
-
-def proportional(gain, bias=0.0):
-    return lambda current, target: gain * (target - current) + bias
-
-
 def pi(p_gain, i_gain, t_sample, t_integral, p_bias=0.0):
     def _pi():
         p = proportional(p_gain, p_bias)
@@ -57,3 +77,7 @@ def pi(p_gain, i_gain, t_sample, t_integral, p_bias=0.0):
     gen = _pi()
     next(gen)
     return lambda current, target: gen.send((current, target))
+
+
+def proportional(gain, bias=0.0):
+    return lambda current, target: gain * (target - current) + bias

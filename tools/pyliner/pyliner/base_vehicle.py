@@ -1,3 +1,11 @@
+"""
+The Base Vehicle module exposes the base class for Vehicle. A lot of the setup
+for intra-vehicle communication occurs here.
+
+Classes:
+    BaseVehicle  The base class for Vehicle
+"""
+
 import logging
 import re
 from abc import ABCMeta
@@ -9,11 +17,11 @@ from sortedcontainers import SortedDict
 
 from app import App, AppAccess
 from communication import Communication
-from geographic import Geographic
+from pyliner.sensor.geographic_sensor import GeographicSensor
 from sensor import SensorAccess
 from service import ServiceAccess
 from telemetry import Telemetry
-from time_sensor import TimeSensor
+from pyliner.sensor.time_sensor import TimeSensor
 from util import Loggable
 
 
@@ -44,7 +52,7 @@ class BaseVehicle(Loggable):
         super(BaseVehicle, self).__init__(
             logger or logging.getLogger(vehicle_id))
 
-        geographic = geographic or Geographic()
+        geographic = geographic or GeographicSensor()
         time = time or TimeSensor()
 
         self.apps = {}

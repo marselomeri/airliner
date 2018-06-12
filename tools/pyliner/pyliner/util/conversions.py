@@ -1,6 +1,7 @@
 """
 Provides shorthands for a handful of useful conversions.
 """
+
 from datetime import timedelta
 
 

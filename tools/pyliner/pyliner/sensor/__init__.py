@@ -1,5 +1,5 @@
-from pyliner_exceptions import InvalidStateError
-from vehicle_access import VehicleAccess
+from pyliner.pyliner_exceptions import InvalidStateError
+from pyliner.vehicle_access import VehicleAccess
 
 
 class Sensor(object):

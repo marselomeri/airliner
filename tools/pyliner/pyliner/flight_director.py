@@ -1,8 +1,20 @@
+"""
+The Flight Director module provides a Flight Director Application to control a
+vehicle's basic axes of motion.
+
+Apps:
+    FlightDirector  Grants the user control of a vehicle's basic axes.
+"""
+
 from app import App
 from telemetry import ManualSetpoint
 
 
 class FlightDirector(App):
+    """The FlightDirector allows for manual, direct control of a vehicle's axes.
+
+     The X, Y, Z, and Yaw (R) axes are controlled via a ManualSetpoint command.
+     """
     def __init__(self, strict_set=False):
         super(FlightDirector, self).__init__()
         self._x = self._y = self._z = self._r = 0.0
@@ -57,7 +69,7 @@ class FlightDirector(App):
     @x.setter
     def x(self, value):
         if self.strict_set and (value > 1 or value < -1):
-            raise ValueError('Cannot assign R outside of [-1, 1].')
+            raise ValueError('Cannot assign X outside of [-1, 1].')
         self._x = value
         self._send_telemetry()
 
@@ -68,7 +80,7 @@ class FlightDirector(App):
     @y.setter
     def y(self, value):
         if self.strict_set and (value > 1 or value < -1):
-            raise ValueError('Cannot assign R outside of [-1, 1].')
+            raise ValueError('Cannot assign Y outside of [-1, 1].')
         self._y = value
         self._send_telemetry()
 
@@ -79,7 +91,7 @@ class FlightDirector(App):
     @z.setter
     def z(self, value):
         if self.strict_set and (value > 1 or value < -1):
-            raise ValueError('Cannot assign R outside of [-1, 1].')
+            raise ValueError('Cannot assign Z outside of [-1, 1].')
         self._z = value
         self._send_telemetry()
 

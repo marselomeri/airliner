@@ -1,3 +1,34 @@
+"""
+The util package contains a lot of random code that doesn't belong anywhere else
+yet. If enough code of a similar purpose is added here it should be moved into
+its own package or module.
+
+Methods:
+    enable_logging  Enable process-wide logging.
+    get_time  Get the current time.
+    handler_factory  Create a UDP receive handler factory.
+    indent  Yield prepended spaces from an iterable.
+    init_socket  Create a UDP socket.
+    query_yes_no  Ask the user a yes/no question.
+    read_json  Read the json from the given file path into a dictionary.
+    shifter  Yield an n-tuple of an iterable as it is left-shifted.
+
+Enums:
+     EventType  The categories of Events.
+
+Classes:
+     Event  An event that is passed around a Vehicle.
+     Loggable  Mixin class that provides basic logging methods.
+     OverlayDict  Dict where key lookups search multiple dicts.
+     PeriodicExecutor  Thread which calls its target periodically.
+     LogStream  Intercepts IO to a stream and logs it.
+     ThreadedUDPRequestHandler  Sends UDP requests to a custom callback.
+
+Modules:
+        conversions  Useful unit conversions for in-code use.
+        mutable_val  Generic container for an immutable object that may change.
+"""
+
 import atexit
 import json
 import logging
@@ -14,17 +45,20 @@ from flufl.enum import Enum
 
 
 class EventType(Enum):
+    """This goes with Event."""
     CONSOLE_OUT = 'CONSOLE_OUT'
     CONSOLE_IN = 'CONSOLE_IN'
     LOG = 'LOG'
 
 
 class Event(object):
+    # TODO Decide if using
     def __init__(self, type):
         self.type = type
 
 
 class Loggable(object):
+    """A mixin class that provides basic logging methods."""
     def __init__(self, logger=None):
         self._logger = logger
 
@@ -51,7 +85,8 @@ class Loggable(object):
         self._logger.warning(msg, *args, **kwargs)
 
 
-class LogStream(object):
+class StreamLogger(object):
+    """Intercepts IO to a stream and logs it."""
     def __init__(self, name, stream, level=logging.INFO):
         self.level = level
         self.name = name
@@ -239,11 +274,11 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
         filemode=filemode
     )
     if stdin:
-        sys.stdin = LogStream('stdin', sys.stdin, stdin)
+        sys.stdin = StreamLogger('stdin', sys.stdin, stdin)
     if stdout:
-        sys.stdout = LogStream('stdout', sys.stdout, stdout)
+        sys.stdout = StreamLogger('stdout', sys.stdout, stdout)
     if stderr:
-        sys.stderr = LogStream('stderr', sys.stderr, stderr)
+        sys.stderr = StreamLogger('stderr', sys.stderr, stderr)
 
 
 def get_time():
@@ -312,17 +347,6 @@ def read_json(file_path):
         print("Specified input file (%s) does not exist" % file_path)
     except Exception as e:
         print(e)
-
-
-def serialize(header, payload):
-    """
-    Receive a CCSDS message and payload then returns the
-    serialized concatenation of them.
-    """
-    ser = header.get_encoded()
-    if payload:
-        ser += payload.SerializeToString()
-    return ser
 
 
 def shifter(num, iterator):

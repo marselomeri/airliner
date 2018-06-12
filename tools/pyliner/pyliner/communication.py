@@ -1,3 +1,14 @@
+"""
+The communication module provides a Communication Service for sending commands
+over UDP to the vehicle.
+
+Methods:
+    serialize  Serialize a header and a payload of a CCSDS packet.
+
+Services:
+    Communication  Handles UDP interface with physical vehicle.
+"""
+
 import threading
 
 import socketserver
@@ -6,19 +17,34 @@ import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from python_pb import pyliner_msgs
 from service import Service
-from util import init_socket, PeriodicExecutor, handler_factory, serialize
+from util import init_socket, PeriodicExecutor, handler_factory
 
+
+# TODO Put all this somewhere vehicle specific
 SEND_TIME = 0.1
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
 
 
-class Communication(Service):
-    """Provide reactive methods to send and receive telemetry to a vehicle.
+def serialize(header, payload):
+    """
+    Receive a CCSDS message and payload then returns the
+    serialized concatenation of them.
+    """
+    ser = header.get_encoded()
+    if payload:
+        ser += payload.SerializeToString()
+    return ser
 
-    Exposes telemetry through RxPY Reactive Extensions. Exposes a single
-    Observable, `telemetry` with a stream of every telemetry update coming down
-    from the vehicle.
+
+class Communication(Service):
+    """Provide methods to send and receive telemetry to a vehicle.
+
+    In some ways this service acts more like a singleton that is guaranteed to
+    be present on the vehicle, because there is only one link to the software
+    bus, and if there is no link the user could not communicate. As much as
+    possible, this service tries not to act like a God Object, but occasionally
+    it happens.
     """
 
     def __init__(self, airliner_map, address='localhost',
@@ -348,4 +374,3 @@ class Communication(Service):
             self._telemetry[tlm_item] = {'name': tlm_item,
                                          'value': 'NULL',
                                          'time': 'NULL'}
-

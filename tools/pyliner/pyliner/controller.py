@@ -1,3 +1,14 @@
+"""
+The controller module exposes a Controller App for performing high-level vehicle
+state management.
+
+Enums:
+    FlightMode  Use to send the flight software a mode.
+
+Apps:
+    Controller  Sends high-level one-off vehicle management commands.
+
+"""
 import time
 
 from flufl.enum import Enum
@@ -11,6 +22,7 @@ _WAIT_TIME = 0.1
 
 
 class FlightMode(Enum):
+    """Use to select a mode for the flight software."""
     Manual = 1
     AltCtl = 2
     PosCtl = 3
@@ -18,6 +30,8 @@ class FlightMode(Enum):
 
 
 class Controller(App):
+    """Sends high-level one-off commands to the vehicle."""
+
     def __init__(self):
         super(Controller, self).__init__()
         self.atp_override = None

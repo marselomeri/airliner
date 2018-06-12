@@ -1,3 +1,13 @@
+"""
+The App module exposes the base class for any App that runs on the Vehicle. An
+App is a subclass of a Service except that it may act on behalf of the system
+and control the vehicle.
+
+See Also:
+    Service
+    Sensor
+"""
+
 from collections import Iterable
 
 from service import Service, ServiceAccess

@@ -1,3 +1,15 @@
+"""
+The heading module exposes the Direction enum, and the Heading and HeadingRange
+classes.
+
+Enums:
+    Direction  Specify a preferred direction in Heading operations.
+
+Classes:
+    Heading  Subclass of float bounded [0, 360). Arithmetic automatically wraps.
+    HeadingRange  Defines a space between two Headings that it `contains`.
+"""
+
 from collections import Container
 from numbers import Real
 
@@ -5,16 +17,21 @@ from enum import Enum
 
 
 class Direction(Enum):
+    """Used to specify a preferred direction when getting the distance from one
+    Heading to another.
+    """
     CLOCKWISE = 1
     NEAREST = 0
     COUNTERCLOCKWISE = -1
 
 
 class Heading(float):
-    """Subclass of float bounded [0, 360). Arithmetic automatically wraps."""
+    """A subclass of float which responds to addition and subtraction such that
+    it wraps around [0, 360).
+    """
     def __new__(cls, value=0.0):
         # Can't wrap inside init because by then self is already set.
-        return super(Heading, cls).__new__(cls, value % 360)
+        return super(Heading, cls).__new__(cls, value % 360.0)
 
     def __add__(self, other):
         if isinstance(other, Real):
@@ -45,17 +62,17 @@ class Heading(float):
         may be useful in the case of overshooting a turn and not wanting to go
         all the way around again.
         """
-        if not 0 <= h1 < 360 or not 0 <= h2 < 360:
+        if not 0.0 <= h1 < 360.0 or not 0.0 <= h2 < 360.0:
             raise ValueError('h1 and h2 must be [0, 360).')
 
         diff = float(h2) - float(h1)
-        nrst = min((diff, diff-360, diff+360), key=abs)
+        nrst = min((diff, diff-360.0, diff+360.0), key=abs)
         if direction is Direction.NEAREST or abs(nrst) <= underflow:
             return nrst
         elif direction is Direction.CLOCKWISE:
-            return diff % 360
+            return diff % 360.0
         elif direction is Direction.COUNTERCLOCKWISE:
-            return diff if diff <= 0 else diff - 360
+            return diff if diff <= 0.0 else diff - 360.0
 
     def range(self, low_range, high_range=None):
         """Create a range relative to this heading.
@@ -71,7 +88,10 @@ class Heading(float):
 class HeadingRange(Container):
     """Create a range of heading values, clockwise from min to max.
 
-    Is allowed to wrap around.
+    Use Python `x in y` syntax to determine if a value is inside the range.
+
+    The range is allowed to cross 360 if the min value is larger than max, and
+    contains checks will pass as expected.
     """
 
     def __init__(self, min, max):
@@ -79,11 +99,14 @@ class HeadingRange(Container):
         self.max = max
 
     def __contains__(self, x):
-        x = Heading(x)
-        wrap = self.min > self.max
-        xgtmin = x >= self.min
-        xltmax = x <= self.max
-        return xgtmin or xltmax if wrap else xgtmin and xltmax
+        if isinstance(x, Real):
+            x = Heading(float(x))
+            wrap = self.min > self.max
+            xgtmin = x >= self.min
+            xltmax = x <= self.max
+            return xgtmin or xltmax if wrap else xgtmin and xltmax
+        else:
+            raise NotImplemented
 
     def __repr__(self):
         return 'HeadingRange({}, {})'.format(self.min, self.max)

@@ -1,18 +1,21 @@
+"""
+The geographic module exposes a base class for a developer looking to implement
+the required methods for their own Geographic calculations.
+
+See Also:
+    GeographicService
+"""
+
 from abc import abstractmethod, ABCMeta
-from copy import copy
 from numbers import Real
 
-from geographiclib.geodesic import Geodesic
-
-from position import Coordinate
-from sensor import Sensor
+from pyliner.navigation.position import Coordinate
 
 
-class GeographicBase(object):
+class Geographic(object):
     """Interface to hold static methods for geographic calculations.
 
-    The user is free to implement their own methods, though an implementation
-    is provided as Geographic.
+    An example implementation is provided as GeographicService.
     """
     __metaclass__ = ABCMeta
 
@@ -55,40 +58,3 @@ class GeographicBase(object):
         raise NotImplementedError()
 
 
-class Geographic(GeographicBase, Sensor):
-    def __repr__(self):
-        return 'Geographic()'
-
-    def __str__(self):
-        return 'WGS84'
-
-    @staticmethod
-    def bearing(a, b):
-        return Geographic._inverse(a, b)['azi1'] % 360
-
-    @staticmethod
-    def _direct(a, azim, dist):
-        # type: (Coordinate, Real, Real) -> dict
-        # Possibility of LRU cache here.
-        # noinspection PyUnresolvedReferences
-        return Geodesic.WGS84.Direct(a.latitude, a.longitude, azim, dist)
-
-    @staticmethod
-    def distance(a, b):
-        return Geographic._inverse(a, b)['s12']
-
-    @staticmethod
-    def _inverse(a, b):
-        # type: (Coordinate, Coordinate) -> dict
-        # Possibility of LRU cache here.
-        # noinspection PyUnresolvedReferences
-        return Geodesic.WGS84.Inverse(a.latitude, a.longitude,
-                                      b.latitude, b.longitude)
-
-    @staticmethod
-    def pbd(a, bearing, distance):
-        direct = Geographic._direct(a, bearing, distance)
-        b = copy(a)
-        b.latitude = direct['lat2']
-        b.longitude = direct['lon2']
-        return b

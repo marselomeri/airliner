@@ -1,3 +1,13 @@
+"""
+The service module exposes the base class for any Service on the vehicle.
+Services are a subclass of Sensors but have extra state transitions for starting
+and stopping the service.
+
+See Also:
+    Sensor
+    App
+"""
+
 from pyliner_exceptions import InvalidStateError
 from sensor import Sensor, SensorAccess
 

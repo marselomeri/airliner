@@ -1,13 +1,13 @@
 import unittest
 
 from pyliner.geofence import Geofence, LayerKind, VerticalCylinder, Box
-from pyliner.geographic import Geographic
-from pyliner.position import Position, Coordinate
+from pyliner.sensor.geographic_sensor import GeographicSensor
+from pyliner.navigation.position import Position, Coordinate
 
 
 class TestGeofence(unittest.TestCase):
     def setUp(self):
-        self.geo = Geographic()
+        self.geo = GeographicSensor()
         self.fence = Geofence()
 
     def test_box(self):
@@ -34,7 +34,7 @@ class TestGeofence(unittest.TestCase):
         raise NotImplementedError
 
     def test_fence(self):
-        geo = Geographic()
+        geo = GeographicSensor()
         fence = Geofence()
 
         base = fence.add_layer(0, 'base', LayerKind.ADDITIVE)
