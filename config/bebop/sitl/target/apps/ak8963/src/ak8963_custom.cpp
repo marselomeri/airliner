@@ -149,9 +149,27 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
         calY_f = calX_f * -1;
         calX_f = temp;
         
-        *X = ((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
+        OS_printf("calX_f %f\n", calX_f);
+        OS_printf("calY_f %f\n", calY_f);
+        OS_printf("calZ_f %f\n", calZ_f);
+
+        OS_printf("1x %f\n", (calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset);
+        OS_printf("1y %f\n", (calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset);
+        OS_printf("1z %f\n", (calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset);
+
+        OS_printf("(AK8963_MAG_UNIT / AK8963_MAG_DIVIDER) %f\n", (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER));
+
+        OS_printf("x %f\n", *X);
+        OS_printf("y %f\n", *Y);
+        OS_printf("z %f\n", *Z);
+
+        *X = ((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset) / (1.0f / 1090.0f);
         *Y = ((calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
         *Z = ((calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
+
+        OS_printf("x %f\n", *X);
+        OS_printf("y %f\n", *Y);
+        OS_printf("z %f\n", *Z);
     }
     else if (TRUE == AK8963_AppCustomData.SelfTestMode)
     {
