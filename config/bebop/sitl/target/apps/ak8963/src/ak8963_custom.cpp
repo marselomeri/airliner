@@ -130,6 +130,7 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
     float calX_f = 0.0f;
     float calY_f = 0.0f;
     float calZ_f = 0.0f;
+
     /* Temp for inverse roation */
     float temp   = 0.0f;
 
@@ -149,27 +150,9 @@ boolean AK8963_Read_Mag(int16 *X, int16 *Y, int16 *Z)
         calY_f = calX_f * -1;
         calX_f = temp;
         
-        OS_printf("calX_f %f\n", calX_f);
-        OS_printf("calY_f %f\n", calY_f);
-        OS_printf("calZ_f %f\n", calZ_f);
-
-        OS_printf("1x %f\n", (calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset);
-        OS_printf("1y %f\n", (calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset);
-        OS_printf("1z %f\n", (calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset);
-
-        OS_printf("(AK8963_MAG_UNIT / AK8963_MAG_DIVIDER) %f\n", (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER));
-
-        OS_printf("x %f\n", *X);
-        OS_printf("y %f\n", *Y);
-        OS_printf("z %f\n", *Z);
-
-        *X = ((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset) / (1.0f / 1090.0f);
+        *X = (((calX_f / oAK8963.Diag.Calibration.MagXScale) + oAK8963.Diag.Calibration.MagXOffset)) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
         *Y = ((calY_f / oAK8963.Diag.Calibration.MagYScale) + oAK8963.Diag.Calibration.MagYOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
         *Z = ((calZ_f / oAK8963.Diag.Calibration.MagZScale) + oAK8963.Diag.Calibration.MagZOffset) / (AK8963_MAG_UNIT / AK8963_MAG_DIVIDER);
-
-        OS_printf("x %f\n", *X);
-        OS_printf("y %f\n", *Y);
-        OS_printf("z %f\n", *Z);
     }
     else if (TRUE == AK8963_AppCustomData.SelfTestMode)
     {
@@ -190,9 +173,11 @@ boolean AK8963_Read_MagDeviceID(uint8 *Value)
 
 boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
 {
-    *X = 1.0;
-    *Y = 1.0;
-    *Z = 1.0;
+    *X = 64;
+    *Y = 64;
+    *Z = 64;
+
+    return (TRUE);
 }
 
 boolean AK8963_Custom_ValidateID(void)
