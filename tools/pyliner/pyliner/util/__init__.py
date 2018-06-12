@@ -335,10 +335,3 @@ def shifter(num, iterator):
         output = tuple(output[index+1] if index < num-1 else item
                        for index in range(num))
         yield output
-
-
-def copy_update(old, new):
-    """Update a copy of old with new and return it."""
-    copy = old.copy()
-    copy.update(new)
-    return copy
