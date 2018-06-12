@@ -57,7 +57,11 @@ extern "C" {
 /** \brief Device path. */
 #define SONAR_DEVICE_PATH                       ("/dev/spidev1.0")
 
-#define SONAR_MIN_DISTANCE                      (0.5f)
+/** \brief Device ADC path. */
+#define SONAR_ADC_DEVICE_PATH                   ("/sys/bus/iio/devices/iio:device0")
+
+/** \brief ADC Channel. */
+#define SONAR_ADC_CHANNEL                       ("scan_elements/in_voltage2_en")
 
 #define SONAR_MAX_DISTANCE                      (8.5f)
 
@@ -119,7 +123,27 @@ typedef struct
     uint16                      FilteredBuffer[SONAR_BUFFER_LEN];
     uint16                      SendLength;
     uint16                      MaximumSignalVal;
+    boolean                     BufferEnabled;
+    char                        ADCDevicePath[50];
 } SONAR_AppCustomData_t;
+
+
+int SONAR_ADC_Enable(void);
+
+int SONAR_ADC_Disable(void);
+
+void SONAR_Custom_InitData(void);
+
+boolean SONAR_Custom_Init(void);
+
+int SONAR_ADC_Read(uint16 *buffer, uint16 length);
+
+int SONAR_ADC_Write(const char *path, int value);
+
+
+
+
+
 
 
 #ifdef __cplusplus
