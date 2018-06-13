@@ -303,9 +303,9 @@ boolean MS5607_ReadADCResult(uint32 *returnVal)
 
                 MS5607_AppCustomData.D2 = dT + (MS5607_CUSTOM_C5 << 8);
 
-                OFF = ((int64)MS5607_CUSTOM_C2 << 16)  + (((int64)MS5607_CUSTOM_C4 * dT) >> 7);
+                OFF = ((int64)MS5607_CUSTOM_C2 << 17)  + (((int64)MS5607_CUSTOM_C4 * dT) >> 6);
 
-                SENS = ((int64)MS5607_CUSTOM_C1 << 15) + (((int64)dT * MS5607_CUSTOM_C3) >> 8);
+                SENS = ((int64)MS5607_CUSTOM_C1 << 16) + (((int64)dT * MS5607_CUSTOM_C3) >> 7);
 
                 MS5607_AppCustomData.D1 = (0x200000*(OFF+0x8000*(p*1000)))/SENS;
 
