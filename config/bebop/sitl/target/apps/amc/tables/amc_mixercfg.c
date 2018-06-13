@@ -28,8 +28,8 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
     **    ObjSize - size of the entire table
     */
 
-    "AMC_MixerCfgTbl", "AMC.MIXERCFG_TBL", "AMC 3a mixer config table",
-    "amc_mixercfg3a.tbl", (sizeof(MultirotorMixer_ConfigTable_t))
+    "AMC_MixerCfgTbl", "AMC.MIXERCFG_TBL", "AMC default mixer config table",
+    "amc_mixercfg.tbl", (sizeof(MultirotorMixer_ConfigTable_t))
 };
 
 
@@ -48,17 +48,15 @@ MultirotorMixer_ConfigTable_t AMC_MixerCfgTbl =
     1.0,          /* Pitch Scale    */
     1.0,          /* Yaw Scale      */
     0.0,          /* Idle Speed     */
-    0.0,          /* Delta Out Max  */
-    6,            /* Rotor Count    */
-	MIXER_HEX_X,  /* Rotor Geometry */
+    1.0,          /* Delta Out Max  */
+    4,            /* Rotor Count    */
+    MIXER_QUAD_X, /* Rotor Geometry */
     {
         /* Rotor # | Roll Scale  |  Pitch Scale  |  Yaw Scale  |  Output Scale */
-		/*  0  */  {  0.0,           0.0,            0.000000,     0.000000 },
-		/*  1  */  {  0.0,           0.0,            0.000000,     0.000000 },
-		/*  2  */  {  0.5,           0.866024971,   -1.000000,     1.000000 },
-		/*  3  */  { -0.5,          -0.866024971,    1.000000,     1.000000 },
-		/*  4  */  { -0.5,           0.866024971,    1.000000,     1.000000 },
-		/*  5  */  {  0.5,          -0.866024971,   -1.000000,     1.000000 }
+        /*  0  */  { -0.707107,    0.707107,    -1.000000,    1.000000 },
+        /*  1  */  { 0.707107,     -0.707107,   -1.000000,    1.000000 },
+        /*  2  */  { 0.707107,     0.707107,     1.000000,    1.000000 },
+        /*  3  */  { -0.707107,    -0.707107,    1.000000,    1.000000 }
     }
 };
 
