@@ -6,7 +6,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4
+        | Telemetry Status
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                     tr
                       th Timestamp:
                       td 
-                        span(data-sage={tlm: {name: "/CFS/PX4/TS_Timestamp"}}) ---
+                        span.format-microseconds(data-sage={tlm: {name: "/CFS/PX4/TS_Timestamp"}}) ---
                     tr
                       th Heartbeat Time:
                       td 

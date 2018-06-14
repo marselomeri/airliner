@@ -6,7 +6,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Vehicle Attitude Setpoint
+        | Vehicle Attitude Setpoint
 
 block main
     .row.row-fluid
@@ -29,7 +29,7 @@ block main
                     tr
                       th Timestamp
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_Timestamp'}]}) ---
                     tr
                       th Roll Body
                       td
@@ -65,7 +65,7 @@ block main
                     tr
                       th Q_D Valid
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_Q_D_Valid'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_Q_D_Valid'}]})
                     tr
                       th Thrust
                       td
@@ -73,28 +73,28 @@ block main
                     tr
                       th Roll Reset Int
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_RollResetInt'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_RollResetInt'}]})
                     tr
                       th Pitch Reset Int
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_PitchResetInt'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_PitchResetInt'}]})
                     tr
                       th Yaw Reset Int
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_YawResetInt'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_YawResetInt'}]})
                     tr
                       th FW Control Yaw
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_FwControlYaw'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_FwControlYaw'}]})
                     tr
                       th Disable MC Yaw Control
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_DisableMcYawControl'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_DisableMcYawControl'}]})
                     tr
                       th Apply Flaps
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_ApplyFlaps'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_ApplyFlaps'}]})
                     tr
                       th Landing Gear
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_LandingGear'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VAS_LandingGear'}]})

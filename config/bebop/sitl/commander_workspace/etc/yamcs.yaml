@@ -6,7 +6,6 @@ services:
 # instance specific properties go into the file yamcs.{instance}.yaml
 instances: 
   - Bebop2
-  #- mavlink
 
 #the location of the data and the incoming files
 # inside there should be a different directory for each instance and for each data type (e.g. /storage/yamcs-data/testinst/tm)

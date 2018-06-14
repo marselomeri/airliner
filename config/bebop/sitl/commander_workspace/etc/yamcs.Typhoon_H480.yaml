@@ -47,7 +47,7 @@ tcDataLinks:
       stream: tc_realtime
 
 #Specify which MDB configuration to use, references a named section in mdb.yaml 
-mdb: softsim
+mdb: Typhoon_H480
 
 #Configuration for streams created at server startup
 streamConfig:

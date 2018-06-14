@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | PX4 - Vehicle Land Detector
+        | Vehicle Land Detector
 
 block main
     .row.row-fluid
@@ -28,7 +28,7 @@ block main
                     tr
                       th Timestamp:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_Timestamp'}]}) ---
                     tr
                       th Altitude Maximum:
                       td
@@ -36,15 +36,15 @@ block main
                     tr
                       th Landed:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_Landed'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_Landed'}]})
                     tr
                       th FreeFall:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_Freefall'}]}) ---
+                        div.bool-led.bool-led-warn(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_Freefall'}]})
                     tr
                       th GroundContact:
                       td
-                        span(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_GroundContact'}]}) ---
+                        div.bool-led(data-sage={'tlm': [{'name': '/CFS/PX4/VLD_GroundContact'}]})
     .row.row-fluid
       article.col-xs-12.col-sm-12.col-md-12.col-lg-12
         #wid-VLD.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')

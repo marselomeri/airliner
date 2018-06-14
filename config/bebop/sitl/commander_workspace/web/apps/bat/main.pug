@@ -5,7 +5,7 @@ block includes
 
 block header
         i.fa-fw.fa.fa-signal
-        | Actuator and Motor Control
+        | Battery
 
 block main
   .row.row-fluid
@@ -33,114 +33,20 @@ block main
               footer
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/BAT/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/BAT/Reset'}}) Reset
-                
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-        #wid-BAT-ActuatorArmed.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-          header
-            span.widget-icon
-              i.fa.fa-table
-            h2 Actuator Armed (Input)
-          div
-            .jarviswidget-editbox
-              input.form-control(type='text')
-            .widget-body
-              .table-responsive
-                table.table.table-condensed
-                  tbody
-                    tr
-                      th Timestamp
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_Timestamp'}]}) ---
-                    tr
-                      th Armed
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_Armed'}]}) ---
-                    tr
-                      th Prearmed
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_Prearmed'}]}) ---
-                    tr
-                      th Ready To Arm
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_ReadyToArm'}]}) ---
-                    tr
-                      th Lockdown
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_Lockdown'}]}) ---
-                    tr
-                      th Manual Lockdown
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_ManualLockdown'}]}) ---
-                    tr
-                      th Force Failsafe
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_ForceFailsafe'}]}) ---
-                    tr
-                      th In ESC Calibration Mode
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorArmed_InEscCalibrationMode'}]}) ---                       
-                
-    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
-        #wid-BAT-ActuatorControls.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
-          header
-            span.widget-icon
-              i.fa.fa-table
-            h2 Actuator Controls (Input)
-          div
-            .jarviswidget-editbox
-              input.form-control(type='text')
-            .widget-body
-              .table-responsive
-                table.table.table-condensed
-                  tbody
-                    tr
-                      th Timestamp
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Timestamp'}]}) ---
-                    tr
-                      th Sample Time
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_SampleTime'}]}) ---
-                    tr
-                      th Control 0
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_0'}]}) ---
-                    tr
-                      th Control 1
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_1'}]}) ---
-                    tr
-                      th Control 2
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_2'}]}) ---
-                    tr
-                      th Control 3
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_3'}]}) ---
-                    tr
-                      th Control 4
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_4'}]}) ---
-                    tr
-                      th Control 5
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_5'}]}) ---
-                    tr
-                      th Control 6
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_6'}]}) ---
-                    tr
-                      th Control 7
-                      td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/ActuatorControls_Control_7'}]}) ---
-                        
-                
+    
+    script.
+        function FloatToPercent(item) {
+            //return Number((item * 100).toFixed(0));
+            return item * 100;
+        }
+        
+                    
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
         #wid-BAT-BatteryStatus.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
           header
             span.widget-icon
               i.fa.fa-table
-            h2 Battery Status (Output)
+            h2 Battery Status
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -151,47 +57,47 @@ block main
                     tr
                       th Timestamp
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Timestamp'}]}) ---
+                        span.format-microseconds(data-sage={tlm: [{name:'/CFS/BAT/Timestamp'}]}) ---
                     tr
                       th Voltage
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Voltage'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Voltage'}]}) ---
                     tr
                       th Voltage (filtered)
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_VoltageFiltered'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/VoltageFiltered'}]}) ---
                     tr
                       th Current
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Current'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Current'}]}) ---
                     tr
                       th Current (filtered)
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_CurrentFiltered'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/CurrentFiltered'}]}) ---
                     tr
                       th Discharged
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Discharged'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Discharged'}]}) ---
                     tr
                       th Remaining
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Remaining'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Remaining', format:'%.0f%%', calibration:{type:'function', function:'FloatToPercent(value)'}}]}) ---
                     tr
                       th Scale
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Scale'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Scale'}]}) ---
                     tr
                       th Cell Count
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_CellCount'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/CellCount'}]}) ---
                     tr
                       th Connected
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Connected'}]}) ---
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/BAT/Connected'}]})
                     tr
                       th Warning
                       td
-                        span(data-sage={tlm: [{name:'/CFS/BAT/BatteryStatus_Warning'}]}) ---
+                        span(data-sage={tlm: [{name:'/CFS/BAT/Warning'}]}) ---
                                         
   .row
     +app_specific_telemetry_control("BAT")

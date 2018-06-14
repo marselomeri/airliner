@@ -53,7 +53,7 @@ block main
                   tr
                     th Addr valid
                     td
-                      span(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_AddressesAreValid'}]}) ---
+                      div.bool-led.bool-led-error(data-sage={tlm: [{name: '/CFS/CFE_ES/AppInfo_AddressesAreValid'}]})
                   tr 
                     th Code addr
                     td
