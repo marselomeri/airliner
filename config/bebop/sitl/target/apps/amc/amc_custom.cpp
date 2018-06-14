@@ -118,7 +118,6 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
         controls[i] = AMC_Map(PWM[i], PwmConfigTblPtr->PwmMin,
                 PwmConfigTblPtr->PwmMax, PWM_CUSTOM_OUT_MIN,
                 PWM_CUSTOM_OUT_MAX);
-        OS_printf("control[%u]: %f\n", i, controls[i]);
     }
 
     SIMLIB_SetActuatorControls(controls, controlCount, 0);
