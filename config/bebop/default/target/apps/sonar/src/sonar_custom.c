@@ -54,6 +54,28 @@
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
+typedef enum 
+{
+/** \brief <tt> 'SONAR - ' </tt>
+**  \event <tt> 'SONAR - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when a device resource encounters an 
+**  error.
+**
+*/
+    SONAR_DEVICE_ERR_EID = SONAR_EVT_CNT,
+
+/** \brief Number of custom events 
+**
+**  \par Limits:
+**       int32
+*/
+    SONAR_CUSTOM_EVT_CNT
+} SONAR_CustomEventIds_t;
 
 /************************************************************************
 ** External Global Variables
@@ -63,6 +85,7 @@
 ** Global Variables
 *************************************************************************/
 SONAR_AppCustomData_t SONAR_AppCustomData;
+struct spi_ioc_transfer SONAR_SPI_Xfer[2];
 
 /************************************************************************
 ** Local Variables
@@ -71,12 +94,173 @@ SONAR_AppCustomData_t SONAR_AppCustomData;
 /************************************************************************
 ** Local Function Definitions
 *************************************************************************/
+int32 SONAR_Ioctl(int fh, int request, void *arg)
+{
+    int32 returnCode = 0;
+    uint32 i = 0;
+
+    for (i=0; i < SONAR_MAX_RETRY_ATTEMPTS; i++)
+    {
+        returnCode = ioctl(fh, request, arg);
+            
+        if (-1 == returnCode && EINTR == errno)
+        {
+            usleep(SONAR_MAX_RETRY_SLEEP_USEC);
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return (returnCode);
+}
+
+void SONAR_Custom_InitData(void)
+{
+    /* Set all struct zero values */
+    bzero(&SONAR_AppCustomData, sizeof(SONAR_AppCustomData));
+    /* Set the device path. */
+    snprintf(SONAR_AppCustomData.ADCDevicePath, sizeof(SONAR_AppCustomData.ADCDevicePath), SONAR_ADC_DEVICE_PATH);
+    /* Generate the pulse to send via SPI emitter. */
+    memset(SONAR_AppCustomData.SendPulse, 0xF0, (SONAR_PULSE_LEN / 2));
+    
+    /* Keep CS activated */
+    SONAR_SPI_Xfer[0].cs_change     = 0; 
+    SONAR_SPI_Xfer[0].delay_usecs   = 0; 
+    SONAR_SPI_Xfer[0].speed_hz      = SONAR_SPI_DEVICE_SPEED; 
+    SONAR_SPI_Xfer[0].bits_per_word = 8;
+
+    return;
+}
+
+
+boolean SONAR_Custom_Init()
+{
+    boolean returnBool = TRUE;
+    int returnVal      = 0;
+    int8 mode          = SONAR_SPI_DEVICE_MODE;
+    int8 bits          = SONAR_SPI_DEVICE_BITS;
+    uint32 speed       = SONAR_SPI_DEVICE_SPEED
+
+    returnVal = SONAR_ADC_Enable();
+    if(returnVal < 0)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    SONAR_AppCustomData.DeviceFd = open(SONAR_SPI_DEVICE_PATH, O_RDWR);
+    if (SONAR_AppCustomData.DeviceFd < 0) 
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "Device open errno: %i", errno);
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_WR_MODE, &mode);
+    if (-1 == returnVal)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't set SPI mode.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_RD_MODE, &mode);
+    if (-1 == returnVal)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't get SPI mode.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_WR_BITS_PER_WORD, &bits);
+    if (-1 == returnVal)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't set bits per word.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    
+    returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_RD_BITS_PER_WORD, &bits);
+    if (-1 == returnVal)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't get bits per word.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+    if (-1 == returnVal)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't set max speed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+    if (-1 == returnVal)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                          "Can't get max speed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+
+    SONAR_AppCustomData.Status = SONAR_CUSTOM_INITIALIZED;
+
+end_of_function:
+    return (returnBool);
+}
+
+
+boolean SONAR_Custom_Uninit(void)
+{
+    boolean returnBool = TRUE;
+    int returnCode     = 0;
+
+    returnCode = close(SONAR_AppCustomData.DeviceFd);
+    if (-1 == returnCode) 
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "SONAR Device close errno: %i.", errno);
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnCode = SONAR_ADC_Disable();
+    if (-1 == returnCode) 
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "SONAR ADC Disable failed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    SONAR_AppCustomData.Status = SONAR_CUSTOM_UNINITIALIZED;
+
+goto end_of_function:
+
+    return (returnBool);
+}
+
+
+void SONAR_Critical_Cleanup(void)
+{
+    (void) close(SONAR_AppCustomData.DeviceFd);
+    (void) SONAR_ADC_Disable();
+}
+
 
 int SONAR_ADC_Enable(void)
 {
-    /* Set the device path. */
-    snprintf(SONAR_AppCustomData.ADCDevicePath, sizeof(SONAR_AppCustomData.ADCDevicePath), SONAR_ADC_DEVICE_PATH);
-
     /* Before we setup the device, disable the pin (prevent resource busy error). */
     SONAR_ADC_Disable();
 
@@ -168,3 +352,133 @@ end_of_function:
     return returnVal;
 }
 
+
+int16 SONAR_Find_End_Of_Send(void)
+{
+    boolean peak = FALSE;
+    uint16 start_index = 0;
+    uint16 end_index = 0;
+    unsigned int i = 0;
+    uint16 value = 0;
+
+    for (i = 0; i < SONAR_BUFFER_LEN; ++i)
+    {
+        value = SONAR_AppCustomData.ReadBuffer[i] >> 4;
+
+        if (!peak && value > SONAR_REQUEST_THRESHOLD) 
+        {
+            start_index = i;
+            peak = TRUE;
+        } else if (peak && value < (SONAR_NOISE_LEVEL_THRESHOLD)) 
+        {
+            end_index = i;
+            break;
+        }
+    }
+
+    SONAR_AppCustomData.SendLength = end_index - start_index;
+
+    if (m_send_length > SONAR_SEND_PULSE_LEN) 
+    {
+        /* Bellow block distance. */
+        return -1;
+    } 
+    else 
+    {
+        return end_index;
+    }
+}
+
+
+int16 SONAR_Filter_Read_Buffer(void)
+{
+    memset(SONAR_AppCustomData.FilteredBuffer, 0, SONAR_BUFFER_LEN);
+    SONAR_AppCustomData.MaximumSignalVal = 0;
+    unsigned int i = 0;
+
+    /* get index where the send pulse ends (end-of-send = eos) */
+    int16 eos = SONAR_Find_End_Of_Send(); 
+
+    if (eos < 0) 
+    {
+        return -1;
+    }
+
+    /* Perform a rolling mean filter with size 3
+     * Raw values on the Bebop's iio have the format (16 >> 4) 
+     */
+
+    /* Set the values at the left edge */
+    SONAR_AppCustomData.FilteredBuffer[0] = SONAR_AppCustomData.ReadBuffer[eos] >> 4;
+    SONAR_AppCustomData.FilteredBuffer[1] = SONAR_AppCustomData.ReadBuffer[eos + 1] >> 4;
+
+    uint16 running_sum = SONAR_AppCustomData.FilteredBuffer[0] + 
+                         SONAR_AppCustomData.FilteredBuffer[1] +
+                        (SONAR_AppCustomData.ReadBuffer[eos + 2] >> 4);
+
+    /* Mean filter the read signal, but exclude the pulse recorded during send */
+    for (i = 2; i < SONAR_BUFFER_LEN - eos - 1; ++i) 
+    {
+        SONAR_AppCustomData.FilteredBuffer[i] = running_sum / 3;
+        running_sum = (running_sum + (SONAR_AppCustomData.ReadBuffer[eos + i + 1] >> 4)
+                    - (SONAR_AppCustomData.ReadBuffer[eos + i - 2] >> 4));
+
+        /* Capture the maximum value in the signal */
+        if (SONAR_AppCustomData.FilteredBuffer[i] > SONAR_AppCustomData.MaximumSignalVal) 
+        {
+            SONAR_AppCustomData.MaximumSignalVal = SONAR_AppCustomData.FilteredBuffer[i];
+        }
+    }
+
+    if (SONAR_AppCustomData.MaximumSignalVal < SONAR_NOISE_LEVEL_THRESHOLD) 
+    {
+        /* No peak found. */
+        return -1;
+    }
+
+    return 0;
+}
+
+
+
+
+
+boolean SONAR_Custom_Max_Events_Not_Reached(int32 ind)
+{
+    boolean returnBool = FALSE;
+
+    if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
+    {
+        returnBool = TRUE;
+    }
+
+    return (returnBool);
+}
+
+
+int32 SONAR_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
+{
+    int32 customEventCount = ind;
+    
+    /* Null check */
+    if(0 == EventTbl)
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+
+    if(TRUE == SONAR_Custom_Max_Events_Not_Reached(customEventCount))
+    {
+        EventTbl[  customEventCount].EventID = SONAR_DEVICE_ERR_EID;
+        EventTbl[customEventCount++].Mask    = CFE_EVS_FIRST_16_STOP;
+    }
+    else
+    {
+        customEventCount = -1;
+        goto end_of_function;
+    }
+    
+end_of_function:
+
+    return (customEventCount);
+}

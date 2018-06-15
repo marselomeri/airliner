@@ -97,6 +97,18 @@ extern "C" {
 */
 #define SONAR_NOISE_LEVEL_THRESHOLD             (100)
 
+/** \brief SPI Device path of the SONAR */
+#define SONAR_SPI_DEVICE_PATH              SONAR_DEVICE_PATH
+
+/** \brief SPI device mode */
+#define SONAR_SPI_DEVICE_MODE              (3)
+
+/** \brief SPI device bits per word */
+#define SONAR_SPI_DEVICE_BITS              (8)
+
+/** \brief SPI device speed */
+#define SONAR_SPI_DEVICE_SPEED             (1000000)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -127,6 +139,24 @@ typedef struct
     char                        ADCDevicePath[50];
 } SONAR_AppCustomData_t;
 
+/************************************************************************/
+/** \brief ioctl with limited EINTR retry attempts. 
+**
+**  \par Description
+**       This function is a wrapper for ioctl with retry attempts added.
+**
+**  \param [in] fh file descriptor.
+**  \param [in] request code.
+**  \param [in] arg pointer to a device specific struct.
+**
+**  \returns
+**  usually 0 for success and -1 for failure, see ioctl man-page for 
+**  more info.
+**  \endreturns
+**
+*************************************************************************/
+int32 SONAR_Ioctl(int fh, int request, void *arg);
+
 
 int SONAR_ADC_Enable(void);
 
@@ -141,9 +171,23 @@ int SONAR_ADC_Read(uint16 *buffer, uint16 length);
 int SONAR_ADC_Write(const char *path, int value);
 
 
-
-
-
+/************************************************************************/
+/** \brief Determines if the maximum of event filters has been reached.
+**
+**  \par Description
+**       This function checks if an index has reached the maximum
+**       number of events.
+**
+**  \par Assumptions, External Events, and Notes:
+**       None
+**
+**  \param [in]    ind    The current index to check.
+**                             
+**
+**  \returns    boolean
+**
+*************************************************************************/
+boolean SONAR_Custom_Max_Events_Not_Reached(int32 ind);
 
 
 #ifdef __cplusplus
