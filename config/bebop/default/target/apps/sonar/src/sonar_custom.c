@@ -143,7 +143,7 @@ boolean SONAR_Custom_Init()
     int8 bits          = SONAR_SPI_DEVICE_BITS;
     uint32 speed       = SONAR_SPI_DEVICE_SPEED
 
-    returnVal = SONAR_ADC_Enable();
+    returnVal = SONAR_ADC_Init();
     if(returnVal < 0)
     {
         returnBool = FALSE;
@@ -259,7 +259,7 @@ void SONAR_Critical_Cleanup(void)
 }
 
 
-int SONAR_ADC_Enable(void)
+int SONAR_ADC_Init(void)
 {
     /* Before we setup the device, disable the pin (prevent resource busy error). */
     SONAR_ADC_Disable();
@@ -270,6 +270,14 @@ int SONAR_ADC_Enable(void)
     /* Set buffer length and disable it initially. */
     SONAR_ADC_Write("/buffer/length", SONAR_BUFFER_LEN);
 
+    SONAR_AppCustomData.BufferEnabled = TRUE;
+
+    return SONAR_ADC_Write("buffer/enable", 1);
+}
+
+
+int SONAR_ADC_Enable(void)
+{
     SONAR_AppCustomData.BufferEnabled = TRUE;
 
     return SONAR_ADC_Write("buffer/enable", 1);
@@ -350,6 +358,49 @@ int SONAR_ADC_Write(const char *path, int value)
 
 end_of_function:
     return returnVal;
+}
+
+
+int SONAR_Custom_Emit_Pulse(void)
+{
+    int ret = 0;
+
+    SONAR_SPI_Xfer[0].tx_buf = (unsigned long)&SONAR_AppCustomData.SendPulse[0];
+    SONAR_SPI_Xfer[0].rx_buf = 0;
+    SONAR_SPI_Xfer[0].len = SONAR_PULSE_LEN;
+
+    if(SONAR_ADC_Enable() >= 0)
+    {
+        ret = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), SONAR_SPI_Xfer);
+        if (-1 == ret) 
+        {            
+            (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                            "Emit pulse ioctl returned %i", errno);
+        }
+    }
+    
+    return ret;
+}
+
+
+int SONAR_Custom_Read_Reflected_Wave(void)
+{
+    int ret = 0;
+
+    SONAR_SPI_Xfer[0].tx_buf = 0;
+    SONAR_SPI_Xfer[0].rx_buf = (unsigned long)&SONAR_AppCustomData.ReadBuffer[0];
+    SONAR_SPI_Xfer[0].len = SONAR_BUFFER_LEN;
+
+    ret = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), SONAR_SPI_Xfer);
+    if (-1 == ret) 
+    {            
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                            "Read reflected wave ioctl returned %i", errno);
+    }
+
+    (void) SONAR_ADC_Disable();
+    
+    return ret;
 }
 
 
@@ -440,7 +491,81 @@ int16 SONAR_Filter_Read_Buffer(void)
 }
 
 
+int16 SONAR_Get_Echo_Index(void)
+{
+    unsigned int i = 0;
 
+    if (SONAR_Filter_Read_Buffer() < 0) 
+    {
+        return -1;
+    }
+
+    /* threshold is 4/5 * m_maximum_signal_value */
+    uint16 threshold = SONAR_AppCustomData.MaximumSignalVal - (SONAR_AppCustomData.MaximumSignalVal / 5);
+    boolean peak = FALSE;
+    boolean max_peak_found = FALSE;
+    uint16 start_index = 0;
+
+    /* search the filtered signal for the rising edge of the peak, which also
+     * includes the maximum value (strongest reflection)
+     */
+    for (i = 0; i < BEBOP_RANGEFINDER_BUFFER_LEN; ++i) 
+    {
+        if (!peak && SONAR_AppCustomData.FilteredBuffer[i] > (threshold)) 
+        {
+            peak = TRUE;
+            start_index = i;
+
+        }
+        else if (peak && SONAR_AppCustomData.FilteredBuffer[i] < threshold)
+        {
+            peak = FALSE;
+
+            if (max_peak_found) 
+            {
+                /* return the index of the rising edge and add the length that we cut
+                 * at the beginning of the signal to exclude the send peak
+                 */
+                return start_index + m_send_length;
+            }
+
+        } 
+        else if (peak && SONAR_AppCustomData.FilteredBuffer[i] >= SONAR_AppCustomData.MaximumSignalVal)
+        {
+            max_peak_found = TRUE;
+        }
+    }
+
+    /* No peak found. */
+    return -1;
+}
+
+
+boolean SONAR_Custom_Measure_Distance(float *distance)
+{
+    int16 echo = 0;
+    float height = 0.0f;
+    float index = 0.0f;
+    boolean returnBool = FALSE;
+
+    if(SONAR_Custom_Read_Reflected_Wave() >= 0)
+    {
+
+        usleep(SONAR_MEASURE_INTERVAL_US);
+
+        if( SONAR_Custom_Read >= 0)
+        {
+            echo = SONAR_Get_Echo_Index();
+            if(echo >= 0)
+            {
+                index = (float) echo;
+                *distance = (index * SONAR_SPEED_OF_SOUND) / (2.0f * SONAR_ADC_SAMPLING_FREZ_HZ);
+                returnBool = TRUE;
+            }
+        }
+    }
+    return returnBool;
+}
 
 
 boolean SONAR_Custom_Max_Events_Not_Reached(int32 ind)
