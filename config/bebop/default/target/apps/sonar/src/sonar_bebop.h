@@ -107,7 +107,7 @@ extern "C" {
 #define SONAR_SPI_DEVICE_BITS              (8)
 
 /** \brief SPI device speed */
-#define SONAR_SPI_DEVICE_SPEED             (1000000)
+#define SONAR_SPI_DEVICE_SPEED             (320000)
 
 /************************************************************************
 ** Structure Declarations
