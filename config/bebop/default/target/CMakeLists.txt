@@ -424,3 +424,15 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
 )
 
+add_airliner_app(
+    sonar
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar/sonar_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar/sonar_bebop.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sonar_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sonar_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sonar_perfids.h
+)
+

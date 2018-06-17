@@ -135,7 +135,7 @@ void SONAR_Custom_InitData(void)
 }
 
 
-boolean SONAR_Custom_Init()
+boolean SONAR_Custom_Init(void)
 {
     boolean returnBool = TRUE;
     int returnVal      = 0;
@@ -143,6 +143,8 @@ boolean SONAR_Custom_Init()
     int8 bits          = SONAR_SPI_DEVICE_BITS;
     uint32 speed       = SONAR_SPI_DEVICE_SPEED
 
+    SONAR_Custom_InitData();
+    
     returnVal = SONAR_ADC_Init();
     if(returnVal < 0)
     {
@@ -548,6 +550,11 @@ boolean SONAR_Custom_Measure_Distance(float *distance)
     float index = 0.0f;
     boolean returnBool = FALSE;
 
+    if(0 == distance)
+    {
+        goto end_of_function;
+    }
+
     if(SONAR_Custom_Read_Reflected_Wave() >= 0)
     {
 
@@ -564,6 +571,9 @@ boolean SONAR_Custom_Measure_Distance(float *distance)
             }
         }
     }
+
+end_of_function:
+
     return returnBool;
 }
 

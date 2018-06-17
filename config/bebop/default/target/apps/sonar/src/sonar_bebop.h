@@ -41,7 +41,7 @@ extern "C" {
 /************************************************************************
 ** Includes
 *************************************************************************/
-//#include "sonar_custom.h"
+#include "sonar_custom.h"
 
 /************************************************************************
 ** Local Defines
@@ -157,14 +157,17 @@ typedef struct
 *************************************************************************/
 int32 SONAR_Ioctl(int fh, int request, void *arg);
 
+void SONAR_Custom_InitData(void);
+
+
+
+
 
 int SONAR_ADC_Enable(void);
 
 int SONAR_ADC_Disable(void);
 
 void SONAR_Custom_InitData(void);
-
-boolean SONAR_Custom_Init(void);
 
 int SONAR_ADC_Read(uint16 *buffer, uint16 length);
 
