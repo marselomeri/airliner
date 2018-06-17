@@ -41,7 +41,11 @@
 #include "sonar_bebop.h"
 #include "sonar_events.h"
 #include "sonar_perfids.h"
-
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/types.h>
+#include <linux/spi/spidev.h>
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
@@ -141,7 +145,7 @@ boolean SONAR_Custom_Init(void)
     int returnVal      = 0;
     int8 mode          = SONAR_SPI_DEVICE_MODE;
     int8 bits          = SONAR_SPI_DEVICE_BITS;
-    uint32 speed       = SONAR_SPI_DEVICE_SPEED
+    uint32 speed       = SONAR_SPI_DEVICE_SPEED;
 
     SONAR_Custom_InitData();
     
@@ -248,7 +252,7 @@ boolean SONAR_Custom_Uninit(void)
 
     SONAR_AppCustomData.Status = SONAR_CUSTOM_UNINITIALIZED;
 
-goto end_of_function:
+end_of_function:
 
     return (returnBool);
 }
@@ -319,7 +323,7 @@ int SONAR_ADC_Read(uint16 *buffer, uint16 length)
         goto end_of_function;
     }
 
-    returnVal = fread(buffer, 2 len, file);
+    returnVal = fread(buffer, 2, length, file);
     if(returnVal < 0)
     {
         goto end_of_function;
@@ -431,7 +435,7 @@ int16 SONAR_Find_End_Of_Send(void)
 
     SONAR_AppCustomData.SendLength = end_index - start_index;
 
-    if (m_send_length > SONAR_SEND_PULSE_LEN) 
+    if (SONAR_AppCustomData.SendLength > SONAR_SEND_PULSE_LEN) 
     {
         /* Bellow block distance. */
         return -1;
@@ -511,7 +515,7 @@ int16 SONAR_Get_Echo_Index(void)
     /* search the filtered signal for the rising edge of the peak, which also
      * includes the maximum value (strongest reflection)
      */
-    for (i = 0; i < BEBOP_RANGEFINDER_BUFFER_LEN; ++i) 
+    for (i = 0; i < SONAR_BUFFER_LEN; ++i) 
     {
         if (!peak && SONAR_AppCustomData.FilteredBuffer[i] > (threshold)) 
         {
@@ -528,7 +532,7 @@ int16 SONAR_Get_Echo_Index(void)
                 /* return the index of the rising edge and add the length that we cut
                  * at the beginning of the signal to exclude the send peak
                  */
-                return start_index + m_send_length;
+                return start_index + SONAR_AppCustomData.SendLength;
             }
 
         } 
@@ -560,7 +564,7 @@ boolean SONAR_Custom_Measure_Distance(float *distance)
 
         usleep(SONAR_MEASURE_INTERVAL_US);
 
-        if( SONAR_Custom_Read >= 0)
+        if( SONAR_Custom_Read() >= 0)
         {
             echo = SONAR_Get_Echo_Index();
             if(echo >= 0)

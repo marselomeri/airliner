@@ -109,6 +109,12 @@ extern "C" {
 /** \brief SPI device speed */
 #define SONAR_SPI_DEVICE_SPEED             (1000000)
 
+/** \brief Retry attemps for interrupted ioctl calls. */
+#define SONAR_MAX_RETRY_ATTEMPTS           (2)
+
+/** \brief Sleep time micro seconds for interrupted calls. */
+#define SONAR_MAX_RETRY_SLEEP_USEC         (10)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/

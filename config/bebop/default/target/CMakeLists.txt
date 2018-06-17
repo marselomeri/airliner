@@ -237,17 +237,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    ulr
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/ulr/ulr_custom.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ulr_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ulr_perfids.h
-)
-
-add_airliner_app(
     rgbled
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/rgbled/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/rgbled
@@ -426,11 +415,11 @@ add_airliner_app(
 
 add_airliner_app(
     sonar
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ulr/fsw/for_build
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sonar/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar/sonar_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar/sonar_bebop.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar/src/sonar_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sonar/src/sonar_bebop.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sonar_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sonar_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sonar_perfids.h
