@@ -148,3 +148,6 @@
 [submodule "tools/commanderjs"]
 	path = tools/commanderjs
 	url = git@bitbucket.org:windhoverlabs/commanderjs.git
+[submodule "apps/sonar"]
+	path = apps/sonar
+	url = git@bitbucket.org:windhoverlabs/sonar.git
