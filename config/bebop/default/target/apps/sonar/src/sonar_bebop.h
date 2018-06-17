@@ -115,6 +115,10 @@ extern "C" {
 /** \brief Sleep time micro seconds for interrupted calls. */
 #define SONAR_MAX_RETRY_SLEEP_USEC         (10)
 
+#define SONAR_SPI_DIR_READ                 (0x80)
+
+#define SONAR_SPI_DIR_WRITE                (0x00)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -165,9 +169,7 @@ int32 SONAR_Ioctl(int fh, int request, void *arg);
 
 void SONAR_Custom_InitData(void);
 
-
-
-
+void SONAR_ADC_Init(void);
 
 int SONAR_ADC_Enable(void);
 

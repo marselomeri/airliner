@@ -149,12 +149,7 @@ boolean SONAR_Custom_Init(void)
 
     SONAR_Custom_InitData();
     
-    returnVal = SONAR_ADC_Init();
-    if(returnVal < 0)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    SONAR_ADC_Init();
 
     SONAR_AppCustomData.DeviceFd = open(SONAR_SPI_DEVICE_PATH, O_RDWR);
     if (SONAR_AppCustomData.DeviceFd < 0) 
@@ -265,7 +260,7 @@ void SONAR_Critical_Cleanup(void)
 }
 
 
-int SONAR_ADC_Init(void)
+void SONAR_ADC_Init(void)
 {
     /* Before we setup the device, disable the pin (prevent resource busy error). */
     SONAR_ADC_Disable();
@@ -275,10 +270,6 @@ int SONAR_ADC_Init(void)
 
     /* Set buffer length and disable it initially. */
     SONAR_ADC_Write("/buffer/length", SONAR_BUFFER_LEN);
-
-    SONAR_AppCustomData.BufferEnabled = TRUE;
-
-    return SONAR_ADC_Write("buffer/enable", 1);
 }
 
 
@@ -370,10 +361,13 @@ end_of_function:
 int SONAR_Custom_Emit_Pulse(void)
 {
     int ret = 0;
+    uint8 buffer[SONAR_PULSE_LEN + 1] = {0};
+    /* First byte is address (0x0). */
+    memcpy((void*) &buffer[1], (void*) &SONAR_AppCustomData.SendPulse[0], SONAR_PULSE_LEN);
 
-    SONAR_SPI_Xfer[0].tx_buf = (unsigned long)&SONAR_AppCustomData.SendPulse[0];
+    SONAR_SPI_Xfer[0].tx_buf = (unsigned long)&buffer[0];
     SONAR_SPI_Xfer[0].rx_buf = 0;
-    SONAR_SPI_Xfer[0].len = SONAR_PULSE_LEN;
+    SONAR_SPI_Xfer[0].len = SONAR_PULSE_LEN + 1;
 
     if(SONAR_ADC_Enable() >= 0)
     {
@@ -393,15 +387,11 @@ int SONAR_Custom_Read_Reflected_Wave(void)
 {
     int ret = 0;
 
-    SONAR_SPI_Xfer[0].tx_buf = 0;
-    SONAR_SPI_Xfer[0].rx_buf = (unsigned long)&SONAR_AppCustomData.ReadBuffer[0];
-    SONAR_SPI_Xfer[0].len = SONAR_BUFFER_LEN;
-
-    ret = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_MESSAGE(1), SONAR_SPI_Xfer);
+    ret = SONAR_ADC_Read(&SONAR_AppCustomData.ReadBuffer[0], SONAR_BUFFER_LEN);
     if (-1 == ret) 
     {            
         (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                            "Read reflected wave ioctl returned %i", errno);
+                            "Read reflected wave failed");
     }
 
     (void) SONAR_ADC_Disable();
@@ -559,12 +549,12 @@ boolean SONAR_Custom_Measure_Distance(float *distance)
         goto end_of_function;
     }
 
-    if(SONAR_Custom_Read_Reflected_Wave() >= 0)
+    if(SONAR_Custom_Emit_Pulse() >= 0)
     {
 
         usleep(SONAR_MEASURE_INTERVAL_US);
 
-        if( SONAR_Custom_Read() >= 0)
+        if( SONAR_Custom_Read_Reflected_Wave() >= 0)
         {
             echo = SONAR_Get_Echo_Index();
             if(echo >= 0)
