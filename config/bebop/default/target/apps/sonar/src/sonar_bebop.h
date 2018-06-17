@@ -41,7 +41,7 @@ extern "C" {
 /************************************************************************
 ** Includes
 *************************************************************************/
-//#include "sonar_custom.h"
+#include "sonar_custom.h"
 
 /************************************************************************
 ** Local Defines
@@ -109,6 +109,12 @@ extern "C" {
 /** \brief SPI device speed */
 #define SONAR_SPI_DEVICE_SPEED             (320000)
 
+/** \brief Retry attemps for interrupted ioctl calls. */
+#define SONAR_MAX_RETRY_ATTEMPTS           (2)
+
+/** \brief Sleep time micro seconds for interrupted calls. */
+#define SONAR_MAX_RETRY_SLEEP_USEC         (10)
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -157,14 +163,17 @@ typedef struct
 *************************************************************************/
 int32 SONAR_Ioctl(int fh, int request, void *arg);
 
+void SONAR_Custom_InitData(void);
+
+
+
+
 
 int SONAR_ADC_Enable(void);
 
 int SONAR_ADC_Disable(void);
 
 void SONAR_Custom_InitData(void);
-
-boolean SONAR_Custom_Init(void);
 
 int SONAR_ADC_Read(uint16 *buffer, uint16 length);
 
