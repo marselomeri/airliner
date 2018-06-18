@@ -169,7 +169,7 @@ int32 SONAR_Ioctl(int fh, int request, void *arg);
 
 void SONAR_Custom_InitData(void);
 
-void SONAR_ADC_Init(void);
+int SONAR_ADC_Init(void);
 
 int SONAR_ADC_Enable(void);
 

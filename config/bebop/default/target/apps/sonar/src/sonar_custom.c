@@ -120,6 +120,7 @@ int32 SONAR_Ioctl(int fh, int request, void *arg)
     return (returnCode);
 }
 
+
 void SONAR_Custom_InitData(void)
 {
     /* Set all struct zero values */
@@ -147,10 +148,20 @@ boolean SONAR_Custom_Init(void)
     int8 bits          = SONAR_SPI_DEVICE_BITS;
     uint32 speed       = SONAR_SPI_DEVICE_SPEED;
 
+    /* Initialize custom data. */
     SONAR_Custom_InitData();
-    
-    SONAR_ADC_Init();
 
+    /* Initialize ADC (for sampling reflected wave). */
+    returnVal = SONAR_ADC_Init();
+    if(returnVal < 0)
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "Sonar ADC init failed.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Open SPI (for generating pulses). */
     SONAR_AppCustomData.DeviceFd = open(SONAR_SPI_DEVICE_PATH, O_RDWR);
     if (SONAR_AppCustomData.DeviceFd < 0) 
     {
@@ -160,6 +171,7 @@ boolean SONAR_Custom_Init(void)
         goto end_of_function;
     }
 
+    /* Setup for SPI. */
     returnVal = SONAR_Ioctl(SONAR_AppCustomData.DeviceFd, SPI_IOC_WR_MODE, &mode);
     if (-1 == returnVal)
     {
@@ -214,7 +226,6 @@ boolean SONAR_Custom_Init(void)
         goto end_of_function;
     }
 
-
     SONAR_AppCustomData.Status = SONAR_CUSTOM_INITIALIZED;
 
 end_of_function:
@@ -237,7 +248,7 @@ boolean SONAR_Custom_Uninit(void)
     }
 
     returnCode = SONAR_ADC_Disable();
-    if (-1 == returnCode) 
+    if (returnCode < 0) 
     {
         (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "SONAR ADC Disable failed.");
@@ -260,16 +271,32 @@ void SONAR_Critical_Cleanup(void)
 }
 
 
-void SONAR_ADC_Init(void)
+int SONAR_ADC_Init(void)
 {
+    int returnVal = -1;
     /* Before we setup the device, disable the pin (prevent resource busy error). */
-    SONAR_ADC_Disable();
+    returnVal = SONAR_ADC_Disable();
+    if(returnVal < 0)
+    {
+        goto end_of_function;
+    }
 
     /* Enable the channel. */
-    SONAR_ADC_Write(SONAR_ADC_CHANNEL, 1);
+    returnVal = SONAR_ADC_Write(SONAR_ADC_CHANNEL, 1);
+    if(returnVal < 0)
+    {
+        goto end_of_function;
+    }
 
     /* Set buffer length and disable it initially. */
-    SONAR_ADC_Write("/buffer/length", SONAR_BUFFER_LEN);
+    returnVal = SONAR_ADC_Write("/buffer/length", SONAR_BUFFER_LEN);
+    if(returnVal < 0)
+    {
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnVal;
 }
 
 
@@ -335,7 +362,7 @@ int SONAR_ADC_Write(const char *path, int value)
 {
     int returnVal = -1;
     char filename[sizeof(SONAR_AppCustomData.ADCDevicePath) + 20] = {0};
-    FILE *file;
+    FILE *file = 0;
 
     snprintf(filename, sizeof(filename), "%s/%s", SONAR_AppCustomData.ADCDevicePath, path);
 
@@ -378,7 +405,7 @@ int SONAR_Custom_Emit_Pulse(void)
                             "Emit pulse ioctl returned %i", errno);
         }
     }
-    
+
     return ret;
 }
 
@@ -388,14 +415,22 @@ int SONAR_Custom_Read_Reflected_Wave(void)
     int ret = 0;
 
     ret = SONAR_ADC_Read(&SONAR_AppCustomData.ReadBuffer[0], SONAR_BUFFER_LEN);
-    if (-1 == ret) 
+    if (ret < 0) 
     {            
         (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                            "Read reflected wave failed");
+                            "Read reflected wave failed.");
+        goto end_of_function;
     }
 
-    (void) SONAR_ADC_Disable();
-    
+    ret = SONAR_ADC_Disable();
+    if (ret < 0) 
+    {            
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                            "ADC disable failed in read reflected wave.");
+        goto end_of_function;
+    }
+
+end_of_function:
     return ret;
 }
 
@@ -428,6 +463,7 @@ int16 SONAR_Find_End_Of_Send(void)
     if (SONAR_AppCustomData.SendLength > SONAR_SEND_PULSE_LEN) 
     {
         /* Bellow block distance. */
+        //printf("Below block distance.\n");
         return -1;
     } 
     else 
@@ -480,6 +516,7 @@ int16 SONAR_Filter_Read_Buffer(void)
     if (SONAR_AppCustomData.MaximumSignalVal < SONAR_NOISE_LEVEL_THRESHOLD) 
     {
         /* No peak found. */
+        //printf("No peak found.\n");
         return -1;
     }
 
@@ -562,7 +599,7 @@ boolean SONAR_Custom_Measure_Distance(float *distance)
                 index = (float) echo;
                 *distance = (index * SONAR_SPEED_OF_SOUND) / (2.0f * SONAR_ADC_SAMPLING_FREZ_HZ);
                 returnBool = TRUE;
-                printf("distance %f\n", *distance);
+                //printf("Distance %f m\n", *distance);
             }
         }
         else
