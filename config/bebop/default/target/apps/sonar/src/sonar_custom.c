@@ -522,7 +522,7 @@ int16 SONAR_Get_Echo_Index(void)
                 /* return the index of the rising edge and add the length that we cut
                  * at the beginning of the signal to exclude the send peak
                  */
-                return start_index + SONAR_AppCustomData.SendLength;
+                return (start_index + SONAR_AppCustomData.SendLength);
             }
 
         } 
@@ -562,8 +562,19 @@ boolean SONAR_Custom_Measure_Distance(float *distance)
                 index = (float) echo;
                 *distance = (index * SONAR_SPEED_OF_SOUND) / (2.0f * SONAR_ADC_SAMPLING_FREZ_HZ);
                 returnBool = TRUE;
+                printf("distance %f\n", *distance);
             }
         }
+        else
+        {
+            (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Read reflected wave failed in custom measure.");
+        }
+    }
+    else
+    {
+        (void) CFE_EVS_SendEvent(SONAR_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Emit pulse failed in custom measure.");
     }
 
 end_of_function:
