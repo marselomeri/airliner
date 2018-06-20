@@ -127,15 +127,6 @@
 [submodule "apps/hk"]
 	path = apps/hk
 	url = https://hangar.windhoverlabs.com/code/scm/pub/hk.git
-[submodule "cfe"]
-	path = cfe
-	url = https://hangar.windhoverlabs.com/code/scm/priv/cfe.git
-[submodule "psp"]
-	path = psp
-	url = https://hangar.windhoverlabs.com/code/scm/priv/psp.git
-[submodule "osal"]
-	path = osal
-	url = https://hangar.windhoverlabs.com/code/scm/priv/osal.git
 [submodule "tools/commanderjs"]
 	path = tools/commanderjs
 	url = https://hangar.windhoverlabs.com/code/scm/pub/commanderjs.git
