@@ -133,3 +133,15 @@
 [submodule "tools/jmavsim"]
 	path = tools/jmavsim
 	url = https://hangar.windhoverlabs.com/code/scm/pub/jMAVSim.git
+[submodule "apps/sonar"]
+	path = apps/sonar
+	url = https://hangar.windhoverlabs.com/code/scm/pub/sonar.git
+[submodule "apps/mpu6050"]
+	path = apps/mpu6050
+	url = https://hangar.windhoverlabs.com/code/scm/pub/mpu6050.git
+[submodule "apps/ms5607"]
+	path = apps/ms5607
+	url = https://hangar.windhoverlabs.com/code/scm/pub/ms5607.git
+[submodule "apps/ak8963"]
+	path = apps/ak8963
+	url = https://hangar.windhoverlabs.com/code/scm/pub/ak8963.git
