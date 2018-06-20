@@ -85,7 +85,7 @@ extern "C" {
 **  \par Description:
 **       The mic records the transmitted signal at the beginning of 
 **       received signal and defines when it should have ended. Used to
-**       if the vehicle is bellow the block distance. 
+**       detect if the vehicle is bellow the block distance. 
 */
 #define SONAR_SEND_PULSE_LEN                    (420)
 
@@ -95,7 +95,7 @@ extern "C" {
 **       Defines the end of the transmitted signal. A valid received
 **       signal must be above this value to be accepted.
 */
-#define SONAR_NOISE_LEVEL_THRESHOLD             (100)
+#define SONAR_NOISE_LEVEL_THRESHOLD             (1000)
 
 /** \brief SPI Device path of the SONAR */
 #define SONAR_SPI_DEVICE_PATH              SONAR_DEVICE_PATH
