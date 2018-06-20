@@ -3,9 +3,11 @@ include(../set-vars.cmake)
 # Put target specific functions here.  This is where we build most everything.  Everything that either uses the
 # cross toolchain or has target independent functions.
 
-build_airliner_cfe(
+initialize_airliner_build(
     PSP ${TARGET_PSP}
     OSAL ${TARGET_OSAL}
+    CORE_BINARY ${CMAKE_CURRENT_SOURCE_DIR}/airliner
+    CORE_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/tools
     CONFIG
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc

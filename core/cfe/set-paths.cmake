@@ -31,20 +31,14 @@
 #
 #############################################################################
  
-set(CFE_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(CFE_FSW ${CFE_DIR}/fsw)
-set(CFE_CORE_SRC ${CFE_FSW}/src)
-set(CFE_TOOLS ${CFE_DIR}/tools)
-set(CFE_UNIT_TEST ${CFE_FSW}/unit-test)
-
 set(CFE_INC_DIRS
-    ${CFE_CORE_SRC}/inc
-    ${CFE_CORE_SRC}/es
-    ${CFE_CORE_SRC}/evs
-    ${CFE_CORE_SRC}/fs
-    ${CFE_CORE_SRC}/inc
-    ${CFE_CORE_SRC}/sb
-    ${CFE_CORE_SRC}/tbl
-    ${CFE_CORE_SRC}/time)
+    ${CMAKE_CURRENT_LIST_DIR}/inc
+    ${CMAKE_CURRENT_LIST_DIR}/inc/private
+    ${CMAKE_CURRENT_LIST_DIR}/inc/internal/es
+    ${CMAKE_CURRENT_LIST_DIR}/inc/internal/evs
+    ${CMAKE_CURRENT_LIST_DIR}/inc/internal/fs
+    ${CMAKE_CURRENT_LIST_DIR}/inc/internal/sb
+    ${CMAKE_CURRENT_LIST_DIR}/inc/internal/tbl
+    ${CMAKE_CURRENT_LIST_DIR}/inc/internal/time)
 
 

@@ -32,6 +32,4 @@
 #############################################################################
  
 # Set some paths that we'll use later in the CFE build.
-set(OSAL_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(OSAL_SRC ${OSAL_DIR}/src/os)
-set(OSAL_INC_DIRS ${OSAL_SRC}/inc)
+set(OSAL_INC_DIRS ${CMAKE_CURRENT_LIST_DIR}/inc)
