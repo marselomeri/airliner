@@ -257,6 +257,6 @@ boolean AK8963_RunSelfTest(void)
 	/* Simulate delays we would see with the real hardware. */
     usleep(AK8963_SELFTEST_DELAY_TIME);
 
-    /* Return and report no failure. */
-    return (false);
+    /* Return and report success. */
+    return (true);
 }
