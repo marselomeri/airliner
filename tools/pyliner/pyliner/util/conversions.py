@@ -1,5 +1,5 @@
 """
-Provides shorthands for a handful of useful conversions.
+Provides shorthands for a handful of useful conversions to SI units.
 """
 
 from datetime import timedelta
@@ -9,6 +9,11 @@ from datetime import timedelta
 def feet(ft):
     """Convert from given feet to meters."""
     return ft * 0.3048
+
+
+def meters(m):
+    """Return m, here for completeness."""
+    return m
 
 
 # Time

@@ -48,3 +48,7 @@ class Position(Coordinate):
     def __repr__(self):
         return('{}({}, {}, {})'.format(self.__class__.__name__, self.latitude,
                                        self.longitude, self.altitude))
+
+    @classmethod
+    def from_coordinate(cls, coordinate, altitude):
+        return Position(coordinate.latitude, coordinate.longitude, altitude)
