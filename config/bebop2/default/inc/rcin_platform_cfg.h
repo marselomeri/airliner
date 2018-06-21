@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define RCIN_STREAMING_TASK_FLAGS          OS_ENABLE_CORE_0
+
 /*
 ** RCIN Platform Configuration Parameter Definitions
 */
@@ -108,8 +110,6 @@ extern "C" {
 **       This parameter must be at least 1000 (ms).
 */
 #define RCIN_STARTUP_TIMEOUT_MSEC    (1000)
-
-#define RCIN_CUSTOM_JOYSTICK_PATH    "/dev/input/futaba-t8j-0"
 
 
 #ifdef __cplusplus

@@ -628,6 +628,36 @@
 #define LGC_WAKEUP_MID                              0x0cb2
 #define LGC_CMD_MID                                 0x0cb3
 
+/* MS5607                                               */
+#define MS5607_SEND_HK_MID                          0x0cb5
+#define MS5607_HK_TLM_MID                           0x0cb6
+#define MS5607_DIAG_TLM_MID                         0x0cb7
+#define MS5607_CMD_MID                              0x0cb8
+#define MS5607_MEASURE_MID                          0x0cb9
+
+/* AK8963                                               */
+#define AK8963_HK_TLM_MID                           0x0cc1
+#define AK8963_SEND_HK_MID                          0x1cc2
+#define AK8963_WAKEUP_MID                           0x1cc3
+#define AK8963_CMD_MID                              0x1cc4
+#define AK8963_DIAG_TLM_MID                         0x0cc5
+
+/* MPU6050                                               */
+#define MPU6050_SEND_HK_MID							0x1cd0
+#define MPU6050_HK_TLM_MID							0x0cd1
+#define MPU6050_DIAG_TLM_MID						0x0cd2
+#define MPU6050_CMD_MID								0x1cd3
+#define MPU6050_MEASURE_MID							0x1cd4
+
+
+/* SONAR                                                 */
+#define SONAR_CMD_MID                               0x1cd6
+#define SONAR_SEND_HK_MID                           0x1cd7
+#define SONAR_MEASURE_MID                           0x1cd8
+#define SONAR_OUT_DATA_MID                          0x0cd9
+#define SONAR_HK_TLM_MID                            0x0ce0
+
+
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif

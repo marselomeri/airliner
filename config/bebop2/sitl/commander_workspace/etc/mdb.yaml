@@ -1,4 +1,4 @@
-Typhoon_H480:
+Bebop_2_SITL:
     # Configuration of the active loaders
     # Valid loaders are: sheet, xtce or fully qualified name of the class
     - type: "sheet"
