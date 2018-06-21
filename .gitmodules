@@ -142,3 +142,6 @@
 [submodule "apps/ak8963"]
 	path = apps/ak8963
 	url = https://hangar.windhoverlabs.com/code/scm/pub/ak8963.git
+[submodule "tools/commanderjs"]
+	path = tools/commanderjs
+	url = https://hangar.windhoverlabs.com/code/scm/pub/commanderjs.git
