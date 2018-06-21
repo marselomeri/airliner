@@ -33,10 +33,12 @@ def odd(f):
 
 # Zero (or any) input
 def adder(*processes):
+    """Sum the output of processes when called with the same arguments."""
     return lambda *args, **kwargs: sum(p(*args, **kwargs) for p in processes)
 
 
 def constant(value):
+    """Return a constant value regardless of input."""
     return lambda *args, **kwargs: value
 
 
@@ -47,12 +49,17 @@ def limiter(min_val=float('-inf'), max_val=float('inf')):
 
 
 def scale(factor):
+    """Linearly scale a single input."""
     return lambda val: val * factor
 
 
 # Two inputs: (current, target)
 def integral(gain, t_sample, t_integral):
-    """Generate an integral controller."""
+    """Generate an integral controller with a gain, sample and integral times.
+
+    Controller returns a control value when called with two args, the current
+    value and the target setpoint.
+    """
     factor = gain * t_sample / t_integral
 
     def _integral():
@@ -66,6 +73,20 @@ def integral(gain, t_sample, t_integral):
 
 
 def pi(p_gain, i_gain, t_sample, t_integral, p_bias=0.0):
+    """Generate a proportional-integral controller.
+
+    Controller returns a control value when called with two args, the current
+    value and the target setpoint. In this setup, the input differential is
+    fed to the proportional controller, which feeds the integral controller.
+    The output is a sum of the proportional and integral controllers.
+
+    Args:
+        p_gain (Real): Proportional gain between the current and target value.
+        p_bias (Real): Constant bias to proportional output.
+        i_gain (Real): Integral gain between the current and target value.
+        t_sample (Real): Sampling time, smaller = slower response
+        t_integral (Real): Integral time, smaller = faster response
+    """
     def _pi():
         p = proportional(p_gain, p_bias)
         i = integral(i_gain, t_sample, t_integral)
@@ -80,4 +101,9 @@ def pi(p_gain, i_gain, t_sample, t_integral, p_bias=0.0):
 
 
 def proportional(gain, bias=0.0):
+    """Generate a proportional controller with a gain and a bias.
+
+    Controller returns a control value when called with two args, the current
+    value and the target setpoint.
+    """
     return lambda current, target: gain * (target - current) + bias

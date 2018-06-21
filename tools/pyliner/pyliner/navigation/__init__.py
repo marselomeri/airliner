@@ -338,11 +338,10 @@ class Vnav(NavigationFactory):
 
 
 class Navigation(App):
-    """Navigation module. Contains all navigation features.
+    """Navigation app. Contains all navigation features.
 
     Note:
-        Currently this module takes lateral and vertical navigation as separate
-        components, and only executes one at a time.
+        Currently this app takes commands and executes one at a time.
     TODO: In a future version a more integrated 3d-space will be implemented.
     """
 

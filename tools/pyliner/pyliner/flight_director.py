@@ -1,5 +1,5 @@
 """
-The Flight Director module provides a Flight Director Application to control a
+The Flight Director app provides a Flight Director Application to control a
 vehicle's basic axes of motion.
 
 Apps:

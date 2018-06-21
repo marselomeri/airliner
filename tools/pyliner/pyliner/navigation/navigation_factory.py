@@ -23,10 +23,18 @@ class NavigationFactory(Loggable):
     for chained calls if such an operation makes sense for the factory.
     """
     def __init__(self, navigation, **kwargs):
-        """Construct with navigation as the base app and default kwargs."""
+        """Construct with navigation as the base app and default kwargs.
+
+        Args:
+            navigation (Navigation): Navigation-compatible App.
+
+        Keyword Args:
+            Any given keyword arguments are used in place of falling back to
+            vehicle Navigation app defaults.
+        """
         super(NavigationFactory, self).__init__(navigation.vehicle.logger)
+        self._default = OverlayDict(kwargs, navigation.defaults)
         self._nav = navigation
-        self._default = OverlayDict(kwargs, self._nav.defaults)
 
     @abstractmethod
     def __call__(self, **kwargs):
@@ -38,6 +46,6 @@ class NavigationFactory(Loggable):
         """If item is NotSet fall back on Navigation defaults."""
         try:
             return item if item is not NotSet else self._default[name]
-        except KeyError as e:
+        except KeyError:
             raise KeyError('No default set for unset parameter '
                            '"{}".'.format(name))
