@@ -53,6 +53,8 @@
 
 extern AK8963 oAK8963;
 
+#define AK8963_SELFTEST_DELAY_TIME (15000)
+
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -247,4 +249,14 @@ void AK8963_Get_Rotation(uint8 *Rotation)
 
 end_of_function:
     return;
+}
+
+
+boolean AK8963_RunSelfTest(void)
+{
+	/* Simulate delays we would see with the real hardware. */
+    usleep(AK8963_SELFTEST_DELAY_TIME);
+
+    /* Return and report no failure. */
+    return (false);
 }
