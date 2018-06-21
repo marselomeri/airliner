@@ -127,9 +127,6 @@
 [submodule "apps/hk"]
 	path = apps/hk
 	url = https://hangar.windhoverlabs.com/code/scm/pub/hk.git
-[submodule "tools/commanderjs"]
-	path = tools/commanderjs
-	url = https://hangar.windhoverlabs.com/code/scm/pub/commanderjs.git
 [submodule "tools/jmavsim"]
 	path = tools/jmavsim
 	url = https://hangar.windhoverlabs.com/code/scm/pub/jMAVSim.git
