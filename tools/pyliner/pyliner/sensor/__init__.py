@@ -33,7 +33,7 @@ class Sensor(object):
         attached to. Use this wrapper for platform-dependant operations.
         """
         if self._state is not Sensor.DETACHED:
-            raise InvalidStateError('Service must be detached before attaching.')
+            raise InvalidStateError('Service is currently attached.')
         self._state = Sensor.ATTACHED
         self.vehicle = vehicle_wrapper
 
@@ -44,10 +44,10 @@ class Sensor(object):
         vehicle will no longer respond to calls through the wrapper nor pass
         events through to the service.
 
-        Sets vehicle to None.
+        Set vehicle to None.
         """
         if self._state is not Sensor.ATTACHED:
-            raise InvalidStateError('Service must be stopped before detaching.')
+            raise InvalidStateError('Service cannot be detached at this time.')
         self._state = Sensor.DETACHED
         self.vehicle = None
 

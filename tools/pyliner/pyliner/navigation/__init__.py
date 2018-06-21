@@ -143,9 +143,10 @@ class Lnav(NavigationFactory):
             raise ValueError('Tolerance must be set to a positive real number.')
 
         # Match axis value
-        axis_match = re.match('(-)?([xyz])', axis)
+        valid = '(-)?([xyz])'
+        axis_match = re.match(valid, axis)
         if not axis_match:
-            raise ValueError('Axis must match "(-)?([xyz])".')
+            raise ValueError('Axis must match "{}".'.format(valid))
         neg, axis = axis_match.groups()
 
         # Timeout
