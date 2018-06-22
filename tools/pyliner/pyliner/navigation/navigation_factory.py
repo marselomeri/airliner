@@ -34,7 +34,7 @@ class NavigationFactory(Loggable):
         """
         super(NavigationFactory, self).__init__(navigation.vehicle.logger)
         self._default = OverlayDict(kwargs, navigation.defaults)
-        self._nav = navigation
+        self.nav = navigation
 
     @abstractmethod
     def __call__(self, **kwargs):

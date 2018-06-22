@@ -19,6 +19,3 @@ The following modules are also available:
     position  2D and 3D point classes.
     waypoint  Waypoint used in navigation.
 """
-
-# TODO Find a place for this within Navigation or Vehicle
-_NAV_SLEEP = 1.0 / 16.0

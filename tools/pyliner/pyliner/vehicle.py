@@ -43,8 +43,6 @@ class Vehicle(BaseVehicle):
         self.atp_override = None
 
         # Attach defaults
-        self.attach_service('socket', SocketService(3380))
-
         self.attach_app(0, 'fence', Geofence())
         self.attach_app(1, 'ctrl', Controller())
         self.attach_app(2, 'fd', FlightDirector())
@@ -55,7 +53,7 @@ class Vehicle(BaseVehicle):
         self.apps['nav'].defaults.update({'timeout': None, 'underflow': 5.0})
 
         # Enable Services and Apps
-        for service in ('socket',):
+        for service in []:
             self.start_service(service)
         for app in ('fence', 'ctrl', 'fd', 'nav'):
             self.start_app(app)

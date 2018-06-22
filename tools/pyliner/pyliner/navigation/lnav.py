@@ -4,7 +4,6 @@ from datetime import datetime
 from numbers import Real
 
 
-from pyliner.navigation import _NAV_SLEEP
 from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
 
@@ -50,20 +49,20 @@ class Lnav(NavigationFactory):
         # TODO Use vehicle time not local
         timeout = datetime.max if timeout is None else timeout + datetime.now()
 
-        original = self._nav.position
+        original = self.nav.position
         while datetime.now() < timeout:
-            delta = self._nav._geographic.distance(original, self._nav.position)
+            delta = self.nav._geographic.distance(original, self.nav.position)
             if (distance - delta) < tolerance:
                 self.info('lnav expected %s actual %s (%s < %s m)',
                           distance, delta, distance - delta, tolerance)
-                setattr(self._nav.vehicle.app('fd'), axis, 0.0)
+                setattr(self.nav.vehicle.app('fd'), axis, 0.0)
                 return self
             control = method(delta, distance)
             control = -control if neg else control
             self.debug('lnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        distance, delta, distance - delta, tolerance, control)
-            setattr(self._nav.vehicle.app('fd'), axis, control)
-            time.sleep(_NAV_SLEEP)
+            setattr(self.nav.vehicle.app('fd'), axis, control)
+            time.sleep(self.nav.sleep_time)
         raise CommandTimeout('lnav exceeded timeout')
 
     def backward(self, distance, **kwargs):

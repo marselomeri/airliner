@@ -2,7 +2,6 @@ import time
 from datetime import timedelta, datetime
 from numbers import Real
 
-from pyliner.navigation import _NAV_SLEEP
 from pyliner.navigation.heading import Heading, Direction
 from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
@@ -60,23 +59,23 @@ class Rotate(NavigationFactory):
         # TODO Use vehicle time not local
         timeout = datetime.max if timeout is None else datetime.now() + timeout
 
-        original = self._nav.heading
+        original = self.nav.heading
         target = original + by if by else Heading(to)
         tol_range = target.range(tolerance)
 
         while datetime.now() < timeout:
-            current = self._nav.heading
+            current = self.nav.heading
             if current in tol_range:
                 self.info('rotate expected %s actual %s (in %s)',
                           target, current, tol_range)
-                self._nav.vehicle.app('fd').r = 0.0
+                self.nav.vehicle.app('fd').r = 0.0
                 return self
             distance = Heading.distance(current, target, direction, underflow)
             control = method(0.0, distance)
             self.debug('rotate toward %.3f current %.3f (%.3f < %.3f) %.3f',
                        target, current, abs(distance), tolerance, control)
-            self._nav.vehicle.app('fd').r = control
-            time.sleep(_NAV_SLEEP)
+            self.nav.vehicle.app('fd').r = control
+            time.sleep(self.nav.sleep_time)
         raise CommandTimeout('rotate exceeded timeout')
 
     def clockwise(self, degrees, **kwargs):

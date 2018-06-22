@@ -46,22 +46,22 @@ class Vnav(NavigationFactory):
         # TODO Use vehicle time not local
         timeout = datetime.max if timeout is None else timeout + datetime.now()
 
-        target_altitude = (self._nav.altitude + by) if by else to
+        target_altitude = (self.nav.altitude + by) if by else to
 
         while datetime.now() < timeout:
-            difference = abs(target_altitude - self._nav.altitude)
+            difference = abs(target_altitude - self.nav.altitude)
             if difference <= tolerance:
                 self.info('vnav expected %s actual %s (%s < %s m)',
-                          target_altitude, self._nav.altitude,
+                          target_altitude, self.nav.altitude,
                           difference, tolerance)
-                self._nav.vehicle.app('fd').z = 0.0
+                self.nav.vehicle.app('fd').z = 0.0
                 return self
-            control = method(self._nav.altitude, target_altitude)
+            control = method(self.nav.altitude, target_altitude)
             self.debug('vnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
-                       target_altitude, self._nav.altitude,
+                       target_altitude, self.nav.altitude,
                        difference, tolerance, control)
-            self._nav.vehicle.app('fd').z = control
-            time.sleep(_NAV_SLEEP)
+            self.nav.vehicle.app('fd').z = control
+            time.sleep(self.nav.sleep_time)
         raise CommandTimeout('vnav exceeded timeout')
 
     def down(self, distance, **kwargs):

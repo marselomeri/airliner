@@ -25,6 +25,7 @@ class Navigation(App):
         self._telemetry = None
 
         self.defaults = {}
+        self.sleep_time = 1.0 / 16.0
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
@@ -45,7 +46,6 @@ class Navigation(App):
     @property
     def heading(self):
         """Degrees"""
-        # TODO add setter for property
         return Heading(math.degrees(self.yaw))
 
     @property

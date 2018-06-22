@@ -3,7 +3,6 @@ from collections import Iterable
 from datetime import datetime
 from numbers import Real
 
-from pyliner.navigation import _NAV_SLEEP
 from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
 from pyliner.telemetry import SetpointTriplet
@@ -42,18 +41,18 @@ class Goto(NavigationFactory):
             waypoints = (waypoints,)
         for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
             palt = 0 if not prv else prv.altitude \
-                if prv.altitude is not None else self._nav.altitude
+                if prv.altitude is not None else self.nav.altitude
             calt = 0 if not cur else cur.altitude \
-                if cur.altitude is not None else self._nav.altitude
+                if cur.altitude is not None else self.nav.altitude
             nalt = 0 if not nxt else nxt.altitude \
-                if nxt.altitude is not None else self._nav.altitude
+                if nxt.altitude is not None else self.nav.altitude
             pyaw = 0 if not prv else prv.yaw \
-                if prv.yaw is not None else self._nav.yaw
+                if prv.yaw is not None else self.nav.yaw
             cyaw = 0 if not cur else cur.yaw \
-                if cur.yaw is not None else self._nav.yaw
+                if cur.yaw is not None else self.nav.yaw
             nyaw = 0 if not nxt else nxt.yaw \
-                if nxt.yaw is not None else self._nav.yaw
-            self._nav._telemetry = SetpointTriplet(
+                if nxt.yaw is not None else self.nav.yaw
+            self.nav._telemetry = SetpointTriplet(
                 Prev_Lat=prv.latitude if prv is not None else 0,
                 Prev_Lon=prv.longitude if prv is not None else 0,
                 Prev_Alt=palt, Prev_Yaw=pyaw,
@@ -70,11 +69,11 @@ class Goto(NavigationFactory):
             while True:
                 if datetime.now() > timeout:
                     raise CommandTimeout('goto exceeded timeout')
-                distance = self._nav._geographic.distance(
-                    cur, self._nav.position)
+                distance = self.nav._geographic.distance(
+                    cur, self.nav.position)
                 if distance < tolerance:
-                    self._nav.vehicle.info(
+                    self.nav.vehicle.info(
                         'goto expected %s actual %s (%s < %s m)',
-                        cur, self._nav.position, distance, tolerance)
+                        cur, self.nav.position, distance, tolerance)
                     break
-                time.sleep(_NAV_SLEEP)
+                time.sleep(self.nav.sleep_time)
