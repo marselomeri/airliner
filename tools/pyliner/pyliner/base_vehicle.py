@@ -8,10 +8,10 @@ Classes:
 
 import logging
 import re
-import time
 from abc import ABCMeta
 from datetime import datetime
 from os.path import join
+from time import sleep
 
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
@@ -54,7 +54,7 @@ class BaseVehicle(Loggable):
             logger or logging.getLogger(vehicle_id))
 
         geographic = geographic or GeographicSensor()
-        time = time or TimeSensor()
+        # time = time or TimeSensor()
 
         self.apps = {}
         self.communications = communications
@@ -65,7 +65,7 @@ class BaseVehicle(Loggable):
         self.vehicle_id = vehicle_id
 
         self.attach_sensor('geographic', geographic)
-        self.attach_service('time', time)
+        # self.attach_service('time', time)
         self.attach_service('comms', communications)
 
     def attach_app(self, priority, app_name, app):
@@ -125,7 +125,7 @@ class BaseVehicle(Loggable):
         while self.tlm_value(tlm) == old_val:
             if out is not None:
                 out()
-            time.sleep(poll)
+            sleep(poll)
         return self.tlm_value(tlm)
 
     def detach_app(self, name):
@@ -144,6 +144,14 @@ class BaseVehicle(Loggable):
         for priority, pri_module in self.com_priority.items():
             if module is pri_module:
                 self.com_priority.pop(priority)
+
+    def start_app(self, app):
+        """Start an App."""
+        self.apps[app].start()
+
+    def start_service(self, service):
+        """Start a Service."""
+        self.services[service].start()
 
     def telemetry(self):
         # type: () -> Optional[Telemetry]

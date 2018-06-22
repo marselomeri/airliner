@@ -12,7 +12,7 @@ from base_vehicle import BaseVehicle
 from controller import Controller
 from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
-from navigation import Navigation
+from pyliner.navigation.navigation import Navigation
 
 
 class Vehicle(BaseVehicle):
@@ -50,6 +50,10 @@ class Vehicle(BaseVehicle):
         # Add helpful default settings
         self.apps['fence'].add_layer(0, 'base', LayerKind.ADDITIVE)
         self.apps['nav'].defaults.update({'timeout': None, 'underflow': 5.0})
+
+        # Enable Services and Apps
+        for app in ('fence', 'ctrl', 'fd', 'nav'):
+            self.start_app(app)
 
     def attach_app(self, priority, app_name, app):
         """
