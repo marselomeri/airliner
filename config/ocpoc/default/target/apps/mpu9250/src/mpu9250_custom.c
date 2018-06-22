@@ -221,12 +221,7 @@ boolean MPU9250_Custom_Init()
     MPU9250_SPI_Xfer[0].delay_usecs = 0; 
     MPU9250_SPI_Xfer[0].speed_hz = speed; 
     MPU9250_SPI_Xfer[0].bits_per_word = 8;
-    ///* Keep CS activated */
-    //MPU9250_SPI_Xfer[1].cs_change = 0; 
-    //MPU9250_SPI_Xfer[1].delay_usecs = 0;
-    //MPU9250_SPI_Xfer[1].speed_hz = speed;
-    //MPU9250_SPI_Xfer[1].bits_per_word = 8;
-    
+
     ret = MPU9250_ResetDevice();
     if (-1 == ret)
     {
@@ -470,35 +465,25 @@ boolean MPU9250_SetAccScale(uint8 Scale, float *AccDivider)
         goto end_of_function;
     }
 
-    //returnBool = MPU9250_ReadReg(MPU9250_REG_ACCEL_CONFIG, &value);
-    //if (FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
     switch (Scale)
     {
         case 2:
             *AccDivider = 16384;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_2G;
             value = MPU9250_BITS_FS_2G;
             break;
 
         case 4:
             *AccDivider = 8192;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_4G;
             value = MPU9250_BITS_FS_4G;
             break;
 
         case 8:
             *AccDivider = 4096;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_8G;
             value = MPU9250_BITS_FS_8G;
             break;
 
         case 16:
             *AccDivider = 2048;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_16G;
             value = MPU9250_BITS_FS_16G;
             break;
 
@@ -532,35 +517,25 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
         goto end_of_function;
     }
 
-    //returnBool = MPU9250_ReadReg(MPU9250_REG_GYRO_CONFIG, &value);
-    //if (FALSE == returnBool)
-    //{
-        //goto end_of_function;
-    //}
-
     switch (Scale)
     {
         case 250:
             *GyroDivider = 131;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_250DPS;
             value = MPU9250_BITS_FS_250DPS;
             break;
 
         case 500:
             *GyroDivider = 65.5;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_500DPS;
             value = MPU9250_BITS_FS_500DPS;
             break;
 
         case 1000:
             *GyroDivider = 32.8;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_1000DPS;
             value = MPU9250_BITS_FS_1000DPS;
             break;
 
         case 2000:
             *GyroDivider = 16.4;
-            //value = (value & MPU9250_BITS_FS_MASK) & MPU9250_BITS_FS_2000DPS;
             value = MPU9250_BITS_FS_2000DPS;
             break;
 

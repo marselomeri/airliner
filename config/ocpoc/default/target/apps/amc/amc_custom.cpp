@@ -47,66 +47,102 @@
 #define AMC_DEVICE_PATH         "/dev/mem"
 
 
+/* The following struct is used by the AMC_SharedMemCmd_t struct and overlayed
+ * over the ocpoc PPM registers to control the PWM hardware.
+ */
 typedef struct {
     uint32 Period;
     uint32 Hi;
 } AMC_PeriodHi_t;
 
+
+/* The following struct is overlayed over the ocpoc PPM registers to control
+ * the PWM hardware.
+ */
 typedef struct
 {
-     AMC_PeriodHi_t PeriodHi[AMC_MAX_MOTOR_OUTPUTS];
+    AMC_PeriodHi_t PeriodHi[AMC_MAX_MOTOR_OUTPUTS];
 } AMC_SharedMemCmd_t;
 
-volatile AMC_SharedMemCmd_t *SharedMemCmd;
+volatile AMC_SharedMemCmd_t *AMC_SharedMemCmd;
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* AMC_Freq2tick function.                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 uint32 AMC_Freq2tick(uint16 FreqHz);
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* AMC::InitDevice function.                                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 AMC::InitDevice(void)
 {
     uint32 i;
     int mem_fd;
 
     /* Initialize just in case we were reloaded and the ctor wasn't called. */
-    SharedMemCmd = 0;
+    AMC_SharedMemCmd = 0;
 
-    //signal(SIGBUS,catch_sigbus);
     mem_fd = open(AMC_DEVICE_PATH, O_RDWR | O_SYNC);
-    SharedMemCmd = (AMC_SharedMemCmd_t *) mmap(0, 0x1000, PROT_READ | PROT_WRITE,
-                        MAP_SHARED, mem_fd, AMC_RCOUT_ZYNQ_PWM_BASE);
+    AMC_SharedMemCmd = (AMC_SharedMemCmd_t *) mmap(0, 0x1000,
+            PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd,
+            AMC_RCOUT_ZYNQ_PWM_BASE);
     close(mem_fd);
 
-    if (SharedMemCmd == 0) {
+    if (AMC_SharedMemCmd <= 0)
+    {
+    	AMC_SharedMemCmd = 0;
         return errno;
     }
 
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) {
-        SharedMemCmd->PeriodHi[i].Period = AMC_Freq2tick(AMC_FREQUENCY_PWM);
-        SharedMemCmd->PeriodHi[i].Hi     = AMC_Freq2tick(AMC_FREQUENCY_PWM) / 2; // i prefer it is zero at the beginning
-        //PX4_ERR("initialize pwm pointer failed.%d, %d", sharedMem_cmd->periodhi[i].period, sharedMem_cmd->periodhi[i].hi);
+    // Note: this appears to be required actuators to initialize
+    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) 
+    {
+        AMC_SharedMemCmd->PeriodHi[i].Period =
+                AMC_Freq2tick(AMC_FREQUENCY_PWM);
+        AMC_SharedMemCmd->PeriodHi[i].Hi     =
+                AMC_Freq2tick(AMC_FREQUENCY_PWM) / 2;
     }
-
-    OS_TaskDelay(100);
+    
     StopMotors();
 
     return 0;
 }
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* AMC::SetMotorOutputs function.                                  */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
     uint32 i = 0;
 
-    /* Convert this to duty_cycle in ns */
-    for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i) {
-        SharedMemCmd->PeriodHi[i].Hi = AMC_TICK_PER_US * PWM[i];
+    if(AMC_SharedMemCmd != 0)
+    {
+		/* Convert this to duty_cycle in ns */
+		for (i = 0; i < AMC_MAX_MOTOR_OUTPUTS; ++i)
+		{
+			AMC_SharedMemCmd->PeriodHi[i].Hi = AMC_TICK_PER_US * PWM[i];
+		}
     }
 }
 
 
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* AMC_Freq2tick function.                                         */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 uint32 AMC_Freq2tick(uint16 FreqHz)
 {
     uint32 duty = AMC_TICK_PER_S / (unsigned long)FreqHz;
+
     return duty;
 }

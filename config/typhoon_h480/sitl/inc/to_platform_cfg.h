@@ -7,6 +7,12 @@ extern "C" {
 
 #include "cfe_platform_cfg.h"
 
+#define TO_CUSTOM_CHILD_TASK_FLAGS            OS_ENABLE_CORE_0
+#define TO_CUSTOM_TASK_STACK_SIZE             131072
+
+#define TO_CUSTOM_BINARY_CHANNEL_PRIORITY     119
+#define TO_CUSTOM_PROTOBUF_CHANNEL_PRIORITY   122
+
 /*
 ** to Platform Configuration Parameter Definitions
 */
@@ -117,8 +123,8 @@ extern "C" {
 #define TO_MEM_BLOCK_SIZE_03            128
 #define TO_MEM_BLOCK_SIZE_04            256
 #define TO_MEM_BLOCK_SIZE_05            512
-#define TO_MEM_BLOCK_SIZE_06           1024
-#define TO_MEM_BLOCK_SIZE_07           2048
+#define TO_MEM_BLOCK_SIZE_06           2048
+#define TO_MEM_BLOCK_SIZE_07           8192
 #define TO_MAX_BLOCK_SIZE       (TO_MEM_BLOCK_SIZE_07 + TO_MEM_BLOCK_SIZE_07)
 
 /**

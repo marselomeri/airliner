@@ -34,14 +34,15 @@
 #ifndef RGBLED_DRIVER_H
 #define RGBLED_DRIVER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include "rgbled_custom.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -183,14 +184,15 @@ extern "C" {
 **  \par Limits:
 **       0 to MAX_PRIORITY (usually 255)
 */
-#define RGBLED_SELFTEST_TASK_PRIORITY      (50)
+#define RGBLED_SELFTEST_TASK_PRIORITY    (50)
 
 /** \brief Streaming task name
 **
 **  \par Limits:
 **       OS_MAX_API_NAME
 */
-#define RGBLED_SELFTEST_TASK_NAME          "RGBLED_TEST"
+#define RGBLED_SELFTEST_TASK_NAME        ("RGBLED_TEST")
+
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -209,12 +211,20 @@ typedef enum
 } RGBLED_Custom_Status_t;
 
 
+/**
+ * \brief LED device settings
+ */
 typedef struct
 {
+    /*! RGBLED device enabled */
     boolean     Enabled;
+    /*! RGBLED NOT powersave */
     boolean     NotPowerSave;
+    /*! RGBLED duty cycle of red LED */
     uint8       RedDutyCycle;
+    /*! RGBLED duty cycle of green LED */
     uint8       GreenDutyCycle;
+    /*! RGBLED duty cycle of blue LED */
     uint8       BlueDutyCycle;
 } RGBLED_Device_Settings_t;
 
@@ -229,12 +239,10 @@ typedef struct
     RGBLED_Device_Settings_t        Settings;
     /*! The current device status */
     RGBLED_Custom_Status_t          Status;
-    /*! Streaming task priority */
-    uint8                           Priority;
     /*! Streaming child task identifier */
     uint32                          ChildTaskID;
     /*! Streaming task function pointer */
-    CFE_ES_ChildTaskMainFuncPtr_t   StreamingTask;
+    CFE_ES_ChildTaskMainFuncPtr_t   SelfTestTask;
 } RGBLED_AppCustomData_t;
 
 
@@ -264,12 +272,88 @@ typedef struct
 *************************************************************************/
 int32 RGBLED_Ioctl(int fh, int request, void *arg);
 
+/************************************************************************/
+/** \brief Send via I2C to the device.
+**
+**  \par Description
+**       Sends data to the device target (recipient).
+**
+**  \param [in] Buffer    The buffer to send.
+**
+**  \param [in] Length    The length of the buffer to write.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length);
+
+/************************************************************************/
+/** \brief Receive data via I2C from the device.
+**
+**  \par Description
+**       Receives data to the device target (sender).
+**
+**  \param [out] Buffer    The buffer to write to.
+**
+**  \param [in] Length    The length of the buffer to read.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length);
+
+/************************************************************************/
+/** \brief Start a self-test.
+**
+**  \par Description
+**       Starts a self-test and returns to the device to its original
+**       state.
+**
+*************************************************************************/
 void RGBLED_Custom_SelfTest_Task(void);
+
+/************************************************************************/
+/** \brief Get the current state of the device.
+**
+**  \par Description
+**       Gets the current device settings.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RGBLED_Custom_GetSettings(void);
+
+/************************************************************************/
+/** \brief Validate the device settings.
+**
+**  \par Description
+**       Validate the current device settings.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RGBLED_Custom_Validate(void);
+
+/************************************************************************/
+/** \brief Enable the device.
+**
+**  \par Description
+**       Enable the device.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RGBLED_Custom_Enable(void);
+
+/************************************************************************/
+/** \brief Disable the device.
+**
+**  \par Description
+**       Disable the device.
+**
+**  \returns TRUE for success, FALSE for failure.
+**
+*************************************************************************/
 boolean RGBLED_Custom_Disable(void);
 
 #ifdef __cplusplus

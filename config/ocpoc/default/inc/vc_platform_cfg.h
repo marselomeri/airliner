@@ -7,6 +7,8 @@ extern "C" {
 
 #include <arpa/inet.h>
 
+#define VC_STREAMING_TASK_FLAGS       OS_ENABLE_CORE_0
+
 /*
 ** VC Platform Configuration Parameter Definitions
 */
@@ -154,7 +156,7 @@ extern "C" {
 **  \par Limits:
 **       0 to MAX_PRIORITY (usually 255)
 */
-#define VC_STREAMING_TASK_PRIORITY      (50)
+#define VC_STREAMING_TASK_PRIORITY      (91)
 
 /** \brief Streaming task name
 **
@@ -191,7 +193,7 @@ extern "C" {
 **  \par Limits:
 **       OS_MAX_LOCAL_PATH_LEN
 */
-#define VC_DEVICE_PATH                  "/dev/video0"
+#define VC_DEVICE_PATH                  "/dev/wide_cam"
 
 
 /* Ground system settings */
@@ -201,7 +203,7 @@ extern "C" {
 **  \par Limits:
 **       INET_ADDRSTRLEN
 */
-#define VC_DESTINATION_IP               "10.10.0.10"
+#define VC_DESTINATION_IP               "192.168.1.3"
 
 /** \brief Ground system port 
 **

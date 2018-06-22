@@ -95,6 +95,7 @@ int32 VC_Devices_InitData(void)
 
 boolean VC_Devices_Start(void)
 {
+    boolean returnBool = TRUE;
     int32 returnCode = 0;
     
     /* Set loop flag to continue forever */
@@ -108,19 +109,20 @@ boolean VC_Devices_Start(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         VC_AppCustomDevice.Priority,
-        0);
+        VC_STREAMING_TASK_FLAGS);
 
     if(returnCode != CFE_SUCCESS)
     {
         VC_AppCustomDevice.ContinueFlag = FALSE;
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+    return (returnBool);
 }
 
 
 boolean VC_Devices_Stop(void)
 {
+    boolean returnBool = TRUE;
     int32   returnCode = CFE_SUCCESS;
     /* Delete the child task */
     returnCode = CFE_ES_DeleteChildTask(VC_AppCustomDevice.ChildTaskID);
@@ -133,29 +135,46 @@ boolean VC_Devices_Stop(void)
     
     if (returnCode != CFE_SUCCESS)
     {
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+    return (returnBool);
 }
 
 
 boolean VC_Devices_Init(void)
 {
+    boolean returnBool = TRUE;
     if(-1 == VC_Init_CustomDevices())
     {
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+    return (returnBool);
 }
 
 
 boolean VC_Devices_Uninit(void)
 {
+    boolean returnBool = TRUE;
     if(-1 == VC_CleanupDevices())
     {
-        return FALSE;
+        returnBool = FALSE;
     }
-    return TRUE;
+    return (returnBool);
+}
+
+
+void VC_Devices_Critical_Cleanup(void)
+{
+    uint8 i = 0;
+
+    for(i=0; i < VC_MAX_DEVICES; i++)
+    {
+        if(VC_AppCustomDevice.Channel[i].Socket != 0)
+        {
+            close(VC_AppCustomDevice.Channel[i].Socket);
+        }
+    }
+    return;
 }
 
 
@@ -179,16 +198,16 @@ int32 VC_CleanupDevices(void)
             }
         }
     }
-    return returnCode;
+    return (returnCode);
 }
 
 
 int32 VC_Init_CustomDevices(void)
 {
     int32 returnCode = 0;
-    int reuseaddr = 1;
+    int reuseaddr    = 1;
     struct sockaddr_in address;
-    uint32 i = 0;
+    uint32 i         = 0;
 
     for (i=0; i < VC_MAX_DEVICES; i++)
     {
@@ -201,7 +220,7 @@ int32 VC_Init_CustomDevices(void)
             
             if (VC_AppCustomDevice.Channel[i].Socket < 0)
             {
-                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, "Socket errno: %i on channel %u", errno, (unsigned int)i);
+                (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR, "Socket errno: %i on channel %u", errno, (unsigned int)i);
                 returnCode = -1;
                 goto end_of_function;
             }
@@ -215,7 +234,7 @@ int32 VC_Init_CustomDevices(void)
             /* if bind failed... */
             if((bind(VC_AppCustomDevice.Channel[i].Socket , (struct sockaddr *) &address, sizeof(address)) < 0))
             {
-                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,"Bind errno: %i on channel %u", errno, (unsigned int)i);
+                (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,"Bind errno: %i on channel %u", errno, (unsigned int)i);
                 returnCode = -1;
                 goto end_of_function;
             }
@@ -228,18 +247,17 @@ int32 VC_Init_CustomDevices(void)
     
 end_of_function:
 
-    return returnCode;
+    return (returnCode);
 }
 
 
 void VC_Stream_Task(void)
 {
-    int32 returnCode = 0;
+    int32 returnCode      = 0;
     static int32 timeouts = 0;
-    
-    uint32 i = 0;
-    uint32 j = 0;
-    uint32 maxFd = 0;
+    uint32 i              = 0;
+    uint32 j              = 0;
+    uint32 maxFd          = 0;
     static uint32 retryAttempts = 0;
     fd_set fds;
     
@@ -285,7 +303,7 @@ void VC_Stream_Task(void)
             else
             {
                 /* No fd's were added to the set so error out */
-                CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC can't start streaming no devices are streaming enabled");
                 returnCode = -1;
                 goto end_of_function;
@@ -303,14 +321,14 @@ void VC_Stream_Task(void)
                     }
                     retryAttempts++;
                     usleep(VC_MAX_RETRY_SLEEP_USEC);
-                    CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC select was interrupted");
                     continue;
                 }
                 else
                 {
                     /* select returned an error other than EINTR */
-                    CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "VC start streaming failed select() returned %i", errno);
                     goto end_of_function;
                 }
@@ -339,7 +357,7 @@ end_of_function:
 
     /* Streaming task is exiting so set app flag to initialized */
     VC_AppData.AppState = VC_INITIALIZED;
-    CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
+    (void) CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
         "VC streaming task exited with return code %li task status (0x%08lX)",
         returnCode, iStatus);
 
@@ -353,8 +371,8 @@ end_of_function:
 
 int32 VC_Send_Buffer(uint8 DeviceID)
 {
-    int32 returnCode = 0;
-    int size = 0;
+    int32 returnCode          = 0;
+    int size                  = 0;
     unsigned int packetLength = 0;
     
     size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
@@ -374,7 +392,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
 
         if (size != packetLength)
         {
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC recv size error on channel %u", (unsigned int)DeviceID);
             returnCode = -1;
             goto end_of_function;
@@ -382,7 +400,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         /* Send data, for now map device id to senddata channel */
         if (-1 == VC_SendData(DeviceID, (void*)VC_AppCustomDevice.Channel[DeviceID].Buffer, packetLength))
         {
-            CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "VC send data failed on channel %u", (unsigned int)DeviceID);
             returnCode = -1;
             goto end_of_function;
@@ -392,7 +410,7 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     else if (size == -1)
     {
         /* recv returned an error */
-        CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "VC recv errno: %i on channel %u", errno, (unsigned int)DeviceID);
         returnCode = -1;
         goto end_of_function;
@@ -404,5 +422,5 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     }
 
 end_of_function:
-    return returnCode;
+    return (returnCode);
 }

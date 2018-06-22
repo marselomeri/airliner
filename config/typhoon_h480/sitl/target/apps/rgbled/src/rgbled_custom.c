@@ -41,6 +41,7 @@
 #include "rgbled_driver.h"
 #include "rgbled_events.h"
 #include "rgbled_perfids.h"
+#include "rgbled_platform_cfg.h"
 
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
@@ -101,6 +102,7 @@ typedef enum {
 ** Global Variables
 *************************************************************************/
 RGBLED_AppCustomData_t RGBLED_AppCustomData;
+
 /************************************************************************
 ** Local Variables
 *************************************************************************/
@@ -138,6 +140,7 @@ void RGBLED_Custom_InitData(void)
 
     strncpy(RGBLED_AppCustomData.DevName, RGBLED_DEVICE_PATH, RGBLED_MAX_DEVICE_PATH);
     RGBLED_AppCustomData.Priority      = RGBLED_SELFTEST_TASK_PRIORITY;
+    RGBLED_AppCustomData.TaskFlags     = RGBLED_SELFTEST_TASK_FLAGS;
     RGBLED_AppCustomData.StreamingTask = RGBLED_Custom_SelfTest_Task;
 }
 
@@ -469,7 +472,7 @@ boolean RGBLED_Custom_SelfTest(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         RGBLED_AppCustomData.Priority,
-        0);
+        RGBLED_AppCustomData.TaskFlags);
 
     if(returnCode != CFE_SUCCESS)
     {

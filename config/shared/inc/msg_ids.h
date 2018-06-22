@@ -67,42 +67,6 @@
 #define DS_DIAG_TLM_MID					0x0943
 
 
-/* EIM										*/
-/* Range: 0x950 - 0x97f						*/
-#define EIM_CMD_MID						0x1950
-#define EIM_SEND_HK_MID					0x1951
-#define EIM_HK_TLM_MID					0x0952
-#define EIM_IMU_MID						0x0953
-#define EIM_NAVDATA_DEMO_MID			0x0954
-#define EIM_NAVDATA_TIME_MID			0x0955
-#define EIM_NAVDATA_RAW_MEASURES_MID	0x0956
-#define EIM_NAVDATA_PRESSURE_RAW_MID	0x0957
-#define EIM_NAVDATA_MAGNETO_MID			0x0958
-#define EIM_NAVDATA_WIND_SPEED_MID		0x0959
-#define EIM_NAVDATA_KALMAN_PRESSURE_MID	0x095a
-#define EIM_NAVDATA_ZIMMU_3000_MID		0x095b
-#define EIM_NAVDATA_PHYS_MEASURES_MID	0x095c
-#define EIM_NAVDATA_GYRO_OFFSETS_MID	0x095d
-#define EIM_NAVDATA_EULER_ANGLES_MID	0x095e
-#define EIM_NAVDATA_REFERENCES_MID		0x095f
-#define EIM_NAVDATA_TRIMS_MID			0x0960
-#define EIM_NAVDATA_RC_REFERENCES_MID	0x0961
-#define EIM_NAVDATA_PWM_MID				0x0962
-#define EIM_NAVDATA_ALTITUDE_MID		0x0963
-#define EIM_NAVDATA_VISION_RAW_MID		0x0964
-#define EIM_NAVDATA_VISION_MID			0x0965
-#define EIM_NAVDATA_VISION_PERF_MID		0x0966
-#define EIM_NAVDATA_TRACKERS_SEND_MID	0x0967
-#define EIM_NAVDATA_DETECT_MID			0x0968
-#define EIM_NAVDATA_VISION_OF_MID		0x0969
-#define EIM_NAVDATA_WATCHDOG_MID		0x096a
-#define EIM_NAVDATA_ADC_DATA_FRAME_MID	0x096b
-#define EIM_NAVDATA_VIDEO_STREAM_MID	0x096c
-#define EIM_NAVDATA_HDVIDEO_MID			0x096d
-#define EIM_NAVDATA_GAMES_MID			0x096e
-#define EIM_NAVDATA_WIFI_MID			0x096f
-
-
 /* FM										*/
 /* Range: 0x980 - 0x98f						*/
 #define FM_CMD_MID  					0x1980
@@ -194,7 +158,7 @@
 /* Range: 0x9f0 - 0x9ff								*/
 #define PX4_ACTUATOR_ARMED_MID						0x0a05
 #define PX4_ACTUATOR_CONTROLS_0_MID					0x0a06
-#define PX4_ACTUATOR_CONTROLS_1_MID                 0x0a5c
+#define PX4_ACTUATOR_CONTROLS_1_MID                 0x0a5f
 #define PX4_ACTUATOR_CONTROLS_2_MID                 0x0a5d
 #define PX4_ACTUATOR_CONTROLS_3_MID                 0x0a5e
 #define PX4_ACTUATOR_DIRECT_MID						0x0a07
@@ -297,17 +261,12 @@
 #define MPU9250_DIAG_TLM_MID						0x0b52
 #define MPU9250_CMD_MID								0x1b53
 #define MPU9250_MEASURE_MID							0x1b54
-//#define MPU9250_RAW_MEAS_MID						0x0b55
-//#define MPU9250_CAL_MEAS_MID						0x0b56
 
 #define MS5611_SEND_HK_MID							0x1b60
 #define MS5611_HK_TLM_MID							0x0b61
 #define MS5611_DIAG_TLM_MID							0x0b62
 #define MS5611_CMD_MID								0x1b63
 #define MS5611_MEASURE_MID							0x1b64
-//#define MS5611_RAW_MEAS_MID						  0x0b65
-//#define MS5611_CAL_MEAS_MID						  0x0b66
-//#define MS5611_WAKEUP_MID                           0x0b67
 
 #define NEOM8N_SEND_HK_MID							0x1b70
 #define NEOM8N_HK_TLM_MID							0x0b71
@@ -631,7 +590,7 @@
 #define SIM_WAKEUP_MID                              0x1c7f
 #define SIM_CMD_MID                                 0x1c80
 
-/* MAVLINK                   					        */
+/* MAVLINK                                              */
 #define MAVLINK_CMD_MID                             0x1c81
 #define MAVLINK_SEND_HK_MID                         0x1c82
 #define MAVLINK_HK_TLM_MID                          0x0c83
@@ -663,6 +622,12 @@
 /* PRMLIB                                               */
 #define PRMLIB_PARAM_UPDATED_MID                    0x0ca6
 
-#define SCH_ACTIVITY_DONE_MID			    0x0f00
+/* LGC                                                  */
+#define LGC_HK_TLM_MID                              0x0cb0
+#define LGC_SEND_HK_MID                             0x0cb1
+#define LGC_WAKEUP_MID                              0x0cb2
+#define LGC_CMD_MID                                 0x0cb3
+
+#define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif

@@ -31,8 +31,10 @@
 #
 #############################################################################
  
-set(PSP ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux)
-set(OSAL ${PROJECT_SOURCE_DIR}/osal/src/os/posix)
+set(TARGET_PSP ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux)
+set(TARGET_OSAL ${PROJECT_SOURCE_DIR}/osal/src/os/posix-fast)
+set(HOST_PSP ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux)
+set(HOST_OSAL ${PROJECT_SOURCE_DIR}/osal/src/os/posix-fast)
 
 
 

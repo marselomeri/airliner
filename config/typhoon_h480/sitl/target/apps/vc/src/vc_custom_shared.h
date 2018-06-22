@@ -59,7 +59,9 @@
 typedef struct 
 {
     uint8                  CmdHeader[CFE_SB_CMD_HDR_SIZE];
+    /*! Address to start streaming to */
     char                   Address[VC_ADDRESS_LENGTH];
+    /*! Port to start streaming to */
     uint16                 Port;
 } VC_StartStreamCmd_t;
 

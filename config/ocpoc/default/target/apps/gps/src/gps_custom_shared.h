@@ -196,6 +196,7 @@ typedef struct
     boolean                       GotVelned;
     /*! Flag to start and stop streaming */
     boolean                       ContinueFlag;
+    uint32						  TaskFlags;
 } GPS_AppCustomData_t;
 
 

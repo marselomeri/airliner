@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+
+#define CI_LISTENER_TASK_FLAGS            OS_ENABLE_CORE_0
+#define CI_SERIAL_LISTENER_TASK_FLAGS     OS_ENABLE_CORE_0
+
 /*
 ** ci Platform Configuration Parameter Definitions
 */

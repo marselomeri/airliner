@@ -30,18 +30,19 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
 #ifndef HMC5883_I2C_H
 #define HMC5883_I2C_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************
 ** Includes
 *************************************************************************/
 #include "hmc5883_custom.h"
 #include "cfe.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -288,8 +289,44 @@ int32 HMC5883_Ioctl(int fh, int request, void *arg);
 *************************************************************************/
 boolean HMC5883_Custom_Max_Events_Not_Reached(int32 ind);
 
+
+/************************************************************************/
+/** \brief Receives data via I2C from the HMC5883.
+**
+**  \par Description
+**       This function receives data via I2C from the device.
+**
+**  \par Assumptions, External Events, and Notes:
+**       The device must be initialized before this function is called.
+**
+**  \param [in]    Reg    The target (sender) register to read from.
+**
+**  \param [out]   Buffer The buffer to save the data received.                           
+**
+**  \param [in]    Length The length of data to read.
+**
+**  \returns    boolean   True for success, false for failure. 
+**
+*************************************************************************/
 boolean HMC5883_Custom_Receive(uint8 Reg, uint8 *Buffer, size_t Length);
 
+
+/************************************************************************/
+/** \brief Send data via I2C to the HMC5883.
+**
+**  \par Description
+**       This function sends data via I2C to the device.
+**
+**  \par Assumptions, External Events, and Notes:
+**       The device must be initialized before this function is called.
+**
+**  \param [in]    Reg    The target (recipient) register.
+**
+**  \param [in]    Data   The data to send.                             
+**
+**  \returns    boolean   True for success, false for failure. 
+**
+*************************************************************************/
 boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data);
 
 
@@ -297,4 +334,4 @@ boolean HMC5883_Custom_Send(uint8 Reg, uint8 Data);
 }
 #endif 
 
-#endif /* MS5611_SPI_H */
+#endif /* HMC5883_I2C_H */

@@ -42,7 +42,8 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default MPU9250 config table data */
 MS5611_ConfigTbl_t MS5611_ConfigTbl =
 {
-	/* TODO:  Define table. */
+    /* current pressure at MSL in kPa */
+    101.325
 };
 
 /*

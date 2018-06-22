@@ -9,6 +9,8 @@ extern "C" {
 ** SIM Platform Configuration Parameter Definitions
 */
 
+#define SIM_LISTENER_TASK_FLAGS        OS_ENABLE_CORE_0
+
 /** \brief Mission specific version number for SIM application
 **  
 **  \par Description:

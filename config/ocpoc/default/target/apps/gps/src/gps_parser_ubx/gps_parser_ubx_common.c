@@ -165,12 +165,10 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
         {
             if(byte == GPS_PARSER_SYNC1_VALUE)
             {
-                //OS_printf("IN SYNC 1\n");
                 GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_SYNC1);
             }
             else if(byte == 0xff)
             {
-                //OS_printf("got 0xff byte\n");
                 *done = TRUE;
             }
             else
@@ -203,18 +201,31 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
             switch(byte)
             {
                 case GPS_PARSER_CLASS_NAV_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_RXM_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_INF_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_ACK_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_CFG_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_UPD_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_MON_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_AID_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_TIM_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_ESF_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_MGA_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_LOG_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_SEC_VALUE:
+                /* Fall through */
                 case GPS_PARSER_CLASS_HNR_VALUE:
                 {
                     GPS_AppCustomData.ParserStatus.ClassID = byte;
@@ -242,30 +253,55 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_NAV_POSECEF_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_POSLLH_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_STATUS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_DOP_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_ATT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_SOL_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_NAVPVT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_ODO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_RESETODO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_VELECEF_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_VELNED_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_TIMEGPS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_TIMEUTC_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_CLOCK_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_TIMEGLO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_TIMEBDS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_TIMEGAL_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_TIMELS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_SVINFO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_DGPS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_SBAS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_ORB_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_NAVSAT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_GEOFENCE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_AOPSTATUS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_NAV_EOE_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -289,11 +325,17 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_RXM_SFRBX_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_RXM_MEASX_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_RXM_RAWX_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_RXM_SVSI_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_RXM_PMREQ_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_RXM_RLM_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_RXM_IMES_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -316,9 +358,13 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_INF_ERROR_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_INF_WARNING_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_INF_NOTICE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_INF_TEST_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_INF_DEBUG_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -370,36 +416,67 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_CFG_PRT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_MSG_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_INF_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_RST_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_DAT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_RATE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_CFG_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_RXM_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_ANT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_SBAS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_NMEA_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_USB_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_ODO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_NAVX5_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_NAV5_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_TP5_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_RINV_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_ITFM_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_PM2_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_TMOD2_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_GNSS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_LOGFILTER_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_PWR_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_TXSLOT_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_HNR_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_ESRC_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_DOSC_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_SMGR_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_GEOFENCE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_FIXSEED_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_DYNSEED_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_CFG_PMS_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -445,15 +522,25 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_MON_IO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_VER_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_MSGPP_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_RXBUF_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_TXBUF_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_HW_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_HW2_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_RXR_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_PATCH_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_GNSS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MON_SMGR_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -477,9 +564,13 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_AID_INI_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_AID_HUI_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_AID_ALM_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_AID_EPH_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_AID_AOP_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -503,14 +594,23 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_TIM_TP_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_TM2_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_SVIN_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_VRFY_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_DOSC_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_TOS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_SMEAS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_VCOCAL_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_FCHG_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_TIM_HOC_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -534,8 +634,11 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_ESF_MEAS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_ESF_RAW_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_ESF_INS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_ESF_STATUS_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -559,14 +662,23 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_MGA_GPS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_GAL_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_BDS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_QZSS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_GLO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_ANO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_FLASH_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_INI_XYZ_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_ACK_DATA0_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_MGA_DBD_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -590,13 +702,21 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_LOG_ERASE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_STRING_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_CREATE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_INFO_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_RETRIEVE_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_RETRIEVEPOS_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_RETRIEVESTRING_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_FINDTIME_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_LOG_RETRIEVEPOSEXTRA_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -620,6 +740,7 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
                     switch(byte)
                     {
                         case GPS_PARSER_SEC_SIGN_ID_VALUE:
+                        /* Fall through */
                         case GPS_PARSER_SEC_UNIQID_ID_VALUE:
                         {
                             GPS_AppCustomData.ParserStatus.MsgID = byte;
@@ -1082,7 +1203,6 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
 
         case GPS_PARSE_STATE_GOT_PAYLOAD:
         {
-            //OS_printf("IN GPS_PARSE_STATE_GOT_PAYLOAD\n");
             GPS_AppCustomData.ParserStatus.ChecksumA = byte;
             GPS_Parser_StateChange(GPS_PARSE_STATE_GOT_CHECKSUMA);
             break;
@@ -1090,15 +1210,13 @@ uint16 GPS_ParseChar(uint8 byte, GPS_DeviceMessage_t* message, boolean *done)
 
         case GPS_PARSE_STATE_GOT_CHECKSUMA:
         {
-            //OS_printf("IN GPS_PARSE_STATE_GOT_CHECKSUMA\n");
-            //GPS_AppCustomData.ParserStatus.ChecksumB = byte;
             CFE_SB_TimeStampMsg((CFE_SB_MsgPtr_t)message);
             msg_received = 1;
             *done = TRUE;
             GPS_Parser_StateChange(GPS_PARSE_STATE_IDLE);
             break;
         }
-        
+
         default:
         {
         }
@@ -1132,9 +1250,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_NAV_DOP_ID_VALUE:
+                {
                     sbMsgID = GPS_NAV_DOP_MID;
                     break;
-
+                }
                 //case GPS_PARSER_NAV_ATT_ID_VALUE:
                     //sbMsgID = GPS_NAV_ATT_MID;
                     //break;
@@ -1144,9 +1263,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_NAV_NAVPVT_ID_VALUE:
+                {
                     sbMsgID = GPS_NAV_NAVPVT_MID;
                     break;
-
+                }
                 //case GPS_PARSER_NAV_ODO_ID_VALUE:
                     //sbMsgID = GPS_NAV_ODO_MID;
                     //break;
@@ -1192,9 +1312,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_NAV_SVINFO_ID_VALUE:
+                {
                     sbMsgID = GPS_NAV_SVINFO_MID;
                     break;
-
+                }
                 //case GPS_PARSER_NAV_DGPS_ID_VALUE:
                     //sbMsgID = GPS_NAV_DGPS_MID;
                     //break;
@@ -1224,27 +1345,34 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 default:
+                {
                     break;
-
+                }
             }
             break;
         }
         case GPS_PARSER_CLASS_RXM_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_INF_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_ACK_VALUE:
         {
             switch(MsgID)
             {
                 case GPS_PARSER_ACK_NAK_ID_VALUE:
+                {
                     sbMsgID = GPS_ACK_NAK_MID;
                     break;
-
+                }
                 case GPS_PARSER_ACK_ACK_ID_VALUE:
+                {
                     sbMsgID = GPS_ACK_ACK_MID;
                     break;
-
+                }
                 default:
+                {
                     break;
+                }
             }
         }
         case GPS_PARSER_CLASS_CFG_VALUE:
@@ -1252,13 +1380,16 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
             switch(MsgID)
             {
                 case GPS_PARSER_CFG_PRT_ID_VALUE:
+                {
                     sbMsgID = GPS_CFG_PRT_MID;
                     break;
+                }
 
                 case GPS_PARSER_CFG_MSG_ID_VALUE:
+                {
                     sbMsgID = GPS_CFG_MSG_MID;
                     break;
-
+                }
                 //case GPS_PARSER_CFG_INF_ID_VALUE:
                     //sbMsgID = ;
                     //break;
@@ -1272,9 +1403,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_CFG_RATE_ID_VALUE:
+                {
                     sbMsgID = GPS_CFG_RATE_MID;
                     break;
-
+                }
                 //case GPS_PARSER_CFG_CFG_ID_VALUE:
                     //sbMsgID = ;
                     //break;
@@ -1288,9 +1420,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_CFG_SBAS_ID_VALUE:
+                {
                     sbMsgID = GPS_CFG_SBAS_MID;
                     break;
-
+                }
                 //case GPS_PARSER_CFG_NMEA_ID_VALUE:
                     //sbMsgID = ;
                     //break;
@@ -1308,9 +1441,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_CFG_NAV5_ID_VALUE:
+                {
                     sbMsgID = GPS_CFG_NAV5_MID;
                     break;
-
+                }
                 //case GPS_PARSER_CFG_TP5_ID_VALUE:
                     //sbMsgID = ;
                     //break;
@@ -1380,10 +1514,13 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 default:
+                {
                     break;
+                }
             }
         }
         case GPS_PARSER_CLASS_UPD_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_MON_VALUE:
         {
             switch(MsgID)
@@ -1409,9 +1546,10 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 case GPS_PARSER_MON_HW_ID_VALUE:
+                {
                     sbMsgID = GPS_MON_HW_MID;
                     break;
-
+                }
                 //case GPS_PARSER_MON_HW2_ID_VALUE:
                     //sbMsgID = GPS_MON_HW2_MID;
                     //break;
@@ -1433,22 +1571,32 @@ CFE_SB_MsgId_t GPS_TranslateMsgID(uint16 ClassID, uint16 MsgID)
                     //break;
 
                 default:
+                {
                     break;
-
+                }
             }
         }
 
         case GPS_PARSER_CLASS_AID_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_TIM_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_ESF_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_MGA_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_LOG_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_SEC_VALUE:
+        /* Fall through */
         case GPS_PARSER_CLASS_HNR_VALUE:
+        {
             break;
-
+        }
         default:
+        {
             break;
+        }
     }
 
     return sbMsgID;

@@ -35,7 +35,6 @@
 #include "vc_platform_stubs.h"
 #include "vc_transmit_udp.h"
 #include "vc_dev_io_v4l.h"
-//#include "vc_dev_io_udp.h"
 
 #include "ut_cfe_evs_hooks.h"
 #include "ut_cfe_time_stubs.h"

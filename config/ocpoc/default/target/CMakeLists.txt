@@ -4,9 +4,10 @@ include(../set-vars.cmake)
 # cross toolchain or has target independent functions.
 
 build_airliner_cfe(
-    PSP ${PSP}
-    OSAL ${OSAL}
+    PSP ${TARGET_PSP}
+    OSAL ${TARGET_OSAL}
     CONFIG
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc
     FILESYS
@@ -23,9 +24,9 @@ build_airliner_cfe(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/osconfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
-    UNIT_TEST_WRAPPER
-        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test_wrapper
 )
+
+add_subdirectory(allstop allstop)
 
 add_airliner_app(
     cfs_lib
@@ -40,11 +41,15 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
 
 add_airliner_app(
+    prmlib
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build)
+
+add_airliner_app(
     sch
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom_rt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sch_perfids.h
@@ -196,8 +201,6 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/vc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc
     CONFIG_SOURCES
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.c
@@ -208,16 +211,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_perfids.h
-    )
-
-add_airliner_app(
-    px4br
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4br
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/px4br_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_perfids.h
     )
 
 add_airliner_app(
@@ -322,16 +315,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    ae
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ae/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ae
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ae_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_perfids.h
-)
-
-add_airliner_app(
     vm
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/vm/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vm
@@ -409,6 +392,16 @@ add_airliner_app(
 )
 
 add_airliner_app(
+    pe
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pe/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pe
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pe_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_perfids.h
+)
+
+add_airliner_app(
     qae
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/qae/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/qae
@@ -417,3 +410,15 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_perfids.h
 )
+
+add_airliner_app(
+    lgc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/lgc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
+)
+

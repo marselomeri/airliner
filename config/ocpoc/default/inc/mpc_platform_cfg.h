@@ -29,7 +29,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define MPC_SCH_PIPE_DEPTH             (2)
+#define MPC_SCH_PIPE_DEPTH             (15)
 
 /** \brief Pipe name for the Scheduler pipe 
 **

@@ -61,6 +61,14 @@
 #define PARAMS_MAIN_TASK_PERF_ID    90
 /* TODO remove me after AE is deleted, see QAE above */
 #define AE_MAIN_TASK_PERF_ID        91
+#define PE_MAIN_TASK_PERF_ID        92
+#define PE_UPDATE_TASK_PERF_ID      93
+#define PE_SENSOR_GPS_PERF_ID       94
+#define PE_SENSOR_BARO_PERF_ID      95
+#define PE_SENSOR_LAND_PERF_ID      96
+#define PE_INVERSE_MAT_PERF_ID      97
+#define LGC_MAIN_TASK_PERF_ID       98
+#define PE_SENSOR_ULR_PERF_ID       99
 
 #endif
 

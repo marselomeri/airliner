@@ -89,7 +89,7 @@ int32 VC_Devices_InitData(void)
     VC_AppCustomDevice.Channel[0].Socket     = 0;
     VC_AppCustomDevice.Channel[0].Port       = VC_GST_GAZEBO_PORT;
 
-    return (iStatus);
+    return iStatus;
 }
 
 
@@ -108,7 +108,7 @@ boolean VC_Devices_Start(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         VC_AppCustomDevice.Priority,
-        0);
+        VC_STREAMING_TASK_FLAGS);
 
     if(returnCode != CFE_SUCCESS)
     {
@@ -176,10 +176,26 @@ int32 VC_CleanupDevices(void)
             else
             {
                 VC_AppCustomDevice.Channel[i].Mode = VC_DEVICE_DISABLED;
+                VC_AppCustomDevice.Channel[i].Socket = 0;
             }
         }
     }
     return returnCode;
+}
+
+
+void VC_Devices_Critical_Cleanup(void)
+{
+    uint8 i = 0;
+
+    for(i=0; i < VC_MAX_DEVICES; i++)
+    {
+        if(VC_AppCustomDevice.Channel[i].Socket != 0)
+        {
+            close(VC_AppCustomDevice.Channel[i].Socket);
+        }
+    }
+    return;
 }
 
 

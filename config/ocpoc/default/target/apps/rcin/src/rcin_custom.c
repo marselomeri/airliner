@@ -41,6 +41,7 @@
 #include "rcin_events.h"
 #include "perf_ids.h"
 #include "px4lib.h"
+#include "rcin_platform_cfg.h"
 
 /************************************************************************
 ** Local Defines
@@ -105,7 +106,7 @@ RCIN_AppCustomData_t RCIN_AppCustomData;
 int32 RCIN_Ioctl(int fh, int request, void *arg)
 {
     int32 returnCode = 0;
-    uint32 i = 0;
+    uint32 i         = 0;
 
     for (i=0; i < RCIN_MAX_RETRY_ATTEMPTS; i++)
     {
@@ -121,14 +122,14 @@ int32 RCIN_Ioctl(int fh, int request, void *arg)
         }
     }
 
-    return returnCode;
+    return (returnCode);
 }
 
 
 int32 RCIN_Read(int fd, void *buf, size_t count)
 {
     int32 returnSize = 0;
-    uint32 i = 0;
+    uint32 i         = 0;
     
     for (i=0; i < RCIN_MAX_RETRY_ATTEMPTS; i++)
     {
@@ -136,7 +137,7 @@ int32 RCIN_Read(int fd, void *buf, size_t count)
         /* Interrupted */
         if (-1 == returnSize && EINTR == errno)
         {
-            CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN device read EINTR");
             usleep(RCIN_MAX_RETRY_SLEEP_USEC);
         }
@@ -146,7 +147,7 @@ int32 RCIN_Read(int fd, void *buf, size_t count)
         }
     }
 
-    return returnSize;
+    return (returnSize);
 }
 
 
@@ -159,21 +160,25 @@ void RCIN_Custom_InitData(void)
     RCIN_AppCustomData.ContinueFlag          = TRUE;
     RCIN_AppCustomData.Priority              = RCIN_STREAMING_TASK_PRIORITY;
     RCIN_AppCustomData.StreamingTask         = RCIN_Stream_Task;
+    /* Initialize for failsafe and RcLost */
+    RCIN_AppCustomData.Measure.RcFailsafe    = 1;
+    RCIN_AppCustomData.Measure.RcLost        = 1;
+    return;
 }
 
 
 boolean RCIN_Custom_Init(void)
 {
     boolean returnBool = TRUE;
-    int32 returnCode = 0;
-    int baud = RCIN_SERIAL_INPUT_SPEED;
+    int32 returnCode   = 0;
+    int baud           = RCIN_SERIAL_INPUT_SPEED;
     struct serial_struct serials;
 
     /* Open */
     RCIN_AppCustomData.DeviceFd = open(RCIN_DEVICE_PATH, O_RDWR | O_NONBLOCK | O_CLOEXEC);
     if (RCIN_AppCustomData.DeviceFd < 0) 
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN custom device open errno: %i", errno);
         returnBool = FALSE;
         goto end_of_function;
@@ -187,7 +192,7 @@ boolean RCIN_Custom_Init(void)
     returnCode = OS_MutSemCreate(&RCIN_AppCustomData.Mutex, RCIN_MUTEX_NAME, 0);
     if (returnCode != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN mutex create failed in custom init");
         returnBool = FALSE;
         goto end_of_function;
@@ -198,7 +203,7 @@ boolean RCIN_Custom_Init(void)
             &RCIN_AppCustomData.TerminalConfig);
     if (0 != returnCode)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN custom get terminal config failed errno: %i", errno);
         goto end_of_function;
     }
@@ -213,7 +218,6 @@ boolean RCIN_Custom_Init(void)
     RCIN_AppCustomData.TerminalConfig.c_cflag &= ~PARODD;
     RCIN_AppCustomData.TerminalConfig.c_iflag |= INPCK;
     RCIN_AppCustomData.TerminalConfig.c_cflag |= CSTOPB;
-
     RCIN_AppCustomData.TerminalConfig.c_cc[VTIME] = 0;
     RCIN_AppCustomData.TerminalConfig.c_cc[VMIN] = 0;
 
@@ -226,7 +230,7 @@ boolean RCIN_Custom_Init(void)
             &RCIN_AppCustomData.TerminalConfig);
     if (0 != returnCode)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN custom set terminal config failed errno: %i", errno);
         goto end_of_function;
     }
@@ -235,7 +239,7 @@ boolean RCIN_Custom_Init(void)
             &serials);
     if (0 > returnCode)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN custom get serial line info errno: %i", errno);
         goto end_of_function;
     }
@@ -247,7 +251,7 @@ boolean RCIN_Custom_Init(void)
             &serials);
     if (0 > returnCode)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN custom set serial line info errno: %i", errno);
         goto end_of_function;
     }
@@ -268,7 +272,7 @@ boolean RCIN_Custom_Init(void)
         0,
         CFE_ES_DEFAULT_STACK_SIZE,
         RCIN_AppCustomData.Priority,
-        0);
+        RCIN_STREAMING_TASK_FLAGS);
         
     if(CFE_SUCCESS != returnCode)
     {
@@ -284,21 +288,20 @@ boolean RCIN_Custom_Init(void)
     }
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
 void RCIN_Stream_Task(void)
 {
-    int32 returnCode = 0;
-    int32 timeouts = 0;
-    uint32 maxFd = 0;
+    int32 returnCode     = 0;
+    int32 timeouts       = 0;
+    uint32 maxFd         = 0;
     uint32 retryAttempts = 0;
+    uint32 iStatus       = -1;
     fd_set fds;
-    
     struct timeval timeValue;
-    uint32 iStatus = -1;
-    
+
     iStatus = CFE_ES_RegisterChildTask();
     
     if (iStatus == CFE_SUCCESS)
@@ -335,15 +338,17 @@ void RCIN_Stream_Task(void)
                 /* select was interrupted, try again */
                 if (EINTR == errno)
                 {
-                    CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    RCIN_Custom_RC_Lost(TRUE);
+                    (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RCIN select was interrupted");
                     usleep(RCIN_MAX_RETRY_SLEEP_USEC);
                     continue;
                 }
                 else
                 {
+                    RCIN_Custom_RC_Lost(TRUE);
                     /* select returned an error other than EINTR */
-                    CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                         "RCIN stream failed select() returned %i", errno);
                     usleep(RCIN_MAX_RETRY_SLEEP_USEC);
                     continue;
@@ -352,23 +357,26 @@ void RCIN_Stream_Task(void)
             /* select timed out */
             if (0 == returnCode)
             {
-                OS_MutSemTake(RCIN_AppCustomData.Mutex);
-                RCIN_AppCustomData.Status = RCIN_CUSTOM_NOTSTREAMING;
-                RCIN_Custom_SetDefaultValues();
-                OS_MutSemGive(RCIN_AppCustomData.Mutex); 
+                RCIN_Custom_RC_Lost(TRUE);
                 continue;
             } 
             /* select() returned and data is ready to be read */
             if(returnCode > 0)
             {
-                OS_MutSemTake(RCIN_AppCustomData.Mutex);
-                RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
+                RCIN_Custom_RC_Lost(FALSE);
                 RCIN_Custom_Read();
-                OS_MutSemGive(RCIN_AppCustomData.Mutex);
                 continue;
             }
         } /* end while loop */
     } /* end if status == success */
+
+    /* Take shared data mutex */
+    OS_MutSemTake(RCIN_AppCustomData.Mutex);
+    /* Set failsafe and RcLost */
+    RCIN_AppCustomData.Measure.RcFailsafe    = 1;
+    RCIN_AppCustomData.Measure.RcLost        = 1;
+    /* Give shared data mutex */
+    OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
     /* Streaming task is exiting so set app flag to initialized */
     RCIN_AppCustomData.Status = RCIN_CUSTOM_ENABLED;
@@ -384,18 +392,6 @@ void RCIN_Stream_Task(void)
 }
 
 
-void RCIN_Custom_SetDefaultValues(void)
-{
-    uint8 sbusData[RCIN_SERIAL_READ_SIZE] = { 0x0f, 0x01, 0x04, 0x20, 0x00,
-                                              0xff, 0x07, 0x40, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0x00, 0x00,
-                                              0x00, 0x00, 0x00, 0x00, 0x00 };
-
-    RCIN_Custom_PWM_Translate(sbusData, sizeof(sbusData));
-}
-
-
 boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
 {
     boolean returnBool = TRUE;
@@ -403,7 +399,7 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
     /* Null pointer check */
     if(0 == data)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN_Custom_PWM_Translate null pointer");
         returnBool = FALSE;
         goto end_of_function;
@@ -412,11 +408,14 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
     /* Size check */
     if(RCIN_SERIAL_READ_SIZE != size)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "RCIN_Custom_PWM_Translate size error");
         returnBool = FALSE;
         goto end_of_function;
     }
+
+    /* Take shared data mutex */
+    OS_MutSemTake(RCIN_AppCustomData.Mutex);
 
     RCIN_AppCustomData.Measure.Values[0] = (uint16)(((data[1] | data[2] << 8) 
             & 0x07FF) * RCIN_SBUS_SCALE_FACTOR + .5f) + RCIN_SBUS_SCALE_OFFSET;
@@ -468,37 +467,62 @@ boolean RCIN_Custom_PWM_Translate(uint8 *data, int size)
     RCIN_AppCustomData.Measure.RcLost = (data[23] & (1 << 2)) ? TRUE : FALSE;
     RCIN_AppCustomData.Measure.InputSource = PX4_RC_INPUT_SOURCE_PX4FMU_SBUS;
 
+    /* Give shared data mutex */
+    OS_MutSemGive(RCIN_AppCustomData.Mutex);
+
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
 void RCIN_Custom_RC_Lost(boolean notReset)
 {
     static int errorCount = 0;
-    
+
+    /* Take shared data mutex */
+    OS_MutSemTake(RCIN_AppCustomData.Mutex);
+
     if (FALSE == notReset)
     {
-        errorCount = 0;
-    }
-
-    if(RCIN_MAX_ERROR_COUNT == errorCount)
-    {
-        RCIN_AppCustomData.Measure.RcFailsafe = TRUE;
-        RCIN_AppCustomData.Measure.RcLost = TRUE;
+        /* Set status to streaming state */
+        RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
         errorCount = 0;
     }
     else
     {
+        /* Set status to not streaming if we're not in RC Lost*/
+        if (RCIN_AppCustomData.Status != RCIN_CUSTOM_RC_LOST 
+            && RCIN_AppCustomData.Status != RCIN_CUSTOM_NOTSTREAMING)
+        {
+            RCIN_AppCustomData.Status = RCIN_CUSTOM_NOTSTREAMING;
+        }
         errorCount++;
     }
+
+    if(RCIN_MAX_ERROR_COUNT == errorCount)
+    {
+        /* We're at max error count, set failsafe and lost flags */
+        RCIN_AppCustomData.Measure.RcFailsafe = TRUE;
+        RCIN_AppCustomData.Measure.RcLost = TRUE;
+
+        if (RCIN_AppCustomData.Status != RCIN_CUSTOM_RC_LOST)
+        {
+            CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "RCIN RC LOST, setting failsafe and lost flags");
+            RCIN_AppCustomData.Status = RCIN_CUSTOM_RC_LOST;
+        }
+        errorCount = 0;
+    }
+    /* Give shared data mutex */
+    OS_MutSemGive(RCIN_AppCustomData.Mutex);
+    return;
 }
 
 
 void RCIN_Custom_Read(void)
 {
-    uint32 i = 0;
-    int bytesRead = 0;
+    uint32 i            = 0;
+    int bytesRead       = 0;
     uint8 sbusTemp[RCIN_SERIAL_READ_SIZE*4] = { 0 };
     static boolean sync = FALSE;
 
@@ -509,95 +533,94 @@ void RCIN_Custom_Read(void)
     {
         for(i = 0; i < bytesRead; i++)
         {
-            //OS_printf("read %hhx\n", sbusTemp[i]);
             switch(RCIN_AppCustomData.ParserState)
             {
                 case RCIN_PARSER_STATE_UNKNOWN:
+                {
+                    /* If header is found move to next state */
+                    if(0x0f == sbusTemp[i] || 0x8f == sbusTemp[i])
                     {
-                        /* If header is found move to next state */
-                        if(0x0f == sbusTemp[i] || 0x8f == sbusTemp[i])
-                        {
-                            RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
-                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
-                        }
+                        RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
                     }
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_HEADER:
+                {
+                    /* If header is found move to next state */
+                    if(0x0f == sbusTemp[i] || 0x8f == sbusTemp[i])
                     {
-                        /* If header is found move to next state */
-                        if(0x0f == sbusTemp[i] || 0x8f == sbusTemp[i])
-                        {
-                            RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
-                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
-                        }
+                        RCIN_AppCustomData.sbusData[0] = sbusTemp[i];
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA1;
                     }
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA1:
-                    {
-                        RCIN_AppCustomData.sbusData[1] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA2;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[1] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA2;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA2:
-                    {
-                        RCIN_AppCustomData.sbusData[2] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA3;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[2] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA3;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA3:
-                    {
-                        RCIN_AppCustomData.sbusData[3] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA4;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[3] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA4;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA4:
-                    {
-                        RCIN_AppCustomData.sbusData[4] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA5;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[4] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA5;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA5:
-                    {
-                        RCIN_AppCustomData.sbusData[5] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA6;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[5] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA6;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA6:
-                    {
-                        RCIN_AppCustomData.sbusData[6] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA7;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[6] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA7;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA7:
-                    {
-                        RCIN_AppCustomData.sbusData[7] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA8;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[7] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA8;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA8:
-                    {
-                        RCIN_AppCustomData.sbusData[8] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA9;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[8] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA9;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA9:
-                    {
-                        RCIN_AppCustomData.sbusData[9] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA10;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[9] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA10;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA10:
-                    {
-                        RCIN_AppCustomData.sbusData[10] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA11;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[10] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA11;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA11:
-                    {
-                        RCIN_AppCustomData.sbusData[11] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA12;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[11] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA12;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA12:
                     {
                         RCIN_AppCustomData.sbusData[12] = sbusTemp[i];
@@ -605,156 +628,154 @@ void RCIN_Custom_Read(void)
                     }
                     break;
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA13:
-                    {
-                        RCIN_AppCustomData.sbusData[13] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA14;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[13] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA14;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA14:
-                    {
-                        RCIN_AppCustomData.sbusData[14] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA15;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[14] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA15;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA15:
-                    {
-                        RCIN_AppCustomData.sbusData[15] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA16;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[15] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA16;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA16:
-                    {
-                        RCIN_AppCustomData.sbusData[16] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA17;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[16] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA17;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA17:
-                    {
-                        RCIN_AppCustomData.sbusData[17] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA18;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[17] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA18;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA18:
-                    {
-                        RCIN_AppCustomData.sbusData[18] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA19;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[18] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA19;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA19:
-                    {
-                        RCIN_AppCustomData.sbusData[19] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA20;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[19] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA20;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA20:
-                    {
-                        RCIN_AppCustomData.sbusData[20] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA21;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[20] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA21;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA21:
-                    {
-                        RCIN_AppCustomData.sbusData[21] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA22;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[21] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_DATA22;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_DATA22:
-                    {
-                        RCIN_AppCustomData.sbusData[22] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_FLAGS;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[22] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_FLAGS;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_FLAGS:
-                    {
-                        RCIN_AppCustomData.sbusData[23] = sbusTemp[i];
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_FOOTER;
-                    }
+                {
+                    RCIN_AppCustomData.sbusData[23] = sbusTemp[i];
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_FOOTER;
                     break;
+                }
                 case RCIN_PARSER_STATE_WAITING_FOR_FOOTER:
+                {
+                    if(0x00 == sbusTemp[i])
                     {
-                        if(0x00 == sbusTemp[i])
+                        /* Reset the error counter */
+                        RCIN_Custom_RC_Lost(FALSE);
+                        RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                        if (FALSE == sync)
                         {
-                            RCIN_AppCustomData.sbusData[24] = sbusTemp[i];
-                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
-                            if (FALSE == sync)
-                            {
-                                RCIN_AppCustomData.Status = RCIN_CUSTOM_STREAMING;
-                                sync = TRUE;
-                                (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
-                                        "RCIN in sync.");
-                            }
-                            /* We have a valid packet, translate SBUS data */
-                            RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
-                            /* Reset the error counter */
-                            RCIN_Custom_RC_Lost(FALSE);
-                        }
-                        else
-                        {
-                            /* The end byte wasn't found so find a header candidate */
-                            //OS_printf("end byte %hhx\n", sbusTemp[i]);
-                            RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                            sync = TRUE;
                             (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
-                                "RCIN out of sync.");
-                            sync = FALSE;
-                            RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
-                            RCIN_Custom_RC_Lost(TRUE);
+                                    "RCIN in sync.");
                         }
+                        /* We have a valid packet, translate SBUS data */
+                        RCIN_Custom_PWM_Translate(RCIN_AppCustomData.sbusData, sizeof(RCIN_AppCustomData.sbusData));
                     }
-                    break;
-                default:
+                    else
                     {
-                        /* Unknown parser state */
-                        (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
-                                "Parser in invalid state.");
-                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
-                        RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
                         RCIN_Custom_RC_Lost(TRUE);
+                        /* The end byte wasn't found so find a header candidate */
+                        RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_WAITING_FOR_HEADER;
+                        (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
+                            "RCIN out of sync.");
+                        sync = FALSE;
                     }
                     break;
+                }
+                default:
+                {
+                    RCIN_Custom_RC_Lost(TRUE);
+                    /* Unknown parser state */
+                    (void) CFE_EVS_SendEvent(RCIN_SYNC_ERR_EID, CFE_EVS_ERROR,
+                            "Parser in invalid state.");
+                    RCIN_AppCustomData.ParserState = RCIN_PARSER_STATE_UNKNOWN;
+                    break;
+                }
             }
         }
     }
     /* Read returned an error */
     else
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "RCIN device read error, errno: %i", errno);
-        RCIN_AppCustomData.Status = RCIN_OUT_OF_SYNC;
         RCIN_Custom_RC_Lost(TRUE);
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "RCIN device read error, errno: %i", errno);
     }
+    return;
 }
 
 
 boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 {
-    boolean returnBool = TRUE;
-    void *userDataPtr = 0;
-    void *copyDataPtr = 0;
+    boolean returnBool    = TRUE;
+    void *userDataPtr     = 0;
+    void *copyDataPtr     = 0;
     uint16 userDataLength = 0;
-    uint16 i = 0;
+    uint16 i              = 0;
 
     /* Null pointer check */
     if (0 == Measure)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN device read null pointer error");
         returnBool = FALSE;
         goto end_of_function;
     }
 
+    /* Take the shared data mutex */
     OS_MutSemTake(RCIN_AppCustomData.Mutex);
+
     if(RCIN_CUSTOM_STREAMING != RCIN_AppCustomData.Status)
     {
         returnBool = FALSE;
     }
-    //userDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)&RCIN_AppCustomData.Measure);
-    //userDataLength = CFE_SB_GetUserDataLength((CFE_SB_MsgPtr_t)Measure);
-    //copyDataPtr = CFE_SB_GetUserData((CFE_SB_MsgPtr_t)Measure);
     
-    //memcpy(copyDataPtr, userDataPtr, userDataLength);
+    if(RCIN_AppCustomData.Measure.RcFailsafe == TRUE &&
+       RCIN_AppCustomData.Measure.RcLost == TRUE)
+    {
+        returnBool = FALSE;
+    }
+
     Measure->Timestamp = RCIN_AppCustomData.Measure.Timestamp;
-    //Measure->TimestampPublication = RCIN_AppCustomData.Measure.TimestampPublication;
-    //Measure->TimestampLastSignal = RCIN_AppCustomData.Measure.TimestampLastSignal;
     Measure->ChannelCount = RCIN_AppCustomData.Measure.ChannelCount;
     Measure->RSSI = RCIN_AppCustomData.Measure.RSSI;
     Measure->RcLostFrameCount = RCIN_AppCustomData.Measure.RcLostFrameCount;
@@ -768,17 +789,18 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
     Measure->RcLost = RCIN_AppCustomData.Measure.RcLost;
     Measure->InputSource = RCIN_AppCustomData.Measure.InputSource;
 
+    /* Give the shared data mutex */
     OS_MutSemGive(RCIN_AppCustomData.Mutex);
 
 end_of_function:
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RCIN_Custom_Uninit(void)
 {
     boolean returnBool = TRUE;
-    int returnCode = 0;
+    int returnCode     = 0;
 
     /* Delete the child task */
     CFE_ES_DeleteChildTask(RCIN_AppCustomData.ChildTaskID);
@@ -790,7 +812,7 @@ boolean RCIN_Custom_Uninit(void)
     returnCode = close(RCIN_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN Device close errno: %i", errno);
         returnBool = FALSE;
     }
@@ -798,20 +820,20 @@ boolean RCIN_Custom_Uninit(void)
     {
         RCIN_AppCustomData.Status = RCIN_CUSTOM_UNINITIALIZED;
     }
-    return returnBool;
+    return (returnBool);
 }
 
 
 boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind)
 {
+    boolean returnBool = FALSE;
+
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
     {
-        return TRUE;
+        returnBool = TRUE;
     }
-    else
-    {
-        return FALSE;
-    }
+
+    return (returnBool);
 }
 
 
@@ -841,5 +863,5 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
 
 end_of_function:
 
-    return customEventCount;
+    return (customEventCount);
 }

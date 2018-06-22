@@ -50,6 +50,20 @@ extern "C" {
 */
 #define MPU9250_SCH_PIPE_PEND_TIME         (2000)
 
+/** \brief Pipe depth for the params pipe 
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define MPU9250_PARAM_PIPE_DEPTH            (4)
+
+/** \brief Pipe name for the params pipe 
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define MPU9250_PARAM_PIPE_NAME             ("MPU9250_PARAM_PIPE")
+
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
@@ -142,6 +156,8 @@ extern "C" {
 #define MPU9250_ONE_G                       (9.80665f)
 /** \brief Radians per degree. */
 #define MPU9250_RADIANS_PER_DEGREE          (0.0174532f)
+/** \brief Room temperature offset */
+#define MPU9250_ROOM_TEMP_OFFSET            (0.0f)
 /** \brief Temperature sensitivity */
 #define MPU9250_TEMP_SENS                   (361.0f)
 

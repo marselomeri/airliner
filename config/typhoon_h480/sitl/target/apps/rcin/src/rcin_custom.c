@@ -53,29 +53,35 @@
 ** Local Defines
 *************************************************************************/
 
-typedef struct {
-	float InMin;
-	float InMax;
-	float OutMin;
-	float OutMax;
-	uint32 OutChannel;
-} RCIN_Custom_JoystickChannelMapping_t;
-
-#define RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH  (80)
-
-RCIN_Custom_JoystickChannelMapping_t RCIN_Custom_JoystickChannelMapping[PX4_RC_INPUT_MAX_CHANNELS] = {
-	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 0},
-	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 1},
-	{-32767.0f, 32767.0f, 1500.0f, 2000.0f, 2},
-	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 4},
-	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 3},
-	{-32767.0f, 32767.0f, 1000.0f, 2000.0f, 5},
-};
-
 #define RCIN_CUSTOM_AXIS_INPUT_MIN_VALUE      (-32767.0f)
 #define RCIN_CUSTOM_AXIS_INPUT_MAX_VALUE      (32767.0f)
 #define RCIN_CUSTOM_AXIS_OUTPUT_MIN_VALUE     (1000.0f)
 #define RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE     (2000.0f)
+#define RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH  (80)
+
+
+typedef struct {
+    float InMin;
+    float InMax;
+    float OutMin;
+    float OutMax;
+    uint32 OutChannel;
+} RCIN_Custom_JoystickChannelMapping_t;
+
+
+RCIN_Custom_JoystickChannelMapping_t RCIN_Custom_JoystickChannelMapping[PX4_RC_INPUT_MAX_CHANNELS] = 
+{
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 0},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 1},
+    {-32767.0f, 32767.0f, 1500.0f, 2000.0f, 2},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 3},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 4},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 5},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 6},
+    {-32767.0f, 32767.0f, 1000.0f, 2000.0f, 7},
+};
+
+
 
 /************************************************************************
 ** Local Structure Declarations
@@ -108,9 +114,10 @@ typedef enum {
 
 typedef struct
 {
-	int FD;
-	uint16 Values[PX4_RC_INPUT_MAX_CHANNELS];
+    int FD;
+    uint16 Values[PX4_RC_INPUT_MAX_CHANNELS];
 } RCIN_CustomData_t;
+
 
 /************************************************************************
 ** External Global Variables
@@ -136,132 +143,133 @@ CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void);
 
 void RCIN_Custom_InitData(void)
 {
+    return;
 }
 
 
 boolean RCIN_Custom_Init(void)
 {
-	boolean rc;
-	int numOfAxis = 0;
-	int numOfButtons = 0;
-	char nameOfJoystick[RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH];
-	uint32 i = 0;
+    boolean rc       = FALSE;
+    int numOfAxis    = 0;
+    int numOfButtons = 0;
+    uint32 i         = 0;
+    char nameOfJoystick[RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH];
 
-	/* Initialize the cached value array.  Set all values to the center positions. */
-	for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
-	{
-		RCIN_CustomData.Values[i] = 0xFFFF;
-	}
+    /* Initialize the cached value array.  Set all values to the center positions. */
+    for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
+    {
+        RCIN_CustomData.Values[i] = 0xFFFF;
+    }
 
-	/* Now open the joystick device. */
-	RCIN_CustomData.FD = open(RCIN_CUSTOM_JOYSTICK_PATH, O_RDONLY, O_NONBLOCK);
-	if(RCIN_CustomData.FD < 0)
-	{
-		OS_printf("RCIN:  Could not bind to joystick at '%s'.  %s.\n", RCIN_CUSTOM_JOYSTICK_PATH, strerror(errno));
+    /* Now open the joystick device. */
+    RCIN_CustomData.FD = open(RCIN_CUSTOM_JOYSTICK_PATH, O_RDONLY, O_NONBLOCK);
+    if(RCIN_CustomData.FD < 0)
+    {
+        OS_printf("RCIN:  Could not bind to joystick at '%s'.  %s.\n", RCIN_CUSTOM_JOYSTICK_PATH, strerror(errno));
 
-		rc = FALSE;
-	}
-	else
-	{
-		/* Use non-blocking mode */
-		fcntl( RCIN_CustomData.FD, F_SETFL, O_NONBLOCK );
+        rc = FALSE;
+    }
+    else
+    {
+        /* Use non-blocking mode */
+        fcntl( RCIN_CustomData.FD, F_SETFL, O_NONBLOCK );
 
-		/* Get the joystick capabilities and present them to the user. */
-		ioctl( RCIN_CustomData.FD, JSIOCGAXES, &numOfAxis );
-		ioctl( RCIN_CustomData.FD, JSIOCGBUTTONS, &numOfButtons );
-		ioctl( RCIN_CustomData.FD, JSIOCGNAME(RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH), &nameOfJoystick );
+        /* Get the joystick capabilities and present them to the user. */
+        ioctl( RCIN_CustomData.FD, JSIOCGAXES, &numOfAxis );
+        ioctl( RCIN_CustomData.FD, JSIOCGBUTTONS, &numOfButtons );
+        ioctl( RCIN_CustomData.FD, JSIOCGNAME(RCIN_CUSTOM_JOYSTICK_NAME_MAX_LENGTH), &nameOfJoystick );
 
-		OS_printf("RCIN:  Joystick detected: %s\n\t%d axis\n\t%d buttons\n\n",
-				nameOfJoystick,
-				numOfAxis,
-				numOfButtons);
+        OS_printf("RCIN:  Joystick detected: %s\n\t%d axis\n\t%d buttons\n\n",
+                nameOfJoystick,
+                numOfAxis,
+                numOfButtons);
 
-		rc = TRUE;
-	}
+        rc = TRUE;
+    }
 
-    return rc;
+    return (rc);
 }
 
 
 int32 RCIN_Custom_MapJSAxisToRcIn(uint32 inAxis, int32 inValue, uint32 *outValueIndex, uint32 *outValue)
 {
-	int32 rc = -1;
+    int32 rc     = -1;
     float fValue = 0.0f;
 
-	/* Check inputs. */
-	if(outValueIndex == 0)
-	{
-		rc = -1;
-		goto end_of_function;
-	}
+    /* Check inputs. */
+    if(outValueIndex == 0)
+    {
+        rc = -1;
+        goto end_of_function;
+    }
 
-	if(outValue == 0)
-	{
-		rc = -1;
-		goto end_of_function;
-	}
+    if(outValue == 0)
+    {
+        rc = -1;
+        goto end_of_function;
+    }
 
-	/* Just map Axis to Value Index directly, for now. */
-	*outValueIndex = RCIN_Custom_JoystickChannelMapping[inAxis].OutChannel;
+    /* Just map Axis to Value Index directly, for now. */
+    *outValueIndex = RCIN_Custom_JoystickChannelMapping[inAxis].OutChannel;
 
 
-	/* Use the mapping equation:  Y = (X-A)/(B-A) * (D-C) + C */
-	fValue = (inValue - RCIN_Custom_JoystickChannelMapping[inAxis].InMin) /
-			(RCIN_Custom_JoystickChannelMapping[inAxis].InMax- RCIN_Custom_JoystickChannelMapping[inAxis].InMin) *
-			(RCIN_Custom_JoystickChannelMapping[inAxis].OutMax - RCIN_Custom_JoystickChannelMapping[inAxis].OutMin) +
-			RCIN_Custom_JoystickChannelMapping[inAxis].OutMin;
+    /* Use the mapping equation:  Y = (X-A)/(B-A) * (D-C) + C */
+    fValue = (inValue - RCIN_Custom_JoystickChannelMapping[inAxis].InMin) /
+            (RCIN_Custom_JoystickChannelMapping[inAxis].InMax- RCIN_Custom_JoystickChannelMapping[inAxis].InMin) *
+            (RCIN_Custom_JoystickChannelMapping[inAxis].OutMax - RCIN_Custom_JoystickChannelMapping[inAxis].OutMin) +
+            RCIN_Custom_JoystickChannelMapping[inAxis].OutMin;
 
-	*outValue = fValue;
+    *outValue = fValue;
 
-	/* Constrain the value to between the output minimum and maximum
-	 * values.
-	 */
-	if(*outValue < RCIN_Custom_JoystickChannelMapping[inAxis].OutMin)
-	{
-		*outValue = RCIN_Custom_JoystickChannelMapping[inAxis].OutMin;
-	}
+    /* Constrain the value to between the output minimum and maximum
+     * values.
+     */
+    if(*outValue < RCIN_Custom_JoystickChannelMapping[inAxis].OutMin)
+    {
+        *outValue = RCIN_Custom_JoystickChannelMapping[inAxis].OutMin;
+    }
 
-	if(*outValue > RCIN_Custom_JoystickChannelMapping[inAxis].OutMax)
-	{
-		*outValue = RCIN_Custom_JoystickChannelMapping[inAxis].OutMax;
-	}
+    if(*outValue > RCIN_Custom_JoystickChannelMapping[inAxis].OutMax)
+    {
+        *outValue = RCIN_Custom_JoystickChannelMapping[inAxis].OutMax;
+    }
 
-	rc = 0;
+    rc = 0;
 
 end_of_function:
 
-	return rc;
+    return (rc);
 }
 
 
 int32 RCIN_Custom_MapJSButtonToRcIn(uint32 inButton, int32 inValue, uint32 *outValueIndex, uint32 *outValue)
 {
-	int32 rc = -1;
+    int32 rc = -1;
 
-	/* Check inputs. */
-	if(outValueIndex == 0)
-	{
-		rc = -1;
-		goto end_of_function;
-	}
+    /* Check inputs. */
+    if(outValueIndex == 0)
+    {
+        rc = -1;
+        goto end_of_function;
+    }
 
-	if(outValue == 0)
-	{
-		rc = -1;
-		goto end_of_function;
-	}
+    if(outValue == 0)
+    {
+        rc = -1;
+        goto end_of_function;
+    }
 
-	/* Not yet supported, for now.  Set out values to illegal values.
-	 * The caller function we range check these.  But also return an
-	 * error.*/
-	*outValueIndex = PX4_RC_INPUT_MAX_CHANNELS;
-	*outValue = RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE + 1;
+    /* Not yet supported, for now.  Set out values to illegal values.
+     * The caller function we range check these.  But also return an
+     * error.*/
+    *outValueIndex = PX4_RC_INPUT_MAX_CHANNELS;
+    *outValue = RCIN_CUSTOM_AXIS_OUTPUT_MAX_VALUE + 1;
 
-	rc = -1;
+    rc = -1;
 
 end_of_function:
 
-	return rc;
+    return (rc);
 }
 
 
@@ -269,145 +277,123 @@ boolean RCIN_Custom_Measure(PX4_InputRcMsg_t *Measure)
 {
     // error Count currently handled outside measure
     //uint16 errorCount = 0;
-    int bytesRead = 0;
-    boolean returnBool = TRUE;
-	uint16 Channel[12];
-	uint8 RSSI = 100;
-	uint16 ChannelCount = 12;
-	struct js_event js;
-	uint32 i = 0;
-    int readStatus;
+    int bytesRead                 = 0;
+    boolean returnBool            = TRUE;
+    uint32 i                      = 0;
+    uint8 RSSI                    = 100;
+    uint16 ChannelCount           = 12;
     static uint32 totalFrameCount = 0;
+    struct js_event js;
+    uint16 Channel[12];
+    int readStatus;
+
 
     /* Null pointer check */
     if (0 == Measure)
     {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "RCIN device read null pointer error");
         returnBool = FALSE;
         goto end_of_function;
     }
 
-	/* Loop until event queue is empty.  At the start of each iteration,
-	 * read the joystick state. */
+    /* Loop until event queue is empty.  At the start of each iteration,
+     * read the joystick state. */
     readStatus = read(RCIN_CustomData.FD, &js, sizeof(struct js_event));
-	while(readStatus > 0)
-	{
-		/* Act on what the event is. */
-		switch (js.type & ~JS_EVENT_INIT)
-		{
-			case JS_EVENT_AXIS:
-			{
-				int32 rc;
-				uint32 valueIndex = 0;
-				uint32 value = 0;
+    while(readStatus > 0)
+    {
+        /* Act on what the event is. */
+        switch (js.type & ~JS_EVENT_INIT)
+        {
+            case JS_EVENT_AXIS:
+            {
+                int32 rc;
+                uint32 valueIndex = 0;
+                uint32 value = 0;
 
-				/* Convert the JS axis number to the RC Input index, and the
-				 * JS position to the equivalent RC Input position for the
-				 * hardware we are emulating.  This allows us to accurately
-				 * emulate the input from the real RC hardware.
-				 */
-				RCIN_Custom_MapJSAxisToRcIn(js.number, js.value, &valueIndex, &value);
+                /* Convert the JS axis number to the RC Input index, and the
+                 * JS position to the equivalent RC Input position for the
+                 * hardware we are emulating.  This allows us to accurately
+                 * emulate the input from the real RC hardware.
+                 */
+                RCIN_Custom_MapJSAxisToRcIn(js.number, js.value, &valueIndex, &value);
 
-				/* Now, only assign the value if it will fit.  Make sure the
-				 * axis number is less than the maximum channels.
-				 */
-				if(valueIndex < PX4_RC_INPUT_MAX_CHANNELS)
-				{
-					RCIN_CustomData.Values[valueIndex] = value;
-				}
-				break;
-			}
+                /* Now, only assign the value if it will fit.  Make sure the
+                 * axis number is less than the maximum channels.
+                 */
+                if(valueIndex < PX4_RC_INPUT_MAX_CHANNELS)
+                {
+                    RCIN_CustomData.Values[valueIndex] = value;
+                }
+                break;
+            }
+            case JS_EVENT_BUTTON:
+            {
+                int32 rc;
+                uint32 valueIndex = 0;
+                uint32 value = 0;
 
-			case JS_EVENT_BUTTON:
-			{
-				int32 rc;
-				uint32 valueIndex = 0;
-				uint32 value = 0;
+                /* Convert the JS axis number to the RC Input index, and the
+                 * JS position to the equivalent RC Input position for the
+                 * hardware we are emulating.  This allows us to accurately
+                 * emulate the input from the real RC hardware.
+                 */
+                RCIN_Custom_MapJSButtonToRcIn(js.number, js.value, &valueIndex, &value);
 
-				/* Convert the JS axis number to the RC Input index, and the
-				 * JS position to the equivalent RC Input position for the
-				 * hardware we are emulating.  This allows us to accurately
-				 * emulate the input from the real RC hardware.
-				 */
-				RCIN_Custom_MapJSButtonToRcIn(js.number, js.value, &valueIndex, &value);
+                /* Now, only assign the value if it will fit.  Make sure the
+                 * axis number is less than the maximum channels.
+                 */
+                if(valueIndex < PX4_RC_INPUT_MAX_CHANNELS)
+                {
+                    RCIN_CustomData.Values[valueIndex] = value;
+                }
+                break;
+            }
+        }
 
-				/* Now, only assign the value if it will fit.  Make sure the
-				 * axis number is less than the maximum channels.
-				 */
-				if(valueIndex < PX4_RC_INPUT_MAX_CHANNELS)
-				{
-					RCIN_CustomData.Values[valueIndex] = value;
-				}
-				break;
-			}
-		}
+        readStatus = read(RCIN_CustomData.FD, &js, sizeof(struct js_event));
+    }
 
-		readStatus = read(RCIN_CustomData.FD, &js, sizeof(struct js_event));
-	}
-
-	/* Now copy the cached values on the struct passed by the caller. */
-	for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
-	{
-		Measure->Values[i] = RCIN_CustomData.Values[i];
-	}
+    /* Now copy the cached values on the struct passed by the caller. */
+    for(i = 0; i < PX4_RC_INPUT_MAX_CHANNELS; ++i)
+    {
+        Measure->Values[i] = RCIN_CustomData.Values[i];
+    }
 
     /* Channel count */
-    Measure->ChannelCount = 12;
-    Measure->RSSI = RSSI;
+    Measure->ChannelCount      = 12;
+    Measure->RSSI              = RSSI;
     // For now handle outside measure function call.
     //Measure->RcLostFrameCount = errorCount;
     Measure->RcTotalFrameCount = totalFrameCount;
-    Measure->RcPpmFrameLength = 0;
-    Measure->RcFailsafe = FALSE;
-    Measure->RcLost = FALSE;
-    Measure->InputSource = PX4_RC_INPUT_SOURCE_PX4IO_SBUS;
+    Measure->RcPpmFrameLength  = 0;
+    Measure->RcFailsafe        = FALSE;
+    Measure->RcLost            = FALSE;
+    Measure->InputSource       = PX4_RC_INPUT_SOURCE_PX4IO_SBUS;
     
     totalFrameCount++;
 
 end_of_function:
-    return returnBool;
-}
-
-
-CFE_TIME_SysTime_t RCIN_Custom_Get_Time(void)
-{
-    struct timespec ts;
-    int returnCode = 0;
-    CFE_TIME_SysTime_t Timestamp = {0, 0};
-
-    returnCode = clock_gettime(CLOCK_MONOTONIC, &ts);
-    if (-1 == returnCode)
-    {
-        CFE_EVS_SendEvent(RCIN_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "RCIN clock_gettime errno: %i", errno);
-        goto end_of_function;
-    }
-
-    Timestamp.Seconds = ts.tv_sec;
-    Timestamp.Subseconds = CFE_TIME_Micro2SubSecs(ts.tv_nsec / 1000);
-
-end_of_function:
-    return Timestamp;
+    return (returnBool);
 }
 
 
 boolean RCIN_Custom_Uninit(void)
 {
-    return TRUE;
+    return (TRUE);
 }
 
 
 boolean RCIN_Custom_Max_Events_Not_Reached(int32 ind)
 {
+    boolean returnBool = FALSE;
+
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
     {
-        return TRUE;
+        returnBool = TRUE;
     }
-    else
-    {
-        return FALSE;
-    }
+
+    return (returnBool);
 }
 
 
@@ -435,5 +421,5 @@ int32 RCIN_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl)
     
 end_of_function:
 
-    return customEventCount;
+    return (customEventCount);
 }

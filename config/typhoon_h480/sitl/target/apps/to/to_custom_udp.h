@@ -93,6 +93,7 @@ typedef struct
     CFE_ES_ChildTaskMainFuncPtr_t   ListenerTask;
     int                             Socket;
     uint32                          ChildTaskID;
+    uint32                          TaskFlags;
 } TO_TlmChannels_t;
 
 typedef struct
@@ -110,8 +111,6 @@ extern TO_AppData_t TO_AppData;
 ** Local Function Definitions
 *************************************************************************/
 
-
-int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size);
 
 int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, uint16 DestinationPort);
 int32 TO_OutputChannel_Disable(uint8 ChannelID);

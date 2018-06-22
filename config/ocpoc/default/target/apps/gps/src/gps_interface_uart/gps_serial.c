@@ -44,6 +44,7 @@
 #include "../gps_parser_ubx/gps_parser_ubx_common.h"
 #include "msg_ids.h"
 #include "px4lib.h"
+#include "gps_platform_cfg.h"
 
 #include "gps_event_driven.h"
 
@@ -88,7 +89,6 @@ void GPS_Custom_InitData(void)
     GPS_Parser_Reset();
         /* Set all non-zero values */
     GPS_AppCustomData.ContinueFlag          = TRUE;
-    GPS_AppCustomData.Priority              = GPS_STREAMING_TASK_PRIORITY;
     GPS_AppCustomData.StreamingTask         = GPS_Stream_Task;
 }
 
@@ -164,7 +164,7 @@ boolean GPS_Custom_Init()
             0,
             (2 * CFE_ES_DEFAULT_STACK_SIZE),
             GPS_AppCustomData.Priority,
-            0);
+			GPS_CUSTOM_CHILD_TASK_FLAGS);
     if(CFE_SUCCESS != returnCode)
     {
         GPS_AppCustomData.ContinueFlag = FALSE;

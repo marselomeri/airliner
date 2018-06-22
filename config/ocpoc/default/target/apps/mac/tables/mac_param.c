@@ -16,7 +16,7 @@
 /*
 ** Local Structure Declarations
 */
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     /* Content format: ObjName[64], TblName[38], Desc[32], TgtFileName[20], ObjSize
     **    ObjName - variable name of config table, e.g., CI_ConfigDefTbl[]
@@ -67,7 +67,7 @@ MAC_ParamTbl_t MAC_ParamTbl =
 		0.30,       /* MC_YR_INT_LIM   */
 		0.0,		/* MC_YAWRATE_D    */
 		0.0,		/* MC_YAWRATE_FF   */
-		0.5,		/* MC_YAW_FF       */
+		0.6,		/* MC_YAW_FF       */
 		220.0,		/* MC_ROLLRATE_MAX */
 		220.0,		/* MC_PITCHRATE_MAX */
 		200.0,		/* MC_YAWRATE_MAX   */

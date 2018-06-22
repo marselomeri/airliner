@@ -137,7 +137,7 @@ int32 CI_ReadSerializedMessage(char* buffer, uint32* size)
     int recv_len = 0;
     int slen = sizeof(si_other);
 
-    recv_len = recv(CI_AppCustomData.Socket, buffer, *size, 0);
+    recv_len = recv(CI_AppSerialCustomData.Socket, buffer, *size, 0);
 
     *size = recv_len;
 

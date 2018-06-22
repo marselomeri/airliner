@@ -4,9 +4,10 @@ include(../set-vars.cmake)
 # cross toolchain or has target independent functions.
 
 build_airliner_cfe(
-    PSP ${PSP}
-    OSAL ${OSAL}
+    PSP ${TARGET_PSP}
+    OSAL ${TARGET_OSAL}
     CONFIG
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc
     FILESYS
@@ -42,11 +43,21 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build)
 
 add_airliner_app(
+    sim
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sim_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_perfids.h
+)
+
+add_airliner_app(
     sch
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/sch/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_custom_rt.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sch_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sch_perfids.h
@@ -200,8 +211,6 @@ add_airliner_app(
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.h
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_custom.c
@@ -210,16 +219,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_perfids.h
-    )
-
-add_airliner_app(
-    px4br
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4br/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4br
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/px4br_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/px4br_perfids.h
     )
 
 add_airliner_app(
@@ -282,7 +281,6 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/gps/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps
     CONFIG_SOURCES
-        #${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_custom_sim_simple.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_ubx_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_common.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/src/gps_parser_ubx/gps_parser_ubx_common.c
@@ -319,16 +317,6 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mpc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mpc_perfids.h
-)
-
-add_airliner_app(
-    ae
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/ae/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/ae
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ae_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ae_perfids.h
 )
 
 add_airliner_app(
@@ -397,27 +385,6 @@ add_airliner_app(
 )
 
 add_airliner_app(
-    sim
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sim/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sim
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sim_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sim_perfids.h
-)
-
-add_airliner_app(
-    mavlink
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/mavlink/fsw/for_build
-    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/mavlink
-    CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/mavlink/mavlink_custom.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/mavlink_platform_cfg.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mavlink_msgids.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mavlink_perfids.h
-)
-
-add_airliner_app(
     hmc5883
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/hmc5883/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/hmc5883
@@ -430,6 +397,16 @@ add_airliner_app(
 )
 
 add_airliner_app(
+    pe
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pe/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/pe
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/pe_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/pe_perfids.h
+)
+
+add_airliner_app(
     qae
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/qae/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/qae
@@ -437,5 +414,16 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/qae_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/qae_perfids.h
+)
+
+add_airliner_app(
+    lgc
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/lgc_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
 )
 

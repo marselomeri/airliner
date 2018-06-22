@@ -97,17 +97,17 @@ int32 TO_Custom_Init(void)
     uint32 i = 0;
 
     TO_AppCustomData.Channel[0].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[0].IP, "10.10.0.10", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[0].IP, "192.168.1.3", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[0].DstPort = 5011;
-    TO_AppCustomData.Channel[0].Priority = 50;
+    TO_AppCustomData.Channel[0].Priority = TO_CUSTOM_BINARY_CHANNEL_PRIORITY;
     TO_AppCustomData.Channel[0].ListenerTask = TO_OutputChannel_BinaryChannelTask;
     TO_AppCustomData.Channel[0].Socket = 0;
     TO_AppCustomData.Channel[0].ChildTaskID = 0;
 
     TO_AppCustomData.Channel[1].Mode = TO_CHANNEL_ENABLED;
-    strncpy(TO_AppCustomData.Channel[1].IP, "10.10.0.10", INET_ADDRSTRLEN);
+    strncpy(TO_AppCustomData.Channel[1].IP, "192.168.1.3", INET_ADDRSTRLEN);
     TO_AppCustomData.Channel[1].DstPort = 5012;
-    TO_AppCustomData.Channel[1].Priority = 50;
+    TO_AppCustomData.Channel[1].Priority = TO_CUSTOM_PROTOBUF_CHANNEL_PRIORITY;
     TO_AppCustomData.Channel[1].ListenerTask = TO_OutputChannel_ProtobufChannelTask;
     TO_AppCustomData.Channel[1].Socket = 0;
     TO_AppCustomData.Channel[1].ChildTaskID = 0;
@@ -141,64 +141,6 @@ int32 TO_Custom_Init(void)
 end_of_function:
 
     return iStatus;
-}
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* Custom Send.  Send the message out the socket.                  */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 TO_OutputChannel_Send(uint32 ChannelID, const char* Buffer, uint32 Size)
-{
-    struct sockaddr_in s_addr;
-    int    status = 0;
-    int32  returnCode = 0;
-    const char *outBuffer;
-    uint32 outSize;
-
-    bzero((char *) &s_addr, sizeof(s_addr));
-    s_addr.sin_family      = AF_INET;
-
-    if(ChannelID < TO_MAX_CHANNELS)
-    {
-        TO_TlmChannels_t *channel = &TO_AppCustomData.Channel[ChannelID];
-
-        if(channel->Mode == TO_CHANNEL_ENABLED)
-        {
-        	char encBuffer[TO_MAX_PROTOBUF_ENC_LEN];
-            if(TO_GetChannelType(ChannelID) == TO_OUTPUT_TYPE_PROTOBUF)
-            {
-            	int encSize = TO_ProtobufTlmEncode((CFE_SB_MsgPtr_t)Buffer, encBuffer, sizeof(encBuffer));
-                outBuffer = encBuffer;
-                outSize = encSize;
-            }
-            else
-            {
-                outBuffer = Buffer;
-                outSize = Size;
-            }
-
-            CFE_ES_PerfLogEntry(TO_SOCKET_SEND_PERF_ID);
-            /* Send message via UDP socket */
-            s_addr.sin_addr.s_addr = inet_addr(channel->IP);
-            s_addr.sin_port        = htons(channel->DstPort);
-            status = sendto(channel->Socket, (char *)outBuffer, outSize, 0,
-                                    (struct sockaddr *) &s_addr,
-                                     sizeof(s_addr));
-            if (status < 0)
-            {
-                CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
-                            "L%d TO sendto errno %d.", __LINE__, errno);
-                    channel->Mode = TO_CHANNEL_DISABLED;
-                returnCode = -1;
-            }
-            CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
-        }
-    }
-
-    return returnCode;
 }
 
 
@@ -405,9 +347,9 @@ int32 TO_OutputChannel_Enable(uint8 ChannelID, const char *DestinationAddress, u
             (const char *)TaskName,
             TO_AppCustomData.Channel[ChannelID].ListenerTask,
             0,
-            CFE_ES_DEFAULT_STACK_SIZE,
+			TO_CUSTOM_TASK_STACK_SIZE,
             TO_AppCustomData.Channel[ChannelID].Priority,
-            0);
+			TO_CUSTOM_CHILD_TASK_FLAGS);
 
 end_of_function:
     return returnCode;
@@ -511,11 +453,8 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
                     &buffer, sizeof(buffer), &msgSize, TO_CUSTOM_CHANNEL_GET_TIMEOUT);
             if(iStatus == OS_SUCCESS)
             {
-                CFE_SB_MsgId_t msgID = CFE_SB_GetMsgId((CFE_SB_MsgPtr_t)buffer);
-
                 struct sockaddr_in s_addr;
-                int                       status = 0;
-                int32                     returnCode = 0;
+                int status = 0;
                 uint16  actualMessageSize = CFE_SB_GetTotalMsgLength((CFE_SB_MsgPtr_t)buffer);
 
                 bzero((char *) &s_addr, sizeof(s_addr));
@@ -545,12 +484,10 @@ void TO_OutputChannel_ChannelHandler(uint32 ChannelIdx)
 											 sizeof(s_addr));
 					if (status < 0)
 					{
-						if(TO_AppCustomData.Channel[ChannelIdx].Mode == TO_CHANNEL_ENABLED)
-						{
-							CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
+						CFE_EVS_SendEvent(TO_TLMOUTSTOP_ERR_EID,CFE_EVS_ERROR,
 									"L%d TO sendto errno=%d Size=%u bytes IP='%s' Port=%u", __LINE__, errno, (unsigned int)outSize, channel->IP, channel->DstPort);
-							TO_OutputChannel_Disable(ChannelIdx);
-						}
+						/* Insert a delay to prevent the possibility of a busy wait and accidental denial of service. */
+						OS_TaskDelay(1000);
 					}
                 }
                 CFE_ES_PerfLogExit(TO_SOCKET_SEND_PERF_ID);
