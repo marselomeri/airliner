@@ -5,7 +5,7 @@ for intra-vehicle communication occurs here.
 Classes:
     BaseVehicle  The base class for Vehicle
 """
-
+import atexit
 import logging
 import re
 from abc import ABCMeta
@@ -56,14 +56,20 @@ class BaseVehicle(Loggable):
         geographic = geographic or GeographicSensor()
         # time = time or TimeSensor()
 
+        # Register Shutdown
+        atexit.register(self.shutdown)
+
+        # Instance attributes
         self.apps = {}
         self.communications = communications
         self.com_priority = SortedDict()
         self.services = {}
         self.sensors = {}
         self._sensor_tokens = {}
+        self._shutdown = False
         self.vehicle_id = vehicle_id
 
+        # Default components
         self.attach_sensor('geographic', geographic)
         # self.attach_service('time', time)
         self.attach_service('comms', communications)
@@ -98,7 +104,7 @@ class BaseVehicle(Loggable):
             service (Service): Service to attach.
         """
         vehicle_token = ServiceAccess(service_name)
-        self.services[service_name] = vehicle_token
+        self.services[service_name] = service
         vehicle_token.attach(self, service)
 
     def attach_sensor(self, sensor_name, sensor):
@@ -145,6 +151,37 @@ class BaseVehicle(Loggable):
             if module is pri_module:
                 self.com_priority.pop(priority)
 
+    def shutdown(self):
+        """Shutdown all components on vehicle and detach.
+
+        This method is normally registered to be called automatically at
+        interpreter exit.
+
+        Shutdown Order:
+            1. Stop Apps
+            2. Stop Services
+            3. Detach Apps
+            4. Detach Services
+            5. Detach Sensors
+        """
+        if not self._shutdown:
+            for app in self.apps.values():
+                if app.state is app.STARTED:
+                    app.stop()
+            for service in self.services.values():
+                if service.state is service.STARTED:
+                    service.stop()
+            for app in self.apps.values():
+                if app.state is app.ATTACHED:
+                    app.detach()
+            for service in self.services.values():
+                if service.state is service.ATTACHED:
+                    service.detach()
+            for sensor in self.sensors.values():
+                if sensor.state is sensor.ATTACHED:
+                    sensor.detach()
+            self._shutdown = True
+
     def start_app(self, app):
         """Start an App."""
         self.apps[app].start()
@@ -154,7 +191,6 @@ class BaseVehicle(Loggable):
         self.services[service].start()
 
     def telemetry(self):
-        # type: () -> Optional[Telemetry]
         """Return telemetry to send, or None."""
         # Iterate through every app in priority order to see if any have
         # telemetry to send.
