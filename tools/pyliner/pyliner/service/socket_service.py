@@ -1,12 +1,15 @@
 from SocketServer import TCPServer, StreamRequestHandler
+from abc import abstractmethod
 from threading import Thread
 
 from pyliner.service import Service
 
 
 class SocketServiceHandler(StreamRequestHandler):
+    """Base class for SocketService request handler."""
+    @abstractmethod
     def handle(self):
-        self.service.debug('Handling Request: {}'.format(self.rfile.read()))
+        pass
 
     @property
     def service(self):
@@ -20,7 +23,7 @@ class SocketService(Service):
     to.
     """
 
-    def __init__(self, port, request_handler_class=SocketServiceHandler):
+    def __init__(self, port, request_handler_class):
         super(SocketService, self).__init__()
         self.request_handler_class = request_handler_class
         self.port = port
@@ -29,7 +32,7 @@ class SocketService(Service):
 
     def start(self):
         super(SocketService, self).start()
-        self.info('Starting SocketService')
+        self.info('Starting SocketService on port {}'.format(self.port))
         self.server = TCPServer(('', self.port), self.request_handler_class)
         self.server.service = self
 
@@ -39,5 +42,5 @@ class SocketService(Service):
 
     def stop(self):
         super(SocketService, self).stop()
-        self.info('Stopping SocketService')
+        self.info('Stopping SocketService on port {}'.format(self.port))
         self.server.shutdown()
