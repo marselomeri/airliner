@@ -60,29 +60,25 @@ class Event(object):
 class Loggable(object):
     """A mixin class that provides basic logging methods."""
     def __init__(self, logger=None):
-        self._logger = logger
-
-    @property
-    def logger(self):
-        return self._logger
+        self.logger = logger
 
     def critical(self, msg, *args, **kwargs):
-        self._logger.critical(msg, *args, **kwargs)
+        self.logger.critical(msg, *args, **kwargs)
 
     def debug(self, msg, *args, **kwargs):
-        self._logger.debug(msg, *args, **kwargs)
+        self.logger.debug(msg, *args, **kwargs)
 
     def error(self, msg, *args, **kwargs):
-        self._logger.error(msg, *args, **kwargs)
+        self.logger.error(msg, *args, **kwargs)
 
     def exception(self, msg, *args, **kwargs):
-        self._logger.exception(msg, *args, **kwargs)
+        self.logger.exception(msg, *args, **kwargs)
 
     def info(self, msg, *args, **kwargs):
-        self._logger.info(msg, *args, **kwargs)
+        self.logger.info(msg, *args, **kwargs)
 
     def warning(self, msg, *args, **kwargs):
-        self._logger.warning(msg, *args, **kwargs)
+        self.logger.warning(msg, *args, **kwargs)
 
 
 class StreamLogger(object):

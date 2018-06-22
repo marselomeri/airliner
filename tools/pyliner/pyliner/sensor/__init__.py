@@ -1,8 +1,9 @@
 from pyliner.pyliner_exceptions import InvalidStateError
+from pyliner.util import Loggable
 from pyliner.vehicle_access import VehicleAccess
 
 
-class Sensor(object):
+class Sensor(Loggable):
     """A Sensor is a long-running passive component of Pyliner.
     
     A sensor is given a VehicleAccess token when it is attached but other
@@ -15,12 +16,13 @@ class Sensor(object):
     tasks. Use a Service for components that generate events.
 
     Lifecycle:
-        attach -> detach
+        attach <-> detach
     """
     ATTACHED = 'ATTACHED'
     DETACHED = 'DETACHED'
 
     def __init__(self):
+        super(Sensor, self).__init__()
         self._state = Sensor.DETACHED
         self.vehicle = None
         """:type: VehicleAccess"""
@@ -36,6 +38,7 @@ class Sensor(object):
             raise InvalidStateError('Service is currently attached.')
         self._state = Sensor.ATTACHED
         self.vehicle = vehicle_wrapper
+        self.logger = vehicle_wrapper.logger
 
     def detach(self):
         """Called when the sensor is detached from a vehicle.
@@ -50,6 +53,7 @@ class Sensor(object):
             raise InvalidStateError('Service cannot be detached at this time.')
         self._state = Sensor.DETACHED
         self.vehicle = None
+        self.logger = None
 
     @property
     def state(self):
@@ -61,11 +65,11 @@ class SensorAccess(VehicleAccess):
     def attach(self, vehicle, component):
         self._vehicle = vehicle
         self._component = component
-        self._logger = vehicle.logger.getChild(self._name)
+        self.logger = vehicle.logger.getChild(self._name)
         self._component.attach(self)
 
     def detach(self):
         self._component.detach()
         self._vehicle = None
         self._component = None
-        self._logger = None
+        self.logger = None

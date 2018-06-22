@@ -8,8 +8,8 @@ See Also:
     App
 """
 
-from pyliner_exceptions import InvalidStateError
-from sensor import Sensor, SensorAccess
+from pyliner.pyliner_exceptions import InvalidStateError
+from pyliner.sensor import Sensor, SensorAccess
 
 
 class Service(Sensor):
@@ -22,7 +22,9 @@ class Service(Sensor):
     Services are not granted control access to the vehicle.
 
     Lifecycle:
-        attach -> start -> stop -> detach
+            +-------------------------+
+            v                         |
+        attach -> start <-> stop -> detach
     """
     STARTED = 'STARTED'
 
@@ -30,6 +32,9 @@ class Service(Sensor):
         """Called when a service is started.
 
         The service should start any threads or processes that it runs here.
+
+        Raises:
+            InvalidStateError if start is called more than once before stopping.
         """
         if self._state is not Service.ATTACHED:
             raise InvalidStateError('Service must be stopped before starting.')
@@ -39,6 +44,9 @@ class Service(Sensor):
         """Called when a service is stopped.
 
         The service should stop any threads or processes that it started.
+
+        Raises:
+            InvalidStateError if stop is called when Service is not started.
         """
         if self._state is not Service.STARTED:
             raise InvalidStateError('Service must be started before stopping.')
