@@ -7,8 +7,6 @@ Classes:
     Vehicle  A vehicle for the user to control.
 """
 
-import time
-
 from app import App
 from base_vehicle import BaseVehicle
 from controller import Controller
@@ -51,23 +49,7 @@ class Vehicle(BaseVehicle):
 
         # Add helpful default settings
         self.apps['fence'].add_layer(0, 'base', LayerKind.ADDITIVE)
-
         self.apps['nav'].defaults.update({'timeout': None, 'underflow': 5.0})
-
-    def await_change(self, tlm, poll=1.0, out=None):
-        """Block until the telemetry value changes.
-
-        Args:
-            tlm (str): The telemetry to monitor.
-            poll (float): Check every `poll` seconds.
-            out (Callable): If not None, call this every loop.
-        """
-        old_val = self.tlm_value(tlm)
-        while self.tlm_value(tlm) == old_val:
-            if out is not None:
-                out()
-            time.sleep(poll)
-        return self.tlm_value(tlm)
 
     def attach_app(self, priority, app_name, app):
         """
@@ -83,32 +65,3 @@ class Vehicle(BaseVehicle):
         required_ops = app.required_telemetry_paths()
         if required_ops:
             self.communications.subscribe({'tlm': required_ops})
-
-    def tlm(self, tlm):
-        """ Get all data of specified telemetry item.
-
-        Args:
-            tlm (str): Operational name of requested telemetry.
-
-        Returns:
-            dict: Telemetry data.
-
-        Raises:
-            KeyError: If telemetry is not found.
-        """
-        # TODO Rename variable _telemetry
-        return self.communications._telemetry[tlm]
-
-    def tlm_value(self, tlm):
-        """ Get current value of specified telemetry item.
-
-        Args:
-            tlm (str): Operational name of requested telemetry.
-
-        Returns:
-            Any: Current value of telemetry.
-
-        Raises:
-            KeyError: If telemetry is not found.
-        """
-        return self.tlm(tlm)['value']

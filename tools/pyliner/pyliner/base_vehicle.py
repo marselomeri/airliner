@@ -8,6 +8,7 @@ Classes:
 
 import logging
 import re
+import time
 from abc import ABCMeta
 from datetime import datetime
 from os.path import join
@@ -90,15 +91,42 @@ class BaseVehicle(Loggable):
         vehicle_token.attach(self, app)
 
     def attach_service(self, service_name, service):
+        """Attach a service to this vehicle.
+
+        Args:
+            service_name (str): Name to identify this service.
+            service (Service): Service to attach.
+        """
         vehicle_token = ServiceAccess(service_name)
         self.services[service_name] = vehicle_token
         vehicle_token.attach(self, service)
 
     def attach_sensor(self, sensor_name, sensor):
+        """Attach a sensor to this vehicle.
+
+        Args:
+            sensor_name (str): Name to identify this sensor.
+            sensor (Sensor): Sensor to attach.
+        """
         vehicle_token = SensorAccess(sensor_name)
         self.sensors[sensor_name] = sensor
         self._sensor_tokens[sensor_name] = vehicle_token
         vehicle_token.attach(self, sensor)
+
+    def await_change(self, tlm, poll=1.0, out=None):
+        """Block until the telemetry value changes.
+
+        Args:
+            tlm (str): The telemetry to monitor.
+            poll (float): Check every `poll` seconds.
+            out (Callable): If not None, call this every loop.
+        """
+        old_val = self.tlm_value(tlm)
+        while self.tlm_value(tlm) == old_val:
+            if out is not None:
+                out()
+            time.sleep(poll)
+        return self.tlm_value(tlm)
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.
@@ -126,6 +154,35 @@ class BaseVehicle(Loggable):
             if app.telemetry_available:
                 return app.telemetry
         return None
+
+    def tlm(self, tlm):
+        """ Get all data of specified telemetry item.
+
+        Args:
+            tlm (str): Operational name of requested telemetry.
+
+        Returns:
+            dict: Telemetry data.
+
+        Raises:
+            KeyError: If telemetry is not found.
+        """
+        # TODO Rename variable _telemetry
+        return self.communications._telemetry[tlm]
+
+    def tlm_value(self, tlm):
+        """ Get current value of specified telemetry item.
+
+        Args:
+            tlm (str): Operational name of requested telemetry.
+
+        Returns:
+            Any: Current value of telemetry.
+
+        Raises:
+            KeyError: If telemetry is not found.
+        """
+        return self.tlm(tlm)['value']
 
     # Testing Code. TODO Figure out where to put this
     def assert_equals(self, a, b, description):
