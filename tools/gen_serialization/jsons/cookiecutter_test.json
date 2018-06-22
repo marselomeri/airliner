@@ -1,0 +1,359 @@
+{
+	"app_name": "FC",
+	"app_ops_name": "CNTL",
+	"proto_msgs": {
+			"PX4_PositionSetpointTripletMsg_t": {
+			"proto_msg": "px4_position_setpoint_triplet_pb",
+			"fields": {
+				"Timestamp": {
+					"airliner_name": "Timestamp", 
+					"pb_type": "uint64",
+					"pb_field_rule": "required",
+					"airliner_type": "uint64",
+					"array_length": 0
+				},
+                "TestStr": {
+					"airliner_name": "TestStr", 
+					"pb_type": "string",
+					"pb_field_rule": "required",
+					"airliner_type": "char",
+					"array_length": 4
+				},
+                "TestStrArray": {
+					"airliner_name": "TestStrArray", 
+					"pb_type": "string",
+					"pb_field_rule": "repeated",
+					"airliner_type": "char",
+					"array_length": 4
+				},
+                "TestFloat": {
+					"airliner_name": "TestFloat", 
+					"pb_type": "float",
+					"pb_field_rule": "required",
+					"airliner_type": "float",
+					"array_length": 0
+				},
+                "TestFloatArray": {
+					"airliner_name": "TestFloatArray", 
+					"pb_type": "float",
+					"pb_field_rule": "repeated",
+					"airliner_type": "float",
+					"array_length": 4
+				},
+				"Previous": {
+					"airliner_name": "Previous", 
+					"pb_type": "px4_position_setpoint_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "PX4_PositionSetpoint_t",
+					"array_length": 0
+				},
+				"Current": {
+					"airliner_name": "Current", 
+					"pb_type": "px4_position_setpoint_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "PX4_PositionSetpoint_t",
+					"array_length": 0
+				},
+				"Next": {
+					"airliner_name": "Next", 
+					"pb_type": "px4_position_setpoint_pb",
+					"pb_field_rule": "required",
+					"airliner_type": "PX4_PositionSetpoint_t",
+					"array_length": 0
+				}
+			},
+            "required_pb_msgs": {
+                "px4_position_setpoint_pb": {
+					"airliner_msg": "PX4_PositionSetpoint_t",
+					"parent_field": {"Previous":0, "Current":0, "Next":0},
+					"fields": {
+						"Lat": {
+							"airliner_name": "Lat", 
+							"pb_type": "double",
+							"pb_field_rule": "optional",
+							"airliner_type": "double",
+							"array_length": 0
+						},
+						"Lon": {
+							"airliner_name": "Lon", 
+							"pb_type": "double",
+							"pb_field_rule": "optional",
+							"airliner_type": "double",
+							"array_length": 0
+						},
+						"X": {
+							"airliner_name": "X", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"Y": {
+							"airliner_name": "Y", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"Z": {
+							"airliner_name": "Z", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"VX": {
+							"airliner_name": "VX", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"VY": {
+							"airliner_name": "VY", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"VZ": {
+							"airliner_name": "VZ", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"Alt": {
+							"airliner_name": "Alt", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"Yaw": {
+							"airliner_name": "Yaw", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"Yawspeed": {
+							"airliner_name": "Yawspeed", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"LoiterRadius": {
+							"airliner_name": "LoiterRadius", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"PitchMin": {
+							"airliner_name": "PitchMin", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"AX": {
+							"airliner_name": "AX", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"AY": {
+							"airliner_name": "AY", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"AZ": {
+							"airliner_name": "AZ", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"AcceptanceRadius": {
+							"airliner_name": "AcceptanceRadius", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"CruisingSpeed": {
+							"airliner_name": "CruisingSpeed", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"CruisingThrottle": {
+							"airliner_name": "CruisingThrottle", 
+							"pb_type": "float",
+							"pb_field_rule": "optional",
+							"airliner_type": "float",
+							"array_length": 0
+						},
+						"Valid": {
+							"airliner_name": "Valid", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"Type": {
+							"airliner_name": "Type", 
+							"pb_type": "uint32",
+							"pb_field_rule": "optional",
+							"airliner_type": "uint8",
+							"array_length": 0
+						},
+						"PositionValid": {
+							"airliner_name": "PositionValid", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"VelocityValid": {
+							"airliner_name": "VelocityValid", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"YawValid": {
+							"airliner_name": "YawValid", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"DisableMcYawControl": {
+							"airliner_name": "DisableMcYawControl", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"YawspeedValid": {
+							"airliner_name": "YawspeedValid", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"LoiterDirection": {
+							"airliner_name": "LoiterDirection", 
+							"pb_type": "int32",
+							"pb_field_rule": "optional",
+							"airliner_type": "int8",
+							"array_length": 0
+						},
+						"AccelerationValid": {
+							"airliner_name": "AccelerationValid", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+						"AccelerationIsForce": {
+							"airliner_name": "AccelerationIsForce", 
+							"pb_type": "bool",
+							"pb_field_rule": "optional",
+							"airliner_type": "boolean",
+							"array_length": 0
+						},
+                        "TestNested1": {
+							"airliner_name": "TestNested1", 
+							"pb_type": "test_nest_pb",
+							"pb_field_rule": "optional",
+							"airliner_type": "TestNest",
+							"array_length": 0
+						},
+                        "TestNested2": {
+							"airliner_name": "TestNested2", 
+							"pb_type": "test_nest2_pb",
+							"pb_field_rule": "optional",
+							"airliner_type": "TestNest",
+							"array_length": 0
+						}
+					},
+					"required_pb_msgs": {
+                        "test_nest_pb": {
+                            "airliner_msg": "PX4_PositionSetpoint_t",
+					        "parent_field": {"TestNested1":0},
+					        "fields": {
+						        "n1": {
+                                    "airliner_name": "n1", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest",
+						            "array_length": 0
+					            },
+						        "n2": {
+                                    "airliner_name": "n2", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest",
+						            "array_length": 0
+					            },
+						        "n3": {
+                                    "airliner_name": "n3", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest",
+						            "array_length": 0
+					            }
+                            },
+                            "required_pb_msgs": {}
+                        },
+                        "test_nest2_pb": {
+                            "airliner_msg": "PX4_PositionSetpoint_t",
+					        "parent_field": {"TestNested2":0},
+					        "fields": {
+						        "n21": {
+                                    "airliner_name": "n21", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "repeated",
+						            "airliner_type": "TestNest2",
+						            "array_length": 4
+					            },
+						        "n22": {
+                                    "airliner_name": "n22", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest2",
+						            "array_length": 0
+					            },
+						        "n23": {
+                                    "airliner_name": "n23", 
+						            "pb_type": "bool",
+						            "pb_field_rule": "optional",
+						            "airliner_type": "TestNest2",
+						            "array_length": 0
+					            }
+                            },
+                            "required_pb_msgs": {}
+                        }
+                    }
+				}
+			}
+		}
+	},
+	"operations": {
+		"SetpointTriplet": {			
+			"airliner_msg": "PX4_PositionSetpointTripletMsg_t",
+			"airliner_cc": -1,
+			"airliner_mid": "0x0a34"
+		}
+	},
+	"autogen_version": "",
+	"_extensions": ["jinja2.ext.do", "jinja2.ext.loopcontrols"]
+}

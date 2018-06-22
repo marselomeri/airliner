@@ -1,0 +1,27 @@
+set(SENS_PROTOBUF_MSGS_DIR ${CMAKE_CURRENT_BINARY_DIR}/msgs/protobuf)
+
+add_airliner_app_def(appname
+    FILE APPNAME
+	NANOPB
+    SOURCES
+		[Your already sourced items]
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_serialization.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_serialization.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_registration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_registration.c
+        ${SENS_PROTOBUF_MSGS_DIR}/sens_hk.pb.h
+        ${SENS_PROTOBUF_MSGS_DIR}/sens_hk.pb.c
+
+    INCLUDES
+		[Your already included items]
+        ${SENS_PROTOBUF_MSGS_DIR}
+
+	PROTOBUF_DEFS
+        ${CMAKE_CURRENT_SOURCE_DIR}/../msgs/proto_defs/sens_hk.proto
+        
+    PROTOBUF_MSGS_DIR        
+        ${SENS_PROTOBUF_MSGS_DIR}
+
+)
+
+set(SENS_PROTOBUF_MSGS_DIR ${SENS_PROTOBUF_MSGS_DIR} PARENT_SCOPE)
