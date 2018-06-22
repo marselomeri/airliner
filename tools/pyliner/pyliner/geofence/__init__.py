@@ -25,7 +25,7 @@ from sortedcontainers import SortedDict
 
 from pyliner.app import App
 from pyliner.geofence.volume import Volume, CompositeVolume, Box, \
-    VerticalCylinder
+    VerticalCylinder, LayerCake
 from pyliner.navigation.position import Position
 from pyliner.telemetry import ManualSetpoint
 from pyliner.util import indent, PeriodicExecutor
@@ -44,23 +44,6 @@ class FenceGenerator(object):
                 warnings.warn('Curry was expecting a subclass of Volume and '
                               'received a {}'.format(c))
             setattr(self, c.__name__, partial(c, geographic=self.geographic))
-
-
-class LayerCake(CompositeVolume):
-    """Define a layer-cake volume.
-
-    Airspace around major airports is often described as an "upside-down layered
-    cake", with larger rings at higher altitudes. Each ring is additive to the
-    whole volume, and rings may intersect in altitude.
-    """
-
-    def __init__(self, geographic, center, rings=None):
-        super(LayerCake, self).__init__(geographic, rings)
-        self.center = center
-
-    def add_ring(self, radius, low, high):
-        self.add(
-            VerticalCylinder(self.geographic, self.center, low, high, radius))
 
 
 class LayerKind(Enum):

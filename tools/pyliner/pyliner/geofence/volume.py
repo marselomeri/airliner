@@ -12,6 +12,7 @@ import itertools
 import warnings
 from abc import ABCMeta, abstractmethod
 from collections import Container
+from numbers import Real
 
 from pyliner.navigation.position import Position, Coordinate
 
@@ -183,3 +184,20 @@ class VerticalCylinder(Volume):
             max_lon or pbd(self.center, 90, self.radius).longitude,
             self.high
         ))
+
+
+class LayerCake(CompositeVolume):
+    """Define a layer-cake volume.
+
+    Airspace around major airports is often described as an "upside-down layered
+    cake", with larger rings at higher altitudes. Each ring is additive to the
+    whole volume, and rings may intersect in altitude.
+    """
+
+    def __init__(self, geographic, center, rings=None):
+        super(LayerCake, self).__init__(geographic, rings)
+        self.center = center
+
+    def add_ring(self, radius, low, high):
+        self.add(
+            VerticalCylinder(self.geographic, self.center, low, high, radius))
