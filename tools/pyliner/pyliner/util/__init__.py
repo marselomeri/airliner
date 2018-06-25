@@ -203,6 +203,8 @@ class ScriptingWrapper:
         self.failure_callback = failure_callback
 
     def __getattr__(self, item):
+        if hasattr(self._vehicle, item):
+            return getattr(self._vehicle, item)
         apps = self._vehicle.apps
         if item in apps:
             return apps[item]

@@ -53,6 +53,7 @@ class BaseVehicle(Loggable):
         super(BaseVehicle, self).__init__(
             logger or logging.getLogger(vehicle_id))
 
+        # Pick passed sensors or Default
         geographic = geographic or GeographicSensor()
         # time = time or TimeSensor()
 

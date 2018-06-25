@@ -5,6 +5,10 @@ from os.path import basename
 
 from pyliner.util import enable_logging
 
+
+# TODO If going service route, use config file for setup
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('script')

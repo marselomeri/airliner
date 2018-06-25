@@ -13,7 +13,6 @@ from controller import Controller
 from flight_director import FlightDirector
 from geofence import Geofence, LayerKind
 from pyliner.navigation.navigation import Navigation
-from pyliner.service.socket_service import SocketService
 
 
 class Vehicle(BaseVehicle):

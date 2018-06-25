@@ -80,26 +80,23 @@ class TestHeading(unittest.TestCase):
     def test_range(self):
         a = Heading(20)
         r = a.range(45)
-
-        self.assertIn(335, r, 'Lower bound not inside range.')
-        self.assertIn(65, r, 'Upper bound not inside range.')
-        self.assertIn(0, r, 'North not in range.')
-        self.assertNotIn(330, r, 'Out of range.')
-        self.assertNotIn(70, r, 'Out of range.')
+        self.assertEqual(r.min, 335)
+        self.assertEqual(r.max, 65)
 
 
 class TestHeadingRange(unittest.TestCase):
-    def test_normal(self):
-        low, mid, high, not1 = 20, 30, 40, 50
+    def test_beyond_wrap(self):
+        low, high = 350, 10
+        out_low, in_low, in_high, out_high = -15, -5, 365, 375
         a = HeadingRange(low, high)
-        self.assertIn(low, a, 'Lower bound not inside range.')
-        self.assertIn(mid, a, 'Middle value not inside range.')
-        self.assertIn(high, a, 'Upper bound not inside range.')
+        self.assertIn(in_low, a, 'Negative should wrap.')
+        self.assertIn(in_high, a, 'Above 360 should wrap.')
 
-        self.assertNotIn(not1, a, 'Out of range.')
+        self.assertNotIn(out_low, a, 'Negative should wrap.')
+        self.assertNotIn(out_high, a, 'Above 360 should wrap.')
 
-    def test_wrap(self):
-        low, mid, high, not1, not2 = 350, 0, 10, 20, 340
+    def test_normal(self):
+        not1, low, mid, high, not2 = 10, 20, 30, 40, 50
         a = HeadingRange(low, high)
         self.assertIn(low, a, 'Lower bound not inside range.')
         self.assertIn(mid, a, 'Middle value not inside range.')
@@ -108,11 +105,19 @@ class TestHeadingRange(unittest.TestCase):
         self.assertNotIn(not1, a, 'Out of range.')
         self.assertNotIn(not2, a, 'Out of range.')
 
-    def test_extra(self):
-        low, high = 350, 10
-        in_low, out_low, in_high, out_high = -5, -15, 365, 375
+    def test_beyond_bounds(self):
+        low, mid, high = 380, 30, 400
         a = HeadingRange(low, high)
-        self.assertIn(in_low, a, 'Negative should wrap.')
-        self.assertNotIn(out_low, a, 'Negative should wrap.')
-        self.assertIn(in_high, a, 'Above 360 should wrap.')
-        self.assertNotIn(out_high, a, 'Above 360 should wrap.')
+        self.assertIsInstance(a.min, Heading)
+        self.assertIsInstance(a.max, Heading)
+        self.assertIn(mid, a, 'Bounds did not wrap.')
+
+    def test_wrap(self):
+        not1, low, mid, high, not2 = 340, 350, 0, 10, 20
+        a = HeadingRange(low, high)
+        self.assertIn(low, a, 'Lower bound not inside range.')
+        self.assertIn(mid, a, 'Middle value not inside range.')
+        self.assertIn(high, a, 'Upper bound not inside range.')
+
+        self.assertNotIn(not1, a, 'Out of range.')
+        self.assertNotIn(not2, a, 'Out of range.')

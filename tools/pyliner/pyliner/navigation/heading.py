@@ -95,8 +95,8 @@ class HeadingRange(Container):
     """
 
     def __init__(self, min, max):
-        self.min = min
-        self.max = max
+        self.min = Heading(min)
+        self.max = Heading(max)
 
     def __contains__(self, x):
         if isinstance(x, Real):
