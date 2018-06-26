@@ -37,6 +37,10 @@ class Controller(App):
         self.atp_override = None
         self._telemetry = None
 
+    def attach(self, vehicle_wrapper):
+        super(Controller, self).attach(vehicle_wrapper)
+        self.vehicle.callback = self.receive
+
     def arm(self):
         """Arm vehicle."""
         print("Arming vehicle")
@@ -84,6 +88,15 @@ class Controller(App):
         self.vehicle.info("Position control")
         self._telemetry = ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1)
         self._wait_clean()
+
+    def receive(self, intent):
+        actions = {
+            'RTL': self.rtl
+        }
+        try:
+            actions[intent.action]()
+        except KeyError:
+            self.info('Controller cannot process intent: {}'.format(intent))
 
     @classmethod
     def required_telemetry_paths(cls):

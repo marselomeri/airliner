@@ -28,7 +28,8 @@ from pyliner.geofence.volume import Volume, CompositeVolume, Box, \
     VerticalCylinder, LayerCake
 from pyliner.navigation.position import Position
 from pyliner.telemetry import ManualSetpoint
-from pyliner.util import indent, PeriodicExecutor
+from pyliner.util import indent
+from pyliner.util.periodic_executor import PeriodicExecutor
 
 
 class FenceGenerator(object):
@@ -125,14 +126,11 @@ class Geofence(App):
             logger=self.vehicle.logger, name='FenceCheck',
             exception=lambda e: self.vehicle.exception('Geofence Exception'))
         self._check_thread.start()
-        geographic = self.vehicle.sensor('geographic')
-        self.gen = FenceGenerator(geographic,
-                                  Box, LayerCake, VerticalCylinder)
 
     def _check_fence(self):
         old = self.fence_violation
         self.fence_violation = self.fence_violation or \
-                               (self.enabled and self.position not in self)
+            (self.enabled and self.position not in self)
         if not old and self.fence_violation:
             self.vehicle.error('Encountered Fence Violation at %s',
                                self.position)

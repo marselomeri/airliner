@@ -39,17 +39,22 @@ class Vehicle(BaseVehicle):
         """
         super(Vehicle, self).__init__(vehicle_id, communication)
 
+        # Attributes
         self.atp_override = None
 
+        # Component Defaults
+        geofence = Geofence()
+        navigation = Navigation()
+
         # Attach defaults
-        self.attach_app(0, 'fence', Geofence())
+        self.attach_app(0, 'fence', geofence)
         self.attach_app(1, 'ctrl', Controller())
         self.attach_app(2, 'fd', FlightDirector())
-        self.attach_app(3, 'nav', Navigation())
+        self.attach_app(3, 'nav', navigation)
 
         # Add helpful default settings
-        self.apps['fence'].add_layer(0, 'base', LayerKind.ADDITIVE)
-        self.apps['nav'].defaults.update({'timeout': None, 'underflow': 5.0})
+        geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
+        navigation.defaults.update({'timeout': None, 'underflow': 5.0})
 
         # Enable Services and Apps
         for service in []:

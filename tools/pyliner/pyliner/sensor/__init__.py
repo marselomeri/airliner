@@ -1,5 +1,5 @@
 from pyliner.pyliner_exceptions import InvalidStateError
-from pyliner.util import Loggable
+from pyliner.util.loggable import Loggable
 from pyliner.vehicle_access import VehicleAccess
 
 

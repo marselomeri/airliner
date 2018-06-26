@@ -19,14 +19,17 @@ if __name__ == '__main__':
     parser.add_argument('--log-file',
                         help='File name of log.\nIf not given, a reasonable '
                              'default is chosen.')
+    parser.add_argument('--no-log', action='store_true',
+                        help='If passed, disable logging.')
     parser.add_argument('-v', '--debug', action='store_true',
                         help='Enable logging for debug messages.')
     args = parser.parse_args()
 
-    enable_logging(
-        log_dir=args.log_dir,
-        log_file=args.log_file,
-        script=basename(args.script),
-        level=DEBUG if args.debug else INFO)
+    if not args.no_log:
+        enable_logging(
+            log_dir=args.log_dir,
+            log_file=args.log_file,
+            script=basename(args.script),
+            level=DEBUG if args.debug else INFO)
 
     imp.load_source('script', args.script)

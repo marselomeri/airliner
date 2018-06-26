@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from pyliner.util import Loggable, OverlayDict
-
+from pyliner.util import OverlayDict
+from pyliner.util.loggable import Loggable
 
 NotSet = type('NotSet', (object,), {'__repr__': lambda s: 'NotSet'})()
 """Indicate a kwarg that is not set (different than None). Use responsibly.
@@ -34,6 +34,7 @@ class NavigationFactory(Loggable):
         """
         super(NavigationFactory, self).__init__(navigation.vehicle.logger)
         self._default = OverlayDict(kwargs, navigation.defaults)
+        self.broadcast = navigation.vehicle.broadcast
         self.nav = navigation
 
     @abstractmethod

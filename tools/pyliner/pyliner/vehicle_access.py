@@ -5,8 +5,8 @@ interact with a vehicle, and the other components of the vehicle.
 Classes:
     VehicleAccess  Access controller between a Vehicle and its components.
 """
-
-from util import Loggable
+from pyliner.intent import IntentResponse
+from pyliner.util.loggable import Loggable
 
 
 class VehicleAccess(Loggable):
@@ -17,31 +17,23 @@ class VehicleAccess(Loggable):
     """
     def __init__(self, name):
         super(VehicleAccess, self).__init__()
+        self.callback = None
         self._component = None
         self._name = name
         self._vehicle = None
         self._filter = set()
 
-    # Vehicle Access
-    # TODO wrap access in case of Access Denial
-    def app(self, name):
-        """Return the app by name on the vehicle."""
-        return self._vehicle.apps[name]
-
-    def sensor(self, name):
-        """Return the sensor by name on the vehicle."""
-        return self._vehicle.sensors[name]
-
-    def service(self, name):
-        """Return the service by name on the vehicle."""
-        return self._vehicle.services[name]
-
     # Events
     def add_filter(self, predicate, callback):
-        """Add an event filter to this access and return a tuple.
+        """Add an intent filter to this access and return a tuple.
 
-        When an event which passes the predicate is broadcast, the callback is
-        invoked. Both are invoked with the event that was broadcast.
+        When an intent is broadcast which passes the predicate, the callback is
+        invoked. Repeated calls with the same arguments will still result in a
+        single call to `callback`.
+
+        Returns:
+            Tuple of (predicate, callback) which must be passed into
+                remove_filter to remove the filter.
         """
         if not callable(predicate) or not callable(callback):
             raise ValueError('Filter predicate and callback must be callable.')
@@ -53,15 +45,19 @@ class VehicleAccess(Loggable):
         """Remove all event filters."""
         self._filter.clear()
 
-    def handle_event(self, event):
-        """Take an event and pass it to any callbacks that are listening."""
+    def receive(self, intent, response=None):
+        """Receive an intent and pass it to any callbacks that are listening."""
+        if callable(self.callback):
+            self.callback(intent)
         for predicate, callback in self._filter:
-            if predicate(event):
-                callback(event)
+            if predicate(intent):
+                resp = callback(intent)
+                if response and resp:
+                    response.add(resp)
 
-    def push_event(self, event):
-        """Broadcast an event to the vehicle."""
-        self._vehicle.event(event)
+    def broadcast(self, intent):
+        """Broadcast an intent to the vehicle."""
+        return self._vehicle.broadcast(intent)
 
     def remove_filter(self, predicate_callback):
         """Remove a filter (by the tuple returned by add) from this access."""

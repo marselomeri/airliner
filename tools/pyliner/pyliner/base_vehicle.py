@@ -8,6 +8,7 @@ Classes:
 import atexit
 import logging
 import re
+import threading
 from abc import ABCMeta
 from datetime import datetime
 from os.path import join
@@ -18,12 +19,13 @@ from sortedcontainers import SortedDict
 
 from app import App, AppAccess
 from communication import Communication
+from pyliner.intent import IntentResponse
+from pyliner.pyliner_exceptions import PylinerError
+from pyliner.sensor import SensorAccess
 from pyliner.sensor.geographic_sensor import GeographicSensor
-from sensor import SensorAccess
-from service import ServiceAccess
-from telemetry import Telemetry
 from pyliner.sensor.time_sensor import TimeSensor
-from util import Loggable
+from pyliner.service import ServiceAccess
+from pyliner.util.loggable import Loggable
 
 
 class BaseVehicle(Loggable):
@@ -53,24 +55,22 @@ class BaseVehicle(Loggable):
         super(BaseVehicle, self).__init__(
             logger or logging.getLogger(vehicle_id))
 
-        # Pick passed sensors or Default
-        geographic = geographic or GeographicSensor()
-        # time = time or TimeSensor()
-
         # Register Shutdown
         atexit.register(self.shutdown)
 
         # Instance attributes
-        self.apps = {}
-        self.communications = communications
-        self.com_priority = SortedDict()
-        self.services = {}
-        self.sensors = {}
-        self._sensor_tokens = {}
-        self._shutdown = False
+        self.components = {'app': {}, 'service': {}, 'sensor': {}}
+        """:type: dict[str, dict[str, SensorAccess]]"""
+        self.com_priority = SortedDict()  # TODO Remove
+        self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
+        # Pick passed sensors or Default
+        geographic = geographic or GeographicSensor()
+        time = time or TimeSensor()
+
         # Default components
+        self.communications = communications
         self.attach_sensor('geographic', geographic)
         # self.attach_service('time', time)
         self.attach_service('comms', communications)
@@ -82,7 +82,7 @@ class BaseVehicle(Loggable):
         if priority in self.com_priority:
             raise ValueError('There is already a module with priority '
                              '{}'.format(priority))
-        elif app_name in self.apps:
+        elif app_name in self.components['app']:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
         elif not re.match(identifier, app_name):
@@ -93,9 +93,9 @@ class BaseVehicle(Loggable):
             return TypeError('module must implement App.')
 
         vehicle_token = AppAccess(app_name)
-        self.apps[app_name] = app
-        self.com_priority[priority] = app
+        self.components['app'][app_name] = vehicle_token
         vehicle_token.attach(self, app)
+        self.com_priority[priority] = app
 
     def attach_service(self, service_name, service):
         """Attach a service to this vehicle.
@@ -105,7 +105,7 @@ class BaseVehicle(Loggable):
             service (Service): Service to attach.
         """
         vehicle_token = ServiceAccess(service_name)
-        self.services[service_name] = service
+        self.components['service'][service_name] = vehicle_token
         vehicle_token.attach(self, service)
 
     def attach_sensor(self, sensor_name, sensor):
@@ -116,8 +116,7 @@ class BaseVehicle(Loggable):
             sensor (Sensor): Sensor to attach.
         """
         vehicle_token = SensorAccess(sensor_name)
-        self.sensors[sensor_name] = sensor
-        self._sensor_tokens[sensor_name] = vehicle_token
+        self.components['sensor'][sensor_name] = vehicle_token
         vehicle_token.attach(self, sensor)
 
     def await_change(self, tlm, poll=1.0, out=None):
@@ -135,6 +134,19 @@ class BaseVehicle(Loggable):
             sleep(poll)
         return self.tlm_value(tlm)
 
+    def broadcast(self, intent):
+        """Broadcast an Intent to components."""
+        self.debug('Broadcasting: {}'.format(intent))
+        print('Broadcasting: {}'.format(intent))
+        response = IntentResponse(caused_by=intent)
+        if intent.is_explicit():
+            kind, ident = intent.component.split('.')
+            callback = self.components[kind][ident].receive
+            threading.Thread(target=callback, args=(intent, response)).start()
+        else:
+            raise PylinerError('Can\'t do implicit intents now')
+        return response
+
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.
 
@@ -142,11 +154,12 @@ class BaseVehicle(Loggable):
             Any apps that attempt to call the disabled app by name will
             produce an error.
         """
-        if name not in self.apps:
+        apps = self.components['app']
+        if name not in apps:
             raise AttributeError(
                 'Cannot disable a module that was never enabled.')
-        module = self.apps[name]
-        del self.apps[name]
+        module = apps[name]
+        del apps[name]
         module.detach()
         for priority, pri_module in self.com_priority.items():
             if module is pri_module:
@@ -165,31 +178,26 @@ class BaseVehicle(Loggable):
             4. Detach Services
             5. Detach Sensors
         """
-        if not self._shutdown:
-            for app in self.apps.values():
-                if app.state is app.STARTED:
-                    app.stop()
-            for service in self.services.values():
-                if service.state is service.STARTED:
-                    service.stop()
-            for app in self.apps.values():
-                if app.state is app.ATTACHED:
-                    app.detach()
-            for service in self.services.values():
-                if service.state is service.ATTACHED:
-                    service.detach()
-            for sensor in self.sensors.values():
-                if sensor.state is sensor.ATTACHED:
-                    sensor.detach()
-            self._shutdown = True
+        if not self.is_shutdown:
+            for app in self.components['app'].values():
+                app.stop()
+            for service in self.components['service'].values():
+                service.stop()
+            for app in self.components['app'].values():
+                app.detach()
+            for service in self.components['service'].values():
+                service.detach()
+            for sensor in self.components['sensor'].values():
+                sensor.detach()
+            self.is_shutdown = True
 
-    def start_app(self, app):
+    def start_app(self, app_name):
         """Start an App."""
-        self.apps[app].start()
+        self.components['app'][app_name].start()
 
-    def start_service(self, service):
+    def start_service(self, service_name):
         """Start a Service."""
-        self.services[service].start()
+        self.components['service'][service_name].start()
 
     def telemetry(self):
         """Return telemetry to send, or None."""

@@ -12,5 +12,5 @@ vehicle = Vehicle(
     )
 )
 
-vehicle.apps['ctrl'].rtl()
+vehicle.components['app']['ctrl']._component.rtl()
 time.sleep(1)

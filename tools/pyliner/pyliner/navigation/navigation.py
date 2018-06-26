@@ -21,7 +21,6 @@ class Navigation(App):
 
     def __init__(self):
         super(Navigation, self).__init__()
-        self._geographic = None
         self._telemetry = None
 
         self.defaults = {}
@@ -66,29 +65,13 @@ class Navigation(App):
 
     @property
     def yaw(self):
-        """The vehicle yaw in clockwise radians from north."""
+        """The vehicle yaw in clockwise radians from north [-Pi, Pi]."""
         return App._telem(self.req_telem['yaw'])(self)
 
-    def attach(self, vehicle):
-        super(Navigation, self).attach(vehicle)
-        self._geographic = vehicle.sensor('geographic')
-
-    def detach(self):
-        super(Navigation, self).detach()
-        self._geographic = None
-
-    def goto(self, **kwargs):
-        return Goto(self, **kwargs)
-
-    def lnav(self, **kwargs):
-        return Lnav(self, **kwargs)
-
+    # Normal Code
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
-
-    def rotate(self, **kwargs):
-        return Rotate(self, **kwargs)
 
     @property
     def telemetry(self):
@@ -99,6 +82,15 @@ class Navigation(App):
     @property
     def telemetry_available(self):
         return self._telemetry is not None
+
+    def goto(self, **kwargs):
+        return Goto(self, **kwargs)
+
+    def lnav(self, **kwargs):
+        return Lnav(self, **kwargs)
+
+    def rotate(self, **kwargs):
+        return Rotate(self, **kwargs)
 
     def vnav(self, **kwargs):
         return Vnav(self, **kwargs)

@@ -17,7 +17,8 @@ from time import sleep
 from pyliner.communication import Communication
 from pyliner.controller import FlightMode
 from pyliner.navigation.control import proportional
-from pyliner.util import read_json, ScriptingWrapper
+from pyliner.util import read_json
+from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.vehicle import Vehicle
 
 rky = Vehicle(

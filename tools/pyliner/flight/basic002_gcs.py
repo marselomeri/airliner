@@ -18,7 +18,8 @@ from pyliner.communication import Communication
 from pyliner.controller import FlightMode
 from pyliner.navigation.control import proportional
 from pyliner.vehicle import Vehicle
-from pyliner.util import read_json, enable_logging, ScriptingWrapper
+from pyliner.util import read_json, enable_logging
+from pyliner.util.scripting_wrapper import ScriptingWrapper
 
 enable_logging(log_dir='logs', script=basename(__file__))
 

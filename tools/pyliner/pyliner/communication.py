@@ -17,8 +17,8 @@ import pyliner_exceptions
 from arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from python_pb import pyliner_msgs
 from service import Service
-from util import init_socket, PeriodicExecutor, handler_factory
-
+from util import init_socket, handler_factory
+from pyliner.util.periodic_executor import PeriodicExecutor
 
 # TODO Put all this somewhere vehicle specific
 SEND_TIME = 0.1

@@ -55,7 +55,13 @@ class Service(Sensor):
 
 class ServiceAccess(SensorAccess):
     def start(self):
-        self._component.start()
+        try:
+            self._component.start()
+        except InvalidStateError:
+            self.debug('Could not start Component.')
 
     def stop(self):
-        self._component.stop()
+        try:
+            self._component.stop()
+        except InvalidStateError:
+            self.debug('Could not stop Component.')

@@ -22,7 +22,6 @@ class App(Service):
     """
     @classmethod
     def required_telemetry_paths(cls):
-        # type: () -> Optional[Iterable[str]]
         """Return the required telemetry to enable this module.
 
         Return:
