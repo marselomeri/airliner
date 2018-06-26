@@ -199,16 +199,21 @@ class ScriptingWrapper:
                 controlling script.
         """
         self._vehicle = vehicle
-        self.geographic = vehicle.sensors['geographic']
         self.failure_callback = failure_callback
 
     def __getattr__(self, item):
         if hasattr(self._vehicle, item):
             return getattr(self._vehicle, item)
         apps = self._vehicle.apps
+        services = self._vehicle.services
+        sensors = self._vehicle.sensors
         if item in apps:
             return apps[item]
-        raise AttributeError('{} is not a method or module of this '
+        if item in services:
+            return services[item]
+        if item in sensors:
+            return sensors[item]
+        raise AttributeError('{} is not a method or component of this '
                              'Pyliner instance.'.format(item))
 
     def __enter__(self):

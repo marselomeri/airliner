@@ -39,7 +39,7 @@ class Goto(NavigationFactory):
         # Iterate through all given waypoints
         if not isinstance(waypoints, Iterable):
             waypoints = (waypoints,)
-        for prv, cur, nxt in shifter(3, (None,) + waypoints + (None,)):
+        for prv, cur, nxt in shifter(3, (None,) + tuple(waypoints) + (None,)):
             palt = 0 if not prv else prv.altitude \
                 if prv.altitude is not None else self.nav.altitude
             calt = 0 if not cur else cur.altitude \
