@@ -81,6 +81,7 @@
 #define AMC_RECEIVE_PERF_ID         109
 #define PE_SENSOR_ULR_PERF_ID       110
 #define SONAR_MAIN_TASK_PERF_ID     111
+#define FLOW_MAIN_TASK_PERF_ID      112
 
 #endif
 
