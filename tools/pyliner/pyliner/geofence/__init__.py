@@ -33,6 +33,9 @@ from pyliner.util import indent
 from pyliner.util.periodic_executor import PeriodicExecutor
 
 
+FENCE_SLEEP = 1.0
+
+
 class FenceGenerator(object):
     """Curry a bunch of Volumes with the same Geographic."""
 
@@ -113,7 +116,7 @@ class Geofence(App):
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
         self._check_thread = PeriodicExecutor(
-            self._check_fence, every=1,
+            self._check_fence, every=FENCE_SLEEP,
             logger=self.vehicle.logger, name='FenceCheck',
             exception=lambda e: self.vehicle.exception('Geofence Exception'))
         self._check_thread.start()
@@ -143,7 +146,7 @@ class Geofence(App):
             self.vehicle.error('Encountered Fence Violation at %s',
                                self.position)
             self.vehicle.broadcast(Intent(action=ACTION_RTL))
-            print('Encountered fence violation. Press Ctrl-C twice to exit.')
+            print('Encountered fence violation. Press Ctrl-C exit.')
 
     def layer_by_name(self, name):
         for layer in self.layers.values():

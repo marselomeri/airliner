@@ -25,6 +25,7 @@ class App(Loggable):
            v                          |
         attach -> start <-> stop -> detach
     """
+    # TODO Add App qualified name (com.windhover.pyliner.app.controller, etc)
 
     ATTACHED = 'ATTACHED'
     DETACHED = 'DETACHED'

@@ -79,7 +79,6 @@ class Goto(NavigationFactory):
 
                 distance = self.broadcast(Intent(
                     action=ACTION_CALC_DISTANCE,
-                    component='app.geographic',
                     data=(cur, self.nav.position),
                 )).first_result(0.5)
                 if distance < tolerance:
