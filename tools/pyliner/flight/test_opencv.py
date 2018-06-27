@@ -22,7 +22,7 @@ lnav = proportional(1.0 / 10.0)
 
 rocky = ScriptingWrapper(Vehicle(
     vehicle_id='rocky',
-    communication=Communication(
+    communications=Communication(
         airliner_map=read_json("airliner.json"),
         ci_port=5009,
         to_port=5012)

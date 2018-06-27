@@ -37,7 +37,7 @@ def range_limit(current, target):
 
 rky = Vehicle(
     vehicle_id='rocky',
-    communication=Communication(
+    communications=Communication(
         airliner_map=read_json("airliner.json"),
         address="192.168.1.2",
         ci_port=5009,

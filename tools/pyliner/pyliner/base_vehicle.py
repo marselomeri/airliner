@@ -17,10 +17,7 @@ from time import sleep
 from junit_xml import TestCase, TestSuite
 
 from pyliner.app import App, AppAccess
-from pyliner.app.communication import Communication
 from pyliner.intent import IntentFuture
-from pyliner.app.geographic_app import GeographicApp
-from pyliner.app.time_app import TimeApp
 from pyliner.util.loggable import Loggable
 
 
@@ -35,18 +32,11 @@ class BaseVehicle(Loggable):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, vehicle_id, communications, geographic=None,
-                 logger=None, time=None):
-        """Constructor for BasePyliner.
+    def __init__(self, vehicle_id, logger=None):
+        """Constructor for BaseVehicle.
 
         Args:
             vehicle_id: Vehicle ID. Should be unique.
-            communications (Communication): Communications PylinerModule.
-                Not exposed as a public module for direct access, but the user
-                is given the option to use a custom class if they desire.
-            geographic: If None, defaults to Geographic().
-            logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
-            time: If None, default to TimeSensor().
         """
         super(BaseVehicle, self).__init__(
             logger or logging.getLogger(vehicle_id))
@@ -60,16 +50,6 @@ class BaseVehicle(Loggable):
         """:type: dict[str, AppAccess]"""
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
-
-        # Pick passed sensors or Default
-        geographic = geographic or GeographicApp()
-        time = time or TimeApp()
-
-        # Default components
-        self.communications = communications
-        self.attach_app('geographic', geographic)
-        # self.attach_service('time', time)
-        self.attach_app('comms', communications)
 
     def attach_app(self, app_name, app):
         """Attach an app to this vehicle."""

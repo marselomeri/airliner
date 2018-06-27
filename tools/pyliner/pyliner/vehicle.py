@@ -8,6 +8,8 @@ Classes:
 """
 
 from pyliner.app import App
+from pyliner.app.geographic_app import GeographicApp
+from pyliner.app.time_app import TimeApp
 from pyliner.base_vehicle import BaseVehicle
 from pyliner.app.controller import Controller
 from pyliner.app.flight_director import FlightDirector
@@ -30,19 +32,28 @@ class Vehicle(BaseVehicle):
     but it is highly recommended that replacements subclass the default apps.
     """
 
-    def __init__(self, vehicle_id, communication):
+    def __init__(self, vehicle_id, communications, geographic=None, time=None,
+                 logger=None):
         """Create an instance of Pyliner.
 
         Args:
             vehicle_id: Vehicle ID. Should be unique.
-            communication: Communications App
+            communications (Communication): Communication App.
+                Not exposed as a public module for direct access, but the user
+                is given the option to use a custom class if they desire.
+            geographic: If None, defaults to Geographic().
+            logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
+            time: If None, default to TimeSensor().
         """
-        super(Vehicle, self).__init__(vehicle_id, communication)
+        super(Vehicle, self).__init__(vehicle_id, logger)
 
         # Attributes
         self.atp_override = None
 
         # Component Defaults
+        self.communications = communications  # TODO Remove, use intent
+        geographic = geographic or GeographicApp()
+        time = time or TimeApp()
         geofence = Geofence()
         navigation = Navigation()
 
@@ -51,6 +62,9 @@ class Vehicle(BaseVehicle):
         self.attach_app('ctrl', Controller())
         self.attach_app('fd', FlightDirector())
         self.attach_app('nav', navigation)
+        self.attach_app('geographic', geographic)
+        # self.attach_service('time', time)
+        self.attach_app('comms', communications)
 
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
