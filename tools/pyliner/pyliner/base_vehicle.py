@@ -17,8 +17,8 @@ from time import sleep
 from junit_xml import TestCase, TestSuite
 from sortedcontainers import SortedDict
 
-from app import App, AppAccess
-from communication import Communication
+from pyliner.app import App, AppAccess
+from pyliner.communication import Communication
 from pyliner.intent import IntentFuture
 from pyliner.sensor import SensorAccess
 from pyliner.sensor.geographic_sensor import GeographicSensor

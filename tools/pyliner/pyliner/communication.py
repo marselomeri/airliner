@@ -20,6 +20,7 @@ from pyliner.service import Service
 from pyliner.util import init_socket, handler_factory
 from pyliner.util.periodic_executor import PeriodicExecutor
 
+# TODO Python3 does not see telemetry
 # TODO Put all this somewhere vehicle specific
 SEND_TIME = 0.1
 DEFAULT_CI_PORT = 5008

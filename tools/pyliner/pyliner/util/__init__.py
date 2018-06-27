@@ -147,7 +147,10 @@ def query_yes_no(question, default=None, **extra):
 
     while True:
         sys.stdout.write(question + prompt)
-        choice = raw_input().lower()
+        if sys.version_info.major < 3:
+            choice = raw_input().lower()
+        else:
+            choice = input().lower()
         if default is not None and choice == '':
             return default
         for answer, options in valid.items():

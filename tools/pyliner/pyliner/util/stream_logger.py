@@ -9,6 +9,9 @@ class StreamLogger(object):
         self.stream = stream
         self.log = logging.getLogger(name)
 
+    def flush(self):
+        return self.stream.flush()
+
     def read(self, length):
         result = self.stream.read(length)
         self.log.log(self.level, '(read) %s', repr(result))

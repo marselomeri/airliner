@@ -13,11 +13,11 @@ import time
 
 from flufl.enum import Enum
 
-from app import App
+from pyliner.app import App
 from pyliner.action import ACTION_RTL
-from pyliner_exceptions import UnauthorizedAtpError
-from telemetry import ManualSetpoint
-from util import query_yes_no
+from pyliner.pyliner_exceptions import UnauthorizedAtpError
+from pyliner.telemetry import ManualSetpoint
+from pyliner.util import query_yes_no
 
 _WAIT_TIME = 0.1
 

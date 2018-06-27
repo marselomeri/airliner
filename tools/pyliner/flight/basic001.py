@@ -32,7 +32,7 @@ rky = Vehicle(
 with ScriptingWrapper(rky) as rocky:
     while rocky.nav.altitude == "NULL":
         sleep(1)
-        print "Waiting for telemetry downlink..."
+        print("Waiting for telemetry downlink...")
 
     rocky.ctrl.atp('Arm')
     rocky.ctrl.arm()

@@ -10,7 +10,7 @@ See Also:
 
 from collections import Iterable
 
-from service import Service, ServiceAccess
+from pyliner.service import Service, ServiceAccess
 
 
 class App(Service):
