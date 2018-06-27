@@ -1,10 +1,9 @@
-from os.path import basename
 from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.navigation.control import proportional
 from pyliner.vehicle import Vehicle
-from pyliner.util import enable_logging, read_json
+from pyliner.util import
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.util.periodic_executor import PeriodicExecutor
 
@@ -17,8 +16,6 @@ TARGET_DISTANCE = 10
 rotator = proportional(1.0 / 200.0)
 # Scale distance by some factor
 lnav = proportional(1.0 / 10.0)
-
-enable_logging(log_dir='logs', script=basename(__file__))
 
 # TODO OpenCV initialization here
 

@@ -15,21 +15,18 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-from os.path import basename
 from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.navigation.control import limiter, proportional
 from pyliner.vehicle import Vehicle
-from pyliner.util import read_json, enable_logging
+from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 
 
 def range_limit(current, target):
     return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
 
-
-enable_logging(log_dir='logs', script=basename(__file__))
 
 rky = Vehicle(
     vehicle_id='rocky',

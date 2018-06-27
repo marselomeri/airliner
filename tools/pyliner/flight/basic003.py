@@ -12,15 +12,13 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-from logging import DEBUG
-from os.path import basename
 from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.app.controller import FlightMode
 from pyliner.navigation.control import limiter, proportional
 from pyliner.vehicle import Vehicle
-from pyliner.util import read_json, enable_logging
+from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.util.conversions import seconds
 
@@ -28,8 +26,6 @@ from pyliner.util.conversions import seconds
 def range_limit(current, target):
     return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
 
-
-enable_logging(log_dir='logs', script=basename(__file__), level=DEBUG)
 
 rky = Vehicle(
     vehicle_id='rocky',
