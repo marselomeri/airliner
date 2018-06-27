@@ -58,13 +58,13 @@ class Vehicle(BaseVehicle):
         navigation = Navigation()
 
         # Attach defaults
+        self.attach_app('comms', communications)
+        self.attach_app('geographic', geographic)
+        # self.attach_service('time', time)
         self.attach_app('fence', geofence)
         self.attach_app('ctrl', Controller())
         self.attach_app('fd', FlightDirector())
         self.attach_app('nav', navigation)
-        self.attach_app('geographic', geographic)
-        # self.attach_service('time', time)
-        self.attach_app('comms', communications)
 
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
