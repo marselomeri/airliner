@@ -5,7 +5,8 @@ interact with a vehicle, and the other components of the vehicle.
 Classes:
     VehicleAccess  Access controller between a Vehicle and its components.
 """
-from pyliner.intent import IntentResponse
+from pyliner.intent import Intent
+from pyliner.intent import IntentFuture, IntentResponse
 from pyliner.util.loggable import Loggable
 
 
@@ -21,6 +22,7 @@ class VehicleAccess(Loggable):
         self._component = None
         self._name = name
         self._vehicle = None
+        """:type: BaseVehicle"""
         self._filter = set()
 
     # Events
@@ -45,17 +47,25 @@ class VehicleAccess(Loggable):
         """Remove all event filters."""
         self._filter.clear()
 
-    def receive(self, intent, response=None):
+    def receive(self, intent, future):
         """Receive an intent and pass it to any callbacks that are listening."""
+        def handle(cb):
+            result = exception = None
+            try:
+                result = cb(intent)
+            except Exception as e:
+                exception = e
+            if result or exception:
+                future.add(IntentResponse(result=result, exception=exception))
+
         if callable(self.callback):
-            self.callback(intent)
+            handle(self.callback)
         for predicate, callback in self._filter:
             if predicate(intent):
-                resp = callback(intent)
-                if response and resp:
-                    response.add(resp)
+                handle(callback)
 
     def broadcast(self, intent):
+        # type: (Intent) -> IntentFuture
         """Broadcast an intent to the vehicle."""
         return self._vehicle.broadcast(intent)
 

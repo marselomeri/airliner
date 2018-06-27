@@ -19,7 +19,8 @@ from sortedcontainers import SortedDict
 
 from app import App, AppAccess
 from communication import Communication
-from pyliner.intent import IntentResponse
+from pyliner.action import ACTION_RTL
+from pyliner.intent import IntentFuture
 from pyliner.pyliner_exceptions import PylinerError
 from pyliner.sensor import SensorAccess
 from pyliner.sensor.geographic_sensor import GeographicSensor
@@ -59,6 +60,7 @@ class BaseVehicle(Loggable):
         atexit.register(self.shutdown)
 
         # Instance attributes
+        # self.broadcast_pool = ThreadPool
         self.components = {'app': {}, 'service': {}, 'sensor': {}}
         """:type: dict[str, dict[str, SensorAccess]]"""
         self.com_priority = SortedDict()  # TODO Remove
@@ -137,15 +139,20 @@ class BaseVehicle(Loggable):
     def broadcast(self, intent):
         """Broadcast an Intent to components."""
         self.debug('Broadcasting: {}'.format(intent))
-        print('Broadcasting: {}'.format(intent))
-        response = IntentResponse(caused_by=intent)
+        future = IntentFuture(caused_by=intent)
+        # TODO Use Pool
+        threading.Thread(target=self._broadcast_thread, args=(intent, future))\
+            .start()
+        return future
+
+    def _broadcast_thread(self, intent, future):
         if intent.is_explicit():
             kind, ident = intent.component.split('.')
-            callback = self.components[kind][ident].receive
-            threading.Thread(target=callback, args=(intent, response)).start()
+            self.components[kind][ident].receive(intent, future)
         else:
-            raise PylinerError('Can\'t do implicit intents now')
-        return response
+            for kind in self.components.values():
+                for ident in kind.values():
+                    ident.receive(intent, future)
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.
@@ -178,6 +185,7 @@ class BaseVehicle(Loggable):
             4. Detach Services
             5. Detach Sensors
         """
+        self.info('Vehicle is shutting down.')
         if not self.is_shutdown:
             for app in self.components['app'].values():
                 app.stop()
@@ -190,6 +198,7 @@ class BaseVehicle(Loggable):
             for sensor in self.components['sensor'].values():
                 sensor.detach()
             self.is_shutdown = True
+            self.info('Shutdown complete.')
 
     def start_app(self, app_name):
         """Start an App."""

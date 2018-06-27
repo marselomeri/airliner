@@ -1,5 +1,4 @@
 from pyliner.communication import Communication
-from pyliner.navigation.waypoint import Waypoint
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.vehicle import Vehicle
@@ -22,11 +21,11 @@ with ScriptingWrapper(vehicle) as rocky:
 
     # Generate waypoints
     last = rocky.nav.position
-    last.altitude += 30
+    last.altitude += 10
     wpts = []
     motion = [(0, 30), (90, 10), (180, 30), (90, 10),
               (0, 30), (90, 10), (180, 30), (90, 10),
-              (0, 30), (90, 10), (180, 30), (90, 10)]
+              (0, 30), (90, 10), (180, 30)]
     for brng, dist in motion:
         last = geo.pbd(last, brng, dist)
         wpts.append(last)

@@ -7,6 +7,7 @@ Apps:
 """
 
 from app import App
+from pyliner.action import ACTION_AXIS_SET
 from telemetry import ManualSetpoint
 
 
@@ -31,22 +32,24 @@ class FlightDirector(App):
         if r is not None:
             self.r = r
 
+    def receive(self, intent):
+        if intent.action == ACTION_AXIS_SET:
+            axis, value = intent.data
+            self(**{axis: value})
+
+    def start(self):
+        super(FlightDirector, self).start()
+        self.vehicle.callback = self.receive
+
+    def stop(self):
+        super(FlightDirector, self).stop()
+        self.vehicle.callback = None
+
     def _send_telemetry(self):
-        mod_z = self.z / 2.0 + 0.5
+        mod_z = self.z / 2.0 + 0.5  # [-1, 1] -> [0, 1]
         self._telemetry = ManualSetpoint(X=self._x, Y=self._y, Z=mod_z,
                                          R=self._r, PosctlSwitch=1,
                                          GearSwitch=1, ArmSwitch=1)
-
-    @property
-    def r(self):
-        return self._r
-
-    @r.setter
-    def r(self, value):
-        if self.strict_set and (value > 1 or value < -1):
-            raise ValueError('Cannot assign R outside of [-1, 1].')
-        self._r = value
-        self._send_telemetry()
 
     @classmethod
     def required_telemetry_paths(cls):
@@ -61,6 +64,17 @@ class FlightDirector(App):
     @property
     def telemetry_available(self):
         return self._telemetry is not None
+
+    @property
+    def r(self):
+        return self._r
+
+    @r.setter
+    def r(self, value):
+        if self.strict_set and (value > 1 or value < -1):
+            raise ValueError('Cannot assign R outside of [-1, 1].')
+        self._r = value
+        self._send_telemetry()
 
     @property
     def x(self):

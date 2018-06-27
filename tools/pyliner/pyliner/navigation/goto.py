@@ -3,6 +3,7 @@ from collections import Iterable
 from datetime import datetime
 from numbers import Real
 
+from pyliner.action import ACTION_CALC_DISTANCE
 from pyliner.intent import Intent
 from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
@@ -72,12 +73,10 @@ class Goto(NavigationFactory):
                     raise CommandTimeout('goto exceeded timeout')
 
                 distance = self.broadcast(Intent(
-                    origin='nav.goto',
-                    action='GEO_DISTANCE',
+                    action=ACTION_CALC_DISTANCE,
                     component='sensor.geographic',
-                    data=(cur, self.nav.position)
-                )).first(0.5)
-                print(distance)
+                    data=(cur, self.nav.position),
+                )).first_result(0.5)
                 if distance < tolerance:
                     self.nav.vehicle.info(
                         'goto expected %s actual %s (%s < %s m)',

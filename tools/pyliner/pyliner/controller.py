@@ -14,6 +14,7 @@ import time
 from flufl.enum import Enum
 
 from app import App
+from pyliner.action import ACTION_RTL
 from pyliner_exceptions import UnauthorizedAtpError
 from telemetry import ManualSetpoint
 from util import query_yes_no
@@ -41,6 +42,9 @@ class Controller(App):
         super(Controller, self).attach(vehicle_wrapper)
         self.vehicle.callback = self.receive
 
+    def detach(self):
+        self.vehicle.callback = None
+
     def arm(self):
         """Arm vehicle."""
         print("Arming vehicle")
@@ -49,6 +53,16 @@ class Controller(App):
         self._wait_clean()
         self._telemetry = ManualSetpoint(ArmSwitch=1)
         self._wait_clean()
+
+    def receive(self, intent):
+        actions = {
+            ACTION_RTL: self.rtl
+        }
+        try:
+            actions[intent.action]()
+        except KeyError:
+            if intent.component == self.vehicle._name:
+                self.info('Controller cannot process intent: {}'.format(intent))
 
     def atp(self, text, error=True):
         """Collect authorization to proceed (ATP) from the user."""
@@ -88,15 +102,6 @@ class Controller(App):
         self.vehicle.info("Position control")
         self._telemetry = ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1)
         self._wait_clean()
-
-    def receive(self, intent):
-        actions = {
-            'RTL': self.rtl
-        }
-        try:
-            actions[intent.action]()
-        except KeyError:
-            self.info('Controller cannot process intent: {}'.format(intent))
 
     @classmethod
     def required_telemetry_paths(cls):

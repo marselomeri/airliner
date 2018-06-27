@@ -7,11 +7,11 @@ Classes:
     Vehicle  A vehicle for the user to control.
 """
 
-from app import App
-from base_vehicle import BaseVehicle
-from controller import Controller
-from flight_director import FlightDirector
-from geofence import Geofence, LayerKind
+from pyliner.app import App
+from pyliner.base_vehicle import BaseVehicle
+from pyliner.controller import Controller
+from pyliner.flight_director import FlightDirector
+from pyliner.geofence import Geofence, LayerKind
 from pyliner.navigation.navigation import Navigation
 
 

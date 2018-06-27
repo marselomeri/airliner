@@ -11,6 +11,7 @@ from numbers import Real
 
 from geographiclib.geodesic import Geodesic
 
+from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, ACTION_CALC_PBD
 from pyliner.geographic import Geographic
 from pyliner.navigation.position import Coordinate
 from pyliner.sensor import Sensor
@@ -20,10 +21,23 @@ class GeographicSensor(Geographic, Sensor):
     """A Sensor that produces relevant world-based calculations."""
 
     def __repr__(self):
-        return 'Geographic()'
+        return 'GeographicSensor()'
 
     def __str__(self):
         return 'WGS84'
+
+    def attach(self, vehicle_wrapper):
+        super(GeographicSensor, self).attach(vehicle_wrapper)
+        self.vehicle.add_filter(
+            lambda i: i.action == ACTION_CALC_BEARING,
+            lambda i: GeographicSensor.bearing(*i.data))
+        self.vehicle.add_filter(
+            lambda i: i.action == ACTION_CALC_DISTANCE,
+            lambda i: GeographicSensor.distance(*i.data))
+        self.vehicle.add_filter(
+            lambda i: i.action == ACTION_CALC_PBD,
+            lambda i: GeographicSensor.pbd(*i.data)
+        )
 
     @staticmethod
     def bearing(a, b):

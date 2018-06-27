@@ -1,3 +1,4 @@
+from pyliner.action import ACTION_RTL
 from pyliner.intent import Intent
 
 
@@ -46,6 +47,4 @@ class ScriptingWrapper(object):
                 self.failure_callback(self, (exc_type, exc_val, exc_tb))
             else:
                 print('Error in execution. Returning to Launch.')
-                self._vehicle.broadcast(
-                    Intent(origin='ScriptingWrapper', action='RTL',
-                           component='app.ctrl'))
+                self._vehicle.broadcast(Intent(action=ACTION_RTL))

@@ -3,7 +3,8 @@ import time
 from datetime import datetime
 from numbers import Real
 
-
+from pyliner.action import ACTION_CALC_DISTANCE, ACTION_AXIS_SET
+from pyliner.intent import Intent
 from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
 
@@ -51,17 +52,19 @@ class Lnav(NavigationFactory):
 
         original = self.nav.position
         while datetime.now() < timeout:
-            delta = self.nav._geographic.distance(original, self.nav.position)
+            delta = self.broadcast(Intent(
+                action=ACTION_CALC_DISTANCE, data=(original, self.nav.position)
+            )).first_result(0.5)
             if (distance - delta) < tolerance:
                 self.info('lnav expected %s actual %s (%s < %s m)',
                           distance, delta, distance - delta, tolerance)
-                setattr(self.nav.vehicle.app('fd'), axis, 0.0)
+                self.broadcast(Intent(action=ACTION_AXIS_SET, data=(axis, 0.0)))
                 return self
             control = method(delta, distance)
             control = -control if neg else control
             self.debug('lnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        distance, delta, distance - delta, tolerance, control)
-            setattr(self.nav.vehicle.app('fd'), axis, control)
+            self.broadcast(Intent(action=ACTION_AXIS_SET, data=(axis, control)))
             time.sleep(self.nav.sleep_time)
         raise CommandTimeout('lnav exceeded timeout')
 
