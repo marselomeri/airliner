@@ -1,6 +1,8 @@
 import time
 
+from pyliner.action import ACTION_RTL
 from pyliner.communication import Communication
+from pyliner.intent import Intent
 from pyliner.util import read_json
 from pyliner.vehicle import Vehicle
 
@@ -12,5 +14,5 @@ vehicle = Vehicle(
     )
 )
 
-vehicle.components['app']['ctrl']._component.rtl()
+vehicle.broadcast(Intent(action=ACTION_RTL))
 time.sleep(1)
