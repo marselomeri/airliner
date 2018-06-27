@@ -36,7 +36,7 @@ class Heading(float):
     def __add__(self, other):
         if isinstance(other, Real):
             return Heading(float(self) + other)
-        raise NotImplemented
+        return NotImplemented
 
     def __radd__(self, other):
         return self + other
@@ -44,7 +44,7 @@ class Heading(float):
     def __sub__(self, other):
         if isinstance(other, Real):
             return Heading(float(self) - other)
-        raise NotImplemented
+        return NotImplemented
 
     def __rsub__(self, other):
         return self - other
