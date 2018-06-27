@@ -7,7 +7,8 @@ Apps:
 """
 
 from pyliner.app import App
-from pyliner.action import ACTION_AXIS_SET
+from pyliner.action import ACTION_AXIS_SET, ACTION_SEND_COMMAND
+from pyliner.intent import Intent
 from pyliner.telemetry import ManualSetpoint
 
 
@@ -20,7 +21,6 @@ class FlightDirector(App):
         super(FlightDirector, self).__init__()
         self._x = self._y = self._z = self._r = 0.0
         self.strict_set = strict_set
-        self._telemetry = None
 
     def __call__(self, x=None, y=None, z=None, r=None):
         if x is not None:
@@ -37,33 +37,22 @@ class FlightDirector(App):
             axis, value = intent.data
             self(**{axis: value})
 
-    def start(self):
-        super(FlightDirector, self).start()
+    def attach(self, vehicle_wrapper):
+        super(FlightDirector, self).attach(vehicle_wrapper)
         self.vehicle.callback = self.receive
 
-    def stop(self):
-        super(FlightDirector, self).stop()
+    def detach(self):
         self.vehicle.callback = None
+        super(FlightDirector, self).detach()
 
     def _send_telemetry(self):
         mod_z = self.z / 2.0 + 0.5  # [-1, 1] -> [0, 1]
-        self._telemetry = ManualSetpoint(X=self._x, Y=self._y, Z=mod_z,
-                                         R=self._r, PosctlSwitch=1,
-                                         GearSwitch=1, ArmSwitch=1)
-
-    @classmethod
-    def required_telemetry_paths(cls):
-        return None
-
-    @property
-    def telemetry(self):
-        t = self._telemetry
-        self._telemetry = None
-        return t
-
-    @property
-    def telemetry_available(self):
-        return self._telemetry is not None
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(
+                X=self._x, Y=self._y, Z=mod_z, R=self._r,
+                PosctlSwitch=1, GearSwitch=1, ArmSwitch=1)
+        ))
 
     @property
     def r(self):

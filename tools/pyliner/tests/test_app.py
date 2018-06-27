@@ -1,10 +1,10 @@
-from unittest import TestCase
+import unittest
 
 from pyliner.app import App
 from pyliner.vehicle_access import VehicleAccess
 
 
-class TestApp(TestCase):
+class TestApp(unittest.TestCase):
     def test_lifecycle(self):
         s = App()
         self.assertEqual(App.DETACHED, s.state)
@@ -13,12 +13,6 @@ class TestApp(TestCase):
         s.attach(VehicleAccess('test'))
         self.assertEqual(App.ATTACHED, s.state)
         self.assertIsNotNone(s.vehicle)
-        # Start
-        s.start()
-        self.assertEqual(App.STARTED, s.state)
-        # Stop
-        s.stop()
-        self.assertEqual(App.ATTACHED, s.state)
         # Detach
         s.detach()
         self.assertEqual(App.DETACHED, s.state)

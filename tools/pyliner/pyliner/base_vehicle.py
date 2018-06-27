@@ -15,15 +15,12 @@ from os.path import join
 from time import sleep
 
 from junit_xml import TestCase, TestSuite
-from sortedcontainers import SortedDict
 
 from pyliner.app import App, AppAccess
-from pyliner.communication import Communication
+from pyliner.app.communication import Communication
 from pyliner.intent import IntentFuture
-from pyliner.sensor import SensorAccess
-from pyliner.sensor.geographic_sensor import GeographicSensor
-from pyliner.sensor.time_sensor import TimeSensor
-from pyliner.service import ServiceAccess
+from pyliner.app.geographic_app import GeographicApp
+from pyliner.app.time_app import TimeApp
 from pyliner.util.loggable import Loggable
 
 
@@ -59,30 +56,26 @@ class BaseVehicle(Loggable):
 
         # Instance attributes
         # self.broadcast_pool = ThreadPool
-        self._components = {'app': {}, 'service': {}, 'sensor': {}}
-        """:type: dict[str, dict[str, SensorAccess]]"""
-        self.com_priority = SortedDict()  # TODO Remove
+        self._apps = {}
+        """:type: dict[str, AppAccess]"""
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
         # Pick passed sensors or Default
-        geographic = geographic or GeographicSensor()
-        time = time or TimeSensor()
+        geographic = geographic or GeographicApp()
+        time = time or TimeApp()
 
         # Default components
         self.communications = communications
-        self.attach_sensor('geographic', geographic)
+        self.attach_app('geographic', geographic)
         # self.attach_service('time', time)
-        self.attach_service('comms', communications)
+        self.attach_app('comms', communications)
 
-    def attach_app(self, priority, app_name, app):
+    def attach_app(self, app_name, app):
         """Attach an app to this vehicle."""
         identifier = re.compile(r"^[^\d\W]\w*\Z")
 
-        if priority in self.com_priority:
-            raise ValueError('There is already a module with priority '
-                             '{}'.format(priority))
-        elif app_name in self._components['app']:
+        if app_name in self._apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
         elif not re.match(identifier, app_name):
@@ -93,31 +86,8 @@ class BaseVehicle(Loggable):
             return TypeError('module must implement App.')
 
         vehicle_token = AppAccess(app_name)
-        self._components['app'][app_name] = vehicle_token
+        self._apps[app_name] = vehicle_token
         vehicle_token.attach(self, app)
-        self.com_priority[priority] = app
-
-    def attach_service(self, service_name, service):
-        """Attach a service to this vehicle.
-
-        Args:
-            service_name (str): Name to identify this service.
-            service (Service): Service to attach.
-        """
-        vehicle_token = ServiceAccess(service_name)
-        self._components['service'][service_name] = vehicle_token
-        vehicle_token.attach(self, service)
-
-    def attach_sensor(self, sensor_name, sensor):
-        """Attach a sensor to this vehicle.
-
-        Args:
-            sensor_name (str): Name to identify this sensor.
-            sensor (Sensor): Sensor to attach.
-        """
-        vehicle_token = SensorAccess(sensor_name)
-        self._components['sensor'][sensor_name] = vehicle_token
-        vehicle_token.attach(self, sensor)
 
     def await_change(self, tlm, poll=1.0, out=None):
         """Block until the telemetry value changes.
@@ -145,12 +115,10 @@ class BaseVehicle(Loggable):
 
     def _broadcast_thread(self, intent, future):
         if intent.is_explicit():
-            kind, ident = intent.component.split('.')
-            self._components[kind][ident].receive(intent, future)
+            self._apps[intent.component].receive(intent, future)
         else:
-            for kind in self._components.values():
-                for ident in kind.values():
-                    ident.receive(intent, future)
+            for ident in self._apps.values():
+                ident.receive(intent, future)
 
     def detach_app(self, name):
         """Disable an app by removing it from the vehicle.
@@ -159,16 +127,12 @@ class BaseVehicle(Loggable):
             Any apps that attempt to call the disabled app by name will
             produce an error.
         """
-        apps = self._components['app']
-        if name not in apps:
+        if name not in self._apps:
             raise AttributeError(
                 'Cannot disable a module that was never enabled.')
-        module = apps[name]
-        del apps[name]
+        module = self._apps[name]
+        del self._apps[name]
         module.detach()
-        for priority, pri_module in self.com_priority.items():
-            if module is pri_module:
-                self.com_priority.pop(priority)
 
     def shutdown(self):
         """Shutdown all components on vehicle and detach.
@@ -185,35 +149,10 @@ class BaseVehicle(Loggable):
         """
         self.info('Vehicle is shutting down.')
         if not self.is_shutdown:
-            for app in self._components['app'].values():
-                app.stop()
-            for service in self._components['service'].values():
-                service.stop()
-            for app in self._components['app'].values():
+            for app in self._apps.values():
                 app.detach()
-            for service in self._components['service'].values():
-                service.detach()
-            for sensor in self._components['sensor'].values():
-                sensor.detach()
             self.is_shutdown = True
-            self.info('Shutdown complete.')
-
-    def start_app(self, app_name):
-        """Start an App."""
-        self._components['app'][app_name].start()
-
-    def start_service(self, service_name):
-        """Start a Service."""
-        self._components['service'][service_name].start()
-
-    def telemetry(self):
-        """Return telemetry to send, or None."""
-        # Iterate through every app in priority order to see if any have
-        # telemetry to send.
-        for app in self.com_priority.values():
-            if app.telemetry_available:
-                return app.telemetry
-        return None
+        self.info('Shutdown complete.')
 
     def tlm(self, tlm):
         """ Get all data of specified telemetry item.

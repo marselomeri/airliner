@@ -1,5 +1,5 @@
 """
-The Geographic Sensor module provides a sensor that can be used to calculate
+The Geographic Sensor module provides a app that can be used to calculate
 information about two Coordinates on Earth.
 
 Sensors:
@@ -14,10 +14,10 @@ from geographiclib.geodesic import Geodesic
 from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, ACTION_CALC_PBD
 from pyliner.geographic import Geographic
 from pyliner.navigation.position import Coordinate
-from pyliner.sensor import Sensor
+from pyliner.app import App
 
 
-class GeographicSensor(Geographic, Sensor):
+class GeographicApp(Geographic, App):
     """A Sensor that produces relevant world-based calculations."""
 
     def __repr__(self):
@@ -27,21 +27,25 @@ class GeographicSensor(Geographic, Sensor):
         return 'WGS84'
 
     def attach(self, vehicle_wrapper):
-        super(GeographicSensor, self).attach(vehicle_wrapper)
+        super(GeographicApp, self).attach(vehicle_wrapper)
         self.vehicle.add_filter(
             lambda i: i.action == ACTION_CALC_BEARING,
-            lambda i: GeographicSensor.bearing(*i.data))
+            lambda i: GeographicApp.bearing(*i.data))
         self.vehicle.add_filter(
             lambda i: i.action == ACTION_CALC_DISTANCE,
-            lambda i: GeographicSensor.distance(*i.data))
+            lambda i: GeographicApp.distance(*i.data))
         self.vehicle.add_filter(
             lambda i: i.action == ACTION_CALC_PBD,
-            lambda i: GeographicSensor.pbd(*i.data)
+            lambda i: GeographicApp.pbd(*i.data)
         )
+
+    def detach(self):
+        self.vehicle.clear_filter()
+        super(GeographicApp, self).detach()
 
     @staticmethod
     def bearing(a, b):
-        return GeographicSensor._inverse(a, b)['azi1'] % 360
+        return GeographicApp._inverse(a, b)['azi1'] % 360
 
     @staticmethod
     def _direct(a, azim, dist):
@@ -52,7 +56,7 @@ class GeographicSensor(Geographic, Sensor):
 
     @staticmethod
     def distance(a, b):
-        return GeographicSensor._inverse(a, b)['s12']
+        return GeographicApp._inverse(a, b)['s12']
 
     @staticmethod
     def _inverse(a, b):
@@ -64,7 +68,7 @@ class GeographicSensor(Geographic, Sensor):
 
     @staticmethod
     def pbd(a, bearing, distance):
-        direct = GeographicSensor._direct(a, bearing, distance)
+        direct = GeographicApp._direct(a, bearing, distance)
         b = copy(a)
         b.latitude = direct['lat2']
         b.longitude = direct['lon2']

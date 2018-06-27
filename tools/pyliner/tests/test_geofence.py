@@ -1,13 +1,13 @@
 import unittest
 
 from pyliner.geofence import Geofence, LayerKind, VerticalCylinder, Box
-from pyliner.sensor.geographic_sensor import GeographicSensor
+from pyliner.app.geographic_app import GeographicApp
 from pyliner.navigation.position import Position, Coordinate
 
 
 class TestGeofence(unittest.TestCase):
     def test_geofence(self):
-        geo = GeographicSensor()
+        geo = GeographicApp()
         fence = Geofence()
 
         base = fence.add_layer(0, 'base', LayerKind.ADDITIVE)
@@ -64,7 +64,7 @@ class TestComposite(unittest.TestCase):
 
 class TestCylinder(unittest.TestCase):
     def test_cylinder(self):
-        geo = GeographicSensor()
+        geo = GeographicApp()
 
         center = Coordinate(2, 4)
         in_bound = Position.from_coordinate(geo.pbd(center, 45, 700), 500)

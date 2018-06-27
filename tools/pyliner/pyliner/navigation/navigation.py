@@ -21,7 +21,6 @@ class Navigation(App):
 
     def __init__(self):
         super(Navigation, self).__init__()
-        self._telemetry = None
 
         self.defaults = {}
         self.sleep_time = 1.0 / 16.0
@@ -72,16 +71,6 @@ class Navigation(App):
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
-
-    @property
-    def telemetry(self):
-        t = self._telemetry
-        self._telemetry = None
-        return t
-
-    @property
-    def telemetry_available(self):
-        return self._telemetry is not None
 
     def goto(self, **kwargs):
         return Goto(self, **kwargs)

@@ -1,7 +1,7 @@
 from os.path import basename
 from time import sleep
 
-from pyliner.communication import Communication
+from pyliner.app.communication import Communication
 from pyliner.geofence import Geofence, VerticalCylinder
 from pyliner.vehicle import Vehicle
 from pyliner.util import read_json, enable_logging

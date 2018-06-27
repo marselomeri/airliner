@@ -14,7 +14,8 @@ import time
 from flufl.enum import Enum
 
 from pyliner.app import App
-from pyliner.action import ACTION_RTL
+from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
+from pyliner.intent import Intent
 from pyliner.pyliner_exceptions import UnauthorizedAtpError
 from pyliner.telemetry import ManualSetpoint
 from pyliner.util import query_yes_no
@@ -36,7 +37,6 @@ class Controller(App):
     def __init__(self):
         super(Controller, self).__init__()
         self.atp_override = None
-        self._telemetry = None
 
     def attach(self, vehicle_wrapper):
         super(Controller, self).attach(vehicle_wrapper)
@@ -44,15 +44,18 @@ class Controller(App):
 
     def detach(self):
         self.vehicle.callback = None
+        super(Controller, self).detach()
 
     def arm(self):
         """Arm vehicle."""
         print("Arming vehicle")
         self.vehicle.info("Arming vehicle")
-        self._telemetry = ManualSetpoint(ArmSwitch=3)
-        self._wait_clean()
-        self._telemetry = ManualSetpoint(ArmSwitch=1)
-        self._wait_clean()
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(ArmSwitch=3))).first()
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(ArmSwitch=1))).first()
 
     def receive(self, intent):
         actions = {
@@ -83,8 +86,9 @@ class Controller(App):
     def disarm(self):
         print("Disarming vehicle")
         self.vehicle.info("Disarming vehicle")
-        self._telemetry = ManualSetpoint(ArmSwitch=3)
-        self._wait_clean()
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(ArmSwitch=3))).first()
 
     def flight_mode(self, mode):
         if not mode:
@@ -95,13 +99,14 @@ class Controller(App):
             raise NotImplemented()
         elif mode == FlightMode.PosCtl:
             self._mode_posctl()
-        self._wait_clean()
 
     def _mode_posctl(self):
         print("Position control")
         self.vehicle.info("Position control")
-        self._telemetry = ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1)
-        self._wait_clean()
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
+        ).first()
 
     @classmethod
     def required_telemetry_paths(cls):
@@ -111,27 +116,17 @@ class Controller(App):
         """Return to launch."""
         print("RTL")
         self.vehicle.info("RTL")
-        self._telemetry = ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1)
-        self._wait_clean()
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
+        ).first()
 
     def takeoff(self):
         """Takeoff"""
         print("Auto takeoff")
         self.vehicle.info("Auto takeoff")
-        self._telemetry = ManualSetpoint(TransitionSwitch=1, ArmSwitch=1)
-        self._wait_clean()
+        self.vehicle.broadcast(Intent(
+            action=ACTION_SEND_COMMAND,
+            data=ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
+        ).first()
         time.sleep(5)
-
-    @property
-    def telemetry(self):
-        t = self._telemetry
-        self._telemetry = None
-        return t
-
-    @property
-    def telemetry_available(self):
-        return self._telemetry is not None
-
-    def _wait_clean(self):
-        while self.telemetry_available:
-            time.sleep(_WAIT_TIME)

@@ -9,8 +9,8 @@ Classes:
 
 from pyliner.app import App
 from pyliner.base_vehicle import BaseVehicle
-from pyliner.controller import Controller
-from pyliner.flight_director import FlightDirector
+from pyliner.app.controller import Controller
+from pyliner.app.flight_director import FlightDirector
 from pyliner.geofence import Geofence, LayerKind
 from pyliner.navigation.navigation import Navigation
 
@@ -47,32 +47,25 @@ class Vehicle(BaseVehicle):
         navigation = Navigation()
 
         # Attach defaults
-        self.attach_app(0, 'fence', geofence)
-        self.attach_app(1, 'ctrl', Controller())
-        self.attach_app(2, 'fd', FlightDirector())
-        self.attach_app(3, 'nav', navigation)
+        self.attach_app('fence', geofence)
+        self.attach_app('ctrl', Controller())
+        self.attach_app('fd', FlightDirector())
+        self.attach_app('nav', navigation)
 
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
         navigation.defaults.update({'timeout': None, 'underflow': 5.0})
 
-        # Enable Services and Apps
-        for service in []:
-            self.start_service(service)
-        for app in ('fence', 'ctrl', 'fd', 'nav'):
-            self.start_app(app)
-
-    def attach_app(self, priority, app_name, app):
+    def attach_app(self, app_name, app):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
         new module will be subscribed to.
 
         Args:
-            priority: The priority that the app communicates with the vehicle.
             app_name (str): The name that the module will be initialized under.
             app (App): The app to enable.
         """
-        super(Vehicle, self).attach_app(priority, app_name, app)
+        super(Vehicle, self).attach_app(app_name, app)
         required_ops = app.required_telemetry_paths()
         if required_ops:
             self.communications.subscribe({'tlm': required_ops})

@@ -54,7 +54,7 @@ class Lnav(NavigationFactory):
         while datetime.now() < timeout:
             delta = self.broadcast(Intent(
                 action=ACTION_CALC_DISTANCE, data=(original, self.nav.position)
-            )).first_result(0.5)
+            )).first_result()
             if (distance - delta) < tolerance:
                 self.info('lnav expected %s actual %s (%s < %s m)',
                           distance, delta, distance - delta, tolerance)

@@ -14,11 +14,11 @@ import threading
 import socketserver
 
 from pyliner import pyliner_exceptions
+from pyliner.action import ACTION_SEND_COMMAND, ACTION_SEND_BYTES
 from pyliner.arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner.python_pb import pyliner_msgs
-from pyliner.service import Service
+from pyliner.app import App
 from pyliner.util import init_socket, handler_factory
-from pyliner.util.periodic_executor import PeriodicExecutor
 
 # TODO Python3 does not see telemetry
 # TODO Put all this somewhere vehicle specific
@@ -38,7 +38,7 @@ def serialize(header, payload):
     return ser
 
 
-class Communication(Service):
+class Communication(App):
     """Provide methods to send and receive telemetry to a vehicle.
 
     In some ways this service acts more like a singleton that is guaranteed to
@@ -68,9 +68,6 @@ class Communication(Service):
         self._telemetry = {}
         self.subscribers = []
         self.to_port = to_port
-        # self.to_socket = init_socket()
-        self._periodic_send = None
-        # self.send_obs = Some sort of observable
 
         # Receive Telemetry
         self.tlm_listener = socketserver.UDPServer(
@@ -82,24 +79,28 @@ class Communication(Service):
 
     def attach(self, vehicle):
         super(Communication, self).attach(vehicle)
-
-        # Send Telemetry
-        def send_telemetry():
-            telemetry = self.vehicle._vehicle.telemetry()
-            if telemetry:
-                msg = self._serialize(telemetry)
-                self.vehicle.debug(
-                    'Sending telemetry to airliner: %s', telemetry.to_json())
-                self.ci_socket.sendto(msg, (self.address, self.ci_port))
-
-        self._periodic_send = PeriodicExecutor(send_telemetry, every=SEND_TIME,
-                                               logger=self.vehicle.logger,
-                                               name='PeriodicSend')
-        self._periodic_send.start()
+        self.vehicle.add_filter(
+            lambda i: i.action == ACTION_SEND_COMMAND,
+            lambda i: self.send_telemetry(i.data)
+        )
+        self.vehicle.add_filter(
+            lambda i: i.action == ACTION_SEND_BYTES,
+            lambda i: self.send_bytes(i.data)
+        )
 
     def detach(self):
+        self.vehicle.clear_filter()
         super(Communication, self).detach()
-        self._periodic_send.stop()
+
+    def send_telemetry(self, telemetry):
+        msg = self._serialize(telemetry)
+        self.vehicle.debug(
+            'Sending telemetry to airliner: %s', telemetry.to_json())
+        return self.send_bytes(msg)
+
+    def send_bytes(self, message):
+        self.ci_socket.sendto(message, (self.address, self.ci_port))
+        return True
 
     def _get_airliner_op(self, op_path):
         """

@@ -55,7 +55,9 @@ class VehicleAccess(Loggable):
                 result = cb(intent)
             except Exception as e:
                 exception = e
-            if result or exception:
+            if result is not None or exception is not None:
+                self.debug('{} handled at {}: result={} exception={}'.format(
+                    intent, self._name, result, exception))
                 future.add(IntentResponse(result=result, exception=exception))
 
         if callable(self.callback):

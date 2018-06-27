@@ -1,39 +1,37 @@
-from SocketServer import TCPServer, StreamRequestHandler
+from SocketServer import TCPServer
 from abc import abstractmethod
 from threading import Thread
 
-from pyliner.service import Service
+from pyliner.app import App
 
 
-class SocketServiceHandler(StreamRequestHandler):
-    """Base class for SocketService request handler."""
-    @abstractmethod
-    def handle(self):
-        pass
-
-    @property
-    def service(self):
-        return self.server.service
-
-
-class SocketService(Service):
+class SocketApp(App):
     """The Socket Service listens to a TCP port for vehicle commands.
 
     The Service parses the given commands into events that the system responds
     to.
     """
 
-    def __init__(self, port, request_handler_class):
-        super(SocketService, self).__init__()
-        self.request_handler_class = request_handler_class
+    def __init__(self, port):
+        super(SocketApp, self).__init__()
         self.port = port
         self.server = None
         """:type: TCPServer"""
 
+    def __repr__(self):
+        return '{}({})'.format(self.__class__.__name__, self.port)
+
+    @abstractmethod
+    def handle(self, request, client_address):
+        pass
+
     def start(self):
-        super(SocketService, self).start()
+        super(SocketApp, self).start()
         self.info('Starting SocketService on port {}'.format(self.port))
-        self.server = TCPServer(('', self.port), self.request_handler_class)
+        self.server = TCPServer(
+            ('', self.port),
+            lambda request, client_address, _self:
+                self.handle(request, client_address))
         self.server.service = self
 
         listen_thread = Thread(target=self.server.serve_forever)
@@ -41,6 +39,6 @@ class SocketService(Service):
         listen_thread.start()
 
     def stop(self):
-        super(SocketService, self).stop()
+        super(SocketApp, self).stop()
         self.info('Stopping SocketService on port {}'.format(self.port))
         self.server.shutdown()

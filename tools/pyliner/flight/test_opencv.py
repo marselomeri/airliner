@@ -1,7 +1,7 @@
 from os.path import basename
 from time import sleep
 
-from pyliner.communication import Communication
+from pyliner.app.communication import Communication
 from pyliner.navigation.control import proportional
 from pyliner.vehicle import Vehicle
 from pyliner.util import enable_logging, read_json

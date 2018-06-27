@@ -16,8 +16,8 @@ from logging import DEBUG
 from os.path import basename
 from time import sleep
 
-from pyliner.communication import Communication
-from pyliner.controller import FlightMode
+from pyliner.app.communication import Communication
+from pyliner.app.controller import FlightMode
 from pyliner.navigation.control import limiter, proportional
 from pyliner.vehicle import Vehicle
 from pyliner.util import read_json, enable_logging

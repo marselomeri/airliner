@@ -1,7 +1,7 @@
-from pyliner.sensor import Sensor
+from pyliner.app import App
 
 
-class TimeSensor(Sensor):
+class TimeApp(App):
     """Vehicle time."""
     # TODO Implement this. Might be useful.
     pass

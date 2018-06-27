@@ -25,15 +25,9 @@ class ScriptingWrapper(object):
     def __getattr__(self, item):
         if hasattr(self._vehicle, item):
             return getattr(self._vehicle, item)
-        apps = self._vehicle._components['app']
-        services = self._vehicle._components['service']
-        sensors = self._vehicle._components['sensor']
+        apps = self._vehicle._apps
         if item in apps:
             return apps[item]._component
-        if item in services:
-            return services[item]._component
-        if item in sensors:
-            return sensors[item]._component
         raise AttributeError('{} is not a method or component of this '
                              'Pyliner instance.'.format(item))
 

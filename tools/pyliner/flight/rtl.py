@@ -1,7 +1,7 @@
 import time
 
 from pyliner.action import ACTION_RTL
-from pyliner.communication import Communication
+from pyliner.app.communication import Communication
 from pyliner.intent import Intent
 from pyliner.util import read_json
 from pyliner.vehicle import Vehicle

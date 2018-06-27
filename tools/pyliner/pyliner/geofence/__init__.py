@@ -23,11 +23,12 @@ from functools import partial
 from enum import Enum
 from sortedcontainers import SortedDict
 
+from pyliner.action import ACTION_RTL
 from pyliner.app import App
 from pyliner.geofence.volume import Volume, CompositeVolume, Box, \
     VerticalCylinder, LayerCake
+from pyliner.intent import Intent
 from pyliner.navigation.position import Position
-from pyliner.telemetry import ManualSetpoint
 from pyliner.util import indent
 from pyliner.util.periodic_executor import PeriodicExecutor
 
@@ -93,7 +94,6 @@ class Geofence(App):
         self._check_thread = None
         self.enabled = False
         self.fence_violation = False
-        self.gen = None
         self.layers = SortedDict()
         """:type: dict[Any, _Layer]"""
 
@@ -110,6 +110,22 @@ class Geofence(App):
             '+' if layer.kind is LayerKind.ADDITIVE else '-',
             order, layer) for order, layer in self.layers.items()) + '\n}'
 
+    def attach(self, vehicle):
+        super(Geofence, self).attach(vehicle)
+        self._check_thread = PeriodicExecutor(
+            self._check_fence, every=1,
+            logger=self.vehicle.logger, name='FenceCheck',
+            exception=lambda e: self.vehicle.exception('Geofence Exception'))
+        self._check_thread.start()
+
+    def detach(self):
+        self._check_thread.stop()
+        super(Geofence, self).detach()
+
+    @classmethod
+    def required_telemetry_paths(cls):
+        return cls.req_telem.values()
+
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
             raise KeyError('This layer already exists.')
@@ -119,14 +135,6 @@ class Geofence(App):
         self.layers[layer_position] = layer
         return layer
 
-    def attach(self, vehicle):
-        super(Geofence, self).attach(vehicle)
-        self._check_thread = PeriodicExecutor(
-            self._check_fence, every=1,
-            logger=self.vehicle.logger, name='FenceCheck',
-            exception=lambda e: self.vehicle.exception('Geofence Exception'))
-        self._check_thread.start()
-
     def _check_fence(self):
         old = self.fence_violation
         self.fence_violation = self.fence_violation or \
@@ -134,12 +142,8 @@ class Geofence(App):
         if not old and self.fence_violation:
             self.vehicle.error('Encountered Fence Violation at %s',
                                self.position)
+            self.vehicle.broadcast(Intent(action=ACTION_RTL))
             print('Encountered fence violation. Press Ctrl-C twice to exit.')
-
-    def detach(self):
-        super(Geofence, self).detach()
-        self._check_thread.stop()
-        self.gen = None
 
     def layer_by_name(self, name):
         for layer in self.layers.values():
@@ -156,17 +160,3 @@ class Geofence(App):
 
     def remove_layer(self, position):
         del self.layers[position]
-
-    @classmethod
-    def required_telemetry_paths(cls):
-        return cls.req_telem.values()
-
-    @property
-    def telemetry(self):
-        if self.fence_violation:
-            return ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1)
-        return None
-
-    @property
-    def telemetry_available(self):
-        return self.fence_violation
