@@ -837,12 +837,9 @@ void TO_Custom_App_Test_AddTestCases(void)
     UtTest_Add(TO_OutputChannel_ChannelHandle_QueueGetFail, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_QueueGetFail");
-    UtTest_Add(TO_OutputChannel_ChannelHandle_SendToFail,
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ChannelHandle_SendToFail");
-    UtTest_Add(TO_OutputChannel_ChannelHandle_PutPoolBufFail,
-                TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
-               "TO_OutputChannel_ChannelHandle_PutPoolBufFail");
+    //UtTest_Add(TO_OutputChannel_ChannelHandle_PutPoolBufFail,
+    //            TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
+    //           "TO_OutputChannel_ChannelHandle_PutPoolBufFail");
     UtTest_Add(TO_OutputChannel_ChannelHandle_OSQueueTimeout, 
                 TO_Custom_Test_Setup, TO_Custom_Test_TearDown,
                "TO_OutputChannel_ChannelHandle_OSQueueTimeout");

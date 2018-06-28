@@ -49,10 +49,8 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.atp('Move Up')
     rocky.nav.vnav(method=proportional(0.2), tolerance=0.5).up(10)
 
-    rocky.nav.defaults['tolerance'] = 0.75
-    lnav = rocky.nav.lnav(method=proportional(0.15))
-    rocky.nav.defaults['tolerance'] = 2
-    yaw = rocky.nav.rotate(method=range_limit)
+    lnav = rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)
+    yaw = rocky.nav.rotate(method=range_limit, tolerance=2)
 
     rocky.ctrl.atp('First')
     for _ in range(4):

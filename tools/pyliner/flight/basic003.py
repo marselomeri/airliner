@@ -17,10 +17,9 @@ from time import sleep
 from pyliner.app.communication import Communication
 from pyliner.app.controller import FlightMode
 from pyliner.navigation.control import limiter, proportional
-from pyliner.vehicle import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
-from pyliner.util.conversions import seconds
+from pyliner.vehicle import Vehicle
 
 
 def range_limit(current, target):
@@ -54,7 +53,7 @@ with ScriptingWrapper(rky) as rocky:
 
     rocky.ctrl.atp('First')
     for _ in range(4):
-        lnav.forward(5, timeout=seconds(1))
+        lnav.forward(5)
         yaw.clockwise(90)
 
     rocky.ctrl.atp('Second')

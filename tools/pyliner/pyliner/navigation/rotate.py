@@ -2,6 +2,8 @@ import time
 from datetime import timedelta, datetime
 from numbers import Real
 
+from pyliner.action import ACTION_AXIS_SET
+from pyliner.intent import Intent
 from pyliner.navigation.heading import Heading, Direction
 from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
@@ -68,13 +70,13 @@ class Rotate(NavigationFactory):
             if current in tol_range:
                 self.info('rotate expected %s actual %s (in %s)',
                           target, current, tol_range)
-                self.nav.vehicle.app('fd').r = 0.0
+                self.broadcast(Intent(action=ACTION_AXIS_SET, data=('r', 0.0)))
                 return self
             distance = Heading.distance(current, target, direction, underflow)
             control = method(0.0, distance)
             self.debug('rotate toward %.3f current %.3f (%.3f < %.3f) %.3f',
                        target, current, abs(distance), tolerance, control)
-            self.nav.vehicle.app('fd').r = control
+            self.broadcast(Intent(action=ACTION_AXIS_SET, data=('r', control)))
             time.sleep(self.nav.sleep_time)
         raise CommandTimeout('rotate exceeded timeout')
 
