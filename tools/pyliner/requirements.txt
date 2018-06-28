@@ -5,6 +5,4 @@ future
 geographiclib
 junit_xml
 protobuf
-rx
 sortedcontainers
-sympy
