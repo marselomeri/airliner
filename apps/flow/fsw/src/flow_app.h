@@ -59,7 +59,7 @@ extern "C" {
 /************************************************************************
  ** Local Defines
  *************************************************************************/
-
+#define FLOW_BUF_LEN 	(20)
 /************************************************************************
  ** Local Structure Definitions
  *************************************************************************/
@@ -68,6 +68,12 @@ typedef struct
     PX4_SubsystemInfoMsg_t SubsystemInfoMsg;
 } FLOW_CurrentValueTable_t;
 
+#define FLOW_LISTENER_TASK_NAME  		"FLOW_LISTENER"
+#define FLOW_LISTENER_TASK_STACK_SIZE	16000
+#define FLOW_LISTENER_TASK_PRIORITY		64
+#define FLOW_MUTEX_NAME 				"FLOW_MUTEX"
+
+extern "C" void FLOW_ListenerTaskMain();
 
 /**
  **  \brief FLOW Application Class
@@ -85,6 +91,8 @@ public:
     CFE_SB_PipeId_t CmdPipeId;
 
     /* Task-related */
+    uint8 buf[FLOW_BUF_LEN];
+	uint32 size = FLOW_BUF_LEN;
 
     /** \brief Task Run Status */
     uint32 uiRunStatus;
@@ -102,6 +110,13 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     FLOW_HkTlm_t HkTlm;
+
+    /** \brief ID of listener child task */
+	uint32 ListenerTaskID;
+
+	uint32 Mutex;
+
+	bool ChildContinueFlag;
     /** \brief Current Value Table */
     FLOW_CurrentValueTable_t CVT;
     /************************************************************************/
@@ -304,7 +319,19 @@ public:
      *************************************************************************/
     boolean VerifyCmdLength(CFE_SB_Msg_t* MsgPtr, uint16 usExpectedLen);
 
+    void ListenerTaskMain(void);
+    int32 InitListenerTask(void);
+
+
+
+
+
 private:
+    void CloseDevice(void);
+	int32 InitDevice(void);
+	bool  ChildContinueExec(void);
+	void  StopChild(void);
+    int32 ReadDevice(uint8 *Buffer, uint32 *Size);
     /************************************************************************/
     /** \brief Initialize the FLOW configuration tables.
     **

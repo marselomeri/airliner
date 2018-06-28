@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#define FLOW_LISTENER_TASK_FLAGS            OS_ENABLE_CORE_0
 /*
 ** FLOW Platform Configuration Parameter Definitions
 */

@@ -193,6 +193,18 @@ int32 FLOW::InitApp()
         goto FLOW_InitApp_Exit_Tag;
     }
 
+    iStatus = InitDevice();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto FLOW_InitApp_Exit_Tag;
+    }
+
+    iStatus = InitListenerTask();
+    if (iStatus != CFE_SUCCESS)
+    {
+        goto FLOW_InitApp_Exit_Tag;
+    }
+
 FLOW_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -224,6 +236,7 @@ FLOW_InitApp_Exit_Tag:
 int32 FLOW::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
+    int32           iStatus2 = CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
     CFE_SB_MsgId_t  MsgId;
 
@@ -235,6 +248,7 @@ int32 FLOW::RcvSchPipeMsg(int32 iBlocking)
 
     /* Start Performance Log entry */
     CFE_ES_PerfLogEntry(FLOW_MAIN_TASK_PERF_ID);
+
 
     if (iStatus == CFE_SUCCESS)
     {
@@ -444,6 +458,10 @@ extern "C" void FLOW_AppMain()
     oFLOW.AppMain();
 }
 
+extern "C" void FLOW_ListenerTaskMain()
+{
+	oFLOW.ListenerTaskMain();
+}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -452,6 +470,7 @@ extern "C" void FLOW_AppMain()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void FLOW::AppMain()
 {
+
     /* Register the application with Executive Services */
     uiRunStatus = CFE_ES_APP_RUN;
 
@@ -494,12 +513,91 @@ void FLOW::AppMain()
             uiRunStatus = CFE_ES_APP_ERROR;
         }
     }
+    //stop child
+    //StopChild();
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(FLOW_MAIN_TASK_PERF_ID);
 
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
+}
+
+bool  FLOW::ChildContinueExec(void)
+{
+	bool result;
+
+    OS_MutSemTake(Mutex);
+    result = ChildContinueFlag;
+    OS_MutSemGive(Mutex);
+
+	return result;
+}
+void FLOW::StopChild(void)
+{
+    OS_MutSemTake(Mutex);
+    ChildContinueFlag = false;
+    OS_MutSemGive(Mutex);
+}
+
+void  FLOW::ListenerTaskMain(void)
+{
+	int32 iStatus = CFE_SUCCESS;
+	uint8 buf[FLOW_BUF_LEN];
+	uint32 size = FLOW_BUF_LEN;
+
+	CFE_ES_RegisterChildTask();
+
+	while(ChildContinueExec())
+	{
+		iStatus = ReadDevice(buf, &size);
+		if(iStatus == CFE_SUCCESS)
+		{
+
+		}
+	}
+
+	CFE_ES_ExitChildTask();
+}
+
+
+
+int32 FLOW::InitListenerTask(void)
+{
+    int32 Status = CFE_SUCCESS;
+
+    /* Create mutex for shared data */
+    Status = OS_MutSemCreate(&Mutex, FLOW_MUTEX_NAME, 0);
+	if (Status != CFE_SUCCESS)
+	{
+		goto end_of_function;
+	}
+
+	ChildContinueFlag = true;
+
+	Status= CFE_ES_CreateChildTask(&ListenerTaskID,
+								   FLOW_LISTENER_TASK_NAME,
+								   FLOW_ListenerTaskMain,
+								   NULL,
+								   FLOW_LISTENER_TASK_STACK_SIZE,
+								   FLOW_LISTENER_TASK_PRIORITY,
+								   FLOW_LISTENER_TASK_FLAGS);
+	if (Status != CFE_SUCCESS)
+	{
+		goto end_of_function;
+	}
+
+	end_of_function:
+	if (Status != CFE_SUCCESS)
+	{
+		OS_printf("Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",Status);
+//		CFE_EVS_SendEvent (FLOW_LISTENER_CREATE_CHDTASK_ERR_EID,
+//						   CFE_EVS_ERROR,
+//						   "Listener child task failed.  CFE_ES_CreateChildTask returned: 0x%08lX",
+//						   Status);
+	}
+
+    return Status;
 }
 
 
