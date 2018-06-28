@@ -7,17 +7,18 @@ Classes:
 """
 import atexit
 import logging
-import re
 import threading
 from abc import ABCMeta
 from datetime import datetime
 from os.path import join
+from threading import Event
 from time import sleep
 
 from junit_xml import TestCase, TestSuite
 
+from pyliner.action import ACTION_TELEM
 from pyliner.app import App, AppAccess
-from pyliner.intent import IntentFuture
+from pyliner.intent import IntentFuture, Intent
 from pyliner.util.loggable import Loggable
 
 
@@ -45,7 +46,7 @@ class BaseVehicle(Loggable):
         atexit.register(self.shutdown)
 
         # Instance attributes
-        # self.broadcast_pool = ThreadPool
+        # self.broadcast_pool = ThreadPool # TODO Python 3
         self._apps = {}
         """:type: dict[str, AppAccess]"""
         self.is_shutdown = False
@@ -64,18 +65,27 @@ class BaseVehicle(Loggable):
         vehicle_token.attach(self)
 
     def await_change(self, tlm, poll=1.0, out=None):
-        """Block until the telemetry value changes.
+        """Block until the telemetry gets a new value.
+
+        The new value does not have to be different than the old value.
 
         Args:
             tlm (str): The telemetry to monitor.
             poll (float): Check every `poll` seconds.
             out (Callable): If not None, call this every loop.
         """
-        old_val = self.tlm_value(tlm)
-        while self.tlm_value(tlm) == old_val:
-            if out is not None:
+
+        telemetry = self.broadcast(Intent(
+            action=ACTION_TELEM,
+            data=tlm
+        )).first_result()
+        change = Event()
+        telemetry.add_listener(lambda t: change.set())
+        change.wait(poll)
+        while not change.is_set():
+            if callable(out):
                 out()
-            sleep(poll)
+            change.wait(poll)
         return self.tlm_value(tlm)
 
     def broadcast(self, intent):
@@ -127,35 +137,6 @@ class BaseVehicle(Loggable):
                 app.detach()
             self.is_shutdown = True
         self.info('Shutdown complete.')
-
-    def tlm(self, tlm):
-        """ Get all data of specified telemetry item.
-
-        Args:
-            tlm (str): Operational name of requested telemetry.
-
-        Returns:
-            dict: Telemetry data.
-
-        Raises:
-            KeyError: If telemetry is not found.
-        """
-        # TODO Rename variable _telemetry
-        return self.communications._telemetry[tlm]
-
-    def tlm_value(self, tlm):
-        """ Get current value of specified telemetry item.
-
-        Args:
-            tlm (str): Operational name of requested telemetry.
-
-        Returns:
-            Any: Current value of telemetry.
-
-        Raises:
-            KeyError: If telemetry is not found.
-        """
-        return self.tlm(tlm)['value']
 
     # Testing Code. TODO Figure out where to put this
     def assert_equals(self, a, b, description):

@@ -1,5 +1,7 @@
 from threading import Event
 
+from pyliner.pyliner_exceptions import PylinerError
+
 
 class Intent(object):
     def __init__(self, action, data=None, component=None):
@@ -24,6 +26,10 @@ class IntentResponse(object):
         self.exception = exception
 
 
+class FutureTimeoutError(PylinerError):
+    pass
+
+
 class IntentFuture(object):
     def __init__(self, caused_by):
         self._add_callback = None
@@ -43,14 +49,20 @@ class IntentFuture(object):
 
     def first(self, timeout=None):
         self._event_first.wait(timeout=timeout)
-        return self.responses[0]
+        try:
+            return self.responses[0]
+        except IndexError:
+            raise FutureTimeoutError()
 
     def first_result(self, timeout=None):
         return self.first(timeout=timeout).result
 
     def recent(self, timeout=None):
         self._event_first.wait(timeout=timeout)
-        return self.responses[-1]
+        try:
+            return self.responses[-1]
+        except IndexError:
+            raise FutureTimeoutError()
 
     def recent_result(self, timeout=None):
         return self.recent(timeout=timeout).result
