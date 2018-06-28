@@ -12,15 +12,14 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-from os.path import basename
 from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.app.controller import FlightMode
 from pyliner.navigation.control import proportional
-from pyliner.vehicle import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
+from pyliner.vehicle import Vehicle
 
 rky = Vehicle(
     vehicle_id='rocky',

@@ -30,3 +30,7 @@ def minutes(min):
 def seconds(sec):
     """Timedelta with sec as seconds."""
     return timedelta(seconds=sec)
+
+
+def hertz(hz):
+    return 1.0 / hz
