@@ -8,6 +8,7 @@ from pyliner.navigation.lnav import Lnav
 from pyliner.navigation.rotate import Rotate
 from pyliner.navigation.vnav import Vnav
 from pyliner.navigation.waypoint import Waypoint
+from pyliner.util.conversions import hertz
 
 
 class Navigation(App):
@@ -23,7 +24,7 @@ class Navigation(App):
         super(Navigation, self).__init__()
 
         self.defaults = {}
-        self.sleep_time = 1.0 / 16.0
+        self.sleep_time = hertz(10.0)
 
     req_telem = {
         'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
