@@ -2,6 +2,16 @@ from pyliner.action import ACTION_RTL
 from pyliner.intent import Intent
 
 
+# class _AppWrapper(object):
+#     def __init__(self, vehicle, mapping):
+#         self.vehicle = vehicle
+#         self.mapping = mapping
+#
+#     def __getattr__(self, item):
+#         try:
+#             return lambda *args, **kwrags: self.mapping[item]()
+
+
 class ScriptingWrapper(object):
     def __init__(self, vehicle, failure_callback=None):
         """Wraps a vehicle for a scripting environment.
@@ -23,23 +33,29 @@ class ScriptingWrapper(object):
         """
         self._vehicle = vehicle
         self.failure_callback = failure_callback
+        # self.mapping = {
+        #     'nav': _AppWrapper(vehicle, {
+        #         ''
+        #     })
+        # }
 
     def app_by_qualified_name(self, qualified_name):
-        return self._vehicle._apps[qualified_name]
+        return self._vehicle._apps[qualified_name]._app
 
     def __getattr__(self, item):
         if hasattr(self._vehicle, item):
             return getattr(self._vehicle, item)
 
-        app_names = ((k.split('.')[-1], v) for k, v in self._vehicle._apps.items())
-        filter_names = list(filter(lambda a: a[0].startswith(item), app_names))
-        if len(filter_names) == 1:
-            return filter_names[0][1]._app
-        elif len(filter_names) > 1:
-            raise AttributeError(
-                '{!r} cannot be resolved to a unique App. Matched {}'.format(
-                    item, (a[0] for a in filter_names)))
-        else:
+        mapping = {
+            'ctrl': 'com.windhover.pyliner.app.controller',
+            'fd': 'com.windhover.pyliner.app.flight_director',
+            'fence': 'com.windhover.pyliner.app.geofence',
+            'nav': 'com.windhover.pyliner.app.navigation'
+        }
+
+        try:
+            return self.app_by_qualified_name(mapping[item])
+        except KeyError:
             raise AttributeError('{!r} is not a method or component of this '
                                  'Pyliner instance.'.format(item))
 
