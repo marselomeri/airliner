@@ -69,6 +69,10 @@ class Navigation(App):
         return App._telem(self.req_telem['yaw'])(self)
 
     # Normal Code
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.navigation'
+
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()

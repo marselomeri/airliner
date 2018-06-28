@@ -108,6 +108,10 @@ class Controller(App):
             data=ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
         ).first()
 
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.controller'
+
     @classmethod
     def required_telemetry_paths(cls):
         return None

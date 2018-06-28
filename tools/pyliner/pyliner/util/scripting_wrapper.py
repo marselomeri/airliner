@@ -11,7 +11,9 @@ class ScriptingWrapper(object):
         give the user a chance to fail gracefully before exiting the context
         manager.
 
-        Apps on the vehicle are accessible by their name (pyliner.app).
+        Apps on the vehicle are directly accessible by their qualified name,
+        and Apps which are explicitly supported by this wrapper are accessible
+        through .
 
         Args:
             vehicle (BasePyliner): The vehicle to wrap.
@@ -22,14 +24,24 @@ class ScriptingWrapper(object):
         self._vehicle = vehicle
         self.failure_callback = failure_callback
 
+    def app_by_qualified_name(self, qualified_name):
+        return self._vehicle._apps[qualified_name]
+
     def __getattr__(self, item):
         if hasattr(self._vehicle, item):
             return getattr(self._vehicle, item)
-        apps = self._vehicle._apps
-        if item in apps:
-            return apps[item]._component
-        raise AttributeError('{} is not a method or component of this '
-                             'Pyliner instance.'.format(item))
+
+        app_names = ((k.split('.')[-1], v) for k, v in self._vehicle._apps.items())
+        filter_names = list(filter(lambda a: a[0].startswith(item), app_names))
+        if len(filter_names) == 1:
+            return filter_names[0][1]._app
+        elif len(filter_names) > 1:
+            raise AttributeError(
+                '{!r} cannot be resolved to a unique App. Matched {}'.format(
+                    item, (a[0] for a in filter_names)))
+        else:
+            raise AttributeError('{!r} is not a method or component of this '
+                                 'Pyliner instance.'.format(item))
 
     def __enter__(self):
         return self

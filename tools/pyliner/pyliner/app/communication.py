@@ -92,6 +92,10 @@ class Communication(App):
         self.vehicle.clear_filter()
         super(Communication, self).detach()
 
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.communication'
+
     def send_telemetry(self, telemetry):
         msg = self._serialize(telemetry)
         self.vehicle.debug(

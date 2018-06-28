@@ -73,3 +73,7 @@ class GeographicApp(Geographic, App):
         b.latitude = direct['lat2']
         b.longitude = direct['lon2']
         return b
+
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.geographic'

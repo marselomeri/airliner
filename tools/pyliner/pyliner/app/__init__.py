@@ -1,6 +1,8 @@
+from abc import abstractmethod
+
 from pyliner.pyliner_exceptions import InvalidStateError
 from pyliner.util.loggable import Loggable
-from pyliner.vehicle_access import VehicleAccess
+from pyliner.app_access import AppAccess
 
 
 class App(Loggable):
@@ -37,12 +39,21 @@ class App(Loggable):
         """:type: VehicleAccess"""
 
     @property
+    @abstractmethod
+    def qualified_name(self):
+        """The system-unique identifier for this App.
+
+        This name is used for explicit intent resolution.
+        """
+        raise NotImplementedError()
+
+    @property
     def state(self):
-        """The state of the app."""
+        """The state of the App, ATTACHED or DETACHED."""
         return self._state
 
     def attach(self, vehicle_wrapper):
-        # type: (VehicleAccess) -> None
+        # type: (AppAccess) -> None
         """Called when the app is attached to a vehicle.
 
         The app is given a wrapper to interact with the vehicle it has been
@@ -84,17 +95,3 @@ class App(Loggable):
     @staticmethod
     def _telem(name):
         return lambda self: self.vehicle._vehicle.tlm_value(name)
-
-
-class AppAccess(VehicleAccess):
-    def attach(self, vehicle, component):
-        self._vehicle = vehicle
-        self._component = component
-        self.logger = vehicle.logger.getChild(self._name)
-        self._component.attach(self)
-
-    def detach(self):
-        self._component.detach()
-        self._vehicle = None
-        self._component = None
-        self.logger = None

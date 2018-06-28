@@ -7,20 +7,20 @@ Classes:
 """
 from pyliner.intent import Intent
 from pyliner.intent import IntentFuture, IntentResponse
+from pyliner.pyliner_exceptions import InvalidStateError
 from pyliner.util.loggable import Loggable
 
 
-class VehicleAccess(Loggable):
+class AppAccess(Loggable):
     """
     The VehicleAccess class acts as a boundary between components on a vehicle
     so that they do not interact destructively with each other. Components must
     access the vehicle through the interface provided by their VehicleAccess.
     """
-    def __init__(self, name):
-        super(VehicleAccess, self).__init__()
+    def __init__(self, app):
+        super(AppAccess, self).__init__()
         self.callback = None
-        self._component = None
-        self._name = name
+        self._app = app
         self._vehicle = None
         """:type: BaseVehicle"""
         self._filter = set()
@@ -43,9 +43,21 @@ class VehicleAccess(Loggable):
             self._filter.add((predicate, callback))
         return predicate, callback
 
+    def attach(self, vehicle):
+        """Attach the App to a Vehicle."""
+        self._vehicle = vehicle
+        self.logger = vehicle.logger.getChild(self._app.qualified_name)
+        self._app.attach(self)
+
     def clear_filter(self):
         """Remove all event filters."""
         self._filter.clear()
+
+    def detach(self):
+        """Detach the App from the Vehicle."""
+        self._app.detach()
+        self._vehicle = None
+        self.logger = None
 
     def receive(self, intent, future):
         """Receive an intent and pass it to any callbacks that are listening."""
@@ -69,6 +81,8 @@ class VehicleAccess(Loggable):
     def broadcast(self, intent):
         # type: (Intent) -> IntentFuture
         """Broadcast an intent to the vehicle."""
+        if not self._vehicle:
+            raise InvalidStateError('Cannot broadcast while detached.')
         return self._vehicle.broadcast(intent)
 
     def remove_filter(self, predicate_callback):

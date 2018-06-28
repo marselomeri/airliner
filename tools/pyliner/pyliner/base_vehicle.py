@@ -51,23 +51,17 @@ class BaseVehicle(Loggable):
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
-    def attach_app(self, app_name, app):
+    def attach_app(self, app):
         """Attach an app to this vehicle."""
-        identifier = re.compile(r"^[^\d\W]\w*\Z")
-
-        if app_name in self._apps:
+        if app.qualified_name in self._apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
-        elif not re.match(identifier, app_name):
-            raise ValueError('Attempting to enable a module with an illegal '
-                             'name. Module names must be valid Python '
-                             'identifiers.')
         elif not isinstance(app, App):
             return TypeError('module must implement App.')
 
-        vehicle_token = AppAccess(app_name)
-        self._apps[app_name] = vehicle_token
-        vehicle_token.attach(self, app)
+        vehicle_token = AppAccess(app)
+        self._apps[app.qualified_name] = vehicle_token
+        vehicle_token.attach(self)
 
     def await_change(self, tlm, poll=1.0, out=None):
         """Block until the telemetry value changes.

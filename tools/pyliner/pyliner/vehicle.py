@@ -58,19 +58,19 @@ class Vehicle(BaseVehicle):
         navigation = Navigation()
 
         # Attach defaults
-        self.attach_app('comms', communications)
-        self.attach_app('geographic', geographic)
-        # self.attach_service('time', time)
-        self.attach_app('fence', geofence)
-        self.attach_app('ctrl', Controller())
-        self.attach_app('fd', FlightDirector())
-        self.attach_app('nav', navigation)
+        self.attach_app(communications)
+        self.attach_app(geographic)
+        # self.attach_service(time)
+        self.attach_app(geofence)
+        self.attach_app(Controller())
+        self.attach_app(FlightDirector())
+        self.attach_app(navigation)
 
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
         navigation.defaults.update({'timeout': None, 'underflow': 5.0})
 
-    def attach_app(self, app_name, app):
+    def attach_app(self, app):
         """
         Enable a Pyliner Module on this vehicle. All required telemetry for the
         new module will be subscribed to.
@@ -79,7 +79,7 @@ class Vehicle(BaseVehicle):
             app_name (str): The name that the module will be initialized under.
             app (App): The app to enable.
         """
-        super(Vehicle, self).attach_app(app_name, app)
+        super(Vehicle, self).attach_app(app)
         required_ops = app.required_telemetry_paths()
         if required_ops:
             self.communications.subscribe({'tlm': required_ops})

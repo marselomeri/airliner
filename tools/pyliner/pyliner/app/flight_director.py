@@ -32,11 +32,6 @@ class FlightDirector(App):
         if r is not None:
             self.r = r
 
-    def receive(self, intent):
-        if intent.action == ACTION_AXIS_SET:
-            axis, value = intent.data
-            self(**{axis: value})
-
     def attach(self, vehicle_wrapper):
         super(FlightDirector, self).attach(vehicle_wrapper)
         self.vehicle.callback = self.receive
@@ -44,6 +39,15 @@ class FlightDirector(App):
     def detach(self):
         self.vehicle.callback = None
         super(FlightDirector, self).detach()
+
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.flight_director'
+
+    def receive(self, intent):
+        if intent.action == ACTION_AXIS_SET:
+            axis, value = intent.data
+            self(**{axis: value})
 
     def _send_telemetry(self):
         mod_z = self.z / 2.0 + 0.5  # [-1, 1] -> [0, 1]

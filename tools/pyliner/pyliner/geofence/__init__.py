@@ -125,6 +125,10 @@ class Geofence(App):
         self._check_thread.stop()
         super(Geofence, self).detach()
 
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.geofence'
+
     @classmethod
     def required_telemetry_paths(cls):
         return cls.req_telem.values()
