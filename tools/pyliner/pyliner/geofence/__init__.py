@@ -23,7 +23,7 @@ from functools import partial
 from enum import Enum
 from sortedcontainers import SortedDict
 
-from pyliner.action import ACTION_RTL
+from pyliner.action import ACTION_RTL, ACTION_TELEM
 from pyliner.app import App
 from pyliner.geofence.volume import Volume, CompositeVolume, Box, \
     VerticalCylinder, LayerCake
@@ -86,12 +86,6 @@ class Geofence(App):
     # TODO Use a small memory database (like TinyDB) to handle layer mapping.
     #   Added benefit of allowing both name and order mapping to layer at once.
 
-    req_telem = {
-        'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
-        'longitude': '/Airliner/CNTL/VehicleGlobalPosition/Lon',
-        'altitude': '/Airliner/CNTL/VehicleGlobalPosition/Alt'
-    }
-
     def __init__(self):
         super(Geofence, self).__init__()
         self._check_thread = None
@@ -99,6 +93,7 @@ class Geofence(App):
         self.fence_violation = False
         self.layers = SortedDict()
         """:type: dict[Any, _Layer]"""
+        self.telemetry = None
 
     def __contains__(self, other):
         """True if the given other is contained within the Geofence."""
@@ -115,6 +110,14 @@ class Geofence(App):
 
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
+        self.telemetry = self.vehicle.broadcast(Intent(
+            action=ACTION_TELEM,
+            data={
+                'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
+                'longitude': '/Airliner/CNTL/VehicleGlobalPosition/Lon',
+                'altitude': '/Airliner/CNTL/VehicleGlobalPosition/Alt'})
+        ).first().result
+
         self._check_thread = PeriodicExecutor(
             self._check_fence, every=FENCE_SLEEP,
             logger=self.vehicle.logger, name='FenceCheck',
@@ -123,15 +126,12 @@ class Geofence(App):
 
     def detach(self):
         self._check_thread.stop()
+        self.telemetry = None
         super(Geofence, self).detach()
 
     @property
     def qualified_name(self):
         return 'com.windhover.pyliner.app.geofence'
-
-    @classmethod
-    def required_telemetry_paths(cls):
-        return cls.req_telem.values()
 
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:
@@ -160,10 +160,9 @@ class Geofence(App):
     @property
     def position(self):
         return Position(
-            App._telem(self.req_telem['latitude'])(self),
-            App._telem(self.req_telem['longitude'])(self),
-            App._telem(self.req_telem['altitude'])(self)
-        )
+            self.telemetry['latitude'].value,
+            self.telemetry['longitude'].value,
+            self.telemetry['altitude'].value)
 
     def remove_layer(self, position):
         del self.layers[position]

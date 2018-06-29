@@ -81,17 +81,3 @@ class App(Loggable):
         self._state = App.DETACHED
         self.vehicle = None
         self.logger = None
-
-    @classmethod
-    def required_telemetry_paths(cls):
-        """Return the required telemetry to enable this module.
-
-        Return:
-            Iterable[str]: An iterable of telemetry paths required.
-                May be None if no telemetry is required.
-        """
-        return None
-
-    @staticmethod
-    def _telem(name):
-        return lambda self: self.vehicle._vehicle.tlm_value(name)

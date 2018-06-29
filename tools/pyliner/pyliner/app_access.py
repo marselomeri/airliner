@@ -20,8 +20,8 @@ class AppAccess(Loggable):
     def __init__(self, app):
         super(AppAccess, self).__init__()
         self.callback = None
-        self._app = app
-        self._vehicle = None
+        self.app = app
+        self.vehicle = None
         """:type: BaseVehicle"""
         self._filter = set()
 
@@ -45,9 +45,9 @@ class AppAccess(Loggable):
 
     def attach(self, vehicle):
         """Attach the App to a Vehicle."""
-        self._vehicle = vehicle
-        self.logger = vehicle.logger.getChild(self._app.qualified_name)
-        self._app.attach(self)
+        self.vehicle = vehicle
+        self.logger = vehicle.logger.getChild(self.app.qualified_name)
+        self.app.attach(self)
 
     def clear_filter(self):
         """Remove all event filters."""
@@ -55,8 +55,8 @@ class AppAccess(Loggable):
 
     def detach(self):
         """Detach the App from the Vehicle."""
-        self._app.detach()
-        self._vehicle = None
+        self.app.detach()
+        self.vehicle = None
         self.logger = None
 
     def receive(self, intent, future):
@@ -81,9 +81,9 @@ class AppAccess(Loggable):
     def broadcast(self, intent):
         # type: (Intent) -> IntentFuture
         """Broadcast an intent to the vehicle."""
-        if not self._vehicle:
+        if not self.vehicle:
             raise InvalidStateError('Cannot broadcast while detached.')
-        return self._vehicle.broadcast(intent)
+        return self.vehicle.broadcast(intent)
 
     def remove_filter(self, predicate_callback):
         """Remove a filter (by the tuple returned by add) from this access."""

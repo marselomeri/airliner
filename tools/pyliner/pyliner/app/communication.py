@@ -27,6 +27,40 @@ DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
 
 
+class CallableDefaultDict(dict):
+    def __init__(self, default_factory=None, **kwargs):
+        super(CallableDefaultDict, self).__init__(**kwargs)
+        self.default_factory = default_factory
+
+    def __getitem__(self, item):
+        if item not in self:
+            self[item] = self.default_factory(item)
+        return super(CallableDefaultDict, self).__getitem__(item)
+
+
+class _Telemetry(object):
+    def __init__(self, name=None, time=None, value=None):
+        self.name = name
+        self.time = time
+        self.value = value
+
+        self._listener = set()
+
+    def add_listener(self, listener):
+        if not callable(listener):
+            raise TypeError('Listener must be callable.')
+        self._listener.add(listener)
+
+    def remove_listener(self, listener):
+        self._listener.remove(listener)
+
+    def update(self, value, time=None):
+        self.time = time
+        self.value = value
+        for listener in self._listener:
+            listener(self)
+
+
 def serialize(header, payload):
     """
     Receive a CCSDS message and payload then returns the
@@ -65,7 +99,9 @@ class Communication(App):
         self.all_telemetry = []
         self.ci_port = ci_port
         self.ci_socket = init_socket()
-        self._telemetry = {}
+        self._telemetry = CallableDefaultDict(
+            default_factory=lambda k: self.subscribe(k))
+        """:type: dict[str, _Telemetry]"""
         self.subscribers = []
         self.to_port = to_port
 
@@ -89,7 +125,7 @@ class Communication(App):
         )
         self.vehicle.add_filter(
             lambda i: i.action == ACTION_TELEM,
-            lambda i: self._telemetry[i.data]
+            lambda i: self.telemetry(i.data)
         )
 
     def detach(self):
@@ -109,6 +145,16 @@ class Communication(App):
     def send_bytes(self, message):
         self.ci_socket.sendto(message, (self.address, self.ci_port))
         return True
+
+    def telemetry(self, args):
+        if isinstance(args, str):
+            return self._telemetry[args]
+        elif isinstance(args, dict):
+            return {k: self._telemetry[v] for k, v in args.items()}
+        elif isinstance(args, list):
+            return [self._telemetry[t] for t in args]
+        else:
+            raise TypeError('Can only parse str, dict, and list data.')
 
     def _get_airliner_op(self, op_path):
         """
@@ -287,32 +333,20 @@ class Communication(App):
 
         # Iterate over subscribed telemetry to check if we care
         for subscribed_tlm in self.subscribers:
-            if int(subscribed_tlm['airliner_mid'], 0) == int(
-                    tlm_pkt.PriHdr.StreamId.data):
+            if int(subscribed_tlm['airliner_mid'], 0) == \
+                    int(tlm_pkt.PriHdr.StreamId.data):
                 # Get pb msg for this msg
                 op_path = subscribed_tlm['op_path']
                 pb_msg = self._get_pb_decode_obj(tlm[0][12:], op_path)
 
-                # Generate telemetry dictionary for callback
-                cb_dict = {'name': op_path,
-                           'value': self._get_pb_value(pb_msg, op_path),
-                           'time': tlm_time}
-
                 # Update telemetry dictionary with fresh data
-                self._telemetry[op_path] = cb_dict
-
-                # Call specified callback for this telemetry if it has one
-                if subscribed_tlm['callback']:
-                    subscribed_tlm['callback'](cb_dict)
+                self._telemetry[op_path].update(
+                    value=self._get_pb_value(pb_msg, op_path), time=tlm_time)
 
     @staticmethod
     def _proto_obj_factory(msg):
         """ Returns a protobuf object for the type of airliner msg passed """
         return pyliner_msgs.proto_msg_map[msg]()
-
-    @classmethod
-    def required_telemetry_paths(cls):
-        return None
 
     def _serialize(self, telemetry):
         """ User accessible function to send a command to the software bus.
@@ -347,40 +381,34 @@ class Communication(App):
         serial_cmd = serialize(header, payload)
         return serial_cmd
 
-    def subscribe(self, tlm, callback=None):
+    def subscribe(self, tlm_item):
         """
         Receives an operational path to an airliner msg attribute to subscribe
         to, as well as an optional callback function.
 
         Args:
-            tlm (dict): Dictionary specifying the telemtry items to subscribe
-                to, using the telemetry item's operational names.
+            tlm (dict[str, list[str]]): Dictionary specifying the telemetry
+                items to subscribe to, using the telemetry item's operational
+                names.
                 E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}
                     or
                      {'tlm': ['/Airliner/ES/HK/CmdCounter',
                               '/Airliner/ES/HK/ErrCounter']}
-            callback (Callable[[], None]): Function to call when this telemetry
-                is updated.
         """
-        self.vehicle.info(
-            'Subscribing to the following telemetry: %s', tlm['tlm'])
-        for tlm_item in tlm["tlm"]:
-            # Get operation for specified telemetry
-            op = self._get_airliner_op(tlm_item)
-            if not op:
-                err_msg = "Invalid telemetry operational name received. " \
-                          "Operation (%s) not defined." % tlm_item
-                self.vehicle.error(err_msg)
-                raise pyliner_exceptions.InvalidOperationException(err_msg)
+        self.vehicle.info('Subscribing to: {}'.format(tlm_item))
+        # Get operation for specified telemetry
+        op = self._get_airliner_op(tlm_item)
+        if not op:
+            err_msg = "Invalid telemetry operational name received. " \
+                      "Operation (%s) not defined." % tlm_item
+            self.vehicle.error(err_msg)
+            raise pyliner_exceptions.InvalidOperationException(err_msg)
 
-            # Add entry to subscribers list
-            self.subscribers.append({'op_path': tlm_item,
-                                     'airliner_mid': op['airliner_mid'],
-                                     'callback': callback,
-                                     'tlmSeqNum': 0})
+        # Add entry to subscribers list
+        self.subscribers.append({'op_path': tlm_item,
+                                 'airliner_mid': op['airliner_mid'],
+                                 'tlmSeqNum': 0})
 
-            # Add entry to telemetry dictionary to prevent key errors
-            # in user scripts and set default values.
-            self._telemetry[tlm_item] = {'name': tlm_item,
-                                         'value': 'NULL',
-                                         'time': 'NULL'}
+        # Add entry to telemetry dictionary to prevent key errors
+        # in user scripts and set default values.
+        return _Telemetry(name=tlm_item)

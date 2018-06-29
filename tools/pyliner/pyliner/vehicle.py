@@ -51,7 +51,6 @@ class Vehicle(BaseVehicle):
         self.atp_override = None
 
         # Component Defaults
-        self.communications = communications  # TODO Remove, use intent
         geographic = geographic or GeographicApp()
         time = time or TimeApp()
         geofence = Geofence()
@@ -69,17 +68,3 @@ class Vehicle(BaseVehicle):
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
         navigation.defaults.update({'timeout': None, 'underflow': 5.0})
-
-    def attach_app(self, app):
-        """
-        Enable a Pyliner Module on this vehicle. All required telemetry for the
-        new module will be subscribed to.
-
-        Args:
-            app_name (str): The name that the module will be initialized under.
-            app (App): The app to enable.
-        """
-        super(Vehicle, self).attach_app(app)
-        required_ops = app.required_telemetry_paths()
-        if required_ops:
-            self.communications.subscribe({'tlm': required_ops})

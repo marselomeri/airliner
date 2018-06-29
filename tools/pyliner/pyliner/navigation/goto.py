@@ -80,7 +80,7 @@ class Goto(NavigationFactory):
                 distance = self.broadcast(Intent(
                     action=ACTION_CALC_DISTANCE,
                     data=(cur, self.nav.position),
-                )).first_result(0.5)
+                )).first().result
                 if distance < tolerance:
                     self.nav.vehicle.info(
                         'goto expected %s actual %s (%s < %s m)',

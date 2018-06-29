@@ -64,7 +64,7 @@ class Controller(App):
         try:
             actions[intent.action]()
         except KeyError:
-            if intent.component == self.vehicle._name:
+            if intent.component == self.qualified_name:
                 self.info('Controller cannot process intent: {}'.format(intent))
 
     def atp(self, text, error=True):

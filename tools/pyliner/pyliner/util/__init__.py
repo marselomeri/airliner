@@ -96,11 +96,11 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
         filename=log_path,
         filemode=filemode
     )
-    if stdin:
+    if stdin is not None:
         sys.stdin = StreamLogger('stdin', sys.stdin, stdin)
-    if stdout:
+    if stdout is not None:
         sys.stdout = StreamLogger('stdout', sys.stdout, stdout)
-    if stderr:
+    if stderr is not None:
         sys.stderr = StreamLogger('stderr', sys.stderr, stderr)
 
 

@@ -25,6 +25,10 @@ class IntentResponse(object):
         self.result = result
         self.exception = exception
 
+    def __repr__(self):
+        return '{}(result={}, exception={})'.format(
+            self.__class__.__name__, self.result, self.exception)
+
 
 class FutureTimeoutError(PylinerError):
     pass
@@ -54,15 +58,9 @@ class IntentFuture(object):
         except IndexError:
             raise FutureTimeoutError()
 
-    def first_result(self, timeout=None):
-        return self.first(timeout=timeout).result
-
     def recent(self, timeout=None):
         self._event_first.wait(timeout=timeout)
         try:
             return self.responses[-1]
         except IndexError:
             raise FutureTimeoutError()
-
-    def recent_result(self, timeout=None):
-        return self.recent(timeout=timeout).result
