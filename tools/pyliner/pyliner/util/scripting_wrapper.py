@@ -54,6 +54,7 @@ class ScriptingWrapper(object):
             'ctrl': 'com.windhover.pyliner.app.controller',
             'fd': 'com.windhover.pyliner.app.flight_director',
             'fence': 'com.windhover.pyliner.app.geofence',
+            'geographic': 'com.windhover.pyliner.app.geographic',
             'nav': 'com.windhover.pyliner.app.navigation'
         }
 
