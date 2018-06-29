@@ -40,23 +40,23 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.takeoff()
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
-    vnav = rocky.nav.vnav(method=proportional(0.2), tolerance=0.5)
-    lnav = rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)
+    vnav = rocky.nav.vnav(method=proportional(0.25), tolerance=0.5)
+    lnav = rocky.nav.lnav(method=proportional(0.20), tolerance=0.5)
 
     rocky.ctrl.atp('Move Up')
     vnav.up(10)
 
     rocky.ctrl.atp('Vertical Right')
-    vnav.up(5)
-    lnav.right(5)
-    vnav.down(5, method=proportional(0.25))
-    lnav.left(5)
+    vnav.up(10)
+    lnav.right(15)
+    vnav.down(15, method=proportional(0.30))
+    lnav.left(15)
 
     rocky.ctrl.atp('Vertical Left')
-    vnav.up(5)
-    lnav.left(5)
-    vnav.down(5, method=proportional(0.25))
-    lnav.right(5)
+    vnav.up(15)
+    lnav.left(15)
+    vnav.down(15, method=proportional(0.30))
+    lnav.right(15)
 
     rocky.ctrl.atp('Return')
     rocky.ctrl.rtl()
