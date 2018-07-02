@@ -21,7 +21,7 @@ with ScriptingWrapper(rky) as rocky:
     home = rocky.nav.position
 
     while True:
-        raw_input('Press Enter To Log: ')
+        # raw_input('Press Enter To Log: ')
         position = rocky.nav.position
-        rocky.info('Position: {}\tDistance: {}'.format(
+        print('Position: {}\tDistance: {}'.format(
             position, rocky.geographic.distance(home, position)))
