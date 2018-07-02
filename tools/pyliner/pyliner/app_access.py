@@ -3,9 +3,11 @@ The Vehicle Access module provides a token-ish interface for a component to
 interact with a vehicle, and the other components of the vehicle.
 
 Classes:
-    VehicleAccess  Access controller between a Vehicle and its components.
+    AppAccess  Access controller between a Vehicle and its components.
 """
+
 from pyliner.intent import Intent
+from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture, IntentResponse
 from pyliner.pyliner_exceptions import InvalidStateError
 from pyliner.util.loggable import Loggable
@@ -13,9 +15,9 @@ from pyliner.util.loggable import Loggable
 
 class AppAccess(Loggable):
     """
-    The VehicleAccess class acts as a boundary between components on a vehicle
+    The AppAccess class acts as a boundary between components on a vehicle
     so that they do not interact destructively with each other. Components must
-    access the vehicle through the interface provided by their VehicleAccess.
+    access the vehicle through the interface provided by their AppAccess.
     """
     def __init__(self, app):
         super(AppAccess, self).__init__()
@@ -23,25 +25,8 @@ class AppAccess(Loggable):
         self.app = app
         self.vehicle = None
         """:type: BaseVehicle"""
-        self._filter = set()
-
-    # Events
-    def add_filter(self, predicate, callback):
-        """Add an intent filter to this access and return a tuple.
-
-        When an intent is broadcast which passes the predicate, the callback is
-        invoked. Repeated calls with the same arguments will still result in a
-        single call to `callback`.
-
-        Returns:
-            Tuple of (predicate, callback) which must be passed into
-                remove_filter to remove the filter.
-        """
-        if not callable(predicate) or not callable(callback):
-            raise ValueError('Filter predicate and callback must be callable.')
-        else:
-            self._filter.add((predicate, callback))
-        return predicate, callback
+        self._filter = {}
+        """:type: dict[IntentFilter, Callable[[Intent], Any]"""
 
     def attach(self, vehicle):
         """Attach the App to a Vehicle."""
@@ -49,18 +34,46 @@ class AppAccess(Loggable):
         self.logger = vehicle.logger.getChild(self.app.qualified_name)
         self.app.attach(self)
 
-    def clear_filter(self):
-        """Remove all event filters."""
-        self._filter.clear()
-
     def detach(self):
         """Detach the App from the Vehicle."""
         self.app.detach()
         self.vehicle = None
         self.logger = None
 
+    def add_filter(self, intent_filter, callback):
+        """Add an intent filter.
+
+        Args:
+            intent_filter (IntentFilter): The filter to apply to incoming
+                intents.
+            callback (Callable[[Intent], Any]: If an incoming intent passes
+                through the filter, the callback will be run with the intent
+                as an argument.
+
+        Returns:
+            IntentFilter: Same object as intent_filter.
+        """
+        if not isinstance(intent_filter, IntentFilter):
+            raise TypeError('intent_filter must be IntentFilter.')
+        if not callable(callback):
+            raise TypeError('callback must be callable.')
+        self._filter[intent_filter] = callback
+        self.vehicle.add_filter(intent_filter, self)
+        return intent_filter
+
+    def clear_filter(self):
+        """Remove all intent filters."""
+        self._filter.clear()
+
     def receive(self, intent, future):
-        """Receive an intent and pass it to any callbacks that are listening."""
+        """Receive an intent and pass it to any callbacks that are listening.
+
+        If self.callback is set, call that before checking intent filters.
+
+        Args:
+            intent (Intent): The intent that was broadcast.
+            future (IntentFuture): The Future to return results into.
+        """
         def handle(cb):
             result = exception = None
             try:
@@ -68,14 +81,12 @@ class AppAccess(Loggable):
             except Exception as e:
                 exception = e
             if result is not None or exception is not None:
-                # self.debug('{} handled at {}: result={} exception={}'.format(
-                #     intent, self._name, result, exception))
                 future.add(IntentResponse(result=result, exception=exception))
 
         if callable(self.callback):
             handle(self.callback)
-        for predicate, callback in self._filter:
-            if predicate(intent):
+        for intent_filter, callback in self._filter.items():
+            if intent in intent_filter:
                 handle(callback)
 
     def broadcast(self, intent):
@@ -85,6 +96,7 @@ class AppAccess(Loggable):
             raise InvalidStateError('Cannot broadcast while detached.')
         return self.vehicle.broadcast(intent)
 
-    def remove_filter(self, predicate_callback):
+    def remove_filter(self, intent_filter):
         """Remove a filter (by the tuple returned by add) from this access."""
-        self._filter.remove(predicate_callback)
+        del self._filter[intent_filter]
+        self.vehicle.remove_filter(intent_filter, self)

@@ -30,9 +30,8 @@ rky = Vehicle(
 )
 
 with ScriptingWrapper(rky) as rocky:
-    while rocky.nav.altitude == "NULL":
-        sleep(1)
-        print("Waiting for telemetry downlink...")
+    rocky.await_change('/Airliner/CNTL/VehicleGlobalPosition/Alt',
+                       "Waiting for telemetry downlink...")
 
     rocky.ctrl.atp('Arm')
     rocky.ctrl.arm()
@@ -59,9 +58,9 @@ with ScriptingWrapper(rky) as rocky:
 
     rocky.ctrl.atp('Third')
     rocky.nav.lnav(method=proportional(0.20), tolerance=0.5) \
-        .backward(15)\
-        .left(15)\
-        .forward(15)\
+        .backward(15) \
+        .left(15) \
+        .forward(15) \
         .right(15)
 
     rocky.ctrl.atp('Fourth')

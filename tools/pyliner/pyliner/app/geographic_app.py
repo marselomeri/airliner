@@ -13,6 +13,7 @@ from geographiclib.geodesic import Geodesic
 
 from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, ACTION_CALC_PBD
 from pyliner.geographic import Geographic
+from pyliner.intent import IntentFilter
 from pyliner.navigation.position import Coordinate
 from pyliner.app import App
 
@@ -29,13 +30,13 @@ class GeographicApp(Geographic, App):
     def attach(self, vehicle_wrapper):
         super(GeographicApp, self).attach(vehicle_wrapper)
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_CALC_BEARING,
+            IntentFilter(actions=[ACTION_CALC_BEARING]),
             lambda i: GeographicApp.bearing(*i.data))
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_CALC_DISTANCE,
+            IntentFilter(actions=[ACTION_CALC_DISTANCE]),
             lambda i: GeographicApp.distance(*i.data))
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_CALC_PBD,
+            IntentFilter(actions=[ACTION_CALC_PBD]),
             lambda i: GeographicApp.pbd(*i.data)
         )
 

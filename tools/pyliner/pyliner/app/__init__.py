@@ -13,7 +13,7 @@ class App(Loggable):
     that an app is detached, it should cease any auxiliary tasks by stopping
     threads or disabling event listeners.
 
-    A app is given a VehicleAccess token when it is attached. This token is how
+    A app is given an AppAccess token when it is attached. This token is how
     the app broadcasts and receive intents from the vehicle it is attached to.
 
     Apps should be responsive. They can register for telemetry events and
@@ -36,7 +36,7 @@ class App(Loggable):
         super(App, self).__init__()
         self._state = App.DETACHED
         self.vehicle = None
-        """:type: VehicleAccess"""
+        """:type: AppAccess"""
 
     @property
     @abstractmethod

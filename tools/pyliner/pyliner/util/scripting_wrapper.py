@@ -40,6 +40,13 @@ class ScriptingWrapper(object):
         """
         self._vehicle = vehicle
         self.failure_callback = failure_callback
+        self.mapping = {
+            'ctrl': 'com.windhover.pyliner.app.controller',
+            'fd': 'com.windhover.pyliner.app.flight_director',
+            'fence': 'com.windhover.pyliner.app.geofence',
+            'geographic': 'com.windhover.pyliner.app.geographic',
+            'nav': 'com.windhover.pyliner.app.navigation'
+        }
         # self.mapping = {
         #     'nav': _AppWrapper(vehicle, {
         #         ''
@@ -49,20 +56,11 @@ class ScriptingWrapper(object):
     def __getattr__(self, item):
         if hasattr(self._vehicle, item):
             return getattr(self._vehicle, item)
-
-        mapping = {
-            'ctrl': 'com.windhover.pyliner.app.controller',
-            'fd': 'com.windhover.pyliner.app.flight_director',
-            'fence': 'com.windhover.pyliner.app.geofence',
-            'geographic': 'com.windhover.pyliner.app.geographic',
-            'nav': 'com.windhover.pyliner.app.navigation'
-        }
-
         try:
-            return self.app_by_qualified_name(mapping[item])
+            return self.app_by_qualified_name(self.mapping[item])
         except KeyError:
-            raise AttributeError('{!r} is not a method or component of this '
-                                 'Pyliner instance.'.format(item))
+            raise AttributeError('{!r} is not a mapped App of this '
+                                 'vehicle.'.format(item))
 
     def __enter__(self):
         return self
@@ -79,15 +77,15 @@ class ScriptingWrapper(object):
     def app_by_qualified_name(self, qualified_name):
         return self._vehicle.apps[qualified_name].app
 
-    def await_change(self, tlm, poll=1.0, out=None):
+    def await_change(self, tlm, out=None, poll=1.0):
         """Block until the telemetry gets a new value.
 
         The new value does not have to be different than the old value.
 
         Args:
             tlm (str): The telemetry to monitor.
-            poll (float): Check every `poll` seconds.
             out (Callable): If not None, call this every loop.
+            poll (float): Check every `poll` seconds.
         """
 
         telemetry = self.broadcast(Intent(
@@ -100,4 +98,6 @@ class ScriptingWrapper(object):
         while not change.is_set():
             if callable(out):
                 out()
+            elif isinstance(out, str):
+                print(out)
             change.wait(poll)

@@ -9,13 +9,14 @@ import atexit
 import logging
 import threading
 from abc import ABCMeta
+from collections import defaultdict
 from datetime import datetime
 from os.path import join
 
 from junit_xml import TestCase, TestSuite
 
 from pyliner.app import App, AppAccess
-from pyliner.intent import Intent
+from pyliner.intent import Intent, IntentNoReceiverError
 from pyliner.intent import IntentFuture
 from pyliner.util.loggable import Loggable
 
@@ -44,11 +45,27 @@ class BaseVehicle(Loggable):
         # self.broadcast_pool = ThreadPool # TODO Python 3
         self.apps = {}
         """:type: dict[str, AppAccess]"""
+        self._intent_filters = defaultdict(lambda: set())
+        """:type: dict[str, set[AppAccess]]"""
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
+    def add_filter(self, intent_filter, app):
+        """Add an intent filter to this vehicle.
+
+        Args:
+            intent_filter (IntentFilter): The filter to add.
+            app (AppAccess): If an intent matches a filter, the app to call.
+        """
+        for action in intent_filter.actions:
+            self._intent_filters[action].add(app)
+
     def attach_app(self, app):
-        """Attach an app to this vehicle."""
+        """Attach an app to this vehicle.
+
+        Args:
+            app (App): The app to attach to this vehicle.
+        """
         if app.qualified_name in self.apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
@@ -69,14 +86,19 @@ class BaseVehicle(Loggable):
         return future
 
     def _broadcast_thread(self, intent, future):
+        # type: (Intent, IntentFuture) -> None
         if intent.is_explicit():
             self.apps[intent.component].receive(intent, future)
         else:
-            for ident in self.apps.values():
-                ident.receive(intent, future)
+            try:
+                for app in self._intent_filters[intent.action]:
+                    app.receive(intent, future)
+            except KeyError:
+                future.failure = IntentNoReceiverError(
+                    'There are no Apps accepting {}.'.format(intent.action))
 
     def detach_app(self, name):
-        """Disable an app by removing it from the vehicle.
+        """Disable an app by removing it from this vehicle.
 
         Note:
             Any apps that attempt to call the disabled app by name will
@@ -88,6 +110,11 @@ class BaseVehicle(Loggable):
         module = self.apps[name]
         del self.apps[name]
         module.detach()
+
+    def remove_filter(self, intent_filter, app):
+        """Remove an intent filter from this vehicle."""
+        for action in intent_filter.actions:
+            self._intent_filters[action].remove(app)
 
     def shutdown(self):
         """Shutdown all components on vehicle and detach.

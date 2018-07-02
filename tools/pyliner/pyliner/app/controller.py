@@ -15,7 +15,7 @@ from flufl.enum import Enum
 
 from pyliner.app import App
 from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
-from pyliner.intent import Intent
+from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_exceptions import UnauthorizedAtpError
 from pyliner.telemetry import ManualSetpoint
 from pyliner.util import query_yes_no
@@ -40,7 +40,10 @@ class Controller(App):
 
     def attach(self, vehicle_wrapper):
         super(Controller, self).attach(vehicle_wrapper)
-        self.vehicle.callback = self.receive
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_RTL]),
+            lambda i: self.rtl()
+        )
 
     def detach(self):
         self.vehicle.callback = None
@@ -56,16 +59,6 @@ class Controller(App):
         self.vehicle.broadcast(Intent(
             action=ACTION_SEND_COMMAND,
             data=ManualSetpoint(ArmSwitch=1))).first()
-
-    def receive(self, intent):
-        actions = {
-            ACTION_RTL: self.rtl
-        }
-        try:
-            actions[intent.action]()
-        except KeyError:
-            if intent.component == self.qualified_name:
-                self.info('Controller cannot process intent: {}'.format(intent))
 
     def atp(self, text, error=True):
         """Collect authorization to proceed (ATP) from the user."""

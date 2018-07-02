@@ -16,6 +16,7 @@ import socketserver
 from pyliner import pyliner_exceptions
 from pyliner.action import ACTION_SEND_COMMAND, ACTION_SEND_BYTES, ACTION_TELEM
 from pyliner.arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
+from pyliner.intent import IntentFilter
 from pyliner.python_pb import pyliner_msgs
 from pyliner.app import App
 from pyliner.util import init_socket, handler_factory
@@ -116,15 +117,15 @@ class Communication(App):
     def attach(self, vehicle):
         super(Communication, self).attach(vehicle)
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_SEND_COMMAND,
-            lambda i: self.send_telemetry(i.data)
+            IntentFilter(actions=[ACTION_SEND_COMMAND]),
+            lambda i: self.send_command(i.data)
         )
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_SEND_BYTES,
+            IntentFilter(actions=[ACTION_SEND_BYTES]),
             lambda i: self.send_bytes(i.data)
         )
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_TELEM,
+            IntentFilter(actions=[ACTION_TELEM]),
             lambda i: self.telemetry(i.data)
         )
 
@@ -136,15 +137,15 @@ class Communication(App):
     def qualified_name(self):
         return 'com.windhover.pyliner.app.communication'
 
-    def send_telemetry(self, telemetry):
+    def send_bytes(self, message):
+        self.ci_socket.sendto(message, (self.address, self.ci_port))
+        return True
+
+    def send_command(self, telemetry):
         msg = self._serialize(telemetry)
         self.vehicle.debug(
             'Sending telemetry to airliner: %s', telemetry.to_json())
         return self.send_bytes(msg)
-
-    def send_bytes(self, message):
-        self.ci_socket.sendto(message, (self.address, self.ci_port))
-        return True
 
     def telemetry(self, args):
         if isinstance(args, str):

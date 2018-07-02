@@ -23,7 +23,7 @@ class SocketApp(App):
 
     @abstractmethod
     def handle(self, request, client_address):
-        pass
+        raise NotImplementedError()
 
     def attach(self, vehicle_wrapper):
         super(SocketApp, self).attach(vehicle_wrapper)
