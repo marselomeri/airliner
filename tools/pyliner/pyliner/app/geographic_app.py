@@ -1,9 +1,9 @@
 """
-The Geographic Sensor module provides a app that can be used to calculate
+The Geographic App module provides a app that can be used to calculate
 information about two Coordinates on Earth.
 
 Sensors:
-    GeographicSensor  Produces relevant world-based calculations.
+    GeographicApp  Produces relevant world-based calculations.
 """
 
 from copy import copy
@@ -11,18 +11,18 @@ from numbers import Real
 
 from geographiclib.geodesic import Geodesic
 
-from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, ACTION_CALC_PBD
-from pyliner.geographic import Geographic
+from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, \
+    ACTION_CALC_PBD
 from pyliner.intent import IntentFilter
 from pyliner.navigation.position import Coordinate
 from pyliner.app import App
 
 
-class GeographicApp(Geographic, App):
+class GeographicApp(App):
     """A Sensor that produces relevant world-based calculations."""
 
     def __repr__(self):
-        return 'GeographicSensor()'
+        return 'GeographicApp()'
 
     def __str__(self):
         return 'WGS84'
@@ -46,6 +46,8 @@ class GeographicApp(Geographic, App):
 
     @staticmethod
     def bearing(a, b):
+        # type: (Coordinate, Coordinate) -> Real
+        """Calculate the bearing from a to b in degrees."""
         return GeographicApp._inverse(a, b)['azi1'] % 360
 
     @staticmethod
@@ -57,6 +59,16 @@ class GeographicApp(Geographic, App):
 
     @staticmethod
     def distance(a, b):
+        # type: (Coordinate, Coordinate) -> Real
+        """Calculate the distance between two points on the globe.
+
+        Args:
+            a (position.Coordinate): Point A
+            b (position.Coordinate): Point B
+
+        Returns:
+            float: Distance in meters.
+        """
         return GeographicApp._inverse(a, b)['s12']
 
     @staticmethod
@@ -69,6 +81,17 @@ class GeographicApp(Geographic, App):
 
     @staticmethod
     def pbd(a, bearing, distance):
+        # type: (Coordinate, Real, Real) -> Coordinate
+        """Calculate a Place-Bearing-Distance (PBD) coordinate.
+
+        Returns:
+            (Coordinate): A copy of `a` with updated latitude and longitude.
+
+        Args:
+            a (position.Coordinate): Point A
+            bearing (float): Direction in degrees [0, 360)
+            distance (float): Distance in meters
+        """
         direct = GeographicApp._direct(a, bearing, distance)
         b = copy(a)
         b.latitude = direct['lat2']
