@@ -91,6 +91,14 @@ int32 VC_CustomTransmit_InitData()
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
     
+    VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
+    VC_AppCustomData.Channel[1].ChannelID = 1;
+    VC_AppCustomData.Channel[1].DestPort = 3002;
+    VC_AppCustomData.Channel[1].SocketFd = 0;
+
+    strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);
+    strncpy(VC_AppCustomData.Channel[1].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN);
+
     return (iStatus);
 }
 
