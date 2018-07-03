@@ -2,41 +2,33 @@
 The communication module provides a Communication Service for sending commands
 over UDP to the vehicle.
 
-Methods:
-    serialize  Serialize a header and a payload of a CCSDS packet.
-
 Services:
     Communication  Handles UDP interface with physical vehicle.
 """
 
 import threading
 
+import queue
 import socketserver
 
 from pyliner import pyliner_exceptions
-from pyliner.action import ACTION_SEND_COMMAND, ACTION_SEND_BYTES, ACTION_TELEM
+from pyliner.action import ACTION_SEND_COMMAND, ACTION_SEND_BYTES, ACTION_TELEM, \
+    ACTION_CONTROL_REQUEST, ACTION_CONTROL_GRANT, ACTION_CONTROL_REVOKE, \
+    ACTION_CONTROL_RELEASE
 from pyliner.arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
-from pyliner.intent import IntentFilter
+from pyliner.intent import IntentFilter, Intent
+from pyliner.pyliner_exceptions import PylinerError
 from pyliner.python_pb import pyliner_msgs
 from pyliner.app import App
-from pyliner.util import init_socket, handler_factory
+from pyliner.util import init_socket, handler_factory, CallableDefaultDict
 
 # TODO Python3 does not see telemetry
 # TODO Put all this somewhere vehicle specific
+from pyliner.util.periodic_executor import PeriodicExecutor
+
 SEND_TIME = 0.1
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
-
-
-class CallableDefaultDict(dict):
-    def __init__(self, default_factory=None, **kwargs):
-        super(CallableDefaultDict, self).__init__(**kwargs)
-        self.default_factory = default_factory
-
-    def __getitem__(self, item):
-        if item not in self:
-            self[item] = self.default_factory(item)
-        return super(CallableDefaultDict, self).__getitem__(item)
 
 
 class _Telemetry(object):
@@ -62,15 +54,25 @@ class _Telemetry(object):
             listener(self)
 
 
-def serialize(header, payload):
-    """
-    Receive a CCSDS message and payload then returns the
-    serialized concatenation of them.
-    """
-    ser = header.get_encoded()
-    if payload:
-        ser += payload.SerializeToString()
-    return ser
+class ControlToken(object):
+    def __init__(self, app_name):
+        self.app_name = app_name
+        # self._token =
+
+    def request(self, data):
+        return ControlRequest(self, data)
+
+
+class ControlRequest(object):
+    def __init__(self, token, data):
+        self.token = token
+        """:type: ControlToken"""
+        self.data = data
+
+
+class CommandAuthorizationError(PylinerError):
+    """Raised if an App does not have permission to send commands."""
+    pass
 
 
 class Communication(App):
@@ -100,11 +102,18 @@ class Communication(App):
         self.all_telemetry = []
         self.ci_port = ci_port
         self.ci_socket = init_socket()
+        self.control_current = None
+        """:type: ControlToken"""
+        self.control_lock = threading.RLock()
+        self.control_thread = None
+        """:type: PeriodicExecutor"""
+        self.control_waiting = queue.Queue()
+        self.subscribers = []
+        self.to_port = to_port
+
         self._telemetry = CallableDefaultDict(
             default_factory=lambda k: self.subscribe(k))
         """:type: dict[str, _Telemetry]"""
-        self.subscribers = []
-        self.to_port = to_port
 
         # Receive Telemetry
         self.tlm_listener = socketserver.UDPServer(
@@ -116,22 +125,109 @@ class Communication(App):
 
     def attach(self, vehicle):
         super(Communication, self).attach(vehicle)
+        self.control_thread = PeriodicExecutor(
+            self.control_rotate, every=0.5, name='ControlRotateThread')
+        self.control_thread.start()
+
+        def filter_control(data, call):
+            if not isinstance(data, ControlRequest):
+                raise TypeError(
+                    'Sending data must be wrapped in a ControlRequest produced '
+                    'from a valid ControlToken.')
+            if data.token is not self.control_current:
+                raise CommandAuthorizationError(
+                    'App is not authorized to send commands.')
+            else:
+                return call(data.data)
+
         self.vehicle.add_filter(
             IntentFilter(actions=[ACTION_SEND_COMMAND]),
-            lambda i: self.send_command(i.data)
+            lambda i: filter_control(i.data, self.send_command)
         )
         self.vehicle.add_filter(
             IntentFilter(actions=[ACTION_SEND_BYTES]),
-            lambda i: self.send_bytes(i.data)
+            lambda i: filter_control(i.data, self.send_bytes)
         )
         self.vehicle.add_filter(
             IntentFilter(actions=[ACTION_TELEM]),
             lambda i: self.telemetry(i.data)
         )
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_CONTROL_REQUEST]),
+            self.control_request
+        )
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_CONTROL_RELEASE]),
+            self.control_release
+        )
 
     def detach(self):
         self.vehicle.clear_filter()
+        self.control_thread.stop()
         super(Communication, self).detach()
+
+    def control_grant(self, request):
+        """Generate a ControlToken and pass it to the App which was granted
+        control.
+        """
+        self.control_lock.acquire()
+        self.debug('Grant Control: {}'.format(request))
+        self.control_current = ControlToken(app_name=request)
+        reply = self.vehicle.broadcast(Intent(
+            action=ACTION_CONTROL_GRANT,
+            component=request,
+            data=self.control_current
+        )).first(0.01).result
+        if reply is not True:
+            self.debug('{} refused control.')
+            self.control_revoke()
+            if not self.control_waiting.empty():
+                self.control_grant(self.control_waiting.get())
+        self.control_lock.release()
+
+    def control_release(self, intent):
+        """Called if an App willingly releases control."""
+        self.control_lock.acquire()
+        if self.control_current is None or intent.data != self.control_current:
+            success = False
+        else:
+            success = True
+            self.debug('Release Control: {}'.format(intent.data.app_name))
+            if self.control_waiting.empty():
+                self.control_current = None
+            else:
+                self.control_grant(self.control_waiting.get())
+        self.control_lock.release()
+        return success
+
+    def control_request(self, intent):
+        """Called when an App requests to be given control."""
+        self.control_lock.acquire()
+        if not self.control_current and self.control_waiting.empty():
+            self.control_grant(intent.data)
+        else:
+            self.control_waiting.put(intent.data)
+        self.control_lock.release()
+
+    def control_revoke(self):
+        self.vehicle.broadcast(Intent(
+            action=ACTION_CONTROL_REVOKE,
+            component=self.control_current.app_name
+        ))
+
+    def control_rotate(self):
+        """If other Apps are waiting for control, rotate control.
+
+        Put App which was rotated out back into queue.
+        """
+        self.control_lock.acquire()
+        if self.control_current is not None \
+                and not self.control_waiting.empty():
+            self.debug('Rotate Out: {}'.format(self.control_current.app_name))
+            self.control_revoke()
+            self.control_waiting.put(self.control_current.app_name)
+            self.control_grant(self.control_waiting.get())
+        self.control_lock.release()
 
     @property
     def qualified_name(self):
@@ -312,7 +408,7 @@ class Communication(App):
             tlm(str): Raw bytes received from socket
         """
         self.all_telemetry.append(tlm)
-        self.vehicle.debug("Recvd tlm: %s", tlm)
+        # self.vehicle.debug("Recvd tlm: %s", tlm)
 
         # TODO: Check if needed
         hdr = tlm[0][:12]
@@ -349,6 +445,17 @@ class Communication(App):
         """ Returns a protobuf object for the type of airliner msg passed """
         return pyliner_msgs.proto_msg_map[msg]()
 
+    @staticmethod
+    def serialize(header, payload):
+        """
+        Receive a CCSDS message and payload then returns the
+        serialized concatenation of them.
+        """
+        ser = header.get_encoded()
+        if payload:
+            ser += payload.SerializeToString()
+        return ser
+
     def _serialize(self, telemetry):
         """ User accessible function to send a command to the software bus.
 
@@ -379,7 +486,7 @@ class Communication(App):
         payload_size = payload.ByteSize() if args_present else 0
         header.set_user_data_length(payload_size)
 
-        serial_cmd = serialize(header, payload)
+        serial_cmd = Communication.serialize(header, payload)
         return serial_cmd
 
     def subscribe(self, tlm_item):

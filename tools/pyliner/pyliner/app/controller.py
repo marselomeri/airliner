@@ -10,11 +10,13 @@ Apps:
 
 """
 import time
+from threading import Event
 
 from flufl.enum import Enum
 
 from pyliner.app import App
-from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
+from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND, \
+    ACTION_CONTROL_REQUEST, ACTION_CONTROL_RELEASE, ACTION_CONTROL_GRANT
 from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_exceptions import UnauthorizedAtpError
 from pyliner.telemetry import ManualSetpoint
@@ -53,12 +55,13 @@ class Controller(App):
         """Arm vehicle."""
         print("Arming vehicle")
         self.vehicle.info("Arming vehicle")
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(ArmSwitch=3))).first()
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(ArmSwitch=1))).first()
+        with self.control_block() as block:
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(ManualSetpoint(ArmSwitch=3)))).first()
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(ManualSetpoint(ArmSwitch=1)))).first()
 
     def atp(self, text, error=True):
         """Collect authorization to proceed (ATP) from the user."""
@@ -79,9 +82,10 @@ class Controller(App):
     def disarm(self):
         print("Disarming vehicle")
         self.vehicle.info("Disarming vehicle")
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(ArmSwitch=3))).first()
+        with self.control_block() as block:
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(ManualSetpoint(ArmSwitch=3)))).first()
 
     def flight_mode(self, mode):
         if not mode:
@@ -96,10 +100,12 @@ class Controller(App):
     def _mode_posctl(self):
         print("Position control")
         self.vehicle.info("Position control")
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
-        ).first()
+        with self.control_block() as block:
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(
+                    ManualSetpoint(Z=0.5, PosctlSwitch=1, GearSwitch=1))
+            )).first()
 
     @property
     def qualified_name(self):
@@ -113,17 +119,21 @@ class Controller(App):
         """Return to launch."""
         print("RTL")
         self.vehicle.info("RTL")
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
-        ).first()
+        with self.control_block() as block:
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(
+                    ManualSetpoint(ReturnSwitch=1, GearSwitch=3, ArmSwitch=1))
+            )).first()
 
     def takeoff(self):
         """Takeoff"""
         print("Auto takeoff")
         self.vehicle.info("Auto takeoff")
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
-        ).first()
+        with self.control_block() as block:
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(
+                    ManualSetpoint(TransitionSwitch=1, ArmSwitch=1))
+            )).first()
         time.sleep(5)

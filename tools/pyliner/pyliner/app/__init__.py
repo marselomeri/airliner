@@ -1,5 +1,9 @@
 from abc import abstractmethod
+from threading import Event
 
+from pyliner.action import ACTION_CONTROL_REQUEST, ACTION_CONTROL_GRANT, \
+    ACTION_CONTROL_RELEASE, ACTION_CONTROL_REVOKE
+from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_exceptions import InvalidStateError
 from pyliner.util.loggable import Loggable
 from pyliner.app_access import AppAccess
@@ -8,7 +12,7 @@ from pyliner.app_access import AppAccess
 class App(Loggable):
     """Apps respond to events and control the vehicle when appropriate.
     A Sensor is a long-running passive component of Pyliner.
-    
+
     An app may be attached or detached at any time by the program. In the event
     that an app is detached, it should cease any auxiliary tasks by stopping
     threads or disabling event listeners.
@@ -27,7 +31,6 @@ class App(Loggable):
            v                          |
         attach -> start <-> stop -> detach
     """
-    # TODO Add App qualified name (com.windhover.pyliner.app.controller, etc)
 
     ATTACHED = 'ATTACHED'
     DETACHED = 'DETACHED'
@@ -81,3 +84,65 @@ class App(Loggable):
         self._state = App.DETACHED
         self.vehicle = None
         self.logger = None
+
+    def control_block(self):
+        if self.state is App.DETACHED:
+            raise InvalidStateError('Detached App will never get control.')
+        return _ControlBlock(self)
+
+
+class _ControlBlock(object):
+    def __init__(self, app):
+        self.app = app
+
+        self._auth = None
+        """:type: ControlToken"""
+        self._control = Event()
+        self._exit = False
+        self._grant_filter = None
+        self._revoke_filter = None
+
+    def __enter__(self):
+        self._grant_filter = self.app.vehicle.add_filter(
+            intent_filter=IntentFilter(actions=[ACTION_CONTROL_GRANT]),
+            callback=lambda i: self.grant(i.data)
+        )
+        self._revoke_filter = self.app.vehicle.add_filter(
+            intent_filter=IntentFilter(actions=[ACTION_CONTROL_REVOKE]),
+            callback=lambda i: self.revoke()
+        )
+
+        self.app.vehicle.broadcast(Intent(
+            action=ACTION_CONTROL_REQUEST,
+            data=self.app.qualified_name
+        ))
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._control.wait()
+        self.app.vehicle.broadcast(Intent(
+            action=ACTION_CONTROL_RELEASE,
+            data=self._auth
+        ))
+        self.app.vehicle.remove_filter(self._grant_filter)
+        self.app.vehicle.remove_filter(self._revoke_filter)
+
+    def broadcast(self, intent):
+        self._control.wait()
+        return self.app.vehicle.broadcast(intent)
+
+    def grant(self, data):
+        if self._exit:
+            return False
+        else:
+            self._auth = data
+            self._control.set()
+            return True
+
+    def request(self, data):
+        self._control.wait()
+        return self._auth.request(data)
+
+    def revoke(self):
+        self._auth = None
+        self._control.clear()

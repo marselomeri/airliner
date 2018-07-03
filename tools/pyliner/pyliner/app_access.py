@@ -80,6 +80,8 @@ class AppAccess(Loggable):
                 result = cb(intent)
             except Exception as e:
                 exception = e
+                self.exception('While handling {}, an Exception was raised:'
+                               .format(intent))
             if result is not None or exception is not None:
                 future.add(IntentResponse(result=result, exception=exception))
 

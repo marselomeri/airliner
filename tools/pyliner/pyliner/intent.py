@@ -17,10 +17,13 @@ class Intent(object):
         self.component = component
         self.data = data
 
+    # def __str__(self):
+    #     return '{}(action={!r})'.format(self.__class__.__name__, self.action)
+
     def __repr__(self):
         s = '{}(action={!r}, data={!r}'.format(
             self.__class__.__name__, self.action, self.data, self.component)
-        s += '' if not self.component else 'component=' + repr(self.component)
+        s += '' if not self.component else ' component=' + repr(self.component)
         s += ')'
         return s
 
