@@ -38,8 +38,8 @@
 ** Includes
 *************************************************************************/
 #include "vc_dev_io_udp.h"
-#include "px4lib.h"
 #include "cfe.h"
+#include "px4lib.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -439,32 +439,16 @@ int32 VC_Send_Buffer(uint8 DeviceID)
                 VC_AppCustomDevice.Channel[DeviceID].Buffer, PX4_OPTICAL_FLOW_FRAME_SIZE, 0);
         if(size == PX4_OPTICAL_FLOW_FRAME_SIZE)
         {
-
         	// Copy to message
-//        	uint64 timestamp;
-//			timestamp = PX4LIB_GetPX4TimeUs();
-//			OpticalFlowFrameMsg.Timestamp = timestamp;
-
-        	// output message before publish
-//			OS_printf("\n\nTimestamp - %u",OpticalFlowFrameMsg.Timestamp);
-			//OS_printf("Frame \n\n");
+        	uint64 timestamp;
+			timestamp = PX4LIB_GetPX4TimeUs();
+			OpticalFlowFrameMsg.Timestamp = timestamp;
 			for (int i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
 				OpticalFlowFrameMsg.Frame[i] = VC_AppCustomDevice.Channel[DeviceID].Buffer[i];
-				//OS_printf(" %c ",OpticalFlowFrameMsg.Frame[i]);
 			}
-
 			// Publish message to software bus
         	CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
 			CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
-
-        	// Send this frame to a defined UDP port
-//        	if (-1 == VC_SendData(DeviceID, (void*)VC_AppCustomDevice.Channel[DeviceID].Buffer, PX4_OPTICAL_FLOW_FRAME_SIZE))
-//            {
-//                (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-//                        "VC send data failed on channel %u", (unsigned int)DeviceID);
-//                returnCode = -1;
-//                goto end_of_function;
-//            }
         }
     }
 

@@ -42,7 +42,54 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default FLOW config table data */
 FLOW_ConfigTbl_t FLOW_ConfigTbl =
 {
-	/* TODO:  Define table. */
+		/** \brief Size of sliding window.
+		 *
+		 *  \par Limits:
+		 *       Min > Max (incr.) 2 > 10, default 8.
+		 */
+		8,
+		/** \brief Number of blocks of sliding window.
+		 *
+		 *  \par Limits:
+		 *       Min > Max (incr.) 2 > 10, default 5.
+		 */
+		5,
+		/** \brief Default image output rate.
+		 *
+		 *  \par Limits:
+		 *       default 15.
+		 */
+		15,
+		/** \brief Default image width.
+		 *
+		 *  \par Limits:
+		 *       default 64.
+		 */
+		64,
+		/** \brief Default image height.
+		 *
+		 *  \par Limits:
+		 *       default 64.
+		 */
+		64,
+		/** \brief Default image search size.
+		 *
+		 *  \par Limits:
+		 *       default 6.
+		 */
+		6,
+		/** \brief Default feature threshold.
+		 *
+		 *  \par Limits:
+		 *       default 30.
+		 */
+		30,
+		/** \brief Default value threshold.
+		 *
+		 *  \par Limits:
+		 *       default 3000.
+		 */
+		3000
 };
 
 /*

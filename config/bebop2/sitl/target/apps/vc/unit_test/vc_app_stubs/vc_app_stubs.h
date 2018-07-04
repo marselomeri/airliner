@@ -43,6 +43,9 @@ extern "C" {
 boolean VC_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
                            uint16 usExpectedLen);
 
+uint64 PX4LIB_GetPX4TimeUs(void);
+
+
 #ifdef __cplusplus
 }
 #endif
