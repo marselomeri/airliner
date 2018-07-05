@@ -14,7 +14,7 @@ from geographiclib.geodesic import Geodesic
 from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, \
     ACTION_CALC_PBD
 from pyliner.intent import IntentFilter
-from pyliner.navigation.position import Coordinate
+from pyliner.app.navigation.position import Coordinate
 from pyliner.app import App
 
 

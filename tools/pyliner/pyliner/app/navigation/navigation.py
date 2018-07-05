@@ -3,13 +3,13 @@ import math
 from pyliner.action import ACTION_TELEM
 from pyliner.app import App
 from pyliner.intent import Intent
-from pyliner.navigation.goto import Goto
+from pyliner.app.navigation.goto import Goto
 
-from pyliner.navigation.heading import Heading
-from pyliner.navigation.lnav import Lnav
-from pyliner.navigation.rotate import Rotate
-from pyliner.navigation.vnav import Vnav
-from pyliner.navigation.waypoint import Waypoint
+from pyliner.app.navigation import Heading
+from pyliner.app.navigation.lnav import Lnav
+from pyliner.app.navigation.rotate import Rotate
+from pyliner.app.navigation import Vnav
+from pyliner.app.navigation.waypoint import Waypoint
 from pyliner.util.conversions import hertz
 
 
