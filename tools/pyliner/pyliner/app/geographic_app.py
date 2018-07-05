@@ -1,9 +1,9 @@
 """
-The Geographic Sensor module provides a app that can be used to calculate
+The Geographic App module provides a app that can be used to calculate
 information about two Coordinates on Earth.
 
 Sensors:
-    GeographicSensor  Produces relevant world-based calculations.
+    GeographicApp  Produces relevant world-based calculations.
 """
 
 from copy import copy
@@ -11,17 +11,18 @@ from numbers import Real
 
 from geographiclib.geodesic import Geodesic
 
-from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, ACTION_CALC_PBD
-from pyliner.geographic import Geographic
-from pyliner.navigation.position import Coordinate
+from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, \
+    ACTION_CALC_PBD
+from pyliner.intent import IntentFilter
+from pyliner.app.navigation.position import Coordinate
 from pyliner.app import App
 
 
-class GeographicApp(Geographic, App):
+class GeographicApp(App):
     """A Sensor that produces relevant world-based calculations."""
 
     def __repr__(self):
-        return 'GeographicSensor()'
+        return 'GeographicApp()'
 
     def __str__(self):
         return 'WGS84'
@@ -29,13 +30,13 @@ class GeographicApp(Geographic, App):
     def attach(self, vehicle_wrapper):
         super(GeographicApp, self).attach(vehicle_wrapper)
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_CALC_BEARING,
+            IntentFilter(actions=[ACTION_CALC_BEARING]),
             lambda i: GeographicApp.bearing(*i.data))
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_CALC_DISTANCE,
+            IntentFilter(actions=[ACTION_CALC_DISTANCE]),
             lambda i: GeographicApp.distance(*i.data))
         self.vehicle.add_filter(
-            lambda i: i.action == ACTION_CALC_PBD,
+            IntentFilter(actions=[ACTION_CALC_PBD]),
             lambda i: GeographicApp.pbd(*i.data)
         )
 
@@ -45,6 +46,8 @@ class GeographicApp(Geographic, App):
 
     @staticmethod
     def bearing(a, b):
+        # type: (Coordinate, Coordinate) -> Real
+        """Calculate the bearing from a to b in degrees."""
         return GeographicApp._inverse(a, b)['azi1'] % 360
 
     @staticmethod
@@ -56,6 +59,16 @@ class GeographicApp(Geographic, App):
 
     @staticmethod
     def distance(a, b):
+        # type: (Coordinate, Coordinate) -> Real
+        """Calculate the distance between two points on the globe.
+
+        Args:
+            a (Coordinate): Point A
+            b (Coordinate): Point B
+
+        Returns:
+            float: Distance in meters.
+        """
         return GeographicApp._inverse(a, b)['s12']
 
     @staticmethod
@@ -68,8 +81,23 @@ class GeographicApp(Geographic, App):
 
     @staticmethod
     def pbd(a, bearing, distance):
+        # type: (Coordinate, Real, Real) -> Coordinate
+        """Calculate a Place-Bearing-Distance (PBD) coordinate.
+
+        Returns:
+            (Coordinate): A copy of `a` with updated latitude and longitude.
+
+        Args:
+            a (Coordinate): Point A
+            bearing (Real): Direction in degrees [0, 360)
+            distance (Real): Distance in meters
+        """
         direct = GeographicApp._direct(a, bearing, distance)
         b = copy(a)
         b.latitude = direct['lat2']
         b.longitude = direct['lon2']
         return b
+
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.geographic'

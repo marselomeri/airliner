@@ -7,14 +7,13 @@ Classes:
     Vehicle  A vehicle for the user to control.
 """
 
-from pyliner.app import App
 from pyliner.app.geographic_app import GeographicApp
 from pyliner.app.time_app import TimeApp
 from pyliner.base_vehicle import BaseVehicle
 from pyliner.app.controller import Controller
 from pyliner.app.flight_director import FlightDirector
-from pyliner.geofence import Geofence, LayerKind
-from pyliner.navigation.navigation import Navigation
+from pyliner.app.geofence import Geofence, LayerKind
+from pyliner.app.navigation.navigation import Navigation
 
 
 class Vehicle(BaseVehicle):
@@ -51,35 +50,20 @@ class Vehicle(BaseVehicle):
         self.atp_override = None
 
         # Component Defaults
-        self.communications = communications  # TODO Remove, use intent
         geographic = geographic or GeographicApp()
         time = time or TimeApp()
         geofence = Geofence()
         navigation = Navigation()
 
         # Attach defaults
-        self.attach_app('comms', communications)
-        self.attach_app('geographic', geographic)
-        # self.attach_service('time', time)
-        self.attach_app('fence', geofence)
-        self.attach_app('ctrl', Controller())
-        self.attach_app('fd', FlightDirector())
-        self.attach_app('nav', navigation)
+        self.attach_app(communications)
+        self.attach_app(geographic)
+        # self.attach_service(time)
+        self.attach_app(geofence)
+        self.attach_app(Controller())
+        self.attach_app(FlightDirector())
+        self.attach_app(navigation)
 
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
         navigation.defaults.update({'timeout': None, 'underflow': 5.0})
-
-    def attach_app(self, app_name, app):
-        """
-        Enable a Pyliner Module on this vehicle. All required telemetry for the
-        new module will be subscribed to.
-
-        Args:
-            app_name (str): The name that the module will be initialized under.
-            app (App): The app to enable.
-        """
-        super(Vehicle, self).attach_app(app_name, app)
-        required_ops = app.required_telemetry_paths()
-        if required_ops:
-            self.communications.subscribe({'tlm': required_ops})

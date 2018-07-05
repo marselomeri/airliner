@@ -1,4 +1,11 @@
+# Log Files
+archive/*
 /logs/*
+
+# Python Files
 *.pyc
-.idea/*
 venv/*
+venv3/*
+
+# PyCharm Files
+.idea/*

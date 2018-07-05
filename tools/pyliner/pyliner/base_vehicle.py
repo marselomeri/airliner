@@ -7,16 +7,16 @@ Classes:
 """
 import atexit
 import logging
-import re
 import threading
 from abc import ABCMeta
+from collections import defaultdict
 from datetime import datetime
 from os.path import join
-from time import sleep
 
 from junit_xml import TestCase, TestSuite
 
 from pyliner.app import App, AppAccess
+from pyliner.intent import Intent, IntentNoReceiverError
 from pyliner.intent import IntentFuture
 from pyliner.util.loggable import Loggable
 
@@ -24,11 +24,8 @@ from pyliner.util.loggable import Loggable
 class BaseVehicle(Loggable):
     """
     Contains the bare-minimum required for Pyliner. All additional functionality
-    is provided through the Pyliner class. App management is performed via the
+    is provided through the Vehicle class. App management is performed via the
     app-lifecycle methods.
-
-    By way of the communications instance given in the constructor, telemetry
-    from the vehicle is exposed via the TODO methods.
     """
     __metaclass__ = ABCMeta
 
@@ -45,74 +42,83 @@ class BaseVehicle(Loggable):
         atexit.register(self.shutdown)
 
         # Instance attributes
-        # self.broadcast_pool = ThreadPool
-        self._apps = {}
+        # self.broadcast_pool = ThreadPool # TODO Python 3
+        self.apps = {}
         """:type: dict[str, AppAccess]"""
+        self._intent_filters = defaultdict(lambda: set())
+        """:type: dict[str, set[AppAccess]]"""
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
-    def attach_app(self, app_name, app):
-        """Attach an app to this vehicle."""
-        identifier = re.compile(r"^[^\d\W]\w*\Z")
+    def add_filter(self, intent_filter, app):
+        """Add an intent filter to this vehicle.
 
-        if app_name in self._apps:
+        Args:
+            intent_filter (IntentFilter): The filter to add.
+            app (AppAccess): If an intent matches a filter, the app to call.
+        """
+        for action in intent_filter.actions:
+            self._intent_filters[action].add(app)
+
+    def attach_app(self, app):
+        """Attach an app to this vehicle.
+
+        Args:
+            app (App): The app to attach to this vehicle.
+        """
+        if app.qualified_name in self.apps:
             raise ValueError('Attempting to enable a module on top of an '
                              'existing module.')
-        elif not re.match(identifier, app_name):
-            raise ValueError('Attempting to enable a module with an illegal '
-                             'name. Module names must be valid Python '
-                             'identifiers.')
         elif not isinstance(app, App):
             return TypeError('module must implement App.')
 
-        vehicle_token = AppAccess(app_name)
-        self._apps[app_name] = vehicle_token
-        vehicle_token.attach(self, app)
-
-    def await_change(self, tlm, poll=1.0, out=None):
-        """Block until the telemetry value changes.
-
-        Args:
-            tlm (str): The telemetry to monitor.
-            poll (float): Check every `poll` seconds.
-            out (Callable): If not None, call this every loop.
-        """
-        old_val = self.tlm_value(tlm)
-        while self.tlm_value(tlm) == old_val:
-            if out is not None:
-                out()
-            sleep(poll)
-        return self.tlm_value(tlm)
+        vehicle_token = AppAccess(app)
+        self.apps[app.qualified_name] = vehicle_token
+        vehicle_token.attach(self)
 
     def broadcast(self, intent):
+        # type: (Intent) -> IntentFuture
         """Broadcast an Intent to components."""
         self.debug('Broadcasting: {}'.format(intent))
         future = IntentFuture(caused_by=intent)
-        # TODO Use Pool
-        threading.Thread(target=self._broadcast_thread, args=(intent, future))\
-            .start()
+        # TODO Multithreading is a headache
+        # threading.Thread(target=self._broadcast_thread, args=(intent, future))\
+        #     .start()
+        self._broadcast_thread(intent, future)
         return future
 
     def _broadcast_thread(self, intent, future):
+        # type: (Intent, IntentFuture) -> None
         if intent.is_explicit():
-            self._apps[intent.component].receive(intent, future)
+            self.apps[intent.component].receive(intent, future)
         else:
-            for ident in self._apps.values():
-                ident.receive(intent, future)
+            try:
+                intent_filters = self._intent_filters[intent.action]
+            except KeyError:
+                future.failure = IntentNoReceiverError(
+                    'There are no Apps accepting {}.'.format(intent.action))
+            else:
+                for app in intent_filters:
+                    app.receive(intent, future)
 
     def detach_app(self, name):
-        """Disable an app by removing it from the vehicle.
+        """Disable an app by removing it from this vehicle.
 
         Note:
             Any apps that attempt to call the disabled app by name will
             produce an error.
         """
-        if name not in self._apps:
+        if name not in self.apps:
             raise AttributeError(
                 'Cannot disable a module that was never enabled.')
-        module = self._apps[name]
-        del self._apps[name]
+        module = self.apps[name]
+        del self.apps[name]
         module.detach()
+
+    def remove_filter(self, intent_filter, app):
+        """Remove an intent filter from this vehicle."""
+        for action in intent_filter.actions:
+            self._intent_filters[action].remove(app)
 
     def shutdown(self):
         """Shutdown all components on vehicle and detach.
@@ -129,39 +135,10 @@ class BaseVehicle(Loggable):
         """
         self.info('Vehicle is shutting down.')
         if not self.is_shutdown:
-            for app in self._apps.values():
+            for app in self.apps.values():
                 app.detach()
             self.is_shutdown = True
         self.info('Shutdown complete.')
-
-    def tlm(self, tlm):
-        """ Get all data of specified telemetry item.
-
-        Args:
-            tlm (str): Operational name of requested telemetry.
-
-        Returns:
-            dict: Telemetry data.
-
-        Raises:
-            KeyError: If telemetry is not found.
-        """
-        # TODO Rename variable _telemetry
-        return self.communications._telemetry[tlm]
-
-    def tlm_value(self, tlm):
-        """ Get current value of specified telemetry item.
-
-        Args:
-            tlm (str): Operational name of requested telemetry.
-
-        Returns:
-            Any: Current value of telemetry.
-
-        Raises:
-            KeyError: If telemetry is not found.
-        """
-        return self.tlm(tlm)['value']
 
     # Testing Code. TODO Figure out where to put this
     def assert_equals(self, a, b, description):

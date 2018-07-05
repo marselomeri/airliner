@@ -18,7 +18,7 @@ Requirements Fulfilled:
 from time import sleep
 
 from pyliner.app.communication import Communication
-from pyliner.navigation.control import limiter, proportional
+from pyliner.app.navigation.control import limiter, proportional
 from pyliner.vehicle import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper

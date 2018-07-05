@@ -5,7 +5,7 @@ from numbers import Real
 
 from pyliner.action import ACTION_CALC_DISTANCE, ACTION_AXIS_SET
 from pyliner.intent import Intent
-from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
+from pyliner.app.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
 
 
@@ -54,7 +54,7 @@ class Lnav(NavigationFactory):
         while datetime.now() < timeout:
             delta = self.broadcast(Intent(
                 action=ACTION_CALC_DISTANCE, data=(original, self.nav.position)
-            )).first_result()
+            )).first().result
             if (distance - delta) < tolerance:
                 self.info('lnav expected %s actual %s (%s < %s m)',
                           distance, delta, distance - delta, tolerance)

@@ -23,10 +23,10 @@ class SocketApp(App):
 
     @abstractmethod
     def handle(self, request, client_address):
-        pass
+        raise NotImplementedError()
 
-    def start(self):
-        super(SocketApp, self).start()
+    def attach(self, vehicle_wrapper):
+        super(SocketApp, self).attach(vehicle_wrapper)
         self.info('Starting SocketService on port {}'.format(self.port))
         self.server = TCPServer(
             ('', self.port),
@@ -38,7 +38,7 @@ class SocketApp(App):
         listen_thread.daemon = True
         listen_thread.start()
 
-    def stop(self):
-        super(SocketApp, self).stop()
+    def detach(self):
         self.info('Stopping SocketService on port {}'.format(self.port))
         self.server.shutdown()
+        super(SocketApp, self).detach()

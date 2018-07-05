@@ -14,7 +14,7 @@ from abc import ABCMeta, abstractmethod
 from collections import Container
 from numbers import Real
 
-from pyliner.navigation.position import Position, Coordinate
+from pyliner.app.navigation.position import Position, Coordinate
 
 
 class Volume(Container):

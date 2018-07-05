@@ -1,7 +1,8 @@
 from time import sleep
 
 from pyliner.app.communication import Communication
-from pyliner.geofence import Geofence, VerticalCylinder
+from pyliner.app.geofence import Geofence
+from pyliner.app.geofence.volume import VerticalCylinder
 from pyliner.vehicle import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
@@ -40,7 +41,7 @@ with ScriptingWrapper(rky) as rocky:
 
     goto = rocky.nav.goto(tolerance=0.5)
     goto(new)
-    new = rocky.geographic.pbd(new, 0, 30)
+    new = rocky.geographic.pbd(new, 0, 50)
     goto(new)
 
     rocky.ctrl.atp('Return (if you got here the fence failed)')

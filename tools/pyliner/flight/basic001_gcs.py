@@ -12,12 +12,11 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-from os.path import basename
 from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.app.controller import FlightMode
-from pyliner.navigation.control import proportional
+from pyliner.app.navigation.control import proportional
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.vehicle import Vehicle
@@ -43,32 +42,32 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Move Up')
-    rocky.nav.vnav(method=proportional(0.2), tolerance=0.5) \
+    rocky.nav.vnav(method=proportional(0.25), tolerance=0.5) \
         .up(10)
 
     rocky.ctrl.atp('First')
-    lnav = rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)
-    lnav.forward(5)
-    lnav.right(5)
-    lnav.backward(5)
-    lnav.left(5)
+    lnav = rocky.nav.lnav(method=proportional(0.20), tolerance=0.5)
+    lnav.forward(15)
+    lnav.right(15)
+    lnav.backward(15)
+    lnav.left(15)
 
     rocky.ctrl.atp('Second')
-    lnav.forward(5)
-    lnav.left(5)
-    lnav.backward(5)
-    lnav.right(5)
+    lnav.forward(15)
+    lnav.left(15)
+    lnav.backward(15)
+    lnav.right(15)
 
     rocky.ctrl.atp('Third')
-    rocky.nav.lnav(method=proportional(0.15), tolerance=0.75) \
-        .backward(5) \
-        .left(5) \
-        .forward(5) \
-        .right(5)
+    rocky.nav.lnav(method=proportional(0.20), tolerance=0.5) \
+        .backward(15) \
+        .left(15) \
+        .forward(15) \
+        .right(15)
 
     rocky.ctrl.atp('Fourth')
-    rocky.nav.lnav(method=proportional(0.15), tolerance=0.75) \
-        .backward(5).right(5).forward(5).left(5)
+    rocky.nav.lnav(method=proportional(0.20), tolerance=0.5) \
+        .backward(15).right(15).forward(15).left(15)
 
     rocky.ctrl.atp('Return')
     rocky.ctrl.rtl()

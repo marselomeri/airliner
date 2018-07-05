@@ -28,7 +28,7 @@ class InvalidOperationException(PylinerError):
     pass
 
 
-class InvalidStateError(PylinerError, ValueError):
+class InvalidStateError(PylinerError):
     """Raised if continuing would perform an illegal state transition."""
     pass
 

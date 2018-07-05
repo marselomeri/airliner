@@ -7,8 +7,9 @@ Apps:
 """
 
 from pyliner.app import App
-from pyliner.action import ACTION_AXIS_SET, ACTION_SEND_COMMAND
-from pyliner.intent import Intent
+from pyliner.action import ACTION_AXIS_SET, ACTION_SEND_COMMAND, \
+    ACTION_AXIS_ZERO
+from pyliner.intent import Intent, IntentFilter
 from pyliner.telemetry import ManualSetpoint
 
 
@@ -32,27 +33,43 @@ class FlightDirector(App):
         if r is not None:
             self.r = r
 
-    def receive(self, intent):
-        if intent.action == ACTION_AXIS_SET:
-            axis, value = intent.data
-            self(**{axis: value})
-
     def attach(self, vehicle_wrapper):
         super(FlightDirector, self).attach(vehicle_wrapper)
-        self.vehicle.callback = self.receive
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_AXIS_SET]),
+            self.axis_set
+        )
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_AXIS_ZERO]),
+            lambda i: self.zero()
+        )
 
     def detach(self):
         self.vehicle.callback = None
         super(FlightDirector, self).detach()
 
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.app.flight_director'
+
+    def axis_set(self, intent):
+        axis, value = intent.data
+        self(**{axis: value})
+
     def _send_telemetry(self):
         mod_z = self.z / 2.0 + 0.5  # [-1, 1] -> [0, 1]
-        self.vehicle.broadcast(Intent(
-            action=ACTION_SEND_COMMAND,
-            data=ManualSetpoint(
-                X=self._x, Y=self._y, Z=mod_z, R=self._r,
-                PosctlSwitch=1, GearSwitch=1, ArmSwitch=1)
-        ))
+        # self.debug('Sending Telemetry: {} {} {} {}'.format(
+        #     self.x, self.y, mod_z, self.r))
+        with self.control_block() as block:
+            block.broadcast(Intent(
+                action=ACTION_SEND_COMMAND,
+                data=block.request(ManualSetpoint(
+                    X=self._x, Y=self._y, Z=mod_z, R=self._r,
+                    PosctlSwitch=1, GearSwitch=1, ArmSwitch=1)))).first()
+
+    def zero(self):
+        self._x = self._y = self._z = self._r = 0.0
+        self._send_telemetry()
 
     @property
     def r(self):
@@ -96,8 +113,4 @@ class FlightDirector(App):
         if self.strict_set and (value > 1 or value < -1):
             raise ValueError('Cannot assign Z outside of [-1, 1].')
         self._z = value
-        self._send_telemetry()
-
-    def zero(self):
-        self.x = self.y = self.z = self.r = 0.0
         self._send_telemetry()

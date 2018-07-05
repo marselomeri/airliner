@@ -16,14 +16,14 @@ from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.app.controller import FlightMode
-from pyliner.navigation.control import limiter, proportional
+from pyliner.app.navigation.control import limiter, proportional
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.vehicle import Vehicle
 
 
 def range_limit(current, target):
-    return limiter(-0.2, 0.2)(proportional(0.1 / 50.0)(current, target))
+    return limiter(-0.2, 0.2)(proportional(0.1 / 40.0)(current, target))
 
 
 rky = Vehicle(
@@ -46,29 +46,29 @@ with ScriptingWrapper(rky) as rocky:
     rocky.ctrl.flight_mode(FlightMode.PosCtl)
 
     rocky.ctrl.atp('Move Up')
-    rocky.nav.vnav(method=proportional(0.2), tolerance=0.5).up(10)
+    rocky.nav.vnav(method=proportional(0.25), tolerance=0.5).up(10)
 
-    lnav = rocky.nav.lnav(method=proportional(0.15), tolerance=0.75)
+    lnav = rocky.nav.lnav(method=proportional(0.20), tolerance=0.5)
     yaw = rocky.nav.rotate(method=range_limit, tolerance=2)
 
     rocky.ctrl.atp('First')
     for _ in range(4):
-        lnav.forward(5)
+        lnav.forward(15)
         yaw.clockwise(90)
 
     rocky.ctrl.atp('Second')
     for _ in range(4):
-        lnav.forward(5)
+        lnav.forward(15)
         yaw.counterclockwise(90)
 
     rocky.ctrl.atp('Third')
     for _ in range(4):
-        lnav.backward(5)
+        lnav.backward(15)
         yaw.clockwise(90)
 
     rocky.ctrl.atp('Fourth')
     for _ in range(4):
-        lnav.backward(5)
+        lnav.backward(15)
         yaw.counterclockwise(90)
 
     rocky.ctrl.atp('Return')

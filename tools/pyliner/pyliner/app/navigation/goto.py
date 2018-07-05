@@ -5,7 +5,7 @@ from numbers import Real
 
 from pyliner.action import ACTION_CALC_DISTANCE, ACTION_SEND_COMMAND
 from pyliner.intent import Intent
-from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
+from pyliner.app.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
 from pyliner.telemetry import SetpointTriplet
 from pyliner.util import shifter
@@ -54,25 +54,27 @@ class Goto(NavigationFactory):
                 if cur.yaw is not None else self.nav.yaw
             nyaw = 0 if not nxt else nxt.yaw \
                 if nxt.yaw is not None else self.nav.yaw
-            self.broadcast(Intent(
-                action=ACTION_SEND_COMMAND,
-                data=SetpointTriplet(
-                    Prev_Lat=prv.latitude if prv is not None else 0,
-                    Prev_Lon=prv.longitude if prv is not None else 0,
-                    Prev_Alt=palt, Prev_Yaw=pyaw,
-                    Prev_Valid=prv is not None,
-                    Prev_PositionValid=prv is not None,
-                    Cur_Lat=cur.latitude if cur is not None else 0,
-                    Cur_Lon=cur.longitude if cur is not None else 0,
-                    Cur_Alt=calt, Cur_Yaw=cyaw,
-                    Cur_Valid=cur is not None,
-                    Cur_PositionValid=cur is not None,
-                    Next_Lat=nxt.latitude if nxt is not None else 0,
-                    Next_Lon=nxt.longitude if nxt is not None else 0,
-                    Next_Alt=nalt, Next_Yaw=nyaw,
-                    Next_Valid=nxt is not None,
-                    Next_PositionValid=nxt is not None
-                )))
+            triplet = SetpointTriplet(
+                Prev_Lat=prv.latitude if prv is not None else 0,
+                Prev_Lon=prv.longitude if prv is not None else 0,
+                Prev_Alt=palt, Prev_Yaw=pyaw,
+                Prev_Valid=prv is not None,
+                Prev_PositionValid=prv is not None,
+                Cur_Lat=cur.latitude if cur is not None else 0,
+                Cur_Lon=cur.longitude if cur is not None else 0,
+                Cur_Alt=calt, Cur_Yaw=cyaw,
+                Cur_Valid=cur is not None,
+                Cur_PositionValid=cur is not None,
+                Next_Lat=nxt.latitude if nxt is not None else 0,
+                Next_Lon=nxt.longitude if nxt is not None else 0,
+                Next_Alt=nalt, Next_Yaw=nyaw,
+                Next_Valid=nxt is not None,
+                Next_PositionValid=nxt is not None
+            )
+            with self.nav.control_block() as block:
+                block.broadcast(Intent(
+                    action=ACTION_SEND_COMMAND,
+                    data=block.request(triplet)))
             while True:
                 if datetime.now() > timeout:
                     raise CommandTimeout('goto exceeded timeout')
@@ -80,7 +82,7 @@ class Goto(NavigationFactory):
                 distance = self.broadcast(Intent(
                     action=ACTION_CALC_DISTANCE,
                     data=(cur, self.nav.position),
-                )).first_result(0.5)
+                )).first().result
                 if distance < tolerance:
                     self.nav.vehicle.info(
                         'goto expected %s actual %s (%s < %s m)',
