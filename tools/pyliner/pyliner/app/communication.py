@@ -21,11 +21,10 @@ from pyliner.pyliner_exceptions import PylinerError
 from pyliner.python_pb import pyliner_msgs
 from pyliner.app import App
 from pyliner.util import init_socket, handler_factory, CallableDefaultDict
+from pyliner.util.periodic_executor import PeriodicExecutor
 
 # TODO Python3 does not see telemetry
 # TODO Put all this somewhere vehicle specific
-from pyliner.util.periodic_executor import PeriodicExecutor
-
 SEND_TIME = 0.1
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011

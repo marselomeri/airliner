@@ -4,7 +4,7 @@ from numbers import Real
 
 from pyliner.action import ACTION_AXIS_SET
 from pyliner.intent import Intent
-from pyliner.app.navigation import Heading, Direction
+from pyliner.app.navigation.heading import Heading, Direction
 from pyliner.app.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.pyliner_exceptions import CommandTimeout
 

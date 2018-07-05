@@ -5,10 +5,10 @@ from pyliner.app import App
 from pyliner.intent import Intent
 from pyliner.app.navigation.goto import Goto
 
-from pyliner.app.navigation import Heading
+from pyliner.app.navigation.heading import Heading
 from pyliner.app.navigation.lnav import Lnav
 from pyliner.app.navigation.rotate import Rotate
-from pyliner.app.navigation import Vnav
+from pyliner.app.navigation.vnav import Vnav
 from pyliner.app.navigation.waypoint import Waypoint
 from pyliner.util.conversions import hertz
 

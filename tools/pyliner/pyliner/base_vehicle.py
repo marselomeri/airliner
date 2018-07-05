@@ -93,11 +93,13 @@ class BaseVehicle(Loggable):
             self.apps[intent.component].receive(intent, future)
         else:
             try:
-                for app in self._intent_filters[intent.action]:
-                    app.receive(intent, future)
+                intent_filters = self._intent_filters[intent.action]
             except KeyError:
                 future.failure = IntentNoReceiverError(
                     'There are no Apps accepting {}.'.format(intent.action))
+            else:
+                for app in intent_filters:
+                    app.receive(intent, future)
 
     def detach_app(self, name):
         """Disable an app by removing it from this vehicle.

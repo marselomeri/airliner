@@ -25,7 +25,7 @@ from sortedcontainers import SortedDict
 
 from pyliner.action import ACTION_RTL, ACTION_TELEM
 from pyliner.app import App
-from pyliner.app.geofence import Volume, CompositeVolume
+from pyliner.app.geofence.volume import Volume, CompositeVolume
 from pyliner.intent import Intent
 from pyliner.app.navigation.position import Position
 from pyliner.util import indent
