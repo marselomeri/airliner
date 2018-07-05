@@ -133,11 +133,11 @@ class BaseVehicle(Loggable):
             4. Detach Services
             5. Detach Sensors
         """
-        self.info('Vehicle is shutting down.')
+        self.info('Vehicle {} is shutting down.'.format(self.vehicle_id))
         if not self.is_shutdown:
+            self.is_shutdown = True
             for app in self.apps.values():
                 app.detach()
-            self.is_shutdown = True
         self.info('Shutdown complete.')
 
     # Testing Code. TODO Figure out where to put this

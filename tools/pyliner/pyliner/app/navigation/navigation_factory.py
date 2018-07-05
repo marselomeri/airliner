@@ -34,7 +34,6 @@ class NavigationFactory(Loggable):
         """
         super(NavigationFactory, self).__init__(navigation.vehicle.logger)
         self._default = OverlayDict(kwargs, navigation.defaults)
-        self.broadcast = navigation.vehicle.broadcast
         self.nav = navigation
 
     @abstractmethod
@@ -42,6 +41,10 @@ class NavigationFactory(Loggable):
         # type: (object) -> NavigationFactory
         """Perform the requested operation and return self."""
         raise NotImplementedError
+
+    @property
+    def broadcast(self):
+        return self.nav.vehicle.broadcast
 
     def resolve(self, item, name):
         """If item is NotSet fall back on Navigation defaults."""

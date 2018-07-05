@@ -34,7 +34,9 @@ class SocketApp(App):
                 self.handle(request, client_address))
         self.server.service = self
 
-        listen_thread = Thread(target=self.server.serve_forever)
+        listen_thread = Thread(
+            name=self.__class__.__name__ + 'Thread',
+            target=self.server.serve_forever)
         listen_thread.daemon = True
         listen_thread.start()
 

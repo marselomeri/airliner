@@ -1,6 +1,7 @@
 import math
 
-from pyliner.action import ACTION_TELEM
+from pyliner.intent import IntentFilter
+from pyliner.action import ACTION_TELEM, ACTION_GOTO
 from pyliner.app import App
 from pyliner.intent import Intent
 from pyliner.app.navigation.goto import Goto
@@ -40,6 +41,10 @@ class Navigation(App):
                 'yaw': '/Airliner/CNTL/VehicleGlobalPosition/Yaw'
             })).first()
         self.telemetry = intent.result
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_GOTO]),
+            lambda i: self.goto()(**i.data)
+        )
 
     def detach(self):
         self.telemetry = None

@@ -78,6 +78,9 @@ class Goto(NavigationFactory):
             while True:
                 if datetime.now() > timeout:
                     raise CommandTimeout('goto exceeded timeout')
+                if self.nav.vehicle.shutdown:
+                    self.nav.vehicle.info('Shutdown interrupted GOTO.')
+                    return False
 
                 distance = self.broadcast(Intent(
                     action=ACTION_CALC_DISTANCE,

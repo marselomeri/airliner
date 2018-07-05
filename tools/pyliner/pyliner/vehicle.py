@@ -50,18 +50,20 @@ class Vehicle(BaseVehicle):
         self.atp_override = None
 
         # Component Defaults
-        geographic = geographic or GeographicApp()
-        time = time or TimeApp()
+        controller = Controller()
+        flight_director = FlightDirector()
         geofence = Geofence()
+        geographic = geographic or GeographicApp()
         navigation = Navigation()
+        time = time or TimeApp()
 
         # Attach defaults
         self.attach_app(communications)
         self.attach_app(geographic)
         # self.attach_service(time)
         self.attach_app(geofence)
-        self.attach_app(Controller())
-        self.attach_app(FlightDirector())
+        self.attach_app(controller)
+        self.attach_app(flight_director)
         self.attach_app(navigation)
 
         # Add helpful default settings

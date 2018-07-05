@@ -23,21 +23,23 @@ class AppAccess(Loggable):
         super(AppAccess, self).__init__()
         self.callback = None
         self.app = app
-        self.vehicle = None
+        self._vehicle = None
         """:type: BaseVehicle"""
         self._filter = {}
         """:type: dict[IntentFilter, Callable[[Intent], Any]"""
 
     def attach(self, vehicle):
         """Attach the App to a Vehicle."""
-        self.vehicle = vehicle
+        self._vehicle = vehicle
         self.logger = vehicle.logger.getChild(self.app.qualified_name)
+        self.info('Attaching {}'.format(self.app.qualified_name))
         self.app.attach(self)
 
     def detach(self):
         """Detach the App from the Vehicle."""
+        self.info('Detaching {}'.format(self.app.qualified_name))
         self.app.detach()
-        self.vehicle = None
+        self._vehicle = None
         self.logger = None
 
     def add_filter(self, intent_filter, callback):
@@ -58,7 +60,7 @@ class AppAccess(Loggable):
         if not callable(callback):
             raise TypeError('callback must be callable.')
         self._filter[intent_filter] = callback
-        self.vehicle.add_filter(intent_filter, self)
+        self._vehicle.add_filter(intent_filter, self)
         return intent_filter
 
     def clear_filter(self):
@@ -91,14 +93,18 @@ class AppAccess(Loggable):
             if intent in intent_filter:
                 handle(callback)
 
+    @property
+    def shutdown(self):
+        return self._vehicle.is_shutdown
+
     def broadcast(self, intent):
         # type: (Intent) -> IntentFuture
         """Broadcast an intent to the vehicle."""
-        if not self.vehicle:
+        if not self._vehicle:
             raise InvalidStateError('Cannot broadcast while detached.')
-        return self.vehicle.broadcast(intent)
+        return self._vehicle.broadcast(intent)
 
     def remove_filter(self, intent_filter):
         """Remove a filter (by the tuple returned by add) from this access."""
         del self._filter[intent_filter]
-        self.vehicle.remove_filter(intent_filter, self)
+        self._vehicle.remove_filter(intent_filter, self)
