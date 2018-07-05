@@ -65,7 +65,7 @@ class FlightDirector(App):
                 action=ACTION_SEND_COMMAND,
                 data=block.request(ManualSetpoint(
                     X=self._x, Y=self._y, Z=mod_z, R=self._r,
-                    PosctlSwitch=1, GearSwitch=1, ArmSwitch=1))))
+                    PosctlSwitch=1, GearSwitch=1, ArmSwitch=1)))).first()
 
     def zero(self):
         self._x = self._y = self._z = self._r = 0.0

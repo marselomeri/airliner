@@ -81,8 +81,10 @@ class BaseVehicle(Loggable):
         """Broadcast an Intent to components."""
         self.debug('Broadcasting: {}'.format(intent))
         future = IntentFuture(caused_by=intent)
-        threading.Thread(target=self._broadcast_thread, args=(intent, future))\
-            .start()
+        # TODO Multithreading is a headache
+        # threading.Thread(target=self._broadcast_thread, args=(intent, future))\
+        #     .start()
+        self._broadcast_thread(intent, future)
         return future
 
     def _broadcast_thread(self, intent, future):

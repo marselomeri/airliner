@@ -59,6 +59,9 @@ class ControlToken(object):
         self.app_name = app_name
         # self._token =
 
+    def __repr__(self):
+        return '{}({})'.format(self.__class__.__name__, self.app_name[-10:])
+
     def request(self, data):
         return ControlRequest(self, data)
 
@@ -68,6 +71,10 @@ class ControlRequest(object):
         self.token = token
         """:type: ControlToken"""
         self.data = data
+
+    def __repr__(self):
+        return '{}({}, {})'.format(
+            self.__class__.__name__, self.token, self.data)
 
 
 class CommandAuthorizationError(PylinerError):
