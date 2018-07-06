@@ -142,7 +142,17 @@ PE_ConfigTbl_t PE_ConfigTbl =
      * @max 255
      * @decimal 0
      */
-    150
+    150,
+    
+    /**
+     * Optical flow minimum AGL
+     *
+     * @group Local Position Estimator
+     * @min 0.0
+     * @max 10.0
+     * @decimal 3
+     */
+    0.5f
 };
 
 /*
