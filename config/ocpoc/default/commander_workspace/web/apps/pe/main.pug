@@ -89,8 +89,8 @@ block main
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/GpsAltOrigin'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseGps'}}) Enable GPS
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableGps'}}) Disable GPS
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseGps'}}) Enable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableGps'}}) Disable
                 
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -128,8 +128,8 @@ block main
                     th Altitude Origin
                     td(data-sage={tlm:[{name:'/CFS/PE/UlrAltOrigin'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseUlr'}}) Enable ULR
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableUlr'}}) Disable ULR
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseUlr'}}) Enable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableUlr'}}) Disable
 
   .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
@@ -170,8 +170,8 @@ block main
                     td
                       span(data-sage={tlm:[{name:'/CFS/PE/BaroAltOrigin'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseBaro'}}) Enable Baro
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableBaro'}}) Disable Baro
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseBaro'}}) Enable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableBaro'}}) Disable
 
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -206,9 +206,46 @@ block main
                     th Last Timestamp
                     td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastLand'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseLand'}}) Enable Land
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableLand'}}) Disable Land
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseLand'}}) Enable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableLand'}}) Disable
+              
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Optical Flow Status
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Fused
+                    td
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/FlowFused'}]})
+                  tr
+                    th Initialized
+                    td
+                      div.bool-led(style='--cmdr-led-off-bg-color: #ff0000;' data-sage={tlm:[{name:'/CFS/PE/FlowInitialized'}]})
+                  tr
+                    th Fault
+                    td
+                      div.bool-led.bool-led-error(style='--cmdr-led-off-bg-color: #00ff00;' data-sage={tlm:[{name:'/CFS/PE/FlowFault'}]})
+                  tr
+                    th Timeout
+                    td
+                      div.bool-led.bool-led-warn(style='--cmdr-led-off-bg-color: #00ff00;' data-sage={tlm:[{name:'/CFS/PE/FlowTimeout'}]})
+                  tr
+                    th Last Timestamp
+                    td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastFlow'}]}) ---
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseFlow'}}) Enable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableFlow'}}) Disable
 
+  .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-LD-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
