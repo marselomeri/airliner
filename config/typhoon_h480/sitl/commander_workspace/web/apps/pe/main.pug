@@ -108,28 +108,28 @@ block main
                   tr
                     th Fused
                     td
-                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/UlrFused'}]})
+                      div.bool-led(data-sage={tlm:[{name:'/CFS/PE/DistFused'}]})
                   tr
                     th Initialized
                     td
-                      div.bool-led(style='--cmdr-led-off-bg-color: #ff0000;' data-sage={tlm:[{name:'/CFS/PE/UlrInitialized'}]})
+                      div.bool-led(style='--cmdr-led-off-bg-color: #ff0000;' data-sage={tlm:[{name:'/CFS/PE/DistInitialized'}]})
                   tr
                     th Fault
                     td
-                      div.bool-led.bool-led-error(style='--cmdr-led-off-bg-color: #00ff00;' data-sage={tlm:[{name:'/CFS/PE/UlrFault'}]})
+                      div.bool-led.bool-led-error(style='--cmdr-led-off-bg-color: #00ff00;' data-sage={tlm:[{name:'/CFS/PE/DistFault'}]})
                   tr
                     th Timeout
                     td
-                      div.bool-led.bool-led-warn(style='--cmdr-led-off-bg-color: #00ff00;' data-sage={tlm:[{name:'/CFS/PE/UlrTimeout'}]})
+                      div.bool-led.bool-led-warn(style='--cmdr-led-off-bg-color: #00ff00;' data-sage={tlm:[{name:'/CFS/PE/DistTimeout'}]})
                   tr
                     th Last Timestamp
-                    td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastUlr'}]}) ---
+                    td.format-microseconds(data-sage={tlm:[{name:'/CFS/PE/TimeLastDist'}]}) ---
                   tr
                     th Altitude Origin
-                    td(data-sage={tlm:[{name:'/CFS/PE/UlrAltOrigin'}]}) ---
+                    td(data-sage={tlm:[{name:'/CFS/PE/DistAltOrigin'}]}) ---
             footer
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseUlr'}}) Enable
-              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableUlr'}}) Disable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/FuseDist'}}) Enable
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/PE/DisableDist'}}) Disable
 
   .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
