@@ -38,6 +38,9 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "px4_msgs.h"
+#include "msg_ids.h"
+
 #include "vc_dev_io.h"
 #include "../vc_custom_shared.h"
 #include "vc_perfids.h"
@@ -61,6 +64,9 @@
 /** \brief Gstreamer Gazebo camera plugin UDP output port number.
 */
 #define VC_GST_GAZEBO_PORT (5600)
+/** \brief Optical Flow downward facing camera plugin UDP output port number.
+*/
+#define VC_OPTICAL_FLOW_PORT (5601)
 
 /************************************************************************
 ** Structure Declarations
@@ -131,6 +137,8 @@ typedef struct
     uint32                          TaskFlags;
 } VC_AppCustomDevice_t;
 
+/** \brief Optical flow frame message  */
+PX4_OpticalFlowFrameMsg_t OpticalFlowFrameMsg;
 
 /**
  * @brief Cleanup (close) all enabled  devices

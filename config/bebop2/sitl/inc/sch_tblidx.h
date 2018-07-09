@@ -122,6 +122,9 @@
 #define EA_PERFMON_MIDX 			126
 #define EA_SEND_HK_MIDX 			127
 
+#define FLOW_WAKEUP_MIDX 			42
+#define FLOW_SEND_HK_MIDX 			43
+
 
 #endif /* SCH_TBL_IDX_H */
 

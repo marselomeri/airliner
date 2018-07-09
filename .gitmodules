@@ -145,3 +145,6 @@
 [submodule "tools/commanderjs"]
 	path = tools/commanderjs
 	url = https://hangar.windhoverlabs.com/code/scm/pub/commanderjs.git
+[submodule "apps/flow"]
+	path = apps/flow
+	url = https://kbibireddy@hangar.windhoverlabs.com/code/scm/pub/flow.git

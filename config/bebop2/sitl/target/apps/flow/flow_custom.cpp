@@ -30,24 +30,9 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-
-#ifndef VC_APP_STUBS_H
-#define VC_APP_STUBS_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cfe.h"
+#include "flow_app.h"
+#include <unistd.h>
+#include "px4_msgs.h"
+#include "simlib.h"
 
-boolean VC_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
-                           uint16 usExpectedLen);
-
-uint64 PX4LIB_GetPX4TimeUs(void);
-
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* VC_APP_STUBS_H */

@@ -1,0 +1,202 @@
+html(lang='en-us')
+  head
+    meta(charset='utf-8')
+    title PFD - Windhover Labs
+    meta(name='description', content='Pilot display for drone flight operations')
+    meta(name='author', content='kbibireddy')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    <!--icons-->
+    link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
+    link(rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css")
+    link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous")
+    <!--cdn and local libraries-->
+    script(src="https://code.jquery.com/jquery-3.1.1.min.js"  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous")
+    <!--script(src="https://unpkg.com/tippy.js@2.5.2/dist/tippy.all.min.js")-->
+    script(src="/semantic/dist/semantic.min.js")
+    script(src='/bower_components/svg.js/dist/svg.min.js')
+    <!-- script(src='/bower_components/jquery/dist/jquery.js') -->
+    script(src='/bower_components/eventEmitter/EventEmitter.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/node_modules/cesium/Build/CesiumUnminified/Cesium.js')
+    script(src="https://code.jquery.com/jquery-1.12.4.js")
+    script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+    <!--commander libraries-->
+    script(src='/js/app.js')
+    script(src='/sage/client.js')
+    <!--hud libraries-->
+    script(src='/js/hud_adi.js')
+    script(src='/js/hud_client.js')
+    script(src='/js/hud_adsb.js')
+    style.
+      @import url('https://fonts.googleapis.com/css?family=Exo+2|Rajdhani');
+      /*usage:
+      font-family: 'Exo 2', sans-serif;
+      font-family: 'Rajdhani', sans-serif;
+        */
+      @import url(/bower_components/bootstrap/dist/css/bootstrap.css);
+      @import url(/bower_components/font-awesome/css/font-awesome.css);
+      @import url(/bower_components/font-mfizz/css/font-mfizz.css);
+      @import url(/bower_components/cesium/Source/Widgets/widgets.css);
+      @import url(/css/pilot_display.css);
+  body
+    nav#header.navbar.navbar-inverse.navbar-fixed-top
+        div.container-fluid
+          div.navbar-header
+           img#logo(src='/img/Windhover-Mark-White.png')
+          div.nav.navbar-nav#displays-well
+            div.large.ui.buttons 
+              button.ui.orange.button.splbtn#bs(onclick="getNothing()" title="No Display") ND
+              button.ui.orange.button.splbtn#vs(onclick="getVideo()" title="Video Stream") VID
+              button.ui.orange.button.splbtn#gv(onclick="getGlobe()" title="Globe View") Earth
+              button.ui.orange.button.splbtn#ar(onclick="getAugReality()" title="Augumented Reality") AR
+          div.nav.navbar-nav#displays-well
+            div.large.ui.buttons 
+              button.ui.button.splbtn#3d(onclick="get3D()" title="Render 3D terrain") 3D
+              div.or
+              button.ui.button.splbtn#2d(onclick="get2D()" title="Render 2D terrain") 2D
+          div.nav.navbar-nav#displays-well
+            div.large.ui.buttons 
+              button.ui.button.splbtn#sat(onclick="getSat()" title="Render satellite map tiles") SAT
+              div.or
+              button.ui.button.splbtn#street(onclick="getStreet()" title="Render street map tiles") STREET
+              div.or
+              button.ui.button.splbtn#hybrid(onclick="getHybrid()" title="Render both street and satellite map tiles") HYB
+          div.nav.navbar-nav#essentials
+            div.ui.label.inactive_label.green_bubble#pele(title="Position Estimator initalized")
+              i.far.fa-compass.icon2.white_ico
+              |PE-IN
+            div.ui.label.inactive_label.green_bubble#ks(title="Killswitch engaged")
+              i.fas.fa-skull.icon2.white_ico
+              |KE
+            div.ui.label.inactive_label.green_bubble#ld(title="Vehicle land Detected")
+              i.flag.checkered.icon.white_ico
+              |LD
+            div.ui.label.inactive_label.white_bubble
+              i.fas.fa-broadcast-tower.icon2.green_ico#rc_icon
+              |Radio Controller
+              div.detail#rc_val NA
+            div.ui.label.inactive_label.white_bubble
+              i.fas.fa-anchor.icon2.green_ico#lg_icon
+              |Landing Gear
+              div.detail#lg_val NA
+            div.ui.label.inactive_label.white_bubble
+              i.fas.fa-location-arrow.icon2.green_ico#sat_icon
+              |Satellites 
+              div.detail#sat_val 10
+            div.ui.label.inactive_label.white_bubble
+              i.fa.fa-wifi.icon2.green_ico#wifi_icon
+              |Wifi
+            div.ui.label.inactive_label.white_bubble
+              i.fas.fa-battery-full.icon2.green_ico#bat_icon
+              |Battery
+              div.detail#battery_percent NA 
+              div.detail#voltage_filtered NA
+    div#guages
+      div.ui.vertical.labeled.menu.icon#guageContainer
+        div.item
+          div#altmeter.ui.statistic.raj
+            |Altitude
+            div#altValue.value.raj_val 0
+            div.label.raj_label meters
+        div.item  
+          div#velocity.ui.statistic.raj
+            |Vehicle Velocity
+            div#vel.value.raj_val 0
+            div.label.raj_label meters/sec
+            |VXY
+            div#hVel.value.raj_val 0
+            div.label.raj_label meters/sec
+            |VZ
+            div#vVel.value.raj_val 0
+            div.label.raj_label meters/sec
+        div.item  
+          div#gps.ui.statistic.raj
+            |GPS
+            div#lat.value.raj_val 0
+            div.label.raj_label LATITUDE
+            div#lon.value.raj_val 0
+            div.label.raj_label LONGITUDE  
+    div#hud.fullSize
+    div#cesiumContainer.fullSize
+    div#videoContainer.fullSize
+      img#videoFrame
+    div#emptyContainer.fullSize
+      img#emptyLogo(src='/img/WindhoverLabs-Logo-Primary-White.png')
+    div#menu
+      div.ui.horizontal.labeled.icon.menu
+        a.item(onClick="arm()") 
+          i.fab.fa-superpowers.icon3#arm_ico
+          |Arm
+        a.item(onClick="disarm()") 
+          i.far.fa-stop-circle.icon3#disarm_ico
+          |Disarm  
+        a.item(onClick="takeoff()") 
+          i.fas.fa-space-shuttle.fa-rotate-270.icon3#toff_ico
+          |Auto Takeoff
+        a.item(onClick="land()")
+          i.fas.fa-parachute-box.icon3#land_ico
+          |Auto Land
+        a.item(onClick="rtl()")
+          i.fas.fa-home.icon3#rtl_ico 
+          |Auto RTL
+        a.item(onClick="loiter()")
+          i.far.fa-pause-circle.icon3#loiter_ico
+          |Auto Loiter  
+        a.item(onClick="manual()") 
+          i.fas.fa-user-astronaut.icon3#man_ico
+          |Manual
+        a.item(onClick="posctl()") 
+          i.fas.fa-hands-helping.icon3#posctl_ico
+          |Position Control
+        a.item(onClick="altctl()") 
+          i.fas.fa-hands-helping.icon3#altctl_ico
+          |Altitude Control
+    nav#footer.navbar.navbar-inverse.navbar-fixed-bottom
+      div.container-fluid
+        ul.nav.navbar-nav#vehicle_debug
+          li
+            div.ui.label.inactive_label.white_bubble
+              i.fas.fa-helicopter.icon2.green_ico
+              |Instance
+              div.detail#instance_name NA
+            div.ui.label.inactive_label.white_bubble
+              i.fab.fa-superpowers.icon2.green_ico
+              |Arming State
+              div.detail#arming_state_val NA 
+            div.ui.label.inactive_label.white_bubble
+              i.far.fa-map.icon2.green_ico
+              |Navigation State
+              div.detail#navigation_state_val NA
+          li
+            button.ui.orange.basic.button(onClick='sendNoOp()') NoOp
+            button.ui.orange.basic.button(onClick='sendReset()') Reset
+            div.ui.compact.menu 
+              div.item Command Count
+                div.floating.ui.orange.label.circular#cmd_cnt_state_val 0
+              div.item Error Count
+                div.floating.ui.red.label.circular#err_cnt_state_val 0
+ 
+          li
+            button.ui.orange.basic.button(onClick='vcStart()') Start VC
+            button.ui.orange.basic.button(onClick='vcStop()') Stop VC
+            div.ui.compact.menu 
+              div.item VC Status
+                div.floating.ui.orange.label.circular#vc_state_val NA
+          li
+            button.ui.orange.basic.button(onClick='adsbSwitch()') 
+              i.fas.fa-circle#adsb_ico.circle_ico.red_ico
+              span#adsb_label ADSB
+            button.ui.orange.basic.button(onClick='adiSwitch()') 
+              i.fas.fa-circle#adi_ico.circle_ico.red_ico
+              span#adi_label ADI 
+            button.ui.orange.basic.button(onClick='prLockSwitch()') 
+              i.fas.fa-circle#prlock_ico.circle_ico.green_ico
+              span#prlock_label PR-LOCK
+            button.ui.orange.basic.button(onClick='oAltSwitch()') 
+              i.fas.fa-circle#oAlt_ico.circle_ico.red_ico
+              span#oAlt_label 0-ALT           
+          li(style='float:right;')
+            div.ui.right.pointing.orange.basic.label#events No Events
+            div.ui.compact.menu 
+              div.item Events
+                div.floating.ui.orange.label#event_count 0
