@@ -93,12 +93,12 @@ class IntentFuture(object):
     """
     def __init__(self, caused_by):
         self.caused_by = caused_by
-        self.complete = False
         self.failure = None
         self.responses = []
         """:type: list[IntentResponse]"""
 
         self._add_callback = None
+        self._complete = Event()
         self._event_first = Event()
 
     def add(self, response):
@@ -109,6 +109,17 @@ class IntentFuture(object):
 
     def add_callback(self, callback):
         self._add_callback = callback
+
+    @property
+    def complete(self):
+        return self._complete.is_set()
+
+    @complete.setter
+    def complete(self, value):
+        if value is True:
+            self._complete.set()
+        else:
+            raise ValueError('IntentFuture.complete can only be set to True.')
 
     def first(self, timeout=None):
         self._event_first.wait(timeout=timeout)
@@ -123,3 +134,6 @@ class IntentFuture(object):
             return self.responses[-1]
         except IndexError:
             raise FutureTimeoutError()
+
+    def wait(self, timeout=None):
+        self._complete.wait(timeout)

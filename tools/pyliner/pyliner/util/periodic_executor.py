@@ -51,9 +51,11 @@ class PeriodicExecutor(threading.Thread):
         self.running = True
         try:
             while self.running:
+                start_time = time.time()
                 self._Thread__target(
                     *self._Thread__args, **self._Thread__kwargs)
-                time.sleep(self.every)
+                delta = time.time() - start_time
+                time.sleep(self.every - delta)
         except Exception as e:
             if callable(self.exception):
                 self.exception(e)
