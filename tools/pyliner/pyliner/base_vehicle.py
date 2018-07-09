@@ -18,6 +18,7 @@ from junit_xml import TestCase, TestSuite
 from pyliner.action import ACTION_VEHICLE_SHUTDOWN
 from pyliner.app import App, AppAccess
 from pyliner.intent import Intent, IntentNoReceiverError
+from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture
 from pyliner.util.loggable import Loggable
 
@@ -46,19 +47,22 @@ class BaseVehicle(Loggable):
         # self.broadcast_pool = ThreadPool # TODO Python 3
         self.apps = {}
         """:type: dict[str, AppAccess]"""
-        self._intent_filters = defaultdict(lambda: set())
-        """:type: dict[str, set[AppAccess]]"""
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
+        # self._dynamic_filters = set()
+        self._intent_filters = defaultdict(lambda: set())
+        """:type: dict[str, set[AppAccess]]"""
+
     def add_filter(self, intent_filter, app):
+        # type: (IntentFilter, AppAccess) -> None
         """Add an intent filter to this vehicle.
 
         Args:
             intent_filter (IntentFilter): The filter to add.
             app (AppAccess): If an intent matches a filter, the app to call.
         """
-        for action in intent_filter.actions:
+        for action in intent_filter.actions or []:
             self._intent_filters[action].add(app)
 
     def attach_app(self, app):
@@ -68,10 +72,10 @@ class BaseVehicle(Loggable):
             app (App): The app to attach to this vehicle.
         """
         if app.qualified_name in self.apps:
-            raise ValueError('Attempting to enable a module on top of an '
-                             'existing module.')
+            raise ValueError('Attempting to enable an App with the same name as'
+                             ' an existing app.')
         elif not isinstance(app, App):
-            return TypeError('module must implement App.')
+            return TypeError('app must be a subclass of App.')
 
         vehicle_token = AppAccess(app)
         self.apps[app.qualified_name] = vehicle_token
@@ -80,13 +84,12 @@ class BaseVehicle(Loggable):
     def broadcast(self, intent):
         # type: (Intent) -> IntentFuture
         """Broadcast an Intent to components."""
-        self.debug('Broadcasting: {}'.format(intent))
+        self.debug('Broadcasting: ' + str(intent))
         future = IntentFuture(caused_by=intent)
         # TODO Multithreading is a headache
         # threading.Thread(target=self._broadcast_thread, args=(intent, future))\
         #     .start()
         self._broadcast_thread(intent, future)
-        future.complete = True  # If multi-thread, move this somewhere else.
         return future
 
     def _broadcast_thread(self, intent, future):
@@ -102,20 +105,21 @@ class BaseVehicle(Loggable):
             else:
                 for app in intent_filters:
                     app.receive(intent, future)
+        future.complete = True
 
     def detach_app(self, name):
         """Disable an app by removing it from this vehicle.
 
         Note:
             Any apps that attempt to call the disabled app by name will
-            produce an error.
+            raise a KeyError.
         """
-        if name not in self.apps:
-            raise AttributeError(
-                'Cannot disable a module that was never enabled.')
-        module = self.apps[name]
+        try:
+            app = self.apps[name]
+        except KeyError:
+            raise KeyError('Cannot find App to detach.')
         del self.apps[name]
-        module.detach()
+        app.detach()
 
     def remove_filter(self, intent_filter, app):
         """Remove an intent filter from this vehicle."""

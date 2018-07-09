@@ -49,13 +49,10 @@ class IntentFilter(object):
     """Filters intents by matching actions from a list.
 
     Match using the contains `intent in IntentFilter()` syntax.
-
-    If dynamic is callable and the intent does not match anything from actions,
-    dynamic is called with the intent as an argument.
     """
-    def __init__(self, actions=None, dynamic=None):
+    def __init__(self, actions=None):
         self.actions = actions
-        self.dynamic = dynamic
+        self.dynamic = None
 
     def __str__(self):
         return '{}(actions={}'.format(self.__class__.__name__, self.actions) + \
