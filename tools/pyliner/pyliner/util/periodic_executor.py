@@ -67,9 +67,9 @@ class PeriodicExecutor(threading.Thread):
     def stop(self):
         """Stops the thread from continuing to loop.
 
-        Thread will not stop immediately. When the thread wakes up next it will
+        Thread will not exit immediately. When the thread wakes up next it will
         see that it has been stopped, will execute the finalize method if it was
-        given, and will then complete.
+        given, and will then exit.
         """
         self.logger.info('Thread %s stopping.', self.name)
         self.running = False

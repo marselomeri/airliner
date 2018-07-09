@@ -1,5 +1,9 @@
 class Loggable(object):
-    """A mixin class that provides basic logging methods."""
+    """A mixin class that provides basic logging methods.
+
+    Subclasses that mix this must set logger before calling any of the logging
+    methods.
+    """
     def __init__(self, logger=None):
         self.logger = logger
 

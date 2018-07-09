@@ -33,4 +33,5 @@ def seconds(sec):
 
 
 def hertz(hz):
+    """Convert from hz to period/rate. Simply 1.0/hz"""
     return 1.0 / hz
