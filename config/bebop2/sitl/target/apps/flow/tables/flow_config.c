@@ -42,6 +42,12 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default FLOW config table data */
 FLOW_ConfigTbl_t FLOW_ConfigTbl =
 {
+		/** \brief Horizontal field of view.
+		 *
+		 *  \par Limits:
+		 *       default 0.088.
+		 */
+		0.088f,
 		/** \brief Size of sliding window.
 		 *
 		 *  \par Limits:
@@ -59,7 +65,7 @@ FLOW_ConfigTbl_t FLOW_ConfigTbl =
 		 *  \par Limits:
 		 *       default 15.
 		 */
-		15,
+		10,
 		/** \brief Default image width.
 		 *
 		 *  \par Limits:
@@ -89,7 +95,13 @@ FLOW_ConfigTbl_t FLOW_ConfigTbl =
 		 *  \par Limits:
 		 *       default 3000.
 		 */
-		3000
+		3000,
+		/** \brief Mean count threshold.
+		 *
+		 *  \par Limits:
+		 *       default 10.
+		 */
+		10
 };
 
 /*
