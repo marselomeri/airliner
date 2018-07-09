@@ -4,9 +4,8 @@ from threading import Event
 from pyliner.action import ACTION_CONTROL_REQUEST, ACTION_CONTROL_GRANT, \
     ACTION_CONTROL_RELEASE, ACTION_CONTROL_REVOKE
 from pyliner.intent import Intent, IntentFilter
-from pyliner.pyliner_exceptions import InvalidStateError
 from pyliner.util.loggable import Loggable
-from pyliner.app_access import AppAccess
+from pyliner.app_access import AppAccess, AppDetachedError, InvalidStateError
 
 
 class App(Loggable):
@@ -60,12 +59,14 @@ class App(Loggable):
         # type: (AppAccess) -> None
         """Called when the app is attached to a vehicle.
 
+        Call super before any subclass code.
+
         The app is given a wrapper to interact with the vehicle it has been
         attached to. Use this wrapper for platform-dependant operations.
 
         The app should start any threads or processes that it runs here.
         """
-        if self._state is not App.DETACHED:
+        if self._state is App.ATTACHED:
             raise InvalidStateError('Service is currently attached.')
         self._state = App.ATTACHED
         self.vehicle = vehicle_wrapper
@@ -74,21 +75,24 @@ class App(Loggable):
     def detach(self):
         """Called when the app is detached from a vehicle.
 
+        Call super after any subclass code if the user code depends on vehicle
+        or any logging calls.
+
         The wrapper will be valid until this method returns, after which the
         vehicle will no longer respond to calls through the wrapper nor pass
         events through to the app.
 
         The service should stop any threads or processes that it started.
         """
-        if self._state is not App.ATTACHED:
-            raise InvalidStateError('Service cannot be detached at this time.')
+        if self._state is App.DETACHED:
+            raise AppDetachedError('Service cannot be detached at this time.')
         self._state = App.DETACHED
         self.vehicle = None
         self.logger = None
 
     def control_block(self):
         if self.state is App.DETACHED:
-            raise InvalidStateError('Detached App will never get control.')
+            raise AppDetachedError('Detached App will never get control.')
         return _ControlBlock(self)
 
 

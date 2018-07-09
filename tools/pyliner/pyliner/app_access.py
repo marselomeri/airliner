@@ -9,8 +9,19 @@ Classes:
 from pyliner.intent import Intent
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture, IntentResponse
-from pyliner.pyliner_exceptions import InvalidStateError
+from pyliner.pyliner_error import PylinerError
 from pyliner.util.loggable import Loggable
+
+
+class InvalidStateError(PylinerError):
+    """Raised if continuing would perform an illegal state transition."""
+    pass
+
+
+class AppDetachedError(InvalidStateError):
+    """Raised if an App attempts to do something that is invalid because it is
+    detached from a vehicle."""
+    pass
 
 
 class AppAccess(Loggable):
@@ -21,8 +32,9 @@ class AppAccess(Loggable):
     """
     def __init__(self, app):
         super(AppAccess, self).__init__()
-        self.callback = None
         self.app = app
+        self.callback = None
+
         self._vehicle = None
         """:type: BaseVehicle"""
         self._filter = {}
@@ -36,7 +48,7 @@ class AppAccess(Loggable):
         self.app.attach(self)
 
     def detach(self):
-        """Detach the App from the Vehicle."""
+        """Detach the App from the Vehicle it was previously attached to."""
         self.info('Detaching {}'.format(self.app.qualified_name))
         self.app.detach()
         self._vehicle = None
@@ -48,9 +60,8 @@ class AppAccess(Loggable):
         Args:
             intent_filter (IntentFilter): The filter to apply to incoming
                 intents.
-            callback (Callable[[Intent], Any]: If an incoming intent passes
-                through the filter, the callback will be run with the intent
-                as an argument.
+            callback (Callable[[Intent], Any]: If an incoming intent passes the
+                filter, the callback will be run with the intent as an argument.
 
         Returns:
             IntentFilter: Same object as intent_filter.
@@ -70,7 +81,11 @@ class AppAccess(Loggable):
     def receive(self, intent, future):
         """Receive an intent and pass it to any callbacks that are listening.
 
-        If self.callback is set, call that before checking intent filters.
+        Any callback return that is not None is passed back to the App that
+        broadcast the Intent.
+
+        If callback is set, it will be called only if the intent did not match
+        any other set filters.
 
         Args:
             intent (Intent): The intent that was broadcast.
@@ -87,11 +102,13 @@ class AppAccess(Loggable):
             if result is not None or exception is not None:
                 future.add(IntentResponse(result=result, exception=exception))
 
-        if callable(self.callback):
-            handle(self.callback)
+        handled = False
         for intent_filter, callback in self._filter.items():
             if intent in intent_filter:
                 handle(callback)
+                handled = True
+        if not handled and callable(self.callback):
+            handle(self.callback)
 
     @property
     def shutdown(self):
@@ -101,7 +118,7 @@ class AppAccess(Loggable):
         # type: (Intent) -> IntentFuture
         """Broadcast an intent to the vehicle."""
         if not self._vehicle:
-            raise InvalidStateError('Cannot broadcast while detached.')
+            raise AppDetachedError('Cannot broadcast while detached.')
         return self._vehicle.broadcast(intent)
 
     def remove_filter(self, intent_filter):

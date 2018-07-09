@@ -11,13 +11,12 @@ import threading
 import queue
 import socketserver
 
-from pyliner import pyliner_exceptions
 from pyliner.action import ACTION_SEND_COMMAND, ACTION_SEND_BYTES, ACTION_TELEM, \
     ACTION_CONTROL_REQUEST, ACTION_CONTROL_GRANT, ACTION_CONTROL_REVOKE, \
     ACTION_CONTROL_RELEASE
 from pyliner.arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner.intent import IntentFilter, Intent
-from pyliner.pyliner_exceptions import PylinerError
+from pyliner.pyliner_error import PylinerError
 from pyliner.python_pb import pyliner_msgs
 from pyliner.app import App
 from pyliner.util import init_socket, handler_factory, CallableDefaultDict
@@ -28,6 +27,16 @@ from pyliner.util.periodic_executor import PeriodicExecutor
 SEND_TIME = 0.1
 DEFAULT_CI_PORT = 5008
 DEFAULT_TO_PORT = 5011
+
+
+class InvalidCommandException(PylinerError):
+    """Raised if a command does not exist."""
+    pass
+
+
+class InvalidOperationException(PylinerError):
+    """Raised if an operation is invalid."""
+    pass
 
 
 class _Telemetry(object):
@@ -377,7 +386,7 @@ class Communication(App):
         for arg in json["args"]:
             arg_path = self._get_op_attr(json["name"] + '/' + arg["name"])
             if not arg_path:
-                raise pyliner_exceptions.InvalidCommandException(
+                raise InvalidCommandException(
                     "Invalid command received. Argument operational name (%s) "
                     "not found." % arg["name"])
             stmt = "pb_obj.{} = {}".format(arg_path, arg["value"])
@@ -471,7 +480,7 @@ class Communication(App):
         """
         json = telemetry.to_json()
         if "name" not in json:
-            raise pyliner_exceptions.InvalidCommandException(
+            raise InvalidCommandException(
                 "Invalid command received. Missing \"name\" attribute")
 
         # Check if no args tlm
@@ -480,7 +489,7 @@ class Communication(App):
         # Get command operation
         op = self._get_airliner_op(json["name"])
         if not op:
-            raise pyliner_exceptions.InvalidCommandException(
+            raise InvalidCommandException(
                 "Invalid telemetry received. Operation ({}) not "
                 "defined.".format(json["name"]))
 
@@ -516,7 +525,7 @@ class Communication(App):
             err_msg = "Invalid telemetry operational name received. " \
                       "Operation (%s) not defined." % tlm_item
             self.vehicle.error(err_msg)
-            raise pyliner_exceptions.InvalidOperationException(err_msg)
+            raise InvalidOperationException(err_msg)
 
         # Add entry to subscribers list
         self.subscribers.append({'op_path': tlm_item,

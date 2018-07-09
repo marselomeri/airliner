@@ -15,6 +15,7 @@ from os.path import join
 
 from junit_xml import TestCase, TestSuite
 
+from pyliner.action import ACTION_VEHICLE_SHUTDOWN
 from pyliner.app import App, AppAccess
 from pyliner.intent import Intent, IntentNoReceiverError
 from pyliner.intent import IntentFuture
@@ -85,6 +86,7 @@ class BaseVehicle(Loggable):
         # threading.Thread(target=self._broadcast_thread, args=(intent, future))\
         #     .start()
         self._broadcast_thread(intent, future)
+        future.complete = True  # If multi-thread, move this somewhere else.
         return future
 
     def _broadcast_thread(self, intent, future):
@@ -136,6 +138,7 @@ class BaseVehicle(Loggable):
         self.info('Vehicle {} is shutting down.'.format(self.vehicle_id))
         if not self.is_shutdown:
             self.is_shutdown = True
+            self.broadcast(Intent(action=ACTION_VEHICLE_SHUTDOWN))
             for app in self.apps.values():
                 app.detach()
         self.info('Shutdown complete.')

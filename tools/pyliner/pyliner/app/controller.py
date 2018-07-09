@@ -10,19 +10,22 @@ Apps:
 
 """
 import time
-from threading import Event
 
 from flufl.enum import Enum
 
+from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
 from pyliner.app import App
-from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND, \
-    ACTION_CONTROL_REQUEST, ACTION_CONTROL_RELEASE, ACTION_CONTROL_GRANT
 from pyliner.intent import Intent, IntentFilter
-from pyliner.pyliner_exceptions import UnauthorizedAtpError
+from pyliner.pyliner_error import PylinerError
 from pyliner.telemetry import ManualSetpoint
 from pyliner.util import query_yes_no
 
 _WAIT_TIME = 0.1
+
+
+class UnauthorizedAtpError(PylinerError):
+    """Raised if the user denies ATP."""
+    pass
 
 
 class FlightMode(Enum):
