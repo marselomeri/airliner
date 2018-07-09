@@ -44,6 +44,7 @@ class App(Loggable):
     @property
     @abstractmethod
     def qualified_name(self):
+        # type: () -> str
         """The system-unique identifier for this App.
 
         This name is used for explicit intent resolution.

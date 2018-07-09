@@ -7,8 +7,10 @@ from pyliner.intent import Intent
 
 
 class CommanderApp(SocketApp):
+    JSON_MAX_SIZE = 1024
+
     def handle(self, request, client_address):
-        data = request.recv(1024)
+        data = request.recv(CommanderApp.JSON_MAX_SIZE)
         j = json.loads(data)
         self.info('JSON from {}: {}'.format(client_address, j))
         if j['command'] == 'goto':
