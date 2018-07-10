@@ -6,7 +6,7 @@ Apps:
     FlightDirector  Grants the user control of a vehicle's basic axes.
 """
 
-from pyliner.app import App
+from pyliner.apps import App
 from pyliner.action import ACTION_AXIS_SET, ACTION_SEND_COMMAND, \
     ACTION_AXIS_ZERO
 from pyliner.intent import Intent, IntentFilter
@@ -50,7 +50,7 @@ class FlightDirector(App):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.flight_director'
+        return 'com.windhover.pyliner.apps.flight_director'
 
     def axis_set(self, intent):
         axis, value = intent.data

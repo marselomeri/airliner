@@ -14,8 +14,8 @@ from geographiclib.geodesic import Geodesic
 from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, \
     ACTION_CALC_PBD
 from pyliner.intent import IntentFilter
-from pyliner.app.navigation.position import Coordinate
-from pyliner.app import App
+from pyliner.apps.navigation.position import Coordinate
+from pyliner.apps import App
 
 
 class GeographicApp(App):
@@ -100,4 +100,4 @@ class GeographicApp(App):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.geographic'
+        return 'com.windhover.pyliner.apps.geographic'

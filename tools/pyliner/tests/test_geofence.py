@@ -1,9 +1,9 @@
 import unittest
 
-from pyliner.app.geofence import Geofence, LayerKind
-from pyliner.app.geofence.volume import Box, VerticalCylinder
-from pyliner.app.geographic_app import GeographicApp
-from pyliner.app.navigation.position import Position, Coordinate
+from pyliner.apps.geofence import Geofence, LayerKind
+from pyliner.apps.geofence.volume import Box, VerticalCylinder
+from pyliner.apps.geographic_app import GeographicApp
+from pyliner.apps.navigation.position import Position, Coordinate
 
 
 class TestGeofence(unittest.TestCase):

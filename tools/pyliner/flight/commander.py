@@ -1,7 +1,7 @@
 import time
 
-from pyliner.app.commander_app import CommanderApp
-from pyliner.app.communication import Communication
+from pyliner.apps.commander_app import CommanderApp
+from pyliner.apps.communication import Communication
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.vehicle import Vehicle

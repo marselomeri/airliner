@@ -1,4 +1,4 @@
-from pyliner.app import App
+from pyliner.apps import App
 
 
 class TimeApp(App):
@@ -7,4 +7,4 @@ class TimeApp(App):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.time'
+        return 'com.windhover.pyliner.apps.time'

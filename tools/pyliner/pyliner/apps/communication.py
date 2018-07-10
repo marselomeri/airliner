@@ -18,7 +18,7 @@ from pyliner.arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner.intent import IntentFilter, Intent
 from pyliner.pyliner_error import PylinerError
 from pyliner.python_pb import pyliner_msgs
-from pyliner.app import App
+from pyliner.apps import App
 from pyliner.util import init_socket, handler_factory, CallableDefaultDict
 from pyliner.util.periodic_executor import PeriodicExecutor
 
@@ -246,7 +246,7 @@ class Communication(App):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.communication'
+        return 'com.windhover.pyliner.apps.communication'
 
     def send_bytes(self, message):
         self.ci_socket.sendto(message, (self.address, self.ci_port))

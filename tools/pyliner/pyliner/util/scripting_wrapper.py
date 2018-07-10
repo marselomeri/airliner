@@ -41,11 +41,11 @@ class ScriptingWrapper(object):
         self._vehicle = vehicle
         self.failure_callback = failure_callback
         self.mapping = {
-            'ctrl': 'com.windhover.pyliner.app.controller',
-            'fd': 'com.windhover.pyliner.app.flight_director',
-            'fence': 'com.windhover.pyliner.app.geofence',
-            'geographic': 'com.windhover.pyliner.app.geographic',
-            'nav': 'com.windhover.pyliner.app.navigation'
+            'ctrl': 'com.windhover.pyliner.apps.controller',
+            'fd': 'com.windhover.pyliner.apps.flight_director',
+            'fence': 'com.windhover.pyliner.apps.geofence',
+            'geographic': 'com.windhover.pyliner.apps.geographic',
+            'nav': 'com.windhover.pyliner.apps.navigation'
         }
         # self.mapping = {
         #     'nav': _AppWrapper(vehicle, {

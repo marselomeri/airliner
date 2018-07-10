@@ -1,6 +1,6 @@
 import math
 
-from pyliner.app.navigation.position import Position
+from pyliner.apps.navigation.position import Position
 
 
 class Waypoint(Position):

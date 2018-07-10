@@ -24,10 +24,10 @@ from enum import Enum
 from sortedcontainers import SortedDict
 
 from pyliner.action import ACTION_RTL, ACTION_TELEM
-from pyliner.app import App
-from pyliner.app.geofence.volume import Volume, CompositeVolume
+from pyliner.apps import App
+from pyliner.apps.geofence.volume import Volume, CompositeVolume
 from pyliner.intent import Intent
-from pyliner.app.navigation.position import Position
+from pyliner.apps.navigation.position import Position
 from pyliner.util import indent
 from pyliner.util.periodic_executor import PeriodicExecutor
 
@@ -130,7 +130,7 @@ class Geofence(App):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.geofence'
+        return 'com.windhover.pyliner.apps.geofence'
 
     def add_layer(self, layer_position, layer_name, layer_kind):
         if layer_position in self.layers:

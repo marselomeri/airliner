@@ -11,10 +11,10 @@ Apps:
 """
 import time
 
-from flufl.enum import Enum
+from enum import Enum
 
 from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
-from pyliner.app import App
+from pyliner.apps import App
 from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_error import PylinerError
 from pyliner.telemetry import ManualSetpoint
@@ -112,7 +112,7 @@ class Controller(App):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.controller'
+        return 'com.windhover.pyliner.apps.controller'
 
     @classmethod
     def required_telemetry_paths(cls):

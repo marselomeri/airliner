@@ -1,8 +1,8 @@
 import json
 
 from pyliner.action import ACTION_GOTO
-from pyliner.app.navigation.waypoint import Waypoint
-from pyliner.app.socket_app import SocketApp
+from pyliner.apps.navigation.waypoint import Waypoint
+from pyliner.apps.socket_app import SocketApp
 from pyliner.intent import Intent
 
 
@@ -24,4 +24,4 @@ class CommanderApp(SocketApp):
 
     @property
     def qualified_name(self):
-        return 'com.windhover.pyliner.app.commander'
+        return 'com.windhover.pyliner.apps.commander'
