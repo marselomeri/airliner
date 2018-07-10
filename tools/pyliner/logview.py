@@ -5,6 +5,7 @@ Enables the fast and easy browsing of Pyliner logs.
 
 Usage:
     python logview.py [filename]
+
 """
 
 import argparse
@@ -14,8 +15,14 @@ import os
 import re
 from abc import abstractmethod
 
+from future.moves import itertools
+
+
+print_errors = []
+
 
 class LogLine(object):
+    """A line in a log file."""
     def __init__(self, log_line, text):
         self.log_line = log_line
         self.text = text
@@ -28,43 +35,50 @@ class LogLine(object):
         except IndexError:
             level = 'CRITICAL'
         table = {
-            'NOTSET': 0,
-            'DEBUG': 0,
-            'INFO': 1,
-            'WARNING': 2,
-            'ERROR': 3,
-            'CRITICAL': 3
+            'NOTSET': curses.COLOR_WHITE,
+            'DEBUG': curses.COLOR_WHITE,
+            'INFO': curses.COLOR_WHITE,
+            'WARNING': curses.COLOR_YELLOW,
+            'ERROR': curses.COLOR_RED,
+            'CRITICAL': curses.COLOR_RED
         }
         return table[level]
 
 
 class FilterLine(LogLine):
+    """A line that has been filtered."""
     def __init__(self, filter_line, log_line):
         super(FilterLine, self).__init__(log_line.log_line, log_line.text)
         self.filter_line = filter_line
 
 
 class ViewLine(FilterLine):
+    """A line that is in view."""
     def __init__(self, view_line, filter_line):
         super(ViewLine, self).__init__(filter_line.filter_line, filter_line)
         self.view_line = view_line
 
 
 class LogView(object):
+    FG_SHIFT = 8
+
     def __init__(self, stdscr, log_name):
         # Curses Initialization
         # Start colors in curses
         curses.start_color()
-        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-        curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-        curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
-        curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_WHITE)
-        curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_CYAN)
+        colors = [curses.COLOR_BLACK, curses.COLOR_RED, curses.COLOR_GREEN,
+                  curses.COLOR_YELLOW, curses.COLOR_BLUE, curses.COLOR_MAGENTA,
+                  curses.COLOR_CYAN, curses.COLOR_WHITE]
+        for fg, bg in itertools.permutations(colors, 2):
+            curses.init_pair(fg*LogView.FG_SHIFT + bg, fg, bg)
+        self.colors = colors
 
         # Application State
         self.exit = False
+        self.log_lines = None
         self.log_name = log_name
         self.state = None
+        self.state_map = None
         self.stdscr = stdscr
 
         with open(self.log_name) as fp:
@@ -78,9 +92,10 @@ class LogView(object):
         # Useful for User Interaction
         self.filter = ''
         self.filter_lines = None
+        """:type: list[FilterLine]"""
         self.apply_filter(lambda line: True)
-        self.view_lines = None
-        self.center_view(0)
+        self.view_max = 1
+        self.view_min = 0
         self.cursor_column = 0
         self.cursor_line = 0
 
@@ -96,34 +111,83 @@ class LogView(object):
                              enumerate(filter(func, self.log_lines))]
     
     def center_view(self, filter_index):
-        """Set view_lines to contain lines centered around filter_index as much
+        """Set view to contain lines centered around filter_index as much
         as possible."""
         h = self.height
         h2 = h / 2
+        num_filter = len(self.filter_lines)
         min_index = max(0, filter_index - h2)
-        max_index = min(len(self.filter_lines), filter_index + h2)
-        if min_index == 0:
-            max_index = h - 1
-        self.view_lines = [ViewLine(*x) for x in 
-                           enumerate(self.filter_lines[min_index: max_index])]
+        max_index = min(num_filter, min_index + h)
+        # if max_index == num_filter:
+        #     min_index = num_filter - h
+        # if min_index < 0:
+        #     max_index = h - 1
+        # self.view_lines = [ViewLine(*x) for x in
+        #                    enumerate(self.filter_lines[min_index: max_index])]\
+        self.view_max = max_index
+        self.view_min = min_index
 
     def cursor_move(self, lines):
-        self.cursor_line = max(
-            0, min(len(self.filter_lines), self.cursor_line + lines))
-        self.in_view(self.cursor_line)
+        self.cursor_line += lines
+        self.cursor_line = max(0, self.cursor_line)
+        self.cursor_line = min(len(self.filter_lines)-1, self.cursor_line)
+        self.put_line_in_view(self.cursor_line)
         
+    @staticmethod
+    def get_color(fg, bg):
+        return curses.color_pair(fg*LogView.FG_SHIFT + bg)
+
     @property
     def height(self):
         return self.stdscr.getmaxyx()[0]
 
-    def in_view(self, filter_index):
+    def put_line_in_view(self, filter_index):
         """Puts filter_index in view."""
-        if filter_index not in (l.filter_line for l in self.filter_lines):
-            self.center_view(filter_index)
+        cur_min = self.view_min
+        cur_max = self.view_max
+        if cur_min < filter_index < cur_max:
+            return
+        h = self.height
+        if filter_index < cur_min:
+            self.view_min = filter_index
+            self.view_max = self.view_min + h - 1
+        elif filter_index > cur_max:
+            self.view_max = filter_index + 1
+            self.view_min = self.view_max - h
 
     def key_press(self, key):
-        if not self.state.handle_key(key):
-            pass
+        if self.state.handle_key(key):
+            return
+
+        # Key Bindings
+        x_vel = 1
+        y_vel = 2
+
+        handled = True
+        if key == curses.KEY_DOWN:
+            self.cursor_move(x_vel)
+        elif key == curses.KEY_UP:
+            self.cursor_move(-x_vel)
+        elif key == curses.KEY_NPAGE:
+            self.cursor_move(10 * x_vel)
+        elif key == curses.KEY_PPAGE:
+            self.cursor_move(-10 * x_vel)
+        elif key == curses.KEY_LEFT:
+            self.cursor_column -= y_vel
+        elif key == curses.KEY_RIGHT:
+            self.cursor_column += y_vel
+        elif key == curses.KEY_HOME:
+            self.cursor_column -= 10 * y_vel
+        elif key == curses.KEY_END:
+            self.cursor_column += 10 * y_vel
+        elif key == curses.KEY_RESIZE:
+            self.resize()
+        else:
+            handled = False
+
+        if handled:
+            self.redraw()
+        return handled
 
     def state_change(self, state):
         if self.state is not None:
@@ -131,9 +195,53 @@ class LogView(object):
         self.state = state
         state.enter()
 
+    def redraw(self):
+        # Initialization
+        self.stdscr.clear()
+        height, width = self.stdscr.getmaxyx()
+
+        # Determine lines to display
+        self.put_line_in_view(self.cursor_line)
+        display_lines = [ViewLine(*x) for x in enumerate(
+            self.filter_lines[self.view_min:self.view_max])]
+
+        # Left Header
+        max_line = display_lines[-1].log_line
+        left_reserve = len(str(max_line))
+
+        # Bound column
+        longest_display = max(len(line.text) for line in display_lines)
+        self.cursor_column = max(0, self.cursor_column)
+        self.cursor_column = min(longest_display - 2, self.cursor_column)
+
+        # Display Log file
+        for line in display_lines:
+            bg = curses.COLOR_MAGENTA if line.filter_line == self.cursor_line\
+                else curses.COLOR_BLACK
+            color = self.get_color(line.level, bg)
+            left = '{:>{x}}'.format(line.log_line, x=left_reserve)
+            end_column = self.cursor_column + width - (len(left) + 2)
+            visible_line = line.text[self.cursor_column:end_column]
+            display = '{}  {}'.format(left, visible_line)
+            try:
+                self.stdscr.addstr(line.view_line, 0, display, color)
+            except Exception as e:
+                # print_errors.append('Cannot display: {} {}'.format(line.filter_line, display))
+                self.stdscr.addstr(0, 0, str(e)[:width], color)
+
+        self.state.status_bar_render()
+
+        # Refresh the screen
+        self.stdscr.refresh()
+
+    def resize(self):
+        self.view_min = 0
+        self.view_max = self.height - 1
+
     def run(self):
         self.state_change(self.state_map['NORMAL'](self))
-
+        self.resize()
+        self.redraw()
         while not self.exit:
             # Wait for next input
             self.key_press(self.stdscr.getch())
@@ -165,77 +273,33 @@ class NormalState(BaseState):
     def status_bar_render(self):
         len_filter = len(self.log_view.filter_lines)
         line_status = 'TOP' if self.log_view.cursor_line == 0 else\
-            'BOT' if self.log_view.cursor_line == len_filter else\
+            'BOT' if self.log_view.cursor_line == len_filter-1 else\
             str(self.log_view.cursor_line)
-        statusbarstr = "Press 'q' to exit | STATUS BAR | Pos: {} Col: {}" \
-            .format(line_status, self.log_view.cursor_column)
+        statusbarstr = "Press 'q' to exit | STATUS BAR | Pos: {} Col: {} " \
+                       "View: {}:{} Height: {} FL: {}" \
+            .format(line_status, self.log_view.cursor_column,
+                    self.log_view.view_min, self.log_view.view_max,
+                    self.log_view.height, len(self.log_view.filter_lines))
 
         height, width = self.stdscr.getmaxyx()
-        self.stdscr.attron(curses.color_pair(5))
+        self.stdscr.attron(self.log_view.get_color(
+            curses.COLOR_BLACK, curses.COLOR_CYAN))
         self.stdscr.addstr(height - 1, 0, statusbarstr)
         self.stdscr.addstr(height - 1, len(statusbarstr),
-                      " " * (width - len(statusbarstr) - 1))
-        self.stdscr.attroff(curses.color_pair(5))
+                           " " * (width - len(statusbarstr) - 1))
+        self.stdscr.attroff(self.log_view.get_color(
+            curses.COLOR_BLACK, curses.COLOR_CYAN))
 
     def handle_key(self, key):
-        # Key Bindings
-        x_vel = 1
-        y_vel = 2
-        
-        if key == curses.KEY_DOWN:
-            self.log_view.cursor_move(x_vel)
-        elif key == curses.KEY_UP:
-            self.log_view.cursor_move(-x_vel)
-        elif key == curses.KEY_NPAGE:
-            self.log_view.cursor_move(10 * x_vel)
-        elif key == curses.KEY_PPAGE:
-            self.log_view.cursor_move(-10 * x_vel)
-        elif key == curses.KEY_LEFT:
-            self.log_view.cursor_column -= y_vel
-        elif key == curses.KEY_RIGHT:
-            self.log_view.cursor_column += y_vel
-        elif key == curses.KEY_HOME:
-            self.log_view.cursor_column -= 10 * y_vel
-        elif key == curses.KEY_END:
-            self.log_view.cursor_column += 10 * y_vel
-        elif key == ord('q'):
+        handled = True
+        if key == ord('q'):
             self.log_view.exit = True
-
-        self.redraw()
+        else:
+            handled = False
+        return handled
 
     def redraw(self):
-        # Initialization
-        self.stdscr.clear()
-        height, width = self.stdscr.getmaxyx()
-
-        # Determine lines to display
-        display_lines = self.log_view.view_lines
-
-        # Left Header
-        max_line = display_lines[-1].log_line
-        left_reserve = len(str(max_line))
-
-        # Bound column
-        longest_display = max(len(line.text) for line in display_lines)
-        start_column = max(0, self.log_view.cursor_column)
-        start_column = min(longest_display - 2, start_column)
-
-        # Display Log file
-        for line in display_lines:
-            color = curses.color_pair(line.level)
-            left = '{:>{x}}'.format(line.log_line, x=left_reserve)
-            end_column = start_column + width - (len(left) + 2)
-            visible_line = line.text[start_column:end_column]
-            display = '{}  {}'.format(left, visible_line)
-            try:
-                self.stdscr.addstr(line.filter_line, 0, display, color)
-            except Exception as e:
-                self.stdscr.addstr(0, 0, str(e)[:width], color)
-
-        self.status_bar_render()
-
-        # Refresh the screen
-        self.stdscr.refresh()
+        pass
 
 
 class GotoState(BaseState):
@@ -275,3 +339,4 @@ if __name__ == '__main__':
         exit(1)
 
     curses.wrapper(log_view, filename)
+    print('\n'.join(print_errors))
