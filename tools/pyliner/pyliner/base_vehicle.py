@@ -7,13 +7,8 @@ Classes:
 """
 import atexit
 import logging
-import threading
 from abc import ABCMeta
 from collections import defaultdict
-from datetime import datetime
-from os.path import join
-
-from junit_xml import TestCase, TestSuite
 
 from pyliner.action import ACTION_VEHICLE_SHUTDOWN
 from pyliner.apps import App, AppAccess
@@ -36,9 +31,11 @@ class BaseVehicle(Loggable):
 
         Args:
             vehicle_id: Vehicle ID. Should be unique.
+            logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
         """
+        logging.basicConfig()
         super(BaseVehicle, self).__init__(
-            logger or logging.getLogger(vehicle_id))
+            logger=logger or logging.getLogger(vehicle_id))
 
         # Register Shutdown
         atexit.register(self.shutdown)

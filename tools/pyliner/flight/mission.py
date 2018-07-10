@@ -5,7 +5,7 @@ from pyliner.vehicle import Vehicle
 
 vehicle = Vehicle(
     vehicle_id='rocky',
-    communications=Communication(
+    communication=Communication(
         airliner_map=read_json('airliner.json'),
         ci_port=5009, to_port=5012
     )

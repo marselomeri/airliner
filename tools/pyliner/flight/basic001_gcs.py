@@ -23,7 +23,7 @@ from pyliner.vehicle import Vehicle
 
 rky = Vehicle(
     vehicle_id='rocky',
-    communications=Communication(
+    communication=Communication(
         airliner_map=read_json("airliner.json"),
         address="192.168.1.2",
         ci_port=5009,

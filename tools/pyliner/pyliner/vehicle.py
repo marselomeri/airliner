@@ -31,13 +31,13 @@ class Vehicle(BaseVehicle):
     but it is highly recommended that replacements subclass the default apps.
     """
 
-    def __init__(self, vehicle_id, communications, geographic=None, time=None,
+    def __init__(self, vehicle_id, communication, geographic=None, time=None,
                  logger=None):
         """Create an instance of Pyliner.
 
         Args:
             vehicle_id: Vehicle ID. Should be unique.
-            communications (Communication): Communication App.
+            communication (Communication): Communication App.
                 Not exposed as a public module for direct access, but the user
                 is given the option to use a custom class if they desire.
             geographic: If None, defaults to Geographic().
@@ -50,6 +50,7 @@ class Vehicle(BaseVehicle):
         self.atp_override = None
 
         # Component Defaults
+        communication = communication
         controller = Controller()
         flight_director = FlightDirector()
         geofence = Geofence()
@@ -58,7 +59,7 @@ class Vehicle(BaseVehicle):
         time = time or TimeApp()
 
         # Attach defaults
-        self.attach_app(communications)
+        self.attach_app(communication)
         self.attach_app(geographic)
         # self.attach_service(time)
         self.attach_app(geofence)
