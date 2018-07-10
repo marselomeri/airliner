@@ -1,9 +1,9 @@
 from time import sleep
 
 from pyliner.app.communication import Communication
-from pyliner.navigation.control import proportional
+from pyliner.app.navigation.control import proportional
+from pyliner.util import read_json
 from pyliner.vehicle import Vehicle
-from pyliner.util import
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.util.periodic_executor import PeriodicExecutor
 

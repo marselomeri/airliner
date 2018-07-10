@@ -14,7 +14,7 @@ from geographiclib.geodesic import Geodesic
 from pyliner.action import ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, \
     ACTION_CALC_PBD
 from pyliner.intent import IntentFilter
-from pyliner.navigation.position import Coordinate
+from pyliner.app.navigation.position import Coordinate
 from pyliner.app import App
 
 
@@ -63,8 +63,8 @@ class GeographicApp(App):
         """Calculate the distance between two points on the globe.
 
         Args:
-            a (position.Coordinate): Point A
-            b (position.Coordinate): Point B
+            a (Coordinate): Point A
+            b (Coordinate): Point B
 
         Returns:
             float: Distance in meters.
@@ -88,9 +88,9 @@ class GeographicApp(App):
             (Coordinate): A copy of `a` with updated latitude and longitude.
 
         Args:
-            a (position.Coordinate): Point A
-            bearing (float): Direction in degrees [0, 360)
-            distance (float): Distance in meters
+            a (Coordinate): Point A
+            bearing (Real): Direction in degrees [0, 360)
+            distance (Real): Distance in meters
         """
         direct = GeographicApp._direct(a, bearing, distance)
         b = copy(a)

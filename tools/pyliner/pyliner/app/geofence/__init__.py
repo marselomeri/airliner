@@ -25,10 +25,9 @@ from sortedcontainers import SortedDict
 
 from pyliner.action import ACTION_RTL, ACTION_TELEM
 from pyliner.app import App
-from pyliner.geofence.volume import Volume, CompositeVolume, Box, \
-    VerticalCylinder, LayerCake
+from pyliner.app.geofence.volume import Volume, CompositeVolume
 from pyliner.intent import Intent
-from pyliner.navigation.position import Position
+from pyliner.app.navigation.position import Position
 from pyliner.util import indent
 from pyliner.util.periodic_executor import PeriodicExecutor
 

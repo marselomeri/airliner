@@ -19,3 +19,9 @@ The following modules are also available:
     position  2D and 3D point classes.
     waypoint  Waypoint used in navigation.
 """
+from pyliner.pyliner_error import PylinerError
+
+
+class CommandTimeout(PylinerError):
+    """Raised if a command times out."""
+    pass

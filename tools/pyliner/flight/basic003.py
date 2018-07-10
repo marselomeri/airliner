@@ -16,7 +16,7 @@ from time import sleep
 
 from pyliner.app.communication import Communication
 from pyliner.app.controller import FlightMode
-from pyliner.navigation.control import limiter, proportional
+from pyliner.app.navigation.control import limiter, proportional
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 from pyliner.vehicle import Vehicle

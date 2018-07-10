@@ -13,13 +13,16 @@ class PeriodicExecutor(threading.Thread):
     attempting to access garbage collected objects.
     """
 
-    def __init__(self, target, every=1, exception=None, finalize=None,
-                 name=None, logger=None, daemon=True):
+    def __init__(self, target, every=1, args=(), kwargs=None, exception=None,
+                 finalize=None, name=None, logger=None, daemon=True):
         """
         Args:
             target (Callable): This method will be called with no arguments
                 continuously until stopped.
             every (Real): Amount of seconds to sleep between calls.
+            args (Optional[list]): If given, these args are passed to target.
+            kwargs (Optional[dict]): If given, these kwargs are passed to
+                target.
             exception (Callable): If an exception is raised this will
                 be called with the exception as an argument.
             finalize (Callable): This method will be called with no arguments
@@ -28,10 +31,11 @@ class PeriodicExecutor(threading.Thread):
             logger (Logger): Logger to use. Default logging.getLogger(self.name)
             daemon (bool): Whether the thread is a daemon or not.
         """
-        super(PeriodicExecutor, self).__init__(name=name)
-        self.daemon = daemon
+        super(PeriodicExecutor, self).__init__(
+            target=target, name=name, args=args, kwargs=kwargs)
+        self.daemon = daemon  # Attribute of Thread
 
-        self.target = target
+        # Instance Attributes
         self.exception = exception if exception else \
             lambda e: self.logger.exception(
                 'Unhandled exception in thread %s', self.name)
@@ -39,6 +43,7 @@ class PeriodicExecutor(threading.Thread):
         self.finalize = finalize
         self.logger = logger if logger else logging.getLogger(self.name)
         self.running = False
+        # self.target = target
 
     def run(self):
         """Do not call this directly. Use PeriodicExecutor.start()"""
@@ -46,8 +51,11 @@ class PeriodicExecutor(threading.Thread):
         self.running = True
         try:
             while self.running:
-                self.target()
-                time.sleep(self.every)
+                start_time = time.time()
+                self._Thread__target(
+                    *self._Thread__args, **self._Thread__kwargs)
+                delta = time.time() - start_time
+                time.sleep(self.every - delta)
         except Exception as e:
             if callable(self.exception):
                 self.exception(e)
@@ -59,9 +67,9 @@ class PeriodicExecutor(threading.Thread):
     def stop(self):
         """Stops the thread from continuing to loop.
 
-        Thread will not stop immediately. When the thread wakes up next it will
+        Thread will not exit immediately. When the thread wakes up next it will
         see that it has been stopped, will execute the finalize method if it was
-        given, and will then complete.
+        given, and will then exit.
         """
         self.logger.info('Thread %s stopping.', self.name)
         self.running = False

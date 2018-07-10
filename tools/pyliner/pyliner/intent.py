@@ -1,17 +1,34 @@
+"""
+The intent module provides all the classes relevant to broadcasting Intents
+across a Vehicle.
+"""
+
 from threading import Event
 
-from pyliner.pyliner_exceptions import PylinerError
+from pyliner.pyliner_error import PylinerError
 
 
 class FutureTimeoutError(PylinerError):
+    """Raised if an IntentFuture did not receive a reply within the
+    specified timeout."""
     pass
 
 
 class IntentNoReceiverError(PylinerError):
+    """Raised if an Intent was not broadcast because no Apps indicated they were
+     capable of receiving the specified action."""
     pass
 
 
 class Intent(object):
+    """An Intent is an abstraction of an operation to be performed.
+
+    Intents are broadcast vehicle-wide or to single Apps to indicate that an
+    action should be taken.
+
+    See Also:
+        https://developer.android.com/reference/android/content/Intent
+    """
     def __init__(self, action, data=None, component=None):
         self.action = action
         self.component = component
@@ -20,7 +37,7 @@ class Intent(object):
     def __repr__(self):
         s = '{}(action={!r}, data={!r}'.format(
             self.__class__.__name__, self.action, self.data, self.component)
-        s += '' if not self.component else 'component=' + repr(self.component)
+        s += '' if not self.component else ' component=' + repr(self.component)
         s += ')'
         return s
 
@@ -29,9 +46,17 @@ class Intent(object):
 
 
 class IntentFilter(object):
-    def __init__(self, actions=None, dynamic=None):
+    """Filters intents by matching actions from a list.
+
+    Match using the contains `intent in IntentFilter()` syntax.
+    """
+    def __init__(self, actions=None):
         self.actions = actions
-        self.dynamic = dynamic
+        self.dynamic = None
+
+    def __str__(self):
+        return '{}(actions={}'.format(self.__class__.__name__, self.actions) + \
+               ', dynamic={}'.format(self.dynamic) if self.dynamic else '' + ')'
 
     def __contains__(self, intent):
         if not isinstance(intent, Intent):
@@ -41,16 +66,28 @@ class IntentFilter(object):
 
 
 class IntentResponse(object):
+    """Wrapper for the response from an Intent.
+
+    Attributes:
+        result: The returned value from code that processed an Intent.
+        exception: The exception (if any) that was raised while processing an
+            Intent.
+    """
     def __init__(self, result=None, exception=None):
         self.result = result
         self.exception = exception
 
     def __repr__(self):
-        return '{}(result={}, exception={})'.format(
+        return '{}(result={!r}, exception={!r})'.format(
             self.__class__.__name__, self.result, self.exception)
 
 
 class IntentFuture(object):
+    """Holds asynchronously-generated IntentResponses.
+
+    When an Intent is broadcast the caller is given an IntentFuture which will
+    be populated with IntentResponses as other Apps handle the broadcast Intent.
+    """
     def __init__(self, caused_by):
         self.caused_by = caused_by
         self.failure = None
@@ -58,6 +95,7 @@ class IntentFuture(object):
         """:type: list[IntentResponse]"""
 
         self._add_callback = None
+        self._complete = Event()
         self._event_first = Event()
 
     def add(self, response):
@@ -68,6 +106,17 @@ class IntentFuture(object):
 
     def add_callback(self, callback):
         self._add_callback = callback
+
+    @property
+    def complete(self):
+        return self._complete.is_set()
+
+    @complete.setter
+    def complete(self, value):
+        if value is True:
+            self._complete.set()
+        else:
+            raise ValueError('IntentFuture.complete can only be set to True.')
 
     def first(self, timeout=None):
         self._event_first.wait(timeout=timeout)
@@ -82,3 +131,6 @@ class IntentFuture(object):
             return self.responses[-1]
         except IndexError:
             raise FutureTimeoutError()
+
+    def wait(self, timeout=None):
+        self._complete.wait(timeout)

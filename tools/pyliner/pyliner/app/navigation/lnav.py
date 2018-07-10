@@ -5,8 +5,8 @@ from numbers import Real
 
 from pyliner.action import ACTION_CALC_DISTANCE, ACTION_AXIS_SET
 from pyliner.intent import Intent
-from pyliner.navigation.navigation_factory import NavigationFactory, NotSet
-from pyliner.pyliner_exceptions import CommandTimeout
+from pyliner.app.navigation.navigation_factory import NavigationFactory, NotSet
+from pyliner.app.navigation import CommandTimeout
 
 
 class Lnav(NavigationFactory):
