@@ -25,8 +25,8 @@ from pyliner.util.periodic_executor import PeriodicExecutor
 # TODO Python3 does not see telemetry
 # TODO Put all this somewhere vehicle specific
 SEND_TIME = 0.1
-DEFAULT_CI_PORT = 5008
-DEFAULT_TO_PORT = 5011
+DEFAULT_CI_PORT = 5009
+DEFAULT_TO_PORT = 5012
 
 
 class InvalidCommandException(PylinerError):
@@ -110,6 +110,10 @@ class Communication(App):
             to_port (int): Telemetry-Output port
         """
         super(Communication, self).__init__()
+
+        if not isinstance(airliner_map, dict):
+            raise TypeError('airliner_map is expecting a dict but got {}'
+                            .format(type(airliner_map)))
 
         # Telemetry variables
         self.address = address
@@ -391,7 +395,7 @@ class Communication(App):
                     "not found." % arg["name"])
             stmt = "pb_obj.{} = {}".format(arg_path, arg["value"])
             try:
-                exec(stmt)
+                exec (stmt)
             except Exception as e:
                 print('Problem with {}\n{}'.format(stmt, e))
 
@@ -413,7 +417,7 @@ class Communication(App):
             return None
         # value = getattr(pb_msg, arg_path)
         value = None
-        exec('value = pb_msg.' + arg_path)
+        exec ('value = pb_msg.' + arg_path)
         return value
 
     def _on_recv_telemetry(self, tlm):
