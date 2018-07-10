@@ -83,8 +83,7 @@ class BaseVehicle(Loggable):
 
     def broadcast(self, intent):
         # type: (Intent) -> IntentFuture
-        """Broadcast an Intent to components."""
-        self.debug('Broadcasting: ' + str(intent))
+        """Broadcast an Intent to listening Apps."""
         future = IntentFuture(caused_by=intent)
         # TODO Multithreading is a headache
         # threading.Thread(target=self._broadcast_thread, args=(intent, future))\
@@ -94,6 +93,11 @@ class BaseVehicle(Loggable):
 
     def _broadcast_thread(self, intent, future):
         # type: (Intent, IntentFuture) -> None
+        """Called by broadcast. Broadcasts intents to listening Apps.
+
+        May be in a separate thread.
+        """
+        self.debug('Broadcasting: ' + str(intent))
         if intent.is_explicit():
             self.apps[intent.component].receive(intent, future)
         else:
