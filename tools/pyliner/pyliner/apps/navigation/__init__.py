@@ -31,7 +31,7 @@ from pyliner.apps.navigation.vnav import Vnav
 from pyliner.apps.navigation.waypoint import Waypoint
 from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_error import PylinerError
-from pyliner.util.conversions import hertz
+from pyliner.conversions import hertz
 
 
 class CommandTimeout(PylinerError):

@@ -1,7 +1,6 @@
 from abc import abstractmethod
 
-from pyliner.util import OverlayDict
-from pyliner.util.loggable import Loggable
+from pyliner.util import OverlayDict, Loggable
 
 NotSet = type('NotSet', (object,), {'__repr__': lambda s: 'NotSet'})()
 """Indicate a kwarg that is not set (different than None). Use responsibly.

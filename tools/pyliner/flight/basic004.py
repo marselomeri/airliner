@@ -21,7 +21,7 @@ from pyliner.apps.communication import Communication
 from pyliner.apps.navigation.control import limiter, proportional
 from pyliner import Vehicle
 from pyliner.util import read_json
-from pyliner.util.scripting_wrapper import ScriptingWrapper
+from pyliner.scripting_wrapper import ScriptingWrapper
 
 
 def range_limit(current, target):

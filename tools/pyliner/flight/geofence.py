@@ -5,7 +5,7 @@ from pyliner.apps.geofence import Geofence
 from pyliner.apps.geofence.volume import VerticalCylinder
 from pyliner import Vehicle
 from pyliner.util import read_json
-from pyliner.util.scripting_wrapper import ScriptingWrapper
+from pyliner.scripting_wrapper import ScriptingWrapper
 
 rky = Vehicle(
     vehicle_id='rocky',

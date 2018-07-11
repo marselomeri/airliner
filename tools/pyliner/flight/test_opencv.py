@@ -2,10 +2,9 @@ from time import sleep
 
 from pyliner.apps.communication import Communication
 from pyliner.apps.navigation.control import proportional
-from pyliner.util import read_json
+from pyliner.util import read_json, RealTimeThread
 from pyliner import Vehicle
-from pyliner.util.scripting_wrapper import ScriptingWrapper
-from pyliner.util.periodic_executor import PeriodicExecutor
+from pyliner.scripting_wrapper import ScriptingWrapper
 
 SLEEP = 0.1
 HALF_X = 400 / 2
@@ -53,7 +52,7 @@ with rocky as rocky:
     rocky.ctrl.atp('Takeoff')
     rocky.ctrl.takeoff()
 
-    follow = PeriodicExecutor(
+    follow = RealTimeThread(
         target=opencv_follow,
         every=SLEEP)
 

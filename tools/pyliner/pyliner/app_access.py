@@ -10,7 +10,7 @@ from pyliner.intent import Intent
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture, IntentResponse
 from pyliner.pyliner_error import PylinerError
-from pyliner.util.loggable import Loggable
+from pyliner.util import Loggable
 
 
 class InvalidStateError(PylinerError):

@@ -9,10 +9,9 @@ Classes:
 from abc import abstractmethod
 from threading import Event
 
-from pyliner import AppDetachedError, IntentFilter, Intent
 from pyliner.action import ACTION_CONTROL_GRANT, ACTION_CONTROL_REVOKE, \
     ACTION_CONTROL_REQUEST, ACTION_CONTROL_RELEASE
-from pyliner.app_access import InvalidStateError, AppDetachedError
+from pyliner.app_access import InvalidStateError, AppDetachedError, AppAccess
 from pyliner.apps.controller import Controller
 from pyliner.apps.flight_director import FlightDirector
 from pyliner.apps.geofence import Geofence, LayerKind
@@ -21,9 +20,10 @@ from pyliner.apps.navigation import Navigation
 from pyliner.apps.time_app import TimeApp
 from pyliner.base_vehicle import BaseVehicle
 from pyliner.intent import IntentFilter, Intent
-from pyliner.util.loggable import Loggable
+from pyliner.util import Loggable
 
 __version__ = '0.3'
+__all__ = ['Vehicle', 'App']
 
 
 class Vehicle(BaseVehicle):

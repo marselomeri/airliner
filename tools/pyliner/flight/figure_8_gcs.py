@@ -24,7 +24,7 @@ from pyliner.apps.controller import FlightMode
 from pyliner.apps.navigation.control import constant, limiter, proportional
 from pyliner import Vehicle
 from pyliner.util import read_json
-from pyliner.util.scripting_wrapper import ScriptingWrapper
+from pyliner.scripting_wrapper import ScriptingWrapper
 
 FAST = 0.75
 SLOW = 0.50

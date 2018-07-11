@@ -16,7 +16,7 @@ from pyliner import App
 from pyliner.intent import Intent, IntentNoReceiverError
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture
-from pyliner.util.loggable import Loggable
+from pyliner.util import Loggable
 
 
 class BaseVehicle(Loggable):

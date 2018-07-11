@@ -19,8 +19,8 @@ from pyliner.intent import IntentFilter, Intent
 from pyliner.pyliner_error import PylinerError
 from pyliner.python_pb import pyliner_msgs
 from pyliner import App
-from pyliner.util import init_socket, handler_factory, CallableDefaultDict
-from pyliner.util.periodic_executor import PeriodicExecutor
+from pyliner.util import init_socket, handler_factory, CallableDefaultDict, \
+    RealTimeThread
 
 # TODO Python3 does not see telemetry
 # TODO Put all this somewhere vehicle specific
@@ -144,7 +144,7 @@ class Communication(App):
 
     def attach(self, vehicle):
         super(Communication, self).attach(vehicle)
-        self.control_thread = PeriodicExecutor(
+        self.control_thread = RealTimeThread(
             self.control_rotate, every=0.5, name='ControlRotateThread')
         self.control_thread.start()
 
