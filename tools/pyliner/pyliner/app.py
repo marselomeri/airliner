@@ -91,6 +91,9 @@ class App(Loggable):
         self.logger = None
 
     def control_block(self):
+        """Return a ControlBlock context manager, which when entered, waits
+        for vehicle control before broadcasting Intents.
+        """
         if self.state is App.DETACHED:
             raise AppDetachedError('Detached App will never get control.')
         return _ControlBlock(self)

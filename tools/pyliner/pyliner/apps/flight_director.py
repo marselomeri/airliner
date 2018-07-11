@@ -24,14 +24,7 @@ class FlightDirector(App):
         self.strict_set = strict_set
 
     def __call__(self, x=None, y=None, z=None, r=None):
-        if x is not None:
-            self.x = x
-        if y is not None:
-            self.y = y
-        if z is not None:
-            self.z = z
-        if r is not None:
-            self.r = r
+        self.set(x, y, z, r)
 
     def attach(self, vehicle_wrapper):
         super(FlightDirector, self).attach(vehicle_wrapper)
@@ -66,6 +59,16 @@ class FlightDirector(App):
                 data=block.request(ManualSetpoint(
                     X=self._x, Y=self._y, Z=mod_z, R=self._r,
                     PosctlSwitch=1, GearSwitch=1, ArmSwitch=1)))).first()
+
+    def set(self, x=None, y=None, z=None, r=None):
+        if x is not None:
+            self.x = x
+        if y is not None:
+            self.y = y
+        if z is not None:
+            self.z = z
+        if r is not None:
+            self.r = r
 
     def zero(self):
         self._x = self._y = self._z = self._r = 0.0

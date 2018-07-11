@@ -68,6 +68,10 @@ class IntentFilter(object):
 class IntentResponse(object):
     """Wrapper for the response from an Intent.
 
+    If the handling App processed the Intent properly, result will hold the
+    returned value. If the handling App raised an exception during execution
+    then exception will hold the exception that was raised.
+
     Attributes:
         result: The returned value from code that processed an Intent.
         exception: The exception (if any) that was raised while processing an
@@ -83,10 +87,10 @@ class IntentResponse(object):
 
 
 class IntentFuture(object):
-    """Holds asynchronously-generated IntentResponses.
+    """Hold asynchronously-generated IntentResponses.
 
     When an Intent is broadcast the caller is given an IntentFuture which will
-    be populated with IntentResponses as other Apps handle the broadcast Intent.
+    be populated with IntentResponses as other Apps handle the Intent.
     """
     def __init__(self, caused_by):
         self.caused_by = caused_by
@@ -99,13 +103,18 @@ class IntentFuture(object):
         self._event_first = Event()
 
     def add(self, response):
+        """Add a response to this Future. Call callback if set."""
         self.responses.append(response)
         self._event_first.set()
-        if callable(self._add_callback):
+        if self._add_callback is not None:
             self._add_callback(self)
 
     def add_callback(self, callback):
-        self._add_callback = callback
+        """Add a callback to be called whenever a new response is received."""
+        if callable(self._add_callback):
+            self._add_callback = callback
+        else:
+            raise TypeError('callback must be callable.')
 
     @property
     def complete(self):
@@ -119,6 +128,12 @@ class IntentFuture(object):
             raise ValueError('IntentFuture.complete can only be set to True.')
 
     def first(self, timeout=None):
+        """Return the first response received.
+
+        Raises:
+            FutureTimeoutError: If no responses were received by the end
+                of the timeout.
+        """
         self._event_first.wait(timeout=timeout)
         try:
             return self.responses[0]
@@ -126,6 +141,12 @@ class IntentFuture(object):
             raise FutureTimeoutError()
 
     def recent(self, timeout=None):
+        """Return the most recent response received.
+
+        Raises:
+            FutureTimeoutError: If no responses were received by the end
+                of the timeout.
+        """
         self._event_first.wait(timeout=timeout)
         try:
             return self.responses[-1]

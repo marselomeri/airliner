@@ -39,6 +39,8 @@ class ScriptingWrapper(object):
                 controlling script.
         """
         self._vehicle = vehicle
+        # TODO if no failure callback, define RTL instead of using if-else
+        # in __exit__.
         self.failure_callback = failure_callback
         self.mapping = {
             'ctrl': 'com.windhover.pyliner.apps.controller',

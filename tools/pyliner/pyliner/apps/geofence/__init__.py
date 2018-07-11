@@ -85,12 +85,13 @@ class Geofence(App):
 
     def __init__(self):
         super(Geofence, self).__init__()
-        self._check_thread = None
         self.enabled = False
-        self.fence_violation = False
         self.layers = SortedDict()
         """:type: dict[Any, _Layer]"""
-        self.telemetry = None
+
+        self._check_thread = None
+        self._fence_violation = False
+        self._telemetry = None
 
     def __contains__(self, other):
         """True if the given other is contained within the Geofence."""
@@ -107,7 +108,7 @@ class Geofence(App):
 
     def attach(self, vehicle):
         super(Geofence, self).attach(vehicle)
-        self.telemetry = self.vehicle.broadcast(Intent(
+        self._telemetry = self.vehicle.broadcast(Intent(
             action=ACTION_TELEM,
             data={
                 'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
@@ -123,7 +124,7 @@ class Geofence(App):
 
     def detach(self):
         self._check_thread.stop()
-        self.telemetry = None
+        self._telemetry = None
         super(Geofence, self).detach()
 
     @property
@@ -140,10 +141,10 @@ class Geofence(App):
         return layer
 
     def _check_fence(self):
-        old = self.fence_violation
-        self.fence_violation = self.fence_violation or \
-            (self.enabled and self.position not in self)
-        if not old and self.fence_violation:
+        old = self._fence_violation
+        self._fence_violation = self._fence_violation or \
+                                (self.enabled and self.position not in self)
+        if not old and self._fence_violation:
             self.vehicle.error('Encountered Fence Violation at %s',
                                self.position)
             self.vehicle.broadcast(Intent(action=ACTION_RTL))
@@ -157,9 +158,9 @@ class Geofence(App):
     @property
     def position(self):
         return Position(
-            self.telemetry['latitude'].value,
-            self.telemetry['longitude'].value,
-            self.telemetry['altitude'].value)
+            self._telemetry['latitude'].value,
+            self._telemetry['longitude'].value,
+            self._telemetry['altitude'].value)
 
     def remove_layer(self, position):
         del self.layers[position]

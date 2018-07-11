@@ -45,6 +45,8 @@ class Controller(App):
 
     def attach(self, vehicle_wrapper):
         super(Controller, self).attach(vehicle_wrapper)
+        # TODO ACTION_ARM, DISARM, TAKEOFF, FLIGHT_MODE
+        # Maybe TODO ACTION_ATP
         self.vehicle.add_filter(
             IntentFilter(actions=[ACTION_RTL]),
             lambda i: self.rtl()

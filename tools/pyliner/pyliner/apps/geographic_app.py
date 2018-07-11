@@ -19,7 +19,7 @@ from pyliner.app import App
 
 
 class GeographicApp(App):
-    """A Sensor that produces relevant world-based calculations."""
+    """An App that produces relevant world-based calculations."""
 
     def __repr__(self):
         return 'GeographicApp()'
