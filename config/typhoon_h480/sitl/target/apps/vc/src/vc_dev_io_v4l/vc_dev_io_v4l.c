@@ -102,6 +102,7 @@ int32 VC_CustomDevice_InitData()
     VC_AppCustomDevice.Channel[0].MemoryType    = VC_V4L_MEMORY_TYPE;
     
     strncpy(VC_AppCustomDevice.Channel[0].DevName, VC_DEVICE_PATH, VC_MAX_DEVICE_PATH); 
+
     /* Set all non-zero values for channel One */
     VC_AppCustomDevice.Channel[1].Status        = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[1].Mode          = VC_DEVICE_ENABLED;

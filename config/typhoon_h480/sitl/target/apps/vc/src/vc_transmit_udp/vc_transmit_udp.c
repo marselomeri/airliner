@@ -90,6 +90,7 @@ int32 VC_CustomTransmit_InitData()
 
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
+
     /* Set all non-zero values for channel one */
     VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
     VC_AppCustomData.Channel[1].ChannelID = 1;
