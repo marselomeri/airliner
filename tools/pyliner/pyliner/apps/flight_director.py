@@ -6,7 +6,7 @@ Apps:
     FlightDirector  Grants the user control of a vehicle's basic axes.
 """
 
-from pyliner.apps import App
+from pyliner import App
 from pyliner.action import ACTION_AXIS_SET, ACTION_SEND_COMMAND, \
     ACTION_AXIS_ZERO
 from pyliner.intent import Intent, IntentFilter

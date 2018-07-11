@@ -19,7 +19,7 @@ from pyliner.apps.controller import FlightMode
 from pyliner.apps.navigation.control import limiter, proportional
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
-from pyliner.vehicle import Vehicle
+from pyliner import Vehicle
 
 
 def range_limit(current, target):

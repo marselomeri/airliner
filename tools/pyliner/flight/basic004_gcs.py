@@ -19,7 +19,7 @@ from time import sleep
 
 from pyliner.apps.communication import Communication
 from pyliner.apps.navigation.control import limiter, proportional
-from pyliner.vehicle import Vehicle
+from pyliner import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 

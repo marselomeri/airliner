@@ -17,7 +17,7 @@ import time
 
 from pyliner.apps.communication import Communication
 from pyliner.apps.controller import FlightMode
-from pyliner.vehicle import Vehicle
+from pyliner import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 

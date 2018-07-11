@@ -1,6 +1,6 @@
 import unittest
 
-from pyliner.apps import App
+from pyliner import App
 from pyliner.app_access import AppAccess
 
 

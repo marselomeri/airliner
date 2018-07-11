@@ -1,4 +1,4 @@
-from pyliner.apps import App
+from pyliner import App
 
 
 class TimeApp(App):

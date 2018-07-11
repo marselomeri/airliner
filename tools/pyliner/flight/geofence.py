@@ -3,7 +3,7 @@ from time import sleep
 from pyliner.apps.communication import Communication
 from pyliner.apps.geofence import Geofence
 from pyliner.apps.geofence.volume import VerticalCylinder
-from pyliner.vehicle import Vehicle
+from pyliner import Vehicle
 from pyliner.util import read_json
 from pyliner.util.scripting_wrapper import ScriptingWrapper
 

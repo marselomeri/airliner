@@ -14,7 +14,7 @@ import time
 from enum import Enum
 
 from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
-from pyliner.apps import App
+from pyliner import App
 from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_error import PylinerError
 from pyliner.telemetry import ManualSetpoint

@@ -2,7 +2,7 @@ from SocketServer import TCPServer
 from abc import abstractmethod
 from threading import Thread
 
-from pyliner.apps import App
+from pyliner import App
 
 
 class SocketApp(App):

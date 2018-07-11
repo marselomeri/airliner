@@ -24,7 +24,7 @@ from enum import Enum
 from sortedcontainers import SortedDict
 
 from pyliner.action import ACTION_RTL, ACTION_TELEM
-from pyliner.apps import App
+from pyliner import App
 from pyliner.apps.geofence.volume import Volume, CompositeVolume
 from pyliner.intent import Intent
 from pyliner.apps.navigation.position import Position

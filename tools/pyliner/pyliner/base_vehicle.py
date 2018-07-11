@@ -11,7 +11,8 @@ from abc import ABCMeta
 from collections import defaultdict
 
 from pyliner.action import ACTION_VEHICLE_SHUTDOWN
-from pyliner.apps import App, AppAccess
+from pyliner.app_access import AppAccess
+from pyliner import App
 from pyliner.intent import Intent, IntentNoReceiverError
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture
