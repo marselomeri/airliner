@@ -91,6 +91,19 @@ int32 VC_CustomTransmit_InitData()
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
     
+    /* Set all non-zero values for channel one */
+    VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
+    VC_AppCustomData.Channel[1].ChannelID = 1;
+    VC_AppCustomData.Channel[1].DestPort = 3002;
+    VC_AppCustomData.Channel[1].SocketFd = 0;
+
+    strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);
+    strncpy(VC_AppCustomData.Channel[1].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN);
+
+    /* Initialize output messages*/
+	CFE_SB_InitMsg(&OpticalFlowFrameMsg, FLOW_FRAME_MID,
+				sizeof(PX4_OpticalFlowFrameMsg_t), TRUE);
+
     return (iStatus);
 }
 
@@ -296,9 +309,90 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->DestIP);
             s_addr.sin_port        = htons(channel->DestPort);
-            status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
-                                    (struct sockaddr *) &s_addr,
-                                    sizeof(s_addr));
+            /* If the frame is from opFlow dedicated camera device
+			 * convert image from YUV2 or YUYV to Grey by extracting the Y component.
+			 * copy the image to opticalFlowFrameMsg*/
+			if(ChannelID == 1)
+			{
+				int actualWidth = 160;
+				int expectedWidth = 64;
+				int actualHeight = 90;
+				int expectedHeight = 64;
+				uint8 greyBuffer[expectedHeight*expectedWidth];
+
+				/* row */
+				int rowPadding = (actualHeight-expectedHeight)/2; 					// (90-64)/2 = 13
+				int startRow = ((actualWidth)*(rowPadding-1)); 						//(160 *12)(row is exclusive)
+				int endRow = ((actualWidth)*(actualHeight-rowPadding-1)); 			//(160 *76)(row is inclusive)
+				/* column */
+				int columnPadding = (actualWidth-expectedWidth)/2;   				// (160-64)/2 = 48
+				int startColumn = (columnPadding);									// (48) (col is inclusive)
+				int endColumn = (actualWidth-columnPadding-1);						//(111)(col is inclusive)
+
+
+				int byteCounter = 0;
+				int colCounter = 0;
+				int valCounter = 0;
+
+
+				int columnPaddingCounter = 0;
+				int rowPaddingCounter = 0;
+
+				for(int i =0 ; i<Size; i++)
+				{
+					if(i%2==0)
+					{
+						if(byteCounter < startRow || byteCounter >= endRow)
+						{
+							byteCounter++;
+							continue;
+
+						}
+						else
+						{
+							if(byteCounter!=0 && byteCounter%160 == 0)
+							{
+								colCounter = 0;
+							}
+
+							if(colCounter>=startColumn && colCounter<=endColumn)
+							{
+								greyBuffer[valCounter]= (uint8)Buffer[i];
+								valCounter++;
+							}
+							colCounter++;
+						}
+						byteCounter++;
+					}
+				}
+
+				/* publish message */
+				uint64 timestamp;
+				timestamp = PX4LIB_GetPX4TimeUs();
+				OpticalFlowFrameMsg.Timestamp = timestamp;
+				for (int i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
+					OpticalFlowFrameMsg.Frame[i] = greyBuffer[i];
+				}
+				// Publish message to software bus
+				CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
+				CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
+				status = PX4_OPTICAL_FLOW_FRAME_SIZE;
+
+			}
+			else if (ChannelID == 0)
+			{
+				/* Send frame over udp*/
+				status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
+						(struct sockaddr *) &s_addr,
+						sizeof(s_addr));
+			}
+			else
+			{
+				status = 0;
+			}
+
+
+
             if (status < 0)
             {
                 if(errno == 90)

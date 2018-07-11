@@ -38,6 +38,7 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "px4_msgs.h"
 #include "vc_transmit.h"
 #include "../vc_custom_shared.h"
 #include "vc_perfids.h"
