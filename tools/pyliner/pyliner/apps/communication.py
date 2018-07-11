@@ -18,7 +18,7 @@ from pyliner.arte_ccsds import CCSDS_TlmPkt_t, CCSDS_CmdPkt_t
 from pyliner.intent import IntentFilter, Intent
 from pyliner.pyliner_error import PylinerError
 from pyliner.python_pb import pyliner_msgs
-from pyliner import App
+from pyliner.app import App
 from pyliner.util import init_socket, handler_factory, CallableDefaultDict, \
     RealTimeThread
 

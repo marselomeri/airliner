@@ -22,21 +22,15 @@ The following modules are also available:
 import math
 
 from pyliner.action import ACTION_TELEM, ACTION_GOTO
-from pyliner import App
+from pyliner.app import App
 from pyliner.apps.navigation.goto import Goto
-from pyliner.apps.navigation.heading import Heading
+from pyliner.heading import Heading
 from pyliner.apps.navigation.lnav import Lnav
 from pyliner.apps.navigation.rotate import Rotate
 from pyliner.apps.navigation.vnav import Vnav
-from pyliner.apps.navigation.waypoint import Waypoint
+from pyliner.waypoint import Waypoint
 from pyliner.intent import Intent, IntentFilter
-from pyliner.pyliner_error import PylinerError
 from pyliner.conversions import hertz
-
-
-class CommandTimeout(PylinerError):
-    """Raised if a command times out."""
-    pass
 
 
 class Navigation(App):

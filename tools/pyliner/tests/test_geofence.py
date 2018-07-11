@@ -3,7 +3,7 @@ import unittest
 from pyliner.apps.geofence import Geofence, LayerKind
 from pyliner.apps.geofence.volume import Box, VerticalCylinder
 from pyliner.apps.geographic_app import GeographicApp
-from pyliner.apps.navigation.position import Position, Coordinate
+from pyliner.position import Position, Coordinate
 
 
 class TestGeofence(unittest.TestCase):

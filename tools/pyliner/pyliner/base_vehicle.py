@@ -12,7 +12,7 @@ from collections import defaultdict
 
 from pyliner.action import ACTION_VEHICLE_SHUTDOWN
 from pyliner.app_access import AppAccess
-from pyliner import App
+from pyliner.app import App
 from pyliner.intent import Intent, IntentNoReceiverError
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture

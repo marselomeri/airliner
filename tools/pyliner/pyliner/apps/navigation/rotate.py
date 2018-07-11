@@ -4,9 +4,9 @@ from numbers import Real
 
 from pyliner.action import ACTION_AXIS_SET
 from pyliner.intent import Intent
-from pyliner.apps.navigation.heading import Heading, Direction
+from pyliner.heading import Heading, Direction
 from pyliner.apps.navigation.navigation_factory import NavigationFactory, NotSet
-from pyliner.apps.navigation import CommandTimeout
+from pyliner.apps.navigation.command_timeout import CommandTimeout
 
 
 class Rotate(NavigationFactory):

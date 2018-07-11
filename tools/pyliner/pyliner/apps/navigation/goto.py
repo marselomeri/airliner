@@ -6,7 +6,7 @@ from numbers import Real
 from pyliner.action import ACTION_CALC_DISTANCE, ACTION_SEND_COMMAND
 from pyliner.intent import Intent
 from pyliner.apps.navigation.navigation_factory import NavigationFactory, NotSet
-from pyliner.apps.navigation import CommandTimeout
+from pyliner.apps.navigation.command_timeout import CommandTimeout
 from pyliner.telemetry import SetpointTriplet
 from pyliner.util import shifter
 

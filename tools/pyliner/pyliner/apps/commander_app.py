@@ -1,7 +1,7 @@
 import json
 
 from pyliner.action import ACTION_GOTO
-from pyliner.apps.navigation.waypoint import Waypoint
+from pyliner.waypoint import Waypoint
 from pyliner.apps.socket_app import SocketApp
 from pyliner.intent import Intent
 
