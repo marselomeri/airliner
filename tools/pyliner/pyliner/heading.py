@@ -30,7 +30,7 @@ class Heading(float):
     it wraps around [0, 360).
     """
     def __new__(cls, value=0.0):
-        # Can't wrap inside init because by then self is already set.
+        # Can't wrap from init because by then self (a float) is already set.
         return super(Heading, cls).__new__(cls, value % 360.0)
 
     def __add__(self, other):

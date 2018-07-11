@@ -28,7 +28,7 @@ from pyliner.heading import Heading
 from pyliner.apps.navigation.lnav import Lnav
 from pyliner.apps.navigation.rotate import Rotate
 from pyliner.apps.navigation.vnav import Vnav
-from pyliner.waypoint import Waypoint
+from pyliner.position import Waypoint
 from pyliner.intent import Intent, IntentFilter
 from pyliner.conversions import hertz
 
