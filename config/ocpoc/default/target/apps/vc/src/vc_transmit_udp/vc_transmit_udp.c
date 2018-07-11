@@ -333,12 +333,12 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				int byteCounter = 0;
 				int colCounter = 0;
 				int valCounter = 0;
-
+				int i;
 
 				int columnPaddingCounter = 0;
 				int rowPaddingCounter = 0;
 
-				for(int i =0 ; i<Size; i++)
+				for(i =0 ; i<Size; i++)
 				{
 					if(i%2==0)
 					{
@@ -370,7 +370,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				uint64 timestamp;
 				timestamp = PX4LIB_GetPX4TimeUs();
 				OpticalFlowFrameMsg.Timestamp = timestamp;
-				for (int i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
+				for (i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
 					OpticalFlowFrameMsg.Frame[i] = greyBuffer[i];
 				}
 				// Publish message to software bus
