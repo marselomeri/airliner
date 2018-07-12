@@ -1,10 +1,14 @@
 """
-The util package contains a lot of random code that doesn't belong anywhere else
+The util module contains a lot of random code that doesn't belong anywhere else
 yet. If enough code of a similar purpose is added here it should be moved into
 its own package or module.
 
+All code in util is self-sufficient, relying only on Python builtins or
+documented dependencies to perform properly. No code in this module uses any
+Pyliner-specific data.
+
 Methods:
-    enable_logging  Enable process-wide logging.
+    enable_logging  Begins logging the current process.
     get_time  Get the current time.
     handler_factory  Create a UDP receive handler factory.
     indent  Yield prepended spaces from an iterable.
@@ -13,20 +17,15 @@ Methods:
     read_json  Read the json from the given file path into a dictionary.
     shifter  Yield an n-tuple of an iterable as it is left-shifted.
 
-Enums:
-     EventType  The categories of Events.
-
 Classes:
-     Event  An event that is passed around a Vehicle.
+     CallableDefaultDict  A reimplementation of defaultdict that calls a
+        handler with the new key as an argument.
      Loggable  Mixin class that provides basic logging methods.
      OverlayDict  Dict where key lookups search multiple dicts.
-     PeriodicExecutor  Thread which calls its target periodically.
-     LogStream  Intercepts IO to a stream and logs it.
+     RealTimeOverrun  Raised when a RealTimeThread took too long to execute.
+     RealTimeThread  Thread which calls its target periodically.
+     StreamLogger  Intercepts IO to a stream and logs it.
      ThreadedUDPRequestHandler  Sends UDP requests to a custom callback.
-
-Modules:
-        conversions  Useful unit conversions for in-code use.
-        mutable_val  Generic container for an immutable object that may change.
 """
 
 import json
@@ -37,12 +36,18 @@ import threading
 import time
 from collections import Iterator, Iterable
 from datetime import datetime
-from os.path import join, dirname
+from os.path import join
 
 import socketserver
 
+from pyliner.pyliner_error import PylinerError
+
 
 class CallableDefaultDict(dict):
+    """A reimplementation of defaultdict that calls a handler with the
+    new key as an argument.
+    """
+
     def __init__(self, default_factory=None, **kwargs):
         super(CallableDefaultDict, self).__init__(**kwargs)
         self.default_factory = default_factory
@@ -57,7 +62,7 @@ class Loggable(object):
     """A mixin class that provides basic logging methods.
 
     Subclasses that mix this must set logger before calling any of the logging
-    methods.
+    methods or they will get AttributeErrors.
     """
 
     def __init__(self, logger=None):
@@ -95,6 +100,10 @@ class OverlayDict(object):
         raise KeyError(item)
 
 
+class RealTimeOverrun(PylinerError):
+    """Raised when a RealTimeThread took too long to execute."""
+
+
 class RealTimeThread(threading.Thread):
     """Executes a callback function every x-seconds.
 
@@ -111,7 +120,7 @@ class RealTimeThread(threading.Thread):
         Args:
             target (Callable): This method will be called with no arguments
                 continuously until stopped.
-            every (Real): Amount of seconds to sleep between calls.
+            every (Real): Seconds between calls to target.
             args (Optional[list]): If given, these args are passed to target.
             kwargs (Optional[dict]): If given, these kwargs are passed to
                 target.
@@ -141,13 +150,18 @@ class RealTimeThread(threading.Thread):
         """Do not call this directly. Use PeriodicExecutor.start()"""
         self.logger.info('Thread %s starting', self.name)
         self.running = True
+        start_time = time.time()
         try:
             while self.running:
-                start_time = time.time()
                 self._Thread__target(
                     *self._Thread__args, **self._Thread__kwargs)
-                delta = time.time() - start_time
-                time.sleep(self.every - delta)
+                start_time += self.every
+                sleep_time = start_time - time.time()
+                if sleep_time < 0:
+                    raise RealTimeOverrun(
+                        '{} took too long ({}s)'
+                        .format(self.name, self.every - sleep_time))
+                time.sleep(sleep_time)
         except Exception as e:
             if callable(self.exception):
                 self.exception(e)
@@ -212,17 +226,17 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
     Logs stdin, stdout, and stderr if a logging level is passed to them.
 
     Args:
-        log_dir (str): If None, defaults to '<pyliner>/logs'.
-        log_file (str): If None, defaults to '<time>_pyliner_<script_name>.log'.
+        log_dir (str): If None, defaults to 'logs'.
+        log_file (str): If None, defaults to '<time>_pyliner_<script>.log'.
         script (str): Script name, only used if log_file is None.
-        level: The level to log at.
+        level: The minimum log level to capture.
         filemode: The filemode of the log file. Either 'a' or 'w'.
-        stdin: Logging level or None
-        stdout: Logging level or None
-        stderr: Logging level or None
+        stdin: Logging level or None to disable stdin logging.
+        stdout: Logging level or None to disable stdout logging.
+        stderr: Logging level or None to disable stderr logging.
     """
     if log_dir is None:
-        log_dir = join(dirname(__file__), 'logs')
+        log_dir = 'logs'
     if log_file is None:
         now = datetime.now()
         time_str = now.strftime('%Y-%m-%d_%H:%M:%S')

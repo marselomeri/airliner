@@ -1,75 +1,45 @@
 """
-The Vehicle module provides the user with a concrete implementation of
-BaseVehicle, with some useful modules and settings pre-loaded. The user is free
-to not use Vehicle in favor of a completely custom subclass of BaseVehicle.
+Pyliner
 
-Classes:
-    Vehicle  A vehicle for the user to control.
+Pyliner is a Python-based drone control scripting interface from Windhover Labs.
+It uses a custom flight software called Airliner, developed by Windhover Labs,
+to send commands and receive telemetry from the actual vehicle. Pyliner presents
+Airliner functionality through a combination of Pyliner Apps which the user may
+choose to enable or disable at will.
+
+Pyliner by itself is a flexible, open-ended Intent-passing framework that gives
+users the flexibility to choose how their platform behaves, and what features
+it presents. When combined with the Windhover Labs Pyliner Apps that are built-
+in to the Vehicle class or available by themselves from the pyliner.apps
+package, Pyliner becomes a feature rich drone flight software controller.
+
+Assuming that Airliner is running and listening on the appropriate ports,
+controlling a vehicle from the scripting interface is super easy!
+
+    >>> from pyliner import Vehicle, enable_logging
+    >>> from pyliner.apps.communication import Communication
+    >>> from pyliner.scripting_wrapper import ScriptingWrapper
+    >>> from pyliner.util import read_json
+    >>> enable_logging()
+    >>> vehicle = Vehicle(
+    ...     vehicle_id='example',
+    ...     communication=Communication(
+    ...         airliner_map=read_json('airliner.json'),
+    ...         address='localhost', ci_port=5009, to_port=5012))
+    >>> with ScriptingWrapper(vehicle) as v:
+    ...     v.await_change('/Airliner/CNTL/VehicleGlobalPosition/Alt',
+    ...                    'Waiting for telemetry downlink')
+    ...     v.ctrl.atp('Begin Script?')
+    ...     v.ctrl.arm()
+    ...     v.ctrl.takeoff()
+    ...     v.ctrl.atp('Return?')
+    ...     v.ctrl.rtl()
+
+
 """
 
-from pyliner.apps.controller import Controller
-from pyliner.apps.flight_director import FlightDirector
-from pyliner.apps.geofence import Geofence, LayerKind
-from pyliner.apps.geographic_app import GeographicApp
-from pyliner.apps.navigation import Navigation
-from pyliner.apps.time_app import TimeApp
-from pyliner.base_vehicle import BaseVehicle
+from pyliner.util import enable_logging
+from pyliner.vehicle import Vehicle
 
 __version__ = '0.3'
-__all__ = ['Vehicle']
-
-
-class Vehicle(BaseVehicle):
-    """Represents a vehicle that the user may control.
-
-    The basic apps that a vehicle presents are:
-        com (Communication): Provides methods to communicate with the physical
-            vehicle in the air.
-        fd (FlightDirector): Provides methods for controlling the raw x, y, z,
-            and rotation axes of the vehicle.
-        nav (Navigation): Provides methods for controlling the direction and
-            speed of the vehicle.
-
-    The user is free to replace the defaults of these apps in the constructor
-    but it is highly recommended that replacements subclass the default apps.
-    """
-
-    def __init__(self, vehicle_id, communication, geographic=None, time=None,
-                 logger=None):
-        """Create an instance of Pyliner.
-
-        Args:
-            vehicle_id: Vehicle ID. Should be unique.
-            communication (Communication): Communication App.
-                Not exposed as a public module for direct access, but the user
-                is given the option to use a custom class if they desire.
-            geographic: If None, defaults to Geographic().
-            logger: If None, defaults to 'logging.getLogger(vehicle_id)'.
-            time: If None, default to TimeSensor().
-        """
-        super(Vehicle, self).__init__(vehicle_id, logger)
-
-        # Attributes
-        self.atp_override = None
-
-        # Component Defaults
-        communication = communication
-        controller = Controller()
-        flight_director = FlightDirector()
-        geofence = Geofence()
-        geographic = geographic or GeographicApp()
-        navigation = Navigation()
-        time = time or TimeApp()
-
-        # Attach defaults
-        self.attach_app(communication)
-        self.attach_app(geographic)
-        # self.attach_service(time)
-        self.attach_app(geofence)
-        self.attach_app(controller)
-        self.attach_app(flight_director)
-        self.attach_app(navigation)
-
-        # Add helpful default settings
-        geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
-        navigation.defaults.update({'timeout': None, 'underflow': 5.0})
+__all__ = ['Vehicle', 'enable_logging']
