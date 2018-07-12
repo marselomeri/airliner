@@ -1,7 +1,7 @@
-from pyliner.apps.communication import Communication
-from pyliner.util import read_json
-from pyliner.scripting_wrapper import ScriptingWrapper
 from pyliner import Vehicle
+from pyliner.apps.communication import Communication
+from pyliner.scripting_wrapper import ScriptingWrapper
+from pyliner.util import read_json
 
 vehicle = Vehicle(
     vehicle_id='rocky',

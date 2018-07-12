@@ -1,10 +1,10 @@
 import time
 
+from pyliner import Vehicle
 from pyliner.action import ACTION_RTL
 from pyliner.apps.communication import Communication
 from pyliner.intent import Intent
 from pyliner.util import read_json
-from pyliner import Vehicle
 
 vehicle = Vehicle(
     vehicle_id='rocky',

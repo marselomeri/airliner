@@ -19,12 +19,12 @@ import thread
 import threading
 from time import sleep
 
+from pyliner import Vehicle
 from pyliner.apps.communication import Communication
 from pyliner.apps.controller import FlightMode
 from pyliner.apps.navigation.control import constant, limiter, proportional
-from pyliner import Vehicle
-from pyliner.util import read_json
 from pyliner.scripting_wrapper import ScriptingWrapper
+from pyliner.util import read_json
 
 FAST = 0.75
 SLOW = 0.50

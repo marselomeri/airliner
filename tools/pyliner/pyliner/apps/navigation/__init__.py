@@ -62,8 +62,7 @@ class Navigation(App):
         self.telemetry = intent.result
         self.vehicle.add_filter(
             IntentFilter(actions=[ACTION_GOTO]),
-            lambda i: self.goto()(**i.data)
-        )
+            lambda i: self.goto()(**i.data))
 
     def detach(self):
         self.telemetry = None

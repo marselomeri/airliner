@@ -13,12 +13,12 @@ Requirements Fulfilled:
     PYLINER016
 """
 
+from pyliner import Vehicle
 from pyliner.apps.communication import Communication
 from pyliner.apps.controller import FlightMode
 from pyliner.apps.navigation.control import proportional
-from pyliner.util import read_json
 from pyliner.scripting_wrapper import ScriptingWrapper
-from pyliner import Vehicle
+from pyliner.util import read_json
 
 rky = Vehicle(
     vehicle_id='rocky',

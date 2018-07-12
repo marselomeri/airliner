@@ -1,10 +1,10 @@
 from time import sleep
 
+from pyliner import Vehicle
 from pyliner.apps.communication import Communication
 from pyliner.apps.navigation.control import proportional
-from pyliner.util import read_json, RealTimeThread
-from pyliner import Vehicle
 from pyliner.scripting_wrapper import ScriptingWrapper
+from pyliner.util import read_json, RealTimeThread
 
 SLEEP = 0.1
 HALF_X = 400 / 2

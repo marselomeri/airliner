@@ -1,9 +1,9 @@
 from time import sleep
 
-from pyliner.apps.communication import Communication
-from pyliner.util import read_json
-from pyliner.scripting_wrapper import ScriptingWrapper
 from pyliner import Vehicle
+from pyliner.apps.communication import Communication
+from pyliner.scripting_wrapper import ScriptingWrapper
+from pyliner.util import read_json
 
 rky = Vehicle(
     vehicle_id='rocky',
@@ -21,7 +21,7 @@ with ScriptingWrapper(rky) as rocky:
     home = rocky.nav.position
 
     while True:
-        raw_input('Press Enter To Log: ')
+        sleep(1.0)
+        # raw_input('Press Enter To Log: ')
         position = rocky.nav.position
-        rocky.info('Position: {}\tDistance: {}'.format(
-            position, rocky.geographic.distance(home, position)))
+        print('Distance: {}'.format(rocky.geographic.distance(home, position)))
