@@ -29,9 +29,9 @@ class AppDetachedError(InvalidStateError):
 
 class AppAccess(Loggable):
     """
-    The AppAccess class acts as a boundary between components on a vehicle
-    so that they do not interact destructively with each other. Components must
-    access the vehicle through the interface provided by their AppAccess.
+    The AppAccess class acts as a boundary between Apps on a vehicle so that
+    they can not interact destructively with each other. Apps must access the
+    vehicle and other Apps through the interface provided by their AppAccess.
     """
     def __init__(self, app):
         super(AppAccess, self).__init__()
@@ -77,9 +77,17 @@ class AppAccess(Loggable):
         self._vehicle.add_filter(intent_filter, self)
         return intent_filter
 
+    def broadcast(self, intent):
+        # type: (Intent) -> IntentFuture
+        """Broadcast an intent to the vehicle."""
+        if not self._vehicle:
+            raise AppDetachedError('Cannot broadcast while detached.')
+        return self._vehicle.broadcast(intent)
+
     def clear_filter(self):
         """Remove all intent filters."""
-        self._filter.clear()
+        for filter_pair in self._filter.keys():
+            self.remove_filter(filter_pair)
 
     def receive(self, intent, future):
         """Receive an intent and pass it to any callbacks that are listening.
@@ -117,14 +125,7 @@ class AppAccess(Loggable):
     def shutdown(self):
         return self._vehicle.is_shutdown
 
-    def broadcast(self, intent):
-        # type: (Intent) -> IntentFuture
-        """Broadcast an intent to the vehicle."""
-        if not self._vehicle:
-            raise AppDetachedError('Cannot broadcast while detached.')
-        return self._vehicle.broadcast(intent)
-
     def remove_filter(self, intent_filter):
-        """Remove a filter (by the tuple returned by add) from this access."""
+        """Remove a filter from this access."""
         del self._filter[intent_filter]
         self._vehicle.remove_filter(intent_filter, self)

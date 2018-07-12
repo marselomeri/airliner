@@ -90,10 +90,7 @@ class ScriptingWrapper(object):
             poll (float): Check every `poll` seconds.
         """
 
-        telemetry = self.broadcast(Intent(
-            action=ACTION_TELEM,
-            data=tlm
-        )).first().result
+        telemetry = self.telemetry(tlm)
         change = Event()
         telemetry.add_listener(lambda t: change.set())
         change.wait(poll)
@@ -103,3 +100,8 @@ class ScriptingWrapper(object):
             elif isinstance(out, str):
                 print(out)
             change.wait(poll)
+
+    def telemetry(self, op_path):
+        return self._vehicle.broadcast(Intent(
+            action=ACTION_TELEM, data=op_path
+        )).first().result
