@@ -110,6 +110,9 @@ extern "C" {
 */
 #define FLOW_STARTUP_TIMEOUT_MSEC    (1000)
 
+#define FLOW_GYRO_PIPE_DEPTH    (30)
+#define FLOW_GYRO_PIPE_NAME    ("FLOW_GYRO_PIPE")
+#define FLOW_SENSOR_GYRO_MID_MAX_MSG_COUNT (25)
 
 #ifdef __cplusplus
 }
