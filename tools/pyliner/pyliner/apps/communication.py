@@ -24,10 +24,11 @@ from pyliner.util import init_socket, handler_factory, CallableDefaultDict, \
     RealTimeThread, OrderedSetQueue
 
 # TODO Python3 does not see telemetry
-# TODO Put all this somewhere vehicle specific
-SEND_TIME = 0.1
-DEFAULT_CI_PORT = 5009
-DEFAULT_TO_PORT = 5012
+
+
+class CommandAuthorizationError(PylinerError):
+    """Raised if an App does not have permission to send commands."""
+    pass
 
 
 class InvalidCommandException(PylinerError):
@@ -41,6 +42,7 @@ class InvalidOperationException(PylinerError):
 
 
 class _Telemetry(object):
+    """Represents an operational path of telemetry from Airliner."""
     def __init__(self, name=None, time=None, value=None):
         self.name = name
         self.time = time
@@ -64,6 +66,9 @@ class _Telemetry(object):
 
 
 class ControlToken(object):
+    """Created by the Communication App and passed to Apps that are granted
+    control of the vehicle. All commands sent that require authentication
+    must use the request method to wrap their request."""
     def __init__(self, app_name):
         self.app_name = app_name
         # self._token =
@@ -76,6 +81,8 @@ class ControlToken(object):
 
 
 class ControlRequest(object):
+    """Created via a ControlToken, used to authenticate a request sent to the
+    Communication App that requires granted control of the vehicle."""
     def __init__(self, token, data):
         self.token = token
         """:type: ControlToken"""
@@ -84,11 +91,6 @@ class ControlRequest(object):
     def __repr__(self):
         return '{}({}, {})'.format(
             self.__class__.__name__, self.token, self.data)
-
-
-class CommandAuthorizationError(PylinerError):
-    """Raised if an App does not have permission to send commands."""
-    pass
 
 
 class Communication(App):
@@ -156,7 +158,7 @@ class Communication(App):
     CONTROL_ROTATE_EVERY = hertz(4)
 
     def __init__(self, airliner_map, address='localhost',
-                 ci_port=DEFAULT_CI_PORT, to_port=DEFAULT_TO_PORT):
+                 ci_port=5009, to_port=5012):
         """
         Args:
             airliner_map (dict): Airliner Mapping, typically read from a JSON.
