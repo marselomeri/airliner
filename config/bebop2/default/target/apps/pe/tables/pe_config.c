@@ -101,7 +101,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
     //ULR_OFF_Z
     0.0f,
     // FLOW_FUSE
-    TRUE,
+    FALSE,
     /**
      * Optical flow scale
      *
