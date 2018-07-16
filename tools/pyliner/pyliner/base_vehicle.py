@@ -13,7 +13,7 @@ from collections import defaultdict
 from pyliner.action import ACTION_VEHICLE_SHUTDOWN
 from pyliner.app_access import AppAccess
 from pyliner.app import App
-from pyliner.intent import Intent, IntentNoReceiverError
+from pyliner.intent import Intent, IntentNoReceiverError, IntentExplicitFailure
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture
 from pyliner.util import Loggable
@@ -97,7 +97,11 @@ class BaseVehicle(Loggable):
         """
         self.debug('Broadcasting: ' + str(intent))
         if intent.is_explicit():
-            self.apps[intent.component].receive(intent, future)
+            try:
+                self.apps[intent.component].receive(intent, future)
+            except KeyError:
+                future.failure = IntentExplicitFailure(
+                    'There is no App with the name: ' + str(intent.component))
         else:
             try:
                 intent_filters = self._intent_filters[intent.action]
