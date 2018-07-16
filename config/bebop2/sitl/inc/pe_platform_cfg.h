@@ -139,6 +139,8 @@ extern "C" {
 /* Optical flow */
 #define REQ_FLOW_INIT_COUNT     (10)
 #define FLOW_TIMEOUT            (1000000) /* 1.0 s */
+#define FLOW_GYRO_HP_CUTOFF     (0.001f)
+
 
 #ifdef __cplusplus
 }
