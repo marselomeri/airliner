@@ -13,6 +13,7 @@ setup(
         'enum34',
         'future',
         'geographiclib',
+        'orderedset',
         'protobuf',
         'sortedcontainers'
     ]

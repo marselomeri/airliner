@@ -38,6 +38,8 @@ from collections import Iterator, Iterable
 from datetime import datetime
 from os.path import join
 
+from orderedset import OrderedSet
+import queue
 import socketserver
 
 from pyliner.pyliner_error import PylinerError
@@ -85,6 +87,27 @@ class Loggable(object):
 
     def warning(self, msg, *args, **kwargs):
         self.logger.warning(msg, *args, **kwargs)
+
+
+class OrderedSetQueue(queue.Queue):
+    """Reimplementation of Queue with a backing OrderedSet.
+
+    Allows use of the in-operator.
+    """
+    def __contains__(self, item):
+        return item in self.queue
+
+    def _init(self, maxsize):
+        self.queue = OrderedSet()
+
+    def _get(self):
+        return self.queue.pop(last=False)
+
+    def _put(self, item):
+        self.queue.add(item)
+
+    def remove(self, elem):
+        self.queue.remove(elem)
 
 
 class OverlayDict(object):
