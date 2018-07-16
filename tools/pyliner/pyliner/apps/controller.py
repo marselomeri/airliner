@@ -13,7 +13,8 @@ import time
 
 from enum import Enum
 
-from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND
+from pyliner.action import ACTION_RTL, ACTION_SEND_COMMAND, ACTION_ARM, \
+    ACTION_DISARM, ACTION_TAKEOFF, ACTION_ATP
 from pyliner.app import App
 from pyliner.intent import Intent, IntentFilter
 from pyliner.pyliner_error import PylinerError
@@ -45,12 +46,18 @@ class Controller(App):
 
     def attach(self, vehicle_wrapper):
         super(Controller, self).attach(vehicle_wrapper)
-        # TODO ACTION_ARM, DISARM, TAKEOFF, FLIGHT_MODE
-        # Maybe TODO ACTION_ATP
+        # TODO FLIGHT_MODE
         self.vehicle.add_filter(
-            IntentFilter(actions=[ACTION_RTL]),
-            lambda i: self.rtl()
-        )
+            IntentFilter(actions=[ACTION_ARM]), lambda i: self.arm())
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_ATP]),
+            lambda i: self.atp(i.data, False))
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_DISARM]), lambda i: self.disarm())
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_RTL]), lambda i: self.rtl())
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_TAKEOFF]), lambda i: self.takeoff())
 
     def detach(self):
         self.vehicle.callback = None
