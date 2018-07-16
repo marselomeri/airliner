@@ -87,7 +87,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//PN_T_NOISE_DENSITY
     .001f,
 	//T_MAX_GRADE
-    1.0f,
+    0.0f,
 	//FAKE_ORIGIN
     0,
 	//INIT_ORIGIN_LAT
