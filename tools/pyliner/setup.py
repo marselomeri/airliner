@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyliner',
-    version='0.3',
+    version='0.4',
     author='Erik VanderWerf',
     author_email='evanderwerf@windhoverlabs.com',
     description='Interface to control drones through Airliner',
