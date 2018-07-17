@@ -17,6 +17,7 @@ from abc import abstractmethod
 
 from future.moves import itertools
 
+from pyliner.util import query_yes_no
 
 print_errors = []
 
@@ -338,5 +339,9 @@ if __name__ == '__main__':
         print('filename must exist.')
         exit(1)
 
-    curses.wrapper(log_view, filename)
-    print('\n'.join(print_errors))
+    if query_yes_no('NOTE: The Pyliner Log Viewer is still in the experimental '
+                    'phase.\nBeware of bugs. Continue? '):
+        curses.wrapper(log_view, filename)
+        print('\n'.join(print_errors))
+    else:
+        exit()

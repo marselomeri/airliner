@@ -309,7 +309,8 @@ def query_yes_no(question, default=None, **extra):
     "question" is a string that is presented to the user.
     "default" is the presumed answer if the user just hits <Enter>.
 
-    The "answer" return value is one of "yes" or "no".
+    Returns:
+        True if yes, False if no.
     Adapted from: http://code.activestate.com/recipes/577058/
     """
     valid = {True: {'y', 'ye', 'yes'},
