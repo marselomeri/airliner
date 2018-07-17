@@ -24,6 +24,7 @@ from pyliner.app import App
 from pyliner.util import init_socket, handler_factory, CallableDefaultDict, \
     RealTimeThread, OrderedSetQueue
 
+
 # TODO Python3 does not see telemetry
 
 
@@ -44,6 +45,7 @@ class InvalidOperationException(PylinerError):
 
 class _Telemetry(object):
     """Represents an operational path of telemetry from Airliner."""
+
     def __init__(self, name=None, time=None, value=None):
         self.name = name
         self.time = time
@@ -70,6 +72,7 @@ class ControlToken(object):
     """Created by the Communication App and passed to Apps that are granted
     control of the vehicle. All commands sent that require authentication
     must use the request method to wrap their request."""
+
     def __init__(self, app_name):
         self.app_name = app_name
         # self._token =
@@ -84,6 +87,7 @@ class ControlToken(object):
 class ControlRequest(object):
     """Created via a ControlToken, used to authenticate a request sent to the
     Communication App that requires granted control of the vehicle."""
+
     def __init__(self, token, data):
         self.token = token
         """:type: ControlToken"""
@@ -245,6 +249,7 @@ class Communication(App):
 
         Assumes control_lock
         """
+
         def get_or_stop():
             try:
                 yield self.control_queue.get(block=False)
@@ -596,7 +601,7 @@ class Communication(App):
         to, as well as an optional callback function.
 
         Args:
-            tlm (dict[str, list[str]]): Dictionary specifying the telemetry
+            tlm_item (dict[str, list[str]]): Dictionary specifying the telemetry
                 items to subscribe to, using the telemetry item's operational
                 names.
                 E.g. {'tlm': ['/Airliner/ES/HK/CmdCounter']}

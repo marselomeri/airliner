@@ -14,6 +14,7 @@ from abc import ABCMeta, abstractmethod
 from collections import Container
 from numbers import Real
 
+from pyliner.apps import GeographicApp
 from pyliner.position import Position, Coordinate
 
 
@@ -143,7 +144,7 @@ class VerticalCylinder(Volume):
     """
 
     def __init__(self, geographic, center, radius, low, high):
-        # type: (Geographic, Coordinate, Real, Real, Real) -> None
+        # type: (GeographicApp, Coordinate, Real, Real, Real) -> None
         super(VerticalCylinder, self).__init__(geographic)
         self.center = center
         self.high = high

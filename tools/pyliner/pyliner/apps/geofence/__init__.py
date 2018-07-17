@@ -56,6 +56,7 @@ class LayerKind(Enum):
 
 class Layer(CompositeVolume):
     """A layer of volumes in a geofence."""
+
     def __init__(self, name, kind, geographic=None):
         super(Layer, self).__init__(geographic)
         self.name = name
@@ -80,6 +81,7 @@ class Geofence(App):
     Within a layer, a point is determined to be inside as if all the volumes in
     that layer were taken as a union.
     """
+
     # TODO Use a small memory database (like TinyDB) to handle layer mapping.
     #   Added benefit of allowing both name and order mapping to layer at once.
 

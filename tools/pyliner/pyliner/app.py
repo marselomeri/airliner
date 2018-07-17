@@ -123,11 +123,11 @@ class _ControlBlock(object):
         )
 
         # Send control request.
-        enque = self.app.vehicle.broadcast(Intent(
+        enqueue = self.app.vehicle.broadcast(Intent(
             action=ACTION_CONTROL_REQUEST,
             data=self.app.qualified_name
         )).first().result
-        if not enque:
+        if not enqueue:
             raise PylinerError('Could not request control.')
         return self
 

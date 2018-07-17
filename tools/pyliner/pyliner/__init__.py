@@ -41,5 +41,5 @@ controlling a vehicle from the scripting interface is super easy!
 from pyliner.util import enable_logging
 from pyliner.vehicle import Vehicle
 
-__version__ = '0.3.1'
+__version__ = '0.4.0'
 __all__ = ['Vehicle', 'enable_logging']

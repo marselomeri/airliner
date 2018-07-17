@@ -269,7 +269,8 @@ def enable_logging(log_dir=None, log_file=None, script=None, level=logging.INFO,
     print('Log at {}'.format(log_path))
     logging.basicConfig(
         level=level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(threadName)s - %(message)s',
+        format='%(asctime)s - %(name)s - %(levelname)s - '
+               '%(threadName)s - %(message)s',
         filename=log_path,
         filemode=filemode
     )

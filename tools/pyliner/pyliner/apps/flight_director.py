@@ -20,7 +20,7 @@ class FlightDirector(App):
 
     Axis Set:
         This app listens to ACTION_AXIS_SET intents, where the data attribute is
-        a dictionary with keys ('x', 'y', 'z', or 'r') that map to the dsesired
+        a dictionary with keys ('x', 'y', 'z', or 'r') that map to the desired
         value for each of the axes. A value of None or an unset key will not
         be changed.
 
