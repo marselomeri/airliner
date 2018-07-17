@@ -83,6 +83,8 @@ class AppAccess(Loggable):
         """Broadcast an intent to the vehicle."""
         if not self._vehicle:
             raise AppDetachedError('Cannot broadcast while detached.')
+        if not intent.origin:
+            intent.origin = self.app.qualified_name
         return self._vehicle.broadcast(intent)
 
     def clear_filter(self):

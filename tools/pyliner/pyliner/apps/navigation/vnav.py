@@ -56,13 +56,13 @@ class Vnav(NavigationFactory):
                 self.info('vnav expected %s actual %s (%s < %s m)',
                           target_altitude, self.nav.altitude,
                           difference, tolerance)
-                self.broadcast(Intent(action=ACTION_AXIS_SET, data=('z', 0.0)))
+                self.broadcast(Intent(action=ACTION_AXIS_SET, data={'z': 0.0}))
                 return self
             control = method(self.nav.altitude, target_altitude)
             self.debug('vnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        target_altitude, self.nav.altitude,
                        difference, tolerance, control)
-            self.broadcast(Intent(action=ACTION_AXIS_SET, data=('z', control)))
+            self.broadcast(Intent(action=ACTION_AXIS_SET, data={'z': control}))
             time.sleep(self.nav.sleep_time)
         raise CommandTimeout('vnav exceeded timeout')
 

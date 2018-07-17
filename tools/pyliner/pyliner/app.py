@@ -5,6 +5,7 @@ from pyliner.action import ACTION_CONTROL_GRANT, ACTION_CONTROL_REVOKE, \
     ACTION_CONTROL_REQUEST, ACTION_CONTROL_RELEASE
 from pyliner.app_access import AppAccess, InvalidStateError, AppDetachedError
 from pyliner.intent import IntentFilter, Intent
+from pyliner.pyliner_error import PylinerError
 from pyliner.util import Loggable
 
 
@@ -111,6 +112,7 @@ class _ControlBlock(object):
         self._revoke_filter = None
 
     def __enter__(self):
+        # Add filters for control block listener.
         self._grant_filter = self.app.vehicle.add_filter(
             intent_filter=IntentFilter(actions=[ACTION_CONTROL_GRANT]),
             callback=lambda i: self.grant(i.data)
@@ -120,10 +122,13 @@ class _ControlBlock(object):
             callback=lambda i: self.revoke()
         )
 
-        self.app.vehicle.broadcast(Intent(
+        # Send control request.
+        enque = self.app.vehicle.broadcast(Intent(
             action=ACTION_CONTROL_REQUEST,
             data=self.app.qualified_name
-        ))
+        )).first().result
+        if not enque:
+            raise PylinerError('Could not request control.')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

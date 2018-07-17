@@ -131,10 +131,10 @@ class BaseVehicle(Loggable):
         del self.apps[name]
         app.detach()
 
-    def remove_filter(self, intent_filter, app):
+    def remove_filter(self, intent_filter, app_access):
         """Remove an intent filter from this vehicle."""
         for action in intent_filter.actions:
-            self._intent_filters[action].remove(app)
+            self._intent_filters[action].remove(app_access)
 
     def shutdown(self):
         """Shutdown all components on vehicle and detach.

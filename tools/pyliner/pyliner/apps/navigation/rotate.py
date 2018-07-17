@@ -70,13 +70,13 @@ class Rotate(NavigationFactory):
             if current in tol_range:
                 self.info('rotate expected %s actual %s (in %s)',
                           target, current, tol_range)
-                self.broadcast(Intent(action=ACTION_AXIS_SET, data=('r', 0.0)))
+                self.broadcast(Intent(action=ACTION_AXIS_SET, data={'r': 0.0}))
                 return self
             distance = Heading.distance(current, target, direction, underflow)
             control = method(0.0, distance)
             self.debug('rotate toward %.3f current %.3f (%.3f < %.3f) %.3f',
                        target, current, abs(distance), tolerance, control)
-            self.broadcast(Intent(action=ACTION_AXIS_SET, data=('r', control)))
+            self.broadcast(Intent(action=ACTION_AXIS_SET, data={'r': control}))
             time.sleep(self.nav.sleep_time)
         raise CommandTimeout('rotate exceeded timeout')
 

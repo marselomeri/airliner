@@ -7,6 +7,7 @@ Services:
 """
 
 import threading
+from Queue import Empty
 
 import socketserver
 
@@ -244,8 +245,14 @@ class Communication(App):
 
         Assumes control_lock
         """
-        for app_name in iter(self.control_queue.get, None):
-            self.debug('Grant Control: {}'.format(app_name))
+        def get_or_stop():
+            try:
+                yield self.control_queue.get(block=False)
+            except Empty:
+                raise StopIteration
+
+        for app_name in get_or_stop():
+            # self.debug('Grant Control: {}'.format(app_name))
             self.control_current = ControlToken(app_name=app_name)
             try:
                 control_ack = self.vehicle.broadcast(Intent(
@@ -275,10 +282,10 @@ class Communication(App):
         with self.control_lock:
             success = True
             if intent.origin in self.control_queue:
-                self.debug('Control request dequeued: ' + str(intent.origin))
+                self.debug('Control request dequeued by ' + str(intent.origin))
                 self.control_queue.remove(intent.origin)
             elif intent.data is self.control_current:
-                self.debug('Control Release: ' + str(intent.data.app_name))
+                self.debug('Control Release by ' + str(intent.data.app_name))
                 self.control_current = None
                 self.control_grant()
             else:
@@ -298,6 +305,8 @@ class Communication(App):
                 return False
             else:
                 self.control_queue.put(intent.origin)
+                if not self.control_current:
+                    self.control_grant()
                 return True
 
     def control_revoke(self, reason=None):

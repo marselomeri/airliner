@@ -58,13 +58,13 @@ class Lnav(NavigationFactory):
             if (distance - delta) < tolerance:
                 self.info('lnav expected %s actual %s (%s < %s m)',
                           distance, delta, distance - delta, tolerance)
-                self.broadcast(Intent(action=ACTION_AXIS_SET, data=(axis, 0.0)))
+                self.broadcast(Intent(action=ACTION_AXIS_SET, data={axis: 0.0}))
                 return self
             control = method(delta, distance)
             control = -control if neg else control
             self.debug('lnav toward %.3f actual %.3f (%.3f < %.3f m) %.3f',
                        distance, delta, distance - delta, tolerance, control)
-            self.broadcast(Intent(action=ACTION_AXIS_SET, data=(axis, control)))
+            self.broadcast(Intent(action=ACTION_AXIS_SET, data={axis: control}))
             time.sleep(self.nav.sleep_time)
         raise CommandTimeout('lnav exceeded timeout')
 

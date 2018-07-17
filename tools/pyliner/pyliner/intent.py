@@ -57,8 +57,8 @@ class Intent(object):
         """
 
     def __repr__(self):
-        s = '{}(action={!r}, data={!r}'.format(
-            self.__class__.__name__, self.action, self.data)
+        s = '{}(origin={!r}, action={!r}, data={!r}'.format(
+            self.__class__.__name__, self.origin, self.action, self.data)
         s += '' if not self.component else ' component=' + repr(self.component)
         s += ')'
         return s
