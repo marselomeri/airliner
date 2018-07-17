@@ -53,6 +53,7 @@ class AppAccess(Loggable):
     def detach(self):
         """Detach the App from the Vehicle it was previously attached to."""
         self.info('Detaching {}'.format(self.app.qualified_name))
+        self.clear_filter()
         self.app.detach()
         self._vehicle = None
         self.logger = None

@@ -10,7 +10,8 @@ import logging
 from abc import ABCMeta
 from collections import defaultdict
 
-from pyliner.action import ACTION_VEHICLE_SHUTDOWN
+from pyliner.action import ACTION_VEHICLE_SHUTDOWN, ACTION_APP_ATTACH, \
+    ACTION_APP_DETACH, ACTION_APP_LIST
 from pyliner.app_access import AppAccess
 from pyliner.app import App
 from pyliner.intent import Intent, IntentNoReceiverError, IntentExplicitFailure
@@ -42,15 +43,18 @@ class BaseVehicle(Loggable):
         atexit.register(self.shutdown)
 
         # Instance attributes
-        # self.broadcast_pool = ThreadPool # TODO Python 3
         self.apps = {}
         """:type: dict[str, AppAccess]"""
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
+        # self._broadcast_pool = ThreadPool # TODO Python 3
         # self._dynamic_filters = set()
         self._intent_filters = defaultdict(lambda: set())
         """:type: dict[str, set[AppAccess]]"""
+
+        # Register self App
+        self.attach_app(VehicleApp())
 
     def add_filter(self, intent_filter, app):
         # type: (IntentFilter, AppAccess) -> None
@@ -60,7 +64,7 @@ class BaseVehicle(Loggable):
             intent_filter (IntentFilter): The filter to add.
             app (AppAccess): If an intent matches a filter, the app to call.
         """
-        for action in intent_filter.actions or []:
+        for action in intent_filter.actions:
             self._intent_filters[action].add(app)
 
     def attach_app(self, app):
@@ -148,7 +152,39 @@ class BaseVehicle(Loggable):
         self.info('Vehicle {} is shutting down.'.format(self.vehicle_id))
         if not self.is_shutdown:
             self.is_shutdown = True
-            self.broadcast(Intent(action=ACTION_VEHICLE_SHUTDOWN))
+            self.broadcast(Intent(action=ACTION_VEHICLE_SHUTDOWN)).wait()
             for app in self.apps.values():
                 app.detach()
         self.info('Shutdown complete.')
+
+
+class VehicleApp(App):
+    """VehicleApp handles simple administrative tasks.
+
+    Attach App:
+        This App responds to ACTION_APP_ATTACH, with the new App to attach as
+        its data.
+
+    Detach App:
+        This App responds to ACTION_APP_DETACH by detaching the App with the
+        qualified name in data.
+
+    App List:
+        This App will return a list of all enabled Apps on the vehicle when it
+        receives an intent with the ACTION_APP_LIST action.
+    """
+    def attach(self, vehicle):
+        super(VehicleApp, self).attach(vehicle)
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_APP_ATTACH]),
+            lambda i: self.vehicle._vehicle.attach_app(i.data))
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_APP_DETACH]),
+            lambda i: self.vehicle._vehicle.detach_app(i.data))
+        self.vehicle.add_filter(
+            IntentFilter(actions=[ACTION_APP_LIST]),
+            lambda i: self.vehicle._vehicle.apps.keys())
+
+    @property
+    def qualified_name(self):
+        return 'com.windhover.pyliner.vehicle_app'

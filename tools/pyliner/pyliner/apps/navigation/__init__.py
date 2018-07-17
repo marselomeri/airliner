@@ -3,6 +3,9 @@ The navigation package holds the builtin code for performing basic vehicle
 navigation. Four types of navigation are provided by default, as well as a
 Navigation app that users may attach to a vehicle.
 
+Notes:
+    Most navigation methods block until they are complete.
+
 Apps:
     Navigation  Takes control of the vehicle to perform movements.
 
@@ -34,11 +37,7 @@ from pyliner.conversions import hertz
 
 
 class Navigation(App):
-    """Navigation app. Contains all navigation features.
-
-    Note:
-        Currently this app takes commands and executes one at a time.
-    """
+    """Navigation app. Contains all navigation features."""
     # TODO: In a future version a more integrated 3d-space will be implemented.
     # TODO Look into using decimal library for precision at any lat/lon
 
