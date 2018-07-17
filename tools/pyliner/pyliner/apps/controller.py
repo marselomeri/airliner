@@ -38,7 +38,24 @@ class FlightMode(Enum):
 
 
 class Controller(App):
-    """Sends high-level one-off commands to the vehicle."""
+    """Sends high-level one-off commands to the vehicle.
+
+    Controller listens to a multiple intent actions. If it receives any of the
+    following actions it will perform the appropriate action:
+        ACTION_ARM
+        ACTION_DISARM
+        ACTION_RTL
+        ACTION_TAKEOFF
+
+    Each of these actions take no data and do not provide any feedback for when
+    the action has completed.
+
+    The only other action that is listens to is ACTION_ATP, which prompts the
+    user over the command line whether to allow a certain action to proceed.
+    The intent should provide a prompt to the user as a string in the intent's
+    data attribute. This App will return True or False to the caller depending
+    on the user's choice.
+    """
 
     def __init__(self):
         super(Controller, self).__init__()

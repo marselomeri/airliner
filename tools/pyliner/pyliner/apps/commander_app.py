@@ -7,6 +7,13 @@ from pyliner.intent import Intent
 
 
 class CommanderApp(SocketApp):
+    """Receives a simple JSON-formatted list of waypoints and flies to them.
+
+    This is a demo App that demonstrates the capability of the SocketApp for
+    handling generic socket data.
+
+    CommanderApp does not listen to any intents.
+    """
     JSON_MAX_SIZE = 1024
 
     def handle(self, request, client_address):

@@ -19,7 +19,14 @@ from pyliner.app import App
 
 
 class GeographicApp(App):
-    """An App that produces relevant world-based calculations."""
+    """An App that produces relevant world-based calculations.
+
+    This App listens to ACTION_CALC_BEARING, ACTION_CALC_DISTANCE, and
+    ACTION_CALC_PBD. For BEARING or DISTANCE, data must be populated with an
+    iterable of two Coordinates. For PDB, data must be an iterable representing
+    an origin Coordinate, and two real numbers representing a desired bearing
+    and a desired distance.
+    """
 
     def __repr__(self):
         return 'GeographicApp()'
