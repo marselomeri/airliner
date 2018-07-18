@@ -82,9 +82,12 @@ with ScriptingWrapper(rky) as rocky:
                 sleep(SLEEP)
                 check()
 
-            # Wait until away from home
+            # Wait until away from homeposition
             print('Retreat')
-            while rocky.geographic.distance(home, rocky.nav.position) < 7:
+            distance = rocky.geographic.distance(home, rocky.nav.position)
+            while distance < 7:
+                distance = rocky.geographic.distance(home, rocky.nav.position)
+                print('Retreat {} {} {}'.format(round(rocky.fd.x, 3), distance, rocky.nav.position))
                 sleep(SLEEP)
                 check()
 

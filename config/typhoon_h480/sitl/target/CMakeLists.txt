@@ -28,8 +28,6 @@ initialize_airliner_build(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
 )
 
-
-
 add_airliner_app(
     cfs_lib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
