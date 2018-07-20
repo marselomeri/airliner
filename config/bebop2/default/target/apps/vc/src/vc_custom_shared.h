@@ -79,7 +79,7 @@ typedef enum {
 **
 */
     VC_SOCKET_ERR_EID = VC_EVT_CNT,
-    
+
 /** \brief <tt> 'VC - ' </tt>
 **  \event <tt> 'VC - ' </tt>
 **  
