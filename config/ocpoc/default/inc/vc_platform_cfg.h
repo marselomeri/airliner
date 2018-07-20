@@ -120,7 +120,7 @@ extern "C" {
 **  \par Limits:
 **       Minimum of 1.
 */
-#define VC_MAX_DEVICES                  (1)
+#define VC_MAX_DEVICES                  (2)
 
 /** \brief Max buffer size
 **
@@ -172,14 +172,14 @@ extern "C" {
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_WIDTH                  (320)
+#define VC_FRAME_WIDTH                  (160)
 
 /** \brief Video resolution height
 **
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_HEIGHT                 (240)
+#define VC_FRAME_HEIGHT                 (90)
 
 /** \brief Video frame rate
 **
@@ -247,7 +247,8 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG 
+#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_YUYV
+									  //V4L2_PIX_FMT_MJPEG
 
 /** \brief V4L field order
 **

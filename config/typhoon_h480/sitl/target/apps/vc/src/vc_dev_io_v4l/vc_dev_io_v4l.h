@@ -249,4 +249,3 @@ int32 VC_CleanupDevices(void);
 extern VC_AppCustomDevice_t VC_AppCustomDevice;
 
 #endif
-
