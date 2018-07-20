@@ -102,20 +102,7 @@ int32 VC_CustomDevice_InitData()
     VC_AppCustomDevice.Channel[0].MemoryType    = VC_V4L_MEMORY_TYPE;
     
     strncpy(VC_AppCustomDevice.Channel[0].DevName, VC_DEVICE_PATH, VC_MAX_DEVICE_PATH); 
-    
-    /* Set all non-zero values for channel One */
-    VC_AppCustomDevice.Channel[1].Status        = VC_DEVICE_UNINITIALIZED;
-    VC_AppCustomDevice.Channel[1].Mode          = VC_DEVICE_ENABLED;
-    VC_AppCustomDevice.Channel[1].BufferType    = VC_V4L_BUFFER_TYPE;
-    VC_AppCustomDevice.Channel[1].Buffer_Size   = VC_MAX_BUFFER_SIZE;
-    VC_AppCustomDevice.Channel[1].FrameWidth    = 160;
-    VC_AppCustomDevice.Channel[1].FrameHeight   = 90;
-    VC_AppCustomDevice.Channel[1].VideoFormat   = V4L2_PIX_FMT_YUYV;
-    VC_AppCustomDevice.Channel[1].FieldOrder    = VC_V4L_VIDEO_FIELD_ORDER;
-    VC_AppCustomDevice.Channel[1].BufferRequest = VC_V4L_BUFFER_REQUEST;
-    VC_AppCustomDevice.Channel[1].MemoryType    = VC_V4L_MEMORY_TYPE;
 
-    strncpy(VC_AppCustomDevice.Channel[1].DevName, "/dev/video1", VC_MAX_DEVICE_PATH);
 
     return (iStatus);
 }
