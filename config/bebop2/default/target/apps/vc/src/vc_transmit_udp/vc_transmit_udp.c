@@ -327,7 +327,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 
 				int columnPaddingCounter = 0;
 				int rowPaddingCounter = 0;
-				int i,j,k;
+				int i,k;
 				for(i =0 ; i<Size; i++)
 				{
 					if(i%2!=0)
