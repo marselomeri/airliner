@@ -120,7 +120,7 @@ extern "C" {
 **  \par Limits:
 **       Minimum of 1.
 */
-#define VC_MAX_DEVICES                  (2)
+#define VC_MAX_DEVICES                  (1)
 
 /** \brief Max buffer size
 **
