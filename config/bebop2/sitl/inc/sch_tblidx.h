@@ -44,7 +44,8 @@
 #define CS_BACKGROUND_CYCLE_MIDX 	39
 #define SC_1HZ_WAKEUP_MIDX			40
 #define SC_SEND_HK_MIDX				41
-
+#define FLOW_WAKEUP_MIDX 			42
+#define FLOW_SEND_HK_MIDX 			43
 #define VC_SEND_HK_MIDX				45
 #define VC_WAKEUP_MIDX				46
 #define RGBLED_WAKEUP_MIDX			47
@@ -121,9 +122,6 @@
 #define EA_WAKEUP_MIDX 				125
 #define EA_PERFMON_MIDX 			126
 #define EA_SEND_HK_MIDX 			127
-
-#define FLOW_WAKEUP_MIDX 			42
-#define FLOW_SEND_HK_MIDX 			43
 
 
 #endif /* SCH_TBL_IDX_H */

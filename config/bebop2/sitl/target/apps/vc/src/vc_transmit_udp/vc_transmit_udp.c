@@ -93,7 +93,7 @@ int32 VC_CustomTransmit_InitData()
     
     VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
     VC_AppCustomData.Channel[1].ChannelID = 1;
-    VC_AppCustomData.Channel[1].DestPort = 3002;
+    VC_AppCustomData.Channel[1].DestPort = VC_DESTINATION_PORT + 1;
     VC_AppCustomData.Channel[1].SocketFd = 0;
 
     strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);

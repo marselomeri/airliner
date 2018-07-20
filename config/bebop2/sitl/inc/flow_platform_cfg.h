@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-#define FLOW_LISTENER_TASK_FLAGS            OS_ENABLE_CORE_0
 /*
 ** FLOW Platform Configuration Parameter Definitions
 */
@@ -109,6 +108,29 @@ extern "C" {
 **       This parameter must be at least 1000 (ms).
 */
 #define FLOW_STARTUP_TIMEOUT_MSEC    (1000)
+
+/** \brief Pipe depth for the Gyroscope pipe
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
+*/
+#define FLOW_GYRO_PIPE_DEPTH	(30)
+
+/** \brief Pipe name for the Gyroscope pipe
+**
+**  \par Limits:
+**       Note, this name must fit in OS_MAX_API_NAME.
+*/
+#define FLOW_GYRO_PIPE_NAME    ("FLOW_GYRO_PIPE")
+
+/** \brief The number of SENSOR_GYRO messages to reserve on the Gyroscope pipe.
+**
+**  \par Limits:
+**       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.  Note the
+**       FLOW_SENSOR_GYRO_MID_MAX_MSG_COUNT
+**       must be less than FLOW_GYRO_PIPE_DEPTH.
+*/
+#define FLOW_SENSOR_GYRO_MID_MAX_MSG_COUNT (25)
 
 
 #ifdef __cplusplus
