@@ -82,6 +82,8 @@ Bebop_2:
              spec: "/mdb/VC.xls"
            - type: "sheet"
              spec: "/mdb/VM.xls"
+           - type: "sheet"
+             spec: "/mdb/FLOW.xls"             
 
 mavlink:
     # Configuration of the active loaders

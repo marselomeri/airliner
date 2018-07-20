@@ -6079,6 +6079,32 @@
 		    ]
 		},
         {
+          "id": "FLOW",
+        "events": [
+              {"macro":"FLOW_INIT_INF_EID", "id": 1},
+              {"macro":"FLOW_CMD_NOOP_EID", "id": 2},
+              {"macro":"FLOW_SUBSCRIBE_ERR_EID", "id": 3},
+              {"macro":"FLOW_PIPE_INIT_ERR_EID", "id": 4},
+              {"macro":"FLOW_CFGTBL_MANAGE_ERR_EID", "id": 5},
+              {"macro":"FLOW_CFGTBL_GETADDR_ERR_EID", "id": 6},
+              {"macro":"FLOW_RCVMSG_ERR_EID", "id": 7},
+              {"macro":"FLOW_MSGID_ERR_EID", "id": 8},
+              {"macro":"FLOW_CC_ERR_EID", "id": 9},
+              {"macro":"FLOW_MSGLEN_ERR_EID", "id": 10},
+              {"macro":"FLOW_CFGTBL_REG_ERR_EID", "id": 11},
+              {"macro":"FLOW_CFGTBL_LOAD_ERR_EID", "id": 12}
+      ],
+        "tables": [
+            {"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
+        ],
+        "msgs": [
+            {"macro": "FLOW_HK_TLM_MID", "type": "TLM"},
+            {"macro": "FLOW_SEND_HK_MID", "type": "CMD"},
+            {"macro": "FLOW_WAKEUP_MID", "type": "CMD"},
+            {"macro": "FLOW_CMD_MID", "type": "CMD"}
+        ]
+    		},
+        {
 	        "id": "VM",
 		    "events": [
 	            {"macro": "VM_INIT_INF_EID", "id": 1},
