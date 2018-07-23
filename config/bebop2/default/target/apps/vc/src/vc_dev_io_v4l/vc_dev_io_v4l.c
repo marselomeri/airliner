@@ -242,7 +242,6 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         returnCode = -1;
         goto end_of_function;
     }
-
 end_of_function:
     return (returnCode);
 }
@@ -274,13 +273,20 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
 			returnCode = -1;
 			goto end_of_function;
 		}
-
-		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = mmap(VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr,
+		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].length =  Buffer.length;
+		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = mmap(NULL,//VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr,
 		                                  VC_AppCustomDevice.Channel[DeviceID].Buffer_Size,
 		                                  PROT_READ | PROT_WRITE,
 		                                  MAP_SHARED, VC_AppCustomDevice.Channel[DeviceID].DeviceFd,
 		                                  Buffer.m.offset);
-		VC_AppCustomDevice.Channel[DeviceID].Buffer_Size =  Buffer.length;
+		if (VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr == MAP_FAILED) {
+			(void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+						"OUT_OF_MEMORY returned %i on %s channel %u", errno,
+						VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+			returnCode = -1;
+			goto end_of_function;
+		}
+
 	}
 
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMON, &Type))

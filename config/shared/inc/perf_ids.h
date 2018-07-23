@@ -79,7 +79,7 @@
 #define MPU6050_SEND_PERF_ID        107
 #define AMC_SEND_PERF_ID            108
 #define AMC_RECEIVE_PERF_ID         109
-#define PE_SENSOR_DIST_PERF_ID      110
+#define PE_SENSOR_ULR_PERF_ID      110
 #define SONAR_MAIN_TASK_PERF_ID     111
 #define LGC_MAIN_TASK_PERF_ID       112
 #define FLOW_MAIN_TASK_PERF_ID      113

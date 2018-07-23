@@ -78,7 +78,9 @@ typedef enum
 typedef struct {
     /*! Pointer to user defined buffer */
     void   *ptr;
+    size_t length;
 }VC_BufferPtr_t;
+
 
 
 /**
