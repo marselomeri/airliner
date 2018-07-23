@@ -310,7 +310,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				int expectedWidth = OP_FLOW_FRAME_WIDTH;
 				int actualHeight = VC_FRAME_HEIGHT;
 				int expectedHeight = OP_FLOW_FRAME_HEIGHT;
-				uint8 greyBuffer[expectedHeight*expectedWidth];
+				//uint8 greyBuffer[expectedHeight*expectedWidth];
 
 				/* Row */
 				int rowPadding = (actualHeight-expectedHeight)/2;
@@ -347,7 +347,8 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 
 							if(colCounter>=startColumn && colCounter<=endColumn)
 							{
-								greyBuffer[valCounter]= (uint8)Buffer[i];
+								OpticalFlowFrameMsg.Frame[valCounter]=(uint8)Buffer[i];
+								//greyBuffer[valCounter]= (uint8)Buffer[i];
 								valCounter++;
 							}
 							colCounter++;
@@ -360,9 +361,9 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				uint64 timestamp;
 				timestamp = PX4LIB_GetPX4TimeUs();
 				OpticalFlowFrameMsg.Timestamp = timestamp;
-				for (k=0; k<PX4_OPTICAL_FLOW_FRAME_SIZE;k++){
-					OpticalFlowFrameMsg.Frame[k] = greyBuffer[k];
-				}
+//				for (k=0; k<PX4_OPTICAL_FLOW_FRAME_SIZE;k++){
+//					OpticalFlowFrameMsg.Frame[k] = greyBuffer[k];
+//				}
 				/* Publish message to software bus */
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
 				CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);

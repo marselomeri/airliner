@@ -47,7 +47,8 @@
 /************************************************************************
 ** Local Defines
 *************************************************************************/
-
+#define OP_FLOW_FRAME_WIDTH 	64
+#define OP_FLOW_FRAME_HEIGHT 	64
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -91,13 +92,17 @@ int32 VC_CustomTransmit_InitData()
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
     
-    VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
-    VC_AppCustomData.Channel[1].ChannelID = 1;
-    VC_AppCustomData.Channel[1].DestPort = VC_DESTINATION_PORT + 1;
-    VC_AppCustomData.Channel[1].SocketFd = 0;
+//    VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
+//    VC_AppCustomData.Channel[1].ChannelID = 1;
+//    VC_AppCustomData.Channel[1].DestPort = VC_DESTINATION_PORT + 1;
+//    VC_AppCustomData.Channel[1].SocketFd = 0;
+//
+//    strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);
+//    strncpy(VC_AppCustomData.Channel[1].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN);
 
-    strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);
-    strncpy(VC_AppCustomData.Channel[1].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN);
+    /* Initialize output messages*/
+	CFE_SB_InitMsg(&OpticalFlowFrameMsg, FLOW_FRAME_MID,
+				sizeof(PX4_OpticalFlowFrameMsg_t), TRUE);
 
     return (iStatus);
 }
@@ -308,9 +313,85 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->DestIP);
             s_addr.sin_port        = htons(channel->DestPort);
-            status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
-                                    (struct sockaddr *) &s_addr,
-                                    sizeof(s_addr));
+//            status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
+//                                    (struct sockaddr *) &s_addr,
+//                                    sizeof(s_addr));
+            /* If the frame is from opFlow dedicated camera device
+			 * convert image from UYUV to Grey by extracting the Y component.
+			 * copy the image to opticalFlowFrameMsg*/
+			if(ChannelID == 0)
+			{
+				int actualWidth = VC_FRAME_WIDTH;
+				int expectedWidth = OP_FLOW_FRAME_WIDTH;
+				int actualHeight = VC_FRAME_HEIGHT;
+				int expectedHeight = OP_FLOW_FRAME_HEIGHT;
+				uint8 greyBuffer[expectedHeight*expectedWidth];
+
+				/* Row */
+				int rowPadding = (actualHeight-expectedHeight)/2;
+				int startRow = ((actualWidth)*(rowPadding-1));
+				int endRow = ((actualWidth)*(actualHeight-rowPadding-1));
+				/* Column */
+				int columnPadding = (actualWidth-expectedWidth)/2;
+				int startColumn = (columnPadding);
+				int endColumn = (actualWidth-columnPadding-1);
+
+				int byteCounter = 0;
+				int colCounter = 0;
+				int valCounter = 0;
+
+				int columnPaddingCounter = 0;
+				int rowPaddingCounter = 0;
+				int i,k;
+				for(i =0 ; i<Size; i++)
+				{
+					if(i%2!=0)
+					{
+						if(byteCounter < startRow || byteCounter >= endRow)
+						{
+							byteCounter++;
+							continue;
+
+						}
+						else
+						{
+							if(byteCounter!=0 && byteCounter%actualWidth == 0)
+							{
+								colCounter = 0;
+							}
+
+							if(colCounter>=startColumn && colCounter<=endColumn)
+							{
+								greyBuffer[valCounter]= (uint8)Buffer[i];
+								valCounter++;
+							}
+							colCounter++;
+						}
+						byteCounter++;
+					}
+				}
+
+				/* publish message */
+				uint64 timestamp;
+				timestamp = PX4LIB_GetPX4TimeUs();
+				OpticalFlowFrameMsg.Timestamp = timestamp;
+				for (k=0; k<PX4_OPTICAL_FLOW_FRAME_SIZE;k++){
+					OpticalFlowFrameMsg.Frame[k] = greyBuffer[k];
+				}
+				/* Publish message to software bus */
+				CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
+				CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
+				status = PX4_OPTICAL_FLOW_FRAME_SIZE;
+
+			}
+			else if(ChannelID == 1)
+			{
+				/* Send frame over udp*/
+				status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
+						(struct sockaddr *) &s_addr,
+						sizeof(s_addr));
+
+			}
             if (status < 0)
             {
                 if(errno == 90)
