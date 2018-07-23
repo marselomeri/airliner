@@ -47,7 +47,7 @@ tcDataLinks:
       stream: tc_realtime
 
 #Specify which MDB configuration to use, references a named section in mdb.yaml 
-mdb: Bebop_2
+mdb: Ocpoc
 
 #Configuration for streams created at server startup
 streamConfig:

@@ -65,7 +65,7 @@ PE_ConfigTbl_t PE_ConfigTbl =
 	//GPS_Z_STDDEV
     3.0f,
 	//GPS_VXY_STDDEV
-    .25f,
+    .5f,
 	//GPS_VZ_STDDEV
     .25f,
 	//GPS_EPH_MAX
