@@ -538,7 +538,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	1,
+	1.0,
 
 	/**
 	 * MPC_Z_MAN_EXPO
@@ -555,7 +555,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	1,
+	1.0,
 
 	/**
 	 * MPC_LAND_ALT1
@@ -623,6 +623,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	1.20000005f,
 
     /**
+     * MPC_CRUISE_90
      * Cruise speed when angle prev-current/current-next setpoint
      * is 90 degrees. It should be lower than MPC_XY_CRUISE.
      *
@@ -638,6 +639,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
     3.0f,
 
     /**
+     * MPC_JERK_MAX
      * Maximum jerk in manual controlled mode for BRAKING to zero.
      * If this value is below MPC_JERK_MIN, the acceleration limit in xy and z
      * is MPC_ACC_HOR_MAX and MPC_ACC_UP_MAX respectively instantaneously when the
@@ -655,6 +657,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
     10.0f,
 
     /**
+     * MPC_JERK_MIN
      * Minimum jerk in manual controlled mode for BRAKING to zero
      *
      * @unit m/s/s/s
@@ -667,6 +670,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
     0.0f,
 
     /**
+     * MPC_DEC_HOR_SLOW
      * Slow horizontal manual deceleration for manual mode
      *
      * @unit m/s/s
@@ -679,6 +683,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
     3.0f,
 
     /**
+     * MPC_VEL_MANUAL
      * Maximum horizontal velocity setpoint for manual controlled mode
      * If velocity setpoint larger than MPC_XY_VEL_MAX is set, then
      * the setpoint will be capped to MPC_XY_VEL_MAX
@@ -693,6 +698,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
     7.0f,
 
     /**
+     * MPC_ACC_HOR
      * Acceleration for auto and for manual
      *
      * @unit m/s/s
@@ -705,7 +711,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
     5.0f,
 
     /**
-     * Acceptance Radius
+     * NAV_ACC_RAD
      *
      * Default acceptance radius, overridden by acceptance radius of waypoint if set.
      * For fixed wing the L1 turning distance is used for horizontal acceptance.
