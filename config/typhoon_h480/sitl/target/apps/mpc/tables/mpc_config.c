@@ -278,19 +278,6 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	5.0f,
 
 	/**
-	 * MPC_VEL_MAN_MAX
-	 * Nominal horizontal velocity for manual controlled mode NOTE: POSCTL uses the min of this and MPC_XY_VEL_MAX as its max
-	 *
-	 * @unit m/s
-	 * @min 3.0
-	 * @max 20.0
-	 * @increment 1
-	 * @decimal 2
-	 * @group Multicopter Position Control
-	 */
-	7.0f,
-
-	/**
 	 * MPC_TARGET_THRE
 	 * Distance Threshold Horizontal Auto
 	 *
