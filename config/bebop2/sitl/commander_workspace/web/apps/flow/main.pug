@@ -53,7 +53,19 @@ block main
                   tr
                     th Angular Flow Y
                     td
-                      span(data-sage={tlm:[{name:'/CFS/FLOW/AngularFlowY',format:'%.4f'}]}) --- 
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/AngularFlowY',format:'%.4f'}]}) ---
+                  tr
+                    th Gyro Rate Integral X
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/GyroXRateIntegral',format:'%.4f'}]}) ---
+                  tr
+                    th Gyro Rate Integral Y
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/GyroYRateIntegral',format:'%.4f'}]}) ---   
+                  tr
+                    th Gyro Rate Integral Z
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/GyroZRateIntegral',format:'%.4f'}]}) ---  
             footer
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/Reset'}}) Reset            
@@ -68,6 +80,28 @@ block main
             input.form-control(type='text')
           .widget-body
             #PixelFlow(style='width:100%; height:300px;')
+    article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+      #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header(style="overflow:hidden;")
+          span.widget-icon
+            i.fa.fa-table
+          h2 AngularFlow
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            #AngularFlow(style='width:100%; height:300px;')
+    article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+      #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header(style="overflow:hidden;")
+          span.widget-icon
+            i.fa.fa-table
+          h2 Gyro
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            #Gyro(style='width:100%; height:300px;')
 
                       
               
@@ -97,5 +131,41 @@ block main
 
 
             var PixelFlowPlot = new SageTimeSeriesDataplot($('#PixelFlow'), PixelFlow);
+            
+            var AngularFlow = {
+                'data': [
+                    { 'tlm':{'name': '/CFS/FLOW/AngularFlowX'},
+                      'label': 'X',
+                      'color': '#ff00ff'
+                    },
+                    { 'tlm':{'name': '/CFS/FLOW/AngularFlowY'},
+                      'label': 'Y',
+                      'color': '#ffff00'
+                    }
+                ]
+            };
+
+
+            var AngularFlowPlot = new SageTimeSeriesDataplot($('#AngularFlow'), AngularFlow);
+            
+            var Gyro = {
+                'data': [
+                    { 'tlm':{'name': '/CFS/FLOW/GyroXRateIntegral'},
+                      'label': 'X',
+                      'color': '#ff00ff'
+                    },
+                    { 'tlm':{'name': '/CFS/FLOW/GyroYRateIntegral'},
+                      'label': 'Y',
+                      'color': '#ffff00'
+                    },
+                    { 'tlm':{'name': '/CFS/FLOW/GyroZRateIntegral'},
+                      'label': 'Z',
+                      'color': '#00ff00'
+                    }
+                ]
+            };
+
+
+            var GyroPlot = new SageTimeSeriesDataplot($('#Gyro'), Gyro);
 
         });

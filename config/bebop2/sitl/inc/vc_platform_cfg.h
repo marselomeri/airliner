@@ -172,14 +172,14 @@ extern "C" {
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_WIDTH                  (160)
+#define VC_FRAME_WIDTH                  (320)
 
 /** \brief Video resolution height
 **
 **  \par Limits:
 **       Specific to device
 */
-#define VC_FRAME_HEIGHT                 (90)
+#define VC_FRAME_HEIGHT                 (240)
 
 /** \brief Video frame rate
 **
@@ -233,7 +233,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_IO_METHOD                V4L2_MEMORY_MMAP
+#define VC_V4L_IO_METHOD                V4L2_MEMORY_USERPTR
 
 /** \brief V4L buffer type 
 **
@@ -247,7 +247,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_YUYV
+#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG
 
 /** \brief V4L field order
 **
@@ -268,7 +268,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_MEMORY_TYPE              V4L2_MEMORY_MMAP
+#define VC_V4L_MEMORY_TYPE              V4L2_MEMORY_USERPTR
 
 /* Timeout settings */
 

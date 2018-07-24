@@ -78,7 +78,6 @@ typedef enum
 typedef struct {
     /*! Pointer to user defined buffer */
     void   *ptr;
-    size_t length;
 }VC_BufferPtr_t;
 
 
@@ -250,4 +249,3 @@ int32 VC_CleanupDevices(void);
 extern VC_AppCustomDevice_t VC_AppCustomDevice;
 
 #endif
-
