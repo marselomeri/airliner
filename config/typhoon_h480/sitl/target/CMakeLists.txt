@@ -111,7 +111,6 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/flow/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/flow
     CONFIG_SOURCES
-    	${CMAKE_CURRENT_SOURCE_DIR}/apps/flow/flow_custom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/flow_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/flow_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/flow_perfids.h
@@ -223,8 +222,8 @@ add_airliner_app(
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/vc/fsw/for_build
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc
     CONFIG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_v4l/vc_dev_io_v4l.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_dev_io_udp/vc_dev_io_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_transmit_udp/vc_transmit_udp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/src/vc_custom.c
