@@ -134,7 +134,7 @@ extern "C" {
 #define REQ_DIST_INIT_COUNT     (10)
 #define DIST_TIMEOUT            (150000) /* 0.1 s */
 #define DIST_BETA_MAX           (700)
-#define DIST_SENSOR_TYPE        (3) /* 3 = radar */
+#define DIST_SENSOR_TYPE        (1) /* 3 = radar */
 
 /* Optical flow */
 #define REQ_FLOW_INIT_COUNT     (10)
