@@ -308,32 +308,25 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 			 * copy the image to opticalFlowFrameMsg*/
 			if(ChannelID == 0)
 			{
-				int actualWidth = VC_FRAME_WIDTH;
-				int expectedWidth = OP_FLOW_FRAME_WIDTH;
-				int actualHeight = VC_FRAME_HEIGHT;
-				int expectedHeight = OP_FLOW_FRAME_HEIGHT;
-				uint8 greyBuffer[expectedHeight*expectedWidth];
-
 				/* Row */
-				int rowPadding = (actualHeight-expectedHeight)/2;
-				int startRow = ((actualWidth)*(rowPadding-1));
-				int endRow = ((actualWidth)*(actualHeight-rowPadding-1));
+				uint32 rowPadding = (VC_FRAME_HEIGHT-OP_FLOW_FRAME_HEIGHT)/2;
+				uint32 startRow = ((VC_FRAME_WIDTH)*(rowPadding-1));
+				uint32 endRow = ((VC_FRAME_WIDTH)*(VC_FRAME_HEIGHT-rowPadding-1));
 				/* Column */
-				int columnPadding = (actualWidth-expectedWidth)/2;
-				int startColumn = (columnPadding);
-				int endColumn = (actualWidth-columnPadding-1);
+				uint32 columnPadding = (VC_FRAME_WIDTH-OP_FLOW_FRAME_WIDTH)/2;
+				uint32 startColumn = (columnPadding);
+				uint32 endColumn = (VC_FRAME_WIDTH-columnPadding-1);
 
+				uint32 byteCounter = 0;
+				uint32 colCounter = 0;
+				uint32 valCounter = 0;
 
-				int byteCounter = 0;
-				int colCounter = 0;
-				int valCounter = 0;
-
-				int columnPaddingCounter = 0;
-				int rowPaddingCounter = 0;
-				int i;
+				uint32 columnPaddingCounter = 0;
+				uint32 rowPaddingCounter = 0;
+				uint32 i;
 				for(i =0 ; i<Size; i++)
 				{
-					if(i%2==0)
+					if(i%2!=0)
 					{
 						if(byteCounter < startRow || byteCounter >= endRow)
 						{
@@ -343,14 +336,14 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 						}
 						else
 						{
-							if(byteCounter!=0 && byteCounter%160 == 0)
+							if(byteCounter!=0 && byteCounter%VC_FRAME_WIDTH == 0)
 							{
 								colCounter = 0;
 							}
 
 							if(colCounter>=startColumn && colCounter<=endColumn)
 							{
-								greyBuffer[valCounter]= (uint8)Buffer[i];
+								OpticalFlowFrameMsg.Frame[valCounter]=(uint8)Buffer[i];
 								valCounter++;
 							}
 							colCounter++;
@@ -359,17 +352,18 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 					}
 				}
 
-				/* publish message */
+				/* Publish message to software bus */
 				uint64 timestamp;
 				timestamp = PX4LIB_GetPX4TimeUs();
 				OpticalFlowFrameMsg.Timestamp = timestamp;
-				for (i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
-					OpticalFlowFrameMsg.Frame[i] = greyBuffer[i];
-				}
-				/* Publish message to software bus */
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
 				CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
 				status = PX4_OPTICAL_FLOW_FRAME_SIZE;
+
+				/* Send frame over udp*/
+				status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
+						(struct sockaddr *) &s_addr,
+						sizeof(s_addr));
 			}
 
             if (status < 0)
