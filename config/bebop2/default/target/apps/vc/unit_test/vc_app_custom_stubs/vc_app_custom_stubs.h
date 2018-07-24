@@ -12,8 +12,8 @@
 *    notice, this list of conditions and the following disclaimer in
 *    the documentation and/or other materials provided with the
 *    distribution.
-* 3. Neither the name Windhover Labs nor the names of its 
-*    contributors may be used to endorse or promote products derived 
+* 3. Neither the name Windhover Labs nor the names of its
+*    contributors may be used to endorse or promote products derived
 *    from this software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -30,8 +30,19 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-#include "cfe.h"
-#include "flow_app.h"
-#include <unistd.h>
-#include "px4_msgs.h"
 
+#ifndef VC_APP_CUSTOM_STUBS_H
+#define VC_APP_CUSTOM_STUBS_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "cfe.h"
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* VC_APP_CUSTOM_STUBS_H */

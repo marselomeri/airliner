@@ -54,6 +54,18 @@ block main
                     th Angular Flow Y
                     td
                       span(data-sage={tlm:[{name:'/CFS/FLOW/AngularFlowY',format:'%.4f'}]}) --- 
+                  tr
+                    th Gyro Rate Integral X
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/GyroXRateIntegral',format:'%.4f'}]}) ---
+                  tr
+                    th Gyro Rate Integral Y
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/GyroYRateIntegral',format:'%.4f'}]}) ---   
+                  tr
+                    th Gyro Rate Integral Z
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/GyroZRateIntegral',format:'%.4f'}]}) --- 
             footer
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/NoOp'}}) No-Op
               button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/Reset'}}) Reset            
