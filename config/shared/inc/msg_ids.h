@@ -553,7 +553,6 @@
 #define MPC_SEND_HK_MID                             0x1c62
 #define MPC_WAKEUP_MID                              0x1c63
 #define MPC_CMD_MID                                 0x1c64
-#define MPC_DIAG_TLM_MID                            0x0cea
 
 /* NAV                                                  */
 #define NAV_HK_TLM_MID                              0x0c65
@@ -657,7 +656,8 @@
 #define SONAR_OUT_DATA_MID                          0x0cd9
 #define SONAR_HK_TLM_MID                            0x0ce0
 
-/* Note: MPC_DIAG_TLM_MID defined as                0x0cea */
+/* MPC                                                   */
+#define MPC_DIAG_TLM_MID                            0x0cea
 
 
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
