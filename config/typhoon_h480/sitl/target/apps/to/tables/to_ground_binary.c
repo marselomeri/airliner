@@ -102,6 +102,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	    {SCH_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {CI_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {AE_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
+	    {MPC_DIAG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
 
             /* Internal PX4 type messages.  These should eventually be removed with
                codified and vetted flight specific telemetry.  These are currently
