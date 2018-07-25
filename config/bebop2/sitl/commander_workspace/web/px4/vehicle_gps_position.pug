@@ -10,7 +10,30 @@ block header
 block main
     .row.row-fluid
       +msg_macro_specific_telemetry_control([{macro: 'PX4_VEHICLE_GPS_POSITION_MID'}])
-      
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Item 1
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #item1(style='width:100%; height:300px;') 
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 Item 1
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #item2(style='width:100%; height:300px;')   
     .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
         #wid-SA.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
@@ -117,3 +140,38 @@ block main
                       th Satellites Used:
                       td
                         span(data-sage={'tlm': [{'name': '/CFS/PX4/VGPP_SatellitesUsed'}]}) ---
+                        
+    script.
+        $(function () {
+            var dataplotDef = {
+                'data': [
+                    { 'tlm': {'name': '/CFS/PX4/VGPP_Lat'},
+                      'label': 'Lat',
+                      'color': '#ff00ff'
+                    },
+                    { 'tlm': {'name': '/CFS/PX4/VGPP_Lon'},
+                      'label': 'Lon',
+                      'color': '#ffff00'
+                    }
+                ],
+                'options': {
+                }
+            };
+            var dataplotDef2 = {
+                'data': [
+                    { 'tlm': {'name': '/CFS/PX4/VGPP_Vel_n_m_s'},
+                      'label': 'Vel North',
+                      'color': '#ff00ff'
+                    },
+                    { 'tlm': {'name': '/CFS/PX4/VGPP_Vel_e_m_s'},
+                      'label': 'Vel East',
+                      'color': '#ffff00'
+                    }
+                ],
+                'options': {
+                }
+            };
+    
+            var dataplot = new SageTimeSeriesDataplot($('#item1'), dataplotDef);
+            var dataplot2 = new SageTimeSeriesDataplot($('#item2'), dataplotDef2);
+        });
