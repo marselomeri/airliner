@@ -27,7 +27,7 @@ Ocpoc:
            - type: "sheet"
              spec: "/mdb/FM.xls"
            - type: "sheet"
-             spec: "/mdb/FLOW.xls"  
+             spec: "/mdb/FLOW.xls"
            - type: "sheet"
              spec: "/mdb/HK.xls"
            - type: "sheet"
@@ -84,7 +84,6 @@ Ocpoc:
              spec: "/mdb/VC.xls"
            - type: "sheet"
              spec: "/mdb/VM.xls"
-           
 
 mavlink:
     # Configuration of the active loaders
