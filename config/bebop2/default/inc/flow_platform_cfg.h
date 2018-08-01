@@ -38,16 +38,6 @@ extern "C" {
 */
 #define FLOW_SCH_PIPE_NAME              ("FLOW_SCH_PIPE")
 
-/** \brief The SB pend behavior type for the Scheduler pipe.
-**
-**  \par Limits:
-**       One of: CFE_SB_POLL, CFE_SB_PEND_FOREVER, or the 
-**       number of milliseconds to wait for a new message (recommended).
-**       Note, using CFE_SB_PEND_FOREVER may cause an unresponsive
-**       application if no messages arrive on this pipe.
-*/
-#define FLOW_SCH_PIPE_PEND_TIME         (2000)
-
 /** \brief The number of WAKEUP messages to reserve on the Scheduler pipe.
 **
 **  \par Limits:
@@ -130,7 +120,7 @@ extern "C" {
 **       FLOW_SENSOR_GYRO_MID_MAX_MSG_COUNT
 **       must be less than FLOW_GYRO_PIPE_DEPTH.
 */
-#define FLOW_SENSOR_GYRO_MID_MAX_MSG_COUNT (25)
+#define FLOW_SENSOR_GYRO_MAX_MSG_COUNT (25)
 
 
 #ifdef __cplusplus
