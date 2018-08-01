@@ -6092,13 +6092,15 @@
               {"macro":"FLOW_CC_ERR_EID", "id": 9},
               {"macro":"FLOW_MSGLEN_ERR_EID", "id": 10},
               {"macro":"FLOW_CFGTBL_REG_ERR_EID", "id": 11},
-              {"macro":"FLOW_CFGTBL_LOAD_ERR_EID", "id": 12}
+              {"macro":"FLOW_CMD_ACCEPTED_EID", "id": 13},
+              {"macro":"FLOW_CMD_REJECTED_ERR_EID", "id": 14}
       ],
         "tables": [
             {"id": "CONFIG_TBL", "title": "Config Table", "isDumpTable": false}
         ],
         "msgs": [
             {"macro": "FLOW_HK_TLM_MID", "type": "TLM"},
+            {"macro": "FLOW_DIAG_TLM_MID", "type": "TLM"},
             {"macro": "FLOW_SEND_HK_MID", "type": "CMD"},
             {"macro": "FLOW_WAKEUP_MID", "type": "CMD"},
             {"macro": "FLOW_CMD_MID", "type": "CMD"}
