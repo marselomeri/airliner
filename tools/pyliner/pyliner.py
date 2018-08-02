@@ -5,7 +5,6 @@ from os.path import basename
 
 from pyliner.util import enable_logging
 
-
 # TODO If going service route, use config file for setup
 
 

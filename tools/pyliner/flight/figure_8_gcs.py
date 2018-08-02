@@ -19,12 +19,12 @@ import thread
 import threading
 from time import sleep
 
-from pyliner.app.communication import Communication
-from pyliner.app.controller import FlightMode
-from pyliner.navigation.control import constant, limiter, proportional
-from pyliner.vehicle import Vehicle
+from pyliner import Vehicle
+from pyliner.apps.communication import Communication
+from pyliner.apps.controller import FlightMode
+from pyliner.apps.navigation.control import constant, limiter, proportional
+from pyliner.scripting_wrapper import ScriptingWrapper
 from pyliner.util import read_json
-from pyliner.util.scripting_wrapper import ScriptingWrapper
 
 FAST = 0.75
 SLOW = 0.50
@@ -37,7 +37,7 @@ def range_limit(current, target):
 
 rky = Vehicle(
     vehicle_id='rocky',
-    communications=Communication(
+    communication=Communication(
         airliner_map=read_json("airliner.json"),
         address="192.168.1.2",
         ci_port=5009,
