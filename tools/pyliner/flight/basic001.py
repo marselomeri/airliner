@@ -12,27 +12,25 @@ Requirements Fulfilled:
     PYLINER014
     PYLINER016
 """
-from time import sleep
 
-from pyliner.app.communication import Communication
-from pyliner.app.controller import FlightMode
-from pyliner.navigation.control import proportional
+from pyliner import Vehicle
+from pyliner.apps.communication import Communication
+from pyliner.apps.controller import FlightMode
+from pyliner.apps.navigation.control import proportional
+from pyliner.scripting_wrapper import ScriptingWrapper
 from pyliner.util import read_json
-from pyliner.util.scripting_wrapper import ScriptingWrapper
-from pyliner.vehicle import Vehicle
 
 rky = Vehicle(
     vehicle_id='rocky',
-    communications=Communication(
+    communication=Communication(
         airliner_map=read_json("airliner.json"),
         ci_port=5009,
         to_port=5012)
 )
 
 with ScriptingWrapper(rky) as rocky:
-    while rocky.nav.altitude == "NULL":
-        sleep(1)
-        print("Waiting for telemetry downlink...")
+    rocky.await_change('/Airliner/CNTL/VehicleGlobalPosition/Alt',
+                       'Waiting for telemetry downlink...')
 
     rocky.ctrl.atp('Arm')
     rocky.ctrl.arm()
@@ -59,9 +57,9 @@ with ScriptingWrapper(rky) as rocky:
 
     rocky.ctrl.atp('Third')
     rocky.nav.lnav(method=proportional(0.20), tolerance=0.5) \
-        .backward(15)\
-        .left(15)\
-        .forward(15)\
+        .backward(15) \
+        .left(15) \
+        .forward(15) \
         .right(15)
 
     rocky.ctrl.atp('Fourth')

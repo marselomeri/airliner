@@ -17,11 +17,11 @@ Requirements Fulfilled:
 """
 from time import sleep
 
-from pyliner.app.communication import Communication
-from pyliner.navigation.control import limiter, proportional
-from pyliner.vehicle import Vehicle
+from pyliner import Vehicle
+from pyliner.apps.communication import Communication
+from pyliner.apps.navigation.control import limiter, proportional
+from pyliner.scripting_wrapper import ScriptingWrapper
 from pyliner.util import read_json
-from pyliner.util.scripting_wrapper import ScriptingWrapper
 
 
 def range_limit(current, target):
@@ -30,7 +30,7 @@ def range_limit(current, target):
 
 rky = Vehicle(
     vehicle_id='rocky',
-    communications=Communication(
+    communication=Communication(
         airliner_map=read_json("airliner.json"),
         address="192.168.1.2",
         ci_port=5009,
