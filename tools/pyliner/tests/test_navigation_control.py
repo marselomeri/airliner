@@ -1,6 +1,6 @@
 import unittest
 
-from pyliner.navigation.control import pi
+from pyliner.apps.navigation.control import pi
 
 
 class TestControl(unittest.TestCase):
