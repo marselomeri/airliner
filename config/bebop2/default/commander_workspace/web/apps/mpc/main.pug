@@ -14,6 +14,217 @@ block main
           header
             span.widget-icon
               i.fa.fa-table
+            h2 Vehicle State
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Autonomous Mode
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/ModeAuto'}]})
+                    tr
+                      th Position Control
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/RunPosControl'}]})
+                    tr
+                      th Altitude Control
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/RunAltControl'}]})
+                    tr
+                      th Position Hold
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/PositionHoldEngaged'}]})
+                    tr
+                      th Altitude Hold
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/AltitudeHoldEngaged'}]})
+                    tr
+                      th In Takeoff
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/InTakeoff'}]})
+                    tr
+                      th Triplet Finite
+                      td
+                        div.bool-led(style='--cmdr-led-off-bg-color: #ff0000;' data-sage={tlm: [{name:'/CFS/MPC/TripletLatLonFinite'}]})
+                    tr
+                      th Was Landed
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/WasLanded'}]})
+                    tr
+                      th Was Armed
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/WasArmed'}]})
+
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-MPC-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Control State
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th Max Velocity XY
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/VelMaxXy',format:'%.4f'}]}) ---
+                    tr
+                      th Max Accel XY
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/AccelerationStateLimitXY',format:'%.4f'}]}) ---
+                    tr
+                      th Max Accel Z
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/AccelerationStateLimitZ',format:'%.4f'}]}) ---
+                    tr
+                      th Max Jerk XY
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/ManualJerkLimitXY',format:'%.4f'}]}) ---
+                    tr
+                      th Max Jerk Z
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/ManualJerkLimitZ',format:'%.4f'}]}) ---
+                    tr
+                      th Takeoff Vel Limit
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/TakeoffVelLimit',format:'%.4f'}]}) ---
+                    tr
+                      th Yaw At Takeoff
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/YawTakeoff',format:'%.4f'}]}) ---
+                    tr
+                      th Yaw
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Yaw',format:'%.4f'}]}) ---
+
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-MPC-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 PIDs
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th XY Gain
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_P'}]}) ---
+                    tr
+                      th XY P
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_VEL_P'}]}) ---
+                    tr
+                      th XY I
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_VEL_I'}]}) ---
+                    tr
+                      th XY D
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_VEL_D'}]}) ---
+                    tr
+                      th Z Gain
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_P'}]}) ---
+                    tr
+                      th Z P
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_VEL_P'}]}) ---
+                    tr
+                      th Z I
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_VEL_I'}]}) ---
+                    tr
+                      th Z D
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_VEL_D'}]}) ---
+              footer
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SendDiag'}}) Query
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetXYPid'}}) Set XY PIDs
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetZPid'}}) Set Z PIDs
+  .row.row-fluid
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-MPC-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
+            h2 Table Values
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              .table-responsive
+                table.table.table-condensed
+                  tbody
+                    tr
+                      th XY_VEL_MAX
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_VEL_MAX'}]}) ---
+                    tr
+                      th MPC_VEL_MANUAL
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/MPC_VEL_MANUAL'}]}) ---
+                    tr
+                      th XY_CRUISE
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_CRUISE'}]}) ---
+                    tr
+                      th Z_VEL_MAX_UP
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_VEL_MAX_UP'}]}) ---
+                    tr
+                      th Z_VEL_MAX_DN
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_VEL_MAX_DN'}]}) ---
+                    tr
+                      th Z_FF
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/Z_FF'}]}) ---
+                    tr
+                      th XY_FF
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/XY_FF'}]}) ---
+                    tr
+                      th TILTMAX_AIR
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/TILTMAX_AIR'}]}) ---
+                    tr
+                      th ACC_HOR_MAX
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/ACC_HOR_MAX'}]}) ---
+                    tr
+                      th MPC_DEC_HOR_SLOW
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/MPC_DEC_HOR_SLOW'}]}) ---
+                    tr
+                      th ACC_UP_MAX
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/ACC_UP_MAX'}]}) ---
+                    tr
+                      th ACC_DOWN_MAX
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/ACC_DOWN_MAX'}]}) ---
+              footer
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SendDiag'}}) Query
+
+
+    article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
+        #wid-MPC-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header
+            span.widget-icon
+              i.fa.fa-table
             h2 Housekeeping
           div
             .jarviswidget-editbox
@@ -33,8 +244,6 @@ block main
               footer
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/NoOp'}}) No-Op
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/Reset'}}) Reset
-                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetXYPid'}}) Set XY PIDs
-                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetZPid'}}) Set Z PIDs
 
                                         
   .row
