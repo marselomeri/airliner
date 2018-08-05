@@ -31,13 +31,13 @@ block main
                       td
                         div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/RunPosControl'}]})
                     tr
-                      th Altitude Control
-                      td
-                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/RunAltControl'}]})
-                    tr
                       th Position Hold
                       td
                         div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/PositionHoldEngaged'}]})
+                    tr
+                      th Altitude Control
+                      td
+                        div.bool-led(data-sage={tlm: [{name:'/CFS/MPC/RunAltControl'}]})
                     tr
                       th Altitude Hold
                       td
@@ -93,7 +93,7 @@ block main
                       td
                         span(data-sage={tlm: [{name:'/CFS/MPC/ManualJerkLimitZ',format:'%.4f'}]}) ---
                     tr
-                      th Takeoff Vel Limit
+                      th Takeoff Velocity Limit
                       td
                         span(data-sage={tlm: [{name:'/CFS/MPC/TakeoffVelLimit',format:'%.4f'}]}) ---
                     tr
