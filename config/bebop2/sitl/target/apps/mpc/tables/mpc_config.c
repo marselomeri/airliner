@@ -373,7 +373,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	3.0f,
+	1.5f,
 
 	/**
 	 * MPC_MAN_TILT_MAX
@@ -574,7 +574,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @max 1
 	 * @group Multicopter Position Control
 	 */
-	0.9f,
+	0.1f,
 
     /**
      * MC_YAWRATE_MAX
