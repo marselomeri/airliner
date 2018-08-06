@@ -128,14 +128,14 @@ extern "C" {
 **       Minimum based on configured device driver requirements.
 */
 //#define VC_MAX_BUFFER_SIZE              (115200)
-#define VC_MAX_BUFFER_SIZE              (1228800)
+#define VC_MAX_BUFFER_SIZE              (153600)
 
 /** \brief Max packet size
 **
 **  \par Limits:
 **       UDP max payload size.
 */
-#define VC_MAX_PACKET_SIZE              (65527)
+#define VC_MAX_PACKET_SIZE              (153600)
 
 /** \brief Retry attemps for interrupted calls
 **
@@ -203,7 +203,7 @@ extern "C" {
 **  \par Limits:
 **       INET_ADDRSTRLEN
 */
-#define VC_DESTINATION_IP               "192.168.1.3"
+#define VC_DESTINATION_IP               "192.168.42.34"
 
 /** \brief Ground system port 
 **
@@ -233,7 +233,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_IO_METHOD                V4L2_MEMORY_USERPTR
+#define VC_V4L_IO_METHOD                V4L2_MEMORY_MMAP
 
 /** \brief V4L buffer type 
 **
@@ -247,7 +247,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_MJPEG 
+#define VC_V4L_VIDEO_FORMAT             V4L2_PIX_FMT_UYVY
 
 /** \brief V4L field order
 **
@@ -268,7 +268,7 @@ extern "C" {
 **  \par Limits:
 **       V4L specific.
 */
-#define VC_V4L_MEMORY_TYPE              V4L2_MEMORY_USERPTR
+#define VC_V4L_MEMORY_TYPE              V4L2_MEMORY_MMAP
 
 /* Timeout settings */
 

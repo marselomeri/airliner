@@ -102,7 +102,8 @@ int32 VC_CustomDevice_InitData()
     VC_AppCustomDevice.Channel[0].MemoryType    = VC_V4L_MEMORY_TYPE;
     
     strncpy(VC_AppCustomDevice.Channel[0].DevName, VC_DEVICE_PATH, VC_MAX_DEVICE_PATH); 
-    
+
+
     return (iStatus);
 }
 

@@ -37,6 +37,7 @@
 #include "cfe.h"
 #include "vc_dev_io.h"
 #include "../vc_custom_shared.h"
+#include "../vc_dev_io_i2c/vc_dev_io_i2c.h"
 #include "vc_perfids.h"
 #include "vc_app.h"
 
@@ -78,7 +79,9 @@ typedef enum
 typedef struct {
     /*! Pointer to user defined buffer */
     void   *ptr;
+    size_t length;
 }VC_BufferPtr_t;
+
 
 
 /**
@@ -137,7 +140,6 @@ typedef struct
     /*! Streaming task flags */
     uint32                          TaskFlags;
 } VC_AppCustomDevice_t;
-
 
 /************************************************************************
 ** Function Prototypes

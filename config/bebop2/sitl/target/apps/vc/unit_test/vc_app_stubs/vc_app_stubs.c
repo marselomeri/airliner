@@ -60,3 +60,8 @@ boolean VC_VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 
     return (bResult);
 } /* End of VC_VerifyCmdLength() */
+
+uint64 PX4LIB_GetPX4TimeUs(void)
+{
+    return 0;
+}

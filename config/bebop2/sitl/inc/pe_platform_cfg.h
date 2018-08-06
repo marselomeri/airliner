@@ -114,7 +114,32 @@ extern "C" {
 **  \par Limits:
 **       This parameter cannot exceed TODO
 */
-#define PE_MAX_EVENT_FILTERS       (32)
+#define PE_MAX_EVENT_FILTERS       (64)
+
+/*** Sensor Configuration ***/
+
+/* Baro */
+#define REQ_BARO_INIT_COUNT     (100)
+#define BARO_TIMEOUT            (100000) /* 0.1 s */
+
+/* GPS */
+#define REQ_GPS_INIT_COUNT      (10)
+#define GPS_TIMEOUT             (1000000) /* 1.0 s */
+
+/* Land */
+#define REQ_LAND_INIT_COUNT     (1)
+#define LAND_TIMEOUT   		    (1000000) /* 1.0 s */
+
+/* Distance sensor */
+#define REQ_DIST_INIT_COUNT     (10)
+#define DIST_TIMEOUT            (150000) /* 0.1 s */
+#define DIST_BETA_MAX           (700)
+#define DIST_SENSOR_TYPE        (3) /* 3 = radar */
+
+/* Optical flow */
+#define REQ_FLOW_INIT_COUNT     (10)
+#define FLOW_TIMEOUT            (1000000) /* 1.0 s */
+#define FLOW_GYRO_HP_CUTOFF     (0.001f)
 
 
 #ifdef __cplusplus

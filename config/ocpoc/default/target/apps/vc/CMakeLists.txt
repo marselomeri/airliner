@@ -23,6 +23,9 @@ add_airliner_app_unit_test(vc-custom-ut
         # Platform stubs
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_platform_stubs/vc_platform_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_platform_stubs/vc_platform_stubs.h
+        # Custom stubs
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_custom_stubs/vc_app_custom_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_custom_stubs/vc_app_custom_stubs.h
         # VC App stubs
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_stubs/vc_app_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_stubs/vc_app_stubs.h
@@ -67,4 +70,3 @@ add_airliner_app_unit_test(vc-custom-ut
         sendto
         recv
 )
-

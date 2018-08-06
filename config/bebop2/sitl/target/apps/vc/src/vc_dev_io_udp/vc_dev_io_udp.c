@@ -39,6 +39,7 @@
 *************************************************************************/
 #include "vc_dev_io_udp.h"
 #include "cfe.h"
+#include "px4lib.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -84,11 +85,20 @@ int32 VC_Devices_InitData(void)
     VC_AppCustomDevice.ContinueFlag          = TRUE;
     VC_AppCustomDevice.Priority              = VC_STREAMING_TASK_PRIORITY;
     VC_AppCustomDevice.StreamingTask         = VC_Stream_Task;
+
     VC_AppCustomDevice.Channel[0].Status     = VC_DEVICE_UNINITIALIZED;
     VC_AppCustomDevice.Channel[0].Mode       = VC_DEVICE_ENABLED;
     VC_AppCustomDevice.Channel[0].Socket     = 0;
     VC_AppCustomDevice.Channel[0].Port       = VC_GST_GAZEBO_PORT;
 
+    VC_AppCustomDevice.Channel[1].Status     = VC_DEVICE_UNINITIALIZED;
+    VC_AppCustomDevice.Channel[1].Mode       = VC_DEVICE_ENABLED;
+    VC_AppCustomDevice.Channel[1].Socket     = 0;
+    VC_AppCustomDevice.Channel[1].Port       = VC_OPTICAL_FLOW_PORT;
+
+    /* Initialize output messages*/
+    CFE_SB_InitMsg(&OpticalFlowFrameMsg, FLOW_FRAME_MID,
+                sizeof(PX4_OpticalFlowFrameMsg_t), TRUE);
     return (iStatus);
 }
 
@@ -374,51 +384,73 @@ int32 VC_Send_Buffer(uint8 DeviceID)
     int32 returnCode          = 0;
     int size                  = 0;
     unsigned int packetLength = 0;
-    
-    size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
-            VC_AppCustomDevice.Channel[DeviceID].Buffer, VC_MAX_PACKET_SIZE, 0);
-    /* if we have the preamble header... */
-    if (size == VC_MPARTMUX_HEADER_SIZE)
+
+    if(DeviceID == 0)
     {
-        /* get the size of the payload from the preamble header */
-        sscanf(&VC_AppCustomDevice.Channel[DeviceID].Buffer[VC_MPARTMUX_HEADER_LENGTH_START], 
-                "%u", &packetLength);
-        /* receive the payload */
         size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket, 
                 VC_AppCustomDevice.Channel[DeviceID].Buffer, VC_MAX_PACKET_SIZE, 0);
-        /* if the size we received is not the size specified in the header 
-         * something went wrong. Or sscanf didn't find a match so we  
-         * don't have a size from the preamble etc */
+        /* if we have the preamble header... */
+        if (size == VC_MPARTMUX_HEADER_SIZE)
+        {
+            /* get the size of the payload from the preamble header */
+            sscanf(&VC_AppCustomDevice.Channel[DeviceID].Buffer[VC_MPARTMUX_HEADER_LENGTH_START],
+                    "%u", &packetLength);
+            /* receive the payload */
+            size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket,
+                    VC_AppCustomDevice.Channel[DeviceID].Buffer, VC_MAX_PACKET_SIZE, 0);
+            /* if the size we received is not the size specified in the header
+             * something went wrong. Or sscanf didn't find a match so we
+             * don't have a size from the preamble etc */
 
-        if (size != packetLength)
+            if (size != packetLength)
+            {
+                (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "VC recv size error on channel %u", (unsigned int)DeviceID);
+                returnCode = -1;
+                goto end_of_function;
+            }
+            /* Send data, for now map device id to senddata channel */
+            if (-1 == VC_SendData(DeviceID, (void*)VC_AppCustomDevice.Channel[DeviceID].Buffer, packetLength))
+            {
+                (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                        "VC send data failed on channel %u", (unsigned int)DeviceID);
+                returnCode = -1;
+                goto end_of_function;
+            }
+        }
+        /* if recv returned an error */
+        else if (size == -1)
         {
+            /* recv returned an error */
             (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "VC recv size error on channel %u", (unsigned int)DeviceID);
+                    "VC recv errno: %i on channel %u", errno, (unsigned int)DeviceID);
             returnCode = -1;
             goto end_of_function;
         }
-        /* Send data, for now map device id to senddata channel */
-        if (-1 == VC_SendData(DeviceID, (void*)VC_AppCustomDevice.Channel[DeviceID].Buffer, packetLength))
+        else
         {
-            (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "VC send data failed on channel %u", (unsigned int)DeviceID);
-            returnCode = -1;
+            /* do nothing we received the 2 byte preamble */
             goto end_of_function;
         }
     }
-    /* if recv returned an error */
-    else if (size == -1)
+    else if (DeviceID == 1)
     {
-        /* recv returned an error */
-        (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "VC recv errno: %i on channel %u", errno, (unsigned int)DeviceID);
-        returnCode = -1;
-        goto end_of_function;
-    }
-    else
-    {
-        /* do nothing we received the 2 byte preamble */
-        goto end_of_function;
+        size = recv(VC_AppCustomDevice.Channel[DeviceID].Socket,
+                VC_AppCustomDevice.Channel[DeviceID].Buffer, PX4_OPTICAL_FLOW_FRAME_SIZE, 0);
+        if(size == PX4_OPTICAL_FLOW_FRAME_SIZE)
+        {
+        	// Copy to message
+        	uint64 timestamp;
+			timestamp = PX4LIB_GetPX4TimeUs();
+			OpticalFlowFrameMsg.Timestamp = timestamp;
+			uint32 i;
+			for (i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
+				OpticalFlowFrameMsg.Frame[i] = VC_AppCustomDevice.Channel[DeviceID].Buffer[i];
+			}
+			// Publish message to software bus
+        	CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
+			CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
+        }
     }
 
 end_of_function:

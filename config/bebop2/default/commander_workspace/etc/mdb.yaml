@@ -1,4 +1,4 @@
-Bebop_2:
+Ocpoc:
     # Configuration of the active loaders
     # Valid loaders are: sheet, xtce or fully qualified name of the class
     - type: "sheet"
@@ -26,6 +26,8 @@ Bebop_2:
              spec: "/mdb/DS.xls"
            - type: "sheet"
              spec: "/mdb/FM.xls"
+           - type: "sheet"
+             spec: "/mdb/FLOW.xls"
            - type: "sheet"
              spec: "/mdb/HK.xls"
            - type: "sheet"
