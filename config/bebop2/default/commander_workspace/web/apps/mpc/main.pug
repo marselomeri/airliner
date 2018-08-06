@@ -104,6 +104,15 @@ block main
                       th Yaw
                       td
                         span(data-sage={tlm: [{name:'/CFS/MPC/Yaw',format:'%.4f'}]}) ---
+                    tr
+                      th User Intent XY
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/UserIntentionXY'}]}) ---
+                    tr
+                      th User Intent Z
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/UserIntentionZ'}]}) ---
+
 
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
         #wid-MPC-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
