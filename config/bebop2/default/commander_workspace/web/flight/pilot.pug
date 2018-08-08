@@ -428,7 +428,7 @@ block main
                     
                       prevTS = GetTime();
                   }
-                  imageBuffer = image;
+                  imageBuffer = btoa(String.fromCharCode.apply(null, new Uint8Array(image)));
                   cameraImage.load('data:image/jpeg;base64,' + imageBuffer);
                   ctr++;
                 });
