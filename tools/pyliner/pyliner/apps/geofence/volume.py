@@ -14,7 +14,7 @@ from abc import ABCMeta, abstractmethod
 from collections import Container
 from numbers import Real
 
-from pyliner.apps import GeographicApp
+from pyliner.apps.geographic_app import GeographicApp
 from pyliner.position import Position, Coordinate
 
 
