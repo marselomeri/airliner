@@ -326,7 +326,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				uint32 i;
 				for(i =0 ; i<Size; i++)
 				{
-					if(i%2!=0)
+					if(i%2==0)
 					{
 						if(byteCounter < startRow || byteCounter >= endRow)
 						{
@@ -361,7 +361,7 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				status = PX4_OPTICAL_FLOW_FRAME_SIZE;
 
 				/* Send frame over udp*/
-				status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
+				status = sendto(channel->SocketFd, (char *)OpticalFlowFrameMsg.Frame, sizeof(OpticalFlowFrameMsg.Frame), 0,
 						(struct sockaddr *) &s_addr,
 						sizeof(s_addr));
 			}
