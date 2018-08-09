@@ -14,13 +14,14 @@ from pyliner.action import ACTION_VEHICLE_SHUTDOWN, ACTION_APP_ATTACH, \
     ACTION_APP_DETACH, ACTION_APP_LIST
 from pyliner.app_access import AppAccess
 from pyliner.app import App
-from pyliner.intent import Intent, IntentNoReceiverError, IntentExplicitFailure
+from pyliner.intent import Intent, IntentNoReceiverError, IntentExplicitFailure, \
+    Broadcaster
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture
 from pyliner.util import Loggable
 
 
-class BaseVehicle(Loggable):
+class BaseVehicle(Loggable, Broadcaster):
     """
     Contains the bare-minimum required for Pyliner. All additional functionality
     is provided through the Vehicle class. App management is performed via the
@@ -48,7 +49,7 @@ class BaseVehicle(Loggable):
         self.is_shutdown = False
         self.vehicle_id = vehicle_id
 
-        # self._broadcast_pool = ThreadPool # TODO Python 3
+        # self._broadcast_pool = Pool() # TODO Python 3
         # self._dynamic_filters = set()
         self._intent_filters = defaultdict(lambda: set())
         """:type: dict[str, set[AppAccess]]"""
@@ -143,11 +144,9 @@ class BaseVehicle(Loggable):
         interpreter exit.
 
         Shutdown Order:
-            1. Stop Apps
-            2. Stop Services
+            1. Broadcast Shutdown
+            2. Wait for broadcast to finish.
             3. Detach Apps
-            4. Detach Services
-            5. Detach Sensors
         """
         self.info('Vehicle {} is shutting down.'.format(self.vehicle_id))
         if not self.is_shutdown:

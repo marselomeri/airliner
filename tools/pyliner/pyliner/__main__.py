@@ -8,7 +8,7 @@ from pyliner.util import enable_logging
 # TODO If going service route, use config file for setup
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('script',
                         help='The Pyliner script that will be executed.')
@@ -32,3 +32,7 @@ if __name__ == '__main__':
             level=DEBUG if args.debug else INFO)
 
     imp.load_source('script', args.script)
+
+
+if __name__ == '__main__':
+    main()
