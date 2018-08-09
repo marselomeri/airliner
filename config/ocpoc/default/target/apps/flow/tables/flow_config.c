@@ -47,7 +47,7 @@ FLOW_ConfigTbl_t FLOW_ConfigTbl =
 		 *  \par Limits:
 		 *       default 0.088.
 		 */
-		0.088f,
+		0.10934f,
 		/** \brief Size of sliding window.
 		 *
 		 *  \par Limits:
