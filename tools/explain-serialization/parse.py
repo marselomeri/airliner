@@ -19,8 +19,10 @@ def setup_serialization_dict(apps):
 def get_pb_name(sym_name):
     if sym_name[-2:] == "_t":
         return sym_name[:-2].lower() + "_pb"
+    else:
+        return sym_name.lower() + "_pb"#"OTHER SYMBOL TODO"
+    
         
-    return "OTHER SYMBOL TODO"
 
 def get_pb_type(sym):
     type_map = {
@@ -36,11 +38,15 @@ def get_pb_type(sym):
         "boolean": "bool",
         "float":   "float",
     }
-
+    global explain
+    
     if sym in type_map:
         return type_map[sym]
     elif is_enum(sym):
         return "uint32"
+    elif sym in explain["symbols"] and "real_type" in explain["symbols"][sym] and explain["symbols"][sym]["real_type"] in type_map:
+        print explain["symbols"][sym]["real_type"]
+        type_map[explain["symbols"][sym]["real_type"]]
     else:
         return get_pb_name(sym)
 
@@ -97,54 +103,74 @@ def fix_required(symbol):
         return {}
         
     def fix(sym, req_pb={}, parent=None):
-        if "fields" not in sym:
-            return
+        try:
+        
+            if "fields" not in sym:
+                return req_pb
 
-        # Iterate over all fields in this symbol
-        for field, data in sym["fields"].iteritems():
-            # Don't do anything to fields which are not other structs
-            if "fields" not in data:
-                continue
+            # Iterate over all fields in this symbol
+            for field, data in sym["fields"].iteritems():
+                # Don't do anything to fields which are not other structs
+                if "fields" not in data:
+                    continue
+                
+                if "airliner_type" in data and "pb_type" in data:
+                    sym_type = data["airliner_type"]
+                    pb_type = data["pb_type"]
+                else:
+                    continue
+                
+                if parent:
+                    #print "\nhave parent" + str(parent)
+                    if pb_type in parent["required_pb_msgs"]:
+                        #print "type in parent"
+                        # Need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
+                        parent["required_pb_msgs"][pb_type]["parent_field"][field] = 0
+                    else:            
+                       # print "type not in parent"
+                        # Add required pb message
+                        parent["required_pb_msgs"][pb_type] = {}
+                        parent["required_pb_msgs"][pb_type]["airliner_msg"] = sym_type
+                        parent["required_pb_msgs"][pb_type]["parent_field"] = {field:0}
+                        parent["required_pb_msgs"][pb_type]["fields"] = data["fields"]
+                        parent["required_pb_msgs"][pb_type]["required_pb_msgs"] = {}
+                        
+                    # Recur into next level of nested fields and fix top down
+                    req_pb = fix(data, req_pb, parent["required_pb_msgs"][pb_type])
+                    
+                else:
+                    # If this required pb message already exists, add our current field to the parent field dict in req_pb
+                    if req_pb and pb_type in req_pb:
+                        #print "found type in req pb"
+                        # Need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
+                        req_pb[pb_type]["parent_field"][field] = 0
+                    else:
+                        #print "adding type to req pb"
+                        # Add required pb message
+                        req_pb[pb_type] = {}
+                        req_pb[pb_type]["airliner_msg"] = sym_type
+                        req_pb[pb_type]["parent_field"] = {field:0}
+                        req_pb[pb_type]["fields"] = data["fields"]
+                        req_pb[pb_type]["required_pb_msgs"] = {}
+    
+                    # Recur into next level of nested fields and fix top down
+                    req_pb = fix(data, req_pb, req_pb[pb_type])
+
+                # Remove fields from struct field
+                del data["fields"]
+                
+        except Exception as e:
+            print "\n"
+            print repr(e)
+            print field
+            print data
+            print "\n"
+            print req_pb
             
-            # Some fields appear to have this missing - TODO check explain
-            if "airliner_type" not in data:
-                print "Warning - missing attrs in " + field
-                continue
-            
-            if parent:
-                if data["pb_type"] in parent["required_pb_msgs"]:
-                    # Need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
-                    parent["required_pb_msgs"][data["pb_type"]]["parent_field"][field] = 0
-                else:            
-                    # Add required pb message
-                    parent["required_pb_msgs"][data["pb_type"]] = {}
-                    parent["required_pb_msgs"][data["pb_type"]]["airliner_msg"] = data["airliner_type"]
-                    parent["required_pb_msgs"][data["pb_type"]]["parent_field"] = {field:0}
-                    parent["required_pb_msgs"][data["pb_type"]]["fields"] = data["fields"]
-                    parent["required_pb_msgs"][data["pb_type"]]["required_pb_msgs"] = {}
-            # If this required pb message already exists, add our current field to the parent field dict in req_pb
-            elif req_pb and data["pb_type"] in req_pb:
-                # Need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
-                req_pb[data["pb_type"]]["parent_field"][field] = 0
-            else:            
-                # Add required pb message
-                req_pb[data["pb_type"]] = {}
-                req_pb[data["pb_type"]]["airliner_msg"] = data["airliner_type"]
-                req_pb[data["pb_type"]]["parent_field"] = {field:0}
-                req_pb[data["pb_type"]]["fields"] = data["fields"]
-                req_pb[data["pb_type"]]["required_pb_msgs"] = {}
-            
-            # Remove fields from struct field
-            del data["fields"]
-            
-            # Recur into next level of nested fields and fix top down
-            field = fix(data, req_pb, req_pb[data["pb_type"]])
             
         return req_pb
 
-        
-    #sym["required_pb_msgs"] = fix(symbol)
-    return fix(symbol)
+    return fix(symbol, OrderedDict())
                 
                 
 def is_enum(sym):
@@ -195,6 +221,8 @@ for symbol, data in explain["symbols"].iteritems():
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["required_pb_msgs"] = fix_required(data)
 
+    #print serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]
+    #print "\n\n\n\n"
        
         
 with open("cookiecutter.json", "w") as cc:
