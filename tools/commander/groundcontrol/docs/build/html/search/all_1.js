@@ -1,5 +1,0 @@
-var searchData=
-[
-  ['address',['address',['../classgroundcontrol_1_1consumers_1_1Telemetry.html#a9ca8c7664acae26a6d4b57018bc21f97',1,'groundcontrol.consumers.Telemetry.address()'],['../classgroundcontrol_1_1consumers_1_1Command.html#a62b39f8e0f707d3107c8161d0c91244c',1,'groundcontrol.consumers.Command.address()'],['../classgroundcontrol_1_1consumers_1_1Instance.html#a27c7b3fa272e1799210f1f3ecfc1f6cc',1,'groundcontrol.consumers.Instance.address()'],['../classgroundcontrol_1_1consumers_1_1Event.html#a276832c5ca2e7f8e0dbfbbb72a9f84ba',1,'groundcontrol.consumers.Event.address()'],['../classgroundcontrol_1_1consumers_1_1Misc.html#ae79d9ff1e1b56842dfc0f2e77e5d4e2f',1,'groundcontrol.consumers.Misc.address()'],['../classgroundcontrol_1_1consumers_1_1Video_af72beb77e260cbefc86914e2dfc94f97.html#af72beb77e260cbefc86914e2dfc94f97',1,'groundcontrol.consumers.Video.address()']]],
-  ['adsb_5fport',['adsb_port',['../classgroundcontrol_1_1consumers_1_1Misc.html#a3709d1a926b728023aed32a9657fc011',1,'groundcontrol::consumers::Misc']]]
-];
