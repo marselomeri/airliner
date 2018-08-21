@@ -4,7 +4,7 @@ from threading import Event
 from pyliner.action import ACTION_CONTROL_GRANT, ACTION_CONTROL_REVOKE, \
     ACTION_CONTROL_REQUEST, ACTION_CONTROL_RELEASE
 from pyliner.app_access import AppAccess, InvalidStateError, AppDetachedError
-from pyliner.intent import IntentFilter, Intent
+from pyliner.intent import IntentFilter, Intent, Broadcaster
 from pyliner.pyliner_error import PylinerError
 from pyliner.util import Loggable
 
@@ -100,7 +100,7 @@ class App(Loggable):
         return _ControlBlock(self)
 
 
-class _ControlBlock(object):
+class _ControlBlock(Broadcaster):
     def __init__(self, app):
         self.app = app
 
