@@ -343,10 +343,17 @@ class Communication(App):
         return True
 
     def send_command(self, telemetry):
-        msg = self._serialize(telemetry)
+        if isinstance(telemetry, dict):
+            msg = telemetry
+        else:
+            msg = telemetry.to_json() 
+            
+        buffer = self._serialize(telemetry)
+            
         self.vehicle.debug(
-            'Sending telemetry to airliner: %s', telemetry.to_json())
-        return self.send_bytes(msg)
+            'Sending telemetry to airliner: %s', msg)
+        
+        return self.send_bytes(buffer)
 
     def telemetry(self, args):
         if isinstance(args, str):
@@ -569,7 +576,11 @@ class Communication(App):
             telemetry (Telemetry): Telemetry specifying the operation to execute
                 and any args for it.
         """
-        json = telemetry.to_json()
+        if isinstance(telemetry, dict):
+            json = telemetry
+        else:
+            json = telemetry.to_json()
+            
         if "name" not in json:
             raise InvalidCommandException(
                 "Invalid command received. Missing \"name\" attribute")
