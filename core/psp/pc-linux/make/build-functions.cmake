@@ -31,6 +31,8 @@
 #
 #############################################################################
  
+include(${PROJECT_SOURCE_DIR}/tools/explain/python/GenerateSymbolMap.cmake)
+ 
 #psp_initialize_airliner_build(
 #    PSP    pc-linux
 #    OSAL   posix
@@ -85,6 +87,9 @@ function(psp_initialize_airliner_build)
     # Where to put tables
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${INSTALL_DIR})
 
+    # Prepare the build to be ready to use the Explain utility.
+    explain_setup()
+        
 endfunction(psp_initialize_airliner_build)
 
 
@@ -320,6 +325,14 @@ function(psp_add_airliner_app_def)
         file(MAKE_DIRECTORY ${PARSED_ARGS_PROTOBUF_MSGS_DIR})
         nanopb_generate_cpp(PROTO_SRCS PROTO_HDRS ${PARSED_ARGS_PROTOBUF_MSGS_DIR} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${PARSED_ARGS_PROTOBUF_DEFS})
     endif()
+
+    # Generate the Explain symbol maps
+    explain_generate_symbol_map(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+        INPUT_PATH     ${INSTALL_DIR}
+        INPUT_FILE     ${PARSED_ARGS_FILE}.so
+        DATABASE_NAME  ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-symbols.sqlite
+        OUTPUT_FILE    ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-symbols.json
+        )
 endfunction(psp_add_airliner_app_def)
 
 
