@@ -14,7 +14,7 @@ from abc import ABCMeta, abstractmethod
 from collections import Container
 from numbers import Real
 
-from pyliner.apps import GeographicApp
+from pyliner.apps.geographic_app import GeographicApp
 from pyliner.position import Position, Coordinate
 
 
@@ -181,7 +181,7 @@ class VerticalCylinder(Volume):
             min_lon or pbd(self.center, 270, self.radius).longitude,
             self.low
         ), Position(
-            max_lat or pbd(self.center, 000, self.radius).latitude,
+            max_lat or pbd(self.center, 0, self.radius).latitude,
             max_lon or pbd(self.center, 90, self.radius).longitude,
             self.high
         ))

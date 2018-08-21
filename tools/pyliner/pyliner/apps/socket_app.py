@@ -6,10 +6,10 @@ from pyliner.app import App
 
 
 class SocketApp(App):
-    """The SocketApp listens to a TCP port for vehicle commands.
+    """The SocketApp listens to a TCP port for vehicle commands or other data.
 
-    The Service parses the given commands into events that the system responds
-    to.
+    Implementing classes must define a handle method that takes the request and
+    does something with it. See CommanderApp for an example.
     """
 
     def __init__(self, port):
