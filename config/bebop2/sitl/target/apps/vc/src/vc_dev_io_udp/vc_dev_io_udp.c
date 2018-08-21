@@ -443,7 +443,8 @@ int32 VC_Send_Buffer(uint8 DeviceID)
         	uint64 timestamp;
 			timestamp = PX4LIB_GetPX4TimeUs();
 			OpticalFlowFrameMsg.Timestamp = timestamp;
-			for (int i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
+			uint32 i;
+			for (i=0; i<PX4_OPTICAL_FLOW_FRAME_SIZE;i++){
 				OpticalFlowFrameMsg.Frame[i] = VC_AppCustomDevice.Channel[DeviceID].Buffer[i];
 			}
 			// Publish message to software bus

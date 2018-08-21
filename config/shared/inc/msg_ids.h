@@ -662,6 +662,7 @@
 #define FLOW_WAKEUP_MID                             0x1ce3
 #define FLOW_CMD_MID                                0x1ce4
 #define FLOW_FRAME_MID                              0x0ce5
+#define FLOW_DIAG_TLM_MID                         	0x0ce6
 
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 

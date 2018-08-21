@@ -103,6 +103,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
 	    {CI_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {AE_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 		{FLOW_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
+		{FLOW_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 
 
 //        {PX4_ACTUATOR_ARMED_MID,               1,     TO_PQUEUE_LOW_IDX},

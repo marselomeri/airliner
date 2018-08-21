@@ -39,7 +39,6 @@
 ** Includes
 *************************************************************************/
 #include "vc_dev_io_v4l.h"
-#include "../vc_dev_io_i2c/vc_dev_io_i2c.h"
 #include "cfe.h"
 #include <unistd.h>
 #include <sys/mman.h>
@@ -242,6 +241,7 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         returnCode = -1;
         goto end_of_function;
     }
+
 end_of_function:
     return (returnCode);
 }
@@ -258,7 +258,19 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
     
     for (i=0; i < VC_AppCustomDevice.Channel[DeviceID].BufferRequest; i++)
 	{
+
+
 		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = (void*)&VC_AppCustomDevice.Channel[DeviceID].Buffers[i][0];
+				//(struct Buffer *) malloc(Buffer.length);
+
+
+		if (VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr == NULL) {
+			(void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
+						"VC Unable to allocate buffers %i on %s channel %u", errno,
+						VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
+			returnCode = -1;
+			goto end_of_function;
+		}
 
 		bzero(&Buffer, sizeof(Buffer));
 		Buffer.type            = VC_AppCustomDevice.Channel[DeviceID].BufferType;
@@ -273,12 +285,14 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
 			returnCode = -1;
 			goto end_of_function;
 		}
+
 		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].length =  Buffer.length;
-		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = mmap(NULL,//VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr,
-		                                  VC_AppCustomDevice.Channel[DeviceID].Buffer_Size,
+		VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr = mmap(VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr,
+											Buffer.length,
 		                                  PROT_READ | PROT_WRITE,
 		                                  MAP_SHARED, VC_AppCustomDevice.Channel[DeviceID].DeviceFd,
 		                                  Buffer.m.offset);
+
 		if (VC_AppCustomDevice.Channel[DeviceID].Buffer_Ptrs[i].ptr == MAP_FAILED) {
 			(void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
 						"OUT_OF_MEMORY returned %i on %s channel %u", errno,
@@ -286,7 +300,6 @@ int32 VC_Start_StreamingDevice(uint8 DeviceID)
 			returnCode = -1;
 			goto end_of_function;
 		}
-
 	}
 
     if (-1 == VC_Ioctl(VC_AppCustomDevice.Channel[DeviceID].DeviceFd, VIDIOC_STREAMON, &Type))

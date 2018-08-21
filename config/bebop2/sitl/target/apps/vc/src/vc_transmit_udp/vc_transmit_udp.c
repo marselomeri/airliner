@@ -91,13 +91,17 @@ int32 VC_CustomTransmit_InitData()
     strncpy(VC_AppCustomData.Channel[0].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN); 
     strncpy(VC_AppCustomData.Channel[0].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN); 
     
-    VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
-    VC_AppCustomData.Channel[1].ChannelID = 1;
-    VC_AppCustomData.Channel[1].DestPort = VC_DESTINATION_PORT + 1;
-    VC_AppCustomData.Channel[1].SocketFd = 0;
+//    VC_AppCustomData.Channel[1].Mode = VC_CHANNEL_ENABLED;
+//    VC_AppCustomData.Channel[1].ChannelID = 1;
+//    VC_AppCustomData.Channel[1].DestPort = VC_DESTINATION_PORT + 1;
+//    VC_AppCustomData.Channel[1].SocketFd = 0;
+//
+//    strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);
+//    strncpy(VC_AppCustomData.Channel[1].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN);
 
-    strncpy(VC_AppCustomData.Channel[1].DestIP, VC_DESTINATION_IP, INET_ADDRSTRLEN);
-    strncpy(VC_AppCustomData.Channel[1].MyIP, VC_SOURCE_IP, INET_ADDRSTRLEN);
+    /* Initialize output messages*/
+	CFE_SB_InitMsg(&OpticalFlowFrameMsg, FLOW_FRAME_MID,
+				sizeof(PX4_OpticalFlowFrameMsg_t), TRUE);
 
     return (iStatus);
 }
@@ -308,9 +312,11 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
             /* Send message via UDP socket */
             s_addr.sin_addr.s_addr = inet_addr(channel->DestIP);
             s_addr.sin_port        = htons(channel->DestPort);
+
             status = sendto(channel->SocketFd, (char *)Buffer, Size, 0,
                                     (struct sockaddr *) &s_addr,
                                     sizeof(s_addr));
+
             if (status < 0)
             {
                 if(errno == 90)

@@ -99,6 +99,8 @@ extern "C" {
 
 #define GPS_MESSAGE_CLASS_MON                     (0x0A)
 
+#define GPS_MESSAGE_CLASS_NMEA                    (0xF0)
+
 /* Message IDs */
 /** \brief Message ID port configuration.
 **
@@ -169,6 +171,14 @@ extern "C" {
 **       Message ID for MON-HW.
 */
 #define GPS_MESSAGE_ID_MON_HW                     (0x09)
+
+#define GPS_MESSAGE_ID_NMEA_GST                   (0x07)
+
+#define GPS_MESSAGE_ID_NMEA_GNS                   (0x0D)
+
+#define GPS_MESSAGE_ID_NAV_POSECEF                (0x01)
+
+#define GPS_MESSAGE_ID_NAV_VELNED                 (0x12)
 
 /* TX CFG-PRT message contents */
 /** \brief UART 1 port number.
@@ -307,7 +317,19 @@ extern "C" {
 
 #define GPS_MESSAGE_MON_HW           ((GPS_MESSAGE_CLASS_MON) | \
                                        GPS_MESSAGE_ID_MON_HW << 8)
-                                       
+
+#define GPS_MESSAGE_NMEA_GST         ((GPS_MESSAGE_CLASS_NMEA) | \
+                                       GPS_MESSAGE_ID_NMEA_GST << 8)
+
+#define GPS_MESSAGE_NMEA_GNS         ((GPS_MESSAGE_CLASS_NMEA) | \
+                                       GPS_MESSAGE_ID_NMEA_GNS << 8)
+
+#define GPS_MESSAGE_NAV_POSECEF         ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_POSECEF << 8)
+
+#define GPS_MESSAGE_NAV_VELNED         ((GPS_MESSAGE_CLASS_NAV) | \
+                                       GPS_MESSAGE_ID_NAV_VELNED << 8)
+
 /** \brief Retry attemps for interrupted calls.
 **
 **  \par Limits:
@@ -674,6 +696,8 @@ void GPS_Stream_Task(void);
 **
 *************************************************************************/
 boolean GPS_Custom_Read_and_Parse(const uint32 timeout);
+
+boolean GPS_Custom_Disable_Bebop_Msgs(void);
 
 #ifdef __cplusplus
 }

@@ -37,6 +37,7 @@
 #include "cfe.h"
 #include "vc_dev_io.h"
 #include "../vc_custom_shared.h"
+#include "../vc_dev_io_i2c/vc_dev_io_i2c.h"
 #include "vc_perfids.h"
 #include "vc_app.h"
 

@@ -1,11 +1,10 @@
 from time import sleep
 
-from pyliner.app.communication import Communication
-from pyliner.navigation.control import proportional
-from pyliner.vehicle import Vehicle
-from pyliner.util import
-from pyliner.util.scripting_wrapper import ScriptingWrapper
-from pyliner.util.periodic_executor import PeriodicExecutor
+from pyliner import Vehicle
+from pyliner.apps.communication import Communication
+from pyliner.apps.navigation.control import proportional
+from pyliner.scripting_wrapper import ScriptingWrapper
+from pyliner.util import read_json, RealTimeThread
 
 SLEEP = 0.1
 HALF_X = 400 / 2
@@ -22,7 +21,7 @@ lnav = proportional(1.0 / 10.0)
 
 rocky = ScriptingWrapper(Vehicle(
     vehicle_id='rocky',
-    communications=Communication(
+    communication=Communication(
         airliner_map=read_json("airliner.json"),
         ci_port=5009,
         to_port=5012)
@@ -53,7 +52,7 @@ with rocky as rocky:
     rocky.ctrl.atp('Takeoff')
     rocky.ctrl.takeoff()
 
-    follow = PeriodicExecutor(
+    follow = RealTimeThread(
         target=opencv_follow,
         every=SLEEP)
 

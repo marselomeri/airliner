@@ -1,20 +1,7 @@
-"""
-The Vehicle module provides the user with a concrete implementation of
-BaseVehicle, with some useful modules and settings pre-loaded. The user is free
-to not use Vehicle in favor of a completely custom subclass of BaseVehicle.
-
-Classes:
-    Vehicle  A vehicle for the user to control.
-"""
-
-from pyliner.app import App
-from pyliner.app.geographic_app import GeographicApp
-from pyliner.app.time_app import TimeApp
+from pyliner.apps import Controller, FlightDirector, Geofence, GeographicApp, \
+    Navigation, TimeApp
+from pyliner.apps.geofence import LayerKind
 from pyliner.base_vehicle import BaseVehicle
-from pyliner.app.controller import Controller
-from pyliner.app.flight_director import FlightDirector
-from pyliner.geofence import Geofence, LayerKind
-from pyliner.navigation.navigation import Navigation
 
 
 class Vehicle(BaseVehicle):
@@ -32,13 +19,13 @@ class Vehicle(BaseVehicle):
     but it is highly recommended that replacements subclass the default apps.
     """
 
-    def __init__(self, vehicle_id, communications, geographic=None, time=None,
+    def __init__(self, vehicle_id, communication, geographic=None, time=None,
                  logger=None):
         """Create an instance of Pyliner.
 
         Args:
             vehicle_id: Vehicle ID. Should be unique.
-            communications (Communication): Communication App.
+            communication (Communication): Communication App.
                 Not exposed as a public module for direct access, but the user
                 is given the option to use a custom class if they desire.
             geographic: If None, defaults to Geographic().
@@ -51,35 +38,23 @@ class Vehicle(BaseVehicle):
         self.atp_override = None
 
         # Component Defaults
-        self.communications = communications  # TODO Remove, use intent
-        geographic = geographic or GeographicApp()
-        time = time or TimeApp()
+        communication = communication
+        controller = Controller()
+        flight_director = FlightDirector()
         geofence = Geofence()
+        geographic = geographic or GeographicApp()
         navigation = Navigation()
+        time = time or TimeApp()
 
         # Attach defaults
-        self.attach_app('comms', communications)
-        self.attach_app('geographic', geographic)
-        # self.attach_service('time', time)
-        self.attach_app('fence', geofence)
-        self.attach_app('ctrl', Controller())
-        self.attach_app('fd', FlightDirector())
-        self.attach_app('nav', navigation)
+        self.attach_app(communication)
+        self.attach_app(geographic)
+        # self.attach_service(time)
+        self.attach_app(geofence)
+        self.attach_app(controller)
+        self.attach_app(flight_director)
+        self.attach_app(navigation)
 
         # Add helpful default settings
         geofence.add_layer(0, 'base', LayerKind.ADDITIVE)
         navigation.defaults.update({'timeout': None, 'underflow': 5.0})
-
-    def attach_app(self, app_name, app):
-        """
-        Enable a Pyliner Module on this vehicle. All required telemetry for the
-        new module will be subscribed to.
-
-        Args:
-            app_name (str): The name that the module will be initialized under.
-            app (App): The app to enable.
-        """
-        super(Vehicle, self).attach_app(app_name, app)
-        required_ops = app.required_telemetry_paths()
-        if required_ops:
-            self.communications.subscribe({'tlm': required_ops})
