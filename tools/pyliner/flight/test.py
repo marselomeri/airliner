@@ -38,6 +38,8 @@ vehicle = Vehicle(
 )
 
 with ScriptingWrapper(vehicle) as v:
+    v.await_change('/Airliner/ES/HK/CmdCounter',
+                       'Waiting for telemetry downlink...')
     
     cmdCounter4 = v.com.subscribe('/Airliner/ES/HK/CmdCounter', cmd_count_callback1)
     
