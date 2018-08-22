@@ -344,10 +344,11 @@ class Communication(App):
         return True
 
     def send_command(self, telemetry):
-        if isinstance(telemetry, dict):
-            msg = telemetry
-        else:
+        to_json_op = getattr(telemetry, "to_json", None)
+        if callable(to_json_op):
             msg = telemetry.to_json() 
+        else:
+            msg = telemetry
             
         buffer = self._serialize(telemetry)
             
@@ -549,11 +550,19 @@ class Communication(App):
                 # Get pb msg for this msg
                 op_path = subscribed_tlm['op_path']
                 pb_msg = self._get_pb_decode_obj(tlm[0][12:], op_path)
+                callback = subscribed_tlm['callback']
+                telemItem = subscribed_tlm['telemItem']
+                
+                telemItem.update(
+                    value=self._get_pb_value(pb_msg, op_path), time=tlm_time)
 
                 # Update telemetry dictionary with fresh data
                 self._telemetry[op_path].update(
                     value=self._get_pb_value(pb_msg, op_path), time=tlm_time)
-
+                
+                if callable(callback):
+                    callback(self._telemetry[op_path])
+                
     @staticmethod
     def _proto_obj_factory(msg):
         """ Returns a protobuf object for the type of airliner msg passed """
@@ -615,7 +624,7 @@ class Communication(App):
         serial_cmd = Communication.serialize(header, payload)
         return serial_cmd
 
-    def subscribe(self, tlm_item):
+    def subscribe(self, tlm_item, callback = 0):
         """
         Receives an operational path to an airliner msg attribute to subscribe
         to, as well as an optional callback function.
@@ -629,6 +638,7 @@ class Communication(App):
                      {'tlm': ['/Airliner/ES/HK/CmdCounter',
                               '/Airliner/ES/HK/ErrCounter']}
         """
+            
         self.vehicle.info('Subscribing to: {}'.format(tlm_item))
         # Get operation for specified telemetry
         op = self._get_airliner_op(tlm_item)
@@ -638,11 +648,15 @@ class Communication(App):
             self.vehicle.error(err_msg)
             raise InvalidOperationException(err_msg)
 
+        newTelemetry = _Telemetry(name=tlm_item)
+        
         # Add entry to subscribers list
         self.subscribers.append({'op_path': tlm_item,
                                  'airliner_mid': op['airliner_mid'],
-                                 'tlmSeqNum': 0})
+                                 'tlmSeqNum': 0,
+                                 'callback': callback,
+                                 'telemItem': newTelemetry})
 
         # Add entry to telemetry dictionary to prevent key errors
         # in user scripts and set default values.
-        return _Telemetry(name=tlm_item)
+        return newTelemetry
