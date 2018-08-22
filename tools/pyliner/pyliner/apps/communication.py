@@ -7,6 +7,7 @@ Services:
 """
 
 import threading
+import json
 from Queue import Empty
 
 import socketserver
@@ -568,6 +569,13 @@ class Communication(App):
         if payload:
             ser += payload.SerializeToString()
         return ser
+    
+    def _is_json(self, myjson):
+        try:
+            json_object = json.loads(myjson)
+        except ValueError, e:
+            return False
+        return True
 
     def _serialize(self, telemetry):
         """ User accessible function to send a command to the software bus.
@@ -576,10 +584,11 @@ class Communication(App):
             telemetry (Telemetry): Telemetry specifying the operation to execute
                 and any args for it.
         """
-        if isinstance(telemetry, dict):
-            json = telemetry
-        else:
+        to_json_op = getattr(telemetry, "to_json", None)
+        if callable(to_json_op):
             json = telemetry.to_json()
+        else:
+            json = telemetry
             
         if "name" not in json:
             raise InvalidCommandException(
