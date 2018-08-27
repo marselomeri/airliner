@@ -228,7 +228,7 @@ for symbol, data in explain["symbols"].iteritems():
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol] = {}
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_msg"] = symbol
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_cc"] = -1
-    serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_mid"] = 0
+    serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_mid"] = ""
     #print serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]
     #print "\n\n\n\n"
        
