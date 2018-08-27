@@ -1,0 +1,267 @@
+extends ../../../web_includes/common/layout
+
+block includes
+  include ../../../web_includes/common/common_includes.pug
+
+block header
+        i.fa-fw.fa.fa-signal
+        | Optical Flow Estimator
+
+block main
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-FLOW-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Command and Data Handling
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Timestamp
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/Timestamp'}]}) ---
+                  tr
+                    th Cmd Count
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/CmdCounter'}]}) ---
+                  tr
+                    th Error Count
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/ErrCounter'}]}) ---   
+                  tr
+                    th Quality
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/Quality'}]}) --- 
+                  tr
+                    th Pixel Flow X
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/PixelFlowX',format:'%.4f'}]}) ---
+                  tr
+                    th Pixel Flow Y
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/PixelFlowY',format:'%.4f'}]}) ---
+                  tr
+                    th Angular Flow X
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/AngularFlowX',format:'%.4f'}]}) ---   
+                  tr
+                    th Angular Flow Y
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/AngularFlowY',format:'%.4f'}]}) ---
+                  tr
+                    th Gyro Rate Integral X
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/GyroXRateIntegral',format:'%.4f'}]}) ---
+                  tr
+                    th Gyro Rate Integral Y
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/GyroYRateIntegral',format:'%.4f'}]}) ---   
+                  tr
+                    th Gyro Rate Integral Z
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/GyroZRateIntegral',format:'%.4f'}]}) ---  
+                  tr
+                    th Flow Sum X
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/FlowSumX',format:'%.4f'}]}) ---   
+                  tr
+                    th Flow Sum Y
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/FlowSumY',format:'%.4f'}]}) ---
+                  tr
+                    th Flow Quality Sum
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/FlowQualitySum'}]}) ---
+                  tr
+                    th Valid Frame Count
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/ValidFrameCount'}]}) ---
+                  tr
+                    th Delta Time
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/DeltaTime'}]}) ---   
+                  tr
+                    th Flow Status
+                    td
+                      div.bool-led(style='--cmdr-led-off-bg-color: #ff0000;' data-sage={tlm:[{name:'/CFS/FLOW/FlowStatus'}]})
+                  tr
+                    th Gyro Last Timestamp
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/LastGyroMsgAppeared'}]}) ---   
+
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/NoOp'}}) No-Op
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/Reset'}}) Reset       
+  .row
+    article.col-xs-12.col-sm-12.col-md-6.col-lg-4
+      #wid-FLOW-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Diag Table
+            button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name:'/CFS/FLOW/SendDiag'}}) Send Diag
+
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            .table-responsive
+              table.table.table-condensed
+                tbody
+                  tr
+                    th Horizontal Field of View
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/HFOV',format:'%.4f'}]}) ---
+                  tr
+                    th FocalLengthX
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/FocalLengthX',format:'%.4f'}]}) ---
+                  tr
+                    th FocalLengthY
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/FocalLengthY',format:'%.4f'}]}) ---
+                  tr
+                    th Tile Size
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/TileSize'}]}) ---   
+                  tr
+                    th Blocks
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/Blocks'}]}) --- 
+                  tr
+                    th Output Rate
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/OutputRate'}]}) ---
+                  tr
+                    th Img Width
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/ImgWidth'}]}) ---
+                  tr
+                    th Img Height
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/ImgHeight'}]}) ---   
+                  tr
+                    th Search Size
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/SearchSize'}]}) ---
+                  tr
+                    th Feature Threshold
+                    td
+                      span.sage-tlm(data-sage={tlm:[{name:'/CFS/FLOW/FeatureThreshold'}]}) ---
+                  tr
+                    th Value Threshold
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/ValueThreshold'}]}) ---   
+                  tr
+                    th Meancount Threshold
+                    td
+                      span(data-sage={tlm:[{name:'/CFS/FLOW/MeancountThreshold'}]}) ---  
+            footer
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetHFOV'}}) Set HFOV
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetTileSize'}}) Set Tile Size
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetBlocks'}}) Set Blocks
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetOutputRate'}}) Set Output Rate      
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetImgWidth'}}) Set Img Width
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetImgHeight'}}) Set Img Height      
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetSearchSize'}}) Set Search Size
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetFeatureThreshold'}}) Set Feature Threshold      
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetValueThreshold'}}) Set Value Threshold
+              button.btn.btn-primary(data-sage={cmd:{name:'/CFS/FLOW/SetMeancountThreshold'}}) Set Meancount Threshold                
+  .row
+    article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+      #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header(style="overflow:hidden;")
+          span.widget-icon
+            i.fa.fa-table
+          h2 PixelFlow
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            #PixelFlow(style='width:100%; height:300px;')
+    article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+      #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header(style="overflow:hidden;")
+          span.widget-icon
+            i.fa.fa-table
+          h2 AngularFlow
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            #AngularFlow(style='width:100%; height:300px;')
+    article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+      #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header(style="overflow:hidden;")
+          span.widget-icon
+            i.fa.fa-table
+          h2 Gyro
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            #Gyro(style='width:100%; height:300px;')  
+  .row
+    +app_specific_application_control("FLOW") 
+    +registered_applications() 
+  script.
+      $(function () {
+          var PixelFlow = {
+              'data': [
+                  { 'tlm':{'name': '/CFS/FLOW/PixelFlowX'},
+                    'label': 'X',
+                    'color': '#ff00ff'
+                  },
+                  { 'tlm':{'name': '/CFS/FLOW/PixelFlowY'},
+                    'label': 'Y',
+                    'color': '#ffff00'
+                  }
+              ]
+          };
+
+
+          var PixelFlowPlot = new SageTimeSeriesDataplot($('#PixelFlow'), PixelFlow);
+          
+          var AngularFlow = {
+              'data': [
+                  { 'tlm':{'name': '/CFS/FLOW/AngularFlowX'},
+                    'label': 'X',
+                    'color': '#ff00ff'
+                  },
+                  { 'tlm':{'name': '/CFS/FLOW/AngularFlowY'},
+                    'label': 'Y',
+                    'color': '#ffff00'
+                  }
+              ]
+          };
+
+
+          var AngularFlowPlot = new SageTimeSeriesDataplot($('#AngularFlow'), AngularFlow);
+          
+          var Gyro = {
+              'data': [
+                  { 'tlm':{'name': '/CFS/FLOW/GyroXRateIntegral'},
+                    'label': 'X',
+                    'color': '#ff00ff'
+                  },
+                  { 'tlm':{'name': '/CFS/FLOW/GyroYRateIntegral'},
+                    'label': 'Y',
+                    'color': '#ffff00'
+                  },
+                  { 'tlm':{'name': '/CFS/FLOW/GyroZRateIntegral'},
+                    'label': 'Z',
+                    'color': '#00ff00'
+                  }
+              ]
+          };
+
+
+          var GyroPlot = new SageTimeSeriesDataplot($('#Gyro'), Gyro);
+
+      });

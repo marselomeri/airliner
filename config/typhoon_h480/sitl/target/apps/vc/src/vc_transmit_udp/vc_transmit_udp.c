@@ -360,4 +360,3 @@ int32 VC_Transmit_InitData()
 {
     return VC_CustomTransmit_InitData();
 }
-

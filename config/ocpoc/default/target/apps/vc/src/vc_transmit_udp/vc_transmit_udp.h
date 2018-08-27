@@ -38,6 +38,8 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
+#include "px4_msgs.h"
+#include "msg_ids.h"
 #include "vc_transmit.h"
 #include "../vc_custom_shared.h"
 #include "vc_perfids.h"
@@ -92,6 +94,8 @@ typedef struct
     VC_Transmit_Handle_t Channel[VC_MAX_OUTPUT_CHANNELS];
 } VC_AppCustomData_t;
 
+/** \brief Optical flow frame message  */
+PX4_OpticalFlowFrameMsg_t OpticalFlowFrameMsg;
 /************************************************************************
 ** External Global Variables
 *************************************************************************/

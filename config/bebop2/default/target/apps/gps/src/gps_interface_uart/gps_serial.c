@@ -1129,74 +1129,110 @@ return returnBool;
 }
 
 
+boolean GPS_Custom_Disable_Bebop_Msgs(void)
+{
+    boolean returnBool = FALSE;
+
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NMEA_GST, 0);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NMEA_GNS, 0);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_POSECEF, 0);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool = GPS_Custom_SendMessageRate(GPS_MESSAGE_NAV_VELNED, 0);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_MSG, 
+            GPS_ACK_TIMEOUT);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnBool;
+}
+
+
 boolean GPS_Custom_Configure(void)
 {
     boolean returnBool = TRUE;
 
     /* TODO move this struct define to gps_ubx_msg */
-    GPS_Payload_TX_CFG_Rate_t rateConfig;
-    GPS_Payload_TX_CFG_Reset_t resetConfig;
-
-    GPS_CFG_NAV5_t navConfig;
     GPS_CFG_SBAS_t sbasConfig;
 
-    /* Controlled software reset. */
-    memset(&resetConfig, 0, sizeof(GPS_Payload_TX_CFG_Reset_t));
-    resetConfig.resetMode = 0x01;
-
-    /* Setup rate configuration */
-    memset(&rateConfig, 0, sizeof(GPS_Payload_TX_CFG_Rate_t));
-    rateConfig.measRate = GPS_TX_CFG_RATE_MEASINTERVAL;
-    rateConfig.navRate  = GPS_TX_CFG_RATE_NAVRATE;
-    rateConfig.timeRef  = GPS_TX_CFG_RATE_TIMEREF;
-    
-    /* Setup NAV5 configuration */
-    memset(&navConfig, 0, sizeof(GPS_CFG_NAV5_t));
-    navConfig.mask      = GPS_TX_CFG_NAV5_MASK;
-    navConfig.dynModel  = GPS_TX_CFG_NAV5_DYNMODEL;
-    navConfig.fixMode   = GPS_TX_CFG_NAV5_FIXMODE;;
+    /* gps_config.txt in the etc folder of the bebop 2 root directory
+     * is the gps configuration set at startup. Since the gps is already
+     * configured we can turn off messages turned on in that 
+     * configuration file and turn on the ublox messages we want.
+     * The GPS configuration file is included below:
+     * $tty=/dev/ttyPA1
+     * $force_update=1
+     * $baud=230400
+     * CFG-NAV5-MASK-Airborne < 4G - fix 3D only ...
+     * 06 24 FFFF 08 02 00000000 10270000 05 00 FA00 FA00 6400 2C01 00 3C 00 1C 0000 C8
+     * CFG-NAVX5 ...
+     * 06 23 0000 0800 00000000 0302 03 14 1C 00 00 0100 00 DC06 000000000101 0000 0064
+     * 06 UBX-CFG, 08 CFG-RATE, measRate 5 Hz, 
+     * 06 08 C800 0100 0100
+     * UBX-CFG-CFG-NMEA ...
+     * 06 17 2F 40 00 00
+     * UBX-CFG-CFG-MSG-NMEA-GGA
+     * 06 01 F0 00 00
+     * UBX-CFG-CFG-MSG-NMEA-GLL
+     * 06 01 F0 01 00
+     * 06 UBX-CFG-CFG-MSG-NMEA-VTG 
+     * 06 01 F0 05 00
+     * UBX-CFG-CFG-MSG-NMEA-GST
+     * 06 01 F0 07 01
+     * UBX-CFG-CFG-MSG-NMEA-GNS
+     * 06 01 F0 0D 01
+     * UBX-CFG-CFG-MSG-UBX-NAV-NAV-POSECEF-Rate
+     * 06 01 01 01 01
+     * UBX-CFG-CFG-MSG-UBX-NAV-UBX-NAV-VELNED-Rate
+     * 06 01 01 12 01*/
+    returnBool = GPS_Custom_Disable_Bebop_Msgs();
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
 
     /* Setup SBAS configuration */
     memset(&sbasConfig, 0, sizeof(GPS_CFG_SBAS_t));
     sbasConfig.mode     = GPS_TX_CFG_SBAS_MODE;
 
-    /* Do a controlled software reset. */
-    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RST, 
-                (uint8 *)&resetConfig, sizeof(GPS_Payload_TX_CFG_Reset_t));
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    usleep(10000);
-
-    /* Send a CFG-RATE message to define update rate */
-    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_RATE, 
-                (uint8 *)&rateConfig, sizeof(GPS_Payload_TX_CFG_Rate_t));
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    
-    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_RATE, 
-            GPS_ACK_TIMEOUT);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    /* send a NAV5 message to set the options for the internal filter */
-    returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_NAV5, 
-                (uint8 *)&navConfig, sizeof(GPS_CFG_NAV5_t));
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    
-    returnBool = GPS_Custom_WaitForAck(GPS_MESSAGE_CFG_NAV5, 
-            GPS_ACK_TIMEOUT);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
     /* send a SBAS message to set the SBAS options */
     returnBool = GPS_Custom_SendMessage(GPS_MESSAGE_CFG_SBAS, 
                 (uint8 *)&sbasConfig, sizeof(GPS_CFG_SBAS_t));

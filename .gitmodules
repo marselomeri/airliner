@@ -16,6 +16,9 @@
 [submodule "apps/ds"]
 	path = apps/ds
 	url = https://hangar.windhoverlabs.com/code/scm/pub/ds.git
+[submodule "apps/flow"]
+	path = apps/flow
+	url = https://hangar.windhoverlabs.com/code/scm/pub/flow.git
 [submodule "apps/fm"]
 	path = apps/fm
 	url = https://hangar.windhoverlabs.com/code/scm/pub/fm.git
@@ -143,5 +146,11 @@
 	path = apps/ak8963
 	url = https://hangar.windhoverlabs.com/code/scm/pub/ak8963.git
 [submodule "tools/commanderjs"]
-	path = tools/commanderjs
+	path = tools/commanderjs-old
 	url = https://hangar.windhoverlabs.com/code/scm/pub/commanderjs.git
+[submodule "tools/commander"]
+	path = tools/commander
+	url = https://mbenson@hangar.windhoverlabs.com/code/scm/pub/commander.git
+[submodule "tools/explain"]
+	path = tools/explain
+	url = https://mbenson@hangar.windhoverlabs.com/code/scm/pub/explain.git

@@ -67,7 +67,7 @@
 #define PE_SENSOR_BARO_PERF_ID      95
 #define PE_SENSOR_LAND_PERF_ID      96
 #define PE_INVERSE_MAT_PERF_ID      97
-#define LGC_MAIN_TASK_PERF_ID       98
+#define PE_SENSOR_FLOW_PERF_ID      98
 #define MS5607_MAIN_TASK_PERF_ID    99
 #define MS5607_RECEIVE_PERF_ID      100
 #define MS5607_SEND_PERF_ID         101
@@ -79,8 +79,11 @@
 #define MPU6050_SEND_PERF_ID        107
 #define AMC_SEND_PERF_ID            108
 #define AMC_RECEIVE_PERF_ID         109
-#define PE_SENSOR_ULR_PERF_ID       110
+#define PE_SENSOR_DIST_PERF_ID      110
 #define SONAR_MAIN_TASK_PERF_ID     111
+#define LGC_MAIN_TASK_PERF_ID       112
+#define FLOW_MAIN_TASK_PERF_ID      113
+#define FLOW_COMPUTE_PERF_ID      	114
 
 #endif
 

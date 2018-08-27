@@ -311,7 +311,7 @@ int32 VC_Stop_StreamingDevice(uint8 DeviceID)
     else
     {
         (void) CFE_EVS_SendEvent(VC_DEV_INF_EID, CFE_EVS_INFORMATION,
-                "VC VIDIOC_STREAMOFF success on %s channel %u", 
+                "VC VIDIOC_STREAMOFF success on %s channel %u",
                     VC_AppCustomDevice.Channel[DeviceID].DevName, (unsigned int)DeviceID);
     }
     return (returnCode);
@@ -619,7 +619,7 @@ int32 VC_InitDevice(uint8 DeviceID, const char *DeviceName)
         returnCode = -1;
         goto end_of_function;
     }
-    
+
     if((VC_AppCustomDevice.Channel[DeviceID].DeviceFd = open(DeviceName, O_RDWR | O_NONBLOCK, 0)) < 0)
     {
         (void) CFE_EVS_SendEvent(VC_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -852,4 +852,3 @@ int32 VC_Devices_InitData()
 {
     return VC_CustomDevice_InitData();
 }
-

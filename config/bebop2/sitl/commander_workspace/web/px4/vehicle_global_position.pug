@@ -23,6 +23,19 @@ block main
               input.form-control(type='text')
             .widget-body
               #Altitude(style='width:100%; height:300px;')  
+              
+    .row.row-fluid
+      article.col-xs-10.col-sm-6.col-md-6.col-lg-6
+        #wid-SM.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+          header(style="overflow:hidden;")
+            span.widget-icon
+              i.fa.fa-table
+            h2 EpH
+          div
+            .jarviswidget-editbox
+              input.form-control(type='text')
+            .widget-body
+              #eph(style='width:100%; height:300px;')    
     
     .row.row-fluid
       article.col-xs-10.col-sm-6.col-md-6.col-lg-6(style="max-width:450px")
@@ -123,13 +136,23 @@ block main
         $(function () {
             var dataplotDef = {
                 'data': [
-                    { 'tlm': {'name': '/CFS/PX4/VGP_Alt'},
-                      'label': 'Global Altitude',
+                    { 'tlm': {'name': '/CFS/PX4/VGP_Lat'},
+                      'label': 'Lat',
                       'color': '#ff00ff'
                     },
-                    { 'tlm': {'name': '/CFS/PX4/VGP_TerrainAlt'},
-                      'label': 'Terrain Altitude',
+                    { 'tlm': {'name': '/CFS/PX4/VGP_Lon'},
+                      'label': 'Lon',
                       'color': '#00ffff'
+                    }
+                ],
+                'options': {
+                }
+            };
+            var dataplotDef2 = {
+                'data': [
+                    { 'tlm': {'name': '/CFS/PX4/VGP_EpH'},
+                      'label': 'Global Altitude',
+                      'color': '#ff00ff'
                     }
                 ],
                 'options': {
@@ -137,4 +160,5 @@ block main
             };
     
             var dataplot = new SageTimeSeriesDataplot($('#Altitude'), dataplotDef);
+            var dataplot2 = new SageTimeSeriesDataplot($('#eph'), dataplotDef2);
         });

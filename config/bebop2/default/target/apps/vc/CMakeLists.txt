@@ -23,6 +23,9 @@ add_airliner_app_unit_test(vc-custom-ut
         # Platform stubs
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_platform_stubs/vc_platform_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_platform_stubs/vc_platform_stubs.h
+        # Custom stubs
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_custom_stubs/vc_app_custom_stubs.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_custom_stubs/vc_app_custom_stubs.h
         # VC App stubs
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_stubs/vc_app_stubs.c
         ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/vc_app_stubs/vc_app_stubs.h
@@ -30,6 +33,9 @@ add_airliner_app_unit_test(vc-custom-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp/vc_transmit_udp.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_transmit_udp/vc_transmit_udp.h
         # Custom device code v4l 
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_i2c/vc_mt9v117_patch.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_i2c/vc_dev_io_i2c.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_i2c/vc_dev_io_i2c.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l/vc_dev_io_v4l.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/vc_dev_io_v4l/vc_dev_io_v4l.h
 	# Custom shared code
@@ -67,4 +73,3 @@ add_airliner_app_unit_test(vc-custom-ut
         sendto
         recv
 )
-

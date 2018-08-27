@@ -205,9 +205,17 @@ block main
         $(function () {
             var dataplotDef = {
                 'data': [
-                    { 'tlm': {'name': '/CFS/PX4/VLP_DistBottom'},
-                      'label': 'Altitude AGL (m)',
+                    { 'tlm': {'name': '/CFS/PX4/VLP_EpH'},
+                      'label': 'EPH',
                       'color': '#ff00ff'
+                    },
+                    { 'tlm': {'name': '/CFS/PX4/VLP_VX'},
+                      'label': 'VX',
+                      'color': '#ffff00'
+                    },
+                    { 'tlm': {'name': '/CFS/PX4/VLP_VY'},
+                      'label': 'VY',
+                      'color': '#00ffff'
                     }
                 ],
                 'options': {
