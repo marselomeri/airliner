@@ -83,5 +83,5 @@ for app, app_data in cookie_json["Airliner"]["apps"].iteritems():
 			    copyfile(src, dest)
 		    os.remove(src)
 
-#rmtree(temp)
+rmtree(temp)
 
