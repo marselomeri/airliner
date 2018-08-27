@@ -7,22 +7,20 @@ def setup_serialization_dict(apps):
     base_dict = {}
     base_dict["Airliner"] = {}
     base_dict["Airliner"]["apps"] = {}
+    base_dict["autogen_version"] = ""
+    base_dict["_extensions"] = ["jinja2.ext.do", "jinja2.ext.loopcontrols"]
     
     for app in apps:
         base_dict["Airliner"]["apps"][app] = {}
         base_dict["Airliner"]["apps"][app]["app_name"] = app
         base_dict["Airliner"]["apps"][app]["app_ops_name"] = app
         base_dict["Airliner"]["apps"][app]["proto_msgs"] = {}
+        base_dict["Airliner"]["apps"][app]["operations"] = {}
 
     return base_dict
     
 def get_pb_name(sym_name):
-    if sym_name[-2:] == "_t":
-        return sym_name[:-2].lower() + "_pb"
-    else:
-        return sym_name.lower() + "_pb"#"OTHER SYMBOL TODO"
-    
-        
+    return sym_name.lower() + "_pb"
 
 def get_pb_type(sym):
     type_map = {
@@ -184,7 +182,7 @@ def is_enum(sym):
 def valid_symbol(sym, data):
     if "fields" not in data:
         return False
-    if "_pb" in sym:
+    elif "_pb" in sym:
         return False
 
     return True        
@@ -196,6 +194,7 @@ with open("symbols.json", "r") as explain_json:
 # Parse app names
 apps = [app.split('.')[0] for app in explain["files"]]
 apps.append("PX4")
+apps.append("CFE")
 serial_input = setup_serialization_dict(apps)
 
 # Reformat data into expected form
@@ -217,10 +216,19 @@ for symbol, data in explain["symbols"].iteritems():
         del serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["type"]
     if "base_type" in serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]:
         del serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["base_type"]
+    if "real_type" in serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]:
+        del serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["real_type"]
 
-    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]
+    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["operational_names"] = {}
+
+    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["proto_msg"] = symbol.lower() + "_pb"
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["required_pb_msgs"] = fix_required(data)
 
+
+    serial_input["Airliner"]["apps"][app_name]["operations"][symbol] = {}
+    serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_msg"] = symbol
+    serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_cc"] = -1
+    serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_mid"] = 0
     #print serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]
     #print "\n\n\n\n"
        
