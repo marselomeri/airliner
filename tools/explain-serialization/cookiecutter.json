@@ -1332,9 +1332,11 @@
                         "fields": {
                             "CFE_TBL_CallbackFuncPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_TBL_CallbackFuncPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
@@ -1671,7 +1673,7 @@
                             }, 
                             "MsgId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgId", 
                                 "bit_size": 16, 
@@ -1707,7 +1709,7 @@
                             }, 
                             "PipeId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "PipeId", 
                                 "bit_size": 8, 
@@ -2379,11 +2381,11 @@
                             }, 
                             "BufferPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*uint8_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "BufferPtr", 
                                 "bit_size": 32, 
-                                "airliner_type": "*uint8", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }, 
                             "Taken": {
@@ -2414,24 +2416,7 @@
                                 "bit_offset": 144
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "*uint8_pb": {
-                                "parent_field": {
-                                    "BufferPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*uint8", 
-                                "fields": {
-                                    "*uint8": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*uint8", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_TBL_LoadBuff_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 672
@@ -2529,16 +2514,16 @@
                             }, 
                             "EVS_LogPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_EVS_Log_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "EVS_LogPtr", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_EVS_Log_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 35840
                             }, 
                             "EVS_CommandPipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "EVS_CommandPipe", 
                                 "bit_size": 8, 
@@ -2653,22 +2638,6 @@
                                         "bit_size": 16, 
                                         "airliner_type": "uint16", 
                                         "bit_offset": 528
-                                    }
-                                }
-                            }, 
-                            "*CFE_EVS_Log_t_pb": {
-                                "parent_field": {
-                                    "EVS_LogPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_EVS_Log_t", 
-                                "fields": {
-                                    "*CFE_EVS_Log_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_EVS_Log_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
                                     }
                                 }
                             }, 
@@ -3247,32 +3216,15 @@
                         "fields": {
                             "typedef": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_SB_Msg_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "typedef", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_SB_Msg_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "*CFE_SB_Msg_t_pb": {
-                                "parent_field": {
-                                    "typedef": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_SB_Msg_t", 
-                                "fields": {
-                                    "*CFE_SB_Msg_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_SB_Msg_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_SB_MsgPtr_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 32
@@ -3424,32 +3376,15 @@
                         "fields": {
                             "typedef": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*uint8_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "typedef", 
                                 "bit_size": 32, 
-                                "airliner_type": "*uint8", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "*uint8_pb": {
-                                "parent_field": {
-                                    "typedef": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*uint8", 
-                                "fields": {
-                                    "*uint8": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*uint8", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_SB_MsgPayloadPtr_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 32
@@ -3458,9 +3393,11 @@
                         "fields": {
                             "CFE_ES_EarlyInitFuncPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_ES_EarlyInitFuncPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
@@ -3947,7 +3884,7 @@
                                     }, 
                                     "PipeId": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_PipeId_t_pb", 
+                                        "pb_type": "string", 
                                         "array_length": 0, 
                                         "airliner_name": "PipeId", 
                                         "bit_size": 8, 
@@ -4208,7 +4145,7 @@
                             }, 
                             "CmdPipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "CmdPipe", 
                                 "bit_size": 8, 
@@ -5387,9 +5324,11 @@
                                 "fields": {
                                     "*CFE_SB_Msg_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "*CFE_SB_Msg_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -5408,9 +5347,11 @@
                                         "fields": {
                                             "CFE_TIME_SynchCallbackPtr_t": {
                                                 "pb_field_rule": "required", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "CFE_TIME_SynchCallbackPtr_t", 
                                                 "bit_size": 32, 
+                                                "airliner_type": "uint32", 
                                                 "bit_offset": 0
                                             }
                                         }
@@ -5756,7 +5697,7 @@
                                 "fields": {
                                     "Pipe": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_PipeId_t_pb", 
+                                        "pb_type": "string", 
                                         "array_length": 0, 
                                         "airliner_name": "Pipe", 
                                         "bit_size": 8, 
@@ -5765,7 +5706,7 @@
                                     }, 
                                     "MsgId": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_MsgId_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "MsgId", 
                                         "bit_size": 16, 
@@ -5933,7 +5874,7 @@
                                             }, 
                                             "PipeId": {
                                                 "pb_field_rule": "required", 
-                                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                                "pb_type": "string", 
                                                 "array_length": 0, 
                                                 "airliner_name": "PipeId", 
                                                 "bit_size": 8, 
@@ -6629,7 +6570,7 @@
                             }, 
                             "HeadOfAccessList": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_Handle_t_pb", 
+                                "pb_type": "int32", 
                                 "array_length": 0, 
                                 "airliner_name": "HeadOfAccessList", 
                                 "bit_size": 16, 
@@ -6674,9 +6615,11 @@
                                 "fields": {
                                     "CFE_TBL_CallbackFuncPtr_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "CFE_TBL_CallbackFuncPtr_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -6712,24 +6655,7 @@
                                 "parent_field": {
                                     "Buffers": 0
                                 }, 
-                                "required_pb_msgs": {
-                                    "*uint8_pb": {
-                                        "parent_field": {
-                                            "BufferPtr": 0
-                                        }, 
-                                        "required_pb_msgs": {}, 
-                                        "airliner_msg": "*uint8", 
-                                        "fields": {
-                                            "*uint8": {
-                                                "pb_field_rule": "required", 
-                                                "array_length": 0, 
-                                                "airliner_name": "*uint8", 
-                                                "bit_size": 32, 
-                                                "bit_offset": 0
-                                            }
-                                        }
-                                    }
-                                }, 
+                                "required_pb_msgs": {}, 
                                 "airliner_msg": "CFE_TBL_LoadBuff_t", 
                                 "fields": {
                                     "FileCreateTimeSecs": {
@@ -6761,11 +6687,11 @@
                                     }, 
                                     "BufferPtr": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "*uint8_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "BufferPtr", 
                                         "bit_size": 32, 
-                                        "airliner_type": "*uint8", 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }, 
                                     "Taken": {
@@ -7611,7 +7537,7 @@
                             }, 
                             "PipeId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "PipeId", 
                                 "bit_size": 8, 
@@ -7630,9 +7556,11 @@
                                 "fields": {
                                     "Buffer": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "Buffer", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -7872,9 +7800,11 @@
                                 "fields": {
                                     "Buffer": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "Buffer", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -8274,7 +8204,7 @@
                                     }, 
                                     "PipeId": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_PipeId_t_pb", 
+                                        "pb_type": "string", 
                                         "array_length": 0, 
                                         "airliner_name": "PipeId", 
                                         "bit_size": 8, 
@@ -9008,7 +8938,7 @@
                             }, 
                             "MsgId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgId", 
                                 "bit_size": 16, 
@@ -9053,9 +8983,11 @@
                                 "fields": {
                                     "Buffer": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "Buffer", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -9140,9 +9072,11 @@
                                 "fields": {
                                     "CFE_TIME_SynchCallbackPtr_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "CFE_TIME_SynchCallbackPtr_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -10320,7 +10254,7 @@
                                         "fields": {
                                             "Pipe": {
                                                 "pb_field_rule": "required", 
-                                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                                "pb_type": "string", 
                                                 "array_length": 0, 
                                                 "airliner_name": "Pipe", 
                                                 "bit_size": 8, 
@@ -10329,7 +10263,7 @@
                                             }, 
                                             "MsgId": {
                                                 "pb_field_rule": "required", 
-                                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "MsgId", 
                                                 "bit_size": 16, 
@@ -10406,7 +10340,7 @@
                             }, 
                             "PrevLink": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_Handle_t_pb", 
+                                "pb_type": "int32", 
                                 "array_length": 0, 
                                 "airliner_name": "PrevLink", 
                                 "bit_size": 16, 
@@ -10433,7 +10367,7 @@
                             }, 
                             "NextLink": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_Handle_t_pb", 
+                                "pb_type": "int32", 
                                 "array_length": 0, 
                                 "airliner_name": "NextLink", 
                                 "bit_size": 16, 
@@ -10748,7 +10682,7 @@
                                 "fields": {
                                     "Pipe": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_PipeId_t_pb", 
+                                        "pb_type": "string", 
                                         "array_length": 0, 
                                         "airliner_name": "Pipe", 
                                         "bit_size": 8, 
@@ -10775,7 +10709,7 @@
                                     }, 
                                     "MsgId": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_MsgId_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "MsgId", 
                                         "bit_size": 16, 
@@ -10885,9 +10819,11 @@
                         "fields": {
                             "CFE_TBL_MsgProcFuncPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_TBL_MsgProcFuncPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
@@ -11518,11 +11454,11 @@
                             }, 
                             "DumpBufferPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_TBL_LoadBuff_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "DumpBufferPtr", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_TBL_LoadBuff_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 64
                             }, 
                             "TableName": {
@@ -11536,11 +11472,11 @@
                             }, 
                             "RegRecPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_TBL_RegistryRec_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "RegRecPtr", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_TBL_RegistryRec_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 96
                             }, 
                             "Size": {
@@ -11553,40 +11489,7 @@
                                 "bit_offset": 32
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "*CFE_TBL_LoadBuff_t_pb": {
-                                "parent_field": {
-                                    "DumpBufferPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_TBL_LoadBuff_t", 
-                                "fields": {
-                                    "*CFE_TBL_LoadBuff_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_TBL_LoadBuff_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }, 
-                            "*CFE_TBL_RegistryRec_t_pb": {
-                                "parent_field": {
-                                    "RegRecPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_TBL_RegistryRec_t", 
-                                "fields": {
-                                    "*CFE_TBL_RegistryRec_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_TBL_RegistryRec_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_TBL_DumpControl_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 608
@@ -11595,7 +11498,7 @@
                         "fields": {
                             "MsgId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgId", 
                                 "bit_size": 16, 
@@ -11604,11 +11507,11 @@
                             }, 
                             "ListHeadPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_SB_DestinationD_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "ListHeadPtr", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_SB_DestinationD_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 64
                             }, 
                             "SeqCnt": {
@@ -11630,24 +11533,7 @@
                                 "bit_offset": 16
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "*CFE_SB_DestinationD_t_pb": {
-                                "parent_field": {
-                                    "ListHeadPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_SB_DestinationD_t", 
-                                "fields": {
-                                    "*CFE_SB_DestinationD_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_SB_DestinationD_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_SB_RouteEntry_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 96
@@ -11833,9 +11719,11 @@
                         "fields": {
                             "CFE_TIME_SynchCallbackPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_TIME_SynchCallbackPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
@@ -12054,7 +11942,7 @@
                         "fields": {
                             "Pipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "Pipe", 
                                 "bit_size": 8, 
@@ -12063,7 +11951,7 @@
                             }, 
                             "MsgId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgId", 
                                 "bit_size": 16, 
@@ -13469,7 +13357,7 @@
                             }, 
                             "CmdPipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "CmdPipe", 
                                 "bit_size": 8, 
@@ -13622,11 +13510,11 @@
                             }, 
                             "MsgPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_SB_Msg_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgPtr", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_SB_Msg_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 4768
                             }, 
                             "FailedValCtr": {
@@ -13758,7 +13646,7 @@
                                     }, 
                                     "PrevLink": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_TBL_Handle_t_pb", 
+                                        "pb_type": "int32", 
                                         "array_length": 0, 
                                         "airliner_name": "PrevLink", 
                                         "bit_size": 16, 
@@ -13785,7 +13673,7 @@
                                     }, 
                                     "NextLink": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_TBL_Handle_t_pb", 
+                                        "pb_type": "int32", 
                                         "array_length": 0, 
                                         "airliner_name": "NextLink", 
                                         "bit_size": 16, 
@@ -13911,24 +13799,7 @@
                                         "parent_field": {
                                             "Buffers": 0
                                         }, 
-                                        "required_pb_msgs": {
-                                            "*uint8_pb": {
-                                                "parent_field": {
-                                                    "BufferPtr": 0
-                                                }, 
-                                                "required_pb_msgs": {}, 
-                                                "airliner_msg": "*uint8", 
-                                                "fields": {
-                                                    "*uint8": {
-                                                        "pb_field_rule": "required", 
-                                                        "array_length": 0, 
-                                                        "airliner_name": "*uint8", 
-                                                        "bit_size": 32, 
-                                                        "bit_offset": 0
-                                                    }
-                                                }
-                                            }
-                                        }, 
+                                        "required_pb_msgs": {}, 
                                         "airliner_msg": "CFE_TBL_LoadBuff_t", 
                                         "fields": {
                                             "FileCreateTimeSecs": {
@@ -13960,11 +13831,11 @@
                                             }, 
                                             "BufferPtr": {
                                                 "pb_field_rule": "required", 
-                                                "pb_type": "*uint8_pb", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "BufferPtr", 
                                                 "bit_size": 32, 
-                                                "airliner_type": "*uint8", 
+                                                "airliner_type": "uint32", 
                                                 "bit_offset": 0
                                             }, 
                                             "Taken": {
@@ -14005,9 +13876,11 @@
                                         "fields": {
                                             "CFE_TBL_CallbackFuncPtr_t": {
                                                 "pb_field_rule": "required", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "CFE_TBL_CallbackFuncPtr_t", 
                                                 "bit_size": 32, 
+                                                "airliner_type": "uint32", 
                                                 "bit_offset": 0
                                             }
                                         }
@@ -14197,7 +14070,7 @@
                                     }, 
                                     "HeadOfAccessList": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_TBL_Handle_t_pb", 
+                                        "pb_type": "int32", 
                                         "array_length": 0, 
                                         "airliner_name": "HeadOfAccessList", 
                                         "bit_size": 16, 
@@ -14451,44 +14324,11 @@
                                     }
                                 }
                             }, 
-                            "*CFE_SB_Msg_t_pb": {
-                                "parent_field": {
-                                    "MsgPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_SB_Msg_t", 
-                                "fields": {
-                                    "*CFE_SB_Msg_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_SB_Msg_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }, 
                             "CFE_TBL_LoadBuff_t_pb": {
                                 "parent_field": {
                                     "LoadBuffs": 0
                                 }, 
-                                "required_pb_msgs": {
-                                    "*uint8_pb": {
-                                        "parent_field": {
-                                            "BufferPtr": 0
-                                        }, 
-                                        "required_pb_msgs": {}, 
-                                        "airliner_msg": "*uint8", 
-                                        "fields": {
-                                            "*uint8": {
-                                                "pb_field_rule": "required", 
-                                                "array_length": 0, 
-                                                "airliner_name": "*uint8", 
-                                                "bit_size": 32, 
-                                                "bit_offset": 0
-                                            }
-                                        }
-                                    }
-                                }, 
+                                "required_pb_msgs": {}, 
                                 "airliner_msg": "CFE_TBL_LoadBuff_t", 
                                 "fields": {
                                     "FileCreateTimeSecs": {
@@ -14520,11 +14360,11 @@
                                     }, 
                                     "BufferPtr": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "*uint8_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "BufferPtr", 
                                         "bit_size": 32, 
-                                        "airliner_type": "*uint8", 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }, 
                                     "Taken": {
@@ -14660,40 +14500,7 @@
                                 "parent_field": {
                                     "DumpControlBlocks": 0
                                 }, 
-                                "required_pb_msgs": {
-                                    "*CFE_TBL_RegistryRec_t_pb": {
-                                        "parent_field": {
-                                            "RegRecPtr": 0
-                                        }, 
-                                        "required_pb_msgs": {}, 
-                                        "airliner_msg": "*CFE_TBL_RegistryRec_t", 
-                                        "fields": {
-                                            "*CFE_TBL_RegistryRec_t": {
-                                                "pb_field_rule": "required", 
-                                                "array_length": 0, 
-                                                "airliner_name": "*CFE_TBL_RegistryRec_t", 
-                                                "bit_size": 32, 
-                                                "bit_offset": 0
-                                            }
-                                        }
-                                    }, 
-                                    "*CFE_TBL_LoadBuff_t_pb": {
-                                        "parent_field": {
-                                            "DumpBufferPtr": 0
-                                        }, 
-                                        "required_pb_msgs": {}, 
-                                        "airliner_msg": "*CFE_TBL_LoadBuff_t", 
-                                        "fields": {
-                                            "*CFE_TBL_LoadBuff_t": {
-                                                "pb_field_rule": "required", 
-                                                "array_length": 0, 
-                                                "airliner_name": "*CFE_TBL_LoadBuff_t", 
-                                                "bit_size": 32, 
-                                                "bit_offset": 0
-                                            }
-                                        }
-                                    }
-                                }, 
+                                "required_pb_msgs": {}, 
                                 "airliner_msg": "CFE_TBL_DumpControl_t", 
                                 "fields": {
                                     "State": {
@@ -14707,11 +14514,11 @@
                                     }, 
                                     "DumpBufferPtr": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "*CFE_TBL_LoadBuff_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "DumpBufferPtr", 
                                         "bit_size": 32, 
-                                        "airliner_type": "*CFE_TBL_LoadBuff_t", 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 64
                                     }, 
                                     "TableName": {
@@ -14725,11 +14532,11 @@
                                     }, 
                                     "RegRecPtr": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "*CFE_TBL_RegistryRec_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "RegRecPtr", 
                                         "bit_size": 32, 
-                                        "airliner_type": "*CFE_TBL_RegistryRec_t", 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 96
                                     }, 
                                     "Size": {
@@ -15707,7 +15514,7 @@
                             }, 
                             "PipeId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "PipeId", 
                                 "bit_size": 8, 
@@ -15778,7 +15585,7 @@
                         "fields": {
                             "Pipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "Pipe", 
                                 "bit_size": 8, 
@@ -15787,7 +15594,7 @@
                             }, 
                             "MsgId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgId", 
                                 "bit_size": 16, 
@@ -16507,7 +16314,7 @@
                                 "fields": {
                                     "Pipe": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_PipeId_t_pb", 
+                                        "pb_type": "string", 
                                         "array_length": 0, 
                                         "airliner_name": "Pipe", 
                                         "bit_size": 8, 
@@ -16516,7 +16323,7 @@
                                     }, 
                                     "MsgId": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_SB_MsgId_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "MsgId", 
                                         "bit_size": 16, 
@@ -16805,9 +16612,11 @@
                                 "fields": {
                                     "CFE_TBL_MsgProcFuncPtr_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "CFE_TBL_MsgProcFuncPtr_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -17105,11 +16914,11 @@
                             }, 
                             "ToTrashBuff": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_SB_BufferD_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "ToTrashBuff", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_SB_BufferD_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 832
                             }, 
                             "Spare": {
@@ -17150,7 +16959,7 @@
                             }, 
                             "PipeId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "PipeId", 
                                 "bit_size": 8, 
@@ -17159,33 +16968,15 @@
                             }, 
                             "CurrentBuff": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "*CFE_SB_BufferD_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CurrentBuff", 
                                 "bit_size": 32, 
-                                "airliner_type": "*CFE_SB_BufferD_t", 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 800
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "*CFE_SB_BufferD_t_pb": {
-                                "parent_field": {
-                                    "ToTrashBuff": 0, 
-                                    "CurrentBuff": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "*CFE_SB_BufferD_t", 
-                                "fields": {
-                                    "*CFE_SB_BufferD_t": {
-                                        "pb_field_rule": "required", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_SB_BufferD_t", 
-                                        "bit_size": 32, 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_SB_PipeD_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 864
@@ -17853,9 +17644,11 @@
                                 "fields": {
                                     "CFE_ES_MainAppFuncPtr_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "CFE_ES_MainAppFuncPtr_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -17869,9 +17662,11 @@
                                 "fields": {
                                     "VoidPtr": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "VoidPtr", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -17885,9 +17680,11 @@
                                 "fields": {
                                     "CFE_ES_EarlyInitFuncPtr_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "CFE_ES_EarlyInitFuncPtr_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -18161,9 +17958,11 @@
                         "fields": {
                             "CFE_ES_ChildTaskMainFuncPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_ES_ChildTaskMainFuncPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
@@ -18194,7 +17993,7 @@
                             }, 
                             "CmdPipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "CmdPipe", 
                                 "bit_size": 8, 
@@ -18339,9 +18138,11 @@
                                 "fields": {
                                     "*CFE_SB_Msg_t": {
                                         "pb_field_rule": "required", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "*CFE_SB_Msg_t", 
                                         "bit_size": 32, 
+                                        "airliner_type": "uint32", 
                                         "bit_offset": 0
                                     }
                                 }
@@ -20490,9 +20291,11 @@
                                         "fields": {
                                             "CFE_ES_EarlyInitFuncPtr_t": {
                                                 "pb_field_rule": "required", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "CFE_ES_EarlyInitFuncPtr_t", 
                                                 "bit_size": 32, 
+                                                "airliner_type": "uint32", 
                                                 "bit_offset": 0
                                             }
                                         }
@@ -20506,9 +20309,11 @@
                                         "fields": {
                                             "VoidPtr": {
                                                 "pb_field_rule": "required", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "VoidPtr", 
                                                 "bit_size": 32, 
+                                                "airliner_type": "uint32", 
                                                 "bit_offset": 0
                                             }
                                         }
@@ -20522,9 +20327,11 @@
                                         "fields": {
                                             "CFE_ES_MainAppFuncPtr_t": {
                                                 "pb_field_rule": "required", 
+                                                "pb_type": "uint32", 
                                                 "array_length": 0, 
                                                 "airliner_name": "CFE_ES_MainAppFuncPtr_t", 
                                                 "bit_size": 32, 
+                                                "airliner_type": "uint32", 
                                                 "bit_offset": 0
                                             }
                                         }
@@ -21474,9 +21281,11 @@
                         "fields": {
                             "CFE_ES_LibraryEntryFuncPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_ES_LibraryEntryFuncPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
@@ -21594,7 +21403,7 @@
                             }, 
                             "PipeId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "PipeId", 
                                 "bit_size": 8, 
@@ -21788,7 +21597,7 @@
                         "fields": {
                             "Pipe": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_PipeId_t_pb", 
+                                "pb_type": "string", 
                                 "array_length": 0, 
                                 "airliner_name": "Pipe", 
                                 "bit_size": 8, 
@@ -21815,7 +21624,7 @@
                             }, 
                             "MsgId": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgId_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgId", 
                                 "bit_size": 16, 
@@ -21860,9 +21669,11 @@
                         "fields": {
                             "CFE_ES_MainAppFuncPtr_t": {
                                 "pb_field_rule": "required", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "CFE_ES_MainAppFuncPtr_t", 
                                 "bit_size": 32, 
+                                "airliner_type": "uint32", 
                                 "bit_offset": 0
                             }
                         }, 
