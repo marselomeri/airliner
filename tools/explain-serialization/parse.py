@@ -50,7 +50,7 @@ def get_pb_type(sym):
         return "uint32"
     if sym["real_type"] in explain["symbols"]:
         if "real_type" in explain["symbols"][sym["real_type"]] and explain["symbols"][sym["real_type"]]["real_type"] in type_map:
-            print explain["symbols"][sym["real_type"]]["real_type"]
+            #print explain["symbols"][sym["real_type"]]["real_type"]
             return type_map[explain["symbols"][sym["real_type"]]["real_type"]]
         if "fields" in explain["symbols"][sym["real_type"]]:
             if len(explain["symbols"][sym["real_type"]]["fields"]) == 1:
@@ -105,6 +105,8 @@ def fix_fields(sym):
         # Remove unused keys from field
         del fields[name]["name"]            
         if "type" in fields[name]:
+            if "base_type" in fields[name]["type"]:
+                fields[name]["base_type"] = fields[name]["type"]["base_type"]
             del fields[name]["type"]
 #        if "bit_size" in fields[name]:
 #            del fields[name]["bit_size"]
@@ -150,79 +152,68 @@ def fix_required(symbol):
         return {}
         
     def fix(sym, req_pb={}, parent=None):
-        try: # TODO: Remove this
-        
-            # Check if this is another symbol
-            if "fields" not in sym:
-                # If not we have reached a primitive and should just return our current req_pb dictionary
-                return req_pb
+        # Check if this is another symbol
+        if "fields" not in sym:
+            # If not we have reached a primitive and should just return our current req_pb dictionary
+            return req_pb
 
-            # Iterate over all fields in this symbol
-            for field, data in sym["fields"].iteritems():
-                # Don't do anything to or recur into fields which are not other symbols
-                if "fields" not in data:
-                    continue
-                
-                # Verify this is a valid symbol with types set
-                if "airliner_type" in data and "pb_type" in data:
-                    sym_type = data["airliner_type"]
-                    pb_type = data["pb_type"]
-                else:
-                    print "Warning: " + str(sym) + " does not contain type information."
-                    continue
-                
-                # Check if this is a pointer
-                if sym_type == "uint32" or pb_type == "uint32":
-                    del data["fields"]
-                    continue
-                
-                # If parent is set we have already recurred into a nested symbol
-                if parent:
-                    # Check if the current symbol has already been added to the parent's required types dictionary
-                    if pb_type in parent["required_pb_msgs"]:
-                        # This symbol has been added so we just need to add this symbol to the parent field map. 
-                        # We need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
-                        parent["required_pb_msgs"][pb_type]["parent_field"][field] = 0
-                    else:            
-                        # Add the required pb message
-                        parent["required_pb_msgs"][pb_type] = {}
-                        parent["required_pb_msgs"][pb_type]["airliner_msg"] = sym_type
-                        parent["required_pb_msgs"][pb_type]["parent_field"] = {field:0}
-                        parent["required_pb_msgs"][pb_type]["fields"] = data["fields"]
-                        parent["required_pb_msgs"][pb_type]["required_pb_msgs"] = {}
-                        
-                    # Recur into next level of nested fields and fix top down
-                    req_pb = fix(data, req_pb, parent["required_pb_msgs"][pb_type])
-                    
-                else:
-                    # If this required pb message already exists, add our current field to the parent field dict in req_pb
-                    if req_pb and pb_type in req_pb:
-                        # This symbol has been added so we just need to add this symbol to the parent field map. 
-                        # We need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
-                        req_pb[pb_type]["parent_field"][field] = 0
-                    else:
-                        # Add required pb message
-                        req_pb[pb_type] = {}
-                        req_pb[pb_type]["airliner_msg"] = sym_type
-                        req_pb[pb_type]["parent_field"] = {field:0}
-                        req_pb[pb_type]["fields"] = data["fields"]
-                        req_pb[pb_type]["required_pb_msgs"] = {}
-    
-                    # Recur into next level of nested fields and fix top down
-                    req_pb = fix(data, req_pb, req_pb[pb_type])
-
-                # Remove fields from struct field
+        # Iterate over all fields in this symbol
+        for field, data in sym["fields"].iteritems():
+            # Don't do anything to or recur into fields which are not other symbols
+            if "fields" not in data:
+                continue
+            
+            # Verify this is a valid symbol with types set
+            if "airliner_type" in data and "pb_type" in data:
+                sym_type = data["airliner_type"]
+                pb_type = data["pb_type"]
+            else:
+                print "Warning: " + str(sym) + " does not contain type information."
+                continue
+            
+            # Check if this is a pointer
+            if sym_type == "uint32" or pb_type == "uint32":
                 del data["fields"]
+                continue
+            
+            # If parent is set we have already recurred into a nested symbol
+            if parent:
+                # Check if the current symbol has already been added to the parent's required types dictionary
+                if pb_type in parent["required_pb_msgs"]:
+                    # This symbol has been added so we just need to add this symbol to the parent field map. 
+                    # We need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
+                    parent["required_pb_msgs"][pb_type]["parent_field"][field] = 0
+                else:            
+                    # Add the required pb message
+                    parent["required_pb_msgs"][pb_type] = {}
+                    parent["required_pb_msgs"][pb_type]["airliner_msg"] = sym_type
+                    parent["required_pb_msgs"][pb_type]["parent_field"] = {field:0}
+                    parent["required_pb_msgs"][pb_type]["fields"] = data["fields"]
+                    parent["required_pb_msgs"][pb_type]["required_pb_msgs"] = {}
+                    
+                # Recur into next level of nested fields and fix top down
+                req_pb = fix(data, req_pb, parent["required_pb_msgs"][pb_type])
                 
-        except Exception as e:
-            print "\n"
-            print repr(e)
-            print field
-            print data
-            print "\n"
-            print req_pb
-            
-            
+            else:
+                # If this required pb message already exists, add our current field to the parent field dict in req_pb
+                if req_pb and pb_type in req_pb:
+                    # This symbol has been added so we just need to add this symbol to the parent field map. 
+                    # We need the value to be populated because jinja struggles with arrays, so we use a dictionary instead.
+                    req_pb[pb_type]["parent_field"][field] = 0
+                else:
+                    # Add required pb message
+                    req_pb[pb_type] = {}
+                    req_pb[pb_type]["airliner_msg"] = sym_type
+                    req_pb[pb_type]["parent_field"] = {field:0}
+                    req_pb[pb_type]["fields"] = data["fields"]
+                    req_pb[pb_type]["required_pb_msgs"] = {}
+
+                # Recur into next level of nested fields and fix top down
+                req_pb = fix(data, req_pb, req_pb[pb_type])
+
+            # Remove fields from struct field
+            del data["fields"]
+                
         return req_pb
 
     return fix(symbol, OrderedDict())
@@ -289,8 +280,6 @@ for symbol, data in explain["symbols"].iteritems():
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_msg"] = symbol
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_cc"] = -1
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_mid"] = ""
-    #print serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]
-    #print "\n\n\n\n"
        
         
 with open("cookiecutter.json", "w") as cc:
