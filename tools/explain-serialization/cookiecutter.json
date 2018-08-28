@@ -1045,7 +1045,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_AppNameCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 320, 
@@ -1063,7 +1063,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_AppNameCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -1261,7 +1261,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TIME_StateCmd_Payload_t_pb", 
+                                "pb_type": "int16", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 16, 
@@ -1279,7 +1279,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_TIME_StateCmd_Payload_t_pb": {
+                            "int16": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -3687,7 +3687,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_OverWriteSysLogCmd_Payload_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 32, 
@@ -3704,26 +3704,7 @@
                                 "bit_offset": 0
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "CFE_ES_OverWriteSysLogCmd_Payload_t_pb": {
-                                "parent_field": {
-                                    "Payload": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "CFE_ES_OverWriteSysLogCmd_Payload_t", 
-                                "fields": {
-                                    "Mode": {
-                                        "pb_field_rule": "required", 
-                                        "pb_type": "uint32", 
-                                        "array_length": 0, 
-                                        "airliner_name": "Mode", 
-                                        "bit_size": 32, 
-                                        "airliner_type": "uint32", 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_ES_OverWriteSysLogCmd_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 96
@@ -4046,7 +4027,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_PerfStopCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 512, 
@@ -4064,7 +4045,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_PerfStopCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -4460,7 +4441,7 @@
                             }, 
                             "MsgPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgPtr_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgPtr", 
                                 "bit_size": 32, 
@@ -5315,24 +5296,6 @@
                                     }
                                 }
                             }, 
-                            "CFE_SB_MsgPtr_t_pb": {
-                                "parent_field": {
-                                    "MsgPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "CFE_SB_MsgPtr_t", 
-                                "fields": {
-                                    "*CFE_SB_Msg_t": {
-                                        "pb_field_rule": "required", 
-                                        "pb_type": "uint32", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_SB_Msg_t", 
-                                        "bit_size": 32, 
-                                        "airliner_type": "uint32", 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }, 
                             "CFE_TIME_SynchCallbackRegEntry_t_pb": {
                                 "parent_field": {
                                     "SynchCallback": 0
@@ -5508,7 +5471,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_QueryAllCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 512, 
@@ -5526,7 +5489,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_QueryAllCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -6166,7 +6129,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_ActivateCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 480, 
@@ -6184,7 +6147,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_TBL_ActivateCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -7105,7 +7068,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_RestartCmd_Payload_t_pb", 
+                                "pb_type": "uint16", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 16, 
@@ -7123,7 +7086,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_RestartCmd_Payload_t_pb": {
+                            "uint16": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -7699,7 +7662,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_NotifyCmd_Payload_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 32, 
@@ -7716,26 +7679,7 @@
                                 "bit_offset": 0
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "CFE_TBL_NotifyCmd_Payload_t_pb": {
-                                "parent_field": {
-                                    "Payload": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "CFE_TBL_NotifyCmd_Payload_t", 
-                                "fields": {
-                                    "Parameter": {
-                                        "pb_field_rule": "required", 
-                                        "pb_type": "uint32", 
-                                        "array_length": 0, 
-                                        "airliner_name": "Parameter", 
-                                        "bit_size": 32, 
-                                        "airliner_type": "uint32", 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_TBL_NotifyCmd_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 96
@@ -9054,7 +8998,7 @@
                             }, 
                             "Ptr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TIME_SynchCallbackPtr_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "Ptr", 
                                 "bit_size": 32, 
@@ -9062,26 +9006,7 @@
                                 "bit_offset": 32
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "CFE_TIME_SynchCallbackPtr_t_pb": {
-                                "parent_field": {
-                                    "Ptr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "CFE_TIME_SynchCallbackPtr_t", 
-                                "fields": {
-                                    "CFE_TIME_SynchCallbackPtr_t": {
-                                        "pb_field_rule": "required", 
-                                        "pb_type": "uint32", 
-                                        "array_length": 0, 
-                                        "airliner_name": "CFE_TIME_SynchCallbackPtr_t", 
-                                        "bit_size": 32, 
-                                        "airliner_type": "uint32", 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_TIME_SynchCallbackRegEntry_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 64
@@ -9719,7 +9644,7 @@
                             }, 
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_OneAppTlm_Payload_t_pb", 
+                                "pb_type": "CFE_ES_AppInfo_t", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 1984, 
@@ -9728,7 +9653,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_OneAppTlm_Payload_t_pb": {
+                            "CFE_ES_AppInfo_t": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -10952,7 +10877,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_EVS_LogFileCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 512, 
@@ -10970,7 +10895,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_EVS_LogFileCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -11897,7 +11822,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_DeleteCDSCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 464, 
@@ -11915,7 +11840,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_DeleteCDSCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -13586,31 +13511,12 @@
                                 "parent_field": {
                                     "NotifyMsg": 0
                                 }, 
-                                "required_pb_msgs": {
-                                    "CFE_TBL_NotifyCmd_Payload_t_pb": {
-                                        "parent_field": {
-                                            "Payload": 0
-                                        }, 
-                                        "required_pb_msgs": {}, 
-                                        "airliner_msg": "CFE_TBL_NotifyCmd_Payload_t", 
-                                        "fields": {
-                                            "Parameter": {
-                                                "pb_field_rule": "required", 
-                                                "pb_type": "uint32", 
-                                                "array_length": 0, 
-                                                "airliner_name": "Parameter", 
-                                                "bit_size": 32, 
-                                                "airliner_type": "uint32", 
-                                                "bit_offset": 0
-                                            }
-                                        }
-                                    }
-                                }, 
+                                "required_pb_msgs": {}, 
                                 "airliner_msg": "CFE_TBL_NotifyCmd_t", 
                                 "fields": {
                                     "Payload": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_TBL_NotifyCmd_Payload_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "Payload", 
                                         "bit_size": 32, 
@@ -13866,24 +13772,6 @@
                                                 "bit_offset": 144
                                             }
                                         }
-                                    }, 
-                                    "CFE_TBL_CallbackFuncPtr_t_pb": {
-                                        "parent_field": {
-                                            "ValidationFuncPtr": 0
-                                        }, 
-                                        "required_pb_msgs": {}, 
-                                        "airliner_msg": "CFE_TBL_CallbackFuncPtr_t", 
-                                        "fields": {
-                                            "CFE_TBL_CallbackFuncPtr_t": {
-                                                "pb_field_rule": "required", 
-                                                "pb_type": "uint32", 
-                                                "array_length": 0, 
-                                                "airliner_name": "CFE_TBL_CallbackFuncPtr_t", 
-                                                "bit_size": 32, 
-                                                "airliner_type": "uint32", 
-                                                "bit_offset": 0
-                                            }
-                                        }
                                     }
                                 }, 
                                 "airliner_msg": "CFE_TBL_RegistryRec_t", 
@@ -13980,7 +13868,7 @@
                                     }, 
                                     "ValidationFuncPtr": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_TBL_CallbackFuncPtr_t_pb", 
+                                        "pb_type": "uint32", 
                                         "array_length": 0, 
                                         "airliner_name": "ValidationFuncPtr", 
                                         "bit_size": 32, 
@@ -15137,7 +15025,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TIME_SourceCmd_Payload_t_pb", 
+                                "pb_type": "int16", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 16, 
@@ -15155,7 +15043,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_TIME_SourceCmd_Payload_t_pb": {
+                            "int16": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -15818,7 +15706,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_ES_QueryAllTasksCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 512, 
@@ -15836,7 +15724,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_ES_QueryAllTasksCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 
@@ -16594,7 +16482,7 @@
                             }, 
                             "MsgProcFuncPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_MsgProcFuncPtr_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgProcFuncPtr", 
                                 "bit_size": 32, 
@@ -16602,26 +16490,7 @@
                                 "bit_offset": 96
                             }
                         }, 
-                        "required_pb_msgs": {
-                            "CFE_TBL_MsgProcFuncPtr_t_pb": {
-                                "parent_field": {
-                                    "MsgProcFuncPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "CFE_TBL_MsgProcFuncPtr_t", 
-                                "fields": {
-                                    "CFE_TBL_MsgProcFuncPtr_t": {
-                                        "pb_field_rule": "required", 
-                                        "pb_type": "uint32", 
-                                        "array_length": 0, 
-                                        "airliner_name": "CFE_TBL_MsgProcFuncPtr_t", 
-                                        "bit_size": 32, 
-                                        "airliner_type": "uint32", 
-                                        "bit_offset": 0
-                                    }
-                                }
-                            }
-                        }, 
+                        "required_pb_msgs": {}, 
                         "proto_msg": "CFE_TBL_CmdHandlerTblRec_t_pb", 
                         "operational_names": {}, 
                         "bit_size": 160
@@ -17984,7 +17853,7 @@
                             }, 
                             "MsgPtr": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_SB_MsgPtr_t_pb", 
+                                "pb_type": "uint32", 
                                 "array_length": 0, 
                                 "airliner_name": "MsgPtr", 
                                 "bit_size": 32, 
@@ -18088,7 +17957,7 @@
                                     "ShellPacket": 0
                                 }, 
                                 "required_pb_msgs": {
-                                    "CFE_ES_ShellPacket_Payload_t_pb": {
+                                    "char": {
                                         "parent_field": {
                                             "Payload": 0
                                         }, 
@@ -18120,30 +17989,12 @@
                                     }, 
                                     "Payload": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_ES_ShellPacket_Payload_t_pb", 
+                                        "pb_type": "char", 
                                         "array_length": 0, 
                                         "airliner_name": "Payload", 
                                         "bit_size": 512, 
                                         "airliner_type": "CFE_ES_ShellPacket_Payload_t", 
                                         "bit_offset": 96
-                                    }
-                                }
-                            }, 
-                            "CFE_SB_MsgPtr_t_pb": {
-                                "parent_field": {
-                                    "MsgPtr": 0
-                                }, 
-                                "required_pb_msgs": {}, 
-                                "airliner_msg": "CFE_SB_MsgPtr_t", 
-                                "fields": {
-                                    "*CFE_SB_Msg_t": {
-                                        "pb_field_rule": "required", 
-                                        "pb_type": "uint32", 
-                                        "array_length": 0, 
-                                        "airliner_name": "*CFE_SB_Msg_t", 
-                                        "bit_size": 32, 
-                                        "airliner_type": "uint32", 
-                                        "bit_offset": 0
                                     }
                                 }
                             }, 
@@ -18299,7 +18150,7 @@
                                     "OneAppPacket": 0
                                 }, 
                                 "required_pb_msgs": {
-                                    "CFE_ES_OneAppTlm_Payload_t_pb": {
+                                    "CFE_ES_AppInfo_t": {
                                         "parent_field": {
                                             "Payload": 0
                                         }, 
@@ -18530,7 +18381,7 @@
                                     }, 
                                     "Payload": {
                                         "pb_field_rule": "required", 
-                                        "pb_type": "CFE_ES_OneAppTlm_Payload_t_pb", 
+                                        "pb_type": "CFE_ES_AppInfo_t", 
                                         "array_length": 0, 
                                         "airliner_name": "Payload", 
                                         "bit_size": 1984, 
@@ -19508,7 +19359,7 @@
                         "fields": {
                             "Payload": {
                                 "pb_field_rule": "required", 
-                                "pb_type": "CFE_TBL_DelCDSCmd_Payload_t_pb", 
+                                "pb_type": "char", 
                                 "array_length": 0, 
                                 "airliner_name": "Payload", 
                                 "bit_size": 480, 
@@ -19526,7 +19377,7 @@
                             }
                         }, 
                         "required_pb_msgs": {
-                            "CFE_TBL_DelCDSCmd_Payload_t_pb": {
+                            "char": {
                                 "parent_field": {
                                     "Payload": 0
                                 }, 

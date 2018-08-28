@@ -46,26 +46,38 @@ def get_pb_type(sym):
     
     if sym["real_type"] in type_map:
         return type_map[sym["real_type"]]
-    elif is_enum(sym["real_type"]):
+    if is_enum(sym["real_type"]):
         return "uint32"
-    elif sym["real_type"] in explain["symbols"] and "real_type" in explain["symbols"][sym["real_type"]] and explain["symbols"][sym["real_type"]]["real_type"] in type_map:
-        print explain["symbols"][sym["real_type"]]["real_type"]
-        type_map[explain["symbols"][sym["real_type"]]["real_type"]]
-    else:
-        if "base_type" in sym:
-            base = sym["base_type"].split(' ')[-1]
-            if base in primitives:
-                if base == "int":
-                    unsigned = "unsigned" in sym["base_type"]
-                    if sym["bit_size"] <= 32:
-                        return "uint32" if unsigned else "int32"
-                    else:
-                        return "uint64" if unsigned else "int64"
-                else: # TODO this may need to be smarter
-                    return type_map[base]
+    if sym["real_type"] in explain["symbols"]:
+        if "real_type" in explain["symbols"][sym["real_type"]] and explain["symbols"][sym["real_type"]]["real_type"] in type_map:
+            print explain["symbols"][sym["real_type"]]["real_type"]
+            return type_map[explain["symbols"][sym["real_type"]]["real_type"]]
+        if "fields" in explain["symbols"][sym["real_type"]]:
+            if len(explain["symbols"][sym["real_type"]]["fields"]) == 1:
+                try:
+                    if "real_type" in explain["symbols"][sym["real_type"]]["fields"][0]:
+                        if "*" in explain["symbols"][sym["real_type"]]["fields"][0]["real_type"]:
+                            return "uint32"
+                except KeyError as e:
+                    key = next(iter(explain["symbols"][sym["real_type"]]["fields"]))
+                    if "airliner_type" in explain["symbols"][sym["real_type"]]["fields"][key]:
+                        # Found previously fixed type
+                        return explain["symbols"][sym["real_type"]]["fields"][key]["airliner_type"]
+                    return "NULL" 
+    if "base_type" in sym:
+        base = sym["base_type"].split(' ')[-1]
+        if base in primitives:
+            if base == "int":
+                unsigned = "unsigned" in sym["base_type"]
+                if sym["bit_size"] <= 32:
+                    return "uint32" if unsigned else "int32"
+                else:
+                    return "uint64" if unsigned else "int64"
+            else: # TODO this may need to be smarter
+                return type_map[base]
                 
         
-        return get_pb_name(sym["real_type"])
+    return get_pb_name(sym["real_type"])
 
 def fix_fields(sym):
     """ Iterate over all fields in a symbol with a depth first search
@@ -160,7 +172,7 @@ def fix_required(symbol):
                     continue
                 
                 # Check if this is a pointer
-                if sym_type == "uint32" and pb_type == "uint32":
+                if sym_type == "uint32" or pb_type == "uint32":
                     del data["fields"]
                     continue
                 
