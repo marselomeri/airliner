@@ -8,7 +8,7 @@ syntax = "proto2";
 	    {%- if req_proto_msg in symbols -%}
             {%- continue -%}
         {%- endif %}
-	    {%- do symbols.append(req_proto_msg) -%}
+	    {%- do symbols.append(req_proto_msg) %}
 message {{req_proto_msg}}
 { 
 {%- for field_name, field_data in req_proto_data.fields.iteritems() %}
