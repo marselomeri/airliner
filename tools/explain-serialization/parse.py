@@ -20,7 +20,7 @@ def setup_serialization_dict(apps):
     return base_dict
     
 def get_pb_name(sym_name):
-    return sym_name.lower() + "_pb"
+    return sym_name + "_pb"
 
 def get_pb_type(sym):
     type_map = {
@@ -72,10 +72,10 @@ def fix_fields(sym):
             del fields[name]["type"]
         if "base_type" in fields[name]:
             del fields[name]["base_type"]
-        if "bit_size" in fields[name]:
-            del fields[name]["bit_size"]
-        if "bit_offset" in fields[name]:
-            del fields[name]["bit_offset"]
+#        if "bit_size" in fields[name]:
+#            del fields[name]["bit_size"]
+#        if "bit_offset" in fields[name]:
+#            del fields[name]["bit_offset"]
 
         # Set types
         if "real_type" in fields[name]:
@@ -221,7 +221,7 @@ for symbol, data in explain["symbols"].iteritems():
 
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["operational_names"] = {}
 
-    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["proto_msg"] = symbol.lower() + "_pb"
+    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["proto_msg"] = get_pb_name(symbol)
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["required_pb_msgs"] = fix_required(data)
 
 
