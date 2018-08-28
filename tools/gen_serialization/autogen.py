@@ -31,7 +31,7 @@ with open("cookiecutter.json", 'r') as f:
 	cookie_json = json.load(f)
 
 for app, app_data in cookie_json["Airliner"]["apps"].iteritems():
-    print app
+    print "Processing %s..." % app
     app_dir = join(target, app)
     os.mkdir(app_dir)
     temp = join(base, "temp", app)
@@ -83,5 +83,5 @@ for app, app_data in cookie_json["Airliner"]["apps"].iteritems():
 			    copyfile(src, dest)
 		    os.remove(src)
 
-rmtree(temp)
+rmtree(join(base, "temp"))
 
