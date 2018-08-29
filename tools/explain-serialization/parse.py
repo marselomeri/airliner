@@ -9,7 +9,6 @@ def setup_serialization_dict(apps):
     base_dict = {}
     base_dict["Airliner"] = {}
     base_dict["autogen_version"] = ""
-    base_dict["_extensions"] = ["jinja2.ext.do", "jinja2.ext.loopcontrols"]    
     base_dict["Airliner"]["apps"] = {}
 
     for app in apps:
@@ -99,7 +98,7 @@ def fix_fields(sym):
         # Set new dict key equal to this field
         fields[name] = field
 
-        # Set name TODO this shouldn't really be needed
+        # Set name for this field
         fields[name]["airliner_name"] = name
         
         # Remove unused keys from field
@@ -108,11 +107,6 @@ def fix_fields(sym):
             if "base_type" in fields[name]["type"]:
                 fields[name]["base_type"] = fields[name]["type"]["base_type"]
             del fields[name]["type"]
-#        if "bit_size" in fields[name]:
-#            del fields[name]["bit_size"]
-#        if "bit_offset" in fields[name]:
-#            del fields[name]["bit_offset"]
-
         
         # Set proper airliner and ptotobuf types for this field
         if "real_type" in fields[name]:
@@ -254,7 +248,7 @@ for symbol, data in explain["symbols"].iteritems():
     if not valid_symbol(symbol, data):
         continue
     
-    # Lookup app name for this message so it can be placed correctly. TODO find a better way
+    # Lookup app name for this message so it can be placed correctly. TODO find a better way - this could drop messages
     app_name = symbol.split("_")[0]
     if app_name not in apps:
         continue
@@ -270,18 +264,19 @@ for symbol, data in explain["symbols"].iteritems():
     if "real_type" in serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]:
         del serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["real_type"]
 
-    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["operational_names"] = {}
-
+    # Set name of protobuf message correctly
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["proto_msg"] = get_pb_name(symbol)
+    
+    # Set required protobuf messages field according to expected format
     serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["required_pb_msgs"] = fix_required(data)
 
-
+    # Add expected fields for pyliner - TODO: These need to be manually populated right now
+    serial_input["Airliner"]["apps"][app_name]["proto_msgs"][symbol]["operational_names"] = {}
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol] = {}
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_msg"] = symbol
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_cc"] = -1
     serial_input["Airliner"]["apps"][app_name]["operations"][symbol]["airliner_mid"] = ""
        
-        
 with open("cookiecutter.json", "w") as cc:
     output = serial_input#OrderedDict(sorted(serial_input.items(), key = lambda x: serial_input['Airliner']['apps'][x]))
     json.dump(output, cc, indent=4)
