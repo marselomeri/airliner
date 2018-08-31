@@ -33,26 +33,26 @@ vehicle = Vehicle(
     communication=Communication(
         airliner_map=read_json("airliner.json"),
         address="127.0.0.1",
-        ci_port=5109,
-        to_port=5112)
+        ci_port=5009,
+        to_port=5012)
 )
 
 with ScriptingWrapper(vehicle) as v:
     #v.await_change('/Airliner/ES/HK/CmdCounter',
     #                   'Waiting for telemetry downlink...')
     
-    cmdCounter4 = v.com.subscribe('/Airliner/ES/HK/CmdCounter', cmd_count_callback1)
+    cmdCounter4 = v.com.subscribe('/Airliner/CFE/ES_HK/CmdCounter', cmd_count_callback1)
     
-    v.com.send_command({'name':'/Airliner/ES/Noop'})
+    v.com.send_command({'name':'/Airliner/CFE/ES_Noop'})
     
-    v.com.send_command(Telemetry('/Airliner/ES/Noop'))
+    v.com.send_command(Telemetry('/Airliner/CFE/ES_Noop'))
     
     time.sleep( 2 )
     
-    cmdCounter2 = v.com.telemetry('/Airliner/ES/HK/CmdCounter')
+    cmdCounter2 = v.com.telemetry('/Airliner/CFE/ES_HK/CmdCounter')
     cmdCounter2.add_listener(cmd_count_callback2)
     
-    cmdErr1 = v.com.telemetry('/Airliner/ES/HK/ErrCounter')
+    cmdErr1 = v.com.telemetry('/Airliner/CFE/ES_HK/ErrCounter')
     cmdErr1.add_listener(cmd_err_callback1)
         
     time.sleep( 1000000000 )

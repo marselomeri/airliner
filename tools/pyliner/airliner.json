@@ -55877,7 +55877,7 @@
 			            "airliner_cc": -1,
 			            "airliner_mid": "0x080F"
 		            },
-		            "HK": {			
+		            "ES_HK": {			
 			            "airliner_msg": "CFE_ES_HkPacket_t",
 			            "airliner_cc": -1,
 			            "airliner_mid": "0x0800"
@@ -55887,12 +55887,12 @@
 			            "airliner_cc": -1,
 			            "airliner_mid": "0x080B"
 		            },
-		            "Noop": {			
+		            "ES_Noop": {			
 			            "airliner_msg": "",
 			            "airliner_cc": 0,
 			            "airliner_mid": "0x1806"
 		            },
-		            "Reset": {			
+		            "ES_Reset": {			
 			            "airliner_msg": "",
 			            "airliner_cc": 1,
 			            "airliner_mid": "0x1806"
@@ -56670,7 +56670,7 @@
                             "Payload.RegisteredTasks": {
                                 "field_path": "Payload.RegisteredTasks"
                             }, 
-                            "Payload.CmdCounter": {
+                            "CmdCounter": {
                                 "field_path": "Payload.CmdCounter"
                             }, 
                             "Payload.SysLogEntries": {
@@ -56715,7 +56715,7 @@
                             "Payload.SysLogSize": {
                                 "field_path": "Payload.SysLogSize"
                             }, 
-                            "Payload.ErrCounter": {
+                            "ErrCounter": {
                                 "field_path": "Payload.ErrCounter"
                             }, 
                             "Payload.RegisteredLibs": {
