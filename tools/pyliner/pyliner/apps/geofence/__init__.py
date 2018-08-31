@@ -115,9 +115,9 @@ class Geofence(App):
         self._telemetry = self.vehicle.broadcast(Intent(
             action=ACTION_TELEM,
             data={
-                'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
-                'longitude': '/Airliner/CNTL/VehicleGlobalPosition/Lon',
-                'altitude': '/Airliner/CNTL/VehicleGlobalPosition/Alt'})
+                'latitude': '/Airliner/PX4/VehicleGlobalPosition/Lat',
+                'longitude': '/Airliner/PX4/VehicleGlobalPosition/Lon',
+                'altitude': '/Airliner/PX4/VehicleGlobalPosition/Alt'})
         ).first().result
 
         self._check_thread = RealTimeThread(

@@ -29,7 +29,7 @@ rky = Vehicle(
 )
 
 with ScriptingWrapper(rky) as rocky:
-    rocky.await_change('/Airliner/CNTL/VehicleGlobalPosition/Alt',
+    rocky.await_change('/Airliner/PX4/VehicleGlobalPosition/Alt',
                        'Waiting for telemetry downlink...')
 
     rocky.ctrl.atp('Arm')

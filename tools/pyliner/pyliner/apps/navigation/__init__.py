@@ -53,10 +53,10 @@ class Navigation(App):
         intent = self.vehicle.broadcast(Intent(
             action=ACTION_TELEM,
             data={
-                'altitude': '/Airliner/CNTL/VehicleGlobalPosition/Alt',
-                'latitude': '/Airliner/CNTL/VehicleGlobalPosition/Lat',
-                'longitude': '/Airliner/CNTL/VehicleGlobalPosition/Lon',
-                'yaw': '/Airliner/CNTL/VehicleGlobalPosition/Yaw'
+                'altitude': '/Airliner/PX4/VehicleGlobalPosition/Alt',
+                'latitude': '/Airliner/PX4/VehicleGlobalPosition/Lat',
+                'longitude': '/Airliner/PX4/VehicleGlobalPosition/Lon',
+                'yaw': '/Airliner/PX4/VehicleGlobalPosition/Yaw'
             })).first()
         self.telemetry = intent.result
         self.vehicle.add_filter(

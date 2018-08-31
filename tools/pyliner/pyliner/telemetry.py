@@ -55,7 +55,7 @@ class Telemetry(dict):
 class ManualSetpoint(Telemetry):
     def __init__(self, **kwargs):
         super(ManualSetpoint, self).__init__(
-            '/Airliner/CNTL/ManualSetpoint',
+            '/Airliner/PX4/ManualSetpoint',
             Timestamp=util.get_time,
             X=0.0,
             Y=0.0,
@@ -89,7 +89,7 @@ class ManualSetpoint(Telemetry):
 class SetpointTriplet(Telemetry):
     def __init__(self, **kwargs):
         super(SetpointTriplet, self).__init__(
-            '/Airliner/CNTL/SetpointTriplet',
+            '/Airliner/PX4/SetpointTriplet',
             Timestamp=util.get_time,
             Prev_Lat=0.0,
             Prev_Lon=0.0,
