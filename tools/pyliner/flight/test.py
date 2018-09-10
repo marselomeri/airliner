@@ -49,6 +49,9 @@ with ScriptingWrapper(vehicle) as v:
     
     time.sleep( 2 )
     
+    v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
+                             {'name':'MaxPRCount', 'value':2}]})
+    
     cmdCounter2 = v.com.telemetry('/Airliner/CFE/ES_HK/CmdCounter')
     cmdCounter2.add_listener(cmd_count_callback2)
     
