@@ -47,6 +47,9 @@ with ScriptingWrapper(vehicle) as v:
     
     v.com.send_command(Telemetry('/Airliner/CFE/ES_Noop'))
     
+    v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
+                             {'name':'MaxPRCount', 'value':2}]})
+    
     time.sleep( 2 )
     
     cmdCounter2 = v.com.telemetry('/Airliner/CFE/ES_HK/CmdCounter')
