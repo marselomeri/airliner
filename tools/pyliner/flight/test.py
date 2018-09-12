@@ -12,6 +12,18 @@ cmd_count = 0
 
 def cmd_count_callback1(data):
     print("1 %s = %d   " % (data.name, data.value))
+
+    v.com.send_command({'name':'/Airliner/CFE/StartApp', 'args':[
+        {'name':'Payload.AppEntryPoint', 'value':'CF_AppMain'},
+        {'name':'Payload.Priority', 'value':100},
+        {'name':'Payload.Application', 'value':'CF'},
+        {'name':'Payload.AppFileName', 'value':'/cf/apps/cf.so'},
+        {'name':'Payload.StackSize', 'value':32769},
+        {'name':'Payload.ExceptionAction', 'value':1}]});
+  
+
+    #v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
+    #                         {'name':'MaxPRCount', 'value':5}]})
     
     #global cmd_count
     #cmd_count = data['params']['CmdCounter']['value']
@@ -33,8 +45,8 @@ vehicle = Vehicle(
     communication=Communication(
         airliner_map=read_json("airliner.json"),
         address="127.0.0.1",
-        ci_port=5009,
-        to_port=5012)
+        ci_port=5109,
+        to_port=5112)
 )
 
 with ScriptingWrapper(vehicle) as v:
