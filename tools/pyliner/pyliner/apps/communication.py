@@ -20,7 +20,7 @@ from pyliner.conversions import hertz
 from pyliner.intent import IntentFilter, Intent, FutureTimeoutError, \
     IntentExplicitFailure
 from pyliner.pyliner_error import PylinerError
-from pyliner.python_pb import pyliner_msgs
+from ..python_pb import pyliner_msgs
 from pyliner.app import App
 from pyliner.util import init_socket, handler_factory, CallableDefaultDict, \
     RealTimeThread, OrderedSetQueue
@@ -489,7 +489,11 @@ class Communication(App):
                 raise InvalidCommandException(
                     "Invalid command received. Argument operational name (%s) "
                     "not found." % arg["name"])
-            stmt = "pb_obj.{} = {}".format(arg_path, arg["value"])
+            # TODO: Python3 would be str not basestring
+            if isinstance(arg["value"], basestring):
+                stmt = "pb_obj.{} = \"{}\"".format(arg_path, arg["value"])
+            else:
+                stmt = "pb_obj.{} = {}".format(arg_path, arg["value"])
             try:
                 exec (stmt)
             except Exception as e:
