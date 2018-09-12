@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_HK_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_HK_AppData_t.proto\"\xaa\x01\n\x10HK_HkPacket_t_pb\x12\x16\n\x0eMissingDataCtr\x18\x01 \x02(\r\x12\x12\n\nCmdCounter\x18\x02 \x02(\r\x12\x0f\n\x07Padding\x18\x03 \x02(\r\x12\x12\n\nErrCounter\x18\x04 \x02(\r\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x1b\n\x13\x43ombinedPacketsSent\x18\x06 \x02(\r\x12\x15\n\rMemPoolHandle\x18\x07 \x02(\r\"\xe8\x02\n\x0fHK_AppData_t_pb\x12\x16\n\x0eMissingDataCtr\x18\x01 \x02(\r\x12\x12\n\nErrCounter\x18\x02 \x02(\r\x12\x1a\n\x12RuntimeTableHandle\x18\x03 \x02(\x05\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12\x11\n\tRunStatus\x18\x05 \x02(\r\x12\x12\n\nCmdCounter\x18\x06 \x02(\r\x12\x0e\n\x06MsgPtr\x18\x07 \x02(\r\x12\x15\n\rMemPoolBuffer\x18\x08 \x03(\r\x12\r\n\x05Spare\x18\t \x02(\r\x12\x17\n\x0fRuntimeTablePtr\x18\n \x02(\r\x12\x1b\n\x13\x43ombinedPacketsSent\x18\x0b \x02(\r\x12\x17\n\x0f\x43opyTableHandle\x18\x0c \x02(\x05\x12\x14\n\x0c\x43opyTablePtr\x18\r \x02(\r\x12\x15\n\rMemPoolHandle\x18\x0e \x02(\r\x12#\n\x08HkPacket\x18\x0f \x02(\x0b\x32\x11.HK_HkPacket_t_pb')
+  serialized_pb=_b('\n\x16_py_HK_AppData_t.proto\"\xaa\x01\n\x10HK_HkPacket_t_pb\x12\x16\n\x0eMissingDataCtr\x18\x01 \x02(\r\x12\x12\n\nCmdCounter\x18\x02 \x02(\r\x12\x0f\n\x07Padding\x18\x03 \x02(\r\x12\x12\n\nErrCounter\x18\x04 \x02(\r\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x1b\n\x13\x43ombinedPacketsSent\x18\x06 \x02(\r\x12\x15\n\rMemPoolHandle\x18\x07 \x02(\r\"\xe8\x02\n\x0fHK_AppData_t_pb\x12\x16\n\x0eMissingDataCtr\x18\x01 \x02(\r\x12\x12\n\nErrCounter\x18\x02 \x02(\r\x12\x1a\n\x12RuntimeTableHandle\x18\x03 \x02(\x05\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12\x11\n\tRunStatus\x18\x05 \x02(\r\x12\x12\n\nCmdCounter\x18\x06 \x02(\r\x12\x0e\n\x06MsgPtr\x18\x07 \x02(\r\x12\x15\n\rMemPoolBuffer\x18\x08 \x03(\r\x12\r\n\x05Spare\x18\t \x02(\r\x12\x1b\n\x13\x43ombinedPacketsSent\x18\n \x02(\r\x12\x17\n\x0fRuntimeTablePtr\x18\x0b \x02(\r\x12\x17\n\x0f\x43opyTableHandle\x18\x0c \x02(\x05\x12\x14\n\x0c\x43opyTablePtr\x18\r \x02(\r\x12\x15\n\rMemPoolHandle\x18\x0e \x02(\r\x12#\n\x08HkPacket\x18\x0f \x02(\x0b\x32\x11.HK_HkPacket_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -168,14 +168,14 @@ _HK_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RuntimeTablePtr', full_name='HK_AppData_t_pb.RuntimeTablePtr', index=9,
+      name='CombinedPacketsSent', full_name='HK_AppData_t_pb.CombinedPacketsSent', index=9,
       number=10, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='CombinedPacketsSent', full_name='HK_AppData_t_pb.CombinedPacketsSent', index=10,
+      name='RuntimeTablePtr', full_name='HK_AppData_t_pb.RuntimeTablePtr', index=10,
       number=11, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

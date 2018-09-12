@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_PlaybackFileCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_CF_PlaybackFileCmd_t.proto\"\xb0\x01\n\x17\x43\x46_PlaybackFileCmd_t_pb\x12\x10\n\x08Preserve\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x13\n\x0bSrcFilename\x18\x03 \x03(\t\x12\x10\n\x08Priority\x18\x04 \x02(\r\x12\x13\n\x0b\x44stFilename\x18\x05 \x03(\t\x12\x14\n\x0cPeerEntityId\x18\x06 \x03(\t\x12\r\n\x05\x43lass\x18\x07 \x02(\r\x12\x0f\n\x07\x43hannel\x18\x08 \x02(\r')
+  serialized_pb=_b('\n\x1e_py_CF_PlaybackFileCmd_t.proto\"\xb0\x01\n\x17\x43\x46_PlaybackFileCmd_t_pb\x12\x10\n\x08Preserve\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x13\n\x0bSrcFilename\x18\x03 \x02(\t\x12\x10\n\x08Priority\x18\x04 \x02(\r\x12\x13\n\x0b\x44stFilename\x18\x05 \x02(\t\x12\x14\n\x0cPeerEntityId\x18\x06 \x02(\t\x12\r\n\x05\x43lass\x18\x07 \x02(\r\x12\x0f\n\x07\x43hannel\x18\x08 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,8 +48,8 @@ _CF_PLAYBACKFILECMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFilename', full_name='CF_PlaybackFileCmd_t_pb.SrcFilename', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -62,15 +62,15 @@ _CF_PLAYBACKFILECMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='DstFilename', full_name='CF_PlaybackFileCmd_t_pb.DstFilename', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='PeerEntityId', full_name='CF_PlaybackFileCmd_t_pb.PeerEntityId', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

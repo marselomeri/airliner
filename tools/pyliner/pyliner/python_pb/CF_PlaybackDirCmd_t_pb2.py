@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_PlaybackDirCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1d_py_CF_PlaybackDirCmd_t.proto\"\xa4\x01\n\x16\x43\x46_PlaybackDirCmd_t_pb\x12\x10\n\x08Preserve\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x0c\n\x04\x43han\x18\x03 \x02(\r\x12\x10\n\x08Priority\x18\x04 \x02(\r\x12\x0f\n\x07\x44stPath\x18\x05 \x03(\t\x12\x0f\n\x07SrcPath\x18\x06 \x03(\t\x12\x14\n\x0cPeerEntityId\x18\x07 \x03(\t\x12\r\n\x05\x43lass\x18\x08 \x02(\r')
+  serialized_pb=_b('\n\x1d_py_CF_PlaybackDirCmd_t.proto\"\xa4\x01\n\x16\x43\x46_PlaybackDirCmd_t_pb\x12\x10\n\x08Preserve\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x0c\n\x04\x43han\x18\x03 \x02(\r\x12\x10\n\x08Priority\x18\x04 \x02(\r\x12\x0f\n\x07\x44stPath\x18\x05 \x02(\t\x12\x0f\n\x07SrcPath\x18\x06 \x02(\t\x12\x14\n\x0cPeerEntityId\x18\x07 \x02(\t\x12\r\n\x05\x43lass\x18\x08 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -62,22 +62,22 @@ _CF_PLAYBACKDIRCMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='DstPath', full_name='CF_PlaybackDirCmd_t_pb.DstPath', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcPath', full_name='CF_PlaybackDirCmd_t_pb.SrcPath', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='PeerEntityId', full_name='CF_PlaybackDirCmd_t_pb.PeerEntityId', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

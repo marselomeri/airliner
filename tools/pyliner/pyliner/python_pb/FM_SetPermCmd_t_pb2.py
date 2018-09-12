@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_FM_SetPermCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_FM_SetPermCmd_t.proto\"G\n\x12\x46M_SetPermCmd_t_pb\x12\x0c\n\x04Mode\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x10\n\x08\x46ileName\x18\x03 \x03(\t')
+  serialized_pb=_b('\n\x19_py_FM_SetPermCmd_t.proto\"G\n\x12\x46M_SetPermCmd_t_pb\x12\x0c\n\x04Mode\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x10\n\x08\x46ileName\x18\x03 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,8 +48,8 @@ _FM_SETPERMCMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FileName', full_name='FM_SetPermCmd_t_pb.FileName', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

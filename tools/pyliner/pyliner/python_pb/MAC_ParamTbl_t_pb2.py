@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MAC_ParamTbl_t.proto',
   package='',
-  serialized_pb=_b('\n\x18_py_MAC_ParamTbl_t.proto\"\xa9\x07\n\x11MAC_ParamTbl_t_pb\x12\x12\n\nyaw_rate_i\x18\x01 \x02(\x02\x12\x10\n\x08pitch_tc\x18\x02 \x02(\x02\x12\x12\n\nyaw_rate_p\x18\x03 \x02(\x02\x12\x1e\n\x16vtol_wv_yaw_rate_scale\x18\x04 \x02(\x02\x12\x0f\n\x07pitch_p\x18\x05 \x02(\x02\x12\x12\n\nyaw_rate_d\x18\x06 \x02(\x02\x12\x14\n\x0c\x61\x63ro_yaw_max\x18\x07 \x02(\x02\x12\x14\n\x0c\x62\x61t_scale_en\x18\x08 \x02(\x05\x12\x14\n\x0cyaw_auto_max\x18\t \x02(\x02\x12\x11\n\tvtol_type\x18\n \x02(\r\x12\x12\n\ntpa_rate_i\x18\x0b \x02(\x02\x12\x15\n\rpitch_rate_ff\x18\x0c \x02(\x02\x12\x13\n\x0byaw_rate_ff\x18\r \x02(\x02\x12\x17\n\x0frattitude_thres\x18\x0e \x02(\x02\x12\x13\n\x0broll_rate_i\x18\x0f \x02(\x02\x12\x1a\n\x12yaw_rate_integ_lim\x18\x10 \x02(\x02\x12\x18\n\x10tpa_breakpoint_p\x18\x11 \x02(\x02\x12\x16\n\x0epitch_rate_max\x18\x12 \x02(\x02\x12\x0e\n\x06yaw_ff\x18\x13 \x02(\x02\x12\x1b\n\x13roll_rate_integ_lim\x18\x14 \x02(\x02\x12\x12\n\ntpa_rate_d\x18\x15 \x02(\x02\x12\x16\n\x0e\x61\x63ro_pitch_max\x18\x16 \x02(\x02\x12\x14\n\x0cyaw_rate_max\x18\x17 \x02(\x02\x12\r\n\x05yaw_p\x18\x18 \x02(\x02\x12\x0f\n\x07roll_tc\x18\x19 \x02(\x02\x12\x12\n\ntpa_rate_p\x18\x1a \x02(\x02\x12\x15\n\rroll_rate_max\x18\x1b \x02(\x02\x12\x14\n\x0cpitch_rate_p\x18\x1c \x02(\x02\x12\x13\n\x0broll_rate_p\x18\x1d \x02(\x02\x12\x13\n\x0broll_rate_d\x18\x1e \x02(\x02\x12\x0e\n\x06roll_p\x18\x1f \x02(\x02\x12\x1c\n\x14pitch_rate_integ_lim\x18  \x02(\x02\x12\x18\n\x10tpa_breakpoint_i\x18! \x02(\x02\x12\x14\n\x0cpitch_rate_d\x18\" \x02(\x02\x12\x16\n\x0e\x62oard_rotation\x18# \x02(\x05\x12\x14\n\x0croll_rate_ff\x18$ \x02(\x02\x12\x15\n\racro_roll_max\x18% \x02(\x02\x12\x18\n\x10tpa_breakpoint_d\x18& \x02(\x02\x12\x14\n\x0c\x62oard_offset\x18\' \x03(\x02\x12!\n\x19vtol_opt_recovery_enabled\x18( \x02(\x05\x12\x14\n\x0cpitch_rate_i\x18) \x02(\x02')
+  serialized_pb=_b('\n\x18_py_MAC_ParamTbl_t.proto\"\xa9\x07\n\x11MAC_ParamTbl_t_pb\x12\x12\n\nyaw_rate_i\x18\x01 \x02(\x02\x12\x10\n\x08pitch_tc\x18\x02 \x02(\x02\x12\x12\n\nyaw_rate_p\x18\x03 \x02(\x02\x12\x1e\n\x16vtol_wv_yaw_rate_scale\x18\x04 \x02(\x02\x12\x0f\n\x07pitch_p\x18\x05 \x02(\x02\x12\x12\n\nyaw_rate_d\x18\x06 \x02(\x02\x12\x14\n\x0c\x61\x63ro_yaw_max\x18\x07 \x02(\x02\x12\x14\n\x0c\x62\x61t_scale_en\x18\x08 \x02(\x05\x12\x14\n\x0cyaw_auto_max\x18\t \x02(\x02\x12\x11\n\tvtol_type\x18\n \x02(\r\x12\x1b\n\x13roll_rate_integ_lim\x18\x0b \x02(\x02\x12\x15\n\rpitch_rate_ff\x18\x0c \x02(\x02\x12\x13\n\x0byaw_rate_ff\x18\r \x02(\x02\x12\x17\n\x0frattitude_thres\x18\x0e \x02(\x02\x12\x18\n\x10tpa_breakpoint_i\x18\x0f \x02(\x02\x12\x1a\n\x12yaw_rate_integ_lim\x18\x10 \x02(\x02\x12\x18\n\x10tpa_breakpoint_p\x18\x11 \x02(\x02\x12\x16\n\x0epitch_rate_max\x18\x12 \x02(\x02\x12\x0e\n\x06yaw_ff\x18\x13 \x02(\x02\x12\x12\n\ntpa_rate_i\x18\x14 \x02(\x02\x12\x12\n\ntpa_rate_d\x18\x15 \x02(\x02\x12\x16\n\x0e\x61\x63ro_pitch_max\x18\x16 \x02(\x02\x12\x14\n\x0cyaw_rate_max\x18\x17 \x02(\x02\x12\r\n\x05yaw_p\x18\x18 \x02(\x02\x12\x0f\n\x07roll_tc\x18\x19 \x02(\x02\x12\x12\n\ntpa_rate_p\x18\x1a \x02(\x02\x12\x15\n\rroll_rate_max\x18\x1b \x02(\x02\x12\x14\n\x0cpitch_rate_p\x18\x1c \x02(\x02\x12\x13\n\x0broll_rate_p\x18\x1d \x02(\x02\x12\x18\n\x10tpa_breakpoint_d\x18\x1e \x02(\x02\x12\x0e\n\x06roll_p\x18\x1f \x02(\x02\x12\x1c\n\x14pitch_rate_integ_lim\x18  \x02(\x02\x12\x13\n\x0broll_rate_i\x18! \x02(\x02\x12\x14\n\x0cpitch_rate_d\x18\" \x02(\x02\x12\x16\n\x0e\x62oard_rotation\x18# \x02(\x05\x12\x14\n\x0croll_rate_ff\x18$ \x02(\x02\x12\x15\n\racro_roll_max\x18% \x02(\x02\x12\x13\n\x0broll_rate_d\x18& \x02(\x02\x12\x14\n\x0c\x62oard_offset\x18\' \x03(\x02\x12!\n\x19vtol_opt_recovery_enabled\x18( \x02(\x05\x12\x14\n\x0cpitch_rate_i\x18) \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -103,7 +103,7 @@ _MAC_PARAMTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='tpa_rate_i', full_name='MAC_ParamTbl_t_pb.tpa_rate_i', index=10,
+      name='roll_rate_integ_lim', full_name='MAC_ParamTbl_t_pb.roll_rate_integ_lim', index=10,
       number=11, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -131,7 +131,7 @@ _MAC_PARAMTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='roll_rate_i', full_name='MAC_ParamTbl_t_pb.roll_rate_i', index=14,
+      name='tpa_breakpoint_i', full_name='MAC_ParamTbl_t_pb.tpa_breakpoint_i', index=14,
       number=15, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -166,7 +166,7 @@ _MAC_PARAMTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='roll_rate_integ_lim', full_name='MAC_ParamTbl_t_pb.roll_rate_integ_lim', index=19,
+      name='tpa_rate_i', full_name='MAC_ParamTbl_t_pb.tpa_rate_i', index=19,
       number=20, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -236,7 +236,7 @@ _MAC_PARAMTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='roll_rate_d', full_name='MAC_ParamTbl_t_pb.roll_rate_d', index=29,
+      name='tpa_breakpoint_d', full_name='MAC_ParamTbl_t_pb.tpa_breakpoint_d', index=29,
       number=30, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -257,7 +257,7 @@ _MAC_PARAMTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='tpa_breakpoint_i', full_name='MAC_ParamTbl_t_pb.tpa_breakpoint_i', index=32,
+      name='roll_rate_i', full_name='MAC_ParamTbl_t_pb.roll_rate_i', index=32,
       number=33, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -292,7 +292,7 @@ _MAC_PARAMTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='tpa_breakpoint_d', full_name='MAC_ParamTbl_t_pb.tpa_breakpoint_d', index=37,
+      name='roll_rate_d', full_name='MAC_ParamTbl_t_pb.roll_rate_d', index=37,
       number=38, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

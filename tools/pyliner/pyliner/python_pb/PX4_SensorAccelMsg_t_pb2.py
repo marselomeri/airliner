@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_SensorAccelMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_PX4_SensorAccelMsg_t.proto\"\xcf\x02\n\x17PX4_SensorAccelMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x11\n\tXIntegral\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x12\n\nRange_m_s2\x18\x06 \x02(\x02\x12\x0c\n\x04ZRaw\x18\x07 \x02(\x05\x12\x0c\n\x04YRaw\x18\x08 \x02(\x05\x12\x0f\n\x07Scaling\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x13\n\x0bTemperature\x18\x12 \x02(\x02')
+  serialized_pb=_b('\n\x1e_py_PX4_SensorAccelMsg_t.proto\"\xcf\x02\n\x17PX4_SensorAccelMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x13\n\x0bTemperature\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x12\n\nRange_m_s2\x18\x06 \x02(\x02\x12\x0c\n\x04ZRaw\x18\x07 \x02(\x05\x12\x0c\n\x04YRaw\x18\x08 \x02(\x05\x12\x0f\n\x07Scaling\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x11\n\tXIntegral\x18\x12 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -47,7 +47,7 @@ _PX4_SENSORACCELMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='XIntegral', full_name='PX4_SensorAccelMsg_t_pb.XIntegral', index=2,
+      name='Temperature', full_name='PX4_SensorAccelMsg_t_pb.Temperature', index=2,
       number=3, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -152,7 +152,7 @@ _PX4_SENSORACCELMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Temperature', full_name='PX4_SensorAccelMsg_t_pb.Temperature', index=17,
+      name='XIntegral', full_name='PX4_SensorAccelMsg_t_pb.XIntegral', index=17,
       number=18, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

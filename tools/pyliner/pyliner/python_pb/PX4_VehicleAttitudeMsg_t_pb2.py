@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_VehicleAttitudeMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_PX4_VehicleAttitudeMsg_t.proto\"\x87\x01\n\x1bPX4_VehicleAttitudeMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tRollSpeed\x18\x02 \x02(\x02\x12\t\n\x01Q\x18\x03 \x03(\x02\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x12\n\nPitchSpeed\x18\x05 \x02(\x02\x12\x10\n\x08YawSpeed\x18\x06 \x02(\x02')
+  serialized_pb=_b('\n\"_py_PX4_VehicleAttitudeMsg_t.proto\"\x87\x01\n\x1bPX4_VehicleAttitudeMsg_t_pb\x12\x12\n\nPitchSpeed\x18\x01 \x02(\x02\x12\x11\n\tRollSpeed\x18\x02 \x02(\x02\x12\t\n\x01Q\x18\x03 \x03(\x02\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x10\n\x08YawSpeed\x18\x06 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,8 +33,8 @@ _PX4_VEHICLEATTITUDEMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='PX4_VehicleAttitudeMsg_t_pb.Timestamp', index=0,
-      number=1, type=4, cpp_type=4, label=2,
+      name='PitchSpeed', full_name='PX4_VehicleAttitudeMsg_t_pb.PitchSpeed', index=0,
+      number=1, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -61,8 +61,8 @@ _PX4_VEHICLEATTITUDEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PitchSpeed', full_name='PX4_VehicleAttitudeMsg_t_pb.PitchSpeed', index=4,
-      number=5, type=2, cpp_type=6, label=2,
+      name='Timestamp', full_name='PX4_VehicleAttitudeMsg_t_pb.Timestamp', index=4,
+      number=5, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

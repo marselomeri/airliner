@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_VehicleAttitudeSetpointMsg_t.proto',
   package='',
-  serialized_pb=_b('\n*_py_PX4_VehicleAttitudeSetpointMsg_t.proto\"\xf5\x02\n#PX4_VehicleAttitudeSetpointMsg_t_pb\x12\x15\n\rYawSpMoveRate\x18\x01 \x02(\x02\x12\x1a\n\x12PitchResetIntegral\x18\x02 \x02(\x08\x12\x0b\n\x03Q_D\x18\x03 \x03(\x02\x12\x14\n\x0c\x46wControlYaw\x18\x04 \x02(\x08\x12\x0f\n\x07YawBody\x18\x05 \x02(\x02\x12\x11\n\tPitchBody\x18\x06 \x02(\x02\x12\x11\n\tTimestamp\x18\x07 \x02(\x04\x12\x11\n\tQ_D_Valid\x18\x08 \x02(\x08\x12\x1b\n\x13\x44isableMcYawControl\x18\t \x02(\x08\x12\x18\n\x10YawResetIntegral\x18\n \x02(\x08\x12\x13\n\x0bLandingGear\x18\x0b \x02(\x02\x12\x11\n\tTlmHeader\x18\x0c \x03(\r\x12\x12\n\nApplyFlaps\x18\r \x02(\x08\x12\x0e\n\x06Thrust\x18\x0e \x02(\x02\x12\x10\n\x08RollBody\x18\x0f \x02(\x02\x12\x19\n\x11RollResetIntegral\x18\x10 \x02(\x08')
+  serialized_pb=_b('\n*_py_PX4_VehicleAttitudeSetpointMsg_t.proto\"\xf5\x02\n#PX4_VehicleAttitudeSetpointMsg_t_pb\x12\x15\n\rYawSpMoveRate\x18\x01 \x02(\x02\x12\x1a\n\x12PitchResetIntegral\x18\x02 \x02(\x08\x12\x0b\n\x03Q_D\x18\x03 \x03(\x02\x12\x14\n\x0c\x46wControlYaw\x18\x04 \x02(\x08\x12\x0f\n\x07YawBody\x18\x05 \x02(\x02\x12\x1b\n\x13\x44isableMcYawControl\x18\x06 \x02(\x08\x12\x11\n\tTimestamp\x18\x07 \x02(\x04\x12\x11\n\tQ_D_Valid\x18\x08 \x02(\x08\x12\x11\n\tPitchBody\x18\t \x02(\x02\x12\x18\n\x10YawResetIntegral\x18\n \x02(\x08\x12\x13\n\x0bLandingGear\x18\x0b \x02(\x02\x12\x11\n\tTlmHeader\x18\x0c \x03(\r\x12\x12\n\nApplyFlaps\x18\r \x02(\x08\x12\x0e\n\x06Thrust\x18\x0e \x02(\x02\x12\x10\n\x08RollBody\x18\x0f \x02(\x02\x12\x19\n\x11RollResetIntegral\x18\x10 \x02(\x08')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -68,9 +68,9 @@ _PX4_VEHICLEATTITUDESETPOINTMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PitchBody', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.PitchBody', index=5,
-      number=6, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      name='DisableMcYawControl', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.DisableMcYawControl', index=5,
+      number=6, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -89,9 +89,9 @@ _PX4_VEHICLEATTITUDESETPOINTMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DisableMcYawControl', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.DisableMcYawControl', index=8,
-      number=9, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='PitchBody', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.PitchBody', index=8,
+      number=9, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

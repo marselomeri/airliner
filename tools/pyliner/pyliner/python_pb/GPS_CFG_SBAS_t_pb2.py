@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_GPS_CFG_SBAS_t.proto',
   package='',
-  serialized_pb=_b('\n\x18_py_GPS_CFG_SBAS_t.proto\"g\n\x11GPS_CFG_SBAS_t_pb\x12\r\n\x05usage\x18\x01 \x02(\r\x12\x11\n\tscanmode1\x18\x02 \x02(\r\x12\x0c\n\x04mode\x18\x03 \x02(\r\x12\x0f\n\x07maxSBAS\x18\x04 \x02(\r\x12\x11\n\tscanmode2\x18\x05 \x02(\r')
+  serialized_pb=_b('\n\x18_py_GPS_CFG_SBAS_t.proto\"g\n\x11GPS_CFG_SBAS_t_pb\x12\r\n\x05usage\x18\x01 \x02(\r\x12\x0f\n\x07maxSBAS\x18\x02 \x02(\r\x12\x11\n\tscanmode2\x18\x03 \x02(\r\x12\x11\n\tscanmode1\x18\x04 \x02(\r\x12\x0c\n\x04mode\x18\x05 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,28 +40,28 @@ _GPS_CFG_SBAS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='scanmode1', full_name='GPS_CFG_SBAS_t_pb.scanmode1', index=1,
+      name='maxSBAS', full_name='GPS_CFG_SBAS_t_pb.maxSBAS', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='mode', full_name='GPS_CFG_SBAS_t_pb.mode', index=2,
+      name='scanmode2', full_name='GPS_CFG_SBAS_t_pb.scanmode2', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='maxSBAS', full_name='GPS_CFG_SBAS_t_pb.maxSBAS', index=3,
+      name='scanmode1', full_name='GPS_CFG_SBAS_t_pb.scanmode1', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='scanmode2', full_name='GPS_CFG_SBAS_t_pb.scanmode2', index=4,
+      name='mode', full_name='GPS_CFG_SBAS_t_pb.mode', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

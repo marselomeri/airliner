@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_EstimatorStatusMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_PX4_EstimatorStatusMsg_t.proto\"\x95\x02\n\x1bPX4_EstimatorStatusMsg_t_pb\x12\x19\n\x11GpsCheckFailFlags\x18\x01 \x02(\r\x12\x10\n\x08NanFlags\x18\x02 \x02(\r\x12\x0c\n\x04Vibe\x18\x03 \x03(\x02\x12\x11\n\tTimestamp\x18\x04 \x02(\x04\x12\x13\n\x0b\x43ovariances\x18\x05 \x03(\x02\x12\x11\n\tNumStates\x18\x06 \x02(\r\x12\x0e\n\x06States\x18\x07 \x03(\x02\x12\x13\n\x0bHealthFlags\x18\x08 \x02(\r\x12\x14\n\x0cTimeoutFlags\x18\t \x02(\r\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x18\n\x10\x46ilterFaultFlags\x18\x0b \x02(\r\x12\x18\n\x10\x43ontrolModeFlags\x18\x0c \x02(\r')
+  serialized_pb=_b('\n\"_py_PX4_EstimatorStatusMsg_t.proto\"\x95\x02\n\x1bPX4_EstimatorStatusMsg_t_pb\x12\x13\n\x0bHealthFlags\x18\x01 \x02(\r\x12\x10\n\x08NanFlags\x18\x02 \x02(\r\x12\x0c\n\x04Vibe\x18\x03 \x03(\x02\x12\x11\n\tTimestamp\x18\x04 \x02(\x04\x12\x13\n\x0b\x43ovariances\x18\x05 \x03(\x02\x12\x18\n\x10\x43ontrolModeFlags\x18\x06 \x02(\r\x12\x0e\n\x06States\x18\x07 \x03(\x02\x12\x19\n\x11GpsCheckFailFlags\x18\x08 \x02(\r\x12\x14\n\x0cTimeoutFlags\x18\t \x02(\r\x12\x18\n\x10\x46ilterFaultFlags\x18\n \x02(\r\x12\x11\n\tNumStates\x18\x0b \x02(\r\x12\x11\n\tTlmHeader\x18\x0c \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,7 +33,7 @@ _PX4_ESTIMATORSTATUSMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='GpsCheckFailFlags', full_name='PX4_EstimatorStatusMsg_t_pb.GpsCheckFailFlags', index=0,
+      name='HealthFlags', full_name='PX4_EstimatorStatusMsg_t_pb.HealthFlags', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -68,7 +68,7 @@ _PX4_ESTIMATORSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='NumStates', full_name='PX4_EstimatorStatusMsg_t_pb.NumStates', index=5,
+      name='ControlModeFlags', full_name='PX4_EstimatorStatusMsg_t_pb.ControlModeFlags', index=5,
       number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -82,7 +82,7 @@ _PX4_ESTIMATORSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='HealthFlags', full_name='PX4_EstimatorStatusMsg_t_pb.HealthFlags', index=7,
+      name='GpsCheckFailFlags', full_name='PX4_EstimatorStatusMsg_t_pb.GpsCheckFailFlags', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -96,23 +96,23 @@ _PX4_ESTIMATORSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_EstimatorStatusMsg_t_pb.TlmHeader', index=9,
-      number=10, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='FilterFaultFlags', full_name='PX4_EstimatorStatusMsg_t_pb.FilterFaultFlags', index=9,
+      number=10, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FilterFaultFlags', full_name='PX4_EstimatorStatusMsg_t_pb.FilterFaultFlags', index=10,
+      name='NumStates', full_name='PX4_EstimatorStatusMsg_t_pb.NumStates', index=10,
       number=11, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlModeFlags', full_name='PX4_EstimatorStatusMsg_t_pb.ControlModeFlags', index=11,
-      number=12, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='TlmHeader', full_name='PX4_EstimatorStatusMsg_t_pb.TlmHeader', index=11,
+      number=12, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

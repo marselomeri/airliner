@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_DS_HkPacket_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_DS_HkPacket_t.proto\"\xef\x03\n\x10\x44S_HkPacket_t_pb\x12\x1a\n\x12\x46ilteredPktCounter\x18\x01 \x02(\r\x12\x19\n\x11\x46ilterTblFilename\x18\x02 \x03(\t\x12\x19\n\x11\x44\x65stTblErrCounter\x18\x03 \x02(\r\x12\x18\n\x10\x46ileWriteCounter\x18\x04 \x02(\r\x12\x1a\n\x12\x44\x65stTblLoadCounter\x18\x05 \x02(\r\x12\x19\n\x11IgnoredPktCounter\x18\x06 \x02(\r\x12\x1b\n\x13\x46ileWriteErrCounter\x18\x07 \x02(\r\x12\x0e\n\x06Spare8\x18\x08 \x02(\r\x12\x1c\n\x14\x46ilterTblLoadCounter\x18\t \x02(\r\x12\x1a\n\x12\x44isabledPktCounter\x18\n \x02(\r\x12\x1c\n\x14\x46ileUpdateErrCounter\x18\x0b \x02(\r\x12\x11\n\tTlmHeader\x18\x0c \x03(\r\x12\x1a\n\x12\x43mdAcceptedCounter\x18\r \x02(\r\x12\x1b\n\x13\x46ilterTblErrCounter\x18\x0e \x02(\r\x12\x19\n\x11\x46ileUpdateCounter\x18\x0f \x02(\r\x12\x18\n\x10PassedPktCounter\x18\x10 \x02(\r\x12\x1a\n\x12\x43mdRejectedCounter\x18\x11 \x02(\r\x12\x16\n\x0e\x41ppEnableState\x18\x12 \x02(\r')
+  serialized_pb=_b('\n\x17_py_DS_HkPacket_t.proto\"\xef\x03\n\x10\x44S_HkPacket_t_pb\x12\x1a\n\x12\x46ilteredPktCounter\x18\x01 \x02(\r\x12\x19\n\x11\x46ilterTblFilename\x18\x02 \x02(\t\x12\x1b\n\x13\x46ilterTblErrCounter\x18\x03 \x02(\r\x12\x18\n\x10\x46ileWriteCounter\x18\x04 \x02(\r\x12\x1a\n\x12\x44\x65stTblLoadCounter\x18\x05 \x02(\r\x12\x19\n\x11IgnoredPktCounter\x18\x06 \x02(\r\x12\x1a\n\x12\x43mdAcceptedCounter\x18\x07 \x02(\r\x12\x0e\n\x06Spare8\x18\x08 \x02(\r\x12\x1c\n\x14\x46ilterTblLoadCounter\x18\t \x02(\r\x12\x1a\n\x12\x44isabledPktCounter\x18\n \x02(\r\x12\x1c\n\x14\x46ileUpdateErrCounter\x18\x0b \x02(\r\x12\x11\n\tTlmHeader\x18\x0c \x03(\r\x12\x1b\n\x13\x46ileWriteErrCounter\x18\r \x02(\r\x12\x19\n\x11\x44\x65stTblErrCounter\x18\x0e \x02(\r\x12\x19\n\x11\x46ileUpdateCounter\x18\x0f \x02(\r\x12\x18\n\x10PassedPktCounter\x18\x10 \x02(\r\x12\x1a\n\x12\x43mdRejectedCounter\x18\x11 \x02(\r\x12\x16\n\x0e\x41ppEnableState\x18\x12 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -41,13 +41,13 @@ _DS_HKPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FilterTblFilename', full_name='DS_HkPacket_t_pb.FilterTblFilename', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DestTblErrCounter', full_name='DS_HkPacket_t_pb.DestTblErrCounter', index=2,
+      name='FilterTblErrCounter', full_name='DS_HkPacket_t_pb.FilterTblErrCounter', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -75,7 +75,7 @@ _DS_HKPACKET_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FileWriteErrCounter', full_name='DS_HkPacket_t_pb.FileWriteErrCounter', index=6,
+      name='CmdAcceptedCounter', full_name='DS_HkPacket_t_pb.CmdAcceptedCounter', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -117,14 +117,14 @@ _DS_HKPACKET_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='CmdAcceptedCounter', full_name='DS_HkPacket_t_pb.CmdAcceptedCounter', index=12,
+      name='FileWriteErrCounter', full_name='DS_HkPacket_t_pb.FileWriteErrCounter', index=12,
       number=13, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FilterTblErrCounter', full_name='DS_HkPacket_t_pb.FilterTblErrCounter', index=13,
+      name='DestTblErrCounter', full_name='DS_HkPacket_t_pb.DestTblErrCounter', index=13,
       number=14, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

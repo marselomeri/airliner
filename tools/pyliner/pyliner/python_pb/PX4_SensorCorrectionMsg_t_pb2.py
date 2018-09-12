@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_SensorCorrectionMsg_t.proto',
   package='',
-  serialized_pb=_b('\n#_py_PX4_SensorCorrectionMsg_t.proto\"\x83\x05\n\x1cPX4_SensorCorrectionMsg_t_pb\x12\x1e\n\x16selected_gyro_instance\x18\x01 \x02(\r\x12\x14\n\x0c\x62\x61ro_mapping\x18\x02 \x03(\r\x12\x16\n\x0e\x61\x63\x63\x65l_offset_0\x18\x03 \x03(\x02\x12\x15\n\rgyro_offset_1\x18\x04 \x03(\x02\x12\x15\n\rgyro_offset_0\x18\x05 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_2\x18\x06 \x02(\x02\x12\x15\n\rgyro_offset_2\x18\x07 \x03(\x02\x12\x15\n\raccel_scale_2\x18\x08 \x03(\x02\x12\x15\n\raccel_scale_1\x18\t \x03(\x02\x12\x15\n\raccel_scale_0\x18\n \x03(\x02\x12\x11\n\tTimestamp\x18\x0b \x02(\x04\x12\x1e\n\x16selected_baro_instance\x18\x0c \x02(\r\x12\x15\n\rbaro_offset_0\x18\r \x02(\x02\x12\x15\n\rbaro_offset_1\x18\x0e \x02(\x02\x12\x15\n\rbaro_offset_2\x18\x0f \x02(\x02\x12\x11\n\tTlmHeader\x18\x10 \x03(\r\x12\x14\n\x0c\x62\x61ro_scale_0\x18\x11 \x02(\x02\x12\x14\n\x0c\x62\x61ro_scale_1\x18\x12 \x02(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_2\x18\x13 \x03(\x02\x12\x1f\n\x17selected_accel_instance\x18\x14 \x02(\r\x12\x15\n\raccel_mapping\x18\x15 \x03(\r\x12\x14\n\x0cgyro_mapping\x18\x16 \x03(\r\x12\x14\n\x0cgyro_scale_2\x18\x17 \x03(\x02\x12\x14\n\x0cgyro_scale_1\x18\x18 \x03(\x02\x12\x14\n\x0cgyro_scale_0\x18\x19 \x03(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_1\x18\x1a \x03(\x02')
+  serialized_pb=_b('\n#_py_PX4_SensorCorrectionMsg_t.proto\"\x83\x05\n\x1cPX4_SensorCorrectionMsg_t_pb\x12\x1e\n\x16selected_gyro_instance\x18\x01 \x02(\r\x12\x14\n\x0c\x62\x61ro_mapping\x18\x02 \x03(\r\x12\x16\n\x0e\x61\x63\x63\x65l_offset_0\x18\x03 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_0\x18\x04 \x02(\x02\x12\x15\n\rgyro_offset_0\x18\x05 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_2\x18\x06 \x02(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_2\x18\x07 \x03(\x02\x12\x15\n\raccel_scale_2\x18\x08 \x03(\x02\x12\x15\n\raccel_scale_1\x18\t \x03(\x02\x12\x15\n\raccel_scale_0\x18\n \x03(\x02\x12\x11\n\tTimestamp\x18\x0b \x02(\x04\x12\x1e\n\x16selected_baro_instance\x18\x0c \x02(\r\x12\x15\n\rbaro_offset_0\x18\r \x02(\x02\x12\x15\n\rbaro_offset_1\x18\x0e \x02(\x02\x12\x15\n\rbaro_offset_2\x18\x0f \x02(\x02\x12\x11\n\tTlmHeader\x18\x10 \x03(\r\x12\x15\n\rgyro_offset_1\x18\x11 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_1\x18\x12 \x02(\x02\x12\x15\n\rgyro_offset_2\x18\x13 \x03(\x02\x12\x1f\n\x17selected_accel_instance\x18\x14 \x02(\r\x12\x15\n\raccel_mapping\x18\x15 \x03(\r\x12\x14\n\x0cgyro_mapping\x18\x16 \x03(\r\x12\x14\n\x0cgyro_scale_2\x18\x17 \x03(\x02\x12\x14\n\x0cgyro_scale_1\x18\x18 \x03(\x02\x12\x14\n\x0cgyro_scale_0\x18\x19 \x03(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_1\x18\x1a \x03(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -54,9 +54,9 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='gyro_offset_1', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_1', index=3,
-      number=4, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
+      name='baro_scale_0', full_name='PX4_SensorCorrectionMsg_t_pb.baro_scale_0', index=3,
+      number=4, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -75,7 +75,7 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='gyro_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_2', index=6,
+      name='accel_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.accel_offset_2', index=6,
       number=7, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -145,9 +145,9 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='baro_scale_0', full_name='PX4_SensorCorrectionMsg_t_pb.baro_scale_0', index=16,
-      number=17, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      name='gyro_offset_1', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_1', index=16,
+      number=17, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -159,7 +159,7 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='accel_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.accel_offset_2', index=18,
+      name='gyro_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_2', index=18,
       number=19, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,

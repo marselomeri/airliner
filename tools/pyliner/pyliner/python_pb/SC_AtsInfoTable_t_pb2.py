@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SC_AtsInfoTable_t.proto',
   package='',
-  serialized_pb=_b('\n\x1b_py_SC_AtsInfoTable_t.proto\"T\n\x14SC_AtsInfoTable_t_pb\x12\x11\n\tAtsUseCtr\x18\x01 \x02(\r\x12\x0f\n\x07\x41tsSize\x18\x02 \x02(\r\x12\x18\n\x10NumberOfCommands\x18\x03 \x02(\r')
+  serialized_pb=_b('\n\x1b_py_SC_AtsInfoTable_t.proto\"T\n\x14SC_AtsInfoTable_t_pb\x12\x11\n\tAtsUseCtr\x18\x01 \x02(\r\x12\x18\n\x10NumberOfCommands\x18\x02 \x02(\r\x12\x0f\n\x07\x41tsSize\x18\x03 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,14 +40,14 @@ _SC_ATSINFOTABLE_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AtsSize', full_name='SC_AtsInfoTable_t_pb.AtsSize', index=1,
+      name='NumberOfCommands', full_name='SC_AtsInfoTable_t_pb.NumberOfCommands', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='NumberOfCommands', full_name='SC_AtsInfoTable_t_pb.NumberOfCommands', index=2,
+      name='AtsSize', full_name='SC_AtsInfoTable_t_pb.AtsSize', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

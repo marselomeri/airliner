@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_PurgeQueueCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1c_py_CF_PurgeQueueCmd_t.proto\"d\n\x15\x43\x46_PurgeQueueCmd_t_pb\x12\r\n\x05Queue\x18\x01 \x02(\r\x12\x0c\n\x04Type\x18\x02 \x02(\r\x12\r\n\x05Spare\x18\x03 \x02(\r\x12\x0c\n\x04\x43han\x18\x04 \x02(\r\x12\x11\n\tCmdHeader\x18\x05 \x03(\r')
+  serialized_pb=_b('\n\x1c_py_CF_PurgeQueueCmd_t.proto\"d\n\x15\x43\x46_PurgeQueueCmd_t_pb\x12\r\n\x05Queue\x18\x01 \x02(\r\x12\r\n\x05Spare\x18\x02 \x02(\r\x12\x0c\n\x04Type\x18\x03 \x02(\r\x12\x0c\n\x04\x43han\x18\x04 \x02(\r\x12\x11\n\tCmdHeader\x18\x05 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,14 +40,14 @@ _CF_PURGEQUEUECMD_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Type', full_name='CF_PurgeQueueCmd_t_pb.Type', index=1,
+      name='Spare', full_name='CF_PurgeQueueCmd_t_pb.Spare', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Spare', full_name='CF_PurgeQueueCmd_t_pb.Spare', index=2,
+      name='Type', full_name='CF_PurgeQueueCmd_t_pb.Type', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

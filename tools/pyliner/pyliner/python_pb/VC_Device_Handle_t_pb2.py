@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_VC_Device_Handle_t.proto',
   package='',
-  serialized_pb=_b('\n\x1c_py_VC_Device_Handle_t.proto\"c\n\x15VC_Device_Handle_t_pb\x12\x0e\n\x06Status\x18\x01 \x02(\r\x12\x0e\n\x06\x42uffer\x18\x02 \x03(\t\x12\x0c\n\x04Mode\x18\x03 \x02(\r\x12\x0c\n\x04Port\x18\x04 \x02(\r\x12\x0e\n\x06Socket\x18\x05 \x02(\r')
+  serialized_pb=_b('\n\x1c_py_VC_Device_Handle_t.proto\"c\n\x15VC_Device_Handle_t_pb\x12\x0e\n\x06\x42uffer\x18\x01 \x02(\t\x12\x0e\n\x06Status\x18\x02 \x02(\r\x12\x0c\n\x04Port\x18\x03 \x02(\r\x12\x0c\n\x04Mode\x18\x04 \x02(\r\x12\x0e\n\x06Socket\x18\x05 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,28 +33,28 @@ _VC_DEVICE_HANDLE_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Status', full_name='VC_Device_Handle_t_pb.Status', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      name='Buffer', full_name='VC_Device_Handle_t_pb.Buffer', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Status', full_name='VC_Device_Handle_t_pb.Status', index=1,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Buffer', full_name='VC_Device_Handle_t_pb.Buffer', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Mode', full_name='VC_Device_Handle_t_pb.Mode', index=2,
+      name='Port', full_name='VC_Device_Handle_t_pb.Port', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Port', full_name='VC_Device_Handle_t_pb.Port', index=3,
+      name='Mode', full_name='VC_Device_Handle_t_pb.Mode', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

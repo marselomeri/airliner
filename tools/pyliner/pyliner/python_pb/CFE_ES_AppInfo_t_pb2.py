@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_ES_AppInfo_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_CFE_ES_AppInfo_t.proto\"\xb7\x03\n\x13\x43\x46\x45_ES_AppInfo_t_pb\x12\x18\n\x10\x45xecutionCounter\x18\x01 \x02(\r\x12\x17\n\x0fNumOfChildTasks\x18\x02 \x02(\r\x12\x0c\n\x04Name\x18\x03 \x03(\t\x12\x14\n\x0cMainTaskName\x18\x04 \x03(\t\x12\x13\n\x0b\x43odeAddress\x18\x05 \x02(\r\x12\x10\n\x08\x43odeSize\x18\x06 \x02(\r\x12\x10\n\x08\x46ileName\x18\x07 \x03(\t\x12\x10\n\x08Priority\x18\x08 \x02(\r\x12\x14\n\x0cStartAddress\x18\t \x02(\r\x12\x13\n\x0b\x44\x61taAddress\x18\n \x02(\r\x12\x12\n\nEntryPoint\x18\x0b \x03(\t\x12\x12\n\nBSSAddress\x18\x0c \x02(\r\x12\r\n\x05\x41ppId\x18\r \x02(\r\x12\x0f\n\x07\x42SSSize\x18\x0e \x02(\r\x12\x12\n\nMainTaskId\x18\x0f \x02(\r\x12\x19\n\x11\x41\x64\x64ressesAreValid\x18\x10 \x02(\r\x12\x10\n\x08\x44\x61taSize\x18\x11 \x02(\r\x12\x0c\n\x04Type\x18\x12 \x02(\r\x12\x11\n\tStackSize\x18\x13 \x02(\r\x12\x17\n\x0f\x45xceptionAction\x18\x14 \x02(\r\x12\x10\n\x08ModuleId\x18\x15 \x02(\r')
+  serialized_pb=_b('\n\x1a_py_CFE_ES_AppInfo_t.proto\"\xb7\x03\n\x13\x43\x46\x45_ES_AppInfo_t_pb\x12\x0c\n\x04Type\x18\x01 \x02(\r\x12\x18\n\x10\x45xecutionCounter\x18\x02 \x02(\r\x12\x0c\n\x04Name\x18\x03 \x02(\t\x12\x14\n\x0cMainTaskName\x18\x04 \x02(\t\x12\x13\n\x0b\x43odeAddress\x18\x05 \x02(\r\x12\x10\n\x08\x43odeSize\x18\x06 \x02(\r\x12\x10\n\x08\x46ileName\x18\x07 \x02(\t\x12\x10\n\x08Priority\x18\x08 \x02(\r\x12\x0f\n\x07\x42SSSize\x18\t \x02(\r\x12\x13\n\x0b\x44\x61taAddress\x18\n \x02(\r\x12\x12\n\nMainTaskId\x18\x0b \x02(\r\x12\x12\n\nBSSAddress\x18\x0c \x02(\r\x12\r\n\x05\x41ppId\x18\r \x02(\r\x12\x14\n\x0cStartAddress\x18\x0e \x02(\r\x12\x19\n\x11\x41\x64\x64ressesAreValid\x18\x0f \x02(\r\x12\x11\n\tStackSize\x18\x10 \x02(\r\x12\x10\n\x08\x44\x61taSize\x18\x11 \x02(\r\x12\x17\n\x0fNumOfChildTasks\x18\x12 \x02(\r\x12\x12\n\nEntryPoint\x18\x13 \x02(\t\x12\x17\n\x0f\x45xceptionAction\x18\x14 \x02(\r\x12\x10\n\x08ModuleId\x18\x15 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,14 +33,14 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='ExecutionCounter', full_name='CFE_ES_AppInfo_t_pb.ExecutionCounter', index=0,
+      name='Type', full_name='CFE_ES_AppInfo_t_pb.Type', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='NumOfChildTasks', full_name='CFE_ES_AppInfo_t_pb.NumOfChildTasks', index=1,
+      name='ExecutionCounter', full_name='CFE_ES_AppInfo_t_pb.ExecutionCounter', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -48,15 +48,15 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Name', full_name='CFE_ES_AppInfo_t_pb.Name', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='MainTaskName', full_name='CFE_ES_AppInfo_t_pb.MainTaskName', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -76,8 +76,8 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FileName', full_name='CFE_ES_AppInfo_t_pb.FileName', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -89,7 +89,7 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='StartAddress', full_name='CFE_ES_AppInfo_t_pb.StartAddress', index=8,
+      name='BSSSize', full_name='CFE_ES_AppInfo_t_pb.BSSSize', index=8,
       number=9, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -103,9 +103,9 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='EntryPoint', full_name='CFE_ES_AppInfo_t_pb.EntryPoint', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='MainTaskId', full_name='CFE_ES_AppInfo_t_pb.MainTaskId', index=10,
+      number=11, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -124,21 +124,21 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='BSSSize', full_name='CFE_ES_AppInfo_t_pb.BSSSize', index=13,
+      name='StartAddress', full_name='CFE_ES_AppInfo_t_pb.StartAddress', index=13,
       number=14, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MainTaskId', full_name='CFE_ES_AppInfo_t_pb.MainTaskId', index=14,
+      name='AddressesAreValid', full_name='CFE_ES_AppInfo_t_pb.AddressesAreValid', index=14,
       number=15, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AddressesAreValid', full_name='CFE_ES_AppInfo_t_pb.AddressesAreValid', index=15,
+      name='StackSize', full_name='CFE_ES_AppInfo_t_pb.StackSize', index=15,
       number=16, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -152,16 +152,16 @@ _CFE_ES_APPINFO_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Type', full_name='CFE_ES_AppInfo_t_pb.Type', index=17,
+      name='NumOfChildTasks', full_name='CFE_ES_AppInfo_t_pb.NumOfChildTasks', index=17,
       number=18, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='StackSize', full_name='CFE_ES_AppInfo_t_pb.StackSize', index=18,
-      number=19, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='EntryPoint', full_name='CFE_ES_AppInfo_t_pb.EntryPoint', index=18,
+      number=19, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

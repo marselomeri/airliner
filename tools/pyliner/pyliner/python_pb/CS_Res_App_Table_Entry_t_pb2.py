@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CS_Res_App_Table_Entry_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_CS_Res_App_Table_Entry_t.proto\"\xc9\x01\n\x1b\x43S_Res_App_Table_Entry_t_pb\x12\x1a\n\x12NumBytesToChecksum\x18\x01 \x02(\r\x12\x13\n\x0b\x43omputedYet\x18\x02 \x02(\r\x12\x19\n\x11TempChecksumValue\x18\x03 \x02(\r\x12\x0c\n\x04Name\x18\x04 \x03(\t\x12\r\n\x05State\x18\x05 \x02(\r\x12\x12\n\nByteOffset\x18\x06 \x02(\r\x12\x14\n\x0cStartAddress\x18\x07 \x02(\r\x12\x17\n\x0f\x43omparisonValue\x18\x08 \x02(\r')
+  serialized_pb=_b('\n\"_py_CS_Res_App_Table_Entry_t.proto\"\xc9\x01\n\x1b\x43S_Res_App_Table_Entry_t_pb\x12\x1a\n\x12NumBytesToChecksum\x18\x01 \x02(\r\x12\x13\n\x0b\x43omputedYet\x18\x02 \x02(\r\x12\x19\n\x11TempChecksumValue\x18\x03 \x02(\r\x12\x0c\n\x04Name\x18\x04 \x02(\t\x12\r\n\x05State\x18\x05 \x02(\r\x12\x17\n\x0f\x43omparisonValue\x18\x06 \x02(\r\x12\x14\n\x0cStartAddress\x18\x07 \x02(\r\x12\x12\n\nByteOffset\x18\x08 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,8 +55,8 @@ _CS_RES_APP_TABLE_ENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Name', full_name='CS_Res_App_Table_Entry_t_pb.Name', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -68,7 +68,7 @@ _CS_RES_APP_TABLE_ENTRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ByteOffset', full_name='CS_Res_App_Table_Entry_t_pb.ByteOffset', index=5,
+      name='ComparisonValue', full_name='CS_Res_App_Table_Entry_t_pb.ComparisonValue', index=5,
       number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -82,7 +82,7 @@ _CS_RES_APP_TABLE_ENTRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ComparisonValue', full_name='CS_Res_App_Table_Entry_t_pb.ComparisonValue', index=7,
+      name='ByteOffset', full_name='CS_Res_App_Table_Entry_t_pb.ByteOffset', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

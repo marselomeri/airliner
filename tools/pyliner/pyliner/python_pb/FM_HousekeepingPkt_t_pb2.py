@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_FM_HousekeepingPkt_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_FM_HousekeepingPkt_t.proto\"\xa0\x02\n\x17\x46M_HousekeepingPkt_t_pb\x12\x1b\n\x13\x43hildCmdWarnCounter\x18\x01 \x02(\r\x12\x16\n\x0e\x43ommandCounter\x18\x02 \x02(\r\x12\x16\n\x0e\x43hildCurrentCC\x18\x03 \x02(\r\x12\x17\n\x0f\x43hildCmdCounter\x18\x04 \x02(\r\x12\x14\n\x0cNumOpenFiles\x18\x05 \x02(\r\x12\x11\n\tTlmHeader\x18\x06 \x03(\r\x12\r\n\x05Spare\x18\x07 \x02(\r\x12\x17\n\x0f\x43hildQueueCount\x18\x08 \x02(\r\x12\x17\n\x0f\x43hildPreviousCC\x18\t \x02(\r\x12\x19\n\x11\x43ommandErrCounter\x18\n \x02(\r\x12\x1a\n\x12\x43hildCmdErrCounter\x18\x0b \x02(\r')
+  serialized_pb=_b('\n\x1e_py_FM_HousekeepingPkt_t.proto\"\xa0\x02\n\x17\x46M_HousekeepingPkt_t_pb\x12\x1b\n\x13\x43hildCmdWarnCounter\x18\x01 \x02(\r\x12\x16\n\x0e\x43ommandCounter\x18\x02 \x02(\r\x12\x16\n\x0e\x43hildCurrentCC\x18\x03 \x02(\r\x12\x19\n\x11\x43ommandErrCounter\x18\x04 \x02(\r\x12\x14\n\x0cNumOpenFiles\x18\x05 \x02(\r\x12\x11\n\tTlmHeader\x18\x06 \x03(\r\x12\r\n\x05Spare\x18\x07 \x02(\r\x12\x17\n\x0f\x43hildQueueCount\x18\x08 \x02(\r\x12\x17\n\x0f\x43hildPreviousCC\x18\t \x02(\r\x12\x17\n\x0f\x43hildCmdCounter\x18\n \x02(\r\x12\x1a\n\x12\x43hildCmdErrCounter\x18\x0b \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -54,7 +54,7 @@ _FM_HOUSEKEEPINGPKT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ChildCmdCounter', full_name='FM_HousekeepingPkt_t_pb.ChildCmdCounter', index=3,
+      name='CommandErrCounter', full_name='FM_HousekeepingPkt_t_pb.CommandErrCounter', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -96,7 +96,7 @@ _FM_HOUSEKEEPINGPKT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='CommandErrCounter', full_name='FM_HousekeepingPkt_t_pb.CommandErrCounter', index=9,
+      name='ChildCmdCounter', full_name='FM_HousekeepingPkt_t_pb.ChildCmdCounter', index=9,
       number=10, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

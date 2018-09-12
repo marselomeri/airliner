@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_HS_EMTEntry_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_HS_EMTEntry_t.proto\"Z\n\x10HS_EMTEntry_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x12\n\nActionType\x18\x02 \x02(\r\x12\x10\n\x08NullTerm\x18\x03 \x02(\r\x12\x0f\n\x07\x41ppName\x18\x04 \x03(\t')
+  serialized_pb=_b('\n\x17_py_HS_EMTEntry_t.proto\"Z\n\x10HS_EMTEntry_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x12\n\nActionType\x18\x02 \x02(\r\x12\x10\n\x08NullTerm\x18\x03 \x02(\r\x12\x0f\n\x07\x41ppName\x18\x04 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,8 +55,8 @@ _HS_EMTENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='AppName', full_name='HS_EMTEntry_t_pb.AppName', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

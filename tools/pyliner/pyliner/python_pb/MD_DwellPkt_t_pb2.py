@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MD_DwellPkt_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_MD_DwellPkt_t.proto\"\x8b\x01\n\x10MD_DwellPkt_t_pb\x12\x0c\n\x04Rate\x18\x01 \x02(\r\x12\x11\n\tAddrCount\x18\x02 \x02(\r\x12\x11\n\tByteCount\x18\x03 \x02(\r\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x0f\n\x07TableId\x18\x05 \x02(\r\x12\x11\n\tSignature\x18\x06 \x03(\t\x12\x0c\n\x04\x44\x61ta\x18\x07 \x03(\r')
+  serialized_pb=_b('\n\x17_py_MD_DwellPkt_t.proto\"\x8b\x01\n\x10MD_DwellPkt_t_pb\x12\x0c\n\x04Rate\x18\x01 \x02(\r\x12\x11\n\tAddrCount\x18\x02 \x02(\r\x12\x11\n\tByteCount\x18\x03 \x02(\r\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x0f\n\x07TableId\x18\x05 \x02(\r\x12\x11\n\tSignature\x18\x06 \x02(\t\x12\x0c\n\x04\x44\x61ta\x18\x07 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -69,8 +69,8 @@ _MD_DWELLPKT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Signature', full_name='MD_DwellPkt_t_pb.Signature', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

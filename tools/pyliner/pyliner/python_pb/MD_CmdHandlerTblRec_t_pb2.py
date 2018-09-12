@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MD_CmdHandlerTblRec_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_MD_CmdHandlerTblRec_t.proto\"d\n\x18MD_CmdHandlerTblRec_t_pb\x12\x0f\n\x07\x43mdCode\x18\x01 \x02(\r\x12\r\n\x05MsgId\x18\x02 \x02(\r\x12\x16\n\x0e\x45xpectedLength\x18\x03 \x02(\r\x12\x10\n\x08MsgTypes\x18\x04 \x02(\r')
+  serialized_pb=_b('\n\x1f_py_MD_CmdHandlerTblRec_t.proto\"d\n\x18MD_CmdHandlerTblRec_t_pb\x12\x0f\n\x07\x43mdCode\x18\x01 \x02(\r\x12\r\n\x05MsgId\x18\x02 \x02(\r\x12\x10\n\x08MsgTypes\x18\x03 \x02(\r\x12\x16\n\x0e\x45xpectedLength\x18\x04 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -47,14 +47,14 @@ _MD_CMDHANDLERTBLREC_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ExpectedLength', full_name='MD_CmdHandlerTblRec_t_pb.ExpectedLength', index=2,
+      name='MsgTypes', full_name='MD_CmdHandlerTblRec_t_pb.MsgTypes', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MsgTypes', full_name='MD_CmdHandlerTblRec_t_pb.MsgTypes', index=3,
+      name='ExpectedLength', full_name='MD_CmdHandlerTblRec_t_pb.ExpectedLength', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

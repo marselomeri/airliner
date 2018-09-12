@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_ES_ShellCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1b_py_CFE_ES_ShellCmd_t.proto\"I\n\x1c\x43\x46\x45_ES_ShellCmd_Payload_t_pb\x12\x11\n\tCmdString\x18\x01 \x03(\t\x12\x16\n\x0eOutputFilename\x18\x02 \x03(\t\"Y\n\x14\x43\x46\x45_ES_ShellCmd_t_pb\x12.\n\x07Payload\x18\x01 \x02(\x0b\x32\x1d.CFE_ES_ShellCmd_Payload_t_pb\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
+  serialized_pb=_b('\n\x1b_py_CFE_ES_ShellCmd_t.proto\"I\n\x1c\x43\x46\x45_ES_ShellCmd_Payload_t_pb\x12\x11\n\tCmdString\x18\x01 \x02(\t\x12\x16\n\x0eOutputFilename\x18\x02 \x02(\t\"Y\n\x14\x43\x46\x45_ES_ShellCmd_t_pb\x12.\n\x07Payload\x18\x01 \x02(\x0b\x32\x1d.CFE_ES_ShellCmd_Payload_t_pb\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,15 +34,15 @@ _CFE_ES_SHELLCMD_PAYLOAD_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='CmdString', full_name='CFE_ES_ShellCmd_Payload_t_pb.CmdString', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='OutputFilename', full_name='CFE_ES_ShellCmd_Payload_t_pb.OutputFilename', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

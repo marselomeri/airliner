@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_DS_AppFileStatus_t.proto',
   package='',
-  serialized_pb=_b('\n\x1c_py_DS_AppFileStatus_t.proto\"\xbc\x01\n\x15\x44S_AppFileStatus_t_pb\x12\x11\n\tFileState\x18\x01 \x02(\r\x12\x0f\n\x07\x46ileAge\x18\x02 \x02(\r\x12\x12\n\nFileGrowth\x18\x03 \x02(\r\x12\x10\n\x08\x46ileName\x18\x04 \x03(\t\x12\x0e\n\x06Unused\x18\x05 \x02(\r\x12\x10\n\x08\x46ileRate\x18\x06 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x07 \x02(\r\x12\x12\n\nFileHandle\x18\x08 \x02(\x05\x12\x11\n\tFileCount\x18\t \x02(\r')
+  serialized_pb=_b('\n\x1c_py_DS_AppFileStatus_t.proto\"\xbc\x01\n\x15\x44S_AppFileStatus_t_pb\x12\x11\n\tFileState\x18\x01 \x02(\r\x12\x0f\n\x07\x46ileAge\x18\x02 \x02(\r\x12\x12\n\nFileGrowth\x18\x03 \x02(\r\x12\x10\n\x08\x46ileName\x18\x04 \x02(\t\x12\x0e\n\x06Unused\x18\x05 \x02(\r\x12\x10\n\x08\x46ileRate\x18\x06 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x07 \x02(\r\x12\x12\n\nFileHandle\x18\x08 \x02(\x05\x12\x11\n\tFileCount\x18\t \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,8 +55,8 @@ _DS_APPFILESTATUS_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FileName', full_name='DS_AppFileStatus_t_pb.FileName', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_FM_DirListPkt_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_FM_DirListPkt_t.proto\"^\n\x14\x46M_DirListEntry_t_pb\x12\x11\n\tEntryName\x18\x01 \x03(\t\x12\x0c\n\x04Mode\x18\x02 \x02(\r\x12\x11\n\tEntrySize\x18\x03 \x02(\r\x12\x12\n\nModifyTime\x18\x04 \x02(\r\"\x9d\x01\n\x12\x46M_DirListPkt_t_pb\x12\x12\n\nTotalFiles\x18\x01 \x02(\r\x12\'\n\x08\x46ileList\x18\x02 \x03(\x0b\x32\x15.FM_DirListEntry_t_pb\x12\x11\n\tFirstFile\x18\x03 \x02(\r\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x13\n\x0bPacketFiles\x18\x05 \x02(\r\x12\x0f\n\x07\x44irName\x18\x06 \x03(\t')
+  serialized_pb=_b('\n\x19_py_FM_DirListPkt_t.proto\"^\n\x14\x46M_DirListEntry_t_pb\x12\x11\n\tEntryName\x18\x01 \x02(\t\x12\x0c\n\x04Mode\x18\x02 \x02(\r\x12\x11\n\tEntrySize\x18\x03 \x02(\r\x12\x12\n\nModifyTime\x18\x04 \x02(\r\"\x9d\x01\n\x12\x46M_DirListPkt_t_pb\x12\x12\n\nTotalFiles\x18\x01 \x02(\r\x12\'\n\x08\x46ileList\x18\x02 \x03(\x0b\x32\x15.FM_DirListEntry_t_pb\x12\x11\n\tFirstFile\x18\x03 \x02(\r\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x13\n\x0bPacketFiles\x18\x05 \x02(\r\x12\x0f\n\x07\x44irName\x18\x06 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _FM_DIRLISTENTRY_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='EntryName', full_name='FM_DirListEntry_t_pb.EntryName', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -120,8 +120,8 @@ _FM_DIRLISTPKT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='DirName', full_name='FM_DirListPkt_t_pb.DirName', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

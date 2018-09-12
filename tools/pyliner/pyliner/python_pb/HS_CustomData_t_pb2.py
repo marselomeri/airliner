@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_HS_CustomData_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_HS_CustomData_t.proto\"\xba\x02\n\x12HS_CustomData_t_pb\x12\x11\n\tUtilArray\x18\x01 \x03(\r\x12\x15\n\rUtilArrayMask\x18\x02 \x02(\r\x12\x16\n\x0eUtilArrayIndex\x18\x03 \x02(\r\x12\x18\n\x10UtilCycleCounter\x18\x04 \x02(\r\x12\x10\n\x08UtilMask\x18\x05 \x02(\r\x12\x0f\n\x07UtilDiv\x18\x06 \x02(\x05\x12\x11\n\tUtilMult2\x18\x07 \x02(\x05\x12\x11\n\tUtilMult1\x18\x08 \x02(\x05\x12\x18\n\x10LastIdleTaskExec\x18\t \x02(\r\x12\x18\n\x10ThisIdleTaskExec\x18\n \x02(\r\x12\x12\n\nIdleTaskID\x18\x0b \x02(\r\x12\x1c\n\x14LastIdleTaskInterval\x18\x0c \x02(\r\x12\x19\n\x11IdleTaskRunStatus\x18\r \x02(\x05')
+  serialized_pb=_b('\n\x19_py_HS_CustomData_t.proto\"\xba\x02\n\x12HS_CustomData_t_pb\x12\x18\n\x10ThisIdleTaskExec\x18\x01 \x02(\r\x12\x16\n\x0eUtilArrayIndex\x18\x02 \x02(\r\x12\x18\n\x10LastIdleTaskExec\x18\x03 \x02(\r\x12\x15\n\rUtilArrayMask\x18\x04 \x02(\r\x12\x10\n\x08UtilMask\x18\x05 \x02(\r\x12\x11\n\tUtilMult1\x18\x06 \x02(\x05\x12\x11\n\tUtilMult2\x18\x07 \x02(\x05\x12\x11\n\tUtilArray\x18\x08 \x03(\r\x12\x0f\n\x07UtilDiv\x18\t \x02(\x05\x12\x18\n\x10UtilCycleCounter\x18\n \x02(\r\x12\x12\n\nIdleTaskID\x18\x0b \x02(\r\x12\x1c\n\x14LastIdleTaskInterval\x18\x0c \x02(\r\x12\x19\n\x11IdleTaskRunStatus\x18\r \x02(\x05')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,28 +33,28 @@ _HS_CUSTOMDATA_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='UtilArray', full_name='HS_CustomData_t_pb.UtilArray', index=0,
-      number=1, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='ThisIdleTaskExec', full_name='HS_CustomData_t_pb.ThisIdleTaskExec', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UtilArrayMask', full_name='HS_CustomData_t_pb.UtilArrayMask', index=1,
+      name='UtilArrayIndex', full_name='HS_CustomData_t_pb.UtilArrayIndex', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UtilArrayIndex', full_name='HS_CustomData_t_pb.UtilArrayIndex', index=2,
+      name='LastIdleTaskExec', full_name='HS_CustomData_t_pb.LastIdleTaskExec', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UtilCycleCounter', full_name='HS_CustomData_t_pb.UtilCycleCounter', index=3,
+      name='UtilArrayMask', full_name='HS_CustomData_t_pb.UtilArrayMask', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -68,7 +68,7 @@ _HS_CUSTOMDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UtilDiv', full_name='HS_CustomData_t_pb.UtilDiv', index=5,
+      name='UtilMult1', full_name='HS_CustomData_t_pb.UtilMult1', index=5,
       number=6, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -82,21 +82,21 @@ _HS_CUSTOMDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UtilMult1', full_name='HS_CustomData_t_pb.UtilMult1', index=7,
-      number=8, type=5, cpp_type=1, label=2,
+      name='UtilArray', full_name='HS_CustomData_t_pb.UtilArray', index=7,
+      number=8, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='UtilDiv', full_name='HS_CustomData_t_pb.UtilDiv', index=8,
+      number=9, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastIdleTaskExec', full_name='HS_CustomData_t_pb.LastIdleTaskExec', index=8,
-      number=9, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='ThisIdleTaskExec', full_name='HS_CustomData_t_pb.ThisIdleTaskExec', index=9,
+      name='UtilCycleCounter', full_name='HS_CustomData_t_pb.UtilCycleCounter', index=9,
       number=10, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

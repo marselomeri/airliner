@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_DS_FilterTable_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_DS_FilterTable_t.proto\"N\n\x13\x44S_PacketEntry_t_pb\x12$\n\x06\x46ilter\x18\x01 \x03(\x0b\x32\x14.DS_FilterParms_t_pb\x12\x11\n\tMessageID\x18\x02 \x02(\r\"\x80\x01\n\x13\x44S_FilterParms_t_pb\x12\x12\n\nFilterType\x18\x01 \x02(\r\x12\x13\n\x0b\x41lgorithm_O\x18\x02 \x02(\r\x12\x13\n\x0b\x41lgorithm_N\x18\x03 \x02(\r\x12\x16\n\x0e\x46ileTableIndex\x18\x04 \x02(\r\x12\x13\n\x0b\x41lgorithm_X\x18\x05 \x02(\r\"O\n\x13\x44S_FilterTable_t_pb\x12\x12\n\nDescriptor\x18\x01 \x03(\t\x12$\n\x06Packet\x18\x02 \x03(\x0b\x32\x14.DS_PacketEntry_t_pb')
+  serialized_pb=_b('\n\x1a_py_DS_FilterTable_t.proto\"N\n\x13\x44S_PacketEntry_t_pb\x12$\n\x06\x46ilter\x18\x01 \x03(\x0b\x32\x14.DS_FilterParms_t_pb\x12\x11\n\tMessageID\x18\x02 \x02(\r\"\x80\x01\n\x13\x44S_FilterParms_t_pb\x12\x16\n\x0e\x46ileTableIndex\x18\x01 \x02(\r\x12\x13\n\x0b\x41lgorithm_O\x18\x02 \x02(\r\x12\x13\n\x0b\x41lgorithm_N\x18\x03 \x02(\r\x12\x12\n\nFilterType\x18\x04 \x02(\r\x12\x13\n\x0b\x41lgorithm_X\x18\x05 \x02(\r\"O\n\x13\x44S_FilterTable_t_pb\x12\x12\n\nDescriptor\x18\x01 \x02(\t\x12$\n\x06Packet\x18\x02 \x03(\x0b\x32\x14.DS_PacketEntry_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -70,7 +70,7 @@ _DS_FILTERPARMS_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='FilterType', full_name='DS_FilterParms_t_pb.FilterType', index=0,
+      name='FileTableIndex', full_name='DS_FilterParms_t_pb.FileTableIndex', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -91,7 +91,7 @@ _DS_FILTERPARMS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FileTableIndex', full_name='DS_FilterParms_t_pb.FileTableIndex', index=3,
+      name='FilterType', full_name='DS_FilterParms_t_pb.FilterType', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -129,8 +129,8 @@ _DS_FILTERTABLE_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='Descriptor', full_name='DS_FilterTable_t_pb.Descriptor', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

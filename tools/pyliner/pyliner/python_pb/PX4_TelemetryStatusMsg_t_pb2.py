@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_TelemetryStatusMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_PX4_TelemetryStatusMsg_t.proto\"\x98\x02\n\x1bPX4_TelemetryStatusMsg_t_pb\x12\x13\n\x0bRemoteNoise\x18\x01 \x02(\r\x12\x10\n\x08RxErrors\x18\x02 \x02(\r\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x11\n\tTelemTime\x18\x04 \x02(\x04\x12\x15\n\rHeartbeatTime\x18\x05 \x02(\x04\x12\r\n\x05Noise\x18\x06 \x02(\r\x12\x10\n\x08SystemID\x18\x07 \x02(\r\x12\x11\n\tTlmHeader\x18\x08 \x03(\r\x12\x12\n\nRemoteRSSI\x18\t \x02(\r\x12\x0c\n\x04RSSI\x18\n \x02(\r\x12\r\n\x05\x46ixed\x18\x0b \x02(\r\x12\x0c\n\x04Type\x18\x0c \x02(\r\x12\x13\n\x0b\x43omponentID\x18\r \x02(\r\x12\r\n\x05TxBuf\x18\x0e \x02(\r')
+  serialized_pb=_b('\n\"_py_PX4_TelemetryStatusMsg_t.proto\"\x98\x02\n\x1bPX4_TelemetryStatusMsg_t_pb\x12\x11\n\tTelemTime\x18\x01 \x02(\x04\x12\x10\n\x08RxErrors\x18\x02 \x02(\r\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x13\n\x0bRemoteNoise\x18\x04 \x02(\r\x12\x15\n\rHeartbeatTime\x18\x05 \x02(\x04\x12\x13\n\x0b\x43omponentID\x18\x06 \x02(\r\x12\r\n\x05Noise\x18\x07 \x02(\r\x12\x10\n\x08SystemID\x18\x08 \x02(\r\x12\x0c\n\x04RSSI\x18\t \x02(\r\x12\x12\n\nRemoteRSSI\x18\n \x02(\r\x12\r\n\x05\x46ixed\x18\x0b \x02(\r\x12\x0c\n\x04Type\x18\x0c \x02(\r\x12\x11\n\tTlmHeader\x18\r \x03(\r\x12\r\n\x05TxBuf\x18\x0e \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,8 +33,8 @@ _PX4_TELEMETRYSTATUSMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='RemoteNoise', full_name='PX4_TelemetryStatusMsg_t_pb.RemoteNoise', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      name='TelemTime', full_name='PX4_TelemetryStatusMsg_t_pb.TelemTime', index=0,
+      number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -54,8 +54,8 @@ _PX4_TELEMETRYSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TelemTime', full_name='PX4_TelemetryStatusMsg_t_pb.TelemTime', index=3,
-      number=4, type=4, cpp_type=4, label=2,
+      name='RemoteNoise', full_name='PX4_TelemetryStatusMsg_t_pb.RemoteNoise', index=3,
+      number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -68,35 +68,35 @@ _PX4_TELEMETRYSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Noise', full_name='PX4_TelemetryStatusMsg_t_pb.Noise', index=5,
+      name='ComponentID', full_name='PX4_TelemetryStatusMsg_t_pb.ComponentID', index=5,
       number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SystemID', full_name='PX4_TelemetryStatusMsg_t_pb.SystemID', index=6,
+      name='Noise', full_name='PX4_TelemetryStatusMsg_t_pb.Noise', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_TelemetryStatusMsg_t_pb.TlmHeader', index=7,
-      number=8, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='SystemID', full_name='PX4_TelemetryStatusMsg_t_pb.SystemID', index=7,
+      number=8, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RemoteRSSI', full_name='PX4_TelemetryStatusMsg_t_pb.RemoteRSSI', index=8,
+      name='RSSI', full_name='PX4_TelemetryStatusMsg_t_pb.RSSI', index=8,
       number=9, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RSSI', full_name='PX4_TelemetryStatusMsg_t_pb.RSSI', index=9,
+      name='RemoteRSSI', full_name='PX4_TelemetryStatusMsg_t_pb.RemoteRSSI', index=9,
       number=10, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -117,9 +117,9 @@ _PX4_TELEMETRYSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ComponentID', full_name='PX4_TelemetryStatusMsg_t_pb.ComponentID', index=12,
-      number=13, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='TlmHeader', full_name='PX4_TelemetryStatusMsg_t_pb.TlmHeader', index=12,
+      number=13, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

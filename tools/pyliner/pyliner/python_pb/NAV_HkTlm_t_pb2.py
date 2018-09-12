@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_NAV_HkTlm_t.proto',
   package='',
-  serialized_pb=_b('\n\x15_py_NAV_HkTlm_t.proto\"\xd1\x02\n\x0eNAV_HkTlm_t_pb\x12\x1a\n\x12MissionItemReached\x18\x01 \x02(\x08\x12!\n\x19LandForceDescentExecuting\x18\x02 \x02(\x08\x12!\n\x19LandForceDescentCompleted\x18\x03 \x02(\x08\x12\x10\n\x08usCmdCnt\x18\x04 \x02(\r\x12\x1f\n\x17WaypointPositionReached\x18\x05 \x02(\x08\x12\x1a\n\x12WaypointYawReached\x18\x06 \x02(\x08\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x08 \x02(\r\x12\x10\n\x08RtlState\x18\t \x02(\r\x12 \n\x18RtlForceDescentExecuting\x18\n \x02(\x08\x12\x10\n\x08NavState\x18\x0b \x02(\r\x12 \n\x18RtlForceDescentCompleted\x18\x0c \x02(\x08')
+  serialized_pb=_b('\n\x15_py_NAV_HkTlm_t.proto\"\xd1\x02\n\x0eNAV_HkTlm_t_pb\x12 \n\x18RtlForceDescentExecuting\x18\x01 \x02(\x08\x12\x10\n\x08RtlState\x18\x02 \x02(\r\x12!\n\x19LandForceDescentCompleted\x18\x03 \x02(\x08\x12\x10\n\x08usCmdCnt\x18\x04 \x02(\r\x12\x1f\n\x17WaypointPositionReached\x18\x05 \x02(\x08\x12\x1a\n\x12WaypointYawReached\x18\x06 \x02(\x08\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x08 \x02(\r\x12!\n\x19LandForceDescentExecuting\x18\t \x02(\x08\x12\x1a\n\x12MissionItemReached\x18\n \x02(\x08\x12\x10\n\x08NavState\x18\x0b \x02(\r\x12 \n\x18RtlForceDescentCompleted\x18\x0c \x02(\x08')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,16 +33,16 @@ _NAV_HKTLM_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='MissionItemReached', full_name='NAV_HkTlm_t_pb.MissionItemReached', index=0,
+      name='RtlForceDescentExecuting', full_name='NAV_HkTlm_t_pb.RtlForceDescentExecuting', index=0,
       number=1, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LandForceDescentExecuting', full_name='NAV_HkTlm_t_pb.LandForceDescentExecuting', index=1,
-      number=2, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='RtlState', full_name='NAV_HkTlm_t_pb.RtlState', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -89,14 +89,14 @@ _NAV_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RtlState', full_name='NAV_HkTlm_t_pb.RtlState', index=8,
-      number=9, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='LandForceDescentExecuting', full_name='NAV_HkTlm_t_pb.LandForceDescentExecuting', index=8,
+      number=9, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RtlForceDescentExecuting', full_name='NAV_HkTlm_t_pb.RtlForceDescentExecuting', index=9,
+      name='MissionItemReached', full_name='NAV_HkTlm_t_pb.MissionItemReached', index=9,
       number=10, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,

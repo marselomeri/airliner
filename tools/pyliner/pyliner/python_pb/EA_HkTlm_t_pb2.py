@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_EA_HkTlm_t.proto',
   package='',
-  serialized_pb=_b('\n\x14_py_EA_HkTlm_t.proto\"\xb4\x01\n\rEA_HkTlm_t_pb\x12\x15\n\rActiveAppUtil\x18\x01 \x02(\x02\x12\x10\n\x08usCmdCnt\x18\x02 \x02(\r\x12\x12\n\nLastAppRun\x18\x03 \x03(\t\x12\x15\n\rLastAppStatus\x18\x04 \x02(\x05\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x06 \x02(\r\x12\x11\n\tActiveApp\x18\x07 \x03(\t\x12\x14\n\x0c\x41\x63tiveAppPID\x18\x08 \x02(\x05')
+  serialized_pb=_b('\n\x14_py_EA_HkTlm_t.proto\"\xb4\x01\n\rEA_HkTlm_t_pb\x12\x15\n\rActiveAppUtil\x18\x01 \x02(\x02\x12\x10\n\x08usCmdCnt\x18\x02 \x02(\r\x12\x12\n\nLastAppRun\x18\x03 \x02(\t\x12\x15\n\rLastAppStatus\x18\x04 \x02(\x05\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x06 \x02(\r\x12\x11\n\tActiveApp\x18\x07 \x02(\t\x12\x14\n\x0c\x41\x63tiveAppPID\x18\x08 \x02(\x05')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,8 +48,8 @@ _EA_HKTLM_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='LastAppRun', full_name='EA_HkTlm_t_pb.LastAppRun', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -76,8 +76,8 @@ _EA_HKTLM_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='ActiveApp', full_name='EA_HkTlm_t_pb.ActiveApp', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

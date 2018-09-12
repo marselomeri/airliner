@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CS_Def_Tables_Table_Entry_t.proto',
   package='',
-  serialized_pb=_b('\n%_py_CS_Def_Tables_Table_Entry_t.proto\"=\n\x1e\x43S_Def_Tables_Table_Entry_t_pb\x12\r\n\x05State\x18\x01 \x02(\r\x12\x0c\n\x04Name\x18\x02 \x03(\t')
+  serialized_pb=_b('\n%_py_CS_Def_Tables_Table_Entry_t.proto\"=\n\x1e\x43S_Def_Tables_Table_Entry_t_pb\x12\r\n\x05State\x18\x01 \x02(\r\x12\x0c\n\x04Name\x18\x02 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -41,8 +41,8 @@ _CS_DEF_TABLES_TABLE_ENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Name', full_name='CS_Def_Tables_Table_Entry_t_pb.Name', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

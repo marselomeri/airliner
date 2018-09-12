@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_VehicleGlobalPositionMsg_t.proto',
   package='',
-  serialized_pb=_b('\n(_py_PX4_VehicleGlobalPositionMsg_t.proto\"\xa5\x03\n!PX4_VehicleGlobalPositionMsg_t_pb\x12\x0c\n\x04VelN\x18\x01 \x02(\x02\x12\x15\n\rDeadReckoning\x18\x02 \x02(\x08\x12\x0b\n\x03Yaw\x18\x03 \x02(\x02\x12\x0b\n\x03Lon\x18\x04 \x02(\x01\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x13\n\x0b\x44\x65ltaLatLon\x18\x06 \x03(\x01\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x17\n\x0fTerrainAltValid\x18\x08 \x02(\x08\x12\x0b\n\x03Lat\x18\t \x02(\x01\x12\x17\n\x0f\x41ltResetCounter\x18\n \x02(\r\x12\x10\n\x08\x44\x65ltaAlt\x18\x0b \x02(\x02\x12\x13\n\x0bTimeUtcUsec\x18\x0c \x02(\x04\x12\x13\n\x0bPressureAlt\x18\r \x02(\x02\x12\x0c\n\x04VelE\x18\x0e \x02(\x02\x12\x0c\n\x04VelD\x18\x0f \x02(\x02\x12\x0b\n\x03\x41lt\x18\x10 \x02(\x02\x12\x0b\n\x03\x45vH\x18\x11 \x02(\x02\x12\x0b\n\x03\x45pV\x18\x12 \x02(\x02\x12\x1a\n\x12LatLonResetCounter\x18\x13 \x02(\r\x12\x0b\n\x03\x45pH\x18\x14 \x02(\x02\x12\x12\n\nTerrainAlt\x18\x15 \x02(\x02\x12\x0b\n\x03\x45vV\x18\x16 \x02(\x02')
+  serialized_pb=_b('\n(_py_PX4_VehicleGlobalPositionMsg_t.proto\"\xa5\x03\n!PX4_VehicleGlobalPositionMsg_t_pb\x12\x17\n\x0f\x41ltResetCounter\x18\x01 \x02(\r\x12\x15\n\rDeadReckoning\x18\x02 \x02(\x08\x12\x0b\n\x03Yaw\x18\x03 \x02(\x02\x12\x0b\n\x03Lon\x18\x04 \x02(\x01\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x13\n\x0b\x44\x65ltaLatLon\x18\x06 \x03(\x01\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x17\n\x0fTerrainAltValid\x18\x08 \x02(\x08\x12\x0b\n\x03Lat\x18\t \x02(\x01\x12\x0c\n\x04VelN\x18\n \x02(\x02\x12\x10\n\x08\x44\x65ltaAlt\x18\x0b \x02(\x02\x12\x13\n\x0bTimeUtcUsec\x18\x0c \x02(\x04\x12\x13\n\x0bPressureAlt\x18\r \x02(\x02\x12\x0c\n\x04VelE\x18\x0e \x02(\x02\x12\x0c\n\x04VelD\x18\x0f \x02(\x02\x12\x0b\n\x03\x41lt\x18\x10 \x02(\x02\x12\x0b\n\x03\x45vH\x18\x11 \x02(\x02\x12\x0b\n\x03\x45pV\x18\x12 \x02(\x02\x12\x1a\n\x12LatLonResetCounter\x18\x13 \x02(\r\x12\x0b\n\x03\x45pH\x18\x14 \x02(\x02\x12\x12\n\nTerrainAlt\x18\x15 \x02(\x02\x12\x0b\n\x03\x45vV\x18\x16 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,8 +33,8 @@ _PX4_VEHICLEGLOBALPOSITIONMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='VelN', full_name='PX4_VehicleGlobalPositionMsg_t_pb.VelN', index=0,
-      number=1, type=2, cpp_type=6, label=2,
+      name='AltResetCounter', full_name='PX4_VehicleGlobalPositionMsg_t_pb.AltResetCounter', index=0,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -96,8 +96,8 @@ _PX4_VEHICLEGLOBALPOSITIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AltResetCounter', full_name='PX4_VehicleGlobalPositionMsg_t_pb.AltResetCounter', index=9,
-      number=10, type=13, cpp_type=3, label=2,
+      name='VelN', full_name='PX4_VehicleGlobalPositionMsg_t_pb.VelN', index=9,
+      number=10, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

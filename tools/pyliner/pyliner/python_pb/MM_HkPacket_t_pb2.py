@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MM_HkPacket_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_MM_HkPacket_t.proto\"\xc0\x01\n\x10MM_HkPacket_t_pb\x12\x0f\n\x07MemType\x18\x01 \x02(\r\x12\x11\n\tDataValue\x18\x02 \x02(\r\x12\x12\n\nCmdCounter\x18\x03 \x02(\r\x12\x10\n\x08\x46ileName\x18\x04 \x03(\t\x12\x12\n\nErrCounter\x18\x05 \x02(\r\x12\x11\n\tTlmHeader\x18\x06 \x03(\r\x12\x12\n\nLastAction\x18\x07 \x02(\r\x12\x16\n\x0e\x42ytesProcessed\x18\x08 \x02(\r\x12\x0f\n\x07\x41\x64\x64ress\x18\t \x02(\r')
+  serialized_pb=_b('\n\x17_py_MM_HkPacket_t.proto\"\xc0\x01\n\x10MM_HkPacket_t_pb\x12\x0f\n\x07MemType\x18\x01 \x02(\r\x12\x11\n\tDataValue\x18\x02 \x02(\r\x12\x12\n\nCmdCounter\x18\x03 \x02(\r\x12\x10\n\x08\x46ileName\x18\x04 \x02(\t\x12\x12\n\nErrCounter\x18\x05 \x02(\r\x12\x11\n\tTlmHeader\x18\x06 \x03(\r\x12\x12\n\nLastAction\x18\x07 \x02(\r\x12\x16\n\x0e\x42ytesProcessed\x18\x08 \x02(\r\x12\x0f\n\x07\x41\x64\x64ress\x18\t \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,8 +55,8 @@ _MM_HKPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FileName', full_name='MM_HkPacket_t_pb.FileName', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

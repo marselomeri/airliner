@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_CF_AppData_t.proto\"C\n\rCF_Queue_t_pb\x12\x0f\n\x07HeadPtr\x18\x01 \x02(\r\x12\x0f\n\x07TailPtr\x18\x02 \x02(\r\x12\x10\n\x08\x45ntryCnt\x18\x03 \x02(\r\"/\n\x0c\x43\x46\x44P_DATA_pb\x12\x0f\n\x07\x63ontent\x18\x01 \x03(\t\x12\x0e\n\x06length\x18\x02 \x02(\r\"7\n\x11\x43\x46_MemParams_t_pb\x12\x0f\n\x07PoolHdl\x18\x01 \x02(\r\x12\x11\n\tPartition\x18\x02 \x03(\r\"\xba\x04\n\x14\x43\x46_ConfigPacket_t_pb\x12\x12\n\nAckTimeout\x18\x01 \x02(\r\x12\x10\n\x08NakLimit\x18\x02 \x02(\r\x12\x1b\n\x13SaveIncompleteFiles\x18\x03 \x03(\t\x12\x1a\n\x12IncomingPduBufSize\x18\x04 \x02(\r\x12\x1c\n\x14MaxSimultaneousTrans\x18\x05 \x02(\r\x12\x15\n\rTmpFilePrefix\x18\x06 \x03(\t\x12\x1d\n\x15MaxPollingDirsPerChan\x18\x07 \x02(\r\x12\x11\n\tPipeDepth\x18\x08 \x02(\r\x12\x11\n\tTlmHeader\x18\t \x03(\r\x12\x18\n\x10NumInputChannels\x18\n \x02(\r\x12\x10\n\x08PipeName\x18\x0b \x03(\t\x12\x12\n\nNakTimeout\x18\x0c \x02(\r\x12\x14\n\x0cInactTimeout\x18\r \x02(\r\x12\x17\n\x0f\x43\x66gTbleFilename\x18\x0e \x03(\t\x12\x18\n\x10\x44\x65\x66QInfoFilename\x18\x0f \x03(\t\x12\x1c\n\x14\x44\x65\x66OutgoingChunkSize\x18\x10 \x02(\r\x12\x1a\n\x12OutgoingPduBufSize\x18\x11 \x02(\r\x12\x18\n\x10MaxPlaybackChans\x18\x12 \x02(\r\x12\x10\n\x08\x41\x63kLimit\x18\x13 \x02(\r\x12\x12\n\nCfgTblName\x18\x14 \x03(\t\x12\x17\n\x0f\x45ngCycPerWakeup\x18\x15 \x02(\r\x12\x17\n\x0f\x44\x65\x62ugCompiledIn\x18\x16 \x02(\r\x12\x14\n\x0cMemPoolBytes\x18\x17 \x02(\r\"7\n\x16\x43\x46\x45_EVS_BinFilter_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x0c\n\x04Mask\x18\x02 \x02(\r\"p\n\x13\x43\x46_TransPacket_t_pb\x12\"\n\x03\x41pp\x18\x01 \x02(\x0b\x32\x15.CF_AppTransStat_t_pb\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\"\n\x03\x45ng\x18\x03 \x02(\x0b\x32\x15.CF_EngTransStat_t_pb\"\xc4\x03\n\x14\x43\x46_EngTransStat_t_pb\x12\r\n\x05State\x18\x01 \x02(\r\x12\x10\n\x08TransLen\x18\x02 \x02(\r\x12\x0c\n\x04Role\x18\x03 \x02(\r\x12\x10\n\x08\x43ondCode\x18\x04 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x05 \x03(\t\x12\x10\n\x08TransVal\x18\x06 \x02(\r\x12\x0f\n\x07PartLen\x18\x07 \x02(\r\x12\r\n\x05Phase\x18\x08 \x02(\r\x12\x10\n\x08\x46\x64Length\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x0f\n\x07TmpFile\x18\x0b \x03(\t\x12\x0f\n\x07PartVal\x18\x0c \x02(\r\x12\x10\n\x08\x43hecksum\x18\r \x02(\r\x12\x10\n\x08\x46\x64Offset\x18\x0e \x02(\r\x12\r\n\x05\x46lags\x18\x0f \x02(\r\x12\x11\n\tFinalStat\x18\x10 \x02(\r\x12\x0e\n\x06Spare1\x18\x11 \x02(\r\x12\x0e\n\x06Spare2\x18\x12 \x02(\r\x12\x0c\n\x04Naks\x18\x13 \x02(\r\x12\x0f\n\x07SrcFile\x18\x14 \x03(\t\x12\x14\n\x0cRcvdFileSize\x18\x15 \x02(\r\x12\x10\n\x08\x41ttempts\x18\x16 \x02(\r\x12\x10\n\x08\x44\x65liCode\x18\x17 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x18 \x02(\r\x12\x11\n\tStartTime\x18\x19 \x02(\r\"\xd5\x01\n\x14\x43\x46_AppTransStat_t_pb\x12\x0e\n\x06Status\x18\x01 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x02 \x03(\t\x12\x10\n\x08NodeType\x18\x03 \x02(\r\x12\x0f\n\x07SrcFile\x18\x04 \x03(\t\x12\x0f\n\x07\x43hanNum\x18\x05 \x02(\r\x12\x10\n\x08Priority\x18\x06 \x02(\r\x12\x0e\n\x06Source\x18\x07 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x08 \x03(\t\x12\r\n\x05\x43lass\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x10\n\x08\x43ondCode\x18\x0b \x02(\r\"\xb7\x02\n\x10\x43\x46_HkPacket_t_pb\x12\x30\n\x0b\x41utoSuspend\x18\x01 \x02(\x0b\x32\x1b.AutoSuspend_Telemetry_t_pb\x12#\n\x03\x45ng\x18\x02 \x02(\x0b\x32\x16.Engine_Telemetry_t_pb\x12 \n\x03\x41pp\x18\x03 \x02(\x0b\x32\x13.App_Telemetry_t_pb\x12&\n\x04\x43han\x18\x04 \x03(\x0b\x32\x18.Downlink_Telemetry_t_pb\x12\"\n\x02Up\x18\x05 \x02(\x0b\x32\x16.Uplink_Telemetry_t_pb\x12\x12\n\nCmdCounter\x18\x06 \x02(\r\x12\x12\n\nErrCounter\x18\x07 \x02(\r\x12\x11\n\tTlmHeader\x18\x08 \x03(\r\x12#\n\x04\x43ond\x18\t \x02(\x0b\x32\x15.Fault_Telemetry_t_pb\"A\n\x1a\x41utoSuspend_Telemetry_t_pb\x12\x13\n\x0bLowFreeMark\x18\x01 \x02(\r\x12\x0e\n\x06\x45nFlag\x18\x02 \x02(\r\"\x91\x01\n\x15Uplink_Telemetry_t_pb\x12\x16\n\x0eSuccessCounter\x18\x01 \x02(\r\x12\x18\n\x10LastFileUplinked\x18\x02 \x03(\t\x12\x15\n\rFailedCounter\x18\x03 \x02(\r\x12\x11\n\tMetaCount\x18\x04 \x02(\r\x12\x1c\n\x14UplinkActiveQFileCnt\x18\x05 \x02(\r\"\xc1\x01\n\x14\x46\x61ult_Telemetry_t_pb\x12\x13\n\x0bNakLimitNum\x18\x01 \x02(\r\x12\x17\n\x0f\x46ileStoreRejNum\x18\x02 \x02(\r\x12\x11\n\tPosAckNum\x18\x03 \x02(\r\x12\x17\n\x0f\x46ileChecksumNum\x18\x04 \x02(\r\x12\x12\n\nSuspendNum\x18\x05 \x02(\r\x12\x13\n\x0b\x46ileSizeNum\x18\x06 \x02(\r\x12\x13\n\x0bInactiveNum\x18\x07 \x02(\r\x12\x11\n\tCancelNum\x18\x08 \x02(\r\"\xb8\x02\n\x17\x44ownlink_Telemetry_t_pb\x12\x16\n\x0eGreenLightCntr\x18\x01 \x02(\r\x12\x17\n\x0fPollDirsChecked\x18\x02 \x02(\r\x12\x15\n\rFailedCounter\x18\x03 \x02(\r\x12\x14\n\x0cRedLightCntr\x18\x04 \x02(\r\x12\x17\n\x0fHistoryQFileCnt\x18\x05 \x02(\r\x12\x10\n\x08SemValue\x18\x06 \x02(\r\x12\r\n\x05\x46lags\x18\x07 \x02(\r\x12\x11\n\tFilesSent\x18\x08 \x02(\r\x12\x17\n\x0fPendingQFileCnt\x18\t \x02(\r\x12\x16\n\x0eSuccessCounter\x18\n \x02(\r\x12\x10\n\x08PDUsSent\x18\x0b \x02(\r\x12\x16\n\x0e\x41\x63tiveQFileCnt\x18\x0c \x02(\r\x12\x17\n\x0fPendingQChecked\x18\r \x02(\r\"\x99\x03\n\x15\x45ngine_Telemetry_t_pb\x12\x1c\n\x14\x46lightEngineEntityId\x18\x01 \x03(\t\x12\x1b\n\x13MachinesDeallocated\x18\x02 \x02(\r\x12\"\n\x1atotal_unsuccessful_senders\x18\x03 \x02(\r\x12\x1f\n\x17\x61re_any_partners_frozen\x18\x04 \x02(\r\x12\x1a\n\x12how_many_receivers\x18\x05 \x02(\r\x12\x1a\n\x12how_many_suspended\x18\x06 \x02(\r\x12$\n\x1ctotal_unsuccessful_receivers\x18\x07 \x02(\r\x12\x18\n\x10how_many_senders\x18\x08 \x02(\r\x12\r\n\x05Spare\x18\t \x03(\r\x12\x1c\n\x14total_files_received\x18\n \x02(\r\x12\r\n\x05\x46lags\x18\x0b \x02(\r\x12\x17\n\x0fhow_many_frozen\x18\x0c \x02(\r\x12\x18\n\x10total_files_sent\x18\r \x02(\r\x12\x19\n\x11MachinesAllocated\x18\x0e \x02(\r\"\xce\x03\n\x12\x41pp_Telemetry_t_pb\x12\x1b\n\x13TotalCompletedTrans\x18\x01 \x02(\r\x12\x18\n\x10TotalInProgTrans\x18\x02 \x02(\r\x12\x17\n\x0fLastFailedTrans\x18\x03 \x03(\t\x12\x15\n\rLowMemoryMark\x18\x04 \x02(\r\x12\x14\n\x0cMaxMemNeeded\x18\x05 \x02(\r\x12\x19\n\x11TotalAbandonTrans\x18\x06 \x02(\r\x12\x18\n\x10\x42ufferPoolHandle\x18\x07 \x02(\r\x12\x17\n\x0fQNodesAllocated\x18\x08 \x02(\r\x12\x14\n\x0cPDUsReceived\x18\t \x02(\r\x12\x14\n\x0cMemAllocated\x18\n \x02(\r\x12\x10\n\x08MemInUse\x18\x0b \x02(\r\x12\x18\n\x10\x45ngineCycleCount\x18\x0c \x02(\r\x12\x14\n\x0cPDUsRejected\x18\r \x02(\r\x12\x19\n\x11QNodesDeallocated\x18\x0e \x02(\r\x12\x19\n\x11WakeupForFileProc\x18\x0f \x02(\r\x12\x18\n\x10TotalFailedTrans\x18\x10 \x02(\r\x12\x19\n\x11TotalSuccessTrans\x18\x11 \x02(\r\x12\x14\n\x0cPeakMemInUse\x18\x12 \x02(\r\"\xcf\x01\n\x13\x43\x46_ChannelData_t_pb\x12\x14\n\x0cPollDirTimer\x18\x01 \x02(\r\x12\x1b\n\x03PbQ\x18\x02 \x03(\x0b\x32\x0e.CF_Queue_t_pb\x12\x12\n\nPendQTimer\x18\x03 \x02(\r\x12\x18\n\x10TransNumBlasting\x18\x04 \x02(\r\x12\x15\n\rZeroCpyHandle\x18\x05 \x02(\r\x12\x16\n\x0eHandshakeSemId\x18\x06 \x02(\r\x12\x15\n\rZeroCpyMsgPtr\x18\x07 \x02(\r\x12\x11\n\tDataBlast\x18\x08 \x02(\r\"\x9f\x03\n\x0f\x43\x46_AppData_t_pb\x12\x0e\n\x06MsgPtr\x18\x01 \x02(\r\x12\x1f\n\x03Mem\x18\x02 \x02(\x0b\x32\x12.CF_MemParams_t_pb\x12\"\n\x04\x43han\x18\x03 \x03(\x0b\x32\x14.CF_ChannelData_t_pb\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12\x11\n\tRunStatus\x18\x05 \x02(\r\x12\x1d\n\x02Hk\x18\x06 \x02(\x0b\x32\x11.CF_HkPacket_t_pb\x12%\n\x0eRawPduInputBuf\x18\x07 \x02(\x0b\x32\r.CFDP_DATA_pb\x12\r\n\x05Spare\x18\x08 \x03(\r\x12\x0b\n\x03Tbl\x18\t \x02(\r\x12\x19\n\x11\x43onfigTableHandle\x18\n \x02(\x05\x12#\n\x05Trans\x18\x0b \x02(\x0b\x32\x14.CF_TransPacket_t_pb\x12\x1b\n\x03UpQ\x18\x0c \x03(\x0b\x32\x0e.CF_Queue_t_pb\x12%\n\x06\x43\x66gPkt\x18\r \x02(\x0b\x32\x15.CF_ConfigPacket_t_pb\x12-\n\x0c\x45ventFilters\x18\x0e \x03(\x0b\x32\x17.CFE_EVS_BinFilter_t_pb')
+  serialized_pb=_b('\n\x16_py_CF_AppData_t.proto\"C\n\rCF_Queue_t_pb\x12\x0f\n\x07HeadPtr\x18\x01 \x02(\r\x12\x0f\n\x07TailPtr\x18\x02 \x02(\r\x12\x10\n\x08\x45ntryCnt\x18\x03 \x02(\r\"/\n\x0c\x43\x46\x44P_DATA_pb\x12\x0f\n\x07\x63ontent\x18\x01 \x02(\t\x12\x0e\n\x06length\x18\x02 \x02(\r\"7\n\x11\x43\x46_MemParams_t_pb\x12\x0f\n\x07PoolHdl\x18\x01 \x02(\r\x12\x11\n\tPartition\x18\x02 \x03(\r\"\xba\x04\n\x14\x43\x46_ConfigPacket_t_pb\x12\x12\n\nAckTimeout\x18\x01 \x02(\r\x12\x10\n\x08NakLimit\x18\x02 \x02(\r\x12\x1b\n\x13SaveIncompleteFiles\x18\x03 \x02(\t\x12\x1a\n\x12IncomingPduBufSize\x18\x04 \x02(\r\x12\x1c\n\x14MaxSimultaneousTrans\x18\x05 \x02(\r\x12\x15\n\rTmpFilePrefix\x18\x06 \x02(\t\x12\x1d\n\x15MaxPollingDirsPerChan\x18\x07 \x02(\r\x12\x11\n\tPipeDepth\x18\x08 \x02(\r\x12\x11\n\tTlmHeader\x18\t \x03(\r\x12\x18\n\x10NumInputChannels\x18\n \x02(\r\x12\x10\n\x08PipeName\x18\x0b \x02(\t\x12\x12\n\nNakTimeout\x18\x0c \x02(\r\x12\x14\n\x0cInactTimeout\x18\r \x02(\r\x12\x17\n\x0f\x43\x66gTbleFilename\x18\x0e \x02(\t\x12\x18\n\x10\x44\x65\x66QInfoFilename\x18\x0f \x02(\t\x12\x1c\n\x14\x44\x65\x66OutgoingChunkSize\x18\x10 \x02(\r\x12\x1a\n\x12OutgoingPduBufSize\x18\x11 \x02(\r\x12\x18\n\x10MaxPlaybackChans\x18\x12 \x02(\r\x12\x10\n\x08\x41\x63kLimit\x18\x13 \x02(\r\x12\x12\n\nCfgTblName\x18\x14 \x02(\t\x12\x17\n\x0f\x45ngCycPerWakeup\x18\x15 \x02(\r\x12\x17\n\x0f\x44\x65\x62ugCompiledIn\x18\x16 \x02(\r\x12\x14\n\x0cMemPoolBytes\x18\x17 \x02(\r\"7\n\x16\x43\x46\x45_EVS_BinFilter_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x0c\n\x04Mask\x18\x02 \x02(\r\"p\n\x13\x43\x46_TransPacket_t_pb\x12\"\n\x03\x41pp\x18\x01 \x02(\x0b\x32\x15.CF_AppTransStat_t_pb\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\"\n\x03\x45ng\x18\x03 \x02(\x0b\x32\x15.CF_EngTransStat_t_pb\"\xc4\x03\n\x14\x43\x46_EngTransStat_t_pb\x12\x14\n\x0cRcvdFileSize\x18\x01 \x02(\r\x12\x10\n\x08TransLen\x18\x02 \x02(\r\x12\x0c\n\x04Role\x18\x03 \x02(\r\x12\x10\n\x08\x43ondCode\x18\x04 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x05 \x02(\t\x12\x10\n\x08TransVal\x18\x06 \x02(\r\x12\x10\n\x08\x44\x65liCode\x18\x07 \x02(\r\x12\r\n\x05Phase\x18\x08 \x02(\r\x12\x10\n\x08\x46\x64Length\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x0f\n\x07TmpFile\x18\x0b \x02(\t\x12\x0f\n\x07PartVal\x18\x0c \x02(\r\x12\x10\n\x08\x43hecksum\x18\r \x02(\r\x12\x10\n\x08\x46\x64Offset\x18\x0e \x02(\r\x12\r\n\x05\x46lags\x18\x0f \x02(\r\x12\x11\n\tFinalStat\x18\x10 \x02(\r\x12\x0e\n\x06Spare1\x18\x11 \x02(\r\x12\x0e\n\x06Spare2\x18\x12 \x02(\r\x12\x0c\n\x04Naks\x18\x13 \x02(\r\x12\x0f\n\x07SrcFile\x18\x14 \x02(\t\x12\r\n\x05State\x18\x15 \x02(\r\x12\x10\n\x08\x41ttempts\x18\x16 \x02(\r\x12\x0f\n\x07PartLen\x18\x17 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x18 \x02(\r\x12\x11\n\tStartTime\x18\x19 \x02(\r\"\xd5\x01\n\x14\x43\x46_AppTransStat_t_pb\x12\x0f\n\x07\x44stFile\x18\x01 \x02(\t\x12\x0e\n\x06Status\x18\x02 \x02(\r\x12\x10\n\x08NodeType\x18\x03 \x02(\r\x12\x0f\n\x07SrcFile\x18\x04 \x02(\t\x12\x0f\n\x07\x43hanNum\x18\x05 \x02(\r\x12\x10\n\x08Priority\x18\x06 \x02(\r\x12\x0e\n\x06Source\x18\x07 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x08 \x02(\t\x12\r\n\x05\x43lass\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x10\n\x08\x43ondCode\x18\x0b \x02(\r\"\xb7\x02\n\x10\x43\x46_HkPacket_t_pb\x12\x30\n\x0b\x41utoSuspend\x18\x01 \x02(\x0b\x32\x1b.AutoSuspend_Telemetry_t_pb\x12#\n\x03\x45ng\x18\x02 \x02(\x0b\x32\x16.Engine_Telemetry_t_pb\x12 \n\x03\x41pp\x18\x03 \x02(\x0b\x32\x13.App_Telemetry_t_pb\x12&\n\x04\x43han\x18\x04 \x03(\x0b\x32\x18.Downlink_Telemetry_t_pb\x12\"\n\x02Up\x18\x05 \x02(\x0b\x32\x16.Uplink_Telemetry_t_pb\x12\x12\n\nCmdCounter\x18\x06 \x02(\r\x12\x12\n\nErrCounter\x18\x07 \x02(\r\x12\x11\n\tTlmHeader\x18\x08 \x03(\r\x12#\n\x04\x43ond\x18\t \x02(\x0b\x32\x15.Fault_Telemetry_t_pb\"A\n\x1a\x41utoSuspend_Telemetry_t_pb\x12\x13\n\x0bLowFreeMark\x18\x01 \x02(\r\x12\x0e\n\x06\x45nFlag\x18\x02 \x02(\r\"\x91\x01\n\x15Uplink_Telemetry_t_pb\x12\x16\n\x0eSuccessCounter\x18\x01 \x02(\r\x12\x18\n\x10LastFileUplinked\x18\x02 \x02(\t\x12\x15\n\rFailedCounter\x18\x03 \x02(\r\x12\x1c\n\x14UplinkActiveQFileCnt\x18\x04 \x02(\r\x12\x11\n\tMetaCount\x18\x05 \x02(\r\"\xc1\x01\n\x14\x46\x61ult_Telemetry_t_pb\x12\x13\n\x0bNakLimitNum\x18\x01 \x02(\r\x12\x17\n\x0f\x46ileStoreRejNum\x18\x02 \x02(\r\x12\x11\n\tPosAckNum\x18\x03 \x02(\r\x12\x17\n\x0f\x46ileChecksumNum\x18\x04 \x02(\r\x12\x12\n\nSuspendNum\x18\x05 \x02(\r\x12\x13\n\x0b\x46ileSizeNum\x18\x06 \x02(\r\x12\x13\n\x0bInactiveNum\x18\x07 \x02(\r\x12\x11\n\tCancelNum\x18\x08 \x02(\r\"\xb8\x02\n\x17\x44ownlink_Telemetry_t_pb\x12\x16\n\x0eGreenLightCntr\x18\x01 \x02(\r\x12\x17\n\x0fPollDirsChecked\x18\x02 \x02(\r\x12\x14\n\x0cRedLightCntr\x18\x03 \x02(\r\x12\x16\n\x0e\x41\x63tiveQFileCnt\x18\x04 \x02(\r\x12\x17\n\x0fPendingQChecked\x18\x05 \x02(\r\x12\x17\n\x0fHistoryQFileCnt\x18\x06 \x02(\r\x12\x10\n\x08SemValue\x18\x07 \x02(\r\x12\r\n\x05\x46lags\x18\x08 \x02(\r\x12\x17\n\x0fPendingQFileCnt\x18\t \x02(\r\x12\x16\n\x0eSuccessCounter\x18\n \x02(\r\x12\x10\n\x08PDUsSent\x18\x0b \x02(\r\x12\x15\n\rFailedCounter\x18\x0c \x02(\r\x12\x11\n\tFilesSent\x18\r \x02(\r\"\x99\x03\n\x15\x45ngine_Telemetry_t_pb\x12\x1c\n\x14\x46lightEngineEntityId\x18\x01 \x02(\t\x12\x1b\n\x13MachinesDeallocated\x18\x02 \x02(\r\x12\"\n\x1atotal_unsuccessful_senders\x18\x03 \x02(\r\x12\x1f\n\x17\x61re_any_partners_frozen\x18\x04 \x02(\r\x12\x18\n\x10total_files_sent\x18\x05 \x02(\r\x12\x1a\n\x12how_many_suspended\x18\x06 \x02(\r\x12$\n\x1ctotal_unsuccessful_receivers\x18\x07 \x02(\r\x12\x18\n\x10how_many_senders\x18\x08 \x02(\r\x12\r\n\x05\x46lags\x18\t \x02(\r\x12\x1c\n\x14total_files_received\x18\n \x02(\r\x12\r\n\x05Spare\x18\x0b \x03(\r\x12\x17\n\x0fhow_many_frozen\x18\x0c \x02(\r\x12\x19\n\x11MachinesAllocated\x18\r \x02(\r\x12\x1a\n\x12how_many_receivers\x18\x0e \x02(\r\"\xce\x03\n\x12\x41pp_Telemetry_t_pb\x12\x1b\n\x13TotalCompletedTrans\x18\x01 \x02(\r\x12\x18\n\x10TotalInProgTrans\x18\x02 \x02(\r\x12\x17\n\x0fLastFailedTrans\x18\x03 \x02(\t\x12\x15\n\rLowMemoryMark\x18\x04 \x02(\r\x12\x14\n\x0cMaxMemNeeded\x18\x05 \x02(\r\x12\x17\n\x0fQNodesAllocated\x18\x06 \x02(\r\x12\x18\n\x10\x42ufferPoolHandle\x18\x07 \x02(\r\x12\x19\n\x11TotalAbandonTrans\x18\x08 \x02(\r\x12\x14\n\x0cPDUsReceived\x18\t \x02(\r\x12\x14\n\x0cMemAllocated\x18\n \x02(\r\x12\x10\n\x08MemInUse\x18\x0b \x02(\r\x12\x18\n\x10\x45ngineCycleCount\x18\x0c \x02(\r\x12\x14\n\x0cPDUsRejected\x18\r \x02(\r\x12\x19\n\x11QNodesDeallocated\x18\x0e \x02(\r\x12\x19\n\x11WakeupForFileProc\x18\x0f \x02(\r\x12\x18\n\x10TotalFailedTrans\x18\x10 \x02(\r\x12\x19\n\x11TotalSuccessTrans\x18\x11 \x02(\r\x12\x14\n\x0cPeakMemInUse\x18\x12 \x02(\r\"\xcf\x01\n\x13\x43\x46_ChannelData_t_pb\x12\x14\n\x0cPollDirTimer\x18\x01 \x02(\r\x12\x1b\n\x03PbQ\x18\x02 \x03(\x0b\x32\x0e.CF_Queue_t_pb\x12\x12\n\nPendQTimer\x18\x03 \x02(\r\x12\x18\n\x10TransNumBlasting\x18\x04 \x02(\r\x12\x15\n\rZeroCpyHandle\x18\x05 \x02(\r\x12\x16\n\x0eHandshakeSemId\x18\x06 \x02(\r\x12\x15\n\rZeroCpyMsgPtr\x18\x07 \x02(\r\x12\x11\n\tDataBlast\x18\x08 \x02(\r\"\x9f\x03\n\x0f\x43\x46_AppData_t_pb\x12%\n\x06\x43\x66gPkt\x18\x01 \x02(\x0b\x32\x15.CF_ConfigPacket_t_pb\x12\x1f\n\x03Mem\x18\x02 \x02(\x0b\x32\x12.CF_MemParams_t_pb\x12\x11\n\tRunStatus\x18\x03 \x02(\r\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12\"\n\x04\x43han\x18\x05 \x03(\x0b\x32\x14.CF_ChannelData_t_pb\x12\x0b\n\x03Tbl\x18\x06 \x02(\r\x12\x0e\n\x06MsgPtr\x18\x07 \x02(\r\x12%\n\x0eRawPduInputBuf\x18\x08 \x02(\x0b\x32\r.CFDP_DATA_pb\x12\r\n\x05Spare\x18\t \x03(\r\x12-\n\x0c\x45ventFilters\x18\n \x03(\x0b\x32\x17.CFE_EVS_BinFilter_t_pb\x12\x1d\n\x02Hk\x18\x0b \x02(\x0b\x32\x11.CF_HkPacket_t_pb\x12#\n\x05Trans\x18\x0c \x02(\x0b\x32\x14.CF_TransPacket_t_pb\x12\x1b\n\x03UpQ\x18\r \x03(\x0b\x32\x0e.CF_Queue_t_pb\x12\x19\n\x11\x43onfigTableHandle\x18\x0e \x02(\x05')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -78,8 +78,8 @@ _CFDP_DATA_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='content', full_name='CFDP_DATA_pb.content', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -166,8 +166,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SaveIncompleteFiles', full_name='CF_ConfigPacket_t_pb.SaveIncompleteFiles', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -187,8 +187,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='TmpFilePrefix', full_name='CF_ConfigPacket_t_pb.TmpFilePrefix', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -222,8 +222,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='PipeName', full_name='CF_ConfigPacket_t_pb.PipeName', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=11, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -243,15 +243,15 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='CfgTbleFilename', full_name='CF_ConfigPacket_t_pb.CfgTbleFilename', index=13,
-      number=14, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=14, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='DefQInfoFilename', full_name='CF_ConfigPacket_t_pb.DefQInfoFilename', index=14,
-      number=15, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=15, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -285,8 +285,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='CfgTblName', full_name='CF_ConfigPacket_t_pb.CfgTblName', index=19,
-      number=20, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=20, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -416,7 +416,7 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='State', full_name='CF_EngTransStat_t_pb.State', index=0,
+      name='RcvdFileSize', full_name='CF_EngTransStat_t_pb.RcvdFileSize', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -445,8 +445,8 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='DstFile', full_name='CF_EngTransStat_t_pb.DstFile', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -458,7 +458,7 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PartLen', full_name='CF_EngTransStat_t_pb.PartLen', index=6,
+      name='DeliCode', full_name='CF_EngTransStat_t_pb.DeliCode', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -487,8 +487,8 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='TmpFile', full_name='CF_EngTransStat_t_pb.TmpFile', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=11, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -550,13 +550,13 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFile', full_name='CF_EngTransStat_t_pb.SrcFile', index=19,
-      number=20, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=20, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RcvdFileSize', full_name='CF_EngTransStat_t_pb.RcvdFileSize', index=20,
+      name='State', full_name='CF_EngTransStat_t_pb.State', index=20,
       number=21, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -570,7 +570,7 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DeliCode', full_name='CF_EngTransStat_t_pb.DeliCode', index=22,
+      name='PartLen', full_name='CF_EngTransStat_t_pb.PartLen', index=22,
       number=23, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -614,16 +614,16 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Status', full_name='CF_AppTransStat_t_pb.Status', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='DstFile', full_name='CF_AppTransStat_t_pb.DstFile', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DstFile', full_name='CF_AppTransStat_t_pb.DstFile', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Status', full_name='CF_AppTransStat_t_pb.Status', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -636,8 +636,8 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFile', full_name='CF_AppTransStat_t_pb.SrcFile', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -664,8 +664,8 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcEntityId', full_name='CF_AppTransStat_t_pb.SrcEntityId', index=7,
-      number=8, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=8, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -845,8 +845,8 @@ _UPLINK_TELEMETRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='LastFileUplinked', full_name='Uplink_Telemetry_t_pb.LastFileUplinked', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -858,14 +858,14 @@ _UPLINK_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MetaCount', full_name='Uplink_Telemetry_t_pb.MetaCount', index=3,
+      name='UplinkActiveQFileCnt', full_name='Uplink_Telemetry_t_pb.UplinkActiveQFileCnt', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UplinkActiveQFileCnt', full_name='Uplink_Telemetry_t_pb.UplinkActiveQFileCnt', index=4,
+      name='MetaCount', full_name='Uplink_Telemetry_t_pb.MetaCount', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -988,42 +988,42 @@ _DOWNLINK_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FailedCounter', full_name='Downlink_Telemetry_t_pb.FailedCounter', index=2,
+      name='RedLightCntr', full_name='Downlink_Telemetry_t_pb.RedLightCntr', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RedLightCntr', full_name='Downlink_Telemetry_t_pb.RedLightCntr', index=3,
+      name='ActiveQFileCnt', full_name='Downlink_Telemetry_t_pb.ActiveQFileCnt', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='HistoryQFileCnt', full_name='Downlink_Telemetry_t_pb.HistoryQFileCnt', index=4,
+      name='PendingQChecked', full_name='Downlink_Telemetry_t_pb.PendingQChecked', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SemValue', full_name='Downlink_Telemetry_t_pb.SemValue', index=5,
+      name='HistoryQFileCnt', full_name='Downlink_Telemetry_t_pb.HistoryQFileCnt', index=5,
       number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Flags', full_name='Downlink_Telemetry_t_pb.Flags', index=6,
+      name='SemValue', full_name='Downlink_Telemetry_t_pb.SemValue', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FilesSent', full_name='Downlink_Telemetry_t_pb.FilesSent', index=7,
+      name='Flags', full_name='Downlink_Telemetry_t_pb.Flags', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1051,14 +1051,14 @@ _DOWNLINK_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ActiveQFileCnt', full_name='Downlink_Telemetry_t_pb.ActiveQFileCnt', index=11,
+      name='FailedCounter', full_name='Downlink_Telemetry_t_pb.FailedCounter', index=11,
       number=12, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PendingQChecked', full_name='Downlink_Telemetry_t_pb.PendingQChecked', index=12,
+      name='FilesSent', full_name='Downlink_Telemetry_t_pb.FilesSent', index=12,
       number=13, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1089,8 +1089,8 @@ _ENGINE_TELEMETRY_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='FlightEngineEntityId', full_name='Engine_Telemetry_t_pb.FlightEngineEntityId', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1116,7 +1116,7 @@ _ENGINE_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='how_many_receivers', full_name='Engine_Telemetry_t_pb.how_many_receivers', index=4,
+      name='total_files_sent', full_name='Engine_Telemetry_t_pb.total_files_sent', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1144,9 +1144,9 @@ _ENGINE_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Spare', full_name='Engine_Telemetry_t_pb.Spare', index=8,
-      number=9, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='Flags', full_name='Engine_Telemetry_t_pb.Flags', index=8,
+      number=9, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1158,9 +1158,9 @@ _ENGINE_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Flags', full_name='Engine_Telemetry_t_pb.Flags', index=10,
-      number=11, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='Spare', full_name='Engine_Telemetry_t_pb.Spare', index=10,
+      number=11, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1172,14 +1172,14 @@ _ENGINE_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='total_files_sent', full_name='Engine_Telemetry_t_pb.total_files_sent', index=12,
+      name='MachinesAllocated', full_name='Engine_Telemetry_t_pb.MachinesAllocated', index=12,
       number=13, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MachinesAllocated', full_name='Engine_Telemetry_t_pb.MachinesAllocated', index=13,
+      name='how_many_receivers', full_name='Engine_Telemetry_t_pb.how_many_receivers', index=13,
       number=14, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1224,8 +1224,8 @@ _APP_TELEMETRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='LastFailedTrans', full_name='App_Telemetry_t_pb.LastFailedTrans', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1244,7 +1244,7 @@ _APP_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TotalAbandonTrans', full_name='App_Telemetry_t_pb.TotalAbandonTrans', index=5,
+      name='QNodesAllocated', full_name='App_Telemetry_t_pb.QNodesAllocated', index=5,
       number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1258,7 +1258,7 @@ _APP_TELEMETRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='QNodesAllocated', full_name='App_Telemetry_t_pb.QNodesAllocated', index=7,
+      name='TotalAbandonTrans', full_name='App_Telemetry_t_pb.TotalAbandonTrans', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1437,9 +1437,9 @@ _CF_APPDATA_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='MsgPtr', full_name='CF_AppData_t_pb.MsgPtr', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='CfgPkt', full_name='CF_AppData_t_pb.CfgPkt', index=0,
+      number=1, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1451,9 +1451,9 @@ _CF_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Chan', full_name='CF_AppData_t_pb.Chan', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='RunStatus', full_name='CF_AppData_t_pb.RunStatus', index=2,
+      number=3, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1465,72 +1465,72 @@ _CF_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RunStatus', full_name='CF_AppData_t_pb.RunStatus', index=4,
-      number=5, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Hk', full_name='CF_AppData_t_pb.Hk', index=5,
-      number=6, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='RawPduInputBuf', full_name='CF_AppData_t_pb.RawPduInputBuf', index=6,
-      number=7, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Spare', full_name='CF_AppData_t_pb.Spare', index=7,
-      number=8, type=13, cpp_type=3, label=3,
+      name='Chan', full_name='CF_AppData_t_pb.Chan', index=4,
+      number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Tbl', full_name='CF_AppData_t_pb.Tbl', index=8,
-      number=9, type=13, cpp_type=3, label=2,
+      name='Tbl', full_name='CF_AppData_t_pb.Tbl', index=5,
+      number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ConfigTableHandle', full_name='CF_AppData_t_pb.ConfigTableHandle', index=9,
-      number=10, type=5, cpp_type=1, label=2,
+      name='MsgPtr', full_name='CF_AppData_t_pb.MsgPtr', index=6,
+      number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Trans', full_name='CF_AppData_t_pb.Trans', index=10,
+      name='RawPduInputBuf', full_name='CF_AppData_t_pb.RawPduInputBuf', index=7,
+      number=8, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Spare', full_name='CF_AppData_t_pb.Spare', index=8,
+      number=9, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='EventFilters', full_name='CF_AppData_t_pb.EventFilters', index=9,
+      number=10, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Hk', full_name='CF_AppData_t_pb.Hk', index=10,
       number=11, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='UpQ', full_name='CF_AppData_t_pb.UpQ', index=11,
-      number=12, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='CfgPkt', full_name='CF_AppData_t_pb.CfgPkt', index=12,
-      number=13, type=11, cpp_type=10, label=2,
+      name='Trans', full_name='CF_AppData_t_pb.Trans', index=11,
+      number=12, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='EventFilters', full_name='CF_AppData_t_pb.EventFilters', index=13,
-      number=14, type=11, cpp_type=10, label=3,
+      name='UpQ', full_name='CF_AppData_t_pb.UpQ', index=12,
+      number=13, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='ConfigTableHandle', full_name='CF_AppData_t_pb.ConfigTableHandle', index=13,
+      number=14, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1558,14 +1558,14 @@ _CF_HKPACKET_T_PB.fields_by_name['Chan'].message_type = _DOWNLINK_TELEMETRY_T_PB
 _CF_HKPACKET_T_PB.fields_by_name['Up'].message_type = _UPLINK_TELEMETRY_T_PB
 _CF_HKPACKET_T_PB.fields_by_name['Cond'].message_type = _FAULT_TELEMETRY_T_PB
 _CF_CHANNELDATA_T_PB.fields_by_name['PbQ'].message_type = _CF_QUEUE_T_PB
+_CF_APPDATA_T_PB.fields_by_name['CfgPkt'].message_type = _CF_CONFIGPACKET_T_PB
 _CF_APPDATA_T_PB.fields_by_name['Mem'].message_type = _CF_MEMPARAMS_T_PB
 _CF_APPDATA_T_PB.fields_by_name['Chan'].message_type = _CF_CHANNELDATA_T_PB
-_CF_APPDATA_T_PB.fields_by_name['Hk'].message_type = _CF_HKPACKET_T_PB
 _CF_APPDATA_T_PB.fields_by_name['RawPduInputBuf'].message_type = _CFDP_DATA_PB
+_CF_APPDATA_T_PB.fields_by_name['EventFilters'].message_type = _CFE_EVS_BINFILTER_T_PB
+_CF_APPDATA_T_PB.fields_by_name['Hk'].message_type = _CF_HKPACKET_T_PB
 _CF_APPDATA_T_PB.fields_by_name['Trans'].message_type = _CF_TRANSPACKET_T_PB
 _CF_APPDATA_T_PB.fields_by_name['UpQ'].message_type = _CF_QUEUE_T_PB
-_CF_APPDATA_T_PB.fields_by_name['CfgPkt'].message_type = _CF_CONFIGPACKET_T_PB
-_CF_APPDATA_T_PB.fields_by_name['EventFilters'].message_type = _CFE_EVS_BINFILTER_T_PB
 DESCRIPTOR.message_types_by_name['CF_Queue_t_pb'] = _CF_QUEUE_T_PB
 DESCRIPTOR.message_types_by_name['CFDP_DATA_pb'] = _CFDP_DATA_PB
 DESCRIPTOR.message_types_by_name['CF_MemParams_t_pb'] = _CF_MEMPARAMS_T_PB

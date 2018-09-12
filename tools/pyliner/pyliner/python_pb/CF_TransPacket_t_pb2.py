@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_TransPacket_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_CF_TransPacket_t.proto\"\xc4\x03\n\x14\x43\x46_EngTransStat_t_pb\x12\r\n\x05State\x18\x01 \x02(\r\x12\x10\n\x08TransLen\x18\x02 \x02(\r\x12\x0c\n\x04Role\x18\x03 \x02(\r\x12\x10\n\x08\x43ondCode\x18\x04 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x05 \x03(\t\x12\x10\n\x08TransVal\x18\x06 \x02(\r\x12\x0f\n\x07PartLen\x18\x07 \x02(\r\x12\r\n\x05Phase\x18\x08 \x02(\r\x12\x10\n\x08\x46\x64Length\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x0f\n\x07TmpFile\x18\x0b \x03(\t\x12\x0f\n\x07PartVal\x18\x0c \x02(\r\x12\x10\n\x08\x43hecksum\x18\r \x02(\r\x12\x10\n\x08\x46\x64Offset\x18\x0e \x02(\r\x12\r\n\x05\x46lags\x18\x0f \x02(\r\x12\x11\n\tFinalStat\x18\x10 \x02(\r\x12\x0e\n\x06Spare1\x18\x11 \x02(\r\x12\x0e\n\x06Spare2\x18\x12 \x02(\r\x12\x0c\n\x04Naks\x18\x13 \x02(\r\x12\x0f\n\x07SrcFile\x18\x14 \x03(\t\x12\x14\n\x0cRcvdFileSize\x18\x15 \x02(\r\x12\x10\n\x08\x41ttempts\x18\x16 \x02(\r\x12\x10\n\x08\x44\x65liCode\x18\x17 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x18 \x02(\r\x12\x11\n\tStartTime\x18\x19 \x02(\r\"\xd5\x01\n\x14\x43\x46_AppTransStat_t_pb\x12\x0e\n\x06Status\x18\x01 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x02 \x03(\t\x12\x10\n\x08NodeType\x18\x03 \x02(\r\x12\x0f\n\x07SrcFile\x18\x04 \x03(\t\x12\x0f\n\x07\x43hanNum\x18\x05 \x02(\r\x12\x10\n\x08Priority\x18\x06 \x02(\r\x12\x0e\n\x06Source\x18\x07 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x08 \x03(\t\x12\r\n\x05\x43lass\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x10\n\x08\x43ondCode\x18\x0b \x02(\r\"p\n\x13\x43\x46_TransPacket_t_pb\x12\"\n\x03\x41pp\x18\x01 \x02(\x0b\x32\x15.CF_AppTransStat_t_pb\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\"\n\x03\x45ng\x18\x03 \x02(\x0b\x32\x15.CF_EngTransStat_t_pb')
+  serialized_pb=_b('\n\x1a_py_CF_TransPacket_t.proto\"\xc4\x03\n\x14\x43\x46_EngTransStat_t_pb\x12\x14\n\x0cRcvdFileSize\x18\x01 \x02(\r\x12\x10\n\x08TransLen\x18\x02 \x02(\r\x12\x0c\n\x04Role\x18\x03 \x02(\r\x12\x10\n\x08\x43ondCode\x18\x04 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x05 \x02(\t\x12\x10\n\x08TransVal\x18\x06 \x02(\r\x12\x10\n\x08\x44\x65liCode\x18\x07 \x02(\r\x12\r\n\x05Phase\x18\x08 \x02(\r\x12\x10\n\x08\x46\x64Length\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x0f\n\x07TmpFile\x18\x0b \x02(\t\x12\x0f\n\x07PartVal\x18\x0c \x02(\r\x12\x10\n\x08\x43hecksum\x18\r \x02(\r\x12\x10\n\x08\x46\x64Offset\x18\x0e \x02(\r\x12\r\n\x05\x46lags\x18\x0f \x02(\r\x12\x11\n\tFinalStat\x18\x10 \x02(\r\x12\x0e\n\x06Spare1\x18\x11 \x02(\r\x12\x0e\n\x06Spare2\x18\x12 \x02(\r\x12\x0c\n\x04Naks\x18\x13 \x02(\r\x12\x0f\n\x07SrcFile\x18\x14 \x02(\t\x12\r\n\x05State\x18\x15 \x02(\r\x12\x10\n\x08\x41ttempts\x18\x16 \x02(\r\x12\x0f\n\x07PartLen\x18\x17 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x18 \x02(\r\x12\x11\n\tStartTime\x18\x19 \x02(\r\"\xd5\x01\n\x14\x43\x46_AppTransStat_t_pb\x12\x0f\n\x07\x44stFile\x18\x01 \x02(\t\x12\x0e\n\x06Status\x18\x02 \x02(\r\x12\x10\n\x08NodeType\x18\x03 \x02(\r\x12\x0f\n\x07SrcFile\x18\x04 \x02(\t\x12\x0f\n\x07\x43hanNum\x18\x05 \x02(\r\x12\x10\n\x08Priority\x18\x06 \x02(\r\x12\x0e\n\x06Source\x18\x07 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x08 \x02(\t\x12\r\n\x05\x43lass\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x10\n\x08\x43ondCode\x18\x0b \x02(\r\"p\n\x13\x43\x46_TransPacket_t_pb\x12\"\n\x03\x41pp\x18\x01 \x02(\x0b\x32\x15.CF_AppTransStat_t_pb\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\"\n\x03\x45ng\x18\x03 \x02(\x0b\x32\x15.CF_EngTransStat_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,7 +33,7 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='State', full_name='CF_EngTransStat_t_pb.State', index=0,
+      name='RcvdFileSize', full_name='CF_EngTransStat_t_pb.RcvdFileSize', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -62,8 +62,8 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='DstFile', full_name='CF_EngTransStat_t_pb.DstFile', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -75,7 +75,7 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PartLen', full_name='CF_EngTransStat_t_pb.PartLen', index=6,
+      name='DeliCode', full_name='CF_EngTransStat_t_pb.DeliCode', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -104,8 +104,8 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='TmpFile', full_name='CF_EngTransStat_t_pb.TmpFile', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=11, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -167,13 +167,13 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFile', full_name='CF_EngTransStat_t_pb.SrcFile', index=19,
-      number=20, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=20, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RcvdFileSize', full_name='CF_EngTransStat_t_pb.RcvdFileSize', index=20,
+      name='State', full_name='CF_EngTransStat_t_pb.State', index=20,
       number=21, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -187,7 +187,7 @@ _CF_ENGTRANSSTAT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DeliCode', full_name='CF_EngTransStat_t_pb.DeliCode', index=22,
+      name='PartLen', full_name='CF_EngTransStat_t_pb.PartLen', index=22,
       number=23, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -231,16 +231,16 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Status', full_name='CF_AppTransStat_t_pb.Status', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='DstFile', full_name='CF_AppTransStat_t_pb.DstFile', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DstFile', full_name='CF_AppTransStat_t_pb.DstFile', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Status', full_name='CF_AppTransStat_t_pb.Status', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -253,8 +253,8 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFile', full_name='CF_AppTransStat_t_pb.SrcFile', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -281,8 +281,8 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcEntityId', full_name='CF_AppTransStat_t_pb.SrcEntityId', index=7,
-      number=8, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=8, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

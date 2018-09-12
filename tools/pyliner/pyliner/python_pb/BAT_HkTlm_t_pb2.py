@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_BAT_HkTlm_t.proto',
   package='',
-  serialized_pb=_b('\n\x15_py_BAT_HkTlm_t.proto\"\x9e\x02\n\x0e\x42\x41T_HkTlm_t_pb\x12\r\n\x05Scale\x18\x01 \x02(\x02\x12\x17\n\x0fVoltageFiltered\x18\x02 \x02(\x02\x12\x11\n\tCellCount\x18\x03 \x02(\x05\x12\x11\n\tTimestamp\x18\x04 \x02(\x04\x12\x10\n\x08usCmdCnt\x18\x05 \x02(\r\x12\x17\n\x0f\x43urrentFiltered\x18\x06 \x02(\x02\x12\x0f\n\x07\x43urrent\x18\x07 \x02(\x02\x12\x0f\n\x07Warning\x18\x08 \x02(\r\x12\x11\n\tConnected\x18\t \x02(\x08\x12\x0f\n\x07Voltage\x18\n \x02(\x02\x12\x11\n\tTlmHeader\x18\x0b \x03(\r\x12\x11\n\tRemaining\x18\x0c \x02(\x02\x12\x12\n\nDischarged\x18\r \x02(\x02\x12\x13\n\x0busCmdErrCnt\x18\x0e \x02(\r')
+  serialized_pb=_b('\n\x15_py_BAT_HkTlm_t.proto\"\x9e\x02\n\x0e\x42\x41T_HkTlm_t_pb\x12\r\n\x05Scale\x18\x01 \x02(\x02\x12\x17\n\x0fVoltageFiltered\x18\x02 \x02(\x02\x12\x11\n\tCellCount\x18\x03 \x02(\x05\x12\x11\n\tTimestamp\x18\x04 \x02(\x04\x12\x10\n\x08usCmdCnt\x18\x05 \x02(\r\x12\x17\n\x0f\x43urrentFiltered\x18\x06 \x02(\x02\x12\x0f\n\x07\x43urrent\x18\x07 \x02(\x02\x12\x0f\n\x07Warning\x18\x08 \x02(\r\x12\x11\n\tConnected\x18\t \x02(\x08\x12\x13\n\x0busCmdErrCnt\x18\n \x02(\r\x12\x11\n\tTlmHeader\x18\x0b \x03(\r\x12\x11\n\tRemaining\x18\x0c \x02(\x02\x12\x12\n\nDischarged\x18\r \x02(\x02\x12\x0f\n\x07Voltage\x18\x0e \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -96,8 +96,8 @@ _BAT_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Voltage', full_name='BAT_HkTlm_t_pb.Voltage', index=9,
-      number=10, type=2, cpp_type=6, label=2,
+      name='usCmdErrCnt', full_name='BAT_HkTlm_t_pb.usCmdErrCnt', index=9,
+      number=10, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -124,8 +124,8 @@ _BAT_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='usCmdErrCnt', full_name='BAT_HkTlm_t_pb.usCmdErrCnt', index=13,
-      number=14, type=13, cpp_type=3, label=2,
+      name='Voltage', full_name='BAT_HkTlm_t_pb.Voltage', index=13,
+      number=14, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

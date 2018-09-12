@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_GPS_NAV_ATT_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_GPS_NAV_ATT_t.proto\"\x96\x01\n\x10GPS_NAV_ATT_t_pb\x12\x0f\n\x07\x61\x63\x63Roll\x18\x01 \x02(\r\x12\x0c\n\x04roll\x18\x02 \x02(\x05\x12\x12\n\naccHeading\x18\x03 \x02(\r\x12\x0f\n\x07version\x18\x04 \x02(\r\x12\x0c\n\x04iTOW\x18\x05 \x02(\r\x12\r\n\x05pitch\x18\x06 \x02(\x05\x12\x0f\n\x07heading\x18\x07 \x02(\x05\x12\x10\n\x08\x61\x63\x63Pitch\x18\x08 \x02(\r')
+  serialized_pb=_b('\n\x17_py_GPS_NAV_ATT_t.proto\"\x96\x01\n\x10GPS_NAV_ATT_t_pb\x12\x0f\n\x07\x61\x63\x63Roll\x18\x01 \x02(\r\x12\x0f\n\x07heading\x18\x02 \x02(\x05\x12\x12\n\naccHeading\x18\x03 \x02(\r\x12\x0f\n\x07version\x18\x04 \x02(\r\x12\x0c\n\x04iTOW\x18\x05 \x02(\r\x12\r\n\x05pitch\x18\x06 \x02(\x05\x12\x0c\n\x04roll\x18\x07 \x02(\x05\x12\x10\n\x08\x61\x63\x63Pitch\x18\x08 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,7 +40,7 @@ _GPS_NAV_ATT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='roll', full_name='GPS_NAV_ATT_t_pb.roll', index=1,
+      name='heading', full_name='GPS_NAV_ATT_t_pb.heading', index=1,
       number=2, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -75,7 +75,7 @@ _GPS_NAV_ATT_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='heading', full_name='GPS_NAV_ATT_t_pb.heading', index=6,
+      name='roll', full_name='GPS_NAV_ATT_t_pb.roll', index=6,
       number=7, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

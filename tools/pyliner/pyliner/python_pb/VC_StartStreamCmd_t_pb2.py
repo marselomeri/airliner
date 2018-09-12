@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_VC_StartStreamCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1d_py_VC_StartStreamCmd_t.proto\"J\n\x16VC_StartStreamCmd_t_pb\x12\x0c\n\x04Port\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x0f\n\x07\x41\x64\x64ress\x18\x03 \x03(\t')
+  serialized_pb=_b('\n\x1d_py_VC_StartStreamCmd_t.proto\"J\n\x16VC_StartStreamCmd_t_pb\x12\x0c\n\x04Port\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x0f\n\x07\x41\x64\x64ress\x18\x03 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,8 +48,8 @@ _VC_STARTSTREAMCMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Address', full_name='VC_StartStreamCmd_t_pb.Address', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

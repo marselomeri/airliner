@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PBLIB_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_PBLIB_AppData_t.proto\"E\n\x12PBLIB_RegData_t_pb\x12\x0f\n\x07\x63mdCode\x18\x01 \x02(\r\x12\r\n\x05msgId\x18\x02 \x02(\r\x12\x0f\n\x07msgName\x18\x03 \x03(\t\"W\n\x12PBLIB_AppData_t_pb\x12,\n\x0fRegisteredFuncs\x18\x01 \x03(\x0b\x32\x13.PBLIB_RegData_t_pb\x12\x13\n\x0bRegTblMutex\x18\x02 \x02(\r')
+  serialized_pb=_b('\n\x19_py_PBLIB_AppData_t.proto\"E\n\x12PBLIB_RegData_t_pb\x12\x0f\n\x07\x63mdCode\x18\x01 \x02(\r\x12\r\n\x05msgId\x18\x02 \x02(\r\x12\x0f\n\x07msgName\x18\x03 \x02(\t\"W\n\x12PBLIB_AppData_t_pb\x12,\n\x0fRegisteredFuncs\x18\x01 \x03(\x0b\x32\x13.PBLIB_RegData_t_pb\x12\x13\n\x0bRegTblMutex\x18\x02 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,8 +48,8 @@ _PBLIB_REGDATA_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='msgName', full_name='PBLIB_RegData_t_pb.msgName', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

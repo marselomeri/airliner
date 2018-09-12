@@ -18,41 +18,11 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_ES_PerfStartCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_CFE_ES_PerfStartCmd_t.proto\"7\n CFE_ES_PerfStartCmd_Payload_t_pb\x12\x13\n\x0bTriggerMode\x18\x01 \x02(\r\"a\n\x18\x43\x46\x45_ES_PerfStartCmd_t_pb\x12\x32\n\x07Payload\x18\x01 \x02(\x0b\x32!.CFE_ES_PerfStartCmd_Payload_t_pb\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
+  serialized_pb=_b('\n\x1f_py_CFE_ES_PerfStartCmd_t.proto\">\n\x18\x43\x46\x45_ES_PerfStartCmd_t_pb\x12\x0f\n\x07Payload\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
-
-
-_CFE_ES_PERFSTARTCMD_PAYLOAD_T_PB = _descriptor.Descriptor(
-  name='CFE_ES_PerfStartCmd_Payload_t_pb',
-  full_name='CFE_ES_PerfStartCmd_Payload_t_pb',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='TriggerMode', full_name='CFE_ES_PerfStartCmd_Payload_t_pb.TriggerMode', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=35,
-  serialized_end=90,
-)
 
 
 _CFE_ES_PERFSTARTCMD_T_PB = _descriptor.Descriptor(
@@ -64,8 +34,8 @@ _CFE_ES_PERFSTARTCMD_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='Payload', full_name='CFE_ES_PerfStartCmd_t_pb.Payload', index=0,
-      number=1, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -87,20 +57,11 @@ _CFE_ES_PERFSTARTCMD_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=92,
-  serialized_end=189,
+  serialized_start=35,
+  serialized_end=97,
 )
 
-_CFE_ES_PERFSTARTCMD_T_PB.fields_by_name['Payload'].message_type = _CFE_ES_PERFSTARTCMD_PAYLOAD_T_PB
-DESCRIPTOR.message_types_by_name['CFE_ES_PerfStartCmd_Payload_t_pb'] = _CFE_ES_PERFSTARTCMD_PAYLOAD_T_PB
 DESCRIPTOR.message_types_by_name['CFE_ES_PerfStartCmd_t_pb'] = _CFE_ES_PERFSTARTCMD_T_PB
-
-CFE_ES_PerfStartCmd_Payload_t_pb = _reflection.GeneratedProtocolMessageType('CFE_ES_PerfStartCmd_Payload_t_pb', (_message.Message,), dict(
-  DESCRIPTOR = _CFE_ES_PERFSTARTCMD_PAYLOAD_T_PB,
-  __module__ = '_py_CFE_ES_PerfStartCmd_t_pb2'
-  # @@protoc_insertion_point(class_scope:CFE_ES_PerfStartCmd_Payload_t_pb)
-  ))
-_sym_db.RegisterMessage(CFE_ES_PerfStartCmd_Payload_t_pb)
 
 CFE_ES_PerfStartCmd_t_pb = _reflection.GeneratedProtocolMessageType('CFE_ES_PerfStartCmd_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _CFE_ES_PERFSTARTCMD_T_PB,

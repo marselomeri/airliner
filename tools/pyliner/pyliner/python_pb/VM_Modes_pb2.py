@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_VM_Modes.proto',
   package='',
-  serialized_pb=_b('\n\x12_py_VM_Modes.proto\"e\n\x0bVM_Modes_pb\x12\r\n\x05inRtl\x18\x01 \x02(\x08\x12\x10\n\x08inLoiter\x18\x02 \x02(\x08\x12\x11\n\tintakeoff\x18\x03 \x02(\x08\x12\x10\n\x08inManual\x18\x04 \x02(\x08\x12\x10\n\x08inPosCtl\x18\x05 \x02(\x08')
+  serialized_pb=_b('\n\x12_py_VM_Modes.proto\"e\n\x0bVM_Modes_pb\x12\r\n\x05inRtl\x18\x01 \x02(\x08\x12\x10\n\x08inPosCtl\x18\x02 \x02(\x08\x12\x11\n\tintakeoff\x18\x03 \x02(\x08\x12\x10\n\x08inManual\x18\x04 \x02(\x08\x12\x10\n\x08inLoiter\x18\x05 \x02(\x08')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,7 +40,7 @@ _VM_MODES_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='inLoiter', full_name='VM_Modes_pb.inLoiter', index=1,
+      name='inPosCtl', full_name='VM_Modes_pb.inPosCtl', index=1,
       number=2, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -61,7 +61,7 @@ _VM_MODES_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='inPosCtl', full_name='VM_Modes_pb.inPosCtl', index=4,
+      name='inLoiter', full_name='VM_Modes_pb.inLoiter', index=4,
       number=5, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,

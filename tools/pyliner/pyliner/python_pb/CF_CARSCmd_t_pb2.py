@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_CARSCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_CF_CARSCmd_t.proto\"3\n\x0f\x43\x46_CARSCmd_t_pb\x12\r\n\x05Trans\x18\x01 \x03(\t\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
+  serialized_pb=_b('\n\x16_py_CF_CARSCmd_t.proto\"3\n\x0f\x43\x46_CARSCmd_t_pb\x12\r\n\x05Trans\x18\x01 \x02(\t\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _CF_CARSCMD_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='Trans', full_name='CF_CARSCmd_t_pb.Trans', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

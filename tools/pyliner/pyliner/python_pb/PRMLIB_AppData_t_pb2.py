@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PRMLIB_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_PRMLIB_AppData_t.proto\"W\n\x18PRMLIB_ParamTblData_t_pb\x12*\n\nparam_data\x18\x01 \x02(\x0b\x32\x16.PRMLIB_ParamData_t_pb\x12\x0f\n\x07\x65nabled\x18\x02 \x02(\r\"B\n\x15PRMLIB_ParamData_t_pb\x12\x0c\n\x04type\x18\x01 \x02(\r\x12\x0c\n\x04name\x18\x02 \x03(\t\x12\r\n\x05value\x18\x03 \x03(\r\"m\n\x13PRMLIB_AppData_t_pb\x12\x12\n\nParamCount\x18\x01 \x02(\r\x12+\n\x08ParamTbl\x18\x02 \x03(\x0b\x32\x19.PRMLIB_ParamTblData_t_pb\x12\x15\n\rParamTblMutex\x18\x03 \x02(\r')
+  serialized_pb=_b('\n\x1a_py_PRMLIB_AppData_t.proto\"W\n\x18PRMLIB_ParamTblData_t_pb\x12*\n\nparam_data\x18\x01 \x02(\x0b\x32\x16.PRMLIB_ParamData_t_pb\x12\x0f\n\x07\x65nabled\x18\x02 \x02(\r\"B\n\x15PRMLIB_ParamData_t_pb\x12\x0c\n\x04type\x18\x01 \x02(\r\x12\x0c\n\x04name\x18\x02 \x02(\t\x12\r\n\x05value\x18\x03 \x03(\r\"m\n\x13PRMLIB_AppData_t_pb\x12\x12\n\nParamCount\x18\x01 \x02(\r\x12+\n\x08ParamTbl\x18\x02 \x03(\x0b\x32\x19.PRMLIB_ParamTblData_t_pb\x12\x15\n\rParamTblMutex\x18\x03 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -78,8 +78,8 @@ _PRMLIB_PARAMDATA_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='name', full_name='PRMLIB_ParamData_t_pb.name', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

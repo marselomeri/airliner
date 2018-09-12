@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_GPS_NAV_ODO_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_GPS_NAV_ODO_t.proto\"o\n\x10GPS_NAV_ODO_t_pb\x12\x10\n\x08\x64istance\x18\x01 \x02(\r\x12\x13\n\x0b\x64istanceStd\x18\x02 \x02(\r\x12\x0f\n\x07version\x18\x03 \x02(\r\x12\x15\n\rtotalDistance\x18\x04 \x02(\r\x12\x0c\n\x04iTOW\x18\x05 \x02(\r')
+  serialized_pb=_b('\n\x17_py_GPS_NAV_ODO_t.proto\"o\n\x10GPS_NAV_ODO_t_pb\x12\x10\n\x08\x64istance\x18\x01 \x02(\r\x12\x13\n\x0b\x64istanceStd\x18\x02 \x02(\r\x12\x0f\n\x07version\x18\x03 \x02(\r\x12\x0c\n\x04iTOW\x18\x04 \x02(\r\x12\x15\n\rtotalDistance\x18\x05 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -54,14 +54,14 @@ _GPS_NAV_ODO_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='totalDistance', full_name='GPS_NAV_ODO_t_pb.totalDistance', index=3,
+      name='iTOW', full_name='GPS_NAV_ODO_t_pb.iTOW', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='iTOW', full_name='GPS_NAV_ODO_t_pb.iTOW', index=4,
+      name='totalDistance', full_name='GPS_NAV_ODO_t_pb.totalDistance', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_GPS_CurrentValueTable_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_GPS_CurrentValueTable_t.proto\"k\n\x19PX4_GpsInjectDataMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\r\n\x05\x46lags\x18\x03 \x02(\r\x12\x0b\n\x03Len\x18\x04 \x02(\r\x12\x0c\n\x04\x44\x61ta\x18\x05 \x03(\t\"O\n\x1aGPS_CurrentValueTable_t_pb\x12\x31\n\rGpsInjectData\x18\x01 \x02(\x0b\x32\x1a.PX4_GpsInjectDataMsg_t_pb')
+  serialized_pb=_b('\n!_py_GPS_CurrentValueTable_t.proto\"k\n\x19PX4_GpsInjectDataMsg_t_pb\x12\x0c\n\x04\x44\x61ta\x18\x01 \x02(\t\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\r\n\x05\x46lags\x18\x03 \x02(\r\x12\x0b\n\x03Len\x18\x04 \x02(\r\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\"O\n\x1aGPS_CurrentValueTable_t_pb\x12\x31\n\rGpsInjectData\x18\x01 \x02(\x0b\x32\x1a.PX4_GpsInjectDataMsg_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,9 +33,9 @@ _PX4_GPSINJECTDATAMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='PX4_GpsInjectDataMsg_t_pb.Timestamp', index=0,
-      number=1, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
+      name='Data', full_name='PX4_GpsInjectDataMsg_t_pb.Data', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -61,9 +61,9 @@ _PX4_GPSINJECTDATAMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Data', full_name='PX4_GpsInjectDataMsg_t_pb.Data', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Timestamp', full_name='PX4_GpsInjectDataMsg_t_pb.Timestamp', index=4,
+      number=5, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

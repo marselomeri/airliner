@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_DS_DestBaseCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_DS_DestBaseCmd_t.proto\"c\n\x13\x44S_DestBaseCmd_t_pb\x12\x0f\n\x07Padding\x18\x01 \x02(\r\x12\x10\n\x08\x42\x61sename\x18\x02 \x03(\t\x12\x16\n\x0e\x46ileTableIndex\x18\x03 \x02(\r\x12\x11\n\tCmdHeader\x18\x04 \x03(\r')
+  serialized_pb=_b('\n\x1a_py_DS_DestBaseCmd_t.proto\"c\n\x13\x44S_DestBaseCmd_t_pb\x12\x0f\n\x07Padding\x18\x01 \x02(\r\x12\x10\n\x08\x42\x61sename\x18\x02 \x02(\t\x12\x16\n\x0e\x46ileTableIndex\x18\x03 \x02(\r\x12\x11\n\tCmdHeader\x18\x04 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -41,8 +41,8 @@ _DS_DESTBASECMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Basename', full_name='DS_DestBaseCmd_t_pb.Basename', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

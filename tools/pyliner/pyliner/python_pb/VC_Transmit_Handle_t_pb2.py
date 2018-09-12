@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_VC_Transmit_Handle_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_VC_Transmit_Handle_t.proto\"\x8c\x01\n\x17VC_Transmit_Handle_t_pb\x12\x10\n\x08SocketFd\x18\x01 \x02(\r\x12\x0e\n\x06MyPort\x18\x02 \x02(\r\x12\x11\n\tChannelID\x18\x03 \x02(\r\x12\x0c\n\x04MyIP\x18\x04 \x03(\t\x12\x0e\n\x06\x44\x65stIP\x18\x05 \x03(\t\x12\x0c\n\x04Mode\x18\x06 \x02(\r\x12\x10\n\x08\x44\x65stPort\x18\x07 \x02(\r')
+  serialized_pb=_b('\n\x1e_py_VC_Transmit_Handle_t.proto\"\x8c\x01\n\x17VC_Transmit_Handle_t_pb\x12\x10\n\x08SocketFd\x18\x01 \x02(\r\x12\x0e\n\x06MyPort\x18\x02 \x02(\r\x12\x11\n\tChannelID\x18\x03 \x02(\r\x12\x0c\n\x04MyIP\x18\x04 \x02(\t\x12\x0e\n\x06\x44\x65stIP\x18\x05 \x02(\t\x12\x0c\n\x04Mode\x18\x06 \x02(\r\x12\x10\n\x08\x44\x65stPort\x18\x07 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,15 +55,15 @@ _VC_TRANSMIT_HANDLE_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='MyIP', full_name='VC_Transmit_Handle_t_pb.MyIP', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='DestIP', full_name='VC_Transmit_Handle_t_pb.DestIP', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
