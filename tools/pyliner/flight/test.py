@@ -49,6 +49,14 @@ with ScriptingWrapper(vehicle) as v:
     
     v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
                              {'name':'MaxPRCount', 'value':2}]})
+
+    v.com.send_command({'name':'/Airliner/CFE/StartApp', 'args':[
+                             {'name':'AppFileName', 'value':"testfile"},
+                             {'name':'StackSize', 'value':1},
+                             {'name':'ExceptionAction', 'value':2},
+                             {'name':'Priority', 'value':3},
+                             {'name':'Application', 'value':"testapp"},
+                             {'name':'AppEntryPoint', 'value':"testentry"}]})
     
     time.sleep( 2 )
     
