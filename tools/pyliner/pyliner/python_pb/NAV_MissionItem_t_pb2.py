@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_NAV_MissionItem_t.proto',
   package='',
-  serialized_pb=_b('\n\x1b_py_NAV_MissionItem_t.proto\"\xca\x02\n\x14NAV_MissionItem_t_pb\x12\x17\n\x0fLatFloatPadding\x18\x01 \x02(\x02\x12\x0b\n\x03Yaw\x18\x02 \x02(\x02\x12\x1a\n\x12\x44oJumpMissionIndex\x18\x03 \x02(\x05\x12\x0b\n\x03Lon\x18\x04 \x02(\x01\x12\x1a\n\x12\x44oJumpCurrentCount\x18\x05 \x02(\r\x12\x19\n\x11\x44oJumpRepeatCount\x18\x06 \x02(\r\x12\x0e\n\x06Params\x18\x07 \x03(\x02\x12\x10\n\x08PitchMin\x18\x08 \x02(\x02\x12\x14\n\x0cLoiterRadius\x18\t \x02(\x02\x12\x0b\n\x03Lat\x18\n \x02(\x01\x12\x12\n\nTimeInside\x18\x0b \x02(\x02\x12\x18\n\x10\x41\x63\x63\x65ptanceRadius\x18\x0c \x02(\x02\x12\x17\n\x0fLonFloatPadding\x18\r \x02(\x02\x12\x10\n\x08\x41ltitude\x18\x0e \x02(\x02\x12\x0e\n\x06NavCmd\x18\x0f \x02(\r')
+  serialized_pb=_b('\n\x1b_py_NAV_MissionItem_t.proto\"\xca\x02\n\x14NAV_MissionItem_t_pb\x12\x17\n\x0fLatFloatPadding\x18\x01 \x02(\x02\x12\x0b\n\x03Yaw\x18\x02 \x02(\x02\x12\x1a\n\x12\x44oJumpMissionIndex\x18\x03 \x02(\x05\x12\x0b\n\x03Lon\x18\x04 \x02(\x01\x12\x1a\n\x12\x44oJumpCurrentCount\x18\x05 \x02(\r\x12\x19\n\x11\x44oJumpRepeatCount\x18\x06 \x02(\r\x12\x0e\n\x06Params\x18\x07 \x03(\x02\x12\x17\n\x0fLonFloatPadding\x18\x08 \x02(\x02\x12\x14\n\x0cLoiterRadius\x18\t \x02(\x02\x12\x0b\n\x03Lat\x18\n \x02(\x01\x12\x12\n\nTimeInside\x18\x0b \x02(\x02\x12\x10\n\x08PitchMin\x18\x0c \x02(\x02\x12\x18\n\x10\x41\x63\x63\x65ptanceRadius\x18\r \x02(\x02\x12\x10\n\x08\x41ltitude\x18\x0e \x02(\x02\x12\x0e\n\x06NavCmd\x18\x0f \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -82,7 +82,7 @@ _NAV_MISSIONITEM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PitchMin', full_name='NAV_MissionItem_t_pb.PitchMin', index=7,
+      name='LonFloatPadding', full_name='NAV_MissionItem_t_pb.LonFloatPadding', index=7,
       number=8, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -110,14 +110,14 @@ _NAV_MISSIONITEM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AcceptanceRadius', full_name='NAV_MissionItem_t_pb.AcceptanceRadius', index=11,
+      name='PitchMin', full_name='NAV_MissionItem_t_pb.PitchMin', index=11,
       number=12, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LonFloatPadding', full_name='NAV_MissionItem_t_pb.LonFloatPadding', index=12,
+      name='AcceptanceRadius', full_name='NAV_MissionItem_t_pb.AcceptanceRadius', index=12,
       number=13, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

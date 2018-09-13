@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_QAE_ConfigTbl_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_QAE_ConfigTbl_t.proto\"\xc3\x01\n\x12QAE_ConfigTbl_t_pb\x12\x16\n\x0e\x41TT_MAG_DECL_A\x18\x01 \x02(\x08\x12\x11\n\tATT_W_ACC\x18\x02 \x02(\x02\x12\x17\n\x0f\x41TT_W_GYRO_BIAS\x18\x03 \x02(\x02\x12\x14\n\x0c\x46W_ARSP_MODE\x18\x04 \x02(\x05\x12\x14\n\x0c\x41TT_BIAS_MAX\x18\x05 \x02(\x02\x12\x14\n\x0c\x41TT_ACC_COMP\x18\x06 \x02(\x08\x12\x11\n\tATT_W_MAG\x18\x07 \x02(\x02\x12\x14\n\x0c\x41TT_MAG_DECL\x18\x08 \x02(\x02')
+  serialized_pb=_b('\n\x19_py_QAE_ConfigTbl_t.proto\"\xc3\x01\n\x12QAE_ConfigTbl_t_pb\x12\x14\n\x0c\x46W_ARSP_MODE\x18\x01 \x02(\x05\x12\x11\n\tATT_W_ACC\x18\x02 \x02(\x02\x12\x17\n\x0f\x41TT_W_GYRO_BIAS\x18\x03 \x02(\x02\x12\x16\n\x0e\x41TT_MAG_DECL_A\x18\x04 \x02(\x08\x12\x14\n\x0c\x41TT_BIAS_MAX\x18\x05 \x02(\x02\x12\x14\n\x0c\x41TT_ACC_COMP\x18\x06 \x02(\x08\x12\x11\n\tATT_W_MAG\x18\x07 \x02(\x02\x12\x14\n\x0c\x41TT_MAG_DECL\x18\x08 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,9 +33,9 @@ _QAE_CONFIGTBL_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='ATT_MAG_DECL_A', full_name='QAE_ConfigTbl_t_pb.ATT_MAG_DECL_A', index=0,
-      number=1, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='FW_ARSP_MODE', full_name='QAE_ConfigTbl_t_pb.FW_ARSP_MODE', index=0,
+      number=1, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -54,9 +54,9 @@ _QAE_CONFIGTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='FW_ARSP_MODE', full_name='QAE_ConfigTbl_t_pb.FW_ARSP_MODE', index=3,
-      number=4, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
+      name='ATT_MAG_DECL_A', full_name='QAE_ConfigTbl_t_pb.ATT_MAG_DECL_A', index=3,
+      number=4, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

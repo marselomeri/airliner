@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SENS_CurrentValueTable_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_SENS_CurrentValueTable_t.proto\"\x8b\x02\n\x13PX4_InputRcMsg_t_pb\x12\x19\n\x11RcTotalFrameCount\x18\x01 \x02(\r\x12\x0e\n\x06RcLost\x18\x02 \x02(\x08\x12\x14\n\x0c\x43hannelCount\x18\x03 \x02(\r\x12\x12\n\nLastSignal\x18\x04 \x02(\x04\x12\x12\n\nRcFailsafe\x18\x05 \x02(\x08\x12\x11\n\tTimestamp\x18\x06 \x02(\x04\x12\x13\n\x0bInputSource\x18\x07 \x02(\r\x12\x11\n\tTlmHeader\x18\x08 \x03(\r\x12\x0e\n\x06Values\x18\t \x03(\r\x12\x18\n\x10RcPpmFrameLength\x18\n \x02(\r\x12\x18\n\x10RcLostFrameCount\x18\x0b \x02(\r\x12\x0c\n\x04RSSI\x18\x0c \x02(\x05\"\xc9\x02\n\x16PX4_SensorGyroMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x11\n\tXIntegral\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x0c\n\x04ZRaw\x18\x06 \x02(\x05\x12\x0c\n\x04YRaw\x18\x07 \x02(\x05\x12\x0f\n\x07Scaling\x18\x08 \x02(\x02\x12\r\n\x05Range\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x13\n\x0bTemperature\x18\x12 \x02(\x02\"\xce\x04\n\x1ePX4_VehicleControlModeMsg_t_pb\x12 \n\x18\x45xternalManualOverrideOk\x18\x01 \x02(\x08\x12\x1e\n\x16\x43ontrolAltitudeEnabled\x18\x02 \x02(\x08\x12\x1a\n\x12\x43ontrolAutoEnabled\x18\x03 \x02(\x08\x12\x1e\n\x16\x43ontrolFixedHdgEnabled\x18\x04 \x02(\x08\x12\"\n\x1a\x43ontrolAccelerationEnabled\x18\x05 \x02(\x08\x12\x18\n\x10SystemHilEnabled\x18\x06 \x02(\x08\x12\x1b\n\x13\x43ontrolRatesEnabled\x18\x07 \x02(\x08\x12\x1c\n\x14\x43ontrolManualEnabled\x18\x08 \x02(\x08\x12!\n\x19\x43ontrolTerminationEnabled\x18\t \x02(\x08\x12\x1e\n\x16\x43ontrolVelocityEnabled\x18\n \x02(\x08\x12\x1b\n\x13\x43ontrolForceEnabled\x18\x0b \x02(\x08\x12\x11\n\tTimestamp\x18\x0c \x02(\x04\x12\x1f\n\x17\x43ontrolRattitudeEnabled\x18\r \x02(\x08\x12\x1f\n\x17\x43ontrolClimbRateEnabled\x18\x0e \x02(\x08\x12\x1e\n\x16\x43ontrolAttitudeEnabled\x18\x0f \x02(\x08\x12\x1e\n\x16\x43ontrolOffboardEnabled\x18\x10 \x02(\x08\x12\r\n\x05\x41rmed\x18\x11 \x02(\x08\x12\x11\n\tTlmHeader\x18\x12 \x03(\r\x12\x1e\n\x16\x43ontrolPositionEnabled\x18\x13 \x02(\x08\"\xb8\x01\n PX4_DifferentialPressureMsg_t_pb\x12$\n\x1c\x44ifferentialPressureFiltered\x18\x01 \x02(\x02\x12\x13\n\x0bTemperature\x18\x02 \x02(\x02\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x12\n\nErrorCount\x18\x04 \x02(\x04\x12\x1f\n\x17\x44ifferentialPressureRaw\x18\x05 \x02(\x02\x12\x11\n\tTlmHeader\x18\x06 \x03(\r\"\xcf\x02\n\x17PX4_SensorAccelMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x11\n\tXIntegral\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x12\n\nRange_m_s2\x18\x06 \x02(\x02\x12\x0c\n\x04ZRaw\x18\x07 \x02(\x05\x12\x0c\n\x04YRaw\x18\x08 \x02(\x05\x12\x0f\n\x07Scaling\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x13\n\x0bTemperature\x18\x12 \x02(\x02\"\xe3\x01\n\x15PX4_SensorMagMsg_t_pb\x12\x13\n\x0bTemperature\x18\x01 \x02(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x0c\n\x04ZRaw\x18\x03 \x02(\x05\x12\x0c\n\x04YRaw\x18\x04 \x02(\x05\x12\x0f\n\x07Scaling\x18\x05 \x02(\x02\x12\r\n\x05Range\x18\x06 \x02(\x02\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x10\n\x08\x44\x65viceID\x18\x08 \x02(\r\x12\t\n\x01Y\x18\t \x02(\x02\x12\t\n\x01X\x18\n \x02(\x02\x12\t\n\x01Z\x18\x0b \x02(\x02\x12\x12\n\nErrorCount\x18\x0c \x02(\x04\x12\x0c\n\x04XRaw\x18\r \x02(\x05\"i\n\x1cPX4_ActuatorControlsMsg_t_pb\x12\x0f\n\x07\x43ontrol\x18\x01 \x03(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x12\n\nSampleTime\x18\x03 \x02(\x04\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\"\x8b\x01\n\x16PX4_SensorBaroMsg_t_pb\x12\x13\n\x0bTemperature\x18\x01 \x02(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x10\n\x08\x41ltitude\x18\x03 \x02(\x02\x12\x10\n\x08Pressure\x18\x04 \x02(\x02\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x12\n\nErrorCount\x18\x06 \x02(\r\"\xa6\x05\n\x1bSENS_CurrentValueTable_t_pb\x12\x14\n\x0cLastBaroTime\x18\x01 \x02(\x04\x12,\n\x0cSensorMagMsg\x18\x02 \x02(\x0b\x32\x16.PX4_SensorMagMsg_t_pb\x12(\n\nInputRcMsg\x18\x03 \x02(\x0b\x32\x14.PX4_InputRcMsg_t_pb\x12.\n\rSensorGyroMsg\x18\x04 \x02(\x0b\x32\x17.PX4_SensorGyroMsg_t_pb\x12\x42\n\x17\x44ifferentialPressureMsg\x18\x05 \x02(\x0b\x32!.PX4_DifferentialPressureMsg_t_pb\x12\"\n\x1aLastVehicleControlModeTime\x18\x06 \x02(\x04\x12;\n\x14\x41\x63tuatorControls0Msg\x18\x07 \x02(\x0b\x32\x1d.PX4_ActuatorControlsMsg_t_pb\x12$\n\x1cLastDifferentialPressureTime\x18\x08 \x02(\x04\x12\x13\n\x0bLastMagTime\x18\t \x02(\x04\x12!\n\x19LastActuatorControls0Time\x18\n \x02(\x04\x12\x14\n\x0cLastGyroTime\x18\x0b \x02(\x04\x12\x15\n\rLastAccelTime\x18\x0c \x02(\x04\x12>\n\x15VehicleControlModeMsg\x18\r \x02(\x0b\x32\x1f.PX4_VehicleControlModeMsg_t_pb\x12.\n\rSensorBaroMsg\x18\x0e \x02(\x0b\x32\x17.PX4_SensorBaroMsg_t_pb\x12\x17\n\x0fLastInputRcTime\x18\x0f \x02(\x04\x12\x30\n\x0eSensorAccelMsg\x18\x10 \x02(\x0b\x32\x18.PX4_SensorAccelMsg_t_pb')
+  serialized_pb=_b('\n\"_py_SENS_CurrentValueTable_t.proto\"\x8b\x02\n\x13PX4_InputRcMsg_t_pb\x12\x19\n\x11RcTotalFrameCount\x18\x01 \x02(\r\x12\x0e\n\x06RcLost\x18\x02 \x02(\x08\x12\x14\n\x0c\x43hannelCount\x18\x03 \x02(\r\x12\x12\n\nLastSignal\x18\x04 \x02(\x04\x12\x12\n\nRcFailsafe\x18\x05 \x02(\x08\x12\x11\n\tTimestamp\x18\x06 \x02(\x04\x12\x13\n\x0bInputSource\x18\x07 \x02(\r\x12\x11\n\tTlmHeader\x18\x08 \x03(\r\x12\x0e\n\x06Values\x18\t \x03(\r\x12\x18\n\x10RcPpmFrameLength\x18\n \x02(\r\x12\x18\n\x10RcLostFrameCount\x18\x0b \x02(\r\x12\x0c\n\x04RSSI\x18\x0c \x02(\x05\"\xc9\x02\n\x16PX4_SensorGyroMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x13\n\x0bTemperature\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x0c\n\x04ZRaw\x18\x06 \x02(\x05\x12\x0c\n\x04YRaw\x18\x07 \x02(\x05\x12\x0f\n\x07Scaling\x18\x08 \x02(\x02\x12\r\n\x05Range\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x11\n\tXIntegral\x18\x12 \x02(\x02\"\xce\x04\n\x1ePX4_VehicleControlModeMsg_t_pb\x12 \n\x18\x45xternalManualOverrideOk\x18\x01 \x02(\x08\x12\x1e\n\x16\x43ontrolAltitudeEnabled\x18\x02 \x02(\x08\x12\x1a\n\x12\x43ontrolAutoEnabled\x18\x03 \x02(\x08\x12\x1e\n\x16\x43ontrolFixedHdgEnabled\x18\x04 \x02(\x08\x12\"\n\x1a\x43ontrolAccelerationEnabled\x18\x05 \x02(\x08\x12\x18\n\x10SystemHilEnabled\x18\x06 \x02(\x08\x12\x1b\n\x13\x43ontrolRatesEnabled\x18\x07 \x02(\x08\x12\x1e\n\x16\x43ontrolVelocityEnabled\x18\x08 \x02(\x08\x12!\n\x19\x43ontrolTerminationEnabled\x18\t \x02(\x08\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x1f\n\x17\x43ontrolClimbRateEnabled\x18\x0b \x02(\x08\x12\x11\n\tTimestamp\x18\x0c \x02(\x04\x12\x1f\n\x17\x43ontrolRattitudeEnabled\x18\r \x02(\x08\x12\x1b\n\x13\x43ontrolForceEnabled\x18\x0e \x02(\x08\x12\x1e\n\x16\x43ontrolAttitudeEnabled\x18\x0f \x02(\x08\x12\x1e\n\x16\x43ontrolOffboardEnabled\x18\x10 \x02(\x08\x12\x1c\n\x14\x43ontrolManualEnabled\x18\x11 \x02(\x08\x12\r\n\x05\x41rmed\x18\x12 \x02(\x08\x12\x1e\n\x16\x43ontrolPositionEnabled\x18\x13 \x02(\x08\"\xb8\x01\n PX4_DifferentialPressureMsg_t_pb\x12$\n\x1c\x44ifferentialPressureFiltered\x18\x01 \x02(\x02\x12\x13\n\x0bTemperature\x18\x02 \x02(\x02\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x12\n\nErrorCount\x18\x04 \x02(\x04\x12\x1f\n\x17\x44ifferentialPressureRaw\x18\x05 \x02(\x02\x12\x11\n\tTlmHeader\x18\x06 \x03(\r\"i\n\x1cPX4_ActuatorControlsMsg_t_pb\x12\x0f\n\x07\x43ontrol\x18\x01 \x03(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\x12\n\nSampleTime\x18\x04 \x02(\x04\"\xe3\x01\n\x15PX4_SensorMagMsg_t_pb\x12\x13\n\x0bTemperature\x18\x01 \x02(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x0c\n\x04ZRaw\x18\x03 \x02(\x05\x12\x0c\n\x04YRaw\x18\x04 \x02(\x05\x12\x0f\n\x07Scaling\x18\x05 \x02(\x02\x12\r\n\x05Range\x18\x06 \x02(\x02\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x10\n\x08\x44\x65viceID\x18\x08 \x02(\r\x12\t\n\x01Y\x18\t \x02(\x02\x12\t\n\x01X\x18\n \x02(\x02\x12\t\n\x01Z\x18\x0b \x02(\x02\x12\x12\n\nErrorCount\x18\x0c \x02(\x04\x12\x0c\n\x04XRaw\x18\r \x02(\x05\"\xcf\x02\n\x17PX4_SensorAccelMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x13\n\x0bTemperature\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x12\n\nRange_m_s2\x18\x06 \x02(\x02\x12\x0c\n\x04ZRaw\x18\x07 \x02(\x05\x12\x0c\n\x04YRaw\x18\x08 \x02(\x05\x12\x0f\n\x07Scaling\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x11\n\tXIntegral\x18\x12 \x02(\x02\"\x8b\x01\n\x16PX4_SensorBaroMsg_t_pb\x12\x13\n\x0bTemperature\x18\x01 \x02(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x10\n\x08\x41ltitude\x18\x03 \x02(\x02\x12\x10\n\x08Pressure\x18\x04 \x02(\x02\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x12\n\nErrorCount\x18\x06 \x02(\r\"\xa6\x05\n\x1bSENS_CurrentValueTable_t_pb\x12\x17\n\x0fLastInputRcTime\x18\x01 \x02(\x04\x12,\n\x0cSensorMagMsg\x18\x02 \x02(\x0b\x32\x16.PX4_SensorMagMsg_t_pb\x12.\n\rSensorGyroMsg\x18\x03 \x02(\x0b\x32\x17.PX4_SensorGyroMsg_t_pb\x12\x14\n\x0cLastBaroTime\x18\x04 \x02(\x04\x12\x42\n\x17\x44ifferentialPressureMsg\x18\x05 \x02(\x0b\x32!.PX4_DifferentialPressureMsg_t_pb\x12\"\n\x1aLastVehicleControlModeTime\x18\x06 \x02(\x04\x12;\n\x14\x41\x63tuatorControls0Msg\x18\x07 \x02(\x0b\x32\x1d.PX4_ActuatorControlsMsg_t_pb\x12(\n\nInputRcMsg\x18\x08 \x02(\x0b\x32\x14.PX4_InputRcMsg_t_pb\x12$\n\x1cLastDifferentialPressureTime\x18\t \x02(\x04\x12\x13\n\x0bLastMagTime\x18\n \x02(\x04\x12!\n\x19LastActuatorControls0Time\x18\x0b \x02(\x04\x12.\n\rSensorBaroMsg\x18\x0c \x02(\x0b\x32\x17.PX4_SensorBaroMsg_t_pb\x12\x15\n\rLastAccelTime\x18\r \x02(\x04\x12>\n\x15VehicleControlModeMsg\x18\x0e \x02(\x0b\x32\x1f.PX4_VehicleControlModeMsg_t_pb\x12\x30\n\x0eSensorAccelMsg\x18\x0f \x02(\x0b\x32\x18.PX4_SensorAccelMsg_t_pb\x12\x14\n\x0cLastGyroTime\x18\x10 \x02(\x04')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -154,7 +154,7 @@ _PX4_SENSORGYROMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='XIntegral', full_name='PX4_SensorGyroMsg_t_pb.XIntegral', index=2,
+      name='Temperature', full_name='PX4_SensorGyroMsg_t_pb.Temperature', index=2,
       number=3, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -259,7 +259,7 @@ _PX4_SENSORGYROMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Temperature', full_name='PX4_SensorGyroMsg_t_pb.Temperature', index=17,
+      name='XIntegral', full_name='PX4_SensorGyroMsg_t_pb.XIntegral', index=17,
       number=18, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -338,7 +338,7 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlManualEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlManualEnabled', index=7,
+      name='ControlVelocityEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlVelocityEnabled', index=7,
       number=8, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -352,14 +352,14 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlVelocityEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlVelocityEnabled', index=9,
-      number=10, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='TlmHeader', full_name='PX4_VehicleControlModeMsg_t_pb.TlmHeader', index=9,
+      number=10, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlForceEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlForceEnabled', index=10,
+      name='ControlClimbRateEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlClimbRateEnabled', index=10,
       number=11, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -380,7 +380,7 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlClimbRateEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlClimbRateEnabled', index=13,
+      name='ControlForceEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlForceEnabled', index=13,
       number=14, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -401,16 +401,16 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Armed', full_name='PX4_VehicleControlModeMsg_t_pb.Armed', index=16,
+      name='ControlManualEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlManualEnabled', index=16,
       number=17, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_VehicleControlModeMsg_t_pb.TlmHeader', index=17,
-      number=18, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='Armed', full_name='PX4_VehicleControlModeMsg_t_pb.Armed', index=17,
+      number=18, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -502,135 +502,37 @@ _PX4_DIFFERENTIALPRESSUREMSG_T_PB = _descriptor.Descriptor(
 )
 
 
-_PX4_SENSORACCELMSG_T_PB = _descriptor.Descriptor(
-  name='PX4_SensorAccelMsg_t_pb',
-  full_name='PX4_SensorAccelMsg_t_pb',
+_PX4_ACTUATORCONTROLSMSG_T_PB = _descriptor.Descriptor(
+  name='PX4_ActuatorControlsMsg_t_pb',
+  full_name='PX4_ActuatorControlsMsg_t_pb',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='TemperatureRaw', full_name='PX4_SensorAccelMsg_t_pb.TemperatureRaw', index=0,
-      number=1, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='ZIntegral', full_name='PX4_SensorAccelMsg_t_pb.ZIntegral', index=1,
-      number=2, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='XIntegral', full_name='PX4_SensorAccelMsg_t_pb.XIntegral', index=2,
-      number=3, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='IntegralDt', full_name='PX4_SensorAccelMsg_t_pb.IntegralDt', index=3,
-      number=4, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='PX4_SensorAccelMsg_t_pb.Timestamp', index=4,
-      number=5, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Range_m_s2', full_name='PX4_SensorAccelMsg_t_pb.Range_m_s2', index=5,
-      number=6, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='ZRaw', full_name='PX4_SensorAccelMsg_t_pb.ZRaw', index=6,
-      number=7, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='YRaw', full_name='PX4_SensorAccelMsg_t_pb.YRaw', index=7,
-      number=8, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Scaling', full_name='PX4_SensorAccelMsg_t_pb.Scaling', index=8,
-      number=9, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_SensorAccelMsg_t_pb.TlmHeader', index=9,
-      number=10, type=13, cpp_type=3, label=3,
+      name='Control', full_name='PX4_ActuatorControlsMsg_t_pb.Control', index=0,
+      number=1, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='YIntegral', full_name='PX4_SensorAccelMsg_t_pb.YIntegral', index=10,
-      number=11, type=2, cpp_type=6, label=2,
+      name='Timestamp', full_name='PX4_ActuatorControlsMsg_t_pb.Timestamp', index=1,
+      number=2, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DeviceID', full_name='PX4_SensorAccelMsg_t_pb.DeviceID', index=11,
-      number=12, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='TlmHeader', full_name='PX4_ActuatorControlsMsg_t_pb.TlmHeader', index=2,
+      number=3, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Y', full_name='PX4_SensorAccelMsg_t_pb.Y', index=12,
-      number=13, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='X', full_name='PX4_SensorAccelMsg_t_pb.X', index=13,
-      number=14, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Z', full_name='PX4_SensorAccelMsg_t_pb.Z', index=14,
-      number=15, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='ErrorCount', full_name='PX4_SensorAccelMsg_t_pb.ErrorCount', index=15,
-      number=16, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='XRaw', full_name='PX4_SensorAccelMsg_t_pb.XRaw', index=16,
-      number=17, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Temperature', full_name='PX4_SensorAccelMsg_t_pb.Temperature', index=17,
-      number=18, type=2, cpp_type=6, label=2,
+      name='SampleTime', full_name='PX4_ActuatorControlsMsg_t_pb.SampleTime', index=3,
+      number=4, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -646,8 +548,8 @@ _PX4_SENSORACCELMSG_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1421,
-  serialized_end=1756,
+  serialized_start=1420,
+  serialized_end=1525,
 )
 
 
@@ -760,43 +662,141 @@ _PX4_SENSORMAGMSG_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1759,
-  serialized_end=1986,
+  serialized_start=1528,
+  serialized_end=1755,
 )
 
 
-_PX4_ACTUATORCONTROLSMSG_T_PB = _descriptor.Descriptor(
-  name='PX4_ActuatorControlsMsg_t_pb',
-  full_name='PX4_ActuatorControlsMsg_t_pb',
+_PX4_SENSORACCELMSG_T_PB = _descriptor.Descriptor(
+  name='PX4_SensorAccelMsg_t_pb',
+  full_name='PX4_SensorAccelMsg_t_pb',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Control', full_name='PX4_ActuatorControlsMsg_t_pb.Control', index=0,
-      number=1, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='PX4_ActuatorControlsMsg_t_pb.Timestamp', index=1,
-      number=2, type=4, cpp_type=4, label=2,
+      name='TemperatureRaw', full_name='PX4_SensorAccelMsg_t_pb.TemperatureRaw', index=0,
+      number=1, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SampleTime', full_name='PX4_ActuatorControlsMsg_t_pb.SampleTime', index=2,
-      number=3, type=4, cpp_type=4, label=2,
+      name='ZIntegral', full_name='PX4_SensorAccelMsg_t_pb.ZIntegral', index=1,
+      number=2, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_ActuatorControlsMsg_t_pb.TlmHeader', index=3,
-      number=4, type=13, cpp_type=3, label=3,
+      name='Temperature', full_name='PX4_SensorAccelMsg_t_pb.Temperature', index=2,
+      number=3, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='IntegralDt', full_name='PX4_SensorAccelMsg_t_pb.IntegralDt', index=3,
+      number=4, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Timestamp', full_name='PX4_SensorAccelMsg_t_pb.Timestamp', index=4,
+      number=5, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Range_m_s2', full_name='PX4_SensorAccelMsg_t_pb.Range_m_s2', index=5,
+      number=6, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='ZRaw', full_name='PX4_SensorAccelMsg_t_pb.ZRaw', index=6,
+      number=7, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='YRaw', full_name='PX4_SensorAccelMsg_t_pb.YRaw', index=7,
+      number=8, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Scaling', full_name='PX4_SensorAccelMsg_t_pb.Scaling', index=8,
+      number=9, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='TlmHeader', full_name='PX4_SensorAccelMsg_t_pb.TlmHeader', index=9,
+      number=10, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='YIntegral', full_name='PX4_SensorAccelMsg_t_pb.YIntegral', index=10,
+      number=11, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='DeviceID', full_name='PX4_SensorAccelMsg_t_pb.DeviceID', index=11,
+      number=12, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Y', full_name='PX4_SensorAccelMsg_t_pb.Y', index=12,
+      number=13, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='X', full_name='PX4_SensorAccelMsg_t_pb.X', index=13,
+      number=14, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Z', full_name='PX4_SensorAccelMsg_t_pb.Z', index=14,
+      number=15, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='ErrorCount', full_name='PX4_SensorAccelMsg_t_pb.ErrorCount', index=15,
+      number=16, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='XRaw', full_name='PX4_SensorAccelMsg_t_pb.XRaw', index=16,
+      number=17, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='XIntegral', full_name='PX4_SensorAccelMsg_t_pb.XIntegral', index=17,
+      number=18, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -811,7 +811,7 @@ _PX4_ACTUATORCONTROLSMSG_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1988,
+  serialized_start=1758,
   serialized_end=2093,
 )
 
@@ -889,7 +889,7 @@ _SENS_CURRENTVALUETABLE_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='LastBaroTime', full_name='SENS_CurrentValueTable_t_pb.LastBaroTime', index=0,
+      name='LastInputRcTime', full_name='SENS_CurrentValueTable_t_pb.LastInputRcTime', index=0,
       number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -903,16 +903,16 @@ _SENS_CURRENTVALUETABLE_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='InputRcMsg', full_name='SENS_CurrentValueTable_t_pb.InputRcMsg', index=2,
+      name='SensorGyroMsg', full_name='SENS_CurrentValueTable_t_pb.SensorGyroMsg', index=2,
       number=3, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SensorGyroMsg', full_name='SENS_CurrentValueTable_t_pb.SensorGyroMsg', index=3,
-      number=4, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='LastBaroTime', full_name='SENS_CurrentValueTable_t_pb.LastBaroTime', index=3,
+      number=4, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -938,65 +938,65 @@ _SENS_CURRENTVALUETABLE_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastDifferentialPressureTime', full_name='SENS_CurrentValueTable_t_pb.LastDifferentialPressureTime', index=7,
-      number=8, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
+      name='InputRcMsg', full_name='SENS_CurrentValueTable_t_pb.InputRcMsg', index=7,
+      number=8, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastMagTime', full_name='SENS_CurrentValueTable_t_pb.LastMagTime', index=8,
+      name='LastDifferentialPressureTime', full_name='SENS_CurrentValueTable_t_pb.LastDifferentialPressureTime', index=8,
       number=9, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastActuatorControls0Time', full_name='SENS_CurrentValueTable_t_pb.LastActuatorControls0Time', index=9,
+      name='LastMagTime', full_name='SENS_CurrentValueTable_t_pb.LastMagTime', index=9,
       number=10, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastGyroTime', full_name='SENS_CurrentValueTable_t_pb.LastGyroTime', index=10,
+      name='LastActuatorControls0Time', full_name='SENS_CurrentValueTable_t_pb.LastActuatorControls0Time', index=10,
       number=11, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastAccelTime', full_name='SENS_CurrentValueTable_t_pb.LastAccelTime', index=11,
-      number=12, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='VehicleControlModeMsg', full_name='SENS_CurrentValueTable_t_pb.VehicleControlModeMsg', index=12,
-      number=13, type=11, cpp_type=10, label=2,
+      name='SensorBaroMsg', full_name='SENS_CurrentValueTable_t_pb.SensorBaroMsg', index=11,
+      number=12, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SensorBaroMsg', full_name='SENS_CurrentValueTable_t_pb.SensorBaroMsg', index=13,
+      name='LastAccelTime', full_name='SENS_CurrentValueTable_t_pb.LastAccelTime', index=12,
+      number=13, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='VehicleControlModeMsg', full_name='SENS_CurrentValueTable_t_pb.VehicleControlModeMsg', index=13,
       number=14, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastInputRcTime', full_name='SENS_CurrentValueTable_t_pb.LastInputRcTime', index=14,
-      number=15, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
+      name='SensorAccelMsg', full_name='SENS_CurrentValueTable_t_pb.SensorAccelMsg', index=14,
+      number=15, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SensorAccelMsg', full_name='SENS_CurrentValueTable_t_pb.SensorAccelMsg', index=15,
-      number=16, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='LastGyroTime', full_name='SENS_CurrentValueTable_t_pb.LastGyroTime', index=15,
+      number=16, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1016,20 +1016,20 @@ _SENS_CURRENTVALUETABLE_T_PB = _descriptor.Descriptor(
 )
 
 _SENS_CURRENTVALUETABLE_T_PB.fields_by_name['SensorMagMsg'].message_type = _PX4_SENSORMAGMSG_T_PB
-_SENS_CURRENTVALUETABLE_T_PB.fields_by_name['InputRcMsg'].message_type = _PX4_INPUTRCMSG_T_PB
 _SENS_CURRENTVALUETABLE_T_PB.fields_by_name['SensorGyroMsg'].message_type = _PX4_SENSORGYROMSG_T_PB
 _SENS_CURRENTVALUETABLE_T_PB.fields_by_name['DifferentialPressureMsg'].message_type = _PX4_DIFFERENTIALPRESSUREMSG_T_PB
 _SENS_CURRENTVALUETABLE_T_PB.fields_by_name['ActuatorControls0Msg'].message_type = _PX4_ACTUATORCONTROLSMSG_T_PB
-_SENS_CURRENTVALUETABLE_T_PB.fields_by_name['VehicleControlModeMsg'].message_type = _PX4_VEHICLECONTROLMODEMSG_T_PB
+_SENS_CURRENTVALUETABLE_T_PB.fields_by_name['InputRcMsg'].message_type = _PX4_INPUTRCMSG_T_PB
 _SENS_CURRENTVALUETABLE_T_PB.fields_by_name['SensorBaroMsg'].message_type = _PX4_SENSORBAROMSG_T_PB
+_SENS_CURRENTVALUETABLE_T_PB.fields_by_name['VehicleControlModeMsg'].message_type = _PX4_VEHICLECONTROLMODEMSG_T_PB
 _SENS_CURRENTVALUETABLE_T_PB.fields_by_name['SensorAccelMsg'].message_type = _PX4_SENSORACCELMSG_T_PB
 DESCRIPTOR.message_types_by_name['PX4_InputRcMsg_t_pb'] = _PX4_INPUTRCMSG_T_PB
 DESCRIPTOR.message_types_by_name['PX4_SensorGyroMsg_t_pb'] = _PX4_SENSORGYROMSG_T_PB
 DESCRIPTOR.message_types_by_name['PX4_VehicleControlModeMsg_t_pb'] = _PX4_VEHICLECONTROLMODEMSG_T_PB
 DESCRIPTOR.message_types_by_name['PX4_DifferentialPressureMsg_t_pb'] = _PX4_DIFFERENTIALPRESSUREMSG_T_PB
-DESCRIPTOR.message_types_by_name['PX4_SensorAccelMsg_t_pb'] = _PX4_SENSORACCELMSG_T_PB
-DESCRIPTOR.message_types_by_name['PX4_SensorMagMsg_t_pb'] = _PX4_SENSORMAGMSG_T_PB
 DESCRIPTOR.message_types_by_name['PX4_ActuatorControlsMsg_t_pb'] = _PX4_ACTUATORCONTROLSMSG_T_PB
+DESCRIPTOR.message_types_by_name['PX4_SensorMagMsg_t_pb'] = _PX4_SENSORMAGMSG_T_PB
+DESCRIPTOR.message_types_by_name['PX4_SensorAccelMsg_t_pb'] = _PX4_SENSORACCELMSG_T_PB
 DESCRIPTOR.message_types_by_name['PX4_SensorBaroMsg_t_pb'] = _PX4_SENSORBAROMSG_T_PB
 DESCRIPTOR.message_types_by_name['SENS_CurrentValueTable_t_pb'] = _SENS_CURRENTVALUETABLE_T_PB
 
@@ -1061,12 +1061,12 @@ PX4_DifferentialPressureMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4
   ))
 _sym_db.RegisterMessage(PX4_DifferentialPressureMsg_t_pb)
 
-PX4_SensorAccelMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_SensorAccelMsg_t_pb', (_message.Message,), dict(
-  DESCRIPTOR = _PX4_SENSORACCELMSG_T_PB,
+PX4_ActuatorControlsMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_ActuatorControlsMsg_t_pb', (_message.Message,), dict(
+  DESCRIPTOR = _PX4_ACTUATORCONTROLSMSG_T_PB,
   __module__ = '_py_SENS_CurrentValueTable_t_pb2'
-  # @@protoc_insertion_point(class_scope:PX4_SensorAccelMsg_t_pb)
+  # @@protoc_insertion_point(class_scope:PX4_ActuatorControlsMsg_t_pb)
   ))
-_sym_db.RegisterMessage(PX4_SensorAccelMsg_t_pb)
+_sym_db.RegisterMessage(PX4_ActuatorControlsMsg_t_pb)
 
 PX4_SensorMagMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_SensorMagMsg_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _PX4_SENSORMAGMSG_T_PB,
@@ -1075,12 +1075,12 @@ PX4_SensorMagMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_SensorMagM
   ))
 _sym_db.RegisterMessage(PX4_SensorMagMsg_t_pb)
 
-PX4_ActuatorControlsMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_ActuatorControlsMsg_t_pb', (_message.Message,), dict(
-  DESCRIPTOR = _PX4_ACTUATORCONTROLSMSG_T_PB,
+PX4_SensorAccelMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_SensorAccelMsg_t_pb', (_message.Message,), dict(
+  DESCRIPTOR = _PX4_SENSORACCELMSG_T_PB,
   __module__ = '_py_SENS_CurrentValueTable_t_pb2'
-  # @@protoc_insertion_point(class_scope:PX4_ActuatorControlsMsg_t_pb)
+  # @@protoc_insertion_point(class_scope:PX4_SensorAccelMsg_t_pb)
   ))
-_sym_db.RegisterMessage(PX4_ActuatorControlsMsg_t_pb)
+_sym_db.RegisterMessage(PX4_SensorAccelMsg_t_pb)
 
 PX4_SensorBaroMsg_t_pb = _reflection.GeneratedProtocolMessageType('PX4_SensorBaroMsg_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _PX4_SENSORBAROMSG_T_PB,

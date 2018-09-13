@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MAC_CurrentValueTable_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_MAC_CurrentValueTable_t.proto\"\x87\x04\n!PX4_ManualControlSetpointMsg_t_pb\x12\x10\n\x08ModeSlot\x18\x01 \x02(\r\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x12\n\nKillSwitch\x18\x03 \x02(\r\x12\x11\n\tArmSwitch\x18\x04 \x02(\r\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x11\n\tManSwitch\x18\x06 \x02(\r\x12\x12\n\nModeSwitch\x18\x07 \x02(\r\x12\x14\n\x0cLoiterSwitch\x18\x08 \x02(\r\x12\x14\n\x0cReturnSwitch\x18\t \x02(\r\x12\x17\n\x0fRattitudeSwitch\x18\n \x02(\r\x12\x14\n\x0cPosctlSwitch\x18\x0b \x02(\r\x12\x18\n\x10TransitionSwitch\x18\x0c \x02(\r\x12\x12\n\nAcroSwitch\x18\r \x02(\r\x12\r\n\x05\x46laps\x18\x0e \x02(\x02\x12\t\n\x01Y\x18\x0f \x02(\x02\x12\t\n\x01X\x18\x10 \x02(\x02\x12\t\n\x01Z\x18\x11 \x02(\x02\x12\x16\n\x0eOffboardSwitch\x18\x12 \x02(\r\x12\x12\n\nGearSwitch\x18\x13 \x02(\r\x12\x12\n\nStabSwitch\x18\x14 \x02(\r\x12\t\n\x01R\x18\x15 \x02(\x02\x12\x12\n\nDataSource\x18\x16 \x02(\r\x12\x0c\n\x04\x41ux2\x18\x17 \x02(\x02\x12\x0c\n\x04\x41ux3\x18\x18 \x02(\x02\x12\x0c\n\x04\x41ux1\x18\x19 \x02(\x02\x12\x0c\n\x04\x41ux4\x18\x1a \x02(\x02\x12\x0c\n\x04\x41ux5\x18\x1b \x02(\x02\"\xc9\x02\n\x16PX4_SensorGyroMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x11\n\tXIntegral\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x0c\n\x04ZRaw\x18\x06 \x02(\x05\x12\x0c\n\x04YRaw\x18\x07 \x02(\x05\x12\x0f\n\x07Scaling\x18\x08 \x02(\x02\x12\r\n\x05Range\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x13\n\x0bTemperature\x18\x12 \x02(\x02\"\x82\x01\n PX4_VehicleRatesSetpointMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x0b\n\x03Yaw\x18\x02 \x02(\x02\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\r\n\x05Pitch\x18\x04 \x02(\x02\x12\x0e\n\x06Thrust\x18\x05 \x02(\x02\x12\x0c\n\x04Roll\x18\x06 \x02(\x02\"\xce\x04\n\x1ePX4_VehicleControlModeMsg_t_pb\x12 \n\x18\x45xternalManualOverrideOk\x18\x01 \x02(\x08\x12\x1e\n\x16\x43ontrolAltitudeEnabled\x18\x02 \x02(\x08\x12\x1a\n\x12\x43ontrolAutoEnabled\x18\x03 \x02(\x08\x12\x1e\n\x16\x43ontrolFixedHdgEnabled\x18\x04 \x02(\x08\x12\"\n\x1a\x43ontrolAccelerationEnabled\x18\x05 \x02(\x08\x12\x18\n\x10SystemHilEnabled\x18\x06 \x02(\x08\x12\x1b\n\x13\x43ontrolRatesEnabled\x18\x07 \x02(\x08\x12\x1c\n\x14\x43ontrolManualEnabled\x18\x08 \x02(\x08\x12!\n\x19\x43ontrolTerminationEnabled\x18\t \x02(\x08\x12\x1e\n\x16\x43ontrolVelocityEnabled\x18\n \x02(\x08\x12\x1b\n\x13\x43ontrolForceEnabled\x18\x0b \x02(\x08\x12\x11\n\tTimestamp\x18\x0c \x02(\x04\x12\x1f\n\x17\x43ontrolRattitudeEnabled\x18\r \x02(\x08\x12\x1f\n\x17\x43ontrolClimbRateEnabled\x18\x0e \x02(\x08\x12\x1e\n\x16\x43ontrolAttitudeEnabled\x18\x0f \x02(\x08\x12\x1e\n\x16\x43ontrolOffboardEnabled\x18\x10 \x02(\x08\x12\r\n\x05\x41rmed\x18\x11 \x02(\x08\x12\x11\n\tTlmHeader\x18\x12 \x03(\r\x12\x1e\n\x16\x43ontrolPositionEnabled\x18\x13 \x02(\x08\"\x7f\n!PX4_MultirotorMotorLimitsMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x34\n\x10SaturationStatus\x18\x03 \x02(\x0b\x32\x1a.PX4_SaturationStatus_t_pb\"D\n\x19PX4_SaturationStatus_t_pb\x12\x18\n\x05\x46lags\x18\x01 \x02(\x0b\x32\t.Flags_pb\x12\r\n\x05Value\x18\x02 \x02(\r\"\xba\x01\n\x08\x46lags_pb\x12\x11\n\tThrustNeg\x18\x01 \x02(\r\x12\x10\n\x08MotorPos\x18\x02 \x02(\r\x12\x10\n\x08PitchNeg\x18\x03 \x02(\r\x12\x11\n\tThrustPos\x18\x04 \x02(\r\x12\x10\n\x08PitchPos\x18\x05 \x02(\r\x12\x0f\n\x07RollPos\x18\x06 \x02(\r\x12\x10\n\x08MotorNeg\x18\x07 \x02(\r\x12\x0e\n\x06YawNeg\x18\x08 \x02(\r\x12\x0f\n\x07RollNeg\x18\t \x02(\r\x12\x0e\n\x06YawPos\x18\n \x02(\r\"\xd5\x01\n\x19PX4_ActuatorArmedMsg_t_pb\x12\x15\n\rForceFailsafe\x18\x01 \x02(\x08\x12\x12\n\nReadyToArm\x18\x02 \x02(\x08\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x1c\n\x14InEscCalibrationMode\x18\x04 \x02(\x08\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x10\n\x08Lockdown\x18\x06 \x02(\x08\x12\x10\n\x08Prearmed\x18\x07 \x02(\x08\x12\r\n\x05\x41rmed\x18\x08 \x02(\x08\x12\x16\n\x0eManualLockdown\x18\t \x02(\x08\"\xf5\x02\n#PX4_VehicleAttitudeSetpointMsg_t_pb\x12\x15\n\rYawSpMoveRate\x18\x01 \x02(\x02\x12\x1a\n\x12PitchResetIntegral\x18\x02 \x02(\x08\x12\x0b\n\x03Q_D\x18\x03 \x03(\x02\x12\x14\n\x0c\x46wControlYaw\x18\x04 \x02(\x08\x12\x0f\n\x07YawBody\x18\x05 \x02(\x02\x12\x11\n\tPitchBody\x18\x06 \x02(\x02\x12\x11\n\tTimestamp\x18\x07 \x02(\x04\x12\x11\n\tQ_D_Valid\x18\x08 \x02(\x08\x12\x1b\n\x13\x44isableMcYawControl\x18\t \x02(\x08\x12\x18\n\x10YawResetIntegral\x18\n \x02(\x08\x12\x13\n\x0bLandingGear\x18\x0b \x02(\x02\x12\x11\n\tTlmHeader\x18\x0c \x03(\r\x12\x12\n\nApplyFlaps\x18\r \x02(\x08\x12\x0e\n\x06Thrust\x18\x0e \x02(\x02\x12\x10\n\x08RollBody\x18\x0f \x02(\x02\x12\x19\n\x11RollResetIntegral\x18\x10 \x02(\x08\"\x83\x05\n\x1cPX4_SensorCorrectionMsg_t_pb\x12\x1e\n\x16selected_gyro_instance\x18\x01 \x02(\r\x12\x14\n\x0c\x62\x61ro_mapping\x18\x02 \x03(\r\x12\x16\n\x0e\x61\x63\x63\x65l_offset_0\x18\x03 \x03(\x02\x12\x15\n\rgyro_offset_1\x18\x04 \x03(\x02\x12\x15\n\rgyro_offset_0\x18\x05 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_2\x18\x06 \x02(\x02\x12\x15\n\rgyro_offset_2\x18\x07 \x03(\x02\x12\x15\n\raccel_scale_2\x18\x08 \x03(\x02\x12\x15\n\raccel_scale_1\x18\t \x03(\x02\x12\x15\n\raccel_scale_0\x18\n \x03(\x02\x12\x11\n\tTimestamp\x18\x0b \x02(\x04\x12\x1e\n\x16selected_baro_instance\x18\x0c \x02(\r\x12\x15\n\rbaro_offset_0\x18\r \x02(\x02\x12\x15\n\rbaro_offset_1\x18\x0e \x02(\x02\x12\x15\n\rbaro_offset_2\x18\x0f \x02(\x02\x12\x11\n\tTlmHeader\x18\x10 \x03(\r\x12\x14\n\x0c\x62\x61ro_scale_0\x18\x11 \x02(\x02\x12\x14\n\x0c\x62\x61ro_scale_1\x18\x12 \x02(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_2\x18\x13 \x03(\x02\x12\x1f\n\x17selected_accel_instance\x18\x14 \x02(\r\x12\x15\n\raccel_mapping\x18\x15 \x03(\r\x12\x14\n\x0cgyro_mapping\x18\x16 \x03(\r\x12\x14\n\x0cgyro_scale_2\x18\x17 \x03(\x02\x12\x14\n\x0cgyro_scale_1\x18\x18 \x03(\x02\x12\x14\n\x0cgyro_scale_0\x18\x19 \x03(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_1\x18\x1a \x03(\x02\"\xd7\x03\n\x18PX4_ControlStateMsg_t_pb\x12\x0c\n\x04PosY\x18\x01 \x02(\x02\x12\x10\n\x08\x41irspeed\x18\x02 \x02(\x02\x12\x0c\n\x04PosZ\x18\x03 \x02(\x02\x12\x0c\n\x04PosX\x18\x04 \x02(\x02\x12\x13\n\x0bVelVariance\x18\x05 \x03(\x02\x12\x13\n\x0b\x44\x65ltaQReset\x18\x06 \x03(\x02\x12\x13\n\x0bPosVariance\x18\x07 \x03(\x02\x12\x11\n\tTimestamp\x18\x08 \x02(\x04\x12\x14\n\x0cRollRateBias\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x15\n\rPitchRateBias\x18\x0b \x02(\x02\x12\x0c\n\x04VelX\x18\x0c \x02(\x02\x12\t\n\x01Q\x18\r \x03(\x02\x12\x0c\n\x04\x41\x63\x63Y\x18\x0e \x02(\x02\x12\x0c\n\x04\x41\x63\x63X\x18\x0f \x02(\x02\x12\x0c\n\x04VelY\x18\x10 \x02(\x02\x12\x0c\n\x04\x41\x63\x63Z\x18\x11 \x02(\x02\x12\x0f\n\x07YawRate\x18\x12 \x02(\x02\x12\x18\n\x10QuatResetCounter\x18\x13 \x02(\r\x12\x10\n\x08RollRate\x18\x14 \x02(\x02\x12\x15\n\rAirspeedValid\x18\x15 \x02(\x08\x12\x11\n\tPitchRate\x18\x16 \x02(\x02\x12\x12\n\nHorzAccMag\x18\x17 \x02(\x02\x12\x13\n\x0bYawRateBias\x18\x18 \x02(\x02\x12\x0c\n\x04VelZ\x18\x19 \x02(\x02\"\x82\x02\n\x19PX4_BatteryStatusMsg_t_pb\x12\r\n\x05Scale\x18\x01 \x02(\x02\x12\x17\n\x0fVoltageFiltered\x18\x02 \x02(\x02\x12\x11\n\tCellCount\x18\x03 \x02(\x05\x12\x11\n\tTimestamp\x18\x04 \x02(\x04\x12\x17\n\x0f\x43urrentFiltered\x18\x05 \x02(\x02\x12\x0f\n\x07\x43urrent\x18\x06 \x02(\x02\x12\x0f\n\x07Warning\x18\x07 \x02(\r\x12\x11\n\tConnected\x18\x08 \x02(\x08\x12\x0f\n\x07Voltage\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tRemaining\x18\x0b \x02(\x02\x12\x12\n\nDischarged\x18\x0c \x02(\x02\"\xbc\x04\n\x19PX4_VehicleStatusMsg_t_pb\x12\x10\n\x08HilState\x18\x01 \x02(\r\x12\x10\n\x08\x46\x61ilsafe\x18\x02 \x02(\x08\x12\x16\n\x0eMissionFailure\x18\x03 \x02(\x08\x12\x1b\n\x13VtolFwPermanentStab\x18\x04 \x02(\x08\x12\x13\n\x0b\x41rmingState\x18\x05 \x02(\r\x12\x18\n\x10\x45ngineFailureCmd\x18\x06 \x02(\x08\x12\x10\n\x08NavState\x18\x07 \x02(\r\x12$\n\x1cOnboardControlSensorsPresent\x18\x08 \x02(\r\x12\x1b\n\x13\x44\x61taLinkLostCounter\x18\t \x02(\r\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x10\n\x08SystemID\x18\x0b \x02(\r\x12$\n\x1cOnboardControlSensorsEnabled\x18\x0c \x02(\r\x12\x15\n\rEngineFailure\x18\r \x02(\x08\x12\x18\n\x10InTransitionMode\x18\x0e \x02(\x08\x12\x14\n\x0cRcSignalLost\x18\x0f \x02(\x08\x12\x13\n\x0bRcInputMode\x18\x10 \x02(\r\x12\x14\n\x0cIsRotaryWing\x18\x11 \x02(\x08\x12\x14\n\x0c\x44\x61taLinkLost\x18\x12 \x02(\x08\x12\x12\n\nSystemType\x18\x13 \x02(\r\x12\x11\n\tTimestamp\x18\x14 \x02(\x04\x12#\n\x1bOnboardControlSensorsHealth\x18\x15 \x02(\r\x12\x13\n\x0b\x43omponentID\x18\x16 \x02(\r\x12\x0e\n\x06IsVtol\x18\x17 \x02(\x08\"\xdc\x04\n\x1aMAC_CurrentValueTable_t_pb\x12\x31\n\rBatteryStatus\x18\x01 \x02(\x0b\x32\x1a.PX4_BatteryStatusMsg_t_pb\x12\x35\n\x0cVControlMode\x18\x02 \x02(\x0b\x32\x1f.PX4_VehicleControlModeMsg_t_pb\x12\x37\n\x10SensorCorrection\x18\x03 \x02(\x0b\x32\x1d.PX4_SensorCorrectionMsg_t_pb\x12;\n\x0fManualControlSp\x18\x04 \x02(\x0b\x32\".PX4_ManualControlSetpointMsg_t_pb\x12\x37\n\x0bMotorLimits\x18\x05 \x02(\x0b\x32\".PX4_MultirotorMotorLimitsMsg_t_pb\x12/\n\x0c\x43ontrolState\x18\x06 \x02(\x0b\x32\x19.PX4_ControlStateMsg_t_pb\x12\x33\n\x08VRatesSp\x18\x07 \x02(\x0b\x32!.PX4_VehicleRatesSetpointMsg_t_pb\x12\x34\n\x06VAttSp\x18\x08 \x02(\x0b\x32$.PX4_VehicleAttitudeSetpointMsg_t_pb\x12+\n\nSensorGyro\x18\t \x02(\x0b\x32\x17.PX4_SensorGyroMsg_t_pb\x12\x31\n\rVehicleStatus\x18\n \x02(\x0b\x32\x1a.PX4_VehicleStatusMsg_t_pb\x12)\n\x05\x41rmed\x18\x0b \x02(\x0b\x32\x1a.PX4_ActuatorArmedMsg_t_pb')
+  serialized_pb=_b('\n!_py_MAC_CurrentValueTable_t.proto\"\x87\x04\n!PX4_ManualControlSetpointMsg_t_pb\x12\x10\n\x08ModeSlot\x18\x01 \x02(\r\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x12\n\nKillSwitch\x18\x03 \x02(\r\x12\x11\n\tArmSwitch\x18\x04 \x02(\r\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x11\n\tManSwitch\x18\x06 \x02(\r\x12\x12\n\nModeSwitch\x18\x07 \x02(\r\x12\x14\n\x0cLoiterSwitch\x18\x08 \x02(\r\x12\x14\n\x0cReturnSwitch\x18\t \x02(\r\x12\x17\n\x0fRattitudeSwitch\x18\n \x02(\r\x12\x14\n\x0cPosctlSwitch\x18\x0b \x02(\r\x12\x18\n\x10TransitionSwitch\x18\x0c \x02(\r\x12\x12\n\nAcroSwitch\x18\r \x02(\r\x12\r\n\x05\x46laps\x18\x0e \x02(\x02\x12\t\n\x01Y\x18\x0f \x02(\x02\x12\t\n\x01X\x18\x10 \x02(\x02\x12\t\n\x01Z\x18\x11 \x02(\x02\x12\x16\n\x0eOffboardSwitch\x18\x12 \x02(\r\x12\x12\n\nGearSwitch\x18\x13 \x02(\r\x12\x12\n\nStabSwitch\x18\x14 \x02(\r\x12\t\n\x01R\x18\x15 \x02(\x02\x12\x12\n\nDataSource\x18\x16 \x02(\r\x12\x0c\n\x04\x41ux2\x18\x17 \x02(\x02\x12\x0c\n\x04\x41ux3\x18\x18 \x02(\x02\x12\x0c\n\x04\x41ux1\x18\x19 \x02(\x02\x12\x0c\n\x04\x41ux4\x18\x1a \x02(\x02\x12\x0c\n\x04\x41ux5\x18\x1b \x02(\x02\"\xc9\x02\n\x16PX4_SensorGyroMsg_t_pb\x12\x16\n\x0eTemperatureRaw\x18\x01 \x02(\x05\x12\x11\n\tZIntegral\x18\x02 \x02(\x02\x12\x13\n\x0bTemperature\x18\x03 \x02(\x02\x12\x12\n\nIntegralDt\x18\x04 \x02(\x04\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x0c\n\x04ZRaw\x18\x06 \x02(\x05\x12\x0c\n\x04YRaw\x18\x07 \x02(\x05\x12\x0f\n\x07Scaling\x18\x08 \x02(\x02\x12\r\n\x05Range\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tYIntegral\x18\x0b \x02(\x02\x12\x10\n\x08\x44\x65viceID\x18\x0c \x02(\r\x12\t\n\x01Y\x18\r \x02(\x02\x12\t\n\x01X\x18\x0e \x02(\x02\x12\t\n\x01Z\x18\x0f \x02(\x02\x12\x12\n\nErrorCount\x18\x10 \x02(\x04\x12\x0c\n\x04XRaw\x18\x11 \x02(\x05\x12\x11\n\tXIntegral\x18\x12 \x02(\x02\"\x82\x01\n PX4_VehicleRatesSetpointMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x0b\n\x03Yaw\x18\x02 \x02(\x02\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\r\n\x05Pitch\x18\x04 \x02(\x02\x12\x0e\n\x06Thrust\x18\x05 \x02(\x02\x12\x0c\n\x04Roll\x18\x06 \x02(\x02\"\xce\x04\n\x1ePX4_VehicleControlModeMsg_t_pb\x12 \n\x18\x45xternalManualOverrideOk\x18\x01 \x02(\x08\x12\x1e\n\x16\x43ontrolAltitudeEnabled\x18\x02 \x02(\x08\x12\x1a\n\x12\x43ontrolAutoEnabled\x18\x03 \x02(\x08\x12\x1e\n\x16\x43ontrolFixedHdgEnabled\x18\x04 \x02(\x08\x12\"\n\x1a\x43ontrolAccelerationEnabled\x18\x05 \x02(\x08\x12\x18\n\x10SystemHilEnabled\x18\x06 \x02(\x08\x12\x1b\n\x13\x43ontrolRatesEnabled\x18\x07 \x02(\x08\x12\x1e\n\x16\x43ontrolVelocityEnabled\x18\x08 \x02(\x08\x12!\n\x19\x43ontrolTerminationEnabled\x18\t \x02(\x08\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x1f\n\x17\x43ontrolClimbRateEnabled\x18\x0b \x02(\x08\x12\x11\n\tTimestamp\x18\x0c \x02(\x04\x12\x1f\n\x17\x43ontrolRattitudeEnabled\x18\r \x02(\x08\x12\x1b\n\x13\x43ontrolForceEnabled\x18\x0e \x02(\x08\x12\x1e\n\x16\x43ontrolAttitudeEnabled\x18\x0f \x02(\x08\x12\x1e\n\x16\x43ontrolOffboardEnabled\x18\x10 \x02(\x08\x12\x1c\n\x14\x43ontrolManualEnabled\x18\x11 \x02(\x08\x12\r\n\x05\x41rmed\x18\x12 \x02(\x08\x12\x1e\n\x16\x43ontrolPositionEnabled\x18\x13 \x02(\x08\"\x7f\n!PX4_MultirotorMotorLimitsMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x34\n\x10SaturationStatus\x18\x03 \x02(\x0b\x32\x1a.PX4_SaturationStatus_t_pb\"D\n\x19PX4_SaturationStatus_t_pb\x12\x18\n\x05\x46lags\x18\x01 \x02(\x0b\x32\t.Flags_pb\x12\r\n\x05Value\x18\x02 \x02(\r\"\xba\x01\n\x08\x46lags_pb\x12\x11\n\tThrustNeg\x18\x01 \x02(\r\x12\x10\n\x08MotorPos\x18\x02 \x02(\r\x12\x10\n\x08PitchNeg\x18\x03 \x02(\r\x12\x11\n\tThrustPos\x18\x04 \x02(\r\x12\x10\n\x08PitchPos\x18\x05 \x02(\r\x12\x0f\n\x07RollPos\x18\x06 \x02(\r\x12\x0e\n\x06YawNeg\x18\x07 \x02(\r\x12\x10\n\x08MotorNeg\x18\x08 \x02(\r\x12\x0f\n\x07RollNeg\x18\t \x02(\r\x12\x0e\n\x06YawPos\x18\n \x02(\r\"\xd5\x01\n\x19PX4_ActuatorArmedMsg_t_pb\x12\x15\n\rForceFailsafe\x18\x01 \x02(\x08\x12\x12\n\nReadyToArm\x18\x02 \x02(\x08\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x1c\n\x14InEscCalibrationMode\x18\x04 \x02(\x08\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x10\n\x08Lockdown\x18\x06 \x02(\x08\x12\x10\n\x08Prearmed\x18\x07 \x02(\x08\x12\r\n\x05\x41rmed\x18\x08 \x02(\x08\x12\x16\n\x0eManualLockdown\x18\t \x02(\x08\"\xf5\x02\n#PX4_VehicleAttitudeSetpointMsg_t_pb\x12\x15\n\rYawSpMoveRate\x18\x01 \x02(\x02\x12\x1a\n\x12PitchResetIntegral\x18\x02 \x02(\x08\x12\x0b\n\x03Q_D\x18\x03 \x03(\x02\x12\x14\n\x0c\x46wControlYaw\x18\x04 \x02(\x08\x12\x0f\n\x07YawBody\x18\x05 \x02(\x02\x12\x1b\n\x13\x44isableMcYawControl\x18\x06 \x02(\x08\x12\x11\n\tTimestamp\x18\x07 \x02(\x04\x12\x11\n\tQ_D_Valid\x18\x08 \x02(\x08\x12\x11\n\tPitchBody\x18\t \x02(\x02\x12\x18\n\x10YawResetIntegral\x18\n \x02(\x08\x12\x13\n\x0bLandingGear\x18\x0b \x02(\x02\x12\x11\n\tTlmHeader\x18\x0c \x03(\r\x12\x12\n\nApplyFlaps\x18\r \x02(\x08\x12\x0e\n\x06Thrust\x18\x0e \x02(\x02\x12\x10\n\x08RollBody\x18\x0f \x02(\x02\x12\x19\n\x11RollResetIntegral\x18\x10 \x02(\x08\"\x83\x05\n\x1cPX4_SensorCorrectionMsg_t_pb\x12\x1e\n\x16selected_gyro_instance\x18\x01 \x02(\r\x12\x14\n\x0c\x62\x61ro_mapping\x18\x02 \x03(\r\x12\x16\n\x0e\x61\x63\x63\x65l_offset_0\x18\x03 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_0\x18\x04 \x02(\x02\x12\x15\n\rgyro_offset_0\x18\x05 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_2\x18\x06 \x02(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_2\x18\x07 \x03(\x02\x12\x15\n\raccel_scale_2\x18\x08 \x03(\x02\x12\x15\n\raccel_scale_1\x18\t \x03(\x02\x12\x15\n\raccel_scale_0\x18\n \x03(\x02\x12\x11\n\tTimestamp\x18\x0b \x02(\x04\x12\x1e\n\x16selected_baro_instance\x18\x0c \x02(\r\x12\x15\n\rbaro_offset_0\x18\r \x02(\x02\x12\x15\n\rbaro_offset_1\x18\x0e \x02(\x02\x12\x15\n\rbaro_offset_2\x18\x0f \x02(\x02\x12\x11\n\tTlmHeader\x18\x10 \x03(\r\x12\x15\n\rgyro_offset_1\x18\x11 \x03(\x02\x12\x14\n\x0c\x62\x61ro_scale_1\x18\x12 \x02(\x02\x12\x15\n\rgyro_offset_2\x18\x13 \x03(\x02\x12\x1f\n\x17selected_accel_instance\x18\x14 \x02(\r\x12\x15\n\raccel_mapping\x18\x15 \x03(\r\x12\x14\n\x0cgyro_mapping\x18\x16 \x03(\r\x12\x14\n\x0cgyro_scale_2\x18\x17 \x03(\x02\x12\x14\n\x0cgyro_scale_1\x18\x18 \x03(\x02\x12\x14\n\x0cgyro_scale_0\x18\x19 \x03(\x02\x12\x16\n\x0e\x61\x63\x63\x65l_offset_1\x18\x1a \x03(\x02\"\xd7\x03\n\x18PX4_ControlStateMsg_t_pb\x12\x13\n\x0bVelVariance\x18\x01 \x03(\x02\x12\x10\n\x08\x41irspeed\x18\x02 \x02(\x02\x12\x0c\n\x04PosZ\x18\x03 \x02(\x02\x12\x0c\n\x04PosX\x18\x04 \x02(\x02\x12\x0c\n\x04PosY\x18\x05 \x02(\x02\x12\x13\n\x0b\x44\x65ltaQReset\x18\x06 \x03(\x02\x12\x13\n\x0bPosVariance\x18\x07 \x03(\x02\x12\x11\n\tTimestamp\x18\x08 \x02(\x04\x12\x14\n\x0cRollRateBias\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x15\n\rPitchRateBias\x18\x0b \x02(\x02\x12\x0c\n\x04VelX\x18\x0c \x02(\x02\x12\t\n\x01Q\x18\r \x03(\x02\x12\x0c\n\x04\x41\x63\x63Y\x18\x0e \x02(\x02\x12\x0c\n\x04\x41\x63\x63X\x18\x0f \x02(\x02\x12\x0c\n\x04VelY\x18\x10 \x02(\x02\x12\x0c\n\x04\x41\x63\x63Z\x18\x11 \x02(\x02\x12\x0f\n\x07YawRate\x18\x12 \x02(\x02\x12\x18\n\x10QuatResetCounter\x18\x13 \x02(\r\x12\x10\n\x08RollRate\x18\x14 \x02(\x02\x12\x15\n\rAirspeedValid\x18\x15 \x02(\x08\x12\x11\n\tPitchRate\x18\x16 \x02(\x02\x12\x12\n\nHorzAccMag\x18\x17 \x02(\x02\x12\x13\n\x0bYawRateBias\x18\x18 \x02(\x02\x12\x0c\n\x04VelZ\x18\x19 \x02(\x02\"\x82\x02\n\x19PX4_BatteryStatusMsg_t_pb\x12\r\n\x05Scale\x18\x01 \x02(\x02\x12\x17\n\x0fVoltageFiltered\x18\x02 \x02(\x02\x12\x11\n\tCellCount\x18\x03 \x02(\x05\x12\x11\n\tTimestamp\x18\x04 \x02(\x04\x12\x17\n\x0f\x43urrentFiltered\x18\x05 \x02(\x02\x12\x0f\n\x07\x43urrent\x18\x06 \x02(\x02\x12\x0f\n\x07Warning\x18\x07 \x02(\r\x12\x11\n\tConnected\x18\x08 \x02(\x08\x12\x0f\n\x07Voltage\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x11\n\tRemaining\x18\x0b \x02(\x02\x12\x12\n\nDischarged\x18\x0c \x02(\x02\"\xbc\x04\n\x19PX4_VehicleStatusMsg_t_pb\x12\x16\n\x0eMissionFailure\x18\x01 \x02(\x08\x12\x10\n\x08\x46\x61ilsafe\x18\x02 \x02(\x08\x12\x10\n\x08HilState\x18\x03 \x02(\r\x12\x1b\n\x13VtolFwPermanentStab\x18\x04 \x02(\x08\x12\x13\n\x0b\x41rmingState\x18\x05 \x02(\r\x12\x18\n\x10\x45ngineFailureCmd\x18\x06 \x02(\x08\x12\x10\n\x08NavState\x18\x07 \x02(\r\x12$\n\x1cOnboardControlSensorsPresent\x18\x08 \x02(\r\x12\x1b\n\x13\x44\x61taLinkLostCounter\x18\t \x02(\r\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x10\n\x08SystemID\x18\x0b \x02(\r\x12$\n\x1cOnboardControlSensorsEnabled\x18\x0c \x02(\r\x12\x15\n\rEngineFailure\x18\r \x02(\x08\x12\x18\n\x10InTransitionMode\x18\x0e \x02(\x08\x12\x14\n\x0cRcSignalLost\x18\x0f \x02(\x08\x12\x0e\n\x06IsVtol\x18\x10 \x02(\x08\x12\x14\n\x0cIsRotaryWing\x18\x11 \x02(\x08\x12\x14\n\x0c\x44\x61taLinkLost\x18\x12 \x02(\x08\x12\x12\n\nSystemType\x18\x13 \x02(\r\x12\x11\n\tTimestamp\x18\x14 \x02(\x04\x12#\n\x1bOnboardControlSensorsHealth\x18\x15 \x02(\r\x12\x13\n\x0b\x43omponentID\x18\x16 \x02(\r\x12\x13\n\x0bRcInputMode\x18\x17 \x02(\r\"\xdc\x04\n\x1aMAC_CurrentValueTable_t_pb\x12\x31\n\rBatteryStatus\x18\x01 \x02(\x0b\x32\x1a.PX4_BatteryStatusMsg_t_pb\x12\x35\n\x0cVControlMode\x18\x02 \x02(\x0b\x32\x1f.PX4_VehicleControlModeMsg_t_pb\x12\x37\n\x10SensorCorrection\x18\x03 \x02(\x0b\x32\x1d.PX4_SensorCorrectionMsg_t_pb\x12;\n\x0fManualControlSp\x18\x04 \x02(\x0b\x32\".PX4_ManualControlSetpointMsg_t_pb\x12\x37\n\x0bMotorLimits\x18\x05 \x02(\x0b\x32\".PX4_MultirotorMotorLimitsMsg_t_pb\x12/\n\x0c\x43ontrolState\x18\x06 \x02(\x0b\x32\x19.PX4_ControlStateMsg_t_pb\x12\x33\n\x08VRatesSp\x18\x07 \x02(\x0b\x32!.PX4_VehicleRatesSetpointMsg_t_pb\x12\x34\n\x06VAttSp\x18\x08 \x02(\x0b\x32$.PX4_VehicleAttitudeSetpointMsg_t_pb\x12+\n\nSensorGyro\x18\t \x02(\x0b\x32\x17.PX4_SensorGyroMsg_t_pb\x12\x31\n\rVehicleStatus\x18\n \x02(\x0b\x32\x1a.PX4_VehicleStatusMsg_t_pb\x12)\n\x05\x41rmed\x18\x0b \x02(\x0b\x32\x1a.PX4_ActuatorArmedMsg_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -259,7 +259,7 @@ _PX4_SENSORGYROMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='XIntegral', full_name='PX4_SensorGyroMsg_t_pb.XIntegral', index=2,
+      name='Temperature', full_name='PX4_SensorGyroMsg_t_pb.Temperature', index=2,
       number=3, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -364,7 +364,7 @@ _PX4_SENSORGYROMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Temperature', full_name='PX4_SensorGyroMsg_t_pb.Temperature', index=17,
+      name='XIntegral', full_name='PX4_SensorGyroMsg_t_pb.XIntegral', index=17,
       number=18, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -508,7 +508,7 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlManualEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlManualEnabled', index=7,
+      name='ControlVelocityEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlVelocityEnabled', index=7,
       number=8, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -522,14 +522,14 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlVelocityEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlVelocityEnabled', index=9,
-      number=10, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='TlmHeader', full_name='PX4_VehicleControlModeMsg_t_pb.TlmHeader', index=9,
+      number=10, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlForceEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlForceEnabled', index=10,
+      name='ControlClimbRateEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlClimbRateEnabled', index=10,
       number=11, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -550,7 +550,7 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ControlClimbRateEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlClimbRateEnabled', index=13,
+      name='ControlForceEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlForceEnabled', index=13,
       number=14, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -571,16 +571,16 @@ _PX4_VEHICLECONTROLMODEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Armed', full_name='PX4_VehicleControlModeMsg_t_pb.Armed', index=16,
+      name='ControlManualEnabled', full_name='PX4_VehicleControlModeMsg_t_pb.ControlManualEnabled', index=16,
       number=17, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_VehicleControlModeMsg_t_pb.TlmHeader', index=17,
-      number=18, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='Armed', full_name='PX4_VehicleControlModeMsg_t_pb.Armed', index=17,
+      number=18, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -738,14 +738,14 @@ _FLAGS_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MotorNeg', full_name='Flags_pb.MotorNeg', index=6,
+      name='YawNeg', full_name='Flags_pb.YawNeg', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='YawNeg', full_name='Flags_pb.YawNeg', index=7,
+      name='MotorNeg', full_name='Flags_pb.MotorNeg', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -910,9 +910,9 @@ _PX4_VEHICLEATTITUDESETPOINTMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PitchBody', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.PitchBody', index=5,
-      number=6, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      name='DisableMcYawControl', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.DisableMcYawControl', index=5,
+      number=6, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -931,9 +931,9 @@ _PX4_VEHICLEATTITUDESETPOINTMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DisableMcYawControl', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.DisableMcYawControl', index=8,
-      number=9, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='PitchBody', full_name='PX4_VehicleAttitudeSetpointMsg_t_pb.PitchBody', index=8,
+      number=9, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1031,9 +1031,9 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='gyro_offset_1', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_1', index=3,
-      number=4, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
+      name='baro_scale_0', full_name='PX4_SensorCorrectionMsg_t_pb.baro_scale_0', index=3,
+      number=4, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1052,7 +1052,7 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='gyro_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_2', index=6,
+      name='accel_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.accel_offset_2', index=6,
       number=7, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1122,9 +1122,9 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='baro_scale_0', full_name='PX4_SensorCorrectionMsg_t_pb.baro_scale_0', index=16,
-      number=17, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      name='gyro_offset_1', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_1', index=16,
+      number=17, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1136,7 +1136,7 @@ _PX4_SENSORCORRECTIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='accel_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.accel_offset_2', index=18,
+      name='gyro_offset_2', full_name='PX4_SensorCorrectionMsg_t_pb.gyro_offset_2', index=18,
       number=19, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1215,9 +1215,9 @@ _PX4_CONTROLSTATEMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='PosY', full_name='PX4_ControlStateMsg_t_pb.PosY', index=0,
-      number=1, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      name='VelVariance', full_name='PX4_ControlStateMsg_t_pb.VelVariance', index=0,
+      number=1, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1243,9 +1243,9 @@ _PX4_CONTROLSTATEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='VelVariance', full_name='PX4_ControlStateMsg_t_pb.VelVariance', index=4,
-      number=5, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
+      name='PosY', full_name='PX4_ControlStateMsg_t_pb.PosY', index=4,
+      number=5, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1520,9 +1520,9 @@ _PX4_VEHICLESTATUSMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='HilState', full_name='PX4_VehicleStatusMsg_t_pb.HilState', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='MissionFailure', full_name='PX4_VehicleStatusMsg_t_pb.MissionFailure', index=0,
+      number=1, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1534,9 +1534,9 @@ _PX4_VEHICLESTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MissionFailure', full_name='PX4_VehicleStatusMsg_t_pb.MissionFailure', index=2,
-      number=3, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='HilState', full_name='PX4_VehicleStatusMsg_t_pb.HilState', index=2,
+      number=3, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1625,9 +1625,9 @@ _PX4_VEHICLESTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RcInputMode', full_name='PX4_VehicleStatusMsg_t_pb.RcInputMode', index=15,
-      number=16, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='IsVtol', full_name='PX4_VehicleStatusMsg_t_pb.IsVtol', index=15,
+      number=16, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1674,9 +1674,9 @@ _PX4_VEHICLESTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='IsVtol', full_name='PX4_VehicleStatusMsg_t_pb.IsVtol', index=22,
-      number=23, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='RcInputMode', full_name='PX4_VehicleStatusMsg_t_pb.RcInputMode', index=22,
+      number=23, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

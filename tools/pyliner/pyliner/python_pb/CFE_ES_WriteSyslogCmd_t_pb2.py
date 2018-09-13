@@ -18,24 +18,24 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_ES_WriteSyslogCmd_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_CFE_ES_WriteSyslogCmd_t.proto\"<\n\"CFE_ES_WriteSyslogCmd_Payload_t_pb\x12\x16\n\x0eSysLogFileName\x18\x01 \x03(\t\"e\n\x1a\x43\x46\x45_ES_WriteSyslogCmd_t_pb\x12\x34\n\x07Payload\x18\x01 \x02(\x0b\x32#.CFE_ES_WriteSyslogCmd_Payload_t_pb\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
+  serialized_pb=_b('\n!_py_CFE_ES_WriteSyslogCmd_t.proto\"\x1e\n\x04\x63har\x12\x16\n\x0eSysLogFileName\x18\x01 \x02(\t\"G\n\x1a\x43\x46\x45_ES_WriteSyslogCmd_t_pb\x12\x16\n\x07Payload\x18\x01 \x02(\x0b\x32\x05.char\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
 
-_CFE_ES_WRITESYSLOGCMD_PAYLOAD_T_PB = _descriptor.Descriptor(
-  name='CFE_ES_WriteSyslogCmd_Payload_t_pb',
-  full_name='CFE_ES_WriteSyslogCmd_Payload_t_pb',
+_CHAR = _descriptor.Descriptor(
+  name='char',
+  full_name='char',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='SysLogFileName', full_name='CFE_ES_WriteSyslogCmd_Payload_t_pb.SysLogFileName', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='SysLogFileName', full_name='char.SysLogFileName', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -51,7 +51,7 @@ _CFE_ES_WRITESYSLOGCMD_PAYLOAD_T_PB = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=37,
-  serialized_end=97,
+  serialized_end=67,
 )
 
 
@@ -87,20 +87,20 @@ _CFE_ES_WRITESYSLOGCMD_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=99,
-  serialized_end=200,
+  serialized_start=69,
+  serialized_end=140,
 )
 
-_CFE_ES_WRITESYSLOGCMD_T_PB.fields_by_name['Payload'].message_type = _CFE_ES_WRITESYSLOGCMD_PAYLOAD_T_PB
-DESCRIPTOR.message_types_by_name['CFE_ES_WriteSyslogCmd_Payload_t_pb'] = _CFE_ES_WRITESYSLOGCMD_PAYLOAD_T_PB
+_CFE_ES_WRITESYSLOGCMD_T_PB.fields_by_name['Payload'].message_type = _CHAR
+DESCRIPTOR.message_types_by_name['char'] = _CHAR
 DESCRIPTOR.message_types_by_name['CFE_ES_WriteSyslogCmd_t_pb'] = _CFE_ES_WRITESYSLOGCMD_T_PB
 
-CFE_ES_WriteSyslogCmd_Payload_t_pb = _reflection.GeneratedProtocolMessageType('CFE_ES_WriteSyslogCmd_Payload_t_pb', (_message.Message,), dict(
-  DESCRIPTOR = _CFE_ES_WRITESYSLOGCMD_PAYLOAD_T_PB,
+char = _reflection.GeneratedProtocolMessageType('char', (_message.Message,), dict(
+  DESCRIPTOR = _CHAR,
   __module__ = '_py_CFE_ES_WriteSyslogCmd_t_pb2'
-  # @@protoc_insertion_point(class_scope:CFE_ES_WriteSyslogCmd_Payload_t_pb)
+  # @@protoc_insertion_point(class_scope:char)
   ))
-_sym_db.RegisterMessage(CFE_ES_WriteSyslogCmd_Payload_t_pb)
+_sym_db.RegisterMessage(char)
 
 CFE_ES_WriteSyslogCmd_t_pb = _reflection.GeneratedProtocolMessageType('CFE_ES_WriteSyslogCmd_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _CFE_ES_WRITESYSLOGCMD_T_PB,

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_QueueEntry_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_CF_QueueEntry_t.proto\"\x17\n\x07Prev_pb\x12\x0c\n\x04Prev\x18\x01 \x02(\r\"\xbc\x02\n\x12\x43\x46_QueueEntry_t_pb\x12\x0e\n\x06Status\x18\x01 \x02(\r\x12\x10\n\x08Preserve\x18\x02 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x03 \x03(\t\x12\x10\n\x08NodeType\x18\x04 \x02(\r\x12\x0f\n\x07SrcFile\x18\x05 \x03(\t\x12\x0f\n\x07\x44stFile\x18\x06 \x03(\t\x12\x0f\n\x07\x43hanNum\x18\x07 \x02(\r\x12\x10\n\x08Priority\x18\x08 \x02(\r\x12\x0e\n\x06Source\x18\t \x02(\r\x12\x0f\n\x07Warning\x18\n \x02(\r\x12\x14\n\x0cPeerEntityId\x18\x0b \x03(\t\x12\x16\n\x04Prev\x18\x0c \x02(\x0b\x32\x08.Prev_pb\x12\x16\n\x04Next\x18\r \x02(\x0b\x32\x08.Prev_pb\x12\r\n\x05\x43lass\x18\x0e \x02(\r\x12\x10\n\x08TransNum\x18\x0f \x02(\r\x12\x10\n\x08\x43ondCode\x18\x10 \x02(\r')
+  serialized_pb=_b('\n\x19_py_CF_QueueEntry_t.proto\"\x17\n\x07Prev_pb\x12\x0c\n\x04Prev\x18\x01 \x02(\r\"\xbc\x02\n\x12\x43\x46_QueueEntry_t_pb\x12\x0e\n\x06Status\x18\x01 \x02(\r\x12\x10\n\x08Preserve\x18\x02 \x02(\r\x12\x16\n\x04Prev\x18\x03 \x02(\x0b\x32\x08.Prev_pb\x12\x10\n\x08NodeType\x18\x04 \x02(\r\x12\x0f\n\x07SrcFile\x18\x05 \x02(\t\x12\x0f\n\x07\x43hanNum\x18\x06 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x07 \x02(\t\x12\x10\n\x08Priority\x18\x08 \x02(\r\x12\x0e\n\x06Source\x18\t \x02(\r\x12\x0f\n\x07Warning\x18\n \x02(\r\x12\x14\n\x0cPeerEntityId\x18\x0b \x02(\t\x12\x13\n\x0bSrcEntityId\x18\x0c \x02(\t\x12\x16\n\x04Next\x18\r \x02(\x0b\x32\x08.Prev_pb\x12\r\n\x05\x43lass\x18\x0e \x02(\r\x12\x10\n\x08TransNum\x18\x0f \x02(\r\x12\x10\n\x08\x43ondCode\x18\x10 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -77,9 +77,9 @@ _CF_QUEUEENTRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SrcEntityId', full_name='CF_QueueEntry_t_pb.SrcEntityId', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Prev', full_name='CF_QueueEntry_t_pb.Prev', index=2,
+      number=3, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -92,22 +92,22 @@ _CF_QUEUEENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFile', full_name='CF_QueueEntry_t_pb.SrcFile', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DstFile', full_name='CF_QueueEntry_t_pb.DstFile', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='ChanNum', full_name='CF_QueueEntry_t_pb.ChanNum', index=6,
-      number=7, type=13, cpp_type=3, label=2,
+      name='ChanNum', full_name='CF_QueueEntry_t_pb.ChanNum', index=5,
+      number=6, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='DstFile', full_name='CF_QueueEntry_t_pb.DstFile', index=6,
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -134,15 +134,15 @@ _CF_QUEUEENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='PeerEntityId', full_name='CF_QueueEntry_t_pb.PeerEntityId', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=11, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Prev', full_name='CF_QueueEntry_t_pb.Prev', index=11,
-      number=12, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='SrcEntityId', full_name='CF_QueueEntry_t_pb.SrcEntityId', index=11,
+      number=12, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

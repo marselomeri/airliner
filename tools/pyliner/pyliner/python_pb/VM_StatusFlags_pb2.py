@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_VM_StatusFlags.proto',
   package='',
-  serialized_pb=_b('\n\x18_py_VM_StatusFlags.proto\"\xfe\x01\n\x11VM_StatusFlags_pb\x12\x1a\n\x12rc_signal_lost_cmd\x18\x01 \x02(\x08\x12%\n\x1d\x63ondition_home_position_valid\x18\x02 \x02(\x08\x12,\n$condition_system_sensors_initialized\x18\x03 \x02(\x08\x12\x15\n\rusb_connected\x18\x04 \x02(\x08\x12)\n!condition_system_returned_to_home\x18\x05 \x02(\x08\x12\x18\n\x10rc_input_blocked\x18\x06 \x02(\x08\x12\x1c\n\x14rc_signal_found_once\x18\x07 \x02(\x08')
+  serialized_pb=_b('\n\x18_py_VM_StatusFlags.proto\"\xfe\x01\n\x11VM_StatusFlags_pb\x12\x1a\n\x12rc_signal_lost_cmd\x18\x01 \x02(\x08\x12%\n\x1d\x63ondition_home_position_valid\x18\x02 \x02(\x08\x12,\n$condition_system_sensors_initialized\x18\x03 \x02(\x08\x12\x18\n\x10rc_input_blocked\x18\x04 \x02(\x08\x12\x15\n\rusb_connected\x18\x05 \x02(\x08\x12)\n!condition_system_returned_to_home\x18\x06 \x02(\x08\x12\x1c\n\x14rc_signal_found_once\x18\x07 \x02(\x08')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -54,21 +54,21 @@ _VM_STATUSFLAGS_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='usb_connected', full_name='VM_StatusFlags_pb.usb_connected', index=3,
+      name='rc_input_blocked', full_name='VM_StatusFlags_pb.rc_input_blocked', index=3,
       number=4, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='condition_system_returned_to_home', full_name='VM_StatusFlags_pb.condition_system_returned_to_home', index=4,
+      name='usb_connected', full_name='VM_StatusFlags_pb.usb_connected', index=4,
       number=5, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='rc_input_blocked', full_name='VM_StatusFlags_pb.rc_input_blocked', index=5,
+      name='condition_system_returned_to_home', full_name='VM_StatusFlags_pb.condition_system_returned_to_home', index=5,
       number=6, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,

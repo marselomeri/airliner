@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_LC_MListTag.proto',
   package='',
-  serialized_pb=_b('\n\x15_py_LC_MListTag.proto\"U\n\x0eLC_MListTag_pb\x12\x11\n\tMessageID\x18\x01 \x02(\r\x12\r\n\x05Spare\x18\x02 \x02(\r\x12\x13\n\x0bWatchPtList\x18\x03 \x02(\r\x12\x0c\n\x04Next\x18\x04 \x02(\r')
+  serialized_pb=_b('\n\x15_py_LC_MListTag.proto\"U\n\x0eLC_MListTag_pb\x12\x0c\n\x04Next\x18\x01 \x02(\r\x12\r\n\x05Spare\x18\x02 \x02(\r\x12\x13\n\x0bWatchPtList\x18\x03 \x02(\r\x12\x11\n\tMessageID\x18\x04 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,7 +33,7 @@ _LC_MLISTTAG_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='MessageID', full_name='LC_MListTag_pb.MessageID', index=0,
+      name='Next', full_name='LC_MListTag_pb.Next', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -54,7 +54,7 @@ _LC_MLISTTAG_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Next', full_name='LC_MListTag_pb.Next', index=3,
+      name='MessageID', full_name='LC_MListTag_pb.MessageID', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

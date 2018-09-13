@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_EA_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_EA_AppData_t.proto\"9\n\x0f\x45\x41_OutData_t_pb\x12\x13\n\x0bucTlmHeader\x18\x01 \x03(\r\x12\x11\n\tuiCounter\x18\x02 \x02(\r\"\x17\n\x05int32\x12\x0e\n\x06iParam\x18\x01 \x02(\x05\"4\n\x0e\x45\x41_InData_t_pb\x12\x11\n\tTlmHeader\x18\x01 \x03(\r\x12\x0f\n\x07\x63ounter\x18\x02 \x02(\r\"S\n\x11\x45\x41_ChildData_t_pb\x12\x16\n\x0e\x41ppInterpreter\x18\x01 \x03(\t\x12\x13\n\x0bucTlmHeader\x18\x02 \x03(\r\x12\x11\n\tAppScript\x18\x03 \x03(\t\"6\n\x10\x45\x41_ProcData_t_pb\x12\x12\n\ntotal_time\x18\x01 \x02(\x04\x12\x0e\n\x06p_time\x18\x02 \x02(\x04\"7\n\x16\x43\x46\x45_EVS_BinFilter_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x0c\n\x04Mask\x18\x02 \x02(\r\"\xb4\x01\n\rEA_HkTlm_t_pb\x12\x15\n\rActiveAppUtil\x18\x01 \x02(\x02\x12\x10\n\x08usCmdCnt\x18\x02 \x02(\r\x12\x12\n\nLastAppRun\x18\x03 \x03(\t\x12\x15\n\rLastAppStatus\x18\x04 \x02(\x05\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x06 \x02(\r\x12\x11\n\tActiveApp\x18\x07 \x03(\t\x12\x14\n\x0c\x41\x63tiveAppPID\x18\x08 \x02(\x05\"\xbc\x03\n\x0f\x45\x41_AppData_t_pb\x12\x0e\n\x06\x43\x64sTbl\x18\x01 \x02(\x05\x12)\n\x08\x45ventTbl\x18\x02 \x03(\x0b\x32\x17.CFE_EVS_BinFilter_t_pb\x12\x1d\n\x05HkTlm\x18\x03 \x02(\x0b\x32\x0e.EA_HkTlm_t_pb\x12\x11\n\tCmdPipeId\x18\x04 \x02(\t\x12\x1f\n\x06InData\x18\x05 \x02(\x0b\x32\x0f.EA_InData_t_pb\x12\x16\n\x0e\x43hildAppTaskID\x18\x06 \x02(\r\x12\x11\n\tCdsTblHdl\x18\x07 \x02(\r\x12\x11\n\tSchPipeId\x18\x08 \x02(\t\x12!\n\x07OutData\x18\t \x02(\x0b\x32\x10.EA_OutData_t_pb\x12#\n\x08ProcData\x18\n \x02(\x0b\x32\x11.EA_ProcData_t_pb\x12\x12\n\nDataPipeId\x18\x0b \x02(\t\x12\x14\n\x0c\x43onfigTblPtr\x18\x0c \x02(\r\x12%\n\tChildData\x18\r \x02(\x0b\x32\x12.EA_ChildData_t_pb\x12\x14\n\x0c\x43onfigTblHdl\x18\x0e \x02(\x05\x12\x13\n\x0buiRunStatus\x18\x0f \x02(\r\x12\x19\n\x11\x43hildAppTaskInUse\x18\x10 \x02(\x08')
+  serialized_pb=_b('\n\x16_py_EA_AppData_t.proto\"9\n\x0f\x45\x41_OutData_t_pb\x12\x13\n\x0bucTlmHeader\x18\x01 \x03(\r\x12\x11\n\tuiCounter\x18\x02 \x02(\r\"6\n\x10\x45\x41_ProcData_t_pb\x12\x12\n\ntotal_time\x18\x01 \x02(\x04\x12\x0e\n\x06p_time\x18\x02 \x02(\x04\"4\n\x0e\x45\x41_InData_t_pb\x12\x11\n\tTlmHeader\x18\x01 \x03(\r\x12\x0f\n\x07\x63ounter\x18\x02 \x02(\r\"S\n\x11\x45\x41_ChildData_t_pb\x12\x16\n\x0e\x41ppInterpreter\x18\x01 \x02(\t\x12\x13\n\x0bucTlmHeader\x18\x02 \x03(\r\x12\x11\n\tAppScript\x18\x03 \x02(\t\" \n\x0e\x45\x41_CdsTbl_t_pb\x12\x0e\n\x06iParam\x18\x01 \x02(\x05\"7\n\x16\x43\x46\x45_EVS_BinFilter_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x0c\n\x04Mask\x18\x02 \x02(\r\"\xb4\x01\n\rEA_HkTlm_t_pb\x12\x15\n\rActiveAppUtil\x18\x01 \x02(\x02\x12\x10\n\x08usCmdCnt\x18\x02 \x02(\r\x12\x12\n\nLastAppRun\x18\x03 \x02(\t\x12\x15\n\rLastAppStatus\x18\x04 \x02(\x05\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x06 \x02(\r\x12\x11\n\tActiveApp\x18\x07 \x02(\t\x12\x14\n\x0c\x41\x63tiveAppPID\x18\x08 \x02(\x05\"\xcd\x03\n\x0f\x45\x41_AppData_t_pb\x12\x1f\n\x06\x43\x64sTbl\x18\x01 \x02(\x0b\x32\x0f.EA_CdsTbl_t_pb\x12)\n\x08\x45ventTbl\x18\x02 \x03(\x0b\x32\x17.CFE_EVS_BinFilter_t_pb\x12\x1d\n\x05HkTlm\x18\x03 \x02(\x0b\x32\x0e.EA_HkTlm_t_pb\x12\x11\n\tCmdPipeId\x18\x04 \x02(\t\x12\x1f\n\x06InData\x18\x05 \x02(\x0b\x32\x0f.EA_InData_t_pb\x12\x16\n\x0e\x43hildAppTaskID\x18\x06 \x02(\r\x12\x11\n\tCdsTblHdl\x18\x07 \x02(\r\x12\x11\n\tSchPipeId\x18\x08 \x02(\t\x12!\n\x07OutData\x18\t \x02(\x0b\x32\x10.EA_OutData_t_pb\x12#\n\x08ProcData\x18\n \x02(\x0b\x32\x11.EA_ProcData_t_pb\x12\x12\n\nDataPipeId\x18\x0b \x02(\t\x12\x14\n\x0c\x43onfigTblPtr\x18\x0c \x02(\r\x12%\n\tChildData\x18\r \x02(\x0b\x32\x12.EA_ChildData_t_pb\x12\x14\n\x0c\x43onfigTblHdl\x18\x0e \x02(\x05\x12\x13\n\x0buiRunStatus\x18\x0f \x02(\r\x12\x19\n\x11\x43hildAppTaskInUse\x18\x10 \x02(\x08')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -62,16 +62,23 @@ _EA_OUTDATA_T_PB = _descriptor.Descriptor(
 )
 
 
-_INT32 = _descriptor.Descriptor(
-  name='int32',
-  full_name='int32',
+_EA_PROCDATA_T_PB = _descriptor.Descriptor(
+  name='EA_ProcData_t_pb',
+  full_name='EA_ProcData_t_pb',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='iParam', full_name='int32.iParam', index=0,
-      number=1, type=5, cpp_type=1, label=2,
+      name='total_time', full_name='EA_ProcData_t_pb.total_time', index=0,
+      number=1, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='p_time', full_name='EA_ProcData_t_pb.p_time', index=1,
+      number=2, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -88,7 +95,7 @@ _INT32 = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=85,
-  serialized_end=108,
+  serialized_end=139,
 )
 
 
@@ -124,8 +131,8 @@ _EA_INDATA_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=110,
-  serialized_end=162,
+  serialized_start=141,
+  serialized_end=193,
 )
 
 
@@ -138,8 +145,8 @@ _EA_CHILDDATA_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='AppInterpreter', full_name='EA_ChildData_t_pb.AppInterpreter', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -152,8 +159,8 @@ _EA_CHILDDATA_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='AppScript', full_name='EA_ChildData_t_pb.AppScript', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -168,28 +175,21 @@ _EA_CHILDDATA_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=164,
-  serialized_end=247,
+  serialized_start=195,
+  serialized_end=278,
 )
 
 
-_EA_PROCDATA_T_PB = _descriptor.Descriptor(
-  name='EA_ProcData_t_pb',
-  full_name='EA_ProcData_t_pb',
+_EA_CDSTBL_T_PB = _descriptor.Descriptor(
+  name='EA_CdsTbl_t_pb',
+  full_name='EA_CdsTbl_t_pb',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='total_time', full_name='EA_ProcData_t_pb.total_time', index=0,
-      number=1, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='p_time', full_name='EA_ProcData_t_pb.p_time', index=1,
-      number=2, type=4, cpp_type=4, label=2,
+      name='iParam', full_name='EA_CdsTbl_t_pb.iParam', index=0,
+      number=1, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -205,8 +205,8 @@ _EA_PROCDATA_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=249,
-  serialized_end=303,
+  serialized_start=280,
+  serialized_end=312,
 )
 
 
@@ -242,8 +242,8 @@ _CFE_EVS_BINFILTER_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=305,
-  serialized_end=360,
+  serialized_start=314,
+  serialized_end=369,
 )
 
 
@@ -270,8 +270,8 @@ _EA_HKTLM_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='LastAppRun', full_name='EA_HkTlm_t_pb.LastAppRun', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -298,8 +298,8 @@ _EA_HKTLM_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='ActiveApp', full_name='EA_HkTlm_t_pb.ActiveApp', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -321,8 +321,8 @@ _EA_HKTLM_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=363,
-  serialized_end=543,
+  serialized_start=372,
+  serialized_end=552,
 )
 
 
@@ -335,8 +335,8 @@ _EA_APPDATA_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='CdsTbl', full_name='EA_AppData_t_pb.CdsTbl', index=0,
-      number=1, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
+      number=1, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -456,10 +456,11 @@ _EA_APPDATA_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=546,
-  serialized_end=990,
+  serialized_start=555,
+  serialized_end=1016,
 )
 
+_EA_APPDATA_T_PB.fields_by_name['CdsTbl'].message_type = _EA_CDSTBL_T_PB
 _EA_APPDATA_T_PB.fields_by_name['EventTbl'].message_type = _CFE_EVS_BINFILTER_T_PB
 _EA_APPDATA_T_PB.fields_by_name['HkTlm'].message_type = _EA_HKTLM_T_PB
 _EA_APPDATA_T_PB.fields_by_name['InData'].message_type = _EA_INDATA_T_PB
@@ -467,10 +468,10 @@ _EA_APPDATA_T_PB.fields_by_name['OutData'].message_type = _EA_OUTDATA_T_PB
 _EA_APPDATA_T_PB.fields_by_name['ProcData'].message_type = _EA_PROCDATA_T_PB
 _EA_APPDATA_T_PB.fields_by_name['ChildData'].message_type = _EA_CHILDDATA_T_PB
 DESCRIPTOR.message_types_by_name['EA_OutData_t_pb'] = _EA_OUTDATA_T_PB
-DESCRIPTOR.message_types_by_name['int32'] = _INT32
+DESCRIPTOR.message_types_by_name['EA_ProcData_t_pb'] = _EA_PROCDATA_T_PB
 DESCRIPTOR.message_types_by_name['EA_InData_t_pb'] = _EA_INDATA_T_PB
 DESCRIPTOR.message_types_by_name['EA_ChildData_t_pb'] = _EA_CHILDDATA_T_PB
-DESCRIPTOR.message_types_by_name['EA_ProcData_t_pb'] = _EA_PROCDATA_T_PB
+DESCRIPTOR.message_types_by_name['EA_CdsTbl_t_pb'] = _EA_CDSTBL_T_PB
 DESCRIPTOR.message_types_by_name['CFE_EVS_BinFilter_t_pb'] = _CFE_EVS_BINFILTER_T_PB
 DESCRIPTOR.message_types_by_name['EA_HkTlm_t_pb'] = _EA_HKTLM_T_PB
 DESCRIPTOR.message_types_by_name['EA_AppData_t_pb'] = _EA_APPDATA_T_PB
@@ -482,12 +483,12 @@ EA_OutData_t_pb = _reflection.GeneratedProtocolMessageType('EA_OutData_t_pb', (_
   ))
 _sym_db.RegisterMessage(EA_OutData_t_pb)
 
-int32 = _reflection.GeneratedProtocolMessageType('int32', (_message.Message,), dict(
-  DESCRIPTOR = _INT32,
+EA_ProcData_t_pb = _reflection.GeneratedProtocolMessageType('EA_ProcData_t_pb', (_message.Message,), dict(
+  DESCRIPTOR = _EA_PROCDATA_T_PB,
   __module__ = '_py_EA_AppData_t_pb2'
-  # @@protoc_insertion_point(class_scope:int32)
+  # @@protoc_insertion_point(class_scope:EA_ProcData_t_pb)
   ))
-_sym_db.RegisterMessage(int32)
+_sym_db.RegisterMessage(EA_ProcData_t_pb)
 
 EA_InData_t_pb = _reflection.GeneratedProtocolMessageType('EA_InData_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _EA_INDATA_T_PB,
@@ -503,12 +504,12 @@ EA_ChildData_t_pb = _reflection.GeneratedProtocolMessageType('EA_ChildData_t_pb'
   ))
 _sym_db.RegisterMessage(EA_ChildData_t_pb)
 
-EA_ProcData_t_pb = _reflection.GeneratedProtocolMessageType('EA_ProcData_t_pb', (_message.Message,), dict(
-  DESCRIPTOR = _EA_PROCDATA_T_PB,
+EA_CdsTbl_t_pb = _reflection.GeneratedProtocolMessageType('EA_CdsTbl_t_pb', (_message.Message,), dict(
+  DESCRIPTOR = _EA_CDSTBL_T_PB,
   __module__ = '_py_EA_AppData_t_pb2'
-  # @@protoc_insertion_point(class_scope:EA_ProcData_t_pb)
+  # @@protoc_insertion_point(class_scope:EA_CdsTbl_t_pb)
   ))
-_sym_db.RegisterMessage(EA_ProcData_t_pb)
+_sym_db.RegisterMessage(EA_CdsTbl_t_pb)
 
 CFE_EVS_BinFilter_t_pb = _reflection.GeneratedProtocolMessageType('CFE_EVS_BinFilter_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _CFE_EVS_BINFILTER_T_PB,

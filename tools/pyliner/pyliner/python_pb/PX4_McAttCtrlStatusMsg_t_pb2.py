@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_McAttCtrlStatusMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_PX4_McAttCtrlStatusMsg_t.proto\"\x88\x01\n\x1bPX4_McAttCtrlStatusMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x16\n\x0ePitchRateInteg\x18\x02 \x02(\x02\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\x14\n\x0cYawRateInteg\x18\x04 \x02(\x02\x12\x15\n\rRollRateInteg\x18\x05 \x02(\x02')
+  serialized_pb=_b('\n\"_py_PX4_McAttCtrlStatusMsg_t.proto\"\x88\x01\n\x1bPX4_McAttCtrlStatusMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x15\n\rRollRateInteg\x18\x02 \x02(\x02\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\x14\n\x0cYawRateInteg\x18\x04 \x02(\x02\x12\x16\n\x0ePitchRateInteg\x18\x05 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,7 +40,7 @@ _PX4_MCATTCTRLSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PitchRateInteg', full_name='PX4_McAttCtrlStatusMsg_t_pb.PitchRateInteg', index=1,
+      name='RollRateInteg', full_name='PX4_McAttCtrlStatusMsg_t_pb.RollRateInteg', index=1,
       number=2, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -61,7 +61,7 @@ _PX4_MCATTCTRLSTATUSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RollRateInteg', full_name='PX4_McAttCtrlStatusMsg_t_pb.RollRateInteg', index=4,
+      name='PitchRateInteg', full_name='PX4_McAttCtrlStatusMsg_t_pb.PitchRateInteg', index=4,
       number=5, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

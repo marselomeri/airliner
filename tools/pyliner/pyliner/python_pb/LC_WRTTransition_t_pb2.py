@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_LC_WRTTransition_t.proto',
   package='',
-  serialized_pb=_b('\n\x1c_py_LC_WRTTransition_t.proto\"<\n\x15\x43\x46\x45_TIME_SysTime_t_pb\x12\x0f\n\x07Seconds\x18\x01 \x02(\r\x12\x12\n\nSubseconds\x18\x02 \x02(\r\"t\n\x15LC_WRTTransition_t_pb\x12\x10\n\x08\x44\x61taType\x18\x01 \x02(\r\x12\x0f\n\x07Padding\x18\x02 \x03(\r\x12\r\n\x05Value\x18\x03 \x02(\r\x12)\n\tTimestamp\x18\x04 \x02(\x0b\x32\x16.CFE_TIME_SysTime_t_pb')
+  serialized_pb=_b('\n\x1c_py_LC_WRTTransition_t.proto\"<\n\x15\x43\x46\x45_TIME_SysTime_t_pb\x12\x0f\n\x07Seconds\x18\x01 \x02(\r\x12\x12\n\nSubseconds\x18\x02 \x02(\r\"t\n\x15LC_WRTTransition_t_pb\x12\x0f\n\x07Padding\x18\x01 \x03(\r\x12)\n\tTimestamp\x18\x02 \x02(\x0b\x32\x16.CFE_TIME_SysTime_t_pb\x12\x10\n\x08\x44\x61taType\x18\x03 \x02(\r\x12\r\n\x05Value\x18\x04 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -70,30 +70,30 @@ _LC_WRTTRANSITION_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='DataType', full_name='LC_WRTTransition_t_pb.DataType', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='Padding', full_name='LC_WRTTransition_t_pb.Padding', index=1,
-      number=2, type=13, cpp_type=3, label=3,
+      name='Padding', full_name='LC_WRTTransition_t_pb.Padding', index=0,
+      number=1, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Value', full_name='LC_WRTTransition_t_pb.Value', index=2,
+      name='Timestamp', full_name='LC_WRTTransition_t_pb.Timestamp', index=1,
+      number=2, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='DataType', full_name='LC_WRTTransition_t_pb.DataType', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='LC_WRTTransition_t_pb.Timestamp', index=3,
-      number=4, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='Value', full_name='LC_WRTTransition_t_pb.Value', index=3,
+      number=4, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

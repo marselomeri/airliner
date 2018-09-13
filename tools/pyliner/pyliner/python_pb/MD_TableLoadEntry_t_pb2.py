@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MD_TableLoadEntry_t.proto',
   package='',
-  serialized_pb=_b('\n\x1d_py_MD_TableLoadEntry_t.proto\"3\n\x10\x43\x46S_SymAddr_t_pb\x12\x0f\n\x07SymName\x18\x01 \x03(\t\x12\x0e\n\x06Offset\x18\x02 \x02(\r\"`\n\x16MD_TableLoadEntry_t_pb\x12\r\n\x05\x44\x65lay\x18\x01 \x02(\r\x12\'\n\x0c\x44wellAddress\x18\x02 \x02(\x0b\x32\x11.CFS_SymAddr_t_pb\x12\x0e\n\x06Length\x18\x03 \x02(\r')
+  serialized_pb=_b('\n\x1d_py_MD_TableLoadEntry_t.proto\"3\n\x10\x43\x46S_SymAddr_t_pb\x12\x0f\n\x07SymName\x18\x01 \x02(\t\x12\x0e\n\x06Offset\x18\x02 \x02(\r\"`\n\x16MD_TableLoadEntry_t_pb\x12\'\n\x0c\x44wellAddress\x18\x01 \x02(\x0b\x32\x11.CFS_SymAddr_t_pb\x12\r\n\x05\x44\x65lay\x18\x02 \x02(\r\x12\x0e\n\x06Length\x18\x03 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _CFS_SYMADDR_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='SymName', full_name='CFS_SymAddr_t_pb.SymName', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -70,16 +70,16 @@ _MD_TABLELOADENTRY_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Delay', full_name='MD_TableLoadEntry_t_pb.Delay', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='DwellAddress', full_name='MD_TableLoadEntry_t_pb.DwellAddress', index=0,
+      number=1, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DwellAddress', full_name='MD_TableLoadEntry_t_pb.DwellAddress', index=1,
-      number=2, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='Delay', full_name='MD_TableLoadEntry_t_pb.Delay', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

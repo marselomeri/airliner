@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_TBL_Info_t.proto',
   package='',
-  serialized_pb=_b('\n\x18_py_CFE_TBL_Info_t.proto\"<\n\x15\x43\x46\x45_TIME_SysTime_t_pb\x12\x0f\n\x07Seconds\x18\x01 \x02(\r\x12\x12\n\nSubseconds\x18\x02 \x02(\r\"\xac\x02\n\x11\x43\x46\x45_TBL_Info_t_pb\x12\x13\n\x0bUserDefAddr\x18\x01 \x02(\x08\x12\x16\n\x0eLastFileLoaded\x18\x02 \x03(\t\x12\x1a\n\x12\x46ileCreateTimeSecs\x18\x03 \x02(\r\x12\x10\n\x08\x44umpOnly\x18\x04 \x02(\x08\x12\x1d\n\x15\x46ileCreateTimeSubSecs\x18\x05 \x02(\r\x12\x17\n\x0fTableLoadedOnce\x18\x06 \x02(\x08\x12\x0b\n\x03\x43rc\x18\x07 \x02(\r\x12\x10\n\x08\x43ritical\x18\x08 \x02(\x08\x12\x13\n\x0b\x44\x62lBuffered\x18\t \x02(\x08\x12\x10\n\x08NumUsers\x18\n \x02(\r\x12\x0c\n\x04Size\x18\x0b \x02(\r\x12\x30\n\x10TimeOfLastUpdate\x18\x0c \x02(\x0b\x32\x16.CFE_TIME_SysTime_t_pb')
+  serialized_pb=_b('\n\x18_py_CFE_TBL_Info_t.proto\"<\n\x15\x43\x46\x45_TIME_SysTime_t_pb\x12\x0f\n\x07Seconds\x18\x01 \x02(\r\x12\x12\n\nSubseconds\x18\x02 \x02(\r\"\xac\x02\n\x11\x43\x46\x45_TBL_Info_t_pb\x12\x13\n\x0bUserDefAddr\x18\x01 \x02(\x08\x12\x16\n\x0eLastFileLoaded\x18\x02 \x02(\t\x12\x1a\n\x12\x46ileCreateTimeSecs\x18\x03 \x02(\r\x12\x10\n\x08\x44umpOnly\x18\x04 \x02(\x08\x12\x1d\n\x15\x46ileCreateTimeSubSecs\x18\x05 \x02(\r\x12\x17\n\x0fTableLoadedOnce\x18\x06 \x02(\x08\x12\x0b\n\x03\x43rc\x18\x07 \x02(\r\x12\x10\n\x08\x43ritical\x18\x08 \x02(\x08\x12\x13\n\x0b\x44\x62lBuffered\x18\t \x02(\x08\x12\x10\n\x08NumUsers\x18\n \x02(\r\x12\x0c\n\x04Size\x18\x0b \x02(\r\x12\x30\n\x10TimeOfLastUpdate\x18\x0c \x02(\x0b\x32\x16.CFE_TIME_SysTime_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -78,8 +78,8 @@ _CFE_TBL_INFO_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='LastFileLoaded', full_name='CFE_TBL_Info_t_pb.LastFileLoaded', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

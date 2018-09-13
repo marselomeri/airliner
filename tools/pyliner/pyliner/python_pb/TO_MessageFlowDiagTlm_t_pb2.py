@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_TO_MessageFlowDiagTlm_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_TO_MessageFlowDiagTlm_t.proto\"|\n\x1aTO_MessageFlowDiagTlm_t_pb\x12\x10\n\x08MsgLimit\x18\x01 \x02(\r\x12\r\n\x05MsgId\x18\x02 \x02(\r\x12\x15\n\rDroppedMsgCnt\x18\x03 \x02(\r\x12\x14\n\x0cQueuedMsgCnt\x18\x04 \x02(\r\x12\x10\n\x08PQueueID\x18\x05 \x02(\r')
+  serialized_pb=_b('\n!_py_TO_MessageFlowDiagTlm_t.proto\"|\n\x1aTO_MessageFlowDiagTlm_t_pb\x12\x10\n\x08MsgLimit\x18\x01 \x02(\r\x12\r\n\x05MsgId\x18\x02 \x02(\r\x12\x14\n\x0cQueuedMsgCnt\x18\x03 \x02(\r\x12\x10\n\x08PQueueID\x18\x04 \x02(\r\x12\x15\n\rDroppedMsgCnt\x18\x05 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -47,21 +47,21 @@ _TO_MESSAGEFLOWDIAGTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DroppedMsgCnt', full_name='TO_MessageFlowDiagTlm_t_pb.DroppedMsgCnt', index=2,
+      name='QueuedMsgCnt', full_name='TO_MessageFlowDiagTlm_t_pb.QueuedMsgCnt', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='QueuedMsgCnt', full_name='TO_MessageFlowDiagTlm_t_pb.QueuedMsgCnt', index=3,
+      name='PQueueID', full_name='TO_MessageFlowDiagTlm_t_pb.PQueueID', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PQueueID', full_name='TO_MessageFlowDiagTlm_t_pb.PQueueID', index=4,
+      name='DroppedMsgCnt', full_name='TO_MessageFlowDiagTlm_t_pb.DroppedMsgCnt', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

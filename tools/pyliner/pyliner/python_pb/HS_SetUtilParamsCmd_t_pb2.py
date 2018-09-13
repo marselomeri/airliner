@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_HS_SetUtilParamsCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_HS_SetUtilParamsCmd_t.proto\"X\n\x18HS_SetUtilParamsCmd_t_pb\x12\r\n\x05Mult2\x18\x01 \x02(\x05\x12\r\n\x05Mult1\x18\x02 \x02(\x05\x12\x0b\n\x03\x44iv\x18\x03 \x02(\x05\x12\x11\n\tCmdHeader\x18\x04 \x03(\r')
+  serialized_pb=_b('\n\x1f_py_HS_SetUtilParamsCmd_t.proto\"X\n\x18HS_SetUtilParamsCmd_t_pb\x12\r\n\x05Mult2\x18\x01 \x02(\x05\x12\x0b\n\x03\x44iv\x18\x02 \x02(\x05\x12\r\n\x05Mult1\x18\x03 \x02(\x05\x12\x11\n\tCmdHeader\x18\x04 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,14 +40,14 @@ _HS_SETUTILPARAMSCMD_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Mult1', full_name='HS_SetUtilParamsCmd_t_pb.Mult1', index=1,
+      name='Div', full_name='HS_SetUtilParamsCmd_t_pb.Div', index=1,
       number=2, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Div', full_name='HS_SetUtilParamsCmd_t_pb.Div', index=2,
+      name='Mult1', full_name='HS_SetUtilParamsCmd_t_pb.Mult1', index=2,
       number=3, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

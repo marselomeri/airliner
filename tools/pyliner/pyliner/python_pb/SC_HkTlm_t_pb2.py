@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SC_HkTlm_t.proto',
   package='',
-  serialized_pb=_b('\n\x14_py_SC_HkTlm_t.proto\"\xab\x05\n\rSC_HkTlm_t_pb\x12\x17\n\x0fRtsActiveErrCtr\x18\x01 \x02(\r\x12\x15\n\rLastRtsErrSeq\x18\x02 \x02(\r\x12\x16\n\x0eSwitchPendFlag\x18\x03 \x02(\r\x12\x14\n\x0c\x41ppendCmdArg\x18\x04 \x02(\r\x12\x19\n\x11RtsDisabledStatus\x18\x05 \x03(\r\x12\x11\n\tRtsNumber\x18\x06 \x02(\r\x12\x10\n\x08\x41tpState\x18\x07 \x02(\r\x12\x15\n\rLastAtsErrSeq\x18\x08 \x02(\r\x12\x0e\n\x06\x43mdCtr\x18\t \x02(\r\x12\x14\n\x0cRtsCmdErrCtr\x18\n \x02(\r\x12 \n\x18\x43ontinueAtsOnFailureFlag\x18\x0b \x02(\r\x12\x17\n\x0f\x41ppendByteCount\x18\x0c \x02(\r\x12\x13\n\x0bNextAtsTime\x18\r \x02(\r\x12\x15\n\rLastRtsErrCmd\x18\x0e \x02(\r\x12\x14\n\x0cRtsActiveCtr\x18\x0f \x02(\r\x12\x11\n\tRtsCmdCtr\x18\x10 \x02(\r\x12\x14\n\x0cNumRtsActive\x18\x11 \x02(\r\x12\x14\n\x0c\x41tpFreeBytes\x18\x12 \x03(\r\x12\x13\n\x0bNextRtsTime\x18\x13 \x02(\r\x12\x10\n\x08Padding8\x18\x14 \x02(\r\x12\x17\n\x0f\x41ppendLoadCount\x18\x15 \x02(\r\x12\x14\n\x0c\x41tsCmdErrCtr\x18\x16 \x02(\r\x12\x11\n\tAtsNumber\x18\x17 \x02(\r\x12\x11\n\tTlmHeader\x18\x18 \x03(\r\x12\x18\n\x10\x41ppendEntryCount\x18\x19 \x02(\r\x12\x11\n\tCmdErrCtr\x18\x1a \x02(\r\x12\x15\n\rLastAtsErrCmd\x18\x1b \x02(\r\x12\x14\n\x0c\x41tpCmdNumber\x18\x1c \x02(\r\x12\x11\n\tAtsCmdCtr\x18\x1d \x02(\r\x12\x1a\n\x12RtsExecutingStatus\x18\x1e \x03(\r')
+  serialized_pb=_b('\n\x14_py_SC_HkTlm_t.proto\"\xab\x05\n\rSC_HkTlm_t_pb\x12\x17\n\x0fRtsActiveErrCtr\x18\x01 \x02(\r\x12\x15\n\rLastRtsErrSeq\x18\x02 \x02(\r\x12\x16\n\x0eSwitchPendFlag\x18\x03 \x02(\r\x12\x14\n\x0c\x41ppendCmdArg\x18\x04 \x02(\r\x12\x19\n\x11RtsDisabledStatus\x18\x05 \x03(\r\x12\x11\n\tRtsNumber\x18\x06 \x02(\r\x12\x10\n\x08\x41tpState\x18\x07 \x02(\r\x12\x15\n\rLastAtsErrSeq\x18\x08 \x02(\r\x12\x0e\n\x06\x43mdCtr\x18\t \x02(\r\x12\x14\n\x0cRtsCmdErrCtr\x18\n \x02(\r\x12 \n\x18\x43ontinueAtsOnFailureFlag\x18\x0b \x02(\r\x12\x11\n\tAtsNumber\x18\x0c \x02(\r\x12\x13\n\x0bNextAtsTime\x18\r \x02(\r\x12\x15\n\rLastRtsErrCmd\x18\x0e \x02(\r\x12\x14\n\x0cRtsActiveCtr\x18\x0f \x02(\r\x12\x11\n\tRtsCmdCtr\x18\x10 \x02(\r\x12\x14\n\x0cNumRtsActive\x18\x11 \x02(\r\x12\x14\n\x0c\x41tpFreeBytes\x18\x12 \x03(\r\x12\x13\n\x0bNextRtsTime\x18\x13 \x02(\r\x12\x10\n\x08Padding8\x18\x14 \x02(\r\x12\x17\n\x0f\x41ppendLoadCount\x18\x15 \x02(\r\x12\x15\n\rLastAtsErrCmd\x18\x16 \x02(\r\x12\x17\n\x0f\x41ppendByteCount\x18\x17 \x02(\r\x12\x11\n\tTlmHeader\x18\x18 \x03(\r\x12\x18\n\x10\x41ppendEntryCount\x18\x19 \x02(\r\x12\x11\n\tCmdErrCtr\x18\x1a \x02(\r\x12\x14\n\x0c\x41tsCmdErrCtr\x18\x1b \x02(\r\x12\x14\n\x0c\x41tpCmdNumber\x18\x1c \x02(\r\x12\x11\n\tAtsCmdCtr\x18\x1d \x02(\r\x12\x1a\n\x12RtsExecutingStatus\x18\x1e \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -110,7 +110,7 @@ _SC_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AppendByteCount', full_name='SC_HkTlm_t_pb.AppendByteCount', index=11,
+      name='AtsNumber', full_name='SC_HkTlm_t_pb.AtsNumber', index=11,
       number=12, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -180,14 +180,14 @@ _SC_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AtsCmdErrCtr', full_name='SC_HkTlm_t_pb.AtsCmdErrCtr', index=21,
+      name='LastAtsErrCmd', full_name='SC_HkTlm_t_pb.LastAtsErrCmd', index=21,
       number=22, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AtsNumber', full_name='SC_HkTlm_t_pb.AtsNumber', index=22,
+      name='AppendByteCount', full_name='SC_HkTlm_t_pb.AppendByteCount', index=22,
       number=23, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -215,7 +215,7 @@ _SC_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='LastAtsErrCmd', full_name='SC_HkTlm_t_pb.LastAtsErrCmd', index=26,
+      name='AtsCmdErrCtr', full_name='SC_HkTlm_t_pb.AtsCmdErrCtr', index=26,
       number=27, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

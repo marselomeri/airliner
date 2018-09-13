@@ -18,36 +18,36 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_DS_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_DS_AppData_t.proto\"<\n\nDS_HashTag\x12\r\n\x05Index\x18\x01 \x02(\r\x12\x0c\n\x04Next\x18\x02 \x02(\r\x12\x11\n\tMessageID\x18\x03 \x02(\r\"\xbc\x01\n\x15\x44S_AppFileStatus_t_pb\x12\x11\n\tFileState\x18\x01 \x02(\r\x12\x0f\n\x07\x46ileAge\x18\x02 \x02(\r\x12\x12\n\nFileGrowth\x18\x03 \x02(\r\x12\x10\n\x08\x46ileName\x18\x04 \x03(\t\x12\x0e\n\x06Unused\x18\x05 \x02(\r\x12\x10\n\x08\x46ileRate\x18\x06 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x07 \x02(\r\x12\x12\n\nFileHandle\x18\x08 \x02(\x05\x12\x11\n\tFileCount\x18\t \x02(\r\"\xad\x05\n\x0f\x44S_AppData_t_pb\x12\x1a\n\x12\x46ilteredPktCounter\x18\x01 \x02(\r\x12\x18\n\x10\x46ileWriteCounter\x18\x02 \x02(\r\x12\x19\n\x11\x44\x65stFileTblHandle\x18\x03 \x02(\x05\x12\x1a\n\x12\x44isabledPktCounter\x18\x04 \x02(\r\x12*\n\nFileStatus\x18\x05 \x03(\x0b\x32\x16.DS_AppFileStatus_t_pb\x12\x16\n\x0e\x41ppEnableState\x18\x06 \x02(\r\x12\x17\n\x0f\x46ilterTblHandle\x18\x07 \x02(\x05\x12\x19\n\x11\x44\x65stTblErrCounter\x18\x08 \x02(\r\x12\x1a\n\x12\x44\x65stTblLoadCounter\x18\t \x02(\r\x12\x17\n\x0f\x44\x61taStoreHandle\x18\n \x02(\r\x12\x1a\n\x12\x43mdAcceptedCounter\x18\x0b \x02(\r\x12\x19\n\x11\x46ileUpdateCounter\x18\x0c \x02(\r\x12\x14\n\x0c\x46ilterTblPtr\x18\r \x02(\r\x12\x1e\n\tHashLinks\x18\x0e \x03(\x0b\x32\x0b.DS_HashTag\x12\x1c\n\x14\x46ilterTblLoadCounter\x18\x0f \x02(\r\x12\x1c\n\x14\x46ileUpdateErrCounter\x18\x10 \x02(\r\x12\x11\n\tHashTable\x18\x11 \x03(\r\x12\x1b\n\x13\x46ileWriteErrCounter\x18\x12 \x02(\r\x12\x19\n\x11IgnoredPktCounter\x18\x13 \x02(\r\x12\x1b\n\x13\x46ilterTblErrCounter\x18\x14 \x02(\r\x12\x0e\n\x06Spare8\x18\x15 \x02(\r\x12\x11\n\tInputPipe\x18\x16 \x02(\t\x12\x16\n\x0e\x44\x65stFileTblPtr\x18\x17 \x02(\r\x12\x18\n\x10PassedPktCounter\x18\x18 \x02(\r\x12\x1a\n\x12\x43mdRejectedCounter\x18\x19 \x02(\r')
+  serialized_pb=_b('\n\x16_py_DS_AppData_t.proto\"B\n\x10\x44S_HashLink_t_pb\x12\r\n\x05Index\x18\x01 \x02(\r\x12\x0c\n\x04Next\x18\x02 \x02(\r\x12\x11\n\tMessageID\x18\x03 \x02(\r\"\xbc\x01\n\x15\x44S_AppFileStatus_t_pb\x12\x11\n\tFileState\x18\x01 \x02(\r\x12\x0f\n\x07\x46ileAge\x18\x02 \x02(\r\x12\x12\n\nFileGrowth\x18\x03 \x02(\r\x12\x10\n\x08\x46ileName\x18\x04 \x02(\t\x12\x0e\n\x06Unused\x18\x05 \x02(\r\x12\x10\n\x08\x46ileRate\x18\x06 \x02(\r\x12\x10\n\x08\x46ileSize\x18\x07 \x02(\r\x12\x12\n\nFileHandle\x18\x08 \x02(\x05\x12\x11\n\tFileCount\x18\t \x02(\r\"\xb3\x05\n\x0f\x44S_AppData_t_pb\x12\x1a\n\x12\x46ilteredPktCounter\x18\x01 \x02(\r\x12\x18\n\x10\x46ileWriteCounter\x18\x02 \x02(\r\x12\x19\n\x11\x44\x65stFileTblHandle\x18\x03 \x02(\x05\x12\x1a\n\x12\x44isabledPktCounter\x18\x04 \x02(\r\x12*\n\nFileStatus\x18\x05 \x03(\x0b\x32\x16.DS_AppFileStatus_t_pb\x12\x16\n\x0e\x41ppEnableState\x18\x06 \x02(\r\x12\x17\n\x0f\x46ilterTblHandle\x18\x07 \x02(\x05\x12\x19\n\x11\x44\x65stTblErrCounter\x18\x08 \x02(\r\x12\x1a\n\x12\x44\x65stTblLoadCounter\x18\t \x02(\r\x12\x17\n\x0f\x44\x61taStoreHandle\x18\n \x02(\r\x12\x1a\n\x12\x43mdAcceptedCounter\x18\x0b \x02(\r\x12\x19\n\x11\x46ileUpdateCounter\x18\x0c \x02(\r\x12\x14\n\x0c\x46ilterTblPtr\x18\r \x02(\r\x12$\n\tHashLinks\x18\x0e \x03(\x0b\x32\x11.DS_HashLink_t_pb\x12\x1c\n\x14\x46ilterTblLoadCounter\x18\x0f \x02(\r\x12\x1c\n\x14\x46ileUpdateErrCounter\x18\x10 \x02(\r\x12\x11\n\tHashTable\x18\x11 \x03(\r\x12\x1b\n\x13\x46ileWriteErrCounter\x18\x12 \x02(\r\x12\x19\n\x11IgnoredPktCounter\x18\x13 \x02(\r\x12\x1b\n\x13\x46ilterTblErrCounter\x18\x14 \x02(\r\x12\x0e\n\x06Spare8\x18\x15 \x02(\r\x12\x11\n\tInputPipe\x18\x16 \x02(\t\x12\x16\n\x0e\x44\x65stFileTblPtr\x18\x17 \x02(\r\x12\x18\n\x10PassedPktCounter\x18\x18 \x02(\r\x12\x1a\n\x12\x43mdRejectedCounter\x18\x19 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
 
-_DS_HASHTAG = _descriptor.Descriptor(
-  name='DS_HashTag',
-  full_name='DS_HashTag',
+_DS_HASHLINK_T_PB = _descriptor.Descriptor(
+  name='DS_HashLink_t_pb',
+  full_name='DS_HashLink_t_pb',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Index', full_name='DS_HashTag.Index', index=0,
+      name='Index', full_name='DS_HashLink_t_pb.Index', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Next', full_name='DS_HashTag.Next', index=1,
+      name='Next', full_name='DS_HashLink_t_pb.Next', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MessageID', full_name='DS_HashTag.MessageID', index=2,
+      name='MessageID', full_name='DS_HashLink_t_pb.MessageID', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -65,7 +65,7 @@ _DS_HASHTAG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=26,
-  serialized_end=86,
+  serialized_end=92,
 )
 
 
@@ -99,8 +99,8 @@ _DS_APPFILESTATUS_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FileName', full_name='DS_AppFileStatus_t_pb.FileName', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -150,8 +150,8 @@ _DS_APPFILESTATUS_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=89,
-  serialized_end=277,
+  serialized_start=95,
+  serialized_end=283,
 )
 
 
@@ -348,22 +348,22 @@ _DS_APPDATA_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=280,
-  serialized_end=965,
+  serialized_start=286,
+  serialized_end=977,
 )
 
 _DS_APPDATA_T_PB.fields_by_name['FileStatus'].message_type = _DS_APPFILESTATUS_T_PB
-_DS_APPDATA_T_PB.fields_by_name['HashLinks'].message_type = _DS_HASHTAG
-DESCRIPTOR.message_types_by_name['DS_HashTag'] = _DS_HASHTAG
+_DS_APPDATA_T_PB.fields_by_name['HashLinks'].message_type = _DS_HASHLINK_T_PB
+DESCRIPTOR.message_types_by_name['DS_HashLink_t_pb'] = _DS_HASHLINK_T_PB
 DESCRIPTOR.message_types_by_name['DS_AppFileStatus_t_pb'] = _DS_APPFILESTATUS_T_PB
 DESCRIPTOR.message_types_by_name['DS_AppData_t_pb'] = _DS_APPDATA_T_PB
 
-DS_HashTag = _reflection.GeneratedProtocolMessageType('DS_HashTag', (_message.Message,), dict(
-  DESCRIPTOR = _DS_HASHTAG,
+DS_HashLink_t_pb = _reflection.GeneratedProtocolMessageType('DS_HashLink_t_pb', (_message.Message,), dict(
+  DESCRIPTOR = _DS_HASHLINK_T_PB,
   __module__ = '_py_DS_AppData_t_pb2'
-  # @@protoc_insertion_point(class_scope:DS_HashTag)
+  # @@protoc_insertion_point(class_scope:DS_HashLink_t_pb)
   ))
-_sym_db.RegisterMessage(DS_HashTag)
+_sym_db.RegisterMessage(DS_HashLink_t_pb)
 
 DS_AppFileStatus_t_pb = _reflection.GeneratedProtocolMessageType('DS_AppFileStatus_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _DS_APPFILESTATUS_T_PB,

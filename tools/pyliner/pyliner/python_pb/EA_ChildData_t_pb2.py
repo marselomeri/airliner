@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_EA_ChildData_t.proto',
   package='',
-  serialized_pb=_b('\n\x18_py_EA_ChildData_t.proto\"S\n\x11\x45\x41_ChildData_t_pb\x12\x16\n\x0e\x41ppInterpreter\x18\x01 \x03(\t\x12\x13\n\x0bucTlmHeader\x18\x02 \x03(\r\x12\x11\n\tAppScript\x18\x03 \x03(\t')
+  serialized_pb=_b('\n\x18_py_EA_ChildData_t.proto\"S\n\x11\x45\x41_ChildData_t_pb\x12\x16\n\x0e\x41ppInterpreter\x18\x01 \x02(\t\x12\x13\n\x0bucTlmHeader\x18\x02 \x03(\r\x12\x11\n\tAppScript\x18\x03 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _EA_CHILDDATA_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='AppInterpreter', full_name='EA_ChildData_t_pb.AppInterpreter', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -48,8 +48,8 @@ _EA_CHILDDATA_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='AppScript', full_name='EA_ChildData_t_pb.AppScript', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

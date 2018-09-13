@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_TO_ChannelTbl_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_TO_ChannelTbl_t.proto\"G\n\x15TO_PriorityQueue_t_pb\x12\x10\n\x08MsgLimit\x18\x01 \x02(\r\x12\r\n\x05State\x18\x02 \x02(\r\x12\r\n\x05QType\x18\x03 \x02(\r\"H\n\x13TO_MessageFlow_t_pb\x12\x10\n\x08MsgLimit\x18\x01 \x02(\r\x12\r\n\x05MsgId\x18\x02 \x02(\r\x12\x10\n\x08PQueueID\x18\x03 \x02(\r\"\x94\x01\n\x12TO_ChannelTbl_t_pb\x12-\n\rPriorityQueue\x18\x01 \x03(\x0b\x32\x16.TO_PriorityQueue_t_pb\x12\x13\n\x0b\x43hannelType\x18\x02 \x02(\r\x12\x0f\n\x07TableID\x18\x03 \x02(\r\x12)\n\x0bMessageFlow\x18\x04 \x03(\x0b\x32\x14.TO_MessageFlow_t_pb')
+  serialized_pb=_b('\n\x19_py_TO_ChannelTbl_t.proto\"G\n\x15TO_PriorityQueue_t_pb\x12\x10\n\x08MsgLimit\x18\x01 \x02(\r\x12\r\n\x05State\x18\x02 \x02(\r\x12\r\n\x05QType\x18\x03 \x02(\r\"H\n\x13TO_MessageFlow_t_pb\x12\x10\n\x08MsgLimit\x18\x01 \x02(\r\x12\r\n\x05MsgId\x18\x02 \x02(\r\x12\x10\n\x08PQueueID\x18\x03 \x02(\r\"\x94\x01\n\x12TO_ChannelTbl_t_pb\x12-\n\rPriorityQueue\x18\x01 \x03(\x0b\x32\x16.TO_PriorityQueue_t_pb\x12)\n\x0bMessageFlow\x18\x02 \x03(\x0b\x32\x14.TO_MessageFlow_t_pb\x12\x0f\n\x07TableID\x18\x03 \x02(\r\x12\x13\n\x0b\x43hannelType\x18\x04 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -128,9 +128,9 @@ _TO_CHANNELTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ChannelType', full_name='TO_ChannelTbl_t_pb.ChannelType', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='MessageFlow', full_name='TO_ChannelTbl_t_pb.MessageFlow', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -142,9 +142,9 @@ _TO_CHANNELTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MessageFlow', full_name='TO_ChannelTbl_t_pb.MessageFlow', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ChannelType', full_name='TO_ChannelTbl_t_pb.ChannelType', index=3,
+      number=4, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_HomePositionMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_PX4_HomePositionMsg_t.proto\"\xd1\x01\n\x18PX4_HomePositionMsg_t_pb\x12\t\n\x01Y\x18\x01 \x02(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x0b\n\x03Yaw\x18\x03 \x02(\x02\x12\x0b\n\x03Lon\x18\x04 \x02(\x01\x12\x12\n\nDirectionZ\x18\x05 \x02(\x02\x12\x12\n\nDirectionY\x18\x06 \x02(\x02\x12\x12\n\nDirectionX\x18\x07 \x02(\x02\x12\x0b\n\x03Lat\x18\x08 \x02(\x01\x12\t\n\x01X\x18\t \x02(\x02\x12\x0b\n\x03\x41lt\x18\n \x02(\x02\x12\t\n\x01Z\x18\x0b \x02(\x02\x12\x11\n\tTlmHeader\x18\x0c \x03(\r')
+  serialized_pb=_b('\n\x1f_py_PX4_HomePositionMsg_t.proto\"\xd1\x01\n\x18PX4_HomePositionMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x0b\n\x03Yaw\x18\x02 \x02(\x02\x12\x0b\n\x03Lat\x18\x03 \x02(\x01\x12\x0b\n\x03Lon\x18\x04 \x02(\x01\x12\x12\n\nDirectionZ\x18\x05 \x02(\x02\x12\x12\n\nDirectionY\x18\x06 \x02(\x02\x12\x12\n\nDirectionX\x18\x07 \x02(\x02\x12\t\n\x01Y\x18\x08 \x02(\x02\x12\t\n\x01X\x18\t \x02(\x02\x12\x0b\n\x03\x41lt\x18\n \x02(\x02\x12\t\n\x01Z\x18\x0b \x02(\x02\x12\x11\n\tTlmHeader\x18\x0c \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,22 +33,22 @@ _PX4_HOMEPOSITIONMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Y', full_name='PX4_HomePositionMsg_t_pb.Y', index=0,
-      number=1, type=2, cpp_type=6, label=2,
+      name='Timestamp', full_name='PX4_HomePositionMsg_t_pb.Timestamp', index=0,
+      number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='PX4_HomePositionMsg_t_pb.Timestamp', index=1,
-      number=2, type=4, cpp_type=4, label=2,
+      name='Yaw', full_name='PX4_HomePositionMsg_t_pb.Yaw', index=1,
+      number=2, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Yaw', full_name='PX4_HomePositionMsg_t_pb.Yaw', index=2,
-      number=3, type=2, cpp_type=6, label=2,
+      name='Lat', full_name='PX4_HomePositionMsg_t_pb.Lat', index=2,
+      number=3, type=1, cpp_type=5, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -82,8 +82,8 @@ _PX4_HOMEPOSITIONMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Lat', full_name='PX4_HomePositionMsg_t_pb.Lat', index=7,
-      number=8, type=1, cpp_type=5, label=2,
+      name='Y', full_name='PX4_HomePositionMsg_t_pb.Y', index=7,
+      number=8, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

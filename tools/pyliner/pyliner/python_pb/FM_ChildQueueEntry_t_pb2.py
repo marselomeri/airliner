@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_FM_ChildQueueEntry_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_FM_ChildQueueEntry_t.proto\"\xf6\x01\n\x17\x46M_ChildQueueEntry_t_pb\x12\x15\n\rDirListOffset\x18\x01 \x02(\r\x12\x17\n\x0fGetSizeTimeMode\x18\x02 \x02(\r\x12\x15\n\rFileInfoState\x18\x03 \x02(\r\x12\x0e\n\x06Target\x18\x04 \x03(\t\x12\x14\n\x0c\x46ileInfoTime\x18\x05 \x02(\r\x12\x13\n\x0b\x46ileInfoCRC\x18\x06 \x02(\r\x12\x0f\n\x07Source2\x18\x07 \x03(\t\x12\x14\n\x0c\x46ileInfoSize\x18\x08 \x02(\r\x12\x0f\n\x07Source1\x18\t \x03(\t\x12\x0c\n\x04Mode\x18\n \x02(\r\x12\x13\n\x0b\x43ommandCode\x18\x0b \x02(\r')
+  serialized_pb=_b('\n\x1e_py_FM_ChildQueueEntry_t.proto\"\xf6\x01\n\x17\x46M_ChildQueueEntry_t_pb\x12\x15\n\rDirListOffset\x18\x01 \x02(\r\x12\x17\n\x0fGetSizeTimeMode\x18\x02 \x02(\r\x12\x15\n\rFileInfoState\x18\x03 \x02(\r\x12\x0e\n\x06Target\x18\x04 \x02(\t\x12\x14\n\x0c\x46ileInfoTime\x18\x05 \x02(\r\x12\x13\n\x0b\x46ileInfoCRC\x18\x06 \x02(\r\x12\x0f\n\x07Source2\x18\x07 \x02(\t\x12\x14\n\x0c\x46ileInfoSize\x18\x08 \x02(\r\x12\x0f\n\x07Source1\x18\t \x02(\t\x12\x0c\n\x04Mode\x18\n \x02(\r\x12\x13\n\x0b\x43ommandCode\x18\x0b \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,8 +55,8 @@ _FM_CHILDQUEUEENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Target', full_name='FM_ChildQueueEntry_t_pb.Target', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -76,8 +76,8 @@ _FM_CHILDQUEUEENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Source2', full_name='FM_ChildQueueEntry_t_pb.Source2', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -90,8 +90,8 @@ _FM_CHILDQUEUEENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Source1', full_name='FM_ChildQueueEntry_t_pb.Source1', index=8,
-      number=9, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=9, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

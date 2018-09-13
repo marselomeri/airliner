@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_LC_ADTEntry_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_LC_ADTEntry_t.proto\"\xee\x01\n\x10LC_ADTEntry_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\r\n\x05RTSId\x18\x02 \x02(\r\x12\x19\n\x11MaxFailsBeforeRTS\x18\x03 \x02(\r\x12\x11\n\tEventType\x18\x04 \x02(\r\x12\x19\n\x11MaxPassFailEvents\x18\x05 \x02(\r\x12\x13\n\x0bRPNEquation\x18\x06 \x03(\r\x12\x19\n\x11MaxFailPassEvents\x18\x07 \x02(\r\x12\x14\n\x0c\x44\x65\x66\x61ultState\x18\x08 \x02(\r\x12\x18\n\x10MaxPassiveEvents\x18\t \x02(\r\x12\x11\n\tEventText\x18\n \x03(\t')
+  serialized_pb=_b('\n\x17_py_LC_ADTEntry_t.proto\"\xee\x01\n\x10LC_ADTEntry_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\r\n\x05RTSId\x18\x02 \x02(\r\x12\x19\n\x11MaxFailsBeforeRTS\x18\x03 \x02(\r\x12\x11\n\tEventType\x18\x04 \x02(\r\x12\x19\n\x11MaxPassFailEvents\x18\x05 \x02(\r\x12\x13\n\x0bRPNEquation\x18\x06 \x03(\r\x12\x19\n\x11MaxFailPassEvents\x18\x07 \x02(\r\x12\x14\n\x0c\x44\x65\x66\x61ultState\x18\x08 \x02(\r\x12\x18\n\x10MaxPassiveEvents\x18\t \x02(\r\x12\x11\n\tEventText\x18\n \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -97,8 +97,8 @@ _LC_ADTENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='EventText', full_name='LC_ADTEntry_t_pb.EventText', index=9,
-      number=10, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=10, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

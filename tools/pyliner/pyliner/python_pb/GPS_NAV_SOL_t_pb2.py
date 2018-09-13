@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_GPS_NAV_SOL_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_GPS_NAV_SOL_t.proto\"\xf1\x01\n\x10GPS_NAV_SOL_t_pb\x12\x0c\n\x04week\x18\x01 \x02(\x05\x12\x0e\n\x06gpsFix\x18\x02 \x02(\r\x12\x0c\n\x04\x66TOW\x18\x03 \x02(\x05\x12\x0c\n\x04sAcc\x18\x04 \x02(\r\x12\x0e\n\x06\x65\x63\x65\x66VZ\x18\x05 \x02(\x05\x12\x0c\n\x04pDOP\x18\x06 \x02(\r\x12\r\n\x05\x65\x63\x65\x66Z\x18\x07 \x02(\x05\x12\r\n\x05\x65\x63\x65\x66X\x18\x08 \x02(\x05\x12\r\n\x05\x65\x63\x65\x66Y\x18\t \x02(\x05\x12\r\n\x05\x66lags\x18\n \x02(\r\x12\x0c\n\x04iTOW\x18\x0b \x02(\r\x12\x0c\n\x04pAcc\x18\x0c \x02(\r\x12\x0e\n\x06\x65\x63\x65\x66VY\x18\r \x02(\x05\x12\r\n\x05numSV\x18\x0e \x02(\r\x12\x0e\n\x06\x65\x63\x65\x66VX\x18\x0f \x02(\x05')
+  serialized_pb=_b('\n\x17_py_GPS_NAV_SOL_t.proto\"\xf1\x01\n\x10GPS_NAV_SOL_t_pb\x12\x0c\n\x04week\x18\x01 \x02(\x05\x12\x0e\n\x06gpsFix\x18\x02 \x02(\r\x12\x0c\n\x04\x66TOW\x18\x03 \x02(\x05\x12\x0c\n\x04sAcc\x18\x04 \x02(\r\x12\x0c\n\x04pAcc\x18\x05 \x02(\r\x12\x0c\n\x04pDOP\x18\x06 \x02(\r\x12\r\n\x05\x65\x63\x65\x66Z\x18\x07 \x02(\x05\x12\r\n\x05\x65\x63\x65\x66X\x18\x08 \x02(\x05\x12\r\n\x05\x65\x63\x65\x66Y\x18\t \x02(\x05\x12\x0e\n\x06\x65\x63\x65\x66VY\x18\n \x02(\x05\x12\x0e\n\x06\x65\x63\x65\x66VX\x18\x0b \x02(\x05\x12\x0e\n\x06\x65\x63\x65\x66VZ\x18\x0c \x02(\x05\x12\r\n\x05\x66lags\x18\r \x02(\r\x12\r\n\x05numSV\x18\x0e \x02(\r\x12\x0c\n\x04iTOW\x18\x0f \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -61,8 +61,8 @@ _GPS_NAV_SOL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ecefVZ', full_name='GPS_NAV_SOL_t_pb.ecefVZ', index=4,
-      number=5, type=5, cpp_type=1, label=2,
+      name='pAcc', full_name='GPS_NAV_SOL_t_pb.pAcc', index=4,
+      number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -96,29 +96,29 @@ _GPS_NAV_SOL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='flags', full_name='GPS_NAV_SOL_t_pb.flags', index=9,
-      number=10, type=13, cpp_type=3, label=2,
+      name='ecefVY', full_name='GPS_NAV_SOL_t_pb.ecefVY', index=9,
+      number=10, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='iTOW', full_name='GPS_NAV_SOL_t_pb.iTOW', index=10,
-      number=11, type=13, cpp_type=3, label=2,
+      name='ecefVX', full_name='GPS_NAV_SOL_t_pb.ecefVX', index=10,
+      number=11, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='pAcc', full_name='GPS_NAV_SOL_t_pb.pAcc', index=11,
-      number=12, type=13, cpp_type=3, label=2,
+      name='ecefVZ', full_name='GPS_NAV_SOL_t_pb.ecefVZ', index=11,
+      number=12, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ecefVY', full_name='GPS_NAV_SOL_t_pb.ecefVY', index=12,
-      number=13, type=5, cpp_type=1, label=2,
+      name='flags', full_name='GPS_NAV_SOL_t_pb.flags', index=12,
+      number=13, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -131,8 +131,8 @@ _GPS_NAV_SOL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ecefVX', full_name='GPS_NAV_SOL_t_pb.ecefVX', index=14,
-      number=15, type=5, cpp_type=1, label=2,
+      name='iTOW', full_name='GPS_NAV_SOL_t_pb.iTOW', index=14,
+      number=15, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

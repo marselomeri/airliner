@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_GPS_NAV_GEOFENCE_t.proto',
   package='',
-  serialized_pb=_b('\n\x1c_py_GPS_NAV_GEOFENCE_t.proto\"l\n\x15GPS_NAV_GEOFENCE_t_pb\x12\x0e\n\x06status\x18\x01 \x02(\r\x12\x11\n\tcombState\x18\x02 \x02(\r\x12\x0f\n\x07version\x18\x03 \x02(\r\x12\x11\n\tnumFences\x18\x04 \x02(\r\x12\x0c\n\x04iTOW\x18\x05 \x02(\r')
+  serialized_pb=_b('\n\x1c_py_GPS_NAV_GEOFENCE_t.proto\"l\n\x15GPS_NAV_GEOFENCE_t_pb\x12\x0e\n\x06status\x18\x01 \x02(\r\x12\x0f\n\x07version\x18\x02 \x02(\r\x12\x11\n\tcombState\x18\x03 \x02(\r\x12\x0c\n\x04iTOW\x18\x04 \x02(\r\x12\x11\n\tnumFences\x18\x05 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,28 +40,28 @@ _GPS_NAV_GEOFENCE_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='combState', full_name='GPS_NAV_GEOFENCE_t_pb.combState', index=1,
+      name='version', full_name='GPS_NAV_GEOFENCE_t_pb.version', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='version', full_name='GPS_NAV_GEOFENCE_t_pb.version', index=2,
+      name='combState', full_name='GPS_NAV_GEOFENCE_t_pb.combState', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='numFences', full_name='GPS_NAV_GEOFENCE_t_pb.numFences', index=3,
+      name='iTOW', full_name='GPS_NAV_GEOFENCE_t_pb.iTOW', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='iTOW', full_name='GPS_NAV_GEOFENCE_t_pb.iTOW', index=4,
+      name='numFences', full_name='GPS_NAV_GEOFENCE_t_pb.numFences', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

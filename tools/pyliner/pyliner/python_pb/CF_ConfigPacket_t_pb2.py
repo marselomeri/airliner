@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_ConfigPacket_t.proto',
   package='',
-  serialized_pb=_b('\n\x1b_py_CF_ConfigPacket_t.proto\"\xba\x04\n\x14\x43\x46_ConfigPacket_t_pb\x12\x12\n\nAckTimeout\x18\x01 \x02(\r\x12\x10\n\x08NakLimit\x18\x02 \x02(\r\x12\x1b\n\x13SaveIncompleteFiles\x18\x03 \x03(\t\x12\x1a\n\x12IncomingPduBufSize\x18\x04 \x02(\r\x12\x1c\n\x14MaxSimultaneousTrans\x18\x05 \x02(\r\x12\x15\n\rTmpFilePrefix\x18\x06 \x03(\t\x12\x1d\n\x15MaxPollingDirsPerChan\x18\x07 \x02(\r\x12\x11\n\tPipeDepth\x18\x08 \x02(\r\x12\x11\n\tTlmHeader\x18\t \x03(\r\x12\x18\n\x10NumInputChannels\x18\n \x02(\r\x12\x10\n\x08PipeName\x18\x0b \x03(\t\x12\x12\n\nNakTimeout\x18\x0c \x02(\r\x12\x14\n\x0cInactTimeout\x18\r \x02(\r\x12\x17\n\x0f\x43\x66gTbleFilename\x18\x0e \x03(\t\x12\x18\n\x10\x44\x65\x66QInfoFilename\x18\x0f \x03(\t\x12\x1c\n\x14\x44\x65\x66OutgoingChunkSize\x18\x10 \x02(\r\x12\x1a\n\x12OutgoingPduBufSize\x18\x11 \x02(\r\x12\x18\n\x10MaxPlaybackChans\x18\x12 \x02(\r\x12\x10\n\x08\x41\x63kLimit\x18\x13 \x02(\r\x12\x12\n\nCfgTblName\x18\x14 \x03(\t\x12\x17\n\x0f\x45ngCycPerWakeup\x18\x15 \x02(\r\x12\x17\n\x0f\x44\x65\x62ugCompiledIn\x18\x16 \x02(\r\x12\x14\n\x0cMemPoolBytes\x18\x17 \x02(\r')
+  serialized_pb=_b('\n\x1b_py_CF_ConfigPacket_t.proto\"\xba\x04\n\x14\x43\x46_ConfigPacket_t_pb\x12\x12\n\nAckTimeout\x18\x01 \x02(\r\x12\x10\n\x08NakLimit\x18\x02 \x02(\r\x12\x1b\n\x13SaveIncompleteFiles\x18\x03 \x02(\t\x12\x1a\n\x12IncomingPduBufSize\x18\x04 \x02(\r\x12\x1c\n\x14MaxSimultaneousTrans\x18\x05 \x02(\r\x12\x15\n\rTmpFilePrefix\x18\x06 \x02(\t\x12\x1d\n\x15MaxPollingDirsPerChan\x18\x07 \x02(\r\x12\x11\n\tPipeDepth\x18\x08 \x02(\r\x12\x11\n\tTlmHeader\x18\t \x03(\r\x12\x18\n\x10NumInputChannels\x18\n \x02(\r\x12\x10\n\x08PipeName\x18\x0b \x02(\t\x12\x12\n\nNakTimeout\x18\x0c \x02(\r\x12\x14\n\x0cInactTimeout\x18\r \x02(\r\x12\x17\n\x0f\x43\x66gTbleFilename\x18\x0e \x02(\t\x12\x18\n\x10\x44\x65\x66QInfoFilename\x18\x0f \x02(\t\x12\x1c\n\x14\x44\x65\x66OutgoingChunkSize\x18\x10 \x02(\r\x12\x1a\n\x12OutgoingPduBufSize\x18\x11 \x02(\r\x12\x18\n\x10MaxPlaybackChans\x18\x12 \x02(\r\x12\x10\n\x08\x41\x63kLimit\x18\x13 \x02(\r\x12\x12\n\nCfgTblName\x18\x14 \x02(\t\x12\x17\n\x0f\x45ngCycPerWakeup\x18\x15 \x02(\r\x12\x17\n\x0f\x44\x65\x62ugCompiledIn\x18\x16 \x02(\r\x12\x14\n\x0cMemPoolBytes\x18\x17 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -48,8 +48,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SaveIncompleteFiles', full_name='CF_ConfigPacket_t_pb.SaveIncompleteFiles', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -69,8 +69,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='TmpFilePrefix', full_name='CF_ConfigPacket_t_pb.TmpFilePrefix', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -104,8 +104,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='PipeName', full_name='CF_ConfigPacket_t_pb.PipeName', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=11, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -125,15 +125,15 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='CfgTbleFilename', full_name='CF_ConfigPacket_t_pb.CfgTbleFilename', index=13,
-      number=14, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=14, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='DefQInfoFilename', full_name='CF_ConfigPacket_t_pb.DefQInfoFilename', index=14,
-      number=15, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=15, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -167,8 +167,8 @@ _CF_CONFIGPACKET_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='CfgTblName', full_name='CF_ConfigPacket_t_pb.CfgTblName', index=19,
-      number=20, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=20, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_FM_GetDirPktCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1b_py_FM_GetDirPktCmd_t.proto\"}\n\x14\x46M_GetDirPktCmd_t_pb\x12\x11\n\tDirectory\x18\x01 \x03(\t\x12\x15\n\rDirListOffset\x18\x02 \x02(\r\x12\x17\n\x0fGetSizeTimeMode\x18\x03 \x02(\r\x12\x11\n\tCmdHeader\x18\x04 \x03(\r\x12\x0f\n\x07Spare01\x18\x05 \x03(\r')
+  serialized_pb=_b('\n\x1b_py_FM_GetDirPktCmd_t.proto\"}\n\x14\x46M_GetDirPktCmd_t_pb\x12\x11\n\tDirectory\x18\x01 \x02(\t\x12\x15\n\rDirListOffset\x18\x02 \x02(\r\x12\x17\n\x0fGetSizeTimeMode\x18\x03 \x02(\r\x12\x11\n\tCmdHeader\x18\x04 \x03(\r\x12\x0f\n\x07Spare01\x18\x05 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _FM_GETDIRPKTCMD_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='Directory', full_name='FM_GetDirPktCmd_t_pb.Directory', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

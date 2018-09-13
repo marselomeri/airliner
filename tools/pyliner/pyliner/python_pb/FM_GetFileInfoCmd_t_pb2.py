@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_FM_GetFileInfoCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1d_py_FM_GetFileInfoCmd_t.proto\"R\n\x16\x46M_GetFileInfoCmd_t_pb\x12\x13\n\x0b\x46ileInfoCRC\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x10\n\x08\x46ilename\x18\x03 \x03(\t')
+  serialized_pb=_b('\n\x1d_py_FM_GetFileInfoCmd_t.proto\"R\n\x16\x46M_GetFileInfoCmd_t_pb\x12\x10\n\x08\x46ilename\x18\x01 \x02(\t\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x13\n\x0b\x46ileInfoCRC\x18\x03 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,9 +33,9 @@ _FM_GETFILEINFOCMD_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='FileInfoCRC', full_name='FM_GetFileInfoCmd_t_pb.FileInfoCRC', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='Filename', full_name='FM_GetFileInfoCmd_t_pb.Filename', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -47,9 +47,9 @@ _FM_GETFILEINFOCMD_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Filename', full_name='FM_GetFileInfoCmd_t_pb.Filename', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='FileInfoCRC', full_name='FM_GetFileInfoCmd_t_pb.FileInfoCRC', index=2,
+      number=3, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_ControlStateMsg_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_PX4_ControlStateMsg_t.proto\"\xd7\x03\n\x18PX4_ControlStateMsg_t_pb\x12\x0c\n\x04PosY\x18\x01 \x02(\x02\x12\x10\n\x08\x41irspeed\x18\x02 \x02(\x02\x12\x0c\n\x04PosZ\x18\x03 \x02(\x02\x12\x0c\n\x04PosX\x18\x04 \x02(\x02\x12\x13\n\x0bVelVariance\x18\x05 \x03(\x02\x12\x13\n\x0b\x44\x65ltaQReset\x18\x06 \x03(\x02\x12\x13\n\x0bPosVariance\x18\x07 \x03(\x02\x12\x11\n\tTimestamp\x18\x08 \x02(\x04\x12\x14\n\x0cRollRateBias\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x15\n\rPitchRateBias\x18\x0b \x02(\x02\x12\x0c\n\x04VelX\x18\x0c \x02(\x02\x12\t\n\x01Q\x18\r \x03(\x02\x12\x0c\n\x04\x41\x63\x63Y\x18\x0e \x02(\x02\x12\x0c\n\x04\x41\x63\x63X\x18\x0f \x02(\x02\x12\x0c\n\x04VelY\x18\x10 \x02(\x02\x12\x0c\n\x04\x41\x63\x63Z\x18\x11 \x02(\x02\x12\x0f\n\x07YawRate\x18\x12 \x02(\x02\x12\x18\n\x10QuatResetCounter\x18\x13 \x02(\r\x12\x10\n\x08RollRate\x18\x14 \x02(\x02\x12\x15\n\rAirspeedValid\x18\x15 \x02(\x08\x12\x11\n\tPitchRate\x18\x16 \x02(\x02\x12\x12\n\nHorzAccMag\x18\x17 \x02(\x02\x12\x13\n\x0bYawRateBias\x18\x18 \x02(\x02\x12\x0c\n\x04VelZ\x18\x19 \x02(\x02')
+  serialized_pb=_b('\n\x1f_py_PX4_ControlStateMsg_t.proto\"\xd7\x03\n\x18PX4_ControlStateMsg_t_pb\x12\x13\n\x0bVelVariance\x18\x01 \x03(\x02\x12\x10\n\x08\x41irspeed\x18\x02 \x02(\x02\x12\x0c\n\x04PosZ\x18\x03 \x02(\x02\x12\x0c\n\x04PosX\x18\x04 \x02(\x02\x12\x0c\n\x04PosY\x18\x05 \x02(\x02\x12\x13\n\x0b\x44\x65ltaQReset\x18\x06 \x03(\x02\x12\x13\n\x0bPosVariance\x18\x07 \x03(\x02\x12\x11\n\tTimestamp\x18\x08 \x02(\x04\x12\x14\n\x0cRollRateBias\x18\t \x02(\x02\x12\x11\n\tTlmHeader\x18\n \x03(\r\x12\x15\n\rPitchRateBias\x18\x0b \x02(\x02\x12\x0c\n\x04VelX\x18\x0c \x02(\x02\x12\t\n\x01Q\x18\r \x03(\x02\x12\x0c\n\x04\x41\x63\x63Y\x18\x0e \x02(\x02\x12\x0c\n\x04\x41\x63\x63X\x18\x0f \x02(\x02\x12\x0c\n\x04VelY\x18\x10 \x02(\x02\x12\x0c\n\x04\x41\x63\x63Z\x18\x11 \x02(\x02\x12\x0f\n\x07YawRate\x18\x12 \x02(\x02\x12\x18\n\x10QuatResetCounter\x18\x13 \x02(\r\x12\x10\n\x08RollRate\x18\x14 \x02(\x02\x12\x15\n\rAirspeedValid\x18\x15 \x02(\x08\x12\x11\n\tPitchRate\x18\x16 \x02(\x02\x12\x12\n\nHorzAccMag\x18\x17 \x02(\x02\x12\x13\n\x0bYawRateBias\x18\x18 \x02(\x02\x12\x0c\n\x04VelZ\x18\x19 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,9 +33,9 @@ _PX4_CONTROLSTATEMSG_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='PosY', full_name='PX4_ControlStateMsg_t_pb.PosY', index=0,
-      number=1, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      name='VelVariance', full_name='PX4_ControlStateMsg_t_pb.VelVariance', index=0,
+      number=1, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -61,9 +61,9 @@ _PX4_CONTROLSTATEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='VelVariance', full_name='PX4_ControlStateMsg_t_pb.VelVariance', index=4,
-      number=5, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
+      name='PosY', full_name='PX4_ControlStateMsg_t_pb.PosY', index=4,
+      number=5, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

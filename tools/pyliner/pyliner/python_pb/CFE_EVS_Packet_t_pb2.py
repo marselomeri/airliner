@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_EVS_Packet_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_CFE_EVS_Packet_t.proto\"x\n\x1b\x43\x46\x45_EVS_Packet_Payload_t_pb\x12\x0f\n\x07Message\x18\x01 \x03(\t\x12\x0e\n\x06Spare2\x18\x02 \x02(\r\x12\x0e\n\x06Spare1\x18\x03 \x02(\r\x12(\n\x08PacketID\x18\x04 \x02(\x0b\x32\x16.CFE_EVS_PacketID_t_pb\"w\n\x15\x43\x46\x45_EVS_PacketID_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x11\n\tEventType\x18\x02 \x02(\r\x12\x13\n\x0bProcessorID\x18\x03 \x02(\r\x12\x14\n\x0cSpacecraftID\x18\x04 \x02(\r\x12\x0f\n\x07\x41ppName\x18\x05 \x03(\t\"W\n\x13\x43\x46\x45_EVS_Packet_t_pb\x12\x11\n\tTlmHeader\x18\x01 \x03(\r\x12-\n\x07Payload\x18\x02 \x02(\x0b\x32\x1c.CFE_EVS_Packet_Payload_t_pb')
+  serialized_pb=_b('\n\x1a_py_CFE_EVS_Packet_t.proto\"x\n\x1b\x43\x46\x45_EVS_Packet_Payload_t_pb\x12\x0f\n\x07Message\x18\x01 \x02(\t\x12(\n\x08PacketID\x18\x02 \x02(\x0b\x32\x16.CFE_EVS_PacketID_t_pb\x12\x0e\n\x06Spare1\x18\x03 \x02(\r\x12\x0e\n\x06Spare2\x18\x04 \x02(\r\"w\n\x15\x43\x46\x45_EVS_PacketID_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x13\n\x0bProcessorID\x18\x02 \x02(\r\x12\x14\n\x0cSpacecraftID\x18\x03 \x02(\r\x12\x11\n\tEventType\x18\x04 \x02(\r\x12\x0f\n\x07\x41ppName\x18\x05 \x02(\t\"W\n\x13\x43\x46\x45_EVS_Packet_t_pb\x12\x11\n\tTlmHeader\x18\x01 \x03(\r\x12-\n\x07Payload\x18\x02 \x02(\x0b\x32\x1c.CFE_EVS_Packet_Payload_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,15 +34,15 @@ _CFE_EVS_PACKET_PAYLOAD_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='Message', full_name='CFE_EVS_Packet_Payload_t_pb.Message', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Spare2', full_name='CFE_EVS_Packet_Payload_t_pb.Spare2', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='PacketID', full_name='CFE_EVS_Packet_Payload_t_pb.PacketID', index=1,
+      number=2, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -54,9 +54,9 @@ _CFE_EVS_PACKET_PAYLOAD_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='PacketID', full_name='CFE_EVS_Packet_Payload_t_pb.PacketID', index=3,
-      number=4, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='Spare2', full_name='CFE_EVS_Packet_Payload_t_pb.Spare2', index=3,
+      number=4, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -91,21 +91,21 @@ _CFE_EVS_PACKETID_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='EventType', full_name='CFE_EVS_PacketID_t_pb.EventType', index=1,
+      name='ProcessorID', full_name='CFE_EVS_PacketID_t_pb.ProcessorID', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ProcessorID', full_name='CFE_EVS_PacketID_t_pb.ProcessorID', index=2,
+      name='SpacecraftID', full_name='CFE_EVS_PacketID_t_pb.SpacecraftID', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SpacecraftID', full_name='CFE_EVS_PacketID_t_pb.SpacecraftID', index=3,
+      name='EventType', full_name='CFE_EVS_PacketID_t_pb.EventType', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -113,8 +113,8 @@ _CFE_EVS_PACKETID_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='AppName', full_name='CFE_EVS_PacketID_t_pb.AppName', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=5, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

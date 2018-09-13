@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_ES_DumpCDSRegCmd_Payload_t.proto',
   package='',
-  serialized_pb=_b('\n(_py_CFE_ES_DumpCDSRegCmd_Payload_t.proto\"9\n!CFE_ES_DumpCDSRegCmd_Payload_t_pb\x12\x14\n\x0c\x44umpFilename\x18\x01 \x03(\t')
+  serialized_pb=_b('\n(_py_CFE_ES_DumpCDSRegCmd_Payload_t.proto\"9\n!CFE_ES_DumpCDSRegCmd_Payload_t_pb\x12\x14\n\x0c\x44umpFilename\x18\x01 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _CFE_ES_DUMPCDSREGCMD_PAYLOAD_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='DumpFilename', full_name='CFE_ES_DumpCDSRegCmd_Payload_t_pb.DumpFilename', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

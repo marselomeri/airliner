@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SIMLIB_RCInputData_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_SIMLIB_RCInputData_t.proto\"K\n\x17SIMLIB_RCInputData_t_pb\x12\x0c\n\x04RSSI\x18\x01 \x02(\r\x12\x11\n\tDataState\x18\x02 \x02(\r\x12\x0f\n\x07\x43hannel\x18\x03 \x03(\r')
+  serialized_pb=_b('\n\x1e_py_SIMLIB_RCInputData_t.proto\"K\n\x17SIMLIB_RCInputData_t_pb\x12\x0c\n\x04RSSI\x18\x01 \x02(\r\x12\x0f\n\x07\x43hannel\x18\x02 \x03(\r\x12\x11\n\tDataState\x18\x03 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,16 +40,16 @@ _SIMLIB_RCINPUTDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DataState', full_name='SIMLIB_RCInputData_t_pb.DataState', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='Channel', full_name='SIMLIB_RCInputData_t_pb.Channel', index=1,
+      number=2, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Channel', full_name='SIMLIB_RCInputData_t_pb.Channel', index=2,
-      number=3, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='DataState', full_name='SIMLIB_RCInputData_t_pb.DataState', index=2,
+      number=3, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

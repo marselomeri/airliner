@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_ES_DeleteCDSCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_CFE_ES_DeleteCDSCmd_t.proto\"\x17\n\x04\x63har\x12\x0f\n\x07\x43\x64sName\x18\x01 \x03(\t\"E\n\x18\x43\x46\x45_ES_DeleteCDSCmd_t_pb\x12\x16\n\x07Payload\x18\x01 \x02(\x0b\x32\x05.char\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
+  serialized_pb=_b('\n\x1f_py_CFE_ES_DeleteCDSCmd_t.proto\"\x17\n\x04\x63har\x12\x0f\n\x07\x43\x64sName\x18\x01 \x02(\t\"E\n\x18\x43\x46\x45_ES_DeleteCDSCmd_t_pb\x12\x16\n\x07Payload\x18\x01 \x02(\x0b\x32\x05.char\x12\x11\n\tCmdHeader\x18\x02 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _CHAR = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='CdsName', full_name='char.CdsName', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

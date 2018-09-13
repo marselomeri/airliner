@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_WriteActiveTransCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\"_py_CF_WriteActiveTransCmd_t.proto\"_\n\x1b\x43\x46_WriteActiveTransCmd_t_pb\x12\r\n\x05Spare\x18\x01 \x02(\r\x12\x0c\n\x04Type\x18\x02 \x02(\r\x12\x11\n\tCmdHeader\x18\x03 \x03(\r\x12\x10\n\x08\x46ilename\x18\x04 \x03(\t')
+  serialized_pb=_b('\n\"_py_CF_WriteActiveTransCmd_t.proto\"_\n\x1b\x43\x46_WriteActiveTransCmd_t_pb\x12\x0c\n\x04Type\x18\x01 \x02(\r\x12\r\n\x05Spare\x18\x02 \x02(\r\x12\x11\n\tCmdHeader\x18\x03 \x03(\r\x12\x10\n\x08\x46ilename\x18\x04 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,14 +33,14 @@ _CF_WRITEACTIVETRANSCMD_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Spare', full_name='CF_WriteActiveTransCmd_t_pb.Spare', index=0,
+      name='Type', full_name='CF_WriteActiveTransCmd_t_pb.Type', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Type', full_name='CF_WriteActiveTransCmd_t_pb.Type', index=1,
+      name='Spare', full_name='CF_WriteActiveTransCmd_t_pb.Spare', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -55,8 +55,8 @@ _CF_WRITEACTIVETRANSCMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Filename', full_name='CF_WriteActiveTransCmd_t_pb.Filename', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

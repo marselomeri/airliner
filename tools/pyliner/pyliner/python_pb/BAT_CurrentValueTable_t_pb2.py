@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_BAT_CurrentValueTable_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_BAT_CurrentValueTable_t.proto\"\xd5\x01\n\x19PX4_ActuatorArmedMsg_t_pb\x12\x15\n\rForceFailsafe\x18\x01 \x02(\x08\x12\x12\n\nReadyToArm\x18\x02 \x02(\x08\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x1c\n\x14InEscCalibrationMode\x18\x04 \x02(\x08\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x10\n\x08Lockdown\x18\x06 \x02(\x08\x12\x10\n\x08Prearmed\x18\x07 \x02(\x08\x12\r\n\x05\x41rmed\x18\x08 \x02(\x08\x12\x16\n\x0eManualLockdown\x18\t \x02(\x08\"i\n\x1cPX4_ActuatorControlsMsg_t_pb\x12\x0f\n\x07\x43ontrol\x18\x01 \x03(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x12\n\nSampleTime\x18\x03 \x02(\x04\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\"\x89\x01\n\x1a\x42\x41T_CurrentValueTable_t_pb\x12\x31\n\rActuatorArmed\x18\x01 \x02(\x0b\x32\x1a.PX4_ActuatorArmedMsg_t_pb\x12\x38\n\x11\x41\x63tuatorControls0\x18\x02 \x02(\x0b\x32\x1d.PX4_ActuatorControlsMsg_t_pb')
+  serialized_pb=_b('\n!_py_BAT_CurrentValueTable_t.proto\"\xd5\x01\n\x19PX4_ActuatorArmedMsg_t_pb\x12\x15\n\rForceFailsafe\x18\x01 \x02(\x08\x12\x12\n\nReadyToArm\x18\x02 \x02(\x08\x12\x11\n\tTimestamp\x18\x03 \x02(\x04\x12\x1c\n\x14InEscCalibrationMode\x18\x04 \x02(\x08\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x10\n\x08Lockdown\x18\x06 \x02(\x08\x12\x10\n\x08Prearmed\x18\x07 \x02(\x08\x12\r\n\x05\x41rmed\x18\x08 \x02(\x08\x12\x16\n\x0eManualLockdown\x18\t \x02(\x08\"i\n\x1cPX4_ActuatorControlsMsg_t_pb\x12\x0f\n\x07\x43ontrol\x18\x01 \x03(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\x12\n\nSampleTime\x18\x04 \x02(\x04\"\x89\x01\n\x1a\x42\x41T_CurrentValueTable_t_pb\x12\x31\n\rActuatorArmed\x18\x01 \x02(\x0b\x32\x1a.PX4_ActuatorArmedMsg_t_pb\x12\x38\n\x11\x41\x63tuatorControls0\x18\x02 \x02(\x0b\x32\x1d.PX4_ActuatorControlsMsg_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -133,16 +133,16 @@ _PX4_ACTUATORCONTROLSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SampleTime', full_name='PX4_ActuatorControlsMsg_t_pb.SampleTime', index=2,
-      number=3, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
+      name='TlmHeader', full_name='PX4_ActuatorControlsMsg_t_pb.TlmHeader', index=2,
+      number=3, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_ActuatorControlsMsg_t_pb.TlmHeader', index=3,
-      number=4, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='SampleTime', full_name='PX4_ActuatorControlsMsg_t_pb.SampleTime', index=3,
+      number=4, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

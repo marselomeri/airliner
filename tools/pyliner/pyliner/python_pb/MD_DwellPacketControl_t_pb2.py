@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MD_DwellPacketControl_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_MD_DwellPacketControl_t.proto\"S\n\x19MD_DwellControlEntry_t_pb\x12\r\n\x05\x44\x65lay\x18\x01 \x02(\r\x12\x0e\n\x06Length\x18\x02 \x02(\r\x12\x17\n\x0fResolvedAddress\x18\x03 \x02(\r\"\xea\x01\n\x1aMD_DwellPacketControl_t_pb\x12\x11\n\tPktOffset\x18\x01 \x02(\r\x12\x0e\n\x06\x46iller\x18\x02 \x02(\r\x12\x0f\n\x07\x45nabled\x18\x03 \x02(\r\x12\x14\n\x0c\x43urrentEntry\x18\x04 \x02(\r\x12\x11\n\tAddrCount\x18\x05 \x02(\r\x12\x11\n\tCountdown\x18\x06 \x02(\r\x12\x0c\n\x04Rate\x18\x07 \x02(\r\x12\x11\n\tSignature\x18\x08 \x03(\t\x12)\n\x05\x45ntry\x18\t \x03(\x0b\x32\x1a.MD_DwellControlEntry_t_pb\x12\x10\n\x08\x44\x61taSize\x18\n \x02(\r')
+  serialized_pb=_b('\n!_py_MD_DwellPacketControl_t.proto\"S\n\x19MD_DwellControlEntry_t_pb\x12\r\n\x05\x44\x65lay\x18\x01 \x02(\r\x12\x0e\n\x06Length\x18\x02 \x02(\r\x12\x17\n\x0fResolvedAddress\x18\x03 \x02(\r\"\xea\x01\n\x1aMD_DwellPacketControl_t_pb\x12\x11\n\tPktOffset\x18\x01 \x02(\r\x12\x0e\n\x06\x46iller\x18\x02 \x02(\r\x12\x0f\n\x07\x45nabled\x18\x03 \x02(\r\x12\x14\n\x0c\x43urrentEntry\x18\x04 \x02(\r\x12\x11\n\tAddrCount\x18\x05 \x02(\r\x12\x11\n\tCountdown\x18\x06 \x02(\r\x12\x0c\n\x04Rate\x18\x07 \x02(\r\x12\x11\n\tSignature\x18\x08 \x02(\t\x12)\n\x05\x45ntry\x18\t \x03(\x0b\x32\x1a.MD_DwellControlEntry_t_pb\x12\x10\n\x08\x44\x61taSize\x18\n \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -127,8 +127,8 @@ _MD_DWELLPACKETCONTROL_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Signature', full_name='MD_DwellPacketControl_t_pb.Signature', index=7,
-      number=8, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=8, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

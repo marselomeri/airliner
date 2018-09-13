@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MD_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_MD_AppData_t.proto\"\x8b\x01\n\x10MD_DwellPkt_t_pb\x12\x0c\n\x04Rate\x18\x01 \x02(\r\x12\x11\n\tAddrCount\x18\x02 \x02(\r\x12\x11\n\tByteCount\x18\x03 \x02(\r\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x0f\n\x07TableId\x18\x05 \x02(\r\x12\x11\n\tSignature\x18\x06 \x03(\t\x12\x0c\n\x04\x44\x61ta\x18\x07 \x03(\r\"\xf2\x01\n\rMD_HkTlm_t_pb\x12\x18\n\x10\x44wellEnabledMask\x18\x01 \x02(\r\x12\x16\n\x0eNumWaitsPerPkt\x18\x02 \x03(\r\x12\x16\n\x0e\x44wellPktOffset\x18\x03 \x03(\r\x12\x15\n\rDwellTblEntry\x18\x04 \x03(\r\x12\x11\n\tCountdown\x18\x05 \x03(\r\x12\x11\n\tByteCount\x18\x06 \x03(\r\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x19\n\x11\x44wellTblAddrCount\x18\x08 \x03(\r\x12\x16\n\x0eInvalidCmdCntr\x18\t \x02(\r\x12\x14\n\x0cValidCmdCntr\x18\n \x02(\r\"\xea\x01\n\x1aMD_DwellPacketControl_t_pb\x12\x11\n\tPktOffset\x18\x01 \x02(\r\x12\x0e\n\x06\x46iller\x18\x02 \x02(\r\x12\x0f\n\x07\x45nabled\x18\x03 \x02(\r\x12\x14\n\x0c\x43urrentEntry\x18\x04 \x02(\r\x12\x11\n\tAddrCount\x18\x05 \x02(\r\x12\x11\n\tCountdown\x18\x06 \x02(\r\x12\x0c\n\x04Rate\x18\x07 \x02(\r\x12\x11\n\tSignature\x18\x08 \x03(\t\x12)\n\x05\x45ntry\x18\t \x03(\x0b\x32\x1a.MD_DwellControlEntry_t_pb\x12\x10\n\x08\x44\x61taSize\x18\n \x02(\r\"S\n\x19MD_DwellControlEntry_t_pb\x12\r\n\x05\x44\x65lay\x18\x01 \x02(\r\x12\x0e\n\x06Length\x18\x02 \x02(\r\x12\x17\n\x0fResolvedAddress\x18\x03 \x02(\r\"\x97\x02\n\x0fMD_AppData_t_pb\x12\x1d\n\x05HkPkt\x18\x01 \x02(\x0b\x32\x0e.MD_HkTlm_t_pb\x12\x0e\n\x06MsgPtr\x18\x02 \x02(\r\x12\x11\n\tRunStatus\x18\x03 \x02(\r\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12&\n\x0bMD_DwellPkt\x18\x05 \x03(\x0b\x32\x11.MD_DwellPkt_t_pb\x12\x12\n\nCmdCounter\x18\x06 \x02(\r\x12\x33\n\x0eMD_DwellTables\x18\x07 \x03(\x0b\x32\x1b.MD_DwellPacketControl_t_pb\x12\x12\n\nErrCounter\x18\x08 \x02(\r\x12\x16\n\x0eMD_TableHandle\x18\t \x03(\x03\x12\x14\n\x0cMD_TableName\x18\n \x03(\t')
+  serialized_pb=_b('\n\x16_py_MD_AppData_t.proto\"\x8b\x01\n\x10MD_DwellPkt_t_pb\x12\x0c\n\x04Rate\x18\x01 \x02(\r\x12\x11\n\tAddrCount\x18\x02 \x02(\r\x12\x11\n\tByteCount\x18\x03 \x02(\r\x12\x11\n\tTlmHeader\x18\x04 \x03(\r\x12\x0f\n\x07TableId\x18\x05 \x02(\r\x12\x11\n\tSignature\x18\x06 \x02(\t\x12\x0c\n\x04\x44\x61ta\x18\x07 \x03(\r\"\xf2\x01\n\rMD_HkTlm_t_pb\x12\x18\n\x10\x44wellEnabledMask\x18\x01 \x02(\r\x12\x16\n\x0eNumWaitsPerPkt\x18\x02 \x03(\r\x12\x16\n\x0e\x44wellPktOffset\x18\x03 \x03(\r\x12\x15\n\rDwellTblEntry\x18\x04 \x03(\r\x12\x11\n\tCountdown\x18\x05 \x03(\r\x12\x11\n\tByteCount\x18\x06 \x03(\r\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x19\n\x11\x44wellTblAddrCount\x18\x08 \x03(\r\x12\x16\n\x0eInvalidCmdCntr\x18\t \x02(\r\x12\x14\n\x0cValidCmdCntr\x18\n \x02(\r\"\xea\x01\n\x1aMD_DwellPacketControl_t_pb\x12\x11\n\tPktOffset\x18\x01 \x02(\r\x12\x0e\n\x06\x46iller\x18\x02 \x02(\r\x12\x0f\n\x07\x45nabled\x18\x03 \x02(\r\x12\x14\n\x0c\x43urrentEntry\x18\x04 \x02(\r\x12\x11\n\tAddrCount\x18\x05 \x02(\r\x12\x11\n\tCountdown\x18\x06 \x02(\r\x12\x0c\n\x04Rate\x18\x07 \x02(\r\x12\x11\n\tSignature\x18\x08 \x02(\t\x12)\n\x05\x45ntry\x18\t \x03(\x0b\x32\x1a.MD_DwellControlEntry_t_pb\x12\x10\n\x08\x44\x61taSize\x18\n \x02(\r\"S\n\x19MD_DwellControlEntry_t_pb\x12\r\n\x05\x44\x65lay\x18\x01 \x02(\r\x12\x0e\n\x06Length\x18\x02 \x02(\r\x12\x17\n\x0fResolvedAddress\x18\x03 \x02(\r\"\x97\x02\n\x0fMD_AppData_t_pb\x12\x1d\n\x05HkPkt\x18\x01 \x02(\x0b\x32\x0e.MD_HkTlm_t_pb\x12\x12\n\nErrCounter\x18\x02 \x02(\r\x12\x11\n\tRunStatus\x18\x03 \x02(\r\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12&\n\x0bMD_DwellPkt\x18\x05 \x03(\x0b\x32\x11.MD_DwellPkt_t_pb\x12\x12\n\nCmdCounter\x18\x06 \x02(\r\x12\x33\n\x0eMD_DwellTables\x18\x07 \x03(\x0b\x32\x1b.MD_DwellPacketControl_t_pb\x12\x0e\n\x06MsgPtr\x18\x08 \x02(\r\x12\x16\n\x0eMD_TableHandle\x18\t \x03(\x03\x12\x14\n\x0cMD_TableName\x18\n \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -69,8 +69,8 @@ _MD_DWELLPKT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Signature', full_name='MD_DwellPkt_t_pb.Signature', index=5,
-      number=6, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -248,8 +248,8 @@ _MD_DWELLPACKETCONTROL_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Signature', full_name='MD_DwellPacketControl_t_pb.Signature', index=7,
-      number=8, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=8, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -342,7 +342,7 @@ _MD_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MsgPtr', full_name='MD_AppData_t_pb.MsgPtr', index=1,
+      name='ErrCounter', full_name='MD_AppData_t_pb.ErrCounter', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -384,7 +384,7 @@ _MD_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ErrCounter', full_name='MD_AppData_t_pb.ErrCounter', index=7,
+      name='MsgPtr', full_name='MD_AppData_t_pb.MsgPtr', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -399,8 +399,8 @@ _MD_APPDATA_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='MD_TableName', full_name='MD_AppData_t_pb.MD_TableName', index=9,
-      number=10, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=10, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

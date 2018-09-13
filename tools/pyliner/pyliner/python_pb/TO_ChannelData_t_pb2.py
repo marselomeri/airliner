@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_TO_ChannelData_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_TO_ChannelData_t.proto\"p\n\x13TO_OutputQueue_t_pb\x12\x1a\n\x12\x43urrentlyQueuedCnt\x18\x01 \x02(\r\x12\x13\n\x0bOSALQueueID\x18\x02 \x02(\r\x12\x11\n\tSentCount\x18\x03 \x02(\r\x12\x15\n\rHighwaterMark\x18\x04 \x02(\r\"\xbc\x01\n\x16TO_ChannelDumpTbl_t_pb\x12\x34\n\rPriorityQueue\x18\x01 \x03(\x0b\x32\x1d.TO_PriorityQueueMetrics_t_pb\x12\x30\n\x0bMessageFlow\x18\x02 \x03(\x0b\x32\x1b.TO_MessageFlowMetrics_t_pb\x12)\n\x0bOutputQueue\x18\x03 \x02(\x0b\x32\x14.TO_OutputQueue_t_pb\x12\x0f\n\x07TableID\x18\x04 \x02(\r\"\x93\x01\n\x1cTO_PriorityQueueMetrics_t_pb\x12\x1a\n\x12\x43urrentlyQueuedCnt\x18\x01 \x02(\r\x12\x13\n\x0bOSALQueueID\x18\x02 \x02(\r\x12\x14\n\x0cQueuedMsgCnt\x18\x03 \x02(\r\x12\x15\n\rDroppedMsgCnt\x18\x04 \x02(\r\x12\x15\n\rHighwaterMark\x18\x05 \x02(\r\"I\n\x1aTO_MessageFlowMetrics_t_pb\x12\x14\n\x0cQueuedMsgCnt\x18\x01 \x02(\r\x12\x15\n\rDroppedMsgCnt\x18\x02 \x02(\r\"\xc0\x02\n\x13TO_ChannelData_t_pb\x12\x12\n\nDumpTblHdl\x18\x01 \x02(\x05\x12\x1b\n\x13\x43onfigTableFileName\x18\x02 \x03(\t\x12\x17\n\x0f\x43onfigTableName\x18\x03 \x03(\t\x12)\n\x0bOutputQueue\x18\x04 \x02(\x0b\x32\x14.TO_OutputQueue_t_pb\x12\x0f\n\x07MutexID\x18\x05 \x02(\r\x12\r\n\x05State\x18\x06 \x02(\r\x12\x15\n\rDumpTableName\x18\x07 \x03(\t\x12(\n\x07\x44umpTbl\x18\x08 \x02(\x0b\x32\x17.TO_ChannelDumpTbl_t_pb\x12\x12\n\nDataPipeId\x18\t \x02(\t\x12\x14\n\x0c\x43onfigTblPtr\x18\n \x02(\r\x12\x13\n\x0b\x43hannelName\x18\x0b \x03(\t\x12\x14\n\x0c\x43onfigTblHdl\x18\x0c \x02(\x05')
+  serialized_pb=_b('\n\x1a_py_TO_ChannelData_t.proto\"p\n\x13TO_OutputQueue_t_pb\x12\x1a\n\x12\x43urrentlyQueuedCnt\x18\x01 \x02(\r\x12\x13\n\x0bOSALQueueID\x18\x02 \x02(\r\x12\x11\n\tSentCount\x18\x03 \x02(\r\x12\x15\n\rHighwaterMark\x18\x04 \x02(\r\"\xbc\x01\n\x16TO_ChannelDumpTbl_t_pb\x12\x34\n\rPriorityQueue\x18\x01 \x03(\x0b\x32\x1d.TO_PriorityQueueMetrics_t_pb\x12\x30\n\x0bMessageFlow\x18\x02 \x03(\x0b\x32\x1b.TO_MessageFlowMetrics_t_pb\x12)\n\x0bOutputQueue\x18\x03 \x02(\x0b\x32\x14.TO_OutputQueue_t_pb\x12\x0f\n\x07TableID\x18\x04 \x02(\r\"\x93\x01\n\x1cTO_PriorityQueueMetrics_t_pb\x12\x1a\n\x12\x43urrentlyQueuedCnt\x18\x01 \x02(\r\x12\x13\n\x0bOSALQueueID\x18\x02 \x02(\r\x12\x14\n\x0cQueuedMsgCnt\x18\x03 \x02(\r\x12\x15\n\rHighwaterMark\x18\x04 \x02(\r\x12\x15\n\rDroppedMsgCnt\x18\x05 \x02(\r\"I\n\x1aTO_MessageFlowMetrics_t_pb\x12\x14\n\x0cQueuedMsgCnt\x18\x01 \x02(\r\x12\x15\n\rDroppedMsgCnt\x18\x02 \x02(\r\"\xc0\x02\n\x13TO_ChannelData_t_pb\x12\x12\n\nDumpTblHdl\x18\x01 \x02(\x05\x12\x15\n\rDumpTableName\x18\x02 \x02(\t\x12\x14\n\x0c\x43onfigTblHdl\x18\x03 \x02(\x05\x12)\n\x0bOutputQueue\x18\x04 \x02(\x0b\x32\x14.TO_OutputQueue_t_pb\x12\x0f\n\x07MutexID\x18\x05 \x02(\r\x12\r\n\x05State\x18\x06 \x02(\r\x12\x1b\n\x13\x43onfigTableFileName\x18\x07 \x02(\t\x12(\n\x07\x44umpTbl\x18\x08 \x02(\x0b\x32\x17.TO_ChannelDumpTbl_t_pb\x12\x12\n\nDataPipeId\x18\t \x02(\t\x12\x14\n\x0c\x43onfigTblPtr\x18\n \x02(\r\x12\x13\n\x0b\x43hannelName\x18\x0b \x02(\t\x12\x17\n\x0f\x43onfigTableName\x18\x0c \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -156,14 +156,14 @@ _TO_PRIORITYQUEUEMETRICS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DroppedMsgCnt', full_name='TO_PriorityQueueMetrics_t_pb.DroppedMsgCnt', index=3,
+      name='HighwaterMark', full_name='TO_PriorityQueueMetrics_t_pb.HighwaterMark', index=3,
       number=4, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='HighwaterMark', full_name='TO_PriorityQueueMetrics_t_pb.HighwaterMark', index=4,
+      name='DroppedMsgCnt', full_name='TO_PriorityQueueMetrics_t_pb.DroppedMsgCnt', index=4,
       number=5, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -237,16 +237,16 @@ _TO_CHANNELDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ConfigTableFileName', full_name='TO_ChannelData_t_pb.ConfigTableFileName', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='DumpTableName', full_name='TO_ChannelData_t_pb.DumpTableName', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ConfigTableName', full_name='TO_ChannelData_t_pb.ConfigTableName', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='ConfigTblHdl', full_name='TO_ChannelData_t_pb.ConfigTblHdl', index=2,
+      number=3, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -272,9 +272,9 @@ _TO_CHANNELDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DumpTableName', full_name='TO_ChannelData_t_pb.DumpTableName', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='ConfigTableFileName', full_name='TO_ChannelData_t_pb.ConfigTableFileName', index=6,
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -301,15 +301,15 @@ _TO_CHANNELDATA_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='ChannelName', full_name='TO_ChannelData_t_pb.ChannelName', index=10,
-      number=11, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=11, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ConfigTblHdl', full_name='TO_ChannelData_t_pb.ConfigTblHdl', index=11,
-      number=12, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
+      name='ConfigTableName', full_name='TO_ChannelData_t_pb.ConfigTableName', index=11,
+      number=12, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

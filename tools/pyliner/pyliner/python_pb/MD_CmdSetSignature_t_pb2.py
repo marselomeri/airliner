@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MD_CmdSetSignature_t.proto',
   package='',
-  serialized_pb=_b('\n\x1e_py_MD_CmdSetSignature_t.proto\"^\n\x17MD_CmdSetSignature_t_pb\x12\x0f\n\x07Padding\x18\x01 \x02(\r\x12\x0e\n\x06Header\x18\x02 \x03(\r\x12\x0f\n\x07TableId\x18\x03 \x02(\r\x12\x11\n\tSignature\x18\x04 \x03(\t')
+  serialized_pb=_b('\n\x1e_py_MD_CmdSetSignature_t.proto\"^\n\x17MD_CmdSetSignature_t_pb\x12\x0f\n\x07Padding\x18\x01 \x02(\r\x12\x0e\n\x06Header\x18\x02 \x03(\r\x12\x0f\n\x07TableId\x18\x03 \x02(\r\x12\x11\n\tSignature\x18\x04 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,8 +55,8 @@ _MD_CMDSETSIGNATURE_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Signature', full_name='MD_CmdSetSignature_t_pb.Signature', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

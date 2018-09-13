@@ -18,41 +18,11 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_TO_TlmChannels_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_TO_TlmChannels_t.proto\"I\n CFE_ES_ChildTaskMainFuncPtr_t_pb\x12%\n\x1d\x43\x46\x45_ES_ChildTaskMainFuncPtr_t\x18\x01 \x02(\r\"\xc3\x01\n\x13TO_TlmChannels_t_pb\x12\x37\n\x0cListenerTask\x18\x01 \x02(\x0b\x32!.CFE_ES_ChildTaskMainFuncPtr_t_pb\x12\x0e\n\x06Socket\x18\x02 \x02(\r\x12\n\n\x02IP\x18\x03 \x03(\t\x12\x11\n\tTaskFlags\x18\x04 \x02(\r\x12\x10\n\x08Priority\x18\x05 \x02(\r\x12\x0c\n\x04Mode\x18\x06 \x02(\r\x12\x13\n\x0b\x43hildTaskID\x18\x07 \x02(\r\x12\x0f\n\x07\x44stPort\x18\x08 \x02(\r')
+  serialized_pb=_b('\n\x1a_py_TO_TlmChannels_t.proto\"\xa0\x01\n\x13TO_TlmChannels_t_pb\x12\x14\n\x0cListenerTask\x18\x01 \x02(\r\x12\x0e\n\x06Socket\x18\x02 \x02(\r\x12\x13\n\x0b\x43hildTaskID\x18\x03 \x02(\r\x12\x11\n\tTaskFlags\x18\x04 \x02(\r\x12\x10\n\x08Priority\x18\x05 \x02(\r\x12\x0c\n\x04Mode\x18\x06 \x02(\r\x12\n\n\x02IP\x18\x07 \x02(\t\x12\x0f\n\x07\x44stPort\x18\x08 \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
-
-
-_CFE_ES_CHILDTASKMAINFUNCPTR_T_PB = _descriptor.Descriptor(
-  name='CFE_ES_ChildTaskMainFuncPtr_t_pb',
-  full_name='CFE_ES_ChildTaskMainFuncPtr_t_pb',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='CFE_ES_ChildTaskMainFuncPtr_t', full_name='CFE_ES_ChildTaskMainFuncPtr_t_pb.CFE_ES_ChildTaskMainFuncPtr_t', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=30,
-  serialized_end=103,
-)
 
 
 _TO_TLMCHANNELS_T_PB = _descriptor.Descriptor(
@@ -64,8 +34,8 @@ _TO_TLMCHANNELS_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='ListenerTask', full_name='TO_TlmChannels_t_pb.ListenerTask', index=0,
-      number=1, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -77,9 +47,9 @@ _TO_TLMCHANNELS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='IP', full_name='TO_TlmChannels_t_pb.IP', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='ChildTaskID', full_name='TO_TlmChannels_t_pb.ChildTaskID', index=2,
+      number=3, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -105,9 +75,9 @@ _TO_TLMCHANNELS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ChildTaskID', full_name='TO_TlmChannels_t_pb.ChildTaskID', index=6,
-      number=7, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='IP', full_name='TO_TlmChannels_t_pb.IP', index=6,
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -129,20 +99,11 @@ _TO_TLMCHANNELS_T_PB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=106,
-  serialized_end=301,
+  serialized_start=31,
+  serialized_end=191,
 )
 
-_TO_TLMCHANNELS_T_PB.fields_by_name['ListenerTask'].message_type = _CFE_ES_CHILDTASKMAINFUNCPTR_T_PB
-DESCRIPTOR.message_types_by_name['CFE_ES_ChildTaskMainFuncPtr_t_pb'] = _CFE_ES_CHILDTASKMAINFUNCPTR_T_PB
 DESCRIPTOR.message_types_by_name['TO_TlmChannels_t_pb'] = _TO_TLMCHANNELS_T_PB
-
-CFE_ES_ChildTaskMainFuncPtr_t_pb = _reflection.GeneratedProtocolMessageType('CFE_ES_ChildTaskMainFuncPtr_t_pb', (_message.Message,), dict(
-  DESCRIPTOR = _CFE_ES_CHILDTASKMAINFUNCPTR_T_PB,
-  __module__ = '_py_TO_TlmChannels_t_pb2'
-  # @@protoc_insertion_point(class_scope:CFE_ES_ChildTaskMainFuncPtr_t_pb)
-  ))
-_sym_db.RegisterMessage(CFE_ES_ChildTaskMainFuncPtr_t_pb)
 
 TO_TlmChannels_t_pb = _reflection.GeneratedProtocolMessageType('TO_TlmChannels_t_pb', (_message.Message,), dict(
   DESCRIPTOR = _TO_TLMCHANNELS_T_PB,

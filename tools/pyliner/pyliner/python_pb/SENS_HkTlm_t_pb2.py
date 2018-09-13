@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SENS_HkTlm_t.proto',
   package='',
-  serialized_pb=_b('\n\x16_py_SENS_HkTlm_t.proto\"\xec\x02\n\x1aPX4_SensorCombinedMsg_t_pb\x12\x0b\n\x03\x41\x63\x63\x18\x01 \x03(\x02\x12\x1c\n\x14MagTimestampRelative\x18\x02 \x02(\r\x12\x19\n\x11\x41\x63\x63RelTimeInvalid\x18\x03 \x02(\x08\x12\x16\n\x0eGyroIntegralDt\x18\x04 \x02(\x02\x12\x1c\n\x14\x41\x63\x63TimestampRelative\x18\x05 \x02(\r\x12\x1a\n\x12\x42\x61roRelTimeInvalid\x18\x06 \x02(\x08\x12\x15\n\rAccIntegralDt\x18\x07 \x02(\x02\x12\x0f\n\x07\x42\x61roAlt\x18\x08 \x02(\x02\x12\x11\n\tTlmHeader\x18\t \x03(\r\x12\x0b\n\x03Mag\x18\n \x03(\x02\x12\x11\n\tTimestamp\x18\x0b \x02(\x04\x12\x0f\n\x07GyroRad\x18\x0c \x03(\x02\x12\x19\n\x11MagRelTimeInvalid\x18\r \x02(\x08\x12\x10\n\x08\x42\x61roTemp\x18\x0e \x02(\x02\x12\x1d\n\x15\x42\x61roTimestampRelative\x18\x0f \x02(\r\"\x83\x01\n\x0fSENS_HkTlm_t_pb\x12\x11\n\tTlmHeader\x18\x01 \x03(\r\x12\x36\n\x11SensorCombinedMsg\x18\x02 \x02(\x0b\x32\x1b.PX4_SensorCombinedMsg_t_pb\x12\x13\n\x0busCmdErrCnt\x18\x03 \x02(\r\x12\x10\n\x08usCmdCnt\x18\x04 \x02(\r')
+  serialized_pb=_b('\n\x16_py_SENS_HkTlm_t.proto\"\xec\x02\n\x1aPX4_SensorCombinedMsg_t_pb\x12\x0b\n\x03\x41\x63\x63\x18\x01 \x03(\x02\x12\x1c\n\x14MagTimestampRelative\x18\x02 \x02(\r\x12\x19\n\x11\x41\x63\x63RelTimeInvalid\x18\x03 \x02(\x08\x12\x1a\n\x12\x42\x61roRelTimeInvalid\x18\x04 \x02(\x08\x12\x11\n\tTimestamp\x18\x05 \x02(\x04\x12\x16\n\x0eGyroIntegralDt\x18\x06 \x02(\x02\x12\x15\n\rAccIntegralDt\x18\x07 \x02(\x02\x12\x0f\n\x07\x42\x61roAlt\x18\x08 \x02(\x02\x12\x11\n\tTlmHeader\x18\t \x03(\r\x12\x0b\n\x03Mag\x18\n \x03(\x02\x12\x1c\n\x14\x41\x63\x63TimestampRelative\x18\x0b \x02(\r\x12\x0f\n\x07GyroRad\x18\x0c \x03(\x02\x12\x19\n\x11MagRelTimeInvalid\x18\r \x02(\x08\x12\x10\n\x08\x42\x61roTemp\x18\x0e \x02(\x02\x12\x1d\n\x15\x42\x61roTimestampRelative\x18\x0f \x02(\r\"\x83\x01\n\x0fSENS_HkTlm_t_pb\x12\x10\n\x08usCmdCnt\x18\x01 \x02(\r\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x03 \x02(\r\x12\x36\n\x11SensorCombinedMsg\x18\x04 \x02(\x0b\x32\x1b.PX4_SensorCombinedMsg_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -54,23 +54,23 @@ _PX4_SENSORCOMBINEDMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='GyroIntegralDt', full_name='PX4_SensorCombinedMsg_t_pb.GyroIntegralDt', index=3,
-      number=4, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='AccTimestampRelative', full_name='PX4_SensorCombinedMsg_t_pb.AccTimestampRelative', index=4,
-      number=5, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='BaroRelTimeInvalid', full_name='PX4_SensorCombinedMsg_t_pb.BaroRelTimeInvalid', index=5,
-      number=6, type=8, cpp_type=7, label=2,
+      name='BaroRelTimeInvalid', full_name='PX4_SensorCombinedMsg_t_pb.BaroRelTimeInvalid', index=3,
+      number=4, type=8, cpp_type=7, label=2,
       has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='Timestamp', full_name='PX4_SensorCombinedMsg_t_pb.Timestamp', index=4,
+      number=5, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='GyroIntegralDt', full_name='PX4_SensorCombinedMsg_t_pb.GyroIntegralDt', index=5,
+      number=6, type=2, cpp_type=6, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -103,8 +103,8 @@ _PX4_SENSORCOMBINEDMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Timestamp', full_name='PX4_SensorCombinedMsg_t_pb.Timestamp', index=10,
-      number=11, type=4, cpp_type=4, label=2,
+      name='AccTimestampRelative', full_name='PX4_SensorCombinedMsg_t_pb.AccTimestampRelative', index=10,
+      number=11, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -161,16 +161,16 @@ _SENS_HKTLM_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='SENS_HkTlm_t_pb.TlmHeader', index=0,
-      number=1, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='usCmdCnt', full_name='SENS_HkTlm_t_pb.usCmdCnt', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SensorCombinedMsg', full_name='SENS_HkTlm_t_pb.SensorCombinedMsg', index=1,
-      number=2, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='TlmHeader', full_name='SENS_HkTlm_t_pb.TlmHeader', index=1,
+      number=2, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -182,9 +182,9 @@ _SENS_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='usCmdCnt', full_name='SENS_HkTlm_t_pb.usCmdCnt', index=3,
-      number=4, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='SensorCombinedMsg', full_name='SENS_HkTlm_t_pb.SensorCombinedMsg', index=3,
+      number=4, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

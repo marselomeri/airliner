@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SENS_ConfigTbl_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_SENS_ConfigTbl_t.proto\"\xaf\x07\n\x13SENS_ConfigTbl_t_pb\x12\x11\n\tFltCutoff\x18\x01 \x02(\x02\x12\x0f\n\x07TransTh\x18\x02 \x02(\x02\x12\x0b\n\x03Min\x18\x03 \x03(\x02\x12\x0b\n\x03Rev\x18\x04 \x03(\x02\x12\x10\n\x08MapArmSw\x18\x05 \x02(\x05\x12\x12\n\nOffboardTh\x18\x06 \x02(\x02\x12\n\n\x02\x44Z\x18\x07 \x03(\x02\x12\x10\n\x08MapParam\x18\x08 \x03(\x05\x12\x0e\n\x06\x41utoTh\x18\t \x02(\x02\x12\x10\n\x08\x41ssistTh\x18\n \x02(\x02\x12\x0f\n\x07MapAux5\x18\x0b \x02(\x05\x12\x0f\n\x07MapAux4\x18\x0c \x02(\x05\x12\x0f\n\x07MapAux3\x18\r \x02(\x05\x12\x0f\n\x07MapAux2\x18\x0e \x02(\x05\x12\x0f\n\x07MapAux1\x18\x0f \x02(\x05\x12\x15\n\rScalingFactor\x18\x10 \x03(\x02\x12\x0e\n\x06StabTh\x18\x11 \x02(\x02\x12\x11\n\tMapModeSw\x18\x12 \x02(\x05\x12\x0e\n\x06MapYaw\x18\x13 \x02(\x05\x12\x12\n\nFltSmpRate\x18\x14 \x02(\x02\x12\x0b\n\x03Max\x18\x15 \x03(\x02\x12\x14\n\x0cKillswitchTh\x18\x16 \x02(\x02\x12\x13\n\x0b\x41rmswitchTh\x18\x17 \x02(\x02\x12\x0e\n\x06\x41\x63roTh\x18\x18 \x02(\x02\x12\x13\n\x0bMapReturnSw\x18\x19 \x02(\x05\x12\x15\n\rMapOffboardSw\x18\x1a \x02(\x05\x12\x10\n\x08\x46\x61ilsThr\x18\x1b \x02(\x05\x12\x11\n\tMapStabSw\x18\x1c \x02(\x05\x12\x13\n\x0bMapLoiterSw\x18\x1d \x02(\x05\x12\x13\n\x0bMapThrottle\x18\x1e \x02(\x05\x12\x10\n\x08MapFlaps\x18\x1f \x02(\x05\x12\x11\n\tMapGearSw\x18  \x02(\x05\x12\x0e\n\x06GearTh\x18! \x02(\x02\x12\r\n\x05ManTh\x18\" \x02(\x02\x12\x10\n\x08MapManSw\x18# \x02(\x05\x12\x10\n\x08MapPitch\x18$ \x02(\x05\x12\x10\n\x08PosctlTh\x18% \x02(\x02\x12\x0c\n\x04Trim\x18& \x03(\x02\x12\x11\n\tMapKillSw\x18\' \x02(\x05\x12\x13\n\x0bMapFailsafe\x18( \x02(\x05\x12\x19\n\x11ModeSwitchControl\x18) \x02(\x08\x12\x16\n\x0eMapRattitudeSw\x18* \x02(\x05\x12\x15\n\rMapFlightMode\x18+ \x02(\x05\x12\x0f\n\x07MapRoll\x18, \x02(\x05\x12\x10\n\x08ReturnTh\x18- \x02(\x02\x12\x13\n\x0bRattitudeTh\x18. \x02(\x02\x12\x12\n\nMapTransSw\x18/ \x02(\x05\x12\x11\n\tMapAcroSw\x18\x30 \x02(\x05\x12\x13\n\x0bMapPosctlSw\x18\x31 \x02(\x05\x12\x10\n\x08LoiterTh\x18\x32 \x02(\x02')
+  serialized_pb=_b('\n\x1a_py_SENS_ConfigTbl_t.proto\"\xaf\x07\n\x13SENS_ConfigTbl_t_pb\x12\x11\n\tFltCutoff\x18\x01 \x02(\x02\x12\x0f\n\x07TransTh\x18\x02 \x02(\x02\x12\x0b\n\x03Min\x18\x03 \x03(\x02\x12\x0b\n\x03Rev\x18\x04 \x03(\x02\x12\x10\n\x08MapArmSw\x18\x05 \x02(\x05\x12\x12\n\nOffboardTh\x18\x06 \x02(\x02\x12\n\n\x02\x44Z\x18\x07 \x03(\x02\x12\x10\n\x08MapParam\x18\x08 \x03(\x05\x12\x0e\n\x06\x41utoTh\x18\t \x02(\x02\x12\x10\n\x08\x41ssistTh\x18\n \x02(\x02\x12\x0f\n\x07MapAux5\x18\x0b \x02(\x05\x12\x0f\n\x07MapAux4\x18\x0c \x02(\x05\x12\x0f\n\x07MapAux3\x18\r \x02(\x05\x12\x0f\n\x07MapAux2\x18\x0e \x02(\x05\x12\x0f\n\x07MapAux1\x18\x0f \x02(\x05\x12\x15\n\rScalingFactor\x18\x10 \x03(\x02\x12\x0e\n\x06StabTh\x18\x11 \x02(\x02\x12\x11\n\tMapModeSw\x18\x12 \x02(\x05\x12\x0e\n\x06MapYaw\x18\x13 \x02(\x05\x12\x12\n\nFltSmpRate\x18\x14 \x02(\x02\x12\x0b\n\x03Max\x18\x15 \x03(\x02\x12\x14\n\x0cKillswitchTh\x18\x16 \x02(\x02\x12\x13\n\x0b\x41rmswitchTh\x18\x17 \x02(\x02\x12\x0e\n\x06\x41\x63roTh\x18\x18 \x02(\x02\x12\x13\n\x0bMapReturnSw\x18\x19 \x02(\x05\x12\x0f\n\x07MapRoll\x18\x1a \x02(\x05\x12\x10\n\x08\x46\x61ilsThr\x18\x1b \x02(\x05\x12\x11\n\tMapStabSw\x18\x1c \x02(\x05\x12\x13\n\x0bMapLoiterSw\x18\x1d \x02(\x05\x12\x13\n\x0bMapThrottle\x18\x1e \x02(\x05\x12\x10\n\x08MapFlaps\x18\x1f \x02(\x05\x12\x11\n\tMapGearSw\x18  \x02(\x05\x12\x0e\n\x06GearTh\x18! \x02(\x02\x12\r\n\x05ManTh\x18\" \x02(\x02\x12\x10\n\x08MapManSw\x18# \x02(\x05\x12\x10\n\x08MapPitch\x18$ \x02(\x05\x12\x10\n\x08PosctlTh\x18% \x02(\x02\x12\x0c\n\x04Trim\x18& \x03(\x02\x12\x11\n\tMapKillSw\x18\' \x02(\x05\x12\x15\n\rMapOffboardSw\x18( \x02(\x05\x12\x13\n\x0bMapFailsafe\x18) \x02(\x05\x12\x19\n\x11ModeSwitchControl\x18* \x02(\x08\x12\x16\n\x0eMapRattitudeSw\x18+ \x02(\x05\x12\x15\n\rMapFlightMode\x18, \x02(\x05\x12\x11\n\tMapAcroSw\x18- \x02(\x05\x12\x10\n\x08ReturnTh\x18. \x02(\x02\x12\x13\n\x0bRattitudeTh\x18/ \x02(\x02\x12\x12\n\nMapTransSw\x18\x30 \x02(\x05\x12\x13\n\x0bMapPosctlSw\x18\x31 \x02(\x05\x12\x10\n\x08LoiterTh\x18\x32 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -208,7 +208,7 @@ _SENS_CONFIGTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MapOffboardSw', full_name='SENS_ConfigTbl_t_pb.MapOffboardSw', index=25,
+      name='MapRoll', full_name='SENS_ConfigTbl_t_pb.MapRoll', index=25,
       number=26, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -306,63 +306,63 @@ _SENS_CONFIGTBL_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MapFailsafe', full_name='SENS_ConfigTbl_t_pb.MapFailsafe', index=39,
+      name='MapOffboardSw', full_name='SENS_ConfigTbl_t_pb.MapOffboardSw', index=39,
       number=40, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ModeSwitchControl', full_name='SENS_ConfigTbl_t_pb.ModeSwitchControl', index=40,
-      number=41, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='MapRattitudeSw', full_name='SENS_ConfigTbl_t_pb.MapRattitudeSw', index=41,
-      number=42, type=5, cpp_type=1, label=2,
+      name='MapFailsafe', full_name='SENS_ConfigTbl_t_pb.MapFailsafe', index=40,
+      number=41, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MapFlightMode', full_name='SENS_ConfigTbl_t_pb.MapFlightMode', index=42,
+      name='ModeSwitchControl', full_name='SENS_ConfigTbl_t_pb.ModeSwitchControl', index=41,
+      number=42, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='MapRattitudeSw', full_name='SENS_ConfigTbl_t_pb.MapRattitudeSw', index=42,
       number=43, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MapRoll', full_name='SENS_ConfigTbl_t_pb.MapRoll', index=43,
+      name='MapFlightMode', full_name='SENS_ConfigTbl_t_pb.MapFlightMode', index=43,
       number=44, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ReturnTh', full_name='SENS_ConfigTbl_t_pb.ReturnTh', index=44,
-      number=45, type=2, cpp_type=6, label=2,
+      name='MapAcroSw', full_name='SENS_ConfigTbl_t_pb.MapAcroSw', index=44,
+      number=45, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='RattitudeTh', full_name='SENS_ConfigTbl_t_pb.RattitudeTh', index=45,
+      name='ReturnTh', full_name='SENS_ConfigTbl_t_pb.ReturnTh', index=45,
       number=46, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MapTransSw', full_name='SENS_ConfigTbl_t_pb.MapTransSw', index=46,
-      number=47, type=5, cpp_type=1, label=2,
+      name='RattitudeTh', full_name='SENS_ConfigTbl_t_pb.RattitudeTh', index=46,
+      number=47, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MapAcroSw', full_name='SENS_ConfigTbl_t_pb.MapAcroSw', index=47,
+      name='MapTransSw', full_name='SENS_ConfigTbl_t_pb.MapTransSw', index=47,
       number=48, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

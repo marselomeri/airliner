@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MM_DumpMemToFileCmd_t.proto',
   package='',
-  serialized_pb=_b('\n\x1f_py_MM_DumpMemToFileCmd_t.proto\"3\n\x10\x43\x46S_SymAddr_t_pb\x12\x0f\n\x07SymName\x18\x01 \x03(\t\x12\x0e\n\x06Offset\x18\x02 \x02(\r\"\x9f\x01\n\x18MM_DumpMemToFileCmd_t_pb\x12(\n\rSrcSymAddress\x18\x01 \x02(\x0b\x32\x11.CFS_SymAddr_t_pb\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x10\n\x08\x46ileName\x18\x03 \x03(\t\x12\x0f\n\x07Padding\x18\x04 \x03(\r\x12\x12\n\nNumOfBytes\x18\x05 \x02(\r\x12\x0f\n\x07MemType\x18\x06 \x02(\r')
+  serialized_pb=_b('\n\x1f_py_MM_DumpMemToFileCmd_t.proto\"3\n\x10\x43\x46S_SymAddr_t_pb\x12\x0f\n\x07SymName\x18\x01 \x02(\t\x12\x0e\n\x06Offset\x18\x02 \x02(\r\"\x9f\x01\n\x18MM_DumpMemToFileCmd_t_pb\x12\x0f\n\x07MemType\x18\x01 \x02(\r\x12\x11\n\tCmdHeader\x18\x02 \x03(\r\x12\x10\n\x08\x46ileName\x18\x03 \x02(\t\x12\x0f\n\x07Padding\x18\x04 \x03(\r\x12\x12\n\nNumOfBytes\x18\x05 \x02(\r\x12(\n\rSrcSymAddress\x18\x06 \x02(\x0b\x32\x11.CFS_SymAddr_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,8 +34,8 @@ _CFS_SYMADDR_T_PB = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='SymName', full_name='CFS_SymAddr_t_pb.SymName', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -70,9 +70,9 @@ _MM_DUMPMEMTOFILECMD_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='SrcSymAddress', full_name='MM_DumpMemToFileCmd_t_pb.SrcSymAddress', index=0,
-      number=1, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='MemType', full_name='MM_DumpMemToFileCmd_t_pb.MemType', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -85,8 +85,8 @@ _MM_DUMPMEMTOFILECMD_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='FileName', full_name='MM_DumpMemToFileCmd_t_pb.FileName', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -105,9 +105,9 @@ _MM_DUMPMEMTOFILECMD_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MemType', full_name='MM_DumpMemToFileCmd_t_pb.MemType', index=5,
-      number=6, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='SrcSymAddress', full_name='MM_DumpMemToFileCmd_t_pb.SrcSymAddress', index=5,
+      number=6, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SCH_AppData_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_SCH_AppData_t.proto\"M\n\x13SCH_DiagPacket_t_pb\x12\x13\n\x0b\x45ntryStates\x18\x01 \x03(\r\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x0e\n\x06MsgIDs\x18\x03 \x03(\x04\"\x8e\x05\n\x11SCH_HkPacket_t_pb\x12\x15\n\rSameSlotCount\x18\x01 \x02(\r\x12!\n\x19UnexpectedMajorFrameCount\x18\x02 \x02(\r\x12\x12\n\nErrCounter\x18\x03 \x02(\r\x12\x1f\n\x17TableVerifyFailureCount\x18\x04 \x02(\r\x12\x1c\n\x14UnexpectedMajorFrame\x18\x05 \x02(\x08\x12\x16\n\x0eNextSlotNumber\x18\x06 \x02(\r\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x1d\n\x15MissedMajorFrameCount\x18\x08 \x02(\r\x12\x19\n\x11SkippedSlotsCount\x18\t \x02(\r\x12$\n\x1cScheduleActivityFailureCount\x18\n \x02(\r\x12\x18\n\x10MajorFrameSource\x18\x0b \x02(\r\x12\x12\n\nCmdCounter\x18\x0c \x02(\r\x12\x11\n\tSyncToMET\x18\r \x02(\r\x12\x1b\n\x13SlotsProcessedCount\x18\x0e \x02(\r\x12\x1f\n\x17TableVerifySuccessCount\x18\x0f \x02(\r\x12\x16\n\x0eTablePassCount\x18\x10 \x02(\r\x12$\n\x1cScheduleActivitySuccessCount\x18\x11 \x02(\r\x12\x1c\n\x14MinorFramesSinceTone\x18\x12 \x02(\r\x12\x1c\n\x14ValidMajorFrameCount\x18\x13 \x02(\r\x12\x1a\n\x12MultipleSlotsCount\x18\x14 \x02(\r\x12\x19\n\x11\x42\x61\x64TableDataCount\x18\x15 \x02(\r\x12\x18\n\x10IgnoreMajorFrame\x18\x16 \x02(\x08\x12\x17\n\x0fLastSyncMETSlot\x18\x17 \x02(\r\"7\n\x16\x43\x46\x45_EVS_BinFilter_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x0c\n\x04Mask\x18\x02 \x02(\r\"\x9c\n\n\x10SCH_AppData_t_pb\x12\x15\n\rScheduleTable\x18\x01 \x02(\r\x12\x18\n\x10SyncAttemptsLeft\x18\x02 \x02(\r\x12\x1f\n\x17TableVerifySuccessCount\x18\x03 \x02(\r\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12#\n\x1bWorstCaseSlotsPerMinorFrame\x18\x05 \x02(\r\x12!\n\x19UnexpectedMajorFrameCount\x18\x06 \x02(\r\x12\x12\n\nErrCounter\x18\x07 \x02(\r\x12\x1f\n\x17TableVerifyFailureCount\x18\x08 \x02(\r\x12-\n\x0c\x45ventFilters\x18\t \x03(\x0b\x32\x17.CFE_EVS_BinFilter_t_pb\x12\x1c\n\x14UnexpectedMajorFrame\x18\n \x02(\x08\x12\x15\n\rTimeSemaphore\x18\x0b \x02(\r\x12\x18\n\x10\x41\x44\x43hildTaskMutex\x18\x0c \x02(\r\x12$\n\x1c\x43onsecutiveNoisyFrameCounter\x18\r \x02(\r\x12\x1b\n\x13\x44\x65\x61\x64lineTableHandle\x18\x0e \x02(\x05\x12\x1f\n\x17IgnoreMajorFrameMsgSent\x18\x0f \x02(\x08\x12\x16\n\x0eNextSlotNumber\x18\x10 \x02(\r\x12\x1d\n\x15MissedMajorFrameCount\x18\x11 \x02(\r\x12(\n\nDiagPacket\x18\x12 \x02(\x0b\x32\x14.SCH_DiagPacket_t_pb\x12$\n\x08HkPacket\x18\x13 \x02(\x0b\x32\x12.SCH_HkPacket_t_pb\x12\x19\n\x11SkippedSlotsCount\x18\x14 \x02(\r\x12$\n\x1cScheduleActivityFailureCount\x18\x15 \x02(\r\x12\x15\n\rClockAccuracy\x18\x16 \x02(\r\x12\x15\n\rDeadlineTable\x18\x17 \x02(\r\x12\x18\n\x10MajorFrameSource\x18\x18 \x02(\r\x12\x12\n\nCmdCounter\x18\x19 \x02(\r\x12\x1b\n\x13ScheduleTableHandle\x18\x1a \x02(\x05\x12\x0e\n\x06MsgPtr\x18\x1b \x02(\r\x12\x1b\n\x13SlotsProcessedCount\x18\x1c \x02(\r\x12\x15\n\rSameSlotCount\x18\x1d \x02(\r\x12\r\n\x05\x41ppID\x18\x1e \x02(\r\x12\x16\n\x0eTablePassCount\x18\x1f \x02(\r\x12\x0f\n\x07TimerId\x18  \x02(\r\x12$\n\x1cScheduleActivitySuccessCount\x18! \x02(\r\x12\x1a\n\x12MessageTableHandle\x18\" \x02(\x05\x12\x1c\n\x14MinorFramesSinceTone\x18# \x02(\r\x12\x18\n\x10LastProcessCount\x18$ \x02(\r\x12\x1c\n\x14ValidMajorFrameCount\x18% \x02(\r\x12\x11\n\tSyncToMET\x18& \x02(\r\x12\x0e\n\x06\x41\x44Pipe\x18\' \x02(\t\x12\x1a\n\x12MultipleSlotsCount\x18( \x02(\r\x12\x19\n\x11\x42\x61\x64TableDataCount\x18) \x02(\r\x12\x14\n\x0cMessageTable\x18* \x02(\r\x12\x18\n\x10IgnoreMajorFrame\x18+ \x02(\x08\x12\x19\n\x11\x41\x44HoldupSemaphore\x18, \x02(\r\x12\x17\n\x0fLastSyncMETSlot\x18- \x02(\r\x12\x15\n\rADChildTaskID\x18. \x02(\r\x12\x1c\n\x14\x41\x44\x43hildTaskRunStatus\x18/ \x02(\x05')
+  serialized_pb=_b('\n\x17_py_SCH_AppData_t.proto\"M\n\x13SCH_DiagPacket_t_pb\x12\x0e\n\x06MsgIDs\x18\x01 \x03(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x13\n\x0b\x45ntryStates\x18\x03 \x03(\r\"\x8e\x05\n\x11SCH_HkPacket_t_pb\x12\x15\n\rSameSlotCount\x18\x01 \x02(\r\x12!\n\x19UnexpectedMajorFrameCount\x18\x02 \x02(\r\x12\x12\n\nErrCounter\x18\x03 \x02(\r\x12\x1f\n\x17TableVerifyFailureCount\x18\x04 \x02(\r\x12\x1c\n\x14UnexpectedMajorFrame\x18\x05 \x02(\x08\x12\x16\n\x0eNextSlotNumber\x18\x06 \x02(\r\x12\x11\n\tTlmHeader\x18\x07 \x03(\r\x12\x1d\n\x15MissedMajorFrameCount\x18\x08 \x02(\r\x12\x19\n\x11SkippedSlotsCount\x18\t \x02(\r\x12$\n\x1cScheduleActivityFailureCount\x18\n \x02(\r\x12\x18\n\x10MajorFrameSource\x18\x0b \x02(\r\x12\x12\n\nCmdCounter\x18\x0c \x02(\r\x12\x11\n\tSyncToMET\x18\r \x02(\r\x12\x1b\n\x13SlotsProcessedCount\x18\x0e \x02(\r\x12\x1f\n\x17TableVerifySuccessCount\x18\x0f \x02(\r\x12\x16\n\x0eTablePassCount\x18\x10 \x02(\r\x12$\n\x1cScheduleActivitySuccessCount\x18\x11 \x02(\r\x12\x1c\n\x14MinorFramesSinceTone\x18\x12 \x02(\r\x12\x1c\n\x14ValidMajorFrameCount\x18\x13 \x02(\r\x12\x1a\n\x12MultipleSlotsCount\x18\x14 \x02(\r\x12\x19\n\x11\x42\x61\x64TableDataCount\x18\x15 \x02(\r\x12\x18\n\x10IgnoreMajorFrame\x18\x16 \x02(\x08\x12\x17\n\x0fLastSyncMETSlot\x18\x17 \x02(\r\"7\n\x16\x43\x46\x45_EVS_BinFilter_t_pb\x12\x0f\n\x07\x45ventID\x18\x01 \x02(\r\x12\x0c\n\x04Mask\x18\x02 \x02(\r\"\x9c\n\n\x10SCH_AppData_t_pb\x12\x15\n\rScheduleTable\x18\x01 \x02(\r\x12\x18\n\x10SyncAttemptsLeft\x18\x02 \x02(\r\x12\x15\n\rSameSlotCount\x18\x03 \x02(\r\x12\x0f\n\x07\x43mdPipe\x18\x04 \x02(\t\x12#\n\x1bWorstCaseSlotsPerMinorFrame\x18\x05 \x02(\r\x12!\n\x19UnexpectedMajorFrameCount\x18\x06 \x02(\r\x12\x12\n\nErrCounter\x18\x07 \x02(\r\x12\x1f\n\x17TableVerifyFailureCount\x18\x08 \x02(\r\x12-\n\x0c\x45ventFilters\x18\t \x03(\x0b\x32\x17.CFE_EVS_BinFilter_t_pb\x12\x1c\n\x14UnexpectedMajorFrame\x18\n \x02(\x08\x12\x16\n\x0eNextSlotNumber\x18\x0b \x02(\r\x12\x18\n\x10MajorFrameSource\x18\x0c \x02(\r\x12\x18\n\x10\x41\x44\x43hildTaskMutex\x18\r \x02(\r\x12\x1b\n\x13\x44\x65\x61\x64lineTableHandle\x18\x0e \x02(\x05\x12\x1f\n\x17IgnoreMajorFrameMsgSent\x18\x0f \x02(\x08\x12\x15\n\rTimeSemaphore\x18\x10 \x02(\r\x12\x1d\n\x15MissedMajorFrameCount\x18\x11 \x02(\r\x12(\n\nDiagPacket\x18\x12 \x02(\x0b\x32\x14.SCH_DiagPacket_t_pb\x12$\n\x08HkPacket\x18\x13 \x02(\x0b\x32\x12.SCH_HkPacket_t_pb\x12\x19\n\x11SkippedSlotsCount\x18\x14 \x02(\r\x12$\n\x1cScheduleActivityFailureCount\x18\x15 \x02(\r\x12\x15\n\rClockAccuracy\x18\x16 \x02(\r\x12\x15\n\rDeadlineTable\x18\x17 \x02(\r\x12$\n\x1c\x43onsecutiveNoisyFrameCounter\x18\x18 \x02(\r\x12\x12\n\nCmdCounter\x18\x19 \x02(\r\x12\x1b\n\x13ScheduleTableHandle\x18\x1a \x02(\x05\x12\x11\n\tSyncToMET\x18\x1b \x02(\r\x12\x1b\n\x13SlotsProcessedCount\x18\x1c \x02(\r\x12\x1f\n\x17TableVerifySuccessCount\x18\x1d \x02(\r\x12\r\n\x05\x41ppID\x18\x1e \x02(\r\x12\x16\n\x0eTablePassCount\x18\x1f \x02(\r\x12\x0f\n\x07TimerId\x18  \x02(\r\x12$\n\x1cScheduleActivitySuccessCount\x18! \x02(\r\x12\x1a\n\x12MessageTableHandle\x18\" \x02(\x05\x12\x1c\n\x14MinorFramesSinceTone\x18# \x02(\r\x12\x18\n\x10LastProcessCount\x18$ \x02(\r\x12\x1c\n\x14ValidMajorFrameCount\x18% \x02(\r\x12\x0e\n\x06MsgPtr\x18& \x02(\r\x12\x0e\n\x06\x41\x44Pipe\x18\' \x02(\t\x12\x1a\n\x12MultipleSlotsCount\x18( \x02(\r\x12\x19\n\x11\x42\x61\x64TableDataCount\x18) \x02(\r\x12\x14\n\x0cMessageTable\x18* \x02(\r\x12\x18\n\x10IgnoreMajorFrame\x18+ \x02(\x08\x12\x15\n\rADChildTaskID\x18, \x02(\r\x12\x17\n\x0fLastSyncMETSlot\x18- \x02(\r\x12\x19\n\x11\x41\x44HoldupSemaphore\x18. \x02(\r\x12\x1c\n\x14\x41\x44\x43hildTaskRunStatus\x18/ \x02(\x05')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,8 +33,8 @@ _SCH_DIAGPACKET_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='EntryStates', full_name='SCH_DiagPacket_t_pb.EntryStates', index=0,
-      number=1, type=13, cpp_type=3, label=3,
+      name='MsgIDs', full_name='SCH_DiagPacket_t_pb.MsgIDs', index=0,
+      number=1, type=4, cpp_type=4, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -47,8 +47,8 @@ _SCH_DIAGPACKET_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MsgIDs', full_name='SCH_DiagPacket_t_pb.MsgIDs', index=2,
-      number=3, type=4, cpp_type=4, label=3,
+      name='EntryStates', full_name='SCH_DiagPacket_t_pb.EntryStates', index=2,
+      number=3, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -312,7 +312,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TableVerifySuccessCount', full_name='SCH_AppData_t_pb.TableVerifySuccessCount', index=2,
+      name='SameSlotCount', full_name='SCH_AppData_t_pb.SameSlotCount', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -368,21 +368,21 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TimeSemaphore', full_name='SCH_AppData_t_pb.TimeSemaphore', index=10,
+      name='NextSlotNumber', full_name='SCH_AppData_t_pb.NextSlotNumber', index=10,
       number=11, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ADChildTaskMutex', full_name='SCH_AppData_t_pb.ADChildTaskMutex', index=11,
+      name='MajorFrameSource', full_name='SCH_AppData_t_pb.MajorFrameSource', index=11,
       number=12, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ConsecutiveNoisyFrameCounter', full_name='SCH_AppData_t_pb.ConsecutiveNoisyFrameCounter', index=12,
+      name='ADChildTaskMutex', full_name='SCH_AppData_t_pb.ADChildTaskMutex', index=12,
       number=13, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -403,7 +403,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='NextSlotNumber', full_name='SCH_AppData_t_pb.NextSlotNumber', index=15,
+      name='TimeSemaphore', full_name='SCH_AppData_t_pb.TimeSemaphore', index=15,
       number=16, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -459,7 +459,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MajorFrameSource', full_name='SCH_AppData_t_pb.MajorFrameSource', index=23,
+      name='ConsecutiveNoisyFrameCounter', full_name='SCH_AppData_t_pb.ConsecutiveNoisyFrameCounter', index=23,
       number=24, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -480,7 +480,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MsgPtr', full_name='SCH_AppData_t_pb.MsgPtr', index=26,
+      name='SyncToMET', full_name='SCH_AppData_t_pb.SyncToMET', index=26,
       number=27, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -494,7 +494,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SameSlotCount', full_name='SCH_AppData_t_pb.SameSlotCount', index=28,
+      name='TableVerifySuccessCount', full_name='SCH_AppData_t_pb.TableVerifySuccessCount', index=28,
       number=29, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -557,7 +557,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SyncToMET', full_name='SCH_AppData_t_pb.SyncToMET', index=37,
+      name='MsgPtr', full_name='SCH_AppData_t_pb.MsgPtr', index=37,
       number=38, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -599,7 +599,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ADHoldupSemaphore', full_name='SCH_AppData_t_pb.ADHoldupSemaphore', index=43,
+      name='ADChildTaskID', full_name='SCH_AppData_t_pb.ADChildTaskID', index=43,
       number=44, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -613,7 +613,7 @@ _SCH_APPDATA_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='ADChildTaskID', full_name='SCH_AppData_t_pb.ADChildTaskID', index=45,
+      name='ADHoldupSemaphore', full_name='SCH_AppData_t_pb.ADHoldupSemaphore', index=45,
       number=46, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

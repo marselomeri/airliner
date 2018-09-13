@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_ULR_HkTlm_t.proto',
   package='',
-  serialized_pb=_b('\n\x15_py_ULR_HkTlm_t.proto\"\xdc\x01\n\x0eULR_HkTlm_t_pb\x12\x19\n\x11SensorOrientation\x18\x01 \x02(\r\x12\x0c\n\x04Type\x18\x02 \x02(\r\x12\x10\n\x08usCmdCnt\x18\x03 \x02(\r\x12\x12\n\nCovariance\x18\x04 \x02(\x02\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x06 \x02(\r\x12\x13\n\x0bMinDistance\x18\x07 \x02(\x02\x12\x10\n\x08SensorID\x18\x08 \x02(\r\x12\x17\n\x0f\x43urrentDistance\x18\t \x02(\x02\x12\x13\n\x0bMaxDistance\x18\n \x02(\x02')
+  serialized_pb=_b('\n\x15_py_ULR_HkTlm_t.proto\"\xdc\x01\n\x0eULR_HkTlm_t_pb\x12\x19\n\x11SensorOrientation\x18\x01 \x02(\r\x12\x0c\n\x04Type\x18\x02 \x02(\r\x12\x10\n\x08usCmdCnt\x18\x03 \x02(\r\x12\x12\n\nCovariance\x18\x04 \x02(\x02\x12\x11\n\tTlmHeader\x18\x05 \x03(\r\x12\x13\n\x0busCmdErrCnt\x18\x06 \x02(\r\x12\x13\n\x0bMinDistance\x18\x07 \x02(\x02\x12\x17\n\x0f\x43urrentDistance\x18\x08 \x02(\x02\x12\x10\n\x08SensorID\x18\t \x02(\r\x12\x13\n\x0bMaxDistance\x18\n \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -82,15 +82,15 @@ _ULR_HKTLM_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SensorID', full_name='ULR_HkTlm_t_pb.SensorID', index=7,
-      number=8, type=13, cpp_type=3, label=2,
+      name='CurrentDistance', full_name='ULR_HkTlm_t_pb.CurrentDistance', index=7,
+      number=8, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='CurrentDistance', full_name='ULR_HkTlm_t_pb.CurrentDistance', index=8,
-      number=9, type=2, cpp_type=6, label=2,
+      name='SensorID', full_name='ULR_HkTlm_t_pb.SensorID', index=8,
+      number=9, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

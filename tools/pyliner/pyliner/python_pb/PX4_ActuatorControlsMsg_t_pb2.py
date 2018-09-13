@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_ActuatorControlsMsg_t.proto',
   package='',
-  serialized_pb=_b('\n#_py_PX4_ActuatorControlsMsg_t.proto\"i\n\x1cPX4_ActuatorControlsMsg_t_pb\x12\x0f\n\x07\x43ontrol\x18\x01 \x03(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x12\n\nSampleTime\x18\x03 \x02(\x04\x12\x11\n\tTlmHeader\x18\x04 \x03(\r')
+  serialized_pb=_b('\n#_py_PX4_ActuatorControlsMsg_t.proto\"i\n\x1cPX4_ActuatorControlsMsg_t_pb\x12\x0f\n\x07\x43ontrol\x18\x01 \x03(\x02\x12\x11\n\tTimestamp\x18\x02 \x02(\x04\x12\x11\n\tTlmHeader\x18\x03 \x03(\r\x12\x12\n\nSampleTime\x18\x04 \x02(\x04')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -47,16 +47,16 @@ _PX4_ACTUATORCONTROLSMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='SampleTime', full_name='PX4_ActuatorControlsMsg_t_pb.SampleTime', index=2,
-      number=3, type=4, cpp_type=4, label=2,
-      has_default_value=False, default_value=0,
+      name='TlmHeader', full_name='PX4_ActuatorControlsMsg_t_pb.TlmHeader', index=2,
+      number=3, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_ActuatorControlsMsg_t_pb.TlmHeader', index=3,
-      number=4, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='SampleTime', full_name='PX4_ActuatorControlsMsg_t_pb.SampleTime', index=3,
+      number=4, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

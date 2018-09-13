@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_MPU9250_Params_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_MPU9250_Params_t.proto\"\x85\x02\n\x13MPU9250_Params_t_pb\x12\x11\n\tAccZScale\x18\x01 \x02(\x02\x12\x12\n\nGyroXScale\x18\x02 \x02(\x02\x12\x12\n\nGyroYScale\x18\x03 \x02(\x02\x12\x12\n\nAccYOffset\x18\x04 \x02(\x02\x12\x11\n\tAccXScale\x18\x05 \x02(\x02\x12\x13\n\x0bGyroYOffset\x18\x06 \x02(\x02\x12\x12\n\nGyroZScale\x18\x07 \x02(\x02\x12\x12\n\nAccZOffset\x18\x08 \x02(\x02\x12\x12\n\nAccXOffset\x18\t \x02(\x02\x12\x13\n\x0bGyroZOffset\x18\n \x02(\x02\x12\x13\n\x0bGyroXOffset\x18\x0b \x02(\x02\x12\x11\n\tAccYScale\x18\x0c \x02(\x02')
+  serialized_pb=_b('\n\x1a_py_MPU9250_Params_t.proto\"\x85\x02\n\x13MPU9250_Params_t_pb\x12\x11\n\tAccZScale\x18\x01 \x02(\x02\x12\x12\n\nGyroXScale\x18\x02 \x02(\x02\x12\x12\n\nGyroYScale\x18\x03 \x02(\x02\x12\x12\n\nAccYOffset\x18\x04 \x02(\x02\x12\x11\n\tAccXScale\x18\x05 \x02(\x02\x12\x13\n\x0bGyroYOffset\x18\x06 \x02(\x02\x12\x12\n\nGyroZScale\x18\x07 \x02(\x02\x12\x12\n\nAccZOffset\x18\x08 \x02(\x02\x12\x12\n\nAccXOffset\x18\t \x02(\x02\x12\x11\n\tAccYScale\x18\n \x02(\x02\x12\x13\n\x0bGyroXOffset\x18\x0b \x02(\x02\x12\x13\n\x0bGyroZOffset\x18\x0c \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -96,7 +96,7 @@ _MPU9250_PARAMS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='GyroZOffset', full_name='MPU9250_Params_t_pb.GyroZOffset', index=9,
+      name='AccYScale', full_name='MPU9250_Params_t_pb.AccYScale', index=9,
       number=10, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -110,7 +110,7 @@ _MPU9250_PARAMS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='AccYScale', full_name='MPU9250_Params_t_pb.AccYScale', index=11,
+      name='GyroZOffset', full_name='MPU9250_Params_t_pb.GyroZOffset', index=11,
       number=12, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

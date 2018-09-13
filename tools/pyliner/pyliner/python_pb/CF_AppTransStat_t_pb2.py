@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_AppTransStat_t.proto',
   package='',
-  serialized_pb=_b('\n\x1b_py_CF_AppTransStat_t.proto\"\xd5\x01\n\x14\x43\x46_AppTransStat_t_pb\x12\x0e\n\x06Status\x18\x01 \x02(\r\x12\x0f\n\x07\x44stFile\x18\x02 \x03(\t\x12\x10\n\x08NodeType\x18\x03 \x02(\r\x12\x0f\n\x07SrcFile\x18\x04 \x03(\t\x12\x0f\n\x07\x43hanNum\x18\x05 \x02(\r\x12\x10\n\x08Priority\x18\x06 \x02(\r\x12\x0e\n\x06Source\x18\x07 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x08 \x03(\t\x12\r\n\x05\x43lass\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x10\n\x08\x43ondCode\x18\x0b \x02(\r')
+  serialized_pb=_b('\n\x1b_py_CF_AppTransStat_t.proto\"\xd5\x01\n\x14\x43\x46_AppTransStat_t_pb\x12\x0f\n\x07\x44stFile\x18\x01 \x02(\t\x12\x0e\n\x06Status\x18\x02 \x02(\r\x12\x10\n\x08NodeType\x18\x03 \x02(\r\x12\x0f\n\x07SrcFile\x18\x04 \x02(\t\x12\x0f\n\x07\x43hanNum\x18\x05 \x02(\r\x12\x10\n\x08Priority\x18\x06 \x02(\r\x12\x0e\n\x06Source\x18\x07 \x02(\r\x12\x13\n\x0bSrcEntityId\x18\x08 \x02(\t\x12\r\n\x05\x43lass\x18\t \x02(\r\x12\x10\n\x08TransNum\x18\n \x02(\r\x12\x10\n\x08\x43ondCode\x18\x0b \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,16 +33,16 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Status', full_name='CF_AppTransStat_t_pb.Status', index=0,
-      number=1, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='DstFile', full_name='CF_AppTransStat_t_pb.DstFile', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='DstFile', full_name='CF_AppTransStat_t_pb.DstFile', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Status', full_name='CF_AppTransStat_t_pb.Status', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -55,8 +55,8 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcFile', full_name='CF_AppTransStat_t_pb.SrcFile', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -83,8 +83,8 @@ _CF_APPTRANSSTAT_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='SrcEntityId', full_name='CF_AppTransStat_t_pb.SrcEntityId', index=7,
-      number=8, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=8, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

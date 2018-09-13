@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_MultirotorMotorLimitsMsg_t.proto',
   package='',
-  serialized_pb=_b('\n(_py_PX4_MultirotorMotorLimitsMsg_t.proto\"D\n\x19PX4_SaturationStatus_t_pb\x12\x18\n\x05\x46lags\x18\x01 \x02(\x0b\x32\t.Flags_pb\x12\r\n\x05Value\x18\x02 \x02(\r\"\xba\x01\n\x08\x46lags_pb\x12\x11\n\tThrustNeg\x18\x01 \x02(\r\x12\x10\n\x08MotorPos\x18\x02 \x02(\r\x12\x10\n\x08PitchNeg\x18\x03 \x02(\r\x12\x11\n\tThrustPos\x18\x04 \x02(\r\x12\x10\n\x08PitchPos\x18\x05 \x02(\r\x12\x0f\n\x07RollPos\x18\x06 \x02(\r\x12\x10\n\x08MotorNeg\x18\x07 \x02(\r\x12\x0e\n\x06YawNeg\x18\x08 \x02(\r\x12\x0f\n\x07RollNeg\x18\t \x02(\r\x12\x0e\n\x06YawPos\x18\n \x02(\r\"\x7f\n!PX4_MultirotorMotorLimitsMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x34\n\x10SaturationStatus\x18\x03 \x02(\x0b\x32\x1a.PX4_SaturationStatus_t_pb')
+  serialized_pb=_b('\n(_py_PX4_MultirotorMotorLimitsMsg_t.proto\"D\n\x19PX4_SaturationStatus_t_pb\x12\x18\n\x05\x46lags\x18\x01 \x02(\x0b\x32\t.Flags_pb\x12\r\n\x05Value\x18\x02 \x02(\r\"\xba\x01\n\x08\x46lags_pb\x12\x11\n\tThrustNeg\x18\x01 \x02(\r\x12\x10\n\x08MotorPos\x18\x02 \x02(\r\x12\x10\n\x08PitchNeg\x18\x03 \x02(\r\x12\x11\n\tThrustPos\x18\x04 \x02(\r\x12\x10\n\x08PitchPos\x18\x05 \x02(\r\x12\x0f\n\x07RollPos\x18\x06 \x02(\r\x12\x0e\n\x06YawNeg\x18\x07 \x02(\r\x12\x10\n\x08MotorNeg\x18\x08 \x02(\r\x12\x0f\n\x07RollNeg\x18\t \x02(\r\x12\x0e\n\x06YawPos\x18\n \x02(\r\"\x7f\n!PX4_MultirotorMotorLimitsMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x34\n\x10SaturationStatus\x18\x03 \x02(\x0b\x32\x1a.PX4_SaturationStatus_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -112,14 +112,14 @@ _FLAGS_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MotorNeg', full_name='Flags_pb.MotorNeg', index=6,
+      name='YawNeg', full_name='Flags_pb.YawNeg', index=6,
       number=7, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='YawNeg', full_name='Flags_pb.YawNeg', index=7,
+      name='MotorNeg', full_name='Flags_pb.MotorNeg', index=7,
       number=8, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

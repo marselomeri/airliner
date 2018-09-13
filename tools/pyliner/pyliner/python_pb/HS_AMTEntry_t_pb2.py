@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_HS_AMTEntry_t.proto',
   package='',
-  serialized_pb=_b('\n\x17_py_HS_AMTEntry_t.proto\"]\n\x10HS_AMTEntry_t_pb\x12\x10\n\x08NullTerm\x18\x01 \x02(\r\x12\x12\n\nActionType\x18\x02 \x02(\r\x12\x12\n\nCycleCount\x18\x03 \x02(\r\x12\x0f\n\x07\x41ppName\x18\x04 \x03(\t')
+  serialized_pb=_b('\n\x17_py_HS_AMTEntry_t.proto\"]\n\x10HS_AMTEntry_t_pb\x12\x12\n\nCycleCount\x18\x01 \x02(\r\x12\x12\n\nActionType\x18\x02 \x02(\r\x12\x10\n\x08NullTerm\x18\x03 \x02(\r\x12\x0f\n\x07\x41ppName\x18\x04 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,7 +33,7 @@ _HS_AMTENTRY_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='NullTerm', full_name='HS_AMTEntry_t_pb.NullTerm', index=0,
+      name='CycleCount', full_name='HS_AMTEntry_t_pb.CycleCount', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -47,7 +47,7 @@ _HS_AMTENTRY_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='CycleCount', full_name='HS_AMTEntry_t_pb.CycleCount', index=2,
+      name='NullTerm', full_name='HS_AMTEntry_t_pb.NullTerm', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -55,8 +55,8 @@ _HS_AMTENTRY_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='AppName', full_name='HS_AMTEntry_t_pb.AppName', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_PX4_CommanderStateMsg_t.proto',
   package='',
-  serialized_pb=_b('\n!_py_PX4_CommanderStateMsg_t.proto\"U\n\x1aPX4_CommanderStateMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tTlmHeader\x18\x02 \x03(\r\x12\x11\n\tMainState\x18\x03 \x02(\r')
+  serialized_pb=_b('\n!_py_PX4_CommanderStateMsg_t.proto\"U\n\x1aPX4_CommanderStateMsg_t_pb\x12\x11\n\tTimestamp\x18\x01 \x02(\x04\x12\x11\n\tMainState\x18\x02 \x02(\r\x12\x11\n\tTlmHeader\x18\x03 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -40,16 +40,16 @@ _PX4_COMMANDERSTATEMSG_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='TlmHeader', full_name='PX4_CommanderStateMsg_t_pb.TlmHeader', index=1,
-      number=2, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
+      name='MainState', full_name='PX4_CommanderStateMsg_t_pb.MainState', index=1,
+      number=2, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='MainState', full_name='PX4_CommanderStateMsg_t_pb.MainState', index=2,
-      number=3, type=13, cpp_type=3, label=2,
-      has_default_value=False, default_value=0,
+      name='TlmHeader', full_name='PX4_CommanderStateMsg_t_pb.TlmHeader', index=2,
+      number=3, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

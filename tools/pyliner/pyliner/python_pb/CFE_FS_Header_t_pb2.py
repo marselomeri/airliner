@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CFE_FS_Header_t.proto',
   package='',
-  serialized_pb=_b('\n\x19_py_CFE_FS_Header_t.proto\"\xce\x01\n\x12\x43\x46\x45_FS_Header_t_pb\x12\x13\n\x0b\x43ontentType\x18\x01 \x02(\r\x12\x13\n\x0b\x44\x65scription\x18\x02 \x03(\t\x12\x14\n\x0cSpacecraftID\x18\x03 \x02(\r\x12\x16\n\x0eTimeSubSeconds\x18\x04 \x02(\r\x12\x13\n\x0bProcessorID\x18\x05 \x02(\r\x12\x0f\n\x07SubType\x18\x06 \x02(\r\x12\x0e\n\x06Length\x18\x07 \x02(\r\x12\x13\n\x0bTimeSeconds\x18\x08 \x02(\r\x12\x15\n\rApplicationID\x18\t \x02(\r')
+  serialized_pb=_b('\n\x19_py_CFE_FS_Header_t.proto\"\xce\x01\n\x12\x43\x46\x45_FS_Header_t_pb\x12\x13\n\x0b\x43ontentType\x18\x01 \x02(\r\x12\x13\n\x0b\x44\x65scription\x18\x02 \x02(\t\x12\x14\n\x0cSpacecraftID\x18\x03 \x02(\r\x12\x16\n\x0eTimeSubSeconds\x18\x04 \x02(\r\x12\x13\n\x0bProcessorID\x18\x05 \x02(\r\x12\x0f\n\x07SubType\x18\x06 \x02(\r\x12\x0e\n\x06Length\x18\x07 \x02(\r\x12\x13\n\x0bTimeSeconds\x18\x08 \x02(\r\x12\x15\n\rApplicationID\x18\t \x02(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -41,8 +41,8 @@ _CFE_FS_HEADER_T_PB = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='Description', full_name='CFE_FS_Header_t_pb.Description', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

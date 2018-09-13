@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_SCH_DeadlineTable_t.proto',
   package='',
-  serialized_pb=_b('\n\x1d_py_SCH_DeadlineTable_t.proto\"O\n\x1bSCH_SlotDeadlineStatus_t_pb\x12\x30\n\x06Status\x18\x01 \x03(\x0b\x32 .SCH_ActivityDeadlineStatus_t_pb\"U\n\x1fSCH_ActivityDeadlineStatus_t_pb\x12\r\n\x05MsgID\x18\x01 \x02(\r\x12\r\n\x05State\x18\x02 \x02(\r\x12\x14\n\x0cOverrunCount\x18\x03 \x02(\r\"D\n\x16SCH_DeadlineTable_t_pb\x12*\n\x04Slot\x18\x01 \x03(\x0b\x32\x1c.SCH_SlotDeadlineStatus_t_pb')
+  serialized_pb=_b('\n\x1d_py_SCH_DeadlineTable_t.proto\"O\n\x1bSCH_SlotDeadlineStatus_t_pb\x12\x30\n\x06Status\x18\x01 \x03(\x0b\x32 .SCH_ActivityDeadlineStatus_t_pb\"U\n\x1fSCH_ActivityDeadlineStatus_t_pb\x12\r\n\x05MsgID\x18\x01 \x02(\r\x12\x14\n\x0cOverrunCount\x18\x02 \x02(\r\x12\r\n\x05State\x18\x03 \x02(\r\"D\n\x16SCH_DeadlineTable_t_pb\x12*\n\x04Slot\x18\x01 \x03(\x0b\x32\x1c.SCH_SlotDeadlineStatus_t_pb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -70,14 +70,14 @@ _SCH_ACTIVITYDEADLINESTATUS_T_PB = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='State', full_name='SCH_ActivityDeadlineStatus_t_pb.State', index=1,
+      name='OverrunCount', full_name='SCH_ActivityDeadlineStatus_t_pb.OverrunCount', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='OverrunCount', full_name='SCH_ActivityDeadlineStatus_t_pb.OverrunCount', index=2,
+      name='State', full_name='SCH_ActivityDeadlineStatus_t_pb.State', index=2,
       number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,

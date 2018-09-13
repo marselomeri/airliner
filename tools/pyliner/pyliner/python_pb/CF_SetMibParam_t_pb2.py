@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='_py_CF_SetMibParam_t.proto',
   package='',
-  serialized_pb=_b('\n\x1a_py_CF_SetMibParam_t.proto\"F\n\x13\x43\x46_SetMibParam_t_pb\x12\r\n\x05Value\x18\x01 \x03(\t\x12\r\n\x05Param\x18\x02 \x03(\t\x12\x11\n\tCmdHeader\x18\x03 \x03(\r')
+  serialized_pb=_b('\n\x1a_py_CF_SetMibParam_t.proto\"F\n\x13\x43\x46_SetMibParam_t_pb\x12\r\n\x05Param\x18\x01 \x02(\t\x12\r\n\x05Value\x18\x02 \x02(\t\x12\x11\n\tCmdHeader\x18\x03 \x03(\r')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,16 +33,16 @@ _CF_SETMIBPARAM_T_PB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Value', full_name='CF_SetMibParam_t_pb.Value', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Param', full_name='CF_SetMibParam_t_pb.Param', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='Param', full_name='CF_SetMibParam_t_pb.Param', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='Value', full_name='CF_SetMibParam_t_pb.Value', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
