@@ -12,6 +12,8 @@ cmd_count = 0
 
 def cmd_count_callback1(data):
     print("1 %s = %d   " % (data.name, data.value))
+    
+    v.com.send_command({'name':'/Airliner/CFE/ES_Noop'})
 
     v.com.send_command({'name':'/Airliner/CFE/StartApp', 'args':[
         {'name':'AppEntryPoint', 'value':'CF_AppMain'},
@@ -22,8 +24,8 @@ def cmd_count_callback1(data):
         {'name':'ExceptionAction', 'value':1}]});
   
 
-    #v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
-    #                         {'name':'MaxPRCount', 'value':5}]})
+    v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
+                             {'name':'MaxPRCount', 'value':5}]})
     
     #global cmd_count
     #cmd_count = data['params']['CmdCounter']['value']
