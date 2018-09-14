@@ -14,12 +14,12 @@ def cmd_count_callback1(data):
     print("1 %s = %d   " % (data.name, data.value))
 
     v.com.send_command({'name':'/Airliner/CFE/StartApp', 'args':[
-        {'name':'Payload.AppEntryPoint', 'value':'CF_AppMain'},
-        {'name':'Payload.Priority', 'value':100},
-        {'name':'Payload.Application', 'value':'CF'},
-        {'name':'Payload.AppFileName', 'value':'/cf/apps/cf.so'},
-        {'name':'Payload.StackSize', 'value':32769},
-        {'name':'Payload.ExceptionAction', 'value':1}]});
+        {'name':'AppEntryPoint', 'value':'CF_AppMain'},
+        {'name':'Priority', 'value':100},
+        {'name':'Application', 'value':'CF'},
+        {'name':'AppFileName', 'value':'/cf/apps/cf.so'},
+        {'name':'StackSize', 'value':32769},
+        {'name':'ExceptionAction', 'value':1}]});
   
 
     #v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
@@ -50,8 +50,8 @@ vehicle = Vehicle(
 )
 
 with ScriptingWrapper(vehicle) as v:
-    #v.await_change('/Airliner/ES/HK/CmdCounter',
-    #                   'Waiting for telemetry downlink...')
+    v.await_change('/Airliner/CFE/ES_HK/CmdCounter',
+                       'Waiting for telemetry downlink...')
     
     cmdCounter4 = v.com.subscribe('/Airliner/CFE/ES_HK/CmdCounter', cmd_count_callback1)
     
