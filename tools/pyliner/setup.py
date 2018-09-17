@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyliner',
-    version='0.4',
+    version='1.0',
     author='Erik VanderWerf',
     author_email='evanderwerf@windhoverlabs.com',
     description='Interface to control drones through Airliner',
@@ -16,5 +16,10 @@ setup(
         'orderedset',
         'protobuf',
         'sortedcontainers'
-    ]
+    ],
+    entry_points={
+        'console_scripts': [
+            'pyliner = pyliner.__main__:main'
+        ]
+    }
 )

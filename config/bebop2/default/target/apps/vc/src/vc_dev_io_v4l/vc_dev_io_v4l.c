@@ -242,7 +242,6 @@ int32 VC_ConfigureDevice(uint8 DeviceID)
         goto end_of_function;
     }
 
-
 end_of_function:
     return (returnCode);
 }

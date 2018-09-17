@@ -25,7 +25,7 @@ from pyliner.util import init_socket, handler_factory, CallableDefaultDict, \
     RealTimeThread, OrderedSetQueue
 
 
-# TODO Python3 does not see telemetry
+# TODO Python3 does not see telemetry. This is the only barrier to Python3.
 
 
 class CommandAuthorizationError(PylinerError):
@@ -266,7 +266,7 @@ class Communication(App):
                 )).first(Communication.CONTROL_ACK_WAIT).result
             except IntentExplicitFailure:  # App was disconnected
                 self.error('Broadcast could not find {}'.format(app_name))
-                self.control_current = None
+                # self.control_current = None
                 continue
             except FutureTimeoutError:
                 self.error('{} did not acknowledge control handoff within '

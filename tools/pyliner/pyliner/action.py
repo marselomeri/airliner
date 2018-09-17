@@ -1,4 +1,7 @@
-# TODO Document all of these with expected arguments.
+# TODO Document all of these with expected arguments. Maybe move them into
+# their own Apps. These shouldn't really be defined outside of an App for
+# complete App independence, although it might be useful to have a few pre-
+# declared actions available for everyone. I don't know.
 
 # Geographic
 ACTION_CALC_PBD = 'ACTION_CALC_PBD'
