@@ -52,10 +52,13 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
+#include <stdint.h>
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+#define MPU6050_ENABLE_FIFO_QUEUE
 
 /************************************************************************
 ** Local Structure Declarations
@@ -139,6 +142,7 @@ void MPU6050_Custom_InitData(void)
 {
     /* Set all struct zero values */
     bzero(&MPU6050_AppCustomData, sizeof(MPU6050_AppCustomData));
+    MPU6050_AppCustomData.TempInitialized = FALSE;
 }
 
 
@@ -169,65 +173,91 @@ boolean MPU6050_Custom_Init()
     /* TODO Add Accelerometer Self-Test */
 
     /* Set clock source. */
-    returnBool = MPU6050_WriteReg(MPU6050_MPU_CLK_SEL_PLLGYROX, MPU6050_REG_PWR_MGMT_1);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_PWR_MGMT_1, MPU6050_MPU_CLK_SEL_PLLGYROX);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Set clock source failed.");
         goto end_of_function;
     }
-
     usleep(1000);
 
     /* Clear any standby modes. */
-    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_PWR_MGMT_2);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_PWR_MGMT_2, 0x00);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Enable Acc and Gyro failed");
         goto end_of_function;
     }
+    usleep(1000);
+
+#ifdef MPU6050_ENABLE_FIFO_QUEUE
+    /* Enable FIFO queue. */
+    returnBool = MPU6050_WriteReg(MPU6050_REG_USER_CTRL, 
+            (MPU6050_BIT_USER_CTRL_FIFO_RST | MPU6050_BIT_USER_CTRL_FIFO_EN));
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Enable FIFO queue failed.");
+        goto end_of_function;
+    }
+    usleep(1000);
+
+    returnBool = MPU6050_WriteReg(MPU6050_REG_FIFO_EN,
+            (MPU6050_BIT_FIFO_ENABLE_TEMP_OUT | 
+            MPU6050_BIT_FIFO_ENABLE_GYRO_XOUT |
+            MPU6050_BIT_FIFO_ENABLE_GYRO_YOUT |
+            MPU6050_BIT_FIFO_ENABLE_GYRO_ZOUT |
+            MPU6050_BIT_FIFO_ENABLE_ACCEL));
+
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Enable FIFO queue bits failed.");
+        goto end_of_function;
+    }
 
     usleep(1000);
 
+#endif
+
     /* Set DLPF.  */
-    returnBool = MPU6050_WriteReg(MPU6050_DEFAULT_LOWPASS_FILTER, MPU6050_REG_CONFIG);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_CONFIG, MPU6050_DEFAULT_LOWPASS_FILTER);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Set DLPF failed. ");
         goto end_of_function;
     }
-
     usleep(1000);
 
     /* Set sample divider.  
      * sample rate = Gyroscope_Output_Rate / (1 + sample_divider)
      * If DLPF is disabled (0 or 7) Gyroscope_Output_Rate = 8 kHz
-     * otherwise Gyroscope_Output_Rate = 1kHz */
-    returnBool = MPU6050_WriteReg(0x00, MPU6050_REG_SMPLRT_DIV);
+     * otherwise Gyroscope_Output_Rate = 1kHz.
+     * 250Hz = 1kHz / (1 + 3) */
+    returnBool = MPU6050_WriteReg(MPU6050_REG_SMPLRT_DIV, 0x00);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Set accel resolution failed. ");
         goto end_of_function;
     }
-    
     usleep(1000);
 
     /* Set gyro resolution. */
-    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_2000DPS, MPU6050_REG_GYRO_CONFIG);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_GYRO_CONFIG, MPU6050_BITS_FS_2000DPS);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Set gyro resolution failed. ");
         goto end_of_function;
     }
-
     usleep(1000);
 
     /* Set accel resolution. */
-    returnBool = MPU6050_WriteReg(MPU6050_BITS_FS_16G, MPU6050_REG_ACCEL_CONFIG);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_ACCEL_CONFIG, MPU6050_BITS_FS_16G);
     if(FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -237,18 +267,10 @@ boolean MPU6050_Custom_Init()
 
     usleep(1000);
 
-    /* LATCH_INT_EN INT pin level held unitl interrupt status is 
-     * cleared. IN_ANYRD_2CLEAR interrupt status is cleared if
-     * any read operation is performed. */
-    //returnBool = MPU6050_WriteReg(0x30, MPU6050_REG_INT_PIN_CFG, 1);
-    //if(FALSE == returnBool)
-    //{
-        //CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                //"Set accel resolution failed. ");
-        //goto end_of_function;
-    //}
-
-    //usleep(1000);
+    /* Clear the FIFO queue. */
+#ifdef MPU6050_ENABLE_FIFO_QUEUE
+    MPU6050_ResetFifo();
+#endif
 
     MPU6050_AppCustomData.Status = MPU6050_CUSTOM_INITIALIZED;
 
@@ -282,7 +304,7 @@ int32 MPU6050_ResetDevice(void)
     int32 ret = 0;
     boolean returnBool = TRUE;
     
-    returnBool = MPU6050_WriteReg(MPU6050_BIT_H_RESET, MPU6050_REG_PWR_MGMT_1);
+    returnBool = MPU6050_WriteReg(MPU6050_REG_PWR_MGMT_1, MPU6050_BIT_H_RESET);
     if (FALSE == returnBool) 
     {            
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
@@ -374,9 +396,6 @@ boolean MPU6050_ReadReg(uint8 Reg, void *Buffer, size_t Length)
 
     return (returnBool);
 }
-
-
-
 
 
 boolean MPU6050_SetAccScale(uint8 Scale, float *AccDivider)
@@ -484,17 +503,19 @@ end_of_function:
 
 
 /* Todo update to passing a structure to this function. */
-boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, int16 *AZ, int16 *Temp)
+boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
 {
     uint8 intStatus = 0;
-    MPU6050_Sample_t sample = {0};
+    MPU6050_Sample_t sample[MPU6050_MAX_FIFO_LENGTH] = {0};
     boolean returnBool = TRUE;
+    uint16 fifoByteCount = 0;
+    uint16 index = 0;
 
     /* Null pointer check */
-    if(0 == GX || 0 == GY || 0 == GZ || 0 == AX || 0 == AY || 0 == AZ || 0 == Temp)
+    if(0 == SampleQueue)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 Read_Gyro Null Pointer");
+            "MPU6050 Measure Null Pointer");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -503,10 +524,68 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
     returnBool = MPU6050_ReadReg(MPU6050_REG_INT_STATUS, &intStatus, 1);
     if(FALSE == returnBool)
     {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU6050 failed to read MPU6050_REG_INT_STATUS");
         returnBool = FALSE;
         goto end_of_function;
     }
 
+#ifdef MPU6050_ENABLE_FIFO_QUEUE
+    /* Check for overflow. */
+    if(intStatus & MPU6050_BIT_INT_STATUS_FIFO_OVRFLW)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU6050 FIFO overflow.");
+        /* Reset fifo Queue. */
+        MPU6050_ResetFifo();
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* Get the number of bytes in the FIFO queue. */
+    fifoByteCount = MPU6050_GetFifoCount();
+
+    if(fifoByteCount > 0)
+    {
+        MPU6050_AppCustomData.FifoSamplesPerCycle = 
+            (0.95f * MPU6050_AppCustomData.FifoSamplesPerCycle) + 
+            (0.05f * (fifoByteCount / sizeof(MPU6050_Sample_t)));
+        returnBool = MPU6050_ReadReg(MPU6050_REG_FIFO_R_W, &sample, fifoByteCount);
+        if(FALSE == returnBool)
+        {
+            CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "MPU6050 FIFO read failed.");
+            goto end_of_function;
+        }
+    }
+    else
+    {
+        /* Data not ready skipping measurement. */
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU6050 FIFO empty.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    SampleQueue->SampleCount = fifoByteCount / sizeof(MPU6050_Sample_t);
+    SampleQueue->SampleIntervalUs = 1000 / MPU6050_AppCustomData.FifoSamplesPerCycle;
+
+    for(index = 0; index < SampleQueue->SampleCount; ++index)
+    {
+        //returnBool = MPU6050_sampleChecks(&sample[index]);
+        //if(FALSE == returnBool)
+        //{
+            //goto end_of_function;
+        //}
+        SampleQueue->Samples[index].AX   = MPU6050_Swap16(sample[index].val[0]);
+        SampleQueue->Samples[index].AY   = MPU6050_Swap16(sample[index].val[1]);
+        SampleQueue->Samples[index].AZ   = MPU6050_Swap16(sample[index].val[2]);
+        SampleQueue->Samples[index].Temp = MPU6050_Swap16(sample[index].val[3]);
+        SampleQueue->Samples[index].GX   = MPU6050_Swap16(sample[index].val[4]);
+        SampleQueue->Samples[index].GY   = MPU6050_Swap16(sample[index].val[5]);
+        SampleQueue->Samples[index].GZ   = MPU6050_Swap16(sample[index].val[6]);
+    }
+
+#else
     /* Check for DATA_RDY_INT set... */
     if(intStatus & MPU6050_BIT_INT_STATUS_DATA)
     {
@@ -515,6 +594,14 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
         {
             goto end_of_function;
         }
+
+        SampleQueue->Samples[0].AX   = MPU6050_Swap16(sample[0].val[0]);
+        SampleQueue->Samples[0].AY   = MPU6050_Swap16(sample[0].val[1]);
+        SampleQueue->Samples[0].AZ   = MPU6050_Swap16(sample[0].val[2]);
+        SampleQueue->Samples[0].Temp = MPU6050_Swap16(sample[0].val[3]);
+        SampleQueue->Samples[0].GX   = MPU6050_Swap16(sample[0].val[4]);
+        SampleQueue->Samples[0].GY   = MPU6050_Swap16(sample[0].val[5]);
+        SampleQueue->Samples[0].GZ   = MPU6050_Swap16(sample[0].val[6]);
     }
     else
     {
@@ -522,14 +609,8 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
         returnBool = FALSE;
         goto end_of_function;
     }
+#endif
 
-    *AX   = MPU6050_Swap16(sample.val[0]);
-    *AY   = MPU6050_Swap16(sample.val[1]);
-    *AZ   = MPU6050_Swap16(sample.val[2]);
-    *Temp = MPU6050_Swap16(sample.val[3]);
-    *GX   = MPU6050_Swap16(sample.val[4]);
-    *GY   = MPU6050_Swap16(sample.val[5]);
-    *GZ   = MPU6050_Swap16(sample.val[6]);
 
 end_of_function:
     if (FALSE == returnBool)
@@ -657,6 +738,123 @@ void MPU6050_Get_Rotation(uint8 *Rotation)
 
 end_of_function:
 ;
+}
+
+
+uint16 MPU6050_GetFifoCount(void)
+{
+    uint16 bytes = 0;
+    uint16 completeSamples = 0;
+    boolean returnBool = FALSE;
+
+    returnBool = MPU6050_ReadReg(MPU6050_REG_FIFO_COUNTH, &bytes, sizeof(bytes));
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Get FIFO count failed.");
+        bytes = 0;
+    }
+
+    bytes = MPU6050_Swap16(bytes);
+    /* Ensure a complete set of samples from all sensors. */
+    completeSamples = bytes / sizeof(MPU6050_Sample_t);
+    bytes = completeSamples * sizeof(MPU6050_Sample_t);
+
+    return bytes;
+}
+
+
+void MPU6050_ResetFifo(void)
+{
+    boolean returnBool = FALSE;
+    returnBool = MPU6050_WriteReg(MPU6050_REG_USER_CTRL, 
+        MPU6050_BIT_USER_CTRL_FIFO_RST | MPU6050_BIT_USER_CTRL_FIFO_EN);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Reset FIFO Queue failed.");
+    }
+
+    return;
+}
+
+
+boolean MPU6050_sampleChecks(MPU6050_Sample_t *sample)
+{
+    boolean returnBool = TRUE;
+
+    if(0 == sample)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "Null pointer in MPU6050_RangeCheck.");
+        goto end_of_function;
+    }
+
+    const int16 AX    = MPU6050_Swap16(sample->val[0]);
+    const int16 AY    = MPU6050_Swap16(sample->val[1]);
+    const int16 AZ    = MPU6050_Swap16(sample->val[2]);
+    const float TempC = (float)MPU6050_Swap16(sample->val[3]) / 340.0f + 36.53f;
+    const int16 GX    = MPU6050_Swap16(sample->val[4]);
+    const int16 GY    = MPU6050_Swap16(sample->val[5]);
+    const int16 GZ    = MPU6050_Swap16(sample->val[6]);
+
+    /* Check acceleration in the range for min/max. */
+    if (AX == INT16_MIN  || AY == INT16_MIN  || AZ == INT16_MIN )
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Acceleration sample hit a minimum");
+    }
+
+    if (AX == INT16_MAX || AY == INT16_MAX  || AZ == INT16_MAX)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Acceleration sample hit a maximum");
+    }
+
+    /* Check gyro in the range for min/max. */
+    if (GX == INT16_MIN  || GY == INT16_MIN  || GZ == INT16_MIN )
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Gyro sample hit a minimum");
+    }
+
+    if (GX == INT16_MAX || GY == INT16_MAX  || GZ == INT16_MAX)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Gyro sample hit a maximum");
+    }
+
+    if(FALSE == MPU6050_AppCustomData.TempInitialized)
+    {
+        if(TempC > -40.0f && TempC < 85.0f)
+        {
+            MPU6050_AppCustomData.TempInitialized = TRUE;
+            CFE_EVS_SendEvent(MPU6050_DEVICE_INF_EID, CFE_EVS_INFORMATION,
+                    "Temperature initialized %f.", TempC);
+        }
+        else
+        {
+            CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "Fifo temperature out of range %f init failed.", TempC);
+        }
+    }
+    else
+    {
+        if (fabsf(TempC - MPU6050_AppCustomData.FifoLastTemp) > 2.0f)
+        {
+            CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "Fifo corruption detected. Reset queue.");
+            MPU6050_AppCustomData.TempInitialized = FALSE;
+            MPU6050_ResetFifo();
+            returnBool = FALSE;
+            goto end_of_function;
+        }
+    }
+
+    MPU6050_AppCustomData.FifoLastTemp = TempC;
+    
+end_of_function:
+    return returnBool;
 }
 
 

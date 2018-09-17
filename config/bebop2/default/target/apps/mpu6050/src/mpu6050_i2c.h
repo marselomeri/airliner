@@ -329,7 +329,6 @@
 
 #define MPU6050_I2C_DEVICE_PATH              "/dev/i2c-mpu6050"
 
-
 /************************************************************************
 ** Structure Declarations
 *************************************************************************/
@@ -353,7 +352,16 @@ typedef struct
     /*! Device file descriptor */
     int                             DeviceFd;
     /*! The current device status */
-    MPU6050_Custom_Status_t          Status;
+    MPU6050_Custom_Status_t         Status;
+    /*! Count of samples from the fifo queue. */
+    uint32                          FifoSamplesPerCycle;
+    /*! Initial fifo temperature sample. */
+    float                           FifoTemp;
+    /*! Last fifo temperature sample. */
+    float                           FifoLastTemp;
+    /*! Temperature initialized flag */
+    boolean                         TempInitialized;
+
 } MPU6050_AppCustomData_t;
 
 
@@ -397,6 +405,9 @@ int32 MPU6050_ResetDevice(void);
 boolean MPU6050_WriteReg(uint8 Addr, uint8 Data);
 boolean MPU6050_ReadReg(uint8 Reg, void *Buffer, size_t Length);
 boolean MPU6050_Custom_Max_Events_Not_Reached(int32 ind);
+uint16 MPU6050_GetFifoCount(void);
+void MPU6050_ResetFifo(void);
 uint16 MPU6050_Swap16(uint16 val);
+boolean MPU6050_sampleChecks(MPU6050_Sample_t *sample);
 
 #endif /* MPU6050_I2C_H */
