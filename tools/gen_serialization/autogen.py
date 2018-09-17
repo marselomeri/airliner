@@ -48,6 +48,7 @@ for app, app_data in cookie_json["Airliner"]["apps"].iteritems():
 
     app_cookie = app_data
     app_cookie["autogen_version"] = ""
+    app_cookie["app_name_lower"] = app.lower()
     app_cookie["_extensions"] = ["jinja2.ext.do", "jinja2.ext.loopcontrols"]
 
     with open(join(temp, "cookiecutter.json"), "w") as cc:
