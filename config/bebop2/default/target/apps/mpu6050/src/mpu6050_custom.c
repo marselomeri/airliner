@@ -569,7 +569,8 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
     SampleQueue->SampleCount = fifoByteCount / sizeof(MPU6050_Sample_t);
     SampleQueue->SampleIntervalUs = 1000 / MPU6050_AppCustomData.FifoSamplesPerCycle;
 
-    for(index = 0; index < SampleQueue->SampleCount; ++index)
+    /* Convert from FIFO to LIFO. */
+    for(index = SampleQueue->SampleCount - 1; index >= 0; --index)
     {
         //returnBool = MPU6050_sampleChecks(&sample[index]);
         //if(FALSE == returnBool)
