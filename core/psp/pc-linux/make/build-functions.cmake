@@ -88,7 +88,29 @@ function(psp_initialize_airliner_build)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${INSTALL_DIR})
 
     # Prepare the build to be ready to use the Explain utility.
-    explain_setup()
+	add_custom_target(pyliner_scripting_engine)
+	add_custom_target(explain_parsing)
+	
+	# Set the path to put the objects we create for Explain to parse.
+	set(EXPLAIN_OBJS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/explain-objs)
+	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
+	
+	# EXPLAIN_DIR:  This is the directory for all explain generated files.
+	set(EXPLAIN_DIR	${CMAKE_CURRENT_BINARY_DIR}/explain)
+	set(EXPLAIN_DB	${EXPLAIN_DIR}/explain-symbols.sqlite)
+	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+	
+	# Remove Explain database if exists to ensure clean slate.
+	if(EXISTS "${EXPLAIN_DB}")
+	    file(REMOVE ${EXPLAIN_DB})
+	endif()
+	
+	# Prepare the build to be ready to use the Explain utility.
+	explain_setup()
+	
+	# Set the Commander Workspace
+	set(${AIRLINER_JSON_FILE} ${CMAKE_CURRENT_BINARY_DIR}/commander/airliner.json)
+	add_subdirectory(commander commander)
         
 endfunction(psp_initialize_airliner_build)
 

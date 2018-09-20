@@ -24,8 +24,8 @@ rky = Vehicle(
     vehicle_id='rocky',
     communication=Communication(
         airliner_map=read_json("airliner.json"),
-        ci_port=5009,
-        to_port=5012)
+        ci_port=5109,
+        to_port=5112)
 )
 
 with ScriptingWrapper(rky) as rocky:
