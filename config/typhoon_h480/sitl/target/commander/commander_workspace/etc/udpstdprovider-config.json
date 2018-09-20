@@ -33,7 +33,7 @@
 
 // an example configuration file
 {
-    inPort:  4321,
+    inPort:  5011,
     outPort: 5010,
     outAddress: '127.0.0.1',
     inputStreamID: 'bin-cmd-stream',

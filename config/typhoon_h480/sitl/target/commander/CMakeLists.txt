@@ -4,7 +4,7 @@ file(INSTALL "${CMAKE_CURRENT_SOURCE_DIR}/commander_workspace" DESTINATION ${CMA
 set(CMDR_WORKSPACE ${CMAKE_CURRENT_BINARY_DIR}/commander_workspace)
 set(AIRLINER_MSG_DEF_PATH ${EXPLAIN_DIR})
 set(AIRLINER_PROTO_PATH ${EXPLAIN_DIR}/src/protos)
-set(COMMANDER_PATH ${MISSION_SOURCE_DIR}/tools/commander)
+set(COMMANDER_PATH ${PROJECT_SOURCE_DIR}/tools/commander)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start_commander.in ${CMAKE_CURRENT_BINARY_DIR}/start_commander @ONLY)
 

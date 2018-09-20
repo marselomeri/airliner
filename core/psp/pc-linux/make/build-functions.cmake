@@ -32,6 +32,7 @@
 #############################################################################
  
 include(${PROJECT_SOURCE_DIR}/tools/explain/python/GenerateSymbolMap.cmake)
+include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmake)
  
 #psp_initialize_airliner_build(
 #    PSP    pc-linux
@@ -87,23 +88,17 @@ function(psp_initialize_airliner_build)
     # Where to put tables
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${INSTALL_DIR})
 
+    ###  EXPLAIN
     # Prepare the build to be ready to use the Explain utility.
-	add_custom_target(pyliner_scripting_engine)
+	add_custom_target(ground_tools)
 	add_custom_target(explain_parsing)
 	
 	# Set the path to put the objects we create for Explain to parse.
-	set(EXPLAIN_OBJS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/explain-objs)
 	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
 	
 	# EXPLAIN_DIR:  This is the directory for all explain generated files.
-	set(EXPLAIN_DIR	${CMAKE_CURRENT_BINARY_DIR}/explain)
-	set(EXPLAIN_DB	${EXPLAIN_DIR}/explain-symbols.sqlite)
 	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
-	
-	# Remove Explain database if exists to ensure clean slate.
-	if(EXISTS "${EXPLAIN_DB}")
-	    file(REMOVE ${EXPLAIN_DB})
-	endif()
+	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
 	
 	# Prepare the build to be ready to use the Explain utility.
 	explain_setup()
@@ -111,7 +106,21 @@ function(psp_initialize_airliner_build)
 	# Set the Commander Workspace
 	set(${AIRLINER_JSON_FILE} ${CMAKE_CURRENT_BINARY_DIR}/commander/airliner.json)
 	add_subdirectory(commander commander)
-        
+	
+	# Do post build explain activities
+	explain_generate_cookie(
+		DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
+		OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
+	)
+		
+	generate_serialization_code(
+		INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
+		OUTPUT_DIR     ${EXPLAIN_DIR}
+		OPS_FILE           
+			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_ops_names.json
+		MSGS_FILE
+			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_msgs.json
+	)  
 endfunction(psp_initialize_airliner_build)
 
 
@@ -347,14 +356,13 @@ function(psp_add_airliner_app_def)
         file(MAKE_DIRECTORY ${PARSED_ARGS_PROTOBUF_MSGS_DIR})
         nanopb_generate_cpp(PROTO_SRCS PROTO_HDRS ${PARSED_ARGS_PROTOBUF_MSGS_DIR} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${PARSED_ARGS_PROTOBUF_DEFS})
     endif()
-
+    
     # Generate the Explain symbol maps
-    explain_generate_symbol_map(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
-        INPUT_PATH     ${INSTALL_DIR}
-        INPUT_FILE     ${PARSED_ARGS_FILE}.so
-        DATABASE_NAME  ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-symbols.sqlite
-        OUTPUT_FILE    ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-symbols.json
-        )
+	explain_read_elf(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+	    INPUT_PATH     ${INSTALL_DIR}/${PARSED_ARGS_FILE}.so
+	    DATABASE_NAME  ${EXPLAIN_DB}
+	)
+	
 endfunction(psp_add_airliner_app_def)
 
 
