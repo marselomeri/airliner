@@ -10,8 +10,8 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start_commander.in ${CMAKE_CURRENT_BI
 
 add_custom_target(start-commander)
 add_custom_command(TARGET start-commander
+    DEPENDS ground_tools
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/start_commander
 )
-add_dependencies(ground_tools start-commander)
 
 set(COMMANDER_WORKSPACE_PLUGINS_DIR ${CMDR_WORKSPACE}/plugins PARENT_SCOPE)
