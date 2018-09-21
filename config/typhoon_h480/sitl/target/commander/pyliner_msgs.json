@@ -1508,7 +1508,7 @@
                         "airliner_msg": "CFE_ES_StartAppCmd_t",
                         "airliner_mid": "0x1806"
                     },
-                    "CFE_TBL_DumpRegCmd_t": {
+                    "TBL_DumpReg": {
                         "airliner_cc": 6,
                         "airliner_msg": "CFE_TBL_DumpRegCmd_t",
                         "airliner_mid": "0x1804"
@@ -1533,7 +1533,7 @@
                         "airliner_msg": "",
                         "airliner_mid": "0x1806"
                     },
-                    "CFE_ES_Reset": {
+                    "ES_Reset": {
                         "airliner_cc": 1,
                         "airliner_msg": "",
                         "airliner_mid": "0x1806"
