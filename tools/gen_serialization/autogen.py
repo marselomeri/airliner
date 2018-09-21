@@ -139,8 +139,9 @@ with open(join(pyliner_temp, "cookiecutter.json"), "w") as cc:
 cookiecutter(pyliner_temp, no_input=True, extra_context=extras, overwrite_if_exists=True)
 
 pyliner_rollup = join(target, extras["autogen_version"], "all_pyliner_msgs.py")
-pyliner_rollup_target = join(target, "pyliner_msgs.py")
+pyliner_rollup_target = join(python_pb, "pyliner_msgs.py")
 copyfile(pyliner_rollup, pyliner_rollup_target)
+open(join(python_pb, "__init__.py"), 'a').close()
 rmtree(join(target, extras["autogen_version"]))
 
 rmtree(join(base, "temp"))

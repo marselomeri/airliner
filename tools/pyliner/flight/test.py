@@ -13,6 +13,20 @@ cmd_count = 0
 def cmd_count_callback1(data):
     print("1 %s = %d   " % (data.name, data.value))
     
+    v.com.send_command({'name':'/Airliner/CFE/ES_Noop'})
+
+    v.com.send_command({'name':'/Airliner/CFE/StartApp', 'args':[
+        {'name':'AppEntryPoint', 'value':'CF_AppMain'},
+        {'name':'Priority', 'value':100},
+        {'name':'Application', 'value':'CF'},
+        {'name':'AppFileName', 'value':'/cf/apps/cf.so'},
+        {'name':'StackSize', 'value':32769},
+        {'name':'ExceptionAction', 'value':1}]});
+  
+
+    v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
+                             {'name':'MaxPRCount', 'value':5}]})
+    
     #global cmd_count
     #cmd_count = data['params']['CmdCounter']['value']
     #print "Cmd counter: " + str(cmd_count)
@@ -33,13 +47,13 @@ vehicle = Vehicle(
     communication=Communication(
         airliner_map=read_json("airliner.json"),
         address="127.0.0.1",
-        ci_port=5009,
-        to_port=5012)
+        ci_port=5109,
+        to_port=5112)
 )
 
 with ScriptingWrapper(vehicle) as v:
-    #v.await_change('/Airliner/ES/HK/CmdCounter',
-    #                   'Waiting for telemetry downlink...')
+    v.await_change('/Airliner/CFE/ES_HK/CmdCounter',
+                       'Waiting for telemetry downlink...')
     
     cmdCounter4 = v.com.subscribe('/Airliner/CFE/ES_HK/CmdCounter', cmd_count_callback1)
     
@@ -59,6 +73,9 @@ with ScriptingWrapper(vehicle) as v:
                              {'name':'AppEntryPoint', 'value':"testentry"}]})
     
     time.sleep( 2 )
+    
+    v.com.send_command({'name':'/Airliner/CFE/SetMaxPRCount', 'args':[
+                             {'name':'MaxPRCount', 'value':2}]})
     
     cmdCounter2 = v.com.telemetry('/Airliner/CFE/ES_HK/CmdCounter')
     cmdCounter2.add_listener(cmd_count_callback2)
