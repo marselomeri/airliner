@@ -1483,7 +1483,7 @@
                         "airliner_msg": "CFE_EVS_AppNameBitMaskCmd_t",
                         "airliner_mid": "0x1801"
                     },
-                    "CFE_ES_SetMaxPRCountCmd_t": {
+                    "SetMaxPRCount": {
                         "airliner_cc": 20,
                         "airliner_msg": "CFE_ES_SetMaxPRCountCmd_t",
                         "airliner_mid": "0x1806"
