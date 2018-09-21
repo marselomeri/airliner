@@ -41,4 +41,4 @@ set(CFE_INC_DIRS
     ${CMAKE_CURRENT_LIST_DIR}/inc/internal/tbl
     ${CMAKE_CURRENT_LIST_DIR}/inc/internal/time)
 
-set(CFE_CMDR_PLUGIN_DIR ${CMAKE_CURRENT_LIST_DIR}/cmdr_plugin)
+set(CFE_CMDR_PLUGIN_DIR ${PROJECT_SOURCE_DIR}/core/cfe/cmdr_plugin)

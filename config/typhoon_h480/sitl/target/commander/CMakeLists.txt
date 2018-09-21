@@ -14,3 +14,4 @@ add_custom_command(TARGET start-commander
 )
 add_dependencies(ground_tools start-commander)
 
+set(COMMANDER_WORKSPACE_PLUGINS_DIR ${CMDR_WORKSPACE}/plugins PARENT_SCOPE)
