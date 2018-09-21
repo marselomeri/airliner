@@ -150,7 +150,7 @@
 	url = https://hangar.windhoverlabs.com/code/scm/pub/commanderjs.git
 [submodule "tools/commander"]
 	path = tools/commander
-	url = https://mbenson@hangar.windhoverlabs.com/code/scm/pub/commander.git
+	url = https://hangar.windhoverlabs.com/code/scm/pub/commander.git
 [submodule "tools/explain"]
 	path = tools/explain
-	url = https://mbenson@hangar.windhoverlabs.com/code/scm/pub/explain.git
+	url = https://hangar.windhoverlabs.com/code/scm/pub/explain.git
