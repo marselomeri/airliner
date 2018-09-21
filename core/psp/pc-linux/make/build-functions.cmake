@@ -103,10 +103,6 @@ function(psp_initialize_airliner_build)
 	# Prepare the build to be ready to use the Explain utility.
 	explain_setup()
 	
-	# Set the Commander Workspace
-	set(${AIRLINER_JSON_FILE} ${CMAKE_CURRENT_BINARY_DIR}/commander/airliner.json)
-	add_subdirectory(commander commander)
-	
 	# Do post build explain activities
 	explain_generate_cookie(
 		DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
@@ -121,6 +117,14 @@ function(psp_initialize_airliner_build)
 		MSGS_FILE
 			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_msgs.json
 	)  
+	
+	# Setup Commander workspace. 
+	# First, copy the initial workspace template over to the build directory.
+	add_subdirectory(commander commander)
+	
+	# Now copy the CFE platform independent Commander plugin
+	file(COPY ${CFE_CMDR_PLUGIN_DIR} ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
+	file(MAKE_DIRECTORY ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps)
 endfunction(psp_initialize_airliner_build)
 
 
@@ -290,6 +294,11 @@ function(psp_add_airliner_app)
         add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
     endif()
     
+	# Add the Commander platform dependent plugin, if there is one.
+    if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")
+		# Copy the application platform independent Commander plugin
+		file(COPY ${PARSED_ARGS_COMMANDER_PLUGIN} ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/pim
+    endif()
 endfunction(psp_add_airliner_app)
 
 
@@ -311,7 +320,7 @@ endfunction(psp_add_airliner_app)
 #)
 function(psp_add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR" ${ARGN})
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
     set(PUBLIC_APP_INCLUDES "${PUBLIC_APP_INCLUDES} ${PARSED_ARGS_PUBLIC_INCLUDES}")
@@ -363,6 +372,13 @@ function(psp_add_airliner_app_def)
 	    DATABASE_NAME  ${EXPLAIN_DB}
 	)
 	
+	# Add the Commander plugin, if there is one.
+	message(${COMMANDER_WORKSPACE_PLUGINS_DIR}/${PARSED_ARGS_TARGET})
+    if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")
+		# Copy the application platform independent Commander plugin
+		file(MAKE_DIRECTORY ${PARSED_ARGS_COMMANDER_PLUGIN} ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}
+		file(COPY ${PARSED_ARGS_COMMANDER_PLUGIN} ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/ps
+    endif()
 endfunction(psp_add_airliner_app_def)
 
 
@@ -456,8 +472,8 @@ function(psp_add_airliner_app_unit_test)
 		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
 		)
 			
-                target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
-                target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
 
 		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
 		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)

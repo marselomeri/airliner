@@ -12,3 +12,5 @@ add_custom_target(start-commander)
 add_custom_command(TARGET start-commander
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/start_commander
 )
+add_dependencies(ground_tools start-commander)
+
