@@ -1,13 +1,24 @@
+var path = require('path');
+var fs = require('fs');
 
+var Commander = require(path.join(global.CDR_INSTALL_DIR, 'commander'));
+var BinaryEncoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-encoder'));
+var BinaryDecoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-decoder'));
+var UdpStdProvider = require(path.join(global.CDR_INSTALL_DIR, 'udp-std-provider'));
+var VariableServer = require(path.join(global.CDR_INSTALL_DIR, 'variable-server'));
+var ClientConnector = require(path.join(global.CDR_INSTALL_DIR, 'client-connector'));
+var ProtobufEncoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-encoder'));
+var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-decoder'));
 
-var binaryEncoder = new BinaryEncoder(CMDR_WORKSPACE, `${CMDR_WORKSPACE}/etc/binary-encoder-config.json`);
-var binaryDecoder = new BinaryDecoder(CMDR_WORKSPACE, `${CMDR_WORKSPACE}/etc/binary-decoder-config.json`);
-var variableServer = new VariableServer(`${CMDR_WORKSPACE}/etc/variable-server-config.json`);
-var fswConnector = new UdpStdProvider(`${CMDR_WORKSPACE}/etc/udpstdprovider-config.json`);
-var pylinerConnector = new UdpStdProvider(`${CMDR_WORKSPACE}/etc/pyliner-connector-config.json`);
-var clientConnector = new ClientConnector(CMDR_WORKSPACE, `${CMDR_WORKSPACE}/etc/client-connector-config.json`, global.NODE_APP);
-var protobufEncoder = new ProtobufEncoder(CMDR_WORKSPACE, `${CMDR_WORKSPACE}/etc/protobuf-encoder-config.json`);
-var protobufDecoder = new ProtobufDecoder(CMDR_WORKSPACE, `${CMDR_WORKSPACE}/etc/protobuf-decoder-config.json`);
+var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/commander-config.json`);
+var binaryEncoder = new BinaryEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`);
+var binaryDecoder = new BinaryDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`);
+var variableServer = new VariableServer(`${global.CDR_WORKSPACE}/etc/variable-server-config.json`);
+var fswConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`);
+var pylinerConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`);
+var clientConnector = new ClientConnector(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/client-connector-config.json`, global.NODE_APP);
+var protobufEncoder = new ProtobufEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`);
+var protobufDecoder = new ProtobufDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`);
 
 var airliner = commander.addInstance('airliner', function(instance) {
 	instance.addApp('binary-encoder',    binaryEncoder);
@@ -18,4 +29,31 @@ var airliner = commander.addInstance('airliner', function(instance) {
 	instance.addApp('client-connector',  clientConnector);
 	instance.addApp('protobuf-encoder',  protobufEncoder);
 	instance.addApp('protobuf-decoder',  protobufDecoder);
+	
+    var outFiles = [];
+    var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');
+    parsePluginPath(fullPath, '/');
 });
+
+
+
+function parsePluginPath(inPath, basePath) {
+    fs.readdir(inPath, function (err, files) {
+        if (err == null) {
+            for (var i = 0; i < files.length; ++i) {
+            	var pluginPath = path.join(inPath, files[i]);
+            	var newBasePath = path.join(basePath);
+                var stats = fs.statSync(pluginPath);
+                if (stats.isDirectory()) {
+                	var indexFilePath = path.join(pluginPath, 'index.js');
+                	if (fs.existsSync(indexFilePath)) {
+                        var NewPluginClass = require(pluginPath);
+                        var newPlugin = new NewPluginClass(newBasePath);
+                	} else {
+                		//parsePluginPath(pluginPath, newBasePath);
+                	}
+                }
+            };
+        };
+    });
+}
