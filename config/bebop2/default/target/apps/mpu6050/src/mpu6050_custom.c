@@ -266,11 +266,6 @@ boolean MPU6050_Custom_Init()
 
     usleep(1000);
 
-    /* Clear the FIFO queue. */
-#ifdef MPU6050_ENABLE_FIFO_QUEUE
-    MPU6050_ResetFifo();
-#endif
-
     MPU6050_AppCustomData.Status = MPU6050_CUSTOM_INITIALIZED;
 
 end_of_function:
@@ -531,10 +526,15 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
     /* Check for overflow. */
     if(intStatus & MPU6050_BIT_INT_STATUS_FIFO_OVRFLW)
     {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU6050 FIFO overflow.");
         /* Reset fifo Queue. */
         MPU6050_ResetFifo();
+        /* Fifo should have overflowed on the first read after SCH
+         * startup sync. */
+        if(MPU6050_AppCustomData.firstMeasureFlag != FALSE)
+        {
+            CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "MPU6050 FIFO overflow.");
+        }
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -615,11 +615,13 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
 
 
 end_of_function:
-    if (FALSE == returnBool)
+    /* First read should have overflowed. */
+    if (FALSE == returnBool && MPU6050_AppCustomData.firstMeasureFlag != FALSE)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MPU6050 read error in Measure");
     }
+    MPU6050_AppCustomData.firstMeasureFlag = TRUE;
     return returnBool;
 }
 

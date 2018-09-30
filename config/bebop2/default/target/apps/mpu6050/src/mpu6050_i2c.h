@@ -373,6 +373,8 @@ typedef struct
     boolean                         TempInitialized;
     /*! Current raw samples from the fifo queue. */
     MPU6050_Sample_t samples[MPU6050_MAX_FIFO_LENGTH];
+    /*! First call flag. */
+    boolean                         firstMeasureFlag;
 } MPU6050_AppCustomData_t;
 
 
