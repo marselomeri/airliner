@@ -219,7 +219,6 @@ boolean MPU6050_Custom_Init()
     }
 
     usleep(1000);
-
 #endif
 
     /* Set DLPF.  */
@@ -303,7 +302,7 @@ int32 MPU6050_ResetDevice(void)
 {
     int32 ret = 0;
     boolean returnBool = TRUE;
-    
+
     returnBool = MPU6050_WriteReg(MPU6050_REG_PWR_MGMT_1, MPU6050_BIT_H_RESET);
     if (FALSE == returnBool) 
     {            
@@ -502,11 +501,9 @@ end_of_function:
 }
 
 
-/* Todo update to passing a structure to this function. */
 boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
 {
     uint8 intStatus = 0;
-    MPU6050_Sample_t sample[MPU6050_MAX_FIFO_LENGTH] = {0};
     boolean returnBool = TRUE;
     uint16 fifoByteCount = 0;
     uint16 index = 0;
@@ -546,16 +543,19 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
 
     if(fifoByteCount > 0)
     {
-        MPU6050_AppCustomData.FifoSamplesPerCycle = 
-            (0.95f * MPU6050_AppCustomData.FifoSamplesPerCycle) + 
-            (0.05f * (fifoByteCount / sizeof(MPU6050_Sample_t)));
-        returnBool = MPU6050_ReadReg(MPU6050_REG_FIFO_R_W, &sample, fifoByteCount);
+        /* Read the fifo queue. */
+        returnBool = MPU6050_ReadReg(MPU6050_REG_FIFO_R_W, &MPU6050_AppCustomData.samples[0], fifoByteCount);
         if(FALSE == returnBool)
         {
             CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "MPU6050 FIFO read failed.");
             goto end_of_function;
         }
+        /* Calculate filtered fifo samples per cycle. This value should
+         * stay close to 4. */
+        MPU6050_AppCustomData.FifoSamplesPerCycle = 
+                (0.95f * MPU6050_AppCustomData.FifoSamplesPerCycle) + 
+                (0.05f * (fifoByteCount / sizeof(MPU6050_Sample_t)));
     }
     else
     {
@@ -566,8 +566,10 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
         goto end_of_function;
     }
 
+    /* Calculate the number of samples in the fifo queue. */
     SampleQueue->SampleCount = fifoByteCount / sizeof(MPU6050_Sample_t);
-    SampleQueue->SampleIntervalUs = 1000 / MPU6050_AppCustomData.FifoSamplesPerCycle;
+    /* Calculate the sampling interval in micro seconds. */
+    SampleQueue->SampleIntervalUs = round(1000 / MPU6050_AppCustomData.FifoSamplesPerCycle);
 
     for(index = 0; index < SampleQueue->SampleCount; ++index)
     {
@@ -576,32 +578,32 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
         //{
             //goto end_of_function;
         //}
-        SampleQueue->Samples[index].AX   = MPU6050_Swap16(sample[index].val[0]);
-        SampleQueue->Samples[index].AY   = MPU6050_Swap16(sample[index].val[1]);
-        SampleQueue->Samples[index].AZ   = MPU6050_Swap16(sample[index].val[2]);
-        SampleQueue->Samples[index].Temp = MPU6050_Swap16(sample[index].val[3]);
-        SampleQueue->Samples[index].GX   = MPU6050_Swap16(sample[index].val[4]);
-        SampleQueue->Samples[index].GY   = MPU6050_Swap16(sample[index].val[5]);
-        SampleQueue->Samples[index].GZ   = MPU6050_Swap16(sample[index].val[6]);
+        SampleQueue->Samples[index].AX   = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[0]);
+        SampleQueue->Samples[index].AY   = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[1]);
+        SampleQueue->Samples[index].AZ   = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[2]);
+        SampleQueue->Samples[index].Temp = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[3]);
+        SampleQueue->Samples[index].GX   = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[4]);
+        SampleQueue->Samples[index].GY   = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[5]);
+        SampleQueue->Samples[index].GZ   = MPU6050_Swap16(MPU6050_AppCustomData.samples[index].val[6]);
     }
 
 #else
     /* Check for DATA_RDY_INT set... */
     if(intStatus & MPU6050_BIT_INT_STATUS_DATA)
     {
-        returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_XOUT_H, &sample, sizeof(sample));
+        returnBool = MPU6050_ReadReg(MPU6050_REG_ACCEL_XOUT_H, &MPU6050_AppCustomData.samples[0], sizeof(MPU6050_Sample_t));
         if(FALSE == returnBool)
         {
             goto end_of_function;
         }
 
-        SampleQueue->Samples[0].AX   = MPU6050_Swap16(sample[0].val[0]);
-        SampleQueue->Samples[0].AY   = MPU6050_Swap16(sample[0].val[1]);
-        SampleQueue->Samples[0].AZ   = MPU6050_Swap16(sample[0].val[2]);
-        SampleQueue->Samples[0].Temp = MPU6050_Swap16(sample[0].val[3]);
-        SampleQueue->Samples[0].GX   = MPU6050_Swap16(sample[0].val[4]);
-        SampleQueue->Samples[0].GY   = MPU6050_Swap16(sample[0].val[5]);
-        SampleQueue->Samples[0].GZ   = MPU6050_Swap16(sample[0].val[6]);
+        SampleQueue->Samples[0].AX   = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[0]);
+        SampleQueue->Samples[0].AY   = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[1]);
+        SampleQueue->Samples[0].AZ   = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[2]);
+        SampleQueue->Samples[0].Temp = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[3]);
+        SampleQueue->Samples[0].GX   = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[4]);
+        SampleQueue->Samples[0].GY   = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[5]);
+        SampleQueue->Samples[0].GZ   = MPU6050_Swap16(MPU6050_AppCustomData.samples[0].val[6]);
     }
     else
     {
