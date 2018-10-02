@@ -43,17 +43,17 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 SENS_ConfigTbl_t SENS_ConfigTbl =
 {
     /*
-    * Expected RC mapping:
-    * CH 1: Throttle
-    * CH 2: Roll
-    * CH 3: Pitch
+    * Expected RC mapping from joystick_remote:
+    * CH 1: Roll
+    * CH 2: Pitch
+    * CH 3: Throttle
     * CH 4: Yaw
     */
     
     /* RC%d_MIN  (0..17)    */
-								1100.0f, // Throttle min
 								1100.0f, // Roll min
 								1100.0f, // Pitch min
+								1100.0f, // Throttle min
 								1100.0f, // Yaw min
 								1100.0f,
 								1100.0f,
@@ -70,9 +70,9 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1100.0f,
 								1100.0f,
     /* RC%d_TRIM (0..17)    */
-								1100.0f, // Throttle trim - set this equal to min
 								1500.0f, // Roll trim
 								1500.0f, // Pitch trim
+								1100.0f, // Throttle trim - set this equal to min
 								1500.0f, // Yaw trim
 								1500.0f,
 								1500.0f,
@@ -89,9 +89,9 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1500.0f,
 								1500.0f,
 	/* RC%d_MAX  (0..17)    */
-								1900.0f, // Throttle max
 								1900.0f, // Roll max
 								1900.0f, // Pitch max
+								1900.0f, // Throttle max
 								1900.0f, // Yaw max
 								1900.0f,
 								1900.0f,
@@ -108,9 +108,9 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1900.0f,
 								1900.0f,
 	/* RC%d_REV  (0..17)    */
-								1.0f, // Throttle reverse
 								1.0f, // Roll reverse
-								1.0f, // Pitch reverse
+								-1.0f, // Pitch reverse
+								1.0f, // Throttle reverse
 								1.0f, // Yaw reverse
 								1.0f,
 								1.0f,
@@ -127,9 +127,9 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1.0f,
 								1.0f,
 	/* RC%d_DZ   (0..17)    */
-								10.0f, // Throttle deadzone
 								10.0f, // Roll deadzone
 								10.0f, // Pitch deadzone
+								10.0f, // Throttle deadzone
 								10.0f, // Yaw deadzone
 								10.0f,
 								10.0f,
