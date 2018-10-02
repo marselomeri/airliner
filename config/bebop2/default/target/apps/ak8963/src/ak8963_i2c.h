@@ -155,9 +155,9 @@ typedef struct
     int                             DeviceFd;
     /*! The current device status */
     AK8963_Custom_Status_t          Status;
-    uint8                           MagAdjX;
-    uint8                           MagAdjY;
-    uint8                           MagAdjZ;
+    float                           MagAdjX;
+    float                           MagAdjY;
+    float                           MagAdjZ;
 } AK8963_AppCustomData_t;
 
 
