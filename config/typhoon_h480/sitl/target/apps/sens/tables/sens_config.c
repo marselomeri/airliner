@@ -42,11 +42,19 @@ static OS_USED CFE_TBL_FileDef_t CFE_TBL_FileDef =
 /* Default SENS config table data */
 SENS_ConfigTbl_t SENS_ConfigTbl =
 {
+    /*
+    * Expected RC mapping:
+    * CH 1: Throttle
+    * CH 2: Roll
+    * CH 3: Pitch
+    * CH 4: Yaw
+    */
+
     /* RC%d_MIN  (0..17)    */
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
+								1000.0f, // Throttle min
+								1000.0f, // Roll min
+								1000.0f, // Pitch min
+								1000.0f, // Yaw min
 								1000.0f,
 								1000.0f,
 								1000.0f,
@@ -62,10 +70,10 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1000.0f,
 								1000.0f,
     /* RC%d_TRIM (0..17)    */
-								1000.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
+								1000.0f, // Throttle trim - set this equal to min
+								1500.0f, // Roll trim
+								1500.0f, // Pitch trim
+								1500.0f, // Yaw trim
 								1500.0f,
 								1500.0f,
 								1500.0f,
@@ -81,10 +89,10 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1500.0f,
 								1500.0f,
 	/* RC%d_MAX  (0..17)    */
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
+								2000.0f, // Throttle max
+								2000.0f, // Roll max
+								2000.0f, // Pitch max
+								2000.0f, // Yaw max
 								2000.0f,
 								2000.0f,
 								2000.0f,
@@ -100,10 +108,10 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								2000.0f,
 								2000.0f,
 	/* RC%d_REV  (0..17)    */
-								1.0f,
-								1.0f,
-								1.0f,
-								1.0f,
+								1.0f, // Throttle reverse
+								1.0f, // Roll reverse
+								1.0f, // Pitch reverse
+								1.0f, // Yaw reverse
 								1.0f,
 								1.0f,
 								1.0f,
@@ -119,12 +127,12 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1.0f,
 								1.0f,
 	/* RC%d_DZ   (0..17)    */
+								10.0f, // Throttle deadzone
+								10.0f, // Roll deadzone
+								10.0f, // Pitch deadzone
+								10.0f, // Yaw deadzone
 								10.0f,
 								10.0f,
-								10.0f,
-								10.0f,
-								10.0f,
-								10.0f,
 								0.0f,
 								0.0f,
 								0.0f,
@@ -137,25 +145,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								0.0f,
 								0.0f,
 								0.0f,
-	/* Scaling factor (0..17) */
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
-								0.002f,
+
 	/* RC_MAP_ROLL          */  2,
 	/* RC_MAP_PITCH         */  3,
 	/* RC_MAP_YAW           */  4,
