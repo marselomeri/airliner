@@ -62,7 +62,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1000.0f,
 								1000.0f,
     /* RC%d_TRIM (0..17)    */
-								1500.0f,
+								1000.0f,
 								1500.0f,
 								1500.0f,
 								1500.0f,
@@ -101,7 +101,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								2000.0f,
 	/* RC%d_REV  (0..17)    */
 								1.0f,
-								-1.0f,
+								1.0f,
 								1.0f,
 								1.0f,
 								1.0f,
@@ -156,10 +156,10 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								0.002f,
 								0.002f,
 								0.002f,
-	/* RC_MAP_ROLL          */  1,
-	/* RC_MAP_PITCH         */  2,
+	/* RC_MAP_ROLL          */  2,
+	/* RC_MAP_PITCH         */  3,
 	/* RC_MAP_YAW           */  4,
-	/* RC_MAP_THROTTLE      */  3,
+	/* RC_MAP_THROTTLE      */  1,
 	/* RC_MAP_FAILSAFE      */  0,
 
 	/* RC_MAP_MODE_SW       */  8,
