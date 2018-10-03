@@ -1,0 +1,39 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 Logging
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Reset Type:
+            td
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/ResetType'}]}) ---
+            td
+          tr
+            th Reset Subtype:
+            td
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/ResetSubtype'}]}) ---
+            td
+          tr
+            th Proc Reset Cnt:
+            td
+              span.sage-tlm(data-sage={tlm: [{name: '/CFS/CFE_ES/ProcessorResets'}]}) ---
+            td
+              button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name:'/CFS/CFE_ES/ResetPRCount'}}) Reset
+          tr
+            th Max Proc Resets:
+            td
+              span.sage-tlm(data-sage={tlm: [{name: '/CFS/CFE_ES/MaxProcessorResets'}]}) ---
+            td
+              button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name:'/CFS/CFE_ES/SetMaxPRCount'}}) Set
+          tr
+            th Boot Source:
+            td
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/BootSource'}]}) ---
+            td
+    footer.btn-group(role="group")              
+      button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
+      button.btn.btn-xs.btn-danger.btn-labeled.sage-cmd-inline(style='margin:20px 10px 20px 20px' data-sage={cmd: {name: '/CFS/CFE_ES/Restart', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset

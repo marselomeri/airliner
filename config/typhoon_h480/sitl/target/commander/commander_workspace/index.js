@@ -6,6 +6,7 @@ var BinaryEncoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-encoder'))
 var BinaryDecoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-decoder'));
 var UdpStdProvider = require(path.join(global.CDR_INSTALL_DIR, 'udp-std-provider'));
 var VariableServer = require(path.join(global.CDR_INSTALL_DIR, 'variable-server'));
+var ClientConnector = require(path.join(global.CDR_INSTALL_DIR, 'client-connector'));
 var ProtobufEncoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-encoder'));
 var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-decoder'));
 
@@ -15,6 +16,7 @@ var binaryDecoder = new BinaryDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSP
 var variableServer = new VariableServer(`${global.CDR_WORKSPACE}/etc/variable-server-config.json`);
 var fswConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`);
 var pylinerConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`);
+var clientConnector = new ClientConnector(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/client-connector-config.json`, global.NODE_APP);
 var protobufEncoder = new ProtobufEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`);
 var protobufDecoder = new ProtobufDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`);
 
@@ -24,10 +26,9 @@ var airliner = commander.addInstance('airliner', function(instance) {
 	instance.addApp('fsw-connector',     fswConnector);
 	instance.addApp('pyliner-connector', pylinerConnector);
 	instance.addApp('variable-server',   variableServer);
+	instance.addApp('client-connector',  clientConnector);
 	instance.addApp('protobuf-encoder',  protobufEncoder);
 	instance.addApp('protobuf-decoder',  protobufDecoder);
-	
-	commander.setDefaultInstance(instance);
 	
     var outFiles = [];
     var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');

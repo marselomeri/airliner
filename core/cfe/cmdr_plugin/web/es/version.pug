@@ -1,0 +1,36 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 Version
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th CFE Version:
+            td 
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMajorVersion'}]}) -
+              span.span-inline-block .
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMinorVersion'}]}) -
+              span.span-inline-block .
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFERevision'}]}) -
+              span.span-inline-block .
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMissionRevision'}]}) -
+            td
+          tr
+            th OSAL Version:
+            td 
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMajorVersion'}]}) -
+              span.span-inline-block .
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMinorVersion'}]}) -
+              span.span-inline-block .
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALRevision'}]}) -
+              span.span-inline-block .
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMissionRevision'}]}) -
+            td
+          tr
+            th Checksum:
+            td
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/CFECoreChecksum', format:'0x%04x'}]}) ---
+            td
