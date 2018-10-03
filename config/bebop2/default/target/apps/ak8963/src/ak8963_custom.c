@@ -477,6 +477,10 @@ boolean AK8963_Read_MagAdj(uint8 *X, uint8 *Y, uint8 *Z)
     AK8963_AppCustomData.MagAdjX = (MagAdjXYZ[0] - 128.0f) / 256.0f + 1.0f;
     AK8963_AppCustomData.MagAdjY = (MagAdjXYZ[1] - 128.0f) / 256.0f + 1.0f;
     AK8963_AppCustomData.MagAdjZ = (MagAdjXYZ[2] - 128.0f) / 256.0f + 1.0f;
+    
+    printf("AK8963_AppCustomData.MagAdjX %f\n", AK8963_AppCustomData.MagAdjX);
+    printf("AK8963_AppCustomData.MagAdjY %f\n", AK8963_AppCustomData.MagAdjY);
+    printf("AK8963_AppCustomData.MagAdjZ %f\n", AK8963_AppCustomData.MagAdjZ);
 
     /* Return to power-down mode */
     returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, AK8963_BITS_CNTL1_MODE_POWER_DOWN);
@@ -610,9 +614,10 @@ boolean AK8963_RunSelfTest(void)
     uint8 bits = 0;
     AK8963_Sample_t sample = {0};
     uint32 i = 0;
-    uint8 Xadj = AK8963_AppCustomData.MagAdjX;
-    uint8 Yadj = AK8963_AppCustomData.MagAdjY;
-    uint8 Zadj = AK8963_AppCustomData.MagAdjZ;
+    const float Xadj = AK8963_AppCustomData.MagAdjX;
+    const float Yadj = AK8963_AppCustomData.MagAdjY;
+    const float Zadj = AK8963_AppCustomData.MagAdjZ;
+    uint8 MeasureCount = 0;
 
     /* Set power-down mode */
     returnBool = AK8963_WriteReg(AK8963_REG_CNTL1, AK8963_BITS_CNTL1_MODE_POWER_DOWN);
@@ -662,7 +667,14 @@ boolean AK8963_RunSelfTest(void)
 
         if(bits & AK8963_BITS_ST1_DRDY)
         {
-            break;
+            /* Throw away the first 5 measurements to allow the sensor
+             * to settle after startup. */
+            if(5 == MeasureCount)
+            {
+                break;
+            }
+            MeasureCount++;
+            (void) AK8963_ReadReg(AK8963_REG_HXL, &sample, sizeof(sample));
         }
         
         usleep(100);
@@ -722,5 +734,6 @@ end_of_function:
 
 boolean AK8963_Custom_In_Range(float value, float min, float max)
 {
+    printf("self test %f\n", value);
     return (min <= value) && (value <= max);
 }

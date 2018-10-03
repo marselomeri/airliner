@@ -13,9 +13,11 @@ Modules:
     volume  Collection of base and simple Volume classes.
 
 Notes:
-    This package is not set up to handle crossing the anti-meridian.
+    This package is not set up to handle boxes crossing the anti-meridian.
     Currently you will get a large bounding box around the entire planet.
     TODO: How to identify bounding boxes that cross? Take smaller box?
+        Possible solution: If max_longitude < min_longitude, then the box
+            crosses the anti-meridian.
 """
 import warnings
 from functools import partial

@@ -140,11 +140,11 @@ extern "C" {
 /** \brief IMU device ID. */
 #define MPU6050_DEVICE_ID                   (0x68)
 /** \brief IMU accelerometer sample rate. */
-#define MPU6050_ACCEL_SAMPLE_RATE           (200)
+#define MPU6050_ACCEL_SAMPLE_RATE           (1000)
 /** \brief IMU accelerometer filter cutoff frequency. */
 #define MPU6050_ACCEL_FILTER_CUTOFF_FREQ    (30)
 /** \brief IMU gyroscope sample rate. */
-#define MPU6050_GYRO_SAMPLE_RATE            (200)
+#define MPU6050_GYRO_SAMPLE_RATE            (1000)
 /** \brief IMU gyroscope filter cutoff frequency. */
 #define MPU6050_GYRO_FILTER_CUTOFF_FREQ     (30)
 /** \brief One gravity. */

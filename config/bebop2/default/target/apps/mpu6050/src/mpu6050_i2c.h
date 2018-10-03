@@ -45,9 +45,9 @@
 
 /* MPU6050 general device defines. */
 /** \brief MPU6050 device ID to verify on I2C. */
-#define MPU6050_WHOAMI_ID           (0x68)
+#define MPU6050_WHOAMI_ID                   (0x68)
 /** \brief MPU6050 I2C slave address. */
-#define MPU6050_I2C_SLAVE_ADDRESS       (0x68)
+#define MPU6050_I2C_SLAVE_ADDRESS           (0x68)
 /* MPU6050 register map for Gyroscope and Accelerometer. */
 /* Self test registers. */
 /** \brief Self test registers gyro and accel X-axis. */
@@ -346,24 +346,37 @@ typedef enum
 
 
 /**
- * \brief MPU6050 application custom data.
- */
-typedef struct
-{
-    /*! Device file descriptor */
-    int                             DeviceFd;
-    /*! The current device status */
-    MPU6050_Custom_Status_t          Status;
-} MPU6050_AppCustomData_t;
-
-
-/**
  * \brief MPU6050 block read sample for accel, temp, and gyro.
  */
 typedef struct
 {
     int16 val[7];
 } MPU6050_Sample_t;
+
+
+/**
+ * \brief MPU6050 application custom data.
+ */
+typedef struct
+{
+    /*! Device file descriptor. */
+    int                             DeviceFd;
+    /*! The current device status. */
+    MPU6050_Custom_Status_t         Status;
+    /*! Filtered samples per cycle from the fifo queue. */
+    float                           FifoSamplesPerCycle;
+    /*! Initial fifo temperature sample. */
+    float                           FifoTemp;
+    /*! Last fifo temperature sample. */
+    float                           FifoLastTemp;
+    /*! Temperature initialized flag */
+    boolean                         TempInitialized;
+    /*! Current raw samples from the fifo queue. */
+    MPU6050_Sample_t samples[MPU6050_MAX_FIFO_LENGTH];
+    /*! First call flag. */
+    boolean                         firstMeasureFlag;
+} MPU6050_AppCustomData_t;
+
 
 
 /************************************************************************
@@ -397,6 +410,9 @@ int32 MPU6050_ResetDevice(void);
 boolean MPU6050_WriteReg(uint8 Addr, uint8 Data);
 boolean MPU6050_ReadReg(uint8 Reg, void *Buffer, size_t Length);
 boolean MPU6050_Custom_Max_Events_Not_Reached(int32 ind);
+uint16 MPU6050_GetFifoCount(void);
+void MPU6050_ResetFifo(void);
 uint16 MPU6050_Swap16(uint16 val);
+boolean MPU6050_sampleChecks(MPU6050_Sample_t *sample);
 
 #endif /* MPU6050_I2C_H */

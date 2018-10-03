@@ -49,7 +49,7 @@ class Vehicle(BaseVehicle):
         # Attach defaults
         self.attach_app(communication)
         self.attach_app(geographic)
-        # self.attach_service(time)
+        # self.attach_app(time)
         self.attach_app(geofence)
         self.attach_app(controller)
         self.attach_app(flight_director)

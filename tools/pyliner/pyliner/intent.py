@@ -25,6 +25,16 @@ class IntentNoReceiverError(PylinerError):
     pass
 
 
+class Broadcaster(object):
+    def broadcast(self, intent):
+        """Broadcast an intent.
+
+        Returns:
+            An IntentFuture that holds the state of the broadcast intent.
+        """
+        raise NotImplementedError
+
+
 class Intent(object):
     """An Intent is an abstraction of an operation to be performed.
 
@@ -98,12 +108,14 @@ class IntentFuture(object):
         """:type: Intent
         The intent that generated this future. 
         """
+
         self.failure = None
         """:type: Exception
         Indicates a generic failure on Broadcasting an Intent. When possible
         this will be raised on the user thread but this is not guaranteed. The
         user should still explicitly check for this. 
         """
+
         self.responses = []
         """:type: list[IntentResponse]
         List of responses that this future has received. To avoid busy-loops
@@ -115,6 +127,7 @@ class IntentFuture(object):
         """:type: Callable[IntentFuture, Any]
         Called whenever a response has been received.
         """
+
         self._complete = Event()
         self._event_first = Event()
 
@@ -194,10 +207,12 @@ class IntentResponse(object):
         """:type: Exception
         The exception, if any, that the handling code for an Intent raised.
         """
+
         self.origin = origin
         """:type: str
         The qualified origin of the response.
         """
+
         self.result = result
         """:type: Any
         The returned result from the handling code for an Intent.

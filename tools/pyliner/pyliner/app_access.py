@@ -6,7 +6,7 @@ Classes:
     AppAccess  Access controller between a Vehicle and its components.
 """
 
-from pyliner.intent import Intent
+from pyliner.intent import Intent, Broadcaster
 from pyliner.intent import IntentFilter
 from pyliner.intent import IntentFuture, IntentResponse
 from pyliner.pyliner_error import PylinerError
@@ -27,7 +27,7 @@ class AppDetachedError(InvalidStateError):
     pass
 
 
-class AppAccess(Loggable):
+class AppAccess(Loggable, Broadcaster):
     """
     The AppAccess class acts as a boundary between Apps on a vehicle so that
     they can not interact destructively with each other. Apps must access the
