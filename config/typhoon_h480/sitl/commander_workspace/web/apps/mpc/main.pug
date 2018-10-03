@@ -237,10 +237,15 @@ block main
                       th Z_MAN_EXPO
                       td
                         span(data-sage={tlm: [{name:'/CFS/MPC/Z_MAN_EXPO'}]}) ---
+                    tr
+                      th TKO_RAMP_T
+                      td
+                        span(data-sage={tlm: [{name:'/CFS/MPC/TKO_RAMP_T'}]}) ---
               footer
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SendDiag'}}) Query
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetHoldDz'}}) Set HoldDZ
                 button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetStickExpo'}}) Set Stick Expo
+                button.btn.btn-primary(data-sage={cmd: {name:'/CFS/MPC/SetRampTime'}}) Set Takeoff Ramp Time
 
     article.col-xs-10.col-sm-8.col-md-6.col-lg-6(style='max-width:450px')
         #wid-MPC-Housekeeping.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
