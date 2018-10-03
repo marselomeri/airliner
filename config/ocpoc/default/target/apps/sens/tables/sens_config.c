@@ -111,7 +111,7 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								2000.0f,
 	/* RC%d_REV  (0..17)    */
 								1.0f, // Roll reverse
-								1.0f, // Pitch reverse
+								-1.0f, // Pitch reverse
 								1.0f, // Throttle reverse
 								1.0f, // Yaw reverse
 								1.0f,
@@ -129,8 +129,8 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1.0f,
 								1.0f,
 	/* RC%d_DZ   (0..17)    */
-								10.0f, // Roll deadzone
-								10.0f, // Pitch deadzone
+								7.0f, // Roll deadzone
+								7.0f, // Pitch deadzone
 								10.0f, // Throttle deadzone
 								10.0f, // Yaw deadzone
 								10.0f,
