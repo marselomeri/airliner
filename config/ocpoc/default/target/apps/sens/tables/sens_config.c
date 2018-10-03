@@ -135,8 +135,8 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								10.0f, // Yaw deadzone
 								10.0f,
 								10.0f,
-								0.0f,
-								0.0f,
+								10.0f,
+								10.0f,
 								0.0f,
 								0.0f,
 								0.0f,
