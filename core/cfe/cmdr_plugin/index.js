@@ -1,58 +1,193 @@
+'use strict';
+
 var path = require('path');
-var fs = require('fs');
 
-var Commander = require(path.join(global.CDR_INSTALL_DIR, 'commander'));
-var BinaryEncoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-encoder'));
-var BinaryDecoder = require(path.join(global.CDR_INSTALL_DIR, 'binary-decoder'));
-var UdpStdProvider = require(path.join(global.CDR_INSTALL_DIR, 'udp-std-provider'));
-var VariableServer = require(path.join(global.CDR_INSTALL_DIR, 'variable-server'));
-var ProtobufEncoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-encoder'));
-var ProtobufDecoder = require(path.join(global.CDR_INSTALL_DIR, 'protobuf-decoder'));
+const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin'));
+//var express = require('express');
+//var router = express.Router();
+//var path = require('path');
+//var url = require('url');
 
-var commander = new Commander(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/commander-config.json`);
-var binaryEncoder = new BinaryEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/binary-encoder-config.json`);
-var binaryDecoder = new BinaryDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/binary-decoder-config.json`);
-var variableServer = new VariableServer(`${global.CDR_WORKSPACE}/etc/variable-server-config.json`);
-var fswConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/udpstdprovider-config.json`);
-var pylinerConnector = new UdpStdProvider(`${global.CDR_WORKSPACE}/etc/pyliner-connector-config.json`);
-var protobufEncoder = new ProtobufEncoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-encoder-config.json`);
-var protobufDecoder = new ProtobufDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`);
+//var workspace = path.join(__dirname + '/..', '/workspace/web');
+//
+///* GET home page. */
+//router.get('/*', function(req, res, next) {
+//	var translatedPath = path.join(workspace, req.url);
+//
+//	switch(path.extname(req.url)) {
+//	    case '.pug':
+//	        res.render(translatedPath, { title: 'Express' });
+//	        break;
+//	        
+//	    default:
+//	    	var options = {};
+//	    	res.sendFile(translatedPath, options, function(error) {
+//	    		if (error) {
+//                    res.writeHead(500);
+//                    res.end();
+//	    		}
+//	    	});
+//	    	break;
+//    };
+//});
 
-var airliner = commander.addInstance('airliner', function(instance) {
-	instance.addApp('binary-encoder',    binaryEncoder);
-	instance.addApp('binary-decoder',    binaryDecoder);
-	instance.addApp('fsw-connector',     fswConnector);
-	instance.addApp('pyliner-connector', pylinerConnector);
-	instance.addApp('variable-server',   variableServer);
-	instance.addApp('protobuf-encoder',  protobufEncoder);
-	instance.addApp('protobuf-decoder',  protobufDecoder);
+
+module.exports = class CfeCdrPlugin extends CdrPlugin {
+	constructor(urlBase) {
+		super(path.join(__dirname, 'web', urlBase));	
+	}
 	
-	commander.setDefaultInstance(instance);
 	
-    var outFiles = [];
-    var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');
-    parsePluginPath(fullPath, '/');
-});
-
-
-
-function parsePluginPath(inPath, basePath) {
-    fs.readdir(inPath, function (err, files) {
-        if (err == null) {
-            for (var i = 0; i < files.length; ++i) {
-            	var pluginPath = path.join(inPath, files[i]);
-            	var newBasePath = path.join(basePath);
-                var stats = fs.statSync(pluginPath);
-                if (stats.isDirectory()) {
-                	var indexFilePath = path.join(pluginPath, 'index.js');
-                	if (fs.existsSync(indexFilePath)) {
-                        var NewPluginClass = require(pluginPath);
-                        var newPlugin = new NewPluginClass(newBasePath);
-                	} else {
-                		//parsePluginPath(pluginPath, newBasePath);
-                	}
+	
+	getLayouts() {
+        var result = {
+            name: 'cfe',
+            text: 'Core Flight Executive',
+            description: 'Core Flight Executive services.',
+            nodes: [
+                {
+                    name: 'es',
+                    text: 'Essential Services',
+                    description: 'Core essential services.',
+                    nodes: [
+                        {
+                            name: 'main',
+                            text: 'Main',
+                            filePath: '/es/main_layout.json',
+                            urlPath: '/cfe/es/main_layout.json',
+                            description: 'Main Essential Services.'
+                        }
+                    ]
                 }
-            };
+            ]
         };
-    });
-}
+        
+        return result;    
+	}
+	
+
+    
+    getPanels() {
+        var result = {
+            name: 'cfe',
+            text: 'Core Flight Executive',
+            description: 'Core Flight Executive services.',
+            nodes: [
+                {
+                    name: 'es',
+                    text: 'Essential Services',
+                    description: 'Core essential services.',
+                    nodes: [
+                        {
+                            name: 'appctrl',
+                            text: 'Application Control',
+                            filePath: '/es/appctrl.pug',
+                            urlPath: '/cfe/es/appctrl.pug',
+                            description: 'Application start, stop, restart, and reload.'
+                        },
+                        {
+                            name: 'cdh',
+                            text: 'Command and Data Handling',
+                            filePath: '/es/cdh.pug',
+                            urlPath: '/cfe/es/cdh.pug',
+                            description: 'Command counters.'
+                        },
+                        {
+                            name: 'console',
+                            text: 'Console',
+                            filePath: '/es/console.pug',
+                            urlPath: '/cfe/es/console.pug',
+                            description: 'System console.'
+                        },
+                        {
+                            name: 'logging',
+                            text: 'Logging',
+                            filePath: '/es/logging.pug',
+                            urlPath: '/cfe/es/logging.pug',
+                            description: 'Essential Services logging status and control.'
+                        },
+                        {
+                            name: 'memory',
+                            text: 'Memory',
+                            filePath: '/es/memory.pug',
+                            urlPath: '/cfe/es/memory.pug',
+                            description: 'Memory and memory pool status and monitoring.'
+                        },
+                        {
+                            name: 'reset',
+                            text: 'Reset',
+                            filePath: '/es/reset.pug',
+                            urlPath: '/cfe/es/reset.pug',
+                            description: 'Core reset and restart.'
+                        },
+                        {
+                            name: 'version',
+                            text: 'Version',
+                            filePath: '/es/version.pug',
+                            urlPath: '/cfe/es/version.pug',
+                            description: 'Core versions.'
+                        }
+                    ]
+                },{
+                    name: 'evs',
+                    text: 'Event Services',
+                    description: 'Core event services.',
+                    nodes: [
+                        {
+                            name: 'main',
+                            text: 'Main',
+                            filePath: '/evs/main.pug',
+                            urlPath: '/cfe/evs/main.pug',
+                            description: ''
+                        }
+                    ]
+                },{
+                    name: 'sb',
+                    text: 'Software Bus',
+                    description: 'Core software bus services.',
+                    nodes: [
+                        {
+                            name: 'main',
+                            text: 'Main',
+                            filePath: '/sb/main.pug',
+                            urlPath: '/cfe/sb/main.pug',
+                            description: ''
+                        }
+                    ]
+                },{
+                    name: 'tbl',
+                    text: 'Table Services',
+                    description: 'Core table services.',
+                    nodes: [
+                        {
+                            name: 'main',
+                            text: 'Main',
+                            filePath: '/tbl/main.pug',
+                            urlPath: '/cfe/tbl/main.pug',
+                            description: ''
+                        }
+                    ]
+                },{
+                    name: 'time',
+                    text: 'Time Services',
+                    description: 'Core time services.',
+                    nodes: [
+                        {
+                            name: 'main',
+                            text: 'Main',
+                            filePath: '/time/main.pug',
+                            urlPath: '/cfe/time/main.pug',
+                            description: ''
+                        }
+                    ]
+                }
+            ]
+        };
+        
+        return result;
+    };
+};
+
+//var plugin = new CfeCdrPlugin();
+
+//let CfeCdrPlugin = new class extends CdrPlugin {
