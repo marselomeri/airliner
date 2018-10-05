@@ -36,9 +36,11 @@
     jsonInputStreamID:       'json-tlm-stream',
     outputEventsStreamID:    'var-server-events',
     reqSubscribeStreamID:    'subscribe-request',
-    persistence: [
-        { name: '/CFE/ES_HK/CmdCounter', count: 100},
-        { name: '/CFE/ES_HK/ErrCounter', count: 50},
-        { name: '/CFE/TBL_HK/Payload.LastUpdateTime.Seconds', count: 8}
+    varDefReqStreamID:       'var-def-request',
+    tlmDefReqStreamID:       'tlm-def-request',
+    variables: [
+        { name: '/CFE/ES_HK/CmdCounter', count: 100, timeout: 1500},
+        { name: '/CFE/ES_HK/ErrCounter', count: 50, timeout: 1500},
+        { name: '/CFE/TBL_HK/Payload.LastUpdateTime.Seconds', count: 8, timeout: 1500}
     ]
 }
