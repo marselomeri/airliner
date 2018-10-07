@@ -365,12 +365,6 @@ typedef struct
     MPU6050_Custom_Status_t         Status;
     /*! Filtered samples per cycle from the fifo queue. */
     float                           FifoSamplesPerCycle;
-    /*! Initial fifo temperature sample. */
-    float                           FifoTemp;
-    /*! Last fifo temperature sample. */
-    float                           FifoLastTemp;
-    /*! Temperature initialized flag */
-    boolean                         TempInitialized;
     /*! Current raw samples from the fifo queue. */
     MPU6050_Sample_t samples[MPU6050_MAX_FIFO_LENGTH];
     /*! First call flag. */

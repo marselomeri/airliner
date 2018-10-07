@@ -142,7 +142,6 @@ void MPU6050_Custom_InitData(void)
 {
     /* Set all struct zero values */
     bzero(&MPU6050_AppCustomData, sizeof(MPU6050_AppCustomData));
-    MPU6050_AppCustomData.TempInitialized = FALSE;
 }
 
 
@@ -573,6 +572,7 @@ boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
 
     for(index = 0; index < SampleQueue->SampleCount; ++index)
     {
+        /* For now no validation. */
         //returnBool = MPU6050_sampleChecks(&sample[index]);
         //if(FALSE == returnBool)
         //{
@@ -791,6 +791,7 @@ boolean MPU6050_sampleChecks(MPU6050_Sample_t *sample)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "Null pointer in MPU6050_RangeCheck.");
+        returnBool = FALSE;
         goto end_of_function;
     }
 
@@ -807,12 +808,14 @@ boolean MPU6050_sampleChecks(MPU6050_Sample_t *sample)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Acceleration sample hit a minimum");
+        returnBool = FALSE;
     }
 
     if (AX == INT16_MAX || AY == INT16_MAX  || AZ == INT16_MAX)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Acceleration sample hit a maximum");
+        returnBool = FALSE;
     }
 
     /* Check gyro in the range for min/max. */
@@ -820,43 +823,24 @@ boolean MPU6050_sampleChecks(MPU6050_Sample_t *sample)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Gyro sample hit a minimum");
+        returnBool = FALSE;
     }
 
     if (GX == INT16_MAX || GY == INT16_MAX  || GZ == INT16_MAX)
     {
         CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "Gyro sample hit a maximum");
+        returnBool = FALSE;
     }
 
-    if(FALSE == MPU6050_AppCustomData.TempInitialized)
+    /* Check temperature in range for min/max. */
+    if(TempC > -40.0f && TempC < 85.0f)
     {
-        if(TempC > -40.0f && TempC < 85.0f)
-        {
-            MPU6050_AppCustomData.TempInitialized = TRUE;
-            CFE_EVS_SendEvent(MPU6050_DEVICE_INF_EID, CFE_EVS_INFORMATION,
-                    "Temperature initialized %f.", TempC);
-        }
-        else
-        {
-            CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "Fifo temperature out of range %f init failed.", TempC);
-        }
-    }
-    else
-    {
-        if (fabsf(TempC - MPU6050_AppCustomData.FifoLastTemp) > 2.0f)
-        {
-            CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "Fifo corruption detected. Reset queue.");
-            MPU6050_AppCustomData.TempInitialized = FALSE;
-            MPU6050_ResetFifo();
-            returnBool = FALSE;
-            goto end_of_function;
-        }
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Temperature out of range.");
+        returnBool = FALSE;
     }
 
-    MPU6050_AppCustomData.FifoLastTemp = TempC;
-    
 end_of_function:
     return returnBool;
 }
