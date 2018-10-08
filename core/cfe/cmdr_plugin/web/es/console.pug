@@ -1,9 +1,19 @@
+style.
+  section >label {
+    display:grid;
+  }
+  textarea,
+  input{
+  background-color: var(--btn-font-color-drk);
+  border: var(--btn-font-color-drk);
+  color: green;
+  }
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
     header
       span.widget-icon
         i.fa.fa-table
-      h2 Logging
+      h2 Console
     div.widget-body.table-responsive
       form.smart-form(action='')
         fieldset
@@ -17,8 +27,7 @@
             label.label File
             label.input                                        
               input#CFE_ES_ConsoleOutputFile.input-xs(style='font-family: monospace' type='text') 
-      footer
-        button#CFE_ES_ConsoleSendCmd.btn.btn-primary Send
+            button#CFE_ES_ConsoleSendCmd.btn.cdr-outline-primary Send
 
 script.
   $(function () {
@@ -27,14 +36,14 @@ script.
     //  $("#CFE_ES_LastUpdate").text($.format.date(timeStamp, "MM/dd/yyyy HH:mm:ss.") + timeStamp.getMilliseconds().toString().paddingLeft("000"));
     //});
     
-    session.subscribe({tlm: [{name: '/CFS/CFE_ES/ShellOutput'}]}, function(tlm) {
+    session.subscribe({tlm: [{name: '/CFE/ES_HK/Payload.ShellOutput'}]}, function(tlm) {
       console.log(tlm);
       $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + tlm.engValue.stringValue);
       $('#CFE_ES_ConsoleOutput').scrollTop($('#CFE_ES_ConsoleOutput')[0].scrollHeight);
     });
      
     $('#CFE_ES_ConsoleSendCmd').click(function(){
-      session.sendCommand('/CFS/CFE_ES/ShellCmd', [{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
+      session.sendCommand('/CFS/CFE_ES_ShellCmd_t', [{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
       $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + '\n');
     });
   });
