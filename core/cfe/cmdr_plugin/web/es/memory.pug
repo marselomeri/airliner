@@ -3,45 +3,45 @@
     header
       span.widget-icon
         i.fa.fa-table
-      h2 Version
+      h2 Memory
     div.widget-body.table-responsive
       table.table.table-condensed
         tbody
           tr
             th Bytes Free:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBytesFree'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBytesFree'}],indicator:'text'}) ---
             td
           tr
             th Blocks Free:
             td 
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBlocksFree'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBlocksFree'}],indicator:'text'}) ---
             td
           tr
             th Maximum:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapMaxBlockSize'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapMaxBlockSize'}],indicator:'text'}) ---
             td
           tr
             th Pool handle
             td 
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_Handle', format:'0x%08x'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_Handle', format:'0x%08x'}],indicator:'text'}) ---
           tr
             th Pool size
             td 
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_Size'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_Size'}],indicator:'text'}) ---
           tr
             th Num blocks requested
             td 
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_NumBlocksRequested'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_NumBlocksRequested'}],indicator:'text'}) ---
           tr
             th Check error count
             td 
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_CheckErrCtr'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_CheckErrCtr'}],indicator:'text'}) ---
           tr
             th Num free bytes
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_NumFreeBytes'}]}) ---       
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/PoolStats_NumFreeBytes'}],indicator:'text'}) ---       
     .table-responsive
       table.table.table-striped.table-condensed.table-memory
         thead
@@ -53,141 +53,141 @@
           tr
             th 0
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block0_NumFree'}],indicator:'text'}) ---
           tr
             th 1
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block1_NumFree'}],indicator:'text'}) ---
           tr
             th 2
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block2_NumFree'}],indicator:'text'}) ---
           tr
             th 3
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block3_NumFree'}],indicator:'text'}) ---
           tr
             th 4
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block4_NumFree'}],indicator:'text'}) ---
           tr
             th 5
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block5_NumFree'}],indicator:'text'}) ---
           tr
             th 6
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block6_NumFree'}],indicator:'text'}) ---
           tr
             th 7
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block7_NumFree'}],indicator:'text'}) ---
           tr
             th 8
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block8_NumFree'}],indicator:'text'}) ---
           tr
             th 9
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block9_NumFree'}],indicator:'text'}) ---
           tr
             th 10
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block10_NumFree'}],indicator:'text'}) ---
           tr
             th 11
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block11_NumFree'}],indicator:'text'}) ---
           tr
             th 12
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block12_NumFree'}],indicator:'text'}) ---
           tr
             th 13
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block13_NumFree'}],indicator:'text'}) ---
           tr
             th 14
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block14_NumFree'}],indicator:'text'}) ---
           tr
             th 15
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block15_NumFree'}],indicator:'text'}) ---
           tr
             th 16
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_Size'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_Size'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumCreated'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumCreated'}],indicator:'text'}) ---
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumFree'}]}) ---
+              span(data-sage={tlm:[{name:'/CFS/CFE_ES/PoolStats_Block16_NumFree'}],indicator:'text'}) ---
     footer
       .btn-group
-        button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/TlmPoolStats'}}) Send Stats
-        button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/DumpCDSReg'}}) Dump CDS
-        button.btn.btn-primary(data-sage={cmd: {name: '/CFS/CFE_ES/DeleteCDS'}}) Delete CDS
+        button.btn.cdr-primary(data-sage={cmd: {name: '/CFS/CFE_ES/TlmPoolStats'},indicator:'cmd'}) Send Stats
+        button.btn.cdr-primary(data-sage={cmd: {name: '/CFS/CFE_ES/DumpCDSReg'},indicator:'cmd'}) Dump CDS
+        button.btn.cdr-primary(data-sage={cmd: {name: '/CFS/CFE_ES/DeleteCDS'},indicator:'cmd'}) Delete CDS

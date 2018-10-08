@@ -3,69 +3,69 @@
     header
       span.widget-icon
         i.fa.fa-table
-      h2 Version
+      h2 Application Control
     div.widget-body.table-responsive
       table.table.table-condensed
         tbody
           tr
             th CFE Version:
             td 
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMajorVersion'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMajorVersion'}],indicator:'text'}) -
               span.span-inline-block .
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMinorVersion'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMinorVersion'}],indicator:'text'}) -
               span.span-inline-block .
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFERevision'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFERevision'}],indicator:'text'}) -
               span.span-inline-block .
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMissionRevision'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/CFEMissionRevision'}],indicator:'text'}) -
             td
           tr
             th OSAL Version:
             td 
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMajorVersion'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMajorVersion'}],indicator:'text'}) -
               span.span-inline-block .
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMinorVersion'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMinorVersion'}],indicator:'text'}) -
               span.span-inline-block .
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALRevision'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALRevision'}],indicator:'text'}) -
               span.span-inline-block .
-              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMissionRevision'}]}) -
+              span.span-inline-block(data-sage={tlm: [{name: '/CFS/CFE_ES/OSALMissionRevision'}],indicator:'text'}) -
             td
           tr
             th Checksum:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/CFECoreChecksum', format:'0x%04x'}]}) ---
+              span(data-sage={tlm: [{name: '/CFS/CFE_ES/CFECoreChecksum', format:'0x%04x'}],indicator:'text'}) ---
             td
               tr
                 th Core Apps:
                 td
-                  span(data-sage={tlm:[{name:'/CFS/CFE_ES/RegisteredCoreApps'}]}) ---
+                  span(data-sage={tlm:[{name:'/CFS/CFE_ES/RegisteredCoreApps'}],indicator:'text'}) ---
                 td
               tr
                 th Ext Apps:
                 td
-                  span(data-sage={tlm:[{name:'/CFS/CFE_ES/RegisteredExternalApps'}]}) ---
+                  span(data-sage={tlm:[{name:'/CFS/CFE_ES/RegisteredExternalApps'}],indicator:'text'}) ---
                 td
               tr 
                 th Tasks:
                 td
-                  span(data-sage={tlm: [{name:'/CFS/CFE_ES/RegisteredTasks'}]}) ---
+                  span(data-sage={tlm: [{name:'/CFS/CFE_ES/RegisteredTasks'}],indicator:'text'}) ---
                 td
               tr
                 th Libs:
                 td
-                  span(data-sage={tlm: [{name:'/CFS/CFE_ES/RegisteredLibs'}]}) ---
+                  span(data-sage={tlm: [{name:'/CFS/CFE_ES/RegisteredLibs'}],indicator:'text'}) ---
                 td
               tr
                 th Bytes Free:
                 td
-                  span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBytesFree'}]}) ---
+                  span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBytesFree'}],indicator:'text'}) ---
                 td
               tr
                 th Blocks Free:
                 td 
-                  span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBlocksFree'}]}) ---
+                  span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapBlocksFree'}],indicator:'text'}) ---
                 td
               tr
                 th Maximum:
                 td
-                  span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapMaxBlockSize'}]}) ---
+                  span(data-sage={tlm: [{name: '/CFS/CFE_ES/HeapMaxBlockSize'}],indicator:'text'}) ---
                 td
