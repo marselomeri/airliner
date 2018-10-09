@@ -58,7 +58,7 @@
                   "componentName": "Blank",
                   "componentState": {
                     "text": "text",
-                    "link": "cfe/es/cdh.pug"
+                    "link": "cfe/es/cdh"
                   },
                   "isClosable": true,
                   "reorderEnabled": true
@@ -80,7 +80,7 @@
                   "componentName": "Blank",
                   "componentState": {
                     "text": "text",
-                    "link": "cfe/es/appctrl.pug"
+                    "link": "cfe/es/appctrl"
                   },
                   "isClosable": true,
                   "reorderEnabled": true
@@ -91,7 +91,7 @@
                   "componentName": "Blank",
                   "componentState": {
                     "text": "text",
-                    "link": "cfe/es/console.pug"
+                    "link": "cfe/es/console"
                   },
                   "isClosable": true,
                   "reorderEnabled": true
@@ -130,7 +130,7 @@
                       "componentName": "Blank",
                       "componentState": {
                         "text": "text",
-                        "link": "cfe/es/logging.pug"
+                        "link": "cfe/es/logging"
                       },
                       "isClosable": true,
                       "reorderEnabled": true
@@ -152,7 +152,7 @@
                       "componentName": "Blank",
                       "componentState": {
                         "text": "text",
-                        "link": "cfe/es/reset.pug"
+                        "link": "cfe/es/reset"
                       },
                       "isClosable": true,
                       "reorderEnabled": true
@@ -183,7 +183,7 @@
                       "componentName": "Blank",
                       "componentState": {
                         "text": "text",
-                        "link": "cfe/es/memory.pug"
+                        "link": "cfe/es/memory"
                       },
                       "isClosable": true,
                       "reorderEnabled": true
@@ -205,7 +205,7 @@
                       "componentName": "Blank",
                       "componentState": {
                         "text": "text",
-                        "link": "cfe/es/version.pug"
+                        "link": "cfe/es/version"
                       },
                       "isClosable": true,
                       "reorderEnabled": true

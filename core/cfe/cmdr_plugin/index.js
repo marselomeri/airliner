@@ -2,7 +2,7 @@
 
 var path = require('path');
 
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin'));
+const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
 //var express = require('express');
 //var router = express.Router();
 //var path = require('path');
@@ -34,10 +34,117 @@ const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/
 
 module.exports = class CfeCdrPlugin extends CdrPlugin {
 	constructor(urlBase) {
-		super(path.join(__dirname, 'web', urlBase));	
+		super(path.basename(__dirname), path.join(__dirname, 'web', urlBase));	
 	}
 	
-	
+	getContent() {
+		var result = {
+            shortDescription: 'Core Flight Executive',
+            longDescription: 'Core Flight Executive services.',
+            nodes: {
+            	es: {
+                    shortDescription: 'Essential Services',
+                    longDescription: 'Core essential services.',
+                    nodes: {
+                    	main: {
+                            type: CdrPlugin.ContentType.LAYOUT,
+                            shortDescription: 'Main',
+                            longDescription: 'Main Essential Services.',
+                            filePath: '/es/main_layout.lyt'
+                        },
+                        appctrl: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Application Control',
+                            longDescription: 'Application start, stop, restart, and reload.',
+                            filePath: '/es/appctrl.pug'
+                        },
+                        cdh: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Command and Data Handling',
+                            longDescription: 'Command counters.',
+                            filePath: '/es/cdh.pug'
+                        },
+                        console: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Console',
+                            longDescription: 'System console.',
+                            filePath: '/es/console.pug'
+                        },
+                        logging: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Logging',
+                            longDescription: 'Essential Services logging status and control.',
+                            filePath: '/es/logging.pug'
+                        },
+                        memory: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Memory',
+                            longDescription: 'Memory and memory pool status and monitoring.',
+                            filePath: '/es/memory.pug'
+                        },
+                        reset: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Reset',
+                            longDescription: 'Core reset and restart.',
+                            filePath: '/es/reset.pug'
+                        },
+                        version: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Version',
+                            longDescription: 'Core versions.',
+                            filePath: '/es/version.pug'
+                        }
+                    }
+                },
+                evs: {
+                    shortDescription: 'Event Services',
+                    longDescription: 'Core event services.',
+                    nodes: {
+                    	main: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Main',
+                            filePath: '/evs/main.pug'
+                        }
+                    }
+                },
+                sb: {
+                    shortDescription: 'Software Bus',
+                    longDescription: 'Core software bus services.',
+                    nodes: {
+                    	main: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Main',
+                            filePath: '/sb/main.pug'
+                        }
+                    }
+                },
+                tbl: {
+                    shortDescription: 'Table Services',
+                    longDescription: 'Core table services.',
+                    nodes: {
+                    	main: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Main',
+                            filePath: '/tbl/main.pug'
+                        }
+                    }
+                },
+                time: {
+                    shortDescription: 'Time Services',
+                    longDescription: 'Core time services.',
+                    nodes: {
+                    	main: {
+                            type: CdrPlugin.ContentType.PANEL,
+                            shortDescription: 'Main',
+                            filePath: '/time/main.pug'
+                        }
+                    }
+                }
+            }
+        };
+        
+        return result;    
+	}
 	
 	getLayouts() {
         var result = {
