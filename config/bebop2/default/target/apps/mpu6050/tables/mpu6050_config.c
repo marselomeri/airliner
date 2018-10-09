@@ -44,17 +44,17 @@ MPU6050_ConfigTbl_t MPU6050_ConfigTbl =
 {
         /* User calibration params */
         /* AccXScale */
-        1.0f,
+        0.996715188026428223f,
         /* AccYScale */
-        1.0f,
+        0.992949187755584717f,
         /* AccZScale */
-        1.0f,
+        1.002056837081909180f,
         /* AccXOffset */
-        0.0f,
+        0.140285968780517578f,
         /* AccYOffset */
-        0.0f,
+        -0.034605026245117188f,
         /* AccZOffset */
-        0.0f,
+        -0.369887351989746094f,
         /* GyroXScale */
         1.0f,
         /* GyroYScale */
@@ -62,11 +62,11 @@ MPU6050_ConfigTbl_t MPU6050_ConfigTbl =
         /* GyroZScale */
         1.0f,
         /* GyroXOffset */
-        0.0f,
+        -0.039485383778810501f,
         /* GyroYOffset */
-        0.0f,
+        -0.020240304991602898f,
         /* GyroZOffset */
-        0.0f
+        -0.011916831135749817f
         /* MagXScale */
         /* MagYScale */
         /* MagZScale */

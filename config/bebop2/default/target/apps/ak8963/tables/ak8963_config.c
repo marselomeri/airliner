@@ -44,17 +44,17 @@ AK8963_ConfigTbl_t AK8963_ConfigTbl =
 {
         /* User calibration params */
         /* MagXScale */
-        1.0f,
+        0.976245760917663574f,
         /* MagYScale */
-        1.0f,
+        0.988125443458557129f,
         /* MagZScale */
-        1.0f,
+        1.038563847541809082f,
         /* MagXOffset */
-        0.0f,
+        0.076581671833992004f,
         /* MagYOffset */
-        0.0f,
+        -0.027957385405898094f,
         /* MagZOffset */
-        0.0f
+        0.254844546318054199f
 };
 
 /*
