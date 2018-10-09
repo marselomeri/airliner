@@ -9446,13 +9446,13 @@
                 "proto_msgs": {
                     "BAT_HkTlm_t": {
                         "operational_names": {
-                            "usCmdErrCnt": {
+                            "CmdErrCnt": {
                                 "field_path": "usCmdErrCnt"
                             },
                             "VoltageFiltered": {
                                 "field_path": "VoltageFiltered"
                             },
-                            "usCmdCnt": {
+                            "CmdCnt": {
                                 "field_path": "usCmdCnt"
                             },
                             "CellCount": {
@@ -17801,7 +17801,7 @@
                     },
                     "AMC_HkTlm_t": {
                         "operational_names": {
-                            "usCmdErrCnt": {
+                            "CmdErrCnt": {
                                 "field_path": "usCmdErrCnt"
                             },
                             "Output": {
@@ -17810,7 +17810,7 @@
                             "Timestamp": {
                                 "field_path": "Timestamp"
                             },
-                            "usCmdCnt": {
+                            "CmdCnt": {
                                 "field_path": "usCmdCnt"
                             },
                             "Count": {
