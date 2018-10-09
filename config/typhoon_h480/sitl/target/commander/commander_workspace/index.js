@@ -51,3 +51,32 @@ function parsePluginPath(indexFilePath, basePath) {
 		//parsePluginPath(pluginPath, newBasePath);
 	}
 }
+
+
+
+function findIndex(dir, cb) {
+	var results = [];
+	fs.readdir(dir, function(err, list) {
+		if (err) return cb(err);
+		var i = 0;
+		(function next() {
+			var file = list[i++];
+			if (!file) return cb(null, results);
+			file = dir + '/' + file;
+			fs.stat(file, function(err, stat) {
+				if (stat && stat.isDirectory()) {
+					findIndex(file, function(err, res) {
+						results = results.concat(res);
+						next();
+					});
+				} else {
+					if(path.basename(file) === 'index.js') {
+						results.push(file);
+						return cb(null, results)
+					} 
+					next();
+				}
+			});
+		})();
+	});
+};
