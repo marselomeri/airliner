@@ -44,17 +44,17 @@ MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
 {
         /* User calibration params */
         /* AccXScale */
-        1.002831101417541504f,
+        1.0f,
         /* AccYScale */
-        1.003104090690612793f,
+        1.0f,
         /* AccZScale */
-        0.992766380310058594f,
+        1.0f,
         /* AccXOffset */
-        0.358827590942382813f,
+        0.0f,
         /* AccYOffset */
-        -0.148477077484130859f,
+        0.0f,
         /* AccZOffset */
-        -0.022399425506591797f,
+        0.0f,
         /* GyroXScale */
         1.0f,
         /* GyroYScale */
@@ -62,11 +62,11 @@ MPU9250_ConfigTbl_t MPU9250_ConfigTbl =
         /* GyroZScale */
         1.0f,
         /* GyroXOffset */
-        0.022997194901108742f,
+        0.0f,
         /* GyroYOffset */
-        -0.002372120507061481f,
+        0.0f,
         /* GyroZOffset */
-        -0.005926270503550768f
+        0.0f
         /* MagXScale */
         /* MagYScale */
         /* MagZScale */
