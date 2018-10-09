@@ -31,28 +31,23 @@ var airliner = commander.addInstance('airliner', function(instance) {
 	
     var outFiles = [];
     var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');
-    parsePluginPath(fullPath, '/');
+    
+    parsePluginPath(path.join(fullPath, 'cfe/index.js'), '/');
+    findIndex(path.join(fullPath, 'apps'), function(err, results) {
+    	if(err) throw err;
+    	for(var i = 0; i < results.length; ++i) {
+    		parsePluginPath(results[i], '/');
+    	}
+    });
 });
 
 
 
-function parsePluginPath(inPath, basePath) {
-    fs.readdir(inPath, function (err, files) {
-        if (err == null) {
-            for (var i = 0; i < files.length; ++i) {
-            	var pluginPath = path.join(inPath, files[i]);
-            	var newBasePath = path.join(basePath);
-                var stats = fs.statSync(pluginPath);
-                if (stats.isDirectory()) {
-                	var indexFilePath = path.join(pluginPath, 'index.js');
-                	if (fs.existsSync(indexFilePath)) {
-                        var NewPluginClass = require(pluginPath);
-                        var newPlugin = new NewPluginClass(newBasePath);
-                	} else {
-                		//parsePluginPath(pluginPath, newBasePath);
-                	}
-                }
-            };
-        };
-    });
+function parsePluginPath(indexFilePath, basePath) {
+    if (fs.existsSync(indexFilePath)) {
+        var NewPluginClass = require(path.dirname(indexFilePath));
+        var newPlugin = new NewPluginClass(basePath);
+	} else {
+		//parsePluginPath(pluginPath, newBasePath);
+	}
 }
