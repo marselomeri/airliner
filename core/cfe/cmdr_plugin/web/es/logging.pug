@@ -10,31 +10,32 @@
           tr
             th Bytes Used:
             td 
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/SysLogBytesUsed'}]}) ---
+              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) ---
             td
           tr
             th Entries:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/SysLogEntries'}]}) ---
+              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogEntries'}],indicator:'text'}) ---
             td
               .btn-group
-                button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_ES/ClearSysLog'}}) Clear Log
-                button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_ES/WriteSysLog'}}) Write Log
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearSysLog'},indicator:'cmd'}) Clear Log
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteSyslogCmd_t'},indicator:'cmd'}) Write Log
           tr 
             th Mode:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/SysLogMode'}]}) ---
+              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogMode'}],indicator:'text'}) ---
             td
-              button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_ES/SetSysLogMode'}}) Set Mode
+              button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_SetLogMode'},indicator:'cmd'}) Set Mode
           tr
             th Index:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/ERLogIndex'}]}) ---
+              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.ERLogIndex'}],indicator:'text'}) ---
+            td
           tr 
             th Entries:
             td
-              span(data-sage={tlm: [{name: '/CFS/CFE_ES/ERLogEntries'}]}) ---
+              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.ERLogEntries'}],indicator:'text'}) ---
             td
               .btn-group
-                button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_ES/ClearErrLog'}}) Clear Log
-                button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-sage={cmd: {name: '/CFS/CFE_ES/WriteErrLog'}}) Write Log
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearErLog'},indicator:'cmd'}) Clear Log
+                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteERlogCmd_t'},indicator:'cmd'}) Write Log
