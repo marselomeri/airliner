@@ -18,7 +18,7 @@ const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/
 //	    case '.pug':
 //	        res.render(translatedPath, { title: 'Express' });
 //	        break;
-//	        
+//
 //	    default:
 //	    	var options = {};
 //	    	res.sendFile(translatedPath, options, function(error) {
@@ -34,9 +34,9 @@ const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/
 
 module.exports = class CfeCdrPlugin extends CdrPlugin {
 	constructor(urlBase) {
-		super(path.basename(__dirname), path.join(__dirname, 'web', urlBase));	
+		super(path.basename(__dirname), path.join(__dirname, 'web', urlBase));
 	}
-	
+
 	getContent() {
 		var result = {
             shortDescription: 'Core Flight Executive',
@@ -100,11 +100,32 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
                     shortDescription: 'Event Services',
                     longDescription: 'Core event services.',
                     nodes: {
-                    	main: {
+											main: {
+														type: CdrPlugin.ContentType.LAYOUT,
+														shortDescription: 'Main',
+														longDescription: 'Main Event Services.',
+														filePath: '/evs/main_layout.lyt'
+												},
+                    	hk: {
                             type: CdrPlugin.ContentType.PANEL,
-                            shortDescription: 'Main',
-                            filePath: '/evs/main.pug'
-                        }
+                            shortDescription: 'Housekeeping',
+                            filePath: '/evs/hk.pug'
+                        },
+											efltr: {
+														type: CdrPlugin.ContentType.PANEL,
+														shortDescription: 'Event Filter (Generic)',
+														filePath: '/evs/efltr.pug'
+												},
+											sch: {
+														type: CdrPlugin.ContentType.PANEL,
+														shortDescription: 'Scheduler',
+														filePath: '/evs/sch.pug'
+												},
+											stats: {
+														type: CdrPlugin.ContentType.PANEL,
+														shortDescription: 'Stats',
+														filePath: '/evs/stats.pug'
+												}
                     }
                 },
                 sb: {
@@ -142,10 +163,10 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
                 }
             }
         };
-        
-        return result;    
+
+        return result;
 	}
-	
+
 	getLayouts() {
         var result = {
             name: 'cfe',
@@ -168,12 +189,12 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
                 }
             ]
         };
-        
-        return result;    
-	}
-	
 
-    
+        return result;
+	}
+
+
+
     getPanels() {
         var result = {
             name: 'cfe',
@@ -290,7 +311,7 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
                 }
             ]
         };
-        
+
         return result;
     };
 };
