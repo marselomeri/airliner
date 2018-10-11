@@ -55,7 +55,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @increment 0.01
 	 * @group Multicopter Position Control
 	 */
-	0.12f,
+	0.08f,
 
 	/**
 	 * MPC_THR_HOVER
@@ -148,7 +148,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	0.2f,
+	0.1f,
 
 	/**
 	 * MPC_Z_VEL_I
@@ -172,7 +172,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 3
 	 * @group Multicopter Position Control
 	 */
-	0.0f,
+	0.005f,
 
 	/**
 	 * MPC_Z_VEL_MAX_UP
