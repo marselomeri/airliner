@@ -144,11 +144,11 @@ function(psp_add_test)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${dir})
     endforeach()
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
     )
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
     )
     
@@ -185,8 +185,13 @@ function(psp_add_test)
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
 
+    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+    set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build)
+    
+    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
+    set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build)
 
     if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
         set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
@@ -194,15 +199,21 @@ function(psp_add_test)
     endif()
     
     if(NOT PARSED_ARGS_NO_MEMCHECK)
+        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
         add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck-ctest-build)
     endif()
     
     if(NOT PARSED_ARGS_NO_HELGRIND)
+        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
         add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind-ctest-build)
     endif()
     
     if(NOT PARSED_ARGS_NO_MASSIF)
+        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
         add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif-ctest-build)
     endif()
 endfunction(psp_add_test)
 
@@ -408,8 +419,8 @@ function(psp_add_airliner_app_unit_test)
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     
-    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${PARSED_ARGS_SOURCES})
-    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${PARSED_ARGS_SOURCES})
+    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
+    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${CMAKE_THREAD_LIBS_INIT})
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
@@ -532,60 +543,81 @@ function(psp_add_airliner_app_unit_test)
     endforeach()
     
     if(NOT ${PARSED_ARGS_UTF_OUTPUT_FILE} EQUAL "")
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
         add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} COMMAND ${CMAKE_COMMAND} 
             -DTEST_EXEC:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
             -DTEST_ARGS:STRING=
             -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
             -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
             -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build)
             
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
         add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov COMMAND ${CMAKE_COMMAND} 
             -DTEST_EXEC:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov
             -DTEST_ARGS:STRING=
             -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
             -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
             -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build)
             
         if(NOT PARSED_ARGS_NO_MEMCHECK)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck COMMAND ${CMAKE_COMMAND} 
                 -DTEST_EXEC:STRING=${MEMCHECK_COMMAND}
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
                 -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+            set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build)
         endif()
         
         if(NOT PARSED_ARGS_NO_HELGRIND)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind COMMAND ${CMAKE_COMMAND} 
                 -DTEST_EXEC:STRING=${HELGRIND_COMMAND}
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
                 -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+            set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build)
         endif()
             
         if(NOT PARSED_ARGS_NO_MASSIF)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif COMMAND ${CMAKE_COMMAND} 
                 -DTEST_EXEC:STRING=${MASSIF_COMMAND}
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
                 -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+            set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build)
         endif()
     else()
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
         add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build)
+            
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
         add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build)
 
         if(NOT PARSED_ARGS_NO_MEMCHECK)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build)
         endif()
 
         if(NOT PARSED_ARGS_NO_HELGRIND)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build)
         endif()
 
         if(NOT PARSED_ARGS_NO_MASSIF)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build)
         endif()
     endif()
 endfunction(psp_add_airliner_app_unit_test)
@@ -605,12 +637,12 @@ function(psp_add_airliner_cfe_unit_test)
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
         ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/unit_test/bsp_ut.c
     )
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
         ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/unit_test/bsp_ut.c
     )
