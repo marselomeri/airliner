@@ -1463,7 +1463,7 @@
                         "airliner_msg": "CFE_EVS_BitMaskCmd_t",
                         "airliner_mid": "0x1801"
                     },
-                    "CFE_EVS_DisabnleEventType": {
+                    "CFE_EVS_DisableEventType": {
                         "airliner_cc": 3,
                         "airliner_msg": "CFE_EVS_BitMaskCmd_t",
                         "airliner_mid": "0x1801"

@@ -302,46 +302,46 @@
                 span(data-commander={tlm:[{name:'/CFE/EVS_HK/AppData_31_EnableStatus'}],indicator:'text'}) ---
              td
       footer
-      button.btn.btn-primary(data-commander={cmd:{name:'/CFE/EVS_HK/FileWriteAppData'}, indicator:'cmd'}) Write To File
+      button.btn.cdr-primary(data-commander={cmd:{name:'/CFE/EVS_HK/FileWriteAppData'}, indicator:'cmd'}) Write To File
       .btn-group.dropup
-        button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+        button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
           | Reset App Counters
           span.caret
         ul#ResetAppCounters.dropdown-menu(role='menu')
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CFE_ES'}]}, indicator:'cmd'}, data-placement="left") CFE_ES
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CF_EVS'}]}, indicator:'cmd'}, data-placement="left") EVS_HK
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CFE_SB'}]}, indicator:'cmd'}, data-placement="left") CFE_SB
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CFE_TBL'}]}, indicator:'cmd'}, data-placement="left") CFE_TBL
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CFE_TIME'}]}, indicator:'cmd'}, data-placement="left") CFE_TIME
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CF'}]}, indicator:'cmd'}, data-placement="left") CF
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CIO'}]}, indicator:'cmd'}, data-placement="left") CIO
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'CS'}]}, indicator:'cmd'}, data-placement="left") CS
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'DS'}]}, indicator:'cmd'}, data-placement="left") DS
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'EIM'}]}, indicator:'cmd'}, data-placement="left") EIM
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'FM'}]}, indicator:'cmd'}, data-placement="left") FM
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'HK'}]}, indicator:'cmd'}, data-placement="left") HK
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'LC'}]}, indicator:'cmd'}, data-placement="left") LC
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'MD'}]}, indicator:'cmd'}, data-placement="left") MD
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'MM'}]}, indicator:'cmd'}, data-placement="left") MM
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'SC'}]}, indicator:'cmd'}, data-placement="left") SC
-          li
-            a(data-commander={cmd:{name:'/CFE/EVS_HK/ResetAppCounter', Parameters:[{Name:'AppName', Value:'SCH'}]}, indicator:'cmd'}, data-placement="left") SCH
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CFE_ES'}]}, indicator:'cmd'}, data-placement="left") CFE_ES
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CF_EVS'}]}, indicator:'cmd'}, data-placement="left") EVS_HK
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CFE_SB'}]}, indicator:'cmd'}, data-placement="left") CFE_SB
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CFE_TBL'}]}, indicator:'cmd'}, data-placement="left") CFE_TBL
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CFE_TIME'}]}, indicator:'cmd'}, data-placement="left") CFE_TIME
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CF'}]}, indicator:'cmd'}, data-placement="left") CF
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CIO'}]}, indicator:'cmd'}, data-placement="left") CIO
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'CS'}]}, indicator:'cmd'}, data-placement="left") CS
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'DS'}]}, indicator:'cmd'}, data-placement="left") DS
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'EIM'}]}, indicator:'cmd'}, data-placement="left") EIM
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'FM'}]}, indicator:'cmd'}, data-placement="left") FM
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'HK'}]}, indicator:'cmd'}, data-placement="left") HK
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'LC'}]}, indicator:'cmd'}, data-placement="left") LC
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'MD'}]}, indicator:'cmd'}, data-placement="left") MD
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'MM'}]}, indicator:'cmd'}, data-placement="left") MM
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'SC'}]}, indicator:'cmd'}, data-placement="left") SC
+          li.cdr-dropdown-list-item
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'SCH'}]}, indicator:'cmd'}, data-placement="left") SCH
   script.
     var AppIDtoName = function(value) {
       //return value;
