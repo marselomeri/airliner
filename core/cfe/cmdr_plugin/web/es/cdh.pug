@@ -1,9 +1,29 @@
+
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Command and Data Handling
+    header.navbar.panel-header.py-0
+       span.widget-icon
+         i.fa.fa-table
+       .navbar-brand.py-0 Command and Data Handling
+       
+       button.navbar-toggler.toggler-example(type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1"
+          aria-expanded="false" aria-label="Toggle navigation")
+          span.white-text
+            i.fa.fa-gear
+       #navbarSupportedContent1.collapse.navbar-collapse
+          ul.navbar-nav.mr-auto
+            li.nav-item.active
+              form.panel-config-form
+                .form-group
+                  label(for='exampleInputEmail1') Config Param 1
+                  input#exampleInputEmail1.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter parameter')
+                .form-group
+                  label(for="examplePassword1") Config Param 2
+                  input#examplePassword1.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter parameter')
+                .form-check
+                  input#exampleCheck1.form-check-input(type='checkbox' for="examplePassword1")
+                  label.form-check-label(for='exampleCheck1') Config Param 3
+      
     div.widget-body.table-responsive
       table.table.table-condensed
             tbody
@@ -18,3 +38,10 @@
     footer.btn-group(role="group")      
       button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) No-Op    
       button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/ES_Reset'},indicator:'cmd'}) Reset
+  article.col-xs-12.col-sm-12
+        header
+          span.widget-icon
+            i.fa.fa-area-chart
+          h2 Pixel Flow Graph
+        div.widget-graph
+          div(data-cdr={tlm:[{name:'/CFE/ES_HK/CmdCounter'},{name:'/CFE/ES_HK/Payload.CFEMinorVersion'}],label:['PRESET','CFEMV'],indicator:'dataplot'})
