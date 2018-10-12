@@ -1,0 +1,27 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+      header
+        span.widget-icon
+          i.fa.fa-table
+        h2 Pipe Stats
+          button.btn.cdr-primary.cdr-in-panel-header(data-cdr={cmd:{name:'/CFE/CFE_SB_SendStats'},indicator:'cmd'}) Send
+      div.widget-body.table-responsive
+        table.table.table-bordered.table-condensed
+          thead
+            tr
+              th Pipe ID
+              th Depth
+              th In Use
+          tbody
+            - for (var i = 0; i < 64; ++i) {
+              - var PipeId = '/CFE/CFE_SB_PipeDepthStats_t/PipeId[' + i + ']'
+              - var Depth = '/CFE/CFE_SB_PipeDepthStats_t/Depth[' + i + ']'
+              - var InUse = '/CFE/CFE_SB_PipeDepthStats_t/InUse[' + i + ']'
+              tr
+                td 
+                  span(data-commander={tlm:[{name:PipeId}],indicator:'text'}) ---
+                td 
+                  span(data-commander={tlm:[{name:Depth}],indicator:'text'}) ---
+                td
+                  span(data-commander={tlm:[{name:InUse}],indicator:'text'}) ---
+            - }  

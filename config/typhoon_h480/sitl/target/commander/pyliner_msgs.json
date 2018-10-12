@@ -1583,10 +1583,45 @@
                         "airliner_msg": "CFE_ES_MemPoolStats_t",
                         "airliner_mid": ""
                     },
+                    "CFE_SB_Noop": {
+                        "airliner_cc": 0,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1803"
+                    },
+                    "CFE_SB_Reset": {
+                        "airliner_cc": 1,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1803"
+                    },
+                    "CFE_SB_SendStats": {
+                        "airliner_cc": 2,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1803"
+                    },
                     "CFE_SB_EnRoutCmd_t": {
-                        "airliner_cc": -1,
+                        "airliner_cc": 4,
                         "airliner_msg": "CFE_SB_EnRoutCmd_t",
-                        "airliner_mid": ""
+                        "airliner_mid": "0x1803"
+                    },
+                    "CFE_SB_DisableRoutCmd_t": {
+                        "airliner_cc": 5,
+                        "airliner_msg": "CFE_SB_EnRoutCmd_t",
+                        "airliner_mid": "0x1803"
+                    },
+                    "CFE_SB_SendRoutInfo_t": {
+                        "airliner_cc": 3,
+                        "airliner_msg": "CFE_SB_WriteFileInfoCmd_t",
+                        "airliner_mid": "0x1803"
+                    },
+                    "CFE_SB_SendPipeInfo_t": {
+                        "airliner_cc": 7,
+                        "airliner_msg": "CFE_SB_WriteFileInfoCmd_t",
+                        "airliner_mid": "0x1803"
+                    },
+                    "CFE_SB_SendMapInfo_t": {
+                        "airliner_cc": 8,
+                        "airliner_msg": "CFE_SB_WriteFileInfoCmd_t",
+                        "airliner_mid": "0x1803"
                     },
                     "CFE_TIME_1HzAdjCmd_t": {
                         "airliner_cc": -1,
@@ -1921,7 +1956,7 @@
                     "CFE_SB_StatMsg_t": {
                         "airliner_cc": -1,
                         "airliner_msg": "CFE_SB_StatMsg_t",
-                        "airliner_mid": ""
+                        "airliner_mid": "0x080A"
                     },
                     "CFE_ES_QueryAllCmd_t": {
                         "airliner_cc": 9,
