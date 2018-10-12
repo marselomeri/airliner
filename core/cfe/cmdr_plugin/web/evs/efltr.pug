@@ -11,9 +11,9 @@
                 th(style={width:'100px'}) App Events
                 td
                   .btn-group
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/EnableAppEvents'}, indicator:'cmd'}) Enable
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/DisableAppEvents'}, indicator:'cmd'}) Disable
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/ResetAllFilters'}, indicator:'cmd'}) Reset
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_EnableAppEvents'}, indicator:'cmd'}) Enable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_DisableAppEvents'}, indicator:'cmd'}) Disable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_ResetAppFilters'}, indicator:'cmd'}) Reset
               tr
                 th Event Types
                 td
@@ -21,31 +21,31 @@
                 td(style='padding-left: 20px !important') Critical
                 td
                   .btn-group
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/EnableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/DisableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Disable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_EnableAppEventType', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_DisableAppEventType', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
               tr
                 td(style='padding-left: 20px !important')  Error
                 td
                   .btn-group
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/EnableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Set'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/DisableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Set'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Disable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_EnableAppEventType', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_DisableAppEventType', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
               tr
                 td(style='padding-left: 20px !important')  Info
                 td
                   .btn-group
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/EnableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Error', value:'Ignored'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/DisableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Set'},{name:'Debug', value:'Ignored'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Disable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_EnableAppEventType', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_DisableAppEventType', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
               tr
                 td(style='padding-left: 20px !important')  Debug
                 td
                   .btn-group
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/EnableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Set'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/DisableAppEventType', argument:[{name:'Critical', value:'Ignored'},{name:'Error', value:'Ignored'},{name:'Information', value:'Ignored'},{name:'Debug', value:'Set'},{name:'Spare', value:'0'}]}, indicator:'cmd'}) Disable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_EnableAppEventType', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_DisableAppEventType', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
               tr
                 th Event IDs
                 td
                   .btn-group
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/SetFilter'}, indicator:'cmd'}) Set
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/ResetFilter'}, indicator:'cmd'}) Reset
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/AddEventFilter'}, indicator:'cmd'}) Add
-                    button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/EVS_HK/DeleteEventFilter'}, indicator:'cmd'}) Delete
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_SetAppEventFilter'}, indicator:'cmd'}) Set
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_ResetAppEventFilter'}, indicator:'cmd'}) Reset
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_AddAppEventFilter'}, indicator:'cmd'}) Add
+                    button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_EVS_DeleteAppEventFilter'}, indicator:'cmd'}) Delete

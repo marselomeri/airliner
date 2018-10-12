@@ -1,0 +1,95 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 Registry
+        button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name: '/CFS/CFE_TBL/TlmReg'}}) Send Reg
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th(style={width:'170px'}) Size
+            td(style={width:'150px'})
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Size'}]}) ---
+            td(style={width:'80px'})
+          tr
+            th CRC
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_CRC'}]}) ---
+            td
+          tr
+            th Active Buffer Addr
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_ActiveBufferAddr', format:'0x%08x'}]}) ---
+            td
+          tr
+            th Inactive Buffer Addr
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_InactiveBufferAddr', format:'0x%08x'}]}) ---
+            td
+          tr
+            th Validation Func Ptr
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_ValidationFuncPtr', format:'0x%08x'}]}) ---
+            td
+          tr
+            th Time of Last Update
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_TimeOfLastUpdate_Seconds'}]}) ---
+            td
+          tr
+            th 
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_TimeOfLastUpdate_Subseconds'}]}) ---
+            td
+          tr
+            th File Create Time
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_FileCreateTime_Seconds'}]}) ---
+            td
+          tr
+            th
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_FileCreateTime_Subseconds'}]}) ---
+            td
+          tr
+            th Table Loaded Once
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_TableLoadedOnce'}]}) ---
+            td
+          tr
+            th Load Pending
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_LoadPending'}]}) ---
+            td
+          tr
+            th Dump Only 
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_DumpOnly'}]}) ---
+            td
+          tr
+            th Dbl Buffered 
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_DblBuffered'}]}) ---
+            td
+          tr
+            th Name
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Name'}]}) ---
+            td
+          tr
+            th Last File Loaded
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_LastFileLoaded'}]}) ---
+            td
+          tr
+            th Owner App Name
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_OwnerAppName'}]}) ---
+            td
+          tr
+            th Critical
+            td
+              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Critical'}]}) ---
+            td
