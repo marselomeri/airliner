@@ -41,7 +41,7 @@
                 tr
                   th Output Port 0
                   td
-                    span(data-commander={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort0'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[0]'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
@@ -49,7 +49,7 @@
                 tr
                   th Output Port 1
                   td
-                    span(data-commander={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort1'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[1]'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
@@ -57,7 +57,7 @@
                 tr
                   th Output Port 2
                   td
-                    span(data-commander={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort2'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[2]'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
@@ -65,7 +65,7 @@
                 tr
                   th Output Port 3
                   td
-                    span(data-commander={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort3'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[3]'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable

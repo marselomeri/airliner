@@ -144,10 +144,21 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
                     longDescription: 'Core table services.',
                     nodes: {
                     	main: {
-                            type: CdrPlugin.ContentType.PANEL,
+                            type: CdrPlugin.ContentType.LAYOUT,
                             shortDescription: 'Main',
-                            filePath: '/tbl/main.pug'
-                        }
+														longDescription: 'Main Table Services.',
+                            filePath: '/tbl/main_layout.lyt'
+                        },
+											general: {
+														type: CdrPlugin.ContentType.PANEL,
+														shortDescription: 'Main',
+														filePath: '/tbl/general.pug'
+												},
+											registry: {
+														type: CdrPlugin.ContentType.PANEL,
+														shortDescription: 'Main',
+														filePath: '/tbl/registry.pug'
+												}
                     }
                 },
                 time: {

@@ -38,10 +38,3 @@
     footer.btn-group(role="group")      
       button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) No-Op    
       button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/ES_Reset'},indicator:'cmd'}) Reset
-  article.col-xs-12.col-sm-12
-        header
-          span.widget-icon
-            i.fa.fa-area-chart
-          h2 Pixel Flow Graph
-        div.widget-graph
-          div(data-cdr={tlm:[{name:'/CFE/ES_HK/CmdCounter'},{name:'/CFE/ES_HK/Payload.CFEMinorVersion'}],label:['PRESET','CFEMV'],indicator:'dataplot'})
