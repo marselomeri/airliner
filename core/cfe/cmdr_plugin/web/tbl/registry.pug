@@ -4,92 +4,92 @@
       span.widget-icon
         i.fa.fa-table
       h2 Registry
-        button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name: '/CFS/CFE_TBL/TlmReg'}}) Send Reg
+        button.btn.cdr-primary.cdr-in-panel-header(data-commander={cmd: {name: '/CFE/CFE_TBL_TlmRegCmd_t'},indicator:'cmd'}) Send Reg
     div.widget-body.table-responsive
       table.table.table-condensed
         tbody
           tr
-            th(style={width:'170px'}) Size
-            td(style={width:'150px'})
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Size'}]}) ---
-            td(style={width:'80px'})
+            th Size
+            td
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.Size'}],indicator:'text'}) ---
+            td
           tr
             th CRC
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_CRC'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.Crc'}],indicator:'text'}) ---
             td
           tr
             th Active Buffer Addr
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_ActiveBufferAddr', format:'0x%08x'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.ActiveBufferAddr', format:'0x%08x'}],indicator:'text'}) ---
             td
           tr
             th Inactive Buffer Addr
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_InactiveBufferAddr', format:'0x%08x'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.InactiveBufferAddr', format:'0x%08x'}],indicator:'text'}) ---
             td
           tr
             th Validation Func Ptr
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_ValidationFuncPtr', format:'0x%08x'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.ValidationFuncPtr', format:'0x%08x'}],indicator:'text'}) ---
             td
           tr
             th Time of Last Update
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_TimeOfLastUpdate_Seconds'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.TimeOfLastUpdate.Seconds'}],indicator:'text'}) ---
             td
           tr
             th 
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_TimeOfLastUpdate_Subseconds'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.TimeOfLastUpdate.Subseconds'}],indicator:'text'}) ---
             td
           tr
             th File Create Time
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_FileCreateTime_Seconds'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.FileCreateTimeSecs'}],indicator:'text'}) ---
             td
           tr
             th
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_FileCreateTime_Subseconds'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.FileCreateTimeSubSecs'}],indicator:'text'}) ---
             td
           tr
             th Table Loaded Once
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_TableLoadedOnce'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.TableLoadedOnce'}],indicator:'text'}) ---
             td
           tr
             th Load Pending
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_LoadPending'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.LoadPending'}],indicator:'text'}) ---
             td
           tr
             th Dump Only 
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_DumpOnly'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.DumpOnly'}],indicator:'text'}) ---
             td
           tr
             th Dbl Buffered 
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_DblBuffered'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.DblBuffered'}],indicator:'text'}) ---
             td
           tr
             th Name
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Name'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.Name'}],indicator:'text'}) ---
             td
           tr
             th Last File Loaded
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_LastFileLoaded'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.LastFileLoaded'}],indicator:'text'}) ---
             td
           tr
             th Owner App Name
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_OwnerAppName'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.OwnerAppName'}],indicator:'text'}) ---
             td
           tr
             th Critical
             td
-              span(data-sage={tlm:[{name:'/CFS/CFE_TBL/Registry_Critical'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_TblRegPacket_t/Payload.Critical'}],indicator:'text'}) ---
             td

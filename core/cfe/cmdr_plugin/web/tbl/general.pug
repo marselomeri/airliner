@@ -9,96 +9,92 @@
       table.table.table-condensed
         tbody
           tr
-            th(style={width:'170px'}) Cmd Count
-            td(style={width:'150px'})
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.CmdCounter'}]}) ---
-            td(style={width:'80px'})
+            th Cmd Count
+            td
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.CmdCounter'}],indicator:'text'}) ---
+            td
+              button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_Noop'}, indicator:'cmd'}) NoOp
           tr
             th Cmd Error Count
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.CmdCounter'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.ErrCounter'}],indicator:'text'}) ---
             td
-          tr
-            th
-            td(colspan=2)
-              .btn-group
-                button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-cdr={cmd: {name: '/CFE/CFE_TBL_Noop'}}) NoOp
-                button.btn.btn-xs.btn-primary.btn-labeled.sage-cmd-inline(data-cdr={cmd: {name: '/CFE/CFE_TBL_Reset'}}) Counter Reset
+              button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_Reset'}, indicator:'cmd'}) Counter Reset
           tr
             th Number of Tables
             td 
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumTables'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumTables'}],indicator:'text'}) ---
             td
           tr
             th Pending updates
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumLoadPending'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumLoadPending'}],indicator:'text'}) ---
             td
           tr
             th Validations
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.ValidationCtr'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.ValidationCtr'}],indicator:'text'}) ---
             td
           tr
             th Last CRC
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastValCrc', format:'0x%08x'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastValCrc', format:'0x%08x'}],indicator:'text'}) ---
             td
           tr
             th Last Valid Table
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastValTableName'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastValTableName'}],indicator:'text'}) ---
             td
           tr
             th Last Validation
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastValStatus'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastValStatus'}],indicator:'text'}) ---
             td
           tr
             th Active Buffer
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.ActiveBuffer', format:'0x%08x'}]}) ---
+              span(data-commander={tlm:[{name:'/CFE/TBL_HK/Payload.ActiveBuffer', format:'0x%08x'}],indicator:'text'}) ---
             td
           tr
             th Successful Validations
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.SuccessValCtr'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.SuccessValCtr'}],indicator:'text'}) ---
             td
           tr
             th Failed Validations
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.FailedValCtr'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.FailedValCtr'}],indicator:'text'}) ---
             td
           tr
             th Validation Requests
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumValRequests'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumValRequests'}],indicator:'text'}) ---
             td
           tr
             th Free Shared Buffers
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumFreeSharedBufs'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.NumFreeSharedBufs'}],indicator:'text'}) ---
             td
           tr
             th Last Updated Table
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastUpdatedTbl'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastUpdatedTbl'}],indicator:'text'}) ---
             td
           tr
             th Last File Loaded
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastFileLoaded'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastFileLoaded'}],indicator:'text'}) ---
             td
           tr
             th Last File Dumped
             td
-              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastFileDumped'}]}) ---
+              span(data-cdr={tlm:[{name:'/CFE/TBL_HK/Payload.LastFileDumped'}],indicator:'text'}) ---
             td
     footer
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/CFE_TBL_LoadCmd_t'}}) Load
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/CFE_TBL_AbortLdCmd_t'}}) Abort Load
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpCmd_t'}}) Dump
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/CFE_TBL_ValidateCmd_t'}}) Validate
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/CFE_TBL_ActivateCmd_t'}}) Activate
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/TBL_DumpReg'}}) Dump Reg
-      button.btn.btn-xs.btn-primary.btn-labeled(data-cdr={cmd: {name: '/CFE/CFE_TBL_DelCDSCmd_t'}}) Delete CDS
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_LoadCmd_t'}, indicator:'cmd'}) Load
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_AbortLdCmd_t'}, indicator:'cmd'}) Abort Load
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpCmd_t'}, indicator:'cmd'}) Dump
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ValidateCmd_t'}, indicator:'cmd'}) Validate
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ActivateCmd_t'}, indicator:'cmd'}) Activate
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/TBL_DumpReg'}, indicator:'cmd'}) Dump Reg
+      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DelCDSCmd_t'}, indicator:'cmd'}) Delete CDS
