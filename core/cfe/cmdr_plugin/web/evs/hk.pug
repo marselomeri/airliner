@@ -26,8 +26,8 @@
                     span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.MessageFormatMode'}],indicator:'text'}) ---
                   td
                     .btn-group
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'Short'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Short 
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'Long'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Long
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Short 
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Long
                 tr
                   th Truncated Msgs
                   td
@@ -39,37 +39,22 @@
                     span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.UnregisteredAppCounter'}],indicator:'text'}) ---
                   td
                 tr
-                  th Output Port 0
+                  th Output Port
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[0]'}],indicator:'text'}) ---
-                  td
-                    .btn-group
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
-                tr
-                  th Output Port 1
-                  td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[1]'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort'}],indicator:'text'}) ---
                   td
                     .btn-group
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
-                tr
-                  th Output Port 2
-                  td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[2]'}],indicator:'text'}) ---
-                  td
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 0
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 0
                     .btn-group
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
-                tr
-                  th Output Port 3
-                  td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort[3]'}],indicator:'text'}) ---
-                  td
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 1
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'2'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 1
                     .btn-group
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 2
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'4'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 2
+                    .btn-group
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 3
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_DisablePorts', argument:[{name:'Payload.BitMask', value:'8'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Disable 3
                 tr
                   th Log Full
                   td
@@ -81,8 +66,8 @@
                     span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.LogMode'}],indicator:'text'}) ---
                   td
                     .btn-group
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'Overwrite'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Overwrite
-                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'Discard'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Discard
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Overwrite
+                      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Discard
                 tr
                   th Msg Send Counter
                   td
