@@ -187,6 +187,53 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               filePath: '/time/main.pug'
             }
           }
+        },
+        pilot: {
+          shortDescription: 'Pilot',
+          longDescription: 'Pilot Services',
+          nodes: {
+            main: {
+              type: CdrPlugin.ContentType.LAYOUT,
+              shortDescription: 'PFD',
+              longDescription: 'Primary Flight Dispaly',
+              filePath: '/pilot/main_layout.lyt'
+            },
+            dm: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Display Modes',
+              filePath: '/pilot/dm.pug'
+            },
+            vm: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Vehicle Manager',
+              filePath: '/pilot/vm.pug'
+            },
+            indicator: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Indicators',
+              filePath: '/pilot/indicator.pug'
+            },
+            position: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Vehicle Position',
+              filePath: '/pilot/position.pug'
+            },
+            misc: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Miscellaneous',
+              filePath: '/pilot/misc.pug'
+            },
+            vitals: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Vitals',
+              filePath: '/pilot/vitals.pug'
+            },
+            display: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Display',
+              filePath: '/pilot/display.pug'
+            }
+          }
         }
       }
     };
