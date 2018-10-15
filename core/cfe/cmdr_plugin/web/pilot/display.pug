@@ -1,237 +1,82 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    #cdr-dc.cdr-display-container
-      #cdr-guages.cdr-display-container-item
-      #cdr-video.cdr-display-container-item
-      #cdr-cesium.cdr-display-container-item
-      #cdr-image.cdr-display-container-item
-      #cdr-empty.cdr-display-container-item  
-
-script.
-  var CommanderDisplay = CommanderDisplay || {};
-  
-  function CommanderDisplay() {
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3YjJkYmYwOS02NGU2LTQyZGEtOGRiZC01Yjg3ZTllODBiYTAiLCJpZCI6MTU1NSwiaWF0IjoxNTI4OTE4MTQzfQ.E3pqNt_MGy9rAjE4T4dnPY3vOKjdctpXOjmh0ZPPloE';
-    /* Default Display metadata */
-    this.DISP_META = {
-      'DISPLAY_CHANNELS' : {
-        0 : 'NO_DISPLAY',         /* Display winhoverlabs logo */
-        1 : 'VIDEO_STREAM',       /* Streams video from vehicle */
-        2 : 'CESIUM_MAPS'         /* Display cesiums maps and terrains */
-      },
-      'CESIUM_MAPS' : {
-        0 : 'SIMPLE',             /* Basic cesium street map */
-        1 : 'SATELLITE',          /* Satellite map */
-        2 : 'SIMPLE_TERRAIN',     /* Basic cesium street map with terrain */
-        3 : 'SATELLITE_TERRAIN'  /* Satellite map with terrain */
-      },
-      'LAYERS' : {
-        0 : 'NO_LAYER',           /* Apply no layer */
-        1 : 'ADSB',               /* Apply ADSB aircraft tracking layer */
-        2 : 'ADI'                /* apply Attitude Director Indicator */
-      }
-    };
-    /* Default Display state */
-    this.DISP_STATE = {
-      'DISPLAY_CHANNELS' : 0,
-      'CESIUM_MAPS'      : 0,
-      'LAYERS'           : 0
-    };
-    this.CesiumViewer = undefined;
-    this.home = Cesium.Cartesian3.fromDegrees( -95.3698,29.7604, 130000.0);  /* Houston */
-    this.updateChannel();
-    this.updateImageLayer();
-    this.updateMapType();
+style.
+  .left{
+    float:left;
   }
-
-  CommanderDisplay.prototype.InitViewer = function() {
-    $('#cdr-cesium').css('display','block');
-    var viewer = new Cesium.Viewer('cdr-cesium',{
-      animation                                   : false,
-      fullscreenButton                            : false,
-      baseLayerPicker                             :	false,
-      vrButton 	                                  : false,
-      geocoder 	                                  : false,
-      homeButton 	                                : false,
-      infoBox 	                                  : false,
-      sceneModePicker                             : false,
-      selectionIndicator                          : false,
-      timeline 	                                  : false,
-      navigationHelpButton 	                      : false,
-      navigationInstructionsInitiallyVisible 	    : false,
-      scene3DOnly 	                              : false,
-      shouldAnimate                               :	false,
-      });
-    viewer.camera.setView({
-      destination : this.home,
-    });
-    /* Simple street layer */
-    viewer.imageryLayers.addImageryProvider(
-      new Cesium.IonImageryProvider({ assetId: 4 })
-    );
-    /* 2D Terrain */
-    viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
-    try{
-      this.CesiumViewer = viewer;
-    }
-    catch (e){
-        cu.logError('Commander Display | InitViewer | Unknown assignment error :',e.message);
-    }
-  };
-  
-  CommanderDisplay.prototype.getViewer = function() {
-    return this.CesiumViewer;
-  };
-  
-  CommanderDisplay.prototype.DestroyViewer = function() {
-    if (this.CesiumViewer != undefined) {
-        try{
-            this.CesiumViewer.destroy();
-            this.CesiumViewer = undefined;
-        }  
-        catch (e) {
-          cu.logError('Commander Display | DestroyViewer | Error destroying viewer :',e.message);
-        }
+  .right{
+    float:right;
+  }
+  .cdr-button-container {
+    display: inline-table;
+    width: 100%;
+  }
+  .cdr-button-container >div {
+    margin: 5px 10px;
+  }
+  .cdr-button-container >div >button {
+    margin: 2px;
+  }
+.row.os-theme-dark.cdr-display-class
+  .col-xs-12.col-sm-12
+    .cdr-button-container
+      .left
+        button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 0] onclick='setDisplayState(this)') NO DISPLAY    
+        button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 1] onclick='setDisplayState(this)') VIDEO STREAM
+        button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 2] onclick='setDisplayState(this)') CESIUM MAP
+      .right
+        button.btn.cdr-outline-green(data-info=['LAYERS', 0] onclick='setDisplayState(this)') NO LAYER    
+        button.btn.cdr-outline-green(data-info=['LAYERS', 1] onclick='setDisplayState(this)') ADI
+  .col-xs-12.col-sm-12
+    .cdr-display-container
+      #cdr-guages.cdr-display-container-item.cdr-guages  
+      #cdr-video.cdr-display-container-item.cdr-video  
+      #cdr-cesium.cdr-display-container-item.cdr-cesium  
+      #cdr-image.cdr-display-container-item.cdr-image  
+      #cdr-empty.cdr-display-container-item.cdr-empty  
+  .col-xs-12.col-sm-12
+    .cdr-button-container
+      .left
+        button.btn.cdr-outline-green(data-info=['MAP_TYPES', 0] onclick='setDisplayState(this)') DEFAULT MAP    
+        button.btn.cdr-outline-green(data-info=['MAP_TYPES', 1] onclick='setDisplayState(this)') SATTELITE MAP
+      .right
+        button.btn.cdr-outline-green(data-info=['TERRAIN_TYPES', 0] onclick='setDisplayState(this)') 2D TERRAIN
+        button.btn.cdr-outline-green(data-info=['TERRAIN_TYPES', 1] onclick='setDisplayState(this)') 3D TERRAIN  
         
-        cu.logInfo('Commander Display | DestroyViewer | Viewer Destroyed');
+        
+script.
+  var displayClass = $('.cdr-display-class');
+  
+  displayClass.each((e)=>{
+    var displayClassObj = $(displayClass[e]);
+    if (displayClassObj.attr('id') == undefined) {
+      var randomKey = cu.makeKey();
+      var splKeyCollection = displayClassObj.find('button[data-info]');
+      displayClassObj.attr('id',randomKey);
+      splKeyCollection.each((itm)=>{
+        $(splKeyCollection[itm]).data('key',randomKey);
+      });
+      splKeyCollection = displayClassObj.find('.cdr-display-container-item');
+      splKeyCollection.each((itm)=>{
+        var id = $(splKeyCollection[itm]).attr('id');
+        $(splKeyCollection[itm]).attr('id',id+'-'+randomKey);
+      });
+      display_controllers[randomKey] = new CommanderDisplay($('#'+randomKey));
     }
-    $('#cdr-cesium').css('display','none');
-    cu.logDebug('Commander Display | DestroyViewer | viewer css property, display set to none');
-  };
+    
+  });
   
-  CommanderDisplay.prototype.DestroyVideoStream = function() {  
-    $('#cdr-video').css('display','none');
-  };
-  
-  CommanderDisplay.prototype.InitVideoStream = function() {  
-    $('#cdr-video').css('display','block');
-  };
-  
-  CommanderDisplay.prototype.updateChannel = function() {
-    var SUCCESS = false;
-    var channel = this.DISP_META.DISPLAY_CHANNELS[this.DISP_STATE.DISPLAY_CHANNELS];
-    try{
-      switch (channel) {
-        case 'NO_DISPLAY': {
-          this.DestroyViewer();
-          this.DestroyVideoStream();
-          break;
-        }
-        case 'VIDEO_STREAM': {
-          this.InitVideoStream();
-          this.DestroyViewer();
-          break;
-        }
-        case 'CESIUM_MAPS': {
-          this.InitViewer();
-          this.DestroyVideoStream();
-          break;
-        }
-      }
-      SUCCESS = true;
+  if (setDisplayState == undefined) {
+    function setDisplayState(e) {
+      var controlInfo = $(e).data('info');
+      var cdKey = $(e).data('key');
+      var key = controlInfo[0];
+      var value = controlInfo[1];
+      display_controllers[cdKey].updateDisplayState(key,value);
     }
-    catch (e) {
-      cu.logError('Commander Display | updateChannel | ', e.message);
-    }
-    return SUCCESS;
-  };
+  }
   
-  CommanderDisplay.prototype.updateImageLayer = function() {
-    var SUCCESS = false;
-    var layer   = this.DISP_META.LAYERS[this.DISP_STATE.LAYERS];
-    return (!SUCCESS)
-  };
-  
-  CommanderDisplay.prototype.updateMapType = function() {
-    var SUCCESS = false;
-    var map     = this.DISP_META.CESIUM_MAPS[this.DISP_STATE.CESIUM_MAPS];
-    var channel = this.DISP_META.DISPLAY_CHANNELS[this.DISP_STATE.DISPLAY_CHANNELS];
 
-    if (channel == 'CESIUM_MAPS') {
-      console.log(this.Ce)
-      switch (map) {
-        case 'SIMPLE' : {
-          /* Simple street layer */
-          this.CesiumViewer.imageryLayers.addImageryProvider(
-            new Cesium.IonImageryProvider({ assetId: 4 })
-          );
-          /* 2D Terrain */
-          this.CesiumViewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
-          break;
-        }
-        case 'SATELLITE' : {
-          /* Sattelite street layer */
-          this.CesiumViewer.imageryLayers.addImageryProvider(
-            new Cesium.IonImageryProvider({ assetId: 3 })
-          );
-          /* 2D Terrain */
-          this.CesiumViewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
-          break;
-        }
-        case 'SIMPLE_TERRAIN' : {
-          /* Simple street layer */
-          this.CesiumViewer.imageryLayers.addImageryProvider(
-            new Cesium.IonImageryProvider({ assetId: 4 })
-          );
-          /* 3D Terrain */
-          this.CesiumViewer.scene.terrainProvider = new Cesium.CesiumTerrainProvider({
-            url : Cesium.IonResource.fromAssetId(1),
-            requestWaterMask: true
-          });
-          break;
-        }
-        case 'SATELLITE_TERRAIN' : {
-          /* Sattelite street layer */
-          this.CesiumViewer.imageryLayers.addImageryProvider(
-            new Cesium.IonImageryProvider({ assetId: 2 })
-          );
-          /* 3D Terrain */
-          this.CesiumViewer.scene.terrainProvider = new Cesium.CesiumTerrainProvider({
-            url : Cesium.IonResource.fromAssetId(1),
-            requestWaterMask: true
-          });
-          break;
-        }
-      }
-      SUCCESS = true;
-    }
-    return SUCCESS;
-  };
 
-  CommanderDisplay.prototype.SetChannels = function(value) {
-    cu.assert(typeof value == 'number', 'Commander Display | SetChannels | value should be a number');
-    var value_range_pool = Object.keys(cdr_display.DISP_META.DISPLAY_CHANNELS).map(Number)
-    cu.assert(value in value_range_pool, 'Commander Display | SetChannels | got invalid channel value');
-    var prevValue = this.DISP_STATE.DISPLAY_CHANNELS;
-    this.DISP_STATE.DISPLAY_CHANNELS = value;
-    if (!this.updateChannel()) {
-      this.DISP_STATE.DISPLAY_CHANNELS = prevValue;
-      cu.logError('Commander Display | SetChannels | Unable to update, DISPLAY_CHANNELS at ',prevValue);
-    }
-  };
   
-  CommanderDisplay.prototype.SetImageLayer = function(value) {
-    cu.assert(typeof value == 'number', 'Commander Display | SetImageLayer | value should be a number');
-    var value_range_pool = Object.keys(cdr_display.DISP_META.LAYERS).map(Number)
-    cu.assert(value in value_range_pool, 'Commander Display | SetImageLayer | got invalid channel value');
-    var prevValue = this.DISP_STATE.LAYERS;
-    this.DISP_STATE.LAYERS = value;
-    if (!this.updateImageLayer()) {
-      this.DISP_STATE.LAYERS = prevValue;
-      cu.logError('Commander Display | SetImageLayer | Unable to update, LAYERS at ',prevValue);
-    }
-  };
+
   
-  CommanderDisplay.prototype.SetMapType = function(value) {
-    cu.assert(typeof value == 'number', 'Commander Display | SetMapType | value should be a number');
-    var value_range_pool = Object.keys(cdr_display.DISP_META.CESIUM_MAPS).map(Number)
-    cu.assert(value in value_range_pool, 'Commander Display | SetMapType | got invalid channel value');
-    var prevValue = this.DISP_STATE.CESIUM_MAPS;
-    this.DISP_STATE.CESIUM_MAPS = value;
-    if (!this.updateMapType()) {
-      this.DISP_STATE.CESIUM_MAPS = prevValue;
-      cu.logError('Commander Display | SetMapType | Unable to update, CESIUM_MAPS at ',prevValue);
-    }
-  };
   
-  var cdr_display = new CommanderDisplay();
