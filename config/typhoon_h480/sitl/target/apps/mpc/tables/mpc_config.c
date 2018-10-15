@@ -55,7 +55,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @increment 0.01
 	 * @group Multicopter Position Control
 	 */
-	0.12f,
+	0.01f,
 
 	/**
 	 * MPC_THR_HOVER
@@ -574,7 +574,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @max 1
 	 * @group Multicopter Position Control
 	 */
-	0.01f,
+	0.05f,
 
     /**
      * MC_YAWRATE_MAX
