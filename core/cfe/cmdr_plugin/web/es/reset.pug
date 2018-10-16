@@ -20,15 +20,15 @@
           tr
             th Proc Reset Cnt:
             td
-              span.sage-tlm(data-cdr={tlm: [{name: '/CFE/ES_HK/ProcessorResets'}],indicator:'text'}) ---
+              span.sage-tlm(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.ProcessorResets'}],indicator:'text'}) ---
             td
               button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_ResetPrCount'},indicator:'cmd'}) Reset
           tr
             th Max Proc Resets:
             td
-              span.sage-tlm(data-cdr={tlm: [{name: '/CFE/ES_HK/MaxProcessorResets'}],indicator:'text'}) ---
+              span.sage-tlm(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.MaxProcessorResets'}],indicator:'text'}) ---
             td
-              button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/SetMaxPRCount'},indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-commander={cmd: {name:'/CFE/Payload.SetMaxPRCount'},indicator:'cmd'}) Set
           tr
             th Boot Source:
             td

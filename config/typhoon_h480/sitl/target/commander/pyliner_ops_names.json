@@ -13316,7 +13316,7 @@
                             "Payload.ResetType": {
                                 "field_path": "Payload.ResetType"
                             },
-                            "ProcessorResets": {
+                            "Payload.ProcessorResets": {
                                 "field_path": "Payload.ProcessorResets"
                             },
                             "Payload.CFEMissionRevision": {
@@ -13355,10 +13355,10 @@
                             "Payload.SysLogMode": {
                                 "field_path": "Payload.SysLogMode"
                             },
-                            "MaxProcessorResets": {
+                            "Payload.MaxProcessorResets": {
                                 "field_path": "Payload.MaxProcessorResets"
                             },
-                            "Payload.CFERevision": {
+                            "Payload.Payload.CFERevision": {
                                 "field_path": "Payload.CFERevision"
                             },
                             "Payload.PerfDataCount": {
@@ -13373,7 +13373,7 @@
                             "Payload.SysLogEntries": {
                                 "field_path": "Payload.SysLogEntries"
                             },
-                            "CmdCounter": {
+                            "Payload.CmdCounter": {
                                 "field_path": "Payload.CmdCounter"
                             },
                             "Payload.PerfDataEnd": {
