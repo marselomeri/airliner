@@ -107,8 +107,63 @@
                         "airliner_cc": -1,
                         "airliner_msg": "VM_Modes"
                     },
+                    "Noop": {
+                        "airliner_cc": 0,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "Reset": {
+                        "airliner_cc": 1,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "Arm": {
+                        "airliner_cc": 2,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "Disarm": {
+                        "airliner_cc": 3,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "Manual": {
+                        "airliner_cc": 40,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "AltCtl": {
+                        "airliner_cc": 41,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "PosCtl": {
+                        "airliner_cc": 42,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "AutoLoiter": {
+                        "airliner_cc": 44,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "AutoRtl": {
+                        "airliner_cc": 45,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "AutoTakeOff": {
+                        "airliner_cc": 56,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
+                    "AutoLand": {
+                        "airliner_cc": 57,
+                        "airliner_msg": "",
+                        "airliner_mid": "0x1c70"
+                    },
                     "VM_HkTlm_t": {
-                        "airliner_mid": "",
+                        "airliner_mid": "0x0c6d",
                         "airliner_cc": -1,
                         "airliner_msg": "VM_HkTlm_t"
                     },
@@ -427,7 +482,7 @@
             "PX4": {
                 "operations": {
                     "PX4_BatteryStatusMsg_t": {
-                        "airliner_mid": "",
+                        "airliner_mid": "0x0a0c",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_BatteryStatusMsg_t"
                     },
@@ -442,7 +497,7 @@
                         "airliner_msg": "PX4_MissionMsg_t"
                     },
                     "PX4_VehicleStatusMsg_t": {
-                        "airliner_mid": "",
+                        "airliner_mid": "0x0a57",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_VehicleStatusMsg_t"
                     },
@@ -477,7 +532,7 @@
                         "airliner_msg": "PX4_VehicleLocalPositionMsg_t"
                     },
                     "PX4_VehicleLandDetectedMsg_t": {
-                        "airliner_mid": "",
+                        "airliner_mid": "0x0a53",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_VehicleLandDetectedMsg_t"
                     },
@@ -647,7 +702,7 @@
                         "airliner_msg": "PX4_SubsystemInfoMsg_t"
                     },
                     "PX4_VehicleGpsPositionMsg_t": {
-                        "airliner_mid": "",
+                        "airliner_mid": "0x0a52",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_VehicleGpsPositionMsg_t"
                     },
@@ -1189,7 +1244,7 @@
                         "airliner_msg": "PE_Params_t"
                     },
                     "PE_HkTlm_t": {
-                        "airliner_mid": "",
+                        "airliner_mid": "0x0c79",
                         "airliner_cc": -1,
                         "airliner_msg": "PE_HkTlm_t"
                     },

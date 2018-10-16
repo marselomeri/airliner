@@ -1,49 +1,180 @@
 style.
-  section >label {
+  .pfd-indicator-class {
+    display: block;
+    background: var(--td-bg-color);
+    border: 1px solid var(--td-border-color) !important;
+    margin: 5px;
+    border-radius: 5px;
+    padding: 6px;
+    overflow: hidden;
+  }
+
+  .pfd-indicator{
+    text-align: center;
     display:grid;
   }
-  textarea,
-  input{
-  background-color: var(--btn-font-color-drk);
-  border: var(--btn-font-color-drk);
-  color: green;
+  .pfd-ind-label{
+    text-align: center;
+    padding: 5px;
+    font-size: small;
+    font-weight: bold;
+  }
+  .pfd-indicator > span {
+    margin: 2px;
+  }
+  .pfd-outline-green {
+    padding: 0px 2px;
+    border-radius:5px;
+    font-size: 10px;
+    color: var(--btn-ssb-txt-inactive-color);
+    background-color: var(--btn-trasperant-color);
+    border: 1px solid var(--btn-ssb-txt-inactive-color);
+  }
+  .pfd-outline-green.active {
+    color: var(--btn-ssb-text-active-color);
+    background-color: var(--btn-trasperant-color);
+    border: 1px solid var(--btn-ssb-border-hover-active-color);
   }
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Console
-    div.widget-body.table-responsive
-      form.smart-form(action='')
-        fieldset
-          section
-            label.label Output
-            label.textarea.textarea-resizable                                         
-              textarea#CFE_ES_ConsoleOutput.custom-scroll(style='font-family: monospace' rows='20') 
-            label.label Command
-            label.input                                        
-              input#CFE_ES_ConsoleCommand.input-xs(style='font-family: monospace' type='text') 
-            label.label File
-            label.input                                        
-              input#CFE_ES_ConsoleOutputFile.input-xs(style='font-family: monospace' type='text') 
-            button#CFE_ES_ConsoleSendCmd.btn.cdr-outline-primary Send
-
-script.
-  $(function () {
-    //session.subscribe([CFE_ES_CmdCounter", function(record) {
-    //  var timeStamp = CfeTimeToJsTime(record.seconds, record.subseconds)
-    //  $("#CFE_ES_LastUpdate").text($.format.date(timeStamp, "MM/dd/yyyy HH:mm:ss.") + timeStamp.getMilliseconds().toString().paddingLeft("000"));
-    //});
+    div.widget-body
     
-    session.subscribe({tlm: [{name: '/CFE/ES_HK/Payload.ShellOutput'}]}, function(tlm) {
-      console.log(tlm);
-      $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + tlm.engValue.stringValue);
-      $('#CFE_ES_ConsoleOutput').scrollTop($('#CFE_ES_ConsoleOutput')[0].scrollHeight);
+      .pfd-ld-initialized.pfd-indicator-class
+        .pfd-ind-label  VEHICLE LAND
+        .pfd-indicator
+          span.pfd-outline-green(data-info="DETECTED") DETECTED
+      
+      .pfd-lg-initialized.pfd-indicator-class
+        .pfd-ind-label  LANDING GEAR
+        .pfd-indicator
+          span.pfd-outline-green(data-info="EXTENDED") EXTENDED
+          span.pfd-outline-green(data-info="RETRACTED") RETRACTED
+          
+      .pfd-pe-initialized.pfd-indicator-class
+        .pfd-ind-label  PE
+        .pfd-indicator
+          span.pfd-outline-green(data-info="INITIALIZED") INITIALIZED
+          
+      .pfd-arm-initialized.pfd-indicator-class
+        .pfd-ind-label  ARM STATE
+        .pfd-indicator
+          span.pfd-outline-green(data-info="ARM") ARM
+          span.pfd-outline-green(data-info="DISARM") DISARM
+          
+      .pfd-mode-initialized.pfd-indicator-class
+        .pfd-ind-label  NAV MODE
+        .pfd-indicator
+          span.pfd-outline-green(data-info="MANUAL") MANUAL
+          span.pfd-outline-green(data-info="POSCTL") POSCTL
+          span.pfd-outline-green(data-info="ALTCTL") ALTCTL
+          span.pfd-outline-green(data-info="AUTO TAKEOFF") AUTO TAKEOFF
+          span.pfd-outline-green(data-info="AUTO LAND") AUTO LAND
+          span.pfd-outline-green(data-info="AUTO LOITER") AUTO LOITER
+          span.pfd-outline-green(data-info="AUTO RTL") AUTO RTL
+          
+script.
+
+  /* LD Detected ? */  
+  if(!('/PX4/PX4_VehicleLandDetectedMsg_t/Landed' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/PX4/PX4_VehicleLandDetectedMsg_t/Landed'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-ld-initialized').find('.pfd-outline-green').removeClass('active');
+        if(value) {
+          $('.pfd-ld-initialized').find('[data-info="DETECTED"]').addClass('active')
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
     });
-     
-    $('#CFE_ES_ConsoleSendCmd').click(function(){
-      session.sendCommand('/CFS/CFE_ES_ShellCmd_t', [{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
-      $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + '\n');
+    rouge_subscriptions['/PX4/PX4_VehicleLandDetectedMsg_t/Landed'] = '.pfd-ld-initialized';
+  }
+  
+  /* PE Initialized ? */  
+  if(!('/PE/PE_HkTlm_t/EstimatorGlobalInitialized' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-pe-initialized').find('.pfd-outline-green').removeClass('active');
+        if(value) {
+          $('.pfd-pe-initialized').find('[data-info="INITIALIZED"]').addClass('active')
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
     });
-  });
+    rouge_subscriptions['/PE/PE_HkTlm_t/EstimatorGlobalInitialized'] = '.pfd-pe-initialized';
+  }
+  
+  /* ARM State ? */  
+  if(!('/VM/VM_HkTlm_t/ArmingState' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/VM/VM_HkTlm_t/ArmingState'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-arm-initialized').find('.pfd-outline-green').removeClass('active');
+        if(value == 1) {
+          $('.pfd-arm-initialized').find('[data-info="DISARM"]').addClass('active')
+        }
+        else if(value == 2) {
+          $('.pfd-arm-initialized').find('[data-info="ARM"]').addClass('active')
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    rouge_subscriptions['/VM/VM_HkTlm_t/ArmingState'] = '.pfd-arm-initialized';
+  }
+  
+  /* NAV State ? */  
+  if(!('/VM/VM_HkTlm_t/NavState' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/VM/VM_HkTlm_t/NavState'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-mode-initialized').find('.pfd-outline-green').removeClass('active');
+        switch(value) {
+          case 0 :{
+            $('.pfd-mode-initialized').find('[data-info="MANUAL"]').addClass('active');
+            break;
+          }
+          case 1 :{
+            $('.pfd-mode-initialized').find('[data-info="ALTCTL"]').addClass('active');
+            break;
+          }
+          case 2 :{
+            $('.pfd-mode-initialized').find('[data-info="POSCTL"]').addClass('active');
+            break;
+          }
+          case 3 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO RTL"]').addClass('active');
+            break;
+          }
+          case 4 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO LOITER"]').addClass('active');
+            break;
+          }
+          case 8 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO TAKEOFF"]').addClass('active');
+            break;
+          }
+          case 9 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO LAND"]').addClass('active');
+            break;
+          }
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    rouge_subscriptions['/VM/VM_HkTlm_t/NavState'] = '.pfd-mode-initialized';
+  }
+
+
+  

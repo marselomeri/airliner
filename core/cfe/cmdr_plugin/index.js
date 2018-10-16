@@ -198,11 +198,6 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               longDescription: 'Primary Flight Dispaly',
               filePath: '/pilot/main_layout.lyt'
             },
-            dm: {
-              type: CdrPlugin.ContentType.PANEL,
-              shortDescription: 'Display Modes',
-              filePath: '/pilot/dm.pug'
-            },
             vm: {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Vehicle Manager',
