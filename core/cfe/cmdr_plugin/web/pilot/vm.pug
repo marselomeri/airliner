@@ -1,39 +1,37 @@
 style.
-  .cdr-btn-container{
-    background-color:var(--th-bg-color);
-    padding:20px;
-    display:flex;
+  .pfd-container{
+    background-color: var(--th-bg-color);
+    padding: 5px;
+    display: grid;
+    margin: 9px;
+    border: 2px solid var(--btn-primary-background-color);
+    border-radius: 7px;
   }
-  .cdr-btn-container>button{
-    margin:5px;
+  .pfd-container>button{
+    margin:3px;
+    padding: 5px;
+    overflow: hidden;
   }
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
-    header
-       span.widget-icon
-         i.fa.fa-table
-       h2 Command and Data Handling
-    div.widget-body.table-responsive
-      table.table.table-condensed
-            tbody
-              tr
-                th Cmd Count
-                td
-                  div(data-cdr={tlm:[{name:'/CFE/ES_HK/CmdCounter'}],indicator:'text'}) ---
-              tr
-                th Error Count
-                td
-                  div(data-cdr={tlm:[{name:'/CFE/ES_HK/Payload.ErrCounter'}],indicator:'text'}) ---
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/ES_Reset'},indicator:'cmd'}) Reset
-
-  article.col-xs-12.col-sm-12
-    header
-       span.widget-icon
-         i.fa.fa-table
-       h2 Vehicle Manager
-    div.widget-body.table-responsive
-      .cdr-btn-container
-        button.btn.cdr-important(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) ARM    
-        button.btn.cdr-important(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) DISARM    
+    .pfd-container
+      button.btn.cdr-important(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) ARM  
+          i.fa.fa-superpowers
+      button.btn.cdr-important(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) DISARM  
+          i.fa.fa-stop-circle-o
+    .pfd-container 
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Auto Takeoff    
+          i.fa.fa-paper-plane-o
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Auto Loiter   
+          i.fa.fa-pause-circle-o
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Auto Land    
+          i.fa.fa-road
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Auto RTL   
+          i.fa.fa-home
+    .pfd-container
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Manual    
+          i.fa.fa-hand-grab-o
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Position Control   
+          i.fa.fa-gears
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/ES_Noop'},indicator:'cmd'}) Altitude Control      
+          i.fa.fa-gears

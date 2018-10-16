@@ -1,41 +1,62 @@
+style.
+  .pfd-tbody > tr > td {
+    padding:5px !important;
+    overflow :hidden;
+  }
+  .pfd-label{
+    display: block;
+    text-align: center;
+    font-size: large;
+    color: var(--danger);
+    margin: 5px;
+  }
+  .pfd-large{
+    display: block;
+    text-align: center;
+    font-size: xx-large;
+    margin: 5px;
+  }
+  .pfd-label-metric{
+    display:block;
+    text-align:center;
+    font-style:italic;
+    margin: 5px;
+  }
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Logging
-    div.widget-body.table-responsive
+    div.widget-body
       table.table.table-condensed
-        tbody
+        tbody.pfd-tbody
           tr
-            th Bytes Used:
             td 
-              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) ---
+              span.pfd-label Altitude
+              .pfd-large
+                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 573.239
+              span.pfd-label-metric meters
             td
+              span.pfd-label Velocity
+              .pfd-large
+                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 2.504
+              span.pfd-label-metric meters/sec
           tr
-            th Entries:
+            td 
+              span.pfd-label VXY
+              .pfd-large
+                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 0.116
+              span.pfd-label-metric meters/sec
             td
-              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogEntries'}],indicator:'text'}) ---
-            td
-              .btn-group
-                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearSysLog'},indicator:'cmd'}) Clear Log
-                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteSyslogCmd_t'},indicator:'cmd'}) Write Log
-          tr 
-            th Mode:
-            td
-              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogMode'}],indicator:'text'}) ---
-            td
-              button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_OverWriteSysLogCmd_t'},indicator:'cmd'}) Set Mode
+              span.pfd-label VZ
+              .pfd-large
+                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 2.501
+              span.pfd-label-metric meters/sec
           tr
-            th Index:
+            td 
+              span.pfd-label Latitude
+              .pfd-large
+                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 47.3977
+              span.pfd-label-metric degrees
             td
-              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.ERLogIndex'}],indicator:'text'}) ---
-            td
-          tr 
-            th Entries:
-            td
-              span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.ERLogEntries'}],indicator:'text'}) ---
-            td
-              .btn-group
-                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_ClearErLog'},indicator:'cmd'}) Clear Log
-                button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_WriteERlogCmd_t'},indicator:'cmd'}) Write Log
+              span.pfd-label Longitude
+              .pfd-large
+                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 8.5452
+              span.pfd-label-metric degrees

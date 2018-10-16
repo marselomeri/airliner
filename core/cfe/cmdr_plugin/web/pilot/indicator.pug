@@ -1,49 +1,63 @@
 style.
-  section >label {
+  .pfd-ind-tbody > tr {
+    display:grid;
+    margin:2px;
+  }
+
+  .pfd-indicator{
+    text-align: center;
     display:grid;
   }
-  textarea,
-  input{
-  background-color: var(--btn-font-color-drk);
-  border: var(--btn-font-color-drk);
-  color: green;
+  .pfd-ind-label{
+    text-align: center;
+    padding: 5px;
+    font-size: small;
+    font-weight: bold;
+  }
+  .pfd-indicator > span {
+    margin: 5px;
+  }
+  .pfd-outline-green {
+    padding: 0px 3px;
+    border-radius:5px;
+    font-size: 14px;
+    color: var(--btn-ssb-txt-inactive-color);
+    background-color: var(--btn-trasperant-color);
+    border: 1px solid var(--btn-ssb-border-inactive-color);
+  }
+  .pfd-outline-green.active {
+    color: var(--btn-ssb-text-active-color);
+    background-color: var(--btn-trasperant-color);
+    border: 1px solid var(--btn-ssb-border-hover-active-color);
   }
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Console
-    div.widget-body.table-responsive
-      form.smart-form(action='')
-        fieldset
-          section
-            label.label Output
-            label.textarea.textarea-resizable                                         
-              textarea#CFE_ES_ConsoleOutput.custom-scroll(style='font-family: monospace' rows='20') 
-            label.label Command
-            label.input                                        
-              input#CFE_ES_ConsoleCommand.input-xs(style='font-family: monospace' type='text') 
-            label.label File
-            label.input                                        
-              input#CFE_ES_ConsoleOutputFile.input-xs(style='font-family: monospace' type='text') 
-            button#CFE_ES_ConsoleSendCmd.btn.cdr-outline-primary Send
-
-script.
-  $(function () {
-    //session.subscribe([CFE_ES_CmdCounter", function(record) {
-    //  var timeStamp = CfeTimeToJsTime(record.seconds, record.subseconds)
-    //  $("#CFE_ES_LastUpdate").text($.format.date(timeStamp, "MM/dd/yyyy HH:mm:ss.") + timeStamp.getMilliseconds().toString().paddingLeft("000"));
-    //});
-    
-    session.subscribe({tlm: [{name: '/CFE/ES_HK/Payload.ShellOutput'}]}, function(tlm) {
-      console.log(tlm);
-      $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + tlm.engValue.stringValue);
-      $('#CFE_ES_ConsoleOutput').scrollTop($('#CFE_ES_ConsoleOutput')[0].scrollHeight);
-    });
-     
-    $('#CFE_ES_ConsoleSendCmd').click(function(){
-      session.sendCommand('/CFS/CFE_ES_ShellCmd_t', [{name:'Command', value:$('#CFE_ES_ConsoleCommand').val()},{name:'OutputFile', value:$('#CFE_ES_ConsoleOutputFile').val()}]);
-      $('#CFE_ES_ConsoleOutput').val($('#CFE_ES_ConsoleOutput').val() + '\n');
-    });
-  });
+    div.widget-body
+      table.table.table-condensed
+        tbody.pfd-ind-tbody
+          tr
+            td
+              .pfd-ind-label  WIFI
+              .pfd-indicator
+                span.pfd-outline-green.active CONNECTED
+          tr
+            td
+              .pfd-ind-label  RADIO
+              .pfd-indicator
+                span.pfd-outline-green.active CONNECTED
+          tr
+            td
+              .pfd-ind-label  VEHICLE LAND
+              .pfd-indicator
+                span.pfd-outline-green.active DETECTED
+          tr
+            td
+              .pfd-ind-label  LANDING GEAR
+              .pfd-indicator
+                span.btn.pfd-outline-green.active EXTENDED
+                span.pfd-outline-green RETRACTED
+          tr
+            td
+              .pfd-ind-label  PE
+              .pfd-indicator
+                span.pfd-outline-green INITIALIZED
