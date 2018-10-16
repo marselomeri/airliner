@@ -1,7 +1,12 @@
 style.
-  .pfd-ind-tbody > tr {
-    display:grid;
-    margin:2px;
+  .pfd-indicator-class {
+    display: block;
+    background: var(--td-bg-color);
+    border: 1px solid var(--td-border-color) !important;
+    margin: 5px;
+    border-radius: 5px;
+    padding: 6px;
+    overflow: hidden;
   }
 
   .pfd-indicator{
@@ -15,15 +20,15 @@ style.
     font-weight: bold;
   }
   .pfd-indicator > span {
-    margin: 5px;
+    margin: 2px;
   }
   .pfd-outline-green {
-    padding: 0px 3px;
+    padding: 0px 2px;
     border-radius:5px;
-    font-size: 14px;
+    font-size: 10px;
     color: var(--btn-ssb-txt-inactive-color);
     background-color: var(--btn-trasperant-color);
-    border: 1px solid var(--btn-ssb-border-inactive-color);
+    border: 1px solid var(--btn-ssb-txt-inactive-color);
   }
   .pfd-outline-green.active {
     color: var(--btn-ssb-text-active-color);
@@ -33,31 +38,143 @@ style.
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
     div.widget-body
-      table.table.table-condensed
-        tbody.pfd-ind-tbody
-          tr
-            td
-              .pfd-ind-label  WIFI
-              .pfd-indicator
-                span.pfd-outline-green.active CONNECTED
-          tr
-            td
-              .pfd-ind-label  RADIO
-              .pfd-indicator
-                span.pfd-outline-green.active CONNECTED
-          tr
-            td
-              .pfd-ind-label  VEHICLE LAND
-              .pfd-indicator
-                span.pfd-outline-green.active DETECTED
-          tr
-            td
-              .pfd-ind-label  LANDING GEAR
-              .pfd-indicator
-                span.btn.pfd-outline-green.active EXTENDED
-                span.pfd-outline-green RETRACTED
-          tr
-            td
-              .pfd-ind-label  PE
-              .pfd-indicator
-                span.pfd-outline-green INITIALIZED
+    
+      .pfd-ld-initialized.pfd-indicator-class
+        .pfd-ind-label  VEHICLE LAND
+        .pfd-indicator
+          span.pfd-outline-green(data-info="DETECTED") DETECTED
+      
+      .pfd-lg-initialized.pfd-indicator-class
+        .pfd-ind-label  LANDING GEAR
+        .pfd-indicator
+          span.pfd-outline-green(data-info="EXTENDED") EXTENDED
+          span.pfd-outline-green(data-info="RETRACTED") RETRACTED
+          
+      .pfd-pe-initialized.pfd-indicator-class
+        .pfd-ind-label  PE
+        .pfd-indicator
+          span.pfd-outline-green(data-info="INITIALIZED") INITIALIZED
+          
+      .pfd-arm-initialized.pfd-indicator-class
+        .pfd-ind-label  ARM STATE
+        .pfd-indicator
+          span.pfd-outline-green(data-info="ARM") ARM
+          span.pfd-outline-green(data-info="DISARM") DISARM
+          
+      .pfd-mode-initialized.pfd-indicator-class
+        .pfd-ind-label  NAV MODE
+        .pfd-indicator
+          span.pfd-outline-green(data-info="MANUAL") MANUAL
+          span.pfd-outline-green(data-info="POSCTL") POSCTL
+          span.pfd-outline-green(data-info="ALTCTL") ALTCTL
+          span.pfd-outline-green(data-info="AUTO TAKEOFF") AUTO TAKEOFF
+          span.pfd-outline-green(data-info="AUTO LAND") AUTO LAND
+          span.pfd-outline-green(data-info="AUTO LOITER") AUTO LOITER
+          span.pfd-outline-green(data-info="AUTO RTL") AUTO RTL
+          
+script.
+
+  /* LD Detected ? */  
+  if(!('/PX4/PX4_VehicleLandDetectedMsg_t/Landed' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/PX4/PX4_VehicleLandDetectedMsg_t/Landed'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-ld-initialized').find('.pfd-outline-green').removeClass('active');
+        if(value) {
+          $('.pfd-ld-initialized').find('[data-info="DETECTED"]').addClass('active')
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    rouge_subscriptions['/PX4/PX4_VehicleLandDetectedMsg_t/Landed'] = '.pfd-ld-initialized';
+  }
+  
+  /* PE Initialized ? */  
+  if(!('/PE/PE_HkTlm_t/EstimatorGlobalInitialized' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-pe-initialized').find('.pfd-outline-green').removeClass('active');
+        if(value) {
+          $('.pfd-pe-initialized').find('[data-info="INITIALIZED"]').addClass('active')
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    rouge_subscriptions['/PE/PE_HkTlm_t/EstimatorGlobalInitialized'] = '.pfd-pe-initialized';
+  }
+  
+  /* ARM State ? */  
+  if(!('/VM/VM_HkTlm_t/ArmingState' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/VM/VM_HkTlm_t/ArmingState'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-arm-initialized').find('.pfd-outline-green').removeClass('active');
+        if(value == 1) {
+          $('.pfd-arm-initialized').find('[data-info="DISARM"]').addClass('active')
+        }
+        else if(value == 2) {
+          $('.pfd-arm-initialized').find('[data-info="ARM"]').addClass('active')
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    rouge_subscriptions['/VM/VM_HkTlm_t/ArmingState'] = '.pfd-arm-initialized';
+  }
+  
+  /* NAV State ? */  
+  if(!('/VM/VM_HkTlm_t/NavState' in Object.keys(rouge_subscriptions))) {
+    session.subscribe([{name:'/VM/VM_HkTlm_t/NavState'}], (param)=>{
+      try {
+        var sample = param.sample[param.sample.length - 1];
+        var value = sample.value;
+        $('.pfd-mode-initialized').find('.pfd-outline-green').removeClass('active');
+        switch(value) {
+          case 0 :{
+            $('.pfd-mode-initialized').find('[data-info="MANUAL"]').addClass('active');
+            break;
+          }
+          case 1 :{
+            $('.pfd-mode-initialized').find('[data-info="ALTCTL"]').addClass('active');
+            break;
+          }
+          case 2 :{
+            $('.pfd-mode-initialized').find('[data-info="POSCTL"]').addClass('active');
+            break;
+          }
+          case 3 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO RTL"]').addClass('active');
+            break;
+          }
+          case 4 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO LOITER"]').addClass('active');
+            break;
+          }
+          case 8 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO TAKEOFF"]').addClass('active');
+            break;
+          }
+          case 9 :{
+            $('.pfd-mode-initialized').find('[data-info="AUTO LAND"]').addClass('active');
+            break;
+          }
+        }
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    rouge_subscriptions['/VM/VM_HkTlm_t/NavState'] = '.pfd-mode-initialized';
+  }
+
+
+  

@@ -44,7 +44,7 @@
           "isClosable": true,
           "reorderEnabled": true,
           "title": "",
-          "width": 14.973033309146539,
+          "width": 18.529010803163434,
           "content": [
             {
               "type": "stack",
@@ -53,8 +53,8 @@
               "reorderEnabled": true,
               "title": "",
               "activeItemIndex": 0,
-              "width": 14.294367050272566,
-              "height": 37.12736706474092,
+              "width": 25,
+              "height": 35.60881417537483,
               "content": [
                 {
                   "title": "Vehicle Manager",
@@ -76,7 +76,7 @@
               "reorderEnabled": true,
               "title": "",
               "activeItemIndex": 0,
-              "height": 23.658448413494213,
+              "height": 22.489777373920944,
               "content": [
                 {
                   "title": "Miscellaneous",
@@ -98,7 +98,7 @@
               "reorderEnabled": true,
               "title": "",
               "activeItemIndex": 0,
-              "height": 39.214184521764885,
+              "height": 41.90140845070423,
               "content": [
                 {
                   "title": "Vehicle Position",
@@ -122,7 +122,8 @@
           "reorderEnabled": true,
           "title": "",
           "activeItemIndex": 0,
-          "width": 75.21616284190884,
+          "height": 100,
+          "width": 72.29351755988357,
           "content": [
             {
               "title": "Display",
@@ -142,7 +143,7 @@
           "isClosable": true,
           "reorderEnabled": true,
           "title": "",
-          "width": 9.810803848944634,
+          "width": 9.177471636953003,
           "content": [
             {
               "type": "stack",
@@ -151,8 +152,8 @@
               "reorderEnabled": true,
               "title": "",
               "activeItemIndex": 0,
-              "height": 50,
-              "width": 14.643165748210407,
+              "width": 50,
+              "height": 86.5967365967366,
               "content": [
                 {
                   "title": "Indicators",
@@ -174,29 +175,7 @@
               "reorderEnabled": true,
               "title": "",
               "activeItemIndex": 0,
-              "height": 29.812206572769952,
-              "content": [
-                {
-                  "title": "Display Modes",
-                  "type": "component",
-                  "componentName": "Blank",
-                  "componentState": {
-                    "text": "text",
-                    "link": "/cfe/pilot/dm"
-                  },
-                  "isClosable": true,
-                  "reorderEnabled": true
-                }
-              ]
-            },
-            {
-              "type": "stack",
-              "header": {},
-              "isClosable": true,
-              "reorderEnabled": true,
-              "title": "",
-              "activeItemIndex": 0,
-              "height": 20.187793427230048,
+              "height": 13.403263403263399,
               "content": [
                 {
                   "title": "Vitals",

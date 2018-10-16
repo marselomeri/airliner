@@ -31,32 +31,43 @@ style.
             td 
               span.pfd-label Altitude
               .pfd-large
-                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 573.239
+                span(data-cdr={tlm: [{name: '/PX4/PX4_VehicleGpsPositionMsg_t/Alt'}],indicator:'text'}) 0
               span.pfd-label-metric meters
             td
               span.pfd-label Velocity
               .pfd-large
-                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 2.504
+                span(data-cdr={tlm: [{name: '/PX4/PX4_VehicleGpsPositionMsg_t/Vel_m_s'}],indicator:'text'}) 0
               span.pfd-label-metric meters/sec
           tr
             td 
               span.pfd-label VXY
               .pfd-large
-                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 0.116
+                span.pfd-vlp-cal-vxy 0
               span.pfd-label-metric meters/sec
             td
               span.pfd-label VZ
               .pfd-large
-                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 2.501
+                span(data-cdr={tlm: [{name: '/PX4/PX4_VehicleLocalPositionMsg_t/VZ'}],indicator:'text'}) 0
               span.pfd-label-metric meters/sec
           tr
             td 
               span.pfd-label Latitude
               .pfd-large
-                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 47.3977
+                span(data-cdr={tlm: [{name: '/PX4/PX4_VehicleGpsPositionMsg_t/Lat'}],indicator:'text'}) 0
               span.pfd-label-metric degrees
             td
               span.pfd-label Longitude
               .pfd-large
-                span(data-cdr={tlm: [{name: '/CFE/ES_HK/Payload.SysLogBytesUsed'}],indicator:'text'}) 8.5452
+                span(data-cdr={tlm: [{name: '/PX4/PX4_VehicleGpsPositionMsg_t/Lon'}],indicator:'text'}) 0
               span.pfd-label-metric degrees
+
+script.
+    /* VXY calculation */  
+    /* session.subscribe([{name:'/PX4/PX4_VehicleLocalPositionMsg_t/VX'},
+                       {name:'/PX4/PX4_VehicleLocalPositionMsg_t/VY'}], (param)=>{
+      try {
+      }
+      catch(e){
+        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+      } 
+    }); */

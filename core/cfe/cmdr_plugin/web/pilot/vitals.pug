@@ -2,38 +2,44 @@ style.
   .pfd-container-2{
     background-color: var(--th-bg-color);
     padding: 5px;
-    display: inline-flex;
-    margin: 9px;
-    border: 0.5px solid var(--btn-primary-background-color);
-    border-radius: 7px;
+    display: inline-grid;
+    margin: 2px;
+    border: 1px solid var(--td-border-color) !important;
+    border-radius: 11px;
   }
   
   .pfd-container-2 > i {
     font-size:x-large;
+    display: grid;
+    text-align: center; 
   }
 
   .pfd-value{
-    margin: 0px 0px 0px 10px;
+    display: grid;
+    text-align: center;
   }
 
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
     .pfd-container-2#battery
       i.fa.fa-battery-4
-      .pfd-value --
-    .pfd-container-2#wifi
-      i.fa.fa-wifi
-      .pfd-value --
-    .pfd-container-2#radio
-      i.fa.fa-signal
-      .pfd-value --
+      .pfd-value
+        div(data-cdr={tlm:[{name:'/PX4/PX4_BatteryStatusMsg_t/Remaining'}],indicator:'text'}) 0%
+    .pfd-container-2#voltage
+      i.fa.fa-bolt
+      .pfd-value
+        div(data-cdr={tlm:[{name:'/PX4/PX4_BatteryStatusMsg_t/VoltageFiltered'}],indicator:'text'}) 0V
+    .pfd-container-2#satellites
+      i.fa.fa-globe
+      .pfd-value
+        div(data-cdr={tlm:[{name:'/PX4/PX4_VehicleGpsPositionMsg_t/SatellitesUsed'}],indicator:'text'}) 0  
       
     
 script.
-  setInterval(()=>{
+  /* setInterval(()=>{
     var rand = Math.random() * 100;
     var eachPartValue = 20;
     var ind = Math.floor(rand/eachPartValue);
     $('#battery').find('.fa').attr('class','fa fa-battery-'+ind);
     $('#battery').find('.pfd-value').text(rand.toFixed(2)+'%');
-    },1000)
+    },1000) */
