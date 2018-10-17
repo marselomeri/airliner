@@ -1,0 +1,128 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 Time Housekeeping
+    div.widget-body
+      table.table.table-condensed
+        tbody
+          tr
+            th(style='width:100px') Cmd Count
+            td(style='width:100px') 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.CmdCounter'}], indicator:'text'}) ---
+            td(style='width:100px') 
+              .btn-group
+                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Noop'}}) No-Op
+                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Reset'}}) Reset
+          tr
+            th Cmd Error Count
+            td
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.ErrCounter'}], indicator:'text'}) ---
+            td
+          tr
+            th Is Set
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/ClockSet'}]})
+            td
+          tr
+            th Is Flying
+            td 
+              div.bool-led.bool-led-warn(data-commander={tlm:[{name:'/CFE/TIME_HK/Flying'}]})
+            td
+          tr
+            th Source Internal
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/SrcInt'}]})
+            td
+          tr
+            th Signal is Primary
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/SigPri'}]})
+            td
+          tr
+            th Server is Flying
+            td 
+              div.bool-led.bool-led-warn(data-commander={tlm:[{name:'/CFE/TIME_HK/SrvFly'}]})
+            td
+          tr
+            th Commanded Flying
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/CmdFly'}]})
+            td
+          tr
+            th Add Adjust
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/AddAdj'}]})
+            td
+          tr
+            th Add 1Hz
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/Add1Hz'}]})
+            td
+          tr
+            th Add TCL
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/AddTcl'}]})
+            td
+          tr
+            th Is Server
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/Server'}]})
+            td
+          tr
+            th Tone Good
+            td 
+              div.bool-led(data-commander={tlm:[{name:'/CFE/TIME_HK/GoodTone'}]})
+            td
+          tr
+            th State API
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.ClockStateAPI'}], indicator:'text'}) ---
+            td
+          tr
+            th Leap Seconds
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.LeapSeconds'}], indicator:'text'}) ---
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetLeaps'}, indicator:'cmd'}) Set
+          tr
+            th MET
+            td 
+              span#TIME_HK_MET_Seconds --- 
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetMET'}, indicator:'cmd'}) Set
+          tr
+            th STCF
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.SecondsSTCF'}], indicator:'text'}) ---
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetSTCF'}, indicator:'cmd'}) Set
+          tr
+            th
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.SubsecsSTCF'}], indicator:'text'}) ---
+            td
+          tr
+            th 1Hz Adjust
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.Seconds1HzAdj'}], indicator:'text'}) ---
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/Add1HzAdj'}, indicator:'cmd'}) Add
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/Sub1HzAdj'}, indicator:'cmd'}) Sub
+          tr
+            th
+            td 
+              span(data-cdr={tlm:[{name:'/CFE/TIME_HK/Payload.Subsecs1HzAdj'}], indicator:'text'}) ---
+            td
+    footer
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetState'}, indicator:'cmd'}) Set State
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetSource'}, indicator:'cmd'}) Set Source
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetSignal'}, indicator:'cmd'}) Set Signal
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/AddDelay'}, indicator:'cmd'}) Add Delay
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SubDelay'}, indicator:'cmd'}) Sub Delay
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetTime'}, indicator:'cmd'}) Set Time
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetMET'}, indicator:'cmd'}) Set MET
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SetSTCF'}, indicator:'cmd'}) Set STCF
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/AddAdjust'}, indicator:'cmd'}) Add Adjust
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/TIME_HK/SubAdjust'}, indicator:'cmd'}) Sub Adjust

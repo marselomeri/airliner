@@ -182,9 +182,20 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
           longDescription: 'Core time services.',
           nodes: {
             main: {
-              type: CdrPlugin.ContentType.PANEL,
+              type: CdrPlugin.ContentType.LAYOUT,
               shortDescription: 'Main',
-              filePath: '/time/main.pug'
+              longDescription: 'Main time services.',
+              filePath: '/time/main_layout.lyt'
+            },
+            hk: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Housekeeping',
+              filePath: '/time/hk.pug'
+            },
+            diag: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Diagnostic',
+              filePath: '/time/diag.pug'
             }
           }
         },
