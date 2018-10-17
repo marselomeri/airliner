@@ -1,5 +1,5 @@
 {
-  "file": "core-bin",
+  "file": "airliner",
   "little_endian": true,
   "symbols": [
     {
@@ -16138,6 +16138,47 @@
         }
       ],
       "real_type": "CFE_TBL_TlmRegCmd_Payload_t"
+    },
+    {
+      "name": "CFE_TBL_TlmRegCmd_t",
+      "bit_size": 544,
+      "fields": [
+        {
+          "name": "CmdHeader",
+          "bit_offset": 0,
+          "bit_size": 64,
+          "array": true,
+          "count": 8,
+          "type": {
+            "name": "unsigned char",
+            "bit_size": 8,
+            "base_type": "unsigned char"
+          },
+          "real_type": "uint8"
+        },
+        {
+          "name": "Payload",
+          "bit_offset": 64,
+          "bit_size": 480,
+          "fields": [
+            {
+              "name": "TableName",
+              "bit_offset": 0,
+              "bit_size": 480,
+              "array": true,
+              "count": 60,
+              "type": {
+                "name": "char",
+                "bit_size": 8,
+                "base_type": "char"
+              },
+              "real_type": "char"
+            }
+          ],
+          "real_type": "CFE_TBL_TlmRegCmd_Payload_t"
+        }
+      ],
+      "real_type": "CFE_TBL_TlmRegCmd_t"
     },
     {
       "name": "CFE_TBL_ValidateCmd_Payload_t",

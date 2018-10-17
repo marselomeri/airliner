@@ -13316,7 +13316,7 @@
                             "Payload.ResetType": {
                                 "field_path": "Payload.ResetType"
                             },
-                            "Payload.ProcessorResets": {
+                            "ProcessorResets": {
                                 "field_path": "Payload.ProcessorResets"
                             },
                             "Payload.CFEMissionRevision": {
@@ -13355,7 +13355,7 @@
                             "Payload.SysLogMode": {
                                 "field_path": "Payload.SysLogMode"
                             },
-                            "Payload.MaxProcessorResets": {
+                            "MaxProcessorResets": {
                                 "field_path": "Payload.MaxProcessorResets"
                             },
                             "Payload.CFERevision": {
@@ -13373,7 +13373,7 @@
                             "Payload.SysLogEntries": {
                                 "field_path": "Payload.SysLogEntries"
                             },
-                            "Payload.CmdCounter": {
+                            "CmdCounter": {
                                 "field_path": "Payload.CmdCounter"
                             },
                             "Payload.PerfDataEnd": {
@@ -15122,16 +15122,6 @@
                             },
                             "Prev.Buffer": {
                                 "field_path": "Prev.Buffer"
-                            }
-                        }
-                    },
-                    "CFE_TBL_TlmRegCmd_t": {
-                        "operational_names": {
-                            "Payload.TableName": {
-                                "field_path": "Payload.TableName"
-                            },
-                            "CmdHeader": {
-                                "field_path": "CmdHeader"
                             }
                         }
                     },
@@ -16998,7 +16988,7 @@
                             "CmdHeader": {
                                 "field_path": "CmdHeader"
                             },
-                            "Payload.MaxPRCount": {
+                            "MaxPRCount": {
                                 "field_path": "Payload.MaxPRCount"
                             }
                         }

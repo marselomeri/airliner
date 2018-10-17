@@ -107,63 +107,8 @@
                         "airliner_cc": -1,
                         "airliner_msg": "VM_Modes"
                     },
-                    "Noop": {
-                        "airliner_cc": 0,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "Reset": {
-                        "airliner_cc": 1,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "Arm": {
-                        "airliner_cc": 2,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "Disarm": {
-                        "airliner_cc": 3,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "Manual": {
-                        "airliner_cc": 40,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "AltCtl": {
-                        "airliner_cc": 41,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "PosCtl": {
-                        "airliner_cc": 42,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "AutoLoiter": {
-                        "airliner_cc": 44,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "AutoRtl": {
-                        "airliner_cc": 45,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "AutoTakeOff": {
-                        "airliner_cc": 56,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
-                    "AutoLand": {
-                        "airliner_cc": 57,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1c70"
-                    },
                     "VM_HkTlm_t": {
-                        "airliner_mid": "0x0c6d",
+                        "airliner_mid": "",
                         "airliner_cc": -1,
                         "airliner_msg": "VM_HkTlm_t"
                     },
@@ -482,7 +427,7 @@
             "PX4": {
                 "operations": {
                     "PX4_BatteryStatusMsg_t": {
-                        "airliner_mid": "0x0a0c",
+                        "airliner_mid": "",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_BatteryStatusMsg_t"
                     },
@@ -497,7 +442,7 @@
                         "airliner_msg": "PX4_MissionMsg_t"
                     },
                     "PX4_VehicleStatusMsg_t": {
-                        "airliner_mid": "0x0a57",
+                        "airliner_mid": "",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_VehicleStatusMsg_t"
                     },
@@ -532,7 +477,7 @@
                         "airliner_msg": "PX4_VehicleLocalPositionMsg_t"
                     },
                     "PX4_VehicleLandDetectedMsg_t": {
-                        "airliner_mid": "0x0a53",
+                        "airliner_mid": "",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_VehicleLandDetectedMsg_t"
                     },
@@ -702,7 +647,7 @@
                         "airliner_msg": "PX4_SubsystemInfoMsg_t"
                     },
                     "PX4_VehicleGpsPositionMsg_t": {
-                        "airliner_mid": "0x0a52",
+                        "airliner_mid": "",
                         "airliner_cc": -1,
                         "airliner_msg": "PX4_VehicleGpsPositionMsg_t"
                     },
@@ -1244,7 +1189,7 @@
                         "airliner_msg": "PE_Params_t"
                     },
                     "PE_HkTlm_t": {
-                        "airliner_mid": "0x0c79",
+                        "airliner_mid": "",
                         "airliner_cc": -1,
                         "airliner_msg": "PE_HkTlm_t"
                     },
@@ -1503,17 +1448,12 @@
                         "airliner_msg": "CFE_ES_OneAppTlm_t",
                         "airliner_mid": ""
                     },
-                    "CFE_TBL_TlmRegCmd_t": {
-                        "airliner_msg": "CFE_TBL_TlmRegCmd_t",
-                        "airliner_cc": 7,
-                        "airliner_mid": "0x1804"
-                    },
                     "CFE_SB_CmdHdr_t": {
                         "airliner_cc": -1,
                         "airliner_msg": "CFE_SB_CmdHdr_t",
                         "airliner_mid": ""
                     },
-                    "EVS_WRITELOG2FILE": {
+                    "CFE_EVS_LogFileCmd_t": {
                         "airliner_cc": 18,
                         "airliner_msg": "CFE_EVS_LogFileCmd_t",
                         "airliner_mid": "0x1801"
@@ -1523,7 +1463,7 @@
                         "airliner_msg": "CFE_EVS_BitMaskCmd_t",
                         "airliner_mid": "0x1801"
                     },
-                    "CFE_EVS_DisableEventType": {
+                    "CFE_EVS_DisabnleEventType": {
                         "airliner_cc": 3,
                         "airliner_msg": "CFE_EVS_BitMaskCmd_t",
                         "airliner_mid": "0x1801"
@@ -1643,45 +1583,10 @@
                         "airliner_msg": "CFE_ES_MemPoolStats_t",
                         "airliner_mid": ""
                     },
-                    "CFE_SB_Noop": {
-                        "airliner_cc": 0,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1803"
-                    },
-                    "CFE_SB_Reset": {
-                        "airliner_cc": 1,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1803"
-                    },
-                    "CFE_SB_SendStats": {
-                        "airliner_cc": 2,
-                        "airliner_msg": "",
-                        "airliner_mid": "0x1803"
-                    },
                     "CFE_SB_EnRoutCmd_t": {
-                        "airliner_cc": 4,
+                        "airliner_cc": -1,
                         "airliner_msg": "CFE_SB_EnRoutCmd_t",
-                        "airliner_mid": "0x1803"
-                    },
-                    "CFE_SB_DisableRoutCmd_t": {
-                        "airliner_cc": 5,
-                        "airliner_msg": "CFE_SB_EnRoutCmd_t",
-                        "airliner_mid": "0x1803"
-                    },
-                    "CFE_SB_SendRoutInfo_t": {
-                        "airliner_cc": 3,
-                        "airliner_msg": "CFE_SB_WriteFileInfoCmd_t",
-                        "airliner_mid": "0x1803"
-                    },
-                    "CFE_SB_SendPipeInfo_t": {
-                        "airliner_cc": 7,
-                        "airliner_msg": "CFE_SB_WriteFileInfoCmd_t",
-                        "airliner_mid": "0x1803"
-                    },
-                    "CFE_SB_SendMapInfo_t": {
-                        "airliner_cc": 8,
-                        "airliner_msg": "CFE_SB_WriteFileInfoCmd_t",
-                        "airliner_mid": "0x1803"
+                        "airliner_mid": ""
                     },
                     "CFE_TIME_1HzAdjCmd_t": {
                         "airliner_cc": -1,
@@ -2016,7 +1921,7 @@
                     "CFE_SB_StatMsg_t": {
                         "airliner_cc": -1,
                         "airliner_msg": "CFE_SB_StatMsg_t",
-                        "airliner_mid": "0x080A"
+                        "airliner_mid": ""
                     },
                     "CFE_ES_QueryAllCmd_t": {
                         "airliner_cc": 9,

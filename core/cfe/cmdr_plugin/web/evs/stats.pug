@@ -302,7 +302,7 @@
                 span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.AppData[31].AppEnableStatus'}],indicator:'text'}) ---
              td
       footer
-      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/EVS_HK/FileWriteAppData'}, indicator:'cmd'}) Write To File
+      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/EVS_WRITELOG2FILE'}, indicator:'cmd'}) Write To File
       .btn-group.dropup
         button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
           | Reset App Counters
@@ -327,7 +327,7 @@
           li.cdr-dropdown-list-item
             a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'DS'}]}, indicator:'cmd'}, data-placement="left") DS
           li.cdr-dropdown-list-item
-            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'EIM'}]}, indicator:'cmd'}, data-placement="left") EIM
+            a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'PE'}]}, indicator:'cmd'}, data-placement="left") PE
           li.cdr-dropdown-list-item
             a(data-cdr={cmd:{name:'/CFE/CFE_EVS_ResetAppEventCounters', argument:[{name:'Payload.AppName', value:'FM'}]}, indicator:'cmd'}, data-placement="left") FM
           li.cdr-dropdown-list-item

@@ -10,7 +10,7 @@
             tr
               th Cmd Count
               td
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.CommandCnt'}],indicator:'text'}) ---
+                div(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.CommandCnt'}],indicator:'text'}) ---
               td
                 .btn-group
                   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_Noop'},indicator:'cmd'}) No-Op
@@ -78,7 +78,7 @@
             tr  
               th Mem Pool Handle
               td 
-                span(data-commander={tlm:[{name:'/CFE/SB_HK/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
               td
       footer
         .btn-group.dropdown
