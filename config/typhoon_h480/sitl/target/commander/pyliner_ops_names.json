@@ -17811,7 +17811,7 @@
                     },
                     "AMC_HkTlm_t": {
                         "operational_names": {
-                            "CmdErrCnt": {
+                            "usCmdErrCnt": {
                                 "field_path": "usCmdErrCnt"
                             },
                             "Output": {
@@ -17820,7 +17820,7 @@
                             "Timestamp": {
                                 "field_path": "Timestamp"
                             },
-                            "CmdCnt": {
+                            "usCmdCnt": {
                                 "field_path": "usCmdCnt"
                             },
                             "Count": {
