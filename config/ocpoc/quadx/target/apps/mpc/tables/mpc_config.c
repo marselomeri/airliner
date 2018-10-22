@@ -275,7 +275,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
 	 * @decimal 2
 	 * @group Multicopter Position Control
 	 */
-	5.0f,
+	3.0f,
 
 	/**
 	 * MPC_TARGET_THRE
@@ -610,7 +610,7 @@ MPC_ConfigTbl_t MPC_ConfigTbl =
      * @decimal 2
      * @group Multicopter Position Control
      */
-    3.0f,
+    2.0f,
 
     /**
      * MPC_JERK_MAX
