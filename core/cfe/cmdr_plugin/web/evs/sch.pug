@@ -3,7 +3,7 @@
     var schDef = {
       slotCount:200,
       entriesPerSlot:5,
-      appName:'EVS_HK',
+      appName:'EVS',
       slots:[
         {id:40, activities:[1]}],
       groups:[
@@ -19,11 +19,11 @@
             tr
               th(style='width: 150px') Cmd Count
               td
-                span(data-commander={tlm: [{name:'/CFE/SCH/CmdCounter'}],indicator:'text'}) ---
+                span(data-cdr={tlm: [{name:'/CFE/SCH/CmdCounter'}],indicator:'text'}) ---
             tr
               th Error Count
               td
-                span(data-commander={tlm: [{name:'/CFE/SCH/ErrCounter'}],indicator:'text'}) ---
+                span(data-cdr={tlm: [{name:'/CFE/SCH/ErrCounter'}],indicator:'text'}) ---
         table.table.table-bordered.table-condensed
           thead
             tr
@@ -49,13 +49,13 @@
                   td #{slotID}
                   td #{strActID}
                   td 
-                    span(data-commander= tlmEntryState) ---
+                    span(data-cdr= tlmEntryState) ---
                   td
-                    span(data-commander= tlmMsgID) ---
+                    span(data-cdr= tlmMsgID) ---
                   td
                     .btn-group.dropup
-                      button.btn.cdr-primary(data-commander= cmdEnableEntry) Ena
-                      button.btn.cdr-primary(data-commander= cmdDisableEntry) Dis
+                      button.btn.cdr-primary(data-cdr= cmdEnableEntry) Ena
+                      button.btn.cdr-primary(data-cdr= cmdDisableEntry) Dis
               - };
             - };
         table.table.table-bordered.table-condensed
@@ -76,6 +76,6 @@
                 td(style='font-family: monospace') #{strGrpID}
                 td
                   .btn-group.dropup
-                    button.btn.cdr-primary(data-commander= cmdEnableGroup) Ena
-                    button.btn.cdr-primary(data-commander= cmdDisableGroup) Dis
+                    button.btn.cdr-primary(data-cdr= cmdEnableGroup) Ena
+                    button.btn.cdr-primary(data-cdr= cmdDisableGroup) Dis
             - };

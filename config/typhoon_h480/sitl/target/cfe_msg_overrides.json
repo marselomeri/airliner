@@ -137,14 +137,16 @@
                         "airliner_mid": "0x080b"
                     },
                     "CFE_ES_PoolStatsTlm_t": {
-                        "airliner_cc": -1,
                         "airliner_msg": "CFE_ES_PoolStatsTlm_t",
-                        "airliner_mid": ""
+                        "airliner_mid": "0x0810"
                     },
                     "CFE_ES_ShellPacket_t": {
-                        "airliner_mid": "0x080f",
-                        "airliner_msg": "CFE_ES_ShellPacket_t"
+                        "airliner_msg": "CFE_ES_ShellPacket_t",
+                        "airliner_mid": "0x080f"
                     },
+                    
+                    
+                    
                     "CFE_EVS_Noop": {
                         "airliner_cc": 0,
                         "airliner_msg": "CFE_SB_CmdHdr_t",
@@ -332,34 +334,16 @@
                         "airliner_msg": "CFE_SB_SubRprtMsg_t",
                         "airliner_mid": "0x080e"
                     },
-
-
-
-
-
-
-
-
-                    "CFE_TBL_TlmRegCmd_t": {
-                        "airliner_msg": "CFE_TBL_TlmRegCmd_t",
-                        "airliner_cc": 7,
-                        "airliner_mid": "0x1804"
+                    "CFE_SB_PipeId_t": {
+                        "airliner_msg": "CFE_SB_PipeId_t",
+                        "bit_size": 8,
+                        "airliner_type": "uint8",
+                        "pb_type": "uint8",
+                        "array_length": 0
                     },
-                    "CFE_TBL_DumpRegCmd_t": {
-                        "airliner_cc": 6,
-                        "airliner_msg": "CFE_TBL_DumpRegCmd_t",
-                        "airliner_mid": "0x1804"
-                    },
-                    "CFE_TBL_LoadCmd_t": {
-                        "airliner_cc": 2,
-                        "airliner_msg": "CFE_TBL_LoadCmd_t",
-                        "airliner_mid": "0x1804"
-                    },
-                    "CFE_TBL_ValidateCmd_t": {
-                        "airliner_cc": 4,
-                        "airliner_msg": "CFE_TBL_ValidateCmd_t",
-                        "airliner_mid": "0x1804"
-                    },
+                    
+
+
                     "CFE_TBL_Noop": {
                         "airliner_cc": 0,
                         "airliner_msg": "",
@@ -414,9 +398,9 @@
                         "airliner_msg": "CFE_TBL_HkPacket_t",
                         "airliner_mid": "0x0804"
                     },
-
-
-
+                    
+                    
+                    
                     "CFE_TIME_Noop": {
                         "airliner_cc": 0,
                         "airliner_msg": "CFE_TIME_NoArgsCmd_t",

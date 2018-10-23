@@ -12,16 +12,20 @@
               th Pipe ID
               th Depth
               th In Use
+              th Peak In Use
           tbody
             - for (var i = 0; i < 64; ++i) {
-              - var PipeId = '/CFE/CFE_SB_PipeDepthStats_t/PipeId[' + i + ']'
-              - var Depth = '/CFE/CFE_SB_PipeDepthStats_t/Depth[' + i + ']'
-              - var InUse = '/CFE/CFE_SB_PipeDepthStats_t/InUse[' + i + ']'
+              - var PipeId = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PipeId'
+              - var Depth = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].Depth'
+              - var InUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].InUse'
+              - var PeakInUse = '/CFE/CFE_SB_StatMsg_t/Payload.PipeDepthStats[' + i + '].PeakInUse'
               tr
                 td 
-                  span(data-commander={tlm:[{name:PipeId}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:PipeId}],indicator:'text'}) ---
                 td 
-                  span(data-commander={tlm:[{name:Depth}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:Depth}],indicator:'text'}) ---
                 td
-                  span(data-commander={tlm:[{name:InUse}],indicator:'text'}) ---
+                  span(data-cdr={tlm:[{name:InUse}],indicator:'text'}) ---
+                td
+                  span(data-cdr={tlm:[{name:PeakInUse}],indicator:'text'}) ---
             - }  

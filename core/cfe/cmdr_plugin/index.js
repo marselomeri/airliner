@@ -192,10 +192,25 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               shortDescription: 'Housekeeping',
               filePath: '/time/hk.pug'
             },
-            diag: {
+            diag_full: {
               type: CdrPlugin.ContentType.PANEL,
-              shortDescription: 'Diagnostic',
-              filePath: '/time/diag.pug'
+              shortDescription: 'Diagnostic (Full Message)',
+              filePath: '/time/diag_full.pug'
+            },
+            diag_1: {
+                type: CdrPlugin.ContentType.PANEL,
+                shortDescription: 'Diagnostic (Partial - 1)',
+                filePath: '/time/diag_1.pug'
+            },
+            diag_2: {
+                type: CdrPlugin.ContentType.PANEL,
+                shortDescription: 'Diagnostic (Partial - 2)',
+                filePath: '/time/diag_2.pug'
+            },
+            diag_3: {
+                type: CdrPlugin.ContentType.PANEL,
+                shortDescription: 'Diagnostic (Partial - 3)',
+                filePath: '/time/diag_3.pug'
             }
           }
         },

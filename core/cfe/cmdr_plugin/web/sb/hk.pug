@@ -10,7 +10,7 @@
             tr
               th Cmd Count
               td
-                div(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.CommandCnt'}],indicator:'text'}) ---
+                div(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.CommandCnt'}],indicator:'text'}) ---
               td
                 .btn-group
                   button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_Noop'},indicator:'cmd'}) No-Op
@@ -18,67 +18,67 @@
             tr
               th Cmd Error Count
               td
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.CmdErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.CmdErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th No Subscribers
               td
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.NoSubscribersCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.NoSubscribersCnt'}],indicator:'text'}) ---
               td
             tr  
               th Msg Send Errors
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.MsgSendErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MsgSendErrCnt'}],indicator:'text'}) ---
               td 
             tr  
               th Msg Receive Errors
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.MsgReceiveErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MsgReceiveErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th Internal Errors
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.InternalErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.InternalErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th Create Pipe Errors
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.CreatePipeErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.CreatePipeErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th Subscribe Errors
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.SubscribeErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.SubscribeErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th Duplicate Subscriptions
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.DupSubscriptionsCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.DupSubscriptionsCnt'}],indicator:'text'}) ---
               td
             tr  
               th Pipe Overflows
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.PipeOverflowErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.PipeOverflowErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th Msg Limit Errors
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.MsgLimErrCnt'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MsgLimErrCnt'}],indicator:'text'}) ---
               td
             tr  
               th Memory in Use
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.MemInUse'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MemInUse'}],indicator:'text'}) ---
               td
             tr  
               th Unmarked Memory
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.UnmarkedMem'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.UnmarkedMem'}],indicator:'text'}) ---
               td
             tr  
               th Mem Pool Handle
               td 
-                span(data-cdr={tlm:[{name:'/CFE/SB_HK/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
+                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
               td
       footer
         .btn-group.dropdown

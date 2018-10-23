@@ -10,7 +10,7 @@
                 tr
                   th(style={width: '150px'}) Cmd Count:
                   td(style={width: '80px'})
-                    span(data-cdr={tlm: [{name: '/CFE/EVS_HK/Payload.CommandCounter'}],indicator:'text'}) ---
+                    span(data-cdr={tlm: [{name: '/CFE/CFE_EVS_TlmPkt_t/Payload.CommandCounter'}],indicator:'text'}) ---
                   td(style={width: '150px'})
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_EVS_Noop'}, indicator:'cmd'}) No-Op
@@ -18,12 +18,12 @@
                 tr
                   th Cmd Error Count:
                   td
-                    span(data-cdr={tlm: [{name: '/CFE/EVS_HK/Payload.CommandErrCounter'}],indicator:'text'}) ---
+                    span(data-cdr={tlm: [{name: '/CFE/CFE_EVS_TlmPkt_t/Payload.CommandErrCounter'}],indicator:'text'}) ---
                   td
                 tr
                   th Msg Format
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.MessageFormatMode'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageFormatMode'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Short 
@@ -31,17 +31,17 @@
                 tr
                   th Truncated Msgs
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.MessageTruncCounter'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageTruncCounter'}],indicator:'text'}) ---
                   td
                 tr
                   th Unregistered Apps
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.UnregisteredAppCounter'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.UnregisteredAppCounter'}],indicator:'text'}) ---
                   td
                 tr
                   th Output Port
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.OutputPort'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.OutputPort'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_EnablePorts', argument:[{name:'Payload.BitMask', value:'1'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Enable 0
@@ -58,12 +58,12 @@
                 tr
                   th Log Full
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.LogFullFlag'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogFullFlag'}],indicator:'text'}) ---
                   td
                 tr
                   th Log Mode
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.LogMode'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogMode'}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Overwrite
@@ -71,15 +71,15 @@
                 tr
                   th Msg Send Counter
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.MessageSendCounter'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageSendCounter'}],indicator:'text'}) ---
                   td
                 tr
                   th Overflow Count
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.LogOverflowCounter'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogOverflowCounter'}],indicator:'text'}) ---
                   td
                 tr
                   th Log Enabled
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/EVS_HK/Payload.LogEnabled'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogEnabled'}],indicator:'text'}) ---
                   td
