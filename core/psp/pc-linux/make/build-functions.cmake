@@ -52,7 +52,7 @@ include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmak
 #)
 function(psp_initialize_airliner_build)
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "" "CORE_BINARY;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES" "FILESYS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "CORE_BINARY;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES;MSG_OVERRIDES" "FILESYS" ${ARGN})
 
     set(PSP_UNIT_TEST_WRAPPER target/${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
@@ -99,6 +99,11 @@ function(psp_initialize_airliner_build)
 	# EXPLAIN_DIR:  This is the directory for all explain generated files.
 	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
 	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
+
+    # Remove the combined airliner JSON overrides file, if it exists.
+    if(EXISTS ${EXPLAIN_DIR}/airliner-overrides.json)
+        file(REMOVE ${EXPLAIN_DIR}/airliner-overrides.json)
+    endif()
 	
 	# Prepare the build to be ready to use the Explain utility.
 	explain_setup()
@@ -108,6 +113,14 @@ function(psp_initialize_airliner_build)
 		DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
 		OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
 	)
+
+    # Add the msg and ops_name Pyliner JSON override files
+    if(PARSED_ARGS_MSG_OVERRIDES) 
+        add_airliner_json_input(ground_tools
+            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif(PARSED_ARGS_MSG_OVERRIDES)
 		
 	generate_serialization_code(
 		INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
@@ -229,7 +242,7 @@ endfunction(psp_add_test)
 function(psp_add_airliner_app)
     # Define the application name.
     set(PARSED_ARGS_APP_NAME ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES;MSG_OVERRIDES" ${ARGN})
 
     # Call the CMake file that actually defines the application.
     add_subdirectory(${PARSED_ARGS_DEFINITION} ${CMAKE_CURRENT_BINARY_DIR}/apps/${PARSED_ARGS_APP_NAME})
@@ -310,6 +323,14 @@ function(psp_add_airliner_app)
         add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
     endif()
     
+    # Add the msg and ops_name Pyliner JSON override files
+    if(PARSED_ARGS_MSG_OVERRIDES) 
+        add_airliner_json_input(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}
+            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif(PARSED_ARGS_MSG_OVERRIDES)
+    
 	# Add the Commander platform dependent plugin, if there is one.
     if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")
 		get_filename_component(APP_CMDR_PLUGIN_NAME ${PARSED_ARGS_COMMANDER_PLUGIN} NAME)
@@ -341,7 +362,7 @@ endfunction(psp_add_airliner_app)
 #)
 function(psp_add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR;MSG_OVERRIDES" ${ARGN})
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
     set(PUBLIC_APP_INCLUDES "${PUBLIC_APP_INCLUDES} ${PARSED_ARGS_PUBLIC_INCLUDES}")
@@ -392,6 +413,14 @@ function(psp_add_airliner_app_def)
 	    INPUT_PATH     ${INSTALL_DIR}/${PARSED_ARGS_FILE}.so
 	    DATABASE_NAME  ${EXPLAIN_DB}
 	)
+
+    # Add the msg and ops_name Pyliner JSON override files
+    if(PARSED_ARGS_MSG_OVERRIDES) 
+        add_airliner_json_input(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif(PARSED_ARGS_MSG_OVERRIDES)
 	
 	# Add the Commander plugin, if there is one.
     if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")

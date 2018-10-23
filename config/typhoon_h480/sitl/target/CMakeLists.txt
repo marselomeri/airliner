@@ -26,6 +26,9 @@ initialize_airliner_build(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/osconfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
+        
+    MSG_OVERRIDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/cfe_msg_overrides.json
 )
 
 add_airliner_app(

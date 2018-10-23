@@ -7,7 +7,7 @@ function(generate_serialization_code)
     endif(NOT EXISTS "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json")
     
     add_custom_target(setup_commander
-	    WORKING_DIRECTORY ${MISSION_SOURCE_DIR}/tools/commander
+	    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
 	    COMMAND npm install
     )
     
