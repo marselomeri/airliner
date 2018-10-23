@@ -39,7 +39,9 @@ function(add_airliner_json_input)
         file(WRITE "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json" "{}")
     endif(NOT EXISTS "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json")
     
-    add_custom_target(all_merge_json)
+    if(NOT TARGET all_merge_json)
+        add_custom_target(all_merge_json)
+    endif(NOT TARGET all_merge_json)
     
     add_custom_target(${TARGET_NAME}_merge_JSON
         DEPENDS setup_commander
