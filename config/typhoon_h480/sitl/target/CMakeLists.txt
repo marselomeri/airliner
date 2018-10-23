@@ -20,13 +20,13 @@ initialize_airliner_build(
         /ram
     STARTUP_SCRIPT
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
-    
+
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/osconfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cfe_platform_cfg.h
-        
+
     MSG_OVERRIDES
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe_msg_overrides.json
 )
@@ -332,6 +332,8 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/vm_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vm_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vm_perfids.h
+    MSG_OVERRIDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/vm_msg_overrides.json
 )
 
 add_airliner_app(
@@ -431,4 +433,3 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
 )
-
