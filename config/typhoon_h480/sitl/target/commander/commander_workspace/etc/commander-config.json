@@ -5,6 +5,7 @@
     cmdDefReqStreamID:       'cmd-def-request',
     cmdSendStreamID:         'cmd-send',
     reqSubscribeStreamID:    'subscribe-request',
+    queryConfigStreamID:     'config-db-query',
     instances: [
         {
             name: 'airliner',
