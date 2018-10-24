@@ -37,7 +37,8 @@ add_airliner_app(
 
 add_airliner_app(
     px4lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/px4_msg_overrides.json)
 
 add_airliner_app(
     pblib

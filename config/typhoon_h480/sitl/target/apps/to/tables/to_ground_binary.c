@@ -125,6 +125,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
             {PX4_TELEMETRY_STATUS_MID,                1,        TO_PQUEUE_LOW_IDX},
             {PX4_VEHICLE_ATTITUDE_MID,                1,        TO_PQUEUE_LOW_IDX},
             {PX4_VEHICLE_GLOBAL_POSITION_MID,         1,        TO_PQUEUE_LOW_IDX},
+						{PX4_VEHICLE_GPS_POSITION_MID,           	1,        TO_PQUEUE_LOW_IDX},
             {PX4_VEHICLE_LAND_DETECTED_MID,           1,        TO_PQUEUE_LOW_IDX}
 	},{
 	    /* Priority Queues */

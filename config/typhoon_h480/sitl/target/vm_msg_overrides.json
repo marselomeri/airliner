@@ -2,19 +2,21 @@
     "Airliner": {
         "apps": {
             "VM": {
-                "VM_Modes":       { "airliner_mid": "" },
-                "Noop":           { "airliner_mid": "0x1c70" },
-                "Reset":          { "airliner_mid": "0x1c70" },
-                "Arm":            { "airliner_mid": "0x1c70" },
-                "Disarm":         { "airliner_mid": "0x1c70" },
-                "Manual":         { "airliner_mid": "0x1c70" },
-                "AltCtl":         { "airliner_mid": "0x1c70" },
-                "PosCtl":         { "airliner_mid": "0x1c70" },
-                "AutoLoiter":     { "airliner_mid": "0x1c70" },
-                "AutoRtl":        { "airliner_mid": "0x1c70" },
-                "AutoTakeOff":    { "airliner_mid": "0x1c70" },
-                "AutoLand":       { "airliner_mid": "0x1c70" },
-                "VM_HkTlm_t":     { "airliner_mid": "0x0c6d" }
+              "operations": {
+                  "VM_Modes":       { "airliner_mid": "" },
+                  "Noop":           { "airliner_mid": "0x1c70" },
+                  "Reset":          { "airliner_mid": "0x1c70" },
+                  "Arm":            { "airliner_mid": "0x1c70" },
+                  "Disarm":         { "airliner_mid": "0x1c70" },
+                  "Manual":         { "airliner_mid": "0x1c70" },
+                  "AltCtl":         { "airliner_mid": "0x1c70" },
+                  "PosCtl":         { "airliner_mid": "0x1c70" },
+                  "AutoLoiter":     { "airliner_mid": "0x1c70" },
+                  "AutoRtl":        { "airliner_mid": "0x1c70" },
+                  "AutoTakeOff":    { "airliner_mid": "0x1c70" },
+                  "AutoLand":       { "airliner_mid": "0x1c70" },
+                  "VM_HkTlm_t":     { "airliner_mid": "0x0c6d" }
+              }
             }
         }
     }
