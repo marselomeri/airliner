@@ -108,15 +108,31 @@ function(psp_initialize_airliner_build)
 	# Prepare the build to be ready to use the Explain utility.
 	explain_setup()
 	
+	# Setup commander
+    execute_process(
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
+        COMMAND npm install
+        OUTPUT_FILE ${PROJECT_SOURCE_DIR}/tools/commander/node_modules
+    )
+    
+    # Merge in the platform independent CFE message overrides.
+    add_airliner_json_input(
+        INPUT_FILE ${CFE_MSG_OVERRIDES}
+        OUTPUT_DIR ${EXPLAIN_DIR}
+    )
+	
 	# Do post build explain activities
 	explain_generate_cookie(
 		DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
 		OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
 	)
+	
+	# Add the generic JSON override files
+	#CFE_MSG_OVERRIDES
 
-    # Add the msg and ops_name Pyliner JSON override files
+    # Add the custom JSON override files
     if(PARSED_ARGS_MSG_OVERRIDES) 
-        add_airliner_json_input(ground_tools
+        add_airliner_json_input(
             INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
             OUTPUT_DIR ${EXPLAIN_DIR}
         )
@@ -325,7 +341,7 @@ function(psp_add_airliner_app)
     
     # Add the msg and ops_name Pyliner JSON override files
     if(PARSED_ARGS_MSG_OVERRIDES) 
-        add_airliner_json_input(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}
+        add_airliner_json_input(
             INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
             OUTPUT_DIR ${EXPLAIN_DIR}
         )
@@ -416,7 +432,7 @@ function(psp_add_airliner_app_def)
 
     # Add the msg and ops_name Pyliner JSON override files
     if(PARSED_ARGS_MSG_OVERRIDES) 
-        add_airliner_json_input(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+        add_airliner_json_input(
             INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
             OUTPUT_DIR ${EXPLAIN_DIR}
         )

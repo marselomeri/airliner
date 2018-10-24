@@ -5,6 +5,9 @@ export AIRLINER_MSG_DEF_PATH="@AIRLINER_MSG_DEF_PATH@"
 export AIRLINER_PROTO_PATH="@AIRLINER_PROTO_PATH@"
 export COMMANDER_PATH="@COMMANDER_PATH@"
 
-(cd ${COMMANDER_PATH}; npm install; npm start)
-
+if [ -x "$(command -v nodemon)" ]; then
+  (cd ${COMMANDER_PATH}; nodemon start)
+else
+  (cd ${COMMANDER_PATH}; npm start)
+fi
 

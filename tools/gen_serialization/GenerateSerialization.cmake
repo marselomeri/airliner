@@ -6,13 +6,8 @@ function(generate_serialization_code)
         file(WRITE "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json" "{}")
     endif(NOT EXISTS "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json")
     
-    add_custom_target(setup_commander
-	    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
-	    COMMAND npm install
-    )
-    
     add_custom_target(gen_serialization 
-        DEPENDS explain_cookie setup_commander all_merge_json
+        DEPENDS explain_cookie 
         
         COMMAND ${PROJECT_SOURCE_DIR}/tools/gen_serialization/generate
          	${PARSED_ARGS_INPUT_FILE}
@@ -39,18 +34,12 @@ function(add_airliner_json_input)
         file(WRITE "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json" "{}")
     endif(NOT EXISTS "${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json")
     
-    if(NOT TARGET all_merge_json)
-        add_custom_target(all_merge_json)
-    endif(NOT TARGET all_merge_json)
-    
-    add_custom_target(${TARGET_NAME}_merge_JSON
-        DEPENDS setup_commander
+    execute_process(
         COMMAND ${PROJECT_SOURCE_DIR}/tools/commander/merge.js 
         	-a ${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json
         	-b ${PARSED_ARGS_INPUT_FILE} 
         	-o ${PARSED_ARGS_OUTPUT_DIR}/airliner-overrides.json
     )
-    add_dependencies(all_merge_json ${TARGET_NAME}_merge_JSON)
     
 endfunction(add_airliner_json_input)
 
