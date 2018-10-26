@@ -99,7 +99,7 @@
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
+     "activeItemIndex": 1,
      "height": 100,
      "width": 29.71803747006768,
      "content": [
@@ -110,6 +110,17 @@
        "componentState": {
         "text": "text",
         "link": "/cfe/sb/pipestats"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Memory",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/cfe/es/memory?appName=CFE_SB"
        },
        "isClosable": true,
        "reorderEnabled": true
