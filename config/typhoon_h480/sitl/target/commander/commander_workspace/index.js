@@ -20,6 +20,8 @@ var protobufEncoder = new ProtobufEncoder(global.CDR_WORKSPACE, `${global.CDR_WO
 var protobufDecoder = new ProtobufDecoder(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/protobuf-decoder-config.json`);
 var configDB = new ConfigDatabase(global.CDR_WORKSPACE, `${global.CDR_WORKSPACE}/etc/config-database-config.json`);
 
+global.COMMANDER = commander;
+
 var airliner = commander.addInstance('airliner', function(instance) {
 	instance.addApp('binary-encoder',    binaryEncoder);
 	instance.addApp('binary-decoder',    binaryDecoder);
