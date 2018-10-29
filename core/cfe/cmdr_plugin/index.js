@@ -1,8 +1,8 @@
 'use strict';
 
-var path = require('path');
+var path = require( 'path' );
 
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
+const CdrPlugin = require( path.join( global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin' ) ).CdrPlugin;
 //var express = require('express');
 //var router = express.Router();
 //var path = require('path');
@@ -33,8 +33,8 @@ const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/
 
 
 module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor(urlBase) {
-    super(path.basename(__dirname), path.join(__dirname, 'web', urlBase));
+  constructor( urlBase ) {
+    super( path.basename( __dirname ), path.join( __dirname, 'web', urlBase ) );
   }
 
   getContent() {
@@ -198,19 +198,19 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               filePath: '/time/diag_full.pug'
             },
             diag_1: {
-                type: CdrPlugin.ContentType.PANEL,
-                shortDescription: 'Diagnostic (Partial - 1)',
-                filePath: '/time/diag_1.pug'
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Diagnostic (Partial - 1)',
+              filePath: '/time/diag_1.pug'
             },
             diag_2: {
-                type: CdrPlugin.ContentType.PANEL,
-                shortDescription: 'Diagnostic (Partial - 2)',
-                filePath: '/time/diag_2.pug'
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Diagnostic (Partial - 2)',
+              filePath: '/time/diag_2.pug'
             },
             diag_3: {
-                type: CdrPlugin.ContentType.PANEL,
-                shortDescription: 'Diagnostic (Partial - 3)',
-                filePath: '/time/diag_3.pug'
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Diagnostic (Partial - 3)',
+              filePath: '/time/diag_3.pug'
             }
           }
         },
@@ -253,6 +253,11 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Display',
               filePath: '/pilot/display.pug'
+            },
+            testwgt: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Test Widget',
+              filePath: '/pilot/testwgt.pug'
             }
           }
         }
@@ -267,18 +272,18 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
       name: 'cfe',
       text: 'Core Flight Executive',
       description: 'Core Flight Executive services.',
-      nodes: [{
+      nodes: [ {
         name: 'es',
         text: 'Essential Services',
         description: 'Core essential services.',
-        nodes: [{
+        nodes: [ {
           name: 'main',
           text: 'Main',
           filePath: '/es/main_layout.json',
           urlPath: '/cfe/es/main_layout.json',
           description: 'Main Essential Services.'
-        }]
-      }]
+        } ]
+      } ]
     };
 
     return result;
@@ -291,11 +296,11 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
       name: 'cfe',
       text: 'Core Flight Executive',
       description: 'Core Flight Executive services.',
-      nodes: [{
+      nodes: [ {
         name: 'es',
         text: 'Essential Services',
         description: 'Core essential services.',
-        nodes: [{
+        nodes: [ {
             name: 'appctrl',
             text: 'Application Control',
             filePath: '/es/appctrl.pug',
@@ -349,47 +354,47 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
         name: 'evs',
         text: 'Event Services',
         description: 'Core event services.',
-        nodes: [{
+        nodes: [ {
           name: 'main',
           text: 'Main',
           filePath: '/evs/main.pug',
           urlPath: '/cfe/evs/main.pug',
           description: ''
-        }]
+        } ]
       }, {
         name: 'sb',
         text: 'Software Bus',
         description: 'Core software bus services.',
-        nodes: [{
+        nodes: [ {
           name: 'main',
           text: 'Main',
           filePath: '/sb/main.pug',
           urlPath: '/cfe/sb/main.pug',
           description: ''
-        }]
+        } ]
       }, {
         name: 'tbl',
         text: 'Table Services',
         description: 'Core table services.',
-        nodes: [{
+        nodes: [ {
           name: 'main',
           text: 'Main',
           filePath: '/tbl/main.pug',
           urlPath: '/cfe/tbl/main.pug',
           description: ''
-        }]
+        } ]
       }, {
         name: 'time',
         text: 'Time Services',
         description: 'Core time services.',
-        nodes: [{
+        nodes: [ {
           name: 'main',
           text: 'Main',
           filePath: '/time/main.pug',
           urlPath: '/cfe/time/main.pug',
           description: ''
-        }]
-      }]
+        } ]
+      } ]
     };
 
     return result;
