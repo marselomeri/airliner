@@ -1,3 +1,9 @@
+script.
+    var sendSBMemPoolStats = function () {
+        var poolHandle = $('#SBMemPoolHandle').text();
+        session.sendCommand({ops_path:'/CFE/CFE_ES_TlmPoolStatsCmd_t', args:{'Payload.Application':'CFE_SB', 'Payload.PoolHandle':poolHandle}});
+    };
+         
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
       header
@@ -78,8 +84,9 @@
             tr  
               th Mem Pool Handle
               td 
-                span(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
+                span#SBMemPoolHandle(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
               td
+                button.btn.cdr-primary(onclick='sendSBMemPoolStats()') Send Stats
       footer
         .btn-group.dropdown
           button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')

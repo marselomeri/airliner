@@ -113,7 +113,7 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
             },
             efltr: {
               type: CdrPlugin.ContentType.PANEL,
-              shortDescription: 'Event Filter (Generic)',
+              shortDescription: 'Event Filter',
               filePath: '/evs/efltr.pug'
             },
             sch: {
