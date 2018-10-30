@@ -59,9 +59,15 @@ script.
       });
       
       display_controllers[randomKey] = new CommanderDisplay($('#'+randomKey));
-      
     }
   });
+  
+  /* call adi subscriptions */
+  /* getSubscriptions();
+  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[0]','text','.cdr-guages');
+  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[1]','text','.cdr-guages');
+  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[2]','text','.cdr-guages');
+  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[3]','text','.cdr-guages'); */
   
 
 
