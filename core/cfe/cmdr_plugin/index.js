@@ -82,6 +82,12 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               longDescription: 'Memory and memory pool status and monitoring.',
               filePath: '/es/memory.pug'
             },
+            perf: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Performance',
+              longDescription: 'Performance monitoring.',
+              filePath: '/es/perf.pug'
+            },
             reset: {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Reset',

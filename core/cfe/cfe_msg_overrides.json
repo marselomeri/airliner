@@ -113,7 +113,23 @@
                     "CFE_TIME_SendCmd":              { "airliner_cc":  0, "macro": "CFE_TIME_SEND_CMD_MID", "airliner_msg": "CFE_TIME_NoArgsCmd_t"},
                     "CFE_TIME_HkPacket_t":           {                    "macro": "CFE_TIME_SEND_HK_MID",  "airliner_msg": "CFE_TIME_HkPacket_t"},
                     "CFE_TIME_DiagPacket_t":         {                    "macro": "CFE_TIME_DIAG_TLM_MID", "airliner_msg": "CFE_TIME_DiagPacket_t"}
-                },            
+                },       
+                "scheduler": {
+                    "activities": [
+                        "CFE_ES_SEND_HK",
+                        "CFE_EVS_SEND_HK",
+                        "CFE_SB_SEND_HK",
+                        "CFE_TBL_SEND_HK",
+                        "CFE_TIME_SEND_HK"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "CFE_ES_STUFF" },
+                        { "id": 2, "macro": "CFE_EVS_STUFF" },
+                        { "id": 3, "macro": "CFE_SB_STUFF" },
+                        { "id": 4, "macro": "CFE_TBL_STUFF" },
+                        { "id": 5, "macro": "CFE_TIME_STUFF" }
+                    ]
+                },
                 "events": [
                     {"macro": "CFE_ES_INIT_INF_EID", "id":1},
                     {"macro": "CFE_ES_INITSTATS_INF_EID", "id":2},
