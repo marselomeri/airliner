@@ -238,6 +238,8 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/amc_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/amc_perfids.h
+    MSG_OVERRIDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/amc_msg_overrides.json
 )
 
 add_airliner_app(
