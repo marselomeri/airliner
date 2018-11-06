@@ -120,6 +120,7 @@ class SetpointTriplet(Telemetry):
             Prev_LoiterDirection=0,
             Prev_AccelerationValid=0,
             Prev_AccelerationIsForce=0,
+            Prev_VelocityFrame=0,
             Cur_Lat=0.0,
             Cur_Lon=0.0,
             Cur_X=0.0,
@@ -149,6 +150,7 @@ class SetpointTriplet(Telemetry):
             Cur_LoiterDirection=0,
             Cur_AccelerationValid=0,
             Cur_AccelerationIsForce=0,
+            Cur_VelocityFrame=0,
             Next_Lat=0.0,
             Next_Lon=0.0,
             Next_X=0.0,
@@ -177,6 +179,7 @@ class SetpointTriplet(Telemetry):
             Next_YawspeedValid=0,
             Next_LoiterDirection=0,
             Next_AccelerationValid=0,
-            Next_AccelerationIsForce=0)
+            Next_AccelerationIsForce=0,
+            Next_VelocityFrame=0)
         for key, value in kwargs.items():
             self[key] = value

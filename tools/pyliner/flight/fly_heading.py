@@ -35,6 +35,7 @@ with ScriptingWrapper(vehicle) as rocky:
                 Cur_Alt=cur_alt,
                 Cur_Valid=True,
                 Cur_VelocityValid=True,
+                Cur_VelocityFrame=8,
                 Cur_Type=1,
                 Cur_AX=1.0,
                 Cur_Yaw=0.0
