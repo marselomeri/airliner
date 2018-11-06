@@ -52,6 +52,8 @@ function parsePluginPath(indexFilePath, basePath) {
     if (fs.existsSync(indexFilePath)) {
         var NewPluginClass = require(path.dirname(indexFilePath));
         var newPlugin = new NewPluginClass(basePath);
+        
+        newPlugin.initialize(commander);
 	} else {
 		//parsePluginPath(pluginPath, newBasePath);
 	}

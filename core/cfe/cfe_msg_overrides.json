@@ -123,11 +123,11 @@
                         "CFE_TIME_SEND_HK"
                     ],
                     "groups": [
-                        { "id": 1, "macro": "CFE_ES_STUFF" },
-                        { "id": 2, "macro": "CFE_EVS_STUFF" },
-                        { "id": 3, "macro": "CFE_SB_STUFF" },
-                        { "id": 4, "macro": "CFE_TBL_STUFF" },
-                        { "id": 5, "macro": "CFE_TIME_STUFF" }
+                        { "id": 1, "macro": "CFE_ES_SCH_GRP" },
+                        { "id": 2, "macro": "CFE_EVS_SCH_GRP" },
+                        { "id": 3, "macro": "CFE_SB_SCH_GRP" },
+                        { "id": 4, "macro": "CFE_TBL_SCH_GRP" },
+                        { "id": 5, "macro": "CFE_TIME_SCH_GRP" }
                     ]
                 },
                 "events": [
