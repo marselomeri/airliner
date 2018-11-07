@@ -7,6 +7,7 @@ from pyliner.scripting_wrapper import ScriptingWrapper
 from pyliner.util import read_json
 from pyliner.telemetry import SetpointTriplet
 
+from math import radians
 from time import sleep
 
 def range_limit(current, target):
@@ -28,7 +29,6 @@ with ScriptingWrapper(vehicle) as rocky:
     rocky.ctrl.takeoff()
     
     cur_alt = rocky.nav.position.altitude + 10
-    
     triplet = SetpointTriplet(
                 Cur_VX=5.0,
                 Cur_CruisingSpeed=5.0,
@@ -37,8 +37,8 @@ with ScriptingWrapper(vehicle) as rocky:
                 Cur_VelocityValid=True,
                 Cur_VelocityFrame=8,
                 Cur_Type=1,
-                Cur_AX=1.0,
-                Cur_Yaw=0.0
+                Cur_Yaw=rocky.fd.r,
+                Next_Yaw=rocky.fd.r
             )
     
 #    heading = rocky.nav.heading
