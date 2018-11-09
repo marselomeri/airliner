@@ -4,6 +4,7 @@ from datetime import datetime
 from numbers import Real
 
 from pyliner.action import ACTION_CALC_DISTANCE, ACTION_AXIS_SET
+from pyliner.conversions import seconds
 from pyliner.intent import Intent
 from pyliner.apps.navigation.navigation_factory import NavigationFactory, NotSet
 from pyliner.apps.navigation.command_timeout import CommandTimeout
@@ -13,7 +14,7 @@ class Lnav(NavigationFactory):
     """Perform a lateral movement."""
 
     def __call__(self, distance, axis=NotSet, method=NotSet, tolerance=NotSet,
-                 timeout=NotSet):
+                 timeout=seconds(30)):
         """Block until the distance traveled is within the tolerance of the
         target distance.
 

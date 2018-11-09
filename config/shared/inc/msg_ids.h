@@ -664,6 +664,9 @@
 #define FLOW_FRAME_MID                              0x0ce5
 #define FLOW_DIAG_TLM_MID                         	0x0ce6
 
+/* MPC                                                   */
+#define MPC_DIAG_TLM_MID                            0x0cea
+
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif
