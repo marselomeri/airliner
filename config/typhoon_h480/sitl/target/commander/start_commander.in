@@ -1,25 +1,10 @@
 #!/bin/bash
 
-export CDR_WORKSPACE="@CDR_WORKSPACE@"
-export AIRLINER_MSG_DEF_PATH="@AIRLINER_MSG_DEF_PATH@"
-export AIRLINER_PROTO_PATH="@AIRLINER_PROTO_PATH@"
-export COMMANDER_PATH="@COMMANDER_PATH@"
+source setvars
 
-function ENVIRONMENT() {
-  if [ -f environment.sh ]; then
-    rm environment.sh;
-  fi
-  #make environment script with auto generated paths
-  touch environment.sh
-  echo "export CDR_WORKSPACE=\"$CDR_WORKSPACE\"" > environment.sh
-  echo "export AIRLINER_MSG_DEF_PATH=\"$AIRLINER_MSG_DEF_PATH\"" >> environment.sh
-  echo "export AIRLINER_PROTO_PATH=\"$AIRLINER_PROTO_PATH\"" >> environment.sh
-  echo "export COMMANDER_PATH=\"$COMMANDER_PATH\"" >> environment.sh
-  chmod +x environment.sh
-}
 
 if [ -x "$(command -v nodemon)" ]; then
-  (cd ${COMMANDER_PATH}; ENVIRONMENT; nodemon start)
+  (cd ${COMMANDER_PATH};  nodemon start)
 else
-  (cd ${COMMANDER_PATH}; ENVIRONMENT; npm start)
+  (cd ${COMMANDER_PATH};  npm start)
 fi
