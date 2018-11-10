@@ -307,6 +307,8 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/gps_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/gps_perfids.h
+    MSG_OVERRIDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/gps/gps_msg_overrides.json
 )
 
 add_airliner_app(
