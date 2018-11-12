@@ -1,0 +1,12 @@
+{
+    "Airliner": {
+        "apps": {
+            "HMC5883": {
+                "operations": {
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

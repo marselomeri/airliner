@@ -1,0 +1,12 @@
+{
+    "Airliner": {
+        "apps": {
+            "RGBLED": {
+                "operations": {
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

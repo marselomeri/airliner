@@ -3,25 +3,21 @@
         "apps": {
             "SCH": {
                 "operations": {
-                    "Noop":           { "airliner_cc":  0, "airliner_msg": "CFE_SB_CmdHdr_t" },
-                    "Reset":          { "airliner_cc":  1, "airliner_msg": "CFE_SB_CmdHdr_t" },
-                    "Enable":         { "airliner_cc":  2, "airliner_msg": "SCH_EntryCmd_t" },
-                    "Disable":        { "airliner_cc":  3, "airliner_msg": "SCH_EntryCmd_t" },
-                    "EnableGroup":    { "airliner_cc":  4, "airliner_msg": "SCH_GroupCmd_t" },
-                    "DisableGroup":   { "airliner_cc":  5, "airliner_msg": "SCH_GroupCmd_t" },
-                    "EnableSync":     { "airliner_cc":  6, "airliner_msg": "CFE_SB_CmdHdr_t" },
-                    "SendDiag":       { "airliner_cc":  7, "airliner_msg": "CFE_SB_CmdHdr_t" },
-                    "SCH_HkPacket_t": {                    "airliner_msg": "SCH_HkPacket_t" },
-                    "SCH_DiagPacket_t": {                  "airliner_msg": "SCH_DiagPacket_t" }
+                    "Noop":             {"airliner_mid": "0x19e4" },
+                    "Reset":            {"airliner_mid": "0x19e4" },
+                    "Enable":           {"airliner_mid": "0x19e4" },
+                    "Disable":          {"airliner_mid": "0x19e4" },
+                    "EnableGroup":      {"airliner_mid": "0x19e4" },
+                    "DisableGroup":     {"airliner_mid": "0x19e4" },
+                    "EnableSync":       {"airliner_mid": "0x19e4" },
+                    "SendDiag":         {"airliner_mid": "0x19e4" },
+                    "SCH_HkPacket_t":   {"airliner_mid": "0x09e8" },
+                    "SCH_DiagPacket_t": {"airliner_mid": "0x09e7" }
                 },
                 "config": {
                   "SCH_TOTAL_SLOTS": 250,
                   "SCH_ENTRIES_PER_SLOT": 15
-                },
-                "tables": [
-                    {"id": "MSG_DEFS",  "title": "Message Definitions",  "isDumpTable": false},
-                    {"id": "SCHED_DEF", "title": "Schedule Definitions", "isDumpTable": false, "ScheduleEntry": []}
-                ]
+                }
             }
         }
     }

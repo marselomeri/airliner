@@ -1,0 +1,12 @@
+{
+    "Airliner": {
+        "apps": {
+            "MPU9250": {
+                "operations": {
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "Airliner": {
+        "apps": {
+            "CI": {
+                "operations": {
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

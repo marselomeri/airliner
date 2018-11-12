@@ -1,0 +1,12 @@
+{
+    "Airliner": {
+        "apps": {
+            "MS5611": {
+                "operations": {
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}
