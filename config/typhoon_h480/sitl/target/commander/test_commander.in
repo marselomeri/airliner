@@ -2,4 +2,4 @@
 
 source setvars
 
-(cd ${COMMANDER_PATH}; npm test)
+(cd ${COMMANDER_PATH}; npm run test-cov;)
