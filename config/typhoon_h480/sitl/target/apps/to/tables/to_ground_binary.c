@@ -110,6 +110,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
                codified and vetted flight specific telemetry.  These are currently
                set to low priority because some do or could be generated at a high
                rate, resulting in saturation of lower rate HK telemetry.*/
+            {PX4_ACTUATOR_OUTPUTS_MID,                1,        TO_PQUEUE_HIGH_IDX},
             {PX4_GEOFENCE_RESULT_MID,                 1,        TO_PQUEUE_LOW_IDX},
             {PX4_HOME_POSITION_MID,                   1,        TO_PQUEUE_LOW_IDX},
             {PX4_LED_CONTROL_MID,                     1,        TO_PQUEUE_LOW_IDX},
