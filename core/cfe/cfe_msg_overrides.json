@@ -422,7 +422,10 @@
                 ],
                 "MemPools": [
                     {"HandleTlmID": "/CFS/CFE_SB/MemPoolHandle"}
-                ]
+                ],
+                "config": {
+                    "OS_MAX_NUM_OPEN_FILES": 50
+                }
             }
         }
     }
