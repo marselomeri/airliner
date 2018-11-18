@@ -19,7 +19,7 @@
                     "CFE_ES_WriteERlogCmd_t":        { "airliner_cc": 13, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_WriteERlogCmd_t"},
                     "CFE_ES_PerfStartCmd_t":         { "airliner_cc": 14, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_PerfStartCmd_t"},
                     "CFE_ES_PerfStopCmd_t":          { "airliner_cc": 15, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_PerfStopCmd_t"},
-                    "CFE_ES_PerfSetFilterMaskCmd_t": {"airliner_cc":  16, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_PerfSetFilterMaskCmd_t"},
+                    "CFE_ES_PerfSetFilterMaskCmd_t": { "airliner_cc": 16, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_PerfSetFilterMaskCmd_t"},
                     "CFE_ES_PerfSetTrigMaskCmd_t":   { "airliner_cc": 17, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_PerfSetTrigMaskCmd_t"},
                     "CFE_ES_OverWriteSysLogCmd_t":   { "airliner_cc": 18, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_ES_OverWriteSysLogCmd_t"},
                     "CFE_ES_ResetPrCount":           { "airliner_cc": 19, "macro": "CFE_ES_CMD_MID",     "airliner_msg": "CFE_SB_CmdHdr_t"},
@@ -113,7 +113,14 @@
                     "CFE_TIME_SendCmd":              { "airliner_cc":  0, "macro": "CFE_TIME_SEND_CMD_MID", "airliner_msg": "CFE_TIME_NoArgsCmd_t"},
                     "CFE_TIME_HkPacket_t":           {                    "macro": "CFE_TIME_SEND_HK_MID",  "airliner_msg": "CFE_TIME_HkPacket_t"},
                     "CFE_TIME_DiagPacket_t":         {                    "macro": "CFE_TIME_DIAG_TLM_MID", "airliner_msg": "CFE_TIME_DiagPacket_t"}
-                },       
+                },  
+                
+                
+                
+                
+                
+                
+                     
                 "scheduler": {
                     "activities": [
                         "CFE_ES_SEND_HK",

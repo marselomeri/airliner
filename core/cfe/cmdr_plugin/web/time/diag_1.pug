@@ -46,7 +46,12 @@
           tr
             th Clock API State
             td 
-              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockStateAPI'}], indicator:'text'}) ---
+              span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ClockStateAPI', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:-1, name:'INVALID'},
+                  {value:0, name:'VALID'},
+                  {value:1, name:'FLYWHEEL'}
+                ]}}],indicator:'text'}) ---
           tr
             th Time Since Tone
             td 

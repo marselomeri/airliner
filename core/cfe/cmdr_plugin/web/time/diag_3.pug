@@ -86,8 +86,13 @@
           tr
             th Data Store Status
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.DataStoreStatus'}], indicator:'text'}) ---
-              
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.DataStoreStatus', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:1, name:'ERROR'},
+                  {value:2, name:'BAD'},
+                  {value:3, name:'NEW'},
+                  {value:4, name:'EXISTING'}
+                ]}}],indicator:'text'}) ---
               
     footer
       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag

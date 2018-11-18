@@ -46,15 +46,27 @@
           tr
             th One Time Direction
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneTimeDirection'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneTimeDirection', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:1, name:'ADD'},
+                  {value:2, name:'SUBTRACT'}
+                ]}}],indicator:'text'}) ---
           tr
             th 1Hz Direction
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneHzDirection'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.OneHzDirection', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:1, name:'ADD'},
+                  {value:2, name:'SUBTRACT'}
+                ]}}],indicator:'text'}) ---
           tr
             th Delay Direction
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.DelayDirection'}], indicator:'text'}) ---
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.DelayDirection', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:1, name:'ADD'},
+                  {value:2, name:'SUBTRACT'}
+                ]}}],indicator:'text'}) ---
           tr
             th One Time Adjust
             td 

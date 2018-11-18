@@ -28,7 +28,12 @@
           tr
             th Clock State API
             td 
-              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.ClockStateAPI'}], indicator:'text'})
+              div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.ClockStateAPI', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:-1, name:'INVALID'},
+                  {value:0, name:'VALID'},
+                  {value:1, name:'FLYWHEEL'}
+                ]}}],indicator:'text'}) ---
             td
           tr
             th Leap Seconds

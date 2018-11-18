@@ -23,7 +23,11 @@
                 tr
                   th Msg Format
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageFormatMode'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.MessageFormatMode', calibration: {type:'enumeration', 
+                      enumerations:[
+                        {value:0, name:'SHORT'},
+                        {value:1, name:'LONG'}
+                      ]}}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetEventFormatMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Short 
@@ -63,7 +67,11 @@
                 tr
                   th Log Mode
                   td
-                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogMode'}],indicator:'text'}) ---
+                    span(data-cdr={tlm:[{name:'/CFE/CFE_EVS_TlmPkt_t/Payload.LogMode', calibration: {type:'enumeration', 
+                      enumerations:[
+                        {value:0, name:'OVERWRITE'},
+                        {value:1, name:'DISCARD'}
+                      ]}}],indicator:'text'}) ---
                   td
                     .btn-group
                       button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_EVS_SetLogMode', argument:[{name:'Payload.Mode', value:'0'},{name:'Payload.Spare', value:'0'}]}, indicator:'cmd'}) Overwrite

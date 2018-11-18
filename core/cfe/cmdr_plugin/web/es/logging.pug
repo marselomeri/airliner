@@ -23,7 +23,10 @@
           tr 
             th Mode:
             td
-              span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.SysLogMode'}],indicator:'text'}) ---
+              span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.SysLogMode', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:0, name:'OVERWRITE'},
+                  {value:1, name:'DISCARD'}]}  }],indicator:'text'}) ---
             td
               button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_ES_OverWriteSysLogCmd_t'},indicator:'cmd'}) Set Mode
           tr

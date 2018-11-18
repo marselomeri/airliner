@@ -10,12 +10,27 @@
           tr
             th Reset Type:
             td
-              span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ResetType'}],indicator:'text'}) ---
+              span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ResetType', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:1, name:'PROCESSOR'},
+                  {value:2, name:'POWERUP'}
+                ]}}],indicator:'text'}) ---}],indicator:'text'}) ---
             td
           tr
             th Reset Subtype:
             td
-              span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ResetSubtype'}],indicator:'text'}) ---
+              span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ResetSubtype', calibration: {type:'enumeration', 
+                enumerations:[
+                  {value:1, name:'POWER_CYCLE'},
+                  {value:2, name:'PUSH_BUTTON'},
+                  {value:3, name:'HW_SPECIAL_COMMAND'},
+                  {value:4, name:'HW_WATCHDOG'},
+                  {value:5, name:'RESET_COMMAND'},
+                  {value:6, name:'EXCEPTION'},
+                  {value:7, name:'UNDEFINED_RESET'},
+                  {value:8, name:'HWDEBUG_RESET'},
+                  {value:9, name:'BANKSWITCH_RESET'}
+                ]}}],indicator:'text'}) ---}],indicator:'text'}) ---
             td
           tr
             th Proc Reset Cnt:
