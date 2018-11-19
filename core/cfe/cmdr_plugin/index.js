@@ -54,14 +54,14 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
             },
             appctrl: {
               type: CdrPlugin.ContentType.PANEL,
-              shortDescription: 'Application Control',
+              shortDescription: 'App Ctrl',
               longDescription: 'Application start, stop, restart, and reload.',
               filePath: '/es/appctrl.pug'
             },
             cdh: {
               type: CdrPlugin.ContentType.PANEL,
-              shortDescription: 'Command and Data Handling',
-              longDescription: 'Command counters.',
+              shortDescription: 'CFE ES HK',
+              longDescription: 'CFE Essential Services Housekeeping.',
               filePath: '/es/cdh.pug'
             },
             console: {
@@ -122,11 +122,6 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               shortDescription: 'Event Filter',
               filePath: '/evs/efltr.pug'
             },
-            sch: {
-              type: CdrPlugin.ContentType.PANEL,
-              shortDescription: 'Scheduler',
-              filePath: '/evs/sch.pug'
-            },
             stats: {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Stats',
@@ -180,6 +175,11 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Registry',
               filePath: '/tbl/registry.pug'
+            },
+            tc: {
+                type: CdrPlugin.ContentType.PANEL,
+                shortDescription: 'Tbl Ctrl',
+                filePath: '/tbl/tc.pug'
             }
           }
         },
