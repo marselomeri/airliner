@@ -3,7 +3,6 @@
         "apps": {
             "VM": {
                 "operations": {
-                    "VM_Modes":       { "airliner_mid": "" },
                     "Noop":           { "airliner_mid": "0x1c70" },
                     "Reset":          { "airliner_mid": "0x1c70" },
                     "Arm":            { "airliner_mid": "0x1c70" },
@@ -15,7 +14,13 @@
                     "AutoRtl":        { "airliner_mid": "0x1c70" },
                     "AutoTakeOff":    { "airliner_mid": "0x1c70" },
                     "AutoLand":       { "airliner_mid": "0x1c70" },
-                    "VM_HkTlm_t":     { "airliner_mid": "0x0c6d" }
+                    "Acrobatic":      { "airliner_mid": "0x1c70" },
+                    "Rattitude":      { "airliner_mid": "0x1c70" },
+                    "Stabilized":     { "airliner_mid": "0x1c70" },
+                    "VM_HkTlm_t":     { "airliner_mid": "0x0c6d" },
+                    "Wakeup":         { "airliner_mid": "0x1c6f" },
+                    "SendHk":         { "airliner_mid": "0x1c6e" }
+
                 }
             }
         }
