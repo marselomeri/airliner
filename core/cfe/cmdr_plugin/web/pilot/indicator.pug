@@ -7,6 +7,7 @@ style.
     border-radius: 5px;
     padding: 6px;
     overflow: hidden;
+    min-width:135px;
   }
 
   .pfd-indicator{
@@ -38,39 +39,41 @@ style.
 .row.os-theme-dark
   article.col-xs-12.col-sm-12
     div.widget-body
-    
-      .pfd-ld-initialized.pfd-indicator-class
-        .pfd-ind-label  VEHICLE LAND
-        .pfd-indicator
-          span.pfd-outline-green(data-info="DETECTED") DETECTED
-      
-      .pfd-lg-initialized.pfd-indicator-class
-        .pfd-ind-label  LANDING GEAR
-        .pfd-indicator
-          span.pfd-outline-green(data-info="EXTENDED") EXTENDED
-          span.pfd-outline-green(data-info="RETRACTED") RETRACTED
-          
-      .pfd-pe-initialized.pfd-indicator-class
-        .pfd-ind-label  PE
-        .pfd-indicator
-          span.pfd-outline-green(data-info="INITIALIZED") INITIALIZED
-          
-      .pfd-arm-initialized.pfd-indicator-class
-        .pfd-ind-label  ARM STATE
-        .pfd-indicator
-          span.pfd-outline-green(data-info="ARM") ARM
-          span.pfd-outline-green(data-info="DISARM") DISARM
-          
-      .pfd-mode-initialized.pfd-indicator-class
-        .pfd-ind-label  NAV MODE
-        .pfd-indicator
-          span.pfd-outline-green(data-info="MANUAL") MANUAL
-          span.pfd-outline-green(data-info="POSCTL") POSCTL
-          span.pfd-outline-green(data-info="ALTCTL") ALTCTL
-          span.pfd-outline-green(data-info="AUTO TAKEOFF") AUTO TAKEOFF
-          span.pfd-outline-green(data-info="AUTO LAND") AUTO LAND
-          span.pfd-outline-green(data-info="AUTO LOITER") AUTO LOITER
-          span.pfd-outline-green(data-info="AUTO RTL") AUTO RTL
+      table.table.table-condensed
+        tbody
+          tr
+            td.pfd-ld-initialized.pfd-indicator-class
+              .pfd-ind-label  VEHICLE LAND
+              .pfd-indicator
+                span.pfd-outline-green(data-info="DETECTED") DETECTED
+          tr
+            td.pfd-lg-initialized.pfd-indicator-class
+              .pfd-ind-label  LANDING GEAR
+              .pfd-indicator
+                span.pfd-outline-green(data-info="EXTENDED") EXTENDED
+                span.pfd-outline-green(data-info="RETRACTED") RETRACTED
+          tr    
+            td.pfd-pe-initialized.pfd-indicator-class
+              .pfd-ind-label  PE
+              .pfd-indicator
+                span.pfd-outline-green(data-info="INITIALIZED") INITIALIZED
+          tr    
+            td.pfd-arm-initialized.pfd-indicator-class
+              .pfd-ind-label  ARM STATE
+              .pfd-indicator
+                span.pfd-outline-green(data-info="ARM") ARM
+                span.pfd-outline-green(data-info="DISARM") DISARM
+          tr    
+            td.pfd-mode-initialized.pfd-indicator-class
+              .pfd-ind-label  NAV MODE
+              .pfd-indicator
+                span.pfd-outline-green(data-info="MANUAL") MANUAL
+                span.pfd-outline-green(data-info="POSCTL") POSCTL
+                span.pfd-outline-green(data-info="ALTCTL") ALTCTL
+                span.pfd-outline-green(data-info="AUTO TAKEOFF") AUTO TAKEOFF
+                span.pfd-outline-green(data-info="AUTO LAND") AUTO LAND
+                span.pfd-outline-green(data-info="AUTO LOITER") AUTO LOITER
+                span.pfd-outline-green(data-info="AUTO RTL") AUTO RTL
           
 script.
 
