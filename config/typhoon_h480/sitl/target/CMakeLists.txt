@@ -20,7 +20,7 @@ initialize_airliner_build(
         /ram
     STARTUP_SCRIPT
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe_es_startup.scr
-
+    
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cfe_msgids.h
@@ -30,6 +30,8 @@ initialize_airliner_build(
     MSG_OVERRIDES
         ${CMAKE_CURRENT_SOURCE_DIR}/cfe/cfe_msg_overrides.json
 )
+
+
 
 add_airliner_app(
     cfs_lib
