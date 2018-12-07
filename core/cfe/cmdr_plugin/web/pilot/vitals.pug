@@ -38,46 +38,42 @@ style.
     
 script.
   /* PX4 Messages */
-  /* add local position Message */
-  var bat_add = [
-  {
-    name: "ChannelIdx", value: "GROUND"
-  },
-  {
-    name: "MsgID", value: "2572"
-  },
-  {
-    name: "MsgLimit", value: "1"
-  },
-  {
-    name: "PqueueIdx", value: "LOW"
-  }
-  ]
-
-  /* Subscribe to px4 streams */
-  session.sendCommand('/CFS/TO/AddMessage', bat_add);
-  
-  /* Battery Status */  
-  if(!('/PX4/PX4_BatteryStatusMsg_t/Remaining' in Object.keys(rouge_subscriptions))) {
-    session.subscribe([{name:'/PX4/PX4_BatteryStatusMsg_t/Remaining'}], (paramArr)=>{
-      try {
-        var param = paramArr[0];
-        var sample = param.sample[param.sample.length - 1];
-        var value = sample.value;
-        var batRemainingPercent = value * 100;
-        if(batRemainingPercent > 100){
-          batRemainingPercent = 100
-        }
-        else if(batRemainingPercent < 0){
-          batRemainingPercent = 0
-        }
-        var indicatorCode = Math.floor(batRemainingPercent/20);
-        $('.pdf-vitals-battery').find('.fa').attr('class','fa fa-battery-'+indicatorCode);
-        $('.pdf-vitals-battery').find('.pfd-value').text(batRemainingPercent.toFixed(2)+'%');
+  setTimeout(()=>{
+    var bat_add = {
+      "ops_path": "/TO/TO_AddMessageFlowCmd_t" ,
+      "args":{
+        "MsgID":2572,
+        "PQueueIdx":1,
+        "MsgLimit":1,
+        "ChannelIdx":0
       }
-      catch(e){
-        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
-      } 
-    });
-    setRougeSubsc('/PX4/PX4_BatteryStatusMsg_t/Remaining','text','.pfd-bat-rem-val');
-  }
+    }
+    
+    session.sendCommand(bat_add);
+    
+    
+    /* Battery Status */  
+    if(!('/PX4/PX4_BatteryStatusMsg_t/Remaining' in Object.keys(rouge_subscriptions))) {
+      session.subscribe([{name:'/PX4/PX4_BatteryStatusMsg_t/Remaining'}], (paramArr)=>{
+        try {
+          var param = paramArr[0];
+          var sample = param.sample[param.sample.length - 1];
+          var value = sample.value;
+          var batRemainingPercent = value * 100;
+          if(batRemainingPercent > 100){
+            batRemainingPercent = 100
+          }
+          else if(batRemainingPercent < 0){
+            batRemainingPercent = 0
+          }
+          var indicatorCode = Math.floor(batRemainingPercent/20) -1;
+          $('.pdf-vitals-battery').find('.fa').attr('class','fa fa-battery-'+indicatorCode);
+          $('.pdf-vitals-battery').find('.pfd-bat-rem-val').text(batRemainingPercent.toFixed(2)+'%');
+        }
+        catch(e){
+          cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+        } 
+      });
+      setRougeSubsc('/PX4/PX4_BatteryStatusMsg_t/Remaining','text','.pfd-bat-rem-val');
+    }
+  },2000);

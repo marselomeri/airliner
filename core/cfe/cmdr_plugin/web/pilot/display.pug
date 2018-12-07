@@ -21,11 +21,12 @@ style.
       .left
         button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 0] onclick='setDisplayState(this)') NO DISPLAY    
         button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 1] onclick='setDisplayState(this)') VIDEO STREAM
-        button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 2] onclick='setDisplayState(this)') CESIUM MAP
+        button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 2] onclick='setDisplayState(this)') GROUND TRACK
+        button.btn.cdr-outline-green(data-info=['DISPLAY_CHANNELS', 3] onclick='setDisplayState(this)') FPV
       .right
-        button.btn.cdr-outline-green(data-info=['LAYERS', 0] onclick='setDisplayState(this)') NO LAYER    
-        button.btn.cdr-outline-green(data-info=['LAYERS', 1] onclick='setDisplayState(this)') ADI
-        button.btn.cdr-outline-green(data-info=['LAYERS', 2] onclick='setDisplayState(this)') ADSB
+        button.btn.cdr-outline-green(data-info=['ADDITIONAL_CTL', 0] onclick='setDisplayState(this)') CA LOCK    
+        button.btn.cdr-outline-green(data-info=['ADDITIONAL_CTL', 1] onclick='setDisplayState(this)') ADI
+        button.btn.cdr-outline-green(data-info=['ADDITIONAL_CTL', 2] onclick='setDisplayState(this)') ADSB
   .col-xs-12.col-sm-12
     .cdr-display-container
       #cdr-guages.cdr-display-container-item.cdr-guages  
@@ -43,31 +44,31 @@ style.
         button.btn.cdr-outline-green(data-info=['TERRAIN_TYPES', 1] onclick='setDisplayState(this)') 3D TERRAIN  
 script.
   var displayClass = $('.cdr-display-class');
+  
   displayClass.each((e)=>{
     var displayClassObj = $(displayClass[e]);
+    
     if (displayClassObj.attr('id') == undefined) {
+      /* new display is loaded */
       var randomKey = cu.makeKey();
-      var splKeyCollection = displayClassObj.find('button[data-info]');
+      var viewControlObjs = displayClassObj.find('button[data-info]');
       displayClassObj.attr('id',randomKey);
-      splKeyCollection.each((itm)=>{
-        $(splKeyCollection[itm]).data('key',randomKey);
+  
+      viewControlObjs.each((itm)=>{
+        $(viewControlObjs[itm]).data('key',randomKey);
       });
-      splKeyCollection = displayClassObj.find('.cdr-display-container-item');
-      splKeyCollection.each((itm)=>{
-        var id = $(splKeyCollection[itm]).attr('id');
-        $(splKeyCollection[itm]).attr('id',id+'-'+randomKey);
+      viewControlObjs = displayClassObj.find('.cdr-display-container-item');
+  
+      viewControlObjs.each((itm)=>{
+        var id = $(viewControlObjs[itm]).attr('id');
+        $(viewControlObjs[itm]).attr('id',id+'-'+randomKey);
       });
-      
+  
       display_controllers[randomKey] = new CommanderDisplay($('#'+randomKey));
+      display_controllers[randomKey].Subscriptions();
+      display_controllers[randomKey].updateCesiumGroundHeight();
     }
   });
-  
-  /* call adi subscriptions */
-  /* getSubscriptions();
-  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[0]','text','.cdr-guages');
-  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[1]','text','.cdr-guages');
-  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[2]','text','.cdr-guages');
-  setRougeSubsc('/PX4/PX4_VehicleAttitudeMsg_t/Q[3]','text','.cdr-guages'); */
   
 
 

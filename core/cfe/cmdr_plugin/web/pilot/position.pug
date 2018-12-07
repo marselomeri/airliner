@@ -64,81 +64,48 @@ style.
 script.
   /* PX4 Messages */
   /* add local position Message */
-  var vlp_add = [
-  {
-    name: "ChannelIdx", value: "GROUND"
-  },
-  {
-    name: "MsgID", value: "2644"
-  },
-  {
-    name: "MsgLimit", value: "1"
-  },
-  {
-    name: "PqueueIdx", value: "LOW"
-  }
-  ]
-  var vgpp_add = [
-  {
-    name: "ChannelIdx", value: "GROUND"
-  },
-  {
-    name: "MsgID", value: "2642"
-  },
-  {
-    name: "MsgLimit", value: "1"
-  },
-  {
-    name: "PqueueIdx", value: "LOW"
-  }
-  ]
-  var vgp_add = [
-  {
-    name: "ChannelIdx", value: "GROUND"
-  },
-  {
-    name: "MsgID", value: "2640"
-  },
-  {
-    name: "MsgLimit", value: "1"
-  },
-  {
-    name: "PqueueIdx", value: "HIGH"
-  }
-  ]
-  /* Subscribe to px4 streams */
-  session.sendCommand('/CFS/TO/AddMessage', vlp_add);
-  session.sendCommand('/CFS/TO/AddMessage', vgpp_add);
-  session.sendCommand('/CFS/TO/AddMessage', vgp_add);
-  /* VXY calculation */  
-  session.subscribe([{name:'/PX4/PX4_VehicleLocalPositionMsg_t/VX'},
-    {name:'/PX4/PX4_VehicleLocalPositionMsg_t/VY'},
-    {name:'/PX4/PX4_VehicleLocalPositionMsg_t/VZ'}], (param)=>{
-      try {
-        var vx, vy, vz;
-        for(var i in param){
-          var opsPath = param[i].opsPath;
-          var value = param[i].sample[ param[i].sample.length - 1 ].value;
-          if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VX'){
-            vx = value;
-          }
-          else if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VY'){
-            vy = value;
-          }
-          else if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VZ'){
-            vz = value;
-          }
-        }
-        if(vx != undefined && vy != undefined && vz != undefined){
-          var horizontalVel = Math.sqrt((vx*vx)+(vy*vy));
-          var velocity = Math.sqrt((vx*vx)+(vy*vy)+(vz*vz));
-          $('.pfd-vlp-cal-vxy').text(sprintf( '%0.3f', horizontalVel ))
-          $('.pfd-vlp-cal-vxyz').text(sprintf( '%0.3f', velocity ))
-        }
+  setTimeout(()=>{
+    
+    var vlp_add = {
+      "ops_path": "/TO/TO_AddMessageFlowCmd_t" ,
+      "args":{
+        "MsgID":2644,
+        "PQueueIdx":1,
+        "MsgLimit":1,
+        "ChannelIdx":0
       }
-      catch(e){
-        cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
-        $('.pfd-vlp-cal-vxy').text(sprintf( '%0.3f', 0 ))
-        $('.pfd-vlp-cal-vxyz').text(sprintf( '%0.3f', 0 ))
-      } 
-  });
+    }
+    session.sendCommand(vlp_add);
+    /* VXY calculation */  
+    session.subscribe([{name:'/PX4/PX4_VehicleLocalPositionMsg_t/VX'},
+      {name:'/PX4/PX4_VehicleLocalPositionMsg_t/VY'},
+      {name:'/PX4/PX4_VehicleLocalPositionMsg_t/VZ'}], (param)=>{
+        try {
+          var vx, vy, vz;
+          for(var i in param){
+            var opsPath = param[i].opsPath;
+            var value = param[i].sample[ param[i].sample.length - 1 ].value;
+            if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VX'){
+              vx = value;
+            }
+            else if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VY'){
+              vy = value;
+            }
+            else if(opsPath == '/PX4/PX4_VehicleLocalPositionMsg_t/VZ'){
+              vz = value;
+            }
+          }
+          if(vx != undefined && vy != undefined && vz != undefined){
+            var horizontalVel = Math.sqrt((vx*vx)+(vy*vy));
+            var velocity = Math.sqrt((vx*vx)+(vy*vy)+(vz*vz));
+            $('.pfd-vlp-cal-vxy').text(sprintf( '%0.3f', horizontalVel ))
+            $('.pfd-vlp-cal-vxyz').text(sprintf( '%0.3f', velocity ))
+          }
+        }
+        catch(e){
+          cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+          $('.pfd-vlp-cal-vxy').text(sprintf( '%0.3f', 0 ))
+          $('.pfd-vlp-cal-vxyz').text(sprintf( '%0.3f', 0 ))
+        } 
+    });
+    },2000)
