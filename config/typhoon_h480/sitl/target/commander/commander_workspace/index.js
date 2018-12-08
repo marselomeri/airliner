@@ -37,23 +37,23 @@ var airliner = commander.addInstance('airliner', function(instance) {
     var outFiles = [];
     var fullPath = path.join(global.CDR_WORKSPACE, 'plugins');
     
-    parsePluginPath(path.join(fullPath, 'cfe/index.js'), '/');
+    parsePluginPath(instance, path.join(fullPath, 'cfe/index.js'), '/');
     findIndex(path.join(fullPath, 'apps'), function(err, results) {
     	if(err) throw err;
     	for(var i = 0; i < results.length; ++i) {
-    		parsePluginPath(results[i], '/');
+    		parsePluginPath(instance, results[i], '/');
     	}
     });
 });
 
 
 
-function parsePluginPath(indexFilePath, basePath) {
+function parsePluginPath(instance, indexFilePath, basePath) {
     if (fs.existsSync(indexFilePath)) {
         var NewPluginClass = require(path.dirname(indexFilePath));
         var newPlugin = new NewPluginClass(basePath);
         
-        newPlugin.initialize(commander);
+        newPlugin.initialize(commander, instance);
 	} else {
 		//parsePluginPath(pluginPath, newBasePath);
 	}
