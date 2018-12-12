@@ -276,15 +276,20 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               shortDescription: 'Timer',
               filePath: '/widgets/timer.pug'
             },
-            cdrthroughput_latency: {
+            network_latency: {
               type: CdrPlugin.ContentType.WIDGET,
-              shortDescription: 'Throughput Latency',
-              filePath: '/widgets/cdrthroughput_latency.pug'
+              shortDescription: 'Network Latency',
+              filePath: '/widgets/network_latency.pug'
             },
-            cdrthroughput_transferrate: {
+            network_throughput: {
               type: CdrPlugin.ContentType.WIDGET,
-              shortDescription: 'Throughput Transfer Rate',
-              filePath: '/widgets/cdrthroughput_transferrate.pug'
+              shortDescription: 'Network Throughput',
+              filePath: '/widgets/network_throughput.pug'
+            },
+            socket_latency: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Socket Latency',
+              filePath: '/widgets/socket_latency.pug'
             },
             connection: {
               type: CdrPlugin.ContentType.WIDGET,

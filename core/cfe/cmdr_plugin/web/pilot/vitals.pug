@@ -53,7 +53,7 @@ script.
     
     
     /* Battery Status */  
-    if(!('/PX4/PX4_BatteryStatusMsg_t/Remaining' in Object.keys(rouge_subscriptions))) {
+    if(!('/PX4/PX4_BatteryStatusMsg_t/Remaining' in Object.keys(rogue_subscriptions))) {
       session.subscribe([{name:'/PX4/PX4_BatteryStatusMsg_t/Remaining'}], (paramArr)=>{
         try {
           var param = paramArr[0];
@@ -71,9 +71,9 @@ script.
           $('.pdf-vitals-battery').find('.pfd-bat-rem-val').text(batRemainingPercent.toFixed(2)+'%');
         }
         catch(e){
-          cu.logError("RougeSubscribe | unable to process response. error= ",e.message)
+          cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
         } 
       });
-      setRougeSubsc('/PX4/PX4_BatteryStatusMsg_t/Remaining','text','.pfd-bat-rem-val');
+      setRogueSubsc('/PX4/PX4_BatteryStatusMsg_t/Remaining','text','.pfd-bat-rem-val');
     }
   },2000);
