@@ -177,9 +177,9 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               filePath: '/tbl/registry.pug'
             },
             tc: {
-                type: CdrPlugin.ContentType.PANEL,
-                shortDescription: 'Tbl Ctrl',
-                filePath: '/tbl/tc.pug'
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Tbl Ctrl',
+              filePath: '/tbl/tc.pug'
             }
           }
         },
@@ -259,12 +259,38 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Display',
               filePath: '/pilot/display.pug'
-            },
-            testwgt: {
-              type: CdrPlugin.ContentType.WIDGET,
-              shortDescription: 'Test Widget',
-              filePath: '/pilot/testwgt.pug'
             }
+          }
+        },
+        widgets: {
+          shortDescription: 'Widgets',
+          longDescription: 'Widgets',
+          nodes: {
+            clock: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Clock',
+              filePath: '/widgets/clock.pug'
+            },
+            timer: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Timer',
+              filePath: '/widgets/timer.pug'
+            },
+            cdrthroughput_latency: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Throughput Latency',
+              filePath: '/widgets/cdrthroughput_latency.pug'
+            },
+            cdrthroughput_transferrate: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Throughput Transfer Rate',
+              filePath: '/widgets/cdrthroughput_transferrate.pug'
+            },
+            connection: {
+              type: CdrPlugin.ContentType.WIDGET,
+              shortDescription: 'Connection',
+              filePath: '/widgets/connection.pug'
+            },
           }
         }
       }
