@@ -240,6 +240,11 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
               shortDescription: 'Indicators',
               filePath: '/pilot/indicator.pug'
             },
+            events: {
+              type: CdrPlugin.ContentType.PANEL,
+              shortDescription: 'Events',
+              filePath: '/pilot/events.pug'
+            },
             position: {
               type: CdrPlugin.ContentType.PANEL,
               shortDescription: 'Vehicle Position',

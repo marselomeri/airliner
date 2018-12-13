@@ -1,0 +1,34 @@
+.row.os-theme-dark(style="margin:5px !important;padding:5px !important")
+  article.col-xs-12.col-sm-12
+    | Export 
+    button.btn.cdr-outline-primary(type='button' title="Export Events as CSV" style="margin:5px 10px !important;font-size: x-small !important;" onclick='exportToCsv(this)')
+      | CSV
+      i.fa.fa-file-excel-o(style="margin-left:10px;")
+    button.btn.cdr-outline-primary(type='button' title="Export Events as JSON" style="margin:5px 10px !important;font-size: x-small !important;" onclick='exportToJSON(this)')
+      | JSON
+      i.fa.fa-file-code-o(style="margin-left:10px;")
+    div.widget-body
+      table.table.table-condensed
+            thead
+              th(style={width:'50px'}) Date/Time
+              th(style={width:'50px'}) Type
+              th(style={width:'50px'}) Source
+              th(style={width:'200px'}) Message
+            tbody.cdr-event-able
+
+script.
+
+  /* CFE/EVENTS */  
+  /* if(!('/CFE/CFE_EVS_Packet_t/Payload.Message' in Object.keys(rogue_subscriptions))) {
+    console.log('test')
+    session.subscribe([{name:'/CFE/CFE_EVS_Packet_t/Payload.Message'}], (paramArr)=>{
+      console.log('session')
+      try {
+        console.log(paramArr);
+      }
+      catch(e){
+        cu.logError("RogueSubscribe | unable to process response. error= ",e.message)
+      } 
+    });
+    setRogueSubsc('/CFE/CFE_EVS_Packet_t/Payload.Message','text','.cdr-event-able');
+  } */
