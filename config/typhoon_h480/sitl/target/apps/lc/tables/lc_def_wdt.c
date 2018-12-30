@@ -6,6 +6,8 @@
 #include "lc_msgdefs.h"
 #include "lc_tbl.h"
 #include "lc_app.h"
+#include "msg_ids.h"
+#include "px4_msgs.h"
 
 /*************************************************************************
 ** Examples
@@ -72,28 +74,28 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 */
 LC_WDTEntry_t LC_DefaultWDT[LC_MAX_WATCHPOINTS] =
 {
-    /* #0 (unused) */
+    /* #0 (Extend Landing Gear) */
     {
-        .DataType                   = LC_WATCH_NOT_USED,
-        .OperatorID                 = LC_NO_OPER,
-        .MessageID                  = 0,
-        .WatchpointOffset           = 0,
+        .DataType                   = LC_DATA_UDWORD_LE,
+        .OperatorID                 = LC_OPER_EQ,
+        .MessageID                  = PX4_MANUAL_CONTROL_SETPOINT_MID,
+        .WatchpointOffset           = 768,
         .BitMask                    = LC_NO_BITMASK,
         .CustomFuncArgument         = 0,
-        .ResultAgeWhenStale         = 0,
-        .ComparisonValue.Unsigned32 = 0,
+        .ResultAgeWhenStale         = 1,
+        .ComparisonValue.Unsigned32 = PX4_SWITCH_POS_OFF,
     },
 
-    /* #1 (unused) */
+    /* #1 (Retract Landing Gear) */
     {
-        .DataType                   = LC_WATCH_NOT_USED,
-        .OperatorID                 = LC_NO_OPER,
-        .MessageID                  = 0,
-        .WatchpointOffset           = 0,
+        .DataType                   = LC_DATA_UDWORD_LE,
+        .OperatorID                 = LC_OPER_EQ,
+        .MessageID                  = PX4_MANUAL_CONTROL_SETPOINT_MID,
+        .WatchpointOffset           = 768,
         .BitMask                    = LC_NO_BITMASK,
         .CustomFuncArgument         = 0,
-        .ResultAgeWhenStale         = 0,
-        .ComparisonValue.Unsigned32 = 0,
+        .ResultAgeWhenStale         = 1,
+        .ComparisonValue.Unsigned32 = PX4_SWITCH_POS_ON,
     },
 
     /* #2 (unused) */
