@@ -46,6 +46,7 @@ block main
               i.fa.fa-table
             h2 Diagnostic
               button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name:'/CFS/MPU9250/SendDiag'}}) Send
+              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name:'/CFS/MPU9250/SetCalibration'}}) Set Calibration
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -143,7 +144,10 @@ block main
                                         
   .row
     +app_specific_telemetry_control("MPU9250")
-                                    
+                
+  .row
+    +app_specific_table_control("MPU9250")
+                    
   .row          
     +app_specific_mempools("MPU9250")
     

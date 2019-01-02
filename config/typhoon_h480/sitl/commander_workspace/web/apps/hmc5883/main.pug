@@ -108,6 +108,7 @@ block main
               i.fa.fa-table
             h2 Diagnostic
               button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name:'/CFS/HMC5883/SendDiag'}}) Send
+              button.btn.btn-xs.btn-primary.btn-labeled(data-sage={cmd: {name:'/CFS/HMC5883/SetCalibration'}}) Set Calibration
           div
             .jarviswidget-editbox
               input.form-control(type='text')
@@ -185,6 +186,9 @@ block main
                                         
   .row
     +app_specific_telemetry_control("HMC5883")
+
+  .row
+    +app_specific_table_control("HMC5883")
                                     
   .row          
     +app_specific_mempools("HMC5883")

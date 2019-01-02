@@ -111,7 +111,7 @@ end_of_function:
 }
 
 
-boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, int16 *AZ, int16 *Temp)
+boolean MPU6050_Measure(MPU6050_SampleQueue_t *SampleQueue)
 {
     float calGX_f = 0.0f;
 	float calGY_f = 0.0f;
@@ -126,11 +126,11 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
 
     if(0 == calTemp)
     {
-        *Temp = -1083;
+        SampleQueue->Samples[0].Temp = -1083;
     }
     else
     {
-        *Temp = ((calTemp + oMPU6050.Diag.Conversion.RoomTempOffset) - 21.0f) * oMPU6050.Diag.Conversion.TempSensitivity;
+        SampleQueue->Samples[0].Temp = ((calTemp + oMPU6050.Diag.Conversion.RoomTempOffset) - 21.0f) * oMPU6050.Diag.Conversion.TempSensitivity;
     }
 
     // Accel
@@ -139,9 +139,9 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
     /* Apply inverse rotation */
     MPU6050_Apply_Platform_Rotation(&calAX_f, &calAY_f, &calAZ_f);
 
-    *AX = ((calAX_f / oMPU6050.Diag.Calibration.AccXScale) + oMPU6050.Diag.Calibration.AccXOffset) / (oMPU6050.Diag.Conversion.AccUnit / oMPU6050.Diag.Conversion.AccDivider);
-    *AY = ((calAY_f / oMPU6050.Diag.Calibration.AccYScale) + oMPU6050.Diag.Calibration.AccYOffset) / (oMPU6050.Diag.Conversion.AccUnit / oMPU6050.Diag.Conversion.AccDivider);
-    *AZ = ((calAZ_f / oMPU6050.Diag.Calibration.AccZScale) + oMPU6050.Diag.Calibration.AccZOffset) / (oMPU6050.Diag.Conversion.AccUnit / oMPU6050.Diag.Conversion.AccDivider);
+    SampleQueue->Samples[0].AX = ((calAX_f / oMPU6050.Diag.Calibration.AccXScale) + oMPU6050.Diag.Calibration.AccXOffset) / (oMPU6050.Diag.Conversion.AccUnit / oMPU6050.Diag.Conversion.AccDivider);
+    SampleQueue->Samples[0].AY = ((calAY_f / oMPU6050.Diag.Calibration.AccYScale) + oMPU6050.Diag.Calibration.AccYOffset) / (oMPU6050.Diag.Conversion.AccUnit / oMPU6050.Diag.Conversion.AccDivider);
+    SampleQueue->Samples[0].AZ = ((calAZ_f / oMPU6050.Diag.Calibration.AccZScale) + oMPU6050.Diag.Calibration.AccZOffset) / (oMPU6050.Diag.Conversion.AccUnit / oMPU6050.Diag.Conversion.AccDivider);
 
     // Gyro
 	SIMLIB_GetGyro(&calGX_f, &calGY_f, &calGZ_f);
@@ -149,10 +149,12 @@ boolean MPU6050_Measure(int16 *GX, int16 *GY, int16 *GZ, int16 *AX, int16 *AY, i
     /* Apply inverse rotation */
     MPU6050_Apply_Platform_Rotation(&calGX_f, &calGY_f, &calGZ_f);
 
-    *GX = ((calGX_f / oMPU6050.Diag.Calibration.GyroXScale) + oMPU6050.Diag.Calibration.GyroXOffset) / (oMPU6050.Diag.Conversion.GyroUnit / oMPU6050.Diag.Conversion.GyroDivider);
-    *GY = ((calGY_f / oMPU6050.Diag.Calibration.GyroYScale) + oMPU6050.Diag.Calibration.GyroYOffset) / (oMPU6050.Diag.Conversion.GyroUnit / oMPU6050.Diag.Conversion.GyroDivider);
-    *GZ = ((calGZ_f / oMPU6050.Diag.Calibration.GyroZScale) + oMPU6050.Diag.Calibration.GyroZOffset) / (oMPU6050.Diag.Conversion.GyroUnit / oMPU6050.Diag.Conversion.GyroDivider);
+    SampleQueue->Samples[0].GX = ((calGX_f / oMPU6050.Diag.Calibration.GyroXScale) + oMPU6050.Diag.Calibration.GyroXOffset) / (oMPU6050.Diag.Conversion.GyroUnit / oMPU6050.Diag.Conversion.GyroDivider);
+    SampleQueue->Samples[0].GY = ((calGY_f / oMPU6050.Diag.Calibration.GyroYScale) + oMPU6050.Diag.Calibration.GyroYOffset) / (oMPU6050.Diag.Conversion.GyroUnit / oMPU6050.Diag.Conversion.GyroDivider);
+    SampleQueue->Samples[0].GZ = ((calGZ_f / oMPU6050.Diag.Calibration.GyroZScale) + oMPU6050.Diag.Calibration.GyroZOffset) / (oMPU6050.Diag.Conversion.GyroUnit / oMPU6050.Diag.Conversion.GyroDivider);
 
+    SampleQueue->SampleCount = 1;
+    
     return TRUE;
 }
 

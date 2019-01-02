@@ -109,6 +109,9 @@ extern "C" {
 */
 #define MPC_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief Time for direction change hysteresis */
+#define DIRECTION_CHANGE_TRIGGER_TIME_US    (100000)
+
 
 #ifdef __cplusplus
 }

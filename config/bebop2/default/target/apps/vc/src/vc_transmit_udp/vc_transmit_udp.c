@@ -356,7 +356,9 @@ int32 VC_SendData(uint32 ChannelID, const char* Buffer, uint32 Size)
 				OpticalFlowFrameMsg.Timestamp = timestamp;
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
 				CFE_SB_SendMsg((CFE_SB_Msg_t*) &OpticalFlowFrameMsg);
-				status = PX4_OPTICAL_FLOW_FRAME_SIZE;
+				status = sendto(channel->SocketFd, (char *)OpticalFlowFrameMsg.Frame, sizeof(OpticalFlowFrameMsg.Frame), 0,
+						(struct sockaddr *) &s_addr,
+						sizeof(s_addr));
 
 			}
 			else if(ChannelID == 1)

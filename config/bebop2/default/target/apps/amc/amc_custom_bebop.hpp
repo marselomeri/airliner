@@ -220,6 +220,13 @@ typedef struct
 #pragma pack(pop)
 
 
+typedef struct
+{
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    AMC_BLDC_Observation_t observation;
+} AMC_BebopObservationMsg_t;
+
+
 /**
  * \brief AMC device status
  */
@@ -244,6 +251,7 @@ typedef struct
     AMC_Custom_Status_t          Status;
     /*! The current motor speeds */
     uint16                       SpeedSetpoint[4];
+    AMC_BebopObservationMsg_t ObservationMsg;
 } AMC_AppCustomData_t;
 
 

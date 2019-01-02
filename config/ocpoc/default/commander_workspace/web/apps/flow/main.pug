@@ -9,6 +9,18 @@ block header
 
 block main
   .row
+    article(style="width:150px;height:150px")
+      #wid-FLOW-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
+        header
+          span.widget-icon
+            i.fa.fa-table
+          h2 Image Viewer
+        div
+          .jarviswidget-editbox
+            input.form-control(type='text')
+          .widget-body
+            canvas#flowCanvas(width="64",height="64")
+  .row
     article.col-xs-12.col-sm-12.col-md-6.col-lg-4
       #wid-FLOW-CmdAndData.jarviswidget.jarviswidget-color-blueDark(data-widget-editbutton='false')
         header
@@ -265,3 +277,24 @@ block main
           var GyroPlot = new SageTimeSeriesDataplot($('#Gyro'), Gyro);
 
       });
+      
+      var cnvs = document.getElementById("flowCanvas");
+      var ctx = cnvs.getContext("2d");
+      var imgData = ctx.createImageData(64, 64);
+      session.subscribeToVideo(function(image) {
+        var pixelData = new Uint8Array(image, 0, image.byteLength);
+        let j = 0;
+        for(var i = 0; i < image.byteLength; i++){
+
+          imgData.data[j] = pixelData[i]
+          imgData.data[j + 1] = pixelData[i]
+          imgData.data[j + 2] = pixelData[i]
+          imgData.data[j + 3] = 255
+          j = j+4
+        }
+        ctx.putImageData(imgData,0,0)
+      });
+      
+      window.onhashchange = function() {
+        session.unSubscribeToVideo()
+      };
