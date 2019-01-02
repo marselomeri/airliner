@@ -47,7 +47,8 @@ class ScriptingWrapper(object):
             'fd': 'com.windhover.pyliner.apps.flight_director',
             'fence': 'com.windhover.pyliner.apps.geofence',
             'geographic': 'com.windhover.pyliner.apps.geographic',
-            'nav': 'com.windhover.pyliner.apps.navigation'
+            'nav': 'com.windhover.pyliner.apps.navigation',
+            'com': 'com.windhover.pyliner.apps.communication'
         }
         # self.mapping = {
         #     'nav': _AppWrapper(vehicle, {

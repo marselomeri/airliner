@@ -1445,6 +1445,9 @@
 			                "Prev_AccelerationIsForce": {
 			                    "field_path": "Previous.AccelerationIsForce"
 			                },
+			                "Prev_VelocityFrame": {
+			                    "field_path": "Previous.VelocityFrame"
+			                },
 			                "Cur_Lat": {
 			                    "field_path": "Current.Lat"
 			                },
@@ -1532,6 +1535,9 @@
 			                "Cur_AccelerationIsForce": {
 			                    "field_path": "Current.AccelerationIsForce"
 			                },
+			                "Cur_VelocityFrame": {
+			                    "field_path": "Current.VelocityFrame"
+			                },
 			                "Next_Lat": {
 			                    "field_path": "Next.Lat"
 			                },
@@ -1618,6 +1624,9 @@
 			                },
 			                "Next_AccelerationIsForce": {
 			                    "field_path": "Next.AccelerationIsForce"
+			                },
+			                "Next_VelocityFrame": {
+			                    "field_path": "Next.VelocityFrame"
 			                }
 			            },
 			            "fields": {
@@ -1856,6 +1865,13 @@
 							            "pb_type": "bool",
 							            "pb_field_rule": "required",
 							            "airliner_type": "boolean",
+							            "array_length": 0
+						            },
+						            "VelocityFrame": {
+							            "airliner_name": "VelocityFrame", 
+							            "pb_type": "uint32",
+							            "pb_field_rule": "required",
+							            "airliner_type": "uint8",
 							            "array_length": 0
 						            }
 					            },
