@@ -151,8 +151,8 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
     /* #0 (Extend Landing Gear) */
     {   .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 1,
-        .MaxFailPassEvents   = 1,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
         .RTSId               = RTS_ID_EXTEND_GEAR,
         .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
@@ -168,8 +168,8 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
     {
         .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 1,
-        .MaxFailPassEvents   = 1,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
         .RTSId               = RTS_ID_RETRACT_GEAR,
         .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
