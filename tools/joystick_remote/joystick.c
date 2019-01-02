@@ -47,7 +47,7 @@ static struct joystick_axis ps3_axes[JOYSTICK_NUM_AXIS] = { {2, 1}, {3, -1}, {1,
 #define JOYSTICK_PWM_MIN   1100.0f
 #define JOYSTICK_PWM_MAX   1900.0f
 
-static const struct joystick_pwms def_pwms = {1500, 1500, 1500, 1500, 1500};
+static const struct joystick_pwms def_pwms = {1500, 1500, 1100, 1500, 1500};
 /* these values are in the middle of the ranges that are documented
  * in the arducopter parameter list as Flight Mode 1-6 */
 static const uint16_t mode_pwm_values[JOYSTICK_NUM_MODES] = { 1165, 1295, 1425, 1555, 1685, 1815 };
