@@ -1,66 +1,78 @@
 #include "bat_app.h"
 #include <unistd.h>
+#include <cstring>
 
-#define BAT_VOLTAGE_PATH "/sys/bus/iio/devices/iio:device0/in_voltage8_raw"
+#define AMC_VOLT_PIPE_DEPTH    (1)
+#define AMC_VOLT_PIPE_NAME     ("AMC_VOLT_PIPE")
+#define AMC_VOLT_PIPE_RESERVED (1)
 
-/* 28V / 4096 counts = 0.0068359375f V per count */
-#define BAT_BATTERY1_V_DIV   (0.0068359375f)
+CFE_SB_PipeId_t VoltPipeId;
+
+#pragma pack(push, 1)
+typedef struct
+{
+    uint16 rpm_front_left;
+    uint16 rpm_front_right;
+    uint16 rpm_back_right;
+    uint16 rpm_back_left;
+    uint16 battery_voltage_mv;
+    uint8  status;
+    uint8  error;
+    uint8  motors_in_fault;
+    uint8  temperatur_c;
+    uint8  checksum;
+} AMC_BLDC_Observation_t;
+#pragma pack(pop)
+
+
+typedef struct
+{
+    uint8 TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    AMC_BLDC_Observation_t observation;
+} AMC_BebopObservationMsg_t;
 
 
 int32 BAT::InitDevice(void)
 {
-	int32 ret = CFE_SUCCESS;
-	FILE *FD;
+    int32 ret = CFE_SUCCESS;
 
-	FD = fopen(BAT_VOLTAGE_PATH, "r");
+    ret = CFE_SB_CreatePipe(&VoltPipeId, AMC_VOLT_PIPE_DEPTH,
+            AMC_VOLT_PIPE_NAME);
+    if(CFE_SUCCESS != ret)
+    {
+        return ret;
+    }
 
-	if (FD == NULL)
-	{
-		ret = -1;
-	}
-	else
-	{
-		fclose(FD);
-	}
+    ret = CFE_SB_SubscribeEx(AMC_OUT_DATA_MID, VoltPipeId,
+            CFE_SB_Default_Qos, AMC_VOLT_PIPE_RESERVED);
 
-	return ret;
+    return ret;
 }
 
 
 void BAT::CloseDevice(void)
 {
+    
 }
 
 
 int32 BAT::ReadDevice(float &Voltage, float &Current)
 {
-	int32 ret = CFE_SUCCESS;
-	FILE *FD;
+    int32 iStatus = CFE_SUCCESS;
+    CFE_SB_Msg_t* MsgPtr = 0;
+    CFE_SB_MsgId_t MsgId;
 
-	FD = fopen(BAT_VOLTAGE_PATH, "r");
+    static AMC_BebopObservationMsg_t observationMsg = {0};
 
-	if (FD == NULL)
-	{
-		Voltage = 0.0f;
-		Current = 0.0f;
-		ret = -1;
-	}
-	else
-	{
-		int ret_tmp = fscanf(FD, "%f", (float*)&Voltage);
-		if(ret_tmp < 0)
-		{
-			ret = ret_tmp;
-		}
+    iStatus = CFE_SB_RcvMsg(&MsgPtr, VoltPipeId, CFE_SB_PEND_FOREVER);
+    if(CFE_SUCCESS == iStatus)
+    {
+        if(AMC_OUT_DATA_MID == CFE_SB_GetMsgId(MsgPtr) && 
+           CFE_SB_GetTotalMsgLength(MsgPtr) <= sizeof(observationMsg))
+        {
+            memcpy(&observationMsg, MsgPtr, sizeof(observationMsg));
+        }
+    }
 
-		Voltage *= BAT_BATTERY1_V_DIV;
-
-		fclose(FD);
-	}
-
-	usleep(10000);
-
-	Current = 0.0f;
-
-	return ret;
+    Voltage = (float) observationMsg.observation.battery_voltage_mv / 1000.0f;
 }

@@ -102,7 +102,6 @@ int32 AMC::InitDevice(void)
     int32 returnValue = CFE_SUCCESS;
     boolean returnBool = FALSE;
     AMC_BLDC_Info_t info = {0};
-    AMC_BLDC_Observation_t observation = {0};
 
     AMC_AppCustomData.DeviceFd = open(AMC_BLDC_I2C_DEVICE_PATH, O_RDWR);
     if (AMC_AppCustomData.DeviceFd < 0) 
@@ -144,20 +143,25 @@ int32 AMC::InitDevice(void)
         goto end_of_function;
     }
     
-    returnBool = AMC_Custom_Get_Observation(&observation);
+    returnBool = AMC_Custom_Get_Observation(&AMC_AppCustomData.ObservationMsg.observation);
     if(TRUE == returnBool)
     {
         (void) CFE_EVS_SendEvent(AMC_DEVICE_INF_EID, CFE_EVS_INFORMATION,
-            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu \
-            temperature C %hhu", 
-            observation.battery_voltage_mv, observation.status, observation.error,
-            observation.motors_in_fault, observation.temperatur_c);
+            "AMC BLDC info mV %hu, status %hhu, error %hhu, faults %hhu, temperature C %hhu", 
+            AMC_AppCustomData.ObservationMsg.observation.battery_voltage_mv, 
+            AMC_AppCustomData.ObservationMsg.observation.status, 
+            AMC_AppCustomData.ObservationMsg.observation.error,
+            AMC_AppCustomData.ObservationMsg.observation.motors_in_fault, 
+            AMC_AppCustomData.ObservationMsg.observation.temperatur_c);
     }
     else
     {
         returnValue = -1;
         goto end_of_function;
     }
+
+    CFE_SB_InitMsg(&AMC_AppCustomData.ObservationMsg,
+            AMC_OUT_DATA_MID, sizeof(AMC_AppCustomData.ObservationMsg), TRUE);
 
     AMC_AppCustomData.Status = AMC_CUSTOM_INITIALIZED;
 
@@ -186,6 +190,7 @@ end_of_function:
 void AMC::SetMotorOutputs(const uint16 *PWM)
 {
     uint32 i = 0;
+    static uint32 count = 0;
     float motor_speeds[4];
 
     /* If disarmed stop motors. */
@@ -213,6 +218,16 @@ void AMC::SetMotorOutputs(const uint16 *PWM)
             (void) AMC_Start_Motors();
         }
     }
+
+    /* Publish at 10 Hz. */
+    if(25 >= count)
+    {
+        (void) AMC_Custom_Get_Observation(&AMC_AppCustomData.ObservationMsg.observation);
+        CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&AMC_AppCustomData.ObservationMsg);
+        CFE_SB_SendMsg((CFE_SB_Msg_t*)&AMC_AppCustomData.ObservationMsg);
+        count = 0;
+    }
+    count++;
 }
 
 
