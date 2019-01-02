@@ -9,11 +9,19 @@
 ** Execution time for each command
 */
 #define CMD1_TIME       0
+#define CMD2_TIME	0
 
 /*
 ** Calculate checksum for each command
 */
 #define CMD1_XSUM       0x0093
+#define CMD2_XSUM       0x0092
+
+/*
+** Optional command data values
+*/
+#define CMD2_ARG_1      1
+#define CMD2_ARG_2      1
 
 /*
 ** Command packet segment flags and sequence counter
@@ -26,11 +34,17 @@
 ** Length of cmd pkt data (in bytes minus one) that follows primary header (thus, 0xFFFF = 64k)
 */
 #define CMD1_LENGTH     1
+#define CMD2_LENGTH     5
 
 /*
 ** Command code for landing gear extend.
 */
 #define CMD1_EXTEND_CC  2
+
+/*
+** Command code for LC set actionpoint state.
+*/
+#define CMD2_LC_SET_AP_STATE_CC 3
 
 /*
 ** Sample cFE Table Header
@@ -49,6 +63,7 @@ uint16 RTS_Table003[SC_RTS_BUFF_SIZE] =
 {
   /*  cmd time,  <---------------------------- cmd pkt primary header ---------------------------->  <----- cmd pkt 2nd header ---->   <-- opt data ---> */
      CMD1_TIME,  CFE_MAKE_BIG16(LGC_CMD_MID), CFE_MAKE_BIG16(PKT_FLAGS), CFE_MAKE_BIG16(CMD1_LENGTH), ((CMD1_EXTEND_CC << 8) | CMD1_XSUM),
+     CMD2_TIME,  CFE_MAKE_BIG16(LC_CMD_MID),  CFE_MAKE_BIG16(PKT_FLAGS), CFE_MAKE_BIG16(CMD2_LENGTH), ((CMD2_LC_SET_AP_STATE_CC << 8) | CMD2_XSUM), CMD2_ARG_1, CMD2_ARG_2, 
 };
 
 /************************/
