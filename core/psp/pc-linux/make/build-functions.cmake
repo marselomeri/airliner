@@ -31,6 +31,9 @@
 #
 #############################################################################
  
+include(${PROJECT_SOURCE_DIR}/tools/explain/python/GenerateSymbolMap.cmake)
+include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmake)
+ 
 #psp_initialize_airliner_build(
 #    PSP    pc-linux
 #    OSAL   posix
@@ -49,7 +52,7 @@
 #)
 function(psp_initialize_airliner_build)
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "" "CORE_BINARY;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES" "FILESYS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "CORE_BINARY;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES;MSG_OVERRIDES" "FILESYS" ${ARGN})
 
     set(PSP_UNIT_TEST_WRAPPER target/${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
@@ -85,6 +88,77 @@ function(psp_initialize_airliner_build)
     # Where to put tables
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${INSTALL_DIR})
 
+    ###  EXPLAIN
+    # Prepare the build to be ready to use the Explain utility.
+	add_custom_target(ground_tools)
+	add_custom_target(explain_parsing)
+	
+	# Set the path to put the objects we create for Explain to parse.
+	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
+	
+	# EXPLAIN_DIR:  This is the directory for all explain generated files.
+	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
+
+    # Remove the combined airliner JSON overrides file, if it exists.
+    if(EXISTS ${EXPLAIN_DIR}/airliner-overrides.json)
+        file(REMOVE ${EXPLAIN_DIR}/airliner-overrides.json)
+    endif()
+	
+	# Prepare the build to be ready to use the Explain utility.
+	explain_setup()
+	
+	# Setup commander
+    execute_process(
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
+        COMMAND npm install
+        OUTPUT_FILE ${PROJECT_SOURCE_DIR}/tools/commander/node_modules
+    )
+    
+    # Merge in the platform independent CFE message overrides.
+    add_airliner_json_input(
+        INPUT_FILE ${CFE_MSG_OVERRIDES}
+        OUTPUT_DIR ${EXPLAIN_DIR}
+    )
+	
+	# Do post build explain activities
+	explain_generate_cookie(
+		DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
+		OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
+	)
+	
+	# Add the generic JSON override files
+	#CFE_MSG_OVERRIDES
+
+    # Add the custom JSON override files
+    if(PARSED_ARGS_MSG_OVERRIDES) 
+        add_airliner_json_input(
+            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif(PARSED_ARGS_MSG_OVERRIDES)
+		
+	generate_serialization_code(
+		INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
+		OUTPUT_DIR     ${EXPLAIN_DIR}
+		OPS_FILE           
+			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_ops_names.json
+		MSGS_FILE
+			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_msgs.json
+	)  
+	
+	# Setup Commander workspace. 
+	# First, copy the initial workspace template over to the build directory.
+	add_subdirectory(commander commander)
+	
+	# Now copy the CFE platform independent Commander plugin
+	get_filename_component(CFE_CMDR_PLUGIN_NAME ${CFE_CMDR_PLUGIN_DIR} NAME)
+	set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
+	set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
+	file(REMOVE_RECURSE ${CFE_CMDR_PLUGIN_NEW_PATH})
+	file(COPY ${CFE_CMDR_PLUGIN_DIR} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR})
+	file(RENAME ${CFE_CMDR_PLUGIN_ORIG_PATH} ${CFE_CMDR_PLUGIN_NEW_PATH})
+	
 endfunction(psp_initialize_airliner_build)
 
 
@@ -99,11 +173,11 @@ function(psp_add_test)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${dir})
     endforeach()
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
     )
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
     )
     
@@ -140,8 +214,13 @@ function(psp_add_test)
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast")
     set_target_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES COMPILE_FLAGS "-g -O0 -Wformat=0 -Wno-int-to-pointer-cast -fprofile-arcs -ftest-coverage")
 
+    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME} ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+    set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-ctest-build)
+    
+    add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
     add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov)
+    set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov-ctest-build)
 
     if(EXISTS ${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
         set(MEMCHECK_COMMAND ${MEMCHECK_COMMAND} --suppressions=${PARSED_ARGS_VALGRIND_SUPPRESSION_FILE})
@@ -149,15 +228,21 @@ function(psp_add_test)
     endif()
     
     if(NOT PARSED_ARGS_NO_MEMCHECK)
+        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
         add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-memcheck-ctest-build)
     endif()
     
     if(NOT PARSED_ARGS_NO_HELGRIND)
+        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
         add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-helgrind-ctest-build)
     endif()
     
     if(NOT PARSED_ARGS_NO_MASSIF)
+        add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${TEST_NAME})
         add_test(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${TEST_NAME})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${TEST_NAME}-massif-ctest-build)
     endif()
 endfunction(psp_add_test)
 
@@ -173,7 +258,7 @@ endfunction(psp_add_test)
 function(psp_add_airliner_app)
     # Define the application name.
     set(PARSED_ARGS_APP_NAME ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES;MSG_OVERRIDES" ${ARGN})
 
     # Call the CMake file that actually defines the application.
     add_subdirectory(${PARSED_ARGS_DEFINITION} ${CMAKE_CURRENT_BINARY_DIR}/apps/${PARSED_ARGS_APP_NAME})
@@ -254,6 +339,23 @@ function(psp_add_airliner_app)
         add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
     endif()
     
+    # Add the msg and ops_name Pyliner JSON override files
+    if(PARSED_ARGS_MSG_OVERRIDES) 
+        add_airliner_json_input(
+            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif(PARSED_ARGS_MSG_OVERRIDES)
+    
+	# Add the Commander platform specific plugin, if there is one.
+    if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")
+	    get_filename_component(APP_CMDR_PLUGIN_NAME ${PARSED_ARGS_COMMANDER_PLUGIN} NAME)
+        set(APP_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/${APP_CMDR_PLUGIN_NAME})
+        set(APP_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/ps)
+ 	    file(REMOVE_RECURSE ${APP_CMDR_PLUGIN_NEW_PATH})
+	    file(COPY ${PARSED_ARGS_COMMANDER_PLUGIN} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET})
+	    file(RENAME ${APP_CMDR_PLUGIN_ORIG_PATH} ${APP_CMDR_PLUGIN_NEW_PATH})
+    endif()	
 endfunction(psp_add_airliner_app)
 
 
@@ -275,7 +377,7 @@ endfunction(psp_add_airliner_app)
 #)
 function(psp_add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR;MSG_OVERRIDES" ${ARGN})
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
     set(PUBLIC_APP_INCLUDES "${PUBLIC_APP_INCLUDES} ${PARSED_ARGS_PUBLIC_INCLUDES}")
@@ -320,6 +422,36 @@ function(psp_add_airliner_app_def)
         file(MAKE_DIRECTORY ${PARSED_ARGS_PROTOBUF_MSGS_DIR})
         nanopb_generate_cpp(PROTO_SRCS PROTO_HDRS ${PARSED_ARGS_PROTOBUF_MSGS_DIR} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${PARSED_ARGS_PROTOBUF_DEFS})
     endif()
+    
+    # Generate the Explain symbol maps
+	explain_read_elf(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
+	    INPUT_PATH     ${INSTALL_DIR}/${PARSED_ARGS_FILE}.so
+	    DATABASE_NAME  ${EXPLAIN_DB}
+	)
+
+    # Add the msg and ops_name Pyliner JSON override files
+    if(PARSED_ARGS_MSG_OVERRIDES) 
+        add_airliner_json_input(
+            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif(PARSED_ARGS_MSG_OVERRIDES)
+	
+    # Add the Commander plugin, if there is one.
+    if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")
+	    # Copy the application platform independent Commander plugin
+	    file(MAKE_DIRECTORY ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET})
+	    file(COPY ${PARSED_ARGS_COMMANDER_PLUGIN} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/pi)
+    endif()
+    
+    if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")
+	    get_filename_component(APP_CMDR_PLUGIN_NAME ${PARSED_ARGS_COMMANDER_PLUGIN} NAME)
+        set(APP_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/${APP_CMDR_PLUGIN_NAME})
+        set(APP_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET}/pi)
+ 	    file(REMOVE_RECURSE ${APP_CMDR_PLUGIN_NEW_PATH})
+	    file(COPY ${PARSED_ARGS_COMMANDER_PLUGIN} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR}/apps/${PARSED_ARGS_TARGET})
+	    file(RENAME ${APP_CMDR_PLUGIN_ORIG_PATH} ${APP_CMDR_PLUGIN_NEW_PATH})
+    endif()
 endfunction(psp_add_airliner_app_def)
 
 
@@ -330,8 +462,8 @@ function(psp_add_airliner_app_unit_test)
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     
-    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${PARSED_ARGS_SOURCES})
-    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${PARSED_ARGS_SOURCES})
+    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
+    add_executable(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov EXCLUDE_FROM_ALL ${PARSED_ARGS_SOURCES})
     
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${CMAKE_THREAD_LIBS_INIT})
     target_link_libraries(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov -fprofile-arcs gcov ${CMAKE_THREAD_LIBS_INIT})
@@ -413,8 +545,8 @@ function(psp_add_airliner_app_unit_test)
 		    ${PROJECT_SOURCE_DIR}/tools/nanopb/pb_encode.h
 		)
 			
-                target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
-                target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${NANOPB_SRC})
+        target_sources(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${NANOPB_SRC})
 
 		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
 		target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PUBLIC ${PROJECT_SOURCE_DIR}/tools/nanopb/)
@@ -454,60 +586,81 @@ function(psp_add_airliner_app_unit_test)
     endforeach()
     
     if(NOT ${PARSED_ARGS_UTF_OUTPUT_FILE} EQUAL "")
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
         add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} COMMAND ${CMAKE_COMMAND} 
             -DTEST_EXEC:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
             -DTEST_ARGS:STRING=
             -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
             -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
             -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build)
             
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
         add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov COMMAND ${CMAKE_COMMAND} 
             -DTEST_EXEC:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov
             -DTEST_ARGS:STRING=
             -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
             -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
             -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build)
             
         if(NOT PARSED_ARGS_NO_MEMCHECK)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck COMMAND ${CMAKE_COMMAND} 
                 -DTEST_EXEC:STRING=${MEMCHECK_COMMAND}
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
                 -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+            set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build)
         endif()
         
         if(NOT PARSED_ARGS_NO_HELGRIND)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind COMMAND ${CMAKE_COMMAND} 
                 -DTEST_EXEC:STRING=${HELGRIND_COMMAND}
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
                 -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+            set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build)
         endif()
             
         if(NOT PARSED_ARGS_NO_MASSIF)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(NAME ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif COMMAND ${CMAKE_COMMAND} 
                 -DTEST_EXEC:STRING=${MASSIF_COMMAND}
                 -DTEST_ARGS:STRING=${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}
                 -DUTF_BLESSED_FILE:STRING=${PARSED_ARGS_UTF_BLESSED_FILE}
                 -DUTF_OUTPUT_FILE:STRING=${PARSED_ARGS_UTF_OUTPUT_FILE}
                 -P ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/make/utf_run_and_check.cmake)
+            set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build)
         endif()
     else()
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
         add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-ctest-build)
+            
+        add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
         add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov)
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-gcov-ctest-build)
 
         if(NOT PARSED_ARGS_NO_MEMCHECK)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck ${MEMCHECK_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-memcheck-ctest-build)
         endif()
 
         if(NOT PARSED_ARGS_NO_HELGRIND)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind ${HELGRIND_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-helgrind-ctest-build)
         endif()
 
         if(NOT PARSED_ARGS_NO_MASSIF)
+            add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
             add_test(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif ${MASSIF_COMMAND} ${CMAKE_CURRENT_BINARY_DIR}/${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET})
+        set_tests_properties(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PROPERTIES DEPENDS ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET}-massif-ctest-build)
         endif()
     endif()
 endfunction(psp_add_airliner_app_unit_test)
@@ -527,12 +680,12 @@ function(psp_add_airliner_cfe_unit_test)
     
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME} EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
         ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/unit_test/bsp_ut.c
     )
 
-    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov
+    add_executable(${AIRLINER_BUILD_PREFIX}${TEST_NAME}-gcov EXCLUDE_FROM_ALL
         ${PARSED_ARGS_SOURCES}
         ${PROJECT_SOURCE_DIR}/psp/fsw/pc-linux/unit_test/bsp_ut.c
     )

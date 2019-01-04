@@ -78,7 +78,7 @@ MPC_WAKEUP_MIDX               250Hz, 0
 MPU9250_SEND_HK_MIDX            1Hz, 175
 MPU9250_MEASURE_MIDX          250Hz, 0
 MS5611_SEND_HK_MIDX             1Hz, 180
-MS5611_WAKEUP_MIDX            250Hz, 0
+MS5611_MEASURE_MIDX           250Hz, 0
 NAV_SEND_HK_MIDX                1Hz, 185
 NAV_WAKEUP_MIDX                10Hz, (17,42,67,92,117,142,167,192,217,242)
 PE_SEND_HK_MIDX                 1Hz, 190
@@ -123,7 +123,7 @@ FLOW_SEND_HK_MIDX 				1Hz, 53
 
 
 /* Default schedule table */
-SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] = 
+SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] =
 {
 
     /* slot #0*/
@@ -4404,4 +4404,3 @@ CFE_TBL_FILEDEF(SCH_DefaultScheduleTable, SCH.SCHED_DEF, SCH schedule table, sch
 /*=======================================================================================
 ** End of file sch_def_schtbl.c
 **=====================================================================================*/
-    

@@ -41,4 +41,7 @@ set(CFE_INC_DIRS
     ${CMAKE_CURRENT_LIST_DIR}/inc/internal/tbl
     ${CMAKE_CURRENT_LIST_DIR}/inc/internal/time)
 
+set(CFE_CMDR_PLUGIN_DIR ${PROJECT_SOURCE_DIR}/core/cfe/cmdr_plugin)
 
+
+set(CFE_MSG_OVERRIDES ${CMAKE_CURRENT_LIST_DIR}/cfe_msg_overrides.json)
