@@ -53,6 +53,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include <byteswap.h>
 
 /************************************************************************
 ** Local Defines
@@ -434,7 +435,7 @@ boolean MPU9250_Custom_Init(void)
     /* TODO Add Gyroscope Self-Test */
     /* TODO Add Accelerometer Self-Test */
 
-    uint8 MPU_Init_Data[MPU_InitRegNum][2] = {
+    uint8 MPU_Init_Data[MPU9250_INITREGNUM][2] = {
         /* Reset device */
         {MPU9250_PWR_MGMT_1_H_RESET, MPU9250_REG_PWR_MGMT_1},
         /* Wakeup */
@@ -474,7 +475,7 @@ boolean MPU9250_Custom_Init(void)
         {MPU9250_I2C_MST_CLOCK_400HZ, MPU9250_REG_I2C_MST_CTRL}
     };
 
-    for(i = 0; i < MPU_InitRegNum; ++i) 
+    for(i = 0; i < MPU9250_INITREGNUM; ++i) 
     {
         returnBool = MPU9250_WriteReg(MPU_Init_Data[i][1], MPU_Init_Data[i][0]);
         if(FALSE == returnBool)
@@ -1115,31 +1116,6 @@ end_of_function:
 }
 
 
-boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
-{
-    boolean returnBool = TRUE;
-    float temp;
-
-    /* Null pointer check */
-    if(0 == X || 0 == Y || 0 == Z)
-    {
-        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU9250 Apply_Platform_Rotation Null Pointer");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-    /* ROTATION_ROLL_180_YAW_90 */
-    temp = *X; 
-    *X = *Y; 
-    *Y = temp; 
-    *Z = -*Z;
-
-end_of_function:
-
-    return returnBool;
-}
-
-
 boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind)
 {
     if ((ind < CFE_EVS_MAX_EVENT_FILTERS) && (ind > 0))
@@ -1196,5 +1172,218 @@ void MPU9250_Get_Rotation(uint8 *Rotation)
     *Rotation = ROTATION_ROLL_180_YAW_90;
 
 end_of_function:
-;
+    return;
+}
+
+
+void MPU9250_Get_Mag_Rotation(uint8 *Rotation)
+{
+    
+    /* Null pointer check */
+    if(0 == Rotation)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Get_Mag_Rotation Null Pointer");
+        goto end_of_function;
+    }
+    
+    /* TODO move to a table */
+    *Rotation = ROTATION_NONE;
+
+end_of_function:
+    return;
+}
+
+
+boolean MPU9250_Apply_Platform_Rotation(float *X, float *Y, float *Z)
+{
+    boolean returnBool = TRUE;
+    float temp;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Apply_Platform_Rotation Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+    /* ROTATION_ROLL_180_YAW_90 */
+    temp = *X; 
+    *X = *Y; 
+    *Y = temp; 
+    *Z = -*Z;
+
+end_of_function:
+
+    return returnBool;
+}
+
+
+boolean MPU9250_Apply_Mag_Platform_Rotation(float *X, float *Y, float *Z)
+{
+    boolean returnBool = TRUE;
+    float temp;
+
+    /* Null pointer check */
+    if(0 == X || 0 == Y || 0 == Z)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 Apply_Mag_Platform_Rotation Null Pointer");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* No Rotation */
+
+end_of_function:
+
+    return returnBool;
+}
+
+
+boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
+{
+    uint8 intStatus = 0;
+    boolean returnBool = TRUE;
+    uint16 fifoByteCount = 0;
+    uint16 index = 0;
+    uint8 magStatus1 = 0;
+    uint8 magStatus2 = 0;
+
+    /* Null pointer check */
+    if(0 == SampleQueue)
+    {
+        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "Null pointer in MPU9250_Measure.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Check data ready interrupt bit. */
+    returnBool = MPU9250_ReadReg(MPU9250_REG_INT_STATUS, &intStatus);
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 failed to read MPU9250_REG_INT_STATUS");
+        goto end_of_function;
+    }
+
+    /* Check for overflow. */
+    if(intStatus & MPU9250_INT_STATUS_FIFO_OVERFLOW)
+    {
+        /* Reset fifo Queue. */
+        MPU9250_Fifo_Reset();
+        /* Fifo should have overflowed on the first read after SCH
+         * startup sync. */
+        if(MPU9250_AppCustomData.firstMeasureFlag != FALSE)
+        {
+            CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "MPU9250 FIFO overflow.");
+        }
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Get the number of bytes in the FIFO queue. */
+    fifoByteCount = MPU9250_GetFifoCount();
+
+    if(fifoByteCount > 0)
+    {
+        /* Read the fifo queue. */
+        returnBool = MPU9250_ReadBlock(MPU9250_REG_FIFO_R_W, &MPU9250_AppCustomData.samples[0], fifoByteCount);
+        if(FALSE == returnBool)
+        {
+            CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "MPU9250 FIFO read failed.");
+            goto end_of_function;
+        }
+        /* Calculate filtered fifo samples per cycle. This value should
+         * stay close to 4. */
+        MPU9250_AppCustomData.FifoSamplesPerCycle = 
+                (0.95f * MPU9250_AppCustomData.FifoSamplesPerCycle) + 
+                (0.05f * (fifoByteCount / sizeof(Fifo_Sample_t)));
+        
+    }
+    else
+    {
+        /* Data not ready skipping measurement. */
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 FIFO empty.");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Calculate the number of samples in the fifo queue. */
+    SampleQueue->SampleCount = fifoByteCount / sizeof(Fifo_Sample_t);
+    /* Calculate the sampling interval in micro seconds. */
+    SampleQueue->SampleIntervalUs = round(1000 / MPU9250_AppCustomData.FifoSamplesPerCycle);
+
+    for(index = 0; index < SampleQueue->SampleCount; ++index)
+    {
+        //returnBool = MPU9250_sampleChecks(&sample[index]);
+        //if(FALSE == returnBool)
+        //{
+            //goto end_of_function;
+        //}
+        SampleQueue->Samples[index].AX   = bswap16(MPU9250_AppCustomData.samples[index].accel_x);
+        SampleQueue->Samples[index].AY   = bswap16(MPU9250_AppCustomData.samples[index].accel_y);
+        SampleQueue->Samples[index].AZ   = bswap16(MPU9250_AppCustomData.samples[index].accel_z);
+        SampleQueue->Samples[index].Temp = bswap16(MPU9250_AppCustomData.samples[index].temp);
+        SampleQueue->Samples[index].GX   = bswap16(MPU9250_AppCustomData.samples[index].gyro_x);
+        SampleQueue->Samples[index].GY   = bswap16(MPU9250_AppCustomData.samples[index].gyro_y);
+        SampleQueue->Samples[index].GZ   = bswap16(MPU9250_AppCustomData.samples[index].gyro_z);
+        SampleQueue->Samples[index].MX   = bswap16(MPU9250_AppCustomData.samples[index].mag_x);
+        SampleQueue->Samples[index].MY   = bswap16(MPU9250_AppCustomData.samples[index].mag_y);
+        SampleQueue->Samples[index].MZ   = bswap16(MPU9250_AppCustomData.samples[index].mag_z);
+
+        /* Check for data ready. */
+        if(MPU9250_AppCustomData.samples[index].mag_st1 & MPU9250_ST1_DRDY_MASK)
+        {
+            SampleQueue->Samples[index].MagDataValid = TRUE;
+        }
+
+        /* Check for magnetic overflow. */
+        if(MPU9250_AppCustomData.samples[index].mag_st2 & MPU9250_ST2_HOFL_MASK)
+        {
+            SampleQueue->Samples[index].MagDataValid = FALSE;
+            /* Magnetic sensor overflow. */
+            CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "MPU9250 mag sensor overflow.");
+        }
+    }
+
+end_of_function:
+    /* First read should have overflowed. */
+    if (FALSE == returnBool && MPU9250_AppCustomData.firstMeasureFlag != FALSE)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "MPU9250 read error in Measure");
+    }
+    MPU9250_AppCustomData.firstMeasureFlag = TRUE;
+    return returnBool;
+}
+
+
+MPU9250_GetFifoCount(void)
+{
+    uint16 bytes = 0;
+    uint16 completeSamples = 0;
+    boolean returnBool = FALSE;
+
+    returnBool = MPU9250_ReadBlock(MPU9250_REG_FIFO_COUNTH, &bytes, sizeof(bytes));
+    if(FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Get FIFO count failed.");
+        bytes = 0;
+    }
+
+    bytes = bswap16(bytes);
+
+    /* Ensure a complete set of samples from all sensors. */
+    completeSamples = bytes / sizeof(Fifo_Sample_t);
+    bytes = completeSamples * sizeof(Fifo_Sample_t);
+
+    return bytes;
 }

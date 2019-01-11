@@ -67,7 +67,9 @@
 #define MPU9250_SPI_MAX_BUFFER               (128)
 
 /** \brief Array initializer. */
-#define MPU_InitRegNum                       (13)
+#define MPU9250_INITREGNUM                   (13)
+
+#define MPU9250_MAX_FIFO_SAMPLES             (10)
 
 /************************************************************************
 ** Structure Declarations
@@ -82,19 +84,6 @@ typedef enum
     /*! MPU9250 status initialized */
     MPU9250_CUSTOM_INITIALIZED   = 1
 } MPU9250_Custom_Status_t;
-
-
-typedef struct
-{
-    /*! Device file descriptor */
-    int                             DeviceFd;
-    /*! The current device status */
-    MPU9250_Custom_Status_t          Status;
-    uint8                           MagAdjX;
-    uint8                           MagAdjY;
-    uint8                           MagAdjZ;
-    uint8                           BufSpi[MPU9250_SPI_MAX_BUFFER];
-} MPU9250_AppCustomData_t;
 
 
 #pragma pack(push, 1)
@@ -114,6 +103,32 @@ typedef struct
     uint8 mag_st2;
 } Fifo_Sample_t;
 #pragma pack(pop)
+
+
+typedef struct
+{
+    /*! Device file descriptor */
+    int                             DeviceFd;
+    /*! The current device status */
+    MPU9250_Custom_Status_t          Status;
+    /*! First call flag. */
+    boolean                         firstMeasureFlag;
+    /*! Filtered samples per cycle from the fifo queue. */
+    float                           FifoSamplesPerCycle;
+    /*! Initial fifo temperature sample. */
+    float                           FifoTemp;
+    /*! Last fifo temperature sample. */
+    float                           FifoLastTemp;
+    /*! Temperature initialized flag */
+    boolean                         TempInitialized;
+    uint8                           MagAdjX;
+    uint8                           MagAdjY;
+    uint8                           MagAdjZ;
+    /*! Current raw samples from the fifo queue. */
+    Fifo_Sample_t                   samples[MPU9250_MAX_FIFO_SAMPLES];
+    uint8                           BufSpi[MPU9250_SPI_MAX_BUFFER];
+} MPU9250_AppCustomData_t;
+
 
 /************************************************************************
 ** External Global Variables
@@ -152,5 +167,6 @@ boolean MPU9250_Custom_MagInit(void);
 boolean MPU9250_MagWriteReg(uint8 Addr, uint8 Data);
 boolean MPU9250_MagReadReg(uint8 Addr, uint8 *returnVal);
 boolean MPU9250_Fifo_Reset(void);
+uint16 MPU9250_GetFifoCount(void);
 
 #endif /* MPU9250_SPI_H */
