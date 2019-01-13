@@ -42,8 +42,7 @@
 #include "mpu9250_events.h"
 #include "mpu9250_perfids.h"
 #include "px4lib.h"
-
-
+#include <math.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -323,7 +322,7 @@ boolean MPU9250_Custom_MagInit(void)
     usleep(1000);
 
     returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_MST_DELAY_CTRL, 
-            MPU9250_SLAVE_0_DLY_EN;
+            MPU9250_SLAVE_0_DLY_EN);
     if(FALSE == returnBool)
     {
         goto end_of_function;
@@ -424,8 +423,8 @@ boolean MPU9250_Custom_Init(void)
     }
 
     /* Check who am i device ID. */
-    returnBool = MPU9250_Read_WhoAmI(&buf)
-    if(FALSE == returnBool || buf != MPU9250_AK8963_ID)
+    returnBool = MPU9250_Read_WhoAmI(&buf);
+    if(FALSE == returnBool || buf != MPU9250_AK8963_Device_ID)
     {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MPU9250 device validation failed");
@@ -1245,7 +1244,7 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
     /* Null pointer check */
     if(0 == SampleQueue)
     {
-        CFE_EVS_SendEvent(MPU6050_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "Null pointer in MPU9250_Measure.");
         returnBool = FALSE;
         goto end_of_function;
@@ -1356,7 +1355,7 @@ end_of_function:
 }
 
 
-MPU9250_GetFifoCount(void)
+uint16 MPU9250_GetFifoCount(void)
 {
     uint16 bytes = 0;
     uint16 completeSamples = 0;

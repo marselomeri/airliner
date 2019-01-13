@@ -156,6 +156,11 @@ typedef struct
 *************************************************************************/
 int32 MPU9250_Ioctl(int fh, int request, void *arg);
 
+boolean MPU9250_ReadReg(uint8 Addr, uint8 *returnVal);
+boolean MPU9250_Read_WhoAmI(uint8 *Value);
+boolean MPU9250_Custom_Read_MagAdj(void);
+
+
 boolean MPU9250_I2C_Master_Reset(void);
 boolean MPU9250_Clear_Interrupt(void);
 int32 MPU9250_ResetDevice(void);
