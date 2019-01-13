@@ -436,8 +436,6 @@ boolean MPU9250_Custom_Init(void)
     /* TODO Add Accelerometer Self-Test */
 
     uint8 MPU_Init_Data[MPU9250_INITREGNUM][2] = {
-        /* Reset device */
-        {MPU9250_PWR_MGMT_1_H_RESET, MPU9250_REG_PWR_MGMT_1},
         /* Wakeup */
         {0x00, MPU9250_REG_PWR_MGMT_1},
         /* Enable Acc & Gyro */
@@ -482,14 +480,7 @@ boolean MPU9250_Custom_Init(void)
         {
             goto end_of_function;
         }
-        if(0 == i)
-        {
-            usleep(100000);
-        }
-        else 
-        {
-            usleep(1000);
-        }
+        usleep(1000);
     }
 
     returnBool = MPU9250_Custom_MagInit();
@@ -550,7 +541,7 @@ int32 MPU9250_ResetDevice(void)
     int32 ret = 0;
     boolean returnBool = TRUE;
     
-    returnBool = MPU9250_WriteReg(MPU9250_BIT_H_RESET, MPU9250_REG_PWR_MGMT_1);
+    returnBool = MPU9250_WriteReg(MPU9250_REG_PWR_MGMT_1, MPU9250_PWR_MGMT_1_H_RESET);
     if (FALSE == returnBool) 
     {            
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,

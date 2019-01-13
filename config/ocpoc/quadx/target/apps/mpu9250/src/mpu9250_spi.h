@@ -67,7 +67,7 @@
 #define MPU9250_SPI_MAX_BUFFER               (128)
 
 /** \brief Array initializer. */
-#define MPU9250_INITREGNUM                   (13)
+#define MPU9250_INITREGNUM                   (12)
 
 #define MPU9250_MAX_FIFO_SAMPLES             (10)
 
