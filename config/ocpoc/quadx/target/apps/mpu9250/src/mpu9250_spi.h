@@ -159,19 +159,17 @@ int32 MPU9250_Ioctl(int fh, int request, void *arg);
 boolean MPU9250_ReadReg(uint8 Addr, uint8 *returnVal);
 boolean MPU9250_Read_WhoAmI(uint8 *Value);
 boolean MPU9250_Custom_Read_MagAdj(void);
-
-
 boolean MPU9250_I2C_Master_Reset(void);
 boolean MPU9250_Clear_Interrupt(void);
 int32 MPU9250_ResetDevice(void);
 boolean MPU9250_WriteReg(uint8 Addr, uint8 Data);
 boolean MPU9250_Custom_Max_Events_Not_Reached(int32 ind);
 boolean MPU9250_ReadBlock(uint8 Addr, void *Buf, size_t Len);
-
 boolean MPU9250_Custom_MagInit(void);
 boolean MPU9250_MagWriteReg(uint8 Addr, uint8 Data);
 boolean MPU9250_MagReadReg(uint8 Addr, uint8 *returnVal);
 boolean MPU9250_Fifo_Reset(void);
 uint16 MPU9250_GetFifoCount(void);
+boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample);
 
 #endif /* MPU9250_SPI_H */

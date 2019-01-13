@@ -53,6 +53,7 @@
 #include <string.h>
 #include <time.h>
 #include <byteswap.h>
+#include <stdint.h>
 
 /************************************************************************
 ** Local Defines
@@ -1311,11 +1312,6 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
 
     for(index = 0; index < SampleQueue->SampleCount; ++index)
     {
-        //returnBool = MPU9250_sampleChecks(&sample[index]);
-        //if(FALSE == returnBool)
-        //{
-            //goto end_of_function;
-        //}
         SampleQueue->Samples[index].AX   = bswap16(MPU9250_AppCustomData.samples[index].accel_x);
         SampleQueue->Samples[index].AY   = bswap16(MPU9250_AppCustomData.samples[index].accel_y);
         SampleQueue->Samples[index].AZ   = bswap16(MPU9250_AppCustomData.samples[index].accel_z);
@@ -1326,6 +1322,12 @@ boolean MPU9250_Measure(MPU9250_SampleQueue_t *SampleQueue)
         SampleQueue->Samples[index].MX   = bswap16(MPU9250_AppCustomData.samples[index].mag_x);
         SampleQueue->Samples[index].MY   = bswap16(MPU9250_AppCustomData.samples[index].mag_y);
         SampleQueue->Samples[index].MZ   = bswap16(MPU9250_AppCustomData.samples[index].mag_z);
+
+        //returnBool = MPU9250_sampleChecks(&SampleQueue->Samples[index]);
+        //if(FALSE == returnBool)
+        //{
+            //goto end_of_function;
+        //}
 
         /* Check for data ready. */
         if(MPU9250_AppCustomData.samples[index].mag_st1 & MPU9250_ST1_DRDY_MASK)
@@ -1376,4 +1378,90 @@ uint16 MPU9250_GetFifoCount(void)
     bytes = completeSamples * sizeof(Fifo_Sample_t);
 
     return bytes;
+}
+
+
+boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample)
+{
+    boolean returnBool = TRUE;
+
+    if(0 == sample)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "Null pointer in MPU9250_sampleChecks.");
+        goto end_of_function;
+    }
+
+    const float TempC = (float)sample->Temp / 340.0f + 36.53f;
+
+    /* Check acceleration in the range for min/max. */
+    if (sample->AX == INT16_MIN  || sample->AY == INT16_MIN  
+            || sample->AZ == INT16_MIN )
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Acceleration sample hit a minimum");
+    }
+
+    if (sample->AX == INT16_MAX || sample->AY == INT16_MAX  
+            || sample->AZ == INT16_MAX)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Acceleration sample hit a maximum");
+    }
+
+    /* Check gyro in the range for min/max. */
+    if (sample->GX == INT16_MIN  || sample->GY == INT16_MIN  
+            || sample->GZ == INT16_MIN )
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Gyro sample hit a minimum");
+    }
+
+    if (sample->GX == INT16_MAX || sample->GY == INT16_MAX  
+            || sample->GZ == INT16_MAX)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Gyro sample hit a maximum");
+    }
+
+    /* Check mag in range min/max. */
+    if (sample->MX == INT16_MIN  || sample->MY == INT16_MIN  
+            || sample->MZ == INT16_MIN )
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Mag sample hit a minimum");
+    }
+
+    if (sample->MX == INT16_MAX || sample->MY == INT16_MAX  
+            || sample->MZ == INT16_MAX)
+    {
+        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                "Mag sample hit a maximum");
+    }
+
+    if(FALSE == MPU9250_AppCustomData.TempInitialized)
+    {
+        if(TempC > -40.0f && TempC < 85.0f)
+        {
+            MPU9250_AppCustomData.TempInitialized = TRUE;
+            MPU9250_AppCustomData.FifoLastTemp = TempC;
+        }
+    }
+    else
+    {
+        if (fabsf(TempC - MPU9250_AppCustomData.FifoLastTemp) > 2.0f)
+        {
+            CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "Fifo corruption detected. Reset queue.");
+            MPU9250_AppCustomData.TempInitialized = FALSE;
+            MPU9250_ResetFifo();
+            returnBool = FALSE;
+            goto end_of_function;
+        }
+    }
+
+    MPU9250_AppCustomData.FifoLastTemp = TempC;
+
+end_of_function:
+    return returnBool;
 }
