@@ -341,9 +341,9 @@ boolean MPU9250_Custom_Init(void)
     boolean returnBool = TRUE;
     int ret, i = 0;
     uint8 buf = 0;
-    int8 mode = MPU9250_SPI_DEVICE_MODE;
-    int8 bits = MPU9250_SPI_DEVICE_BITS;
-    uint32 speed = MPU9250_SPI_DEVICE_SPEED;
+    const int8 mode = MPU9250_SPI_DEVICE_MODE;
+    const int8 bits = MPU9250_SPI_DEVICE_BITS;
+    const uint32 speed = MPU9250_SPI_DEVICE_SPEED;
 
     MPU9250_AppCustomData.DeviceFd = open(MPU9250_SPI_DEVICE_PATH, O_RDWR);
     if (MPU9250_AppCustomData.DeviceFd < 0) 
@@ -435,7 +435,8 @@ boolean MPU9250_Custom_Init(void)
     /* TODO Add Gyroscope Self-Test */
     /* TODO Add Accelerometer Self-Test */
 
-    uint8 MPU_Init_Data[MPU9250_INITREGNUM][2] = {
+    /* Array of registers and values to initialize. */
+    const uint8 MPU_Init_Data[MPU9250_INITREGNUM][2] = {
         /* Wakeup */
         {0x00, MPU9250_REG_PWR_MGMT_1},
         /* Enable Acc & Gyro */
@@ -483,6 +484,7 @@ boolean MPU9250_Custom_Init(void)
         usleep(1000);
     }
 
+    /* Initialize the mag. */
     returnBool = MPU9250_Custom_MagInit();
     if(FALSE == returnBool)
     {
@@ -524,8 +526,6 @@ boolean MPU9250_Custom_Uninit(void)
     returnCode = close(MPU9250_AppCustomData.DeviceFd);
     if (-1 == returnCode) 
     {
-        CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU9250 Device close errno: %i", errno);
         returnBool = FALSE;
     }
     else
@@ -736,10 +736,11 @@ boolean MPU9250_MagWriteReg(uint8 Addr, uint8 Data)
     }
 
     verified = FALSE;
+
     /* Check for completion. */
-    for(i = 0; i < 100; ++i)
+    for(i = 0; i < 1000; ++i)
     {
-        usleep(10000);
+        usleep(1000);
         returnBool = MPU9250_ReadReg(MPU9250_REG_I2C_MST_STATUS, &buf);
         if(FALSE == returnBool)
         {
@@ -983,6 +984,7 @@ end_of_function:
 boolean MPU9250_Read_WhoAmI(uint8 *Value)
 {
     boolean returnBool = TRUE;
+
     /* Null pointer check */
     if(0 == Value)
     {
@@ -993,13 +995,13 @@ boolean MPU9250_Read_WhoAmI(uint8 *Value)
     }
 
     returnBool = MPU9250_ReadReg(MPU9250_REG_WHOAMI, Value);
-
-end_of_function:
     if (FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "MPU9250 read error in WhoAmI");
     }
+
+end_of_function:
     return returnBool;
 }
 
@@ -1016,13 +1018,7 @@ boolean MPU9250_Perform_GyroSelfTest(void)
 }
 
 
-boolean MPU9250_Start_MagSelfTest(void)
-{
-    return TRUE;
-}
-
-
-boolean MPU9250_Stop_MagSelfTest(void)
+boolean MPU9250_Perform_MagSelfTest(void)
 {
     return TRUE;
 }
