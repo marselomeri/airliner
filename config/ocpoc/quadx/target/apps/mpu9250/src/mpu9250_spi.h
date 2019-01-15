@@ -156,6 +156,7 @@ typedef struct
 *************************************************************************/
 int32 MPU9250_Ioctl(int fh, int request, void *arg);
 
+uint16 bswap16(uint16 val);
 boolean MPU9250_ReadReg(uint8 Addr, uint8 *returnVal);
 boolean MPU9250_Read_WhoAmI(uint8 *Value);
 boolean MPU9250_Custom_Read_MagAdj(void);

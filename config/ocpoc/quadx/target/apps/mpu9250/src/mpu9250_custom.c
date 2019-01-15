@@ -52,7 +52,6 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
-#include <byteswap.h>
 #include <stdint.h>
 
 /************************************************************************
@@ -134,6 +133,12 @@ int32 MPU9250_Ioctl(int fh, int request, void *arg)
     }
 
     return returnCode;
+}
+
+
+uint16 bswap16(uint16 val) 
+{
+    return (val >> 8) | (val << 8); 
 }
 
 
@@ -341,9 +346,9 @@ boolean MPU9250_Custom_Init(void)
     boolean returnBool = TRUE;
     int ret, i = 0;
     uint8 buf = 0;
-    const int8 mode = MPU9250_SPI_DEVICE_MODE;
-    const int8 bits = MPU9250_SPI_DEVICE_BITS;
-    const uint32 speed = MPU9250_SPI_DEVICE_SPEED;
+    int8 mode = MPU9250_SPI_DEVICE_MODE;
+    int8 bits = MPU9250_SPI_DEVICE_BITS;
+    uint32 speed = MPU9250_SPI_DEVICE_SPEED;
 
     MPU9250_AppCustomData.DeviceFd = open(MPU9250_SPI_DEVICE_PATH, O_RDWR);
     if (MPU9250_AppCustomData.DeviceFd < 0) 
@@ -425,10 +430,11 @@ boolean MPU9250_Custom_Init(void)
 
     /* Check who am i device ID. */
     returnBool = MPU9250_Read_WhoAmI(&buf);
-    if(FALSE == returnBool || buf != MPU9250_AK8963_Device_ID)
+    if(FALSE == returnBool || buf != MPU9250_WHOAMI_9250)
     {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU9250 device validation failed");
+            "MPU9250 device validation failed %u", buf);
+        returnBool = FALSE;
         goto end_of_function;
     }
 
@@ -998,7 +1004,7 @@ boolean MPU9250_Read_WhoAmI(uint8 *Value)
     if (FALSE == returnBool)
     {
         CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "MPU9250 read error in WhoAmI");
+            "MPU9250 read error in WhoAmI", Value);
     }
 
 end_of_function:
@@ -1450,7 +1456,7 @@ boolean MPU9250_sampleChecks(MPU9250_Measurement_t *sample)
             CFE_EVS_SendEvent(MPU9250_DEVICE_ERR_EID, CFE_EVS_ERROR,
                     "Fifo corruption detected. Reset queue.");
             MPU9250_AppCustomData.TempInitialized = FALSE;
-            MPU9250_ResetFifo();
+            MPU9250_Fifo_Reset();
             returnBool = FALSE;
             goto end_of_function;
         }
