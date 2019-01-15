@@ -270,6 +270,7 @@ boolean MPU9250_Custom_MagInit(void)
         goto end_of_function;
     }
 
+    printf("mag device id %hhu\n", buf);
     if(buf != MPU9250_AK8963_Device_ID)
     {
         returnBool = FALSE;
@@ -480,6 +481,7 @@ boolean MPU9250_Custom_Init(void)
         {MPU9250_I2C_MST_CLOCK_400HZ, MPU9250_REG_I2C_MST_CTRL}
     };
 
+    printf("About to initialize MPU\n");
     for(i = 0; i < MPU9250_INITREGNUM; ++i) 
     {
         returnBool = MPU9250_WriteReg(MPU_Init_Data[i][1], MPU_Init_Data[i][0]);
@@ -490,6 +492,7 @@ boolean MPU9250_Custom_Init(void)
         usleep(1000);
     }
 
+    printf("About to initialize the mag\n");
     /* Initialize the mag. */
     returnBool = MPU9250_Custom_MagInit();
     if(FALSE == returnBool)
@@ -499,6 +502,7 @@ boolean MPU9250_Custom_Init(void)
         goto end_of_function;
     }
 
+    printf("About to reset the fifo\n");
     /* Reset FIFO. */
     returnBool = MPU9250_Fifo_Reset();
     if(FALSE == returnBool)
@@ -508,6 +512,7 @@ boolean MPU9250_Custom_Init(void)
         goto end_of_function;
     }
 
+    printf("About to clear interrupt status\n");
     /* Clear interrupt status. */
     returnBool = MPU9250_Clear_Interrupt();
     if(FALSE == returnBool)
@@ -924,11 +929,11 @@ boolean MPU9250_SetAccScale(uint8 Scale, float *AccDivider)
             goto end_of_function;
     }
 
-    returnBool = MPU9250_WriteReg(MPU9250_REG_ACCEL_CONFIG, value);
-    if (FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = MPU9250_WriteReg(MPU9250_REG_ACCEL_CONFIG, value);
+    //if (FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
 end_of_function:
     return returnBool;
@@ -976,11 +981,11 @@ boolean MPU9250_SetGyroScale(uint32 Scale, float *GyroDivider)
             goto end_of_function;
     }
 
-    returnBool = MPU9250_WriteReg(MPU9250_REG_GYRO_CONFIG, value);
-    if (FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
+    //returnBool = MPU9250_WriteReg(MPU9250_REG_GYRO_CONFIG, value);
+    //if (FALSE == returnBool)
+    //{
+        //goto end_of_function;
+    //}
 
 end_of_function:
     return returnBool;
@@ -1043,6 +1048,7 @@ boolean MPU9250_Custom_Read_MagAdj(void)
     {
         goto end_of_function;
     }
+    usleep(1000);
 
     /* Set fuse rom access mode. */
     returnBool = MPU9250_MagWriteReg(MPU9250_AK8963_CNTL1, 
@@ -1051,6 +1057,7 @@ boolean MPU9250_Custom_Read_MagAdj(void)
     {
         goto end_of_function;
     }
+    usleep(1000);
 
     returnBool = MPU9250_MagReadReg(MPU9250_AK8963_ASAX, &validateX);
     if(FALSE == returnBool)
@@ -1075,6 +1082,9 @@ boolean MPU9250_Custom_Read_MagAdj(void)
     }
     /* TODO validate Z*/
     MPU9250_AppCustomData.MagAdjZ = validateZ;
+
+    /* Set power down mode. */
+    returnBool = MPU9250_MagWriteReg(MPU9250_AK8963_CNTL1, MPU9250_MAG_CNTL1_MODE_POWER_DOWN);
 
 end_of_function:
     if (FALSE == returnBool)
