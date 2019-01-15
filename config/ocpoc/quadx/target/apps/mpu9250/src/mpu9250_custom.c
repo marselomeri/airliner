@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
+*   Copyright (c) 2019 Windhover Labs, L.L.C. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
@@ -295,28 +295,29 @@ boolean MPU9250_Custom_MagInit(void)
     }
 
     /* Set the I2C slave address of AK8963 and set for read. */
-    returnBool = MPU9250_MagWriteReg(MPU9250_REG_I2C_SLV0_ADDR, 
+    returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_SLV0_ADDR, 
             MPU9250_AK8963_I2C_ADDR | MPU9250_SLAVE_READ);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    usleep(1000);
 
     /* I2C slave 0 register address from where to begin data transfer */
-    returnBool = MPU9250_MagWriteReg(MPU9250_REG_I2C_SLV0_REG, 
+    returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_SLV0_REG, 
             MPU9250_AK8963_ST1);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
+    usleep(1000);
 
-    returnBool = MPU9250_MagWriteReg(MPU9250_REG_I2C_SLV0_CTRL, 
+    returnBool = MPU9250_WriteReg(MPU9250_REG_I2C_SLV0_CTRL, 
             MPU9250_SLAVE_EN | MPU9250_SLAVE_READ_8BYTES);
     if(FALSE == returnBool)
     {
         goto end_of_function;
     }
-
     usleep(1000);
 
     /* Sample every 10 samples. Downsample to 100Hz*/
