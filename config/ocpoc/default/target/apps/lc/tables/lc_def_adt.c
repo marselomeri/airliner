@@ -7,6 +7,7 @@
 #include "lc_tbl.h"
 #include "lc_app.h"
 #include "lc_events.h"
+#include "sc_rts.h"
 
 /*************************************************************************
 ** Examples
@@ -147,35 +148,35 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 */
 LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
 {
-    /* #0 (unused) */
-    {   .DefaultState        = LC_ACTION_NOT_USED,
+    /* #0 (Extend Landing Gear) */
+    {   .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
+        .RTSId               = RTS_ID_EXTEND_GEAR,
+        .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
+        .EventID             = LC_BASE_AP_EID,
+        .EventText           = { "Landing gear in Extended State" },
         .RPNEquation         = { /* (WP_0) */
                                  0,
                                  LC_RPN_EQUAL
                                }
     },
 
-    /* #1 (unused) */
+    /* #1 (Retract Landing Gear) */
     {
-        .DefaultState        = LC_ACTION_NOT_USED,
+        .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
+        .RTSId               = RTS_ID_RETRACT_GEAR,
+        .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
-        .RPNEquation         = { /* (WP_0) */
-                                 0,
+        .EventID             = LC_BASE_AP_EID + 1,
+        .EventText           = { "Landing Gear in Retracted State" },
+        .RPNEquation         = { /* (WP_1) */
+                                 1,
                                  LC_RPN_EQUAL
                                }
     },
