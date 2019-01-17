@@ -48,6 +48,8 @@ help::
 $(TARGET_NAMES)::
 	@echo 'Updating submodules'
 	git submodule update --init --recursive
+	@echo 'Setting up Commander'
+	(cd tools/commander; npm install)
 	@echo 'Building '$@'.'
 	@idx=1; \
 	for name in $(TARGET_NAMES); do \
