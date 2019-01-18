@@ -471,3 +471,16 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lgc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/lgc/lgc_msg_overrides.json
 )
+
+add_airliner_app(
+    sg33bl
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/sg33bl/fsw/for_build
+    CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl
+    CONFIG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/sg33bl_custom.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sg33bl_platform_cfg.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sg33bl_msgids.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sg33bl_perfids.h
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/sg33bl_msg_overrides.json
+)
+

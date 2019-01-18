@@ -1,0 +1,14 @@
+{
+    "Airliner": {
+        "apps": {
+            "SG33BL": {
+                "operations": {
+                  "Noop":                 { "airliner_mid":  "0x1cee" },
+                  "Reset":                { "airliner_mid":  "0x1cee" }
+                },
+                "config": {
+                }
+            }
+        }
+    }
+}

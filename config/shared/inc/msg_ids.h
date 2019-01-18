@@ -667,6 +667,13 @@
 /* MPC                                                   */
 #define MPC_DIAG_TLM_MID                            0x0cea
 
+/* SG33BL                                                */
+#define SG33BL_HK_TLM_MID                           0x0ceb
+#define SG33BL_SEND_HK_MID                          0x1cec
+#define SG33BL_WAKEUP_MID                           0x1ced
+#define SG33BL_CMD_MID                              0x1cee
+#define SG33BL_CUSTOM_WAKEUP_MID                    0x1cef
+
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 
 #endif
