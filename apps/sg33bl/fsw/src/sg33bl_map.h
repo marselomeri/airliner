@@ -111,7 +111,7 @@ typedef enum {
     /** \brief Set the maximum operating temperature. */
     SG33BL_REG_TEMP_MAX             = 0x5C,
     /** \brief Set the minimum operating temperature. */
-    SG33BL_REG_TEMP_MAX             = 0x5E,
+    SG33BL_REG_TEMP_MIN             = 0x5E,
     /** \brief Restore data to factory default. */
     SG33BL_REG_FACTORY_DEFAULT      = 0x6E,
     /** \brief Save changed data in memory. */

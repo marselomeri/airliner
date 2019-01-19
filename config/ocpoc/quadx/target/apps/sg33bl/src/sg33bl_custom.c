@@ -38,15 +38,16 @@
 ** Includes
 *************************************************************************/
 #include "cfe.h"
-#include "sg33bl_app.h"
+#include "sg33bl_events.h"
+#include "sg33bl_perfids.h"
+#include "sg33bl_platform_cfg.h"
+#include "sg33bl_map.h"
+#include "sg33bl_custom.h"
 #include <termios.h>
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-//#include <linux/types.h>
-//#include <sys/wait.h>
-//#include <time.h>
 
 /************************************************************************
 ** Local Defines
@@ -111,7 +112,6 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud);
 boolean SG33BL_Custom_Max_Events_Not_Reached(int32 ind);
 uint8 SG33BL_Compute_Checksum(SG33BL_Packet_t *Packet);
 boolean SG33BL_Valid_Checksum(SG33BL_Packet_t *Packet);
-void SG33BL_Load_Checksum(SG33BL_Packet_t *PktPtr);
 
 /************************************************************************
 ** Function Definitions
@@ -395,7 +395,7 @@ boolean SG33BL_Custom_Write(uint8 Addr, uint16 Value)
     packet.checksum = SG33BL_Compute_Checksum(&packet);
 
     /* Send message */
-    bytesWritten = write(SG33BL_AppCustomData.deviceFd, (void *)&packet, 
+    bytesWritten = write(SG33BL_AppCustomData.DeviceFd, (void *)&packet, 
             sizeof(packet));
     if (bytesWritten != sizeof(packet)) 
     {
@@ -410,13 +410,13 @@ end_of_function:
 
 boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
 {
-    SG33BL_Packet_t inpacket = {0};
+    SG33BL_Packet_t inPacket = {0};
     SG33BL_Normal_Read_t outPacket = {0};
     boolean returnBool = TRUE;
     int bytes = 0;
     /* Minus one since we don't care about the existing checksum. */
     uint16   PktLen   = sizeof(SG33BL_Normal_Read_t) - 1;
-    uint8   *BytePtr  = (uint8 *)PktPtr;
+    uint8   *BytePtr  = (uint8 *)&outPacket;
     uint8    CheckSum = 0;
 
     outPacket.frame_start.header = SG33BL_HEADER_WRITE;
@@ -431,7 +431,7 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
     while (PktLen--)  CheckSum += *(BytePtr++);
     outPacket.checksum = CheckSum;
 
-    bytes = write(SG33BL_AppCustomData.deviceFd, (void *)&outPacket, 
+    bytes = write(SG33BL_AppCustomData.DeviceFd, (void *)&outPacket, 
             sizeof(outPacket));
     if (bytes != sizeof(outPacket)) 
     {
@@ -442,7 +442,7 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
     /* Sleep for typical response relay. */
     usleep(SG33BL_DATA_RET_DELAY_TYP);
 
-    bytes = read(SG33BL_AppCustomData.deviceFd, (void *)&inPacket, 
+    bytes = read(SG33BL_AppCustomData.DeviceFd, (void *)&inPacket, 
             sizeof(inPacket));
     if (bytes <= 0)
     {
@@ -458,12 +458,6 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
 
 end_of_function:
     return returnBool;
-}
-
-
-void SG33BL_Load_Checksum (SG33BL_Packet_t *PktPtr)
-{
-   *PktPtr.checksum = SG33BL_Compute_Checksum(PktPtr);
 }
 
 
@@ -536,7 +530,7 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud)
     }
     
     /* fill the struct for the new configuration */
-    tcgetattr(GPS_AppCustomData.DeviceFd, &uart_config);
+    tcgetattr(SG33BL_AppCustomData.DeviceFd, &uart_config);
 
     /* properly configure the terminal 
      * (see also https://en.wikibooks.org/wiki/Serial_Programming/termios ) 
@@ -573,7 +567,7 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud)
     termios_state = cfsetispeed(&uart_config, speed);
     if (termios_state < 0) 
     {
-        CFE_EVS_SendEvent(GPS_DEVICE_ERR_EID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
             "SG33BL set input baud rate failed errno: %i", errno);
         returnBool = FALSE;
         goto end_of_function;

@@ -8,7 +8,7 @@
 #include "sg33bl_app.h"
 #include "sg33bl_msg.h"
 #include "sg33bl_version.h"
-
+#include "sg33bl_custom.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
