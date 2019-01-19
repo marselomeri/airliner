@@ -109,6 +109,15 @@ extern "C" {
 */
 #define SG33BL_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief SG33BL serial device path. */
+#define SG33BL_SERIAL_DEVICE_PATH    "/dev/ttyS3"
+
+/** \brief IO speed.
+**
+**  \par Description:
+**       The serial IO speed 115200 baud.
+*/
+#define SG33BL_SERIAL_IO_SPEED       (229800)
 
 #ifdef __cplusplus
 }

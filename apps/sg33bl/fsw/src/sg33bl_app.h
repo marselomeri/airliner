@@ -54,6 +54,7 @@ extern "C" {
 #include "sg33bl_msg.h"
 #include "sg33bl_events.h"
 #include "sg33bl_tbldefs.h"
+#include "sg33bl_map.h"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
