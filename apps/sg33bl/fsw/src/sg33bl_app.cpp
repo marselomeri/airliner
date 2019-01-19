@@ -139,8 +139,8 @@ SG33BL_InitPipe_Exit_Tag:
 void SG33BL::InitData()
 {
     /* Init housekeeping message. */
-    CFE_SB_InitMsg(&HkTlm,
-    		SG33BL_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    CFE_SB_InitMsg(&HkTlm, SG33BL_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    SG33BL_Custom_InitData();
 }
 
 
@@ -153,6 +153,7 @@ int32 SG33BL::InitApp()
 {
     int32  iStatus   = CFE_SUCCESS;
     int8   hasEvents = 0;
+    boolean returnBool;
 
     iStatus = InitEvent();
     if (iStatus != CFE_SUCCESS)
@@ -178,6 +179,16 @@ int32 SG33BL::InitApp()
     {
         goto SG33BL_InitApp_Exit_Tag;
     }
+
+    returnBool = SG33BL_Custom_Init();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Custom init failed");
+        goto SG33BL_InitApp_Exit_Tag;
+    }
+
 
 SG33BL_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -471,6 +482,9 @@ void SG33BL::AppMain()
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(SG33BL_MAIN_TASK_PERF_ID);
 
+    /* Custom cleanup. */
+    (void) SG33BL_Custom_Deinit();
+    
     /* Exit the application */
     CFE_ES_ExitApp(uiRunStatus);
 }

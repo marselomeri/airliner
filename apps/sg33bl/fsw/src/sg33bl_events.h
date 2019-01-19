@@ -249,7 +249,18 @@ typedef enum {
 **
 */
 	SG33BL_CFGTBL_LOAD_ERR_EID,
-
+/** \brief <tt> 'SG33BL - ' </tt>
+**  \event <tt> 'SG33BL - ' </tt>
+**  
+**  \par Type: ERROR
+**
+**  \par Cause:
+**
+**  This event message is issued when the SG33BL has
+**  had an error in initialization.
+**
+*/
+    SG33BL_INIT_ERR_EID,
 /** \brief <tt> This is a count of all the app events and should not be used. </tt> */
 	SG33BL_EVT_CNT
 } SG33BL_EventIds_t;
