@@ -673,6 +673,7 @@
 #define SG33BL_WAKEUP_MID                           0x1ced
 #define SG33BL_CMD_MID                              0x1cee
 #define SG33BL_CUSTOM_WAKEUP_MID                    0x1cef
+#define SG33BL_STATUS_TLM_MID                       0x1cf0
 
 #define SCH_ACTIVITY_DONE_MID                       0x0f00
 

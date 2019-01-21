@@ -94,6 +94,10 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     SG33BL_HkTlm_t HkTlm;
+
+    /** \brief Status Telemetry */
+    SG33BL_StatusTlm_t StatusTlm;
+
     /************************************************************************/
     /** \brief SG33BL Driver (SG33BL) application entry point
      **
@@ -309,7 +313,15 @@ private:
     int32  AcquireConfigPointers(void);
     
     boolean SetConfiguration(void);
-    boolean SetPosition(const uint16 pos);
+    boolean GetConfiguration(void);
+
+    boolean SetPosition(uint16 position);
+    boolean SetVelocity(uint16 velocity);
+    boolean SetTorque(uint16 torque);
+
+    boolean GetPosition(uint16 *position);
+    boolean GetVelocity(uint16 *velocity);
+    boolean GetTorque(uint16 *torque);
 
 public:
     /************************************************************************/

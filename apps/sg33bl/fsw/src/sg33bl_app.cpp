@@ -150,6 +150,9 @@ void SG33BL::InitData()
 {
     /* Init housekeeping message. */
     CFE_SB_InitMsg(&HkTlm, SG33BL_HK_TLM_MID, sizeof(HkTlm), TRUE);
+    /* Init status telemetry. */
+    CFE_SB_InitMsg(&StatusTlm, SG33BL_STATUS_TLM_MID, sizeof(StatusTlm), TRUE);
+    /* Init custom data. */
     SG33BL_Custom_InitData();
 }
 
@@ -199,13 +202,21 @@ int32 SG33BL::InitApp()
         goto SG33BL_InitApp_Exit_Tag;
     }
 
-
     returnBool = SetConfiguration();
     if (FALSE == returnBool)
     {
         iStatus = -1;
         CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Set configuration failed");
+        goto SG33BL_InitApp_Exit_Tag;
+    }
+
+    returnBool = GetConfiguration();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Get configuration failed");
         goto SG33BL_InitApp_Exit_Tag;
     }
 
@@ -448,9 +459,39 @@ boolean SG33BL::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 }
 
 
-boolean SG33BL::SetPosition(const uint16 position)
+boolean SG33BL::SetPosition(uint16 position)
 {
     return SG33BL_Custom_Write(SG33BL_REG_POSITION_NEW, position);
+}
+
+
+boolean SG33BL::SetVelocity(uint16 velocity)
+{
+    return SG33BL_Custom_Write(SG33BL_REG_VELOCITY_NEW, velocity);
+}
+
+
+boolean SG33BL::SetTorque(uint16 torque)
+{
+    return SG33BL_Custom_Write(SG33BL_REG_TORQUE_NEW, torque);
+}
+
+
+boolean SG33BL::GetPosition(uint16 *position)
+{
+    return SG33BL_Custom_Read(SG33BL_REG_POSITION, position);
+}
+
+
+boolean SG33BL::GetVelocity(uint16 *velocity)
+{
+    return SG33BL_Custom_Read(SG33BL_REG_VELOCITY, velocity);
+}
+
+
+boolean SG33BL::GetTorque(uint16 *torque)
+{
+    return SG33BL_Custom_Read(SG33BL_REG_TORQUE, torque);
 }
 
 
@@ -542,6 +583,29 @@ end_of_function:
     return returnBool;
 }
 
+
+boolean SG33BL::GetConfiguration(void)
+{
+    boolean returnBool;
+
+    returnBool = GetPosition(&StatusTlm.Position);
+    {
+        goto end_of_function;
+    }
+
+    returnBool = GetVelocity(&StatusTlm.Velocity);
+    {
+        goto end_of_function;
+    }
+
+    returnBool = GetTorque(&StatusTlm.Torque);
+    {
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnBool;
+}
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* SG33BL Application C style main entry point.                       */
