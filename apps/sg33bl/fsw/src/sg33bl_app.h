@@ -309,6 +309,7 @@ private:
     int32  AcquireConfigPointers(void);
     
     boolean SetConfiguration(void);
+    boolean SetPosition(const uint16 pos);
 
 public:
     /************************************************************************/

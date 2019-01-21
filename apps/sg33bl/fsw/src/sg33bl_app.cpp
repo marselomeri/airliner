@@ -233,6 +233,7 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
     int32           iStatus=CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
     CFE_SB_MsgId_t  MsgId;
+    static int testing = 0;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(SG33BL_MAIN_TASK_PERF_ID);
@@ -249,7 +250,16 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case SG33BL_WAKEUP_MID:
-                /* TODO:  Do something here. */
+                testing++;
+                if(testing == 2000)
+                {
+                    setPosition(0);
+                }
+                if(testing == 4000)
+                {
+                    setPosition(2048);
+                    testing = 0;
+                }
                 break;
 
             case SG33BL_SEND_HK_MID:
@@ -428,6 +438,12 @@ boolean SG33BL::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 }
 
 
+boolean SG33BL::SetPosition(const uint16 position)
+{
+    return SG33BL_Custom_Write(SG33BL_REG_POSITION_NEW, position);
+}
+
+
 boolean SG33BL::SetConfiguration(void)
 {
     boolean returnBool;
@@ -439,6 +455,8 @@ boolean SG33BL::SetConfiguration(void)
     const uint16 posNeutral = 2048;
     const uint16 posStart = 1025;
     const uint16 posEnd = 3071;
+    const uint16 torque = 4095;
+    const uint16 velocity = 4095;
 
     /* Set return delay. */
     returnBool = SG33BL_Custom_Write(SG33BL_REG_NORMAL_RETURN_DELAY, returnDelay);
@@ -491,6 +509,20 @@ boolean SG33BL::SetConfiguration(void)
 
     /* Set end position. */
     returnBool = SG33BL_Custom_Write(SG33BL_REG_POS_END, posEnd);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Set velocity. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_VELOCITY_NEW, velocity);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    /* Set torque. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_TORQUE_NEW, torque);
     if (FALSE == returnBool)
     {
         goto end_of_function;
