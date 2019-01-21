@@ -253,11 +253,11 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
                 testing++;
                 if(testing == 2000)
                 {
-                    setPosition(0);
+                    (void) SetPosition(0);
                 }
                 if(testing == 4000)
                 {
-                    setPosition(2048);
+                    (void) SetPosition(2048);
                     testing = 0;
                 }
                 break;
