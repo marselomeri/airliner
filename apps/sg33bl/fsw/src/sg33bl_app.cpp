@@ -9,6 +9,7 @@
 #include "sg33bl_msg.h"
 #include "sg33bl_version.h"
 #include "sg33bl_custom.h"
+#include "sg33bl_map.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -189,6 +190,15 @@ int32 SG33BL::InitApp()
         goto SG33BL_InitApp_Exit_Tag;
     }
 
+
+    returnBool = SetConfiguration();
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
+                "Set configuration failed");
+        goto SG33BL_InitApp_Exit_Tag;
+    }
 
 SG33BL_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
@@ -417,6 +427,115 @@ boolean SG33BL::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
     return bResult;
 }
 
+
+boolean SG33BL::SetConfiguration(void)
+{
+    boolean returnBool;
+    uint16 value = 0;
+    const uint16 returnDelay = 0;
+    const uint16 positionSlope = 4095;
+    const uint16 velocityMax = 4095;
+    const uint16 torqueMax = 4095;
+    const uint16 tempMax = 4095;
+
+    /* Set return delay. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_NORMAL_RETURN_DELAY, returnDelay);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool =  SG33BL_Custom_Read(SG33BL_REG_NORMAL_RETURN_DELAY, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    if(value != returnDelay)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Set position slope. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_POSITION_SLOPE, positionSlope);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool =  SG33BL_Custom_Read(SG33BL_REG_POSITION_SLOPE, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    if(value != positionSlope)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Set max velocity. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_VELOCITY_MAX, velocityMax);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool =  SG33BL_Custom_Read(SG33BL_REG_VELOCITY_MAX, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    if(value != velocityMax)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Set max torque. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_TORQUE_MAX, torqueMax);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool =  SG33BL_Custom_Read(SG33BL_REG_TORQUE_MAX, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    if(value != torqueMax)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Set max temp. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_TEMP_MAX, tempMax);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    returnBool =  SG33BL_Custom_Read(SG33BL_REG_TEMP_MAX, &value);
+    if (FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    if(value != tempMax)
+    {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnBool;
+}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
