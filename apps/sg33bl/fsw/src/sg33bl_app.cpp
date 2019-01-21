@@ -72,15 +72,24 @@ int32 SG33BL::InitPipe()
 
     /* Init schedule pipe and subscribe to wakeup messages */
     iStatus = CFE_SB_CreatePipe(&SchPipeId,
-    		SG33BL_SCH_PIPE_DEPTH,
-			SG33BL_SCH_PIPE_NAME);
+            SG33BL_SCH_PIPE_DEPTH,
+            SG33BL_SCH_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         iStatus = CFE_SB_SubscribeEx(SG33BL_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, SG33BL_WAKEUP_MID_MAX_MSG_COUNT);
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(SG33BL_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-            		"Sch Pipe failed to subscribe to SG33BL_WAKEUP_MID. (0x%08lX)",
+                    "Sch Pipe failed to subscribe to SG33BL_WAKEUP_MID. (0x%08lX)",
+                    iStatus);
+            goto SG33BL_InitPipe_Exit_Tag;
+        }
+
+        iStatus = CFE_SB_SubscribeEx(SG33BL_CUSTOM_WAKEUP_MID, SchPipeId, CFE_SB_Default_Qos, SG33BL_WAKEUP_MID_MAX_MSG_COUNT);
+        if (iStatus != CFE_SUCCESS)
+        {
+            (void) CFE_EVS_SendEvent(SG33BL_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
+                    "Sch Pipe failed to subscribe to SG33BL_CUSTOM_WAKEUP_MID. (0x%08lX)",
                     iStatus);
             goto SG33BL_InitPipe_Exit_Tag;
         }
@@ -89,23 +98,23 @@ int32 SG33BL::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(SG33BL_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-					 "CMD Pipe failed to subscribe to SG33BL_SEND_HK_MID. (0x%08X)",
-					 (unsigned int)iStatus);
+                   "CMD Pipe failed to subscribe to SG33BL_SEND_HK_MID. (0x%08X)",
+                   (unsigned int)iStatus);
             goto SG33BL_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(SG33BL_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create SCH pipe (0x%08lX)",
-			 iStatus);
+            "Failed to create SCH pipe (0x%08lX)",
+            iStatus);
         goto SG33BL_InitPipe_Exit_Tag;
     }
 
     /* Init command pipe and subscribe to command messages */
     iStatus = CFE_SB_CreatePipe(&CmdPipeId,
-    		SG33BL_CMD_PIPE_DEPTH,
-			SG33BL_CMD_PIPE_NAME);
+            SG33BL_CMD_PIPE_DEPTH,
+            SG33BL_CMD_PIPE_NAME);
     if (iStatus == CFE_SUCCESS)
     {
         /* Subscribe to command messages */
@@ -114,16 +123,16 @@ int32 SG33BL::InitPipe()
         if (iStatus != CFE_SUCCESS)
         {
             (void) CFE_EVS_SendEvent(SG33BL_SUBSCRIBE_ERR_EID, CFE_EVS_ERROR,
-				 "CMD Pipe failed to subscribe to SG33BL_CMD_MID. (0x%08lX)",
-				 iStatus);
+                "CMD Pipe failed to subscribe to SG33BL_CMD_MID. (0x%08lX)",
+                iStatus);
             goto SG33BL_InitPipe_Exit_Tag;
         }
     }
     else
     {
         (void) CFE_EVS_SendEvent(SG33BL_PIPE_INIT_ERR_EID, CFE_EVS_ERROR,
-			 "Failed to create CMD pipe (0x%08lX)",
-			 iStatus);
+                "Failed to create CMD pipe (0x%08lX)",
+                iStatus);
         goto SG33BL_InitPipe_Exit_Tag;
     }
 
@@ -205,10 +214,10 @@ SG33BL_InitApp_Exit_Tag:
     {
         (void) CFE_EVS_SendEvent(SG33BL_INIT_INF_EID, CFE_EVS_INFORMATION,
                                  "Initialized.  Version %d.%d.%d.%d",
-								 SG33BL_MAJOR_VERSION,
-								 SG33BL_MINOR_VERSION,
-								 SG33BL_REVISION,
-								 SG33BL_MISSION_REV);
+                                 SG33BL_MAJOR_VERSION,
+                                 SG33BL_MINOR_VERSION,
+                                 SG33BL_REVISION,
+                                 SG33BL_MISSION_REV);
     }
     else
     {
@@ -250,26 +259,24 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
         switch (MsgId)
         {
             case SG33BL_WAKEUP_MID:
-                testing++;
-                if(testing == 2000)
-                {
-                    (void) SetPosition(0);
-                }
-                if(testing == 4000)
-                {
-                    (void) SetPosition(2048);
-                    testing = 0;
-                }
+            {
                 break;
-
+            }
+            case SG33BL_CUSTOM_WAKEUP_MID:
+            {
+                break;
+            }
             case SG33BL_SEND_HK_MID:
+            {
                 ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
-
+            }
             default:
+            {
                 (void) CFE_EVS_SendEvent(SG33BL_MSGID_ERR_EID, CFE_EVS_ERROR,
                      "Recvd invalid SCH msgId (0x%04X)", MsgId);
+            }
         }
     }
     else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -290,7 +297,7 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
     else
     {
         (void) CFE_EVS_SendEvent(SG33BL_RCVMSG_ERR_EID, CFE_EVS_ERROR,
-			  "SCH pipe read error (0x%08lX).", iStatus);
+             "SCH pipe read error (0x%08lX).", iStatus);
     }
 
     return iStatus;
@@ -319,10 +326,12 @@ void SG33BL::ProcessCmdPipe()
             switch (CmdMsgId)
             {
                 case SG33BL_CMD_MID:
+                {
                     ProcessAppCmds(CmdMsgPtr);
                     break;
-
+                }
                 default:
+                {
                     /* Bump the command error counter for an unknown command.
                      * (This should only occur if it was subscribed to with this
                      *  pipe, but not handled in this switch-case.) */
@@ -330,6 +339,7 @@ void SG33BL::ProcessCmdPipe()
                     (void) CFE_EVS_SendEvent(SG33BL_MSGID_ERR_EID, CFE_EVS_ERROR,
                                       "Recvd invalid CMD msgId (0x%04X)", (unsigned short)CmdMsgId);
                     break;
+                }
             }
         }
         else if (iStatus == CFE_SB_NO_MESSAGE)
@@ -364,11 +374,11 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case SG33BL_NOOP_CC:
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(SG33BL_CMD_NOOP_EID, CFE_EVS_INFORMATION,
-					"Recvd NOOP. Version %d.%d.%d.%d",
-					SG33BL_MAJOR_VERSION,
-					SG33BL_MINOR_VERSION,
-					SG33BL_REVISION,
-					SG33BL_MISSION_REV);
+                    "Recvd NOOP. Version %d.%d.%d.%d",
+                    SG33BL_MAJOR_VERSION,
+                    SG33BL_MINOR_VERSION,
+                    SG33BL_REVISION,
+                    SG33BL_MISSION_REV);
                 break;
 
             case SG33BL_RESET_CC:
