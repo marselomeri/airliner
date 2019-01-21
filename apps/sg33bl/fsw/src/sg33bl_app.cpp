@@ -215,9 +215,17 @@ int32 SG33BL::InitApp()
     if (FALSE == returnBool)
     {
         iStatus = -1;
-        CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
+        (void) CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
                 "Get configuration failed");
         goto SG33BL_InitApp_Exit_Tag;
+    }
+    else
+    {
+        (void) CFE_EVS_SendEvent(SG33BL_INIT_INF_EID, CFE_EVS_INFORMATION,
+                                 "Starting pos, vel, torque %hu %hu %hu",
+                                 StatusTlm.Position,
+                                 StatusTlm.Velocity,
+                                 StatusTlm.Torque);
     }
 
 SG33BL_InitApp_Exit_Tag:
