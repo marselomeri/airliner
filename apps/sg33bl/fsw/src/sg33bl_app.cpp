@@ -431,29 +431,19 @@ boolean SG33BL::VerifyCmdLength(CFE_SB_Msg_t* MsgPtr,
 boolean SG33BL::SetConfiguration(void)
 {
     boolean returnBool;
-    uint16 value = 0;
     const uint16 returnDelay = 0;
     const uint16 positionSlope = 4095;
     const uint16 velocityMax = 4095;
     const uint16 torqueMax = 4095;
     const uint16 tempMax = 4095;
+    const uint16 posNeutral = 2048;
+    const uint16 posStart = 1025;
+    const uint16 posEnd = 3071;
 
     /* Set return delay. */
     returnBool = SG33BL_Custom_Write(SG33BL_REG_NORMAL_RETURN_DELAY, returnDelay);
     if (FALSE == returnBool)
     {
-        goto end_of_function;
-    }
-
-    returnBool =  SG33BL_Custom_Read(SG33BL_REG_NORMAL_RETURN_DELAY, &value);
-    if (FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    if(value != returnDelay)
-    {
-        returnBool = FALSE;
         goto end_of_function;
     }
 
@@ -464,34 +454,10 @@ boolean SG33BL::SetConfiguration(void)
         goto end_of_function;
     }
 
-    returnBool =  SG33BL_Custom_Read(SG33BL_REG_POSITION_SLOPE, &value);
-    if (FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    if(value != positionSlope)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
     /* Set max velocity. */
     returnBool = SG33BL_Custom_Write(SG33BL_REG_VELOCITY_MAX, velocityMax);
     if (FALSE == returnBool)
     {
-        goto end_of_function;
-    }
-
-    returnBool =  SG33BL_Custom_Read(SG33BL_REG_VELOCITY_MAX, &value);
-    if (FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    if(value != velocityMax)
-    {
-        returnBool = FALSE;
         goto end_of_function;
     }
 
@@ -502,18 +468,6 @@ boolean SG33BL::SetConfiguration(void)
         goto end_of_function;
     }
 
-    returnBool =  SG33BL_Custom_Read(SG33BL_REG_TORQUE_MAX, &value);
-    if (FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-
-    if(value != torqueMax)
-    {
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
     /* Set max temp. */
     returnBool = SG33BL_Custom_Write(SG33BL_REG_TEMP_MAX, tempMax);
     if (FALSE == returnBool)
@@ -521,15 +475,24 @@ boolean SG33BL::SetConfiguration(void)
         goto end_of_function;
     }
 
-    returnBool =  SG33BL_Custom_Read(SG33BL_REG_TEMP_MAX, &value);
+    /* Set neutral position. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_POS_NEUTRAL, posNeutral);
     if (FALSE == returnBool)
     {
         goto end_of_function;
     }
 
-    if(value != tempMax)
+    /* Set start position. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_POS_START, posStart);
+    if (FALSE == returnBool)
     {
-        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    /* Set end position. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_POS_END, posEnd);
+    if (FALSE == returnBool)
+    {
         goto end_of_function;
     }
 
