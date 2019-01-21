@@ -159,7 +159,7 @@ void SG33BL::InitData()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* SG33BL initialization                                              */
+/* SG33BL initialization                                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 SG33BL::InitApp()
@@ -255,7 +255,6 @@ SG33BL_InitApp_Exit_Tag:
 /* Receive and Process Messages                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
 {
     int32           iStatus=CFE_SUCCESS;
@@ -328,7 +327,6 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
 /* Process Incoming Commands                                       */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void SG33BL::ProcessCmdPipe()
 {
     int32 iStatus = CFE_SUCCESS;
@@ -377,10 +375,9 @@ void SG33BL::ProcessCmdPipe()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Process SG33BL Commands                                            */
+/* Process SG33BL Commands                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
@@ -416,10 +413,9 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Send SG33BL Housekeeping                                           */
+/* Send SG33BL Housekeeping                                        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 void SG33BL::ReportHousekeeping()
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&HkTlm);
@@ -429,9 +425,14 @@ void SG33BL::ReportHousekeeping()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* Publish Output Data                                             */
+/* Publish Output Status Data                                      */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+void SG33BL::ReportStatus()
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t*)&StatusTlm);
+    CFE_SB_SendMsg((CFE_SB_Msg_t*)&StatusTlm);
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -616,7 +617,7 @@ end_of_function:
 }
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* SG33BL Application C style main entry point.                       */
+/* SG33BL Application C style main entry point.                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 extern "C" void SG33BL_AppMain()
@@ -627,7 +628,7 @@ extern "C" void SG33BL_AppMain()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
-/* SG33BL Application C++ style main entry point.                     */
+/* SG33BL Application C++ style main entry point.                  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void SG33BL::AppMain()

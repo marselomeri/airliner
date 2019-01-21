@@ -254,6 +254,19 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
+    /************************************************************************/
+    /** \brief Sends SG33BL status message
+     **
+     **  \par Description
+     **       This function sends the current status message
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReportStatus(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **
