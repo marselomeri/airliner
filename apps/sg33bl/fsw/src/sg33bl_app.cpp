@@ -284,7 +284,7 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
             {
                 CFE_ES_PerfLogEntry(SG33BL_CONTROL_LOOP_PERF_ID);
                 ProcessCmdPipe();
-                (void) GetPosition(&StatusTlm.Position)
+                (void) GetPosition(&StatusTlm.Position);
                 ReportStatus();
                 CFE_ES_PerfLogExit(SG33BL_CONTROL_LOOP_PERF_ID);
                 break;
@@ -425,7 +425,7 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             }
             case SG33BL_VELOCITY_CC:
             {
-                velocity = (SG33BL_PositionCmd_t *) MsgPtr;
+                velocity = (SG33BL_VelocityCmd_t *) MsgPtr;
                 returnBool = SetPosition(velocity->Velocity);
                 if(TRUE != returnBool)
                 {
