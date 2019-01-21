@@ -117,7 +117,7 @@ extern "C" {
 **  \par Description:
 **       The serial IO speed 115200 baud.
 */
-#define SG33BL_SERIAL_IO_SPEED       (229800)
+#define SG33BL_SERIAL_IO_SPEED       (115200)
 
 #ifdef __cplusplus
 }
