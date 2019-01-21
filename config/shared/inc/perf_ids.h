@@ -85,7 +85,9 @@
 #define FLOW_MAIN_TASK_PERF_ID      113
 #define FLOW_COMPUTE_PERF_ID      	114
 #define SG33BL_MAIN_TASK_PERF_ID    115
-
+#define SG33BL_SEND_PERF_ID         116
+#define SG33BL_RECEIVE_PERF_ID      117
+#define SG33BL_CONTROL_LOOP_PERF_ID 118
 
 #endif
 

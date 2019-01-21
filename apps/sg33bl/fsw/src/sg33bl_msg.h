@@ -121,6 +121,12 @@ extern "C" {
 */
 #define SG33BL_RESET_CC                (1)
 
+#define SG33BL_POSITION_CC             (2)
+
+#define SG33BL_VELOCITY_CC             (3)
+
+#define SG33BL_TORQUE_CC               (4)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -134,6 +140,27 @@ typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } SG33BL_NoArgCmd_t;
+
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 Position;
+} SG33BL_PositionCmd_t;
+
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 Velocity;
+} SG33BL_VelocityCmd_t;
+
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 Torque;
+} SG33BL_TorqueCmd_t;
 
 
 /** 

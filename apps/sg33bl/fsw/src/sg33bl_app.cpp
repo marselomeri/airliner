@@ -282,11 +282,15 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
             }
             case SG33BL_CUSTOM_WAKEUP_MID:
             {
+                CFE_ES_PerfLogEntry(SG33BL_CONTROL_LOOP_PERF_ID);
+                ProcessCmdPipe();
+                (void) GetPosition(&StatusTlm.Position)
+                ReportStatus();
+                CFE_ES_PerfLogExit(SG33BL_CONTROL_LOOP_PERF_ID);
                 break;
             }
             case SG33BL_SEND_HK_MID:
             {
-                ProcessCmdPipe();
                 ReportHousekeeping();
                 break;
             }
@@ -381,6 +385,10 @@ void SG33BL::ProcessCmdPipe()
 void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
 {
     uint32  uiCmdCode=0;
+    boolean returnBool;
+    SG33BL_PositionCmd_t *position;
+    SG33BL_VelocityCmd_t *velocity;
+    SG33BL_TorqueCmd_t *torque;
 
     if (MsgPtr != NULL)
     {
@@ -388,6 +396,7 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
         switch (uiCmdCode)
         {
             case SG33BL_NOOP_CC:
+            {
                 HkTlm.usCmdCnt++;
                 (void) CFE_EVS_SendEvent(SG33BL_CMD_NOOP_EID, CFE_EVS_INFORMATION,
                     "Recvd NOOP. Version %d.%d.%d.%d",
@@ -396,17 +405,53 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
                     SG33BL_REVISION,
                     SG33BL_MISSION_REV);
                 break;
-
+            }
             case SG33BL_RESET_CC:
+            {
                 HkTlm.usCmdCnt = 0;
                 HkTlm.usCmdErrCnt = 0;
                 break;
-
+            }
+            case SG33BL_POSITION_CC:
+            {
+                position = (SG33BL_PositionCmd_t *) MsgPtr;
+                returnBool = SetPosition(position->Position);
+                if(TRUE != returnBool)
+                {
+                    (void) CFE_EVS_SendEvent(SG33BL_CC_ERR_EID, CFE_EVS_ERROR,
+                                  "Set position command failed.");
+                }
+                break;
+            }
+            case SG33BL_VELOCITY_CC:
+            {
+                velocity = (SG33BL_PositionCmd_t *) MsgPtr;
+                returnBool = SetPosition(velocity->Velocity);
+                if(TRUE != returnBool)
+                {
+                    (void) CFE_EVS_SendEvent(SG33BL_CC_ERR_EID, CFE_EVS_ERROR,
+                                  "Set velocity command failed.");
+                }
+                break;
+            }
+            case SG33BL_TORQUE_CC:
+            {
+                torque = (SG33BL_TorqueCmd_t *) MsgPtr;
+                returnBool = SetPosition(torque->Torque);
+                if(TRUE != returnBool)
+                {
+                    (void) CFE_EVS_SendEvent(SG33BL_CC_ERR_EID, CFE_EVS_ERROR,
+                                  "Set torque command failed.");
+                }
+                break;
+            }
             default:
+            {
                 HkTlm.usCmdErrCnt++;
                 (void) CFE_EVS_SendEvent(SG33BL_CC_ERR_EID, CFE_EVS_ERROR,
                                   "Recvd invalid command code (%u)", (unsigned int)uiCmdCode);
                 break;
+            }
         }
     }
 }
