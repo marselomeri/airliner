@@ -308,7 +308,7 @@ private:
     *************************************************************************/
     int32  AcquireConfigPointers(void);
     
-    boolean SG33BL::SetConfiguration(void);
+    boolean SetConfiguration(void);
 
 public:
     /************************************************************************/
