@@ -303,16 +303,6 @@ boolean RGBLED_Custom_Send(uint8 *Buffer, size_t Length);
 boolean RGBLED_Custom_Receive(uint8 *Buffer, size_t Length);
 
 /************************************************************************/
-/** \brief Start a self-test.
-**
-**  \par Description
-**       Starts a self-test and returns to the device to its original
-**       state.
-**
-*************************************************************************/
-void RGBLED_Custom_SelfTest_Task(void);
-
-/************************************************************************/
 /** \brief Get the current state of the device.
 **
 **  \par Description

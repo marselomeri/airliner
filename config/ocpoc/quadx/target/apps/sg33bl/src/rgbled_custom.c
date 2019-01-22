@@ -102,7 +102,6 @@ void RGBLED_Custom_InitData(void)
     bzero(&RGBLED_AppCustomData, sizeof(RGBLED_AppCustomData));
 
     strncpy(RGBLED_AppCustomData.DevName, RGBLED_DEVICE_PATH, RGBLED_MAX_DEVICE_PATH);
-    RGBLED_AppCustomData.SelfTestTask = RGBLED_Custom_SelfTest_Task;
     return;
 }
 
@@ -399,75 +398,6 @@ boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue)
 
     return (returnBool);
 }
-
-
-boolean RGBLED_Custom_SelfTest(void)
-{
-    boolean returnBool = TRUE;
-    int32 returnCode = 0;
-    
-    /* Create the self-test task */
-    returnCode = CFE_ES_CreateChildTask(
-        &RGBLED_AppCustomData.ChildTaskID,
-        RGBLED_SELFTEST_TASK_NAME,
-        RGBLED_AppCustomData.SelfTestTask,
-        0,
-        CFE_ES_DEFAULT_STACK_SIZE,
-        RGBLED_SELFTEST_TASK_PRIORITY,
-        RGBLED_SELFTEST_TASK_FLAGS);
-
-    if(returnCode != CFE_SUCCESS)
-    {
-        return FALSE;
-    }
-    return (returnBool);
-}
-
-
-void RGBLED_Custom_SelfTest_Task(void)
-{
-    uint32 iStatus = -1;
-    uint8 redPWM;
-    uint8 greenPWM;
-    uint8 bluePWM;
-
-    /* Save the original settings */
-    redPWM   = RGBLED_AppCustomData.Settings.RedDutyCycle;
-    greenPWM = RGBLED_AppCustomData.Settings.GreenDutyCycle;
-    bluePWM  = RGBLED_AppCustomData.Settings.BlueDutyCycle;
-
-    iStatus = CFE_ES_RegisterChildTask();
-
-    if (iStatus == CFE_SUCCESS)
-    {
-        RGBLED_Custom_SetColor(255, 0, 0);
-        sleep(1);
-
-        RGBLED_Custom_SetColor(0, 255, 0);
-        sleep(1);
-
-        RGBLED_Custom_SetColor(0, 0, 255);
-        sleep(1);
-
-        RGBLED_Custom_SetColor(255, 255, 255);
-        sleep(1);
-    
-        RGBLED_Custom_SetColor(0, 0, 0);
-        sleep(1);
-        /* Restore the original settings */
-        RGBLED_Custom_SetColor((redPWM << 4), (greenPWM << 4), (bluePWM << 4));
-        
-    }
-    /* Set app status in none custom code back to previous value */
-    RGBLED_SelfTest_Complete();
-
-    /* The child task was successfully created so exit from it */
-    if (iStatus == CFE_SUCCESS)
-    {
-        CFE_ES_ExitChildTask();
-    }
-}
-
 
 
 boolean RGBLED_Custom_Uninit(void)

@@ -107,20 +107,6 @@ boolean RGBLED_Custom_Init(void);
 *************************************************************************/
 boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue);
 
-
-/************************************************************************/
-/** \brief Custom function to run a self test.
-**
-**  \par Description
-**       This function test each color for one second.
-**
-**  \returns
-**  TRUE if successful, FALSE otherwise.
-**  \endreturns
-**
-*************************************************************************/
-boolean RGBLED_Custom_SelfTest(void);
-
 /************************************************************************/
 /** \brief Custom function to uninitialize custom device(s).
 **

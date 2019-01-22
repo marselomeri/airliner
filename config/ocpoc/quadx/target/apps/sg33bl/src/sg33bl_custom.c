@@ -442,13 +442,13 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
 
     while(!completePacket)
     {
-        returnCode = SG33BL_Custom_Select(0, 20000);
-        if(returnCode <= 0)
-        {
-            returnBool = FALSE;
-            SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
-            goto end_of_function;
-        }
+        //returnCode = SG33BL_Custom_Select(0, 20000);
+        //if(returnCode <= 0)
+        //{
+            //returnBool = FALSE;
+            //SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
+            //goto end_of_function;
+        //}
 
         bytes = read(SG33BL_AppCustomData.DeviceFd, (void *)&tempBuffer, 1);
         if(bytes > 0)
