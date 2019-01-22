@@ -49,6 +49,8 @@
 #include <fcntl.h>
 #include <string.h>
 
+#include <time.h>
+
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -112,6 +114,7 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud);
 boolean SG33BL_Custom_Max_Events_Not_Reached(int32 ind);
 uint8 SG33BL_Compute_Checksum(SG33BL_Packet_t *Packet);
 boolean SG33BL_Valid_Checksum(SG33BL_Packet_t *Packet);
+int32 SG33BL_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec);
 
 /************************************************************************
 ** Function Definitions
@@ -402,6 +405,8 @@ boolean SG33BL_Custom_Write(uint8 Addr, uint16 Value)
         returnBool = FALSE;
     }
 
+    //tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
+    
 end_of_function:
     return returnBool;
 }
@@ -412,10 +417,13 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
     SG33BL_Packet_t inPacket = {0};
     SG33BL_Normal_Read_t outPacket = {0};
     uint8   *BytePtr  = (uint8 *)&inPacket;
-    boolean returnBool = TRUE;
+    boolean returnBool = FALSE;
     int bytes, i = 0;
     uint8 startIndex = 0;
     char buffer[32] = {0};
+    char tempBuffer;
+    int32 returnCode = 0;
+    boolean completePacket = FALSE;
 
     outPacket.frame_start.header = SG33BL_HEADER_WRITE;
     outPacket.frame_start.id = SG33BL_HEADER_ID_NONE;
@@ -432,50 +440,106 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
         goto end_of_function;
     }
 
-    tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
+    //returnCode = SG33BL_Custom_Select(0, 2000);
+    //if (returnCode <= 0)
+    //{
+        //printf("!!!!!!select failed\n");
+        //goto end_of_function;
+    //}
+    //tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
 
+    
+    /* TODO add parser and timeout. */
     /* Read one byte at a time. */
-    for(i = 0; i < sizeof(buffer); ++i)
+
+    while(!completePacket)
     {
-        bytes = read(SG33BL_AppCustomData.DeviceFd, (void *)&buffer[i], 1);
-        if (bytes <= 0)
+        bytes = read(SG33BL_AppCustomData.DeviceFd, (void *)&tempBuffer, 1);
+        if(bytes > 0)
+        {
+            switch(SG33BL_AppCustomData.ParserState)
+            {
+                case SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN:
+                {
+                    if(tempBuffer == 0xFF)
+                    {
+                        SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_HEADER;
+                    }
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_HEADER:
+                {
+                    if(tempBuffer == 0x69)
+                    {
+                        buffer[0] = tempBuffer;
+                        SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_ID;
+                    }
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_ID:
+                {
+                    buffer[1] = tempBuffer;
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_ADDR;
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_ADDR:
+                {
+                    buffer[2] = tempBuffer;
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_LEN;
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_LEN:
+                {
+                    buffer[3] = tempBuffer;
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_DATA1;
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_DATA1:
+                {
+                    buffer[4] = tempBuffer;
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_DATA2;
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_DATA2:
+                {
+                    buffer[5] = tempBuffer;
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_CHECKSUM;
+                    break;
+                }
+                case SG33BL_PARSER_STATE_WAITING_FOR_CHECKSUM:
+                {
+                    buffer[6] = tempBuffer;
+                    completePacket = TRUE;
+                    memcpy(&inPacket, &buffer[0], sizeof(inPacket));
+                    returnBool = SG33BL_Valid_Checksum(&inPacket);
+                    if(TRUE == returnBool)
+                    {
+                        *Value = inPacket.data;
+                    }
+                    else
+                    {
+                        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                            "SG33BL read failed checksum validation");
+                    }
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
+                    break;
+                }
+                default:
+                {
+                    OS_printf("Unknown SG33BL parser state\n");
+                    SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
+                    break;
+                }
+            }
+        }
+        else
         {
             CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
                 "SG33BL read returned %d", bytes);
+            tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
             returnBool = FALSE;
             goto end_of_function;
         }
-
-        if(buffer[i] == 0x69)
-        {
-            startIndex = i;
-        }
-
-        if(i >= sizeof(inPacket) - 1 + startIndex)
-        {
-            break;
-        }
-    }
-
-    if(i < sizeof(inPacket) - 1)
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL read returned only %d bytes", bytes);
-        returnBool = FALSE;
-        goto end_of_function;
-    }
-
-    memcpy(&inPacket, &buffer[startIndex], sizeof(inPacket));
-
-    returnBool = SG33BL_Valid_Checksum(&inPacket);
-    if(TRUE == returnBool)
-    {
-        *Value = inPacket.data;
-    }
-    else
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL read failed checksum validation");
     }
 
 end_of_function:
@@ -631,3 +695,65 @@ end_of_function:
     return returnBool;
 }
 
+
+int32 SG33BL_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec)
+{
+    int32 returnCode = 0;
+    uint32 maxFd = 0;
+    uint32 retryAttempts = 0;
+    fd_set fds;
+    struct timeval timeValue;
+    maxFd = 0;
+    returnCode = 0;
+    const uint32 maxRetryAttempts = 1;
+
+    while(retryAttempts != maxRetryAttempts)
+    {
+        /* Set the timeout */
+        timeValue.tv_sec = TimeoutSec;
+        timeValue.tv_usec = TimeoutUSec;
+    
+        /* Initialize the set */
+        FD_ZERO(&fds);
+    
+        FD_SET(SG33BL_AppCustomData.DeviceFd, &fds);
+        
+        /* Get the greatest fd value for select() */
+        maxFd = SG33BL_AppCustomData.DeviceFd; 
+
+        /* Wait for RC data */
+        returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
+
+        /* select() wasn't successful */
+        if (-1 == returnCode)
+        {
+            /* select was interrupted, try again */
+            if (EINTR == errno)
+            {
+                CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "SG33BL select was interrupted");
+                retryAttempts++;
+                continue;
+            }
+            else
+            {
+                /* select returned an error other than EINTR */
+                CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                    "SG33BL select() returned errno: %i", errno);
+                break;
+            }
+        }
+        /* select timed out */
+        if (0 == returnCode)
+        {
+            break;
+        } 
+        /* select() returned and data is ready to be read */
+        if(returnCode > 0)
+        {
+            break;
+        }
+    } /* end while loop*/
+
+    return returnCode;
+}

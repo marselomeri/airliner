@@ -67,6 +67,19 @@ typedef enum
 } SG33BL_Custom_Status_t;
 
 
+typedef enum
+{
+    SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN  = 0,
+    SG33BL_PARSER_STATE_WAITING_FOR_HEADER   = 1,
+    SG33BL_PARSER_STATE_WAITING_FOR_ID       = 2,
+    SG33BL_PARSER_STATE_WAITING_FOR_ADDR     = 3,
+    SG33BL_PARSER_STATE_WAITING_FOR_LEN      = 4,
+    SG33BL_PARSER_STATE_WAITING_FOR_DATA1    = 5,
+    SG33BL_PARSER_STATE_WAITING_FOR_DATA2    = 6,
+    SG33BL_PARSER_STATE_WAITING_FOR_CHECKSUM = 7
+} SG33BL_Custom_ParserState_t;
+
+
 typedef struct
 {
     /*! Device file descriptor */
@@ -75,6 +88,7 @@ typedef struct
     SG33BL_Custom_Status_t        Status;
     /*! The current baud */
     uint32                        Baud;
+    SG33BL_Custom_ParserState_t   ParserState;
 } SG33BL_AppCustomData_t;
 
 
