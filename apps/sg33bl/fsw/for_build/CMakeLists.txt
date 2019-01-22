@@ -18,7 +18,7 @@ add_airliner_app_def(sg33bl
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 
-    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/sg33tbl_msg_overrides.json 
+    MSG_OVERRIDES   ${CMAKE_CURRENT_SOURCE_DIR}/sg33bl_msg_overrides.json 
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
