@@ -49,8 +49,6 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include <time.h>
-
 /************************************************************************
 ** Local Defines
 *************************************************************************/
@@ -114,7 +112,6 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud);
 boolean SG33BL_Custom_Max_Events_Not_Reached(int32 ind);
 uint8 SG33BL_Compute_Checksum(SG33BL_Packet_t *Packet);
 boolean SG33BL_Valid_Checksum(SG33BL_Packet_t *Packet);
-int32 SG33BL_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec);
 
 /************************************************************************
 ** Function Definitions
@@ -405,8 +402,6 @@ boolean SG33BL_Custom_Write(uint8 Addr, uint16 Value)
         returnBool = FALSE;
     }
 
-    //tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
-    
 end_of_function:
     return returnBool;
 }
@@ -545,6 +540,7 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
 end_of_function:
     return returnBool;
 }
+
 
 
 uint8 SG33BL_Compute_Checksum(SG33BL_Packet_t *PktPtr)
@@ -695,65 +691,3 @@ end_of_function:
     return returnBool;
 }
 
-
-int32 SG33BL_Custom_Select(uint32 TimeoutSec, uint32 TimeoutUSec)
-{
-    int32 returnCode = 0;
-    uint32 maxFd = 0;
-    uint32 retryAttempts = 0;
-    fd_set fds;
-    struct timeval timeValue;
-    maxFd = 0;
-    returnCode = 0;
-    const uint32 maxRetryAttempts = 1;
-
-    while(retryAttempts != maxRetryAttempts)
-    {
-        /* Set the timeout */
-        timeValue.tv_sec = TimeoutSec;
-        timeValue.tv_usec = TimeoutUSec;
-    
-        /* Initialize the set */
-        FD_ZERO(&fds);
-    
-        FD_SET(SG33BL_AppCustomData.DeviceFd, &fds);
-        
-        /* Get the greatest fd value for select() */
-        maxFd = SG33BL_AppCustomData.DeviceFd; 
-
-        /* Wait for RC data */
-        returnCode = select(maxFd + 1, &fds, 0, 0, &timeValue);
-
-        /* select() wasn't successful */
-        if (-1 == returnCode)
-        {
-            /* select was interrupted, try again */
-            if (EINTR == errno)
-            {
-                CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "SG33BL select was interrupted");
-                retryAttempts++;
-                continue;
-            }
-            else
-            {
-                /* select returned an error other than EINTR */
-                CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                    "SG33BL select() returned errno: %i", errno);
-                break;
-            }
-        }
-        /* select timed out */
-        if (0 == returnCode)
-        {
-            break;
-        } 
-        /* select() returned and data is ready to be read */
-        if(returnCode > 0)
-        {
-            break;
-        }
-    } /* end while loop*/
-
-    return returnCode;
-}
