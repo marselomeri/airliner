@@ -10,6 +10,7 @@
 #include "sg33bl_version.h"
 #include "sg33bl_custom.h"
 #include "sg33bl_map.h"
+#include "rgbled_custom.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -154,6 +155,8 @@ void SG33BL::InitData()
     CFE_SB_InitMsg(&StatusTlm, SG33BL_STATUS_TLM_MID, sizeof(StatusTlm), TRUE);
     /* Init custom data. */
     SG33BL_Custom_InitData();
+    
+    RGBLED_Custom_InitData();
 }
 
 
@@ -228,6 +231,8 @@ int32 SG33BL::InitApp()
                                  StatusTlm.Torque);
     }
 
+    RGBLED_Custom_Init();
+
 SG33BL_InitApp_Exit_Tag:
     if (iStatus == CFE_SUCCESS)
     {
@@ -284,8 +289,9 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
             {
                 CFE_ES_PerfLogEntry(SG33BL_CONTROL_LOOP_PERF_ID);
                 ProcessCmdPipe();
-                (void) GetPosition(&StatusTlm.Position);
+                //(void) GetPosition(&StatusTlm.Position);
                 ReportStatus();
+                RGBLED_Custom_SetColor(0,255,0);
                 CFE_ES_PerfLogExit(SG33BL_CONTROL_LOOP_PERF_ID);
                 break;
             }
@@ -414,6 +420,7 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             }
             case SG33BL_POSITION_CC:
             {
+                RGBLED_Custom_SetColor(0,0,255);
                 position = (SG33BL_PositionCmd_t *) MsgPtr;
                 returnBool = SetPosition(position->Position);
                 if(TRUE != returnBool)

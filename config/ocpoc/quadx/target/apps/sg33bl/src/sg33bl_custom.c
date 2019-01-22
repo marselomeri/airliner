@@ -440,27 +440,16 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
         goto end_of_function;
     }
 
-    //returnCode = SG33BL_Custom_Select(0, 2000);
-    //if (returnCode <= 0)
-    //{
-        //printf("!!!!!!select failed\n");
-        //goto end_of_function;
-    //}
-    //tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
-
-    
-    /* TODO add parser and timeout. */
-    /* Read one byte at a time. */
-
     while(!completePacket)
     {
         returnCode = SG33BL_Custom_Select(0, 20000);
         if(returnCode <= 0)
         {
-            printf("return %d\n", returnCode);
             returnBool = FALSE;
+            SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
             goto end_of_function;
         }
+
         bytes = read(SG33BL_AppCustomData.DeviceFd, (void *)&tempBuffer, 1);
         if(bytes > 0)
         {
