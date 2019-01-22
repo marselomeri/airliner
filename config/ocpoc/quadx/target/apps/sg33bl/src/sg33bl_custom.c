@@ -432,8 +432,6 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
         goto end_of_function;
     }
 
-    tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
-
     /* Read one byte at a time. */
     for(i = 0; i < sizeof(buffer); ++i)
     {
