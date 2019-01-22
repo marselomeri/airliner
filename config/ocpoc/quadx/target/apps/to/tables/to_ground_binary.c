@@ -105,6 +105,7 @@ TO_ChannelTbl_t TO_ConfigTbl =
 		{FLOW_HK_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 		{FLOW_DIAG_TLM_MID,			      1,	TO_PQUEUE_MEDIUM_IDX},
 	    {MPC_DIAG_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
+	    {SG33BL_HK_TLM_MID,		      1,	TO_PQUEUE_MEDIUM_IDX},
 
             /* Internal PX4 type messages.  These should eventually be removed with
                codified and vetted flight specific telemetry.  These are currently
