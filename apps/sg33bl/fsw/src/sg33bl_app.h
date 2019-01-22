@@ -54,6 +54,7 @@ extern "C" {
 #include "sg33bl_msg.h"
 #include "sg33bl_events.h"
 #include "sg33bl_tbldefs.h"
+#include "sg33bl_map.h"
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -93,6 +94,10 @@ public:
 
     /** \brief Housekeeping Telemetry for downlink */
     SG33BL_HkTlm_t HkTlm;
+
+    /** \brief Status Telemetry */
+    SG33BL_StatusTlm_t StatusTlm;
+
     /************************************************************************/
     /** \brief SG33BL Driver (SG33BL) application entry point
      **
@@ -249,6 +254,19 @@ public:
      **
      *************************************************************************/
     void ReportHousekeeping(void);
+
+    /************************************************************************/
+    /** \brief Sends SG33BL status message
+     **
+     **  \par Description
+     **       This function sends the current status message
+     **
+     **  \par Assumptions, External Events, and Notes:
+     **       None
+     **
+     *************************************************************************/
+    void ReportStatus(void);
+
     /************************************************************************/
     /** \brief Verify Command Length
      **
@@ -306,6 +324,17 @@ private:
     **
     *************************************************************************/
     int32  AcquireConfigPointers(void);
+    
+    boolean SetConfiguration(void);
+    boolean GetConfiguration(void);
+
+    boolean SetPosition(uint16 position);
+    boolean SetVelocity(uint16 velocity);
+    boolean SetTorque(uint16 torque);
+
+    boolean GetPosition(uint16 *position);
+    boolean GetVelocity(uint16 *velocity);
+    boolean GetTorque(uint16 *torque);
 
 public:
     /************************************************************************/

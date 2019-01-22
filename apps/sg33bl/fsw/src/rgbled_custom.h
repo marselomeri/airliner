@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*   Copyright (c) 2019 Windhover Labs, L.L.C. All rights reserved.
+*   Copyright (c) 2017 Windhover Labs, L.L.C. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
@@ -31,8 +31,8 @@
 *
 *****************************************************************************/
 
-#ifndef SG33BL_CUSTOM_H
-#define SG33BL_CUSTOM_H
+#ifndef RGBLED_CUSTOM_H
+#define RGBLED_CUSTOM_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,81 +45,14 @@ extern "C" {
 /************************************************************************
 ** Includes
 *************************************************************************/
-#include "cfe.h"
 
 /************************************************************************
-** Defines
+** Local Defines
 *************************************************************************/
 
 /************************************************************************
-** Structure Definitions
+** Local Structure Definitions
 *************************************************************************/
-
-/**
- * \brief SG33BL device status
- */
-typedef enum
-{
-    /*! SG33BL status uninitialized */
-    SG33BL_CUSTOM_UNINITIALIZED  = 0,
-    /*! SG33BL status initialized */
-    SG33BL_CUSTOM_INITIALIZED    = 1
-} SG33BL_Custom_Status_t;
-
-
-typedef enum
-{
-    SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN  = 0,
-    SG33BL_PARSER_STATE_WAITING_FOR_HEADER   = 1,
-    SG33BL_PARSER_STATE_WAITING_FOR_ID       = 2,
-    SG33BL_PARSER_STATE_WAITING_FOR_ADDR     = 3,
-    SG33BL_PARSER_STATE_WAITING_FOR_LEN      = 4,
-    SG33BL_PARSER_STATE_WAITING_FOR_DATA1    = 5,
-    SG33BL_PARSER_STATE_WAITING_FOR_DATA2    = 6,
-    SG33BL_PARSER_STATE_WAITING_FOR_CHECKSUM = 7
-} SG33BL_Custom_ParserState_t;
-
-
-typedef struct
-{
-    /*! Device file descriptor */
-    int                           DeviceFd;
-    /*! The current device status */
-    SG33BL_Custom_Status_t        Status;
-    /*! The current baud */
-    uint32                        Baud;
-    SG33BL_Custom_ParserState_t   ParserState;
-} SG33BL_AppCustomData_t;
-
-
-#pragma pack(push, 1)
-typedef struct
-{
-  uint8 header;
-  uint8 id;
-  uint8 addr;
-  uint8 length;
-} SG33BL_Frame_Start_t;
-#pragma pack(pop)
-
-
-#pragma pack(push, 1)
-typedef struct 
-{
-  SG33BL_Frame_Start_t frame_start;
-  uint16 data;
-  uint8 checksum;
-} SG33BL_Packet_t;
-#pragma pack(pop)
-
-
-#pragma pack(push, 1)
-typedef struct 
-{
-  SG33BL_Frame_Start_t frame_start;
-  uint8 checksum;
-} SG33BL_Normal_Read_t;
-#pragma pack(pop)
 
 /************************************************************************
 ** External Global Variables
@@ -137,7 +70,7 @@ typedef struct
 **       to initialize non-zero data.
 **
 *************************************************************************/
-void SG33BL_Custom_InitData(void);
+void RGBLED_Custom_InitData(void);
 
 /************************************************************************/
 /** \brief Custom function to initialize custom device(s).
@@ -152,8 +85,27 @@ void SG33BL_Custom_InitData(void);
 **  \endreturns
 **
 *************************************************************************/
-boolean SG33BL_Custom_Init(void);
+boolean RGBLED_Custom_Init(void);
 
+
+/************************************************************************/
+/** \brief Custom function to set the color of the LED.
+**
+**  \par Description
+**       This function sets the color of the LED.
+**
+**  \param [in] Red brightness value from 0-255.
+**
+**  \param [in] Green brightness value from 0-255.
+**
+**  \param [in] Blue brightness value from 0-255.
+**
+**  \returns
+**  TRUE if successful, FALSE otherwise.
+**  \endreturns
+**
+*************************************************************************/
+boolean RGBLED_Custom_SetColor(uint8 Red, uint8 Green, uint8 Blue);
 
 /************************************************************************/
 /** \brief Custom function to uninitialize custom device(s).
@@ -170,32 +122,10 @@ boolean SG33BL_Custom_Init(void);
 **  \endreturns
 **
 *************************************************************************/
-boolean SG33BL_Custom_Deinit(void);
-
-/************************************************************************/
-/** \brief Custom function to initialize custom events. 
-**
-**  \par Description
-**       This function is called in init event before CFE_EVS_Register
-**       to add custom events to the event filter table.
-**
-**  \par Assumptions, External Events, and Notes:
-**       This function must be defined, but not all custom
-**       layers will do anything in this function.
-**
-**  \returns
-**       The number of events written to the filter table and -1 for 
-**       failure i.e. CFE_EVS_MAX_EVENT_FILTERS reached.
-**
-*************************************************************************/
-int32 SG33BL_Custom_Init_EventFilters(int32 ind, CFE_EVS_BinFilter_t *EventTbl);
-
-boolean SG33BL_Custom_Write(uint8 Addr, uint16 Value);
-boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value);
-
+boolean RGBLED_Custom_Uninit(void);
 
 #ifdef __cplusplus
 }
 #endif 
 
-#endif /* SG33BL_CUSTOM_H */
+#endif /* RGBLED_CUSTOM_H */

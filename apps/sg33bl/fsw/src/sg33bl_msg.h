@@ -121,6 +121,12 @@ extern "C" {
 */
 #define SG33BL_RESET_CC                (1)
 
+#define SG33BL_POSITION_CC             (2)
+
+#define SG33BL_VELOCITY_CC             (3)
+
+#define SG33BL_TORQUE_CC               (4)
+
 /************************************************************************
 ** Local Structure Declarations
 *************************************************************************/
@@ -134,6 +140,47 @@ typedef struct
 {
     uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
 } SG33BL_NoArgCmd_t;
+
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 Position;
+} SG33BL_PositionCmd_t;
+
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 Velocity;
+} SG33BL_VelocityCmd_t;
+
+
+typedef struct
+{
+    uint8  ucCmdHeader[CFE_SB_CMD_HDR_SIZE];
+    uint16 Torque;
+} SG33BL_TorqueCmd_t;
+
+
+/** 
+**  \brief SG33BL state data.
+*/
+typedef struct
+{
+    /** \brief cFE SB Tlm Msg Hdr */
+    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+
+    /** \brief current servo position. */
+    uint16             Position;
+
+    /** \brief current servo velocity. */
+    uint16             Velocity;
+
+    /** \brief current servo torque. */
+    uint16             Torque;
+} SG33BL_StatusTlm_t;
+
 
 /** 
 **  \brief SG33BL application housekeeping data
@@ -151,7 +198,11 @@ typedef struct
         \brief Count of failed commands */
     uint8              usCmdErrCnt; 
 
+    SG33BL_StatusTlm_t Status;
 } SG33BL_HkTlm_t;
+
+
+
 
 
 #ifdef __cplusplus

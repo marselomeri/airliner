@@ -29,7 +29,7 @@ extern "C" {
 **  \par Limits:
 **       minimum of 1, max of CFE_SB_MAX_PIPE_DEPTH.
 */
-#define SG33BL_SCH_PIPE_DEPTH             (2)
+#define SG33BL_SCH_PIPE_DEPTH             (3)
 
 /** \brief Pipe name for the Scheduler pipe 
 **
@@ -109,6 +109,15 @@ extern "C" {
 */
 #define SG33BL_STARTUP_TIMEOUT_MSEC    (1000)
 
+/** \brief SG33BL serial device path. */
+#define SG33BL_SERIAL_DEVICE_PATH    "/dev/ttyS3"
+
+/** \brief IO speed.
+**
+**  \par Description:
+**       The serial IO speed 115200 baud.
+*/
+#define SG33BL_SERIAL_IO_SPEED       (115200)
 
 #ifdef __cplusplus
 }
