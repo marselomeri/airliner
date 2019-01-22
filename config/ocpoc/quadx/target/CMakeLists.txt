@@ -442,6 +442,7 @@ add_airliner_app(
     CONFIG     ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl
     CONFIG_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/sg33bl_custom.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/apps/sg33bl/src/rgbled_custom.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sg33bl_platform_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sg33bl_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sg33bl_perfids.h
