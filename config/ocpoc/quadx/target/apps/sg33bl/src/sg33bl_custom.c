@@ -214,101 +214,101 @@ boolean SG33BL_Custom_Init()
             "SG33BL serial sub/main %x/%x", serialSub, serialMain);
 
     /* Set the baud rate of the device to the configured rate. */
-    switch (SG33BL_AppCustomData.Baud) 
-    {
-        case 9600:
-        {
-            speed = SG33BL_SET_B9600;
-            break;
-        }
-        case 14400:
-        {
-            speed = SG33BL_SET_B14400;
-            break;
-        }
-        case 19200:
-        {
-            speed = SG33BL_SET_B19200;
-            break;
-        }
-        case 38400:
-        {
-            speed = SG33BL_SET_B38400;
-            break;
-        }
-        case 57600:
-        {
-            speed = SG33BL_SET_B57600;
-            break;
-        }
-        case 115200:
-        {
-            speed = SG33BL_SET_B115200;
-            break;
-        }
-        case 229800:
-        {
-            speed = SG33BL_SET_B229800;
-            break;
-        }
-        default:
-        {
-            CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-                "SG33BL set baudrate unknown rate error %u", 
-                SG33BL_AppCustomData.Baud);
-            returnBool = FALSE;
-            goto end_of_function;
-        }
-    }
+    //switch (SG33BL_AppCustomData.Baud) 
+    //{
+        //case 9600:
+        //{
+            //speed = SG33BL_SET_B9600;
+            //break;
+        //}
+        //case 14400:
+        //{
+            //speed = SG33BL_SET_B14400;
+            //break;
+        //}
+        //case 19200:
+        //{
+            //speed = SG33BL_SET_B19200;
+            //break;
+        //}
+        //case 38400:
+        //{
+            //speed = SG33BL_SET_B38400;
+            //break;
+        //}
+        //case 57600:
+        //{
+            //speed = SG33BL_SET_B57600;
+            //break;
+        //}
+        //case 115200:
+        //{
+            //speed = SG33BL_SET_B115200;
+            //break;
+        //}
+        //case 229800:
+        //{
+            //speed = SG33BL_SET_B229800;
+            //break;
+        //}
+        //default:
+        //{
+            //CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+                //"SG33BL set baudrate unknown rate error %u", 
+                //SG33BL_AppCustomData.Baud);
+            //returnBool = FALSE;
+            //goto end_of_function;
+        //}
+    //}
 
-    returnBool =  SG33BL_Custom_Write(SG33BL_REG_BAUD_RATE, speed);
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL set baud rate failed");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    //returnBool =  SG33BL_Custom_Write(SG33BL_REG_BAUD_RATE, speed);
+    //if (FALSE == returnBool)
+    //{
+        //CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            //"SG33BL set baud rate failed");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
-    ///* Power reset. */
-    /* TODO need some way to do power reset here. */
+    /////* Power reset. */
+    ///* TODO need some way to do power reset here. */
 
-    //usleep(SG33BL_STARTUP_TIME);
+    ////usleep(SG33BL_STARTUP_TIME);
 
-    /* Set baud to the configured rate. */
-    returnBool = SG33BL_Custom_Set_Baud(SG33BL_AppCustomData.Baud);
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL SG33BL_Custom_Set_Baud failed");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    ///* Set baud to the configured rate. */
+    //returnBool = SG33BL_Custom_Set_Baud(SG33BL_AppCustomData.Baud);
+    //if (FALSE == returnBool)
+    //{
+        //CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            //"SG33BL SG33BL_Custom_Set_Baud failed");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
-    tcflush(SG33BL_AppCustomData.DeviceFd, TCIFLUSH);
+    //tcflush(SG33BL_AppCustomData.DeviceFd, TCIFLUSH);
 
-    /* Check the new configuration. */
-    returnBool =  SG33BL_Custom_Read(SG33BL_REG_BAUD_RATE, &value);
-    if (FALSE == returnBool)
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL get baud rate failed");
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    ///* Check the new configuration. */
+    //returnBool =  SG33BL_Custom_Read(SG33BL_REG_BAUD_RATE, &value);
+    //if (FALSE == returnBool)
+    //{
+        //CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            //"SG33BL get baud rate failed");
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
-    if (speed & value)
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_INF_EID, CFE_EVS_DEBUG,
-            "SG33BL baud rate set %d", SG33BL_AppCustomData.Baud);
-    }
-    else
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL baud rate incorrect %hu", value);
-        returnBool = FALSE;
-        goto end_of_function;
-    }
+    //if (speed & value)
+    //{
+        //CFE_EVS_SendEvent(SG33BL_DEVICE_INF_EID, CFE_EVS_DEBUG,
+            //"SG33BL baud rate set %d", SG33BL_AppCustomData.Baud);
+    //}
+    //else
+    //{
+        //CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            //"SG33BL baud rate incorrect %hu", value);
+        //returnBool = FALSE;
+        //goto end_of_function;
+    //}
 
     SG33BL_AppCustomData.Status = SG33BL_CUSTOM_INITIALIZED;
 
@@ -433,13 +433,13 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
 
     while(!completePacket)
     {
-        //returnCode = SG33BL_Custom_Select(0, 20000);
-        //if(returnCode <= 0)
-        //{
-            //returnBool = FALSE;
-            //SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
-            //goto end_of_function;
-        //}
+        returnCode = SG33BL_Custom_Select(0, 50000);
+        if(returnCode <= 0)
+        {
+            returnBool = FALSE;
+            SG33BL_AppCustomData.ParserState = SG33BL_PARSER_STATE_WAITING_FOR_UNKNOWN;
+            goto end_of_function;
+        }
 
         bytes = read(SG33BL_AppCustomData.DeviceFd, (void *)&tempBuffer, 1);
         if(bytes > 0)
@@ -603,7 +603,7 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud)
         }
         //case 229800:
         //{
-            //speed = BOTHER;
+            //speed = 229800;
             //break;
         //}
         default:
@@ -656,6 +656,15 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud)
     /* no parity, one stop bit */
     uart_config.c_cflag &= ~(CSTOPB | PARENB);
 
+    /* set the parameters */
+    termios_state = tcsetattr(SG33BL_AppCustomData.DeviceFd, TCSANOW, &uart_config);
+    if (termios_state < 0) 
+    {
+        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "SG33BL set terminal parameters failed errno: %i", errno);
+        returnBool = FALSE;
+    }
+
     /* Set baud rate. */
     termios_state = cfsetispeed(&uart_config, speed);
     if (termios_state < 0) 
@@ -672,14 +681,6 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud)
             "SG33BL set output baud rate failed errno: %i", errno);
         returnBool = FALSE;
         goto end_of_function;
-    }
-    /* set the parameters */
-    termios_state = tcsetattr(SG33BL_AppCustomData.DeviceFd, TCSANOW, &uart_config);
-    if (termios_state < 0) 
-    {
-        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
-            "SG33BL set terminal parameters failed errno: %i", errno);
-        returnBool = FALSE;
     }
 
 end_of_function:
