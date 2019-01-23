@@ -4,7 +4,10 @@
             "SG33BL": {
                 "operations": {
                   "Noop":                 { "airliner_mid":  "0x1cee" },
-                  "Reset":                { "airliner_mid":  "0x1cee" }
+                  "Reset":                { "airliner_mid":  "0x1cee" },
+                  "SetPosition":          { "airliner_mid":  "0x1cee" },
+                  "SetVelocity":          { "airliner_mid":  "0x1cee" },
+                  "SetTorque":            { "airliner_mid":  "0x1cee" }
                 },
                 "config": {
                 }
