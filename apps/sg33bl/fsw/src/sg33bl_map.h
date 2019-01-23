@@ -170,7 +170,7 @@ typedef enum {
 #define SG33BL_DATA_RET_DELAY_TYP   (20000)
 
 /* TODO Boot up time. */
-#define SG33BL_STARTUP_TIME         (10000)
+#define SG33BL_STARTUP_TIME         (1000000)
 
 #ifdef __cplusplus
 }
