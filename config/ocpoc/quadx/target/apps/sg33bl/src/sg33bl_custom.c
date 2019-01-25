@@ -158,7 +158,17 @@ boolean SG33BL_Custom_Init()
         goto end_of_function;
     }
 
-    tcflush(SG33BL_AppCustomData.DeviceFd, TCIFLUSH);
+    tcflush(SG33BL_AppCustomData.DeviceFd, TCIOFLUSH);
+
+    /* Set the return delay to 0. */
+    returnBool = SG33BL_Custom_Write(SG33BL_REG_NORMAL_RETURN_DELAY, 0);
+    if (FALSE == returnBool)
+    {
+        CFE_EVS_SendEvent(SG33BL_DEVICE_ERR_EID, CFE_EVS_ERROR,
+            "SG33BL custom set return delay failed");
+        returnBool = FALSE;
+        goto end_of_function;
+    }
 
     /* Get device info at default baud rate. */
     returnBool = SG33BL_Custom_Read(SG33BL_REG_PRODUCT_NO, &productNum);
@@ -433,7 +443,7 @@ boolean SG33BL_Custom_Read(uint8 Addr, uint16 *Value)
 
     while(!completePacket)
     {
-        returnCode = SG33BL_Custom_Select(0, 50000);
+        returnCode = SG33BL_Custom_Select(0, SG33BL_SELECT_TIMEOUT_MS * 1000);
         if(returnCode <= 0)
         {
             returnBool = FALSE;
@@ -654,7 +664,8 @@ boolean SG33BL_Custom_Set_Baud(const uint32 Baud)
      */
     uart_config.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG);
     /* no parity, one stop bit */
-    uart_config.c_cflag &= ~(CSTOPB | PARENB);
+    //uart_config.c_cflag &= ~(CSTOPB | PARENB);
+    uart_config.c_cflag = 0x1cb2;
 
     /* set the parameters */
     termios_state = tcsetattr(SG33BL_AppCustomData.DeviceFd, TCSANOW, &uart_config);

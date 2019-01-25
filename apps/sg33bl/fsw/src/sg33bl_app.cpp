@@ -12,6 +12,8 @@
 #include "sg33bl_map.h"
 #include "rgbled_custom.h"
 
+#include <time.h>
+#include <unistd.h>
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Instantiate the application object.                             */
@@ -265,7 +267,6 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
     int32           iStatus=CFE_SUCCESS;
     CFE_SB_Msg_t*   MsgPtr=NULL;
     CFE_SB_MsgId_t  MsgId;
-    static int testing = 0;
 
     /* Stop Performance Log entry */
     CFE_ES_PerfLogExit(SG33BL_MAIN_TASK_PERF_ID);
@@ -289,9 +290,8 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
             {
                 CFE_ES_PerfLogEntry(SG33BL_CONTROL_LOOP_PERF_ID);
                 ProcessCmdPipe();
-                //(void) GetPosition(&StatusTlm.Position);
+                (void) GetPosition(&StatusTlm.Position);
                 ReportStatus();
-                RGBLED_Custom_SetColor(0,255,0);
                 CFE_ES_PerfLogExit(SG33BL_CONTROL_LOOP_PERF_ID);
                 break;
             }
@@ -433,7 +433,7 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case SG33BL_VELOCITY_CC:
             {
                 velocity = (SG33BL_VelocityCmd_t *) MsgPtr;
-                returnBool = SetPosition(velocity->Velocity);
+                returnBool = SetVelocity(velocity->Velocity);
                 if(TRUE != returnBool)
                 {
                     (void) CFE_EVS_SendEvent(SG33BL_CC_ERR_EID, CFE_EVS_ERROR,
@@ -444,7 +444,7 @@ void SG33BL::ProcessAppCmds(CFE_SB_Msg_t* MsgPtr)
             case SG33BL_TORQUE_CC:
             {
                 torque = (SG33BL_TorqueCmd_t *) MsgPtr;
-                returnBool = SetPosition(torque->Torque);
+                returnBool = SetTorque(torque->Torque);
                 if(TRUE != returnBool)
                 {
                     (void) CFE_EVS_SendEvent(SG33BL_CC_ERR_EID, CFE_EVS_ERROR,

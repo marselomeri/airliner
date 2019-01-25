@@ -121,6 +121,8 @@ extern "C" {
 
 #define SG33BL_DEFAULT_SERIAL_IO_SPEED  (115200)
 
+#define SG33BL_SELECT_TIMEOUT_MS        (20)
+
 #ifdef __cplusplus
 }
 #endif
