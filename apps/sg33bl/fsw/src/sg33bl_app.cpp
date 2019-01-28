@@ -11,7 +11,6 @@
 #include "sg33bl_custom.h"
 #include "sg33bl_map.h"
 #include "rgbled_custom.h"
-
 #include <time.h>
 #include <unistd.h>
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -28,9 +27,10 @@ SG33BL oSG33BL;
 /* Default constructor.                                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-SG33BL::SG33BL()
+SG33BL::SG33BL() :
+mADS1115()
 {
-
+    
 }
 
 
@@ -41,7 +41,7 @@ SG33BL::SG33BL()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 SG33BL::~SG33BL()
 {
-
+    
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -46,9 +46,7 @@ extern "C" {
  ** Includes
  *************************************************************************/
 #include "cfe.h"
-
 #include "ads1115_map.h"
-//#include "ads1115_custom.h"
 
 /************************************************************************
  ** Local Defines
@@ -83,14 +81,14 @@ public:
     /* The current device configuration. */
     ADS1115_Configuration_t mConfig;
     /* Configuration setters. */
-    boolean setMux(ADS1115_Bits_Mux_t mux);
-    boolean setGain(ADS1115_Bits_Pga_t pga);
-    boolean setMode(ADS1115_Bits_Mode_t mode);
-    boolean setRate(ADS1115_Bits_Data_Rate_t rate);
-    boolean setComparatorMode(ADS1115_Bits_Comp_Mode_t compMode);
-    boolean setComparatorPolarity(ADS1115_Bits_Comp_Polarity_t compPolarity);
-    boolean setComparatorLatchEnabled(ADS1115_Bits_Comp_Latching_t compLatching);
-    boolean setComparatorQueueMode(ADS1115_Bits_Comp_Queue_t compQueueMode);
+    boolean setMux(const ADS1115_Bits_Mux_t mux);
+    boolean setGain(const ADS1115_Bits_Pga_t pga);
+    boolean setMode(const ADS1115_Bits_Mode_t mode);
+    boolean setRate(const ADS1115_Bits_Data_Rate_t rate);
+    boolean setComparatorMode(const ADS1115_Bits_Comp_Mode_t compMode);
+    boolean setComparatorPolarity(const ADS1115_Bits_Comp_Polarity_t compPolarity);
+    boolean setComparatorLatchEnabled(const ADS1115_Bits_Comp_Latching_t compLatching);
+    boolean setComparatorQueueMode(const ADS1115_Bits_Comp_Queue_t compQueueMode);
     /* Configuration getters. */
     boolean getMux(ADS1115_Bits_Mux_t *mux);
     boolean getGain(ADS1115_Bits_Pga_t *pga);
@@ -106,8 +104,9 @@ public:
     /* Utilities. */
     uint16 setBits16(uint8 bitStart, uint8 length, uint16 originalValue, uint16 data);
     uint16 getBits16(uint8 bitStart, uint8 length, uint16 originalValue);
-private:
+protected:
 
+private:
 };
 
 #ifdef __cplusplus

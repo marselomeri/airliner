@@ -82,8 +82,8 @@ boolean ADS1115_Custom_Init(void);
 *************************************************************************/
 boolean ADS1115_Custom_Uninit(void);
 
-boolean ADS1115_ReadBlock(uint8 Reg, void *Buffer, size_t Length);
-boolean ADS1115_WriteBlock(uint8 Reg, const void *Buffer, size_t Length);
+boolean ADS1115_readBlock(uint8 Reg, void *Buffer, size_t Length);
+boolean ADS1115_writeBlock(uint8 Reg, const void *Buffer, size_t Length);
 
 #ifdef __cplusplus
 }

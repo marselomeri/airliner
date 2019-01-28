@@ -1,8 +1,8 @@
 /************************************************************************
 ** Includes
 *************************************************************************/
-
 #include "ads1115.h"
+#include "ads1115_custom.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -22,6 +22,8 @@ ADS1115::ADS1115()
     mConfig.compLatching = ADS1115_COMP_LAT_BITS_NON_LATCHING;
     mConfig.compQueueMode = ADS1115_COMP_QUE_BITS_DISABLE;
     mConfig.mvMultiplier = ADS1115_MV_MULT_2P048;
+    ADS1115_Custom_InitData();
+    ADS1115_Custom_Init();
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -31,12 +33,12 @@ ADS1115::ADS1115()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 ADS1115::~ADS1115()
 {
-
+    ADS1115_Custom_Uninit();
 }
 
 
 /* Configuration setters. */
-boolean ADS1115::setMux(ADS1115_Bits_Mux_t mux)
+boolean ADS1115::setMux(const ADS1115_Bits_Mux_t mux)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -65,7 +67,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setGain(ADS1115_Bits_Pga_t pga)
+boolean ADS1115::setGain(const ADS1115_Bits_Pga_t pga)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -132,7 +134,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setMode(ADS1115_Bits_Mode_t mode)
+boolean ADS1115::setMode(const ADS1115_Bits_Mode_t mode)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -168,7 +170,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setRate(ADS1115_Bits_Data_Rate_t rate)
+boolean ADS1115::setRate(const ADS1115_Bits_Data_Rate_t rate)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -197,7 +199,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setComparatorMode(ADS1115_Bits_Comp_Mode_t compMode)
+boolean ADS1115::setComparatorMode(const ADS1115_Bits_Comp_Mode_t compMode)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -233,7 +235,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setComparatorPolarity(ADS1115_Bits_Comp_Polarity_t compPolarity)
+boolean ADS1115::setComparatorPolarity(const ADS1115_Bits_Comp_Polarity_t compPolarity)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -269,7 +271,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setComparatorLatchEnabled(ADS1115_Bits_Comp_Latching_t compLatching)
+boolean ADS1115::setComparatorLatchEnabled(const ADS1115_Bits_Comp_Latching_t compLatching)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -305,7 +307,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::setComparatorQueueMode(ADS1115_Bits_Comp_Queue_t compQueueMode)
+boolean ADS1115::setComparatorQueueMode(const ADS1115_Bits_Comp_Queue_t compQueueMode)
 {
     boolean returnBool = FALSE;
     uint16 value = 0;
@@ -347,7 +349,8 @@ boolean ADS1115::getMux(ADS1115_Bits_Mux_t *mux)
         goto end_of_function;
     }
 
-    *mux = getBits16(ADS1115_CONFIG_BITS_MUX0, ADS1115_BIT_LENGTH_MUX, value);
+    *mux = static_cast<ADS1115_Bits_Mux_t>(getBits16(ADS1115_CONFIG_BITS_MUX0, 
+            ADS1115_BIT_LENGTH_MUX, value));
 
 end_of_function:
     return returnBool;
@@ -367,7 +370,8 @@ boolean ADS1115::getGain(ADS1115_Bits_Pga_t *pga)
     }
 
     /* Set the new value of just the desired bits. */
-    *pga = getBits16(ADS1115_CONFIG_BITS_PGA0, ADS1115_BIT_LENGTH_PGA, value);
+    *pga = static_cast<ADS1115_Bits_Pga_t>(getBits16(ADS1115_CONFIG_BITS_PGA0, 
+            ADS1115_BIT_LENGTH_PGA, value));
 
 end_of_function:
     return returnBool;
@@ -386,7 +390,7 @@ boolean ADS1115::getMode(ADS1115_Bits_Mode_t *mode)
         goto end_of_function;
     }
 
-    *mode = value & (1 << ADS1115_CONFIG_BITS_MODE);
+    *mode = static_cast<ADS1115_Bits_Mode_t>(value & (1 << ADS1115_CONFIG_BITS_MODE));
 
 end_of_function:
     return returnBool;
@@ -405,7 +409,8 @@ boolean ADS1115::getRate(ADS1115_Bits_Data_Rate_t *rate)
         goto end_of_function;
     }
 
-    *rate = getBits16(ADS1115_CONFIG_BITS_COMP_DR0, ADS1115_BIT_LENGTH_DR, value);
+    *rate = static_cast<ADS1115_Bits_Data_Rate_t>(getBits16(ADS1115_CONFIG_BITS_COMP_DR0, 
+            ADS1115_BIT_LENGTH_DR, value));
 
 end_of_function:
     return returnBool;
@@ -425,7 +430,7 @@ boolean ADS1115::getComparatorMode(ADS1115_Bits_Comp_Mode_t *compMode)
         goto end_of_function;
     }
 
-    *compMode = value & (1 << ADS1115_CONFIG_BITS_COMP_MODE);
+    *compMode = static_cast<ADS1115_Bits_Comp_Mode_t>(value & (1 << ADS1115_CONFIG_BITS_COMP_MODE));
 
 end_of_function:
     return returnBool;
@@ -444,7 +449,7 @@ boolean ADS1115::getComparatorPolarity(ADS1115_Bits_Comp_Polarity_t *compPolarit
         goto end_of_function;
     }
 
-    *compPolarity = value & (1 << ADS1115_CONFIG_BITS_COMP_POL);
+    *compPolarity = static_cast<ADS1115_Bits_Comp_Polarity_t>(value & (1 << ADS1115_CONFIG_BITS_COMP_POL));
 
 end_of_function:
     return returnBool;
@@ -463,7 +468,7 @@ boolean ADS1115::getComparatorLatchEnabled(ADS1115_Bits_Comp_Latching_t *compLat
         goto end_of_function;
     }
 
-    *compLatching = value & (1 << ADS1115_CONFIG_BITS_COMP_LAT);
+    *compLatching = static_cast<ADS1115_Bits_Comp_Latching_t>(value & (1 << ADS1115_CONFIG_BITS_COMP_LAT));
 
 end_of_function:
     return returnBool;
@@ -482,7 +487,8 @@ boolean ADS1115::getComparatorQueueMode(ADS1115_Bits_Comp_Queue_t *compQueueMode
         goto end_of_function;
     }
 
-    *compQueueMode = getBits16(ADS1115_CONFIG_BITS_COMP_QUE0, ADS1115_BIT_LENGTH_COMP_QUE, value);
+    *compQueueMode = static_cast<ADS1115_Bits_Comp_Queue_t>(getBits16(ADS1115_CONFIG_BITS_COMP_QUE0, 
+            ADS1115_BIT_LENGTH_COMP_QUE, value));
 
 end_of_function:
     return returnBool;
@@ -521,6 +527,7 @@ boolean ADS1115::setConfiguration(const ADS1115_Configuration_t *config)
 {
     return FALSE;
 }
+
 
 /************************/
 /*  End of File Comment */

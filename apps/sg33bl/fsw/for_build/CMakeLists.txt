@@ -11,7 +11,11 @@ add_airliner_app_def(sg33bl
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sg33bl_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sg33bl_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sg33bl_version.h
-   
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115_custom.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115_map.h
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
 
@@ -43,7 +47,11 @@ add_airliner_app_unit_test(sg33bl-ut
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sg33bl_msg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sg33bl_tbldefs.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/sg33bl_version.h
-        
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115_custom.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/ads1115_map.h
+
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
         ${CMAKE_CURRENT_SOURCE_DIR}/../unit_test/

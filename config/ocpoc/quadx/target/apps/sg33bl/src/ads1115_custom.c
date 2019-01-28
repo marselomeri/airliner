@@ -51,10 +51,29 @@
 #include <time.h>
 #include <math.h>
 #include <stdint.h>
+#include "ads1115_map.h"
+#include "ads1115_custom.h"
 
 /************************************************************************
 ** Local Defines
 *************************************************************************/
+/** \brief Retry attemps for interrupted ioctl calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define ADS1115_MAX_RETRY_ATTEMPTS           (2)
+
+/** \brief Sleep time micro seconds for interrupted calls.
+**
+**  \par Limits:
+**       None.
+*/
+#define ADS1115_MAX_RETRY_SLEEP_USEC         (10)
+
+#define ADS1115_I2C_DEVICE_PATH              "/dev/i2c-2"
+#define ADS1115_I2C_SLAVE_ADDRESS            ADS1115_ADDRESS_GND
+#define ADS1115_I2C_M_READ                   (0x0001)
 
 /************************************************************************
 ** Local Structure Declarations
@@ -166,7 +185,7 @@ boolean ADS1115_Custom_Uninit(void)
 }
 
 
-boolean ADS1115_ReadBlock(uint8 Reg, const void *Buffer, size_t Length)
+boolean ADS1115_readBlock(uint8 Reg, void *Buffer, size_t Length)
 {
     int returnCode       = 0;
     boolean returnBool   = FALSE;
@@ -206,11 +225,11 @@ boolean ADS1115_ReadBlock(uint8 Reg, const void *Buffer, size_t Length)
 
 
 
-boolean ADS1115_writeBlock(uint8 Reg, void *Buffer, size_t Length)
+boolean ADS1115_writeBlock(uint8 Reg, const void *Buffer, size_t Length)
 {
     int returnCode       = 0;
     boolean returnBool   = FALSE;
-    char buf[32] = 0;
+    char buf[32] = {0};
 
     if(Length + 1 > sizeof(buf))
     {
