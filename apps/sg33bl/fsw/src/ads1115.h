@@ -67,6 +67,7 @@ typedef struct
     ADS1115_Bits_Comp_Polarity_t compPolarity;
     ADS1115_Bits_Comp_Latching_t compLatching;
     ADS1115_Bits_Comp_Queue_t compQueueMode;
+    float mvMultiplier;
 } ADS1115_Configuration_t;
 
 
@@ -79,8 +80,8 @@ public:
     ADS1115();
     ~ADS1115();
 
+    /* The current device configuration. */
     ADS1115_Configuration_t mConfig;
-
     /* Configuration setters. */
     boolean setMux(ADS1115_Bits_Mux_t mux);
     boolean setGain(ADS1115_Bits_Pga_t pga);
@@ -99,8 +100,12 @@ public:
     boolean getComparatorPolarity(ADS1115_Bits_Comp_Polarity_t *compPolarity);
     boolean getComparatorLatchEnabled(ADS1115_Bits_Comp_Latching_t *compLatching);
     boolean getComparatorQueueMode(ADS1115_Bits_Comp_Queue_t *compQueueMode);
+    /* Total configuration set/get. */
+    boolean getConfiguration(ADS1115_Configuration_t *config);
+    boolean setConfiguration(const ADS1115_Configuration_t *config);
     /* Utilities. */
-    uint16 getMask16(uint8 bitStart, uint8 length, uint16 originalValue, uint16 data);
+    uint16 setBits16(uint8 bitStart, uint8 length, uint16 originalValue, uint16 data);
+    uint16 getBits16(uint8 bitStart, uint8 length, uint16 originalValue);
 private:
 
 };

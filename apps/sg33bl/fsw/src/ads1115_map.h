@@ -200,21 +200,21 @@ typedef enum {
 
 /* mV multipliers. */
 /** \brief mV constant gain multiplier 6P144. */
-#define ADS1115_MV_MULT_6P144           (0.187500)
+#define ADS1115_MV_MULT_6P144           (0.187500f)
 /** \brief mV constant gain multiplier 4P096. */
-#define ADS1115_MV_MULT_4P096           (0.125000)
+#define ADS1115_MV_MULT_4P096           (0.125000f)
 /** \brief mV constant gain multiplier 2P048 (default). */
-#define ADS1115_MV_MULT_2P048           (0.062500)
+#define ADS1115_MV_MULT_2P048           (0.062500f)
 /** \brief mV constant gain multiplier 1P024. */
-#define ADS1115_MV_MULT_1P024           (0.031250)
+#define ADS1115_MV_MULT_1P024           (0.031250f)
 /** \brief mV constant gain multiplier 0P512. */
-#define ADS1115_MV_MULT_0P512           (0.015625)
+#define ADS1115_MV_MULT_0P512           (0.015625f)
 /** \brief mV constant gain multiplier 0P256. */
-#define ADS1115_MV_MULT_0P256           (0.007813)
+#define ADS1115_MV_MULT_0P256           (0.007813f)
 /** \brief mV constant gain multiplier 0P256B. */
-#define ADS1115_MV_MULT_0P256B          (0.007813)
+#define ADS1115_MV_MULT_0P256B          (0.007813f)
 /** \brief mV constant gain multiplier 0P256C. */
-#define ADS1115_MV_MULT_0P256C          (0.007813)
+#define ADS1115_MV_MULT_0P256C          (0.007813f)
 
 /* ADS1115 addresses. */
 /** \brief Address pin low (GND) (default). */
