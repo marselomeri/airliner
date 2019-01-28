@@ -80,7 +80,7 @@ typedef enum {
     ADS1115_CONFIG_BITS_MUX0            = 13,
     /** \brief Input multiplexer config bit 1. */
     ADS1115_CONFIG_BITS_MUX1            = 14,
-    /** \brief Input multiplexer config bit 1. */
+    /** \brief Input multiplexer config bit 2. */
     ADS1115_CONFIG_BITS_MUX2            = 15,
     /** \brief Operational status/single-shot conversion start bit. */
     ADS1115_CONFIG_BITS_OS              = 16
