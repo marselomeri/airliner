@@ -198,6 +198,16 @@ typedef enum {
     ADS1115_COMP_QUE_BITS_DISABLE       = 0x03
 } ADS1115_Bits_Comp_Queue_t;
 
+
+/** \brief Operational status bits. */
+typedef enum {
+    /** \brief Conversion active. */
+    ADS1115_OP_STATUS_ACTIVE            = 0x00,
+    /** \brief Conversion inactive. */
+    ADS1115_OP_STATUS_INACTIVE          = 0x01
+} ADS1115_Bits_Op_Status_t;
+
+
 /* mV multipliers. */
 /** \brief mV constant gain multiplier 6P144. */
 #define ADS1115_MV_MULT_6P144           (0.187500f)

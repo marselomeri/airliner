@@ -99,7 +99,8 @@ public:
 
     /** \brief Status Telemetry */
     SG33BL_StatusTlm_t StatusTlm;
-    
+
+    ADS1115_Configuration_t mConfigAdc;
     ADS1115 mADS1115;
 
     /************************************************************************/

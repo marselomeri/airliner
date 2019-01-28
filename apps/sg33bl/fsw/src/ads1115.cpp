@@ -336,6 +336,52 @@ end_of_function:
 }
 
 
+boolean setOperationalStatus(ADS1115_Bits_Op_Status_t status)
+{
+    boolean returnBool = FALSE;
+    uint16 value = 0;
+
+    /* Get the existing value. */
+    returnBool = ADS1115_readBlock(ADS1115_REG_CONFIG, &value, sizeof(value));
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+
+    /* Set the new value of just the desired bit. */
+    if(status)
+    {
+        value |= 1 << ADS1115_CONFIG_BITS_OS;
+    }
+    else
+    {
+        value &= ~(1 << ADS1115_CONFIG_BITS_OS);
+    }
+
+    /* Write the new value. */
+    returnBool = ADS1115_writeBlock(ADS1115_REG_CONFIG, &value, sizeof(value));
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+
+end_of_function:
+    return returnBool;
+}
+
+
+boolean ADS1115::setLoThresholdReg(uint16 value)
+{
+    return ADS1115_writeBlock(ADS1115_REG_LO_THRESHOLD, &value, sizeof(value));
+}
+
+
+boolean ADS1115::setHiThresholdReg(uint16 value)
+{
+    return ADS1115_writeBlock(ADS1115_REG_HI_THRESHOLD, &value, sizeof(value));
+}
+
+
 /* Configuration getters. */
 boolean ADS1115::getMux(ADS1115_Bits_Mux_t *mux)
 {
@@ -495,6 +541,25 @@ end_of_function:
 }
 
 
+boolean ADS1115::getOperationalStatus(ADS1115_Bits_Op_Status_t *status)
+{
+    boolean returnBool = FALSE;
+    uint16 value = 0;
+
+    /* Get the existing value. */
+    returnBool = ADS1115_readBlock(ADS1115_REG_CONFIG, &value, sizeof(value));
+    if(returnBool == FALSE)
+    {
+        goto end_of_function;
+    }
+
+    *status = static_cast<ADS1115_Bits_Op_Status_t>(value & (1 << ADS1115_CONFIG_BITS_OS));
+
+end_of_function:
+    return returnBool;
+}
+
+
 uint16 ADS1115::setBits16(uint8 bitStart, uint8 length, uint16 originalValue, uint16 data)
 {
     uint16 word = originalValue;
@@ -526,6 +591,30 @@ boolean ADS1115::getConfiguration(ADS1115_Configuration_t *config)
 boolean ADS1115::setConfiguration(const ADS1115_Configuration_t *config)
 {
     return FALSE;
+}
+
+
+boolean ADS1115::getConversionReg(uint16 *value)
+{
+    return ADS1115_readBlock(ADS1115_REG_CONVERSION, value, sizeof(value));
+}
+
+
+boolean ADS1115::getConfigReg(uint16 *value)
+{
+    return ADS1115_readBlock(ADS1115_REG_CONFIG, &value, sizeof(value));
+}
+
+
+boolean ADS1115::getLoThresholdReg(uint16 *value)
+{
+    return ADS1115_readBlock(ADS1115_REG_LO_THRESHOLD, value, sizeof(value));
+}
+
+
+boolean ADS1115::getHiThresholdReg(uint16 *value)
+{
+    return ADS1115_readBlock(ADS1115_REG_HI_THRESHOLD, value, sizeof(value));
 }
 
 

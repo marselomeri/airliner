@@ -179,6 +179,8 @@ typedef struct
 
     /** \brief current servo torque. */
     uint16             Torque;
+    /** \brief current analog voltage. */
+    uint16             Analog;
 } SG33BL_StatusTlm_t;
 
 

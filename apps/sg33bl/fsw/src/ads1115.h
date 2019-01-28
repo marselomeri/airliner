@@ -89,6 +89,7 @@ public:
     boolean setComparatorPolarity(const ADS1115_Bits_Comp_Polarity_t compPolarity);
     boolean setComparatorLatchEnabled(const ADS1115_Bits_Comp_Latching_t compLatching);
     boolean setComparatorQueueMode(const ADS1115_Bits_Comp_Queue_t compQueueMode);
+    boolean setOperationalStatus(ADS1115_Bits_Op_Status_t status);
     /* Configuration getters. */
     boolean getMux(ADS1115_Bits_Mux_t *mux);
     boolean getGain(ADS1115_Bits_Pga_t *pga);
@@ -98,9 +99,18 @@ public:
     boolean getComparatorPolarity(ADS1115_Bits_Comp_Polarity_t *compPolarity);
     boolean getComparatorLatchEnabled(ADS1115_Bits_Comp_Latching_t *compLatching);
     boolean getComparatorQueueMode(ADS1115_Bits_Comp_Queue_t *compQueueMode);
+    boolean getOperationalStatus(ADS1115_Bits_Op_Status_t *status);
     /* Total configuration set/get. */
     boolean getConfiguration(ADS1115_Configuration_t *config);
     boolean setConfiguration(const ADS1115_Configuration_t *config);
+    /* Read registers. */
+    boolean getConversionReg(uint16 *value);
+    boolean getConfigReg(uint16 *value);
+    boolean getLoThresholdReg(uint16 *value);
+    boolean getHiThresholdReg(uint16 *value);
+    /* Set registers. */
+    boolean setLoThresholdReg(uint16 value);
+    boolean setHiThresholdReg(uint16 value);
     /* Utilities. */
     uint16 setBits16(uint8 bitStart, uint8 length, uint16 originalValue, uint16 data);
     uint16 getBits16(uint8 bitStart, uint8 length, uint16 originalValue);

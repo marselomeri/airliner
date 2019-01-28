@@ -157,8 +157,18 @@ void SG33BL::InitData()
     CFE_SB_InitMsg(&StatusTlm, SG33BL_STATUS_TLM_MID, sizeof(StatusTlm), TRUE);
     /* Init custom data. */
     SG33BL_Custom_InitData();
-    
     RGBLED_Custom_InitData();
+
+    /* ADC setup. */
+    mConfigAdc.mux = ADS1115_MUX_BITS_P0_N1;
+    mConfigAdc.pga = ADS1115_PGA_BITS_4P096;
+    mConfigAdc.mode = ADS1115_MODE_BITS_CONTINUOUS;
+    mConfigAdc.rate = ADS1115_DATA_RATE_BITS_860;
+    mConfigAdc.compMode = ADS1115_COMP_MODE_BITS_HYSTERESIS;
+    mConfigAdc.compPolarity = ADS1115_COMP_POL_ACTIVE_LOW;
+    mConfigAdc.compLatching = ADS1115_COMP_LAT_BITS_NON_LATCHING;
+    mConfigAdc.compQueueMode = ADS1115_COMP_QUE_BITS_DISABLE;
+    mConfigAdc.mvMultiplier = ADS1115_MV_MULT_4P096;
 }
 
 
@@ -233,6 +243,15 @@ int32 SG33BL::InitApp()
                                  StatusTlm.Torque);
     }
 
+    returnBool = mADS1115.setConfiguration(&mConfigAdc);
+    if (FALSE == returnBool)
+    {
+        iStatus = -1;
+        (void) CFE_EVS_SendEvent(SG33BL_INIT_ERR_EID, CFE_EVS_ERROR,
+                "ADC set configuration failed.");
+        goto SG33BL_InitApp_Exit_Tag;
+    }
+
     RGBLED_Custom_Init();
 
 SG33BL_InitApp_Exit_Tag:
@@ -291,6 +310,7 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
                 CFE_ES_PerfLogEntry(SG33BL_CONTROL_LOOP_PERF_ID);
                 ProcessCmdPipe();
                 (void) GetPosition(&StatusTlm.Position);
+                (void) mADS1115.getConversionReg(&StatusTlm.Analog);
                 ReportStatus();
                 CFE_ES_PerfLogExit(SG33BL_CONTROL_LOOP_PERF_ID);
                 break;
