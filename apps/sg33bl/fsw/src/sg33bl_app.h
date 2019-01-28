@@ -55,6 +55,8 @@ extern "C" {
 #include "sg33bl_events.h"
 #include "sg33bl_tbldefs.h"
 #include "sg33bl_map.h"
+#include "ads1115.h"
+
 /************************************************************************
  ** Local Defines
  *************************************************************************/
@@ -97,6 +99,8 @@ public:
 
     /** \brief Status Telemetry */
     SG33BL_StatusTlm_t StatusTlm;
+    
+    ADS1115 mADS1115;
 
     /************************************************************************/
     /** \brief SG33BL Driver (SG33BL) application entry point
