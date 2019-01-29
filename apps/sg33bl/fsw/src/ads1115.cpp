@@ -593,55 +593,44 @@ boolean ADS1115::getConfiguration(ADS1115_Configuration_t *config)
 boolean ADS1115::setConfiguration(const ADS1115_Configuration_t config)
 {
     boolean returnBool = FALSE;
+    uint16 value = 0;
 
-    returnBool = setMux(config.mux);
-    if(FALSE == returnBool)
+    /* Get the existing value. */
+    returnBool = ADS1115_readBlock(ADS1115_REG_CONFIG, &value, sizeof(value));
+    if(returnBool == FALSE)
     {
         goto end_of_function;
     }
-    usleep(1000);
-    returnBool = setGain(config.pga);
-    if(FALSE == returnBool)
+
+    value = setBits16(ADS1115_CONFIG_BITS_MUX0, ADS1115_BIT_LENGTH_MUX, value, config.mux);
+
+    value = setBits16(ADS1115_CONFIG_BITS_PGA0, ADS1115_BIT_LENGTH_PGA, value, config.pga);
+
+    /* Set the new value of just the desired bit. */
+    if(config.mode)
     {
-        goto end_of_function;
+        value |= 1 << ADS1115_CONFIG_BITS_MODE;
     }
-    usleep(1000);
-    returnBool = setMode(config.mode);
-    if(FALSE == returnBool)
+
+    value = setBits16(ADS1115_CONFIG_BITS_COMP_DR0, ADS1115_BIT_LENGTH_DR, value, config.rate);
+
+    if(config.compMode)
     {
-        goto end_of_function;
+        value |= 1 << ADS1115_CONFIG_BITS_COMP_MODE;
     }
-    usleep(1000);
-    returnBool = setRate(config.rate);
-    if(FALSE == returnBool)
+
+    if(config.compPolarity)
     {
-        goto end_of_function;
+        value |= 1 << ADS1115_CONFIG_BITS_COMP_POL;
     }
-    usleep(1000);
-    returnBool = setComparatorMode(config.compMode);
-    if(FALSE == returnBool)
+
+    if(config.compLatching)
     {
-        goto end_of_function;
+        value |= 1 << ADS1115_CONFIG_BITS_COMP_LAT;
     }
-    usleep(1000);
-    returnBool = setComparatorPolarity(config.compPolarity);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    usleep(1000);
-    returnBool = setComparatorLatchEnabled(config.compLatching);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    usleep(1000);
-    returnBool = setComparatorQueueMode(config.compQueueMode);
-    if(FALSE == returnBool)
-    {
-        goto end_of_function;
-    }
-    usleep(1000);
+
+    value = setBits16(ADS1115_CONFIG_BITS_COMP_QUE0, ADS1115_BIT_LENGTH_COMP_QUE, value, config.compQueueMode);
+    returnBool = setConfigReg(&value);
 
 end_of_function:
     return returnBool;
