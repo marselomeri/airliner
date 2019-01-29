@@ -46,5 +46,6 @@
     "config":{
       "DEFAULT_TEMP_BASE_DIR": "/tmp/cf/",
     },
-    "CfdpStreamID" : "cfdp-stream"
+    "CfdpStreamID" : "cfdp-stream",
+    "cfdpInputStream" : "cfdp-json-stream",
 }
