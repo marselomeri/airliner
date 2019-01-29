@@ -102,7 +102,7 @@ public:
     boolean getOperationalStatus(ADS1115_Bits_Op_Status_t *status);
     /* Total configuration set/get. */
     boolean getConfiguration(ADS1115_Configuration_t *config);
-    boolean setConfiguration(const ADS1115_Configuration_t *config);
+    boolean setConfiguration(const ADS1115_Configuration_t config);
     /* Read registers. */
     boolean getConversionReg(uint16 *value);
     boolean getConfigReg(uint16 *value);

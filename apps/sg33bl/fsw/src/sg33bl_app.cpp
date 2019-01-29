@@ -243,7 +243,7 @@ int32 SG33BL::InitApp()
                                  StatusTlm.Torque);
     }
 
-    returnBool = mADS1115.setConfiguration(&mConfigAdc);
+    returnBool = mADS1115.setConfiguration(mConfigAdc);
     if (FALSE == returnBool)
     {
         iStatus = -1;

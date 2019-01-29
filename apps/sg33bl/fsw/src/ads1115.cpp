@@ -3,7 +3,7 @@
 *************************************************************************/
 #include "ads1115.h"
 #include "ads1115_custom.h"
-
+#include <unistd.h>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -584,13 +584,67 @@ uint16 ADS1115::getBits16(uint8 bitStart, uint8 length, uint16 originalValue)
 
 boolean ADS1115::getConfiguration(ADS1115_Configuration_t *config)
 {
-    return FALSE;
+    boolean returnBool = FALSE;
+
+    return returnBool;
 }
 
 
-boolean ADS1115::setConfiguration(const ADS1115_Configuration_t *config)
+boolean ADS1115::setConfiguration(const ADS1115_Configuration_t config)
 {
-    return FALSE;
+    boolean returnBool = FALSE;
+
+    returnBool = setMux(config.mux);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setGain(config.pga);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setMode(config.mode);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setRate(config.rate);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setComparatorMode(config.compMode);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setComparatorPolarity(config.compPolarity);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setComparatorLatchEnabled(config.compLatching);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+    returnBool = setComparatorQueueMode(config.compQueueMode);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+    usleep(1000);
+
+end_of_function:
+    return returnBool;
 }
 
 
