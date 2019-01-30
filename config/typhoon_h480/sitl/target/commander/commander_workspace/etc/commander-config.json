@@ -6,6 +6,7 @@
     cmdSendStreamID:         'cmd-send',
     reqSubscribeStreamID:    'subscribe-request',
     queryConfigStreamID:     'config-db-query',
+    CfdpClientStreamID:     'cfdp-client-stream',
     instances: [
         {
             name: 'airliner',
@@ -28,4 +29,3 @@
     apps: [
     ]
 }
-        
