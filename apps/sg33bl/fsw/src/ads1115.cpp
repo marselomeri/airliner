@@ -631,7 +631,7 @@ end_of_function:
 }
 
 
-boolean ADS1115::getConversionReg(uint16 *value)
+boolean ADS1115::getConversionReg(int16 *value)
 {
     return ADS1115_readBlock(ADS1115_REG_CONVERSION, value, sizeof(value));
 }

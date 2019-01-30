@@ -104,7 +104,7 @@ public:
     boolean getConfiguration(ADS1115_Configuration_t *config);
     boolean setConfiguration(const ADS1115_Configuration_t config);
     /* Read registers. */
-    boolean getConversionReg(uint16 *value);
+    boolean getConversionReg(int16 *value);
     boolean getConfigReg(uint16 *value);
     boolean getLoThresholdReg(uint16 *value);
     boolean getHiThresholdReg(uint16 *value);
