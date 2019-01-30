@@ -71,7 +71,7 @@
 */
 #define ADS1115_MAX_RETRY_SLEEP_USEC         (10)
 
-#define ADS1115_I2C_DEVICE_PATH              "/dev/i2c-2"
+#define ADS1115_I2C_DEVICE_PATH              "/dev/i2c-4"
 #define ADS1115_I2C_SLAVE_ADDRESS            ADS1115_ADDRESS_GND
 #define ADS1115_I2C_M_READ                   (0x0001)
 
@@ -152,10 +152,19 @@ boolean ADS1115_Custom_Init(void)
 {
     boolean returnBool = TRUE;
     int32 returnCode   = 0;
+    uint16 value = 0;
 
     ADS1115_AppCustomData.DeviceFd = open(ADS1115_I2C_DEVICE_PATH, O_RDWR);
     if (ADS1115_AppCustomData.DeviceFd < 0) 
     {
+        returnBool = FALSE;
+        goto end_of_function;
+    }
+
+    returnBool = ADS1115_readBlock(ADS1115_REG_CONVERSION, &value, sizeof(value));
+    if(FALSE == returnBool)
+    {
+        OS_printf("ADS1115 custom init failed to reg conversion register.\n");
         returnBool = FALSE;
         goto end_of_function;
     }
@@ -210,10 +219,10 @@ boolean ADS1115_readBlock(uint8 Reg, void *Buffer, size_t Length)
     Packets.nmsgs = 2;
 
     returnCode = ADS1115_Ioctl(ADS1115_AppCustomData.DeviceFd, I2C_RDWR, &Packets);
-
     if (-1 == returnCode) 
     {            
         returnBool = FALSE;
+        OS_printf("ADS1115_Ioctl returned errno %d\n", errno);
     }
     else
     {

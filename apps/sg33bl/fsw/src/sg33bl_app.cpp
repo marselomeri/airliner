@@ -309,8 +309,12 @@ int32 SG33BL::RcvSchPipeMsg(int32 iBlocking)
             {
                 CFE_ES_PerfLogEntry(SG33BL_CONTROL_LOOP_PERF_ID);
                 ProcessCmdPipe();
+                /* Get position via RS485. */
                 (void) GetPosition(&StatusTlm.Position);
+                /* Get position via analog out. */
                 (void) mADS1115.getConversionReg(&StatusTlm.Analog);
+                /* Convert raw analog ADC value to mV. */
+                StatusTlm.AnalogmV = StatusTlm.Analog * mConfigAdc.mvMultiplier;
                 ReportStatus();
                 CFE_ES_PerfLogExit(SG33BL_CONTROL_LOOP_PERF_ID);
                 break;
