@@ -149,7 +149,7 @@ typedef enum {
 #define SG33BL_SET_B38400           (3)
 #define SG33BL_SET_B57600           (4)
 #define SG33BL_SET_B115200          (5)
-#define SG33BL_SET_B229800          (6)
+#define SG33BL_SET_B230400          (6)
 
 /* Factory default settings. */
 #define SG33BL_SET_FACTORY_DEFAULT  (0x1515)

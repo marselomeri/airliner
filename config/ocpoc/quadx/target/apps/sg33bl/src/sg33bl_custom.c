@@ -256,9 +256,9 @@ boolean SG33BL_Custom_Init()
             //speed = SG33BL_SET_B115200;
             //break;
         //}
-        //case 229800:
+        //case 230400:
         //{
-            //speed = SG33BL_SET_B229800;
+            //speed = SG33BL_SET_B230400;
             //break;
         //}
         //default:
