@@ -643,6 +643,81 @@ boolean ADS1115::getConfiguration(ADS1115_Configuration_t *config)
     boolean returnBool = FALSE;
     uint16 value = 0;
 
+    returnBool = getConfigReg(&value);
+    if(FALSE == returnBool)
+    {
+        goto end_of_function;
+    }
+
+    value = (value << 8) | (value >> 8);
+
+    config->mux = static_cast<ADS1115_Bits_Mux_t>
+            (getBits16(ADS1115_CONFIG_BITS_MUX2 - 1, 
+            ADS1115_BIT_LENGTH_MUX, value));
+
+    config->pga = static_cast<ADS1115_Bits_Pga_t>
+            (getBits16(ADS1115_CONFIG_BITS_PGA2 - 1, 
+            ADS1115_BIT_LENGTH_PGA, value));
+
+    config->mode = static_cast<ADS1115_Bits_Mode_t>
+            (value & (1 << ADS1115_CONFIG_BITS_MODE));
+    
+    config->rate = static_cast<ADS1115_Bits_Data_Rate_t>
+            (getBits16(ADS1115_CONFIG_BITS_COMP_DR2 - 1, 
+            ADS1115_BIT_LENGTH_DR, value));
+            
+    config->compMode = static_cast<ADS1115_Bits_Comp_Mode_t>
+            (value & (1 << ADS1115_CONFIG_BITS_COMP_MODE));
+    
+    config->compPolarity = static_cast<ADS1115_Bits_Comp_Polarity_t>
+            (value & (1 << ADS1115_CONFIG_BITS_COMP_POL));
+    
+    config->compLatching = static_cast<ADS1115_Bits_Comp_Latching_t>
+            (value & (1 << ADS1115_CONFIG_BITS_COMP_LAT));
+
+    config->compQueueMode = static_cast<ADS1115_Bits_Comp_Queue_t>
+            (getBits16(ADS1115_CONFIG_BITS_COMP_QUE1 - 1, 
+            ADS1115_BIT_LENGTH_COMP_QUE, value));
+
+    switch (config->pga) 
+    {
+        case ADS1115_PGA_BITS_6P144:
+        {
+            config->mvMultiplier = ADS1115_MV_MULT_6P144;
+            break;
+        }
+        case ADS1115_PGA_BITS_4P096:
+        {
+            config->mvMultiplier = ADS1115_MV_MULT_4P096;
+            break;
+        }
+        case ADS1115_PGA_BITS_2P048:
+        {
+            config->mvMultiplier = ADS1115_MV_MULT_2P048;
+            break;
+        }
+        case ADS1115_PGA_BITS_1P024:
+        {
+            config->mvMultiplier = ADS1115_MV_MULT_1P024;
+            break;
+        }
+        case ADS1115_PGA_BITS_0P512:
+        {
+            config->mvMultiplier = ADS1115_MV_MULT_0P512;
+            break;
+        }
+        case ADS1115_PGA_BITS_0P256:
+            /* Fall through. */
+        case ADS1115_PGA_BITS_0P256B:
+            /* Fall through. */
+        case ADS1115_PGA_BITS_0P256C:
+        {
+            config->mvMultiplier = ADS1115_MV_MULT_0P256;
+            break;
+        }
+    }
+
+end_of_function:
     return returnBool;
 }
 
