@@ -1,0 +1,168 @@
+- var appKeyName = query.appName;
+- 
+- if( query.appName == 'CFE_ES' || query.appName == 'CFE_EVS' || query.appName == 'CFE_SB' || query.appName == 'CFE_TBL' || query.appName == 'CFE_TIME') {
+-   appKeyName = 'CFE';
+- }       
+-
+- var SCH_TOTAL_SLOTS = 0;
+- var SCH_ENTRIES_PER_SLOT = 0;
+- var MSGS = [];
+- var strMSGS = '';
+-
+- var queryString = '$.Airliner.apps.SCH.config';
+- global.COMMANDER.queryConfigDB(queryString, function (config) {
+-     SCH_TOTAL_SLOTS = config[0].SCH_TOTAL_SLOTS;
+-     SCH_ENTRIES_PER_SLOT = config[0].SCH_ENTRIES_PER_SLOT;
+- });
+
+.row.row-fluid
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 SCH Diag
+    div.widget-body
+      table.table.table-condensed
+        tbody
+          tr
+            th Total Slots
+            td 
+              div #{SCH_TOTAL_SLOTS}
+          tr
+            th Entries Per Slot
+            td 
+              div #{SCH_ENTRIES_PER_SLOT}   
+    footer
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Diagnostic
+      #sch-diag-content
+      
+script.
+  var SendSchEnableCmd = function(slotID, activityID) {
+      session.sendCommand({ops_path: '/SCH/Enable', args:{'SlotNumber':slotID, 'EntryNumber':activityID}});
+  }
+  
+  var SendSchDisableCmd = function(slotID, activityID) {
+      session.sendCommand({ops_path: '/SCH/Disable', args:{'SlotNumber':slotID, 'EntryNumber':activityID}});
+  }
+  
+  session.subscribe([{name:'/SCH/SCH_DiagPacket_t/EntryStates'}, {name:'/SCH/SCH_DiagPacket_t/MsgIDs'}], function(params) {
+    if(params.length == 2) {
+        session.callPlugin('sch', 'getMessageIDsAndMacros', {}, function(msgMacros) { 
+            if(params[0].opsPath === '/SCH/SCH_DiagPacket_t/EntryStates') {
+                var sampleCount = params[0].sample.length;
+                var EntryStates = params[0].sample[sampleCount-1].value;
+                sampleCount = params[1].sample.length;
+                var MsgIDs = params[1].sample[sampleCount-1].value;
+            } else {
+                var sampleCount = params[0].sample.length;
+                var EntryStates = params[1].sample[sampleCount-1].value;
+                sampleCount = params[1].sample.length;
+                var MsgIDs = params[0].sample[sampleCount-1].value;
+            }
+    
+            var SCH_TOTAL_SLOTS = #{SCH_TOTAL_SLOTS};
+            var SCH_ENTRIES_PER_SLOT = #{SCH_ENTRIES_PER_SLOT};
+            var SCH_TABLE_ENTRIES = (SCH_TOTAL_SLOTS * SCH_ENTRIES_PER_SLOT);
+            var SchTable = [];
+            
+            for (var TblIndex=0; TblIndex<SCH_TABLE_ENTRIES; TblIndex++) {
+                var WordIndex = (TblIndex/8) >> 0;      /* 8 states can fit in each word */
+                var BitIndex  = (7-(TblIndex%8))*2;     /* Determine bit pair, MSBs contain lowest index */
+                var entryState = 3 & (EntryStates[WordIndex] >> BitIndex);
+                var entry = {};
+                var msgID = MsgIDs[TblIndex];
+                var msgMacro = msgID;
+                
+                for(var i = 0; i < msgMacros.length; i++) {
+                    if(msgMacros[i].msgID === msgID) {
+                        msgMacro = msgMacros[i].macro;
+                    }
+                }
+                        
+                switch(entryState) {
+                    case 0:
+                        entry.State = 'UNUSED';
+                        entry.MsgID = 0;
+                        entry.Macro = '';
+                        break;
+                        
+                    case 1:
+                        entry.State = 'ENABLED';
+                        entry.MsgID = msgID;
+                        entry.Macro = msgMacro;
+                        break;
+                        
+                    case 2:
+                        entry.State = 'DISABLED';
+                        entry.MsgID = msgID;
+                        entry.Macro = msgMacro;
+                        break;
+                        
+                    default:
+                        entry.State = 'UNDEFINED (' + entryState + ')';
+                        entry.MsgID = 0;
+                        entry.Macro = '';
+                        break;
+                }   
+                SchTable[TblIndex] = entry;
+            }
+            
+            var Slots = new Array(SCH_TOTAL_SLOTS);
+            
+            for(var SlotIndex=0; SlotIndex<SCH_TOTAL_SLOTS; SlotIndex++) {
+                var entryArray = new Array(SCH_ENTRIES_PER_SLOT);
+                for(var EntryIndex=0; EntryIndex<SCH_ENTRIES_PER_SLOT; EntryIndex++) {
+                    var tblIndex = (SlotIndex * SCH_ENTRIES_PER_SLOT) + EntryIndex;
+                    entryArray[EntryIndex] = {activityID: EntryIndex, tblIndex: tblIndex, state: SchTable[tblIndex].State, macro: SchTable[tblIndex].Macro, msgID: SchTable[tblIndex].msgID};
+                }
+                Slots[SlotIndex] = {slotID: SlotIndex, activity: entryArray};
+            }
+            
+            $('#sch-diag-content').empty();
+              
+            // Grab the template script
+            var theTemplateScript = $("#sch-accordian-template").html();
+
+            // Compile the template
+            var theTemplate = Handlebars.compile(theTemplateScript);
+
+            // Pass our data to the template
+            var theCompiledHtml = theTemplate(Slots);
+
+            // Add the compiled html to the page
+            $('#sch-diag-content').html(theCompiledHtml);
+        });
+    }
+  });
+                      
+script#sch-accordian-template(type='text/x-handlebars-template') 
+  #accordion.panel-group.smart-accordion-default
+    | {{#each this}}
+    panel.panel-default
+      .panel-heading
+        h4.panel-title
+          a.collapsed(data-toggle='collapse' data-parent='#accordion' href="#slot{{slotID}}") 
+            i.fa.fa-lg.fa-angle-down.pull-right
+            i.fa.fa-lg.fa-angle-up.pull-right 
+            | Slot {{slotID}}
+      .panel-collapse.collapse(id= "slot{{slotID}}")
+        .panel-body.no-padding                           
+          table.table.table-bordered.table-condensed.table-striped
+            thead
+              tr
+                th(style="width: 100px") Activity #
+                th(style="width: 150px") Message ID
+                th(style="width: 150px") State
+                th
+            tbody
+            | {{#each activity}}
+            tr
+              td {{activityID}}
+              td {{macro}}
+              td {{state}}
+              td
+                .btn-group(role="group")      
+                  button.btn.cdr-outline-primary(onClick='SendSchEnableCmd("{{../slotID}}", "{{activityID}}")') Enable    
+                  button.btn.cdr-outline-primary(onClick='SendSchDisableCmd("{{../slotID}}", "{{activityID}}")') Disable
+            | {{/each}}  
+    | {{/each}}  

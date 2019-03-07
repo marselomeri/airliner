@@ -1,0 +1,176 @@
+- var appKeyName = query.appName;
+- if(typeof appKeyName !== 'undefined') {
+-   if( query.appName == 'CFE_ES' || query.appName == 'CFE_EVS' || query.appName == 'CFE_SB' || query.appName == 'CFE_TBL' || query.appName == 'CFE_TIME') {
+-       appKeyName = 'CFE';
+-   }       
+-
+-   var queryString = '$.Airliner.apps.' + appKeyName + '.scheduler';
+-   global.COMMANDER.queryConfigDB(queryString, function (schedule) {
+-       if(appKeyName != query.appName) {
+-           var re = new RegExp(query.appName + '.*');
+-       } else {
+-           var re = new RegExp('.*');
+-       }
+-     
+-       var appSchedule = [];
+-       var activities = schedule[0].activities;
+-       for(var idx in activities) {
+-           var activity = activities[idx];
+-           if(re.test(activity)) {
+-               appSchedule.push(activity);
+-           }
+-       }   
+-       var strAppSchedule = appSchedule.join();
+-
+-       var SCH_TOTAL_SLOTS = 0;
+-       var SCH_ENTRIES_PER_SLOT = 0;
+-       var MSGS = [];
+-       var strMSGS = '';
+-
+-       queryString = '$.Airliner.apps.SCH.config';
+-       global.COMMANDER.queryConfigDB(queryString, function (config) {
+-           SCH_TOTAL_SLOTS = config[0].SCH_TOTAL_SLOTS;
+-           SCH_ENTRIES_PER_SLOT = config[0].SCH_ENTRIES_PER_SLOT;
+-       });
+
+
+
+        .row.os-theme-dark
+          article.col-xs-12.col-sm-12
+            header
+              span.widget-icon
+                i.fa.fa-table
+              h2 Scheduler (#{query.appName})
+            div.widget-body.table-responsive
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SCH/SendDiag'}, indicator:'cmd'}) Telemeter Schedule
+              #app-sch-content 
+              
+        script.
+          var SendSchEnableCmd = function(slotID, activityID) {
+              session.sendCommand({ops_path: '/SCH/Enable', args:{'SlotNumber':slotID, 'EntryNumber':activityID}});
+          }
+          
+          var SendSchDisableCmd = function(slotID, activityID) {
+              session.sendCommand({ops_path: '/SCH/Disable', args:{'SlotNumber':slotID, 'EntryNumber':activityID}});
+          }
+                      
+          var strAppSchedule = '#{strAppSchedule}';
+          var appSchedule = strAppSchedule.split(',');
+
+          session.subscribe([{name:'/SCH/SCH_DiagPacket_t/EntryStates'}, {name:'/SCH/SCH_DiagPacket_t/MsgIDs'}], function(params) {
+            if(params.length == 2) {
+                session.callPlugin('sch', 'getMessageIDsAndMacros', {}, function(msgMacros) { 
+                    if(params[0].opsPath === '/SCH/SCH_DiagPacket_t/EntryStates') {
+                        var sampleCount = params[0].sample.length;
+                        var EntryStates = params[0].sample[sampleCount-1].value;
+                        sampleCount = params[1].sample.length;
+                        var MsgIDs = params[1].sample[sampleCount-1].value;
+                    } else {
+                        var sampleCount = params[0].sample.length;
+                        var EntryStates = params[1].sample[sampleCount-1].value;
+                        sampleCount = params[1].sample.length;
+                        var MsgIDs = params[0].sample[sampleCount-1].value;
+                    }
+            
+                    var SCH_TOTAL_SLOTS = #{SCH_TOTAL_SLOTS};
+                    var SCH_ENTRIES_PER_SLOT = #{SCH_ENTRIES_PER_SLOT};
+                    var SCH_TABLE_ENTRIES = (SCH_TOTAL_SLOTS * SCH_ENTRIES_PER_SLOT);
+                    var SchTable = [];
+                    
+                    for (var TblIndex=0; TblIndex<SCH_TABLE_ENTRIES; TblIndex++) {
+                        var WordIndex = (TblIndex/8) >> 0;      /* 8 states can fit in each word */
+                        var BitIndex  = (7-(TblIndex%8))*2;     /* Determine bit pair, MSBs contain lowest index */
+                        var entryState = 3 & (EntryStates[WordIndex] >> BitIndex);
+                        var entry = {};
+                        var msgID = MsgIDs[TblIndex];
+                        var msgMacro = msgID;
+                        
+                        for(var i = 0; i < msgMacros.length; i++) {
+                            if(msgMacros[i].msgID === msgID) {
+                                msgMacro = msgMacros[i].macro;
+                            }
+                        }
+                                
+                        switch(entryState) {
+                            case 0:
+                                entry.State = 'UNUSED';
+                                entry.MsgID = 0;
+                                entry.Macro = '';
+                                break;
+                                
+                            case 1:
+                                entry.State = 'ENABLED';
+                                entry.MsgID = msgID;
+                                entry.Macro = msgMacro;
+                                break;
+                                
+                            case 2:
+                                entry.State = 'DISABLED';
+                                entry.MsgID = msgID;
+                                entry.Macro = msgMacro;
+                                break;
+                                
+                            default:
+                                entry.State = 'UNDEFINED (' + entryState + ')';
+                                entry.MsgID = 0;
+                                entry.Macro = '';
+                                break;
+                        }   
+                        SchTable[TblIndex] = entry;
+                    }
+                    
+                    var Slots = [];
+                    
+                    for(var SlotIndex=0; SlotIndex<SCH_TOTAL_SLOTS; SlotIndex++) {
+                        var entryArray = new Array(SCH_ENTRIES_PER_SLOT);
+                        for(var EntryIndex=0; EntryIndex<SCH_ENTRIES_PER_SLOT; EntryIndex++) {
+                            var tblIndex = (SlotIndex * SCH_ENTRIES_PER_SLOT) + EntryIndex;
+                            for(var macroIdx in appSchedule) {
+                                if(appSchedule[macroIdx] === SchTable[tblIndex].Macro) {
+                                    Slots.push({slotID: SlotIndex, activityID: EntryIndex, tblIndex: tblIndex, state: SchTable[tblIndex].State, macro: SchTable[tblIndex].Macro, msgID: SchTable[tblIndex].msgID});
+                                }
+                            }
+                        }
+                    }
+                    
+                    $('#app-sch-content').empty();
+                      
+                    // Grab the template script
+                    var theTemplateScript = $("#app-sch-template").html();
+        
+                    // Compile the template
+                    var theTemplate = Handlebars.compile(theTemplateScript);
+        
+                    // Pass our data to the template
+                    var theCompiledHtml = theTemplate(Slots);
+        
+                    // Add the compiled html to the page
+                    $('#app-sch-content').html(theCompiledHtml);
+                });
+            }
+          });
+                              
+        script#app-sch-template(type='text/x-handlebars-template') 
+              table.table.table-condensed
+                    thead
+                      tr
+                        th(style="width: 100px") Slot #
+                        th(style="width: 100px") Activity #
+                        th(style="width: 150px") Message ID
+                        th(style="width: 150px") State
+                        th
+                    tbody
+                      | {{#each this}}
+                      tr
+                        td {{slotID}}
+                        td {{activityID}}
+                        td {{macro}}
+                        td {{state}}
+                        td
+                          .btn-group(role="group")      
+                            button.btn.cdr-outline-primary(onClick='SendSchEnableCmd("{{slotID}}", "{{activityID}}")') Enable    
+                            button.btn.cdr-outline-primary(onClick='SendSchDisableCmd("{{slotID}}", "{{activityID}}")') Disable
+                      | {{/each}} 
+
+-   });
+-};
