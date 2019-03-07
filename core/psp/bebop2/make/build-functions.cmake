@@ -306,7 +306,7 @@ function(psp_add_airliner_app)
             add_dependencies(${AIRLINER_BUILD_PREFIX}docs ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-docs)
             configure_file(${USER_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy @ONLY)
             add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-user-docs
-                COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/users_guide/apps/${PARSED_ARGS_APP_NAME}/
+                COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/users_guide
                 COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/user_doxy
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
             )
@@ -319,7 +319,7 @@ function(psp_add_airliner_app)
             endif()
             configure_file(${DESIGN_DOCS_INPUT} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy @ONLY)
             add_custom_target(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-design-docs
-                COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/detailed_design/apps/${PARSED_ARGS_APP_NAME}/
+                COMMAND mkdir -p ${CFS_DOCS_HTML_DIR}/apps/${PARSED_ARGS_APP_NAME}/detailed_design/
                 COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}/detail_doxy
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/target/config/apps/${PARSED_ARGS_APP_NAME}
             )
