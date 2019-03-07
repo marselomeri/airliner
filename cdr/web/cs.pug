@@ -1,0 +1,115 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 QAE - Vehicle Attitude
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Timestamp
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.Timestamp'}],indicator:'text'}) ---
+          tr
+            th Acc
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.AccX'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.AccY'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.AccZ'}],indicator:'text'}) ---
+          tr
+            th Vel
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.VelX'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.VelY'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.VelZ'}],indicator:'text'}) ---
+          tr
+            th Pos
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PosX'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PosY'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PosZ'}],indicator:'text'}) ---
+          tr
+            th Airspeed
+            td
+              span(data-cdr={tlm: [{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.Airspeed'}], indicator:'text'}) ---
+          tr
+            th Vel Variance
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.VelVariance[0]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.VelVariance[1]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.VelVariance[2]'}],indicator:'text'}) ---
+          tr
+            th Pos Variance
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PosVariance[0]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PosVariance[1]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PosVariance[2]'}],indicator:'text'}) ---
+          tr
+            th Q
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.Q[0]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.Q[1]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.Q[2]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.Q[2]'}],indicator:'text'}) ---
+          tr
+            th Delta Q Reset
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.DeltaQReset[0]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.DeltaQReset[1]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.DeltaQReset[2]'}],indicator:'text'}) ---
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.DeltaQReset[2]'}],indicator:'text'}) ---
+          tr
+            th Roll Rate
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.RollRate'}],indicator:'text'}) ---
+          tr
+            th Pitch Rate
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PitchRate'}],indicator:'text'}) ---
+          tr
+            th Yaw Rate
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.YawRate'}],indicator:'text'}) ---
+          tr
+            th Horz Acc Mag
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.HorzAccMag'}],indicator:'text'}) ---
+          tr
+            th Roll Rate Bias
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.RollRateBias'}],indicator:'text'}) ---
+          tr
+            th Pitch Rate Bias
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.PitchRateBias'}],indicator:'text'}) ---
+          tr
+            th Yaw Rate Bias
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.YawRateBias'}],indicator:'text'}) ---
+          tr
+            th Airspeed Valid
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.AirspeedValid'}],indicator:'text'}) ---
+          tr
+            th Quat Reset Counter
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/ControlStateMsg.RollRate'}],indicator:'text'}) ---
+                 
+              
