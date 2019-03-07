@@ -1,0 +1,55 @@
+{
+    "Airliner": {
+        "apps": {
+            "HK": {
+                "operations": {
+                    "Noop":             { "airliner_cc":  0, "macro": "HK_CMD_MID", "airliner_msg": "HK_NoArgCmd_t" },
+                    "Reset":            { "airliner_cc":  1, "macro": "HK_CMD_MID", "airliner_msg": "HK_NoArgCmd_t" },
+                    "HK_HkTlm_t":       {                    "macro": "HK_HK_TLM_MID", "airliner_msg": "HK_HkTlm_t" },
+                    "SendCombined":     {                    "macro": "HK_SEND_COMBINED_PKT_MID", "airliner_msg": "HK_NoArgCmd_t"},
+                    "HK_SendHk":        { "airliner_cc":  0, "macro": "HK_SEND_HK_MID", "airliner_msg": "HK_NoArgCmd_t"}
+                },    
+                "scheduler": {
+                    "activities": [
+                        "HK_SEND_HK_MID",
+                        "HK_SEND_COMBINED_PKT_MID"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "HK_SCH_GRP" }
+                    ]
+                },
+                "events": [
+                    {"macro": "HK_INIT_EID", "id": 1},
+                    {"macro": "HK_CC_ERR_EID", "id": 2},
+                    {"macro": "HK_CMD_LEN_ERR_EID", "id": 3},
+                    {"macro": "HK_NOOP_CMD_EID", "id": 4},
+                    {"macro": "HK_RESET_CNTRS_CMD_EID", "id": 5},
+                    {"macro": "HK_ACCESSING_PAST_PACKET_END_EID", "id": 6},
+                    {"macro": "HK_MEM_POOL_MALLOC_FAILED_EID", "id": 7},
+                    {"macro": "HK_CANT_SUBSCRIBE_TO_SB_PKT_EID", "id": 8},
+                    {"macro": "HK_MEM_POOL_FREE_FAILED_EID", "id": 9},
+                    {"macro": "HK_UNEXPECTED_GETSTAT_RET_EID", "id": 10},
+                    {"macro": "HK_UNKNOWN_COMBINED_PACKET_EID", "id": 11},
+                    {"macro": "HK_OUTPKT_MISSING_DATA_EID", "id": 12},
+                    {"macro": "HK_CR_PIPE_ERR_EID", "id": 14},
+                    {"macro": "HK_SUB_CMB_ERR_EID", "id": 15},
+                    {"macro": "HK_SUB_REQ_ERR_EID", "id": 16},
+                    {"macro": "HK_SUB_CMD_ERR_EID", "id": 17},
+                    {"macro": "HK_CR_POOL_ERR_EID", "id": 18},
+                    {"macro": "HK_CPTBL_REG_ERR_EID", "id": 19},
+                    {"macro": "HK_RTTBL_REG_ERR_EID", "id": 20},
+                    {"macro": "HK_CPTBL_LD_ERR_EID", "id": 21},
+                    {"macro": "HK_CPTBL_MNG_ERR_EID", "id": 22},
+                    {"macro": "HK_RTTBL_MNG_ERR_EID", "id": 23},
+                    {"macro": "HK_CPTBL_GADR_ERR_EID", "id": 24},
+                    {"macro": "HK_RTTBL_GADR_ERR_EID", "id": 25}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "CopyTable",  "title": "Copy Table",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}
