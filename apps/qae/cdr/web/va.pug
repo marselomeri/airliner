@@ -1,0 +1,41 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 QAE - Vehicle Attitude
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Timestamp
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.Timestamp'}],indicator:'text'}) ---
+          tr
+            th Roll Speed
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.RollSpeed'}],indicator:'text'}) ---
+          tr
+            th Pitch Speed
+            td
+              span(data-cdr={tlm: [{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.PitchSpeed'}], indicator:'text'}) ---
+          tr
+            th Yaw Speed
+            td
+              span(data-cdr={tlm: [{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.YawSpeed'}], indicator:'text'}) ---
+          tr
+            th Q[0]
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.Q[0]'}],indicator:'text'}) ---
+          tr
+            th Q[1]
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.Q[1]'}],indicator:'text'}) ---
+          tr
+            th Q[2]
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.Q[2]'}],indicator:'text'}) ---
+          tr
+            th Q[3]
+            td
+              div(data-cdr={tlm:[{name:'/QAE/QAE_HkTlm_t/VehicleAttitudeMsg.Q[3]'}],indicator:'text'}) ---
