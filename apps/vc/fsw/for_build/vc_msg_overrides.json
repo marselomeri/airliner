@@ -1,0 +1,49 @@
+{
+    "Airliner": {
+        "apps": {
+            "VC": {
+              "operations": {
+                  "Noop":           { "airliner_cc":  0, "macro": "VC_CMD_MID", "airliner_msg": "" },
+                  "Reset":          { "airliner_cc":  1, "macro": "VC_CMD_MID", "airliner_msg": "" },
+                  "StartStreaming": { "airliner_cc":  2, "macro": "VC_CMD_MID", "airliner_msg": "VC_StartStreamCmd_t" },
+                  "StopStreaming":  { "airliner_cc":  3, "macro": "VC_CMD_MID", "airliner_msg": "" },
+                  "VC_HkTlm_t":     { "airliner_cc": -1, "macro": "VC_HK_TLM_MID", "airliner_msg": "VC_HkTlm_t" },
+                  "Wakeup":         { "airliner_cc":  0, "macro": "VC_WAKEUP_MID", "airliner_msg": "" },
+                  "SendHk":         { "airliner_cc":  0, "macro": "VC_SEND_HK_MID", "airliner_msg": "" }
+              },
+              "scheduler": {
+                  "activities": [
+                      "VC_WAKEUP_MID",
+                      "VC_SEND_HK_MID"
+                  ],
+                  "groups": [
+                      { "id": 1, "macro": "VC_SCH_GRP" }
+                  ]
+              },
+              "events": [
+                  {"macro": "VC_INF_EID", "id": 1},
+                  {"macro": "VC_INIT_INF_EID", "id": 2},
+                  {"macro": "VC_CONFIG_TABLE_INF_EID", "id": 3},
+                  {"macro": "VC_NOOP_INF_EID", "id": 4},
+                  {"macro": "VC_RESET_INF_EID", "id": 5},
+                  {"macro": "VC_CMD_INF_EID", "id": 6},
+                  {"macro": "VC_DEV_INF_EID", "id": 7},
+                  {"macro": "VC_CHA_INF_EID", "id": 8},
+                  {"macro": "VC_ERR_EID", "id": 9},
+                  {"macro": "VC_INIT_ERR_EID", "id": 10},
+                  {"macro": "VC_UNINIT_ERR_EID", "id": 11},
+                  {"macro": "VC_CONFIG_TABLE_ERR_EID", "id": 12},
+                  {"macro": "VC_CMD_ERR_EID", "id": 13},
+                  {"macro": "VC_PIPE_ERR_EID", "id": 14},
+                  {"macro": "VC_MSGID_ERR_EID", "id": 15},
+                  {"macro": "VC_MSGLEN_ERR_EID", "id": 16}
+              ],
+              "config": {
+              },
+              "tables": [
+                  {"id": "CONFIG_TBL",  "title": "VC Configuration",  "isDumpTable": false}
+              ]
+            }
+        }
+    }
+}
