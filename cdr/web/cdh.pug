@@ -1,0 +1,36 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 LC - Command and Data Handling
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Cmd Count
+            td
+              div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/CmdCount'}],indicator:'text'}) ---
+            td
+            td
+            td
+          tr
+            th Error Count
+            td
+              div(data-cdr={tlm:[{name:'/LC/LC_HkPacket_t/CmdErrCount'}],indicator:'text'}) ---
+            td
+            td
+            td
+          tr
+            th Current LC State
+            td
+              span(data-cdr={tlm: [{name:'/LC/LC_HkPacket_t/CurrentLCState'}], indicator:'text'}) ---
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/SetLCState', argument:[{name:'NewLCState', value:1}]},indicator:'cmd'}) Active
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/SetLCState', argument:[{name:'NewLCState', value:2}]},indicator:'cmd'}) Passive
+            td
+              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/SetLCState', argument:[{name:'NewLCState', value:3}]},indicator:'cmd'}) Disabled
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/Noop'},indicator:'cmd'}) No-Op    
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/LC/Reset'},indicator:'cmd'}) Reset
