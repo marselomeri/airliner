@@ -1,0 +1,39 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 SC - General
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Switch Pending
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/SwitchPendFlag'}],indicator:'text'}) ---
+          tr
+            th Append Cmd Arg
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AppendCmdArg'}],indicator:'text'}) ---
+          tr
+            th Append Entry Count
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AppendEntryCount'}],indicator:'text'}) ---
+          tr
+            th Append Byte Count
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AppendByteCount'}],indicator:'text'}) ---
+          tr
+            th Append Load Count
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AppendLoadCount'}],indicator:'text'}) ---
+          tr
+            th ATP Free Bytes[0]
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtpFreeBytes[0]'}],indicator:'text'}) ---
+          tr
+            th ATP Free Bytes[1]
+            td
+              div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/AtpFreeBytes[1]'}],indicator:'text'}) ---
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/SC/ManageTable'},indicator:'cmd'}) Manage Table    
