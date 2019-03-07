@@ -1,0 +1,40 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 TO - Diagnostics
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Index
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}],indicator:'text'}) ---
+          tr
+            th State
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/State'}],indicator:'text'}) ---
+          tr
+            th Config Table Name
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ConfigTableName'}],indicator:'text'}) ---
+          tr
+            th Config Table FileName
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ConfigTableFileName'}],indicator:'text'}) ---
+          tr
+            th Dump Table Name
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/DumpTableName'}],indicator:'text'}) ---
+          tr
+            th Channel Name
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}],indicator:'text'}) ---
+          tr
+            th Table ID
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/TableID'}],indicator:'text'}) ---
+              
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'},indicator:'cmd'}) Send Diagnostics

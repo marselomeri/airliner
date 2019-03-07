@@ -1,0 +1,48 @@
+{
+    "Airliner": {
+        "apps": {
+            "QAE": {
+                "operations": {
+                    "Noop":        { "airliner_cc":  0, "macro": "AE_CMD_MID", "airliner_msg": "QAE_NoArgCmd_t" },
+                    "Reset":       { "airliner_cc":  1, "macro": "AE_CMD_MID", "airliner_msg": "QAE_NoArgCmd_t" },
+                    "QAE_HkTlm_t": {                    "macro": "AE_HK_TLM_MID", "airliner_msg": "QAE_HkTlm_t" },
+                    "Wakeup":      {                    "macro": "AE_WAKEUP_MID", "airliner_msg": "QAE_NoArgCmd_t"},
+                    "QAE_SendHk":  {                    "macro": "AE_SEND_HK_MID", "airliner_msg": "QAE_NoArgCmd_t"}
+                },    
+                "scheduler": {
+                    "activities": [
+                        "AE_SEND_HK_MID",
+                        "AE_WAKEUP_MID"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "AE_SCH_GRP" }
+                    ]
+                },
+                "events": [
+                    {"macro": "QAE_INIT_INF_EID", "id": 1},
+                    {"macro": "QAE_CMD_NOOP_EID", "id": 2},
+                    {"macro": "QAE_SUBSCRIBE_ERR_EID", "id": 3},
+                    {"macro": "QAE_PIPE_INIT_ERR_EID", "id": 4},
+                    {"macro": "QAE_MIXER_INIT_ERR_EID", "id": 5},
+                    {"macro": "QAE_CFGTBL_MANAGE_ERR_EID", "id": 6},
+                    {"macro": "QAE_CFGTBL_GETADDR_ERR_EID", "id": 7},
+                    {"macro": "QAE_RCVMSG_ERR_EID", "id": 8},
+                    {"macro": "QAE_MSGID_ERR_EID", "id": 9},
+                    {"macro": "QAE_CC_ERR_EID", "id": 10},
+                    {"macro": "QAE_MSGLEN_ERR_EID", "id": 11},
+                    {"macro": "QAE_CFGTBL_REG_ERR_EID", "id": 12},
+                    {"macro": "QAE_CFGTBL_LOAD_ERR_EID", "id": 13},
+                    {"macro": "QAE_DEGENERATE_ACC_ERR_EID", "id": 14},
+                    {"macro": "QAE_DEGENERATE_MAG_ERR_EID", "id": 15},
+                    {"macro": "QAE_UPDATE_EST_ERR_EID", "id": 16},
+                    {"macro": "QAE_CFGTBL_VALIDATION_ERR_EID", "id": 17}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "CONFIG_TBL",  "title": "PWM Configuration",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}

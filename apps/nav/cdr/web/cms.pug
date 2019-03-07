@@ -1,0 +1,22 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 NAV - Current Mission Status
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Mission Item Reached
+            td
+              div(data-cdr={tlm:[{name:'/NAV/NAV_HkTlm_t/MissionItemReached'}],indicator:'led'}) ---
+          tr
+            th Waypoint Position Reached
+            td
+              div(data-cdr={tlm:[{name:'/NAV/NAV_HkTlm_t/WaypointPositionReached'}],indicator:'led'}) ---
+          tr
+            th Waypoint Yaw Reached
+            td
+              div(data-cdr={tlm:[{name:'/NAV/NAV_HkTlm_t/WaypointYawReached'}],indicator:'led'}) ---
+    

@@ -1,0 +1,42 @@
+-   var queryString = '$.Airliner.apps.TO.config';
+-   global.COMMANDER.queryConfigDB(queryString, function (config) {
+
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 TO - Command and Data Handling
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Cmd Count
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdCnt'}],indicator:'text'}) ---
+          tr
+            th Error Count
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usCmdErrCnt'}],indicator:'text'}) ---
+          tr
+            th Total Messages Dropped
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/usTotalMsgDropped'}],indicator:'text'}) ---
+          tr
+            th Queued In Output Channel 0
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[0]'}],indicator:'text'}) ---
+          tr
+            th Queued In Output Channel 1
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[1]'}],indicator:'text'}) ---
+          tr
+            th Queued In Output Channel 2
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_HkTlm_t/QueuedInOutputChannel[2]'}],indicator:'text'}) ---
+              
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/Noop'},indicator:'cmd'}) No-Op    
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/Reset'},indicator:'cmd'}) Reset
+
+-   });

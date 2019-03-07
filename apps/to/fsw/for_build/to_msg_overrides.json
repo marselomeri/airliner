@@ -1,0 +1,65 @@
+{
+    "Airliner": {
+        "apps": {
+            "TO": {
+                "operations": {
+                    "Noop":                       { "airliner_cc":  0, "macro": "TO_CMD_MID", "airliner_msg": "TO_NoArgCmd_t" },
+                    "Reset":                      { "airliner_cc":  1, "macro": "TO_CMD_MID", "airliner_msg": "TO_NoArgCmd_t" },
+                    "TO_AddMessageFlowCmd_t":     { "airliner_cc":  2, "macro": "TO_CMD_MID", "airliner_msg": "TO_AddMessageFlowCmd_t" },
+                    "TO_RemoveMessageFlowCmd_t":  { "airliner_cc":  3, "macro": "TO_CMD_MID", "airliner_msg": "TO_RemoveMessageFlowCmd_t" },
+                    "TO_QueryMessageFlowCmd_t":   { "airliner_cc":  4, "macro": "TO_CMD_MID", "airliner_msg": "TO_QueryMessageFlowCmd_t" },
+                    "TO_QueryPriorityQueueCmd_t": { "airliner_cc":  5, "macro": "TO_CMD_MID", "airliner_msg": "TO_QueryPriorityQueueCmd_t" },
+                    "TO_QueryOutputChannelCmd_t": { "airliner_cc":  6, "macro": "TO_CMD_MID", "airliner_msg": "TO_QueryOutputChannelCmd_t" },
+                    "TO_SendDiagCmd_t":           { "airliner_cc":  7, "macro": "TO_CMD_MID", "airliner_msg": "TO_SendDiagCmd_t" },
+                    "TO_HkTlm_t":                 {                    "macro": "TO_HK_TLM_MID", "airliner_msg": "TO_HkTlm_t" },
+                    "TO_ChannelDiagTlm_t":        {                    "macro": "TO_DIAG_TLM_MID", "airliner_msg": "TO_ChannelDiagTlm_t" }
+                },    
+                "scheduler": {
+                    "activities": [
+                        "TO_SEND_HK_MID",
+                        "TO_SEND_TLM_MID"
+                    ],
+                    "groups": [
+                        { "id": 1, "macro": "TO_SCH_GRP" }
+                    ]
+                },
+                "events": [
+                    {"macro": "TO_INF_EID", "id": 1},
+                    {"macro": "TO_INIT_INF_EID", "id": 2},
+                    {"macro": "TO_CONFIG_TABLE_INF_EID", "id": 3},
+                    {"macro": "TO_CDS_INF_EID", "id": 4},
+                    {"macro": "TO_CMD_INF_EID", "id": 5},
+                    {"macro": "TO_ERR_EID", "id": 6},
+                    {"macro": "TO_INIT_ERR_EID", "id": 7},
+                    {"macro": "TO_CONFIG_TABLE_ERR_EID", "id": 8},
+                    {"macro": "TO_CDS_ERR_EID", "id": 9},
+                    {"macro": "TO_CMD_ERR_EID", "id": 10},
+                    {"macro": "TO_PIPE_ERR_EID", "id": 11},
+                    {"macro": "TO_MSGID_ERR_EID", "id": 12},
+                    {"macro": "TO_MSGLEN_ERR_EID", "id": 13},
+                    {"macro": "TO_MSG_WRITE_ERR_EID", "id": 14},
+                    {"macro": "TO_MSG_UNSUB_DBG_EID", "id": 15},
+                    {"macro": "TO_MSG_DROP_FROM_FLOW_DBG_EID", "id": 16},
+                    {"macro": "TO_CR_POOL_ERR_EID", "id": 17},
+                    {"macro": "TO_GET_POOL_ERR_EID", "id": 18},
+                    {"macro": "TO_TLM_LISTEN_ERR_EID", "id": 19},
+                    {"macro": "TO_MSG_FLOW_INFO_EID", "id": 20},
+                    {"macro": "TO_PQUEUE_INFO_EID", "id": 21},
+                    {"macro": "TO_OUT_CH_INFO_EID", "id": 22},
+                    {"macro": "TO_CMD_NOOP_EID", "id": 23},
+                    {"macro": "TO_CMD_RESET_EID", "id": 24},
+                    {"macro": "TO_CMD_ADD_MSG_FLOW_EID", "id": 25},
+                    {"macro": "TO_CMD_REMOVE_MSG_FLOW_EID", "id": 26},
+                    {"macro": "TO_CMD_SEND_DIAG_EID", "id": 27},
+                    {"macro": "TO_NO_ENCODE_FUNC_EID", "id": 28}
+                ],
+                "config": {
+                },
+                "tables": [
+                    {"id": "GRND_BIN_CFG", "title": "Ground Binary Configuration",  "isDumpTable": false},
+                    {"id": "GRND_PB_CFG",  "title": "Ground Protobuf Configuration",  "isDumpTable": false}
+                ]
+            }
+        }
+    }
+}

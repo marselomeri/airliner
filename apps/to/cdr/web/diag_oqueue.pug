@@ -1,0 +1,32 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 TO - Diagnostics
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Index
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/Index'}],indicator:'text'}) ---
+          tr
+            th Channel Name
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/ChannelName'}],indicator:'text'}) ---
+          tr
+            th Output Queue - Sent Count
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/OQueue.SentCount'}],indicator:'text'}) ---
+          tr
+            th Output Queue - Currently Queued Count
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/OQueue.CurrentlyQueuedCnt'}],indicator:'text'}) ---
+          tr
+            th Output Queue - Highwater Mark
+            td
+              div(data-cdr={tlm:[{name:'/TO/TO_ChannelDiagTlm_t/OQueue.HighwaterMark'}],indicator:'text'}) ---
+              
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/TO/TO_SendDiagCmd_t'},indicator:'cmd'}) Send Diagnostics
