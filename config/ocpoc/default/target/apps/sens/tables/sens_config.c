@@ -53,67 +53,67 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
     */
    
     /* RC%d_MIN  (0..17)    */
-								1103.0f, // Roll min
-								1103.0f, // Pitch min
-								1104.0f, // Throttle min
-								1103.0f, // Yaw min
-		                        1000.0f,
-		                        964.0f,
-		                        1000.0f,
-		                        964.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
-								1000.0f,
+								982.0f, // Throttle min
+								982.0f, // Roll min
+								982.0f, // Pitch min
+								982.0f, // Yaw min
+		                        982.0f,
+		                        982.0f,
+		                        982.0f,
+		                        982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
+								982.0f,
     /* RC%d_TRIM (0..17)    */
-								1514.0f, // Roll trim
-								1514.0f, // Pitch trim
-								1104.0f, // Throttle trim - set this equal to min
-								1516.0f, // Yaw trim
-		                        1500.0f,
-		                        1514.0f,
-		                        1500.0f,
-		                        1514.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
-								1500.0f,
+								982.0f,  // Throttle trim - set this equal to min
+								1493.0f, // Roll trim
+								1493.0f, // Pitch trim
+								1493.0f, // Yaw trim
+		                        1493.0f,
+		                        1493.0f,
+		                        1493.0f,
+		                        1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
+								1493.0f,
 	/* RC%d_MAX  (0..17)    */
-								1924.0f, // Roll max
-								1924.0f, // Pitch max
-								1924.0f, // Throttle max
-								1924.0f, // Yaw max
-		                        2000.0f,
-		                        2064.0f,
-		                        2000.0f,
-		                        2064.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
-								2000.0f,
+								2006.0f, // Throttle max
+								2006.0f, // Roll max
+								2006.0f, // Pitch max
+								2006.0f, // Yaw max
+		                        2006.0f,
+		                        2006.0f,
+		                        2006.0f,
+		                        2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
+								2006.0f,
 	/* RC%d_REV  (0..17)    */
-								1.0f, // Roll reverse
-								-1.0f, // Pitch reverse
-								1.0f, // Throttle reverse
-								1.0f, // Yaw reverse
+								1.0f,
+								1.0f,
+								1.0f,
+								1.0f,
 								1.0f,
 								1.0f,
 								1.0f,
@@ -129,29 +129,29 @@ SENS_ConfigTbl_t SENS_ConfigTbl =
 								1.0f,
 								1.0f,
 	/* RC%d_DZ   (0..17)    */
-								7.0f, // Roll deadzone
-								7.0f, // Pitch deadzone
-								10.0f, // Throttle deadzone
-								10.0f, // Yaw deadzone
+								10.0f, 
+								10.0f, 
+								10.0f, 
 								10.0f,
 								10.0f,
 								10.0f,
 								10.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
-								0.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
+								10.0f,
 
-	/* RC_MAP_ROLL          */  1,
-	/* RC_MAP_PITCH         */  2,
+	/* RC_MAP_ROLL          */  2,
+	/* RC_MAP_PITCH         */  3,
 	/* RC_MAP_YAW           */  4,
-	/* RC_MAP_THROTTLE      */  3,
+	/* RC_MAP_THROTTLE      */  1,
 	/* RC_MAP_FAILSAFE      */  0,
 
 	/* RC_MAP_MODE_SW       */  8,
