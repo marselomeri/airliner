@@ -745,12 +745,14 @@ void SENS::UpdateRcFunctions()
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_MAN] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapManSw - 1);
 
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_FLAPS] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapFlaps - 1);
+	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_ALTCTL] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapAltctlSw - 1);
 
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_AUX_1] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapAux1 - 1);
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_AUX_2] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapAux2 - 1);
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_AUX_3] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapAux3 - 1);
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_AUX_4] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapAux4 - 1);
 	RcChannelsMsg.Function[PX4_RC_CHANNELS_FUNCTION_AUX_5] = (PX4_RcChannelFunction_t)(ConfigTblPtr->MapAux5 - 1);
+	
 
 	for (int i = 0; i < PX4_RC_PARAM_MAP_NCHAN; i++)
 	{
@@ -972,6 +974,8 @@ void SENS::ProcessRCInput(void)
 					ConfigTblPtr->StabTh, (ConfigTblPtr->StabTh < 0));
 			ManualControlSetpointMsg.ManSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_MAN,
 					ConfigTblPtr->ManTh, (ConfigTblPtr->ManTh < 0));
+			ManualControlSetpointMsg.AltctlSwitch = GetRcSw2PosPosition(PX4_RC_CHANNELS_FUNCTION_ALTCTL,
+					ConfigTblPtr->AltctlTh, (ConfigTblPtr->AltctlTh < 0));
 
             /* Set flight mode flags according to mode switch. TODO: Make modes configurable */
             if(1 == ConfigTblPtr->ModeSwitchControl)

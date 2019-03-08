@@ -227,6 +227,8 @@ typedef struct {
     boolean inManual;
     /** \brief Takeoff is selected  */
     boolean intakeoff;
+    /** \brief Altitude control is selected  */
+    boolean inAltCtl;
 
 }VM_Modes;
 
