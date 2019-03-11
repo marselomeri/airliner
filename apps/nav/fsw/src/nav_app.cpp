@@ -9,6 +9,7 @@
 #include "nav_msg.h"
 #include "nav_version.h"
 #include <math/Limits.hpp>
+#include "px4lib_msgids.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

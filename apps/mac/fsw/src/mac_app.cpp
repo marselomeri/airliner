@@ -52,6 +52,7 @@
 
 #include <math/Quaternion.hpp>
 #include <px4lib.h>
+#include "px4lib_msgids.h"
 
 
 #define TPA_RATE_LOWER_LIMIT  0.05f

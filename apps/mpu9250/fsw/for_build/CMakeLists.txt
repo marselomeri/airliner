@@ -53,6 +53,10 @@ add_airliner_app_def(mpu9250
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/mpu9250/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/mpu9250/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(mpu9250-ut

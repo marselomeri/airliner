@@ -9,6 +9,7 @@
 #include "ulr_msg.h"
 #include "ulr_version.h"
 #include "px4lib.h"
+#include "px4lib_msgids.h"
 
 
 

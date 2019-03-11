@@ -5,10 +5,10 @@
 extern "C" {
 #endif
 
-#define LD_HK_TLM_MID    0x0000
-#define LD_SEND_HK_MID   0x0000
-#define LD_WAKEUP_MID       0x0000
-#define LD_CMD_MID       0x0000
+#define LD_HK_TLM_MID                               0x0c5d
+#define LD_SEND_HK_MID                              0x1c5e
+#define LD_WAKEUP_MID                               0x1c5f
+#define LD_CMD_MID                                  0x1c60
 
 #ifdef __cplusplus
 }

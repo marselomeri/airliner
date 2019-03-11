@@ -35,20 +35,24 @@ initialize_airliner_build(
 
 add_airliner_app(
     cfs_lib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/cfs_lib/fsw/for_build
+)
 
 add_airliner_app(
     px4lib
     DEFINITION ${PROJECT_SOURCE_DIR}/apps/px4lib/fsw/for_build
-    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4_msg_overrides.json)
+    MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/px4lib/px4_msg_overrides.json
+)
 
 add_airliner_app(
     pblib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/pblib/fsw/for_build
+)
 
 add_airliner_app(
     prmlib
-    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build)
+    DEFINITION ${PROJECT_SOURCE_DIR}/apps/prmlib/fsw/for_build
+)
 
 add_airliner_app(
     sim
@@ -71,7 +75,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sch_perfids.h
     MSG_OVERRIDES
         ${CMAKE_CURRENT_SOURCE_DIR}/apps/sch/sch_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     cf
@@ -82,7 +86,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/cf_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cf_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/cf/cf_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     cs
@@ -94,7 +98,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cs_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/cs_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/cs/cs_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     ds
@@ -105,7 +109,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/ds_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ds_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/ds/ds_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     fm
@@ -116,7 +120,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/fm_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/fm_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/fm/fm_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     hk
@@ -127,7 +131,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hk_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hk_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/hk/hk_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     hs
@@ -139,7 +143,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/hs_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/hs_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/hs/hs_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     lc
@@ -152,7 +156,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/lc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/lc/lc_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     md
@@ -163,7 +167,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/md_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/md_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/md/md_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     mm
@@ -175,7 +179,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mm_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/mm_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/mm/mm_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     sc
@@ -186,7 +190,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../inc/sc_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/sc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/sc/sc_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     ci
@@ -199,7 +203,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ci_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ci_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/ci/ci_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     to
@@ -213,7 +217,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/to_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/to_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/to/to_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     ea
@@ -225,7 +229,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ea_msgids.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/ea_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/ea/ea_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     vc
@@ -243,7 +247,7 @@ add_airliner_app(
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_mission_cfg.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../shared/inc/vc_perfids.h
     MSG_OVERRIDES ${CMAKE_CURRENT_SOURCE_DIR}/apps/vc/vc_msg_overrides.json
-    )
+)
 
 add_airliner_app(
     amc

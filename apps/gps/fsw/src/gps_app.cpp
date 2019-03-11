@@ -45,6 +45,7 @@
 #include "gps_msg.h"
 #include "gps_version.h"
 #include "gps_event_driven.h"
+#include "px4lib_msgids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

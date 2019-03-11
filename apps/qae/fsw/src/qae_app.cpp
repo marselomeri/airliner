@@ -44,6 +44,7 @@
 #include <geo/geo.h>
 #include <math/Limits.hpp>
 #include <px4lib.h>
+#include "px4lib_msgids.h"
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

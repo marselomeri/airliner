@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "px4lib.h"
+#include "px4lib_msgids.h"
 
 VM_Arming::VM_Arming(VM &inApp) :
         FSM(*this), App(inApp) {

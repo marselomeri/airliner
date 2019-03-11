@@ -52,7 +52,7 @@ include(${PROJECT_SOURCE_DIR}/tools/gen_serialization/GenerateSerialization.cmak
 #)
 function(psp_initialize_airliner_build)
     # Define the function arguments.
-    cmake_parse_arguments(PARSED_ARGS "" "CORE_BINARY;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES;MSG_OVERRIDES" "FILESYS" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "REFERENCE" "CORE_BINARY;CONFIG;PREFIX;OSAL;STARTUP_SCRIPT;UNIT_TEST_WRAPPER;CONFIG_SOURCES;MSG_OVERRIDES" "FILESYS" ${ARGN})
 
     set(PSP_UNIT_TEST_WRAPPER target/${PARSED_ARGS_UNIT_TEST_WRAPPER})
     
@@ -62,12 +62,19 @@ function(psp_initialize_airliner_build)
     endforeach()
     
     # Copy the core binary to the correct location.
-    file(COPY ${PARSED_ARGS_CORE_BINARY} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe)
+    if(EXISTS "${PARSED_ARGS_CORE_BINARY}")
+        file(COPY ${PARSED_ARGS_CORE_BINARY} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe)
+    endif()
     
     # Find the Nano Protobuf utility to use later.
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/tools/nanopb/extra)
     find_package(Nanopb REQUIRED)
+    
+    # Is this a reference build?
+    if(PARSED_ARGS_REFERENCE)
+        set_property(GLOBAL PROPERTY IS_REFERENCE_BUILD true)
+    endif()
     
     if(NOT TARGET rsm)   
         add_custom_target(rsm)
@@ -77,8 +84,10 @@ function(psp_initialize_airliner_build)
     endif()
     
     # Copy the startup script into the default location.
-    file(COPY ${PARSED_ARGS_STARTUP_SCRIPT} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe/cf/apps)
-
+    if(EXISTS ${PARSED_ARGS_STARTUP_SCRIPT})
+        file(COPY ${PARSED_ARGS_STARTUP_SCRIPT} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/exe/cf/apps)
+    endif()
+    
     # Set what we're going to call the executable file.
     set(CFE_EXEC_FILE core-bin)
 
@@ -97,9 +106,11 @@ function(psp_initialize_airliner_build)
 	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
 	
 	# EXPLAIN_DIR:  This is the directory for all explain generated files.
-	file(MAKE_DIRECTORY ${EXPLAIN_DIR})
-	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
-
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite)
+	    file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+	    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
+    endif()
+    
     # Remove the combined airliner JSON overrides file, if it exists.
     if(EXISTS ${EXPLAIN_DIR}/airliner-overrides.json)
         file(REMOVE ${EXPLAIN_DIR}/airliner-overrides.json)
@@ -116,10 +127,12 @@ function(psp_initialize_airliner_build)
     )
     
     # Merge in the platform independent CFE message overrides.
-    add_airliner_json_input(
-        INPUT_FILE ${CFE_MSG_OVERRIDES}
-        OUTPUT_DIR ${EXPLAIN_DIR}
-    )
+    if(EXISTS ${CFE_MSG_OVERRIDES})
+        add_airliner_json_input(
+            INPUT_FILE ${CFE_MSG_OVERRIDES}
+            OUTPUT_DIR ${EXPLAIN_DIR}
+        )
+    endif()
 	
 	# Do post build explain activities
 	explain_generate_cookie(
@@ -131,12 +144,14 @@ function(psp_initialize_airliner_build)
 	#CFE_MSG_OVERRIDES
 
     # Add the custom JSON override files
-    if(PARSED_ARGS_MSG_OVERRIDES) 
-        add_airliner_json_input(
-            INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
-            OUTPUT_DIR ${EXPLAIN_DIR}
-        )
-    endif(PARSED_ARGS_MSG_OVERRIDES)
+    if(PARSED_ARGS_MSG_OVERRIDES)
+        if(EXISTS ${PARSED_ARGS_MSG_OVERRIDES}) 
+            add_airliner_json_input(
+                INPUT_FILE ${PARSED_ARGS_MSG_OVERRIDES}
+                OUTPUT_DIR ${EXPLAIN_DIR}
+            )
+        endif()
+    endif()
 		
 	generate_serialization_code(
 		INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
@@ -149,16 +164,19 @@ function(psp_initialize_airliner_build)
 	
 	# Setup Commander workspace. 
 	# First, copy the initial workspace template over to the build directory.
-	add_subdirectory(commander commander)
+	if(EXISTS commander)
+	    add_subdirectory(commander commander)
+	endif()
 	
 	# Now copy the CFE platform independent Commander plugin
-	get_filename_component(CFE_CMDR_PLUGIN_NAME ${CFE_CMDR_PLUGIN_DIR} NAME)
-	set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
-	set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
-	file(REMOVE_RECURSE ${CFE_CMDR_PLUGIN_NEW_PATH})
-	file(COPY ${CFE_CMDR_PLUGIN_DIR} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR})
-	file(RENAME ${CFE_CMDR_PLUGIN_ORIG_PATH} ${CFE_CMDR_PLUGIN_NEW_PATH})
-	
+    if(EXISTS ${COMMANDER_WORKSPACE_PLUGINS_DIR})
+        get_filename_component(CFE_CMDR_PLUGIN_NAME ${CFE_CMDR_PLUGIN_DIR} NAME)
+	    set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
+	    set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
+	    file(REMOVE_RECURSE ${CFE_CMDR_PLUGIN_NEW_PATH})
+	    file(COPY ${CFE_CMDR_PLUGIN_DIR} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR})
+	    file(RENAME ${CFE_CMDR_PLUGIN_ORIG_PATH} ${CFE_CMDR_PLUGIN_NEW_PATH})
+    endif()
 endfunction(psp_initialize_airliner_build)
 
 
@@ -258,7 +276,7 @@ endfunction(psp_add_test)
 function(psp_add_airliner_app)
     # Define the application name.
     set(PARSED_ARGS_APP_NAME ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES;MSG_OVERRIDES" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS "" "DEFINITION" "CONFIG;CONFIG_SOURCES;INCLUDES;MSG_OVERRIDES" ${ARGN})
 
     # Call the CMake file that actually defines the application.
     add_subdirectory(${PARSED_ARGS_DEFINITION} ${CMAKE_CURRENT_BINARY_DIR}/apps/${PARSED_ARGS_APP_NAME})
@@ -339,6 +357,11 @@ function(psp_add_airliner_app)
         add_dependencies(rsm ${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME}-rsm)
     endif()
     
+    # Add include directories, if provided.
+    if(PARSED_ARGS_INCLUDES)
+        target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_APP_NAME} PUBLIC ${PARSED_ARGS_INCLUDES})
+    endif()
+    
     # Add the msg and ops_name Pyliner JSON override files
     if(PARSED_ARGS_MSG_OVERRIDES) 
         add_airliner_json_input(
@@ -377,12 +400,21 @@ endfunction(psp_add_airliner_app)
 #)
 function(psp_add_airliner_app_def)
     set(PARSED_ARGS_TARGET ${ARGV0})
-    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR;MSG_OVERRIDES" ${ARGN})
+    cmake_parse_arguments(PARSED_ARGS ""  "PREFIX;FILE" "COMMANDER_PLUGIN;SOURCES;LIBS;INCLUDES;PUBLIC_INCLUDES;USER_DOCS;DESIGN_DOCS;PROTOBUF_DEFS;PROTOBUF_MSGS_DIR;MSG_OVERRIDES;REFERENCE_CONFIG" ${ARGN})
     
     get_property(PUBLIC_APP_INCLUDES GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY)
     set(PUBLIC_APP_INCLUDES "${PUBLIC_APP_INCLUDES} ${PARSED_ARGS_PUBLIC_INCLUDES}")
+    
+    # If this is a reference build, include the reference configuration directories
+    # in the public includes
+    get_property(IS_REFERENCE_BUILD GLOBAL PROPERTY IS_REFERENCE_BUILD)
+    if(IS_REFERENCE_BUILD)
+        if(PARSED_ARGS_REFERENCE_CONFIG)  
+            set(PUBLIC_APP_INCLUDES "${PUBLIC_APP_INCLUDES} ${PARSED_ARGS_REFERENCE_CONFIG}")
+        endif()
+    endif()
+    
     set_property(GLOBAL PROPERTY PUBLIC_APP_INCLUDES_PROPERTY ${PUBLIC_APP_INCLUDES})
-
     get_property(AIRLINER_BUILD_PREFIX GLOBAL PROPERTY AIRLINER_BUILD_PREFIX_PROPERTY)
     separate_arguments(PUBLIC_APP_INCLUDES)
 
@@ -436,6 +468,15 @@ function(psp_add_airliner_app_def)
             OUTPUT_DIR ${EXPLAIN_DIR}
         )
     endif(PARSED_ARGS_MSG_OVERRIDES)
+    
+    # If this is a reference build, include the reference configuration directories
+    get_property(IS_REFERENCE_BUILD GLOBAL PROPERTY IS_REFERENCE_BUILD)
+    if(IS_REFERENCE_BUILD)
+        if(PARSED_ARGS_REFERENCE_CONFIG)
+            target_include_directories(${AIRLINER_BUILD_PREFIX}${PARSED_ARGS_TARGET} PUBLIC 
+                ${PARSED_ARGS_REFERENCE_CONFIG})
+        endif()
+    endif()
 	
     # Add the Commander plugin, if there is one.
     if(NOT ${PARSED_ARGS_COMMANDER_PLUGIN} EQUAL "")

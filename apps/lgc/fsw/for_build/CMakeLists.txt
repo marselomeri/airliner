@@ -20,6 +20,10 @@ add_airliner_app_def(lgc
 
     COMMANDER_PLUGIN
         ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/lgc/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(lgc-ut

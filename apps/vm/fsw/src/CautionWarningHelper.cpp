@@ -1,6 +1,6 @@
 #include "CautionWarningHelper.hpp"
 #include "px4lib.h"
-#include "msg_ids.h"
+#include "px4lib_msgids.h"
 
 CautionWarningHelper::CautionWarningHelper() :
     m_State(CAWS_UNINITIALIZED)

@@ -47,6 +47,10 @@ add_airliner_app_def(simlib
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/lib_user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/lib_detail_doxy.in
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/platform_inc
 )
 
 add_airliner_app_def(sim
@@ -66,6 +70,10 @@ add_airliner_app_def(sim
 
     USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
     DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
+    
+    REFERENCE_CONFIG
+        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/mission_inc
+        ${PROJECT_SOURCE_DIR}/apps/sim/fsw/platform_inc
 )
 
 add_airliner_app_unit_test(sim-ut
