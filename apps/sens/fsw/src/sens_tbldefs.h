@@ -116,7 +116,7 @@ typedef struct
 	float GearTh;                                   /* RC_GEAR_TH           */
 	float StabTh;                                   /* RC_STAB_TH           */
 	float ManTh;                                    /* RC_MAN_TH            */
-	float AltctlTh;                                    /* RC_MAN_TH            */
+	float AltctlTh;                                 /* RC_ALTCTL_TH         */
 	
 	float FltSmpRate;                               /* RC_FLT_SMP_RATE      */
 	float FltCutoff;                                /* RC_FLT_CUTOFF        */
