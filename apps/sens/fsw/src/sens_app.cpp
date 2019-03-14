@@ -980,25 +980,24 @@ void SENS::ProcessRCInput(void)
             /* Set flight mode flags according to mode switch. TODO: Make modes configurable */
             if(1 == ConfigTblPtr->ModeSwitchControl)
             {
-                //ManualControlSetpointMsg.ManSwitch = PX4_SWITCH_POS_OFF;
-                ManualControlSetpointMsg.ReturnSwitch = PX4_SWITCH_POS_OFF;
+                ManualControlSetpointMsg.AltctlSwitch = PX4_SWITCH_POS_OFF;
                 ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_OFF;
 
                 if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_OFF)
                 {
-                    //ManualControlSetpointMsg.ManSwitch = PX4_SWITCH_POS_ON;
+                    // Do nothing
                 }
                 else if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_MIDDLE)
                 {
-                    ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_ON;
+                    ManualControlSetpointMsg.AltctlSwitch = PX4_SWITCH_POS_ON;
                 }
                 else if(ManualControlSetpointMsg.ModeSwitch == PX4_SWITCH_POS_ON)
                 {
-                    ManualControlSetpointMsg.ReturnSwitch = PX4_SWITCH_POS_ON;
+                    ManualControlSetpointMsg.PosctlSwitch = PX4_SWITCH_POS_ON;
                 }
                 else
                 {
-                    //invalid mode switch pos
+                    // Invalid mode switch pos
                 }
             }
 
