@@ -88,7 +88,7 @@ function(initialize_airliner_build)
     set(CFE_OSAL_DIR ${PARSED_ARGS_OSAL})
 
     include(${PARSED_ARGS_PSP}/make/build-vars.cmake)
-    include(${PARSED_ARGS_PSP}/make/build-functions.cmake)
+    include(${PROJECT_SOURCE_DIR}/core/psp/make/build-functions.cmake)
     
     set_global_airliner_includes(${PARSED_ARGS_CONFIG})
     
