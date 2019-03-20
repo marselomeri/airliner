@@ -1449,7 +1449,7 @@ void VM::RcModes() {
                     GetNavStateAsString(PrevState), "POSCTL");
         }
 
-    } else if (!posctl && !altctl && rtl && !loiter && !takeoff && mode_changed) {
+    } else if (rtl && mode_changed) {
 
         try {
             NavigationSM.FSM.trAutoReturnToLaunch();
@@ -1479,7 +1479,7 @@ void VM::RcModes() {
                     "Illegal Nav transition [%s -> %s].  Command rejected.",
                     GetNavStateAsString(PrevState), "AUTOLTR");
         }
-    } else if (!posctl && !altctl && !rtl && !loiter && takeoff && mode_changed) {
+    } else if (takeoff && mode_changed) {
         try {
             NavigationSM.FSM.trAutoTakeoff();
             HkTlm.usCmdCnt++;
