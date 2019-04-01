@@ -101,27 +101,27 @@ function(psp_initialize_airliner_build)
 
     ###  EXPLAIN
     # Prepare the build to be ready to use the Explain utility.
-	add_custom_target(ground_tools)
-	add_custom_target(explain_parsing)
+    add_custom_target(ground_tools)
+    add_custom_target(explain_parsing)
 	
-	# Set the path to put the objects we create for Explain to parse.
-	file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
+    # Set the path to put the objects we create for Explain to parse.
+    file(MAKE_DIRECTORY ${EXPLAIN_OBJS_INSTALL_DIR})
 	
-	# EXPLAIN_DIR:  This is the directory for all explain generated files.
+    # EXPLAIN_DIR:  This is the directory for all explain generated files.
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite)
-	    file(MAKE_DIRECTORY ${EXPLAIN_DIR})
-	    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
+        file(MAKE_DIRECTORY ${EXPLAIN_DIR})
+        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/airliner-symbols.sqlite DESTINATION ${EXPLAIN_DIR})
     endif()
     
     # Remove the combined airliner JSON overrides file, if it exists.
     if(EXISTS ${EXPLAIN_DIR}/airliner-overrides.json)
         file(REMOVE ${EXPLAIN_DIR}/airliner-overrides.json)
     endif()
-	
-	# Prepare the build to be ready to use the Explain utility.
-	explain_setup()
-	
-	# Setup commander
+    
+    # Prepare the build to be ready to use the Explain utility.
+    explain_setup()
+    
+    # Setup commander
     execute_process(
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tools/commander
         COMMAND npm install
@@ -135,15 +135,15 @@ function(psp_initialize_airliner_build)
             OUTPUT_DIR ${EXPLAIN_DIR}
         )
     endif()
+    
+    # Do post build explain activities
+    explain_generate_cookie(
+        DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
+        OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
+    )
 	
-	# Do post build explain activities
-	explain_generate_cookie(
-		DATABASE_NAME  ${EXPLAIN_DIR}/airliner-symbols.sqlite
-		OUTPUT_FILE    ${EXPLAIN_DIR}/explain-symbols.json
-	)
-	
-	# Add the generic JSON override files
-	#CFE_MSG_OVERRIDES
+    # Add the generic JSON override files
+    #CFE_MSG_OVERRIDES
 
     # Add the custom JSON override files
     if(PARSED_ARGS_MSG_OVERRIDES)
@@ -154,30 +154,28 @@ function(psp_initialize_airliner_build)
             )
         endif()
     endif()
-		
-	generate_serialization_code(
-		INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
-		OUTPUT_DIR     ${EXPLAIN_DIR}
-		OPS_FILE           
-			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_ops_names.json
-		MSGS_FILE
-			${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_msgs.json
-	)  
+
+    generate_serialization_code(
+        INPUT_FILE     ${EXPLAIN_DIR}/cookiecutter.json
+        OUTPUT_DIR     ${EXPLAIN_DIR}
+        OPS_FILE       ${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_ops_names.json
+        MSGS_FILE      ${CMAKE_CURRENT_SOURCE_DIR}/commander/pyliner_msgs.json
+    )  
 	
-	# Setup Commander workspace. 
-	# First, copy the initial workspace template over to the build directory.
-	if(EXISTS commander)
-	    add_subdirectory(commander commander)
-	endif()
+    # Setup Commander workspace. 
+    # First, copy the initial workspace template over to the build directory.
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/commander)
+        add_subdirectory(commander commander)
+    endif()
 	
-	# Now copy the CFE platform independent Commander plugin
+    # Now copy the CFE platform independent Commander plugin
     if(EXISTS ${COMMANDER_WORKSPACE_PLUGINS_DIR})
         get_filename_component(CFE_CMDR_PLUGIN_NAME ${CFE_CMDR_PLUGIN_DIR} NAME)
-	    set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
-	    set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
-	    file(REMOVE_RECURSE ${CFE_CMDR_PLUGIN_NEW_PATH})
-	    file(COPY ${CFE_CMDR_PLUGIN_DIR} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR})
-	    file(RENAME ${CFE_CMDR_PLUGIN_ORIG_PATH} ${CFE_CMDR_PLUGIN_NEW_PATH})
+	set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
+        set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
+        file(REMOVE_RECURSE ${CFE_CMDR_PLUGIN_NEW_PATH})
+        file(COPY ${CFE_CMDR_PLUGIN_DIR} DESTINATION ${COMMANDER_WORKSPACE_PLUGINS_DIR})
+        file(RENAME ${CFE_CMDR_PLUGIN_ORIG_PATH} ${CFE_CMDR_PLUGIN_NEW_PATH})
     endif()
 endfunction(psp_initialize_airliner_build)
 
