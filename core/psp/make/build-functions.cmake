@@ -163,13 +163,11 @@ function(psp_initialize_airliner_build)
     )  
 	
     # Setup Commander workspace. 
-    # First, copy the initial workspace template over to the build directory.
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/commander)
+        # First, copy the initial workspace template over to the build directory.
         add_subdirectory(commander commander)
-    endif()
-	
-    # Now copy the CFE platform independent Commander plugin
-    if(EXISTS ${COMMANDER_WORKSPACE_PLUGINS_DIR})
+
+        # Now copy the CFE platform independent Commander plugin
         get_filename_component(CFE_CMDR_PLUGIN_NAME ${CFE_CMDR_PLUGIN_DIR} NAME)
 	set(CFE_CMDR_PLUGIN_ORIG_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/${CFE_CMDR_PLUGIN_NAME})
         set(CFE_CMDR_PLUGIN_NEW_PATH ${COMMANDER_WORKSPACE_PLUGINS_DIR}/cfe)
