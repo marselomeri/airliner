@@ -123,6 +123,8 @@ cdr-nav-iconshtml(lang='en-us')
         myObserver.observe (this, obsConfig);
       });
 
+      var CommanderTlmDataElements = [];
+      
       function mutationHandler (mutationRecords) {
         mutationRecords.forEach ( function (mutation) {
           if (typeof mutation.addedNodes == "object" && mutation.addedNodes.length > 0) {
@@ -140,14 +142,32 @@ cdr-nav-iconshtml(lang='en-us')
                 jsonObj = obj;
               }
               else {
-              // it's something else
-            return;
-          }
+                // it's something else
+                return;
+              }
+              
+              if (jsonObj.hasOwnProperty('tlm')) {
+                /* This is a telemetry object. */
+                session.subscribe(jsonObj.tlm, processTelemetryUpdate);
+                //session.getTlmInfo(jsonObj,processTlmInfo);
+                CommanderTlmDataElements.push($(this));
+              }
             });
           }
         });
+      };      
+      
+      var processTelemetryUpdate = function (param) {
+        var found = false;
+        for (var i = 0; i < CommanderTlmDataElements.length; i++) {
+          var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
+          for (var j = 0; j < jsonObj.tlm.length; j++) {
+            var tlmObj = CommanderTlmDataElements[i];
+            console.log(tlmObj);
+            //if (jsonObj.tlm[j].name == param.id.name){
+          }
+        }
       };
-       
     
     script(type="text/javascript" src='/commander/app/util.js') 
     script(type="text/javascript" src='/commander/client.js') 
