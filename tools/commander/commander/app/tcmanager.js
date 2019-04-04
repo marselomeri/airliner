@@ -1,16 +1,6 @@
 
 
-console.log("Creating MutationObserver");  
-//  var in_dom = document.body.contains(element);
-  var observer = new MutationObserver(function(mutations) {
-	  console.log("Created MutationObserver");
 
-	  mutations.forEach(function(mutation) {
-	    console.log(mutation);
-	  });
-   
-  });
-  observer.observe(document.body, {childList: true});
 
 //  /**
 //   * Stores (k,v) pair of opsPath and a array of dependant DOM elements.

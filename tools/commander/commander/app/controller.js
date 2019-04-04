@@ -104,15 +104,14 @@ $( () => {
 
     if ( _sescon_never ) {
       var defaultLayoutPromise = new Promise( ( resolve, reject ) => {
-
         session.getDefaultLayout( function( resp ) {
           if ( window.__backupConfig == undefined | window.__backupConfig == null ) {
             config = resp;
             resolve( 'Success!' );
           }
         } );
-
       } );
+      
       defaultLayoutPromise.then( () => {
         session.getPanels( '/', function( dirEntries ) {
           var panelEntries = [];
@@ -223,7 +222,7 @@ $( () => {
         myLayout = new window.GoldenLayout( config, $( '#cdr-layout-container' ) );
         updateDragSources();
         window.dispatchEvent( llc );
-        InitLayout( myLayout );
+        //InitLayout( myLayout );
 
         /* load resources */
         InitModal();

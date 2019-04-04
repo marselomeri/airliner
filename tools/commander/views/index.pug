@@ -46,7 +46,7 @@ cdr-nav-iconshtml(lang='en-us')
     link(type="text/css" rel="stylesheet" href="/css/goldenlayout-dark-theme.css")  
     link(type="text/css" rel="stylesheet" href="/scripts/cesium/Source/Widgets/widgets.css")
     link(type="text/css" rel="stylesheet" href="/scripts/jquery-contextmenu/dist/jquery.contextMenu.min.css")  
-  body(onload='checkCompatability()')
+  body
     <!-- Generic Modal Template -->
     div#genericInputModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="genericInputModal" aria-hidden="true")
       div.modal-dialog(role="document")
@@ -108,17 +108,24 @@ cdr-nav-iconshtml(lang='en-us')
           i.fa.fa-file
       ul.navbar-nav.mr-auto
       ul#cdr-well-top-bottom.navbar-nav.cdr-well
+    
     <!-- Custom Scripts -->
+    script(type="text/javascript").
+      console.log("Creating MutationObserver");  
+      //  var in_dom = document.body.contains(element);
+      var observer = new MutationObserver(function(mutations) {
+        console.log("Created MutationObserver");
+
+        mutations.forEach(function(mutation) {
+          console.log(mutation);
+        });
+      });
+      observer.observe(document.body, {childList: true});
+    
     script(type="text/javascript" src='/commander/app/util.js') 
     script(type="text/javascript" src='/commander/client.js') 
     script(type="text/javascript" src='/commander/app/controller.js') 
-    script(type="text/javascript" src='/commander/app/tcmanager.js') 
-    script(type="text/javascript" src='/commander/app/ui/adi.js')
-    script(type="text/javascript" src='/commander/app/ui/adsb.js')
-    script(type="text/javascript" src='/commander/app/ui/display.js') 
     script(type="text/javascript" src='/commander/app/ui/navtree.js') 
     script(type="text/javascript" src='/commander/app/ui/layout.js') 
     script(type="text/javascript" src='/commander/app/ui/modal.js') 
     script(type="text/javascript" src='/commander/app/ui/misc.js')
-    script(type="text/javascript" src='/commander/app/ui/dataplot.js')   
-    script(type="text/javascript" src='/commander/app/ui/widget.js')
