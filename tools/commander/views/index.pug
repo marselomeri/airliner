@@ -110,17 +110,44 @@ cdr-nav-iconshtml(lang='en-us')
       ul#cdr-well-top-bottom.navbar-nav.cdr-well
     
     <!-- Custom Scripts -->
+    
     script(type="text/javascript").
-      console.log("Creating MutationObserver");  
-      //  var in_dom = document.body.contains(element);
-      var observer = new MutationObserver(function(mutations) {
-        console.log("Created MutationObserver");
+      
+      var targetNodes         = $("body");
+      var MutationObserver    = window.MutationObserver || window.WebKitMutationObserver;
+      var myObserver          = new MutationObserver (mutationHandler);
+      var obsConfig           = { childList: true, characterData: true, attributes: true, subtree: true };
 
-        mutations.forEach(function(mutation) {
-          console.log(mutation);
-        });
+      //--- Add a target node to the observer. Can only add one node at a time.
+      targetNodes.each ( function () {
+        myObserver.observe (this, obsConfig);
       });
-      observer.observe(document.body, {childList: true});
+
+      function mutationHandler (mutationRecords) {
+        mutationRecords.forEach ( function (mutation) {
+          if (typeof mutation.addedNodes == "object" && mutation.addedNodes.length > 0) {
+            var jq = $(mutation.addedNodes);
+            jq.find('[data-cdr]').each(function () {
+              var obj = $(this).attr('data-cdr');
+              
+              var jsonObj;
+              if (typeof obj === 'string' || obj instanceof String) {
+                // it's a string
+                jsonObj = JSON.parse(obj);
+              }
+              else if (typeof obj === 'object' || obj instanceof Object) {
+                // it's an object
+                jsonObj = obj;
+              }
+              else {
+              // it's something else
+            return;
+          }
+            });
+          }
+        });
+      };
+       
     
     script(type="text/javascript" src='/commander/app/util.js') 
     script(type="text/javascript" src='/commander/client.js') 
