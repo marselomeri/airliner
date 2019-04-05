@@ -152,6 +152,283 @@ cdr-nav-iconshtml(lang='en-us')
                 //session.getTlmInfo(jsonObj,processTlmInfo);
                 CommanderTlmDataElements.push($(this));
               }
+              if (jsonObj.hasOwnProperty('cmd')) {
+                /* This is a command object. */
+                var cmdObj = jsonObj.cmd;
+                var btnObj = $(this);
+                session.getCmdDef({name:cmdObj.name}, function (cmdInfo) {
+                  if (cmdObj.hasOwnProperty('uuid')) {
+                    /* We already bound this element. */
+                  } else {
+                    var uuid = generateUUID();
+                    cmdInfo.uuid = uuid;
+                    cmdObj.uuid = uuid;
+                    btnObj.attr('data-sage', JSON.stringify(jsonObj));
+                    /* Copy any arguments we have from the command button into the cmdInfo struct. */
+                    if (cmdObj.hasOwnProperty('argument')) {
+                      for (i = 0; i < cmdObj.argument.length; i++) {
+                        for (j = 0; j < cmdInfo.argument.length; j++) {
+                          if (cmdInfo.argument[j].name == cmdObj.argument[i].name) {
+                            cmdInfo.argument[j].value = cmdObj.argument[i].value;
+                          }
+                        }
+                      }
+                    };
+                      
+                    if ( isTemplateCommand( cmdInfo ) == false ) {
+                      console.log('Template');
+                      /*
+                       * This is a fully instantiated command. No need to
+                       * create a popup form. Just send the command when
+                       * the user clicks the button.
+                       */
+                      var args = {};
+                      if ( cmdInfo.hasOwnProperty( 'argument' ) ) {
+                        for ( var i = 0; i < cmdInfo.argument.length; i++ ) {
+                          args[ cmdInfo.argument[ i ].name ] = cmdInfo.argument[ i ].value
+                        }
+                      }
+                      btnObj[ 0 ].onclick = function( eventObject ) {
+                        session.sendCommand( {
+                          ops_path: cmdInfo.name,
+                          args: args
+                        });
+                      };
+                    } else {
+
+
+
+
+
+
+
+                      /*
+                       * This is not a fully instantiated command. We need
+                       * to present a popup form to allow the user to
+                       * enter the remaining command arguments before
+                       * sending the command.
+                       *
+                       * First, generate UUIDs to be used later as element
+                       * IDs.
+                       */
+                      for ( i = 0; i < cmdInfo.argument.length; i++ ) {
+                        cmdInfo.argument[ i ].uuid = uuid + "_" + cmdInfo.argument[ i ].name;
+                      }
+                      /*
+                       * Next set stringLength for string parameters to be
+                       * used for form validation later.
+                       */
+                      for ( i = 0; i < cmdInfo.argument.length; i++ ) {
+                        if ( cmdInfo.argument[ i ].type === 'string' ) {
+                          /*
+                           * Add a new stringLength (in bytes)
+                           * attribute for parameter validation later.
+                           */
+                          cmdInfo.argument[ i ].stringLength = cmdOut.argument[ i ].bitSize / 8;
+                        }
+                      }
+      
+                      /* Make button fire modal */
+                      btnObj.attr( 'data-toggle', 'modal' );
+                      btnObj.attr( 'data-target', '#genericInputModal' );
+                      btnObj.attr( 'data-title', 'Submit ' + cmdInfo.name + ' Arguments' );
+                      btnObj.attr( 'data-submit', 'sendCmd' );
+                      var argArray = [];
+      
+                      for ( var i in cmdInfo.argument ) {
+                        var label = cmdInfo.argument[ i ].name;
+                        var type = cmdInfo.argument[ i ].type;
+                        var value = cmdInfo.argument[ i ].value;
+                        switch ( type ) {
+                          case 'char':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'uint8':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'integer',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'int8':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'integer',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'string':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'uint16':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'int16':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'uint32':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'int32':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'float':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'float',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'double':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'float',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'boolean':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'integer',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'uint64':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+                          case 'int64':
+                            {
+                              /* integer action */
+                              argArray.push( {
+                                'label': label,
+                                'type': 'field',
+                                'dtype': 'text',
+                                'value': value
+                              } );
+                              break;
+                            }
+      
+      
+                        }
+                        btnObj.attr( 'data-custom', JSON.stringify( argArray ) );
+                      }
+
+
+
+
+
+
+
+
+                    }
+                  }
+                });
+              };
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
             });
           }
         });
@@ -159,26 +436,27 @@ cdr-nav-iconshtml(lang='en-us')
       
       var processTelemetryUpdate = function (param) {
         var found = false;
-        for (var i = 0; i < CommanderTlmDataElements.length; i++) {
-          var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
-          for (var j = 0; j < jsonObj.tlm.length; j++) {
-            var tlmObj = CommanderTlmDataElements[i];
-            for (var k = 0; k < param.length; k++) {
+        for (var k = 0; k < param.length; k++) {
+          for (var i = 0; i < CommanderTlmDataElements.length; i++) {
+            var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
+            for (var j = 0; j < jsonObj.tlm.length; j++) {
+              var tlmObj = CommanderTlmDataElements[i];
               if (jsonObj.tlm[j].name == param[k].opsPath) {
+                found = true;
                 if(typeof param[k].sample !== 'undefined') {
                   var value = param[k].sample[0].value;
 	                
                   if(tlmObj.hasClass('bool-led')) {
                     if(value > 0) {
-                      //BoolLedEnable(tlmObj);
+                      BoolLedEnable(tlmObj);
                     } else {
-                      //BoolLedDisable(tlmObj);
+                      BoolLedDisable(tlmObj);
                     }
                     value = '';
                   }
 	                
                   if(tlmObj.hasClass('format-microseconds')){
-                    //value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
+                    value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
                   } 
 	
                   if(tlmObj.is(':checkbox')) {
@@ -208,8 +486,110 @@ cdr-nav-iconshtml(lang='en-us')
               }
             }
           }
+          
+          if (found == false) {
+            session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
+          }
         }
       };
+
+      function isTemplateCommand(commandInfo) {
+        var found = false;
+        if(commandInfo.hasOwnProperty('argument')){
+          if(commandInfo.argument.length > 0){
+            /* Look for at least 1 unspecified value. */
+            for(i=0; i < commandInfo.argument.length; i++){
+              if(!commandInfo.argument[i].hasOwnProperty('value')){
+                found = true;
+              }
+            }
+          }
+        }
+        return found;
+      }
+      
+      var GetFormattedSystemTimeInMicroseconds = function(inTime) {
+        hours = Math.floor(inTime / (1000000*60*60))
+        remainder = inTime - (hours * (1000000*60*60))
+        minutes = Math.floor(remainder / (1000000*60))
+        remainder = remainder - (minutes * (1000000*60))
+        seconds = remainder / 1000000.0
+        
+        if(minutes < 10.0) {
+          strMinutes = '0' + minutes
+        } else {
+          strMinutes = minutes
+        }
+        if(seconds < 10.0) {
+          strSeconds = '0' + seconds
+        } else {
+          strSeconds = seconds
+        }
+        
+        value = '' + hours + ':' + strMinutes + ':' + strSeconds
+        return value
+      }
+      
+      var BoolLedEnable = function(tlmObj) {
+          tlmObj.removeClass('bool-led-off')
+          tlmObj.addClass('bool-led-on')
+          if(tlmObj.hasClass('bool-led-error')) {
+              tlmObj.addClass('bool-led-on-error')
+          }
+          else if(tlmObj.hasClass('bool-led-warn')) {
+              tlmObj.addClass('bool-led-on-warn')
+          } else {
+              tlmObj.addClass('bool-led-on-info')
+          }
+      }
+      
+      var BoolLedDisable = function(tlmObj) {
+          tlmObj.removeClass('bool-led-on')
+          tlmObj.addClass('bool-led-off')
+          if(tlmObj.hasClass('bool-led-error')) {
+              tlmObj.removeClass('bool-led-on-error')
+          }
+          else if(tlmObj.hasClass('bool-led-warn')) {
+              tlmObj.removeClass('bool-led-on-warn')
+          } else {
+              tlmObj.removeClass('bool-led-on-info')
+          }
+      }
+      
+      var generateUUID = function(){
+        var d = new Date().getTime();
+        if(window.performance && typeof window.performance.now === "function"){
+          d += performance.now(); //use high-precision timer if available
+        }
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = (d + Math.random()*16)%16 | 0;
+          d = Math.floor(d/16);
+          return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+        });
+        return uuid;
+      }
+      
+      /**
+       * Some command invoke a modal or a form to be filled out by the user. The
+       * submit action of that form will invoke this function. THis function scrapes
+       * the modal for form information and generates a complete command object and
+       * sends it out.
+       * @return {undefined}
+       */
+      function sendCmd() {
+        var args = {};
+        var labels = $( "#genericInputModal" ).find( 'label' );
+        for ( var i = 0; i < labels.length; ++i ) {
+          var label = labels[ i ].textContent;
+          var value = labels[ i ].control.value;
+          args[ label ] = value;
+        }
+        var cmdObj = JSON.parse( $( "#genericInputModal" ).attr( 'data-info' ) );
+        session.sendCommand( {
+          ops_path: cmdObj.cmd.name,
+          args: args
+        } )
+      }
     
     script(type="text/javascript" src='/commander/app/util.js') 
     script(type="text/javascript" src='/commander/client.js') 
