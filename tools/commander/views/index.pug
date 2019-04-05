@@ -163,8 +163,50 @@ cdr-nav-iconshtml(lang='en-us')
           var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
           for (var j = 0; j < jsonObj.tlm.length; j++) {
             var tlmObj = CommanderTlmDataElements[i];
-            console.log(tlmObj);
-            //if (jsonObj.tlm[j].name == param.id.name){
+            for (var k = 0; k < param.length; k++) {
+              if (jsonObj.tlm[j].name == param[k].opsPath) {
+                if(typeof param[k].sample !== 'undefined') {
+                  var value = param[k].sample[0].value;
+	                
+                  if(tlmObj.hasClass('bool-led')) {
+                    if(value > 0) {
+                      //BoolLedEnable(tlmObj);
+                    } else {
+                      //BoolLedDisable(tlmObj);
+                    }
+                    value = '';
+                  }
+	                
+                  if(tlmObj.hasClass('format-microseconds')){
+                    //value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
+                  } 
+	
+                  if(tlmObj.is(':checkbox')) {
+                    if((value == true) || (value > 0.0))
+                      tlmObj.prop( 'checked', true );
+                    else
+                      tlmObj.prop( 'checked', false );
+                  }
+	                
+                  if(tlmObj.is('input')) {
+                    tlmObj.prop('value', value );
+                  } 
+	                  
+                  if(jsonObj.tlm[j].hasOwnProperty('format')) {
+                    value = sprintf(jsonObj.tlm[j].format, value);
+                  } 
+	                           
+                  if((tlmObj.hasClass('display-units') || !tlmObj.hasClass('no-display-units')) &&
+                    !tlmObj.hasClass('format-microseconds')) {
+                    if(tlmObj[0].hasAttribute('data-units')) {
+                      value = value + ' ' + tlmObj[0].getAttribute('data-units');
+                    }
+                  }
+                    
+                  tlmObj.text(value);
+                }
+              }
+            }
           }
         }
       };
