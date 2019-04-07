@@ -22,7 +22,8 @@
   "minItemWidth": 10,
   "headerHeight": 20,
   "dragProxyWidth": 300,
-  "dragProxyHeight": 200
+  "dragProxyHeight": 200,
+  "headerHeight": 25
  },
  "labels": {
   "close": "close",

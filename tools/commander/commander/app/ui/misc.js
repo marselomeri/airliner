@@ -245,13 +245,13 @@ function InitToolTips() {
  */
 function InitScrollBar() {
   var applyScrollTo = [
-    '.os-theme-dark',
+    '.lm_content',
     '#cdr-app-menu',
   ]
 
   var options = {
     autoUpdate: true,
-    // autoUpdateInterval: 33
+    autoUpdateInterval: 5,
     overflowBehavior: {
       x: "scroll",
       y: "scroll"
@@ -266,18 +266,18 @@ function InitScrollBar() {
     }
   }
   /* os-theme-dark class should be added to every pug file in the top element */
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 10 );
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 100 );
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 250 );
-  setTimeout( function() {
-    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  }, 500 );
+  //setTimeout( function() {
+  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
+  //}, 10 );
+  //setTimeout( function() {
+  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
+  //}, 100 );
+  //setTimeout( function() {
+  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
+  //}, 250 );
+  //setTimeout( function() {
+  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
+  //}, 500 );
   setTimeout( function() {
     $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
   }, 1000 );
@@ -288,9 +288,9 @@ function InitScrollBar() {
  */
 function InitResizeCtl() {
 
-  $( window ).resize( () => {
-    cu.logDebug( 'Layout | resize event occured' );
-    myLayout.updateSize();
-  } );
+  //$( window ).resize( () => {
+  //  cu.logDebug( 'Layout | resize event occured' );
+  //  myLayout.updateSize();
+  //} );
 
 }

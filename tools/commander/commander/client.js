@@ -63,7 +63,7 @@ function CommanderClient() {
 
   this.videoConnected = false;
 
-  cu.logInfo( 'Clinet | CommanderClient' );
+  //cu.logInfo( 'Clinet | CommanderClient' );
   /* Connect */
   this.connect();
 }
@@ -159,7 +159,7 @@ CommanderClient.prototype.loadWidgets = function( cb ) {
   if ( localStorage.widgetState != undefined && typeof JSON.parse( localStorage.widgetState ) == 'object' ) {
     cb( JSON.parse( localStorage.widgetState ) )
   } else {
-    cu.logError( 'loadWidgets | no widget state may be available' );
+    //cu.logError( 'loadWidgets | no widget state may be available' );
   }
 };
 
@@ -221,7 +221,7 @@ CommanderClient.prototype.getADSBJson = function( interval, cb ) {
     try {
       this.clearADSBInterval();
     } catch ( ex ) {
-      cu.logError( 'unable to clear ADSB interval ' );
+      //cu.logError( 'unable to clear ADSB interval ' );
     }
   }
   this.adsbInterval = setInterval( () => {
@@ -310,7 +310,7 @@ CommanderClient.prototype.getCmdDef = function( cmdObj, cb ) {
         };
         cb( outCmdDef );
       } catch ( e ) {
-        cu.logError( 'loadCommanding | command definition cannot be loaded' );
+        //cu.logError( 'loadCommanding | command definition cannot be loaded.  ' + e );
       }
     } );
   };
@@ -412,7 +412,7 @@ CommanderClient.prototype.unsubscribe = function( tlmObj ) {
       if ( this.subscriptions.hasOwnProperty( opsPath ) ) {
         delete this.subscriptions[ opsPath ];
       }
-      cu.logDebug( 'Clinet | unsubscribed' )
+      //cu.logDebug( 'Clinet | unsubscribed' )
     }
 
     this.socket.emit( 'unsubscribe', tlmOpsPaths );
@@ -455,7 +455,7 @@ CommanderClient.prototype.subscribe = function( tlmObj, cb ) {
  * @param  {Object} cmdObj Command object
  */
 CommanderClient.prototype.sendCommand = function( cmdObj ) {
-  cu.logInfo( 'Client | sent command : ', JSON.stringify( cmdObj, 2 ) );
+  //cu.logInfo( 'Client | sent command : ', JSON.stringify( cmdObj, 2 ) );
   if ( this.isSocketConnected ) {
     this.socket.emit( 'sendCmd', cmdObj );
 
@@ -468,7 +468,7 @@ CommanderClient.prototype.sendCommand = function( cmdObj ) {
  * @param  {Object} path XPath style query string
  */
 CommanderClient.prototype.queryConfigDB = function( path, cb ) {
-  cu.logInfo( 'Client | query config DB : ', JSON.stringify( path, 2 ) );
+  //cu.logInfo( 'Client | query config DB : ', JSON.stringify( path, 2 ) );
   if ( this.isSocketConnected ) {
     this.socket.emit( 'queryConfigDB', path, cb );
 

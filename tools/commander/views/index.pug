@@ -40,10 +40,12 @@ cdr-nav-iconshtml(lang='en-us')
     link(rel="stylesheet" type="text/css" href="/scripts/patternfly-bootstrap-treeview/dist/bootstrap-treeview.min.css")
     link(rel="stylesheet" type="text/css" href="/scripts/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet" type="text/css" href="/scripts/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css")
-    link(rel="stylesheet" type="text/css" href="/css/commander.css")
     link(rel="stylesheet" type="text/css" href="/scripts/font-awesome/css/font-awesome.min.css")
     link(type="text/css" rel="stylesheet" href="/css/goldenlayout-base.css")
-    link(type="text/css" rel="stylesheet" href="/css/goldenlayout-dark-theme.css")  
+    link(type="text/css" rel="stylesheet" href="/css/goldenlayout-dark-theme.css")
+    <!--link(rel="stylesheet" type="text/css" href="/scripts/golden-layout/src/css/goldenlayout-base.css")--> 
+    <!--link(rel="stylesheet" type="text/css" href="/scripts/golden-layout/src/css/goldenlayout-dark-theme.css")-->
+    link(rel="stylesheet" type="text/css" href="/css/commander.css")
     link(type="text/css" rel="stylesheet" href="/scripts/cesium/Source/Widgets/widgets.css")
     link(type="text/css" rel="stylesheet" href="/scripts/jquery-contextmenu/dist/jquery.contextMenu.min.css")  
   body
@@ -129,6 +131,8 @@ cdr-nav-iconshtml(lang='en-us')
         mutationRecords.forEach ( function (mutation) {
           if (typeof mutation.addedNodes == "object" && mutation.addedNodes.length > 0) {
             var jq = $(mutation.addedNodes);
+            
+            
             jq.find('[data-cdr]').each(function () {
               var obj = $(this).attr('data-cdr');
               
@@ -590,8 +594,9 @@ cdr-nav-iconshtml(lang='en-us')
           args: args
         } )
       }
+      
     
-    script(type="text/javascript" src='/commander/app/util.js') 
+    //script(type="text/javascript" src='/commander/app/util.js') 
     script(type="text/javascript" src='/commander/client.js') 
     script(type="text/javascript" src='/commander/app/controller.js') 
     script(type="text/javascript" src='/commander/app/ui/navtree.js') 

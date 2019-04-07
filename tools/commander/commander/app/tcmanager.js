@@ -373,31 +373,31 @@
 //    }
 //    return found;
 //  }
-//
-//  /**
-//   * Some command invoke a modal or a form to be filled out by the user. The
-//   * submit action of that form will invoke this function. THis function scrapes
-//   * the modal for form information and generates a complete command object and
-//   * sends it out.
-//   * @return {undefined}
-//   */
-//  function sendCmd() {
-//    var args = {};
-//    var labels = $( "#genericInputModal" ).find( 'label' );
-//    for ( var i = 0; i < labels.length; ++i ) {
-//      var label = labels[ i ].textContent;
-//      var value = labels[ i ].control.value;
-//      args[ label ] = value;
-//    }
-//    var cmdObj = JSON.parse( $( "#genericInputModal" ).attr( 'data-info' ) );
-//    session.sendCommand( {
-//      ops_path: cmdObj.cmd.name,
-//      args: args
-//    } )
-//  }
-//
-//
-//
+
+  /**
+   * Some command invoke a modal or a form to be filled out by the user. The
+   * submit action of that form will invoke this function. THis function scrapes
+   * the modal for form information and generates a complete command object and
+   * sends it out.
+   * @return {undefined}
+   */
+  function sendCmd() {
+    var args = {};
+    var labels = $( "#genericInputModal" ).find( 'label' );
+    for ( var i = 0; i < labels.length; ++i ) {
+      var label = labels[ i ].textContent;
+      var value = labels[ i ].control.value;
+      args[ label ] = value;
+    }
+    var cmdObj = JSON.parse( $( "#genericInputModal" ).attr( 'data-info' ) );
+    session.sendCommand( {
+      ops_path: cmdObj.cmd.name,
+      args: args
+    } )
+  }
+
+
+
 //  /**
 //   * Manages data inside a panel which tipically is a window of a layout.
 //   */
