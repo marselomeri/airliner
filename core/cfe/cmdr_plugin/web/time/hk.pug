@@ -1,10 +1,4 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Time Housekeeping
-    div.widget-body
+div.widget-body
       table.table.table-condensed
         tbody
           tr
@@ -13,8 +7,8 @@
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.CmdCounter'}], indicator:'text'}) ---
             td(style='width:100px') 
               .btn-group
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Noop'}, indicator:'cmd'}) No-Op
-                button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Reset'}, indicator:'cmd'}) Reset
+                button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Noop'}, indicator:'cmd'}) No-Op
+                button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Reset'}, indicator:'cmd'}) Reset
           tr
             th Cmd Error Count
             td
@@ -40,13 +34,13 @@
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.LeapSeconds'}], indicator:'text'}) ---
             td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetLeapsCmd'}, indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetLeapsCmd'}, indicator:'cmd'}) Set
           tr
             th MET
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SecondsMET'}], indicator:'text'}) ---
             td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}, indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}, indicator:'cmd'}) Set
           tr
             th
             td 
@@ -57,7 +51,7 @@
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SecondsSTCF'}], indicator:'text'}) ---
             td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}, indicator:'cmd'}) Set
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}, indicator:'cmd'}) Set
           tr
             th
             td 
@@ -68,8 +62,8 @@
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.Seconds1HzAdj'}], indicator:'text'}) ---
             td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Add1HzAdjCmd'}, indicator:'cmd'}) Add
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Sub1HzAdjCmd'}, indicator:'cmd'}) Sub
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Add1HzAdjCmd'}, indicator:'cmd'}) Add
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_Sub1HzAdjCmd'}, indicator:'cmd'}) Sub
           tr
             th 
             td 
@@ -80,19 +74,20 @@
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SecondsDelay'}], indicator:'text'}) ---
             td
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddDelayCmd'}, indicator:'cmd'}) Add Delay
-              button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubDelayCmd'}, indicator:'cmd'}) Sub Delay
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddDelayCmd'}, indicator:'cmd'}) Add Delay
+              button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubDelayCmd'}, indicator:'cmd'}) Sub Delay
           tr
             th 
             td 
               span(data-cdr={tlm:[{name:'/CFE/CFE_TIME_HkPacket_t/Payload.SubsecsDelay'}], indicator:'text'}) ---
             td
-    footer
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_StateCmd_t'}, indicator:'cmd'}) Set State
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SourceCmd_t'}, indicator:'cmd'}) Set Source
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetSignalCmd'}, indicator:'cmd'}) Set Signal
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetTimeCmd'}, indicator:'cmd'}) Set Time
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}, indicator:'cmd'}) Set MET
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}, indicator:'cmd'}) Set STCF
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddAdjustCmd'}, indicator:'cmd'}) Add Adjust
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubAdjustCmd'}, indicator:'cmd'}) Sub Adjust
+footer
+  .btn-group
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_StateCmd_t'}, indicator:'cmd'}) Set State
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SourceCmd_t'}, indicator:'cmd'}) Set Source
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetSignalCmd'}, indicator:'cmd'}) Set Signal
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetTimeCmd'}, indicator:'cmd'}) Set Time
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetMetCmd'}, indicator:'cmd'}) Set MET
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SetStcfCmd'}, indicator:'cmd'}) Set STCF
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_AddAdjustCmd'}, indicator:'cmd'}) Add Adjust
+     button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SubAdjustCmd'}, indicator:'cmd'}) Sub Adjust

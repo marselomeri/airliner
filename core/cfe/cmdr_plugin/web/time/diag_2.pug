@@ -1,11 +1,6 @@
-.row.row-fluid
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Time Diag
-    div.widget-body
-      table.table.table-condensed
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
+
+table.table.table-condensed
         tbody
           tr
             th Current UTC
@@ -91,7 +86,5 @@
             th 
             td 
               div(data-cdr={tlm:[{name:'/CFE/CFE_TIME_DiagPacket_t/Payload.ToneSignalLatch.Subseconds'}], indicator:'text'}) ---
-              
-    footer
-      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
+      
                       

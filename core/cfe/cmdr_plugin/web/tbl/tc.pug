@@ -5,14 +5,7 @@
 -   global.COMMANDER.queryConfigDB(queryString, function (results) {
 -     var tables = results[0];
 
-.row.os-theme-dark                
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 General
-    div.widget-body.table-responsive
-      table.table.table-condensed
+table.table.table-condensed
         tbody
           tr
             th Cmd Count
@@ -116,7 +109,7 @@
                 button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DelCDSCmd_t', argument: [{name: 'Payload.TableName', value: tables[i].id}]}, indicator:'cmd'}) Delete CDS
           - }
           
-    footer
+footer
       button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_LoadCmd_t'}, indicator:'cmd'}) Load
 -   })
 - }

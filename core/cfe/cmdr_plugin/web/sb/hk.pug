@@ -4,14 +4,7 @@ script.
         session.sendCommand({ops_path:'/CFE/CFE_ES_TlmPoolStatsCmd_t', args:{'Payload.Application':'CFE_SB', 'Payload.PoolHandle':poolHandle}});
     };
          
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-      header
-        span.widget-icon
-          i.fa.fa-table
-        h2 Housekeeping
-      div.widget-body.table-responsive
-        table.table.table-condensed
+table.table.table-condensed
           tbody
             tr
               th Cmd Count
@@ -87,19 +80,12 @@ script.
                 span#SBMemPoolHandle(data-cdr={tlm:[{name:'/CFE/CFE_SB_HKMsg_t/Payload.MemPoolHandle', format:'0x%08x'}],indicator:'text'}) ---
               td
                 button.btn.cdr-primary(onclick='sendSBMemPoolStats()') Send Stats
-      footer
-        .btn-group.dropdown
-          button.btn.cdr-primary.dropdown-toggle(type='button', data-toggle='dropdown')
-            | Commands
-            span.caret
-          ul#MiscCommands.dropdown-menu(role='menu')
-            li.cdr-dropdown-list-item
-              a(data-cdr={cmd:{name:'/CFE/CFE_SB_EnRoutCmd_t'},indicator:'cmd'}) Enable Route
-            li.cdr-dropdown-list-item
-              a(data-cdr={cmd:{name:'/CFE/CFE_SB_DisableRoutCmd_t'},indicator:'cmd'}) Disable Route
-            li.cdr-dropdown-list-item
-              a(data-cdr={cmd:{name:'/CFE/CFE_SB_SendRoutInfo_t'},indicator:'cmd'}) Send Routing Info
-            li.cdr-dropdown-list-item
-              a(data-cdr={cmd:{name:'/CFE/CFE_SB_SendPipeInfo_t'},indicator:'cmd'}) Send Pipe Info 
-            li.cdr-dropdown-list-item
-              a(data-cdr={cmd:{name:'/CFE/CFE_SB_SendMapInfo_t'},indicator:'cmd'}) Send Map Info 
+
+footer
+  .btn-group
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_EnRoutCmd_t'},indicator:'cmd'}) Enable Route
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_DisableRoutCmd_t'},indicator:'cmd'}) Disable Route
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_SendRoutInfo_t'},indicator:'cmd'}) Send Routing Info
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_SendPipeInfo_t'},indicator:'cmd'}) Send Pipe Info
+    button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_SB_SendMapInfo_t'},indicator:'cmd'}) Send Map Info
+    

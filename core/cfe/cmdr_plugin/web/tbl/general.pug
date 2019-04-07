@@ -1,12 +1,4 @@
-
-.row.os-theme-dark                
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 General
-    div.widget-body.table-responsive
-      table.table.table-condensed
+table.table.table-condensed
         tbody
           tr
             th Cmd Count
@@ -90,11 +82,12 @@
             td
               span(data-cdr={tlm:[{name:'/CFE/CFE_TBL_HkPacket_t/Payload.LastFileDumped'}],indicator:'text'}) ---
             td
-    footer
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_LoadCmd_t'}, indicator:'cmd'}) Load
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_AbortLdCmd_t'}, indicator:'cmd'}) Abort Load
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpCmd_t'}, indicator:'cmd'}) Dump
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ValidateCmd_t'}, indicator:'cmd'}) Validate
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ActivateCmd_t'}, indicator:'cmd'}) Activate
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpRegCmd_t'}, indicator:'cmd'}) Dump Reg
-      button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DelCDSCmd_t'}, indicator:'cmd'}) Delete CDS
+footer
+  .btn-group
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_LoadCmd_t'}, indicator:'cmd'}) Load
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_AbortLdCmd_t'}, indicator:'cmd'}) Abort Load
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpCmd_t'}, indicator:'cmd'}) Dump
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ValidateCmd_t'}, indicator:'cmd'}) Validate
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_ActivateCmd_t'}, indicator:'cmd'}) Activate
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DumpRegCmd_t'}, indicator:'cmd'}) Dump Reg
+     button.btn.cdr-primary(data-cdr={cmd: {name: '/CFE/CFE_TBL_DelCDSCmd_t'}, indicator:'cmd'}) Delete CDS

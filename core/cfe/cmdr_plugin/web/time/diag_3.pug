@@ -1,11 +1,6 @@
-.row.row-fluid
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 Time Diag
-    div.widget-body
-      table.table.table-condensed
+button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
+
+table.table.table-condensed
         tbody
           tr
             th Tone Data Latch
@@ -93,7 +88,3 @@
                   {value:3, name:'NEW'},
                   {value:4, name:'EXISTING'}
                 ]}}],indicator:'text'}) ---
-              
-    footer
-      button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_TIME_SendDiag'}, indicator:'cmd'}) Telemeter Diag
-                      
