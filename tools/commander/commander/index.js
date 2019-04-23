@@ -219,6 +219,27 @@ function Commander( workspace, configFile ) {
         }
       }
     } );
+    
+    var onevent = socket.onevent;
+    socket.onevent = function (packet) {
+      var args = packet.data || {};
+      onevent.call(this, packet);
+      packet.data = ['*'].concat(args);
+      onevent.call(this, packet);
+    }
+
+    socket.on( '*', function( funcName, args, cb ) {    	
+      for ( var i in self.registeredFunctions ) {
+        if ( self.registeredFunctions[ i ].funcName === funcName ) {
+          if ( typeof self.registeredFunctions[ i ].cb === 'function' ) {
+            self.registeredFunctions[ i ].cb( args, function( results ) {
+              cb( results );
+            } );
+          };
+        }
+      }
+    });
+
 
     function updateTelemetry( update ) {
       socket.volatile.emit( 'telemetry-update', update );

@@ -225,11 +225,11 @@ $( () => {
         //InitLayout( myLayout );
 
         /* load resources */
-        //InitModal();
-        //InitMenuState();
+        InitCommandInputForm();
+        InitMenuState();
         //InitToolTips();
         InitScrollBar();
-        //InitResizeCtl();
+        InitResizeCtl();
         InitSidebar();
         //InitWidgets();
         /* false means previously, there had already been a session connection */

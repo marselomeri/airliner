@@ -3,14 +3,14 @@
 /**
  * Proceadure to generate modals
  */
-function InitModal() {
+function InitCommandInputForm() {
   /* Make it draggable with the boundary of document */
   $( ".modal-content" ).draggable( {
     containment: "document"
   } );
   /* modal on show handle - generate a form based on custom
    * information from dom elements*/
-  $( "#genericInputModal" ).on( 'show.bs.modal', ( event ) => {
+  $( "#CommandInputForm" ).on( 'show.bs.modal', ( event ) => {
 
     if ( event.hasOwnProperty( 'relatedTarget' ) ) {
       /* which invoked the modal to show */
@@ -22,7 +22,7 @@ function InitModal() {
       /* form generation data */
       var custom = btn.data( 'custom' );
       var info = btn.data( 'cdr' );
-      $( "#genericInputModal" ).attr( 'data-info', JSON.stringify( info ) );
+      $( "#CommandInputForm" ).attr( 'data-info', JSON.stringify( info ) );
       var item = "";
       /* set modal title */
       $( '#modalTitle' ).text( title );
@@ -94,7 +94,7 @@ function InitModal() {
     }
 
     /* supress the default reload event */
-    $( "#genericInputModal" ).on( 'submit', function( event ) {
+    $( "#CommandInputForm" ).on( 'submit', function( event ) {
       event.preventDefault();
     } );
 
@@ -110,7 +110,7 @@ function InitModal() {
   } );
 
   /* modal on hide handle - unload a form based */
-  $( "#genericInputModal" ).on( 'hidden.bs.modal', ( e ) => {
+  $( "#CommandInputForm" ).on( 'hidden.bs.modal', ( e ) => {
     /* replace title */
     $( "#modalTitle" ).text( 'Title Placeholder' );
     /* Remove all attached children*/

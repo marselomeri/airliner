@@ -383,13 +383,13 @@
    */
   function sendCmd() {
     var args = {};
-    var labels = $( "#genericInputModal" ).find( 'label' );
+    var labels = $( "#CommandInputForm" ).find( 'label' );
     for ( var i = 0; i < labels.length; ++i ) {
       var label = labels[ i ].textContent;
       var value = labels[ i ].control.value;
       args[ label ] = value;
     }
-    var cmdObj = JSON.parse( $( "#genericInputModal" ).attr( 'data-info' ) );
+    var cmdObj = JSON.parse( $( "#CommandInputForm" ).attr( 'data-info' ) );
     session.sendCommand( {
       ops_path: cmdObj.cmd.name,
       args: args
@@ -577,7 +577,7 @@
 //
 //                /* Make button fire modal */
 //                btnObj.attr( 'data-toggle', 'modal' );
-//                btnObj.attr( 'data-target', '#genericInputModal' );
+//                btnObj.attr( 'data-target', '#CommandInputForm' );
 //                btnObj.attr( 'data-title', 'Submit ' + cmdInfo.name + ' Arguments' );
 //                btnObj.attr( 'data-submit', 'sendCmd' );
 //                var argArray = [];

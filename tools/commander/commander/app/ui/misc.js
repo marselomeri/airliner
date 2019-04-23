@@ -272,12 +272,12 @@ function InitScrollBar() {
   //setTimeout( function() {
   //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
   //}, 100 );
-  //setTimeout( function() {
-  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  //}, 250 );
-  //setTimeout( function() {
-  //  $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
-  //}, 500 );
+  setTimeout( function() {
+    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
+  }, 250 );
+  setTimeout( function() {
+    $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
+  }, 500 );
   setTimeout( function() {
     $( applyScrollTo.join( ',' ) ).overlayScrollbars( options );
   }, 1000 );
@@ -288,9 +288,9 @@ function InitScrollBar() {
  */
 function InitResizeCtl() {
 
-  //$( window ).resize( () => {
-  //  cu.logDebug( 'Layout | resize event occured' );
-  //  myLayout.updateSize();
-  //} );
+  $( window ).resize( () => {
+    //cu.logDebug( 'Layout | resize event occured' );
+    myLayout.updateSize();
+  } );
 
 }

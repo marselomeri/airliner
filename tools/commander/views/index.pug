@@ -50,7 +50,7 @@ cdr-nav-iconshtml(lang='en-us')
     link(type="text/css" rel="stylesheet" href="/scripts/jquery-contextmenu/dist/jquery.contextMenu.min.css")  
   body
     <!-- Generic Modal Template -->
-    div#genericInputModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="genericInputModal" aria-hidden="true")
+    div#CommandInputForm.modal.fade(tabindex="-1" role="dialog" aria-labelledby="CommandInputForm" aria-hidden="true")
       div.modal-dialog(role="document")
         div.modal-content
           div.modal-header
@@ -82,10 +82,10 @@ cdr-nav-iconshtml(lang='en-us')
         ul.navbar-nav.ml-auto
         ul#cdr-well-top-right.navbar-nav.cdr-well
         ul.navbar-nav.cdr-nav-btn(data-tooltip='true' title='Load Layout')
-          button.btn.btn-outline-primary( data-toggle="modal" data-target="#genericInputModal" data-title="Load Layout" data-submit="LoadLayout" data-custom='[{"label":"Select Layout", "type":"browse", "dtype":"none", "getItem":"GetStoredLayoutList"}]') 
+          button.btn.btn-outline-primary( data-toggle="modal" data-target="#CommandInputForm" data-title="Load Layout" data-submit="LoadLayout" data-custom='[{"label":"Select Layout", "type":"browse", "dtype":"none", "getItem":"GetStoredLayoutList"}]') 
             i.cdr-nav-icons.fa.fa-download
         ul.navbar-nav.cdr-nav-btn(data-tooltip='true' title='Save Layout')
-          button.btn.btn-outline-primary(data-toggle="modal" data-target="#genericInputModal" data-title="Save Layout" data-submit="SaveLayout" data-custom='[{"label":"Enter Layout Name ", "type":"field", "dtype":"text"}]') 
+          button.btn.btn-outline-primary(data-toggle="modal" data-target="#CommandInputForm" data-title="Save Layout" data-submit="SaveLayout" data-custom='[{"label":"Enter Layout Name ", "type":"field", "dtype":"text"}]') 
             i.cdr-nav-icons.fa.fa-save
         <!--ul.navbar-nav.cdr-nav-btn#noop-test -->
         <!--  button.btn.btn-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_NoopCmd'},indicator:'cmd'}) -->
@@ -132,21 +132,21 @@ cdr-nav-iconshtml(lang='en-us')
           if (typeof mutation.addedNodes == "object" && mutation.addedNodes.length > 0) {
             var jq = $(mutation.addedNodes);
             
-            
-            jq.find('[data-cdr]').each(function () {
+            jq.find('[data-cdr]').not('.cdr-bound').each(function () {
               var obj = $(this).attr('data-cdr');
               
               var jsonObj;
               if (typeof obj === 'string' || obj instanceof String) {
-                // it's a string
+                /* It's a string, so convert it to an object. */
                 jsonObj = JSON.parse(obj);
               }
               else if (typeof obj === 'object' || obj instanceof Object) {
-                // it's an object
+                /* It's alaready an object, so just reference it. */
                 jsonObj = obj;
               }
               else {
-                // it's something else
+                /* It's something else that we don't understand.  Skip it. */
+                console.log('data-cdr improperly formatted.  Must be either a string or an object.');
                 return;
               }
               
@@ -155,11 +155,13 @@ cdr-nav-iconshtml(lang='en-us')
                 session.subscribe(jsonObj.tlm, processTelemetryUpdate);
                 //session.getTlmInfo(jsonObj,processTlmInfo);
                 CommanderTlmDataElements.push($(this));
+                $(this).addClass('cdr-bound');
               }
               if (jsonObj.hasOwnProperty('cmd')) {
                 /* This is a command object. */
                 var cmdObj = jsonObj.cmd;
                 var btnObj = $(this);
+                $(this).addClass('cdr-bound');
                 session.getCmdDef({name:cmdObj.name}, function (cmdInfo) {
                   if (cmdObj.hasOwnProperty('uuid')) {
                     /* We already bound this element. */
@@ -167,7 +169,7 @@ cdr-nav-iconshtml(lang='en-us')
                     var uuid = generateUUID();
                     cmdInfo.uuid = uuid;
                     cmdObj.uuid = uuid;
-                    btnObj.attr('data-sage', JSON.stringify(jsonObj));
+                    btnObj.attr('data-cdr', JSON.stringify(jsonObj));
                     /* Copy any arguments we have from the command button into the cmdInfo struct. */
                     if (cmdObj.hasOwnProperty('argument')) {
                       for (i = 0; i < cmdObj.argument.length; i++) {
@@ -180,7 +182,6 @@ cdr-nav-iconshtml(lang='en-us')
                     };
                       
                     if ( isTemplateCommand( cmdInfo ) == false ) {
-                      console.log('Template');
                       /*
                        * This is a fully instantiated command. No need to
                        * create a popup form. Just send the command when
@@ -199,13 +200,6 @@ cdr-nav-iconshtml(lang='en-us')
                         });
                       };
                     } else {
-
-
-
-
-
-
-
                       /*
                        * This is not a fully instantiated command. We need
                        * to present a popup form to allow the user to
@@ -234,7 +228,7 @@ cdr-nav-iconshtml(lang='en-us')
       
                       /* Make button fire modal */
                       btnObj.attr( 'data-toggle', 'modal' );
-                      btnObj.attr( 'data-target', '#genericInputModal' );
+                      btnObj.attr( 'data-target', '#CommandInputForm' );
                       btnObj.attr( 'data-title', 'Submit ' + cmdInfo.name + ' Arguments' );
                       btnObj.attr( 'data-submit', 'sendCmd' );
                       var argArray = [];
@@ -404,35 +398,42 @@ cdr-nav-iconshtml(lang='en-us')
                         }
                         btnObj.attr( 'data-custom', JSON.stringify( argArray ) );
                       }
-
-
-
-
-
-
-
-
                     }
                   }
                 });
               };
+            });
+          };
+          
+          if (typeof mutation.removedNodes == "object" && mutation.removedNodes.length > 0) {
+            var jq = $(mutation.removedNodes);
+            
+            jq.find('[data-cdr],.cdr-bound').each(function () {
+              var obj = $(this).attr('data-cdr');
               
+              var jsonObj;
+              if (typeof obj === 'string' || obj instanceof String) {
+                /* It's a string, so convert it to an object. */
+                jsonObj = JSON.parse(obj);
+              }
+              else if (typeof obj === 'object' || obj instanceof Object) {
+                /* It's alaready an object, so just reference it. */
+                jsonObj = obj;
+              }
+              else {
+                /* It's something else that we don't understand.  Skip it. */
+                return;
+              }
               
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
+              //if (jsonObj.hasOwnProperty('tlm')) {
+              //  /* This is a telemetry object. */
+              //  session.unsubscribe(jsonObj.tlm);
+              //  $(this).removeClass('cdr-bound');
+              //}
+              //if (jsonObj.hasOwnProperty('cmd')) {
+              //  /* This is a command object. */
+              //  var cmdObj = jsonObj.cmd;
+              //}
             });
           }
         });
@@ -445,54 +446,61 @@ cdr-nav-iconshtml(lang='en-us')
             var jsonObj = JSON.parse(CommanderTlmDataElements[i].attr('data-cdr'));
             for (var j = 0; j < jsonObj.tlm.length; j++) {
               var tlmObj = CommanderTlmDataElements[i];
-              if (jsonObj.tlm[j].name == param[k].opsPath) {
-                found = true;
-                if(typeof param[k].sample !== 'undefined') {
-                  var value = param[k].sample[0].value;
-	                
-                  if(tlmObj.hasClass('bool-led')) {
-                    if(value > 0) {
-                      BoolLedEnable(tlmObj);
-                    } else {
-                      BoolLedDisable(tlmObj);
+              if(tlmObj.is(':visible')) {
+                  if (jsonObj.tlm[j].name == param[k].opsPath) {
+                    found = true;
+                    if(typeof param[k].sample !== 'undefined') {
+                      var value = param[k].sample[0].value;
+    	                
+                      if(tlmObj.hasClass('bool-led')) {
+                        if(value > 0) {
+                          BoolLedEnable(tlmObj);
+                        } else {
+                          BoolLedDisable(tlmObj);
+                        }
+                        value = '';
+                      }
+    	                
+                      if(tlmObj.hasClass('format-microseconds')){
+                        value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
+                      } 
+    	
+                      if(tlmObj.is(':checkbox')) {
+                        if((value == true) || (value > 0.0))
+                          tlmObj.prop( 'checked', true );
+                        else
+                          tlmObj.prop( 'checked', false );
+                      }
+    	                
+                      if(tlmObj.is('input')) {
+                        tlmObj.prop('value', value );
+                      } 
+    	                  
+                      if(jsonObj.tlm[j].hasOwnProperty('format')) {
+                        value = sprintf(jsonObj.tlm[j].format, value);
+                      } 
+    	                           
+                      if((tlmObj.hasClass('display-units') || !tlmObj.hasClass('no-display-units')) &&
+                        !tlmObj.hasClass('format-microseconds')) {
+                        if(tlmObj[0].hasAttribute('data-units')) {
+                          value = value + ' ' + tlmObj[0].getAttribute('data-units');
+                        }
+                      }
+                        
+                      if(typeof tlmObj === 'object') {
+                        tlmObj.text(value);
+                      } else {
+                        console.log(tlmObj);
+                      }
                     }
-                    value = '';
                   }
-	                
-                  if(tlmObj.hasClass('format-microseconds')){
-                    value = GetFormattedSystemTimeInMicroseconds(param.engValue.uint32Value)
-                  } 
-	
-                  if(tlmObj.is(':checkbox')) {
-                    if((value == true) || (value > 0.0))
-                      tlmObj.prop( 'checked', true );
-                    else
-                      tlmObj.prop( 'checked', false );
-                  }
-	                
-                  if(tlmObj.is('input')) {
-                    tlmObj.prop('value', value );
-                  } 
-	                  
-                  if(jsonObj.tlm[j].hasOwnProperty('format')) {
-                    value = sprintf(jsonObj.tlm[j].format, value);
-                  } 
-	                           
-                  if((tlmObj.hasClass('display-units') || !tlmObj.hasClass('no-display-units')) &&
-                    !tlmObj.hasClass('format-microseconds')) {
-                    if(tlmObj[0].hasAttribute('data-units')) {
-                      value = value + ' ' + tlmObj[0].getAttribute('data-units');
-                    }
-                  }
-                    
-                  tlmObj.text(value);
                 }
               }
-            }
-          }
           
-          if (found == false) {
-            session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
+            //if (found == false) {
+            //  console.log('Unsubscribing from ' + param[i].opsPath);
+            //  session.unsubscribe({tlm:[{'name':param[k].opsPath}]});
+            //}
           }
         }
       };
@@ -582,13 +590,13 @@ cdr-nav-iconshtml(lang='en-us')
        */
       function sendCmd() {
         var args = {};
-        var labels = $( "#genericInputModal" ).find( 'label' );
+        var labels = $( "#CommandInputForm" ).find( 'label' );
         for ( var i = 0; i < labels.length; ++i ) {
           var label = labels[ i ].textContent;
           var value = labels[ i ].control.value;
           args[ label ] = value;
         }
-        var cmdObj = JSON.parse( $( "#genericInputModal" ).attr( 'data-info' ) );
+        var cmdObj = JSON.parse( $( "#CommandInputForm" ).attr( 'data-info' ) );
         session.sendCommand( {
           ops_path: cmdObj.cmd.name,
           args: args
@@ -601,5 +609,5 @@ cdr-nav-iconshtml(lang='en-us')
     script(type="text/javascript" src='/commander/app/controller.js') 
     script(type="text/javascript" src='/commander/app/ui/navtree.js') 
     script(type="text/javascript" src='/commander/app/ui/layout.js') 
-    script(type="text/javascript" src='/commander/app/ui/modal.js') 
+    script(type="text/javascript" src='/commander/app/ui/command_input_form.js') 
     script(type="text/javascript" src='/commander/app/ui/misc.js')
