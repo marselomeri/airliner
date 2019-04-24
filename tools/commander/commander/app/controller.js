@@ -222,16 +222,16 @@ $( () => {
         myLayout = new window.GoldenLayout( config, $( '#cdr-layout-container' ) );
         updateDragSources();
         window.dispatchEvent( llc );
-        //InitLayout( myLayout );
+        InitLayout( myLayout );
 
         /* load resources */
         InitCommandInputForm();
         InitMenuState();
-        //InitToolTips();
+        InitToolTips();
         InitScrollBar();
         InitResizeCtl();
         InitSidebar();
-        //InitWidgets();
+        InitWidgets();
         /* false means previously, there had already been a session connection */
         _sescon_never = false;
       } ).catch( ( e ) => {

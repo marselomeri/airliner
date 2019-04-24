@@ -70,7 +70,7 @@ cdr-nav-iconshtml(lang='en-us')
         span.navbar-toggler-icon
       #cdr-nav-top-left-content.collapse.navbar-collapse
         ul.navbar-nav.cdr-nav-btn
-          button#cdr-app-menu-toggle.btn.btn-outline-primary(data-tooltip='true' title='Open/Close Menus')
+          button#cdr-app-menu-toggle.btn.btn-menu-button(data-tooltip='true' title='Open/Close Menus')
             i.cdr-nav-icons.fa.fa-bars
         ul.navbar-nav.cdr-nav-btn
           i#cdr-voice-cmd.cdr-nav-icons.fa.fa-microphone
@@ -82,10 +82,10 @@ cdr-nav-iconshtml(lang='en-us')
         ul.navbar-nav.ml-auto
         ul#cdr-well-top-right.navbar-nav.cdr-well
         ul.navbar-nav.cdr-nav-btn(data-tooltip='true' title='Load Layout')
-          button.btn.btn-outline-primary( data-toggle="modal" data-target="#CommandInputForm" data-title="Load Layout" data-submit="LoadLayout" data-custom='[{"label":"Select Layout", "type":"browse", "dtype":"none", "getItem":"GetStoredLayoutList"}]') 
+          button.btn.btn-menu-button( data-toggle="modal" data-target="#CommandInputForm" data-title="Load Layout" data-submit="LoadLayout" data-custom='[{"label":"Select Layout", "type":"browse", "dtype":"none", "getItem":"GetStoredLayoutList"}]') 
             i.cdr-nav-icons.fa.fa-download
         ul.navbar-nav.cdr-nav-btn(data-tooltip='true' title='Save Layout')
-          button.btn.btn-outline-primary(data-toggle="modal" data-target="#CommandInputForm" data-title="Save Layout" data-submit="SaveLayout" data-custom='[{"label":"Enter Layout Name ", "type":"field", "dtype":"text"}]') 
+          button.btn.btn-menu-button(data-toggle="modal" data-target="#CommandInputForm" data-title="Save Layout" data-submit="SaveLayout" data-custom='[{"label":"Enter Layout Name ", "type":"field", "dtype":"text"}]') 
             i.cdr-nav-icons.fa.fa-save
         <!--ul.navbar-nav.cdr-nav-btn#noop-test -->
         <!--  button.btn.btn-outline-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_NoopCmd'},indicator:'cmd'}) -->
@@ -97,9 +97,9 @@ cdr-nav-iconshtml(lang='en-us')
         div#cdr-layout-container
         div#cdr-app-menu 
           div#cdr-panel-layout-switch.cdr-center-btn-group.btn-group(role="group" aria-label="Toggle Menus")
-            button#cdr-layout-menu-toggle.btn.cdr-outline-primary.active(data-tooltip='true' title='A layout(collection of webpages) directory') Layout
-            button#cdr-panel-menu-toggle.btn.cdr-outline-primary(data-tooltip='true' title='A webpage directory') Panels
-            button#cdr-widget-menu-toggle.btn.cdr-outline-primary(data-tooltip='true' title='A widget directory') Widgets
+            button#cdr-layout-menu-toggle.btn.cdr-nav-pane-selector.active(data-tooltip='true' title='A layout(collection of webpages) directory') Layout
+            button#cdr-panel-menu-toggle.btn.cdr-nav-pane-selector(data-tooltip='true' title='A webpage directory') Panels
+            button#cdr-widget-menu-toggle.btn.cdr-nav-pane-selector(data-tooltip='true' title='A widget directory') Widgets
           div#cdr-panel-menu-container.cdr-menu-container(data-open="false")
           div#cdr-layout-menu-container.cdr-menu-container.menuShow(data-open="true")
           div#cdr-widget-menu-container.cdr-menu-container(data-open="false")
@@ -607,6 +607,7 @@ cdr-nav-iconshtml(lang='en-us')
     //script(type="text/javascript" src='/commander/app/util.js') 
     script(type="text/javascript" src='/commander/client.js') 
     script(type="text/javascript" src='/commander/app/controller.js') 
+
     script(type="text/javascript" src='/commander/app/ui/navtree.js') 
     script(type="text/javascript" src='/commander/app/ui/layout.js') 
     script(type="text/javascript" src='/commander/app/ui/command_input_form.js') 

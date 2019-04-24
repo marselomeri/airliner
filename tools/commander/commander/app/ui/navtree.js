@@ -66,6 +66,7 @@ function updateDragSources() {
  * @constructor
  */
 function NodeSelected( e, node ) {
+  console.log("NodeSelected");
   /* if node to be rendered is a file, a .pug file */
   if ( node.type === 'file' ) {
     /* add url to be node's state, which will be loaded when node is rendered

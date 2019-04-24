@@ -37,7 +37,7 @@ function InitLayout( mlyt ) {
         item.container._contentElement.load( link );
         item.container._contentElement.css( "overflow", "auto" );
       } catch ( e ) {
-        cu.logError( 'itemCreated | cannot load link onto component' )
+        //cu.logError( 'itemCreated | cannot load link onto component' )
       }
     }
   } );
