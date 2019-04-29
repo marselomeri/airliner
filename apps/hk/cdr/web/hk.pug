@@ -1,33 +1,26 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 HK - HK
-    div.widget-body.table-responsive
-      table.table.table-condensed
-        tbody
-          tr
-            th Cmd Count
-            td
-              div(data-cdr={tlm:[{name:'/HK/HK_HkPacket_t/CmdCounter'}],indicator:'text'}) ---
-          tr
-            th Error Count
-            td
-              div(data-cdr={tlm:[{name:'/HK/HK_HkPacket_t/ErrCounter'}],indicator:'text'}) ---
-          tr
-            th Combined Packets Sent
-            td
-              span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/CombinedPacketsSent'}], indicator:'text'}) ---
-          tr
-            th Missing Data Count
-            td
-              span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/MissingDataCtr'}], indicator:'text'}) ---
-          tr
-            th Memory Pool Handle
-            td
-              span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/MemPoolHandle'}], indicator:'text'}) ---
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/HK/HK_HkPacket_t/CmdCounter'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/HK/HK_HkPacket_t/ErrCounter'}]}) ---
+    tr
+      th Combined Packets Sent
+      td
+        span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/CombinedPacketsSent'}]}) ---
+    tr
+      th Missing Data Count
+      td
+        span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/MissingDataCtr'}]}) ---
+    tr
+      th Memory Pool Handle
+      td
+        span(data-cdr={tlm: [{name:'/HK/HK_HkPacket_t/MemPoolHandle'}]}) ---
               
-    footer.btn-group(role="group")      
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/HK/Noop'},indicator:'cmd'}) No-Op    
-      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/HK/Reset'},indicator:'cmd'}) Reset
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/HK/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/HK/Reset'}}) Reset

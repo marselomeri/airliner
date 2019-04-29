@@ -55,7 +55,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/bat/hk"
+        "link": "flight/apps/bat/hk"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -77,7 +77,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/app_sch?appName=BAT"
+        "link": "flight/apps/sch/app_sch?appName=BAT"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -99,7 +99,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=BAT"
+        "link": "flight/core/evs/efltr?appName=BAT"
        },
        "isClosable": true,
        "reorderEnabled": true

@@ -97,7 +97,6 @@ function CommanderClient() {
     }
     
     self.socket.emit( 'getMessageIDsAndMacros', {}, function(results) {
-    	console.log(results);
     });
   }, 1000);
 }
@@ -482,8 +481,6 @@ CommanderClient.prototype.subscribe = function( tlmObj, cb ) {
           cb: {}
         };
       } 
-      
-      console.log(this.subscriptions[ opsPath ]);
 
       /* Add the callback to the subscription. */
       this.subscriptions[ opsPath ].cb[cb.name] = cb;

@@ -3,11 +3,12 @@ table.table.table-condensed
     tr
       th Cmd Count
       td 
-        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.CmdCounter'}],indicator:'text'}) ---
+        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.CmdCounter'}]}) ---
     tr
       th Error Count
       td
-        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.ErrCounter'}],indicator:'text'}) ---
+        div(data-cdr={tlm:[{name:'/CFE/CFE_ES_HkPacket_t/Payload.ErrCounter'}]}) ---
+        
 footer.btn-group(role="group")      
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_NoopCmd'},indicator:'cmd'}) No-Op    
-  button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_ResetCmd'},indicator:'cmd'}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_NoopCmd'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/CFE/CFE_ES_ResetCmd'}}) Reset

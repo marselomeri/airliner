@@ -351,6 +351,7 @@ Commander.prototype.registerStreams = function( streamName ) {
  * @param  {Object} layoutsObj layout object
  */
 Commander.prototype.getLayoutsByPath = function( paths, layoutsObj ) {
+  
   if ( paths.length == 1 ) {
     var targetPath = paths[ 0 ];
     if ( targetPath === '' ) {

@@ -40,6 +40,10 @@ var convict = require( 'convict' );
 const dgram = require( 'dgram' );
 var convict = require( 'convict' );
 
+var path = require('path');
+
+const CdrGroundPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrGroundPlugin')).CdrGroundPlugin;
+
 /**
  * Event id's
  * @type {Object}
@@ -68,166 +72,215 @@ var listenerCount = Emitter.listenerCount ||
  * @param       {String} configFile path to UdpStdProvider-config.json
  * @constructor
  */
-function UdpStdProvider( configFile ) {
-  this.listener = dgram.createSocket( 'udp4' );
-  this.sender = dgram.createSocket( 'udp4' );
+module.exports = class UdpStdProvider extends CdrGroundPlugin {
+    constructor(configFile) {
+    	// urlBase
+	    super('tlm', path.join(__dirname, 'web', '/'));
+	    
+	    this.listener = dgram.createSocket( 'udp4' );
+	    this.sender = dgram.createSocket( 'udp4' );
 
-  /**
-   * Define varibale server schema
-   * @type {Object}
-   */
-  this.config = convict( {
-    env: {
-      doc: 'The application environment.',
-      format: [ 'production', 'development', 'test' ],
-      default: 'development',
-      env: 'NODE_ENV'
-    },
-    inPort: {
-      doc: 'Input port.',
-      format: 'int',
-      default: 0
-    },
-    outPort: {
-      doc: 'Output port.',
-      format: 'int',
-      default: 0
-    },
-    outAddress: {
-      doc: 'Output IP address.',
-      format: 'ipaddress',
-      default: '127.0.0.1'
-    },
-    outputStreamID: {
-      doc: 'Output binary stream from binary data provider to the encoder/decoder.',
-      format: String,
-      default: ''
-    },
-    inputStreamID: {
-      doc: 'Input binary stream from encoder/decoder to binary data provider.',
-      format: String,
-      default: ''
+	    /**
+	     * Define varibale server schema
+	     * @type {Object}
+	     */
+	    this.config = convict( {
+	      env: {
+	        doc: 'The application environment.',
+	        format: [ 'production', 'development', 'test' ],
+	        default: 'development',
+	        env: 'NODE_ENV'
+	      },
+	      inPort: {
+	        doc: 'Input port.',
+	        format: 'int',
+	        default: 0
+	      },
+	      outPort: {
+	        doc: 'Output port.',
+	        format: 'int',
+	        default: 0
+	      },
+	      outAddress: {
+	        doc: 'Output IP address.',
+	        format: 'ipaddress',
+	        default: '127.0.0.1'
+	      },
+	      outputStreamID: {
+	        doc: 'Output binary stream from binary data provider to the encoder/decoder.',
+	        format: String,
+	        default: ''
+	      },
+	      inputStreamID: {
+	        doc: 'Input binary stream from encoder/decoder to binary data provider.',
+	        format: String,
+	        default: ''
+	      }
+	    } );
+
+	    /* Load environment dependent configuration */
+	    this.config.loadFile( configFile );
+
+	    /* Perform validation */
+	    this.config.validate( {
+	      allowed: 'strict'
+	    } );
+
+	    this.inputStreamID = this.config.get( 'inputStreamID' );
+	    this.outputStreamID = this.config.get( 'outputStreamID' );
+
+	    this.listener.on( 'error', ( err ) => {
+	      this.logCriticalEvent( EventEnum.UDP_ERROR, `UDP connector error:\n${err}.` );
+	      // server.close(); // server not defined here
+	    } );
+
+	    this.listener.on( 'listening', () => {
+	      const address = this.listener.address();
+	      this.logInfoEvent( EventEnum.UDP_CONNECTOR_LISTENING, `UDP connector listening ${address.address}:${address.port}` );
+	    } );
+	    
+	    var tlm = {
+            shortDescription: 'Telemetry Receiver',
+	        longDescription: 'Telemetry Receiver.',
+            nodes: {
+                main: {
+		           type: CdrGroundPlugin.ContentType.LAYOUT,
+		           shortDescription: 'Main',
+			       longDescription: 'Main BAT.',
+			       filePath: '/main_layout.lyt'
+		        },
+		        hk: {
+			       type: CdrGroundPlugin.ContentType.PANEL,
+			       shortDescription: 'Telemetry Housekeeping',
+			       longDescription: 'Telemetry Housekeeping',
+			       filePath: '/hk.pug'
+		        }
+		    }
+        };            
+	    
+	    //super.addContent6(tlm);
+	};
+	
+	_getContent() {
+	    var result = super.getContent();
+
+	    result.ground.nodes.tlm = {
+		                shortDescription: 'Telemetry Receiver',
+   		                longDescription: 'Telemetry Receiver.',
+                        nodes: {
+                            main: {
+				                type: CdrGroundPlugin.ContentType.LAYOUT,
+				    	        shortDescription: 'Main',
+					            longDescription: 'Main BAT.',
+					            filePath: '/main_layout.lyt'
+				            },
+				            hk: {
+					            type: CdrGroundPlugin.ContentType.PANEL,
+					            shortDescription: 'Telemetry Housekeeping',
+					            longDescription: 'Telemetry Housekeeping',
+					            filePath: '/hk.pug'
+				            }
+				        }
+		};
+
+		return result;
     }
-  } );
-
-  /* Load environment dependent configuration */
-  this.config.loadFile( configFile );
-
-  /* Perform validation */
-  this.config.validate( {
-    allowed: 'strict'
-  } );
-
-  this.inputStreamID = this.config.get( 'inputStreamID' );
-  this.outputStreamID = this.config.get( 'outputStreamID' );
-
-  this.listener.on( 'error', ( err ) => {
-    this.logCriticalEvent( EventEnum.UDP_ERROR, `UDP connector error:\n${err}.` );
-    // server.close(); // server not defined here
-  } );
-
-  this.listener.on( 'listening', () => {
-    const address = this.listener.address();
-    this.logInfoEvent( EventEnum.UDP_CONNECTOR_LISTENING, `UDP connector listening ${address.address}:${address.port}` );
-  } );
-};
 
 
-/**
- * Configure and set instance emitter
- * @param  {Object} newInstanceEmitter instance of instance emitter
- */
-UdpStdProvider.prototype.setInstanceEmitter = function( newInstanceEmitter ) {
-  this.instanceEmitter = newInstanceEmitter;
-  var self = this;
+	/**
+	 * Configure and set instance emitter
+	 * @param  {Object} newInstanceEmitter instance of instance emitter
+	 */
+    setInstanceEmitter( newInstanceEmitter ) {
+	    this.instanceEmitter = newInstanceEmitter;
+	    var self = this;
 
-  this.listener.on( 'message', ( msg, rinfo ) => {
-    self.instanceEmitter.emit( self.config.get( 'outputStreamID' ), msg );
-  } );
+	    this.listener.on( 'message', ( msg, rinfo ) => {
+	      self.instanceEmitter.emit( self.config.get( 'outputStreamID' ), msg );
+	    } );
 
-  this.instanceEmitter.on( this.config.get( 'inputStreamID' ), function( buffer ) {
-    self.sender.send( buffer, 0, buffer.length, self.config.get( 'outPort' ), self.config.get( 'outAddress' ) );
-  } );
+	    this.instanceEmitter.on( this.config.get( 'inputStreamID' ), function( buffer ) {
+	      self.sender.send( buffer, 0, buffer.length, self.config.get( 'outPort' ), self.config.get( 'outAddress' ) );
+	    } );
 
-  this.listener.bind( this.config.get( 'inPort' ) );
+	    this.listener.bind( this.config.get( 'inPort' ) );
 
-  this.logInfoEvent( EventEnum.INITIALIZED, `Starting binary UDP listener on port ${this.config.get('inPort')}` );
+	    this.logInfoEvent( EventEnum.INITIALIZED, `Starting binary UDP listener on port ${this.config.get('inPort')}` );
+	}
+
+
+	/**
+	 * Emit data
+	 * @param  {String}   streamID stream id
+	 * @param  {String}   msg      emit message
+	 */
+	instanceEmit( streamID, msg ) {
+	    this.instanceEmitter.emit( streamID, msg );
+	}
+
+	/**
+	 * Inherits from EventEmitter.
+	 * @type {Object}
+	 */
+	//UdpStdProvider.prototype.__proto__ = Emitter.prototype;
+
+	/**
+	 * Log debug events
+	 * @param  {number} eventID event id
+	 * @param  {String} text    text
+	 */
+	logDebugEvent( eventID, text ) {
+	    this.instanceEmit( 'events-debug', {
+	        sender: this,
+	        component: 'UdpStdProvider',
+	        eventID: eventID,
+	        text: text
+	    } );
+	}
+
+
+	/**
+	 * Log info events
+	 * @param  {number} eventID event id
+	 * @param  {String} text    text
+	 */
+	logInfoEvent( eventID, text ) {
+	    this.instanceEmit( 'events-info', {
+	        sender: this,
+	        component: 'UdpStdProvider',
+	        eventID: eventID,
+	        text: text
+	    } );
+	}
+
+
+	/**
+	 * Log error events
+	 * @param  {number} eventID event id
+	 * @param  {String} text    text
+	 */
+	logErrorEvent( eventID, text ) {
+	    this.instanceEmit( 'events-error', {
+	        sender: this,
+	        component: 'UdpStdProvider',
+	        eventID: eventID,
+	        text: text
+	    } );
+	}
+
+
+	/**
+	 * Log critical events
+	 * @param  {number} eventID event id
+	 * @param  {String} text    text
+	 */
+	logCriticalEvent( eventID, text ) {
+	    this.instanceEmit( 'events-critical', {
+	        sender: this,
+	        component: 'UdpStdProvider',
+	        eventID: eventID,
+	        text: text
+	    } );
+	}
+	
 }
-
-
-/**
- * Emit data
- * @param  {String}   streamID stream id
- * @param  {String}   msg      emit message
- */
-UdpStdProvider.prototype.instanceEmit = function( streamID, msg ) {
-  this.instanceEmitter.emit( streamID, msg );
-}
-
-/**
- * Inherits from EventEmitter.
- * @type {Object}
- */
-UdpStdProvider.prototype.__proto__ = Emitter.prototype;
-
-/**
- * Log debug events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-UdpStdProvider.prototype.logDebugEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-debug', {
-    sender: this,
-    component: 'UdpStdProvider',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-/**
- * Log info events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-UdpStdProvider.prototype.logInfoEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-info', {
-    sender: this,
-    component: 'UdpStdProvider',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-/**
- * Log error events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-UdpStdProvider.prototype.logErrorEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-error', {
-    sender: this,
-    component: 'UdpStdProvider',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-/**
- * Log critical events
- * @param  {number} eventID event id
- * @param  {String} text    text
- */
-UdpStdProvider.prototype.logCriticalEvent = function( eventID, text ) {
-  this.instanceEmit( 'events-critical', {
-    sender: this,
-    component: 'UdpStdProvider',
-    eventID: eventID,
-    text: text
-  } );
-}
-
-
-exports = module.exports = UdpStdProvider;

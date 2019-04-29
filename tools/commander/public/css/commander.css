@@ -910,7 +910,7 @@ header>button {
 
 .cdr-danger {
   border:1px solid #ff6262; 
-  color: #000000;
+  color: #ffffff;
   background-color: #ff9a9a; 
   background-image: -webkit-gradient(linear, left top, left bottom, from(#ff9a9a), to(#ff4040));
   background-image: -webkit-linear-gradient(top, #ff9a9a, #ff4040);
@@ -919,7 +919,10 @@ header>button {
   background-image: -o-linear-gradient(top, #ff9a9a, #ff4040);
   background-image: linear-gradient(to bottom, #ff9a9a, #ff4040);
   filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff9a9a, endColorstr=#ff4040);
-  text-shadow: -1px -1px 0 rgba(255,255,255,0.5);
+  text-shadow:  1px  1px 0 rgba(0,0,0,1.0),
+               -1px  1px 0 rgba(0,0,0,1.0),
+                1px -1px 0 rgba(0,0,0,1.0),
+               -1px -1px 0 rgba(0,0,0,1.0);
 }
 
 .cdr-danger:hover {

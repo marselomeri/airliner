@@ -1,4 +1,4 @@
-{
+﻿{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -40,56 +40,25 @@
    "title": "",
    "content": [
     {
-     "type": "column",
+     "type": "stack",
+     "header": {},
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "width": 50,
+     "activeItemIndex": 0,
+     "height": 100,
+     "width": 28.182558492087555,
      "content": [
       {
-       "type": "stack",
-       "header": {},
+       "title": "Battery Housekeeping",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/bat/hk"
+       },
        "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "width": 50,
-       "height": 50,
-       "content": [
-        {
-         "title": "Ground Control",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/cf/gnd_cntrl"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
-       "content": [
-        {
-         "title": "Utilities",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/cf/gnd_util"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
+       "reorderEnabled": true
       }
      ]
     },
@@ -100,15 +69,37 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 50,
+     "width": 33.83121784502751,
      "content": [
       {
-       "title": "Transaction Status",
+       "title": "Application Scheduling",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cf/gnd_trans"
+        "link": "/sch/app_sch?appName=BAT"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      }
+     ]
+    },
+    {
+     "type": "stack",
+     "header": {},
+     "isClosable": true,
+     "reorderEnabled": true,
+     "title": "",
+     "activeItemIndex": 0,
+     "width": 37.98622366288493,
+     "content": [
+      {
+       "title": "Event Filter",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/cfe/evs/efltr?appName=BAT"
        },
        "isClosable": true,
        "reorderEnabled": true

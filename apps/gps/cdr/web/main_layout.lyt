@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/gps/cdh"
+          "link": "flight/apps/gps/cdh"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -84,7 +84,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/sch/app_sch?appName=GPS"
+          "link": "flight/apps/sch/app_sch?appName=GPS"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -109,7 +109,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/gps/gps"
+        "link": "flight/apps/gps/gps"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -131,7 +131,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=GPS"
+        "link": "flight/core/evs/efltr?appName=GPS"
        },
        "isClosable": true,
        "reorderEnabled": true

@@ -54,7 +54,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/hk/hk"
+        "link": "flight/apps/hk/hk"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -76,7 +76,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=HK"
+        "link": "flight/core/evs/efltr?appName=HK"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -87,7 +87,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/app_sch?appName=HK"
+        "link": "flight/apps/sch/app_sch?appName=HK"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -98,7 +98,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=HK"
+        "link": "flight/apps/to/tlm_app?appName=HK"
        },
        "isClosable": true,
        "reorderEnabled": true

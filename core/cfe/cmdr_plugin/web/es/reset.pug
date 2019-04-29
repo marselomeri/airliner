@@ -7,7 +7,7 @@ table.table.table-condensed
           enumerations:[
            {value:1, name:'PROCESSOR'},
            {value:2, name:'POWERUP'}
-         ]}}],indicator:'text'}) ---
+         ]}}]}) ---
       td
     tr
       th Reset Subtype:
@@ -23,25 +23,25 @@ table.table.table-condensed
             {value:7, name:'UNDEFINED_RESET'},
             {value:8, name:'HWDEBUG_RESET'},
             {value:9, name:'BANKSWITCH_RESET'}
-          ]}}],indicator:'text'}) ---
+          ]}}]}) ---
       td
     tr
       th Proc Reset Cnt:
       td
-        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ProcessorResets'}],indicator:'text'}) ---
+        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.ProcessorResets'}]}) ---
       td
-        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_ResetPrCount'},indicator:'cmd'}) Reset
+        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_ResetPrCount'}}) Reset
     tr
       th Max Proc Resets:
       td
-        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.MaxProcessorResets'}],indicator:'text'}) ---
+        span.sage-tlm(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.MaxProcessorResets'}]}) ---
       td
-        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_SetMaxPRCountCmd_t'},indicator:'cmd'}) Set
+        button.btn.cdr-primary(data-cdr={cmd: {name:'/CFE/CFE_ES_SetMaxPRCountCmd_t'}}) Set
     tr
       th Boot Source:
       td
-        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.BootSource'}],indicator:'text'}) ---
+        span(data-cdr={tlm: [{name: '/CFE/CFE_ES_HkPacket_t/Payload.BootSource'}]}) ---
       td
 footer.btn-group(role="group")              
-  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_RestartCmd_t', argument:[{name:'Type', value:'PROC'}]},indicator:'cmd'}) Proc Reset
-  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_RestartCmd_t', argument:[{name:'Type', value:'POWER-ON'}]},indicator:'cmd'}) Power Reset
+  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_RestartCmd_t', argument:[{name:'Type', value:'PROC'}]}}) Proc Reset
+  button.btn.cdr-danger(data-cdr={cmd: {name: '/CFE/CFE_ES_RestartCmd_t', argument:[{name:'Type', value:'POWER-ON'}]}}) Power Reset
