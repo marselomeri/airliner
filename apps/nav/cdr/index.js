@@ -1,55 +1,56 @@
 'use strict';
 
-var path = require( 'path' );
+var path = require('path');
 
-const CdrPlugin = require( path.join( global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin' ) ).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor( urlBase ) {
-    super( 'nav', path.join( __dirname, 'web', urlBase ) );
-  }
-
-  getContent() {
-    var result = {
-      shortDescription: 'Vehicle Navigation',
-      longDescription: 'Vehicle Navigation Manager.',
-      nodes: {
-        main: {
-          type: CdrPlugin.ContentType.LAYOUT,
-          shortDescription: 'Main',
-          longDescription: 'Main VM.',
-          filePath: '/main.lyt'
-        },
-        cdh: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Command and Data Handling',
-          longDescription: 'Command counters.',
-          filePath: '/cdh.pug'
-        },
-        als: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Auto Land Status',
-          longDescription: 'Auto Land Status',
-          filePath: '/als.pug'
-        },
-        cms: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Current Mission Status',
-          longDescription: 'Current Mission Status',
-          filePath: '/cms.pug'
-        },
-        rtls: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'RTL Status',
-          longDescription: 'RTL Status',
-          filePath: '/rtls.pug'
-        }
-      }
+module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor() {
+        super(path.join(__dirname, 'web'));
+        
+        var content = {
+            nav: {   
+                shortDescription: 'Navigation',
+                longDescription: 'Vehicle Navigation Manager.',
+                nodes: {
+                    main: {
+                        type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+                        shortDescription: 'Main',
+                        longDescription: 'Main VM.',
+                        filePath: 'main.lyt'
+                    },
+                    cdh: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Command and Data Handling',
+                        longDescription: 'Command counters.',
+                        filePath: 'cdh.pug'
+                    },
+                    als: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Auto Land Status',
+                        longDescription: 'Auto Land Status',
+                        filePath: 'als.pug'
+                    },
+                    cms: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Current Mission Status',
+                        longDescription: 'Current Mission Status',
+                        filePath: 'cms.pug'
+                    },
+                    rtls: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'RTL Status',
+                        longDescription: 'RTL Status',
+                        filePath: 'rtls.pug'
+                    }
+                }
+            }
+        };
+        
+      	this.addContent(content);
     };
-
-    return result;
-  }
 };
+
 
 //var plugin = new CfeCdrPlugin();
 

@@ -1,0 +1,23 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_HkTlm_t/usCmdCnt'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_HkTlm_t/usCmdErrCnt'}]}) ---
+      td
+    tr
+      th State
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_HkTlm_t/State'}]}) ---
+      td
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/Reset'}}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/SendDiag'}}) Send Diag    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/AK8963_SetCalibrationCmd_t'}}) Set Calibration 

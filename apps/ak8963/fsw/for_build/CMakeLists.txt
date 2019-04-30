@@ -53,6 +53,9 @@ add_airliner_app_def(ak8963
     REFERENCE_CONFIG
         ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/mission_inc
         ${PROJECT_SOURCE_DIR}/apps/ak8963/fsw/platform_inc
+
+    COMMANDER_PLUGIN
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../cdr
 )
 
 add_airliner_app_unit_test(ak8963-ut

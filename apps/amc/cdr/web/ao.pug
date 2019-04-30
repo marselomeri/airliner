@@ -1,19 +1,13 @@
-.row.os-theme-dark
-  article.col-xs-12.col-sm-12
-    header
-      span.widget-icon
-        i.fa.fa-table
-      h2 AMC - Actuator Outputs
-    div
-      input#AMC_AOUseAnimate(type='checkbox') 
-      | Use Animation
-      form#AMC_AODataSource
-        | Source
-        input(type='radio' name='source' value='HK' onclick='AMC_AOSelectHKSource();' checked='checked')  
-        | HK 
-        input(type='radio' name='source' value='PX4' onclick='AMC_AOSelectPX4Source();' ) 
-        | PX4 
-    div#radar.widget-body
+div
+  input#AMC_AOUseAnimate(type='checkbox') 
+  | Use Animation
+  form#AMC_AODataSource
+    | Source
+    input(type='radio' name='source' value='HK' onclick='AMC_AOSelectHKSource();' checked='checked')  
+    | HK 
+    input(type='radio' name='source' value='PX4' onclick='AMC_AOSelectPX4Source();' ) 
+    | PX4 
+div#radar.widget-body
     script.
     
         AMC_AOSelectHKSource();

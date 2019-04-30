@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/to/hk"
+          "link": "flight/apps/to/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -73,7 +73,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/to/cdh"
+          "link": "flight/apps/to/cdh"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -95,7 +95,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/to/tlm_app?appName=AMC"
+          "link": "flight/apps/to/tlm_app?appName=AMC"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -119,7 +119,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/diag"
+        "link": "flight/apps/to/diag"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -130,7 +130,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/diag_msg_flow"
+        "link": "flight/apps/to/diag_msg_flow"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -141,7 +141,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/diag_pqueue"
+        "link": "flight/apps/to/diag_pqueue"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -152,7 +152,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/diag_oqueue"
+        "link": "flight/apps/to/diag_oqueue"
        },
        "isClosable": true,
        "reorderEnabled": true

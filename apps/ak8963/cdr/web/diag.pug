@@ -1,0 +1,28 @@
+table.table.table-condensed
+  tbody
+    tr
+      th 
+      th X
+      th Y
+      th Z
+    tr
+      th Scale
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagXScale'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagYScale'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Calibration.MagZScale'}]}) ---
+
+    tr
+      th Offset
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Conversion.MagXOffset'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Conversion.MagYOffset'}]}) ---
+      td
+        div(data-cdr={tlm:[{name:'/AK8963/AK8963_DiagPacket_t/Conversion.MagZOffset'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/SendDiag'}}) Send Diag    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/AK8963/AK8963_SetCalibrationCmd_t'}}) Set Calibration 

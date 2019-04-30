@@ -9,33 +9,27 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
         super(path.join(__dirname, 'web'));
 
         var content = {
-            qae: {    		
-                shortDescription: 'Attitude Estimator',
-                longDescription: 'Attitude Estimator',
+            ds: {    		
+                shortDescription: 'AK8963',
+                longDescription: 'AK8963 Driver.',
                 nodes: {
 				    main: {
 					    type: CdrFlightAppsPlugin.ContentType.LAYOUT,
-					    shortDescription: 'Main',
-					    longDescription: 'Main AMC.',
+					    shortDescription: 'AK863 Main',
+					    longDescription: 'AK8963 Main.',
 					    filePath: 'main_layout.lyt'
 				    },
 				    hk: {
 					    type: CdrFlightAppsPlugin.ContentType.PANEL,
-					    shortDescription: 'AE HK',
-					    longDescription: 'Attitude Estimator Housekeeping',
+					    shortDescription: 'AK8963 HK',
+					    longDescription: 'AK8963 Housekeeping.',
 					    filePath: 'hk.pug'
 				    },
-				    va: {
+				    diag: {
 					    type: CdrFlightAppsPlugin.ContentType.PANEL,
-					    shortDescription: 'Vehicle Attitude',
-					    longDescription: 'Attitude Estimator Vehicle Attitude',
-					    filePath: 'va.pug'
-				    },
-				    cs: {
-					    type: CdrFlightAppsPlugin.ContentType.PANEL,
-					    shortDescription: 'Control State',
-					    longDescription: 'Attitude Estimator Control State',
-					    filePath: 'cs.pug'
+					    shortDescription: 'AK8963 Diagnostics',
+					    longDescription: 'AK8963 Diagnostics.',
+					    filePath: 'diag.pug'
 				    }
                 }
             }

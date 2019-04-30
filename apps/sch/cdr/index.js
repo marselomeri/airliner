@@ -1,13 +1,56 @@
 'use strict';
 
-var path = require( 'path' );
+var path = require('path');
 
-const CdrPlugin = require( path.join( global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin' ) ).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor( urlBase ) {
-    super( 'sch', path.join( __dirname, 'web', urlBase ) );
-  }
+module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor() {
+        super(path.join(__dirname, 'web'));
+        
+        var content = {
+        	sch: {
+                shortDescription: 'Scheduler',
+                longDescription: 'Scheduler.',
+                nodes: {
+                    main: {
+                        type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+                        shortDescription: 'Main',
+                        longDescription: 'Main SCH.',
+                        filePath: '/main_layout.lyt'
+                    },
+                    hk: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Housekeeping (SCH)',
+                        longDescription: 'Scheduler housekeeping telemetry.',
+                        filePath: '/hk.pug'
+                    },
+                    sch: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Schedule Control (General)',
+                        longDescription: 'Schedule control.',
+                        filePath: '/sch.pug'
+                    },
+                    diag: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Schedule Diagnostics',
+                        longDescription: 'Schedule Diagnostics.',
+                        filePath: '/diag.pug'
+                    },
+                    app_sch: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'SCH Ctrl',
+                        longDescription: 'Application specific scheduling data.',
+                        filePath: '/app-sch.pug'
+                    }
+                }
+            }
+        };
+    
+        this.addContent(content);
+    };
+        
+  
 
   getMessageIDsAndMacros( args, cb ) {
     var msgs = [];
@@ -101,46 +144,6 @@ module.exports = class CfeCdrPlugin extends CdrPlugin {
     return result;
   }
 
-  getContent() {
-    var result = {
-      shortDescription: 'Scheduler',
-      longDescription: 'Scheduler.',
-      nodes: {
-        main: {
-          type: CdrPlugin.ContentType.LAYOUT,
-          shortDescription: 'Main',
-          longDescription: 'Main SCH.',
-          filePath: '/main_layout.lyt'
-        },
-        hk: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Housekeeping (SCH)',
-          longDescription: 'Scheduler housekeeping telemetry.',
-          filePath: '/hk.pug'
-        },
-        sch: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Schedule Control (General)',
-          longDescription: 'Schedule control.',
-          filePath: '/sch.pug'
-        },
-        diag: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'Schedule Diagnostics',
-          longDescription: 'Schedule Diagnostics.',
-          filePath: '/diag.pug'
-        },
-        app_sch: {
-          type: CdrPlugin.ContentType.PANEL,
-          shortDescription: 'SCH Ctrl',
-          longDescription: 'Application specific scheduling data.',
-          filePath: '/app-sch.pug'
-        }
-      }
-    };
-
-    return result;
-  }
 };
 
 //var plugin = new CfeCdrPlugin();

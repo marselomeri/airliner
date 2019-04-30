@@ -62,7 +62,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/pe/hk"
+          "link": "flight/apps/pe/hk"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -92,7 +92,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/pe/gps"
+            "link": "flight/apps/pe/gps"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -114,7 +114,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/pe/baro"
+            "link": "flight/apps/pe/baro"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -148,7 +148,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/cfe/evs/efltr?appName=PE"
+          "link": "flight/core/evs/efltr?appName=PE"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -159,7 +159,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/sch/app_sch?appName=PE"
+          "link": "flight/apps/sch/app_sch?appName=PE"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -170,7 +170,7 @@
          "componentName": "Blank",
          "componentState": {
           "text": "text",
-          "link": "/to/tlm_app?appName=PE"
+          "link": "flight/apps/to/tlm_app?appName=PE"
          },
          "isClosable": true,
          "reorderEnabled": true
@@ -200,7 +200,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/pe/dist"
+            "link": "flight/apps/pe/dist"
            },
            "isClosable": true,
            "reorderEnabled": true
@@ -222,7 +222,7 @@
            "componentName": "Blank",
            "componentState": {
             "text": "text",
-            "link": "/pe/land"
+            "link": "flight/apps/pe/land"
            },
            "isClosable": true,
            "reorderEnabled": true
