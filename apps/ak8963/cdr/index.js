@@ -9,15 +9,15 @@ module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
         super(path.join(__dirname, 'web'));
 
         var content = {
-            ds: {    		
+            ak8963: {    		
                 shortDescription: 'AK8963',
                 longDescription: 'AK8963 Driver.',
                 nodes: {
 				    main: {
 					    type: CdrFlightAppsPlugin.ContentType.LAYOUT,
-					    shortDescription: 'AK863 Main',
+					    shortDescription: 'Main',
 					    longDescription: 'AK8963 Main.',
-					    filePath: 'main_layout.lyt'
+					    filePath: 'main.lyt'
 				    },
 				    hk: {
 					    type: CdrFlightAppsPlugin.ContentType.PANEL,

@@ -84,7 +84,7 @@ function NodeSelected( e, node ) {
      * check if a selection is done.*/
     if ( myLayout.selectedItem === null ) {
       /* notify on developer console */
-      cu.logError( 'NodeSelected | Container not selected. Choose any container to load component.' );
+      //cu.logError( 'NodeSelected | Container not selected. Choose any container to load component.' );
     } else {
       /* add new item or panel or tab to layout */
       myLayout.selectedItem.addChild( newItemConfig );

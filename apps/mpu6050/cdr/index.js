@@ -2,43 +2,39 @@
 
 var path = require('path');
 
-const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
+const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
-module.exports = class CfeCdrPlugin extends CdrPlugin {
-  constructor(urlBase) {
-    super('amc', path.join(__dirname, 'web', urlBase));
-  }
+module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
+    constructor() {
+        super(path.join(__dirname, 'web'));
 
-  getContent() {
-    var result = {
-      shortDescription: 'Actuator and Motor Control',
-      longDescription: 'Actuator and Motor Control.',
-      nodes: {
-				main: {
-					type: CdrPlugin.ContentType.LAYOUT,
-					shortDescription: 'Main',
-					longDescription: 'Main AMC.',
-					filePath: '/main_layout.lyt'
-				},
-				cdh: {
-					type: CdrPlugin.ContentType.PANEL,
-					shortDescription: 'Command and Data Handling',
-					longDescription: 'Command counters.',
-					filePath: '/cdh.pug'
-				},
-                ao: {
-                    type: CdrPlugin.ContentType.PANEL,
-                    shortDescription: 'Actuator Outputs',
-                    longDescription: 'Actuator Outputs',
-                    filePath: '/ao.pug'
+        var content = {
+            mpu6050: {   
+                shortDescription: 'MPU6050',
+                longDescription: 'MPU6050 Driver.',
+                nodes: {
+				    main: {
+					    type: CdrFlightAppsPlugin.ContentType.LAYOUT,
+					    shortDescription: 'Main',
+                        longDescription: 'Main MPU6050.',
+                        filePath: 'main.lyt'
+				    },
+				    hk: {
+					    type: CdrFlightAppsPlugin.ContentType.PANEL,
+					    shortDescription: 'Housekeeping',
+					    longDescription: 'MPU6050 Housekeeping.',
+					    filePath: 'hk.pug'
+				    },
+                    diag: {
+                        type: CdrFlightAppsPlugin.ContentType.PANEL,
+                        shortDescription: 'Diag',
+                        longDescription: 'MPU6050 Diag',
+                        filePath: 'diag.pug'
+                    }
                 }
-      }
+            }
+        };
+        
+      	this.addContent(content);
     };
-
-    return result;
-  }
 };
-
-//var plugin = new CfeCdrPlugin();
-
-//let CfeCdrPlugin = new class extends CdrPlugin {
