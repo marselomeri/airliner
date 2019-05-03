@@ -1,0 +1,42 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Max Velocity XY
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/VelMaxXy'}]}) ---
+    tr
+      th Max Accel XY
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/AccelerationStateLimitXY'}]}) ---
+    tr
+      th Max Accel Z
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/AccelerationStateLimitZ'}]}) ---
+    tr
+      th Max Jerk XY
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/ManualJerkLimitXY', format: '%.8f' }]}) ---
+    tr
+      th Max Jerk Z
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/ManualJerkLimitZ'}]}) ---
+    tr
+      th Takeoff Velocity Limit
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/TakeoffVelLimit', format: '%.8f' }]}) ---
+    tr
+      th Yaw At Takeoff
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/YawTakeoff', format: '%.8f' }]}) ---
+    tr
+      th Yaw
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/Yaw', format: '%.8f' }]}) ---
+    tr
+      th User Intent XY
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/UserIntentionXY'}]}) ---
+    tr
+      th User Intent Z
+      td
+        div(data-cdr={tlm:[{name:'/MPC/MPC_HkTlm_t/UserIntentionZ'}]}) ---

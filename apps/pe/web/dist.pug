@@ -1,0 +1,31 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Last Update
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TimeLastDist'}]}) ---
+    tr
+      th Alt Origin
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/m_DistAltOrigin'}]}) ---
+    tr
+      th Initialized
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistInitialized'}]}) ---
+    tr
+      th Fault
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistFault'}]}) ---
+    tr
+      th Timeout
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistTimeout'}]}) ---
+    tr
+      th Fused
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/DistFused'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableDistanceSensor'}}) Enable
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/DisableDistanceSensor'}}) Disable 
+      

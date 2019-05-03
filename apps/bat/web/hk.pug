@@ -1,0 +1,59 @@
+
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/BAT/BAT_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/BAT/BAT_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Timestamp
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Timestamp'}]}) ---
+    tr
+      th Voltage
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Voltage'}]}) ---
+    tr
+      th Voltage Filtered
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/VoltageFiltered'}]}) ---
+    tr
+      th Current
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Current'}]}) ---
+    tr
+      th Current Filtered
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/CurrentFiltered'}]}) ---
+    tr
+      th Discharged
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Discharged'}]}) ---
+    tr
+      th Remaining
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Remaining'}]}) ---
+    tr
+      th Scale
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Scale'}]}) ---
+    tr
+      th Cell Count
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/CellCount'}]}) ---
+    tr
+      th Connected
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Connected'}]}) ---
+    tr
+      th Warning
+      td
+        span(data-cdr={tlm: [{name:'/BAT/BAT_HkTlm_t/Warning'}]}) ---
+        
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/BAT/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/BAT/Reset'}}) Reset

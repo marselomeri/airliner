@@ -1,0 +1,13 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/CmdCtr'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/SC/SC_HkTlm_t/CmdErrCtr'}]}) ---
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/SC/Reset'}}) Reset

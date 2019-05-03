@@ -1,6 +1,7 @@
 "use strict";
 
 var path = require( 'path' );
+const util = require('util');
 
 const CdrFlightPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightPlugin')).CdrFlightPlugin;
 
@@ -15,8 +16,8 @@ class CdrFlightAppsPlugin extends CdrFlightPlugin {
      * @param {String} webRoot directory path
      * @param {String} urlBase base url
      */
-    constructor(webRoot) {
-	    super(webRoot);
+    constructor(config) {
+        super(config);
     }
     
     addContent(content) {
@@ -25,7 +26,7 @@ class CdrFlightAppsPlugin extends CdrFlightPlugin {
                 shortDescription: 'Apps',
                 longDescription: 'Applications.',
                 nodes: content
-        	}
+            }
     	};
         
         super.addContent(newContent);

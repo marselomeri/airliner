@@ -15,8 +15,8 @@ class CdrFlightPlugin extends CdrPlugin {
      * @param {String} webRoot directory path
      * @param {String} urlBase base url
      */
-    constructor(webRoot) {
-	    super(webRoot);
+    constructor(config) {
+        super(config);
     }
     
     addContent(content) {
@@ -25,12 +25,11 @@ class CdrFlightPlugin extends CdrPlugin {
                 shortDescription: 'Flight',
                 longDescription: 'Flight Systems.',
                 nodes: content
-        	}
+            }
     	};
-        
+    	        
         super.addContent(newContent);
     }
-  
 }
 
 

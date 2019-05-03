@@ -5,36 +5,35 @@ var path = require( 'path' );
 const CdrPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrPlugin')).CdrPlugin;
 
 /**
- * Commander Ground plugin
+ * Commander Flight plugin
  */
 class CdrGroundPlugin extends CdrPlugin {
-	
+        
     /**
      * Constructor for commander plugin
      * @param {String} name    directory name
      * @param {String} webRoot directory path
      * @param {String} urlBase base url
      */
-    constructor(webRoot) {
-	    super(webRoot);
+    constructor(config) {
+        super(config);
     }
-
-    getContent() { 
-        var result = {
-            ground: {
-	            shortDescription: 'Ground',
-	            longDescription: 'Ground Systems.',
-	            nodes: {}
+    
+    addContent(content) {
+        var newContent = {
+            flight: {
+                shortDescription: 'Ground',
+                longDescription: 'Ground Systems.',
+                nodes: content
             }
-	    };
-
-	    return result;
-	}
-  
+        };
+                
+        super.addContent(newContent);
+    }
 }
 
 
 
 module.exports = {
-  CdrGroundPlugin: CdrGroundPlugin
+        CdrGroundPlugin: CdrGroundPlugin
 }

@@ -24,10 +24,14 @@ class CdrPlugin extends Emitter {
      * @param {String} webRoot directory path
      * @param {String} urlBase base url
      */
-    constructor(webRoot) {
-	    super();
+    constructor(config) {
+	super();
 
-        this.webRoot = webRoot;
+        this.webRoot = config.webRoot;
+        this.namespace = config.namespace;
+        this.name = config.name;
+
+        this.logDebug('Created.');
     }
   
   
@@ -39,6 +43,10 @@ class CdrPlugin extends Emitter {
             appViews.push( this.webRoot );
 
             this.processContentTree( content, '');
+            
+            this.logDebug('Added content.');
+        } else {
+            this.logError('Content is undefined');
         }
     }
 
@@ -49,29 +57,29 @@ class CdrPlugin extends Emitter {
     initialize( commander, instance ) {
         var self = this;
 
-        if ( typeof this.getFunctions === 'function' ) {
-            var functions = this.getFunctions();
-            if(typeof functions !== 'undefined') {
-                for(var funcName in functions) {
-                    commander.registerFunction(self.name, functions[funcName]);
-                }
-            }
-        }
-
-        if(typeof this.getStreams === 'function') {
-            var functions = this.getStreams();
-            if(typeof functions !== 'undefined') {
-                for(var funcName in functions) {
-                    commander.registerStreams(self.name);
-                }
-            }
-        }
-
-        if(typeof this.getServerApp === 'function') {
-            var serverApp = this.getServerApp();
-  	  
-            instance.addApp(serverApp.name, serverApp.obj);
-        }
+//        if ( typeof this.getFunctions === 'function' ) {
+//            var functions = this.getFunctions();
+//            if(typeof functions !== 'undefined') {
+//                for(var funcName in functions) {
+//                    commander.registerFunction(self.name, functions[funcName]);
+//                }
+//            }
+//        }
+//
+//        if(typeof this.getStreams === 'function') {
+//            var functions = this.getStreams();
+//            if(typeof functions !== 'undefined') {
+//                for(var funcName in functions) {
+//                    commander.registerStreams(self.name);
+//                }
+//            }
+//        }
+//
+//        if(typeof this.getServerApp === 'function') {
+//            var serverApp = this.getServerApp();
+//  	  
+//            instance.addApp(serverApp.name, serverApp.obj);
+//        }
     }
 
 
@@ -127,49 +135,49 @@ class CdrPlugin extends Emitter {
     }
 
 
+//    /**
+//     * Process panel tree
+//     * @param  {Object} panels panel object
+//     */
+//    processPanelsTree(panels) {
+//        if(panels.hasOwnProperty('urlPath')) {
+//            var self = this;
+//            global.NODE_APP.get(panels.urlPath, function(req, res) {
+//                res.render(path.join(self.webRoot, panels.filePath));
+//            });
+//        }
+//
+//        if(panels.hasOwnProperty('nodes')) {
+//            for(var nodeID in panels.nodes) {
+//                this.processPanelsTree(panels.nodes[nodeID]);
+//            }
+//        }
+//    }
+//
+//
+//    /**
+//     * Process layout tree
+//     * @param  {Object} layouts layout object
+//     */
+//    processLayoutsTree(layouts) {
+//        if(layouts.hasOwnProperty('urlPath')) {
+//            var self = this;
+//            global.NODE_APP.get(layouts.urlPath, function(req, res) {
+//                self.readJSONFile(path.join(self.webRoot, layouts.filePath), function( err, json ) {
+//                    res.send( json );
+//                });
+//            });
+//        }
+//
+//        if(layouts.hasOwnProperty('nodes')) {
+//            for(var nodeID in layouts.nodes) {
+//                this.processLayoutsTree(layouts.nodes[nodeID]);
+//            }
+//        }
+//    }
+
     /**
-     * Process panel tree
-     * @param  {Object} panels panel object
-     */
-    processPanelsTree(panels) {
-        if(panels.hasOwnProperty('urlPath')) {
-            var self = this;
-            global.NODE_APP.get(panels.urlPath, function(req, res) {
-                res.render(path.join(self.webRoot, panels.filePath));
-            });
-        }
-
-        if(panels.hasOwnProperty('nodes')) {
-            for(var nodeID in panels.nodes) {
-                this.processPanelsTree(panels.nodes[nodeID]);
-            }
-        }
-    }
-
-
-    /**
-     * Process layout tree
-     * @param  {Object} layouts layout object
-     */
-    processLayoutsTree(layouts) {
-        if(layouts.hasOwnProperty('urlPath')) {
-            var self = this;
-            global.NODE_APP.get(layouts.urlPath, function(req, res) {
-                self.readJSONFile(path.join(self.webRoot, layouts.filePath), function( err, json ) {
-                    res.send( json );
-                });
-            });
-        }
-
-        if(layouts.hasOwnProperty('nodes')) {
-            for(var nodeID in layouts.nodes) {
-                this.processLayoutsTree(layouts.nodes[nodeID]);
-            }
-        }
-    }
-
-    /**
-     * Reads a json file and applies a collback on read data.
+     * Reads a json file and applies a callback on read data.
      * @param  {String}   filename file name
      * @param  {Function} callback callback
      */
@@ -186,6 +194,51 @@ class CdrPlugin extends Emitter {
                 callback(exception);
             }
         });
+    }
+    
+    
+    logDebug(message) {
+        if(typeof this.namespace === 'undefined') {
+            console.log('Namespace undefined in plugin \'' + this.name + '\'');
+        } else {
+            this.namespace.logDebug(this.name, message);
+        }
+    }
+    
+    
+    logVerbose(message) {
+        if(typeof this.namespace === 'undefined') {
+            console.log('Namespace undefined in plugin \'' + this.name + '\'');
+        } else {
+            this.namespace.logVerbose(this.name, message);
+        }
+    }
+    
+    
+    logInfo(message) {
+        if(typeof this.namespace === 'undefined') {
+            console.log('Namespace undefined in plugin \'' + this.name + '\'');
+        } else {
+            this.namespace.logInfo(this.name, message);
+        }
+    }
+    
+    
+    logWarn(message) {
+        if(typeof this.namespace === 'undefined') {
+            console.log('Namespace undefined in plugin \'' + this.name + '\'');
+        } else {
+            this.namespace.logWarn(this.name, message);
+        }
+    }
+    
+    
+    logError(message) {
+        if(typeof this.namespace === 'undefined') {
+            console.log('Namespace undefined in plugin \'' + this.name + '\'');
+        } else {
+            this.namespace.logError(this.name, message);
+        }
     }
 }
 

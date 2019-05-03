@@ -1,0 +1,45 @@
+- queryString = '$.Airliner.apps.FM.config.FM_DIR_LIST_PKT_ENTRIES';
+-
+- global.COMMANDER.queryConfigDB(queryString, function (results) {
+-     FM_DIR_LIST_PKT_ENTRIES = results[0];
+table.table.table-condensed
+  tbody
+    tr
+      th Directory Name
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/DirName'}]}) ---
+    tr
+      th Total Files
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/TotalFiles'}]}) ---
+    tr
+      th Packet Files
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/PacketFiles'}]}) ---
+    tr
+      th Index of First Packet File
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/FirstFile'}]}) ---
+table.table.table-condensed
+  tbody
+    tr
+      th File Name
+      th File Size
+      th Modify Time
+      th Mode
+    - for(var i = 0; i < FM_DIR_LIST_PKT_ENTRIES; ++i) {
+    tr
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/FileList[' + i + '].EntryName'}]}) ---
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/FileList[' + i + '].EntrySize'}]}) ---
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/FileList[' + i + '].ModifyTime'}]}) ---
+      td
+        span(data-cdr={tlm: [{name:'/FM/FM_DirListPkt_t/FileList[' + i + '].Mode'}]}) ---
+    - }
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/FM/FM_GetDirPktCmd_t'}}) Get Directory (telemetry)
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/FM/FM_GetDirFileCmd_t'}}) Get Directory (file)
+- });

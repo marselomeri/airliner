@@ -1,0 +1,47 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Cmd Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/usCmdCnt'}]}) ---
+    tr
+      th Error Count
+      td
+        div(data-cdr={tlm:[{name:'/PE/PE_HkTlm_t/usCmdErrCnt'}]}) ---
+    tr
+      th Timestamp
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/Timestamp'}]}) ---
+    tr
+      th Alt Origin
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/AltOrigin'}]}) ---
+    tr
+      th Estimator Global Initialized
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorGlobalInitialized'}]}) ---
+    tr
+      th Alt Origin Initialized
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/AltOriginInitialized'}]}) ---
+    tr
+      th XY Est Valid
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/XyEstValid'}]}) ---
+    tr
+      th Z Est Valid
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/ZEstValid'}]}) ---
+    tr
+      th Terrain Z Est Valid
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TzEstValid'}]}) ---
+    tr
+      th Estimator Local Initialized
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/EstimatorLocalInitialized'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/Noop'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/Reset'}}) Reset  
+      

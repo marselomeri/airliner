@@ -1,0 +1,27 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Last Update
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/TimeLastFlow'}]}) ---
+    tr
+      th Flow Fused
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowFused'}]}) ---
+    tr
+      th Flow Initialized
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowInitialized'}]}) ---
+    tr
+      th Flow Fault
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowFault'}]}) ---
+    tr
+      th Flow Timeout
+      td
+        span(data-cdr={tlm: [{name:'/PE/PE_HkTlm_t/FlowTimeout'}]}) ---
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/EnableFlow'}}) Enable
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/PE/DisableFlow'}}) Disable 
+      

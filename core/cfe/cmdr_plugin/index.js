@@ -5,8 +5,10 @@ var path = require( 'path' );
 const CdrFlightPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightPlugin')).CdrFlightPlugin;
 
 module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
-    constructor() {
-	    super(path.join( __dirname, 'web'));
+    constructor(config) {
+        config.name = 'core';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
 
         var content = {
             core: {
@@ -275,9 +277,9 @@ module.exports = class CfeCdrPlugin extends CdrFlightPlugin {
                         }
                     }
                 }
-	        }
+	    }
         }
         
-	    this.addContent(content);
+	this.addContent(content);
     }
 };
